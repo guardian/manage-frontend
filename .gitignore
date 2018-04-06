@@ -16,7 +16,6 @@ project/plugins/project/
 *.class
 *.log
 
-.idea/*
-.idea/workspace.xml
+.idea/
 
 logs/
