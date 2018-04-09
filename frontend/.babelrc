@@ -1,0 +1,35 @@
+{
+    "env": {
+        "production": {
+            "plugins": [
+                [
+                    "emotion",
+                    {
+                        "hoist": true
+                    }
+                ]
+            ]
+        },
+        "development": {
+            "plugins": [
+                [
+                    "emotion",
+                    {
+                        "sourceMap": true,
+                        "autoLabel": true
+                    }
+                ]
+            ]
+        }
+    },
+    "presets": [
+        "@babel/env",
+        "@babel/typescript",
+        "@babel/react"
+    ],
+    "plugins": [
+        "emotion",
+        "@babel/proposal-class-properties",
+        "@babel/proposal-object-rest-spread"
+    ]
+}

@@ -19,3 +19,9 @@ project/plugins/project/
 .idea/
 .idea/workspace.xml
 logs/
+/frontend/node_modules/
+/conf/webpack-assets.json
+/.vscode/
+/public/user.js
+/public/webpack-assets.json
+/public/csr.js
