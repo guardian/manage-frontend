@@ -18,7 +18,7 @@ enablePlugins(SystemdPlugin)
 serverLoading in Debian := Some(Systemd)
 
 debianPackageDependencies := Seq("openjdk-8-jre-headless")
-maintainer := "The Maintainer <the.maintainer@company.com>"
+maintainer := "digital"
 packageSummary := "Brief description"
 packageDescription := """Slightly longer description"""
 
@@ -26,3 +26,5 @@ riffRaffPackageType := (packageBin in Debian).value
 
 riffRaffUploadArtifactBucket := Option("riffraff-artifact")
 riffRaffUploadManifestBucket := Option("riffraff-builds")
+
+PlayKeys.devSettings := Seq("play.server.http.port" -> "9233")
