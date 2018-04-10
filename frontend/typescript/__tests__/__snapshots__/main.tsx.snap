@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main renders something 1`] = `
+<div
+  css="[object Object]"
+>
+  <header
+    css="[object Object]"
+  >
+    this is the header
+  </header>
+  <main
+    css="[object Object]"
+  >
+    <p>
+      hi
+    </p>
+  </main>
+  <footer
+    css="[object Object]"
+  >
+    this is the footer
+  </footer>
+</div>
+`;
