@@ -9,7 +9,8 @@ module.exports = {
     },
     output: {
         path:  path.resolve(__dirname, '../public/'),
-        filename: '[name].js'
+        filename: '[name].js',
+        chunkFilename: '[name].js'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json']
