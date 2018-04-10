@@ -4,8 +4,8 @@ var assetsPluginInstance = new AssetsPlugin({path:  path.resolve(__dirname, '../
 
 module.exports = {
     entry: {
-    	csr: './js/csr',
-    	user: './js/user'
+    	csr: './typescript/csr',
+    	user: './typescript/user'
     },
     output: {
         path:  path.resolve(__dirname, '../public/'),
