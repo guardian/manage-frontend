@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from 'emotion'
 import palette from '../colours'
 import { Container } from './grid';
+import { cell } from '../styles/grid';
 
 export interface MainProps {
   children: JSX.Element[] | JSX.Element
@@ -27,10 +28,10 @@ export const Main: React.SFC<MainProps> = ({ children }) => {
       backgroundColor:  palette.neutral["1"],
       color:  palette.neutral["7"],
     }}><Container>
-      <h1>this is the footer</h1>
-      <h1 css={{
+      <div><h1>this is the footer</h1></div>
+      <div><h1 css={{
         color: palette.yellow.medium
-      }}>this is the fake footer</h1>
+      }}>this is the fake footer</h1></div>
       </Container></footer>
   </div>
 }

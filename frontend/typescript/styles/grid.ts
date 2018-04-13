@@ -32,3 +32,14 @@ export const spanBreakpoints: (bs:SomeBreakPoints,qs: BreakpointQueries)=> Break
   }).reduce((a ,c) =>({...a,...c}),{})
 }
 
+export const cell = {
+  flex: '1',
+  display: 'flex',
+  padding: `${gutter}px 0 0 ${gutter}px`
+}
+
+export const row = {
+  padding: `-${gutter}px 0 0 -${gutter}px`,
+  display: 'flex',
+  margin: 'auto'
+}
