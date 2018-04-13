@@ -32,11 +32,14 @@
     "test": "tsc --noEmit && jest"
   },
   "dependencies": {
+    "@guardian/guui": "https://github.com/guardian/guui",
     "@types/react": "^16.3.5",
     "@types/react-dom": "^16.0.4",
     "babel-plugin-emotion": "^9.1.0",
     "emotion": "^9.1.1",
+    "facepaint": "^1.2.1",
     "react": "^16.3.1",
-    "react-dom": "^16.3.1"
-  }  
+    "react-dom": "^16.3.1",
+    "react-emotion": "^9.1.1"
+  }
 }
