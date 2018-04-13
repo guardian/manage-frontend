@@ -8,6 +8,8 @@
   ],
   "jsRules": {},
   "rules": {
+    "object-literal-sort-keys": false,
+    "interface-name": false,
     // Recommended built-in rules
     "no-var-keyword": true,
     "no-parameter-reassignment": true,

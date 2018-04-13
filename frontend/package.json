@@ -2,7 +2,6 @@
   "name": "account-frontend",
   "version": "1.0.0",
   "main": "index.js",
-  "license": " ",
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
     "@babel/core": "^7.0.0-beta.44",
@@ -32,6 +31,8 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
+    "pretty-quick": "pretty-quick",
+    "lint": "tslint -p .",
     "bundle": "webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
     "watch": "webpack --config webpack.dev.js -w",
@@ -44,5 +45,6 @@
     "emotion": "^9.1.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
-  }
+  },
+  "license": "UNLICENSED"
 }
