@@ -30,6 +30,7 @@
     "webpack-merge": "^4.1.2"
   },
   "scripts": {
+    "start": "node ./dist/server",
     "type-check": "tsc --noEmit",
     "pretty-quick": "pretty-quick",
     "lint": "tslint -p .",
@@ -43,6 +44,7 @@
     "@types/react-dom": "^16.0.4",
     "babel-plugin-emotion": "^9.1.0",
     "emotion": "^9.1.1",
+    "emotion-server": "^9.1.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
   },

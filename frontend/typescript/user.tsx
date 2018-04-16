@@ -3,8 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Main } from './components/main'
 
-const element = <Main>
+const User = <Main>
   <div css={{ color: 'hotpink' }}>Hello world!</div>
 </Main>
+
+export default User
+
 // tslint:disable-next-line:no-expression-statement
-ReactDOM.render(element, document.getElementById('root'));
+// ReactDOM.render(element, document.getElementById('root'));
+
