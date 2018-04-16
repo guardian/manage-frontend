@@ -1,5 +1,4 @@
-import React from 'react';
 import { css } from 'emotion'
+import React from 'react';
 
-export let z = <div css={{ color: 'hotpink' }}>Hello world!</div>
-console.log('hello') 
+export const z = <div css={{ color: 'hotpink' }}>Hello world!</div>

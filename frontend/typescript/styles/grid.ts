@@ -1,6 +1,5 @@
 import { css } from 'emotion'
-import styled from 'react-emotion'
-import { SomeBreakPoints, BreakpointQueries, minWidth } from './breakpoints';
+import { BreakpointQueries, minWidth, SomeBreakPoints } from './breakpoints';
 
 
 const gutter = 20
@@ -16,20 +15,17 @@ export const span = (n: number) => ({
 })
 
 export interface BreakpointCSS {
-    [key:string]: {
-      width: string
+    readonly [key:string]: {
+      readonly width: string
     },
 }
 
-export const spanBreakpoints: (bs:SomeBreakPoints,qs: BreakpointQueries)=> BreakpointCSS = (bs, qs = minWidth) => {
-    return Object.entries(bs).map(([k, v]) => {
-    if (k in qs && v) {
-      let q = qs[k]
-      let w = span(v)
-      return ({ [q]: w })
-    }
-    return {}
-  }).reduce((a ,c) =>({...a,...c}),{})
+export const spanBreakpoints: (bs:SomeBreakPoints,qs: BreakpointQueries)=> BreakpointCSS = (breakpoints, mqs = minWidth ) => {
+  const bs = breakpoints as  {readonly [key:string]: number}
+  const qs = mqs as {readonly [key:string]: string}
+    return Object.entries(bs as  {readonly [key:string]: number}).map(([k, v]) => 
+       (k in qs && v)?({ [qs[k]]: span(v) }):{}
+  ).reduce((a ,c) =>({...a,...c}),{})
 }
 
 export const cell = {

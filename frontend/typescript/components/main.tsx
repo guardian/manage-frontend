@@ -1,11 +1,11 @@
-import React from 'react';
 import { css } from 'emotion'
+import React from 'react';
 import palette from '../colours'
-import { Container } from './grid';
 import { cell } from '../styles/grid';
+import { Container } from './grid';
 
 export interface MainProps {
-  children: JSX.Element[] | JSX.Element
+  readonly children: ReadonlyArray<JSX.Element> | JSX.Element
 }
 
 export const Main: React.SFC<MainProps> = ({ children }) => {

@@ -1,13 +1,12 @@
 export interface Breakpoints {
-  [key:string]: number,
-  mobile: number,
-  mobileMedium: number,
-  mobileLandscape: number,
-  phablet: number,
-  tablet: number,
-  desktop: number,
-  leftCol: number,
-  wide: number
+  readonly mobile: number,
+  readonly mobileMedium: number,
+  readonly mobileLandscape: number,
+  readonly phablet: number,
+  readonly tablet: number,
+  readonly desktop: number,
+  readonly leftCol: number,
+  readonly wide: number,
 }
 
 export type SomeBreakPoints = {
