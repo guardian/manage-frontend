@@ -4,10 +4,11 @@ import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
 import html from "./html";
 import { renderStylesToString } from "emotion-server";
-
+import path from "path"
 const port = 9233;
+
 const server = express();
-server.use("/static", express.static("static"));
+server.use("/static", express.static("dist/static"));
 
 server.get("/", (req, res) => {
   /**
@@ -16,11 +17,13 @@ server.get("/", (req, res) => {
    */
   const body = renderStylesToString(renderToString(User));
   const title = "Server side Rendering with Styled Components";
+  const src= "static/user.js"
 
   res.send(
     html({
       body,
-      title
+      title,
+      src
     })
   );
 });

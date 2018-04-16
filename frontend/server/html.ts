@@ -10,15 +10,17 @@ const html: (
   _: {
     readonly body: string;
     readonly title: string;
+    readonly src: string;
   }
-) => string = ({ body, title }) => `
+) => string = ({ body, title, src }) => `
   <!DOCTYPE html>
   <html>
     <head>
       <title>${title}</title>
     </head>
     <body style="margin:0">
-      <div id="container">${body}</div>
+      <div id="app">${body}</div>
+      <script src="${src}"></script>
     </body>
   </html>
 `;
