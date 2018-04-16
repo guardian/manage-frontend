@@ -1,4 +1,4 @@
-//colours from guui
+// colours from guui
 const palette = {
   red: {
     light: "#ff4e36",
