@@ -5,7 +5,7 @@ import User from "../client/components/user";
 import html from "./html";
 import { renderStylesToString } from "emotion-server";
 
-const port = 3000;
+const port = 9233;
 const server = express();
 server.use("/static", express.static("static"));
 
