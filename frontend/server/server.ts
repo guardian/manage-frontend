@@ -1,7 +1,7 @@
 import express from "express";
 import React from "react";
 import { renderToString } from "react-dom/server";
-import User from "./components/user";
+import User from "../client/components/user";
 import html from "./html";
 import { renderStylesToString } from "emotion-server";
 

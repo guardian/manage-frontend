@@ -25,7 +25,7 @@ const common = {
 };
 
 const server = merge(common, {
-  entry: "./typescript/server",
+  entry: "./server/server",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "server.js",
@@ -37,8 +37,8 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    csr: "./typescript/csr",
-    user: "./typescript/user"
+    csr: "./client/csr",
+    user: "./client/user"
   },
   output: {
     path: path.resolve(__dirname, "../public/"),
