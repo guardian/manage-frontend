@@ -6,20 +6,21 @@
  * Note we're returning a template string from this function.
  */
 
-export interface HTMLinterface {
-  readonly  body:  string,
-  readonly title:  string
- }
-const html:(_: HTMLinterface) =>  string = ({ body, title })=> `
+const html: (
+  _: {
+    readonly body: string;
+    readonly title: string;
+  }
+) => string = ({ body, title }) => `
   <!DOCTYPE html>
   <html>
     <head>
       <title>${title}</title>
     </head>
     <body style="margin:0">
-      <div id="app">${body}</div>
+      <div id="container">${body}</div>
     </body>
   </html>
-`
+`;
 
-export default html
+export default html;
