@@ -37,7 +37,7 @@
     "lint": "tslint -p .",
     "bundle": "webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
-    "watch": "webpack --config webpack.dev.js -w & nodemon ./dist/server",
+    "watch": "yarn bundle-dev && yarn watch & nodemon ./dist/server",
     "test": "tsc --noEmit && jest"
   },
   "dependencies": {
