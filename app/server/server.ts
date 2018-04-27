@@ -1,10 +1,10 @@
+import { renderStylesToString } from "emotion-server";
 import express from "express";
+import path from "path"
 import React from "react";
 import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
 import html from "./html";
-import { renderStylesToString } from "emotion-server";
-import path from "path"
 const port = 9233;
 
 const server = express();
@@ -29,4 +29,5 @@ server.get("/", (req, res) => {
 });
 
 server.listen(port);
+// tslint:disable-next-line:no-console
 console.log(`Serving at http://localhost:${port}`);

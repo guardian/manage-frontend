@@ -1,21 +1,17 @@
 export interface Breakpoints {
-  readonly mobile: number,
-  readonly mobileMedium: number,
-  readonly mobileLandscape: number,
-  readonly phablet: number,
-  readonly tablet: number,
-  readonly desktop: number,
-  readonly leftCol: number,
-  readonly wide: number,
+  readonly mobile: number;
+  readonly mobileMedium: number;
+  readonly mobileLandscape: number;
+  readonly phablet: number;
+  readonly tablet: number;
+  readonly desktop: number;
+  readonly leftCol: number;
+  readonly wide: number;
 }
 
-export type SomeBreakPoints = {
-  [_ in keyof Breakpoints]?: number
-}
+export type SomeBreakPoints = { [_ in keyof Breakpoints]?: number };
 
-export type BreakpointQueries  = {
-  [_ in keyof Breakpoints]: string 
-}
+export type BreakpointQueries = { [_ in keyof Breakpoints]: string };
 
 export const namedBreakpoints: Breakpoints = {
   mobile: 320,
@@ -25,27 +21,30 @@ export const namedBreakpoints: Breakpoints = {
   tablet: 740,
   desktop: 980,
   leftCol: 1140,
-  wide: 1300,
-}
+  wide: 1300
+};
 
-export const queries =
-  {
-    minWidth: (from: number): string => `@media (min-width: ${`${from}px`})`,
-    maxWidth: (until: number): string => `@media (max-width: ${`${until - 1}px`})`,
-    minWidthMaxWidth: (from: number, until: number): string => `@media (min-width: ${`${from}px`}) and (max-width: ${`${until - 1}px`})`
-  }
+export const queries = {
+  minWidth: (from: number): string => `@media (min-width: ${`${from}px`})`,
+  maxWidth: (until: number): string =>
+    `@media (max-width: ${`${until - 1}px`})`,
+  minWidthMaxWidth: (from: number, until: number): string =>
+    `@media (min-width: ${`${from}px`}) and (max-width: ${`${until - 1}px`})`
+};
 
+const mapBreakpointValues: (
+  bs: Breakpoints,
+  f: (x: number) => string
+) => BreakpointQueries = (bs, f) => ({
+  mobile: f(bs.mobile),
+  mobileMedium: f(bs.mobileMedium),
+  mobileLandscape: f(bs.mobileLandscape),
+  phablet: f(bs.phablet),
+  tablet: f(bs.tablet),
+  desktop: f(bs.desktop),
+  leftCol: f(bs.leftCol),
+  wide: f(bs.wide)
+});
 
-  const mapBreakpointValues: (bs: Breakpoints, f: (x: number) => string ) => BreakpointQueries = (bs, f) => ({
-    mobile: f(bs.mobile),
-    mobileMedium: f(bs.mobileMedium),
-    mobileLandscape: f(bs.mobileLandscape),
-    phablet: f(bs.phablet),
-    tablet: f(bs.tablet),
-    desktop: f(bs.desktop),
-    leftCol: f(bs.leftCol),
-    wide: f(bs.wide)
-  }) 
-  
-  export const minWidth = mapBreakpointValues(namedBreakpoints,queries.minWidth)
-  export const maxWidth = mapBreakpointValues(namedBreakpoints,queries.maxWidth)
+export const minWidth = mapBreakpointValues(namedBreakpoints, queries.minWidth);
+export const maxWidth = mapBreakpointValues(namedBreakpoints, queries.maxWidth);
