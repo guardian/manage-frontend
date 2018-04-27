@@ -13,5 +13,4 @@ This is probably a good chance for people to look at it and give any opinions be
 
 1. Add `account.thegulocal.com` to `/etc/hosts`
 1. In `./nginx` run `./setup.sh`.
-1. In `./frontend`, run `yarn` and `yarn watch`.
-1. In `.` run `sbt run`
+1. In `./app`, run `yarn` and `yarn watch`.
