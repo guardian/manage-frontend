@@ -1,7 +1,6 @@
 # Account Frontend
 
 This is a shell webapp using:
-- Play
 - [Sytled Components](https://emotion.sh)
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org)
