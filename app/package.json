@@ -1,7 +1,7 @@
 {
   "name": "account-frontend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/server",
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
     "@babel/core": "^7.0.0-beta.44",
@@ -31,13 +31,13 @@
     "webpack-merge": "^4.1.2"
   },
   "scripts": {
-    "start": "node ./dist/server",
+    "start": "nodemon ./dist/server",
     "type-check": "tsc --noEmit",
     "pretty-quick": "pretty-quick",
     "lint": "tslint -p .",
     "bundle": "webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
-    "watch": "yarn bundle-dev && yarn watch & nodemon ./dist/server",
+    "watch": "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "tsc --noEmit && jest"
   },
   "dependencies": {
@@ -46,9 +46,11 @@
     "@types/react": "^16.3.5",
     "@types/react-dom": "^16.0.4",
     "babel-plugin-emotion": "^9.1.0",
+    "cookie-parser": "^1.4.3",
     "emotion": "^9.1.1",
     "emotion-server": "^9.1.1",
     "express": "^4.16.3",
+    "helmet": "^3.12.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "webpack-node-externals": "^1.7.2"
