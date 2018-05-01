@@ -29,7 +29,7 @@ export const withIdentity: express.RequestHandler = (
 
   if (cookies[GU_U] == null || cookies[SC_GU_U] == null) {
     log.info("Not logged in.");
-    res.redirect("https://profile.thegulocal.com/login");
+    res.redirect("https://profile.thegulocal.com/signin");
     return;
   }
 
