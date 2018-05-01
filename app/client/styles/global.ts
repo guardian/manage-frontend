@@ -1,4 +1,4 @@
-import { injectGlobal } from 'emotion'
+import { injectGlobal } from "emotion";
 
 const global = `
 html {
@@ -51,5 +51,5 @@ address {
   font-style: normal;
   word-break: keep-all;
 }
-`
-export default global
+`;
+export default global;

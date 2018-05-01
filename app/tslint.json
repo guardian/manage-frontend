@@ -24,11 +24,11 @@
     "no-method-signature": true,
 
     // Functional style rules
-    "no-this": true,
-    "no-class": true,
+    "no-this": false,
+    "no-class": false,
     "no-mixed-interface": true,
     "no-expression-statement": false, // this thwarts our test library and endpoints
-    "no-if-statement": true
+    "no-if-statement": false
   },
   "rulesDirectory": []
 }
