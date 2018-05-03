@@ -1,8 +1,5 @@
-import { css, injectGlobal } from "emotion";
 import React from "react";
-import global from "../styles/global";
-import { Main } from "./main";
-import { Table } from "./table";
+import {Table} from "./table";
 
 export default class Membership extends React.Component<{}, {}> {
   constructor(props) {
@@ -24,7 +21,7 @@ export default class Membership extends React.Component<{}, {}> {
       data: {
         alert: data.alertText,
         tier: data.tier,
-        "subscriber id": data.subscriberId
+        "subscriber id": data.subscription.subscriberId
       },
       loading: false
     });
