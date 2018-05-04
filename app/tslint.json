@@ -1,0 +1,34 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-immutable",
+    "tslint-config-prettier"
+  ],
+  "jsRules": {},
+  "rules": {
+    "object-literal-sort-keys": false, // we use emotion css objects for styles alphabetising the rules will make them harder to reason about
+    "interface-name": false,
+    // Recommended built-in rules
+    "no-var-keyword": true,
+    "no-parameter-reassignment": true,
+    "typedef": [true, "call-signature"],
+
+    // Immutability rules
+    "readonly-keyword": true,
+    "readonly-array": true,
+    "no-let": true,
+    "no-object-mutation": true,
+    "no-delete": true,
+    "no-method-signature": true,
+
+    // Functional style rules
+    "no-this": false,
+    "no-class": false,
+    "no-mixed-interface": true,
+    "no-expression-statement": false, // this thwarts our test library and endpoints
+    "no-if-statement": false
+  },
+  "rulesDirectory": []
+}
