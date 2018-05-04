@@ -42,7 +42,8 @@
     "lint": "tslint -p .",
     "bundle": "webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
-    "watch": "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
+    "watch":
+      "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "tsc --noEmit && jest"
   },
   "dependencies": {
