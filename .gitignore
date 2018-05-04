@@ -11,9 +11,10 @@ project/plugins/project/
 .idea/
 .idea/workspace.xml
 logs/
-/frontend/node_modules/
+/app/node_modules/
 /conf/webpack-assets.json
 /.vscode/
 /public/*.js
 /public/webpack-assets.json
 
+app/dist/*
