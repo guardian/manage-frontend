@@ -8,6 +8,7 @@ import path from "path";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
+import { config } from "./config";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
 
@@ -27,7 +28,6 @@ server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
 server.use("/static", express.static("dist/static"));
-
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
@@ -40,7 +40,9 @@ server.get("/api/membership", (req: express.Request, res: express.Response) => {
   const identity: IdentityUser = res.locals.identity;
 
   fetch(
-    "https://members-data-api.thegulocal.com/user-attributes/me/mma-membership",
+    `https://members-data-api.${
+      config.domain
+    }/user-attributes/me/mma-membership`,
     {
       headers: {
         Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`

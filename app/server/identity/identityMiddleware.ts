@@ -1,5 +1,6 @@
 import bunyan from "bunyan";
 import express from "express";
+import { config } from "../config";
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -25,7 +26,7 @@ export const withIdentity: express.RequestHandler = (
 
   if (cookies[GU_U] == null || cookies[SC_GU_U] == null) {
     log.info("Not logged in.");
-    res.redirect("https://profile.thegulocal.com/signin");
+    res.redirect(`https://profile.${config.dev.domain}/signin`);
     return;
   }
 
