@@ -42,7 +42,8 @@
     "lint": "tslint -p .",
     "bundle": "webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
-    "watch": "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
+    "watch":
+      "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "tsc --noEmit && jest"
   },
   "dependencies": {
@@ -61,6 +62,7 @@
     "node-fetch": "^2.1.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "react-emotion": "^9.1.2",
     "webpack-node-externals": "^1.7.2"
   },
   "license": "UNLICENSED"

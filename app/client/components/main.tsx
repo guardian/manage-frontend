@@ -1,8 +1,6 @@
-import { css } from "emotion";
 import React from "react";
-import palette from "../colours";
-import { cell } from "../styles/grid";
-import { Container } from "./grid";
+import Header from "./header";
+import Footer from "./footer";
 
 export interface MainProps {
   readonly children: ReadonlyArray<JSX.Element> | JSX.Element;
@@ -19,37 +17,9 @@ export const Main: React.SFC<MainProps> = ({ children }) => {
         width: "100%"
       }}
     >
-      <header
-        css={{
-          backgroundColor: palette.neutral.header,
-          height: "100px",
-          color: palette.neutral["1"]
-        }}
-      >
-        this is the header
-      </header>
+      <Header />
       <main css={{ flex: "1" }}>{children}</main>
-      <footer
-        css={{
-          backgroundColor: palette.neutral["1"],
-          color: palette.neutral["7"]
-        }}
-      >
-        <Container>
-          <div>
-            <h1>this is the footer</h1>
-          </div>
-          <div>
-            <h1
-              css={{
-                color: palette.yellow.medium
-              }}
-            >
-              this is the fake footer
-            </h1>
-          </div>
-        </Container>
-      </footer>
+      <Footer />
     </div>
   );
 };
