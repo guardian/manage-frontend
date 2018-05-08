@@ -18,7 +18,11 @@ export const Main: React.SFC<MainProps> = ({ children }) => {
       }}
     >
       <Header />
-      <main css={{ flex: "1" }}>{children}</main>
+      <main css={{
+          flex: "1",
+          "width": "48.75rem",
+          margin: "30px auto"
+      }}>{children}</main>
       <Footer />
     </div>
   );

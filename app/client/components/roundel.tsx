@@ -6,7 +6,7 @@ const Roundel: React.SFC<{ size: number }> = ({ size }) => (
         href="https://www.theguardian.com/uk"
         css={{
             float: "right",
-            margin: "2px"
+            padding: "2px"
         }}
     >
         <svg
