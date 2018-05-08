@@ -9,7 +9,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
 import html from "./html";
-import { IdentityRequest, withIdentity } from "./identity/identityMiddleware";
+import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
 
 const port = 9233;
 
@@ -23,11 +23,13 @@ server.use(withIdentity);
 server.use("/static", express.static("dist/static"));
 
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
+  const identity: IdentityUser = res.locals.identity;
+
   fetch(
     "https://members-data-api.thegulocal.com/user-attributes/me/mma-membership",
     {
       headers: {
-        Cookie: `GU_U=${req.identity.GU_U}; SC_GU_U=${req.identity.SC_GU_U}`
+        Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
       }
     }
   )
@@ -39,7 +41,7 @@ server.get("/api/membership", (req: express.Request, res: express.Response) => {
     });
 });
 
-server.get("/", (req: IdentityRequest, res: express.Response) => {
+server.get("/", (req: express.Request, res: express.Response) => {
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.

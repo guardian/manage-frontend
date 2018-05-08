@@ -1,12 +1,8 @@
 import React from "react";
-import Header from "./header";
 import Footer from "./footer";
+import Header from "./header";
 
-export interface MainProps {
-  readonly children: ReadonlyArray<JSX.Element> | JSX.Element;
-}
-
-export const Main: React.SFC<MainProps> = ({ children }) => {
+export const Main: React.SFC<{}> = ({ children }) => {
   return (
     <div
       css={{
