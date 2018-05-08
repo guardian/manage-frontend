@@ -1,4 +1,4 @@
-import { css, cx } from "emotion";
+import { css } from "emotion";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { cell, row, spanBreakpoints } from "../styles/grid";

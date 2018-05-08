@@ -1,5 +1,5 @@
+import { injectGlobal } from "emotion";
 import React from "react";
-import {injectGlobal} from "emotion";
 
 const Spinner = () => (
   <div>
