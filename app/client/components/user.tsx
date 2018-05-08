@@ -1,36 +1,36 @@
-import {injectGlobal} from "emotion";
+import { injectGlobal } from "emotion";
 import React from "react";
 import global from "../styles/global";
-import {Main} from "./main";
 import AsyncLoader from "./asyncLoader";
-import {Table} from "./table";
+import { Main } from "./main";
+import { Table } from "./table";
 
-interface details{
-  [key: string]:string
-  id: string
-  tier: string
+interface Details {
+  id: string;
+  tier: string;
+  // tslint:disable-next-line:no-mixed-interface
+  [key: string]: string; // remove when we remove general table generator.
 }
 
-class Membership extends AsyncLoader<details>{}
+class Membership extends AsyncLoader<Details> {}
 
-const loader:()=>Promise<details> = async ()=>{
-  console.log("hello");
+const loader: () => Promise<Details> = async () => {
   const resp = await fetch("api/membership", { credentials: "include" });
   const data = await resp.json();
   // tslint:disable-next-line:no-console
   console.log(data);
 
-   return {
-      tier: data.tier,
-      id: data.subscription.subscriberId
-    }
-} 
+  return {
+    tier: data.tier,
+    id: data.subscription.subscriberId
+  };
+};
 
 const User = (
-    <Main>
-        {injectGlobal`${global}`}
-        <Membership fetch={loader} render={(data)=><Table data={data}/>} />
-    </Main>
+  <Main>
+    {injectGlobal`${global}`}
+    <Membership fetch={loader} render={data => <Table data={data} />} />
+  </Main>
 );
 
 export default User;

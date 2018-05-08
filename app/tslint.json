@@ -16,9 +16,9 @@
     "typedef": [true, "call-signature"],
 
     // Immutability rules
-    "readonly-keyword": true,
-    "readonly-array": true,
-    "no-let": true,
+    "readonly-keyword": false,
+    "readonly-array": false,
+    "no-let": false,
     "no-object-mutation": true,
     "no-delete": true,
     "no-method-signature": true,
@@ -28,7 +28,10 @@
     "no-class": false,
     "no-mixed-interface": true,
     "no-expression-statement": false, // this thwarts our test library and endpoints
-    "no-if-statement": false
+    "no-if-statement": false,
+
+    // Premature optimisation
+    "jsx-no-lambda": false
   },
   "rulesDirectory": []
 }
