@@ -5,7 +5,7 @@ const Roundel: React.SFC<{ size: number }> = ({ size }) => (
   <svg
     viewBox="0 0 56 56"
     xmlns="http://www.w3.org/2000/svg"
-    className={css({ width: `${size}px` })}
+    className={css({ width: `${size}px` }) /* emotion css property not recognised properly on <svg> tag */}
   >
     <path d="M28 0a28 28 0 1 0 28 28A28 28 0 0 0 28 0" fill="#121212" />
     <path

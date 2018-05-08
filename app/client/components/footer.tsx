@@ -7,10 +7,9 @@ const Footer = () => (
       color: "#bdbdbd"
     }}
   >
-    <div className="copyright-container">
-      <div className="really-serious-copyright">
-        © 2018 Guardian News and Media Limited or its affiliated companies.
-        All&nbsp;rights&nbsp;reserved.
+    <div> {/* equivalent class name on profile site is "copyright-container" */}
+      <div> {/* equivalent class name on profile site is "really-serious-copyright" */}
+        © 2018 Guardian News and Media Limited or its affiliated companies. All&nbsp;rights&nbsp;reserved.
       </div>
     </div>
   </footer>
