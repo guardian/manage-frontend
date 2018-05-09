@@ -35,7 +35,7 @@ export default class AsyncLoader<T> extends React.Component<
 
         switch (this.state.loadingState){
             case LoadingState.loading : return <Spinner />;
-            case LoadingState.loaded : return this.state.data?this.props.render(this.state.data):<h1>Super Boom</h1>;
+            case LoadingState.loaded : return this.state.data ? this.props.render(this.state.data) : <h1>Super Boom</h1>;
             case LoadingState.error : return <h1>Boom</h1>;
         }
 

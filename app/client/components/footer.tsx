@@ -11,8 +11,9 @@ const Footer = () => (
         }}>
             <div css={{
                 "max-width": "71.25rem",
-                "margin": "auto",
+                margin: "auto",
                 "line-height": "42px",
+                "padding-right": "2rem"
             }}>
                 <a href={"#top"} css={{color: palette.neutral["1"]}}>
                     back to top
@@ -26,7 +27,12 @@ const Footer = () => (
                 "padding": "0.25rem",
                 "font-size": "0.75rem"
             }}>
-                © 2018 Guardian News and Media Limited or its affiliated companies. All&nbsp;rights&nbsp;reserved.
+                <div css={{
+                    "max-width": "71.25rem",
+                    margin: "auto"
+                }}>
+                    © 2018 Guardian News and Media Limited or its affiliated companies. All&nbsp;rights&nbsp;reserved.
+                </div>
             </div>
         </div>
     </footer>
