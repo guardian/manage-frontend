@@ -16,9 +16,10 @@ export const Main: React.SFC<{}> = ({ children }) => {
     >
       <Header />
       <main className={css({ margin: "auto",
-                    "max-width": "48.75rem",
-                    "padding-bottom": "2.5rem",
-                    "padding-top": "0.3125rem" })}>{children}</main>
+                    flex:"1",
+                    maxWidth: "48.75rem",
+                    paddingBottom: "2.5rem",
+                    paddingTop: "0.3125rem" })}>{children}</main>
       <Footer />
     </div>
   );
