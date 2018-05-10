@@ -3,6 +3,7 @@
 set -e
 
 # Installing yarn
+
 YARN_VERSION="1.6.0"
 YARN_LOCATION="$(pwd)/tools/${YARN_VERSION}"
 
@@ -13,7 +14,7 @@ if [ ! -d "$YARN_LOCATION" ]; then
 	cd ../..
 fi
 
-export PATH=$PATH:${YARN_LOCATION}/yarn-v$YARN_VERSION/bin/yarn
+export PATH="$PATH:$YARN_LOCATION/yarn-v$YARN_VERSION/bin/yarn"
 
 # cd into the app directory where package.json resides
 
