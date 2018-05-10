@@ -13,7 +13,7 @@ if [ ! -d "$YARN_LOCATION" ]; then
 	cd ../..
 fi
 
-YARN_EXEC=${YARN_LOCATION}/yarn-v$YARN_VERSION/bin/yarn
+export PATH=$PATH:${YARN_LOCATION}/yarn-v$YARN_VERSION/bin/yarn
 
 # cd into the app directory where package.json resides
 
@@ -29,12 +29,12 @@ nvm use
 
 # Installing packages via yarn
 
-${YARN_EXEC} install
+yarn install
 
 # run tests with yarn
 
-${YARN_EXEC} test
+yarn test
 
 # produce prod artifacts
 
-${YARN_EXEC} bundle
+yarn bundle
