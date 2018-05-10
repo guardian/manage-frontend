@@ -46,7 +46,7 @@
     "bundle-dev": "webpack --config webpack.dev.js",
     "watch":
       "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
-    "test": "yarn lint && yarn type-check && jest",
+    "test": "yarn lint && yarn type-check && jest --coverage",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged"
   },
