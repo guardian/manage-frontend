@@ -22,6 +22,7 @@
     "husky": "^0.14.3",
     "jest": "^22.4.3",
     "jest-emotion": "^9.0.0",
+    "jest-teamcity-reporter": "^0.9.0",
     "nodemon": "^1.17.3",
     "prettier": "1.12.0",
     "pretty-quick": "^1.4.1",
@@ -48,9 +49,6 @@
     "test": "yarn lint && yarn type-check && jest",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged"
-  },
-  "jest": {
-    "testResultsProcessor": "jest-teamcity-reporter"
   },
   "dependencies": {
     "@types/express": "^4.11.1",
