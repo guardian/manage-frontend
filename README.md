@@ -1,3 +1,5 @@
+[![Build status](<https://teamcity.gutools.co.uk/guestAuth/app/rest/builds/buildType:(id:TeamCityPluginsByJetBrains_TeamcityGoogleTagManagerPlugin_Build)/statusIcon.svg>)](https://teamcity.gutools.co.uk/viewType.html?buildTypeId=TeamCityPluginsByJetBrains_TeamcityGoogleTagManagerPlugin_Build)
+
 # Account Frontend
 
 This is a shell webapp using:
