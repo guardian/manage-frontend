@@ -10,6 +10,8 @@ project/plugins/project/
 
 .idea/
 .idea/workspace.xml
+*.iml
+*.code-workspace
 logs/
 /app/node_modules/
 /conf/webpack-assets.json
