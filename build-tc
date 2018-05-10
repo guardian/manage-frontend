@@ -14,7 +14,7 @@ if [ ! -d "$YARN_LOCATION" ]; then
 	cd ../..
 fi
 
-export PATH="$PATH:$YARN_LOCATION/yarn-v$YARN_VERSION/bin/yarn"
+export PATH="$PATH:$YARN_LOCATION/yarn-v$YARN_VERSION/bin"
 
 # cd into the app directory where package.json resides
 
