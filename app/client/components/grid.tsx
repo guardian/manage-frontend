@@ -8,13 +8,13 @@ export interface ContainerProps {
 
 export const Container: React.SFC<ContainerProps> = ({ children }) => (
   <div
-    css={{
+    className={css({
       position: "relative",
       margin: "auto",
       ...spanBreakpoints({ mobile: 1, wide: 10 }, minWidth),
       ...row,
       ["&>*"]: cell
-    }}
+    })}
   >
     {children}
   </div>
