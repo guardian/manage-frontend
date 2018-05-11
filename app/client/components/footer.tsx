@@ -1,6 +1,6 @@
-import { css } from "emotion";
 import React from "react";
 import palette from "../colours";
+import { css } from "../styles/emotion";
 
 const Footer = () => (
   <footer>

@@ -1,5 +1,5 @@
-import { injectGlobal } from "emotion";
 import React from "react";
+import { injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
 import AsyncLoader from "./asyncLoader";
