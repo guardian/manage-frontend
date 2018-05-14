@@ -159,13 +159,13 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Sub ${Stack}-${Stage}-${App}
-      Port: 9000
+      Port: 9233
       Protocol: HTTP
       VpcId:
         Ref: VpcId
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /healthcheck
-      HealthCheckPort: 9000
+      HealthCheckPort: 9233
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
@@ -187,7 +187,7 @@ Resources:
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 9000
-          ToPort: 9000
+          ToPort: 9233
           CidrIp: 0.0.0.0/0
 
   InstanceSecurityGroup:
@@ -202,11 +202,11 @@ Resources:
           CidrIp: 77.91.248.0/21
         - IpProtocol: tcp
           FromPort: 9000
-          ToPort: 9000
+          ToPort: 9233
           CidrIp: 77.91.248.0/21
         - IpProtocol: tcp
           FromPort: 9000
-          ToPort: 9000
+          ToPort: 9233
           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
       SecurityGroupEgress:
         - IpProtocol: tcp
