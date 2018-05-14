@@ -3,7 +3,11 @@ regions:
 stacks:
 - support
 deployments:
+  cfn:
+    type: cloud-formation
+    app: account-frontend
   account-frontend:
     type: autoscaling
+    dependencies: [cfn]
     parameters:
       bucket: membership-dist
