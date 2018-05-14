@@ -1,4 +1,5 @@
 import { injectGlobal } from "emotion";
+import { css } from "emotion";
 import React from "react";
 
 const Spinner = () => (
@@ -10,14 +11,14 @@ const Spinner = () => (
             }
         `}
     <div
-      css={`
-        border: 8px solid #f3f3f3;
-        border-top: 8px solid #333;
+      className={css(`
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #333;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         animation: spin 2s linear infinite;
-      `}
+      `)}
     />
   </div>
 );
