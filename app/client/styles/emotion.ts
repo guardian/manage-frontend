@@ -2,6 +2,21 @@ import createEmotion from "create-emotion";
 import pxToRem from "stylis-pxtorem";
 const context = typeof global !== "undefined" ? global : {};
 
+import {
+  _Interpolation1,
+  _Interpolation2,
+  CreateStyles,
+  Interpolation,
+  StyleSheet
+} from "emotion";
+export {
+  _Interpolation1,
+  _Interpolation2,
+  CreateStyles,
+  Interpolation,
+  StyleSheet
+} from "emotion";
+
 export const {
   flush,
   hydrate,
