@@ -17,17 +17,18 @@ const server = express();
 const log = bunyan.createLogger({ name: "af" });
 
 server.use(helmet());
-server.use(cookieParser());
-server.use("/api/membership", withIdentity);
 
 server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
   res.send("OK");
 });
 
+server.use(cookieParser());
+server.use("/api/membership", withIdentity);
+server.use("/", withIdentity);
+
 server.use("/static", express.static("dist/static"));
 
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
-  
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
     // Refactor this.
