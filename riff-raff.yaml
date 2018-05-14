@@ -7,4 +7,4 @@ deployments:
     type: autoscaling
     actions: [uploadArtifacts]
     parameters:
-      bucket: membership-dist/support
+      bucket: membership-dist
