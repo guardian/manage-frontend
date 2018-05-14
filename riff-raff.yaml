@@ -1,10 +1,10 @@
 regions:
 - eu-west-1
 stacks:
-- membership
+- support
 deployments:
   account-frontend:
     type: autoscaling
     actions: [uploadArtifacts]
     parameters:
-      bucket: membership-dist
+      bucket: membership-dist/support
