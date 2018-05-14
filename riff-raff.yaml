@@ -1,2 +1,4 @@
-stacks: [membership]
-regions: [eu-west-1]
+regions:
+- eu-west-1
+stacks:
+- membership
