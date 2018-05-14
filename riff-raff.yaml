@@ -7,7 +7,7 @@ deployments:
     type: cloud-formation
     app: account-frontend
     parameters:
-      templatePath: cloud-formation/account-frontend-cf.yaml
+      templatePath: cloudformation/account-frontend-cf.yaml
   account-frontend:
     type: autoscaling
     dependencies: [account-frontend-cloudformation]
