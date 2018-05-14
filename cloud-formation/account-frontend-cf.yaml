@@ -1,0 +1,215 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: account-frontend
+Parameters:
+  VpcId:
+    Type: String
+    Description: VpcId of your existing Virtual Private Cloud (VPC)
+    Default: vpc-e6e00183
+  Subnets:
+    Type: CommaDelimitedList
+    Description: The list of SubnetIds in your Virtual Private Cloud (VPC)
+    Default: subnet-cb91ae8d, subnet-a7b74ac2, subnet-179e8063
+  Stack:
+    Description: Applied directly as a tag
+    Type: String
+    Default: support
+  Stage:
+    Description: Applied directly as a tag
+    Type: String
+  App:
+    Description: Applied directly as a tag
+    Type: String
+    Default: account-frontend
+  AmiId:
+    Description: AMI ID
+    Type: String
+    Default: ami-b29cb5cb
+Conditions:
+  CreateProdResources: !Equals [!Ref "Stage", "PROD"]
+  CreateCodeResources: !Equals [!Ref "Stage", "CODE"]
+Mappings:
+  StageVariables:
+    CODE:
+      MaxInstances: 2
+      MinInstances: 1
+      InstanceType: t2.small
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/44e9f40c-c884-40e6-a171-6769e9a8b173
+      AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/89f17663-c79e-4104-b718-ee0986402ad9
+    PROD:
+      MaxInstances: 6
+      MinInstances: 3
+      InstanceType: t2.small
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/9d8ff96c-63d5-425b-88d1-f529770e5b6d
+      AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/d7aed06c-e961-4078-8604-0aeedae08613
+Resources:
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones: !GetAZs
+      VPCZoneIdentifier: !Ref Subnets
+      LaunchConfigurationName: !Ref LaunchConfig
+      MinSize: !FindInMap [ StageVariables, !Ref Stage, MinInstances ]
+      MaxSize: !FindInMap [ StageVariables, !Ref Stage, MaxInstances ]
+      TargetGroupARNs:
+        - !Ref TargetGroup
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 300
+      Tags:
+        - Key: Stack
+          Value: !Ref Stack
+          PropagateAtLaunch: true
+        - Key: App
+          Value: !Ref App
+          PropagateAtLaunch: true
+        - Key: Stage
+          Value: !Ref Stage
+          PropagateAtLaunch: true
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref AMI
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      InstanceType: !FindInMap [ StageVariables, !Ref Stage, InstanceType ]
+      IamInstanceProfile: !Ref InstanceProfile
+      AssociatePublicIpAddress: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -ev
+
+          # get and install node
+          wget https://nodejs.org/dist/v9.11.1/node-v9.11.1-linux-x64.tar.xz -P /tmp
+          tar -xf /tmp/node-v9.11.1-linux-x64.tar.xz bin/node --directory /usr/local/bin
+
+          # get runnable tar from S3
+          aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/account-frontend.tgz /tmp
+          mkdir /etc/gu
+          tar -xvzf /tmp/account-frontend.tgz dist --directory /etc/gu/
+
+          node /etc/gu/server.js
+
+  AppRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      ManagedPolicyArns: [ "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM" ]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: UpdateSSHKeys
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: arn:aws:s3:::github-public-keys/Membership-and-Subscriptions/*
+        - PolicyName: KMSEncryption
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                - kms:Encrypt
+                - kms:Decrypt
+                Resource: !FindInMap [ StageVariables, !Ref Stage, AwsKeyARN ]
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref AppRole
+
+  ElasticLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${Stack}-${Stage}-${App}
+      Subnets: !Ref Subnets
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+      Tags:
+        - Key: Stack
+          Value: !Ref Stack
+        - Key: App
+          Value: !Ref App
+        - Key: Stage
+          Value: !Ref Stage
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: TargetGroup
+      LoadBalancerArn:
+        Ref: ElasticLoadBalancer
+      Certificates:
+        - CertificateArn: !FindInMap [ StageVariables, !Ref Stage, CertificateARN ]
+      Port: 443
+      Protocol: HTTPS
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${Stack}-${Stage}-${App}
+      Port: 9000
+      Protocol: HTTP
+      VpcId:
+        Ref: VpcId
+      HealthCheckIntervalSeconds: 10
+      HealthCheckPath: /healthcheck
+      HealthCheckPort: 9000
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      VpcId: !Ref VpcId
+    DependsOn:
+    - ElasticLoadBalancer
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Permit incoming HTTPS access on port 443, egress to port 9000
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 9000
+          ToPort: 9000
+          CidrIp: 0.0.0.0/0
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Open up SSH access and enable HTTP access on the configured port
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 77.91.248.0/21
+        - IpProtocol: tcp
+          FromPort: 9000
+          ToPort: 9000
+          CidrIp: 77.91.248.0/21
+        - IpProtocol: tcp
+          FromPort: 9000
+          ToPort: 9000
+          SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0

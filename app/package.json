@@ -52,7 +52,7 @@
     "precommit": "pretty-quick --staged",
     "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
   },
-  "cloudformation": false,
+  "cloudformation": "../cloud-formation/account-frontend-cf.yaml",
   "riffraffFile": "../riff-raff.yaml",
   "uploadArtefact": true,
   "buildDir": "dist",
