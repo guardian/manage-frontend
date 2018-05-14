@@ -1,3 +1,4 @@
+import { css } from "emotion";
 import React from "react";
 import Footer from "./footer";
 import Header from "./header";
@@ -5,16 +6,31 @@ import Header from "./header";
 export const Main: React.SFC<{}> = ({ children }) => {
   return (
     <div
-      css={{
+      className={css({
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
         alignItems: "stretch",
         width: "100%"
-      }}
+      })}
     >
       <Header />
-      <main css={{ flex: "1" }}>{children}</main>
+      <div
+        className={css({
+          flex: "1"
+        })}
+      >
+        <main
+          className={css({
+            margin: "auto",
+            maxWidth: "48.75rem",
+            paddingBottom: "2.5rem",
+            paddingTop: "0.3125rem"
+          })}
+        >
+          {children}
+        </main>
+      </div>
       <Footer />
     </div>
   );

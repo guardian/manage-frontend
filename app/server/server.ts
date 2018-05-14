@@ -27,6 +27,7 @@ server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
 server.use("/static", express.static("dist/static"));
 
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
+  
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
     // Refactor this.

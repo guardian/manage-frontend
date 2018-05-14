@@ -1,8 +1,7 @@
-import { injectGlobal } from "emotion";
-
 const global = `
 html {
   box-sizing: border-box;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 }
 *,
 *:before,

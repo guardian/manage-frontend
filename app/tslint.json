@@ -26,7 +26,7 @@
     // Functional style rules
     "no-this": false,
     "no-class": false,
-    "no-mixed-interface": true,
+    "no-mixed-interface": false,
     "no-expression-statement": false, // this thwarts our test library and endpoints
     "no-if-statement": false,
 
