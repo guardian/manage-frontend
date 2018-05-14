@@ -23,6 +23,7 @@
     "jest": "^22.4.3",
     "jest-emotion": "^9.0.0",
     "jest-teamcity-reporter": "^0.9.0",
+    "node-riffraff-artefact": "^2.0.1",
     "nodemon": "^1.17.3",
     "prettier": "1.12.0",
     "pretty-quick": "^1.4.1",
@@ -48,8 +49,13 @@
       "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "yarn lint && yarn type-check && jest --coverage",
     "fix": "pretty-quick && tslint --fix -p .",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
   },
+  "cloudformation": false,
+  "riffraffFile": "../riff-raff.yaml",
+  "uploadArtefact": false,
+  "buildDir": "dist",
   "dependencies": {
     "@types/express": "^4.11.1",
     "@types/node": "^9.6.5",
