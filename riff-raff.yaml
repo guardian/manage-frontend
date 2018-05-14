@@ -3,7 +3,7 @@ regions:
 stacks:
 - membership
 deployments:
-  frontend:
+  account-frontend:
     type: autoscaling
     actions: [uploadArtifacts]
     parameters:
