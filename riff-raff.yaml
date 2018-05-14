@@ -3,9 +3,11 @@ regions:
 stacks:
 - support
 deployments:
-  cfn:
+  account-frontend-cloudformation:
     type: cloud-formation
     app: account-frontend
+    parameters:
+      templatePath: cloudformation/account-frontend-cf.yaml
   account-frontend:
     type: autoscaling
     dependencies: [cfn]
