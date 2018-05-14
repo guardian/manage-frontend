@@ -2,3 +2,9 @@ regions:
 - eu-west-1
 stacks:
 - membership
+deployments:
+  frontend:
+    type: autoscaling
+    actions: [uploadArtifacts]
+    parameters:
+      bucket: membership-dist
