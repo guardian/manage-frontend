@@ -38,4 +38,8 @@ yarn test
 
 # produce prod artifacts
 
+yarn bundle
+
+# push to riffraff
+
 yarn riffraff
