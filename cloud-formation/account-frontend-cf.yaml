@@ -20,7 +20,7 @@ Parameters:
     Description: Applied directly as a tag
     Type: String
     Default: account-frontend
-  AmiId:
+  AMI:
     Description: AMI ID
     Type: String
     Default: ami-b29cb5cb
