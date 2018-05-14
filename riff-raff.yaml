@@ -5,6 +5,5 @@ stacks:
 deployments:
   account-frontend:
     type: autoscaling
-    actions: [uploadArtifacts]
     parameters:
       bucket: membership-dist
