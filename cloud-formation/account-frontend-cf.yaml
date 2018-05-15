@@ -23,7 +23,7 @@ Parameters:
   AMI:
     Description: AMI ID
     Type: String
-    Default: ami-b29cb5cb
+    Default: ami-09c0f070
 Conditions:
   CreateProdResources: !Equals [!Ref "Stage", "PROD"]
   CreateCodeResources: !Equals [!Ref "Stage", "CODE"]
