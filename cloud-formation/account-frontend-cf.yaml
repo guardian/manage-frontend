@@ -164,7 +164,7 @@ Resources:
       VpcId:
         Ref: VpcId
       HealthCheckIntervalSeconds: 10
-      HealthCheckPath: /healthcheck
+      HealthCheckPath: /_healthcheck
       HealthCheckPort: 9233
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 5
