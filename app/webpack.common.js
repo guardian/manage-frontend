@@ -6,29 +6,6 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const nodeExternals = require("webpack-node-externals");
-/**"env": {
-    "production": {
-      "plugins": [
-        [
-          "emotion",
-          {
-            "hoist": true
-          }
-        ]
-      ]
-    },
-    "development": {
-      "plugins": [
-        [
-          "emotion",
-          {
-            "sourceMap": true,
-            "autoLabel": true
-          }
-        ]
-      ]
-    }
-  }, */
 
 const babelCommon = {
   presets: ["@babel/env", "@babel/typescript", "@babel/react"],
