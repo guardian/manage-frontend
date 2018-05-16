@@ -1,5 +1,7 @@
 import bunyan from "bunyan";
 import express from "express";
+import Config from "../config";
+import url from "url";
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -25,7 +27,15 @@ export const withIdentity: express.RequestHandler = (
 
   if (cookies[GU_U] == null || cookies[SC_GU_U] == null) {
     log.info("Not logged in.");
-    res.redirect("https://profile.thegulocal.com/signin");
+    const returnUrl = url.format({
+      protocol: "https",
+      host: req.get("host"),
+      pathname: req.originalUrl
+    });
+    // somehow the redirect url is automatically encoded
+    res.redirect(
+      `https://profile.${Config.DOMAIN}/signin?returnUrl=${returnUrl}`
+    );
     return;
   }
 

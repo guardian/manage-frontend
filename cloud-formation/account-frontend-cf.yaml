@@ -35,12 +35,14 @@ Mappings:
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
       AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/89f17663-c79e-4104-b718-ee0986402ad9
+      DomainEnvVariable: account.code.dev-theguardian.com
     PROD:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f # this is the CODE cert, and will need to be updated before PROD deployment
       AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/d7aed06c-e961-4078-8604-0aeedae08613
+      DomainEnvVariable: theguardian.com
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -74,6 +76,7 @@ Resources:
       IamInstanceProfile: !Ref InstanceProfile
       AssociatePublicIpAddress: true
       UserData:
+        DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
         Fn::Base64: !Sub |
           #!/bin/bash -ev
 
@@ -86,6 +89,10 @@ Resources:
           mkdir /etc/gu
           tar -xvzf /tmp/account-frontend.tgz --directory /etc/gu/
 
+          # set DOMAIN environment variable based on StageVariables
+          export DOMAIN=${DomainEnvVariable}
+
+          # RUN
           /usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js
 
   AppRole:
