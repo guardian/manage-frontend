@@ -76,7 +76,7 @@ Resources:
       IamInstanceProfile: !Ref InstanceProfile
       AssociatePublicIpAddress: true
       UserData:
-        Fn::Base64: !Sub |
+        Fn::Base64: !Sub
           - |+
             #!/bin/bash -ev
 
@@ -94,7 +94,6 @@ Resources:
 
             # RUN
             /usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js
-
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
 
   AppRole:
