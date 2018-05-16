@@ -1,7 +1,7 @@
 import bunyan from "bunyan";
 import express from "express";
-import Config from "../config";
 import url from "url";
+import Config from "../config";
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -39,12 +39,10 @@ export const withIdentity: express.RequestHandler = (
     return;
   }
 
-  const tokens: IdentityUser = {
+  // tslint:disable-next-line:no-object-mutation
+  res.locals.identity = {
     GU_U: cookies[GU_U],
     SC_GU_U: cookies[SC_GU_U]
   };
-
-  // tslint:disable-next-line:no-object-mutation
-  res.locals.identity = tokens;
   next();
 };

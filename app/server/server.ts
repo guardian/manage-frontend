@@ -6,9 +6,9 @@ import helmet from "helmet";
 import fetch from "node-fetch";
 import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
+import Config from "./config";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
-import Config from "./config";
 
 const port = 9233;
 
@@ -25,7 +25,7 @@ server.use(cookieParser());
 server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
-server.use("/static", express.static("dist/static")); //TODO this needs fixing
+server.use("/static", express.static("dist/static")); // TODO this needs fixing
 
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
