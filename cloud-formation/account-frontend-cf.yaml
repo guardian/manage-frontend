@@ -183,7 +183,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 0.0.0.0/0
+          CidrIp: 77.91.248.0/21
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 9233
