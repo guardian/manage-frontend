@@ -25,7 +25,7 @@ server.use(cookieParser());
 server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
-server.use("/static", express.static("dist/static")); // TODO this needs fixing
+server.use("/static", express.static(__dirname + "/static"));
 
 server.get("/api/membership", (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
