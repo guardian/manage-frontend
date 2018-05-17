@@ -1,0 +1,15 @@
+regions:
+- eu-west-1
+stacks:
+- support
+deployments:
+  account-frontend-cloudformation:
+    type: cloud-formation
+    app: account-frontend
+    parameters:
+      templatePath: cloudformation/account-frontend-cf.yaml
+  account-frontend:
+    type: autoscaling
+    dependencies: [account-frontend-cloudformation]
+    parameters:
+      bucket: membership-dist
