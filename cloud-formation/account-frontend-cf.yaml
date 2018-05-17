@@ -34,14 +34,12 @@ Mappings:
       MinInstances: 1
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
-      AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/89f17663-c79e-4104-b718-ee0986402ad9
       DomainEnvVariable: code.dev-theguardian.com
     PROD:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f # this is the CODE cert, and will need to be updated before PROD deployment
-      AwsKeyARN: arn:aws:kms:eu-west-1:865473395570:key/d7aed06c-e961-4078-8604-0aeedae08613
       DomainEnvVariable: theguardian.com
 Resources:
   AutoScalingGroup:
@@ -101,7 +99,8 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       Path: "/"
-      ManagedPolicyArns: [ "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM" ]
+      ManagedPolicyArns:
+      - !Sub arn:aws:iam::${AWS::AccountId}:policy/guardian-ec2-role-for-ssm
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -118,15 +117,6 @@ Resources:
               - Effect: Allow
                 Action: s3:GetObject
                 Resource: arn:aws:s3:::github-public-keys/Membership-and-Subscriptions/*
-        - PolicyName: KMSEncryption
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                - kms:Encrypt
-                - kms:Decrypt
-                Resource: !FindInMap [ StageVariables, !Ref Stage, AwsKeyARN ]
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
