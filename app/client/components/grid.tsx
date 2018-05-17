@@ -1,6 +1,6 @@
-import { css } from "emotion";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
+import { css } from "../styles/emotion";
 import { cell, row, spanBreakpoints } from "../styles/grid";
 export interface ContainerProps {
   readonly children: ReadonlyArray<JSX.Element> | JSX.Element;

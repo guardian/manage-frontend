@@ -1,6 +1,6 @@
-import { injectGlobal } from "emotion";
-import { css } from "emotion";
 import React from "react";
+import { injectGlobal } from "../styles/emotion";
+import { css } from "../styles/emotion";
 
 const Spinner = () => (
   <div>
