@@ -1,8 +1,8 @@
 import React from "react";
+import palette from "../colours";
 import { css } from "../styles/emotion";
 import Footer from "./footer";
 import Header from "./header";
-import palette from "../colours";
 
 export const Main: React.SFC<{}> = ({ children }) => {
   return (

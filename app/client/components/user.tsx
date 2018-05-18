@@ -3,8 +3,8 @@ import { css, injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
 import AsyncLoader from "./asyncLoader";
-import { Main } from "./main";
 import { CardProps, default as CardDisplay } from "./card";
+import { Main } from "./main";
 
 interface MembershipData {
   regNumber: string;

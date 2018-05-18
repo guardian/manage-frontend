@@ -53,7 +53,7 @@
       "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "yarn lint && yarn type-check && jest --coverage",
     "fix": "pretty-quick && tslint --fix -p .",
-    "precommit": "pretty-quick --staged",
+    "precommit": "yarn lint --fix && pretty-quick --staged",
     "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
   },
   "cloudformation": "../cloud-formation/account-frontend-cf.yaml",

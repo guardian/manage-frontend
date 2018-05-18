@@ -25,7 +25,7 @@ const cardTypeToSVG = (cardType: string) => {
           display: "inline-block",
           borderRadius: "6px",
           marginRight: "9px",
-          backgroundImage: backgroundImage,
+          backgroundImage,
           width: "54px",
           height: "35px",
           backgroundPosition: "0 0"
