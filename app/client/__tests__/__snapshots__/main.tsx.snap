@@ -2,7 +2,7 @@
 
 exports[`Main renders something 1`] = `
 <div
-  class="css-6d0m9p"
+  css="[object Object]"
 >
   <header
     class="css-41prdp"
@@ -35,10 +35,10 @@ exports[`Main renders something 1`] = `
     </div>
   </header>
   <div
-    class="css-1rr4qq7"
+    css="[object Object]"
   >
     <main
-      class="css-1kvb4hd"
+      css="[object Object]"
     >
       <p>
         hi
