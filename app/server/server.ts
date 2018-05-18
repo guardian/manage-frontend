@@ -62,7 +62,7 @@ server.get("/", (req: express.Request, res: express.Response) => {
    * to be inserted into our Html template function.
    */
   const body = renderStylesToString(renderToString(User));
-  const title = "Server side Rendering with Styled Components";
+  const title = "My Account | The Guardian";
   const src = "static/user.js";
 
   res.send(
