@@ -14,6 +14,11 @@ body {
   line-height: 1.5;
 }
 
+::selection {
+    background: #ffe500;
+    color: #121212;
+}
+
 h1,
 h2,
 h3 {
