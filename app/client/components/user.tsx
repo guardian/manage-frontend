@@ -4,6 +4,7 @@ import fonts from "../styles/fonts";
 import global from "../styles/global";
 import AsyncLoader from "./asyncLoader";
 import { Main } from "./main";
+import { CardProps, default as CardDisplay } from "./card";
 
 interface MembershipData {
   regNumber: string;
@@ -11,10 +12,7 @@ interface MembershipData {
   subscription: {
     start: string;
     nextPaymentDate: string;
-    card: {
-      last4: string;
-      type: string;
-    };
+    card: CardProps;
     plan: {
       amount: number;
       currency: string;
@@ -52,7 +50,8 @@ const MembershipRow = (props: MembershipRowProps) => {
         className={css({
           display: "table-cell",
           width: "320px",
-          paddingRight: "100px"
+          paddingRight: "100px",
+          verticalAlign: "top"
         })}
       >
         <h2
@@ -77,7 +76,7 @@ const MembershipRow = (props: MembershipRowProps) => {
 const renderMembershipData = (data: MembersDataApiResponse) => {
   if (hasMembership(data)) {
     return (
-      <ul>
+      <div>
         <MembershipRow label={"Membership number"} data={data.regNumber} />
         <MembershipRow label={"Membership tier"} data={data.tier} />
         <MembershipRow label={"Start date"} data={data.subscription.start} />
@@ -94,9 +93,14 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
         />
         <MembershipRow
           label={"Card details"}
-          data={"•••• •••• •••• " + data.subscription.card.last4}
+          data={
+            <CardDisplay
+              last4={data.subscription.card.last4}
+              type={data.subscription.card.type}
+            />
+          }
         />
-      </ul>
+      </div>
     );
   }
   return <h1>No Membership</h1>;
