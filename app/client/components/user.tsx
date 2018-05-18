@@ -73,16 +73,23 @@ const MembershipRow = (props: MembershipRowProps) => {
   );
 };
 
+const formatDate = (shortForm: string) => {
+  return new Date(shortForm).toDateString();
+};
+
 const renderMembershipData = (data: MembersDataApiResponse) => {
   if (hasMembership(data)) {
     return (
       <div>
         <MembershipRow label={"Membership number"} data={data.regNumber} />
         <MembershipRow label={"Membership tier"} data={data.tier} />
-        <MembershipRow label={"Start date"} data={data.subscription.start} />
+        <MembershipRow
+          label={"Start date"}
+          data={formatDate(data.subscription.start)}
+        />
         <MembershipRow
           label={"Next payment date"}
-          data={data.subscription.nextPaymentDate}
+          data={formatDate(data.subscription.nextPaymentDate)}
         />
         <MembershipRow
           label={"Annual payment"}
