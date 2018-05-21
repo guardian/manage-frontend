@@ -1,17 +1,8 @@
 const path = require("path");
 const merge = require("webpack-merge");
 const AssetsPlugin = require("assets-webpack-plugin");
-const webpack = require("webpack");
-
 const assetsPluginInstance = new AssetsPlugin({
-  path: path.resolve(__dirname, "./dist/")
-});
-
-const definePlugin = new webpack.DefinePlugin({
-  DOMAIN: JSON.stringify(process.env.DOMAIN || "thegulocal.com"),
-  SERVER_DSN: process.env.SERVER_DSN || "",
-  CLIENT_DSN: process.env.CLIENT_DSN || "",
-  BUILD: process.env.TEAMCITY_BUILD
+  path: path.resolve(__dirname, "../conf/")
 });
 
 const nodeExternals = require("webpack-node-externals");
@@ -52,7 +43,7 @@ const common = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
-  plugins: [definePlugin, assetsPluginInstance]
+  plugins: [assetsPluginInstance]
 };
 
 const server = merge(common, {
