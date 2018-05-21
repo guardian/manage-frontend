@@ -2,6 +2,8 @@ const global = `
 html {
   box-sizing: border-box;
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 *,
 *:before,
@@ -12,6 +14,11 @@ html {
 body {
   margin: 0;
   line-height: 1.5;
+}
+
+::selection {
+    background: #ffe500;
+    color: #121212;
 }
 
 h1,
