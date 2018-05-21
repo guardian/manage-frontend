@@ -20,12 +20,6 @@ Parameters:
     Description: Applied directly as a tag
     Type: String
     Default: account-frontend
-  ClientRavenDSN:
-    Description: the DSN to use with sentry on the client
-    Type: String
-  ServerRavenDSN:
-    Description: the DSN to use with sentry on the server
-    Type: String
   AMI:
     Description: AMI ID
     Type: String
@@ -95,8 +89,6 @@ Resources:
 
             # set DOMAIN environment variable based on StageVariables
             export DOMAIN=${DomainEnvVariable}
-            export CLIENT_DSN=${ClientRavenDSN}
-            export SERVER_DSN=${ServerRavenDSN}
 
             # RUN
             /usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js

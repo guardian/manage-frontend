@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
 import fetch from "node-fetch";
-import Raven from "raven-js";
 import { renderToString } from "react-dom/server";
 import User from "../client/components/user";
 import Config from "./config";
@@ -11,14 +10,10 @@ import { renderStylesToString } from "./emotion-server";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
 
-Raven.config(Config.SERVER_DSN).install();
-
 const port = 9233;
 
 const server = express();
 const log = bunyan.createLogger({ name: "af" });
-
-// server.use(raven.requestHandler());
 
 server.use(helmet());
 
