@@ -1,34 +1,18 @@
 const path = require("path");
 const merge = require("webpack-merge");
 const AssetsPlugin = require("assets-webpack-plugin");
+const webpack = require("webpack");
+
 const assetsPluginInstance = new AssetsPlugin({
-  path: path.resolve(__dirname, "../conf/")
+  path: path.resolve(__dirname, "./dist/")
+});
+
+const definePlugin = new webpack.DefinePlugin({
+  WEBPACK_ENVIRONMENT: `'${process.env.NODE_ENV}'` || "'NO ENVIRONMENT SET'",
+  WEBPACK_BUILD: `'${process.env.TEAMCITY_BUILD}'` || "'NO BUILD SET'"
 });
 
 const nodeExternals = require("webpack-node-externals");
-/**"env": {
-    "production": {
-      "plugins": [
-        [
-          "emotion",
-          {
-            "hoist": true
-          }
-        ]
-      ]
-    },
-    "development": {
-      "plugins": [
-        [
-          "emotion",
-          {
-            "sourceMap": true,
-            "autoLabel": true
-          }
-        ]
-      ]
-    }
-  }, */
 
 const babelCommon = {
   presets: ["@babel/env", "@babel/typescript", "@babel/react"],
@@ -43,7 +27,7 @@ const common = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
-  plugins: [assetsPluginInstance]
+  plugins: [definePlugin, assetsPluginInstance]
 };
 
 const server = merge(common, {
@@ -67,7 +51,7 @@ const server = merge(common, {
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
-          ...babelCommon,
+          plugins: [...babelCommon.plugins, "babel-plugin-source-map-support"],
           presets: [
             ["@babel/env", { targets: { node: "current" } }],
             "@babel/typescript",

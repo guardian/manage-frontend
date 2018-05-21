@@ -4,7 +4,7 @@ set -e
 
 # Installing yarn
 
-YARN_VERSION="1.6.0"
+YARN_VERSION="1.7.0"
 YARN_LOCATION="$(pwd)/tools/${YARN_VERSION}"
 
 if [ ! -d "$YARN_LOCATION" ]; then
@@ -27,6 +27,7 @@ export NVM_DIR="$HOME/.nvm"
 
 nvm install
 nvm use
+
 
 # Installing packages via yarn
 
