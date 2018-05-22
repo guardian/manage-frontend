@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter, Route, StaticRouter, Switch } from "react-router-dom";
 import { css, injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
@@ -80,7 +81,11 @@ const formatDate = (shortForm: string) => {
 const renderMembershipData = (data: MembersDataApiResponse) => {
   if (hasMembership(data)) {
     return (
-      <div>
+      <div
+        className={css({
+          padding: "25px"
+        })}
+      >
         <MembershipRow label={"Membership number"} data={data.regNumber} />
         <MembershipRow label={"Membership tier"} data={data.tier} />
         <MembershipRow
@@ -113,12 +118,40 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
   return <h1>No Membership</h1>;
 };
 
-const User = (
+const User = () => (
   <Main>
     {injectGlobal`${global}`}
     {injectGlobal`${fonts}`}
-    <Membership fetch={loadMembershipData} render={renderMembershipData} />
+    <Switch>
+      <Route
+        path="/"
+        exact={true}
+        render={() => (
+          <div>
+            <h1>Membership</h1>
+            <Membership
+              fetch={loadMembershipData}
+              render={renderMembershipData}
+            />
+          </div>
+        )}
+      />
+      <Route path="/cancel" render={() => <h1>Cancel Flow</h1>} />
+      <Route render={() => <h1>Not Found</h1>} />
+    </Switch>
   </Main>
 );
 
-export default User;
+const ServerUser = (location: string, context: object) => (
+  <StaticRouter location={location} context={context}>
+    <User />
+  </StaticRouter>
+);
+
+const BrowserUser = (
+  <BrowserRouter>
+    <User />
+  </BrowserRouter>
+);
+
+export { ServerUser, BrowserUser };

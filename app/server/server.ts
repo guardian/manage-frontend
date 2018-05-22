@@ -4,7 +4,7 @@ import express from "express";
 import helmet from "helmet";
 import fetch from "node-fetch";
 import { renderToString } from "react-dom/server";
-import User from "../client/components/user";
+import { ServerUser } from "../client/components/user";
 import Config from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -56,14 +56,20 @@ server.get("/api/membership", (req: express.Request, res: express.Response) => {
     });
 });
 
-server.get("/", (req: express.Request, res: express.Response) => {
+// ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
+server.use((req: express.Request, res: express.Response) => {
+  const context = {};
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
    */
-  const body = renderStylesToString(renderToString(User));
+  const body = renderStylesToString(
+    renderToString(ServerUser(req.url, context))
+  );
   const title = "My Account | The Guardian";
   const src = "static/user.js";
+
+  // TODO check for redirect on the context object
 
   res.send(
     html({
