@@ -8,12 +8,13 @@ import { CardProps, default as CardDisplay } from "./card";
 import { Main } from "./main";
 
 interface MembershipData {
-  regNumber: string;
+  regNumber?: string;
   tier: string;
+  isPaidTier: boolean;
   subscription: {
     start: string;
     nextPaymentDate: string;
-    card: CardProps;
+    card?: CardProps;
     plan: {
       amount: number;
       currency: string;
@@ -80,6 +81,40 @@ const formatDate = (shortForm: string) => {
 
 const renderMembershipData = (data: MembersDataApiResponse) => {
   if (hasMembership(data)) {
+    let paymentPart;
+    if (data.isPaidTier && data.subscription.card) {
+      paymentPart = (
+        <div>
+          <MembershipRow
+            label={"Start date"}
+            data={formatDate(data.subscription.start)}
+          />
+          <MembershipRow
+            label={"Next payment date"}
+            data={formatDate(data.subscription.nextPaymentDate)}
+          />
+          <MembershipRow
+            label={"Annual payment"}
+            data={
+              data.subscription.plan.currency +
+              (data.subscription.plan.amount / 100.0).toFixed(2)
+            }
+          />
+          <MembershipRow
+            label={"Card details"}
+            data={
+              <CardDisplay
+                last4={data.subscription.card.last4}
+                type={data.subscription.card.type}
+              />
+            }
+          />
+        </div>
+      );
+    } else {
+      paymentPart = <MembershipRow label={"Annual payment"} data={"FREE"} />;
+    }
+
     return (
       <div
         className={css({
@@ -88,30 +123,7 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
       >
         <MembershipRow label={"Membership number"} data={data.regNumber} />
         <MembershipRow label={"Membership tier"} data={data.tier} />
-        <MembershipRow
-          label={"Start date"}
-          data={formatDate(data.subscription.start)}
-        />
-        <MembershipRow
-          label={"Next payment date"}
-          data={formatDate(data.subscription.nextPaymentDate)}
-        />
-        <MembershipRow
-          label={"Annual payment"}
-          data={
-            data.subscription.plan.currency +
-            (data.subscription.plan.amount / 100.0).toFixed(2)
-          }
-        />
-        <MembershipRow
-          label={"Card details"}
-          data={
-            <CardDisplay
-              last4={data.subscription.card.last4}
-              type={data.subscription.card.type}
-            />
-          }
-        />
+        {paymentPart}
       </div>
     );
   }

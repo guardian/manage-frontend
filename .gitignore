@@ -1,21 +1,19 @@
 dist/*
 target/
-project/boot/
-project/plugins/project/
-.history
-.cache
-.lib/
-*.class
+lib/
+coverage/
 *.log
 
 .idea/
 .idea/workspace.xml
 *.iml
+
 *.code-workspace
+/.vscode/
+
 logs/
 /app/node_modules/
 /conf/webpack-assets.json
-/.vscode/
 /public/*.js
 /public/webpack-assets.json
 
