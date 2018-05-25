@@ -28,7 +28,7 @@ export const Main: React.SFC<{}> = ({ children }) => {
             maxWidth: "48.75rem",
             paddingBottom: "2.5rem",
             paddingTop: "30px",
-            fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'  
+            fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
           }}
         >
           {children}
