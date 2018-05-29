@@ -93,6 +93,10 @@ Resources:
             mkdir /etc/gu
             tar -xvzf /tmp/account-frontend.tgz --directory /etc/gu/
 
+            # add user
+            useradd -r -s /usr/bin/nologin -g account-frontend account-frontend
+            chown -R account-frontend:account-frontend /etc/gu
+
             # write out systemd file
             cat >/etc/systemd/system/account-frontend.service <<EOL
             [Service]
