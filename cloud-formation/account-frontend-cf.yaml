@@ -94,6 +94,7 @@ Resources:
             tar -xvzf /tmp/account-frontend.tgz --directory /etc/gu/
 
             # add user
+            groupadd account-frontend
             useradd -r -s /usr/bin/nologin -g account-frontend account-frontend
             chown -R account-frontend:account-frontend /etc/gu
 
