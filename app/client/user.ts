@@ -1,5 +1,5 @@
+import Raven from "raven-js";
 import ReactDOM from "react-dom";
-
 import User from "./components/user";
 
 const element = document.getElementById("app");
