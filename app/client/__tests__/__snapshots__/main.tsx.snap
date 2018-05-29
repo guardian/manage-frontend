@@ -21,9 +21,9 @@ exports[`Main renders something 1`] = `
     css={
       Object {
         "backgroundColor": "#e9eff1",
-        "border-bottom-color": "rgba(0, 0, 0, 0.14)",
-        "border-bottom-style": "solid",
-        "border-bottom-width": "0.8px",
+        "borderBottomColor": "rgba(0, 0, 0, 0.14)",
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "0.8px",
         "color": "#121212",
         "height": "2.8125rem",
       }
@@ -32,12 +32,12 @@ exports[`Main renders something 1`] = `
     <div
       css={
         Object {
-          "font-size": "0.875rem",
-          "line-height": "2.8125rem",
+          "fontSize": "0.875rem",
+          "lineHeight": "2.8125rem",
           "margin": "auto",
-          "max-width": "71.25rem",
-          "padding-left": "1.25rem",
-          "padding-right": "1.25rem",
+          "maxWidth": "71.25rem",
+          "paddingLeft": "1.25rem",
+          "paddingRight": "1.25rem",
         }
       }
     >
@@ -107,10 +107,10 @@ exports[`Main renders something 1`] = `
       <div
         css={
           Object {
-            "line-height": "42px",
+            "lineHeight": "42px",
             "margin": "auto",
-            "max-width": "71.25rem",
-            "padding-right": "2rem",
+            "maxWidth": "71.25rem",
+            "paddingRight": "2rem",
           }
         }
       >
@@ -132,7 +132,7 @@ exports[`Main renders something 1`] = `
           Object {
             "backgroundColor": "#333",
             "color": "#bdbdbd",
-            "font-size": "0.75rem",
+            "fontSize": "0.75rem",
             "padding": "0.25rem",
           }
         }
@@ -141,7 +141,7 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "margin": "auto",
-              "max-width": "71.25rem",
+              "maxWidth": "71.25rem",
             }
           }
         >
