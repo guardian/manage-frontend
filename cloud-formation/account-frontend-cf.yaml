@@ -93,14 +93,31 @@ Resources:
             mkdir /etc/gu
             tar -xvzf /tmp/account-frontend.tgz --directory /etc/gu/
 
-            # set DOMAIN environment variable based on StageVariables
-            export DOMAIN=${DomainEnvVariable}
-            export NODE_ENV=production
-            export CLIENT_DSN=${ClientRavenDSN}
-            export SERVER_DSN=${ServerRavenDSN}
+            # add user
+            groupadd account-frontend
+            useradd -r -s /usr/bin/nologin -g account-frontend account-frontend
+            chown -R account-frontend:account-frontend /etc/gu
 
+            # write out systemd file
+            cat >/etc/systemd/system/account-frontend.service <<EOL
+            [Service]
+            ExecStart=/usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js
+            Restart=always
+            StandardOutput=syslog
+            StandardError=syslog
+            SyslogIdentifier=account-frontend
+            User=account-frontend
+            Group=account-frontend
+            Environment=NODE_ENV=production
+            Environment=DOMAIN=${DomainEnvVariable}
+            Environment=CLIENT_DSN=${ClientRavenDSN}
+            Environment=SERVER_DSN=${ServerRavenDSN}
+            [Install]
+            WantedBy=multi-user.target
+            EOL
             # RUN
-            /usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js
+            systemctl enable account-frontend
+            systemctl start account-frontend
 
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
 
