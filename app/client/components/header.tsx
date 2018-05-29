@@ -10,19 +10,19 @@ const Header = () => (
       backgroundColor: palette.neutral.header,
       color: palette.neutral["1"],
       height: "2.8125rem",
-      "border-bottom-width": "0.8px",
-      "border-bottom-color": "rgba(0, 0, 0, 0.14)",
-      "border-bottom-style": "solid"
+      borderBottomWidth: "0.8px",
+      borderBottomColor: "rgba(0, 0, 0, 0.14)",
+      borderBottomStyle: "solid"
     }}
   >
     <div
       css={{
-        "padding-left": "1.25rem",
-        "padding-right": "1.25rem",
-        "max-width": "71.25rem",
+        paddingLeft: "1.25rem",
+        paddingRight: "1.25rem",
+        maxWidth: "71.25rem",
         margin: "auto",
-        "font-size": "0.875rem",
-        "line-height": "2.8125rem"
+        fontSize: "0.875rem",
+        lineHeight: "2.8125rem"
       }}
     >
       <Nav />

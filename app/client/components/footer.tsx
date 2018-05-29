@@ -14,10 +14,10 @@ const Footer = () => (
     >
       <div
         css={{
-          "max-width": "71.25rem",
+          maxWidth: "71.25rem",
           margin: "auto",
-          "line-height": "42px",
-          "padding-right": "2rem"
+          lineHeight: "42px",
+          paddingRight: "2rem"
         }}
       >
         <a href={"#top"} css={{ color: palette.neutral["1"] }}>
@@ -31,12 +31,12 @@ const Footer = () => (
           backgroundColor: "#333",
           color: "#bdbdbd",
           padding: "0.25rem",
-          "font-size": "0.75rem"
+          fontSize: "0.75rem"
         }}
       >
         <div
           css={{
-            "max-width": "71.25rem",
+            maxWidth: "71.25rem",
             margin: "auto"
           }}
         >
