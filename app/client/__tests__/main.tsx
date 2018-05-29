@@ -1,14 +1,21 @@
 import "dom-testing-library/extend-expect";
 import React from "react";
-import { render, Simulate, wait } from "react-testing-library";
-// this add custom expect matchers from dom-testing-library
+
+import * as emotion from "emotion";
+import { createSerializer } from "jest-emotion";
+
+expect.addSnapshotSerializer(createSerializer(emotion));
+
+import renderer from "react-test-renderer";
+
 import { Main } from "../components/main";
 
 test("Main renders something", () => {
-  const rendered = render(
+  const rendered = renderer.create(
     <Main>
       <p>hi</p>
     </Main>
   );
-  expect(rendered.container.firstChild).toMatchSnapshot();
+
+  expect(rendered.toJSON()).toMatchSnapshot();
 });
