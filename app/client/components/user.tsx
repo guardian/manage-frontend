@@ -3,36 +3,20 @@ import { BrowserRouter, Route, StaticRouter, Switch } from "react-router-dom";
 import { injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
+import { default as CancellationFlows } from "./cancel/cancellationFlows";
+import StagesContainer from "./cancel/stagesContainer";
 import { Main } from "./main";
-import {
-  loadMembershipData,
-  Membership,
-  renderMembershipData
-} from "./membership";
+import Membership from "./membership";
 
 const User = () => (
   <Main>
     {injectGlobal`${global}`}
     {injectGlobal`${fonts}`}
     <Switch>
+      <Route path="/" exact={true} component={Membership} />
       <Route
-        path="/"
-        exact={true}
-        render={() => (
-          <div>
-            <h1>Membership</h1>
-            <Membership
-              fetch={loadMembershipData}
-              render={renderMembershipData}
-            />
-          </div>
-        )}
-      />
-      <Route
-        path="/cancel/:cancelType(membership)" //TODO change to .join('|') based on config file keys
-        render={({ match }) => (
-          <h1>{match.params.cancelType} Cancellation Flow</h1>
-        )}
+        path={`/cancel/:cancelType(${CancellationFlows.toCancelTypeRouteWhitelist()})/:requestedStageID?`}
+        component={StagesContainer}
       />
       <Route render={() => <h1>Not Found</h1>} />
     </Switch>

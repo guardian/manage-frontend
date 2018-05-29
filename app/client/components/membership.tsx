@@ -24,7 +24,7 @@ function hasMembership(data: MembersDataApiResponse): data is MembershipData {
   return data.hasOwnProperty("tier");
 }
 
-class Membership extends AsyncLoader<MembersDataApiResponse> {}
+class MembershipAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
 const loadMembershipData: () => Promise<MembersDataApiResponse> = async () => {
   return (await fetch("api/membership", { credentials: "include" })).json();
@@ -126,4 +126,14 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
   return <h2>No Membership</h2>;
 };
 
-export { Membership, loadMembershipData, renderMembershipData };
+const Membership = () => (
+  <div>
+    <h1>Membership</h1>
+    <MembershipAsyncLoader
+      fetch={loadMembershipData}
+      render={renderMembershipData}
+    />
+  </div>
+);
+
+export default Membership;

@@ -67,7 +67,7 @@ server.use((req: express.Request, res: express.Response) => {
     renderToString(ServerUser(req.url, context))
   );
   const title = "My Account | The Guardian";
-  const src = "static/user.js";
+  const src = "/static/user.js";
 
   // TODO check for redirect on the context object
 

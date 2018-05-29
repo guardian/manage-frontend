@@ -26,8 +26,7 @@ export const Main: React.SFC<{}> = ({ children }) => {
           className={css({
             margin: "auto",
             maxWidth: "48.75rem",
-            paddingBottom: "2.5rem",
-            paddingTop: "30px",
+            padding: "30px",
             fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
           })}
         >
