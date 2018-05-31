@@ -1,79 +1,78 @@
 import React, { ReactNode } from "react";
 import { ReasonsStageRenderer } from "./stages/reasons";
 
+export interface StageDescriptor {
+  metadata?: string | object;
+}
+
+export type NavToChild = (stageID: StageID) => void;
+
 export type BranchingStageRenderer = (
-  descriptor: BranchingStageDescriptor,
-  selectChild: (selectedChildID: string) => void
+  children: StageMap,
+  navToChild: NavToChild
 ) => ReactNode;
 
-export interface StageDescriptor {
-  id: string;
-  render: (descriptor?: any, selectedChildID?: any) => ReactNode;
-}
-
-export interface ChildStageDescriptor extends StageDescriptor {
-  data: string | object;
-}
-
 export interface BranchingStageDescriptor extends StageDescriptor {
-  children: ChildStageDescriptor[];
   render: BranchingStageRenderer;
+  next: StageID[];
+}
+export interface NonBranchingStageDescriptor extends StageDescriptor {
+  render: () => ReactNode;
+  next: StageID | undefined;
 }
 
-export type Stage =
-  | StageDescriptor
-  | BranchingStageDescriptor
-  | ChildStageDescriptor;
+export type Stage = BranchingStageDescriptor | NonBranchingStageDescriptor;
 
-export type CancellationFlow = Stage[];
+export interface StageMap {
+  [stageID: string]: Stage;
+}
 
-export function stageHasChildren(
+export type CancellationFlow = StageMap;
+
+export type StageID = keyof CancellationFlow;
+
+export function stageDoesBranch(
   stage: Stage
 ): stage is BranchingStageDescriptor {
-  return (stage as BranchingStageDescriptor).children !== undefined;
-}
-export function stageIsChild(stage: Stage): stage is ChildStageDescriptor {
-  return (stage as ChildStageDescriptor).data !== undefined;
+  return Array.isArray(stage.next);
 }
 
 const flows: { [cancelType: string]: CancellationFlow } = {
-  membership: [
-    {
-      id: "reasons",
+  membership: {
+    START: {
       render: ReasonsStageRenderer,
-      children: [
-        {
-          id: "reasonSaveAttemptA",
-          data: "reason A",
-          render: () => <h2>save attempt A</h2>
-        },
-        {
-          id: "reasonSaveAttemptB",
-          data: "reason B",
-          render: () => <h2>save attempt B</h2>
-        },
-        {
-          id: "reasonSaveAttemptC",
-          data: "reason C",
-          render: () => <h2>save attempt C</h2>
-        }
-      ]
+      next: ["reasonSaveAttemptA", "reasonSaveAttemptB", "reasonSaveAttemptC"]
     },
-    {
-      id: "cancelAnyway",
-      render: () => <h2>cancel anyway</h2>
+    reasonSaveAttemptA: {
+      metadata: "reason A",
+      render: () => <h2>save attempt A</h2>,
+      next: "cancelAnyway"
     },
-    {
-      id: "cancelConfirmation",
-      render: () => <h2>cancel confirmation</h2>
+    reasonSaveAttemptB: {
+      metadata: "reason B",
+      render: () => <h2>save attempt B</h2>,
+      next: "cancelAnyway"
+    },
+    reasonSaveAttemptC: {
+      metadata: "reason C",
+      render: () => <h2>save attempt C</h2>,
+      next: "cancelAnyway"
+    },
+    cancelAnyway: {
+      render: () => <h2>cancel anyway</h2>,
+      next: "cancelConfirmation"
+    },
+    cancelConfirmation: {
+      render: () => <h2>cancel confirmation</h2>,
+      next: undefined
     }
-  ],
-  contributions: [
-    {
-      id: "comingSoon",
-      render: () => <h2>Coming Soon</h2>
+  },
+  contributions: {
+    START: {
+      render: () => <h2>Coming Soon</h2>,
+      next: undefined
     }
-  ]
+  }
 };
 
 export default class CancellationFlows {

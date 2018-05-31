@@ -1,20 +1,21 @@
 import * as React from "react";
 import {
-  BranchingStageDescriptor,
-  BranchingStageRenderer
+  BranchingStageRenderer,
+  NavToChild,
+  StageMap
 } from "../cancellationFlows";
 
 export const ReasonsStageRenderer: BranchingStageRenderer = (
-  descriptor: BranchingStageDescriptor,
-  selectChild: (selectedChildID: string) => any
+  children: StageMap,
+  navToChild: NavToChild
 ) => {
   return (
     <div>
       Please tell us your reason...
       <ul>
-        {descriptor.children.map(({ id, data }) => (
-          <button key={id} onClick={() => selectChild(id)}>
-            {data}
+        {Object.keys(children).map(stageID => (
+          <button key={stageID} onClick={() => navToChild(stageID)}>
+            {children[stageID].metadata}
           </button>
         ))}
       </ul>
