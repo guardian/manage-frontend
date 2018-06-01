@@ -4,7 +4,7 @@ import { injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { MembershipFlow, Saver } from "./cancel/membershipFlow";
+import { MembershipFlow } from "./cancel/membershipFlow";
 import { NotFound } from "./cancel/notFound";
 import { AreYouSure } from "./cancel/stages/areYouSure";
 import { Confirmed } from "./cancel/stages/confirmed";
@@ -34,7 +34,7 @@ const User = () => (
 
       <ContributionsFlow path="/cancel/contributions" />
 
-      <NotFound default={true} />
+      <NotFound default />
     </Router>
   </Main>
 );

@@ -1,3 +1,4 @@
 import * as React from "react";
+import { Routeable } from "../../wizardRouterAdapter";
 
-export const SaveOfReasonB = () => <h1>SaveOfReasonB</h1>;
+export const SaveOfReasonB = (props: Routeable) => <h1>SaveOfReasonB</h1>;

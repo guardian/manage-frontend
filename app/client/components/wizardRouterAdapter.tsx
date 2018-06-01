@@ -6,6 +6,11 @@ interface RootComponentProps {
   path: string;
 }
 
+export interface Routeable {
+  path: string;
+  children?: any; // TODO get types (or extend IntrinsicAttributes or something similar)
+}
+
 const RootComponent = (props: RootComponentProps) => (
   <React.Fragment children={props.realChildren} />
 );
