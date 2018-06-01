@@ -126,7 +126,7 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
   return <h2>No Membership</h2>;
 };
 
-const Membership = () => (
+export const Membership = () => (
   <div>
     <h1>Membership</h1>
     <MembershipAsyncLoader
@@ -135,5 +135,3 @@ const Membership = () => (
     />
   </div>
 );
-
-export default Membership;

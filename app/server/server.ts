@@ -6,9 +6,6 @@ import fetch from "node-fetch";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
-import Config from "./config";
-import CardDisplay from "../client/components/card";
-import User from "../client/components/user";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -21,7 +18,6 @@ if (conf.SERVER_DSN) {
 const port = 9233;
 
 const server = express();
-server.use(Raven.requestHandler());
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -77,11 +73,9 @@ server.use((req: express.Request, res: express.Response) => {
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
    */
-  const body = renderStylesToString(
-    renderToString(ServerUser(req.url, context))
-  );
+  const body = renderStylesToString(renderToString(ServerUser(req.url)));
   const title = "My Account | The Guardian";
-  const src = "static/user.js";
+  const src = "/static/user.js";
 
   const dsn =
     conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
@@ -103,7 +97,6 @@ server.use((req: express.Request, res: express.Response) => {
   );
 });
 
-server.use(Raven.errorHandler());
 server.listen(port);
 // tslint:disable-next-line:no-console
 log.info(`Serving at http://localhost:${port}`);

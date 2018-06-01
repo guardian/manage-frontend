@@ -1,40 +1,47 @@
 import React from "react";
-import { BrowserRouter, Route, StaticRouter, Switch } from "react-router-dom";
 import { injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
-import { default as CancellationFlows } from "./cancel/cancellationFlows";
-import { NotFound } from "./cancel/notFound";
-import { StagesContainer } from "./cancel/stagesContainer";
 import { Main } from "./main";
-import Membership from "./membership";
+import { Link, Router, ServerLocation } from "@reach/router";
+import { Membership } from "./membership";
+import { MembershipFlow } from "./cancel/membershipFlow";
+import { ContributionsFlow } from "./cancel/contributionsFlow";
+import { NotFound } from "./cancel/notFound";
+import { SaveOfReasonA } from "./cancel/stages/saveOfReasonA";
+import { SaveOfReasonB } from "./cancel/stages/saveOfReasonB";
+import { SaveOfReasonC } from "./cancel/stages/saveOfReasonC";
+import { AreYouSure } from "./cancel/stages/areYouSure";
+import { Confirmed } from "./cancel/stages/confirmed";
 
 const User = () => (
   <Main>
     {injectGlobal`${global}`}
     {injectGlobal`${fonts}`}
-    <Switch>
-      <Route path="/" exact={true} component={Membership} />
-      <Route
-        path={`/cancel/:cancelType(${CancellationFlows.toCancelTypeRouteWhitelist()})/:stagePath*`}
-        component={StagesContainer}
-      />
-      <Route component={NotFound} />
-    </Switch>
+
+    <Router>
+      <Membership path="/" />
+
+      <MembershipFlow path="/cancel/membership">
+        <SaveOfReasonA path="saveReasonA">
+          <AreYouSure path="areYouSure">
+            <Confirmed path="confirmed" />
+          </AreYouSure>
+        </SaveOfReasonA>
+        <SaveOfReasonB path="saveReasonB" />
+        <SaveOfReasonC path="saveReasonC" />
+      </MembershipFlow>
+      <ContributionsFlow path="/cancel/contributions" />
+
+      <NotFound default />
+    </Router>
   </Main>
 );
 
-// TODO need to prevent double rendering (just want SSR to do outer stuff)
-const ServerUser = (location: string, context: object) => (
-  <StaticRouter location={location} context={context}>
-    <User />
-  </StaticRouter>
+export const ServerUser = (url: string) => (
+  <ServerLocation url={url}>
+    <h1>Fix SSR</h1>
+  </ServerLocation>
 );
 
-const BrowserUser = (
-  <BrowserRouter>
-    <User />
-  </BrowserRouter>
-);
-
-export { ServerUser, BrowserUser };
+export const BrowserUser = <User />;

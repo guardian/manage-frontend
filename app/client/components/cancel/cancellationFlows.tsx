@@ -27,9 +27,7 @@ export interface StageMap {
   [stageID: string]: Stage;
 }
 
-export type CancellationFlow = StageMap;
-
-export type StageID = keyof CancellationFlow;
+export type StageID = keyof StageMap;
 
 export function stageDoesBranch(
   stage: Stage
@@ -37,7 +35,7 @@ export function stageDoesBranch(
   return Array.isArray(stage.next);
 }
 
-const flows: { [cancelType: string]: CancellationFlow } = {
+const cancelStageMaps: { [cancelType: string]: StageMap } = {
   membership: {
     START: {
       render: ReasonsStageRenderer,
@@ -77,10 +75,10 @@ const flows: { [cancelType: string]: CancellationFlow } = {
 
 export default class CancellationFlows {
   public static toCancelTypeRouteWhitelist(): string {
-    return Object.keys(flows).join("|");
+    return Object.keys(cancelStageMaps).join("|");
   }
 
-  public static getCorrespondingFlow(cancelType: string): CancellationFlow {
-    return flows[cancelType];
+  public static getCorrespondingStageMap(cancelType: string): StageMap {
+    return cancelStageMaps[cancelType];
   }
 }

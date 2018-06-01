@@ -2,8 +2,7 @@ import { css } from "emotion";
 import History from "history";
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import CancellationFlows, {
-  CancellationFlow,
+import StageMaps, {
   Stage,
   stageDoesBranch,
   StageID,
@@ -22,13 +21,16 @@ export const StagesContainer: React.SFC<CancelRouteParams> = (
 ) => {
   // route path param whitelist validation should prevent this from being null
   const cancelType: string = props.match.params.cancelType;
-  const correspondingFlow: CancellationFlow = CancellationFlows.getCorrespondingFlow(
+  const correspondingStageMap: StageMap = StageMaps.getCorrespondingStageMap(
     cancelType
   );
 
   const stageParts: string[] = stagePathToParts(props.match.params.stagePath); // TODO consider obfuscating the stageIDs
 
-  const currentStage: Stage = stagePartsToStage(stageParts, correspondingFlow);
+  const currentStage: Stage = stagePartsToStage(
+    stageParts,
+    correspondingStageMap
+  );
 
   if (currentStage === undefined) {
     return <NotFound />;
@@ -69,7 +71,7 @@ export const StagesContainer: React.SFC<CancelRouteParams> = (
     if (stageDoesBranch(currentStage)) {
       const toStageMapReducer = (result: StageMap, stageID: StageID) => ({
         ...result,
-        [stageID]: correspondingFlow[stageID]
+        [stageID]: correspondingStageMap[stageID]
       });
       const children = currentStage.next.reduce(toStageMapReducer, {});
       return currentStage.render(children, goToNext);
@@ -90,7 +92,7 @@ export const StagesContainer: React.SFC<CancelRouteParams> = (
         currentStage={1 + stageParts.length}
         totalStages={
           stageParts.length +
-          estimateRemainingSteps(correspondingFlow, currentStage)
+          estimateRemainingSteps(correspondingStageMap, currentStage)
         }
       />
       <div>{renderToReactNode()}</div>
@@ -111,10 +113,7 @@ function stagePathToParts(stagePath: string | undefined): string[] {
   return stagePath.split("/");
 }
 
-function stagePartsToStage(
-  stageParts: string[],
-  flow: CancellationFlow
-): Stage {
+function stagePartsToStage(stageParts: string[], flow: StageMap): Stage {
   if (stageParts.length === 0) {
     return flow.START;
   }
@@ -126,10 +125,7 @@ function buildNavFunction(history: History.History, next?: string): () => void {
   return () => (next ? history.push(next) : history.goBack());
 }
 
-function estimateRemainingSteps(
-  flow: CancellationFlow,
-  fromStage: Stage
-): number {
+function estimateRemainingSteps(flow: StageMap, fromStage: Stage): number {
   if (stageDoesBranch(fromStage)) {
     return 1 + estimateRemainingSteps(flow, flow[fromStage.next[0]]);
   } else if (fromStage.next) {

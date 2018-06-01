@@ -55,11 +55,9 @@
     "type-check": "tsc --noEmit --skipLibCheck",
     "pretty-quick": "pretty-quick",
     "lint": "tslint -p .",
-    "bundle":
-      "copy-node-modules . ./dist && webpack --config webpack.production.js",
+    "bundle": "copy-node-modules . ./dist && webpack --config webpack.production.js",
     "bundle-dev": "webpack --config webpack.dev.js",
-    "watch":
-      "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
+    "watch": "yarn bundle-dev && (yarn start & webpack --config webpack.dev.js -w )",
     "test": "yarn lint && yarn type-check && jest --coverage",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged && tslint --fix -p .",
@@ -71,6 +69,7 @@
   "buildDir": "dist",
   "projectName": "support:account-frontend",
   "dependencies": {
+    "@reach/router": "^1.0.2",
     "babel-plugin-emotion": "^9.1.0",
     "babel-plugin-source-map-support": "^2.0.1",
     "babel-regenerator-runtime": "^6.5.0",
