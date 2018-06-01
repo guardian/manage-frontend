@@ -1,24 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main renders something 1`] = `
+.emotion-0 {
+  width: 56px;
+}
+
 <div
-  class="css-6d0m9p"
+  css={
+    Object {
+      "alignItems": "stretch",
+      "color": "#333333",
+      "display": "flex",
+      "flexDirection": "column",
+      "minHeight": "100vh",
+      "width": "100%",
+    }
+  }
 >
   <header
-    class="css-41prdp"
+    css={
+      Object {
+        "backgroundColor": "#e9eff1",
+        "borderBottomColor": "rgba(0, 0, 0, 0.14)",
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "0.8px",
+        "color": "#121212",
+        "height": "2.8125rem",
+      }
+    }
   >
     <div
-      class="css-8mnhbg"
+      css={
+        Object {
+          "fontSize": "0.875rem",
+          "lineHeight": "2.8125rem",
+          "margin": "auto",
+          "maxWidth": "71.25rem",
+          "paddingLeft": "1.25rem",
+          "paddingRight": "1.25rem",
+        }
+      }
     >
       <span>
         My Account
       </span>
       <a
-        class="css-1pwdi7e"
+        css={
+          Object {
+            "float": "right",
+            "padding": "2px",
+          }
+        }
         href="https://www.theguardian.com/uk"
       >
         <svg
-          class="css-7pdxto"
+          className="emotion-0"
           viewBox="0 0 56 56"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -35,10 +71,22 @@ exports[`Main renders something 1`] = `
     </div>
   </header>
   <div
-    class="css-1rr4qq7"
+    css={
+      Object {
+        "flex": "1",
+      }
+    }
   >
     <main
-      class="css-1kvb4hd"
+      css={
+        Object {
+          "fontFamily": "\\"Guardian Text Egyptian Web\\",Georgia,serif",
+          "margin": "auto",
+          "maxWidth": "48.75rem",
+          "paddingBottom": "2.5rem",
+          "paddingTop": "30px",
+        }
+      }
     >
       <p>
         hi
@@ -47,13 +95,31 @@ exports[`Main renders something 1`] = `
   </div>
   <footer>
     <div
-      class="css-ol13lf"
+      css={
+        Object {
+          "backgroundColor": "#e9eff1",
+          "color": "#121212",
+          "height": "42px",
+          "text-align": "right",
+        }
+      }
     >
       <div
-        class="css-q7ekx7"
+        css={
+          Object {
+            "lineHeight": "42px",
+            "margin": "auto",
+            "maxWidth": "71.25rem",
+            "paddingRight": "2rem",
+          }
+        }
       >
         <a
-          class="css-cywksh"
+          css={
+            Object {
+              "color": "#121212",
+            }
+          }
           href="#top"
         >
           back to top
@@ -62,10 +128,22 @@ exports[`Main renders something 1`] = `
     </div>
     <div>
       <div
-        class="css-of41qb"
+        css={
+          Object {
+            "backgroundColor": "#333",
+            "color": "#bdbdbd",
+            "fontSize": "0.75rem",
+            "padding": "0.25rem",
+          }
+        }
       >
         <div
-          class="css-136nfoa"
+          css={
+            Object {
+              "margin": "auto",
+              "maxWidth": "71.25rem",
+            }
+          }
         >
           © 2018 Guardian News and Media Limited or its affiliated companies. All rights reserved.
         </div>

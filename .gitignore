@@ -18,3 +18,4 @@ logs/
 /public/webpack-assets.json
 
 app/dist/*
+app/coverage/*

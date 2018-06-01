@@ -1,7 +1,7 @@
 import bunyan from "bunyan";
 import express from "express";
 import url from "url";
-import Config from "../config";
+import { conf } from "../config";
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -34,7 +34,7 @@ export const withIdentity: express.RequestHandler = (
     });
     // somehow the redirect url is automatically encoded
     res.redirect(
-      `https://profile.${Config.DOMAIN}/signin?returnUrl=${returnUrl}`
+      `https://profile.${conf.DOMAIN}/signin?returnUrl=${returnUrl}`
     );
     return;
   }

@@ -3,16 +3,26 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
 import fetch from "node-fetch";
+import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import Config from "./config";
+import CardDisplay from "../client/components/card";
+import User from "../client/components/user";
+import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
 
+if (conf.SERVER_DSN) {
+  Raven.config(conf.SERVER_DSN).install();
+}
+
 const port = 9233;
 
 const server = express();
+server.use(Raven.requestHandler());
+
 const log = bunyan.createLogger({ name: "af" });
 
 server.use(helmet());
@@ -27,34 +37,38 @@ server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
 
-server.get("/api/membership", (req: express.Request, res: express.Response) => {
-  if (res.locals.identity == null) {
-    // Check if the identity middleware is loaded for this route.
-    // Refactor this.
-    log.error("Identity not present in locals.");
-    res.status(500).send("Something broke!");
-    return;
-  }
-
-  const identity: IdentityUser = res.locals.identity;
-
-  fetch(
-    `https://members-data-api.${
-      Config.DOMAIN
-    }/user-attributes/me/mma-membership`,
-    {
-      headers: {
-        Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
-      }
-    }
-  )
-    .then(_ => _.text())
-    .then(_ => res.send(_))
-    .catch(e => {
-      log.info(e);
+server.get(
+  "/api/membership",
+  (req: express.Request, res: express.Response) => {
+    if (res.locals.identity == null) {
+      // Check if the identity middleware is loaded for this route.
+      // Refactor this.
+      log.error("Identity not present in locals.");
       res.status(500).send("Something broke!");
-    });
-});
+      return;
+    }
+
+    const identity: IdentityUser = res.locals.identity;
+
+    fetch(
+      `https://members-data-api.${
+        conf.DOMAIN
+      }/user-attributes/me/mma-membership`,
+      {
+        headers: {
+          Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
+        }
+      }
+    )
+      .then(_ => _.text())
+      .then(_ => res.send(_))
+      .catch(e => {
+        log.info(e);
+        res.status(500).send("Something broke!");
+      });
+  },
+  withIdentity
+);
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use((req: express.Request, res: express.Response) => {
@@ -67,7 +81,15 @@ server.use((req: express.Request, res: express.Response) => {
     renderToString(ServerUser(req.url, context))
   );
   const title = "My Account | The Guardian";
-  const src = "/static/user.js";
+  const src = "static/user.js";
+
+  const dsn =
+    conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
+      ? conf.CLIENT_DSN
+      : null;
+  if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
+    log.error("NO SENTRY IN CLIENT PROD!");
+  }
 
   // TODO check for redirect on the context object
 
@@ -75,11 +97,13 @@ server.use((req: express.Request, res: express.Response) => {
     html({
       body,
       title,
-      src
+      src,
+      dsn
     })
   );
 });
 
+server.use(Raven.errorHandler());
 server.listen(port);
 // tslint:disable-next-line:no-console
 log.info(`Serving at http://localhost:${port}`);
