@@ -1,12 +1,18 @@
+import { Link, Router } from "@reach/router";
 import * as React from "react";
-import { Link } from "@reach/router";
+
+const ThisStage = () => (
+  <div path="/">
+    <h1>are you sure?</h1>
+    <Link to="confirmed">Confirm?</Link>
+  </div>
+);
 
 export const AreYouSure = (props: any) => (
   <React.Fragment>
-    <div path="/">
-      <h1>are you sure?</h1>
-      <Link to="confirmed">Confirm?</Link>
-    </div>
+    <Router>
+      <ThisStage path="/" />
+    </Router>
     {props.children}
   </React.Fragment>
 );
