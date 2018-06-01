@@ -1,18 +1,10 @@
-import { Link, Router } from "@reach/router";
+import { Link } from "@reach/router";
 import * as React from "react";
-
-const ThisStage = () => (
-  <div path="/">
-    <h1>are you sure?</h1>
-    <Link to="confirmed">Confirm?</Link>
-  </div>
-);
+import { WizardStep } from "../../wizardRouterAdapter";
 
 export const AreYouSure = (props: any) => (
-  <React.Fragment>
-    <Router>
-      <ThisStage path="/" />
-    </Router>
-    {props.children}
-  </React.Fragment>
+  <WizardStep subsequentSteps={props.children}>
+    <h1>are you sure?</h1>
+    <Link to="confirmed">Confirm?</Link>
+  </WizardStep>
 );

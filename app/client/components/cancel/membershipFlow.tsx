@@ -1,9 +1,10 @@
 import { Link, Router } from "@reach/router";
 import * as React from "react";
+import { WizardStep } from "../wizardRouterAdapter";
 
-const ThisStage = () => (
-  <>
-    Please tell us your reason...
+export const MembershipFlow = (props: any) => (
+  <WizardStep subsequentSteps={props.children}>
+    <span>Please tell us your reason...</span>
     <ul>
       <li>
         <Link to="saveReasonA">Reason A</Link>
@@ -15,14 +16,5 @@ const ThisStage = () => (
         <Link to="saveReasonC">Reason C</Link>
       </li>
     </ul>
-  </>
-);
-
-export const MembershipFlow = (props: any) => (
-  <div>
-    <Router>
-      <ThisStage path="/" />
-    </Router>
-    {props.children}
-  </div>
+  </WizardStep>
 );
