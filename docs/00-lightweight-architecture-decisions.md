@@ -8,7 +8,7 @@ The convention of lightweight architectural decisions [is set out by think relev
 
 ## Decision
 
-For all architectural decisions in this project, an architectural decision document will be created with a filename of `XX-decision-title.md` where XX is the monotonically increasing number described in the linked document.
+For all architectural decisions in this project, an architectural decision record will be created with a filename of `XX-decision-title.md` where XX is the monotonically increasing number described in the linked document.
 
 ## Status
 
