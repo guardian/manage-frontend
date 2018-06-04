@@ -4,10 +4,10 @@ import { css } from "../styles/emotion";
 const Roundel: React.SFC<{ size: number }> = ({ size }) => (
   <a
     href="https://www.theguardian.com/uk"
-    className={css({
+    css={{
       float: "right",
       padding: "2px"
-    })}
+    }}
   >
     <svg
       viewBox="0 0 56 56"

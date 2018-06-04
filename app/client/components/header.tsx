@@ -6,24 +6,24 @@ import Roundel from "./roundel";
 
 const Header = () => (
   <header
-    className={css({
+    css={{
       backgroundColor: palette.neutral.header,
       color: palette.neutral["1"],
       height: "2.8125rem",
-      "border-bottom-width": "0.8px",
-      "border-bottom-color": "rgba(0, 0, 0, 0.14)",
-      "border-bottom-style": "solid"
-    })}
+      borderBottomWidth: "0.8px",
+      borderBottomColor: "rgba(0, 0, 0, 0.14)",
+      borderBottomStyle: "solid"
+    }}
   >
     <div
-      className={css({
-        "padding-left": "1.25rem",
-        "padding-right": "1.25rem",
-        "max-width": "71.25rem",
+      css={{
+        paddingLeft: "1.25rem",
+        paddingRight: "1.25rem",
+        maxWidth: "71.25rem",
         margin: "auto",
-        "font-size": "0.875rem",
-        "line-height": "2.8125rem"
-      })}
+        fontSize: "0.875rem",
+        lineHeight: "2.8125rem"
+      }}
     >
       <Nav />
       <Roundel size={56} />

@@ -30,6 +30,9 @@ Parameters:
     Description: AMI ID
     Type: String
     Default: ami-09c0f070
+  OfficeCIDR:
+    Description: Office IP range
+    Type: String
 Conditions:
   CreateProdResources: !Equals [!Ref "Stage", "PROD"]
   CreateCodeResources: !Equals [!Ref "Stage", "CODE"]
@@ -211,7 +214,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 77.91.248.0/21
+          CidrIp: !Ref OfficeCIDR
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 9233
@@ -227,11 +230,11 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 77.91.248.0/21
+          CidrIp: !Ref OfficeCIDR
         - IpProtocol: tcp
           FromPort: 9233
           ToPort: 9233
-          CidrIp: 77.91.248.0/21
+          CidrIp: !Ref OfficeCIDR
         - IpProtocol: tcp
           FromPort: 9233
           ToPort: 9233
