@@ -1,6 +1,5 @@
-import Raven from "raven-js";
 import ReactDOM from "react-dom";
-import User from "./components/user";
+import { BrowserUser } from "./components/user";
 
 const element = document.getElementById("app");
-ReactDOM.hydrate(User, element);
+ReactDOM.hydrate(BrowserUser, element);

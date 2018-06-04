@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "sourceRoot": "${workspaceRoot}/app",
+  "sourceMaps": true,
+  "sourceMapPathOverrides": {
+    // if you override this, you MUST provide all defaults again
+    // gist.github.com/jarshwah/389f93f2282a165563990ed60f2b6d6c
+    "webpack:///./~/*": "${webRoot}/node_modules/*", // a default
+    "webpack:///./*": "${webRoot}/js-src/*", // unsure how/why webpack generates ./links.js
+    "webpack:///../*": "${webRoot}/js-src/*", // unsure how/why webpack generates ../links.js
+    "webpack:///*": "*" // a default, catch everything else
+  },
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Node: Nodemon",
+      "processId": "${command:PickProcess}",
+      "restart": true,
+      "protocol": "inspector"
+    }
+  ]
+}

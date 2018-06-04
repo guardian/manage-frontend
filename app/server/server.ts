@@ -5,8 +5,7 @@ import helmet from "helmet";
 import fetch from "node-fetch";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
-import CardDisplay from "../client/components/card";
-import User from "../client/components/user";
+import { ServerUser } from "../client/components/user";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -68,14 +67,16 @@ server.get(
   withIdentity
 );
 
-server.get("/", (req: express.Request, res: express.Response) => {
+// ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
+server.use((req: express.Request, res: express.Response) => {
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
    */
-  const body = renderStylesToString(renderToString(User));
+  const body = renderStylesToString(renderToString(ServerUser(req.url)));
   const title = "My Account | The Guardian";
-  const src = "static/user.js";
+  const src = "/static/user.js";
+
   const dsn =
     conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
       ? conf.CLIENT_DSN
