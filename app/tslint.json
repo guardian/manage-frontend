@@ -14,6 +14,7 @@
     "no-var-keyword": true,
     "no-parameter-reassignment": true,
     "typedef": [true, "call-signature"],
+    "jsx-boolean-value": false,
 
     // Immutability rules
     "readonly-keyword": false,
