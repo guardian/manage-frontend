@@ -2,7 +2,7 @@ import { css } from "emotion";
 import React from "react";
 import AsyncLoader from "./asyncLoader";
 import { CardProps, default as CardDisplay } from "./card";
-import { Routeable } from "./wizardRouterAdapter";
+import { RouteableProps } from "./wizardRouterAdapter";
 
 interface MembershipData {
   regNumber?: string;
@@ -127,7 +127,7 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
   return <h2>No Membership</h2>;
 };
 
-export const Membership = (props: Routeable) => (
+export const Membership = (props: RouteableProps) => (
   <div>
     <h1>Membership</h1>
     <MembershipAsyncLoader

@@ -1,10 +1,9 @@
 import { Link } from "@reach/router";
 import * as React from "react";
-import { WizardStep } from "../../wizardRouterAdapter";
+import { RouteableProps, WizardStep } from "../../wizardRouterAdapter";
 
-export const SaveOfReasonA = (props: any) => (
-  <WizardStep subsequentSteps={props.children}>
-    <h1>SaveOfReasonA</h1>
-    <Link to="areYouSure">Cancel Anyway</Link>
+export const SaveOfReasonA = (props: RouteableProps) => (
+  <WizardStep routeableProps={props}>
+    <h1>Save of Reason A</h1>
   </WizardStep>
 );

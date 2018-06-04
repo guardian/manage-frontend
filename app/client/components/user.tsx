@@ -3,8 +3,8 @@ import React from "react";
 import { injectGlobal } from "../styles/emotion";
 import fonts from "../styles/fonts";
 import global from "../styles/global";
-import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { MembershipFlow } from "./cancel/membershipFlow";
+import { ContributionsReasons } from "./cancel/contributionsReasons";
+import { MembershipReasons } from "./cancel/membershipReasons";
 import { NotFound } from "./cancel/notFound";
 import { AreYouSure } from "./cancel/stages/areYouSure";
 import { Confirmed } from "./cancel/stages/confirmed";
@@ -22,19 +22,27 @@ const User = () => (
     <Router>
       <Membership path="/" />
 
-      <MembershipFlow path="/cancel/membership/">
-        <SaveOfReasonA path="saveReasonA">
+      <MembershipReasons path="/cancel/membership/">
+        <SaveOfReasonA path="saveReasonA" linkLabel="Reason A">
           <AreYouSure path="areYouSure">
             <Confirmed path="confirmed" />
           </AreYouSure>
         </SaveOfReasonA>
-        <SaveOfReasonB path="saveReasonB" />
-        <SaveOfReasonC path="saveReasonC" />
-      </MembershipFlow>
+        <SaveOfReasonB path="saveReasonB" linkLabel="Reason B">
+          <AreYouSure path="areYouSure">
+            <Confirmed path="confirmed" />
+          </AreYouSure>
+        </SaveOfReasonB>
+        <SaveOfReasonC path="saveReasonC" linkLabel="Reason C">
+          <AreYouSure path="areYouSure">
+            <Confirmed path="confirmed" />
+          </AreYouSure>
+        </SaveOfReasonC>
+      </MembershipReasons>
 
-      <ContributionsFlow path="/cancel/contributions" />
+      <ContributionsReasons path="/cancel/contributions" />
 
-      <NotFound default />
+      <NotFound default={true} />
     </Router>
   </Main>
 );

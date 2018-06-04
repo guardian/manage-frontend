@@ -1,4 +1,8 @@
 import * as React from "react";
-import { Routeable } from "../../wizardRouterAdapter";
+import { RouteableProps, WizardStep } from "../../wizardRouterAdapter";
 
-export const Confirmed = (props: Routeable) => <h1>cancel confirmed</h1>;
+export const Confirmed = (props: RouteableProps) => (
+  <WizardStep routeableProps={props}>
+    <h1>cancel confirmed</h1>
+  </WizardStep>
+);
