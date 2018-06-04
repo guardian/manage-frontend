@@ -6,7 +6,7 @@ export interface StageIndicatorProps {
   totalStages: number;
 }
 
-const StageIndicator = (props: StageIndicatorProps) => (
+export const StageIndicator = (props: StageIndicatorProps) => (
   <h3
     className={css({
       float: "right"
@@ -15,5 +15,3 @@ const StageIndicator = (props: StageIndicatorProps) => (
     Step {props.currentStage}/{props.totalStages}
   </h3>
 );
-
-export default StageIndicator;

@@ -7,7 +7,7 @@ export const MembershipReasons = (props: RouteableProps) => (
     <span>Please tell us your reason...</span>
     <ul>
       {props.children.props.children.map((child: { props: RouteableProps }) => (
-        <li>
+        <li key={child.props.path}>
           <Link to={child.props.path}>
             {child.props.linkLabel ? child.props.linkLabel : child.props.path}
           </Link>

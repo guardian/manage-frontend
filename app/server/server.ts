@@ -68,7 +68,6 @@ server.get(
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use((req: express.Request, res: express.Response) => {
-  const context = {};
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
