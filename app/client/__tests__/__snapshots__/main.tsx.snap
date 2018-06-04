@@ -83,8 +83,7 @@ exports[`Main renders something 1`] = `
           "fontFamily": "\\"Guardian Text Egyptian Web\\",Georgia,serif",
           "margin": "auto",
           "maxWidth": "48.75rem",
-          "paddingBottom": "2.5rem",
-          "paddingTop": "30px",
+          "padding": "30px",
         }
       }
     >
