@@ -11,13 +11,14 @@ import { renderStylesToString } from "./emotion-server";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
 
-if (conf.SERVER_DSN) {
-  Raven.config(conf.SERVER_DSN).install();
-}
-
 const port = 9233;
 
 const server = express();
+
+if (conf.SERVER_DSN) {
+  Raven.config(conf.SERVER_DSN).install();
+  server.use(Raven.requestHandler());
+}
 
 const log = bunyan.createLogger({ name: "af" });
 
@@ -84,8 +85,6 @@ server.use((req: express.Request, res: express.Response) => {
     log.error("NO SENTRY IN CLIENT PROD!");
   }
 
-  // TODO check for redirect on the context object
-
   res.send(
     html({
       body,
@@ -96,6 +95,9 @@ server.use((req: express.Request, res: express.Response) => {
   );
 });
 
+if (conf.SERVER_DSN) {
+  server.use(Raven.errorHandler());
+}
 server.listen(port);
 // tslint:disable-next-line:no-console
 log.info(`Serving at http://localhost:${port}`);
