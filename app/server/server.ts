@@ -34,36 +34,42 @@ server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
 
-server.get(
-  "/api/membership",
-  (req: express.Request, res: express.Response) => {
-    if (res.locals.identity == null) {
-      // Check if the identity middleware is loaded for this route.
-      // Refactor this.
-      log.error("Identity not present in locals.");
-      res.status(500).send("Something broke!");
-      return;
+const membersDataApiHandler = (path: string) => (
+  req: express.Request,
+  res: express.Response
+) => {
+  if (res.locals.identity == null) {
+    // Check if the identity middleware is loaded for this route.
+    // Refactor this.
+    log.error("Identity not present in locals.");
+    res.status(500).send("Something broke!");
+    return;
+  }
+
+  const identity: IdentityUser = res.locals.identity;
+
+  fetch(`https://members-data-api.${conf.DOMAIN}/${path}`, {
+    headers: {
+      Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
     }
+  })
+    .then(_ => _.text())
+    .then(_ => res.send(_))
+    .catch(e => {
+      log.info(e);
+      res.status(500).send("Something broke!");
+    });
+};
 
-    const identity: IdentityUser = res.locals.identity;
+server.get(
+  "/api/me",
+  membersDataApiHandler("user-attributes/me"),
+  withIdentity
+);
 
-    fetch(
-      `https://members-data-api.${
-        conf.DOMAIN
-      }/user-attributes/me/mma-membership`,
-      {
-        headers: {
-          Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
-        }
-      }
-    )
-      .then(_ => _.text())
-      .then(_ => res.send(_))
-      .catch(e => {
-        log.info(e);
-        res.status(500).send("Something broke!");
-      });
-  },
+server.get(
+  "/api/me/membership",
+  membersDataApiHandler("user-attributes/me/mma-membership"),
   withIdentity
 );
 
