@@ -9,7 +9,7 @@ coverage/
 *.iml
 
 *.code-workspace
-/.vscode/
+ 
 
 logs/
 /app/node_modules/

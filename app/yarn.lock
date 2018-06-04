@@ -659,9 +659,9 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
-"@reach/router@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.0.2.tgz#428825a071254e8a8661a122ca709adbb962527f"
+"@reach/router@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.0.5.tgz#96ba509734a0270ec82a628503c8b88911442366"
   dependencies:
     babel-plugin-dev-expression "^0.2.1"
     create-react-context "^0.2.1"
@@ -6621,7 +6621,7 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^16.3.1:
+react-dom@16.4:
   version "16.4.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.0.tgz#099f067dd5827ce36a29eaf9a6cdc7cbf6216b1e"
   dependencies:
@@ -6661,7 +6661,7 @@ react-testing-library@^3.1.3:
     dom-testing-library "^2.3.1"
     wait-for-expect "^0.5.0"
 
-react@^16.3.1:
+react@16.4:
   version "16.4.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.0.tgz#402c2db83335336fba1962c08b98c6272617d585"
   dependencies:

@@ -49,7 +49,7 @@ const User = () => (
 
 export const ServerUser = (url: string) => (
   <ServerLocation url={url}>
-    <h1>Fix SSR</h1>
+    ...{/* wait for https://github.com/reach/router/issues/27 fix and then reenable */}
   </ServerLocation>
 );
 
