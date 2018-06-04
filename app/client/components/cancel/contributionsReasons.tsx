@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { RouteableProps } from "../wizardRouterAdapter";
 
 export const ContributionsReasons = (props: RouteableProps) => (

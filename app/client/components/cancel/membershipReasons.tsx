@@ -1,5 +1,5 @@
 import { Link, Router } from "@reach/router";
-import * as React from "react";
+import React from "react";
 import { RouteableProps, WizardStep } from "../wizardRouterAdapter";
 
 export const MembershipReasons = (props: RouteableProps) => (

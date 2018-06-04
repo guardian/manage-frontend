@@ -28,7 +28,7 @@ function hasMembership(data: MembersDataApiResponse): data is MembershipData {
 class MembershipAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
 const loadMembershipData: () => Promise<MembersDataApiResponse> = async () => {
-  return (await fetch("api/membership", { credentials: "include" })).json();
+  return (await fetch("/api/membership", { credentials: "include" })).json();
 };
 
 interface MembershipRowProps {
