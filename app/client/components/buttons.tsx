@@ -1,19 +1,66 @@
+import { Link } from "@reach/router";
 import { VerticalAlign } from "aws-sdk/clients/elastictranscoder";
 import Color from "color";
 import { css } from "emotion";
 import React from "react";
 import { sans } from "../styles/fonts";
 
-export const MediumButton = ({
+export const LinkButton = ({
   color,
   textColor,
   text,
-  left
+  left,
+  to
 }: {
   color: string;
   textColor?: string;
   text: string;
   left?: true;
+  to: string;
+}) => {
+  const hoverColor = Color(color)
+    .darken(0.3)
+    .string();
+  // if (
+  //   Color(hoverColor).contrast(Color(textColor)) < 4.5 ||
+  //   Color(color).contrast(Color(textColor)) < 4.5
+  // ) {
+  //   console.error("insufficient constrast");
+  // }
+  return (
+    <Link
+      to={to}
+      css={{
+        ...styles.common,
+        background: color,
+        color: textColor,
+        ...(left ? styles.left : styles.right),
+        ":hover": {
+          background: hoverColor,
+          ...(left ? styles.leftHover : styles.rightHover)
+        }
+      }}
+    >
+      {text}
+      <svg width="30" height="30" viewBox="0 0 30 30">
+        <path d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9" />
+      </svg>
+    </Link>
+  );
+};
+
+export const Button = ({
+  color,
+  textColor,
+  text,
+  left,
+  onClick
+}: {
+  color: string;
+  textColor?: string;
+  text: string;
+  left?: true;
+  onClick: () => void;
 }) => {
   const hoverColor = Color(color)
     .darken(0.3)
@@ -26,6 +73,7 @@ export const MediumButton = ({
   // }
   return (
     <button
+      onClick={onClick}
       css={{
         ...styles.common,
         background: color,

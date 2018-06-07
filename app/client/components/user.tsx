@@ -1,7 +1,7 @@
 import { Link, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import { injectGlobal } from "../styles/emotion";
-import fonts from "../styles/fonts";
+import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { ContributionsReasons } from "./cancel/contributionsReasons";
 import { MembershipReasons } from "./cancel/membershipReasons";
