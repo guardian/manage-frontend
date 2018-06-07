@@ -9,9 +9,7 @@ import { MembershipFlow } from "./cancel/membershipFlow";
 import { NotFound } from "./cancel/notFound";
 import { AreYouSure } from "./cancel/stages/areYouSure";
 import { Confirmed } from "./cancel/stages/confirmed";
-import { SaveOfReasonA } from "./cancel/stages/saveOfReasonA";
-import { SaveOfReasonB } from "./cancel/stages/saveOfReasonB";
-import { SaveOfReasonC } from "./cancel/stages/saveOfReasonC";
+import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { Main } from "./main";
 import { Membership } from "./membership";
 
@@ -27,11 +25,35 @@ export interface MeResponse {
   };
 }
 
+const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
+  mma_editorial: "I am unhappy with Guardian journalism",
+  mma_support_another_way:
+    "I am going to support The Guardian in another way, eg. by subscribing",
+  mma_values: "I don't feel that the Guardian values my support",
+  mma_payment_issue: "I didn't expect The Guardian to take another payment",
+  mma_health: "Ill-health",
+  mma_none: "None of the membership benefits are of interest to me",
+  mma_financial_circumstances: "A change in my financial circumstances",
+  mma_other: "Other"
+};
+
 export class MeCheckerAsyncLoader extends AsyncLoader<MeResponse> {}
 
 export const fetchMe: () => Promise<MeResponse> = async () => {
   return (await fetch("/api/me", { credentials: "include" })).json();
 };
+
+export const CancellationReasonContext: React.Context<
+  string
+> = React.createContext("");
+
+export const CancellationUrlSuffixContext: React.Context<
+  string
+> = React.createContext("");
+
+export const CancellationTypeContext: React.Context<
+  string
+> = React.createContext("error");
 
 const User = () => (
   <Main>
@@ -41,22 +63,20 @@ const User = () => (
     <Router>
       <Membership path="/" />
 
-      <MembershipFlow path="/cancel/membership/">
-        <SaveOfReasonA path="saveReasonA" linkLabel="Reason A">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonA>
-        <SaveOfReasonB path="saveReasonB" linkLabel="Reason B">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonB>
-        <SaveOfReasonC path="saveReasonC" linkLabel="Reason C">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonC>
+      <MembershipFlow path="/cancel/membership">
+        {Object.keys(zuoraCancellationReasonMapping).map(
+          (zuoraReason: string) => (
+            <GenericSaveAttempt
+              key={zuoraReason}
+              path={zuoraReason}
+              linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
+            >
+              <AreYouSure path="areYouSure">
+                <Confirmed path="confirmed" />
+              </AreYouSure>
+            </GenericSaveAttempt>
+          )
+        )}
       </MembershipFlow>
 
       <ContributionsFlow path="/cancel/contributions" />
