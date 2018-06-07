@@ -1,5 +1,7 @@
-import { Link, Router } from "@reach/router";
+import { Router } from "@reach/router";
 import React from "react";
+import palette from "../colours";
+import { Button, LinkButton } from "./buttons";
 
 export interface RouteableProps {
   path: string;
@@ -20,9 +22,14 @@ interface RootComponentProps {
 const RootComponent = (props: RootComponentProps) => (
   <div>
     {props.thisStageChildren}
-    <div>
-      {getBackwardNavigationIfApplicable(props.routeableProps)}
-      {getForwardNavigationIfApplicable(props.routeableProps)}
+    <div
+      css={{
+        display: "flex",
+        justifyContent: "space-between"
+      }}
+    >
+      <div>{getBackwardNavigationIfApplicable(props.routeableProps)}</div>
+      <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
     </div>
   </div>
 );
@@ -39,7 +46,15 @@ const ThisStageContent = (props: WizardStepProps) => (
 
 const getBackwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
   if (routeableProps.children) {
-    return <button onClick={() => window.history.back()}>Back</button>;
+    return (
+      <Button
+        onClick={() => window.history.back()}
+        text="Back"
+        textColor={palette.white}
+        left
+        color={palette.neutral["4"]}
+      />
+    );
   }
 };
 
@@ -52,9 +67,14 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
     const childProps: RouteableProps =
       routeableProps.children.props.children.props;
     return (
-      <Link css={{ float: "right" }} to={childProps.path}>
-        {childProps.linkLabel ? childProps.linkLabel : "Continue Cancellation"}
-      </Link>
+      <LinkButton
+        to={childProps.path}
+        text={
+          childProps.linkLabel ? childProps.linkLabel : "Continue Cancellation"
+        }
+        textColor={palette.white}
+        color={palette.neutral["4"]}
+      />
     );
   }
 };

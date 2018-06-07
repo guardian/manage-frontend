@@ -1,4 +1,4 @@
-const fonts  = `
+export const fonts = `
 /* totally hacky way of adding fonts temporarily */
 
 @font-face {
@@ -524,4 +524,7 @@ const fonts  = `
 }
 `;
 
-export default fonts;
+export const sans = `"Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
+export const serifText = `"Guardian Text Egyptian Web", Georgia, serif`;
+export const serif = `"Guardian Egyptian Web", ${serifText}`;
+export const headline = `GH Guardian Headline, ${serif}`;

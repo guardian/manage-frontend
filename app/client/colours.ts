@@ -38,7 +38,8 @@ const palette = {
     "5": "#dcdcdc",
     "6": "#ececec",
     "7": "#f6f6f6"
-  }
+  },
+  white: "#ffffff"
 };
 
 export default palette;
