@@ -4,6 +4,7 @@ import Spinner from "./spinner";
 export interface AsyncLoaderProps<T> {
   readonly fetch: () => Promise<T>;
   readonly render: (data: T) => React.ReactNode;
+  readonly errorRender?: () => React.ReactNode;
 }
 
 export enum LoadingState {
@@ -40,10 +41,14 @@ export default class AsyncLoader<T> extends React.Component<
         return this.state.data ? (
           this.props.render(this.state.data)
         ) : (
-          <h1>Super Boom</h1>
+          <h1>Impossible Error</h1>
         );
       case LoadingState.error:
-        return <h1>Boom</h1>;
+        return this.props.errorRender ? (
+          this.props.errorRender()
+        ) : (
+          <h1>Error</h1>
+        );
     }
   }
 }
