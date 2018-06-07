@@ -3,8 +3,9 @@ import React from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
-import { ContributionsReasons } from "./cancel/contributionsReasons";
-import { MembershipReasons } from "./cancel/membershipReasons";
+import AsyncLoader from "./asyncLoader";
+import { ContributionsFlow } from "./cancel/contributionsFlow";
+import { MembershipFlow } from "./cancel/membershipFlow";
 import { NotFound } from "./cancel/notFound";
 import { AreYouSure } from "./cancel/stages/areYouSure";
 import { Confirmed } from "./cancel/stages/confirmed";
@@ -14,6 +15,24 @@ import { SaveOfReasonC } from "./cancel/stages/saveOfReasonC";
 import { Main } from "./main";
 import { Membership } from "./membership";
 
+export interface MeResponse {
+  userId: string;
+  tier: string;
+  membershipJoinDate: string;
+  contentAccess: {
+    member: boolean;
+    paidMember: boolean;
+    recurringContributor: boolean;
+    digitalPack: boolean;
+  };
+}
+
+export class MeCheckerAsyncLoader extends AsyncLoader<MeResponse> {}
+
+export const fetchMe: () => Promise<MeResponse> = async () => {
+  return (await fetch("/api/me", { credentials: "include" })).json();
+};
+
 const User = () => (
   <Main>
     {injectGlobal`${global}`}
@@ -22,7 +41,7 @@ const User = () => (
     <Router>
       <Membership path="/" />
 
-      <MembershipReasons path="/cancel/membership/">
+      <MembershipFlow path="/cancel/membership/">
         <SaveOfReasonA path="saveReasonA" linkLabel="Reason A">
           <AreYouSure path="areYouSure">
             <Confirmed path="confirmed" />
@@ -38,9 +57,9 @@ const User = () => (
             <Confirmed path="confirmed" />
           </AreYouSure>
         </SaveOfReasonC>
-      </MembershipReasons>
+      </MembershipFlow>
 
-      <ContributionsReasons path="/cancel/contributions" />
+      <ContributionsFlow path="/cancel/contributions" />
 
       <NotFound default={true} />
     </Router>
