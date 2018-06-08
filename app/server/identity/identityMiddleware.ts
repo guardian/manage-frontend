@@ -16,6 +16,11 @@ export const withIdentity: express.RequestHandler = (
   res: express.Response,
   next: express.NextFunction
 ) => {
+  const returnUrl = url.format({
+    protocol: "https",
+    host: req.get("host"),
+    pathname: req.originalUrl
+  });
   if (req.cookies == null) {
     log.info("No cookies object.");
     res.status(500).send("Something broke!");
@@ -25,18 +30,33 @@ export const withIdentity: express.RequestHandler = (
 
   if (cookies[GU_U] == null || cookies[SC_GU_U] == null) {
     log.info("Not logged in.");
-    const returnUrl = url.format({
-      protocol: "https",
-      host: req.get("host"),
-      pathname: req.originalUrl
-    });
+
     // somehow the redirect url is automatically encoded
     res.redirect(
       `https://profile.${conf.DOMAIN}/signin?returnUrl=${returnUrl}`
     );
     return;
   }
-
+  try {
+    const now = new Date().getTime();
+    const cookieString = atob(cookies[SC_GU_U].split(".")[0]);
+    const cookieData = JSON.parse(cookieString);
+    const expiry = cookieData[1];
+    const remaining = expiry - now;
+    if (remaining < 60) {
+      log.info("Insufficient time left in session.");
+      res.redirect(
+        `https://profile.${conf.DOMAIN}/signin?returnUrl=${returnUrl}`
+      );
+      return;
+    }
+  } catch (e) {
+    log.error(`Unparseable SC_GU_U cookie ${e}`);
+    res.redirect(
+      `https://profile.${conf.DOMAIN}/signin?returnUrl=${returnUrl}`
+    );
+    return;
+  }
   // tslint:disable-next-line:no-object-mutation
   res.locals.identity = {
     GU_U: cookies[GU_U],
