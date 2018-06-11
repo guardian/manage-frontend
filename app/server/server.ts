@@ -60,7 +60,10 @@ const membersDataApiHandler = (path: string, fetchOptions?: object) => (
       Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
     }
   })
-    .then(_ => _.text())
+    .then(_ => {
+      res.status(_.status);
+      return _.text();
+    })
     .then(_ => res.send(_))
     .catch(e => {
       log.info(e);
