@@ -3,13 +3,13 @@ import React from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
-import AsyncLoader from "./asyncLoader";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { MembershipFlow } from "./cancel/membershipFlow";
 import { NotFound } from "./cancel/notFound";
 import { AreYouSure } from "./cancel/stages/areYouSure";
-import { Confirmed } from "./cancel/stages/confirmed";
+import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { CardProps } from "./card";
 import { Main } from "./main";
 import { Membership } from "./membership";
 
@@ -25,6 +25,22 @@ export interface MeResponse {
   };
 }
 
+export interface Subscription {
+  start: string;
+  end: string;
+  cancelledAt: boolean;
+  nextPaymentDate: string;
+  card?: CardProps;
+  plan: {
+    amount: number;
+    currency: string;
+  };
+}
+
+export interface HasSubscription {
+  subscription: Subscription;
+}
+
 const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
   mma_editorial: "I am unhappy with Guardian journalism",
   mma_support_another_way:
@@ -37,8 +53,6 @@ const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
   mma_other: "Other"
 };
 
-export class MeCheckerAsyncLoader extends AsyncLoader<MeResponse> {}
-
 export const fetchMe: () => Promise<MeResponse> = async () => {
   return (await fetch("/api/me", { credentials: "include" })).json();
 };
@@ -47,13 +61,21 @@ export const CancellationReasonContext: React.Context<
   string
 > = React.createContext("");
 
+export const CancellationTypeContext: React.Context<
+  string
+> = React.createContext("error");
+
 export const CancellationUrlSuffixContext: React.Context<
   string
 > = React.createContext("");
 
-export const CancellationTypeContext: React.Context<
-  string
-> = React.createContext("error");
+export const HasSubscriptionGetterContext: React.Context<
+  () => Promise<HasSubscription | {}>
+> = React.createContext(() => Promise.resolve({}));
+
+export const formatDate = (shortForm: string) => {
+  return new Date(shortForm).toDateString();
+};
 
 const User = () => (
   <Main>
@@ -72,7 +94,7 @@ const User = () => (
               linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
             >
               <AreYouSure path="areYouSure">
-                <Confirmed path="confirmed" />
+                <ExecuteCancellation path="confirmed" />
               </AreYouSure>
             </GenericSaveAttempt>
           )

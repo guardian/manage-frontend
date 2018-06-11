@@ -1,33 +1,31 @@
 import { css } from "emotion";
 import React from "react";
+import palette from "../colours";
 import AsyncLoader from "./asyncLoader";
-import { CardProps, default as CardDisplay } from "./card";
+import { LinkButton } from "./buttons";
+import { CardDisplay } from "./card";
+import { formatDate, HasSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
 
-interface MembershipData {
+export interface MembershipData extends HasSubscription {
   regNumber?: string;
   tier: string;
   isPaidTier: boolean;
-  subscription: {
-    start: string;
-    nextPaymentDate: string;
-    card?: CardProps;
-    plan: {
-      amount: number;
-      currency: string;
-    };
-  };
 }
 
-type MembersDataApiResponse = MembershipData | {};
+export type MembersDataApiResponse = MembershipData | {};
 
-function hasMembership(data: MembersDataApiResponse): data is MembershipData {
+export function hasMembership(
+  data: MembersDataApiResponse
+): data is MembershipData {
   return data.hasOwnProperty("tier");
 }
 
 class MembershipAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
-const loadMembershipData: () => Promise<MembersDataApiResponse> = async () => {
+export const loadMembershipData: () => Promise<
+  MembersDataApiResponse
+> = async () => {
   return (await fetch("/api/me/membership", { credentials: "include" })).json();
 };
 
@@ -72,16 +70,22 @@ const MembershipRow = (props: MembershipRowProps) => {
   );
 };
 
-const formatDate = (shortForm: string) => {
-  return new Date(shortForm).toDateString();
-};
-
 const renderMembershipData = (data: MembersDataApiResponse) => {
   if (hasMembership(data)) {
     let paymentPart;
-    if (data.isPaidTier && data.subscription.card) {
+    if (data.subscription.cancelledAt) {
       paymentPart = (
-        <div>
+        <React.Fragment>
+          <MembershipRow label={"Membership Status"} data={"Cancelled"} />
+          <MembershipRow
+            label={"Effective end date"}
+            data={formatDate(data.subscription.end)}
+          />
+        </React.Fragment>
+      );
+    } else if (data.isPaidTier && data.subscription.card) {
+      paymentPart = (
+        <React.Fragment>
           <MembershipRow
             label={"Start date"}
             data={formatDate(data.subscription.start)}
@@ -106,7 +110,7 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
               />
             }
           />
-        </div>
+        </React.Fragment>
       );
     } else {
       paymentPart = <MembershipRow label={"Annual payment"} data={"FREE"} />;
@@ -119,7 +123,20 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
         })}
       >
         <MembershipRow label={"Membership number"} data={data.regNumber} />
-        <MembershipRow label={"Membership tier"} data={data.tier} />
+        <MembershipRow
+          label={"Membership tier"}
+          data={
+            <React.Fragment>
+              <span css={{ marginRight: "15px" }}>{data.tier}</span>
+              <LinkButton
+                to="/cancel/membership"
+                text="Cancel Membership"
+                textColor={palette.white}
+                color={palette.neutral["1"]}
+              />
+            </React.Fragment>
+          }
+        />
         {paymentPart}
       </div>
     );

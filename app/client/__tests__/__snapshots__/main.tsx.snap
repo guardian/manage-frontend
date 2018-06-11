@@ -51,7 +51,7 @@ exports[`Main renders something 1`] = `
             "padding": "2px",
           }
         }
-        href="https://www.theguardian.com/uk"
+        href="https://www.theguardian.com"
       >
         <svg
           className="emotion-0"
