@@ -1,5 +1,4 @@
 import { Link } from "@reach/router";
-import { VerticalAlign } from "aws-sdk/clients/elastictranscoder";
 import Color from "color";
 import { css } from "emotion";
 import React from "react";

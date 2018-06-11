@@ -13,7 +13,7 @@ const actuallyCancelled = (subscription: Subscription) => (
   </React.Fragment>
 );
 
-const notCancelled = () => <h2>No Cancelled - call centre</h2>; // TODO genericise this
+const notCancelled = () => <h2>Not Cancelled - please call the call centre</h2>; // TODO genericise this
 
 export const CancellationSummary = (subscription: Subscription) => (
   <CancellationTypeContext.Consumer>
