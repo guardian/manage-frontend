@@ -78,7 +78,7 @@ export const BrowserUser = (trackPath: (path: string) => void) => {
       <User />
       <Location>
         {({ location }) => {
-          trackPath(location.href);
+          trackPath(location.pathname);
           return null; // null is a valid React node type, but void is not.
         }}
       </Location>

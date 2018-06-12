@@ -43,6 +43,7 @@ const html: (
       </body>
      ${raven(dsn)}
       <script src="${src}"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51507017-5"></script>
   </html>
 `;
 
