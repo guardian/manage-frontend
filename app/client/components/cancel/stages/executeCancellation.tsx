@@ -2,11 +2,8 @@ import React from "react";
 import AsyncLoader from "../../asyncLoader";
 import {
   CancellationReasonContext,
-  CancellationTypeContext,
-  CancellationUrlSuffixContext,
-  HasSubscription,
-  HasSubscriptionGetterContext,
-  Subscription
+  Subscription,
+  WithSubscription
 } from "../../user";
 import { RouteableProps } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
@@ -14,22 +11,21 @@ import { CancellationSummary } from "../cancellationSummary";
 class CancelAsyncLoader extends AsyncLoader<Subscription> {}
 
 export const getCancelFunc = (
-  cancelType: string,
   urlSuffix: string,
   reason: string,
-  hasSubscriptionPromiseGetter: () => Promise<HasSubscription | {}>
+  withSubscriptionPromiseFetcher: () => Promise<WithSubscription | {}>
 ) => async () => {
-  await fetch("/api/cancel/" + cancelType + urlSuffix, {
+  await fetch("/api/cancel/" + urlSuffix, {
     credentials: "include",
     method: "POST",
     body: JSON.stringify({ reason }),
     headers: { "Content-Type": "application/json" }
   }); // response is either empty or 404 - neither is useful so need to fetch subscription...
   const mightHaveSubscription:
-    | HasSubscription
-    | {} = await hasSubscriptionPromiseGetter();
+    | WithSubscription
+    | {} = await withSubscriptionPromiseFetcher();
   return Promise.resolve(
-    (mightHaveSubscription as HasSubscription).subscription
+    (mightHaveSubscription as WithSubscription).subscription
   );
 };
 
@@ -40,31 +36,26 @@ const getCancelErrorRenderer = (cancelType: string) => () => (
   </h2>
 );
 
-export const ExecuteCancellation = (props: RouteableProps) => (
-  <CancellationTypeContext.Consumer>
-    {cancelType => (
-      <CancellationUrlSuffixContext.Consumer>
-        {urlSuffix => (
-          <CancellationReasonContext.Consumer>
-            {reason => (
-              <HasSubscriptionGetterContext.Consumer>
-                {hasSubscriptionPromiseGetter => (
-                  <CancelAsyncLoader
-                    fetch={getCancelFunc(
-                      cancelType,
-                      urlSuffix,
-                      reason,
-                      hasSubscriptionPromiseGetter
-                    )}
-                    render={CancellationSummary}
-                    errorRender={getCancelErrorRenderer(cancelType)}
-                  />
-                )}
-              </HasSubscriptionGetterContext.Consumer>
-            )}
-          </CancellationReasonContext.Consumer>
+export interface ExecuteCancellationRouteableProps extends RouteableProps {
+  cancelApiUrlSuffix: string;
+  cancelType: string;
+  withSubscriptionPromiseFetcher: () => Promise<WithSubscription | {}>;
+}
+
+export const ExecuteCancellation = (
+  props: ExecuteCancellationRouteableProps
+) => (
+  <CancellationReasonContext.Consumer>
+    {reason => (
+      <CancelAsyncLoader
+        fetch={getCancelFunc(
+          props.cancelApiUrlSuffix,
+          reason,
+          props.withSubscriptionPromiseFetcher
         )}
-      </CancellationUrlSuffixContext.Consumer>
+        render={CancellationSummary(props.cancelType)}
+        errorRender={getCancelErrorRenderer(props.cancelType)}
+      />
     )}
-  </CancellationTypeContext.Consumer>
+  </CancellationReasonContext.Consumer>
 );

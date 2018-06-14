@@ -4,26 +4,15 @@ import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { MembershipFlow } from "./cancel/membershipFlow";
+import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
+import { PaidMembershipFlow } from "./cancel/paidMembershipFlow";
 import { AreYouSure } from "./cancel/stages/areYouSure";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { CardProps } from "./card";
 import { Main } from "./main";
-import { Membership } from "./membership";
-
-export interface MeResponse {
-  userId: string;
-  tier: string;
-  membershipJoinDate: string;
-  contentAccess: {
-    member: boolean;
-    paidMember: boolean;
-    recurringContributor: boolean;
-    digitalPack: boolean;
-  };
-}
+import { loadMembershipData, Membership } from "./membership";
 
 export interface Subscription {
   start: string;
@@ -37,7 +26,7 @@ export interface Subscription {
   };
 }
 
-export interface HasSubscription {
+export interface WithSubscription {
   subscription: Subscription;
 }
 
@@ -53,25 +42,9 @@ const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
   mma_other: "Other"
 };
 
-export const fetchMe: () => Promise<MeResponse> = async () => {
-  return (await fetch("/api/me", { credentials: "include" })).json();
-};
-
 export const CancellationReasonContext: React.Context<
   string
 > = React.createContext("");
-
-export const CancellationTypeContext: React.Context<
-  string
-> = React.createContext("error");
-
-export const CancellationUrlSuffixContext: React.Context<
-  string
-> = React.createContext("");
-
-export const HasSubscriptionGetterContext: React.Context<
-  () => Promise<HasSubscription | {}>
-> = React.createContext(() => Promise.resolve({}));
 
 export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
@@ -85,7 +58,7 @@ const User = () => (
     <Router>
       <Membership path="/" />
 
-      <MembershipFlow path="/cancel/membership">
+      <PaidMembershipFlow path="/cancel/membership">
         {Object.keys(zuoraCancellationReasonMapping).map(
           (zuoraReason: string) => (
             <GenericSaveAttempt
@@ -94,12 +67,20 @@ const User = () => (
               linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
             >
               <AreYouSure path="areYouSure">
-                <ExecuteCancellation path="confirmed" />
+                <ExecuteCancellation
+                  path="confirmed"
+                  cancelApiUrlSuffix="membership/paid"
+                  cancelType="membership"
+                  withSubscriptionPromiseFetcher={loadMembershipData}
+                />
               </AreYouSure>
             </GenericSaveAttempt>
           )
         )}
-      </MembershipFlow>
+        {/*TODO add special case for mma_health*/}
+      </PaidMembershipFlow>
+
+      <FreeMembershipFlow path="/cancel/friend" />
 
       <ContributionsFlow path="/cancel/contributions" />
 
@@ -110,7 +91,7 @@ const User = () => (
 
 export const ServerUser = (url: string) => (
   <ServerLocation url={url}>
-    ...{/* wait for https://github.com/reach/router/issues/27 fix and then reenable */}
+    ...{/* wait for https://github.com/reach/router/issues/27 fix and then re-enable */}
   </ServerLocation>
 );
 

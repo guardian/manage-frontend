@@ -4,10 +4,10 @@ import palette from "../colours";
 import AsyncLoader from "./asyncLoader";
 import { LinkButton } from "./buttons";
 import { CardDisplay } from "./card";
-import { formatDate, HasSubscription } from "./user";
+import { formatDate, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
 
-export interface MembershipData extends HasSubscription {
+export interface MembershipData extends WithSubscription {
   regNumber?: string;
   tier: string;
   isPaidTier: boolean;
@@ -21,7 +21,9 @@ export function hasMembership(
   return data.hasOwnProperty("tier");
 }
 
-class MembershipAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
+export class MembershipAsyncLoader extends AsyncLoader<
+  MembersDataApiResponse
+> {}
 
 export const loadMembershipData: () => Promise<
   MembersDataApiResponse
