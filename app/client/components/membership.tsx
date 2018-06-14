@@ -130,12 +130,16 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
           data={
             <React.Fragment>
               <span css={{ marginRight: "15px" }}>{data.tier}</span>
-              <LinkButton
-                to="/cancel/membership"
-                text="Cancel Membership"
-                textColor={palette.white}
-                color={palette.neutral["1"]}
-              />
+              {data.subscription.cancelledAt ? (
+                undefined
+              ) : (
+                <LinkButton
+                  to="/cancel/membership"
+                  text="Cancel Membership"
+                  textColor={palette.white}
+                  color={palette.neutral["1"]}
+                />
+              )}
             </React.Fragment>
           }
         />
