@@ -54,6 +54,7 @@ export const ExecuteCancellation = (
           props.withSubscriptionPromiseFetcher
         )}
         render={CancellationSummary(props.cancelType)}
+        loadingMessage="Performing your cancellation..."
         errorRender={getCancelErrorRenderer(props.cancelType)}
       />
     )}

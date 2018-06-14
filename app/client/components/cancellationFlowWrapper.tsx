@@ -23,7 +23,7 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   props.validator(me) ? (
     <React.Fragment>{props.children}</React.Fragment>
   ) : (
-    <h1>No {props.missingKeyword}</h1>
+    <h1>No {props.checkingFor}</h1>
   );
 
 class MeAsyncLoader extends AsyncLoader<MeResponse> {}
@@ -31,9 +31,13 @@ class MeAsyncLoader extends AsyncLoader<MeResponse> {}
 export interface CheckFlowIsValidProps {
   children: any;
   validator: (me: MeResponse) => boolean;
-  missingKeyword: string;
+  checkingFor: string;
 }
 
 export const CheckFlowIsValid = (props: CheckFlowIsValidProps) => (
-  <MeAsyncLoader fetch={fetchMe} render={renderChildrenIfValidated(props)} />
+  <MeAsyncLoader
+    fetch={fetchMe}
+    render={renderChildrenIfValidated(props)}
+    loadingMessage={"Confirming you have " + props.checkingFor + "..."}
+  />
 );

@@ -7,7 +7,7 @@ export const FreeMembershipFlow = (props: RouteableProps) => (
     validator={(me: MeResponse) =>
       me.contentAccess.member && !me.contentAccess.paidMember
     }
-    missingKeyword="'friend' membership"
+    checkingFor="'friend' membership"
   >
     <h1>Coming Soon</h1>
   </CheckFlowIsValid>

@@ -46,12 +46,13 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
 
 export const PaidMembershipFlow = (props: RouteableProps) => (
   <CheckFlowIsValid
-    missingKeyword="membership"
+    checkingFor="membership"
     validator={(me: MeResponse) => me.contentAccess.paidMember}
   >
     <MembershipAsyncLoader
       fetch={loadMembershipData}
       render={getReasonsRenderer(props)}
+      loadingMessage="Checking the status of your current membership..."
       errorRender={() => (
         <h2>
           Could not fetch membership details. Please call the call centre...{" "}

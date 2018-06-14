@@ -152,6 +152,7 @@ export const Membership = (props: RouteableProps) => (
     <MembershipAsyncLoader
       fetch={loadMembershipData}
       render={renderMembershipData}
+      loadingMessage="Loading your membership details..."
     />
   </div>
 );

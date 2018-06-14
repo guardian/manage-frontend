@@ -1,9 +1,10 @@
 import React from "react";
-import Spinner from "./spinner";
+import { LoadingProps, Spinner } from "./spinner";
 
-export interface AsyncLoaderProps<T> {
+export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly fetch: () => Promise<T>;
   readonly render: (data: T) => React.ReactNode;
+  readonly loadingMessage: string;
   readonly errorRender?: () => React.ReactNode;
 }
 
@@ -34,7 +35,7 @@ export default class AsyncLoader<
 
   public render(): React.ReactNode {
     if (this.state.loadingState === LoadingState.loading) {
-      return <Spinner />;
+      return <Spinner loadingMessage={this.props.loadingMessage} />;
     } else if (
       this.state.loadingState === LoadingState.loaded &&
       this.state.data !== undefined
