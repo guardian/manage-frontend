@@ -11,7 +11,7 @@
     "bundle-dev-server": "webpack --config webpack.dev.server.js",
     "bundle-dev-client": "webpack --config webpack.dev.client.js",
     "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --public account.thegulocal.com",
-    "watch": "yarn bundle-dev-server && (yarn start & yarn serve-dev & yarn bundle-dev-server -w)",
+    "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "yarn lint && yarn type-check && jest --coverage",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged && tslint --fix -p .",

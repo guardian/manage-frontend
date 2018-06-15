@@ -71,7 +71,8 @@ const client = merge(common, {
   output: {
     path: path.resolve(__dirname, "dist", "static"),
     filename: "[name].js",
-    chunkFilename: "[name].js"
+    chunkFilename: "[name].js",
+    publicPath: "/static/"
   },
   module: {
     rules: [
