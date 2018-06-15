@@ -69,7 +69,7 @@ const User = () => (
               <AreYouSure path="areYouSure">
                 <ExecuteCancellation
                   path="confirmed"
-                  cancelApiUrlSuffix="membership/paid"
+                  cancelApiUrlSuffix="membership"
                   cancelType="membership"
                   withSubscriptionPromiseFetcher={loadMembershipData}
                 />

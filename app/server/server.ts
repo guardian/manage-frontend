@@ -84,13 +84,8 @@ server.get(
 );
 
 server.post(
-  "/api/cancel/membership/free",
-  membersDataApiHandler("user-attributes/me/cancel-free-membership"),
-  withIdentity
-);
-server.post(
-  "/api/cancel/membership/paid",
-  membersDataApiHandler("user-attributes/me/cancel-paid-membership"),
+  "/api/cancel/membership",
+  membersDataApiHandler("user-attributes/me/cancel-membership"),
   withIdentity
 );
 
