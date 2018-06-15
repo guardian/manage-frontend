@@ -38,6 +38,6 @@ export const CheckFlowIsValid = (props: CheckFlowIsValidProps) => (
   <MeAsyncLoader
     fetch={fetchMe}
     render={renderChildrenIfValidated(props)}
-    loadingMessage={"Confirming you have " + props.checkingFor + "..."}
+    loadingMessage={"Confirming you have a " + props.checkingFor + "..."}
   />
 );
