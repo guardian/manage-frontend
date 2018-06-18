@@ -1,9 +1,10 @@
 import React from "react";
-import Spinner from "./spinner";
+import { LoadingProps, Spinner } from "./spinner";
 
-export interface AsyncLoaderProps<T> {
+export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly fetch: () => Promise<T>;
   readonly render: (data: T) => React.ReactNode;
+  readonly loadingMessage: string;
   readonly errorRender?: () => React.ReactNode;
 }
 
@@ -18,10 +19,9 @@ export interface AsyncLoaderState<T> {
   readonly loadingState: LoadingState;
 }
 
-export default class AsyncLoader<T> extends React.Component<
-  AsyncLoaderProps<T>,
-  AsyncLoaderState<T>
-> {
+export default class AsyncLoader<
+  T extends NonNullable<any>
+> extends React.Component<AsyncLoaderProps<T>, AsyncLoaderState<T>> {
   public state: AsyncLoaderState<T> = { loadingState: LoadingState.loading };
 
   public componentDidMount(): void {
@@ -34,21 +34,16 @@ export default class AsyncLoader<T> extends React.Component<
   }
 
   public render(): React.ReactNode {
-    switch (this.state.loadingState) {
-      case LoadingState.loading:
-        return <Spinner />;
-      case LoadingState.loaded:
-        return this.state.data ? (
-          this.props.render(this.state.data)
-        ) : (
-          <h1>Impossible Error</h1>
-        );
-      case LoadingState.error:
-        return this.props.errorRender ? (
-          this.props.errorRender()
-        ) : (
-          <h1>Error</h1>
-        );
+    if (this.state.loadingState === LoadingState.loading) {
+      return <Spinner loadingMessage={this.props.loadingMessage} />;
+    } else if (
+      this.state.loadingState === LoadingState.loaded &&
+      this.state.data !== undefined
+    ) {
+      return this.props.render(this.state.data);
+    } else if (this.props.errorRender) {
+      return this.props.errorRender();
     }
+    return <h1>Error</h1>;
   }
 }

@@ -3,7 +3,7 @@ import { css } from "../styles/emotion";
 
 const Roundel: React.SFC<{ size: number }> = ({ size }) => (
   <a
-    href="https://www.theguardian.com/uk"
+    href="https://www.theguardian.com"
     css={{
       float: "right",
       padding: "2px"

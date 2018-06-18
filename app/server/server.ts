@@ -1,3 +1,4 @@
+import bodyParser from "body-parser";
 import bunyan from "bunyan";
 import cookieParser from "cookie-parser";
 import express from "express";
@@ -28,13 +29,15 @@ server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
   res.send("OK");
 });
 
+// server.use(bodyParser.json());
+server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 server.use(cookieParser());
 server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
 
-const membersDataApiHandler = (path: string) => (
+const membersDataApiHandler = (path: string, fetchOptions?: object) => (
   req: express.Request,
   res: express.Response
 ) => {
@@ -49,11 +52,18 @@ const membersDataApiHandler = (path: string) => (
   const identity: IdentityUser = res.locals.identity;
 
   fetch(`https://members-data-api.${conf.DOMAIN}/${path}`, {
+    ...fetchOptions,
+    method: req.method,
+    body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
+      "Content-Type": "application/json",
       Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
     }
   })
-    .then(_ => _.text())
+    .then(_ => {
+      res.status(_.status);
+      return _.text();
+    })
     .then(_ => res.send(_))
     .catch(e => {
       log.info(e);
@@ -70,6 +80,12 @@ server.get(
 server.get(
   "/api/me/membership",
   membersDataApiHandler("user-attributes/me/mma-membership"),
+  withIdentity
+);
+
+server.post(
+  "/api/cancel/membership",
+  membersDataApiHandler("user-attributes/me/cancel-membership"),
   withIdentity
 );
 

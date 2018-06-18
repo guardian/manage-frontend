@@ -3,34 +3,51 @@ import React from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
-import AsyncLoader from "./asyncLoader";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { MembershipFlow } from "./cancel/membershipFlow";
+import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
+import { PaidMembershipFlow } from "./cancel/paidMembershipFlow";
 import { AreYouSure } from "./cancel/stages/areYouSure";
-import { Confirmed } from "./cancel/stages/confirmed";
-import { SaveOfReasonA } from "./cancel/stages/saveOfReasonA";
-import { SaveOfReasonB } from "./cancel/stages/saveOfReasonB";
-import { SaveOfReasonC } from "./cancel/stages/saveOfReasonC";
+import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
+import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { CardProps } from "./card";
 import { Main } from "./main";
-import { Membership } from "./membership";
+import { loadMembershipData, Membership } from "./membership";
 
-export interface MeResponse {
-  userId: string;
-  tier: string;
-  membershipJoinDate: string;
-  contentAccess: {
-    member: boolean;
-    paidMember: boolean;
-    recurringContributor: boolean;
-    digitalPack: boolean;
+export interface Subscription {
+  start: string;
+  end: string;
+  cancelledAt: boolean;
+  nextPaymentDate: string;
+  card?: CardProps;
+  plan: {
+    amount: number;
+    currency: string;
   };
 }
 
-export class MeCheckerAsyncLoader extends AsyncLoader<MeResponse> {}
+export interface WithSubscription {
+  subscription: Subscription;
+}
 
-export const fetchMe: () => Promise<MeResponse> = async () => {
-  return (await fetch("/api/me", { credentials: "include" })).json();
+const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
+  mma_editorial: "I am unhappy with Guardian journalism",
+  mma_support_another_way:
+    "I am going to support The Guardian in another way, eg. by subscribing",
+  mma_values: "I don't feel that the Guardian values my support",
+  mma_payment_issue: "I didn't expect The Guardian to take another payment",
+  mma_health: "Ill-health",
+  mma_none: "None of the membership benefits are of interest to me",
+  mma_financial_circumstances: "A change in my financial circumstances",
+  mma_other: "Other"
+};
+
+export const CancellationReasonContext: React.Context<
+  string
+> = React.createContext("");
+
+export const formatDate = (shortForm: string) => {
+  return new Date(shortForm).toDateString();
 };
 
 const User = () => (
@@ -41,23 +58,29 @@ const User = () => (
     <Router>
       <Membership path="/" />
 
-      <MembershipFlow path="/cancel/membership/">
-        <SaveOfReasonA path="saveReasonA" linkLabel="Reason A">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonA>
-        <SaveOfReasonB path="saveReasonB" linkLabel="Reason B">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonB>
-        <SaveOfReasonC path="saveReasonC" linkLabel="Reason C">
-          <AreYouSure path="areYouSure">
-            <Confirmed path="confirmed" />
-          </AreYouSure>
-        </SaveOfReasonC>
-      </MembershipFlow>
+      <PaidMembershipFlow path="/cancel/membership">
+        {Object.keys(zuoraCancellationReasonMapping).map(
+          (zuoraReason: string) => (
+            <GenericSaveAttempt
+              key={zuoraReason}
+              path={zuoraReason}
+              linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
+            >
+              <AreYouSure path="areYouSure">
+                <ExecuteCancellation
+                  path="confirmed"
+                  cancelApiUrlSuffix="membership"
+                  cancelType="membership"
+                  withSubscriptionPromiseFetcher={loadMembershipData}
+                />
+              </AreYouSure>
+            </GenericSaveAttempt>
+          )
+        )}
+        {/*TODO add special case for mma_health*/}
+      </PaidMembershipFlow>
+
+      <FreeMembershipFlow path="/cancel/friend" />
 
       <ContributionsFlow path="/cancel/contributions" />
 
@@ -68,7 +91,7 @@ const User = () => (
 
 export const ServerUser = (url: string) => (
   <ServerLocation url={url}>
-    ...{/* wait for https://github.com/reach/router/issues/27 fix and then reenable */}
+    ...{/* wait for https://github.com/reach/router/issues/27 fix and then re-enable */}
   </ServerLocation>
 );
 

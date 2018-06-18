@@ -36,7 +36,7 @@ const cardTypeToSVG = (cardType: string) => {
   return "weird";
 };
 
-const CardDisplay = (props: CardProps) => (
+export const CardDisplay = (props: CardProps) => (
   <div
     className={css({
       display: "flex",
@@ -46,5 +46,3 @@ const CardDisplay = (props: CardProps) => (
     {cardTypeToSVG(props.type)}•••• •••• •••• {props.last4}
   </div>
 );
-
-export default CardDisplay;
