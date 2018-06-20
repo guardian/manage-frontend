@@ -13,3 +13,11 @@ deployments:
     dependencies: [account-frontend-cloudformation]
     parameters:
       bucket: membership-dist
+  account-frontend-ami:
+    type: ami-cloudformation-parameter
+    parameters:
+      amiTags:
+        Recipe: xenial-membership
+        AmigoStage: PROD
+      amiParameter: AMI
+      amiEncrypted: true
