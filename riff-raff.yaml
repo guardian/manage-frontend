@@ -14,6 +14,7 @@ deployments:
     parameters:
       bucket: membership-dist
   account-frontend-ami:
+    app: account-frontend
     type: ami-cloudformation-parameter
     parameters:
       amiTags:
