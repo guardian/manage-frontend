@@ -20,5 +20,4 @@ deployments:
       amiTags:
         Recipe: xenial-membership
         AmigoStage: PROD
-      amiParameter: AMI
       amiEncrypted: true
