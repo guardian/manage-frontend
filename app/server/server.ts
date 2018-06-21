@@ -37,10 +37,10 @@ server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
 
-const membersDataApiHandler = (path: string, fetchOptions?: object) => (
-  req: express.Request,
-  res: express.Response
-) => {
+const apiHandler = (basePath: string) => (
+  path: string,
+  pathParamNamesToReplace: string[] = []
+) => (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
     // Refactor this.
@@ -51,8 +51,13 @@ const membersDataApiHandler = (path: string, fetchOptions?: object) => (
 
   const identity: IdentityUser = res.locals.identity;
 
-  fetch(`https://members-data-api.${conf.DOMAIN}/${path}`, {
-    ...fetchOptions,
+  const paramaterisedPath = pathParamNamesToReplace.reduce(
+    (evolvingPath: string, pathParamName: string) =>
+      evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
+    path
+  );
+
+  fetch(`${basePath}/${paramaterisedPath}`, {
     method: req.method,
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
@@ -71,6 +76,11 @@ const membersDataApiHandler = (path: string, fetchOptions?: object) => (
     });
 };
 
+const membersDataApiHandler = apiHandler(
+  "https://members-data-api." + conf.DOMAIN
+);
+const sfCasesApiHandler = apiHandler(conf.SF_CASES_URL);
+
 server.get(
   "/api/me",
   membersDataApiHandler("user-attributes/me"),
@@ -86,6 +96,14 @@ server.get(
 server.post(
   "/api/cancel/membership",
   membersDataApiHandler("user-attributes/me/cancel-membership"),
+  withIdentity
+);
+
+server.post("/api/case", sfCasesApiHandler("case"), withIdentity);
+
+server.patch(
+  "/api/case/:caseId",
+  sfCasesApiHandler("case/:caseId", ["caseId"]),
   withIdentity
 );
 

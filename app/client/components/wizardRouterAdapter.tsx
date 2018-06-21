@@ -5,7 +5,6 @@ import { Button, LinkButton } from "./buttons";
 
 export interface RouteableProps {
   path: string;
-  linkLabel?: string;
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
@@ -24,6 +23,7 @@ const RootComponent = (props: RootComponentProps) => (
     {props.thisStageChildren}
     <div
       css={{
+        marginTop: "50px",
         display: "flex",
         justifyContent: "space-between"
       }}
@@ -64,7 +64,7 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
     routeableProps.children.props.children &&
     !Array.isArray(routeableProps.children.props.children)
   ) {
-    const childProps: RouteableProps =
+    const childProps: MultiRouteableProps =
       routeableProps.children.props.children.props;
     return (
       <LinkButton

@@ -12,9 +12,14 @@ import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { CardProps } from "./card";
 import { Main } from "./main";
-import { loadMembershipData, Membership } from "./membership";
+import {
+  loadMembershipData,
+  MembersDataApiResponse,
+  Membership
+} from "./membership";
 
 export interface Subscription {
+  subscriberId: string;
   start: string;
   end: string;
   cancelledAt: boolean;
@@ -46,6 +51,14 @@ export const CancellationReasonContext: React.Context<
   string
 > = React.createContext("");
 
+export const CancellationCaseIdContext: React.Context<
+  string
+> = React.createContext("");
+
+export const MembersDataApiResponseContext: React.Context<
+  MembersDataApiResponse
+> = React.createContext({});
+
 export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
 };
@@ -62,6 +75,7 @@ const User = () => (
         {Object.keys(zuoraCancellationReasonMapping).map(
           (zuoraReason: string) => (
             <GenericSaveAttempt
+              sfProduct="Membership"
               key={zuoraReason}
               path={zuoraReason}
               linkLabel={zuoraCancellationReasonMapping[zuoraReason]}

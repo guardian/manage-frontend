@@ -1,6 +1,8 @@
 import React from "react";
 import AsyncLoader from "../../asyncLoader";
+import { getUpdateCasePromise } from "../../caseUpdate";
 import {
+  CancellationCaseIdContext,
   CancellationReasonContext,
   Subscription,
   WithSubscription
@@ -11,22 +13,31 @@ import { CancellationSummary } from "../cancellationSummary";
 class CancelAsyncLoader extends AsyncLoader<Subscription> {}
 
 export const getCancelFunc = (
-  urlSuffix: string,
+  cancelApiUrlSuffix: string,
   reason: string,
+  caseId: string,
   withSubscriptionPromiseFetcher: () => Promise<WithSubscription | {}>
 ) => async () => {
-  await fetch("/api/cancel/" + urlSuffix, {
+  await fetch("/api/cancel/" + cancelApiUrlSuffix, {
     credentials: "include",
     method: "POST",
     body: JSON.stringify({ reason }),
     headers: { "Content-Type": "application/json" }
-  }); // response is either empty or 404 - neither is useful so need to fetch subscription...
+  }); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
   const mightHaveSubscription:
     | WithSubscription
     | {} = await withSubscriptionPromiseFetcher();
-  return Promise.resolve(
+
+  const subscriptionPromise = Promise.resolve(
     (mightHaveSubscription as WithSubscription).subscription
   );
+
+  await getUpdateCasePromise(caseId, {
+    Journey__c: "SV - Cancellation - MB",
+    Subject: "Online Cancellation Completed"
+  });
+
+  return subscriptionPromise;
 };
 
 const getCancelErrorRenderer = (cancelType: string) => () => (
@@ -47,16 +58,21 @@ export const ExecuteCancellation = (
 ) => (
   <CancellationReasonContext.Consumer>
     {reason => (
-      <CancelAsyncLoader
-        fetch={getCancelFunc(
-          props.cancelApiUrlSuffix,
-          reason,
-          props.withSubscriptionPromiseFetcher
+      <CancellationCaseIdContext.Consumer>
+        {caseId => (
+          <CancelAsyncLoader
+            fetch={getCancelFunc(
+              props.cancelApiUrlSuffix,
+              reason,
+              caseId,
+              props.withSubscriptionPromiseFetcher
+            )}
+            render={CancellationSummary(props.cancelType)}
+            loadingMessage="Performing your cancellation..."
+            errorRender={getCancelErrorRenderer(props.cancelType)}
+          />
         )}
-        render={CancellationSummary(props.cancelType)}
-        loadingMessage="Performing your cancellation..."
-        errorRender={getCancelErrorRenderer(props.cancelType)}
-      />
+      </CancellationCaseIdContext.Consumer>
     )}
   </CancellationReasonContext.Consumer>
 );

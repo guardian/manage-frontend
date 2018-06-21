@@ -44,12 +44,14 @@ Mappings:
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
       DomainEnvVariable: code.dev-theguardian.com
+      SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE
     PROD:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f # this is the CODE cert, and will need to be updated before PROD deployment
       DomainEnvVariable: theguardian.com
+      SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE # TODO update to PROD url
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -84,7 +86,7 @@ Resources:
       AssociatePublicIpAddress: true
       UserData:
         Fn::Base64: !Sub
-          - |+
+          - |
             #!/bin/bash -ev
 
             # get and install node
@@ -113,6 +115,7 @@ Resources:
             Group=account-frontend
             Environment=NODE_ENV=production
             Environment=DOMAIN=${DomainEnvVariable}
+            Environment=SF_CASES_URL=${SFCasesUrl}
             Environment=CLIENT_DSN=${ClientRavenDSN}
             Environment=SERVER_DSN=${ServerRavenDSN}
             [Install]
@@ -122,7 +125,9 @@ Resources:
             systemctl enable account-frontend
             systemctl start account-frontend
 
-          - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
+          -
+            DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
+            SFCasesUrl: !FindInMap [ StageVariables, !Ref Stage, SFCasesUrl ]
 
   AppRole:
     Type: AWS::IAM::Role
