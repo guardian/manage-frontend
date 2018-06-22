@@ -1,9 +1,7 @@
-import bunyan from "bunyan";
 import express from "express";
 import url from "url";
 import { conf } from "../config";
-
-const log = bunyan.createLogger({ name: "af" });
+import { log } from "../log";
 
 const GU_U = "GU_U";
 const SC_GU_U = "SC_GU_U";
