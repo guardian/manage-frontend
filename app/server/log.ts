@@ -14,7 +14,7 @@ export const log = bunyan.createLogger({
     {
       path: `${location}account-frontend.log`,
       level: "info",
-      type: "rotating-file",
+      type: "file",
       period: "1d",
       count: 8 // auto redeploy should happen more frequently than this
     }
@@ -30,7 +30,7 @@ export const audit = bunyan.createLogger({
     {
       path: `${location}account-frontend-audit.log`,
       level: "info",
-      type: "rotating-file",
+      type: "file",
       period: "1d",
       count: 8 // auto redeploy should happen more frequently than this
     }

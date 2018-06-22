@@ -191,7 +191,7 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub ${Stack}-${Stage}-${App}
+      Name: !Sub ${Stack}-${Stage}-${App} 
       Port: 9233
       Protocol: HTTP
       VpcId:
