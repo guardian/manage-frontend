@@ -1,38 +1,27 @@
-import bunyan from "bunyan";
+import winston from "winston";
 import { conf, Environments } from "./config";
 
 const location =
   conf.ENVIRONMENT === Environments.PRODUCTION ? "/var/log/" : "./";
 
-export const log = bunyan.createLogger({
-  name: "account-frontend",
-  streams: [
-    {
-      stream: process.stderr,
-      level: "info"
-    },
-    {
-      path: `${location}account-frontend.log`,
-      level: "info",
-      type: "file",
-      period: "1d",
-      count: 8 // auto redeploy should happen more frequently than this
-    }
+export const log = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({
+      filename: `${location}/account-frontend.log`
+    }),
+    new winston.transports.Console({ format: winston.format.simple() })
   ]
 });
-export const audit = bunyan.createLogger({
-  name: "account-frontend-audit-log",
-  streams: [
-    {
-      stream: process.stderr,
-      level: "info"
-    },
-    {
-      path: `${location}account-frontend-audit.log`,
-      level: "info",
-      type: "file",
-      period: "1d",
-      count: 8 // auto redeploy should happen more frequently than this
-    }
+
+export const audit = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({
+      filename: `${location}/account-frontend-audit.log`
+    }),
+    new winston.transports.Console({ format: winston.format.simple() })
   ]
 });
