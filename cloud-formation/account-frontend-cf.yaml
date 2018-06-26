@@ -49,7 +49,7 @@ Mappings:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
-      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f # this is the CODE cert, and will need to be updated before PROD deployment
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       DomainEnvVariable: theguardian.com
       SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE # TODO update to PROD url
 Resources:
@@ -219,7 +219,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: !Ref OfficeCIDR
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 9233
