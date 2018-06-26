@@ -39,7 +39,7 @@ export const withIdentity: express.RequestHandler = (
     return;
   }
   if (user === IdentityError.Expired) {
-    log.info("User session expired or expiring.");
+    log.info("User session expired.");
 
     // somehow the redirect url is automatically encoded
     res.redirect(
