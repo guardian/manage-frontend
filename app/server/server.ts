@@ -6,6 +6,7 @@ import fetch from "node-fetch";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
+import { Globals } from "../globals";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -21,6 +22,15 @@ if (conf.SERVER_DSN) {
   server.use(Raven.requestHandler());
 }
 
+const dsn =
+  conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
+    ? conf.CLIENT_DSN
+    : null;
+if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
+  log.error("NO SENTRY IN CLIENT PROD!");
+}
+const globals: Globals = { domain: conf.DOMAIN };
+
 server.use(helmet());
 
 server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
@@ -29,7 +39,6 @@ server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
 
 // server.use(bodyParser.json());
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
-server.use(cookieParser());
 server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
@@ -115,20 +124,13 @@ server.use((req: express.Request, res: express.Response) => {
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
 
-  const dsn =
-    conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
-      ? conf.CLIENT_DSN
-      : null;
-  if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
-    log.error("NO SENTRY IN CLIENT PROD!");
-  }
-
   res.send(
     html({
       body,
       title,
       src,
-      dsn
+      dsn,
+      globals
     })
   );
 });
