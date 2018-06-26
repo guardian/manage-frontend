@@ -126,9 +126,6 @@ Resources:
 
 
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
-            Stack: !Ref Stack
-            Stage: !Ref Stage
-            App: !Ref App
   AppRole:
     Type: AWS::IAM::Role
     Properties:
