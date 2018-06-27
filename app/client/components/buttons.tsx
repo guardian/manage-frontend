@@ -81,7 +81,8 @@ export const Button = ({
         ":hover": {
           background: hoverColor,
           ...(left ? styles.leftHover : styles.rightHover)
-        }
+        },
+        cursor: "pointer"
       }}
     >
       {text}

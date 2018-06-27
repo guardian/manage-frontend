@@ -7,10 +7,17 @@ import {
   MembersDataApiResponse,
   MembershipAsyncLoader
 } from "../membership";
-import { RouteableProps, WizardStep } from "../wizardRouterAdapter";
+import { MembersDataApiResponseContext } from "../user";
+import {
+  MultiRouteableProps,
+  RouteableProps,
+  WizardStep
+} from "../wizardRouterAdapter";
 import { CancellationSummary } from "./cancellationSummary";
 
-const childWithRouteablePropsToElement = (child: { props: RouteableProps }) => (
+const childWithRouteablePropsToElement = (child: {
+  props: MultiRouteableProps;
+}) => (
   <li key={child.props.path}>
     <Link to={child.props.path}>
       {child.props.linkLabel || child.props.path}
@@ -27,17 +34,19 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
     }
 
     return (
-      <WizardStep routeableProps={routeableProps}>
-        <h3>
-          Sorry to hear you are thinking of cancelling your membership.<br />Can
-          you take a moment to tell us why?
-        </h3>
-        <ul>
-          {routeableProps.children.props.children.map(
-            childWithRouteablePropsToElement
-          )}
-        </ul>
-      </WizardStep>
+      <MembersDataApiResponseContext.Provider value={data}>
+        <WizardStep routeableProps={routeableProps}>
+          <h3>
+            Sorry to hear you are thinking of cancelling your membership.<br />Can
+            you take a moment to tell us why?
+          </h3>
+          <ul>
+            {routeableProps.children.props.children.map(
+              childWithRouteablePropsToElement
+            )}
+          </ul>
+        </WizardStep>
+      </MembersDataApiResponseContext.Provider>
     );
   }
 

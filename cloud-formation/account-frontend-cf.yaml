@@ -44,12 +44,14 @@ Mappings:
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
       DomainEnvVariable: code.dev-theguardian.com
+      SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE
     PROD:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       DomainEnvVariable: theguardian.com
+      SFCasesUrl: https://lmjfwuvr5l.execute-api.eu-west-1.amazonaws.com/PROD
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -113,6 +115,7 @@ Resources:
             Group=account-frontend
             Environment=NODE_ENV=production
             Environment=DOMAIN=${DomainEnvVariable}
+            Environment=SF_CASES_URL=${SFCasesUrl}
             Environment=CLIENT_DSN=${ClientRavenDSN}
             Environment=SERVER_DSN=${ServerRavenDSN}
             [Install]
@@ -126,6 +129,8 @@ Resources:
 
 
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
+            SFCasesUrl: !FindInMap [ StageVariables, !Ref Stage, SFCasesUrl ]
+
   AppRole:
     Type: AWS::IAM::Role
     Properties:
@@ -188,7 +193,7 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub ${Stack}-${Stage}-${App} 
+      Name: !Sub ${Stack}-${Stage}-${App}
       Port: 9233
       Protocol: HTTP
       VpcId:
