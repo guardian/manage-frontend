@@ -10,12 +10,14 @@ deployments:
       templatePath: cloudformation/account-frontend-cf.yaml
   account-frontend:
     type: autoscaling
-    dependencies: [account-frontend-cloudformation]
+    dependencies: [account-frontend-cloudformation, account-frontend-ami]
     parameters:
       bucket: membership-dist
   account-frontend-ami:
+    dependencies: [account-frontend-cloudformation]
     app: account-frontend
     type: ami-cloudformation-parameter
+    dependencies: [account-frontend-cloudformation]
     parameters:
       amiTags:
         Recipe: xenial-membership
