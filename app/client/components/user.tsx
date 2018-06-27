@@ -1,4 +1,4 @@
-import { Link, Router, ServerLocation } from "@reach/router";
+import { Link, Location, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
@@ -109,4 +109,16 @@ export const ServerUser = (url: string) => (
   </ServerLocation>
 );
 
-export const BrowserUser = <User />;
+export const BrowserUser = (trackPath: (path: string) => void) => {
+  return (
+    <>
+      <User />
+      <Location>
+        {({ location }) => {
+          trackPath(location.pathname);
+          return null; // null is a valid React node type, but void is not.
+        }}
+      </Location>
+    </>
+  );
+};

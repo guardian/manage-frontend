@@ -29,7 +29,7 @@ Parameters:
   AMI:
     Description: AMI ID
     Type: String
-    Default: ami-09c0f070
+    Default: ami-5a747db0
   OfficeCIDR:
     Description: Office IP range
     Type: String
@@ -49,7 +49,7 @@ Mappings:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t2.small
-      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f # this is the CODE cert, and will need to be updated before PROD deployment
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       DomainEnvVariable: theguardian.com
       SFCasesUrl: https://lmjfwuvr5l.execute-api.eu-west-1.amazonaws.com/PROD
 Resources:
@@ -219,7 +219,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: !Ref OfficeCIDR
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 9233
