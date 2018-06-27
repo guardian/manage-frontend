@@ -32,33 +32,29 @@ export const getUser: (
     return IdentityError.NotLoggedIn;
   }
 
-  if (typeof GU_U !== "string") {
-    return IdentityError.CouldNotParse;
-  }
-  if (typeof SC_GU_U !== "string") {
-    return IdentityError.CouldNotParse;
-  }
-
   const [encodedToken] = SC_GU_U.split(".");
-  const cookieString = decode(encodedToken);
-
-  const parsed = (_ => {
-    try {
-      return JSON.parse(_);
-    } catch (e) {
-      return null;
-    }
-  })(cookieString);
-
-  if (!(Array.isArray(parsed) && parsed.length !== 2)) {
+  const cookieString = safely(() => decode(encodedToken));
+  if (cookieString == null) {
+    return IdentityError.CouldNotParse;
+  }
+  const parsed = safely(() => JSON.parse(cookieString));
+  if (parsed == null) {
+    return IdentityError.CouldNotParse;
+  }
+  if (!(Array.isArray(parsed) && parsed.length === 2)) {
     return IdentityError.CouldNotParse;
   }
 
   const [id, expires] = parsed;
-  if (parsed == null) {
+  if (expires == null) {
     return IdentityError.CouldNotParse;
   }
-  const expiry = parseInt(expires, 10);
+
+  const expiry = safely(() => parseInt(expires, 10));
+  if (expiry == null) {
+    return IdentityError.CouldNotParse;
+  }
+
   const remaining = expiry - new Date().getTime();
   if (remaining < 0) {
     return IdentityError.Expired;
@@ -69,4 +65,12 @@ export const getUser: (
     SC_GU_U,
     expiry
   };
+};
+
+const safely: <T>(f: () => T) => T | null = f => {
+  try {
+    return f();
+  } catch (e) {
+    return null;
+  }
 };

@@ -7,10 +7,11 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { IdentityUser } from "../identity";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
-import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
+import { withIdentity } from "./identity/identityMiddleware";
 import { log } from "./log";
 
 const port = 9233;
