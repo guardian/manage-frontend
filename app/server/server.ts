@@ -1,5 +1,4 @@
 import bodyParser from "body-parser";
-import bunyan from "bunyan";
 import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
@@ -11,6 +10,7 @@ import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
 import { IdentityUser, withIdentity } from "./identity/identityMiddleware";
+import { log } from "./log";
 
 const port = 9233;
 
@@ -20,8 +20,6 @@ if (conf.SERVER_DSN) {
   Raven.config(conf.SERVER_DSN).install();
   server.use(Raven.requestHandler());
 }
-
-const log = bunyan.createLogger({ name: "af" });
 
 server.use(helmet());
 
@@ -121,5 +119,4 @@ if (conf.SERVER_DSN) {
   server.use(Raven.errorHandler());
 }
 server.listen(port);
-// tslint:disable-next-line:no-console
 log.info(`Serving at http://localhost:${port}`);
