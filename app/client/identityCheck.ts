@@ -28,7 +28,7 @@ export const check = async () => {
   const userOrError = getUser(cookies);
   if (isUser(userOrError)) {
     const remaining = userOrError.expiry - new Date().getTime();
-    if (remaining < 600) {
+    if (remaining < 6000) {
       return refresh();
     }
   } else {
