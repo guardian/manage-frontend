@@ -52,7 +52,7 @@ const getBackwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
         text="Back"
         textColor={palette.white}
         left
-        color={palette.neutral["4"]}
+        color={palette.neutral["2"]}
       />
     );
   }
@@ -73,7 +73,7 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
           childProps.linkLabel ? childProps.linkLabel : "Continue Cancellation"
         }
         textColor={palette.white}
-        color={palette.neutral["4"]}
+        color={palette.neutral["2"]}
       />
     );
   }
