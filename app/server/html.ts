@@ -1,3 +1,4 @@
+import { Globals } from "../globals";
 declare var WEBPACK_BUILD: string;
 declare var WEBPACK_ENVIRONMENT: string;
 
@@ -23,19 +24,26 @@ const raven = (dsn: string | null) => {
     : "";
 };
 
+const insertGlobals = (globals: Globals) => {
+  return `<script>
+  window.guardian = ${JSON.stringify(globals)}
+  </script>`;
+};
+
 const html: (
   _: {
     readonly body: string;
     readonly title: string;
     readonly src: string;
     readonly dsn: string | null;
+    readonly globals: Globals;
   }
-) => string = ({ body, title, src, dsn }) => `
+) => string = ({ body, title, src, dsn, globals }) => `
   <!DOCTYPE html>
   <html>
     <head>
       <title>${title}</title>
-
+      ${insertGlobals(globals)}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/48bc5564bb01b74cf7cd1a08ae0dd98e/32x32.ico" />
     </head>
     <body style="margin:0">
