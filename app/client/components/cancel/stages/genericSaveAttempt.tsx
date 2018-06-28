@@ -6,7 +6,9 @@ import { Button } from "../../buttons";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import {
+  CALL_CENTRE_NUMBER,
   CancellationCaseIdContext,
+  CancellationReason,
   CancellationReasonContext,
   MembersDataApiResponseContext
 } from "../../user";
@@ -14,6 +16,7 @@ import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   sfProduct: string;
+  reason: CancellationReason;
 }
 
 interface FeedbackFormProps {
@@ -68,7 +71,12 @@ class FeedbackForm extends React.Component<
         <textarea
           rows={5}
           maxLength={this.props.characterLimit}
-          css={{ width: "100%", fontSize: "inherit", fontFamily: "inherit" }}
+          css={{
+            width: "100%",
+            fontSize: "inherit",
+            fontFamily: "inherit",
+            border: "1px black solid"
+          }}
           onChange={this.handleChange}
         />
         <span
@@ -86,7 +94,8 @@ class FeedbackForm extends React.Component<
           onClick={() => this.setState({ hasHitSubmit: true })}
           text="Submit Feedback"
           textColor={palette.white}
-          color={palette.neutral["4"]}
+          color={palette.neutral["2"]}
+          disabled={this.state.feedback.length === 0}
         />
       </div>
     );
@@ -102,15 +111,20 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           sfProduct={props.sfProduct}
         >
           <WizardStep routeableProps={props}>
-            <h2>{props.linkLabel || props.path}</h2>
-            <b>We are very interested in your feedback and concerns. </b>
-            If there’s anything we can do differently that would ensure your
-            continued support please take a moment to call us on xxx
+            <h2>{props.reason.saveTitle}</h2>
+            <p>{props.reason.saveBody}</p>
+            <p>
+              {props.reason.alternateCallUsPrefix || "You can contact us on"}{" "}
+              {CALL_CENTRE_NUMBER}
+            </p>
             <CancellationCaseIdContext.Consumer>
               {caseId =>
-                caseId ? (
+                caseId || !props.reason.skipFeedback ? (
                   <React.Fragment>
-                    or use the feedback form below...
+                    <p>
+                      {props.reason.alternateFeedbackIntro ||
+                        "Alternatively provide feedback in the box below"}
+                    </p>
                     <FeedbackForm characterLimit={1000} caseId={caseId} />
                   </React.Fragment>
                 ) : (

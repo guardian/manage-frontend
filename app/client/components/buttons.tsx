@@ -3,6 +3,7 @@ import Color from "color";
 import { css } from "emotion";
 import React from "react";
 import { sans } from "../styles/fonts";
+import palette from "../colours";
 
 export const LinkButton = ({
   color,
@@ -53,12 +54,14 @@ export const Button = ({
   textColor,
   text,
   left,
-  onClick
+  onClick,
+  disabled
 }: {
   color: string;
   textColor?: string;
   text: string;
   left?: true;
+  disabled?: boolean;
   onClick: () => void;
 }) => {
   const hoverColor = Color(color)
@@ -75,15 +78,18 @@ export const Button = ({
       onClick={onClick}
       css={{
         ...styles.common,
-        background: color,
+        background: disabled ? palette.neutral["4"] : color,
         color: textColor,
         ...(left ? styles.left : styles.right),
-        ":hover": {
-          background: hoverColor,
-          ...(left ? styles.leftHover : styles.rightHover)
-        },
-        cursor: "pointer"
+        ":hover": disabled
+          ? undefined
+          : {
+              background: hoverColor,
+              ...(left ? styles.leftHover : styles.rightHover)
+            },
+        cursor: disabled ? "not-allowed" : "pointer"
       }}
+      disabled={disabled}
     >
       {text}
       <svg width="30" height="30" viewBox="0 0 30 30">

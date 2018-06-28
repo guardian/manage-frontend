@@ -6,7 +6,7 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
     <h2>Your {cancelType} is cancelled.</h2>
     <p>
       You will continue to receive the benefits of your {cancelType} until{" "}
-      {formatDate(subscription.end)}
+      <b>{formatDate(subscription.end)}</b>
     </p>
   </React.Fragment>
 );

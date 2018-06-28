@@ -1,15 +1,15 @@
-import { Link, Location, Router, ServerLocation } from "@reach/router";
-import React from "react";
+import { Location, Router, ServerLocation } from "@reach/router";
+import React, { ReactNode } from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
-import { PaidMembershipFlow } from "./cancel/paidMembershipFlow";
-import { AreYouSure } from "./cancel/stages/areYouSure";
-import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
-import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import {
+  membershipCancellationReasonMatrix,
+  PaidMembershipFlow
+} from "./cancel/paidMembershipFlow";
 import { CardProps } from "./card";
 import { Main } from "./main";
 import {
@@ -17,6 +17,10 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
+import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
+
+export const CALL_CENTRE_NUMBER = "XXXXXXXXXXXXXX";
 
 export interface Subscription {
   subscriberId: string;
@@ -35,17 +39,15 @@ export interface WithSubscription {
   subscription: Subscription;
 }
 
-const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
-  mma_editorial: "I am unhappy with Guardian journalism",
-  mma_support_another_way:
-    "I am going to support The Guardian in another way, eg. by subscribing",
-  mma_values: "I don't feel that the Guardian values my support",
-  mma_payment_issue: "I didn't expect The Guardian to take another payment",
-  mma_health: "Ill-health",
-  mma_none: "None of the membership benefits are of interest to me",
-  mma_financial_circumstances: "A change in my financial circumstances",
-  mma_other: "Other"
-};
+export interface CancellationReason {
+  reasonId: string;
+  linkLabel: string;
+  saveTitle: string;
+  saveBody: string | ReactNode;
+  alternateCallUsPrefix?: string;
+  alternateFeedbackIntro?: string;
+  skipFeedback?: boolean;
+}
 
 export const CancellationReasonContext: React.Context<
   string
@@ -72,26 +74,24 @@ const User = () => (
       <Membership path="/" />
 
       <PaidMembershipFlow path="/cancel/membership">
-        {Object.keys(zuoraCancellationReasonMapping).map(
-          (zuoraReason: string) => (
+        {membershipCancellationReasonMatrix.map(
+          (reason: CancellationReason) => (
             <GenericSaveAttempt
               sfProduct="Membership"
-              key={zuoraReason}
-              path={zuoraReason}
-              linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
+              reason={reason}
+              key={reason.reasonId}
+              path={reason.reasonId}
+              linkLabel={reason.linkLabel}
             >
-              <AreYouSure path="areYouSure">
-                <ExecuteCancellation
-                  path="confirmed"
-                  cancelApiUrlSuffix="membership"
-                  cancelType="membership"
-                  withSubscriptionPromiseFetcher={loadMembershipData}
-                />
-              </AreYouSure>
+              <ExecuteCancellation
+                path="confirmed"
+                cancelApiUrlSuffix="membership"
+                cancelType="membership"
+                withSubscriptionPromiseFetcher={loadMembershipData}
+              />
             </GenericSaveAttempt>
           )
         )}
-        {/*TODO add special case for mma_health*/}
       </PaidMembershipFlow>
 
       <FreeMembershipFlow path="/cancel/friend" />
