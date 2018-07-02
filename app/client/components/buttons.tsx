@@ -1,22 +1,23 @@
 import { Link } from "@reach/router";
 import Color from "color";
-import { css } from "emotion";
 import React from "react";
-import { sans } from "../styles/fonts";
 import palette from "../colours";
+import { sans } from "../styles/fonts";
 
 export const LinkButton = ({
   color,
   textColor,
   text,
   left,
-  to
+  to,
+  disabled
 }: {
   color: string;
   textColor?: string;
   text: string;
   left?: true;
   to: string;
+  disabled?: boolean;
 }) => {
   const hoverColor = Color(color)
     .darken(0.3)
@@ -32,13 +33,16 @@ export const LinkButton = ({
       to={to}
       css={{
         ...styles.common,
-        background: color,
+        background: disabled ? palette.neutral["4"] : color,
         color: textColor,
         ...(left ? styles.left : styles.right),
-        ":hover": {
-          background: hoverColor,
-          ...(left ? styles.leftHover : styles.rightHover)
-        }
+        ":hover": disabled
+          ? undefined
+          : {
+              background: hoverColor,
+              ...(left ? styles.leftHover : styles.rightHover)
+            },
+        cursor: disabled ? "not-allowed" : "pointer"
       }}
     >
       {text}
@@ -62,7 +66,7 @@ export const Button = ({
   text: string;
   left?: true;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   const hoverColor = Color(color)
     .darken(0.3)
@@ -131,16 +135,9 @@ const styles = {
     svg: { transform: "translate(5px, -50%)" }
   },
   right: {
-    padding: "0 45px 0 18px",
+    padding: "0 18px 0 18px",
     svg: {
-      fill: "currentColor",
-      height: "34px",
-      position: "absolute",
-      right: "5px",
-      top: "50%",
-      transform: "translate(0, -50%)",
-      transition: "transform .3s, background .3s",
-      width: "40px"
+      display: "none"
     }
   }
 };

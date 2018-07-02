@@ -1,4 +1,6 @@
 import React, { ChangeEvent, ReactNode } from "react";
+import { css } from "react-emotion";
+import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { LinkButton } from "../buttons";
 import { CheckFlowIsValid, MeResponse } from "../cancellationFlowWrapper";
@@ -23,7 +25,9 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveTitle:
       "We understand that financial circumstances can change from time to time",
     saveBody:
-      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to make support us and one of our customer service specialist would be happy to hear from you."
+      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to make support us and one of our customer service specialist would be happy to hear from you.",
+    alternateFeedbackThankYouBody:
+      "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_payment_issue",
@@ -32,13 +36,16 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveBody:
       "We’d like to know more details to help resolve the issue. One of our customer service specialists will be more than happy to assist.",
     alternateFeedbackIntro:
-      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
+      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
+    alternateFeedbackThankYouTitle: "Thank you.",
+    alternateFeedbackThankYouBody:
+      "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I am unhappy with Guardian journalism",
     saveTitle:
-      "In order to improve our journalism, we’d love to know more about why you decided to cancel", //TODO check past tense decided
+      "In order to improve our journalism, we’d love to know more about why you are thinking of cancelling",
     saveBody:
       "If there’s anything we can do differently please take a moment to call our customer services team we would be happy to hear from you."
   },
@@ -59,7 +66,9 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     alternateCallUsPrefix:
       "If you’re not sure what’s best for you or would like help, please call us on",
     alternateFeedbackIntro:
-      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
+      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
+    alternateFeedbackThankYouBody:
+      "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_health",
@@ -76,7 +85,13 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
       "We understand that sometimes the news cycle can feel a little overwhelming.",
     saveBody: (
       <React.Fragment>
-        You can click <a>here to manage your communication preferences.</a>
+        You can click{" "}
+        <a
+          css={{ textDecoration: "underline" }}
+          href={"https://profile." + conf.DOMAIN + "/consents"}
+        >
+          here to manage your communication preferences.
+        </a>
       </React.Fragment>
     ),
     alternateCallUsPrefix:
@@ -141,9 +156,9 @@ class ReasonPicker extends React.Component<
           css={{
             ...cssInheritFont,
             width: "100%",
-            height: "40px",
-            textIndent: "4px",
-            border: "1px black solid"
+            height: "30px",
+            border: "1px black solid",
+            color: this.state.reasonPath ? undefined : palette.neutral["4"]
             // TODO fix the clipping of font top/bottom because of font-size
           }}
         >
@@ -154,16 +169,15 @@ class ReasonPicker extends React.Component<
         </select>
         <br />
         <br />
-        {this.state.reasonPath ? (
+        <div css={{ textAlign: "right" }}>
           <LinkButton
             color={palette.neutral["2"]}
             textColor={palette.white}
             text="Continue"
             to={this.state.reasonPath}
+            disabled={!this.state.reasonPath}
           />
-        ) : (
-          undefined
-        )}
+        </div>
       </React.Fragment>
     );
   }
@@ -177,6 +191,17 @@ const childWithRouteablePropsToElement = (child: {
   </option>
 );
 
+const cssBullet = css`
+  flex-basis: 50%;
+  flex-grow: 1;
+  list-style: none;
+  &::before {
+    display: inline-block;
+    content: "●";
+    margin-right: 15px;
+  }
+`;
+
 const getReasonsRenderer = (routeableProps: RouteableProps) => (
   data: MembersDataApiResponse
 ) => {
@@ -187,12 +212,48 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
     return (
       <MembersDataApiResponseContext.Provider value={data}>
         <WizardStep routeableProps={routeableProps}>
+          <div
+            css={{
+              backgroundColor: palette.neutral["6"],
+              padding: "10px 20px",
+              margin: "0 -100px 40px -100px"
+            }}
+          >
+            <h4
+              css={{
+                textAlign: "center",
+                marginBottom: "10px"
+              }}
+            >
+              If you cancel your Membership you will miss out on:
+            </h4>
+            <ul
+              css={{ display: "flex", flexWrap: "wrap", margin: 0, padding: 0 }}
+            >
+              <li className={cssBullet}>Access to events tickets</li>
+              <li className={cssBullet}>
+                Exclusive emails from our membership editor
+              </li>
+              <li className={cssBullet} css={{ paddingTop: "5px" }}>
+                Free access to the premium tier of the Guardian app -{" "}
+                <a
+                  css={{ textDecoration: "underline" }}
+                  href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
+                >
+                  click here to find out how to access your premium app
+                </a>
+              </li>
+            </ul>
+          </div>
           <h3>
             Your support means we can remain independent, free from censorship,
             open to all readers and empowered to hold those in power to account.
           </h3>
-          <p>Sorry to hear you are thinking of cancelling your membership.</p>
-          <p>Can you take a moment to tell us why?</p>
+          <p>
+            Sorry to hear you are thinking of cancelling your membership.
+            <br />
+            Can you take a moment to tell us why?
+          </p>
           <ReasonPicker
             options={routeableProps.children.props.children.map(
               childWithRouteablePropsToElement
@@ -207,20 +268,34 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
 };
 
 export const PaidMembershipFlow = (props: RouteableProps) => (
-  <CheckFlowIsValid
-    checkingFor="membership"
-    validator={(me: MeResponse) => me.contentAccess.paidMember}
-  >
-    <MembershipAsyncLoader
-      fetch={loadMembershipData}
-      render={getReasonsRenderer(props)}
-      loadingMessage="Checking the status of your current membership..."
-      errorRender={() => (
-        <h2>
-          Could not fetch membership details. Please call the call centre...{" "}
-          {/* TODO add the call centre number*/}
-        </h2>
-      )}
-    />
-  </CheckFlowIsValid>
+  <div>
+    <span
+      css={{
+        fontWeight: "bold",
+        fontSize: "20px",
+        position: "relative",
+        marginLeft: "-50vw",
+        left: "calc(50% + 30px)"
+      }}
+    >
+      Cancel your Guardian membership
+    </span>
+    <div css={{ height: "30px" }} />
+    <CheckFlowIsValid
+      checkingFor="membership"
+      validator={(me: MeResponse) => me.contentAccess.paidMember}
+    >
+      <MembershipAsyncLoader
+        fetch={loadMembershipData}
+        render={getReasonsRenderer(props)}
+        loadingMessage="Checking the status of your current membership..."
+        errorRender={() => (
+          <h2>
+            Could not fetch membership details. Please call the call centre...{" "}
+            {/* TODO add the call centre number*/}
+          </h2>
+        )}
+      />
+    </CheckFlowIsValid>
+  </div>
 );
