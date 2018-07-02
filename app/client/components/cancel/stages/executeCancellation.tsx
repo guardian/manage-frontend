@@ -40,13 +40,6 @@ export const getCancelFunc = (
   return subscriptionPromise;
 };
 
-const getCancelErrorRenderer = (cancelType: string) => () => (
-  <h2>
-    Cannot cancel {cancelType} at this time. Please try again later OR call the
-    call centre...{" "}
-  </h2>
-);
-
 export interface ExecuteCancellationRouteableProps extends RouteableProps {
   cancelApiUrlSuffix: string;
   cancelType: string;
@@ -70,7 +63,6 @@ export const ExecuteCancellation = (
               )}
               render={CancellationSummary(props.cancelType)}
               loadingMessage="Performing your cancellation..."
-              errorRender={getCancelErrorRenderer(props.cancelType)}
             />
           )}
         </CancellationCaseIdContext.Consumer>

@@ -1,4 +1,5 @@
 import React from "react";
+import { GenericErrorScreen } from "./genericErrorScreen";
 import { LoadingProps, Spinner } from "./spinner";
 
 export interface AsyncLoaderProps<T> extends LoadingProps {
@@ -44,6 +45,6 @@ export default class AsyncLoader<
     } else if (this.props.errorRender) {
       return this.props.errorRender();
     }
-    return <h1>Error</h1>;
+    return <GenericErrorScreen />;
   }
 }

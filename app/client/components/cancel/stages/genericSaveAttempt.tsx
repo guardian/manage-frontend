@@ -1,4 +1,3 @@
-import { Link } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
@@ -6,7 +5,7 @@ import { Button } from "../../buttons";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import {
-  CALL_CENTRE_NUMBER,
+  CALL_CENTRE_NUMBERS,
   CancellationCaseIdContext,
   CancellationReason,
   CancellationReasonContext,
@@ -144,14 +143,14 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
             {props.reason.skipFeedback ? (
               undefined
             ) : (
-              <p>
+              <div>
                 {props.reason.alternateCallUsPrefix || "You can contact us on"}{" "}
-                {CALL_CENTRE_NUMBER}
-              </p>
+                {CALL_CENTRE_NUMBERS}
+              </div>
             )}
             <CancellationCaseIdContext.Consumer>
               {caseId =>
-                caseId || !props.reason.skipFeedback ? (
+                caseId && !props.reason.skipFeedback ? (
                   <React.Fragment>
                     <FeedbackForm
                       characterLimit={2500}

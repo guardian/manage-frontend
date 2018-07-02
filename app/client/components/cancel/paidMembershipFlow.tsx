@@ -13,6 +13,7 @@ import {
 import { CancellationReason, MembersDataApiResponseContext } from "../user";
 import {
   MultiRouteableProps,
+  ReturnToYourAccountButton,
   RouteableProps,
   WizardStep
 } from "../wizardRouterAdapter";
@@ -92,10 +93,12 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
         >
           here to manage your communication preferences.
         </a>
+        <p>
+          If you would like some help with your communication preferences our
+          customer services team would be happy to set this up for you.
+        </p>
       </React.Fragment>
     ),
-    alternateCallUsPrefix:
-      "If you would like some help with your communication preferences our customer services team would be happy to set this up for you. You can contact us on",
     alternateFeedbackIntro:
       "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
   },
@@ -162,7 +165,7 @@ class ReasonPicker extends React.Component<
             // TODO fix the clipping of font top/bottom because of font-size
           }}
         >
-          <option disabled selected value="">
+          <option disabled value="">
             please select a reason from this dropdown
           </option>
           {this.props.options}
@@ -207,7 +210,12 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
 ) => {
   if (hasMembership(data)) {
     if (data.subscription.cancelledAt) {
-      return CancellationSummary("membership")(data.subscription);
+      return (
+        <div>
+          {CancellationSummary("membership")(data.subscription)}
+          <ReturnToYourAccountButton />
+        </div>
+      );
     }
     return (
       <MembersDataApiResponseContext.Provider value={data}>
@@ -246,8 +254,8 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
             </ul>
           </div>
           <h3>
-            Your support means we can remain independent, free from censorship,
-            open to all readers and empowered to hold those in power to account.
+            Your support means we can remain independent, open to all readers
+            and empowered to hold those in power to account.
           </h3>
           <p>
             Sorry to hear you are thinking of cancelling your membership.
@@ -289,12 +297,6 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
         fetch={loadMembershipData}
         render={getReasonsRenderer(props)}
         loadingMessage="Checking the status of your current membership..."
-        errorRender={() => (
-          <h2>
-            Could not fetch membership details. Please call the call centre...{" "}
-            {/* TODO add the call centre number*/}
-          </h2>
-        )}
       />
     </CheckFlowIsValid>
   </div>
