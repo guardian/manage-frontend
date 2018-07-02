@@ -7,7 +7,7 @@ import {
   Subscription,
   WithSubscription
 } from "../../user";
-import { RouteableProps } from "../../wizardRouterAdapter";
+import { RouteableProps, WizardStep } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
 
 class CancelAsyncLoader extends AsyncLoader<Subscription> {}
@@ -56,23 +56,25 @@ export interface ExecuteCancellationRouteableProps extends RouteableProps {
 export const ExecuteCancellation = (
   props: ExecuteCancellationRouteableProps
 ) => (
-  <CancellationReasonContext.Consumer>
-    {reason => (
-      <CancellationCaseIdContext.Consumer>
-        {caseId => (
-          <CancelAsyncLoader
-            fetch={getCancelFunc(
-              props.cancelApiUrlSuffix,
-              reason,
-              caseId,
-              props.withSubscriptionPromiseFetcher
-            )}
-            render={CancellationSummary(props.cancelType)}
-            loadingMessage="Performing your cancellation..."
-            errorRender={getCancelErrorRenderer(props.cancelType)}
-          />
-        )}
-      </CancellationCaseIdContext.Consumer>
-    )}
-  </CancellationReasonContext.Consumer>
+  <WizardStep routeableProps={props}>
+    <CancellationReasonContext.Consumer>
+      {reason => (
+        <CancellationCaseIdContext.Consumer>
+          {caseId => (
+            <CancelAsyncLoader
+              fetch={getCancelFunc(
+                props.cancelApiUrlSuffix,
+                reason,
+                caseId,
+                props.withSubscriptionPromiseFetcher
+              )}
+              render={CancellationSummary(props.cancelType)}
+              loadingMessage="Performing your cancellation..."
+              errorRender={getCancelErrorRenderer(props.cancelType)}
+            />
+          )}
+        </CancellationCaseIdContext.Consumer>
+      )}
+    </CancellationReasonContext.Consumer>
+  </WizardStep>
 );

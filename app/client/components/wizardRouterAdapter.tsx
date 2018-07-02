@@ -1,14 +1,18 @@
 import { Router } from "@reach/router";
 import React from "react";
+import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
+import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps {
   path: string;
+  currentStep: number;
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
 export interface MultiRouteableProps extends RouteableProps {
+  // TODO is this is still needed??
   linkLabel: string;
 }
 
@@ -18,8 +22,28 @@ interface RootComponentProps {
   path: string;
 }
 
+const estimateTotal = (currentStep: number, child: any) => {
+  // if(child && Array.isArray(child)) {
+  //   child = child[0];
+  // }
+  // if (child){
+  //   child.hasOwnProperty()
+  // }
+  // return currentStep;
+  return 3; // TODO dynamically estimate total steps by recursively exploring children
+};
+
 const RootComponent = (props: RootComponentProps) => (
   <div>
+    <div css={{ padding: "0 50px 40px 50px" }}>
+      <ProgressCounter
+        current={props.routeableProps.currentStep}
+        total={estimateTotal(
+          props.routeableProps.currentStep,
+          props.routeableProps.children
+        )}
+      />
+    </div>
     {props.thisStageChildren}
     <div
       css={{
@@ -28,7 +52,16 @@ const RootComponent = (props: RootComponentProps) => (
         justifyContent: "space-between"
       }}
     >
-      <div>{getBackwardNavigationIfApplicable(props.routeableProps)}</div>
+      <div css={{ marginLeft: "-100px" }}>
+        <a href={"https://profile." + conf.DOMAIN + "/membership/edit"}>
+          <Button
+            text="Return to your account"
+            textColor={palette.white}
+            left
+            color={palette.neutral["2"]}
+          />
+        </a>
+      </div>
       <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
     </div>
   </div>
@@ -43,20 +76,6 @@ const ThisStageContent = (props: WizardStepProps) => (
     />
   </Router>
 );
-
-const getBackwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
-  if (routeableProps.children) {
-    return (
-      <Button
-        onClick={() => window.history.back()}
-        text="Back"
-        textColor={palette.white}
-        left
-        color={palette.neutral["2"]}
-      />
-    );
-  }
-};
 
 const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
   if (
