@@ -33,6 +33,19 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
+export const ReturnToYourAccountButton = () => (
+  <div css={{ marginLeft: "-100px", marginTop: "50px" }}>
+    <a href={"https://profile." + conf.DOMAIN + "/membership/edit"}>
+      <Button
+        text="Return to your account"
+        textColor={palette.white}
+        left
+        color={palette.neutral["2"]}
+      />
+    </a>
+  </div>
+);
+
 const RootComponent = (props: RootComponentProps) => (
   <div>
     <div css={{ padding: "0 50px 40px 50px" }}>
@@ -52,16 +65,7 @@ const RootComponent = (props: RootComponentProps) => (
         justifyContent: "space-between"
       }}
     >
-      <div css={{ marginLeft: "-100px" }}>
-        <a href={"https://profile." + conf.DOMAIN + "/membership/edit"}>
-          <Button
-            text="Return to your account"
-            textColor={palette.white}
-            left
-            color={palette.neutral["2"]}
-          />
-        </a>
-      </div>
+      <ReturnToYourAccountButton />
       <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
     </div>
   </div>
