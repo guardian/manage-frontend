@@ -41,9 +41,7 @@ exports[`Main renders something 1`] = `
         }
       }
     >
-      <span>
-        My Account
-      </span>
+      <span />
       <a
         css={
           Object {

@@ -10,6 +10,8 @@ import {
   membershipCancellationReasonMatrix,
   PaidMembershipFlow
 } from "./cancel/paidMembershipFlow";
+import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
+import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { CardProps } from "./card";
 import { Main } from "./main";
 import {
@@ -17,10 +19,20 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
-import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 
-export const CALL_CENTRE_NUMBER = "XXXXXXXXXXXXXX";
+export const CALL_CENTRE_NUMBERS = (
+  <div css={{ display: "inline-block", verticalAlign: "top" }}>
+    <div>
+      <b>0330 333 6790</b> (UK)
+    </div>
+    <div>
+      <b>1-844-632-2010</b> (US)
+    </div>
+    <div>
+      <b>+61 (0)2 8076 8500</b> (AUS)
+    </div>
+  </div>
+);
 
 export interface Subscription {
   subscriberId: string;
@@ -46,6 +58,8 @@ export interface CancellationReason {
   saveBody: string | ReactNode;
   alternateCallUsPrefix?: string;
   alternateFeedbackIntro?: string;
+  alternateFeedbackThankYouTitle?: string;
+  alternateFeedbackThankYouBody?: string;
   skipFeedback?: boolean;
 }
 
@@ -71,9 +85,9 @@ const User = () => (
     {injectGlobal`${fonts}`}
 
     <Router>
-      <Membership path="/" />
+      <Membership path="/" currentStep={1} />
 
-      <PaidMembershipFlow path="/cancel/membership">
+      <PaidMembershipFlow path="/cancel/membership" currentStep={1}>
         {membershipCancellationReasonMatrix.map(
           (reason: CancellationReason) => (
             <GenericSaveAttempt
@@ -82,21 +96,23 @@ const User = () => (
               key={reason.reasonId}
               path={reason.reasonId}
               linkLabel={reason.linkLabel}
+              currentStep={2}
             >
               <ExecuteCancellation
                 path="confirmed"
                 cancelApiUrlSuffix="membership"
                 cancelType="membership"
                 withSubscriptionPromiseFetcher={loadMembershipData}
+                currentStep={3}
               />
             </GenericSaveAttempt>
           )
         )}
       </PaidMembershipFlow>
 
-      <FreeMembershipFlow path="/cancel/friend" />
+      <FreeMembershipFlow path="/cancel/friend" currentStep={1} />
 
-      <ContributionsFlow path="/cancel/contributions" />
+      <ContributionsFlow path="/cancel/contributions" currentStep={1} />
 
       <NotFound default={true} />
     </Router>

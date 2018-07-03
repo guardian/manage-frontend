@@ -1,5 +1,6 @@
 import React from "react";
 import AsyncLoader from "./asyncLoader";
+import { GenericErrorScreen } from "./genericErrorScreen";
 
 export interface MeResponse {
   userId: string;
@@ -23,7 +24,7 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   props.validator(me) ? (
     <React.Fragment>{props.children}</React.Fragment>
   ) : (
-    <h1>No {props.checkingFor}</h1>
+    <GenericErrorScreen />
   );
 
 class MeAsyncLoader extends AsyncLoader<MeResponse> {}

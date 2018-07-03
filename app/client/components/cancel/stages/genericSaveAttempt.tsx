@@ -1,12 +1,11 @@
-import { Link } from "@reach/router";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import {
-  CALL_CENTRE_NUMBER,
+  CALL_CENTRE_NUMBERS,
   CancellationCaseIdContext,
   CancellationReason,
   CancellationReasonContext,
@@ -20,6 +19,7 @@ export interface GenericSaveAttemptProps extends MultiRouteableProps {
 }
 
 interface FeedbackFormProps {
+  reason: CancellationReason;
   characterLimit: number;
   caseId: string;
 }
@@ -35,8 +35,6 @@ const getPatchUpdateCaseFunc = (feedback: string, caseId: string) => async () =>
     Subject: "Online Cancellation Query",
     Status: "Open"
   })).json();
-
-const renderFeedbackThankYou = () => <h3>Thanks for the feedback</h3>;
 
 class FeedbackForm extends React.Component<
   FeedbackFormProps,
@@ -62,12 +60,16 @@ class FeedbackForm extends React.Component<
         <CaseUpdateAsyncLoader
           loadingMessage="Storing your feedback..."
           fetch={getPatchUpdateCaseFunc(this.state.feedback, this.props.caseId)}
-          render={renderFeedbackThankYou}
+          render={this.getFeedbackThankYouRenderer(this.props.reason)}
         />
       );
     }
     return (
-      <div css={{ textAlign: "right" }}>
+      <div>
+        <p>
+          {this.props.reason.alternateFeedbackIntro ||
+            "Alternatively provide feedback in the box below"}
+        </p>
         <textarea
           rows={5}
           maxLength={this.props.characterLimit}
@@ -79,24 +81,49 @@ class FeedbackForm extends React.Component<
           }}
           onChange={this.handleChange}
         />
-        <span
-          css={{
-            fontSize: "small",
-            float: "left",
-            color: palette.neutral["3"],
-            fontFamily: sans
-          }}
-        >
-          You have {this.props.characterLimit - this.state.feedback.length}{" "}
-          characters remaining
+        <div css={{ textAlign: "right" }}>
+          <div
+            css={{
+              fontSize: "small",
+              color: palette.neutral["3"],
+              fontFamily: sans,
+              paddingBottom: "10px"
+            }}
+          >
+            You have {this.props.characterLimit - this.state.feedback.length}{" "}
+            characters remaining
+          </div>
+          <Button
+            onClick={() => this.setState({ hasHitSubmit: true })}
+            text="Submit Feedback"
+            textColor={palette.white}
+            color={palette.neutral["2"]}
+            disabled={this.state.feedback.length === 0}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  private getFeedbackThankYouRenderer(
+    reason: CancellationReason
+  ): () => ReactNode {
+    return () => (
+      <div
+        css={{
+          marginLeft: "15px",
+          paddingLeft: "15px",
+          borderLeft: "1px solid " + palette.neutral["4"]
+        }}
+      >
+        <h3>
+          {reason.alternateFeedbackThankYouTitle ||
+            "Thank you for your feedback."}
+        </h3>
+        <span>
+          {reason.alternateFeedbackThankYouBody ||
+            "The Guardian is dedicated to reporting the truth, holding power to account, and exposing corruption wherever we find it. Support from our readers makes what we do possible."}
         </span>
-        <Button
-          onClick={() => this.setState({ hasHitSubmit: true })}
-          text="Submit Feedback"
-          textColor={palette.white}
-          color={palette.neutral["2"]}
-          disabled={this.state.feedback.length === 0}
-        />
       </div>
     );
   }
@@ -111,21 +138,25 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           sfProduct={props.sfProduct}
         >
           <WizardStep routeableProps={props}>
-            <h2>{props.reason.saveTitle}</h2>
+            <h3>{props.reason.saveTitle}</h3>
             <p>{props.reason.saveBody}</p>
-            <p>
-              {props.reason.alternateCallUsPrefix || "You can contact us on"}{" "}
-              {CALL_CENTRE_NUMBER}
-            </p>
+            {props.reason.skipFeedback ? (
+              undefined
+            ) : (
+              <div>
+                {props.reason.alternateCallUsPrefix || "You can contact us on"}{" "}
+                {CALL_CENTRE_NUMBERS}
+              </div>
+            )}
             <CancellationCaseIdContext.Consumer>
               {caseId =>
-                caseId || !props.reason.skipFeedback ? (
+                caseId && !props.reason.skipFeedback ? (
                   <React.Fragment>
-                    <p>
-                      {props.reason.alternateFeedbackIntro ||
-                        "Alternatively provide feedback in the box below"}
-                    </p>
-                    <FeedbackForm characterLimit={1000} caseId={caseId} />
+                    <FeedbackForm
+                      characterLimit={2500}
+                      caseId={caseId}
+                      reason={props.reason}
+                    />
                   </React.Fragment>
                 ) : (
                   undefined

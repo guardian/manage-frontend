@@ -1,7 +1,6 @@
 import React from "react";
 import palette from "../colours";
-import { css } from "../styles/emotion";
-import Nav from "./nav";
+import { Nav } from "./nav";
 import Roundel from "./roundel";
 
 const Header = () => (

@@ -7,7 +7,7 @@ import {
   Subscription,
   WithSubscription
 } from "../../user";
-import { RouteableProps } from "../../wizardRouterAdapter";
+import { RouteableProps, WizardStep } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
 
 class CancelAsyncLoader extends AsyncLoader<Subscription> {}
@@ -40,13 +40,6 @@ export const getCancelFunc = (
   return subscriptionPromise;
 };
 
-const getCancelErrorRenderer = (cancelType: string) => () => (
-  <h2>
-    Cannot cancel {cancelType} at this time. Please try again later OR call the
-    call centre...{" "}
-  </h2>
-);
-
 export interface ExecuteCancellationRouteableProps extends RouteableProps {
   cancelApiUrlSuffix: string;
   cancelType: string;
@@ -56,23 +49,24 @@ export interface ExecuteCancellationRouteableProps extends RouteableProps {
 export const ExecuteCancellation = (
   props: ExecuteCancellationRouteableProps
 ) => (
-  <CancellationReasonContext.Consumer>
-    {reason => (
-      <CancellationCaseIdContext.Consumer>
-        {caseId => (
-          <CancelAsyncLoader
-            fetch={getCancelFunc(
-              props.cancelApiUrlSuffix,
-              reason,
-              caseId,
-              props.withSubscriptionPromiseFetcher
-            )}
-            render={CancellationSummary(props.cancelType)}
-            loadingMessage="Performing your cancellation..."
-            errorRender={getCancelErrorRenderer(props.cancelType)}
-          />
-        )}
-      </CancellationCaseIdContext.Consumer>
-    )}
-  </CancellationReasonContext.Consumer>
+  <WizardStep routeableProps={props}>
+    <CancellationReasonContext.Consumer>
+      {reason => (
+        <CancellationCaseIdContext.Consumer>
+          {caseId => (
+            <CancelAsyncLoader
+              fetch={getCancelFunc(
+                props.cancelApiUrlSuffix,
+                reason,
+                caseId,
+                props.withSubscriptionPromiseFetcher
+              )}
+              render={CancellationSummary(props.cancelType)}
+              loadingMessage="Performing your cancellation..."
+            />
+          )}
+        </CancellationCaseIdContext.Consumer>
+      )}
+    </CancellationReasonContext.Consumer>
+  </WizardStep>
 );
