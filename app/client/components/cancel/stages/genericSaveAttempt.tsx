@@ -112,6 +112,7 @@ class FeedbackForm extends React.Component<
       <div
         css={{
           marginLeft: "15px",
+          marginTop: "30px",
           paddingLeft: "15px",
           borderLeft: "1px solid " + palette.neutral["4"]
         }}
@@ -151,13 +152,11 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
             <CancellationCaseIdContext.Consumer>
               {caseId =>
                 caseId && !props.reason.skipFeedback ? (
-                  <React.Fragment>
-                    <FeedbackForm
-                      characterLimit={2500}
-                      caseId={caseId}
-                      reason={props.reason}
-                    />
-                  </React.Fragment>
+                  <FeedbackForm
+                    characterLimit={2500}
+                    caseId={caseId}
+                    reason={props.reason}
+                  />
                 ) : (
                   undefined
                 )
