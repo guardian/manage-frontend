@@ -104,9 +104,10 @@ const User = () => (
 );
 
 export const ServerUser = (url: string) => (
-  <ServerLocation url={url}>
-    ...{/* wait for https://github.com/reach/router/issues/27 fix and then re-enable */}
-  </ServerLocation>
+  <>
+    <User />
+    <ServerLocation url={url} />
+  </>
 );
 
 export const BrowserUser = (trackPath: (path: string) => void) => {
