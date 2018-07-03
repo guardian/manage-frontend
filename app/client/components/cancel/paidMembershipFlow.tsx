@@ -93,10 +93,12 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
         >
           here to manage your communication preferences.
         </a>
-        <p>
+        <br />
+        <br />
+        <span>
           If you would like some help with your communication preferences our
           customer services team would be happy to set this up for you.
-        </p>
+        </span>
       </React.Fragment>
     ),
     alternateFeedbackIntro:
