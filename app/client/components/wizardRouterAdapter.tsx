@@ -1,5 +1,6 @@
 import { Router } from "@reach/router";
 import React from "react";
+import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { ProgressCounter } from "./progressCounter";
