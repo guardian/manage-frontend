@@ -1,6 +1,5 @@
 import { Router } from "@reach/router";
 import React from "react";
-import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { ProgressCounter } from "./progressCounter";
@@ -35,7 +34,7 @@ const estimateTotal = (currentStep: number, child: any) => {
 
 export const ReturnToYourAccountButton = () => (
   <div css={{ marginLeft: "-100px", marginTop: "50px" }}>
-    <a href={"https://profile." + conf.DOMAIN + "/membership/edit"}>
+    <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
       <Button
         text="Return to your account"
         textColor={palette.white}

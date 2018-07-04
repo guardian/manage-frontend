@@ -1,6 +1,5 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
-import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { LinkButton } from "../buttons";
 import { CheckFlowIsValid, MeResponse } from "../cancellationFlowWrapper";
@@ -18,6 +17,12 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import { CancellationSummary } from "./cancellationSummary";
+
+// Webpack doesn't like browser globals
+let domain;
+if (typeof window !== "undefined") {
+  domain = window.guardian.domain;
+}
 
 export const membershipCancellationReasonMatrix: CancellationReason[] = [
   {
@@ -85,11 +90,11 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveTitle:
       "We understand that sometimes the news cycle can feel a little overwhelming.",
     saveBody: (
-      <React.Fragment>
+      <>
         You can click{" "}
         <a
           css={{ textDecoration: "underline" }}
-          href={"https://profile." + conf.DOMAIN + "/consents"}
+          href={`https://profile.${domain}/consents`}
         >
           here to manage your communication preferences.
         </a>
@@ -99,7 +104,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
           If you would like some help with your communication preferences our
           customer services team would be happy to set this up for you.
         </span>
-      </React.Fragment>
+      </>
     ),
     alternateFeedbackIntro:
       "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"

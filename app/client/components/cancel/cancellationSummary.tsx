@@ -1,5 +1,4 @@
 import React from "react";
-import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { Button } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -17,7 +16,7 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
       you can do so below.
     </p>
     <div css={{ textAlign: "right" }}>
-      <a href={"https://support." + conf.DOMAIN}>
+      <a href={`https://support.${window.guardian.domain}`}>
         <Button
           text="Support The Guardian"
           textColor={palette.white}
