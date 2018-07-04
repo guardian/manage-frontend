@@ -284,17 +284,17 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
 
 export const PaidMembershipFlow = (props: RouteableProps) => (
   <div>
-    <span
+    <h1
       css={{
-        fontWeight: "bold",
         fontSize: "20px",
         position: "relative",
         marginLeft: "-50vw",
         left: "calc(50% + 30px)"
       }}
     >
+      {" "}
       Cancel your Guardian membership
-    </span>
+    </h1>
     <div css={{ height: "30px" }} />
     <CheckFlowIsValid
       checkingFor="membership"

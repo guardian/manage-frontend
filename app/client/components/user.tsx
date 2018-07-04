@@ -105,7 +105,13 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string) => <>...</>;
+export const ServerUser = (url: string) => (
+  <>
+    <ServerLocation url={url}>
+      <User />
+    </ServerLocation>
+  </>
+);
 
 export const BrowserUser = (trackPath: (path: string) => void) => {
   return (
