@@ -1,5 +1,5 @@
 import React from "react";
-import { CALL_CENTRE_NUMBERS } from "./user";
+import { CallCentreNumbers } from "./callCentreNumbers";
 
 export const GenericErrorScreen = () => (
   <div>
@@ -10,6 +10,9 @@ export const GenericErrorScreen = () => (
       Please try again in 5 minutes. Alternatively, please call to speak to one
       of our customer service specialists.
     </p>
-    <p>You can contact us on {CALL_CENTRE_NUMBERS}</p>
+    <div css={{ display: "flex" }}>
+      <span css={{ flexShrink: 0, paddingRight: "5px" }}>To contact us</span>
+      <CallCentreNumbers />
+    </div>
   </div>
 );

@@ -2,10 +2,10 @@ import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
+import { CallCentreNumbers } from "../../callCentreNumbers";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import {
-  CALL_CENTRE_NUMBERS,
   CancellationCaseIdContext,
   CancellationReason,
   CancellationReasonContext,
@@ -144,9 +144,11 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
             {props.reason.skipFeedback ? (
               undefined
             ) : (
-              <div>
-                {props.reason.alternateCallUsPrefix || "You can contact us on"}{" "}
-                {CALL_CENTRE_NUMBERS}
+              <div css={{ display: "flex" }}>
+                <span css={{ flexShrink: 0, paddingRight: "5px" }}>
+                  {props.reason.alternateCallUsPrefix || "To contact us"}
+                </span>
+                <CallCentreNumbers />
               </div>
             )}
             <CancellationCaseIdContext.Consumer>

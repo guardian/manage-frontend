@@ -48,7 +48,7 @@ export const ReturnToYourAccountButton = () => (
 
 const RootComponent = (props: RootComponentProps) => (
   <div>
-    <div css={{ padding: "0 50px 40px 50px" }}>
+    <div css={{ padding: "0 100px 40px 100px" }}>
       <ProgressCounter
         current={props.routeableProps.currentStep}
         total={estimateTotal(

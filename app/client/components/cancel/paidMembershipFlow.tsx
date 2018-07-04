@@ -70,7 +70,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveTitle: "Thank you for your your ongoing support.",
     saveBody: "Please first confirm your membership cancellation below.",
     alternateCallUsPrefix:
-      "If you’re not sure what’s best for you or would like help, please call us on",
+      "If you’re not sure what’s best for you or would like help, please contact us",
     alternateFeedbackIntro:
       "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
     alternateFeedbackThankYouBody:
