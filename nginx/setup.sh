@@ -6,7 +6,7 @@ NGINX_HOME=$(nginx -V 2>&1 | grep 'configure arguments:' | sed 's#.*conf-path=\(
 echo "🌏 This script will now attempt to install the nginx config for this project."
 echo "🌍 Tis script needs root access to configure nginx, please enter your sudo password if prompted"
 sudo mkdir -p $NGINX_HOME/sites-enabled
-sudo ln -fs $DIR/account-frontend.conf $NGINX_HOME/sites-enabled/account-frontend.conf
+sudo ln -fs $DIR/manage-frontend.conf $NGINX_HOME/sites-enabled/manage-frontend.conf
 
 if [[ $(sudo lsof -iTCP:443 -sTCP:LISTEN ) ]]; 
 then 

@@ -3,20 +3,20 @@ regions:
 stacks:
 - support
 deployments:
-  account-frontend-cloudformation:
+  manage-frontend-cloudformation:
     type: cloud-formation
-    app: account-frontend
+    app: manage-frontend
     parameters:
-      templatePath: cloudformation/account-frontend-cf.yaml
-  account-frontend:
+      templatePath: cloudformation/cfn.yaml
+  manage-frontend:
     type: autoscaling
-    dependencies: [account-frontend-cloudformation, account-frontend-ami]
+    dependencies: [manage-frontend-cloudformation, manage-frontend-ami]
     parameters:
       bucket: membership-dist
-  account-frontend-ami:
-    app: account-frontend
+  manage-frontend-ami:
+    app: manage-frontend
     type: ami-cloudformation-parameter
-    dependencies: [account-frontend-cloudformation]
+    dependencies: [manage-frontend-cloudformation]
     parameters:
       amiTags:
         Recipe: xenial-membership

@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: account-frontend
+Description: manage-frontend
 Parameters:
   VpcId:
     Type: String
@@ -19,7 +19,7 @@ Parameters:
   App:
     Description: Applied directly as a tag
     Type: String
-    Default: account-frontend
+    Default: manage-frontend
   ClientRavenDSN:
     Description: the DSN to use with sentry on the client
     Type: String
@@ -42,7 +42,7 @@ Mappings:
       MaxInstances: 2
       MinInstances: 1
       InstanceType: t2.small
-      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/f44a80e1-7c25-422e-987d-f50d88093aec
       DomainEnvVariable: code.dev-theguardian.com
       SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE
     PROD:
@@ -94,25 +94,25 @@ Resources:
             tar -xf /tmp/node-v9.11.1-linux-x64.tar.xz --directory /usr/local/
 
             # get runnable tar from S3
-            aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/account-frontend.tgz /tmp
+            aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/manage-frontend.tgz /tmp
             mkdir /etc/gu
-            tar -xvzf /tmp/account-frontend.tgz --directory /etc/gu/
+            tar -xvzf /tmp/manage-frontend.tgz --directory /etc/gu/
 
             # add user
-            groupadd account-frontend
-            useradd -r -s /usr/bin/nologin -g account-frontend account-frontend
-            chown -R account-frontend:account-frontend /etc/gu
+            groupadd manage-frontend
+            useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+            chown -R manage-frontend:manage-frontend /etc/gu
 
             # write out systemd file
-            cat >/etc/systemd/system/account-frontend.service <<EOL
+            cat >/etc/systemd/system/manage-frontend.service <<EOL
             [Service]
             ExecStart=/usr/local/node-v9.11.1-linux-x64/bin/node /etc/gu/dist/server.js
             Restart=always
             StandardOutput=syslog
             StandardError=syslog
-            SyslogIdentifier=account-frontend
-            User=account-frontend
-            Group=account-frontend
+            SyslogIdentifier=manage-frontend
+            User=manage-frontend
+            Group=manage-frontend
             Environment=NODE_ENV=production
             Environment=DOMAIN=${DomainEnvVariable}
             Environment=SF_CASES_URL=${SFCasesUrl}
@@ -122,10 +122,10 @@ Resources:
             WantedBy=multi-user.target
             EOL
             # RUN
-            systemctl enable account-frontend
-            systemctl start account-frontend
-            /opt/cloudwatch-logs/configure-logs application ${Stack} ${Stage} ${App} /var/log/account-frontend.log
-            /opt/cloudwatch-logs/configure-logs audit ${Stack} ${Stage} ${App} /var/log/account-frontend-audit.log
+            systemctl enable manage-frontend
+            systemctl start manage-frontend
+            /opt/cloudwatch-logs/configure-logs application ${Stack} ${Stage} ${App} /var/log/manage-frontend.log
+            /opt/cloudwatch-logs/configure-logs audit ${Stack} ${Stage} ${App} /var/log/manage-frontend-audit.log
 
 
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]

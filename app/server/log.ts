@@ -9,7 +9,7 @@ export const log = winston.createLogger({
   format: winston.format.json(),
   transports: [
     new winston.transports.File({
-      filename: `${location}/account-frontend.log`
+      filename: `${location}/manage-frontend.log`
     }),
     new winston.transports.Console({ format: winston.format.simple() })
   ]
@@ -20,7 +20,7 @@ export const audit = winston.createLogger({
   format: winston.format.json(),
   transports: [
     new winston.transports.File({
-      filename: `${location}/account-frontend-audit.log`
+      filename: `${location}/manage-frontend-audit.log`
     }),
     new winston.transports.Console({ format: winston.format.simple() })
   ]
