@@ -42,7 +42,7 @@ Mappings:
       MaxInstances: 2
       MinInstances: 1
       InstanceType: t2.small
-      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/e4c03b58-bf76-44c2-ae6a-17f81c10eb6f
+      CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/f44a80e1-7c25-422e-987d-f50d88093aec
       DomainEnvVariable: code.dev-theguardian.com
       SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE
     PROD:
