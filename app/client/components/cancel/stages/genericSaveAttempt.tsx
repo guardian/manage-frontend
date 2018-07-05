@@ -1,12 +1,13 @@
-import { Link } from "@reach/router";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
+import { CallCentreNumbers } from "../../callCentreNumbers";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import {
   CancellationCaseIdContext,
+  CancellationReason,
   CancellationReasonContext,
   MembersDataApiResponseContext
 } from "../../user";
@@ -14,9 +15,11 @@ import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   sfProduct: string;
+  reason: CancellationReason;
 }
 
 interface FeedbackFormProps {
+  reason: CancellationReason;
   characterLimit: number;
   caseId: string;
 }
@@ -32,8 +35,6 @@ const getPatchUpdateCaseFunc = (feedback: string, caseId: string) => async () =>
     Subject: "Online Cancellation Query",
     Status: "Open"
   })).json();
-
-const renderFeedbackThankYou = () => <h3>Thanks for the feedback</h3>;
 
 class FeedbackForm extends React.Component<
   FeedbackFormProps,
@@ -59,35 +60,71 @@ class FeedbackForm extends React.Component<
         <CaseUpdateAsyncLoader
           loadingMessage="Storing your feedback..."
           fetch={getPatchUpdateCaseFunc(this.state.feedback, this.props.caseId)}
-          render={renderFeedbackThankYou}
+          render={this.getFeedbackThankYouRenderer(this.props.reason)}
         />
       );
     }
     return (
-      <div css={{ textAlign: "right" }}>
+      <div>
+        <p>
+          {this.props.reason.alternateFeedbackIntro ||
+            "Alternatively provide feedback in the box below"}
+        </p>
         <textarea
           rows={5}
           maxLength={this.props.characterLimit}
-          css={{ width: "100%", fontSize: "inherit", fontFamily: "inherit" }}
+          css={{
+            width: "100%",
+            fontSize: "inherit",
+            fontFamily: "inherit",
+            border: "1px black solid"
+          }}
           onChange={this.handleChange}
         />
-        <span
-          css={{
-            fontSize: "small",
-            float: "left",
-            color: palette.neutral["3"],
-            fontFamily: sans
-          }}
-        >
-          You have {this.props.characterLimit - this.state.feedback.length}{" "}
-          characters remaining
+        <div css={{ textAlign: "right" }}>
+          <div
+            css={{
+              fontSize: "small",
+              color: palette.neutral["3"],
+              fontFamily: sans,
+              paddingBottom: "10px"
+            }}
+          >
+            You have {this.props.characterLimit - this.state.feedback.length}{" "}
+            characters remaining
+          </div>
+          <Button
+            onClick={() => this.setState({ hasHitSubmit: true })}
+            text="Submit Feedback"
+            textColor={palette.white}
+            color={palette.neutral["2"]}
+            disabled={this.state.feedback.length === 0}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  private getFeedbackThankYouRenderer(
+    reason: CancellationReason
+  ): () => ReactNode {
+    return () => (
+      <div
+        css={{
+          marginLeft: "15px",
+          marginTop: "30px",
+          paddingLeft: "15px",
+          borderLeft: "1px solid " + palette.neutral["4"]
+        }}
+      >
+        <h3>
+          {reason.alternateFeedbackThankYouTitle ||
+            "Thank you for your feedback."}
+        </h3>
+        <span>
+          {reason.alternateFeedbackThankYouBody ||
+            "The Guardian is dedicated to reporting the truth, holding power to account, and exposing corruption wherever we find it. Support from our readers makes what we do possible."}
         </span>
-        <Button
-          onClick={() => this.setState({ hasHitSubmit: true })}
-          text="Submit Feedback"
-          textColor={palette.white}
-          color={palette.neutral["4"]}
-        />
       </div>
     );
   }
@@ -102,17 +139,26 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           sfProduct={props.sfProduct}
         >
           <WizardStep routeableProps={props}>
-            <h2>{props.linkLabel || props.path}</h2>
-            <b>We are very interested in your feedback and concerns. </b>
-            If there’s anything we can do differently that would ensure your
-            continued support please take a moment to call us on xxx
+            <h3>{props.reason.saveTitle}</h3>
+            <p>{props.reason.saveBody}</p>
+            {props.reason.skipFeedback ? (
+              undefined
+            ) : (
+              <div css={{ display: "flex" }}>
+                <span css={{ flexShrink: 0, paddingRight: "5px" }}>
+                  {props.reason.alternateCallUsPrefix || "To contact us"}
+                </span>
+                <CallCentreNumbers />
+              </div>
+            )}
             <CancellationCaseIdContext.Consumer>
               {caseId =>
-                caseId ? (
-                  <React.Fragment>
-                    or use the feedback form below...
-                    <FeedbackForm characterLimit={1000} caseId={caseId} />
-                  </React.Fragment>
+                caseId && !props.reason.skipFeedback ? (
+                  <FeedbackForm
+                    characterLimit={2500}
+                    caseId={caseId}
+                    reason={props.reason}
+                  />
                 ) : (
                   undefined
                 )

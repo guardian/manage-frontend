@@ -1,6 +1,6 @@
 import express from "express";
 import url from "url";
-import { getUser, IdentityError } from "../../identity";
+import { getUser, IdentityError } from "../../server/identity/identity";
 import { conf } from "../config";
 import { log } from "../log";
 
@@ -18,11 +18,6 @@ export const withIdentity: express.RequestHandler = (
     pathname: req.originalUrl
   });
   const cookies = req.header("cookie");
-  if (cookies == null) {
-    log.info("No cookies header.");
-    res.status(500).send("Something broke!");
-    return;
-  }
 
   const user = getUser(cookies);
 

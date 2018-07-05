@@ -1,6 +1,8 @@
 import { decode } from "base-64";
-
 import { parse as parseCookie } from "es-cookie";
+
+const ONE_HOUR = 3600000;
+
 export interface IdentityUser {
   readonly GU_U: string;
   readonly SC_GU_U: string;
@@ -22,8 +24,12 @@ export function isUser(x: any): x is IdentityUser {
 }
 
 export const getUser: (
-  cookies: string
+  cookies: string | undefined
 ) => IdentityUser | IdentityError = cookies => {
+  if (cookies == null) {
+    return IdentityError.NotLoggedIn;
+  }
+
   const cookieJar = parseCookie(cookies);
   const GU_U = cookieJar[keys.GU];
   const SC_GU_U = cookieJar[keys.SC];
@@ -56,7 +62,7 @@ export const getUser: (
   }
 
   const remaining = expiry - new Date().getTime();
-  if (remaining < 0) {
+  if (remaining < ONE_HOUR) {
     return IdentityError.Expired;
   }
 

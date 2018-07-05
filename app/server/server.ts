@@ -1,5 +1,4 @@
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
 import fetch from "node-fetch";
@@ -7,7 +6,7 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
-import { IdentityUser } from "../identity";
+import { IdentityUser } from "../server/identity/identity";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -134,7 +133,7 @@ server.use((req: express.Request, res: express.Response) => {
       globals
     })
   );
-});
+}, withIdentity);
 
 if (conf.SERVER_DSN) {
   server.use(Raven.errorHandler());

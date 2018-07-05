@@ -1,13 +1,15 @@
-import { Link, Location, Router, ServerLocation } from "@reach/router";
-import React from "react";
+import { Location, Router, ServerLocation } from "@reach/router";
+import React, { ReactNode } from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
-import { PaidMembershipFlow } from "./cancel/paidMembershipFlow";
-import { AreYouSure } from "./cancel/stages/areYouSure";
+import {
+  membershipCancellationReasonMatrix,
+  PaidMembershipFlow
+} from "./cancel/paidMembershipFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { CardProps } from "./card";
@@ -35,17 +37,17 @@ export interface WithSubscription {
   subscription: Subscription;
 }
 
-const zuoraCancellationReasonMapping: { [zuoraReasonKey: string]: string } = {
-  mma_editorial: "I am unhappy with Guardian journalism",
-  mma_support_another_way:
-    "I am going to support The Guardian in another way, eg. by subscribing",
-  mma_values: "I don't feel that the Guardian values my support",
-  mma_payment_issue: "I didn't expect The Guardian to take another payment",
-  mma_health: "Ill-health",
-  mma_none: "None of the membership benefits are of interest to me",
-  mma_financial_circumstances: "A change in my financial circumstances",
-  mma_other: "Other"
-};
+export interface CancellationReason {
+  reasonId: string;
+  linkLabel: string;
+  saveTitle: string;
+  saveBody: string | ReactNode;
+  alternateCallUsPrefix?: string;
+  alternateFeedbackIntro?: string;
+  alternateFeedbackThankYouTitle?: string;
+  alternateFeedbackThankYouBody?: string;
+  skipFeedback?: boolean;
+}
 
 export const CancellationReasonContext: React.Context<
   string
@@ -69,34 +71,34 @@ const User = () => (
     {injectGlobal`${fonts}`}
 
     <Router>
-      <Membership path="/" />
+      <Membership path="/" currentStep={1} />
 
-      <PaidMembershipFlow path="/cancel/membership">
-        {Object.keys(zuoraCancellationReasonMapping).map(
-          (zuoraReason: string) => (
+      <PaidMembershipFlow path="/cancel/membership" currentStep={1}>
+        {membershipCancellationReasonMatrix.map(
+          (reason: CancellationReason) => (
             <GenericSaveAttempt
               sfProduct="Membership"
-              key={zuoraReason}
-              path={zuoraReason}
-              linkLabel={zuoraCancellationReasonMapping[zuoraReason]}
+              reason={reason}
+              key={reason.reasonId}
+              path={reason.reasonId}
+              linkLabel={reason.linkLabel}
+              currentStep={2}
             >
-              <AreYouSure path="areYouSure">
-                <ExecuteCancellation
-                  path="confirmed"
-                  cancelApiUrlSuffix="membership"
-                  cancelType="membership"
-                  withSubscriptionPromiseFetcher={loadMembershipData}
-                />
-              </AreYouSure>
+              <ExecuteCancellation
+                path="confirmed"
+                cancelApiUrlSuffix="membership"
+                cancelType="membership"
+                withSubscriptionPromiseFetcher={loadMembershipData}
+                currentStep={3}
+              />
             </GenericSaveAttempt>
           )
         )}
-        {/*TODO add special case for mma_health*/}
       </PaidMembershipFlow>
 
-      <FreeMembershipFlow path="/cancel/friend" />
+      <FreeMembershipFlow path="/cancel/friend" currentStep={1} />
 
-      <ContributionsFlow path="/cancel/contributions" />
+      <ContributionsFlow path="/cancel/contributions" currentStep={1} />
 
       <NotFound default={true} />
     </Router>
@@ -105,8 +107,9 @@ const User = () => (
 
 export const ServerUser = (url: string) => (
   <>
-    <User />
-    <ServerLocation url={url} />
+    <ServerLocation url={url}>
+      <User />
+    </ServerLocation>
   </>
 );
 

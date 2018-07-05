@@ -1,14 +1,18 @@
 import { Router } from "@reach/router";
 import React from "react";
+import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
+import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps {
   path: string;
+  currentStep: number;
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
 export interface MultiRouteableProps extends RouteableProps {
+  // TODO is this is still needed??
   linkLabel: string;
 }
 
@@ -18,8 +22,41 @@ interface RootComponentProps {
   path: string;
 }
 
+const estimateTotal = (currentStep: number, child: any) => {
+  // if(child && Array.isArray(child)) {
+  //   child = child[0];
+  // }
+  // if (child){
+  //   child.hasOwnProperty()
+  // }
+  // return currentStep;
+  return 3; // TODO dynamically estimate total steps by recursively exploring children
+};
+
+export const ReturnToYourAccountButton = () => (
+  <div css={{ marginLeft: "-100px", marginTop: "50px" }}>
+    <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
+      <Button
+        text="Return to your account"
+        textColor={palette.white}
+        left
+        color={palette.neutral["2"]}
+      />
+    </a>
+  </div>
+);
+
 const RootComponent = (props: RootComponentProps) => (
   <div>
+    <div css={{ padding: "0 100px 40px 100px" }}>
+      <ProgressCounter
+        current={props.routeableProps.currentStep}
+        total={estimateTotal(
+          props.routeableProps.currentStep,
+          props.routeableProps.children
+        )}
+      />
+    </div>
     {props.thisStageChildren}
     <div
       css={{
@@ -28,7 +65,7 @@ const RootComponent = (props: RootComponentProps) => (
         justifyContent: "space-between"
       }}
     >
-      <div>{getBackwardNavigationIfApplicable(props.routeableProps)}</div>
+      <ReturnToYourAccountButton />
       <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
     </div>
   </div>
@@ -43,20 +80,6 @@ const ThisStageContent = (props: WizardStepProps) => (
     />
   </Router>
 );
-
-const getBackwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
-  if (routeableProps.children) {
-    return (
-      <Button
-        onClick={() => window.history.back()}
-        text="Back"
-        textColor={palette.white}
-        left
-        color={palette.neutral["4"]}
-      />
-    );
-  }
-};
 
 const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
   if (
@@ -73,7 +96,7 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
           childProps.linkLabel ? childProps.linkLabel : "Continue Cancellation"
         }
         textColor={palette.white}
-        color={palette.neutral["4"]}
+        color={palette.neutral["2"]}
       />
     );
   }
