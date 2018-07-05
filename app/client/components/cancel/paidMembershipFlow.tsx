@@ -287,15 +287,13 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
     <h1
       css={{
         fontSize: "20px",
-        position: "relative",
-        marginLeft: "-50vw",
-        left: "calc(50% + 30px)"
+        position: "absolute",
+        left: "30px"
       }}
     >
-      {" "}
       Cancel your Guardian membership
     </h1>
-    <div css={{ height: "30px" }} />
+    <div css={{ height: "50px" }} />
     <CheckFlowIsValid
       checkingFor="membership"
       validator={(me: MeResponse) => me.contentAccess.paidMember}
