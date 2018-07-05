@@ -1,5 +1,5 @@
 {
-  "name": "account-frontend",
+  "name": "manage-frontend",
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
@@ -10,18 +10,18 @@
     "bundle-dev": "yarn bundle-dev-server && yarn bundle-dev-client",
     "bundle-dev-server": "webpack --config webpack.dev.server.js",
     "bundle-dev-client": "webpack --config webpack.dev.client.js",
-    "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --public account.thegulocal.com",
+    "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --public manage.thegulocal.com",
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged && tslint --fix -p .",
     "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
   },
-  "cloudformation": "../cloud-formation/account-frontend-cf.yaml",
+  "cloudformation": "../cfn.yaml",
   "riffraffFile": "../riff-raff.yaml",
   "uploadArtefact": true,
   "buildDir": "dist",
-  "projectName": "support:account-frontend",
+  "projectName": "support:manage-frontend",
   "main": "./dist/server",
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.51",

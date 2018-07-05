@@ -5,7 +5,7 @@ module.exports = merge(common.client, {
   devtool: "inline-source-map",
   mode: "development",
   devServer: {
-    host: "account.thegulocal.com",
+    host: "manage.thegulocal.com",
     port: 9234,
     inline: true,
     open: true,
