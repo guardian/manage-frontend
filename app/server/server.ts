@@ -31,6 +31,13 @@ if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
 }
 const globals: Globals = { domain: conf.DOMAIN };
 
+server.use(
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.header("Cache-Control", "private");
+    next();
+  }
+);
+
 server.use(helmet());
 
 server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
