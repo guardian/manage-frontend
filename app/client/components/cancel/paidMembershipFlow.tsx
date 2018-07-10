@@ -9,6 +9,7 @@ import {
   MembersDataApiResponse,
   MembershipAsyncLoader
 } from "../membership";
+import { PageContainer, PageContainerSection } from "../page";
 import { CancellationReason, MembersDataApiResponseContext } from "../user";
 import {
   MultiRouteableProps,
@@ -231,7 +232,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
             css={{
               backgroundColor: palette.neutral["6"],
               padding: "10px 20px",
-              margin: "0 -100px 40px -100px"
+              marginBottom: "40px"
             }}
           >
             <h4
@@ -260,20 +261,25 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
               </li>
             </ul>
           </div>
-          <h3>
-            Your support means we can remain independent, open to all readers
-            and empowered to hold those in power to account.
-          </h3>
-          <p>
-            Sorry to hear you are thinking of cancelling your membership.
-            <br />
-            Can you take a moment to tell us why?
-          </p>
-          <ReasonPicker
-            options={routeableProps.children.props.children.map(
-              childWithRouteablePropsToElement
-            )}
-          />
+
+          <PageContainerSection>
+            <h3>
+              Your support means we can remain independent, open to all readers
+              and empowered to hold those in power to account.
+            </h3>
+
+            <p>
+              Sorry to hear you are thinking of cancelling your membership.
+              <br />
+              Can you take a moment to tell us why?
+            </p>
+
+            <ReasonPicker
+              options={routeableProps.children.props.children.map(
+                childWithRouteablePropsToElement
+              )}
+            />
+          </PageContainerSection>
         </WizardStep>
       </MembersDataApiResponseContext.Provider>
     );
@@ -286,23 +292,23 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
   <div>
     <h1
       css={{
-        fontSize: "20px",
-        position: "absolute",
-        left: "30px"
+        fontSize: "20px"
       }}
     >
       Cancel your Guardian membership
     </h1>
-    <div css={{ height: "50px" }} />
-    <CheckFlowIsValid
-      checkingFor="membership"
-      validator={(me: MeResponse) => me.contentAccess.paidMember}
-    >
-      <MembershipAsyncLoader
-        fetch={loadMembershipData}
-        render={getReasonsRenderer(props)}
-        loadingMessage="Checking the status of your current membership..."
-      />
-    </CheckFlowIsValid>
+    <PageContainer>
+      <div css={{ height: "50px" }} />
+      <CheckFlowIsValid
+        checkingFor="membership"
+        validator={(me: MeResponse) => me.contentAccess.paidMember}
+      >
+        <MembershipAsyncLoader
+          fetch={loadMembershipData}
+          render={getReasonsRenderer(props)}
+          loadingMessage="Checking the status of your current membership..."
+        />
+      </CheckFlowIsValid>
+    </PageContainer>
   </div>
 );

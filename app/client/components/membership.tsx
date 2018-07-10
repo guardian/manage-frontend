@@ -4,6 +4,7 @@ import palette from "../colours";
 import AsyncLoader from "./asyncLoader";
 import { LinkButton } from "./buttons";
 import { CardDisplay } from "./card";
+import { PageContainer, PageContainerSection } from "./page";
 import { formatDate, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
 
@@ -119,11 +120,7 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
     }
 
     return (
-      <div
-        className={css({
-          padding: "25px"
-        })}
-      >
+      <div>
         <MembershipRow label={"Membership number"} data={data.regNumber} />
         <MembershipRow
           label={"Membership tier"}
@@ -151,12 +148,12 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
 };
 
 export const Membership = (props: RouteableProps) => (
-  <div>
-    <h1>Membership</h1>
+  <PageContainerSection>
+    <h1 css={{ marginBottom: "25px" }}>Membership</h1>
     <MembershipAsyncLoader
       fetch={loadMembershipData}
       render={renderMembershipData}
       loadingMessage="Loading your membership details..."
     />
-  </div>
+  </PageContainerSection>
 );

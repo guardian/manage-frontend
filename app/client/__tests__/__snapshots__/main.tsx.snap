@@ -79,8 +79,6 @@ exports[`Main renders something 1`] = `
       css={
         Object {
           "fontFamily": "\\"Guardian Text Egyptian Web\\",Georgia,serif",
-          "margin": "auto",
-          "maxWidth": "48.75rem",
           "padding": "30px",
         }
       }

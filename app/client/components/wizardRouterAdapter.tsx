@@ -3,6 +3,7 @@ import React from "react";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
+import { PageContainer, PageContainerSection } from "./page";
 import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps {
@@ -34,7 +35,7 @@ const estimateTotal = (currentStep: number, child: any) => {
 };
 
 export const ReturnToYourAccountButton = () => (
-  <div css={{ marginLeft: "-100px", marginTop: "50px" }}>
+  <div>
     <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
       <Button
         text="Return to your account"
@@ -47,8 +48,8 @@ export const ReturnToYourAccountButton = () => (
 );
 
 const RootComponent = (props: RootComponentProps) => (
-  <div>
-    <div css={{ padding: "0 100px 40px 100px" }}>
+  <PageContainer>
+    <PageContainerSection>
       <ProgressCounter
         current={props.routeableProps.currentStep}
         total={estimateTotal(
@@ -56,19 +57,18 @@ const RootComponent = (props: RootComponentProps) => (
           props.routeableProps.children
         )}
       />
-    </div>
+    </PageContainerSection>
+
     {props.thisStageChildren}
-    <div
-      css={{
-        marginTop: "50px",
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-    >
-      <ReturnToYourAccountButton />
-      <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
-    </div>
-  </div>
+
+    <PageContainerSection>
+      <div css={{ textAlign: "right", marginBottom: "50px" }}>
+        {getForwardNavigationIfApplicable(props.routeableProps)}
+      </div>
+    </PageContainerSection>
+
+    <ReturnToYourAccountButton />
+  </PageContainer>
 );
 
 const ThisStageContent = (props: WizardStepProps) => (

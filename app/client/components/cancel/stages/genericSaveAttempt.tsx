@@ -5,6 +5,7 @@ import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
+import { PageContainerSection } from "../../page";
 import {
   CancellationCaseIdContext,
   CancellationReason,
@@ -139,31 +140,33 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           sfProduct={props.sfProduct}
         >
           <WizardStep routeableProps={props}>
-            <h3>{props.reason.saveTitle}</h3>
-            <p>{props.reason.saveBody}</p>
-            {props.reason.skipFeedback ? (
-              undefined
-            ) : (
-              <div css={{ display: "flex" }}>
-                <span css={{ flexShrink: 0, paddingRight: "5px" }}>
-                  {props.reason.alternateCallUsPrefix || "To contact us"}
-                </span>
-                <CallCentreNumbers />
-              </div>
-            )}
-            <CancellationCaseIdContext.Consumer>
-              {caseId =>
-                caseId && !props.reason.skipFeedback ? (
-                  <FeedbackForm
-                    characterLimit={2500}
-                    caseId={caseId}
-                    reason={props.reason}
-                  />
-                ) : (
-                  undefined
-                )
-              }
-            </CancellationCaseIdContext.Consumer>
+            <PageContainerSection>
+              <h2>{props.reason.saveTitle}</h2>
+              <p>{props.reason.saveBody}</p>
+              {props.reason.skipFeedback ? (
+                undefined
+              ) : (
+                <div css={{ display: "flex", marginBottom: "50px" }}>
+                  <span css={{ flexShrink: 0, paddingRight: "5px" }}>
+                    {props.reason.alternateCallUsPrefix || "To contact us"}
+                  </span>
+                  <CallCentreNumbers />
+                </div>
+              )}
+              <CancellationCaseIdContext.Consumer>
+                {caseId =>
+                  caseId && !props.reason.skipFeedback ? (
+                    <FeedbackForm
+                      characterLimit={2500}
+                      caseId={caseId}
+                      reason={props.reason}
+                    />
+                  ) : (
+                    undefined
+                  )
+                }
+              </CancellationCaseIdContext.Consumer>
+            </PageContainerSection>
           </WizardStep>
         </CaseCreationWrapper>
       </CancellationReasonContext.Provider>
