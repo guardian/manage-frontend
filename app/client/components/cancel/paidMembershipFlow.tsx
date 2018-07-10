@@ -256,7 +256,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
                   css={{ textDecoration: "underline" }}
                   href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
                 >
-                  click here to find out how to access your premium app
+                  click here to find out about our brand new features
                 </a>
               </li>
             </ul>
