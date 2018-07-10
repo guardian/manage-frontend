@@ -86,8 +86,8 @@ export class Accordion extends React.Component<AccordionProps, AccordionState> {
                     }}
                   >
                     {index === this.state.selectedIndex
-                      ? svgDownCaret
-                      : svgUpCaret}
+                      ? svgUpCaret
+                      : svgDownCaret}
                   </div>
                 </div>
               </button>

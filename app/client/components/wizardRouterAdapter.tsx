@@ -4,6 +4,7 @@ import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { ProgressCounter } from "./progressCounter";
+import { PageContainer, PageContainerSection } from "./page";
 
 export interface RouteableProps {
   path: string;
@@ -47,8 +48,8 @@ export const ReturnToYourAccountButton = () => (
 );
 
 const RootComponent = (props: RootComponentProps) => (
-  <div>
-    <div css={{ padding: "0 100px 40px 100px" }}>
+  <PageContainer>
+    <PageContainerSection>
       <ProgressCounter
         current={props.routeableProps.currentStep}
         total={estimateTotal(
@@ -56,11 +57,12 @@ const RootComponent = (props: RootComponentProps) => (
           props.routeableProps.children
         )}
       />
-    </div>
+    </PageContainerSection>
+
     {props.thisStageChildren}
+
     <div
       css={{
-        marginTop: "50px",
         display: "flex",
         justifyContent: "space-between"
       }}
@@ -68,7 +70,7 @@ const RootComponent = (props: RootComponentProps) => (
       <ReturnToYourAccountButton />
       <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
     </div>
-  </div>
+  </PageContainer>
 );
 
 const ThisStageContent = (props: WizardStepProps) => (

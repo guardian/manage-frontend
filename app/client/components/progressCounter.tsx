@@ -68,7 +68,8 @@ export const ProgressCounter = ({
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        width: "100%"
+        width: "100%",
+        marginBottom: "40px"
       }}
     >
       {a}

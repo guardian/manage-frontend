@@ -3,9 +3,10 @@ import palette from "../../colours";
 import { Button } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { formatDate, Subscription } from "../user";
+import { PageContainerSection } from "../page";
 
 const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
-  <div>
+  <PageContainerSection>
     <h2>Your {cancelType} is cancelled.</h2>
     <p>
       You will continue to receive the benefits of your {cancelType} until{" "}
@@ -24,7 +25,7 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
         />
       </a>
     </div>
-  </div>
+  </PageContainerSection>
 );
 
 export const CancellationSummary = (cancelType: string) => (
