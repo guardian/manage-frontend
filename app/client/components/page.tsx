@@ -1,7 +1,4 @@
 import React from "react";
-import palette from "../colours";
-import Footer from "./footer";
-import Header from "./header";
 
 // Standard width, centered container
 export const PageContainer: React.SFC<{}> = ({ children }) => {
@@ -9,7 +6,7 @@ export const PageContainer: React.SFC<{}> = ({ children }) => {
     <div
       css={{
         maxWidth: "100%",
-        width: "57.5rem",
+        width: "54rem",
         margin: "auto"
       }}
     >
