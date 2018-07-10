@@ -13,6 +13,7 @@
     "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --public manage.thegulocal.com",
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "jest --coverage && yarn type-check && yarn lint ",
+    "updateSnapshot": "jest -u",
     "fix": "pretty-quick && tslint --fix -p .",
     "precommit": "pretty-quick --staged && tslint --fix -p .",
     "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
