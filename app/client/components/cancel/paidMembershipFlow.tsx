@@ -9,6 +9,7 @@ import {
   MembersDataApiResponse,
   MembershipAsyncLoader
 } from "../membership";
+import { PageContainer, PageContainerSection } from "../page";
 import { CancellationReason, MembersDataApiResponseContext } from "../user";
 import {
   MultiRouteableProps,
@@ -17,7 +18,6 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import { CancellationSummary } from "./cancellationSummary";
-import { PageContainer, PageContainerSection } from "../page";
 
 // Webpack doesn't like browser globals
 let domain;

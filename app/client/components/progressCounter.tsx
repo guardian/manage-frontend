@@ -69,7 +69,8 @@ export const ProgressCounter = ({
         justifyContent: "space-around",
         alignItems: "center",
         width: "100%",
-        marginBottom: "40px"
+        marginBottom: "40px",
+        padding: "0 100px"
       }}
     >
       {a}

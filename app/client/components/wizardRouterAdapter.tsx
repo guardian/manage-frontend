@@ -3,8 +3,8 @@ import React from "react";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
-import { ProgressCounter } from "./progressCounter";
 import { PageContainer, PageContainerSection } from "./page";
+import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps {
   path: string;
@@ -35,7 +35,7 @@ const estimateTotal = (currentStep: number, child: any) => {
 };
 
 export const ReturnToYourAccountButton = () => (
-  <div css={{ marginLeft: "-100px", marginTop: "50px" }}>
+  <div>
     <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
       <Button
         text="Return to your account"
@@ -61,15 +61,13 @@ const RootComponent = (props: RootComponentProps) => (
 
     {props.thisStageChildren}
 
-    <div
-      css={{
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-    >
-      <ReturnToYourAccountButton />
-      <div>{getForwardNavigationIfApplicable(props.routeableProps)}</div>
-    </div>
+    <PageContainerSection>
+      <div css={{ textAlign: "right", marginBottom: "50px" }}>
+        {getForwardNavigationIfApplicable(props.routeableProps)}
+      </div>
+    </PageContainerSection>
+
+    <ReturnToYourAccountButton />
   </PageContainer>
 );
 

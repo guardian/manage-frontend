@@ -2,8 +2,8 @@ import React from "react";
 import palette from "../../colours";
 import { Button } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { formatDate, Subscription } from "../user";
 import { PageContainerSection } from "../page";
+import { formatDate, Subscription } from "../user";
 
 const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
   <PageContainerSection>
