@@ -14,9 +14,9 @@ export const CallCentreNumbers = () => (
         <b>1800 773 766</b> (within Australia)
       </div>
       <div>
-        <b>+61 2076 8599</b> (outside Australia)
+        <b>+61 2​ 8​076 8599</b> (outside Australia)
       </div>
-      <div>9am - 5pm Monday - Friday (AEDT) ​​</div>
+      <div>9am - 5pm Monday - Friday (AEDT)</div>
     </div>
     <div title="Canada and USA">
       <div>
