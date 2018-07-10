@@ -10,11 +10,11 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
     <h2>Your {cancelType} is cancelled.</h2>
     <p>
       You will continue to receive the benefits of your {cancelType} until{" "}
-      <b>{formatDate(subscription.end)}</b>
+      <b>{formatDate(subscription.end)}</b>. You will not be charged again.
     </p>
     <p>
-      If you change your mind and wish to support the Guardian in the future,
-      you can do so below.
+      If you are interested in supporting our journalism in other ways, please
+      consider either a contribution or a subscription.
     </p>
     <div css={{ textAlign: "right" }}>
       <a href={`https://support.${window.guardian.domain}`}>

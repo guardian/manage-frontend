@@ -87,13 +87,15 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
     routeableProps.children.props.children &&
     !Array.isArray(routeableProps.children.props.children)
   ) {
-    const childProps: MultiRouteableProps =
+    const childProps: RouteableProps =
       routeableProps.children.props.children.props;
     return (
       <LinkButton
         to={childProps.path}
         text={
-          childProps.linkLabel ? childProps.linkLabel : "Continue Cancellation"
+          childProps.children && childProps.children.props.children
+            ? "Continue Cancellation"
+            : "Confirm Cancellation"
         }
         textColor={palette.white}
         color={palette.neutral["2"]}
