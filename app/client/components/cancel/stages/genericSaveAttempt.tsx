@@ -156,11 +156,14 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
               <CancellationCaseIdContext.Consumer>
                 {caseId =>
                   caseId && !props.reason.skipFeedback ? (
-                    <FeedbackForm
-                      characterLimit={2500}
-                      caseId={caseId}
-                      reason={props.reason}
-                    />
+                    <React.Fragment>
+                      <FeedbackForm
+                        characterLimit={2500}
+                        caseId={caseId}
+                        reason={props.reason}
+                      />
+                      <div css={{ height: "15px" }} />
+                    </React.Fragment>
                   ) : (
                     undefined
                   )
