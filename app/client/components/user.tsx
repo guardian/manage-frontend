@@ -6,10 +6,8 @@ import global from "../styles/global";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
-import {
-  membershipCancellationReasonMatrix,
-  PaidMembershipFlow
-} from "./cancel/paidMembershipFlow";
+import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
+import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/cancellationReasons";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { CardProps } from "./card";

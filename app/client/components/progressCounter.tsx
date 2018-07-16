@@ -1,9 +1,23 @@
 import React from "react";
 import palette from "../colours";
 import { css } from "../styles/emotion";
+import { minWidth } from "../styles/breakpoints";
 
 const RADIUS = 40;
 const FONT_SIZE = 16;
+
+const containerCss = css({
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  width: "100%",
+  marginBottom: "40px",
+  padding: "0 20px",
+
+  [minWidth.tablet]: {
+    padding: "0 100px"
+  }
+});
 
 const processCounterCss = (current: number, total: number, n: number) =>
   css({
@@ -33,10 +47,14 @@ const processCounterCss = (current: number, total: number, n: number) =>
 
 const spacerCss = css({
   height: "1px",
-  minWidth: `${RADIUS * 3}px`,
+  flexBasis: `${RADIUS * 3}px`,
   background: palette.neutral["2"],
-  margin: "0 20px",
-  flexGrow: "1"
+  flexGrow: "1",
+  margin: "0 10px",
+
+  [minWidth.phablet]: {
+    margin: "0 20px"
+  }
 });
 
 export const ProgressCounter = ({
@@ -62,18 +80,5 @@ export const ProgressCounter = ({
         </div>
       );
     });
-  return (
-    <div
-      css={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        width: "100%",
-        marginBottom: "40px",
-        padding: "0 100px"
-      }}
-    >
-      {a}
-    </div>
-  );
+  return <div className={containerCss}>{a}</div>;
 };

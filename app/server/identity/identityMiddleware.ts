@@ -1,6 +1,6 @@
 import express from "express";
 import url from "url";
-import { getUser, IdentityError } from "../../server/identity/identity";
+import { getUser, IdentityError } from "./identity";
 import { conf } from "../config";
 import { log } from "../log";
 
