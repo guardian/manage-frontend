@@ -1,5 +1,7 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
+import { minWidth } from "../../../styles/breakpoints";
+import { css } from "../../../styles/emotion";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
@@ -131,6 +133,24 @@ class FeedbackForm extends React.Component<
   }
 }
 
+const contactUsStyles = css({
+  margin: "0 0 10px",
+
+  [minWidth.phablet]: {
+    flexShrink: 0,
+    paddingRight: "5px",
+    margin: "0"
+  }
+});
+
+const callCenterStyles = css({
+  marginBottom: "50px",
+
+  [minWidth.phablet]: {
+    display: "flex"
+  }
+});
+
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
   <MembersDataApiResponseContext.Consumer>
     {membersDataApiResponse => (
@@ -146,8 +166,8 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
               {props.reason.skipFeedback ? (
                 undefined
               ) : (
-                <div css={{ display: "flex", marginBottom: "50px" }}>
-                  <span css={{ flexShrink: 0, paddingRight: "5px" }}>
+                <div className={callCenterStyles}>
+                  <span className={contactUsStyles}>
                     {props.reason.alternateCallUsPrefix || "To contact us"}
                   </span>
                   <CallCentreNumbers />
