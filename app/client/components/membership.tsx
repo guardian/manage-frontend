@@ -7,6 +7,7 @@ import { CardDisplay } from "./card";
 import { PageContainer, PageContainerSection } from "./page";
 import { formatDate, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
+import { minWidth } from "../styles/breakpoints";
 
 export interface MembershipData extends WithSubscription {
   regNumber?: string;
@@ -37,38 +38,35 @@ interface MembershipRowProps {
   data: string | React.ReactNode;
 }
 
+const membershipRowStyles = css({
+  textAlign: "left",
+  marginBottom: "15px",
+  verticalAlign: "top",
+
+  [minWidth.phablet]: {
+    display: "flex"
+  }
+});
+
 const MembershipRow = (props: MembershipRowProps) => {
   return (
-    <div
-      className={css({
-        textAlign: "left",
-        height: "48px",
-        marginBottom: "12px"
-      })}
-    >
+    <div className={membershipRowStyles}>
       <div
-        className={css({
-          display: "table-cell",
-          width: "320px",
-          paddingRight: "100px",
-          verticalAlign: "top"
-        })}
+        css={{
+          flexBasis: "320px"
+        }}
       >
-        <h2
-          className={css({
-            fontSize: "18px"
-          })}
+        <p
+          css={{
+            fontSize: "18px",
+            margin: "0 0 5px 0",
+            fontWeight: "bold"
+          }}
         >
           {props.label}
-        </h2>
+        </p>
       </div>
-      <div
-        className={css({
-          display: "table-cell"
-        })}
-      >
-        {props.data}
-      </div>
+      <div>{props.data}</div>
     </div>
   );
 };
