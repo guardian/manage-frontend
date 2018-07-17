@@ -1,6 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main renders something 1`] = `
+.emotion-1 {
+  position: absolute;
+  top: 0.375rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 0.125rem solid #ffffff;
+  border-bottom: 0;
+  border-right: 0;
+  height: 0.7rem;
+  width: 0.7rem;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
 .emotion-0 {
   width: 56px;
 }
@@ -102,6 +119,8 @@ exports[`Main renders something 1`] = `
       <div
         css={
           Object {
+            "display": "flex",
+            "justifyContent": "flex-end",
             "lineHeight": "42px",
             "margin": "auto",
             "maxWidth": "71.25rem",
@@ -113,11 +132,30 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "color": "#121212",
+              "display": "flex",
             }
           }
           href="#top"
         >
           back to top
+          <span
+            css={
+              Object {
+                "backgroundColor": "#121212",
+                "borderRadius": "50%",
+                "display": "inline-block",
+                "height": "48px",
+                "marginLeft": "10px",
+                "minWidth": "48px",
+                "position": "relative",
+                "transform": "translateY(-6px)",
+              }
+            }
+          >
+            <i
+              className="emotion-1"
+            />
+          </span>
         </a>
       </div>
     </div>
