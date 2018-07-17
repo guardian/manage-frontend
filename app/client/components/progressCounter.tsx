@@ -1,7 +1,7 @@
 import React from "react";
 import palette from "../colours";
-import { css } from "../styles/emotion";
 import { minWidth } from "../styles/breakpoints";
+import { css } from "../styles/emotion";
 
 const RADIUS = 40;
 const FONT_SIZE = 16;

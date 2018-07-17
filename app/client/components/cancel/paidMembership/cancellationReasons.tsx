@@ -1,5 +1,5 @@
-import { CancellationReason } from "../../user";
 import React from "react";
+import { CancellationReason } from "../../user";
 
 // Webpack doesn't like browser globals
 let domain;

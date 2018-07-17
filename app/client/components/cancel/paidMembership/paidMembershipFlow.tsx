@@ -1,6 +1,7 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
 import palette from "../../../colours";
+import { minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { CheckFlowIsValid, MeResponse } from "../../cancellationFlowWrapper";
 import {
@@ -18,7 +19,6 @@ import {
   WizardStep
 } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
-import { minWidth } from "../../../styles/breakpoints";
 
 interface ReasonPickerProps {
   options: ReactNode[];
