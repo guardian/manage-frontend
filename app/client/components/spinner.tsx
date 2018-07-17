@@ -27,7 +27,8 @@ export const Spinner = (props: LoadingProps) => (
         width: "40px",
         height: "40px",
         animation: "spin 2s linear infinite",
-        margin: "10px"
+        margin: "10px",
+        flexShrink: 0
       }}
     />
     {props.loadingMessage}
