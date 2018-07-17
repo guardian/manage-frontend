@@ -1,36 +1,44 @@
 import React from "react";
+import { initGA } from "../analytics";
 import palette from "../colours";
 import Footer from "./footer";
 import Header from "./header";
 
-export const Main: React.SFC<{}> = ({ children }) => {
-  return (
-    <div
-      css={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        alignItems: "stretch",
-        width: "100%",
-        color: palette.neutral["2"]
-      }}
-    >
-      <Header />
+export class Main extends React.PureComponent<{}> {
+  public componentDidMount(): void {
+    initGA();
+  }
+
+  public render(): React.ReactNode {
+    const children = this.props.children;
+    return (
       <div
         css={{
-          flex: "1"
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          alignItems: "stretch",
+          width: "100%",
+          color: palette.neutral["2"]
         }}
       >
-        <main
+        <Header />
+        <div
           css={{
-            padding: "30px",
-            fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
+            flex: "1"
           }}
         >
-          {children}
-        </main>
+          <main
+            css={{
+              padding: "30px",
+              fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
+            }}
+          >
+            {children}
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
-};
+    );
+  }
+}

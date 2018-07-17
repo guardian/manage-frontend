@@ -1,22 +1,44 @@
 declare global {
   interface Window {
-    dataLayer?: any[][];
+    ga?: any;
   }
 }
 
-// tslint:disable-next-line:no-object-mutation
-
-export const gtag = (...args: any[]) => {
-  // tslint:disable-next-line:no-object-mutation
-  window.dataLayer = window.dataLayer || [];
-
-  window.dataLayer.push(args);
+const initGA = () => {
+  const { ga } = window;
+  ga("create", "UA-51507017-5", "auto");
+  ga("set", "transport", "beacon");
+  ga("send", "pageview");
+  return ga;
 };
 
-gtag("config", "UA-51507017-5");
-
-export const trackPath = ((previous = "") => (path: string) => {
+const trackPath = ((previous = "") => (path: string) => {
   if (path !== previous) {
-    gtag("config", "UA-51507017-5", { page_path: path });
+    window.ga("send", "pageview", path);
   }
 })();
+
+interface Event {
+  eventCategory: string;
+  eventAction: string;
+  eventLabel?: string;
+  eventValue?: number;
+}
+
+const trackEvent = ({
+  eventCategory,
+  eventAction,
+  eventLabel,
+  eventValue
+}: Event) => {
+  window.ga(
+    "send",
+    "event",
+    eventCategory,
+    eventAction,
+    eventLabel,
+    eventValue
+  );
+};
+
+export { initGA, trackPath, trackEvent };
