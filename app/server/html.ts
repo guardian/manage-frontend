@@ -45,6 +45,7 @@ const html: (
       <title>${title}</title>
       ${insertGlobals(globals)}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/48bc5564bb01b74cf7cd1a08ae0dd98e/32x32.ico" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body style="margin:0">
       <div id="app">${body}</div>

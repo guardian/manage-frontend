@@ -76,7 +76,7 @@ export class Accordion extends React.Component<AccordionProps, AccordionState> {
                     alignItems: "center"
                   }}
                 >
-                  <span css={{ flexShrink: 0 }}>{child.props.title}</span>
+                  <span css={{ maxWidth: "100%" }}>{child.props.title}</span>
                   <div
                     css={{
                       height: "13px",
