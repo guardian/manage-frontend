@@ -5,15 +5,17 @@ declare global {
 }
 
 const initGA = () => {
-  const { ga } = window;
-  ga("create", "UA-51507017-5", "auto");
-  ga("set", "transport", "beacon");
-  ga("send", "pageview");
-  return ga;
+  if (window.ga) {
+    const { ga } = window;
+    ga("create", "UA-51507017-5", "auto");
+    ga("set", "transport", "beacon");
+    ga("send", "pageview");
+    return ga;
+  }
 };
 
 const trackPath = ((previous = "") => (path: string) => {
-  if (path !== previous) {
+  if (path !== previous && window.ga) {
     window.ga("send", "pageview", path);
   }
 })();
@@ -31,14 +33,16 @@ const trackEvent = ({
   eventLabel,
   eventValue
 }: Event) => {
-  window.ga(
-    "send",
-    "event",
-    eventCategory,
-    eventAction,
-    eventLabel,
-    eventValue
-  );
+  if (window.ga) {
+    window.ga(
+      "send",
+      "event",
+      eventCategory,
+      eventAction,
+      eventLabel,
+      eventValue
+    );
+  }
 };
 
 export { initGA, trackPath, trackEvent };
