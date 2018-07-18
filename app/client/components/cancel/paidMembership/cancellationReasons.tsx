@@ -39,7 +39,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
       "If there’s anything we can do differently please take a moment to call our customer services team we would be happy to hear from you."
   },
   {
-    reasonId: "mma_none",
+    reasonId: "mma_benefits",
     linkLabel: "None of the membership benefits are of interest to me",
     saveTitle:
       "In order to improve our membership programme, we’d love to know more about why you are thinking of cancelling",
@@ -68,7 +68,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     skipFeedback: true
   },
   {
-    reasonId: "mma_break", // TODO think this needs to be added to zuora
+    reasonId: "mma_break_from_news",
     linkLabel: "I am taking a break from news",
     saveTitle:
       "We understand that sometimes the news cycle can feel a little overwhelming.",

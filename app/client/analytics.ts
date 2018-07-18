@@ -20,7 +20,7 @@ const trackPath = ((previous = "") => (path: string) => {
   }
 })();
 
-interface Event {
+export interface Event {
   eventCategory: string;
   eventAction: string;
   eventLabel?: string;
