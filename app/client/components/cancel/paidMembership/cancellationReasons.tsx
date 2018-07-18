@@ -68,7 +68,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     skipFeedback: true
   },
   {
-    reasonId: "mma_break", // TODO think this needs to be added to zuora
+    reasonId: "mma_break_from_news",
     linkLabel: "I am taking a break from news",
     saveTitle:
       "We understand that sometimes the news cycle can feel a little overwhelming.",
