@@ -39,7 +39,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
       "If there’s anything we can do differently please take a moment to call our customer services team we would be happy to hear from you."
   },
   {
-    reasonId: "mma_none",
+    reasonId: "mma_benefits",
     linkLabel: "None of the membership benefits are of interest to me",
     saveTitle:
       "In order to improve our membership programme, we’d love to know more about why you are thinking of cancelling",
