@@ -50,12 +50,6 @@ class FeedbackForm extends React.Component<
       feedback: "",
       hasHitSubmit: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  public handleChange(event: ChangeEvent<HTMLTextAreaElement>): void {
-    this.setState({ feedback: event.target.value });
   }
 
   public render(): React.ReactNode {
@@ -109,13 +103,17 @@ class FeedbackForm extends React.Component<
     );
   }
 
-  private submitFeedback(): void {
+  private handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ feedback: event.target.value });
+  };
+
+  private submitFeedback = () => {
     this.setState({ hasHitSubmit: true });
     trackEvent({
       eventCategory: "feedback",
       eventAction: "submitted"
     });
-  }
+  };
 
   private getFeedbackThankYouRenderer(
     reason: CancellationReason
