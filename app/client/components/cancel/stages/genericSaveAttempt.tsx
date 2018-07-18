@@ -1,4 +1,5 @@
 import React, { ChangeEvent, ReactNode } from "react";
+import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { css } from "../../../styles/emotion";
@@ -49,12 +50,6 @@ class FeedbackForm extends React.Component<
       feedback: "",
       hasHitSubmit: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  public handleChange(event: ChangeEvent<HTMLTextAreaElement>): void {
-    this.setState({ feedback: event.target.value });
   }
 
   public render(): React.ReactNode {
@@ -97,7 +92,7 @@ class FeedbackForm extends React.Component<
             characters remaining
           </div>
           <Button
-            onClick={() => this.setState({ hasHitSubmit: true })}
+            onClick={this.submitFeedback}
             text="Submit Feedback"
             textColor={palette.white}
             color={palette.neutral["2"]}
@@ -107,6 +102,18 @@ class FeedbackForm extends React.Component<
       </div>
     );
   }
+
+  private handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ feedback: event.target.value });
+  };
+
+  private submitFeedback = () => {
+    this.setState({ hasHitSubmit: true });
+    trackEvent({
+      eventCategory: "feedback",
+      eventAction: "submitted"
+    });
+  };
 
   private getFeedbackThankYouRenderer(
     reason: CancellationReason
