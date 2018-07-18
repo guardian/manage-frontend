@@ -11,8 +11,8 @@ exports[`Main renders something 1`] = `
   border: 0.125rem solid #ffffff;
   border-bottom: 0;
   border-right: 0;
-  height: 0.7rem;
-  width: 0.7rem;
+  height: 11px;
+  width: 11px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
