@@ -201,7 +201,7 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
       <div css={{ height: "50px" }} />
       <CheckFlowIsValid
         checkingFor="membership"
-        validator={(me: MeResponse) => me.contentAccess.paidMember}
+        validator={(me: MeResponse) => me.contentAccess.member}
       >
         <MembershipAsyncLoader
           fetch={loadMembershipData}
