@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from "../../node_modules/emotion";
-import palette from "../colours";
 import { conf } from "../../server/config";
+import palette from "../colours";
 
 const navToggleCss = css({
   display: "flex",
@@ -93,7 +93,7 @@ const signOutIcon = (
 );
 
 let domain;
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {
   domain = conf.DOMAIN;
