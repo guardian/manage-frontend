@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main renders something 1`] = `
-.emotion-1 {
+.emotion-12 {
   position: absolute;
   top: 0.375rem;
   bottom: 0;
@@ -19,6 +19,92 @@ exports[`Main renders something 1`] = `
 }
 
 .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.emotion-0::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  -webkit-transform: translateY(-2px) rotate(45deg);
+  -ms-transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-2px) rotate(45deg);
+  border: 1px solid currentColor;
+  border-left: transparent;
+  border-top: transparent;
+  margin-left: 5px;
+  -webkit-transition: .25s ease-out;
+  transition: .25s ease-out;
+}
+
+.emotion-1 {
+  font-size: 0.9375rem;
+  padding: 7px 20px 15px 30px;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: currentColor;
+  white-space: nowrap;
+  position: relative;
+  margin-top: -1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1:hover {
+  background-color: #ececec;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4 {
+  height: 0.0625rem;
+  background: #ececec;
+  border: 0;
+  display: block;
+  margin: 0 0 0 1.875rem;
+}
+
+.emotion-10 {
+  display: none;
+  background: #ffffff;
+  position: absolute;
+  left: 0px;
+  top: 2.2rem;
+  z-index: 1071;
+  list-style: none;
+  line-height: 1.375rem;
+  box-shadow: 0 0 0 0.0625rem rgba(0,0,0,0.1);
+  border-radius: 0.1875rem;
+  margin: 0;
+  padding: 0.375rem 0;
+  overflow: hidden;
+}
+
+.emotion-10 li {
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-11 {
   width: 56px;
 }
 
@@ -42,23 +128,159 @@ exports[`Main renders something 1`] = `
         "borderBottomStyle": "solid",
         "borderBottomWidth": "0.8px",
         "color": "#121212",
-        "height": "2.8125rem",
+        "height": "3rem",
       }
     }
   >
     <div
       css={
         Object {
+          "display": "flex",
           "fontSize": "0.875rem",
+          "justifyContent": "space-between",
           "lineHeight": "2.8125rem",
           "margin": "auto",
-          "maxWidth": "71.25rem",
+          "maxWidth": "980px",
           "paddingLeft": "1.25rem",
           "paddingRight": "1.25rem",
         }
       }
     >
-      <span />
+      <nav
+        css={
+          Object {
+            "position": "relative",
+          }
+        }
+      >
+        <span
+          className="emotion-0"
+          onClick={[Function]}
+        >
+          My account
+        </span>
+        <ul
+          className="emotion-10"
+        >
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/public/edit"
+            >
+              <span>
+                Public profile
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/account/edit"
+            >
+              <span>
+                Account details
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/email-prefs"
+            >
+              <span>
+                Emails & marketing
+              </span>
+            </a>
+          </li>
+          <hr
+            className="emotion-4"
+          />
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/membership/edit"
+            >
+              <span>
+                Membership
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/contribution/recurring/edit"
+            >
+              <span>
+                Contributions
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/digitalpack/edit"
+            >
+              <span>
+                Digital Pack
+              </span>
+            </a>
+          </li>
+          <hr
+            className="emotion-4"
+          />
+          <li>
+            <a
+              className="emotion-1"
+              href="https://profile.thegulocal.com/signout"
+            >
+              <span
+                css={
+                  Object {
+                    " svg": Object {
+                      "display": "block",
+                    },
+                    "display": "block",
+                    "height": "0.8em",
+                    "marginRight": "5px",
+                    "width": "0.8em",
+                  }
+                }
+              >
+                <svg
+                  fill="none"
+                  height="100%"
+                  viewBox="0 0 20 22"
+                  width="100%"
+                >
+                  <g
+                    clipPath="url(#a)"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
+                      fill="#333"
+                      fillRule="evenodd"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath
+                      id="a"
+                    >
+                      <path
+                        d="M0 0h20v22H0z"
+                        fill="#fff"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+              <span>
+                Sign out
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       <a
         css={
           Object {
@@ -69,7 +291,7 @@ exports[`Main renders something 1`] = `
         href="https://www.theguardian.com"
       >
         <svg
-          className="emotion-0"
+          className="emotion-11"
           viewBox="0 0 56 56"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -153,7 +375,7 @@ exports[`Main renders something 1`] = `
             }
           >
             <i
-              className="emotion-1"
+              className="emotion-12"
             />
           </span>
         </a>
