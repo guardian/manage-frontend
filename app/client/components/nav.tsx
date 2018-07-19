@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from "../../node_modules/emotion";
-import palette from "../colours";
 import { conf } from "../../server/config";
+import palette from "../colours";
 
 const navToggleCss = css({
   display: "flex",
@@ -71,11 +71,7 @@ const navBorderCss = css({
 });
 
 const signOutIcon = (
-  <svg
-    css={{ display: "block", height: "0.8em", width: "0.8em" }}
-    viewBox="0 0 20 22"
-    fill="none"
-  >
+  <svg width="100%" height="100%" viewBox="0 0 20 22" fill="none">
     <g clipPath="url(#a)">
       <path
         fillRule="evenodd"
@@ -93,7 +89,7 @@ const signOutIcon = (
 );
 
 let domain;
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {
   domain = conf.DOMAIN;
@@ -167,7 +163,17 @@ export class Nav extends React.Component {
               <li>
                 <a href={item.link} className={navItemCss}>
                   {item.icon ? (
-                    <span css={{ marginRight: "5px" }}>{item.icon}</span>
+                    <span
+                      css={{
+                        marginRight: "5px",
+                        display: "block",
+                        height: "0.8em",
+                        width: "0.8em",
+                        " svg": { display: "block" }
+                      }}
+                    >
+                      {item.icon}
+                    </span>
                   ) : (
                     false
                   )}
