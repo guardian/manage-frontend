@@ -1,6 +1,7 @@
 import React from "react";
 import { css } from "../../node_modules/emotion";
 import palette from "../colours";
+import { conf } from "../../server/config";
 
 const navToggleCss = css({
   display: "flex",
@@ -91,10 +92,11 @@ const signOutIcon = (
   </svg>
 );
 
-//Webpack + window = pain
 let domain;
 if (typeof window !== "undefined") {
   domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
 }
 
 const profileHostName = `https://profile.${domain}`;
@@ -114,7 +116,7 @@ export class Nav extends React.Component {
   public navItems: NavItem[] = [
     // {
     //   title: "Comments & replies",
-    //   link: `${profileHostName}/user/id/${userId}`
+    //   link: `/profile/user`
     // },
     {
       title: "Public profile",
