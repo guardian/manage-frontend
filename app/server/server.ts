@@ -6,6 +6,7 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { MeResponse } from "../shared/meResponse";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -120,6 +121,41 @@ server.patch(
   sfCasesApiHandler("case/:caseId", ["caseId"]),
   withIdentity
 );
+
+const goToProfile = (req: express.Request, res: express.Response) => {
+  if (res.locals.identity == null) {
+    // Check if the identity middleware is loaded for this route.
+    // Refactor this.
+    log.error("Identity not present in locals.");
+    res.status(500).send("Something broke!");
+    return;
+  }
+
+  const identity: IdentityUser = res.locals.identity;
+
+  fetch(`https://members-data-api.${conf.DOMAIN}/user-attributes/me`, {
+    method: req.method,
+    body: Buffer.isBuffer(req.body) ? req.body : undefined,
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
+    }
+  })
+    .then(_ => {
+      res.status(_.status);
+      return _.text();
+    })
+    .then(me => {
+      const userId = JSON.parse(me).userId;
+      res.redirect(`https://profile.theguardian.com/user/id/${userId}`);
+    })
+    .catch(e => {
+      log.info(e);
+      res.status(500).send("Something broke!");
+    });
+};
+
+server.get("/profile/user", goToProfile, withIdentity);
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use((req: express.Request, res: express.Response) => {
