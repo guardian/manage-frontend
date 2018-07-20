@@ -13,6 +13,7 @@ export interface MembershipData extends WithSubscription {
   regNumber?: string;
   tier: string;
   isPaidTier: boolean;
+  joinDate: string;
 }
 
 export type MembersDataApiResponse = MembershipData | {};
@@ -88,10 +89,6 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
       paymentPart = (
         <React.Fragment>
           <MembershipRow
-            label={"Start date"}
-            data={formatDate(data.subscription.start)}
-          />
-          <MembershipRow
             label={"Next payment date"}
             data={formatDate(data.subscription.nextPaymentDate)}
           />
@@ -119,7 +116,11 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
 
     return (
       <div>
-        <MembershipRow label={"Membership number"} data={data.regNumber} />
+        {data.regNumber ? (
+          <MembershipRow label={"Membership number"} data={data.regNumber} />
+        ) : (
+          undefined
+        )}
         <MembershipRow
           label={"Membership tier"}
           data={
@@ -137,6 +138,10 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
               )}
             </React.Fragment>
           }
+        />
+        <MembershipRow
+          label={"Start date"}
+          data={formatDate(data.subscription.start || data.joinDate)}
         />
         {paymentPart}
       </div>

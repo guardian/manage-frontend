@@ -6,7 +6,6 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
-import { MeResponse } from "../shared/meResponse";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";

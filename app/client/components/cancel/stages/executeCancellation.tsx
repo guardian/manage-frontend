@@ -28,16 +28,15 @@ export const getCancelFunc = (
     | WithSubscription
     | {} = await withSubscriptionPromiseFetcher();
 
-  const subscriptionPromise = Promise.resolve(
-    (mightHaveSubscription as WithSubscription).subscription
-  );
+  const subscription =
+    (mightHaveSubscription as WithSubscription).subscription || {};
 
   await getUpdateCasePromise(caseId, {
     Journey__c: "SV - Cancellation - MB",
     Subject: "Online Cancellation Completed"
   });
 
-  return subscriptionPromise;
+  return Promise.resolve(subscription);
 };
 
 export interface ExecuteCancellationRouteableProps extends RouteableProps {
