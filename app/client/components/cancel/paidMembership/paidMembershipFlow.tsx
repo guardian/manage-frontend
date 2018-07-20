@@ -186,7 +186,12 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
     );
   }
 
-  return <h2>No Membership</h2>;
+  return (
+    <>
+      <h2>No Membership</h2>
+      <ReturnToYourAccountButton />
+    </>
+  );
 };
 
 export const PaidMembershipFlow = (props: RouteableProps) => (

@@ -5,16 +5,16 @@ import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";
 import { formatDate, Subscription } from "../user";
 
-const actuallyCancelled = (cancelType: string, subscription?: Subscription) => (
+const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
   <PageContainerSection>
     <h2>Your {cancelType} is cancelled.</h2>
-    {subscription ? (
+    {subscription.end ? (
       <p>
         You will continue to receive the benefits of your {cancelType} until{" "}
         <b>{formatDate(subscription.end)}</b>. You will not be charged again.
       </p>
     ) : (
-      undefined
+      <p>Your cancellation is effective immediately.</p>
     )}
     <p>
       If you are interested in supporting our journalism in other ways, please
@@ -33,9 +33,9 @@ const actuallyCancelled = (cancelType: string, subscription?: Subscription) => (
 );
 
 export const CancellationSummary = (cancelType: string) => (
-  subscription?: Subscription
+  subscription: Subscription
 ) =>
-  subscription && subscription.cancelledAt ? (
+  Object.keys(subscription).length === 0 || subscription.cancelledAt ? (
     actuallyCancelled(cancelType, subscription)
   ) : (
     <GenericErrorScreen />
