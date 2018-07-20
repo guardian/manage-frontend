@@ -6,6 +6,7 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { MeResponse } from "../shared/meResponse";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -51,7 +52,9 @@ server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
 
-const apiHandler = (basePath: string) => (
+type JsonHandler = (res: express.Response, jsonString: string) => void;
+
+const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
   path: string,
   pathParamNamesToReplace: string[] = []
 ) => (req: express.Request, res: express.Response) => {
@@ -83,17 +86,19 @@ const apiHandler = (basePath: string) => (
       res.status(_.status);
       return _.text();
     })
-    .then(_ => res.send(_))
+    .then(_ => jsonHandler(res, _))
     .catch(e => {
       log.info(e);
       res.status(500).send("Something broke!");
     });
 };
 
-const membersDataApiHandler = apiHandler(
+const proxyApiHandler = apiHandler((res, jsonString) => res.send(jsonString));
+
+const membersDataApiHandler = proxyApiHandler(
   "https://members-data-api." + conf.DOMAIN
 );
-const sfCasesApiHandler = apiHandler(conf.SF_CASES_URL);
+const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
 server.get(
   "/api/me",
@@ -118,6 +123,22 @@ server.post("/api/case", sfCasesApiHandler("case"), withIdentity);
 server.patch(
   "/api/case/:caseId",
   sfCasesApiHandler("case/:caseId", ["caseId"]),
+  withIdentity
+);
+
+const profileRedirectHandler: JsonHandler = (
+  res: express.Response,
+  meJsonString: string
+) => {
+  const userId = JSON.parse(meJsonString).userId;
+  res.redirect(`https://profile.${conf.DOMAIN}/user/id/${userId}`);
+};
+
+server.get(
+  "/profile/user",
+  apiHandler(profileRedirectHandler)("https://members-data-api." + conf.DOMAIN)(
+    "user-attributes/me"
+  ),
   withIdentity
 );
 

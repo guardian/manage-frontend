@@ -110,10 +110,10 @@ export class Nav extends React.Component {
   };
 
   public navItems: NavItem[] = [
-    // {
-    //   title: "Comments & replies",
-    //   link: `/profile/user`
-    // },
+    {
+      title: "Comments & replies",
+      link: `/profile/user`
+    },
     {
       title: "Public profile",
       link: `${profileHostName}/public/edit`

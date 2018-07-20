@@ -1,9 +1,10 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
+import { MeResponse } from "../../../../shared/meResponse";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
-import { CheckFlowIsValid, MeResponse } from "../../cancellationFlowWrapper";
+import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import {
   hasMembership,
   loadMembershipData,
