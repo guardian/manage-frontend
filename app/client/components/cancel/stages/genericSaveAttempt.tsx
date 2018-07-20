@@ -1,3 +1,4 @@
+import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
@@ -55,11 +56,17 @@ class FeedbackForm extends React.Component<
   public render(): React.ReactNode {
     if (this.state.hasHitSubmit) {
       return (
-        <CaseUpdateAsyncLoader
-          loadingMessage="Storing your feedback..."
-          fetch={getPatchUpdateCaseFunc(this.state.feedback, this.props.caseId)}
-          render={this.getFeedbackThankYouRenderer(this.props.reason)}
-        />
+        <>
+          <CaseUpdateAsyncLoader
+            loadingMessage="Storing your feedback..."
+            fetch={getPatchUpdateCaseFunc(
+              this.state.feedback,
+              this.props.caseId
+            )}
+            render={this.getFeedbackThankYouRenderer(this.props.reason)}
+          />
+          <ConfirmCancellationButton reasonId={this.props.reason.reasonId} />
+        </>
       );
     }
     return (
@@ -97,6 +104,17 @@ class FeedbackForm extends React.Component<
             textColor={palette.white}
             color={palette.neutral["2"]}
             disabled={this.state.feedback.length === 0}
+          />
+          <ConfirmCancellationButton
+            reasonId={this.props.reason.reasonId}
+            onClick={() => {
+              if (this.state.feedback.length > 0) {
+                getPatchUpdateCaseFunc(
+                  this.state.feedback,
+                  this.props.caseId
+                )();
+              }
+            }}
           />
         </div>
       </div>
@@ -158,6 +176,36 @@ const callCenterStyles = css({
   }
 });
 
+interface ConfirmCancellationButtonProps {
+  onClick?: () => any;
+  reasonId: string;
+}
+
+const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
+  <div
+    css={{
+      [minWidth.tablet]: {
+        transform: "translateY(51px)",
+        margin: 0
+      },
+      marginTop: "15px",
+      textAlign: "right"
+    }}
+  >
+    <Button
+      text="Confirm Cancellation"
+      textColor={palette.white}
+      color={palette.neutral["2"]}
+      onClick={() => {
+        if (props.onClick) {
+          props.onClick();
+        }
+        navigate(props.reasonId + "/confirmed");
+      }}
+    />
+  </div>
+);
+
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
   <MembersDataApiResponseContext.Consumer>
     {membersDataApiResponse => (
@@ -183,16 +231,15 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
               <CancellationCaseIdContext.Consumer>
                 {caseId =>
                   caseId && !props.reason.skipFeedback ? (
-                    <React.Fragment>
-                      <FeedbackForm
-                        characterLimit={2500}
-                        caseId={caseId}
-                        reason={props.reason}
-                      />
-                      <div css={{ height: "15px" }} />
-                    </React.Fragment>
+                    <FeedbackForm
+                      characterLimit={2500}
+                      caseId={caseId}
+                      reason={props.reason}
+                    />
                   ) : (
-                    undefined
+                    <ConfirmCancellationButton
+                      reasonId={props.reason.reasonId}
+                    />
                   )
                 }
               </CancellationCaseIdContext.Consumer>
