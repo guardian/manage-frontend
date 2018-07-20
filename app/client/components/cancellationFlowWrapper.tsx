@@ -1,23 +1,7 @@
 import React from "react";
+import { MeResponse } from "../../shared/meResponse";
 import AsyncLoader from "./asyncLoader";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { PageContainerSection } from "./page";
-
-export interface MeResponse {
-  userId: string;
-  tier: string;
-  membershipJoinDate: string;
-  contentAccess: {
-    member: boolean;
-    paidMember: boolean;
-    recurringContributor: boolean;
-    digitalPack: boolean;
-  };
-}
-
-const fetchMe: () => Promise<MeResponse> = async () => {
-  return (await fetch("/api/me", { credentials: "include" })).json();
-};
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
@@ -27,6 +11,10 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   ) : (
     <GenericErrorScreen />
   );
+
+const fetchMe: () => Promise<MeResponse> = async () => {
+  return (await fetch("/api/me", { credentials: "include" })).json();
+};
 
 class MeAsyncLoader extends AsyncLoader<MeResponse> {}
 

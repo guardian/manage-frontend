@@ -8,7 +8,7 @@ const Header = () => (
     css={{
       backgroundColor: palette.neutral.header,
       color: palette.neutral["1"],
-      height: "2.8125rem",
+      height: "3rem",
       borderBottomWidth: "0.8px",
       borderBottomColor: "rgba(0, 0, 0, 0.14)",
       borderBottomStyle: "solid"
@@ -18,10 +18,12 @@ const Header = () => (
       css={{
         paddingLeft: "1.25rem",
         paddingRight: "1.25rem",
-        maxWidth: "71.25rem",
+        maxWidth: "980px",
         margin: "auto",
         fontSize: "0.875rem",
-        lineHeight: "2.8125rem"
+        lineHeight: "2.8125rem",
+        display: "flex",
+        justifyContent: "space-between"
       }}
     >
       <Nav />
