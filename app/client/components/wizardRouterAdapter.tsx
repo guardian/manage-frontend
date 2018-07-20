@@ -1,6 +1,5 @@
 import { Router } from "@reach/router";
 import React from "react";
-import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
@@ -35,7 +34,7 @@ const estimateTotal = (currentStep: number, child: any) => {
 };
 
 export const ReturnToYourAccountButton = () => (
-  <div>
+  <div css={{ marginTop: "15px" }}>
     <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
       <Button
         text="Return to your account"
@@ -60,12 +59,6 @@ const RootComponent = (props: RootComponentProps) => (
     </PageContainerSection>
 
     {props.thisStageChildren}
-
-    <PageContainerSection>
-      <div css={{ textAlign: "right", marginBottom: "50px" }}>
-        {getForwardNavigationIfApplicable(props.routeableProps)}
-      </div>
-    </PageContainerSection>
 
     <ReturnToYourAccountButton />
   </PageContainer>
