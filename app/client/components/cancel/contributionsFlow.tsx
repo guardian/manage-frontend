@@ -1,5 +1,6 @@
 import React from "react";
-import { CheckFlowIsValid, MeResponse } from "../cancellationFlowWrapper";
+import { CheckFlowIsValid } from "../cancellationFlowWrapper";
+import { MeResponse } from "../../../shared/meResponse";
 import { RouteableProps } from "../wizardRouterAdapter";
 
 export const ContributionsFlow = (props: RouteableProps) => (

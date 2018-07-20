@@ -1,5 +1,5 @@
-import { css } from "./emotion";
 import { BreakpointQueries, minWidth, SomeBreakPoints } from "./breakpoints";
+import { css } from "./emotion";
 
 const gutter = 20;
 const baseline = 12;
