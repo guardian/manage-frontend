@@ -15,7 +15,11 @@ const definePlugin = new webpack.DefinePlugin({
 const nodeExternals = require("webpack-node-externals");
 
 const babelCommon = {
-  presets: ["@babel/env", "@babel/typescript", "@babel/react"],
+  presets: [
+    ["@babel/env", { targets: { browsers: ["last 2 versions"] } }],
+    "@babel/typescript",
+    "@babel/react"
+  ],
   plugins: [
     "emotion",
     "@babel/proposal-class-properties",
