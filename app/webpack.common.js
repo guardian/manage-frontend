@@ -16,7 +16,15 @@ const nodeExternals = require("webpack-node-externals");
 
 const babelCommon = {
   presets: [
-    ["@babel/env", { targets: { browsers: ["last 2 versions"] } }],
+    [
+      "@babel/env",
+      {
+        targets: {
+          browsers: ["last 2 versions"]
+        },
+        useBuiltIns: "usage"
+      }
+    ],
     "@babel/typescript",
     "@babel/react"
   ],

@@ -1,3 +1,4 @@
+import "babel-polyfill"; // replaced with specific polyfills where needed
 import React from "react";
 import { initGA } from "../analytics";
 import palette from "../colours";

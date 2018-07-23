@@ -81,6 +81,7 @@
     "@types/base-64": "^0.1.2",
     "babel-plugin-emotion": "^9.1.0",
     "babel-plugin-source-map-support": "^2.0.1",
+    "babel-polyfill": "^6.26.0",
     "babel-regenerator-runtime": "^6.5.0",
     "base-64": "^0.1.0",
     "color": "^3.0.0",
