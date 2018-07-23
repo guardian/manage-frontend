@@ -1,4 +1,6 @@
+import Raven from "raven-js";
 import React from "react";
+import { trackEvent } from "../analytics";
 import AsyncLoader from "./asyncLoader";
 import { MembersDataApiResponse, MembershipData } from "./membership";
 import { CancellationCaseIdContext, CancellationReasonContext } from "./user";
@@ -12,7 +14,7 @@ const getCreateCaseFunc = (
   sfProduct: string,
   membershipData: MembershipData
 ) => async () => {
-  return (await fetch("/api/case", {
+  const newCaseResponse: Response = await fetch("/api/case", {
     credentials: "include",
     method: "POST",
     body: JSON.stringify({
@@ -21,7 +23,18 @@ const getCreateCaseFunc = (
       subscriptionName: membershipData.subscription.subscriberId
     }),
     headers: { "Content-Type": "application/json" }
-  })).json();
+  });
+  if (!newCaseResponse.ok) {
+    trackEvent({
+      eventCategory: "create SF Case",
+      eventAction: "failed",
+      eventLabel: newCaseResponse.statusText
+    });
+    Raven.captureException(
+      "Failed to create case : " + newCaseResponse.statusText
+    );
+  }
+  return newCaseResponse.json();
 };
 
 const renderWithCaseIdContextProvider = (children: any) => (
