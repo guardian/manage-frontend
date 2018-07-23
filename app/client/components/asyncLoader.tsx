@@ -1,4 +1,6 @@
+import Raven from "raven-js";
 import React from "react";
+import { trackEvent } from "../analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { LoadingProps, Spinner } from "./spinner";
 
@@ -31,7 +33,15 @@ export default class AsyncLoader<
       .then(data => {
         this.setState({ data, loadingState: LoadingState.loaded });
       })
-      .catch(_ => this.setState({ loadingState: LoadingState.error }));
+      .catch(exception => {
+        this.setState({ loadingState: LoadingState.error });
+        trackEvent({
+          eventCategory: "asyncLoader",
+          eventAction: "error",
+          eventLabel: exception ? exception.toString() : undefined
+        });
+        Raven.captureException(exception);
+      });
   }
 
   public render(): React.ReactNode {
