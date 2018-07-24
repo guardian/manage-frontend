@@ -35,11 +35,11 @@ interface FeedbackFormState {
 }
 
 const getPatchUpdateCaseFunc = (feedback: string, caseId: string) => async () =>
-  (await getUpdateCasePromise(caseId, {
+  await getUpdateCasePromise(caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query",
     Status: "Open"
-  })).json();
+  });
 
 const gaTrackFeedback = (actionString: string) =>
   trackEvent({

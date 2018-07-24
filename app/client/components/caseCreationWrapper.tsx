@@ -1,6 +1,4 @@
-import Raven from "raven-js";
 import React from "react";
-import { trackEvent } from "../analytics";
 import AsyncLoader from "./asyncLoader";
 import { MembersDataApiResponse, MembershipData } from "./membership";
 import { CancellationCaseIdContext, CancellationReasonContext } from "./user";
@@ -13,8 +11,8 @@ const getCreateCaseFunc = (
   reason: string,
   sfProduct: string,
   membershipData: MembershipData
-) => async () => {
-  const newCaseResponse: Response = await fetch("/api/case", {
+) => async () =>
+  await fetch("/api/case", {
     credentials: "include",
     method: "POST",
     body: JSON.stringify({
@@ -24,26 +22,17 @@ const getCreateCaseFunc = (
     }),
     headers: { "Content-Type": "application/json" }
   });
-  if (!newCaseResponse.ok) {
-    trackEvent({
-      eventCategory: "create SF Case",
-      eventAction: "failed",
-      eventLabel: newCaseResponse.statusText
-    });
-    Raven.captureException(
-      "Failed to create case : " + newCaseResponse.statusText
-    );
-  }
-  return newCaseResponse.json();
-};
 
 const renderWithCaseIdContextProvider = (children: any) => (
-  caseCreationResponse: CaseCreationResponse
-) => (
-  <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
-    {children}
-  </CancellationCaseIdContext.Provider>
-);
+  caseCreationResponse?: CaseCreationResponse
+) =>
+  caseCreationResponse ? (
+    <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
+      {children}
+    </CancellationCaseIdContext.Provider>
+  ) : (
+    children
+  );
 
 class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 
@@ -63,6 +52,7 @@ export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
           props.membersDataApiResponse as MembershipData
         )}
         render={renderWithCaseIdContextProvider(props.children)}
+        errorRender={renderWithCaseIdContextProvider(props.children)}
         loadingMessage="Capturing your cancellation reason..."
       />
     )}

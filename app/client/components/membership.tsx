@@ -28,11 +28,8 @@ export class MembershipAsyncLoader extends AsyncLoader<
   MembersDataApiResponse
 > {}
 
-export const loadMembershipData: () => Promise<
-  MembersDataApiResponse
-> = async () => {
-  return (await fetch("/api/me/membership", { credentials: "include" })).json();
-};
+export const loadMembershipData: () => Promise<Response> = async () =>
+  await fetch("/api/me/membership", { credentials: "include" });
 
 interface MembershipRowProps {
   label: string;

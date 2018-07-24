@@ -86,7 +86,7 @@ const User = () => (
                 path="confirmed"
                 cancelApiUrlSuffix="membership"
                 cancelType="membership"
-                withSubscriptionPromiseFetcher={loadMembershipData}
+                withSubscriptionResponseFetcher={loadMembershipData}
                 currentStep={3}
               />
             </GenericSaveAttempt>

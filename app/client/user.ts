@@ -7,7 +7,7 @@ declare var WEBPACK_BUILD: string;
 
 if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
   Raven.config(window.guardian.dsn, {
-    release: `${WEBPACK_BUILD}`,
+    release: WEBPACK_BUILD || "local",
     environment: window.guardian.domain
   }).install();
 }
