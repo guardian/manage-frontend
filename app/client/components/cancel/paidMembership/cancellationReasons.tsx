@@ -1,4 +1,5 @@
 import React from "react";
+import palette from "../../../colours";
 import { CancellationReason } from "../../user";
 
 // Webpack doesn't like browser globals
@@ -76,7 +77,11 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
       <React.Fragment>
         You can
         <a
-          css={{ textDecoration: "underline" }}
+          css={{
+            textDecoration: "underline",
+            color: palette.blue.dark,
+            ":visited": { color: palette.blue.dark }
+          }}
           href={`https://profile.${domain}/consents`}
         >
           {` click here to manage your communication preferences.`}
