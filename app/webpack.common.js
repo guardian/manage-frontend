@@ -8,7 +8,6 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const definePlugin = new webpack.DefinePlugin({
-  WEBPACK_ENVIRONMENT: `'${process.env.NODE_ENV}'` || "'NO ENVIRONMENT SET'",
   WEBPACK_BUILD: `'${process.env.TEAMCITY_BUILD}'` || "'NO BUILD SET'"
 });
 

@@ -22,14 +22,18 @@ if (conf.SERVER_DSN) {
   server.use(Raven.requestHandler());
 }
 
-const dsn =
+const clientDSN =
   conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
     ? conf.CLIENT_DSN
     : null;
 if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
   log.error("NO SENTRY IN CLIENT PROD!");
 }
-const globals: Globals = { domain: conf.DOMAIN };
+
+const globals: Globals = {
+  domain: conf.DOMAIN,
+  dsn: clientDSN
+};
 
 server.use(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -156,7 +160,6 @@ server.use((req: express.Request, res: express.Response) => {
       body,
       title,
       src,
-      dsn,
       globals
     })
   );
