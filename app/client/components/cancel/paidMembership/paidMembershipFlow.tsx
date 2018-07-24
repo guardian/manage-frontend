@@ -154,7 +154,11 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
               <li className={cssBullet} css={{ paddingTop: "5px" }}>
                 Free access to the premium tier of the Guardian app -{" "}
                 <a
-                  css={{ textDecoration: "underline" }}
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.blue.dark,
+                    ":visited": { color: palette.blue.dark }
+                  }}
                   href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
                 >
                   click here to find out about our brand new features
