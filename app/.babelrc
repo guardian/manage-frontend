@@ -28,7 +28,7 @@
           "@babel/env",
           {
             "targets": {
-              "node": "current"
+              "node": "10.7.0"
             }
           }
         ],
