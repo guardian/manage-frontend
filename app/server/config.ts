@@ -19,7 +19,7 @@ const getConfig: (name: string) => string | null = name => {
   return value || null; // or empty string as typescript not happy about throw
 };
 
-export enum Environments { // This mirrors NODE_ENV, and as such will not track CODE
+export enum Environments {
   PRODUCTION,
   DEVELOPMENT
 }

@@ -97,7 +97,7 @@ if (typeof window !== "undefined" && window.guardian) {
 
 const profileHostName = `https://profile.${domain}`;
 
-interface NavItem {
+export interface NavItem {
   title: string;
   link: string;
   icon?: JSX.Element;

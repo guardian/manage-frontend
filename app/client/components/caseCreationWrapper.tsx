@@ -11,8 +11,8 @@ const getCreateCaseFunc = (
   reason: string,
   sfProduct: string,
   membershipData: MembershipData
-) => async () => {
-  return (await fetch("/api/case", {
+) => async () =>
+  await fetch("/api/case", {
     credentials: "include",
     method: "POST",
     body: JSON.stringify({
@@ -21,16 +21,18 @@ const getCreateCaseFunc = (
       subscriptionName: membershipData.subscription.subscriberId
     }),
     headers: { "Content-Type": "application/json" }
-  })).json();
-};
+  });
 
 const renderWithCaseIdContextProvider = (children: any) => (
-  caseCreationResponse: CaseCreationResponse
-) => (
-  <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
-    {children}
-  </CancellationCaseIdContext.Provider>
-);
+  caseCreationResponse?: CaseCreationResponse
+) =>
+  caseCreationResponse ? (
+    <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
+      {children}
+    </CancellationCaseIdContext.Provider>
+  ) : (
+    children
+  );
 
 class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 
@@ -50,6 +52,7 @@ export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
           props.membersDataApiResponse as MembershipData
         )}
         render={renderWithCaseIdContextProvider(props.children)}
+        errorRender={renderWithCaseIdContextProvider(props.children)}
         loadingMessage="Capturing your cancellation reason..."
       />
     )}

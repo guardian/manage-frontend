@@ -32,10 +32,13 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
   </PageContainerSection>
 );
 
+export const isCancelled = (subscription: Subscription) =>
+  Object.keys(subscription).length === 0 || subscription.cancelledAt;
+
 export const CancellationSummary = (cancelType: string) => (
   subscription: Subscription
 ) =>
-  Object.keys(subscription).length === 0 || subscription.cancelledAt ? (
+  isCancelled(subscription) ? (
     actuallyCancelled(cancelType, subscription)
   ) : (
     <GenericErrorScreen />

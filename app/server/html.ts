@@ -1,6 +1,4 @@
 import { Globals } from "../globals";
-declare var WEBPACK_BUILD: string;
-declare var WEBPACK_ENVIRONMENT: string;
 
 /**
  * https://medium.com/styled-components/the-simple-guide-to-server-side-rendering-react-with-styled-components-d31c6b2b8fbf
@@ -9,20 +7,6 @@ declare var WEBPACK_ENVIRONMENT: string;
  * application code into before sending it to the client as regular HTML.
  * Note we're returning a template string from this function.
  */
-
-const raven = (dsn: string | null) => {
-  return dsn
-    ? ` 
-    <script src=https://cdn.ravenjs.com/3.24.0/raven.min.js
-    crossorigin=anonymous></script>
-    <script>
-  Raven.config('${dsn}', {
-    release: '${WEBPACK_BUILD}',
-    environment: '${WEBPACK_ENVIRONMENT}',
-  }).install()
- </script>`
-    : "";
-};
 
 const insertGlobals = (globals: Globals) => {
   return `<script>
@@ -35,10 +19,9 @@ const html: (
     readonly body: string;
     readonly title: string;
     readonly src: string;
-    readonly dsn: string | null;
     readonly globals: Globals;
   }
-) => string = ({ body, title, src, dsn, globals }) => `
+) => string = ({ body, title, src, globals }) => `
   <!DOCTYPE html>
   <html>
     <head>
@@ -50,7 +33,6 @@ const html: (
     <body style="margin:0">
       <div id="app">${body}</div>
       </body>
-      ${raven(dsn)}
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

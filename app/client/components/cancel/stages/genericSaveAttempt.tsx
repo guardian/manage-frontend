@@ -35,11 +35,17 @@ interface FeedbackFormState {
 }
 
 const getPatchUpdateCaseFunc = (feedback: string, caseId: string) => async () =>
-  (await getUpdateCasePromise(caseId, {
+  await getUpdateCasePromise(caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query",
     Status: "Open"
-  })).json();
+  });
+
+const gaTrackFeedback = (actionString: string) =>
+  trackEvent({
+    eventCategory: "feedback",
+    eventAction: actionString
+  });
 
 class FeedbackForm extends React.Component<
   FeedbackFormProps,
@@ -113,6 +119,7 @@ class FeedbackForm extends React.Component<
                   this.state.feedback,
                   this.props.caseId
                 )();
+                gaTrackFeedback("submitted silently");
               }
             }}
           />
@@ -127,10 +134,7 @@ class FeedbackForm extends React.Component<
 
   private submitFeedback = () => {
     this.setState({ hasHitSubmit: true });
-    trackEvent({
-      eventCategory: "feedback",
-      eventAction: "submitted"
-    });
+    gaTrackFeedback("submitted");
   };
 
   private getFeedbackThankYouRenderer(

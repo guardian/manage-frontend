@@ -12,9 +12,8 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
     <GenericErrorScreen />
   );
 
-const fetchMe: () => Promise<MeResponse> = async () => {
-  return (await fetch("/api/me", { credentials: "include" })).json();
-};
+const fetchMe: () => Promise<Response> = async () =>
+  await fetch("/api/me", { credentials: "include" });
 
 class MeAsyncLoader extends AsyncLoader<MeResponse> {}
 
