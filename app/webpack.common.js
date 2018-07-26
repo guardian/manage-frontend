@@ -13,6 +13,27 @@ const definePlugin = new webpack.DefinePlugin({
 
 const nodeExternals = require("webpack-node-externals");
 
+const babelCommon = {
+  presets: [
+    [
+      "@babel/env",
+      {
+        targets: {
+          browsers: ["last 2 versions"]
+        },
+        useBuiltIns: "usage"
+      }
+    ],
+    "@babel/typescript",
+    "@babel/react"
+  ],
+  plugins: [
+    "emotion",
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread"
+  ]
+};
+
 const common = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
@@ -39,7 +60,15 @@ const server = merge(common, {
         // Include ts, tsx, and js files.
         test: /\.(tsx?)|(js)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
+        options: {
+          plugins: [...babelCommon.plugins, "babel-plugin-source-map-support"],
+          presets: [
+            ["@babel/env", { targets: { node: "10.7.0" } }],
+            "@babel/typescript",
+            "@babel/react"
+          ]
+        }
       }
     ]
   }
@@ -62,7 +91,8 @@ const client = merge(common, {
         // Include ts, tsx, and js files.
         test: /\.(tsx?)|(js)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
+        options: babelCommon
       }
     ]
   }
