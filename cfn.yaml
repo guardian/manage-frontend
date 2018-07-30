@@ -263,10 +263,10 @@ Resources:
 
   NoHealthyInstancesAlarm:
     Type: AWS::CloudWatch::Alarm
-    Condition: CreateCodeResources #FIXME
+    Condition: CreateProdResources
     Properties:
       AlarmActions:
-      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:jacob-testing #FIXME
+      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
       AlarmName: !Sub No healthy instances for manage-frontend in ${Stage}
       MetricName: HealthyHostCount
       Namespace: AWS/ApplicationELB
@@ -286,10 +286,10 @@ Resources:
 
   High5XXRateAlarm:
     Type: AWS::CloudWatch::Alarm
-    Condition: CreateCodeResources #FIXME
+    Condition: CreateProdResources
     Properties:
       AlarmActions:
-      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:jacob-testing #FIXME
+      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
       AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
       MetricName: HTTPCode_Target_5XX_Count
       Namespace: AWS/ApplicationELB
@@ -303,6 +303,7 @@ Resources:
       Period: 60
       EvaluationPeriods: 2
       Statistic: Sum
+      TreatMissingData: notBreaching
     DependsOn:
     - TargetGroup
     - ElasticLoadBalancer
