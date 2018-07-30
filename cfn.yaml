@@ -101,9 +101,7 @@ Resources:
             # add user
             groupadd manage-frontend
             useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
-            touch /var/log/manage-frontend.log
             chown -R manage-frontend:manage-frontend /etc/gu
-            chown manage-frontend:manage-frontend /var/log/manage-frontend.log
 
             # write out systemd file
             cat >/etc/systemd/system/manage-frontend.service <<EOL
@@ -127,6 +125,8 @@ Resources:
             systemctl enable manage-frontend
             systemctl start manage-frontend
             /opt/cloudwatch-logs/configure-logs application ${Stack} ${Stage} ${App} /var/log/manage-frontend.log
+            /opt/cloudwatch-logs/configure-logs audit ${Stack} ${Stage} ${App} /var/log/manage-frontend-audit.log
+
 
           - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
             SFCasesUrl: !FindInMap [ StageVariables, !Ref Stage, SFCasesUrl ]
@@ -146,16 +146,13 @@ Resources:
             Action:
               - sts:AssumeRole
       Policies:
-        - PolicyName: PushLogs
+        - PolicyName: UpdateSSHKeys
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
-                Action:
-                - logs:CreateLogGroup
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-                Resource: !GetAtt ManageFrontendLogGroup.Arn
+                Action: s3:GetObject
+                Resource: arn:aws:s3:::github-public-keys/Membership-and-Subscriptions/*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -254,9 +251,3 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
-
-  ManageFrontendLogGroup:
-    Type: "AWS::Logs::LogGroup"
-    Properties:
-      LogGroupName: !Sub support-manage-frontend-${Stage}
-      RetentionInDays: 14
