@@ -8,17 +8,12 @@ deployments:
     app: manage-frontend
     parameters:
       templatePath: cloudformation/cfn.yaml
-  manage-frontend:
-    type: autoscaling
-    dependencies: [manage-frontend-cloudformation, manage-frontend-ami]
-    parameters:
-      bucket: membership-dist
-  manage-frontend-ami:
-    app: manage-frontend
-    type: ami-cloudformation-parameter
-    dependencies: [manage-frontend-cloudformation]
-    parameters:
       amiTags:
         Recipe: xenial-membership
         AmigoStage: PROD
       amiEncrypted: true
+  manage-frontend:
+    type: autoscaling
+    dependencies: [manage-frontend-cloudformation]
+    parameters:
+      bucket: membership-dist
