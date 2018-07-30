@@ -14,14 +14,3 @@ export const log = winston.createLogger({
     new winston.transports.Console({ format: winston.format.simple() })
   ]
 });
-
-export const audit = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({
-      filename: `${location}/manage-frontend-audit.log`
-    }),
-    new winston.transports.Console({ format: winston.format.simple() })
-  ]
-});
