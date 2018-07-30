@@ -260,3 +260,49 @@ Resources:
     Properties:
       LogGroupName: !Sub support-manage-frontend-${Stage}
       RetentionInDays: 14
+
+  NoHealthyInstancesAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: CreateCodeResources #FIXME
+    Properties:
+      AlarmActions:
+      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:jacob-testing #FIXME
+      AlarmName: !Sub No healthy instances for manage-frontend in ${Stage}
+      MetricName: HealthyHostCount
+      Namespace: AWS/ApplicationELB
+      Dimensions:
+        - Name: LoadBalancer
+          Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+        - Name: TargetGroup
+          Value: !GetAtt TargetGroup.TargetGroupFullName
+      ComparisonOperator: LessThanOrEqualToThreshold
+      Threshold: 0.5
+      Period: 60
+      EvaluationPeriods: 2
+      Statistic: Average
+    DependsOn:
+      - TargetGroup
+      - ElasticLoadBalancer
+
+  High5XXRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: CreateCodeResources #FIXME
+    Properties:
+      AlarmActions:
+      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:jacob-testing #FIXME
+      AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
+      MetricName: HTTPCode_Target_5XX_Count
+      Namespace: AWS/ApplicationELB
+      Dimensions:
+        - Name: LoadBalancer
+          Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+        - Name: TargetGroup
+          Value: !GetAtt TargetGroup.TargetGroupFullName
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Threshold: 3
+      Period: 60
+      EvaluationPeriods: 2
+      Statistic: Sum
+    DependsOn:
+    - TargetGroup
+    - ElasticLoadBalancer
