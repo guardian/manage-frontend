@@ -19,7 +19,7 @@ const babelCommon = {
       "@babel/env",
       {
         targets: {
-          browsers: ["last 2 versions"]
+          browsers: ["last 2 versions", "safari >= 7", "iOS >= 9"]
         },
         useBuiltIns: "usage"
       }
@@ -76,8 +76,8 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    csr: ["babel-regenerator-runtime", "./client/csr"],
-    user: ["babel-regenerator-runtime", "./client/user"]
+    csr: ["whatwg-fetch", "./client/csr"],
+    user: ["whatwg-fetch", "./client/user"]
   },
   output: {
     path: path.resolve(__dirname, "dist", "static"),
