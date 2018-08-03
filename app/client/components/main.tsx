@@ -30,7 +30,6 @@ export class Main extends React.PureComponent<{}> {
         >
           <main
             css={{
-              padding: "30px",
               fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
             }}
           >

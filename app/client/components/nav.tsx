@@ -2,91 +2,92 @@ import React from "react";
 import { css } from "../../node_modules/emotion";
 import { conf } from "../../server/config";
 import palette from "../colours";
+import { minWidth } from "../styles/breakpoints";
+import { serif } from "../styles/fonts";
 
-const navToggleCss = css({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  cursor: "pointer",
+const navCss = css({
+  width: "100%",
+  position: "relative",
+  margin: 0,
+  padding: 0,
+  borderBottom: 0,
+  listStyleType: "none",
+  overflow: "hidden",
+  zIndex: 2,
+  background: "#fafafa",
+  tableLayout: "fixed",
+  gridTemplateColumns: "repeat(auto-fit, minmax(40%, 1fr))",
+  gridColumnGap: "0.125rem",
+  display: "grid",
 
-  "::after": {
-    content: "''",
-    display: "block",
-    width: "5px",
-    height: "5px",
-    transform: "translateY(-2px) rotate(45deg)",
-    border: "1px solid currentColor",
-    borderLeft: "transparent",
-    borderTop: "transparent",
-    marginLeft: "5px",
-    transition: ".25s ease-out"
+  [minWidth.tablet]: {
+    gridTemplateColumns: "repeat(auto-fit, minmax(7.5rem, 1fr))"
   }
 });
 
-const navMenuCss = (showMenu: boolean) =>
+const navLinkCss = (local: boolean | undefined) =>
   css({
-    display: `${showMenu ? "block" : "none"}`,
-    background: palette.white,
-    position: "absolute",
-    left: "0",
-    top: "2.2rem",
-    zIndex: "1071",
-    listStyle: "none",
-    lineHeight: "1.375rem",
-    boxShadow: "0 0 0 0.0625rem rgba(0,0,0,0.1)",
-    borderRadius: "0.1875rem",
-    margin: 0,
-    padding: "0.375rem 0",
+    fontSize: "1rem",
+    fontWeight: "500",
+    lineHeight: "1.25rem",
+    fontFamily: serif,
+    display: "block",
+    boxSizing: "border-box",
+    minHeight: "35px",
+    padding: "4px 6px 0",
+    textAlign: "left",
+    textDecoration: "none",
     overflow: "hidden",
-
-    " li": {
-      padding: 0,
-      margin: 0
-    }
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    background: local ? palette.white : palette.neutral["6"],
+    color: "inherit"
   });
 
-const navItemCss = css({
-  fontSize: "0.9375rem",
-  padding: "7px 20px 15px 30px",
-  textDecoration: "none",
-  color: "currentColor",
-  whiteSpace: "nowrap",
-  position: "relative",
-  marginTop: "-1px",
-  display: "flex",
-  alignItems: "center",
+const navItemCss = (local: boolean | undefined) =>
+  css({
+    margin: 0,
+    borderBottom: `0.0625rem solid ${
+      local ? palette.white : palette.neutral["5"]
+    }`,
+    borderTop: `0.1875rem solid ${palette.neutral["6"]}`,
+    display: "table-cell",
+    width: "100%"
+  });
 
-  ":hover": {
-    backgroundColor: palette.neutral["6"],
-    textDecoration: "none"
+export interface NavItem {
+  title: string;
+  link: string;
+  local?: boolean;
+}
+
+const navLinks: NavItem[] = [
+  {
+    title: "Public profile",
+    link: "/public/edit"
+  },
+  {
+    title: "Account details",
+    link: "/account/edit"
+  },
+  {
+    title: "Membership",
+    link: "/",
+    local: true
+  },
+  {
+    title: "Digital Pack",
+    link: "/digitalpack/edit"
+  },
+  {
+    title: "Contributions",
+    link: "/contribution/recurring/edit"
+  },
+  {
+    title: "Emails & marketing",
+    link: "/email-prefs"
   }
-});
-
-const navBorderCss = css({
-  height: "0.0625rem",
-  background: palette.neutral["6"],
-  border: 0,
-  display: "block",
-  margin: "0 0 0 1.875rem"
-});
-
-const signOutIcon = (
-  <svg width="100%" height="100%" viewBox="0 0 20 22" fill="none">
-    <g clipPath="url(#a)">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
-        fill="#333"
-      />
-    </g>
-    <defs>
-      <clipPath id="a">
-        <path fill="#fff" d="M0 0h20v22H0z" />
-      </clipPath>
-    </defs>
-  </svg>
-);
+];
 
 let domain;
 if (typeof window !== "undefined" && window.guardian) {
@@ -97,94 +98,17 @@ if (typeof window !== "undefined" && window.guardian) {
 
 const profileHostName = `https://profile.${domain}`;
 
-export interface NavItem {
-  title: string;
-  link: string;
-  icon?: JSX.Element;
-  border?: boolean;
-}
-
-export class Nav extends React.Component {
-  public state = {
-    showMenu: false
-  };
-
-  public navItems: NavItem[] = [
-    {
-      title: "Comments & replies",
-      link: `/profile/user`
-    },
-    {
-      title: "Public profile",
-      link: `${profileHostName}/public/edit`
-    },
-    {
-      title: "Account details",
-      link: `${profileHostName}/account/edit`
-    },
-    {
-      title: "Emails & marketing",
-      link: `${profileHostName}/email-prefs`,
-      border: true
-    },
-    {
-      title: "Membership",
-      link: `${profileHostName}/membership/edit`
-    },
-    {
-      title: "Contributions",
-      link: `${profileHostName}/contribution/recurring/edit`
-    },
-    {
-      title: "Digital Pack",
-      link: `${profileHostName}/digitalpack/edit`,
-      border: true
-    },
-    {
-      title: "Sign out",
-      link: `${profileHostName}/signout`,
-      icon: signOutIcon
-    }
-  ];
-
-  public render(): JSX.Element {
-    return (
-      <nav css={{ position: "relative" }}>
-        <span
-          className={navToggleCss}
-          onClick={() => this.setState({ showMenu: !this.state.showMenu })}
+export const Nav = () => (
+  <ul role="tablist" className={navCss}>
+    {navLinks.map(({ title, link, local }) => (
+      <li className={navItemCss(local)} key={title}>
+        <a
+          className={navLinkCss(local)}
+          href={`${local ? "" : profileHostName}${link}`}
         >
-          My account
-        </span>
-
-        <ul className={navMenuCss(this.state.showMenu)}>
-          {this.navItems.map((item: NavItem) => (
-            <React.Fragment key={item.title}>
-              <li>
-                <a href={item.link} className={navItemCss}>
-                  {item.icon ? (
-                    <span
-                      css={{
-                        marginRight: "5px",
-                        display: "block",
-                        height: "0.8em",
-                        width: "0.8em",
-                        " svg": { display: "block" }
-                      }}
-                    >
-                      {item.icon}
-                    </span>
-                  ) : (
-                    false
-                  )}
-                  <span>{item.title}</span>
-                </a>
-              </li>
-              {item.border ? <hr className={navBorderCss} /> : false}
-            </React.Fragment>
-          ))}
-        </ul>
-      </nav>
-    );
-  }
-}
+          {title}
+        </a>
+      </li>
+    ))}
+  </ul>
+);

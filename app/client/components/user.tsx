@@ -17,6 +17,7 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
+import { Nav } from "./Nav";
 
 export interface Subscription {
   subscriberId: string;

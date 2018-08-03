@@ -5,9 +5,10 @@ import { minWidth } from "../styles/breakpoints";
 import AsyncLoader from "./asyncLoader";
 import { LinkButton } from "./buttons";
 import { CardDisplay } from "./card";
-import { PageContainer, PageContainerSection } from "./page";
+import { PageContainer, PageHeaderContainer } from "./page";
 import { formatDate, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
+import { serif } from "../styles/fonts";
 
 export interface MembershipData extends WithSubscription {
   regNumber?: string;
@@ -147,13 +148,24 @@ const renderMembershipData = (data: MembersDataApiResponse) => {
   return <h2>No Membership</h2>;
 };
 
+const headerCss = css({
+  fontSize: "2rem",
+  lineHeight: "2.25rem",
+  fontFamily: serif,
+  marginBottom: "30px"
+});
+
 export const Membership = (props: RouteableProps) => (
-  <PageContainerSection>
-    <h1 css={{ marginBottom: "25px" }}>Membership</h1>
-    <MembershipAsyncLoader
-      fetch={loadMembershipData}
-      render={renderMembershipData}
-      loadingMessage="Loading your membership details..."
-    />
-  </PageContainerSection>
+  <>
+    <PageHeaderContainer>
+      <h1 className={headerCss}>Membership</h1>
+    </PageHeaderContainer>
+    <PageContainer>
+      <MembershipAsyncLoader
+        fetch={loadMembershipData}
+        render={renderMembershipData}
+        loadingMessage="Loading your membership details..."
+      />
+    </PageContainer>
+  </>
 );
