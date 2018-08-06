@@ -89,7 +89,7 @@ const navLinks: NavItem[] = [
   }
 ];
 
-let domain;
+let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {

@@ -1,5 +1,6 @@
 import React from "react";
 import palette from "../colours";
+import { minWidth } from "../styles/breakpoints";
 import { Nav } from "./nav";
 
 // Standard width, centered container
@@ -7,9 +8,13 @@ export const PageContainer: React.SFC<{}> = ({ children }) => {
   return (
     <div
       css={{
-        maxWidth: "100%",
-        width: "940px",
-        margin: "1.8125rem auto 0"
+        maxWidth: "940px",
+        margin: "1.8125rem auto 0",
+        padding: "0.625rem",
+
+        [minWidth.tablet]: {
+          padding: "0 1.25rem"
+        }
       }}
     >
       {children}
@@ -22,8 +27,7 @@ export const PageContainerSection: React.SFC<{}> = ({ children }) => {
   return (
     <div
       css={{
-        maxWidth: "100%",
-        width: "45rem",
+        maxWidth: "45rem",
         margin: "auto"
       }}
     >

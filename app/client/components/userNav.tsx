@@ -88,7 +88,7 @@ const signOutIcon = (
   </svg>
 );
 
-let domain;
+let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {

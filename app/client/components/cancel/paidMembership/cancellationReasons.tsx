@@ -3,7 +3,7 @@ import palette from "../../../colours";
 import { CancellationReason } from "../../user";
 
 // Webpack doesn't like browser globals
-let domain;
+let domain: string;
 if (typeof window !== "undefined") {
   domain = window.guardian.domain;
 }
