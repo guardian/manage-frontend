@@ -1,6 +1,6 @@
 import React from "react";
 import palette from "../colours";
-import { Nav } from "./Nav";
+import { Nav } from "./nav";
 
 // Standard width, centered container
 export const PageContainer: React.SFC<{}> = ({ children }) => {
