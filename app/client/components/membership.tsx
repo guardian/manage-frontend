@@ -2,13 +2,13 @@ import { css } from "emotion";
 import React from "react";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
+import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
 import { LinkButton } from "./buttons";
 import { CardDisplay } from "./card";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { formatDate, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
-import { serif } from "../styles/fonts";
 
 export interface MembershipData extends WithSubscription {
   regNumber?: string;

@@ -128,7 +128,11 @@ exports[`Main renders something 1`] = `
         "borderBottomStyle": "solid",
         "borderBottomWidth": "0.8px",
         "color": "#121212",
-        "height": "3rem",
+        "height": "2.8125rem",
+        "overflow": "visible",
+        "padding": "0.15625rem 0 0",
+        "position": "relative",
+        "zIndex": 1070,
       }
     }
   >
@@ -140,7 +144,7 @@ exports[`Main renders something 1`] = `
           "justifyContent": "space-between",
           "lineHeight": "2.8125rem",
           "margin": "auto",
-          "maxWidth": "980px",
+          "maxWidth": "940px",
           "paddingLeft": "1.25rem",
           "paddingRight": "1.25rem",
         }
@@ -292,12 +296,6 @@ exports[`Main renders something 1`] = `
         </ul>
       </nav>
       <a
-        css={
-          Object {
-            "float": "right",
-            "padding": "2px",
-          }
-        }
         href="https://www.theguardian.com"
       >
         <svg
@@ -328,7 +326,6 @@ exports[`Main renders something 1`] = `
       css={
         Object {
           "fontFamily": "\\"Guardian Text Egyptian Web\\",Georgia,serif",
-          "padding": "30px",
         }
       }
     >

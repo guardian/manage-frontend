@@ -1,8 +1,8 @@
 import React from "react";
-import { css } from "../../node_modules/emotion";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
+import { css } from "../styles/emotion";
 import { serif } from "../styles/fonts";
 
 const navCss = css({
