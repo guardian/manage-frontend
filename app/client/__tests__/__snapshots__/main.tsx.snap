@@ -87,7 +87,7 @@ exports[`Main renders something 1`] = `
   display: none;
   background: #ffffff;
   position: absolute;
-  left: 0px;
+  left: 0;
   top: 2.2rem;
   z-index: 1071;
   list-style: none;
@@ -99,7 +99,7 @@ exports[`Main renders something 1`] = `
   overflow: hidden;
 }
 
-.emotion-11 li {
+.emotion-11 li: {
   padding: 0;
   margin: 0;
 }
