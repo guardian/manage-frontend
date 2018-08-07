@@ -1,6 +1,6 @@
 const global = `
 html {
-  box-sizing: border-box;
+  box-sizing: content-box;
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -14,6 +14,9 @@ html {
 body {
   margin: 0;
   line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+  font-kerning: normal;
 }
 
 ::selection {
@@ -37,7 +40,7 @@ h5,
 h6 {
   margin: 0;
   color: inherit;
-  font-weight: guss-font-weight(medium);
+  font-weight: 500;
 }
 
 a {
