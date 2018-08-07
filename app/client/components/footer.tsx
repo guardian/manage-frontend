@@ -194,6 +194,7 @@ const Footer = () => (
               padding: "0.75rem 0",
 
               [minWidth.desktop]: {
+                padding: "0 0 0.75rem 0",
                 display: "flex",
                 justifyContent: "space-between"
               }
@@ -202,10 +203,10 @@ const Footer = () => (
             <div
               css={{
                 borderBottom: "0.0625rem solid #434343",
+                paddingBottom: "0.75rem",
 
                 [minWidth.desktop]: {
-                  paddingRight: 0,
-                  paddingLeft: 0,
+                  padding: 0,
                   border: 0,
                   width: "18.75rem",
                   margin: "0.75rem 11.25rem 0.75rem 0"
@@ -214,7 +215,8 @@ const Footer = () => (
             >
               <iframe
                 title="Guardian Email Sign-up Form"
-                src={`https://profile.${domain}/email/form/footer/today-uk`}
+                // src={`https://profile.${domain}/email/form/footer/today-uk`}
+                src={`https://profile.theguardian.com/email/form/footer/today-uk`}
                 scrolling="no"
                 seamless={false}
                 frameBorder="0"
@@ -231,7 +233,11 @@ const Footer = () => (
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                marginTop: "0.75rem"
+                marginTop: "0.75rem",
+
+                [minWidth.tablet]: {
+                  margin: "0"
+                }
               }}
             >
               {footerLinks.map((linkList, i) => (
@@ -250,10 +256,22 @@ const Footer = () => (
                     },
 
                     [minWidth.tablet]: {
+                      padding: "0.75rem 0 0",
+                      margin: "0 0.625rem 2.25rem 0",
+
+                      "&:not(:first-child)": {
+                        borderLeft: "1px solid #434343",
+                        paddingLeft: "0.625rem",
+                        marginLeft: "0.625rem"
+                      },
+
+                      width: "20%",
+                      flex: "1 0 0"
+                    },
+
+                    [minWidth.desktop]: {
                       borderLeft: "1px solid #434343",
                       padding: "0.75rem 0 0 0.625rem",
-                      width: "20%",
-                      flex: "1 0 0",
                       margin: "0 0.625rem 2.25rem"
                     }
                   }}
