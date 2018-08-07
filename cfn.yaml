@@ -90,7 +90,7 @@ Resources:
             #!/bin/bash -ev
 
             # get and install node
-            wget -nv https://nodejs.org/dist/latest-v10.x/node-v10.7.0-linux-x64.tar.xz -P /tmp
+            wget -nv https://nodejs.org/dist/v10.7.0/node-v10.7.0-linux-x64.tar.xz -P /tmp
             tar -xf /tmp/node-v10.7.0-linux-x64.tar.xz  --directory /usr/local/
 
             # get runnable tar from S3
@@ -208,7 +208,6 @@ Resources:
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
-      VpcId: !Ref VpcId
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 45 # only connection drains for 45 seconds (rather than default of 300)
