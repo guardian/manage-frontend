@@ -8,6 +8,7 @@ const initGA = () => {
   if (window.ga) {
     const { ga } = window;
     ga("create", "UA-51507017-5", "auto");
+    ga("require", "GTM-NZGXNBL");
     ga("set", "transport", "beacon");
     ga("send", "pageview");
     return ga;
