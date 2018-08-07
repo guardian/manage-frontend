@@ -415,6 +415,7 @@ exports[`Main renders something 1`] = `
                 "@media (min-width: 980px)": Object {
                   "display": "flex",
                   "justifyContent": "space-between",
+                  "padding": "0 0 0.75rem 0",
                 },
                 "padding": "0.75rem 0",
               }
@@ -426,11 +427,11 @@ exports[`Main renders something 1`] = `
                   "@media (min-width: 980px)": Object {
                     "border": 0,
                     "margin": "0.75rem 11.25rem 0.75rem 0",
-                    "paddingLeft": 0,
-                    "paddingRight": 0,
+                    "padding": 0,
                     "width": "18.75rem",
                   },
                   "borderBottom": "0.0625rem solid #434343",
+                  "paddingBottom": "0.75rem",
                 }
               }
             >
@@ -448,6 +449,9 @@ exports[`Main renders something 1`] = `
             <div
               css={
                 Object {
+                  "@media (min-width: 740px)": Object {
+                    "margin": "0",
+                  },
                   "display": "flex",
                   "flexDirection": "row",
                   "flexWrap": "wrap",
@@ -465,11 +469,20 @@ exports[`Main renders something 1`] = `
                       "paddingLeft": "0.625rem",
                     },
                     "@media (min-width: 740px)": Object {
-                      "borderLeft": "1px solid #434343",
+                      "&:not(:first-child)": Object {
+                        "borderLeft": "1px solid #434343",
+                        "marginLeft": "0.625rem",
+                        "paddingLeft": "0.625rem",
+                      },
                       "flex": "1 0 0",
+                      "margin": "0 0.625rem 2.25rem 0",
+                      "padding": "0.75rem 0 0",
+                      "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
                       "margin": "0 0.625rem 2.25rem",
                       "padding": "0.75rem 0 0 0.625rem",
-                      "width": "20%",
                     },
                     "listStyle": "none",
                     "margin": 0,
@@ -593,11 +606,20 @@ exports[`Main renders something 1`] = `
                       "paddingLeft": "0.625rem",
                     },
                     "@media (min-width: 740px)": Object {
-                      "borderLeft": "1px solid #434343",
+                      "&:not(:first-child)": Object {
+                        "borderLeft": "1px solid #434343",
+                        "marginLeft": "0.625rem",
+                        "paddingLeft": "0.625rem",
+                      },
                       "flex": "1 0 0",
+                      "margin": "0 0.625rem 2.25rem 0",
+                      "padding": "0.75rem 0 0",
+                      "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
                       "margin": "0 0.625rem 2.25rem",
                       "padding": "0.75rem 0 0 0.625rem",
-                      "width": "20%",
                     },
                     "listStyle": "none",
                     "margin": 0,
@@ -721,11 +743,20 @@ exports[`Main renders something 1`] = `
                       "paddingLeft": "0.625rem",
                     },
                     "@media (min-width: 740px)": Object {
-                      "borderLeft": "1px solid #434343",
+                      "&:not(:first-child)": Object {
+                        "borderLeft": "1px solid #434343",
+                        "marginLeft": "0.625rem",
+                        "paddingLeft": "0.625rem",
+                      },
                       "flex": "1 0 0",
+                      "margin": "0 0.625rem 2.25rem 0",
+                      "padding": "0.75rem 0 0",
+                      "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
                       "margin": "0 0.625rem 2.25rem",
                       "padding": "0.75rem 0 0 0.625rem",
-                      "width": "20%",
                     },
                     "listStyle": "none",
                     "margin": 0,
@@ -870,11 +901,20 @@ exports[`Main renders something 1`] = `
                       "paddingLeft": "0.625rem",
                     },
                     "@media (min-width: 740px)": Object {
-                      "borderLeft": "1px solid #434343",
+                      "&:not(:first-child)": Object {
+                        "borderLeft": "1px solid #434343",
+                        "marginLeft": "0.625rem",
+                        "paddingLeft": "0.625rem",
+                      },
                       "flex": "1 0 0",
+                      "margin": "0 0.625rem 2.25rem 0",
+                      "padding": "0.75rem 0 0",
+                      "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
                       "margin": "0 0.625rem 2.25rem",
                       "padding": "0.75rem 0 0 0.625rem",
-                      "width": "20%",
                     },
                     "listStyle": "none",
                     "margin": 0,
