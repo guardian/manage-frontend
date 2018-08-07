@@ -416,6 +416,7 @@ exports[`Main renders something 1`] = `
               Object {
                 "@media (min-width: 980px)": Object {
                   "display": "flex",
+                  "justifyContent": "space-between",
                   "padding": "0 0 0.75rem 0",
                 },
                 "padding": "0.75rem 0",
@@ -443,7 +444,7 @@ exports[`Main renders something 1`] = `
                 height="86px"
                 scrolling="no"
                 seamless={false}
-                src="https://profile.thegulocal.com/email/form/footer/today-uk"
+                src="https://profile.theguardian.com/email/form/footer/today-uk"
                 title="Guardian Email Sign-up Form"
               />
             </div>
@@ -480,6 +481,11 @@ exports[`Main renders something 1`] = `
                       "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0",
                       "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
+                      "margin": "0 0.625rem 2.25rem",
+                      "padding": "0.75rem 0 0 0.625rem",
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
@@ -620,6 +626,11 @@ exports[`Main renders something 1`] = `
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
+                      "margin": "0 0.625rem 2.25rem",
+                      "padding": "0.75rem 0 0 0.625rem",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
                       "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0 0.625rem",
                     },
@@ -754,6 +765,11 @@ exports[`Main renders something 1`] = `
                       "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0",
                       "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
+                      "margin": "0 0.625rem 2.25rem",
+                      "padding": "0.75rem 0 0 0.625rem",
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
@@ -912,6 +928,11 @@ exports[`Main renders something 1`] = `
                       "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0",
                       "width": "20%",
+                    },
+                    "@media (min-width: 980px)": Object {
+                      "borderLeft": "1px solid #434343",
+                      "margin": "0 0.625rem 2.25rem",
+                      "padding": "0.75rem 0 0 0.625rem",
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
