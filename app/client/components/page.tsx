@@ -37,13 +37,21 @@ export const PageHeaderContainer: React.SFC<{}> = ({ children }) => {
     <div
       css={{
         borderBottom: `1px solid ${palette.neutral["5"]}`,
-        padding: "5px 20px 0"
+        marginLeft: "auto",
+        marginRight: "auto",
+        paddingTop: "0.3125rem"
       }}
     >
-      <PageContainer>
+      <div
+        css={{
+          maxWidth: "100%",
+          width: "940px",
+          margin: "auto"
+        }}
+      >
         {children}
         <Nav />
-      </PageContainer>
+      </div>
     </div>
   );
 };
