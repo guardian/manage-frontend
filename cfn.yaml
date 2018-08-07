@@ -208,7 +208,6 @@ Resources:
       HealthCheckTimeoutSeconds: 5
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
-      VpcId: !Ref VpcId
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 45 # only connection drains for 45 seconds (rather than default of 300)
