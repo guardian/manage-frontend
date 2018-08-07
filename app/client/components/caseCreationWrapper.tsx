@@ -18,7 +18,8 @@ const getCreateCaseFunc = (
     body: JSON.stringify({
       reason,
       product: sfProduct,
-      subscriptionName: membershipData.subscription.subscriberId
+      subscriptionName: membershipData.subscription.subscriberId,
+      gaData: JSON.stringify(window.gaData)
     }),
     headers: { "Content-Type": "application/json" }
   });
