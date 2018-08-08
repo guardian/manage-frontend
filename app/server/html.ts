@@ -1,5 +1,7 @@
 import { Globals } from "../globals";
 
+declare var WEBPACK_BUILD: string;
+
 /**
  * https://medium.com/styled-components/the-simple-guide-to-server-side-rendering-react-with-styled-components-d31c6b2b8fbf
  * Html
@@ -47,7 +49,7 @@ const html: (
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
       </script>
-      <script src="${src}"></script>
+      <script src="${src}?release=${WEBPACK_BUILD}"></script>
   </html>
 `;
 

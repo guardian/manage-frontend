@@ -77,7 +77,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveTitle:
       "We understand that sometimes the news cycle can feel a little overwhelming.",
     saveBody: (
-      <React.Fragment>
+      <>
         You can
         <a
           css={{
@@ -95,7 +95,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
           If you would like some help with your communication preferences our
           customer services team would be happy to set this up for you.
         </span>
-      </React.Fragment>
+      </>
     ),
     alternateFeedbackIntro:
       "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"

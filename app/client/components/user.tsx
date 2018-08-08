@@ -10,13 +10,13 @@ import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/canc
 import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import { CardProps } from "./card";
 import { Main } from "./main";
 import {
   loadMembershipData,
   MembersDataApiResponse,
   Membership
 } from "./membership";
+import { CardProps } from "./payment/cardDisplay";
 
 export interface Subscription {
   subscriberId: string;
@@ -25,6 +25,7 @@ export interface Subscription {
   cancelledAt: boolean;
   nextPaymentDate: string;
   card?: CardProps;
+  payPalEmail?: string;
   plan: {
     amount: number;
     currency: string;

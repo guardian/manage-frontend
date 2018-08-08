@@ -112,6 +112,7 @@ const styles = {
     borderRadius: "1000px",
     border: "none",
     display: "inline-block",
+    whiteSpace: "nowrap",
     position: "relative"
   },
   leftHover: {

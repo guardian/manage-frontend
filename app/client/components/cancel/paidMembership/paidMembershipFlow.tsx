@@ -53,7 +53,7 @@ class ReasonPicker extends React.Component<
 
   public render(): React.ReactNode {
     return (
-      <React.Fragment>
+      <>
         <select
           value={this.state.reasonPath}
           onChange={this.handleChange}
@@ -82,7 +82,7 @@ class ReasonPicker extends React.Component<
             disabled={!this.state.reasonPath}
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }
