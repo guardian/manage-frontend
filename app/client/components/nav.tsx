@@ -61,33 +61,42 @@ export interface NavItem {
   local?: boolean;
 }
 
-const navLinks: NavItem[] = [
-  {
+export interface NavLinks {
+  publicProfile: NavItem;
+  accountDetails: NavItem;
+  membership: NavItem;
+  digiPack: NavItem;
+  contributions: NavItem;
+  emailPrefs: NavItem;
+}
+
+export const navLinks: NavLinks = {
+  publicProfile: {
     title: "Public profile",
     link: "/public/edit"
   },
-  {
+  accountDetails: {
     title: "Account details",
     link: "/account/edit"
   },
-  {
+  membership: {
     title: "Membership",
-    link: "/",
+    link: "/membership",
     local: true
   },
-  {
+  digiPack: {
     title: "Digital Pack",
     link: "/digitalpack/edit"
   },
-  {
+  contributions: {
     title: "Contributions",
     link: "/contribution/recurring/edit"
   },
-  {
+  emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs"
   }
-];
+};
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -96,17 +105,15 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-const profileHostName = `https://profile.${domain}`;
+export const qualifyLink = (navItem: NavItem) =>
+  navItem.local ? navItem.link : `https://profile.${domain}${navItem.link}`;
 
 export const Nav = () => (
   <ul role="tablist" className={navCss}>
-    {navLinks.map(({ title, link, local }) => (
-      <li className={navItemCss(local)} key={title}>
-        <a
-          className={navLinkCss(local)}
-          href={`${local ? "" : profileHostName}${link}`}
-        >
-          {title}
+    {Object.values(navLinks).map((navItem: NavItem) => (
+      <li className={navItemCss(navItem.local)} key={navItem.title}>
+        <a className={navLinkCss(navItem.local)} href={qualifyLink(navItem)}>
+          {navItem.title}
         </a>
       </li>
     ))}

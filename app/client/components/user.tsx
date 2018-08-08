@@ -1,5 +1,6 @@
-import { Location, Router, ServerLocation } from "@reach/router";
+import { Location, navigate, Router, ServerLocation } from "@reach/router";
 import React, { ReactNode } from "react";
+import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -16,7 +17,9 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
+import { navLinks, qualifyLink } from "./nav";
 import { CardProps } from "./payment/cardDisplay";
+import { RouteableProps } from "./wizardRouterAdapter";
 
 export interface Subscription {
   subscriberId: string;
@@ -64,13 +67,35 @@ export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
 };
 
+const RedirectOnMeResponse = (props: RouteableProps) => (
+  <MeAsyncLoader
+    fetch={fetchMe}
+    render={(me: MeResponse) => {
+      const replace = { replace: true };
+      if (me.contentAccess.member) {
+        navigate(qualifyLink(navLinks.membership), replace);
+      } else if (me.contentAccess.recurringContributor) {
+        navigate(qualifyLink(navLinks.contributions), replace);
+      } else if (me.contentAccess.digitalPack) {
+        navigate(qualifyLink(navLinks.digiPack), replace);
+      } else {
+        navigate("https://" + window.guardian.domain, replace);
+      }
+      return null; // official way to render nothing
+    }}
+    loadingMessage={"Checking your products..."}
+  />
+);
+
 const User = () => (
   <Main>
     {injectGlobal`${global}`}
     {injectGlobal`${fonts}`}
 
     <Router>
-      <Membership path="/" currentStep={1} />
+      <RedirectOnMeResponse path="/" currentStep={1} />
+
+      <Membership path={navLinks.membership.link} currentStep={1} />
 
       <PaidMembershipFlow path="/cancel/membership" currentStep={1}>
         {membershipCancellationReasonMatrix.map(
