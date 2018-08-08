@@ -1,7 +1,7 @@
 import React from "react";
 import { initGA } from "../analytics";
 import palette from "../colours";
-import Footer from "./footer";
+import Footer from "./footer/footer";
 import Header from "./header";
 
 export class Main extends React.PureComponent<{}> {

@@ -20,7 +20,7 @@ const navCss = css({
   gridColumnGap: "0.125rem",
   display: "grid",
 
-  [minWidth.tablet]: {
+  [minWidth.desktop]: {
     gridTemplateColumns: "repeat(auto-fit, minmax(7.5rem, 1fr))"
   }
 });
@@ -89,7 +89,7 @@ const navLinks: NavItem[] = [
   }
 ];
 
-let domain;
+let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {

@@ -1,11 +1,14 @@
 import React from "react";
+import { conf } from "../../../../server/config";
 import palette from "../../../colours";
 import { CancellationReason } from "../../user";
 
 // Webpack doesn't like browser globals
-let domain;
-if (typeof window !== "undefined") {
+let domain: string;
+if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
 }
 
 export const membershipCancellationReasonMatrix: CancellationReason[] = [
