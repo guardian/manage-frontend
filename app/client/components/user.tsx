@@ -11,6 +11,7 @@ import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/canc
 import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { FAQs } from "./faqs";
 import { Main } from "./main";
 import {
   loadMembershipData,
@@ -123,6 +124,8 @@ const User = () => (
       <FreeMembershipFlow path="/cancel/friend" currentStep={1} />
 
       <ContributionsFlow path="/cancel/contributions" currentStep={1} />
+
+      <FAQs path="help" />
 
       <NotFound default={true} />
     </Router>
