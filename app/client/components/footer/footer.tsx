@@ -39,10 +39,8 @@ const Footer = () => (
     >
       <div
         css={{
-          maxWidth: "71.25rem",
           margin: "auto",
           lineHeight: "42px",
-          paddingRight: "2rem",
           display: "flex",
           justifyContent: "flex-end"
         }}
@@ -64,7 +62,12 @@ const Footer = () => (
               position: "relative",
               borderRadius: "50%",
               marginLeft: "10px",
-              transform: "translateY(-6px)"
+              marginRight: "20px",
+              transform: "translateY(-6px)",
+
+              [minWidth.desktop]: {
+                marginRight: "50px"
+              }
             }}
           >
             <i className={backToTopArrow} />
@@ -96,8 +99,7 @@ const Footer = () => (
 
               [minWidth.desktop]: {
                 padding: "0 0 0.75rem 0",
-                display: "flex",
-                justifyContent: "space-between"
+                display: "flex"
               }
             }}
           >
@@ -128,6 +130,7 @@ const Footer = () => (
 
             <div
               css={{
+                flexBasis: "40rem",
                 fontSize: "0.875rem",
                 lineHeight: "0.875rem",
                 display: "flex",
@@ -172,7 +175,7 @@ const Footer = () => (
                     [minWidth.desktop]: {
                       borderLeft: "1px solid #434343",
                       padding: "0.75rem 0 0 0.625rem",
-                      margin: "0 0.625rem 2.25rem"
+                      margin: "0 0.625rem 2.25rem 0"
                     }
                   }}
                 >

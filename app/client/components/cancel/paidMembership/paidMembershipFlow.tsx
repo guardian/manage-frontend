@@ -202,7 +202,8 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
   <div>
     <h1
       css={{
-        fontSize: "20px"
+        fontSize: "20px",
+        margin: "10px 20px 0"
       }}
     >
       Cancel your Guardian membership

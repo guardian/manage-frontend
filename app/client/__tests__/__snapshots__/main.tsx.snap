@@ -352,8 +352,6 @@ exports[`Main renders something 1`] = `
             "justifyContent": "flex-end",
             "lineHeight": "42px",
             "margin": "auto",
-            "maxWidth": "71.25rem",
-            "paddingRight": "2rem",
           }
         }
       >
@@ -370,11 +368,15 @@ exports[`Main renders something 1`] = `
           <span
             css={
               Object {
+                "@media (min-width: 980px)": Object {
+                  "marginRight": "50px",
+                },
                 "backgroundColor": "#121212",
                 "borderRadius": "50%",
                 "display": "inline-block",
                 "height": "48px",
                 "marginLeft": "10px",
+                "marginRight": "20px",
                 "minWidth": "48px",
                 "position": "relative",
                 "transform": "translateY(-6px)",
@@ -414,7 +416,6 @@ exports[`Main renders something 1`] = `
               Object {
                 "@media (min-width: 980px)": Object {
                   "display": "flex",
-                  "justifyContent": "space-between",
                   "padding": "0 0 0.75rem 0",
                 },
                 "padding": "0.75rem 0",
@@ -453,6 +454,7 @@ exports[`Main renders something 1`] = `
                     "margin": "0",
                   },
                   "display": "flex",
+                  "flexBasis": "40rem",
                   "flexDirection": "row",
                   "flexWrap": "wrap",
                   "fontSize": "0.875rem",
@@ -481,7 +483,7 @@ exports[`Main renders something 1`] = `
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
-                      "margin": "0 0.625rem 2.25rem",
+                      "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0 0.625rem",
                     },
                     "listStyle": "none",
@@ -618,7 +620,7 @@ exports[`Main renders something 1`] = `
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
-                      "margin": "0 0.625rem 2.25rem",
+                      "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0 0.625rem",
                     },
                     "listStyle": "none",
@@ -755,7 +757,7 @@ exports[`Main renders something 1`] = `
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
-                      "margin": "0 0.625rem 2.25rem",
+                      "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0 0.625rem",
                     },
                     "listStyle": "none",
@@ -913,7 +915,7 @@ exports[`Main renders something 1`] = `
                     },
                     "@media (min-width: 980px)": Object {
                       "borderLeft": "1px solid #434343",
-                      "margin": "0 0.625rem 2.25rem",
+                      "margin": "0 0.625rem 2.25rem 0",
                       "padding": "0.75rem 0 0 0.625rem",
                     },
                     "listStyle": "none",
