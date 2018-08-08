@@ -1,6 +1,6 @@
 const global = `
 html {
-  box-sizing: content-box;
+  box-sizing: border-box;
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;

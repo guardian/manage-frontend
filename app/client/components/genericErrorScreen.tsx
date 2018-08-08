@@ -8,9 +8,9 @@ const contactUsStyles = css({
   margin: "0 0 10px",
 
   [minWidth.phablet]: {
-    flexShrink: 0,
     paddingRight: "5px",
-    margin: "0"
+    margin: "0",
+    flexBasis: "40%"
   }
 });
 
