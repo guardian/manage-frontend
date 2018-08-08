@@ -5,12 +5,7 @@ import { GenericErrorScreen } from "./genericErrorScreen";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
-) =>
-  props.validator(me) ? (
-    <React.Fragment>{props.children}</React.Fragment>
-  ) : (
-    <GenericErrorScreen />
-  );
+) => (props.validator(me) ? <>{props.children}</> : <GenericErrorScreen />);
 
 const fetchMe: () => Promise<Response> = async () =>
   await fetch("/api/me", { credentials: "include" });

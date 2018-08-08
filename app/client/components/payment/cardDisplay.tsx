@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "../styles/emotion";
+import { css } from "../../styles/emotion";
 
 export interface CardProps {
   last4: string;

@@ -103,11 +103,11 @@ export interface WizardStepProps {
 }
 
 export const WizardStep = (props: WizardStepProps) => (
-  <React.Fragment>
+  <>
     <ThisStageContent
       children={props.children}
       routeableProps={props.routeableProps}
     />
     {props.routeableProps.children}
-  </React.Fragment>
+  </>
 );
