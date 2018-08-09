@@ -149,7 +149,12 @@ export class UserNav extends React.Component {
 
   public render(): JSX.Element {
     return (
-      <nav css={{ position: "relative" }}>
+      <nav
+        css={{
+          position: "relative",
+          transform: "translateY(-1px)"
+        }}
+      >
         <span
           className={userNavToggleCss}
           onClick={() => this.setState({ showMenu: !this.state.showMenu })}

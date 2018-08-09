@@ -15,8 +15,8 @@ const backToTopArrow = css({
   border: "0.125rem solid #ffffff",
   borderBottom: 0,
   borderRight: 0,
-  height: "11px",
-  width: "11px",
+  height: "calc(11px + 0.25rem)",
+  width: "calc(11px + 0.25rem)",
   transform: "rotate(45deg)"
 });
 
@@ -37,10 +37,11 @@ const Footer = () => {
     <footer>
       <div
         css={{
-          backgroundColor: palette.neutral.header,
-          color: palette.neutral["1"],
-          height: "42px",
-          "text-align": "right"
+          margin: "auto",
+          lineHeight: "42px",
+          display: "flex",
+          justifyContent: "flex-end",
+          maxWidth: "81.25rem"
         }}
       >
         <div
@@ -56,8 +57,14 @@ const Footer = () => {
           <a
             href={"#top"}
             css={{
-              color: palette.neutral["1"],
-              display: "flex"
+              display: "inline-block",
+              backgroundColor: palette.neutral["1"],
+              height: "48px",
+              minWidth: "48px",
+              position: "relative",
+              borderRadius: "50%",
+              marginLeft: "10px",
+              transform: "translateY(-6px)"
             }}
           >
             back to top

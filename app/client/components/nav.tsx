@@ -33,7 +33,7 @@ const navLinkCss = (local: boolean | undefined) =>
     fontFamily: serif,
     display: "block",
     boxSizing: "border-box",
-    minHeight: "35px",
+    minHeight: "36px",
     padding: "4px 6px 0",
     textAlign: "left",
     textDecoration: "none",

@@ -60,7 +60,7 @@ class ReasonPicker extends React.Component<
           css={{
             ...cssInheritFont,
             width: "100%",
-            height: "30px",
+            height: "32px",
             border: "1px black solid",
             color: this.state.reasonPath ? undefined : palette.neutral["4"]
             // TODO fix the clipping of font top/bottom because of font-size
