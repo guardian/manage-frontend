@@ -27,30 +27,9 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-
 const fillEmailSignup = (emailForm: SyntheticEvent<HTMLIFrameElement>) => {
-  const emailFormContent =
-    emailForm.currentTarget.contentDocument ||
-    (emailForm.currentTarget.contentWindow &&
-      emailForm.currentTarget.contentWindow.document);
-
-  if (emailFormContent) {
-    const label = emailFormContent.querySelector(
-      ".js-email-sub__inline-label"
-    ) as HTMLLabelElement;
-    const submit = emailFormContent.querySelector(
-      ".js-email-sub__submit-input"
-    ) as HTMLButtonElement;
-    const input: HTMLInputElement = emailFormContent.querySelector(
-      ".js-email-sub__text-input"
-    ) as HTMLInputElement;
-
-    label.classList.add("email-sub__inline-label--is-hidden");
-    submit.classList.add("email-sub__submit-input--solo");
-
-    // tslint:disable-next-line:no-object-mutation
-    input.value = "help@me.com";
-  }
+  // Placeholder method to autofill user email when the iframe is hosted on the same hostname
+  return;
 };
 
 const Footer = () => {
@@ -82,7 +61,7 @@ const Footer = () => {
             }}
           >
             back to top
-              <span
+            <span
               css={{
                 display: "inline-block",
                 backgroundColor: palette.neutral["1"],
@@ -144,14 +123,13 @@ const Footer = () => {
                 <iframe
                   title="Guardian Email Sign-up Form"
                   src={`https://profile.${domain}/email/form/footer/today-uk`}
-                  // src={`https://profile.theguardian.com/email/form/footer/today-uk`}
                   scrolling="no"
                   seamless={false}
                   frameBorder="0"
                   data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
                   data-node-uid="2"
                   height="86px"
-                  onLoad={el => fillEmailSignup(el)}
+                  onLoad={emailForm => fillEmailSignup(emailForm)}
                 />
               </div>
 
@@ -240,12 +218,12 @@ const Footer = () => {
             >
               © 2018 Guardian News and Media Limited or its affiliated
               companies. All&nbsp;rights&nbsp;reserved.
-              </div>
+            </div>
           </div>
         </div>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;
