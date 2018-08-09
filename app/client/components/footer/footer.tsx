@@ -64,7 +64,7 @@ const Footer = () => (
           }}
         >
           back to top
-          <span
+            <span
             css={{
               display: "inline-block",
               backgroundColor: palette.neutral["1"],
@@ -219,9 +219,9 @@ const Footer = () => (
               paddingTop: "0.375rem"
             }}
           >
-            © 2018 Guardian News and Media Limited or its affiliated companies.
-            All&nbsp;rights&nbsp;reserved.
-          </div>
+            © 2018 Guardian News and Media Limited or its affiliated
+            companies. All&nbsp;rights&nbsp;reserved.
+            </div>
         </div>
       </div>
     </div>
