@@ -37,11 +37,10 @@ const Footer = () => {
     <footer>
       <div
         css={{
-          margin: "auto",
-          lineHeight: "42px",
-          display: "flex",
-          justifyContent: "flex-end",
-          maxWidth: "81.25rem"
+          backgroundColor: palette.neutral.header,
+          color: palette.neutral["1"],
+          height: "42px",
+          "text-align": "right"
         }}
       >
         <div
@@ -57,14 +56,8 @@ const Footer = () => {
           <a
             href={"#top"}
             css={{
-              display: "inline-block",
-              backgroundColor: palette.neutral["1"],
-              height: "48px",
-              minWidth: "48px",
-              position: "relative",
-              borderRadius: "50%",
-              marginLeft: "10px",
-              transform: "translateY(-6px)"
+              color: palette.neutral["1"],
+              display: "flex"
             }}
           >
             back to top

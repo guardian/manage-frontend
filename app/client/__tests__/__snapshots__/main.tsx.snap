@@ -359,7 +359,8 @@ exports[`Main renders something 1`] = `
             "justifyContent": "flex-end",
             "lineHeight": "42px",
             "margin": "auto",
-            "maxWidth": "81.25rem",
+            "maxWidth": "71.25rem",
+            "paddingRight": "2rem",
           }
         }
       >
