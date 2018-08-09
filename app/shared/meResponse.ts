@@ -1,3 +1,5 @@
+import AsyncLoader from "../client/components/asyncLoader";
+
 export interface MeResponse {
   userId: string;
   tier: string;
@@ -9,3 +11,8 @@ export interface MeResponse {
     digitalPack: boolean;
   };
 }
+
+export const fetchMe: () => Promise<Response> = async () =>
+  await fetch("/api/me", { credentials: "include" });
+
+export class MeAsyncLoader extends AsyncLoader<MeResponse> {}
