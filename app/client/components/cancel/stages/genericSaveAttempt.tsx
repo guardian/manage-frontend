@@ -162,24 +162,6 @@ class FeedbackForm extends React.Component<
   }
 }
 
-const contactUsStyles = css({
-  margin: "0 0 10px",
-
-  [minWidth.phablet]: {
-    paddingRight: "5px",
-    margin: "0",
-    flexBasis: "40%"
-  }
-});
-
-const callCenterStyles = css({
-  marginBottom: "50px",
-
-  [minWidth.phablet]: {
-    display: "flex"
-  }
-});
-
 interface ConfirmCancellationButtonProps {
   onClick?: () => any;
   reasonId: string;
@@ -225,12 +207,11 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
               {props.reason.skipFeedback ? (
                 undefined
               ) : (
-                <div className={callCenterStyles}>
-                  <span className={contactUsStyles}>
-                    {props.reason.alternateCallUsPrefix || "To contact us"}
-                  </span>
-                  <CallCentreNumbers />
-                </div>
+                <CallCentreNumbers
+                  prefixText={
+                    props.reason.alternateCallUsPrefix || "To contact us"
+                  }
+                />
               )}
               <CancellationCaseIdContext.Consumer>
                 {caseId =>
