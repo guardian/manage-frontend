@@ -4,7 +4,7 @@ import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
-import { LinkButton } from "./buttons";
+import { Button } from "./buttons";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
@@ -158,12 +158,19 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
               {data.subscription.cancelledAt ? (
                 undefined
               ) : (
-                <LinkButton
-                  to="/cancel/membership"
-                  text="Cancel Membership"
-                  textColor={palette.white}
-                  color={palette.neutral["1"]}
-                />
+                <a
+                  href={
+                    "https://membership." +
+                    window.guardian.domain +
+                    "/tier/change"
+                  }
+                >
+                  <Button
+                    text="Change tier"
+                    textColor={palette.white}
+                    color={palette.neutral["1"]}
+                  />
+                </a>
               )}
             </div>
           }
