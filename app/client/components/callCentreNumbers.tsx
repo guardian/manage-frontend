@@ -1,6 +1,6 @@
 import React from "react";
-import { Accordion } from "./accordion";
 import { css } from "../styles/emotion";
+import { Accordion } from "./accordion";
 
 const contactUsStyles = css({
   margin: "0 0 10px",
