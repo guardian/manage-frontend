@@ -15,8 +15,8 @@ const backToTopArrow = css({
   border: "0.125rem solid #ffffff",
   borderBottom: 0,
   borderRight: 0,
-  height: "11px",
-  width: "11px",
+  height: "calc(11px + 0.25rem)",
+  width: "calc(11px + 0.25rem)",
   transform: "rotate(45deg)"
 });
 

@@ -12,7 +12,7 @@ const Header = () => (
       borderBottomColor: "rgba(0, 0, 0, 0.14)",
       borderBottomStyle: "solid",
       padding: "0.15625rem 0 0",
-      height: "2.8125rem",
+      height: "47.5px",
       overflow: "visible",
       position: "relative",
       zIndex: 1070
@@ -22,12 +22,13 @@ const Header = () => (
       css={{
         paddingLeft: "1.25rem",
         paddingRight: "1.25rem",
-        maxWidth: "940px",
+        maxWidth: "calc(940px + 2.5rem)",
         margin: "auto",
         fontSize: "0.875rem",
-        lineHeight: "2.8125rem",
         display: "flex",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: "100%"
       }}
     >
       <UserNav />

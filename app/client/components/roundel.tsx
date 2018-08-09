@@ -2,7 +2,12 @@ import React from "react";
 import { css } from "../styles/emotion";
 
 const Roundel: React.SFC<{ size: number }> = ({ size }) => (
-  <a href="https://www.theguardian.com">
+  <a
+    css={{
+      alignSelf: "flex-start"
+    }}
+    href="https://www.theguardian.com"
+  >
     <svg
       viewBox="0 0 56 56"
       xmlns="http://www.w3.org/2000/svg"
