@@ -1,11 +1,12 @@
 import React from "react";
+import { conf } from "../../server/config";
+import palette from "../colours";
 import { Accordion } from "./accordion";
 import {
   PageContainer,
   PageContainerSection,
   PageHeaderContainer
 } from "./page";
-import { conf } from "../../server/config";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -69,13 +70,29 @@ export const FAQs = () => (
         <div title="What is the difference between a Supporter, a Partner and a Patron?">
           <div>
             You can read a full description of each membership tier{" "}
-            <a href="https://membership.${domain}/choose-tier">here</a>.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://membership.${domain}/choose-tier"
+            >
+              here
+            </a>.
           </div>
         </div>
         <div title="What if I just want to give money to the Guardian?">
           <div>
             There is also the option to make a{" "}
-            <a href="https://contribute.${domain}/?INTCMP=membership_faq">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://contribute.${domain}/?INTCMP=membership_faq"
+            >
               contribution
             </a>{" "}
             if this is more suitable. All funds raised from readers will go
@@ -116,7 +133,16 @@ export const FAQs = () => (
             from commercial or political interference. It reinvests revenue into
             our journalism, as opposed to into shareholders' pockets. More
             information can be found{" "}
-            <a href="https://www.${domain}/the-scott-trust">here</a>.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://www.${domain}/the-scott-trust"
+            >
+              here
+            </a>.
           </div>
         </div>
         <div title="Does membership provide an ad-free experience?">
@@ -126,7 +152,14 @@ export const FAQs = () => (
             adverts, allows you to follow your favourite journalists, sign up
             for alerts to key topics, series and sports events, and gives you
             access to our crosswords. You can download the app by visiting{" "}
-            <a href="https://${domain}/guardianapp">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://${domain}/guardianapp"
+            >
               theguardian.com/guardianapp
             </a>, and then you simply need to sign in with your Guardian Members
             login details. If you encounter any difficulties accessing the
@@ -140,11 +173,39 @@ export const FAQs = () => (
         <div title="I’m already a Member, but I’m still seeing membership related ads and promotions.">
           <div>
             You can avoid seeing membership ads if you{" "}
-            <a href="https://profile.${domain}/signin">sign in</a> at the top
-            left hand corner of <a href="https://${domain}/">theguardian.com</a>{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://profile.${domain}/signin"
+            >
+              sign in
+            </a>{" "}
+            at the top left hand corner of{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://${domain}/"
+            >
+              theguardian.com
+            </a>{" "}
             and on the Guardian app, so we know you are a Member. If you’ve
             forgotten or need to retrieve your password you can reset it{" "}
-            <a href="https://profile.${domain}/reset">here</a>.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://profile.${domain}/reset"
+            >
+              here
+            </a>.
           </div>
         </div>
         <div title="What happens if I don't want to receive membership emails?">
@@ -152,7 +213,14 @@ export const FAQs = () => (
             If you no longer want to receive our email updates for Members,
             click the unsubscribe link at the bottom of the email. We have also
             created a{" "}
-            <a href="https://contribute.${domain}/?INTCMP=membership_faq">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://contribute.${domain}/?INTCMP=membership_faq"
+            >
               one-off contributions
             </a>{" "}
             page specifically for loyal readers who want to make a financial
@@ -162,10 +230,28 @@ export const FAQs = () => (
         <div title="I want to update the personal details (phone, email or address) connected to my membership account">
           <div>
             You can update any of your personal details by simply{" "}
-            <a href="https://profile.${domain}/signin">signing in</a> to your
-            membership account and clicking{" "}
-            <a href="https://profile.${domain}/account/edit">edit profile</a> to
-            update your account details. Any changes will be automatically
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://profile.${domain}/signin"
+            >
+              signing in
+            </a>{" "}
+            to your membership account and clicking{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://profile.${domain}/account/edit"
+            >
+              edit profile
+            </a>{" "}
+            to update your account details. Any changes will be automatically
             updated in our system.
           </div>
         </div>
@@ -174,7 +260,14 @@ export const FAQs = () => (
             Your welcome gift should be delivered to you three weeks after
             joining us. If you have not received it by this time, please email
             the membership customer support team at{" "}
-            <a href="mailto:membershipsupport@theguardian.com">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="mailto:membershipsupport@theguardian.com"
+            >
               membershipsupport@theguardian.com
             </a>{" "}
             and quote your Membership ID number
@@ -184,7 +277,14 @@ export const FAQs = () => (
           <div>
             We are in the process of setting up PayPal for membership. We
             currently have PayPal available for{" "}
-            <a href="https://contribute.${domain}/?INTCMP=membership_faq">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://contribute.${domain}/?INTCMP=membership_faq"
+            >
               contributions
             </a>.
           </div>
@@ -247,12 +347,27 @@ export const FAQs = () => (
         <div title="Can I get involved in Guardian journalism?">
           <div>
             Details on contributing to the Guardian can be found{" "}
-            <a href="https://www.${domain}/info/1999/nov/22/contributors-guide-and-contacts">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://www.${domain}/info/1999/nov/22/contributors-guide-and-contacts"
+            >
               here
             </a>. Readers can also get involved via{" "}
-            <a href="https://witness.${domain}/">GuardianWitness</a>. And we
-            regularly ask Members for their views and opinions on our journalism
-            and how we cover ongoing stories and issues.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://witness.${domain}/"
+            >
+              GuardianWitness
+            </a>. And we regularly ask Members for their views and opinions on
+            our journalism and how we cover ongoing stories and issues.
           </div>
         </div>
         <div title="I can't afford to pay you anything yet, but would like to offer my support.">
@@ -277,7 +392,14 @@ export const FAQs = () => (
             We will never use your information for any purpose – marketing or
             otherwise – without your permission. You can read more about our
             approach to data security in our{" "}
-            <a href="http://www.${domain}/help/privacy-policy">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="http://www.${domain}/help/privacy-policy"
+            >
               privacy policy
             </a>.
           </div>
@@ -300,22 +422,46 @@ export const FAQs = () => (
         <div title="What happens if I want to change my membership tier?">
           <div>
             You can change your membership tier online anytime. Just go to your{" "}
-            <a href="https://profile.${domain}/membership/edit">Profile page</a>{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://profile.${domain}/membership/edit"
+            >
+              Profile page
+            </a>{" "}
             on the membership site and follow the instructions.
           </div>
         </div>
         <div title="What happens if I want to cancel my membership?">
           <div>
             You can cancel your membership by following the instructions on{" "}
-            <a href="https://membership.${domain}/tier/cancel">this page</a>.
-            Your membership will run until the end of your current payment term
-            and then renew on an ongoing basis unless you choose to cancel.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://membership.${domain}/tier/cancel"
+            >
+              this page
+            </a>. Your membership will run until the end of your current payment
+            term and then renew on an ongoing basis unless you choose to cancel.
           </div>
         </div>
         <div title="What are the terms and conditions of membership?">
           <div>
             Read the full set of terms and conditions{" "}
-            <a href="https://www.${domain}/info/2014/sep/09/guardian-membership-terms-and-conditions">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="https://www.${domain}/info/2014/sep/09/guardian-membership-terms-and-conditions"
+            >
               here
             </a>.
           </div>
@@ -324,7 +470,14 @@ export const FAQs = () => (
           <div>
             <p>
               Please email{" "}
-              <a href="mailto:membershipsupport@theguardian.com">
+              <a
+                css={{
+                  textDecoration: "underline",
+                  color: palette.blue.dark,
+                  ":visited": { color: palette.blue.dark }
+                }}
+                href="mailto:membershipsupport@theguardian.com"
+              >
                 membershipsupport@theguardian.com
               </a>{" "}
               with your question. We will do our best to get back to you within
@@ -335,7 +488,14 @@ export const FAQs = () => (
 
             <p>
               Readers in Australia can email{" "}
-              <a href="mailto:australia.membership@theguardian.com">
+              <a
+                css={{
+                  textDecoration: "underline",
+                  color: palette.blue.dark,
+                  ":visited": { color: palette.blue.dark }
+                }}
+                href="mailto:australia.membership@theguardian.com"
+              >
                 australia.membership@theguardian.com
               </a>{" "}
               or call the Guardian Australia office on 1800 773 766, lines are
@@ -344,14 +504,30 @@ export const FAQs = () => (
 
             <p>
               Readers in the US can email{" "}
-              <a href="mailto:membershipsupport@theguardian.com">
+              <a
+                css={{
+                  textDecoration: "underline",
+                  color: palette.blue.dark,
+                  ":visited": { color: palette.blue.dark }
+                }}
+                href="mailto:membershipsupport@theguardian.com"
+              >
                 membershipsupport@theguardian.com
               </a>
             </p>
 
             <p>
               You can also leave feedback via{" "}
-              <a href="https://membership.${domain}/feedback">this form</a>.
+              <a
+                css={{
+                  textDecoration: "underline",
+                  color: palette.blue.dark,
+                  ":visited": { color: palette.blue.dark }
+                }}
+                href="https://membership.${domain}/feedback"
+              >
+                this form
+              </a>.
             </p>
           </div>
         </div>
@@ -382,7 +558,14 @@ export const FAQs = () => (
               hire) can mean it’s hard to make the figures work. However, in
               addition, our regular Local programme takes place all over the
               country. Visit{" "}
-              <a href="http://membership.${domain}/events">
+              <a
+                css={{
+                  textDecoration: "underline",
+                  color: palette.blue.dark,
+                  ":visited": { color: palette.blue.dark }
+                }}
+                href="http://membership.${domain}/events"
+              >
                 membership.theguardian.com/events
               </a>{" "}
               to see the calendar of current events.
@@ -452,7 +635,14 @@ export const FAQs = () => (
             only if you have not yet redeemed a ticket, or received a book in
             the applicable membership year. To do so, contact membership support
             by either emailing{" "}
-            <a href="mailto:membershipsupport@theguardian.com">
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="mailto:membershipsupport@theguardian.com"
+            >
               membershipsupport@theguardian.com
             </a>{" "}
             or calling 0330 333 6898.
@@ -475,7 +665,7 @@ export const FAQs = () => (
         </div>
       </Accordion>
 
-      <h2>Guardian Live (Events)</h2>
+      <h2>Guardian Masterclasses</h2>
 
       <Accordion>
         <div title="What are Guardian Masterclasses?">
@@ -488,7 +678,16 @@ export const FAQs = () => (
             Chris Difford, and a masterclass in becoming a successful journalist
             from some of our award-winning writers. More frequently asked
             questions are available{" "}
-            <a href="http://www.${domain}/guardian-masterclasses/faqs">here</a>.
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="http://www.${domain}/guardian-masterclasses/faqs"
+            >
+              here
+            </a>.
           </div>
         </div>
         <div title="Can I book a Guardian Masterclass course without becoming a Member?">
