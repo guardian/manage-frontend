@@ -6,6 +6,7 @@ import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
 import { Button } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
+import { MembershipLinks } from "./membershipLinks";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
@@ -29,7 +30,7 @@ export function hasMembership(
 
 export class MembershipAsyncLoader extends AsyncLoader<
   MembersDataApiResponse
-> {}
+  > { }
 
 export const loadMembershipData: () => Promise<Response> = async () =>
   await fetch("/api/me/membership", { credentials: "include" });
@@ -145,8 +146,8 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
         {data.regNumber ? (
           <MembershipRow label={"Membership number"} data={data.regNumber} />
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         <MembershipRow
           label={"Membership tier"}
           data={
@@ -197,6 +198,7 @@ export const Membership = (props: RouteableProps) => (
         render={renderMembershipData}
         loadingMessage="Loading your membership details..."
       />
+      <MembershipLinks />
     </PageContainer>
   </>
 );

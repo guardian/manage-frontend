@@ -7,6 +7,7 @@ import {
   PageContainerSection,
   PageHeaderContainer
 } from "./page";
+import { RouteableProps } from "./wizardRouterAdapter";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -15,7 +16,7 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-export const FAQs = () => (
+export const FAQs = (props: RouteableProps) => (
   <>
     <PageHeaderContainer>
       <h1>Frequently asked questions</h1>

@@ -125,7 +125,7 @@ const User = () => (
 
       <ContributionsFlow path="/cancel/contributions" currentStep={1} />
 
-      <FAQs path="help" />
+      <FAQs path="/help" currentStep={1} />
 
       <NotFound default={true} />
     </Router>
