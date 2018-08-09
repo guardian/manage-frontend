@@ -209,7 +209,6 @@ export const PaidMembershipFlow = (props: RouteableProps) => (
       Cancel your Guardian membership
     </h1>
     <PageContainer>
-      <div css={{ height: "50px" }} />
       <CheckFlowIsValid
         checkingFor="membership"
         validator={(me: MeResponse) => me.contentAccess.member}

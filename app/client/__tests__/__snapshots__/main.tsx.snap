@@ -341,7 +341,13 @@ exports[`Main renders something 1`] = `
       </p>
     </main>
   </div>
-  <footer>
+  <footer
+    css={
+      Object {
+        "marginTop": "2rem",
+      }
+    }
+  >
     <div
       css={
         Object {

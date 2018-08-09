@@ -36,7 +36,7 @@ export class Accordion extends React.Component<AccordionProps, AccordionState> {
 
   public render(): ReactNode {
     return (
-      <div css={{ flexGrow: 0, flexShrink: 0 }}>
+      <div css={{ flexGrow: 0 }}>
         {this.props.children.map(
           (child: ReactElement<AccordionPanelProps>, index: number) => (
             <React.Fragment key={child.props.title}>
