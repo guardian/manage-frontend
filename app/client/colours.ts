@@ -26,6 +26,7 @@ const palette = {
     dark: "#7d0068"
   },
   yellow: {
+    light: "#fff8e5",
     medium: "#ffe500",
     dark: "#edd600"
   },
