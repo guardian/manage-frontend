@@ -5,6 +5,7 @@ import { minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
 import { Button } from "./buttons";
+import { CancellationSummary } from "./cancel/cancellationSummary";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
@@ -108,17 +109,7 @@ const getPaymentMethodRow = (subscription: Subscription) => {
 };
 
 const getPaymentPart = (data: MembershipData) => {
-  if (data.subscription.cancelledAt) {
-    return (
-      <>
-        <MembershipRow label={"Membership Status"} data={"Cancelled"} />
-        <MembershipRow
-          label={"Effective end date"}
-          data={formatDate(data.subscription.end)}
-        />
-      </>
-    );
-  } else if (data.isPaidTier) {
+  if (data.isPaidTier) {
     return (
       <>
         <MembershipRow
@@ -140,9 +131,15 @@ const getPaymentPart = (data: MembershipData) => {
   }
 };
 
+const membershipCancelled = (cancelType: string, subscription: Subscription) =>
+  CancellationSummary(cancelType)(subscription);
+
 const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
   if (hasMembership(apiResponse)) {
     const data: MembershipData = apiResponse;
+    if (data.subscription.cancelledAt) {
+      return membershipCancelled("membership", data.subscription);
+    }
     return (
       <div>
         {data.regNumber ? (
@@ -155,23 +152,19 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
           data={
             <div css={spaceBetweenCSS}>
               <span css={{ marginRight: "15px" }}>{data.tier}</span>
-              {data.subscription.cancelledAt ? (
-                undefined
-              ) : (
-                <a
-                  href={
-                    "https://membership." +
-                    window.guardian.domain +
-                    "/tier/change"
-                  }
-                >
-                  <Button
-                    text="Change tier"
-                    textColor={palette.white}
-                    color={palette.neutral["1"]}
-                  />
-                </a>
-              )}
+              <a
+                href={
+                  "https://membership." +
+                  window.guardian.domain +
+                  "/tier/change"
+                }
+              >
+                <Button
+                  text="Change tier"
+                  textColor={palette.white}
+                  color={palette.neutral["1"]}
+                />
+              </a>
             </div>
           }
         />

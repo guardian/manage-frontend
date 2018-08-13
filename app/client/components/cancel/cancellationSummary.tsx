@@ -7,7 +7,21 @@ import { formatDate, Subscription } from "../user";
 
 const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
   <PageContainerSection>
-    <h2>Your {cancelType} is cancelled.</h2>
+    <h2
+      css={{
+        padding: "0.9375rem 0 0.9375rem 0.25rem",
+        margin: "2rem 0 0.9375rem",
+        backgroundColor: palette.yellow.light,
+        borderTop: `0.0625rem solid ${palette.neutral["3"]}`,
+        borderBottom: `0.0625rem solid ${palette.neutral["3"]}`,
+        fontSize: "1.25rem",
+        lineHeight: "1.5rem",
+        fontWeight: 900,
+        color: palette.neutral["1"]
+      }}
+    >
+      Your {cancelType} is cancelled.
+    </h2>
     {subscription.end ? (
       <p>
         You will continue to receive the benefits of your {cancelType} until{" "}
