@@ -38,6 +38,7 @@ const globals: Globals = {
 server.use(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.header("Cache-Control", "private");
+    res.header("Access-Control-Allow-Origin", "*." + conf.DOMAIN);
     next();
   }
 );
