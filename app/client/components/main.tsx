@@ -1,6 +1,7 @@
 import React from "react";
 import { initGA } from "../analytics";
 import palette from "../colours";
+import { serif } from "../styles/fonts";
 import Footer from "./footer/footer";
 import Header from "./header";
 
@@ -30,7 +31,7 @@ export class Main extends React.PureComponent<{}> {
         >
           <main
             css={{
-              fontFamily: '"Guardian Text Egyptian Web",Georgia,serif'
+              fontFamily: serif
             }}
           >
             {children}
