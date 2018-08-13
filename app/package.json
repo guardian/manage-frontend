@@ -53,6 +53,7 @@
     "assets-webpack-plugin": "^3.5.1",
     "babel-loader": "^8.0.0-beta.0",
     "copy-node-modules": "^1.0.4",
+    "copy-webpack-plugin": "^4.5.2",
     "dom-testing-library": "^2.3.2",
     "husky": "^0.14.3",
     "jest": "^23.0.0",

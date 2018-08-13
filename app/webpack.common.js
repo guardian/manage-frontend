@@ -2,6 +2,7 @@ const path = require("path");
 const merge = require("webpack-merge");
 const AssetsPlugin = require("assets-webpack-plugin");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const assetsPluginInstance = new AssetsPlugin({
   path: path.resolve(__dirname, "./dist/")
@@ -10,6 +11,13 @@ const assetsPluginInstance = new AssetsPlugin({
 const definePlugin = new webpack.DefinePlugin({
   WEBPACK_BUILD: `'${process.env.TEAMCITY_BUILD}'` || "'NO BUILD SET'"
 });
+
+const copyPlugin = new CopyWebpackPlugin([
+  {
+    from: path.resolve(__dirname, "client", "fonts"),
+    to: path.resolve(__dirname, "dist", "static", "fonts")
+  }
+]);
 
 const nodeExternals = require("webpack-node-externals");
 
@@ -95,7 +103,8 @@ const client = merge(common, {
         options: babelCommon
       }
     ]
-  }
+  },
+  plugins: [copyPlugin]
 });
 module.exports = {
   client: client,
