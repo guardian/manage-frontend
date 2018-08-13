@@ -8,6 +8,7 @@ export interface AccordionPanelProps {
 
 export interface AccordionProps {
   children: Array<ReactElement<AccordionPanelProps>>;
+  initialIndex?: number;
 }
 
 export interface AccordionState {
@@ -30,7 +31,7 @@ export class Accordion extends React.Component<AccordionProps, AccordionState> {
   constructor(props: AccordionProps) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selectedIndex: props.initialIndex ? props.initialIndex : 0
     };
   }
 
