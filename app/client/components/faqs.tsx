@@ -1,4 +1,5 @@
 import React from "react";
+import { css } from "../../node_modules/emotion";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { Accordion } from "./accordion";
@@ -16,6 +17,11 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
+const headerCss = css({
+  marginBottom: "12px",
+  borderBottom: `1px solid ${palette.neutral["5"]}`
+});
+
 export const FAQs = (props: RouteableProps) => (
   <>
     <PageHeaderContainer>
@@ -24,8 +30,8 @@ export const FAQs = (props: RouteableProps) => (
     </PageHeaderContainer>
 
     <PageContainerSection>
-      <h2>Guardian Membership: the basics</h2>
-      <Accordion>
+      <h2 className={headerCss}>Guardian Membership: the basics</h2>
+      <Accordion initialIndex={-1}>
         <div title="What is membership?">
           <div>
             Membership is an opportunity for readers to offer financial support
@@ -534,9 +540,9 @@ export const FAQs = (props: RouteableProps) => (
         </div>
       </Accordion>
 
-      <h2>Guardian Live (Events)</h2>
+      <h2 className={headerCss}>Guardian Live (Events)</h2>
 
-      <Accordion>
+      <Accordion initialIndex={-1}>
         <div title="What is Guardian Live?">
           <div>
             Guardian Live is a rolling events programme of discussions, debates,
@@ -666,9 +672,9 @@ export const FAQs = (props: RouteableProps) => (
         </div>
       </Accordion>
 
-      <h2>Guardian Masterclasses</h2>
+      <h2 className={headerCss}>Guardian Masterclasses</h2>
 
-      <Accordion>
+      <Accordion initialIndex={-1}>
         <div title="What are Guardian Masterclasses?">
           <div>
             Guardian Masterclasses match our readers’ interests with a wide
