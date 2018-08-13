@@ -45,6 +45,8 @@ export interface CancellationReason {
   linkLabel: string;
   saveTitle: string;
   saveBody: string | ReactNode;
+  experimentSaveBody?: string | ReactNode;
+  experimentTriggerFlag?: string;
   alternateCallUsPrefix?: string;
   alternateFeedbackIntro?: string;
   alternateFeedbackThankYouTitle?: string;

@@ -2,6 +2,7 @@ import React from "react";
 import { conf } from "../../../../server/config";
 import palette from "../../../colours";
 import { CancellationReason } from "../../user";
+import { SwitchToContributionPlaceholder } from "./switchToContributionPlaceholder";
 
 // Webpack doesn't like browser globals
 let domain: string;
@@ -19,6 +20,26 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
       "We understand that financial circumstances can change from time to time",
     saveBody:
       "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to make support us and one of our customer service specialist would be happy to hear from you.",
+    experimentSaveBody: (
+      <>
+        <div css={{ marginTop: "10px" }}>
+          Making a smaller one time or recurring contribution to the Guardian
+          can be an inexpensive way of keeping journalism open for everyone to
+          read and enjoy.{" "}
+          <span
+            css={{
+              backgroundColor: palette.yellow.medium,
+              color: palette.neutral["1"]
+            }}
+          >
+            For as little as £1 you can continue to support the Guardian - and
+            it only takes a minute.
+          </span>
+        </div>
+        <SwitchToContributionPlaceholder />
+      </>
+    ),
+    experimentTriggerFlag: "showSwitchToContributionPlaceholder",
     alternateFeedbackThankYouBody:
       "One of our customer service specialists will be in touch shortly."
   },
