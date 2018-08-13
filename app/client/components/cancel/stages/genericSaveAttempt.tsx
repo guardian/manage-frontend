@@ -203,7 +203,9 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           <WizardStep routeableProps={props}>
             <PageContainerSection>
               <h2>{props.reason.saveTitle}</h2>
-              {props.reason.experimentTriggerFlag &&
+              {window.guardian &&
+              window.guardian.experimentFlags &&
+              props.reason.experimentTriggerFlag &&
               window.guardian.experimentFlags[
                 props.reason.experimentTriggerFlag
               ] ? (

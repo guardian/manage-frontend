@@ -2,7 +2,7 @@ export interface Globals {
   domain: string;
   dsn: string | null;
   experimentFlags?: {
-    showSwitchToContributionPlaceholder?: true;
+    [experimentFlagName: string]: true;
   };
 }
 
