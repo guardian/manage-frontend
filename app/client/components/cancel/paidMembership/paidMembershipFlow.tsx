@@ -1,6 +1,7 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
 import { MeResponse } from "../../../../shared/meResponse";
+import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
@@ -95,14 +96,17 @@ const childWithRouteablePropsToElement = (child: {
   </option>
 );
 
-const cssBullet = css`
-  flex-basis: 50%;
+const cssBullet = (flexBasis: string = "50%") => css`
+  flex-basis: ${flexBasis};
   flex-grow: 1;
   list-style: none;
+  list-style-position: inside;
+  text-indent: -0.6em;
+  padding-left: 20px;
   &::before {
     display: inline-block;
     content: "●";
-    margin-right: 15px;
+    margin-right: 0.6em;
   }
 `;
 
@@ -115,6 +119,25 @@ const reasonsCss = css({
     flexWrap: "wrap"
   }
 });
+
+const clickHereToFindOutMoreAboutOurNewFeatures = (
+  <a
+    css={{
+      textDecoration: "underline",
+      color: palette.blue.dark,
+      ":visited": { color: palette.blue.dark }
+    }}
+    href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
+    onClick={() => {
+      trackEvent({
+        eventCategory: "href",
+        eventAction: "premium_features"
+      });
+    }}
+  >
+    click here to find out about our brand new features
+  </a>
+);
 
 const getReasonsRenderer = (routeableProps: RouteableProps) => (
   data: MembersDataApiResponse
@@ -146,25 +169,50 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
             >
               If you cancel your Membership you will miss out on:
             </h4>
-            <ul className={reasonsCss}>
-              <li className={cssBullet}>Access to events tickets</li>
-              <li className={cssBullet}>
-                Exclusive emails from our membership editor
-              </li>
-              <li className={cssBullet} css={{ paddingTop: "5px" }}>
-                Free access to the premium tier of the Guardian app -{" "}
-                <a
+            {window.guardian &&
+            window.guardian.experimentFlags &&
+            window.guardian.experimentFlags.alternateMembershipBenefits ? (
+              <ul className={reasonsCss}>
+                <li className={cssBullet("100%")}>
+                  Exclusive emails from our membership editor
+                </li>
+                <li className={cssBullet("100%")} css={{ paddingTop: "5px" }}>
+                  Free access to the ad-free premium tier of the Guardian app,
+                  now featuring ‘Live’ & ‘Discover’ - two new ways to experience
+                  the Guardian, set to the pace of your day.
+                  <ul>
+                    <li css={{ display: "list-item" }}>
+                      Live: Access to every breaking news story and update, in
+                      real time
+                    </li>
+                    <li>
+                      Discover: Explore great stories you may have missed, when
+                      you have more time
+                    </li>
+                  </ul>
+                </li>
+                <div
                   css={{
-                    textDecoration: "underline",
-                    color: palette.blue.dark,
-                    ":visited": { color: palette.blue.dark }
+                    textAlign: "center",
+                    width: "100%",
+                    margin: "10px"
                   }}
-                  href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
                 >
-                  click here to find out about our brand new features
-                </a>
-              </li>
-            </ul>
+                  {clickHereToFindOutMoreAboutOurNewFeatures}
+                </div>
+              </ul>
+            ) : (
+              <ul className={reasonsCss}>
+                <li className={cssBullet()}>Access to events tickets</li>
+                <li className={cssBullet()}>
+                  Exclusive emails from our membership editor
+                </li>
+                <li className={cssBullet()} css={{ paddingTop: "5px" }}>
+                  Free access to the premium tier of the Guardian app -{" "}
+                  {clickHereToFindOutMoreAboutOurNewFeatures}
+                </li>
+              </ul>
+            )}
           </div>
 
           <PageContainerSection>
