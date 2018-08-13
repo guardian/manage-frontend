@@ -10,7 +10,7 @@ export const PageContainer: React.SFC<{}> = ({ children }) => {
       css={{
         maxWidth: "980px",
         margin: "1.8125rem auto 0",
-        padding: "0.625rem",
+        padding: "0 0.625rem",
 
         [minWidth.tablet]: {
           padding: "0 1.25rem"
@@ -29,7 +29,7 @@ export const PageContainerSection: React.SFC<{}> = ({ children }) => {
       css={{
         maxWidth: "calc(45rem + 1.25rem)",
         margin: "1.8125rem auto 0",
-        padding: "0.625rem",
+        padding: "0 0.625rem",
 
         [minWidth.tablet]: {
           maxWidth: "calc(45rem + 2.5rem)",
