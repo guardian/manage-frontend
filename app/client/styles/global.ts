@@ -1,3 +1,5 @@
+import { headline } from "./fonts";
+
 const global = `
 html {
   box-sizing: border-box;
@@ -41,6 +43,7 @@ h6 {
   margin: 0;
   color: inherit;
   font-weight: 500;
+  font-family: ${headline};
 }
 
 a {

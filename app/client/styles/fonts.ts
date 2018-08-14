@@ -106,79 +106,151 @@ export const fonts = `
 	font-weight: 900;
 	font-style: italic;
     }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-Regular.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-Regular.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-Regular.ttf") format("truetype");
-        font-weight: 400;
-        font-style: normal;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-RegularItalic.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-RegularItalic.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-RegularItalic.ttf") format("truetype");
-        font-weight: 400;
-        font-style: italic;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-Medium.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-Medium.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-Medium.ttf") format("truetype");
-        font-weight: 500;
-        font-style: normal;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-MediumItalic.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-MediumItalic.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-MediumItalic.ttf") format("truetype");
-        font-weight: 500;
-        font-style: italic;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-Bold.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-Bold.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-Bold.ttf") format("truetype");
-        font-weight: 700;
-        font-style: normal;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-BoldItalic.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-BoldItalic.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-BoldItalic.ttf") format("truetype");
-        font-weight: 700;
-        font-style: italic;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-Black.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-Black.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-Black.ttf") format("truetype");
-        font-weight: 900;
-        font-style: normal;
-        }
-    
-    @font-face {
-        font-family: "GuardianTextSans";
-        src: url("/static/fonts/GuardianTextSans-BlackItalic.woff2") format("woff2"),
-                 url("/static/fonts/GuardianTextSans-BlackItalic.woff") format("woff"),
-                 url("/static/fonts/GuardianTextSans-BlackItalic.ttf") format("truetype");
-        font-weight: 900;
-        font-style: italic;
-        }
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-Regular.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-Regular.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-Regular.ttf") format("truetype");
+			font-weight: 400;
+			font-style: normal;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-RegularItalic.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-RegularItalic.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-RegularItalic.ttf") format("truetype");
+			font-weight: 400;
+			font-style: italic;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-Medium.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-Medium.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-Medium.ttf") format("truetype");
+			font-weight: 500;
+			font-style: normal;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-MediumItalic.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-MediumItalic.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-MediumItalic.ttf") format("truetype");
+			font-weight: 500;
+			font-style: italic;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-Bold.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-Bold.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-Bold.ttf") format("truetype");
+			font-weight: 700;
+			font-style: normal;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-BoldItalic.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-BoldItalic.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-BoldItalic.ttf") format("truetype");
+			font-weight: 700;
+			font-style: italic;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-Black.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-Black.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-Black.ttf") format("truetype");
+			font-weight: 900;
+			font-style: normal;
+			}
+	
+	@font-face {
+			font-family: "GuardianTextSans";
+			src: url("/static/fonts/GuardianTextSans-BlackItalic.woff2") format("woff2"),
+								url("/static/fonts/GuardianTextSans-BlackItalic.woff") format("woff"),
+								url("/static/fonts/GuardianTextSans-BlackItalic.ttf") format("truetype");
+			font-weight: 900;
+			font-style: italic;
+			}
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-Regular.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-Regular.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-Regular.ttf") format("truetype");
+		font-weight: 400;
+		font-style: normal;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-RegularItalic.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-RegularItalic.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-RegularItalic.ttf") format("truetype");
+		font-weight: 400;
+		font-style: italic;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-Medium.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-Medium.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-Medium.ttf") format("truetype");
+		font-weight: 500;
+		font-style: normal;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-MediumItalic.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-MediumItalic.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-MediumItalic.ttf") format("truetype");
+		font-weight: 500;
+		font-style: italic;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-Bold.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-Bold.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-Bold.ttf") format("truetype");
+		font-weight: 700;
+		font-style: normal;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-BoldItalic.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-BoldItalic.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-BoldItalic.ttf") format("truetype");
+		font-weight: 700;
+		font-style: italic;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-Black.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-Black.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-Black.ttf") format("truetype");
+		font-weight: 900;
+		font-style: normal;
+		}
+	
+	@font-face {
+		font-family: "GuardianTextEgyptian";
+		src: url("/static/fonts/GuardianTextEgyptian-BlackItalic.woff2") format("woff2"),
+						url("/static/fonts/GuardianTextEgyptian-BlackItalic.woff") format("woff"),
+						url("/static/fonts/GuardianTextEgyptian-BlackItalic.ttf") format("truetype");
+		font-weight: 900;
+		font-style: italic;
+		}
 `;
 
 export const sans = `"GuardianTextSans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
-export const serif = `"GH Guardian Headline", Georgia, serif`;
+export const serif = `"GuardianTextEgyptian", Georgia, serif`;
+export const headline = `GH Guardian Headline, ${serif}`;
