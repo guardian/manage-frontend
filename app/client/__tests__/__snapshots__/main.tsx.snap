@@ -332,7 +332,7 @@ exports[`Main renders something 1`] = `
     <main
       css={
         Object {
-          "fontFamily": "\\"GH Guardian Headline\\", Georgia, serif",
+          "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
         }
       }
     >
