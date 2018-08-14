@@ -1,7 +1,9 @@
+import { headline } from "./fonts";
+
 const global = `
 html {
   box-sizing: border-box;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-family: "GuardianTextSans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
@@ -41,6 +43,7 @@ h6 {
   margin: 0;
   color: inherit;
   font-weight: 500;
+  font-family: ${headline};
 }
 
 a {

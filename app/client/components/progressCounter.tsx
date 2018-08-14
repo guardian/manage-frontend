@@ -2,6 +2,7 @@ import React from "react";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { css } from "../styles/emotion";
+import { sans } from "../styles/fonts";
 
 const RADIUS = 40;
 const FONT_SIZE = 16;
@@ -23,7 +24,7 @@ const processCounterCss = (current: number, total: number, n: number) =>
   css({
     transitionProperty: "background",
     transitionDuration: "0.2s",
-    fontFamily: "'Guardian Text Sans Web'",
+    fontFamily: sans,
     color: n === current ? palette.neutral["5"] : palette.neutral["1"],
     border: `1px solid ${palette.neutral["2"]}`,
     minHeight: `${RADIUS}px`,
