@@ -107,77 +107,151 @@ export const fonts = `
 	font-style: italic;
     }
 	
-	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-Regular.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-Regular.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-Regular.ttf") format("truetype");
+		@font-face {
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.svg#GuardianTextSansWeb-Regular')
+							format('svg');
 			font-weight: 400;
 			font-style: normal;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-RegularItalic.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-RegularItalic.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-RegularItalic.ttf") format("truetype");
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-RegularItalic.svg#GuardianTextSansWeb-RegularItalic')
+							format('svg');
 			font-weight: 400;
 			font-style: italic;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-Medium.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-Medium.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-Medium.ttf") format("truetype");
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Medium.svg#GuardianTextSansWeb-Medium')
+							format('svg');
 			font-weight: 500;
 			font-style: normal;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-MediumItalic.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-MediumItalic.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-MediumItalic.ttf") format("truetype");
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-MediumItalic.svg#GuardianTextSansWeb-MediumItalic')
+							format('svg');
 			font-weight: 500;
 			font-style: italic;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-Bold.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-Bold.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-Bold.ttf") format("truetype");
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Bold.svg#GuardianTextSansWeb-Bold')
+							format('svg');
 			font-weight: 700;
 			font-style: normal;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-BoldItalic.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-BoldItalic.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-BoldItalic.ttf") format("truetype");
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BoldItalic.svg#GuardianTextSansWeb-BoldItalic')
+							format('svg');
 			font-weight: 700;
 			font-style: italic;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-Black.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-Black.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-Black.ttf") format("truetype");
-			font-weight: 900;
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Black.svg#GuardianTextSansWeb-Black')
+							format('svg');
+			font-weight: 800;
 			font-style: normal;
-			}
-	
+			font-stretch: normal;
+			font-display: swap;
+	}
 	@font-face {
-			font-family: "GuardianTextSans";
-			src: url("/static/fonts/GuardianTextSans-BlackItalic.woff2") format("woff2"),
-								url("/static/fonts/GuardianTextSans-BlackItalic.woff") format("woff"),
-								url("/static/fonts/GuardianTextSans-BlackItalic.ttf") format("truetype");
-			font-weight: 900;
+			font-family: 'Guardian Text Sans Web';
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.eot');
+			src: url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.eot?#iefix')
+							format('embedded-opentype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.woff2')
+							format('woff2'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.woff')
+							format('woff'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.ttf')
+							format('truetype'),
+					url('https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-BlackItalic.svg#GuardianTextSansWeb-BlackItalic')
+							format('svg');
+			font-weight: 800;
 			font-style: italic;
-			}
+			font-stretch: normal;
+			font-display: swap;
+	}
+
 	@font-face {
 		font-family: "GuardianTextEgyptian";
 		src: url("/static/fonts/GuardianTextEgyptian-Regular.woff2") format("woff2"),
@@ -251,6 +325,6 @@ export const fonts = `
 		}
 `;
 
-export const sans = `"GuardianTextSans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
+export const sans = `"Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
 export const serif = `"GuardianTextEgyptian", Georgia, serif`;
 export const headline = `GH Guardian Headline, ${serif}`;

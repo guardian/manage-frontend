@@ -1,9 +1,9 @@
-import { headline } from "./fonts";
+import { headline, serif } from "./fonts";
 
 const global = `
 html {
   box-sizing: border-box;
-  font-family: "GuardianTextSans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
@@ -34,6 +34,10 @@ h3 {
   font-feature-settings: "kern" 1, "liga" 1;
 }
 
+h1 {
+  font-family: ${headline};
+}
+
 h1,
 h2,
 h3,
@@ -43,7 +47,7 @@ h6 {
   margin: 0;
   color: inherit;
   font-weight: 500;
-  font-family: ${headline};
+  font-family: ${serif};
 }
 
 a {
@@ -54,6 +58,11 @@ img {
   border: none;
   display: block;
   max-width: 100%;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1.125rem;
 }
 
 /**
