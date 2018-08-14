@@ -149,10 +149,15 @@ class FeedbackForm extends React.Component<
           borderLeft: "1px solid " + palette.neutral["4"]
         }}
       >
-        <h3>
+        <p
+          css={{
+            fontSize: "1rem",
+            fontWeight: "500"
+          }}
+        >
           {reason.alternateFeedbackThankYouTitle ||
             "Thank you for your feedback."}
-        </h3>
+        </p>
         <span>
           {reason.alternateFeedbackThankYouBody ||
             "The Guardian is dedicated to reporting the truth, holding power to account, and exposing corruption wherever we find it. Support from our readers makes what we do possible."}

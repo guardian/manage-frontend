@@ -96,7 +96,7 @@ export const Button = ({
       disabled={disabled}
     >
       {text}
-      <svg width="30" height="30" viewBox="0 0 30 30">
+      <svg width="28" height="28" viewBox="0 0 30 30">
         <path d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9" />
       </svg>
     </button>
@@ -111,7 +111,8 @@ const styles = {
     fontFamily: sans,
     borderRadius: "1000px",
     border: "none",
-    display: "inline-block",
+    display: "inline-flex",
+    alignItems: "center",
     whiteSpace: "nowrap",
     position: "relative"
   },
@@ -123,13 +124,13 @@ const styles = {
 
     svg: {
       fill: "currentColor",
-      height: "34px",
+      height: "28px",
       position: "absolute",
       left: "5px",
       top: "50%",
       transform: "translate(0, -50%) rotate(180deg)",
       transition: "transform .3s, background .3s",
-      width: "40px"
+      width: "28px"
     }
   },
   rightHover: {

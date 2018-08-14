@@ -216,10 +216,15 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
           </div>
 
           <PageContainerSection>
-            <h3>
+            <p
+              css={{
+                fontSize: "1rem",
+                fontWeight: "500"
+              }}
+            >
               Your support means we can remain independent, open to all readers
               and empowered to hold those in power to account.
-            </h3>
+            </p>
 
             <p>
               Sorry to hear you are thinking of cancelling your membership.
