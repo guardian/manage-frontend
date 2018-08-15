@@ -258,7 +258,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
   );
 };
 
-export const PaidMembershipFlow = (props: RouteableProps) => (
+export const MembershipCancellationFlow = (props: RouteableProps) => (
   <div>
     <h1
       css={{
