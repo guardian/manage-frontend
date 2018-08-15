@@ -8,17 +8,20 @@ import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps {
   path: string;
+}
+
+export interface RouteableStepProps extends RouteableProps {
   currentStep: number;
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
-export interface MultiRouteableProps extends RouteableProps {
-  // TODO is this is still needed??
+export interface MultiRouteableProps extends RouteableStepProps {
+  // TODO refactor this out by adding type params to Children
   linkLabel: string;
 }
 
 interface RootComponentProps {
-  routeableProps: RouteableProps;
+  routeableStepProps: RouteableStepProps;
   thisStageChildren: any;
   path: string;
 }
@@ -57,10 +60,10 @@ const RootComponent = (props: RootComponentProps) => (
   <PageContainer>
     <PageContainerSection>
       <ProgressCounter
-        current={props.routeableProps.currentStep}
+        current={props.routeableStepProps.currentStep}
         total={estimateTotal(
-          props.routeableProps.currentStep,
-          props.routeableProps.children
+          props.routeableStepProps.currentStep,
+          props.routeableStepProps.children
         )}
       />
     </PageContainerSection>
@@ -76,19 +79,21 @@ const ThisStageContent = (props: WizardStepProps) => (
     <RootComponent
       path="/"
       thisStageChildren={props.children}
-      routeableProps={props.routeableProps}
+      routeableStepProps={props.routeableStepProps}
     />
   </Router>
 );
 
-const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
+const getForwardNavigationIfApplicable = (
+  routeableStepProps: RouteableStepProps
+) => {
   if (
-    routeableProps.children &&
-    routeableProps.children.props.children &&
-    !Array.isArray(routeableProps.children.props.children)
+    routeableStepProps.children &&
+    routeableStepProps.children.props.children &&
+    !Array.isArray(routeableStepProps.children.props.children)
   ) {
-    const childProps: RouteableProps =
-      routeableProps.children.props.children.props;
+    const childProps: RouteableStepProps =
+      routeableStepProps.children.props.children.props;
     return (
       <LinkButton
         to={childProps.path}
@@ -105,7 +110,7 @@ const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
 };
 
 export interface WizardStepProps {
-  routeableProps: RouteableProps;
+  routeableStepProps: RouteableStepProps;
   children: any;
 }
 
@@ -113,8 +118,8 @@ export const WizardStep = (props: WizardStepProps) => (
   <>
     <ThisStageContent
       children={props.children}
-      routeableProps={props.routeableProps}
+      routeableStepProps={props.routeableStepProps}
     />
-    {props.routeableProps.children}
+    {props.routeableStepProps.children}
   </>
 );

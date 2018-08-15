@@ -7,7 +7,7 @@ import {
   Subscription,
   WithSubscription
 } from "../../user";
-import { RouteableProps, WizardStep } from "../../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CancellationSummary, isCancelled } from "../cancellationSummary";
 
 class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
@@ -44,7 +44,7 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
-export interface ExecuteCancellationRouteableProps extends RouteableProps {
+export interface ExecuteCancellationRouteableProps extends RouteableStepProps {
   cancelApiUrlSuffix: string;
   cancelType: string;
   withSubscriptionResponseFetcher: () => Promise<Response>;
@@ -68,7 +68,7 @@ const getCaseUpdatingCancellationSummary = (
 export const ExecuteCancellation = (
   props: ExecuteCancellationRouteableProps
 ) => (
-  <WizardStep routeableProps={props}>
+  <WizardStep routeableStepProps={props}>
     <CancellationReasonContext.Consumer>
       {reason => (
         <CancellationCaseIdContext.Consumer>

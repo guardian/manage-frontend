@@ -1,13 +1,10 @@
 import React from "react";
-import { MeResponse } from "../../../../shared/meResponse";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
-import { RouteableProps } from "../../wizardRouterAdapter";
+import { ProductTypes } from "../../user";
+import { RouteableStepProps } from "../../wizardRouterAdapter";
 
-export const ContributionsCancellationFlow = (props: RouteableProps) => (
-  <CheckFlowIsValid
-    validator={(me: MeResponse) => me.contentAccess.recurringContributor}
-    checkingFor="regular contribution"
-  >
+export const ContributionsCancellationFlow = (props: RouteableStepProps) => (
+  <CheckFlowIsValid {...ProductTypes.contributions}>
     <h1>Coming Soon</h1>
   </CheckFlowIsValid>
 );
