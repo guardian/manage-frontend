@@ -6,7 +6,6 @@ import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
 import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/cancellationReasons";
 import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
@@ -126,8 +125,6 @@ const User = () => (
           )
         )}
       </PaidMembershipFlow>
-
-      <FreeMembershipFlow path="/cancel/friend" currentStep={1} />
 
       <ContributionsFlow path="/cancel/contributions" currentStep={1} />
 
