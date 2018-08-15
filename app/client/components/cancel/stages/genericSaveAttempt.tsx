@@ -1,10 +1,10 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
-import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { css } from "../../../styles/emotion";
 import { sans } from "../../../styles/fonts";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";

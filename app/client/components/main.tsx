@@ -1,15 +1,10 @@
 import React from "react";
-import { initGA } from "../analytics";
 import palette from "../colours";
 import { serif } from "../styles/fonts";
 import Footer from "./footer/footer";
 import Header from "./header";
 
 export class Main extends React.PureComponent<{}> {
-  public componentDidMount(): void {
-    initGA();
-  }
-
   public render(): React.ReactNode {
     const children = this.props.children;
     return (

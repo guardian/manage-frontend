@@ -1,9 +1,9 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
 import { MeResponse } from "../../../../shared/meResponse";
-import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
+import { trackEvent } from "../../analytics";
 import { LinkButton } from "../../buttons";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import {

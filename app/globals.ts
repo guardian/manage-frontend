@@ -8,7 +8,6 @@ export interface Globals {
 
 declare global {
   interface Window {
-    gaData?: any;
     guardian: Globals;
   }
 }
