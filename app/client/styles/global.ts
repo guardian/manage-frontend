@@ -34,10 +34,6 @@ h3 {
   font-feature-settings: "kern" 1, "liga" 1;
 }
 
-h1 {
-  font-family: ${headline};
-}
-
 h1,
 h2,
 h3,
@@ -49,6 +45,11 @@ h6 {
   font-weight: 500;
   font-family: ${serif};
 }
+
+h1 {
+  font-family: ${headline};
+}
+
 
 a {
   text-decoration: none;

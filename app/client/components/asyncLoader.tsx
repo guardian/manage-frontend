@@ -1,6 +1,6 @@
 import Raven from "raven-js";
 import React from "react";
-import { trackEvent } from "../analytics";
+import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { LoadingProps, Spinner } from "./spinner";
 

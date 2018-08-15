@@ -4,6 +4,7 @@ import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
+import { AnalyticsTracker } from "./analytics";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
@@ -19,6 +20,7 @@ import {
   Membership
 } from "./membership";
 import { navLinks, qualifyLink } from "./nav";
+import { PageContainer } from "./page";
 import { CardProps } from "./payment/cardDisplay";
 import { RouteableProps } from "./wizardRouterAdapter";
 
@@ -71,23 +73,25 @@ export const formatDate = (shortForm: string) => {
 };
 
 const RedirectOnMeResponse = (props: RouteableProps) => (
-  <MeAsyncLoader
-    fetch={fetchMe}
-    render={(me: MeResponse) => {
-      const replace = { replace: true };
-      if (me.contentAccess.member) {
-        navigate(qualifyLink(navLinks.membership), replace);
-      } else if (me.contentAccess.recurringContributor) {
-        navigate(qualifyLink(navLinks.contributions), replace);
-      } else if (me.contentAccess.digitalPack) {
-        navigate(qualifyLink(navLinks.digiPack), replace);
-      } else {
-        navigate("https://" + window.guardian.domain, replace);
-      }
-      return null; // official way to render nothing
-    }}
-    loadingMessage={"Checking your products..."}
-  />
+  <PageContainer>
+    <MeAsyncLoader
+      fetch={fetchMe}
+      render={(me: MeResponse) => {
+        const replace = { replace: true };
+        if (me.contentAccess.member) {
+          navigate(qualifyLink(navLinks.membership), replace);
+        } else if (me.contentAccess.recurringContributor) {
+          navigate(qualifyLink(navLinks.contributions), replace);
+        } else if (me.contentAccess.digitalPack) {
+          navigate(qualifyLink(navLinks.digiPack), replace);
+        } else {
+          navigate("https://" + window.guardian.domain, replace);
+        }
+        return null; // official way to render nothing
+      }}
+      loadingMessage={"Checking your products..."}
+    />
+  </PageContainer>
 );
 
 const User = () => (
@@ -142,16 +146,9 @@ export const ServerUser = (url: string) => (
   </>
 );
 
-export const BrowserUser = (trackPath: (path: string) => void) => {
-  return (
-    <>
-      <User />
-      <Location>
-        {({ location }) => {
-          trackPath(location.pathname);
-          return null; // null is a valid React node type, but void is not.
-        }}
-      </Location>
-    </>
-  );
-};
+export const BrowserUser = (
+  <>
+    <User />
+    <AnalyticsTracker />
+  </>
+);

@@ -1,6 +1,6 @@
 import React from "react";
-import { trackEvent } from "../../../analytics";
 import palette from "../../../colours";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 
 export interface SwitchToContributionPlaceholderState {
