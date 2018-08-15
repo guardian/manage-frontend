@@ -5,10 +5,9 @@ import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
-import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { NotFound } from "./cancel/notFound";
-import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/cancellationReasons";
-import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
+import { ContributionsCancellationFlow } from "./cancel/contributions/contributionsCancellationFlow";
+import { membershipCancellationReasonMatrix } from "./cancel/membership/cancellationReasons";
+import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { FAQs } from "./faqs";
@@ -19,6 +18,7 @@ import {
   Membership
 } from "./membership";
 import { navLinks, qualifyLink } from "./nav";
+import { NotFound } from "./notFound";
 import { PageContainer } from "./page";
 import { CardProps } from "./payment/cardDisplay";
 import { RouteableProps } from "./wizardRouterAdapter";
@@ -102,8 +102,7 @@ const User = () => (
       <RedirectOnMeResponse path="/" currentStep={1} />
 
       <Membership path={navLinks.membership.link} currentStep={1} />
-
-      <PaidMembershipFlow path="/cancel/membership" currentStep={1}>
+      <MembershipCancellationFlow path="/cancel/membership" currentStep={1}>
         {membershipCancellationReasonMatrix.map(
           (reason: CancellationReason) => (
             <GenericSaveAttempt
@@ -124,9 +123,12 @@ const User = () => (
             </GenericSaveAttempt>
           )
         )}
-      </PaidMembershipFlow>
+      </MembershipCancellationFlow>
 
-      <ContributionsFlow path="/cancel/contributions" currentStep={1} />
+      <ContributionsCancellationFlow
+        path="/cancel/contributions"
+        currentStep={1}
+      />
 
       <FAQs path="/help" currentStep={1} />
 
