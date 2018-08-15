@@ -4,7 +4,7 @@ import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
-import { AnalyticsTrackPath } from "./analytics";
+import { AnalyticsTracker } from "./analytics";
 import { ContributionsFlow } from "./cancel/contributionsFlow";
 import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
 import { NotFound } from "./cancel/notFound";
@@ -149,6 +149,6 @@ export const ServerUser = (url: string) => (
 export const BrowserUser = (
   <>
     <User />
-    <AnalyticsTrackPath />
+    <AnalyticsTracker />
   </>
 );

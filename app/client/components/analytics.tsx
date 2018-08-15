@@ -8,20 +8,6 @@ declare global {
   }
 }
 
-const initGA = () => {
-  if (window.ga) {
-    window.ga("create", "UA-51507017-5", "auto");
-    window.ga("require", "GTM-NZGXNBL");
-    window.ga("set", "transport", "beacon");
-  }
-};
-
-const trackPath = (path: string) => {
-  if (path && window.ga) {
-    window.ga("send", "pageview", path);
-  }
-};
-
 export interface Event {
   eventCategory: string;
   eventAction: string;
@@ -47,17 +33,23 @@ export const trackEvent = ({
   }
 };
 
-export class AnalyticsTrackPath extends React.PureComponent<{}> {
+export class AnalyticsTracker extends React.PureComponent<{}> {
   constructor(props: {}) {
     super(props);
-    initGA();
+    if (window.ga) {
+      window.ga("create", "UA-51507017-5", "auto");
+      window.ga("require", "GTM-NZGXNBL");
+      window.ga("set", "transport", "beacon");
+    }
   }
 
   public render(): ReactNode {
     return (
       <Location>
         {({ location }) => {
-          trackPath(location.pathname);
+          if (location && location.pathname && window.ga) {
+            window.ga("send", "pageview", location.pathname);
+          }
           return null; // null is a valid React node type, but void is not.
         }}
       </Location>
