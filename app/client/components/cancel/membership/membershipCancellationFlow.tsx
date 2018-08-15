@@ -1,6 +1,5 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
-import { MeResponse } from "../../../../shared/meResponse";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
@@ -14,11 +13,11 @@ import {
   MembershipAsyncLoader
 } from "../../membership";
 import { PageContainer, PageContainerSection } from "../../page";
-import { MembersDataApiResponseContext } from "../../user";
+import { MembersDataApiResponseContext, ProductTypes } from "../../user";
 import {
   MultiRouteableProps,
   ReturnToYourAccountButton,
-  RouteableProps,
+  RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
@@ -140,7 +139,7 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
   </a>
 );
 
-const getReasonsRenderer = (routeableProps: RouteableProps) => (
+const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
   data: MembersDataApiResponse
 ) => {
   if (hasMembership(data)) {
@@ -154,7 +153,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
     }
     return (
       <MembersDataApiResponseContext.Provider value={data}>
-        <WizardStep routeableProps={routeableProps}>
+        <WizardStep routeableStepProps={routeableStepProps}>
           <div
             css={{
               backgroundColor: palette.neutral["6"],
@@ -240,7 +239,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
             </p>
 
             <ReasonPicker
-              options={routeableProps.children.props.children.map(
+              options={routeableStepProps.children.props.children.map(
                 childWithRouteablePropsToElement
               )}
             />
@@ -258,7 +257,7 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
   );
 };
 
-export const MembershipCancellationFlow = (props: RouteableProps) => (
+export const MembershipCancellationFlow = (props: RouteableStepProps) => (
   <div>
     <h1
       css={{
@@ -270,8 +269,9 @@ export const MembershipCancellationFlow = (props: RouteableProps) => (
     </h1>
     <PageContainer>
       <CheckFlowIsValid
-        checkingFor="membership"
-        validator={(me: MeResponse) => me.contentAccess.member}
+        {
+          ...ProductTypes.membership /*TODO use for the whole flow*/
+        }
       >
         <MembershipAsyncLoader
           fetch={loadMembershipData}

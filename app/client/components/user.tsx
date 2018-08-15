@@ -1,6 +1,6 @@
-import { navigate, Router, ServerLocation } from "@reach/router";
-import React from "react";
-import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
+import { Router, ServerLocation } from "@reach/router";
+import React, { ReactNode } from "react";
+import { MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -10,6 +10,7 @@ import { membershipCancellationReasonMatrix } from "./cancel/membership/cancella
 import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { MeValidator } from "./cancellationFlowWrapper";
 import { FAQs } from "./faqs";
 import { Main } from "./main";
 import {
@@ -17,11 +18,11 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
-import { navLinks, qualifyLink } from "./nav";
+import { navLinks } from "./nav";
 import { NotFound } from "./notFound";
-import { PageContainer } from "./page";
 import { CardProps } from "./payment/cardDisplay";
-import { RouteableProps } from "./wizardRouterAdapter";
+import { MembershipPaymentUpdateFlow } from "./payment/updatePaymentFlow";
+import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 export interface Subscription {
   subscriberId: string;
@@ -71,27 +72,23 @@ export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
 };
 
-const RedirectOnMeResponse = (props: RouteableProps) => (
-  <PageContainer>
-    <MeAsyncLoader
-      fetch={fetchMe}
-      render={(me: MeResponse) => {
-        const replace = { replace: true };
-        if (me.contentAccess.member) {
-          navigate(qualifyLink(navLinks.membership), replace);
-        } else if (me.contentAccess.recurringContributor) {
-          navigate(qualifyLink(navLinks.contributions), replace);
-        } else if (me.contentAccess.digitalPack) {
-          navigate(qualifyLink(navLinks.digiPack), replace);
-        } else {
-          navigate("https://" + window.guardian.domain, replace);
-        }
-        return null; // official way to render nothing
-      }}
-      loadingMessage={"Checking your products..."}
-    />
-  </PageContainer>
-);
+export type ProductName = "membership" | "recurring contribution";
+
+export interface ProductType {
+  productName: ProductName;
+  validator: MeValidator;
+}
+
+export const ProductTypes: { [productKey: string]: ProductType } = {
+  membership: {
+    productName: "membership",
+    validator: (me: MeResponse) => me.contentAccess.member
+  },
+  contributions: {
+    productName: "recurring contribution",
+    validator: (me: MeResponse) => me.contentAccess.recurringContributor
+  }
+};
 
 const User = () => (
   <Main>
@@ -99,9 +96,9 @@ const User = () => (
     {injectGlobal`${fonts}`}
 
     <Router>
-      <RedirectOnMeResponse path="/" currentStep={1} />
+      <RedirectOnMeResponse path="/" />
 
-      <Membership path={navLinks.membership.link} currentStep={1} />
+      <Membership path={navLinks.membership.link} />
       <MembershipCancellationFlow path="/cancel/membership" currentStep={1}>
         {membershipCancellationReasonMatrix.map(
           (reason: CancellationReason) => (
@@ -124,13 +121,16 @@ const User = () => (
           )
         )}
       </MembershipCancellationFlow>
+      <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
+        {/*TODO add 'updated' route similar to 'ExecuteCancellation'*/}
+      </MembershipPaymentUpdateFlow>
 
       <ContributionsCancellationFlow
         path="/cancel/contributions"
         currentStep={1}
       />
 
-      <FAQs path="/help" currentStep={1} />
+      <FAQs path="/help" />
 
       <NotFound default={true} />
     </Router>

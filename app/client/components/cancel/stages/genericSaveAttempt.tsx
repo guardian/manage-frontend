@@ -205,7 +205,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           membersDataApiResponse={membersDataApiResponse}
           sfProduct={props.sfProduct}
         >
-          <WizardStep routeableProps={props}>
+          <WizardStep routeableStepProps={props}>
             <PageContainerSection>
               <h2 id="save_title">{props.reason.saveTitle}</h2>
               <GoogleOptimiseAwaitFlagWrapper
