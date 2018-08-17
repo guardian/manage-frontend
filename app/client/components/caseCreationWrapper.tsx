@@ -1,7 +1,8 @@
 import React from "react";
 import AsyncLoader from "./asyncLoader";
+import { CancellationCaseIdContext } from "./cancel/cancellationContexts";
+import { CancellationReasonContext } from "./cancel/cancellationContexts";
 import { MembersDataApiResponse, MembershipData } from "./membership";
-import { CancellationCaseIdContext, CancellationReasonContext } from "./user";
 
 export interface CaseCreationResponse {
   id: string;

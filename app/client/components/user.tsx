@@ -21,7 +21,9 @@ import {
 import { navLinks } from "./nav";
 import { NotFound } from "./notFound";
 import { CardProps } from "./payment/cardDisplay";
-import { MembershipPaymentUpdateFlow } from "./payment/updatePaymentFlow";
+import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
+import { PaymentUpdated } from "./payment/update/paymentUpdated";
+import { MembershipPaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
 import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 export interface Subscription {
@@ -55,14 +57,6 @@ export interface CancellationReason {
   alternateFeedbackThankYouBody?: string;
   skipFeedback?: boolean;
 }
-
-export const CancellationReasonContext: React.Context<
-  string
-> = React.createContext("");
-
-export const CancellationCaseIdContext: React.Context<
-  string
-> = React.createContext("");
 
 export const MembersDataApiResponseContext: React.Context<
   MembersDataApiResponse
@@ -122,7 +116,13 @@ const User = () => (
         )}
       </MembershipCancellationFlow>
       <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
-        {/*TODO add 'updated' route similar to 'ExecuteCancellation'*/}
+        <ConfirmCardUpdate path="confirm" currentStep={2}>
+          <PaymentUpdated
+            fetch={loadMembershipData}
+            path="updated"
+            currentStep={3}
+          />
+        </ConfirmCardUpdate>
       </MembershipPaymentUpdateFlow>
 
       <ContributionsCancellationFlow

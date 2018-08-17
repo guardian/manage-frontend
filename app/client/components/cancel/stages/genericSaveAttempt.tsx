@@ -10,13 +10,12 @@ import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
+import { CancellationReason, MembersDataApiResponseContext } from "../../user";
+import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
-  CancellationReason,
-  CancellationReasonContext,
-  MembersDataApiResponseContext
-} from "../../user";
-import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
+  CancellationReasonContext
+} from "../cancellationContexts";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   sfProduct: string;

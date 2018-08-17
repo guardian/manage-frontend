@@ -1,3 +1,4 @@
+import { RouteComponentProps } from "@reach/router";
 import React from "react";
 
-export const NotFound = (props: { default: boolean }) => <h1>Not Found</h1>;
+export const NotFound = (props: RouteComponentProps) => <h1>Not Found</h1>;

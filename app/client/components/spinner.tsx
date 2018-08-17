@@ -4,13 +4,18 @@ import { css } from "../styles/emotion";
 
 export interface LoadingProps {
   loadingMessage?: string;
+  scale?: number;
+  inline?: true;
 }
+
+const scaledPx = (original: number, scale: number = 1) =>
+  `${Math.ceil(original * scale)}px`;
 
 export const Spinner = (props: LoadingProps) => (
   <div
     css={{
       alignItems: "center",
-      display: "flex"
+      display: props.inline ? "inline-flex" : "flex"
     }}
   >
     {injectGlobal`
@@ -21,13 +26,13 @@ export const Spinner = (props: LoadingProps) => (
         `}
     <div
       css={{
-        border: "6px solid #f3f3f3",
-        borderTop: "6px solid #333",
+        border: `${scaledPx(6, props.scale)} solid #f3f3f3`,
+        borderTop: `${scaledPx(6, props.scale)} solid #333`,
         borderRadius: "50%",
-        width: "40px",
-        height: "40px",
+        width: scaledPx(40, props.scale),
+        height: scaledPx(40, props.scale),
         animation: "spin 2s linear infinite",
-        margin: "10px",
+        margin: scaledPx(10, props.scale),
         flexShrink: 0
       }}
     />

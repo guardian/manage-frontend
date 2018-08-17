@@ -40,7 +40,6 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
   color: inherit;
   font-weight: 500;
   font-family: ${serif};

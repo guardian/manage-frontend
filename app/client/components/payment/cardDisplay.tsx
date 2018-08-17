@@ -4,6 +4,7 @@ import { css } from "../../styles/emotion";
 export interface CardProps {
   last4: string;
   type: string;
+  stripePublicKeyForUpdate?: string;
 }
 
 const cardTypeToSVG = (cardType: string) => {
@@ -33,7 +34,7 @@ const cardTypeToSVG = (cardType: string) => {
       />
     );
   }
-  return "weird";
+  return null;
 };
 
 export const CardDisplay = (props: CardProps) => (
