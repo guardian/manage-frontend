@@ -1,12 +1,13 @@
-import { Router } from "@reach/router";
+import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
+import { NotFound } from "./notFound";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressCounter } from "./progressCounter";
 
-export interface RouteableProps {
+export interface RouteableProps extends RouteComponentProps {
   path: string;
 }
 
@@ -16,7 +17,7 @@ export interface RouteableStepProps extends RouteableProps {
 }
 
 export interface MultiRouteableProps extends RouteableStepProps {
-  // TODO refactor this out by adding type params to Children
+  // TODO refactor this out by adding type params to children
   linkLabel: string;
 }
 
@@ -24,6 +25,7 @@ interface RootComponentProps {
   routeableStepProps: RouteableStepProps;
   thisStageChildren: any;
   path: string;
+  backButtonLevelsUp?: true;
 }
 
 const estimateTotal = (currentStep: number, child: any) => {
@@ -70,7 +72,17 @@ const RootComponent = (props: RootComponentProps) => (
 
     {props.thisStageChildren}
 
-    <ReturnToYourAccountButton />
+    {props.backButtonLevelsUp ? (
+      <LinkButton
+        text="Back"
+        textColor={palette.white}
+        left
+        color={palette.neutral["2"]}
+        to=".."
+      />
+    ) : (
+      <ReturnToYourAccountButton />
+    )}
   </PageContainer>
 );
 
@@ -80,46 +92,20 @@ const ThisStageContent = (props: WizardStepProps) => (
       path="/"
       thisStageChildren={props.children}
       routeableStepProps={props.routeableStepProps}
+      backButtonLevelsUp={props.backButtonLevelsUp}
     />
   </Router>
 );
 
-const getForwardNavigationIfApplicable = (
-  routeableStepProps: RouteableStepProps
-) => {
-  if (
-    routeableStepProps.children &&
-    routeableStepProps.children.props.children &&
-    !Array.isArray(routeableStepProps.children.props.children)
-  ) {
-    const childProps: RouteableStepProps =
-      routeableStepProps.children.props.children.props;
-    return (
-      <LinkButton
-        to={childProps.path}
-        text={
-          childProps.children && childProps.children.props.children
-            ? "Continue Cancellation"
-            : "Confirm Cancellation"
-        }
-        textColor={palette.white}
-        color={palette.neutral["2"]}
-      />
-    );
-  }
-};
-
 export interface WizardStepProps {
   routeableStepProps: RouteableStepProps;
   children: any;
+  backButtonLevelsUp?: true;
 }
 
 export const WizardStep = (props: WizardStepProps) => (
   <>
-    <ThisStageContent
-      children={props.children}
-      routeableStepProps={props.routeableStepProps}
-    />
+    <ThisStageContent {...props} />
     {props.routeableStepProps.children}
   </>
 );

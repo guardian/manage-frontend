@@ -4,7 +4,7 @@ import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
-import { Button } from "./buttons";
+import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
 import { PageContainer, PageHeaderContainer } from "./page";
@@ -97,7 +97,19 @@ const getPaymentMethodRow = (subscription: Subscription) => {
     return (
       <MembershipRow
         label={"Card details"}
-        data={<CardDisplay {...subscription.card} />}
+        data={
+          <div css={spaceBetweenCSS}>
+            <div css={{ marginRight: "15px" }}>
+              <CardDisplay {...subscription.card} />
+            </div>
+            <LinkButton
+              text="Update Payment Details"
+              textColor={palette.white}
+              color={palette.neutral["1"]}
+              to="/payment/membership"
+            />
+          </div>
+        }
       />
     );
   } else if (subscription.payPalEmail) {

@@ -1,13 +1,12 @@
 import React from "react";
 import AsyncLoader from "../../asyncLoader";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
+import { Subscription, WithSubscription } from "../../user";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
-  CancellationReasonContext,
-  Subscription,
-  WithSubscription
-} from "../../user";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+  CancellationReasonContext
+} from "../cancellationContexts";
 import { CancellationSummary, isCancelled } from "../cancellationSummary";
 
 class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
