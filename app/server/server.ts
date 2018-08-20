@@ -136,6 +136,12 @@ server.patch(
   withIdentity
 );
 
+server.post(
+  "/api/payment/membership/card",
+  membersDataApiHandler("user-attributes/me/membership-update-card"),
+  withIdentity
+);
+
 const profileRedirectHandler: JsonHandler = (
   res: express.Response,
   meJsonString: string

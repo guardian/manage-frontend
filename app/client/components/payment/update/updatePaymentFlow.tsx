@@ -1,6 +1,7 @@
 import { NavigateFn } from "@reach/router";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
+import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -12,23 +13,10 @@ import {
   MembershipData
 } from "../../membership";
 import { PageContainer } from "../../page";
-import {
-  MembersDataApiResponseContext,
-  ProductType,
-  Subscription
-} from "../../user";
+import { MembersDataApiResponseContext, Subscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
-import { CardDisplay } from "../cardDisplay";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
-
-const CurrentPaymentDetails = (subscription: Subscription) => {
-  if (subscription.card) {
-    return <CardDisplay {...subscription.card} />;
-  } else if (subscription.payPalEmail) {
-    return <div>Using PayPal</div>; // TODO re-use PayPalDisplay
-  }
-  return <span>Direct Debit ????????</span>;
-};
+import { CurrentPaymentDetails } from "./currentPaymentDetails";
 
 enum PaymentMethod {
   card = "Card",
@@ -80,7 +68,11 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
 );
 
 const PaymentMethodBar = (props: PaymentMethodProps) => (
-  <form>
+  <form
+    css={{
+      display: "none" // TODO show when we want to test appetite for switching payment method
+    }}
+  >
     <h3>New Payment Method</h3>
     <PaymentMethodRadioButton paymentMethod={PaymentMethod.card} {...props} />
     <PaymentMethodRadioButton paymentMethod={PaymentMethod.payPal} {...props} />
@@ -106,7 +98,7 @@ interface PaymentUpdaterStepProps {
 
 interface PaymentUpdaterStepState {
   stripeTokenResponse: ReactStripeElements.PatchedTokenResponse;
-  paymentMethod: PaymentMethod;
+  selectedPaymentMethod: PaymentMethod;
 }
 
 class PaymentUpdaterStep extends React.Component<
@@ -115,7 +107,9 @@ class PaymentUpdaterStep extends React.Component<
 > {
   public state = {
     stripeTokenResponse: {},
-    paymentMethod: subscriptionToPaymentMethod(this.props.data.subscription)
+    selectedPaymentMethod: subscriptionToPaymentMethod(
+      this.props.data.subscription
+    )
   };
 
   public render(): React.ReactNode {
@@ -132,7 +126,7 @@ class PaymentUpdaterStep extends React.Component<
               <CurrentPaymentDetails {...this.props.data.subscription} />
               <PaymentMethodBar
                 updatePaymentMethod={this.updatePaymentMethod}
-                value={this.state.paymentMethod}
+                value={this.state.selectedPaymentMethod}
               />
               <h3>New Payment Details</h3>
               {this.getInputForm(this.props.data.subscription)}
@@ -148,10 +142,10 @@ class PaymentUpdaterStep extends React.Component<
   ) => this.setState({ stripeTokenResponse });
 
   private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
-    this.setState({ paymentMethod: newPaymentMethod });
+    this.setState({ selectedPaymentMethod: newPaymentMethod });
 
   private getInputForm = (subscription: Subscription) => {
-    switch (this.state.paymentMethod) {
+    switch (this.state.selectedPaymentMethod) {
       case PaymentMethod.card:
         return subscription.card &&
           subscription.card.stripePublicKeyForUpdate ? (
@@ -163,7 +157,9 @@ class PaymentUpdaterStep extends React.Component<
           <GenericErrorScreen />
         );
       default:
-        return <span>TODO: {this.state.paymentMethod} details input</span>;
+        return (
+          <span>TODO: {this.state.selectedPaymentMethod} details input</span>
+        );
     }
   };
 }
@@ -192,7 +188,7 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
     <PageContainer>
       <CheckFlowIsValid {...productType}>
         <MembershipAsyncLoader
-          fetch={loadMembershipData}
+          fetch={loadMembershipData /*TODO reload on 'back' to page*/}
           render={getPaymentUpdateRenderer(props)}
           loadingMessage={`Retrieving current payment details for your ${
             productType.productName
@@ -203,7 +199,6 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
   </div>
 );
 
-export const MembershipPaymentUpdateFlow = createUpdatePaymentFlow({
-  productName: "membership",
-  validator: me => true
-}); // TODO swap back to ProductTypes.membership
+export const MembershipPaymentUpdateFlow = createUpdatePaymentFlow(
+  ProductTypes.membership
+);

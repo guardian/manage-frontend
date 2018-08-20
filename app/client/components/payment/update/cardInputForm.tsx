@@ -11,10 +11,10 @@ import {
   StripeProvider
 } from "react-stripe-elements";
 import palette from "../../../colours";
-import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { Spinner } from "../../spinner";
+import { FlexCardElement } from "./flexCardElement";
 import { NavigateFnContext } from "./updatePaymentFlow";
 
 export const StripeTokenResponseContext: React.Context<
@@ -30,6 +30,7 @@ interface StripeCardInputFormProps
 
 interface StripeCardInputFormState {
   isGeneratingToken: boolean;
+  isValid: boolean;
 }
 
 class StripeCardInputForm extends React.Component<
@@ -37,50 +38,42 @@ class StripeCardInputForm extends React.Component<
   StripeCardInputFormState
 > {
   public state = {
-    isGeneratingToken: false
+    isGeneratingToken: false,
+    isValid: false
   };
 
   public render(): React.ReactNode {
     return this.props.stripe ? (
       <div css={{ textAlign: "right" }}>
-        <div className="checkout" css={{ margin: "20px" }}>
-          <CardElement
-            hidePostalCode
-            style={{
-              base: {
-                fontSize: "18px",
-                fontFamily: sans
+        <FlexCardElement disabled={this.state.isGeneratingToken} />
+        <div css={{ margin: "20px 0" }}>
+          {this.state.isGeneratingToken ? (
+            <Spinner
+              loadingMessage="Validating your card detail..."
+              scale={0.7}
+              inline
+            />
+          ) : (
+            <NavigateFnContext.Consumer>
+              {nav =>
+                nav.navigate ? (
+                  <Button
+                    color={palette.neutral["1"]}
+                    textColor={palette.white}
+                    disabled={
+                      this.props.stripe ===
+                      undefined /*TODO add validation check on FlexCardElement*/
+                    }
+                    text="Review Payment Update"
+                    onClick={this.startCardUpdate(nav.navigate)}
+                  />
+                ) : (
+                  <GenericErrorScreen />
+                )
               }
-            }}
-          />
-          {/*TODO find some way to lock these based on this.state.isGeneratingToken*/}
+            </NavigateFnContext.Consumer>
+          )}
         </div>
-        {this.state.isGeneratingToken ? (
-          <Spinner
-            loadingMessage="Validating your card detail..."
-            scale={0.7}
-            inline
-          />
-        ) : (
-          <NavigateFnContext.Consumer>
-            {nav =>
-              nav.navigate ? (
-                <Button
-                  color={palette.neutral["1"]}
-                  textColor={palette.white}
-                  disabled={
-                    this.props.stripe ===
-                    undefined /*TODO add validation check on CardElement*/
-                  }
-                  text="Review Payment Update"
-                  onClick={this.startCardUpdate(nav.navigate)}
-                />
-              ) : (
-                <GenericErrorScreen />
-              )
-            }
-          </NavigateFnContext.Consumer>
-        )}
       </div>
     ) : (
       <GenericErrorScreen />
@@ -93,7 +86,7 @@ class StripeCardInputForm extends React.Component<
   private startCardUpdate = (navigate: NavigateFn) => async () => {
     this.setInProgress(true);
     if (this.props.stripe) {
-      const tokenResponse = await this.props.stripe.createToken(); // TODO check whether we need any token options
+      const tokenResponse = await this.props.stripe.createToken(); // may need to add token options for product switch
       if (tokenResponse.token && tokenResponse.token.card) {
         this.props.stripeTokenUpdater(tokenResponse);
         navigate("confirm");

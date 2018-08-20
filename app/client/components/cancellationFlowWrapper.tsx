@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
+import { ProductType } from "../../shared/productTypes";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { ProductType } from "./user";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
