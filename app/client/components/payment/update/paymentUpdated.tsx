@@ -1,6 +1,9 @@
 import React from "react";
+import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
+import { Subscription, WithSubscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
 
 export const handleNoToken = (props: RouteableStepProps) => {
@@ -10,6 +13,25 @@ export const handleNoToken = (props: RouteableStepProps) => {
   }
   return <GenericErrorScreen />;
 };
+
+export class WithSubscriptionAsyncLoader extends AsyncLoader<
+  WithSubscription
+> {}
+
+const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
+  if (subscription.card) {
+    return <CardDisplay {...subscription.card} />;
+  }
+
+  return <GenericErrorScreen />; // unsupported operation currently
+};
+
+const WithSubscriptionRenderer = (withSub: WithSubscription) => (
+  <>
+    Going forward your payment details are...
+    <ConfirmedNewPaymentDetailsRenderer {...withSub.subscription} />
+  </>
+);
 
 // TODO this should load an async loader to fetch membership details (passed in)
 export interface PaymentUpdatedProps extends RouteableStepProps {
@@ -21,7 +43,11 @@ export const PaymentUpdated = (props: PaymentUpdatedProps) => (
     {tokenResponse =>
       tokenResponse.token && tokenResponse.token.card ? (
         <WizardStep routeableStepProps={props}>
-          <span>updated</span>
+          <WithSubscriptionAsyncLoader
+            fetch={props.fetch}
+            render={WithSubscriptionRenderer}
+            loadingMessage="Looks good so far. Just checking everything is done..."
+          />
         </WizardStep>
       ) : (
         handleNoToken(props)

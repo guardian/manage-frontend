@@ -1,5 +1,6 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
+import { ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
@@ -13,7 +14,7 @@ import {
   MembershipAsyncLoader
 } from "../../membership";
 import { PageContainer, PageContainerSection } from "../../page";
-import { MembersDataApiResponseContext, ProductTypes } from "../../user";
+import { MembersDataApiResponseContext } from "../../user";
 import {
   MultiRouteableProps,
   ReturnToYourAccountButton,

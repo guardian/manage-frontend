@@ -1,37 +1,131 @@
+import Raven from "raven-js";
 import React from "react";
 import palette from "../../../colours";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
+import { CallCentreNumbers } from "../../callCentreNumbers";
+import { hasMembership } from "../../membership";
 import { MembersDataApiResponseContext } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
+import {
+  CardUpdateAsyncLoader,
+  CardUpdateResponse
+} from "./cardUpdateAsyncLoader";
+import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { handleNoToken } from "./paymentUpdated";
 
+interface ExecuteCardUpdateProps extends RouteableStepProps {
+  stripePublicKeyForUpdate: string;
+  token: stripe.Token;
+}
+
+interface ExecuteCardUpdateState {
+  hasHitComplete: boolean;
+  error: boolean;
+}
+
+class ExecuteCardUpdate extends React.Component<
+  ExecuteCardUpdateProps,
+  ExecuteCardUpdateState
+> {
+  public state = {
+    hasHitComplete: false,
+    error: false
+  };
+
+  public render(): React.ReactNode {
+    return this.state.hasHitComplete ? (
+      <CardUpdateAsyncLoader
+        fetch={this.executeCardUpdate}
+        render={this.renderCardUpdateResponse}
+        loadingMessage="Updating payment card details..."
+        spinnerScale={0.7}
+        inline
+      />
+    ) : (
+      <>
+        <Button
+          color={palette.neutral["1"]}
+          textColor={palette.white}
+          text="Complete Payment Update"
+          onClick={() => this.setState({ hasHitComplete: true })}
+        />
+        {this.state.error ? (
+          <div css={{ color: palette.red.medium }}>
+            Oh dear, the card update failed this time, you can try again.
+            <CallCentreNumbers prefixText="Or you can contact the call centre..." />
+          </div>
+        ) : (
+          undefined
+        )}
+      </>
+    );
+  }
+
+  private executeCardUpdate: () => Promise<Response> = async () =>
+    await fetch("/api/payment/membership/card", {
+      // TODO perhaps get 'membership' from product type / url
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({
+        stripeToken: this.props.token.id,
+        publicKey: this.props.stripePublicKeyForUpdate
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+
+  private renderCardUpdateResponse = (response: CardUpdateResponse) => {
+    if (
+      this.props.navigate &&
+      this.props.token.card &&
+      response.last4 === this.props.token.card.last4
+    ) {
+      this.props.navigate("updated", { replace: true });
+      return null;
+    }
+
+    trackEvent({
+      eventCategory: "payment",
+      eventAction: "card_update",
+      eventLabel: "failed"
+    });
+
+    Raven.captureException("payment card update failed");
+
+    this.setState({
+      error: true,
+      hasHitComplete: false
+    });
+  };
+}
+
 export const ConfirmCardUpdate = (props: RouteableStepProps) => (
-  <MembersDataApiResponseContext.Consumer>
-    {mdaResponse => (
-      <StripeTokenResponseContext.Consumer>
-        {tokenResponse =>
-          props.navigate && tokenResponse.token && tokenResponse.token.card ? (
+  <StripeTokenResponseContext.Consumer>
+    {tokenResponse => (
+      <MembersDataApiResponseContext.Consumer>
+        {mdaResponse =>
+          props.navigate &&
+          tokenResponse.token &&
+          tokenResponse.token.card &&
+          hasMembership(mdaResponse) &&
+          mdaResponse.subscription.card ? (
             <WizardStep routeableStepProps={props} backButtonLevelsUp>
-              {/*TODO add 'from' display - new re-usable component that requires a subscription*/}
-              <span>please confirm</span>
+              <h3>Please confirm your change from...</h3>
+              <CurrentPaymentDetails {...mdaResponse.subscription} />
+              <h3>...to...</h3>
               <CardDisplay
                 last4={tokenResponse.token.card.last4}
-                type={
-                  tokenResponse.token.card.brand.toLowerCase() /*TODO need to research how MDA calcs 'type'*/
-                }
+                type={tokenResponse.token.card.brand}
               />
-              <div css={{ textAlign: "right" }}>
-                <Button
-                  color={palette.neutral["1"]}
-                  textColor={palette.white}
-                  text="Complete Payment Update"
-                  onClick={() =>
-                    props.navigate
-                      ? props.navigate("updated")
-                      : handleNoToken(props)
+              <div css={{ margin: "20px 0", textAlign: "right" }}>
+                <ExecuteCardUpdate
+                  {...props}
+                  stripePublicKeyForUpdate={
+                    mdaResponse.subscription.card.stripePublicKeyForUpdate
                   }
+                  token={tokenResponse.token}
                 />
               </div>
             </WizardStep>
@@ -39,7 +133,7 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
             handleNoToken(props)
           )
         }
-      </StripeTokenResponseContext.Consumer>
+      </MembersDataApiResponseContext.Consumer>
     )}
-  </MembersDataApiResponseContext.Consumer>
+  </StripeTokenResponseContext.Consumer>
 );

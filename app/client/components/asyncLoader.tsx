@@ -12,6 +12,8 @@ export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly render: (data: T) => React.ReactNode;
   readonly loadingMessage: string;
   readonly errorRender?: () => React.ReactNode;
+  readonly inline?: true;
+  readonly spinnerScale?: number;
 }
 
 export enum LoadingState {
@@ -47,7 +49,13 @@ export default class AsyncLoader<
 
   public render(): React.ReactNode {
     if (this.state.loadingState === LoadingState.loading) {
-      return <Spinner loadingMessage={this.props.loadingMessage} />;
+      return (
+        <Spinner
+          loadingMessage={this.props.loadingMessage}
+          inline={this.props.inline}
+          scale={this.props.spinnerScale}
+        />
+      );
     } else if (
       this.state.loadingState === LoadingState.loaded &&
       this.state.data !== undefined

@@ -1,6 +1,5 @@
 import { Router, ServerLocation } from "@reach/router";
 import React, { ReactNode } from "react";
-import { MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -10,7 +9,6 @@ import { membershipCancellationReasonMatrix } from "./cancel/membership/cancella
 import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import { MeValidator } from "./cancellationFlowWrapper";
 import { FAQs } from "./faqs";
 import { Main } from "./main";
 import {
@@ -26,13 +24,17 @@ import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { MembershipPaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
 import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
+export interface Card extends CardProps {
+  stripePublicKeyForUpdate: string;
+}
+
 export interface Subscription {
   subscriberId: string;
   start: string;
   end: string;
   cancelledAt: boolean;
   nextPaymentDate: string;
-  card?: CardProps;
+  card?: Card;
   payPalEmail?: string;
   plan: {
     amount: number;
@@ -64,24 +66,6 @@ export const MembersDataApiResponseContext: React.Context<
 
 export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
-};
-
-export type ProductName = "membership" | "recurring contribution";
-
-export interface ProductType {
-  productName: ProductName;
-  validator: MeValidator;
-}
-
-export const ProductTypes: { [productKey: string]: ProductType } = {
-  membership: {
-    productName: "membership",
-    validator: (me: MeResponse) => me.contentAccess.member
-  },
-  contributions: {
-    productName: "recurring contribution",
-    validator: (me: MeResponse) => me.contentAccess.recurringContributor
-  }
 };
 
 const User = () => (
