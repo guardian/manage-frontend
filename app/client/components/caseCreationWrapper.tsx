@@ -15,6 +15,7 @@ const getCreateCaseFunc = (
   await fetch("/api/case", {
     credentials: "include",
     method: "POST",
+    mode: "same-origin",
     body: JSON.stringify({
       reason,
       product: sfProduct,
