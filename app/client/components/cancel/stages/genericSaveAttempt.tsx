@@ -207,13 +207,13 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
         >
           <WizardStep routeableProps={props}>
             <PageContainerSection>
-              <h2>{props.reason.saveTitle}</h2>
+              <h2 id="save_title">{props.reason.saveTitle}</h2>
               <GoogleOptimiseAwaitFlagWrapper
                 experimentFlagName={props.reason.experimentTriggerFlag}
               >
                 {{
                   flagIsSet: props.reason.experimentSaveBody,
-                  flagIsNotSet: <p>{props.reason.saveBody}</p>
+                  flagIsNotSet: <p id="save_body">{props.reason.saveBody}</p>
                 }}
               </GoogleOptimiseAwaitFlagWrapper>
 
