@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import { matchesUA } from "browserslist-useragent";
 import express from "express";
 import helmet from "helmet";
 import fetch from "node-fetch";
@@ -32,7 +33,8 @@ if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
 
 const globals: Globals = {
   domain: conf.DOMAIN,
-  dsn: clientDSN
+  dsn: clientDSN,
+  supportedBrowser: true
 };
 
 server.use(
@@ -155,7 +157,11 @@ server.use((req: express.Request, res: express.Response) => {
   const body = renderStylesToString(renderToString(ServerUser(req.url)));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
-
+  Object.assign(globals, {
+    supportedBrowser: matchesUA(req.headers["user-agent"], {
+      env: "development"
+    })
+  });
   res.send(
     html({
       body,
