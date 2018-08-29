@@ -1,4 +1,4 @@
-import { Location, navigate, Router, ServerLocation } from "@reach/router";
+import { navigate, Router, ServerLocation } from "@reach/router";
 import React, { ReactNode } from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
@@ -148,7 +148,7 @@ export const ServerUser = (url: string) => (
 
 export const BrowserUser = (
   <>
-    <User />
     <AnalyticsTracker />
+    <User />
   </>
 );

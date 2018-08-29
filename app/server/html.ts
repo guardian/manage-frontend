@@ -31,14 +31,6 @@ const html: (
       ${insertGlobals(globals)}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/48bc5564bb01b74cf7cd1a08ae0dd98e/32x32.ico" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <style>.async-hide { opacity: 0 !important} </style>
-      <script>
-        (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
-        h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
-        (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
-        })(window,document.documentElement,'async-hide','dataLayer',4000,
-        {'GTM-NZGXNBL':true});
-      </script>
     </head>
     <body style="margin:0">
       <div id="app">${body}</div>
