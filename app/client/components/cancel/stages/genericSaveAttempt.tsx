@@ -2,13 +2,13 @@ import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { css } from "../../../styles/emotion";
 import { sans } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
+import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
 import {
   CancellationCaseIdContext,
@@ -208,16 +208,14 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           <WizardStep routeableProps={props}>
             <PageContainerSection>
               <h2>{props.reason.saveTitle}</h2>
-              {window.guardian &&
-              window.guardian.experimentFlags &&
-              props.reason.experimentTriggerFlag &&
-              window.guardian.experimentFlags[
-                props.reason.experimentTriggerFlag
-              ] ? (
-                props.reason.experimentSaveBody
-              ) : (
-                <p>{props.reason.saveBody}</p>
-              )}
+              <GoogleOptimiseAwaitFlagWrapper
+                experimentFlagName={props.reason.experimentTriggerFlag}
+              >
+                {{
+                  flagIsSet: props.reason.experimentSaveBody,
+                  flagIsNotSet: <p>{props.reason.saveBody}</p>
+                }}
+              </GoogleOptimiseAwaitFlagWrapper>
 
               {props.reason.skipFeedback ? (
                 undefined

@@ -1,5 +1,5 @@
 import { navigate, Router, ServerLocation } from "@reach/router";
-import React, { ReactNode } from "react";
+import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
@@ -46,8 +46,8 @@ export interface CancellationReason {
   reasonId: string;
   linkLabel: string;
   saveTitle: string;
-  saveBody: string | ReactNode;
-  experimentSaveBody?: string | ReactNode;
+  saveBody: string | JSX.Element;
+  experimentSaveBody?: JSX.Element;
   experimentTriggerFlag?: string;
   alternateCallUsPrefix?: string;
   alternateFeedbackIntro?: string;
