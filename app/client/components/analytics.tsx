@@ -52,19 +52,14 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
       window.ga("require", "GTM-M985W29");
       window.ga("set", "transport", "beacon");
 
-      if (MutationObserver) {
-        new MutationObserver(applyAnyOptimiseExperiments).observe(
-          document.body,
-          {
-            attributes: false,
-            characterData: false,
-            childList: true,
-            subtree: true,
-            attributeOldValue: false,
-            characterDataOldValue: false
-          }
-        );
-      }
+      new MutationObserver(applyAnyOptimiseExperiments).observe(document.body, {
+        attributes: false,
+        characterData: false,
+        childList: true,
+        subtree: true,
+        attributeOldValue: false,
+        characterDataOldValue: false
+      });
     }
   }
 
