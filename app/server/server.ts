@@ -157,14 +157,25 @@ server.use((req: express.Request, res: express.Response) => {
   const body = renderStylesToString(renderToString(ServerUser(req.url)));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
-  Object.assign(globals, {
-    supportedBrowser: matchesUA(req.headers["user-agent"], {
-      env:
-        conf.ENVIRONMENT === Environments.PRODUCTION
-          ? "production"
-          : "development"
-    })
+  const supportedBrowser = matchesUA(req.headers["user-agent"], {
+    env:
+      conf.ENVIRONMENT === Environments.PRODUCTION
+        ? "production"
+        : "development"
   });
+
+  Object.assign(globals, { supportedBrowser });
+
+  if (!supportedBrowser) {
+    log.info(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);
+
+    Raven.captureException({
+      name: "Unsupported Browser",
+      message: "",
+      stack: req.headers["user-agent"]
+    } as Error);
+  }
+
   res.send(
     html({
       body,
