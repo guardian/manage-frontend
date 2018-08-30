@@ -7,6 +7,10 @@ export interface CardProps {
   stripePublicKeyForUpdate?: string;
 }
 
+export interface CardDisplayProps extends CardProps {
+  margin?: string;
+}
+
 const cardTypeToSVG = (cardType: string) => {
   const backgroundImage: string | undefined = (() => {
     switch (cardType.toLowerCase().replace(/\s/g, "")) {
@@ -37,12 +41,12 @@ const cardTypeToSVG = (cardType: string) => {
   return null;
 };
 
-export const CardDisplay = (props: CardProps) => (
+export const CardDisplay = (props: CardDisplayProps) => (
   <div
     className={css({
       display: "flex",
       alignItems: "center",
-      margin: "10px"
+      margin: props.margin || "10px"
     })}
   >
     {cardTypeToSVG(props.type)}•••• •••• •••• {props.last4}
