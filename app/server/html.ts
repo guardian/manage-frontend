@@ -36,7 +36,7 @@ const html: (
         ${
           globals.supportedBrowser
             ? ""
-            : '<p style="text-align: center; margin: 0; padding: 10px; background-color: #ff4e36; color: #fff">Your browser isn\'t actively supported by manage.theguardian.com, for more information, see <a href="https://www.theguardian.com/help/recommended-browsers" style="color: #FFF; text-decoration: underline">our help page</a></p>'
+            : '<p style="text-align: center; margin: 0; padding: 10px; background-color: #005689; color: #fff">manage.theguardian.com is not optimised for your current browser, for more information, see <a href="https://www.theguardian.com/help/recommended-browsers" style="color: #FFF; text-decoration: underline">our list of recommended browsers</a></p>'
         }
       <div id="app">${body}</div>
       </body>
