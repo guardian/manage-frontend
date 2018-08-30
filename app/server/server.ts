@@ -159,7 +159,10 @@ server.use((req: express.Request, res: express.Response) => {
   const src = "/static/user.js";
   Object.assign(globals, {
     supportedBrowser: matchesUA(req.headers["user-agent"], {
-      env: "development"
+      env:
+        conf.ENVIRONMENT === Environments.PRODUCTION
+          ? "production"
+          : "development"
     })
   });
   res.send(
