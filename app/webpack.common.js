@@ -9,7 +9,9 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const definePlugin = new webpack.DefinePlugin({
-  WEBPACK_BUILD: `'${process.env.TEAMCITY_BUILD}'` || "'NO BUILD SET'"
+  WEBPACK_BUILD: process.env.TEAMCITY_BUILD
+    ? `'${process.env.TEAMCITY_BUILD}'`
+    : "'NO BUILD SET'"
 });
 
 const copyPlugin = new CopyWebpackPlugin([

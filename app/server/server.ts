@@ -18,9 +18,13 @@ const port = 9233;
 
 const server = express();
 
+declare var WEBPACK_BUILD: string;
 if (conf.SERVER_DSN) {
-  Raven.config(conf.SERVER_DSN).install();
-  server.use(Raven.requestHandler());
+  Raven.config(conf.SERVER_DSN, {
+    release: WEBPACK_BUILD || "local",
+    environment: conf.DOMAIN
+  }).install();
+  // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
 }
 
 const clientDSN =
@@ -157,14 +161,23 @@ server.use((req: express.Request, res: express.Response) => {
   const body = renderStylesToString(renderToString(ServerUser(req.url)));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
-  Object.assign(globals, {
-    supportedBrowser: matchesUA(req.headers["user-agent"], {
-      env:
-        conf.ENVIRONMENT === Environments.PRODUCTION
-          ? "production"
-          : "development"
-    })
+  const supportedBrowser = matchesUA(req.headers["user-agent"], {
+    env:
+      conf.ENVIRONMENT === Environments.PRODUCTION
+        ? "production"
+        : "development"
   });
+
+  Object.assign(globals, { supportedBrowser });
+
+  if (!supportedBrowser) {
+    log.warn(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);
+
+    Raven.captureMessage("Unsupported Browser", {
+      extra: { "User-Agent": req.headers["user-agent"] }
+    });
+  }
+
   res.send(
     html({
       body,
