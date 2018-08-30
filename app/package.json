@@ -32,8 +32,7 @@
     "edge >= 13",
     "safari >= 8",
     "opera >= 27",
-    "iOS >= 9",
-    "not chrome 68"
+    "iOS >= 9"
   ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
