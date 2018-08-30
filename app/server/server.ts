@@ -18,9 +18,13 @@ const port = 9233;
 
 const server = express();
 
+declare var WEBPACK_BUILD: string; //FIXME not working for some reason
 if (conf.SERVER_DSN) {
-  Raven.config(conf.SERVER_DSN).install();
-  server.use(Raven.requestHandler());
+  Raven.config(conf.SERVER_DSN, {
+    release: WEBPACK_BUILD || "local",
+    environment: conf.DOMAIN
+  }).install();
+  // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
 }
 
 const clientDSN =
@@ -167,13 +171,11 @@ server.use((req: express.Request, res: express.Response) => {
   Object.assign(globals, { supportedBrowser });
 
   if (!supportedBrowser) {
-    log.info(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);
+    log.warn(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);
 
-    Raven.captureException({
-      name: "Unsupported Browser",
-      message: "",
-      stack: req.headers["user-agent"]
-    } as Error);
+    Raven.captureMessage("Unsupported Browser", {
+      extra: { "User-Agent": req.headers["user-agent"] }
+    });
   }
 
   res.send(
