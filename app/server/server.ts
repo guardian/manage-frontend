@@ -18,7 +18,7 @@ const port = 9233;
 
 const server = express();
 
-declare var WEBPACK_BUILD: string; // FIXME not working for some reason
+declare var WEBPACK_BUILD: string;
 if (conf.SERVER_DSN) {
   Raven.config(conf.SERVER_DSN, {
     release: WEBPACK_BUILD || "local",
