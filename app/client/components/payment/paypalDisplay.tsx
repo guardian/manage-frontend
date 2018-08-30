@@ -8,7 +8,7 @@ export interface PayPalProps {
   payPalEmail: string;
 }
 
-interface PayPalDisplayState {
+export interface PayPalDisplayState {
   shouldShowAccountName: boolean;
 }
 
