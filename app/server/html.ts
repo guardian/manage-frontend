@@ -33,6 +33,11 @@ const html: (
       <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body style="margin:0">
+        ${
+          globals.supportedBrowser
+            ? ""
+            : '<p style="text-align: center; margin: 0; padding: 10px; background-color: #ff4e36; color: #fff">Your browser isn\'t actively supported by manage.theguardian.com, for more information, see <a href="https://www.theguardian.com/help/recommended-browsers" style="color: #FFF; text-decoration: underline">our help page</a></p>'
+        }
       <div id="app">${body}</div>
       </body>
       <script>
