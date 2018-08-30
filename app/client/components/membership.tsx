@@ -100,7 +100,7 @@ const getPaymentMethodRow = (subscription: Subscription) => {
         data={
           <div css={spaceBetweenCSS}>
             <div css={{ marginRight: "15px" }}>
-              <CardDisplay {...subscription.card} />
+              <CardDisplay margin="0" {...subscription.card} />
             </div>
             <LinkButton
               text="Update Payment Details"
