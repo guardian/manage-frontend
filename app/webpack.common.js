@@ -26,9 +26,6 @@ const babelCommon = {
     [
       "@babel/env",
       {
-        targets: {
-          browsers: ["last 2 versions", "safari >= 7", "iOS >= 9"]
-        },
         useBuiltIns: "usage"
       }
     ],
@@ -72,7 +69,13 @@ const server = merge(common, {
         options: {
           plugins: [...babelCommon.plugins, "babel-plugin-source-map-support"],
           presets: [
-            ["@babel/env", { targets: { node: "10.7.0" } }],
+            [
+              "@babel/env",
+              {
+                targets: { node: "10.7.0" },
+                ignoreBrowserslistConfig: true
+              }
+            ],
             "@babel/typescript",
             "@babel/react"
           ]
