@@ -6,6 +6,7 @@ import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { LinkButton } from "../../buttons";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
+import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import {
   hasMembership,
   loadMembershipData,
@@ -169,50 +170,56 @@ const getReasonsRenderer = (routeableProps: RouteableProps) => (
             >
               If you cancel your Membership you will miss out on:
             </h4>
-            {window.guardian &&
-            window.guardian.experimentFlags &&
-            window.guardian.experimentFlags.alternateMembershipBenefits ? (
-              <ul className={reasonsCss}>
-                <li className={cssBullet("100%")}>
-                  Exclusive emails from our membership editor
-                </li>
-                <li className={cssBullet("100%")} css={{ paddingTop: "5px" }}>
-                  Free access to the ad-free premium tier of the Guardian app,
-                  now featuring ‘Live’ & ‘Discover’ - two new ways to experience
-                  the Guardian, set to the pace of your day.
-                  <ul>
-                    <li css={{ display: "list-item" }}>
-                      Live: Access to every breaking news story and update, in
-                      real time
+            <GoogleOptimiseAwaitFlagWrapper experimentFlagName="alternateMembershipBenefits">
+              {{
+                flagIsSet: (
+                  <ul className={reasonsCss}>
+                    <li className={cssBullet("100%")}>
+                      Exclusive emails from our membership editor
                     </li>
-                    <li>
-                      Discover: Explore great stories you may have missed, when
-                      you have more time
+                    <li
+                      className={cssBullet("100%")}
+                      css={{ paddingTop: "5px" }}
+                    >
+                      Free access to the ad-free premium tier of the Guardian
+                      app, now featuring ‘Live’ & ‘Discover’ - two new ways to
+                      experience the Guardian, set to the pace of your day.
+                      <ul>
+                        <li css={{ display: "list-item" }}>
+                          Live: Access to every breaking news story and update,
+                          in real time
+                        </li>
+                        <li>
+                          Discover: Explore great stories you may have missed,
+                          when you have more time
+                        </li>
+                      </ul>
+                    </li>
+                    <div
+                      css={{
+                        textAlign: "center",
+                        width: "100%",
+                        margin: "10px"
+                      }}
+                    >
+                      {clickHereToFindOutMoreAboutOurNewFeatures}
+                    </div>
+                  </ul>
+                ),
+                flagIsNotSet: (
+                  <ul className={reasonsCss}>
+                    <li className={cssBullet()}>Access to events tickets</li>
+                    <li className={cssBullet()}>
+                      Exclusive emails from our membership editor
+                    </li>
+                    <li className={cssBullet()} css={{ paddingTop: "5px" }}>
+                      Free access to the premium tier of the Guardian app -{" "}
+                      {clickHereToFindOutMoreAboutOurNewFeatures}
                     </li>
                   </ul>
-                </li>
-                <div
-                  css={{
-                    textAlign: "center",
-                    width: "100%",
-                    margin: "10px"
-                  }}
-                >
-                  {clickHereToFindOutMoreAboutOurNewFeatures}
-                </div>
-              </ul>
-            ) : (
-              <ul className={reasonsCss}>
-                <li className={cssBullet()}>Access to events tickets</li>
-                <li className={cssBullet()}>
-                  Exclusive emails from our membership editor
-                </li>
-                <li className={cssBullet()} css={{ paddingTop: "5px" }}>
-                  Free access to the premium tier of the Guardian app -{" "}
-                  {clickHereToFindOutMoreAboutOurNewFeatures}
-                </li>
-              </ul>
-            )}
+                )
+              }}
+            </GoogleOptimiseAwaitFlagWrapper>
           </div>
 
           <PageContainerSection>

@@ -1,5 +1,6 @@
 import { Router } from "@reach/router";
 import React from "react";
+import { conf } from "../../server/config";
 import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
@@ -35,7 +36,13 @@ const estimateTotal = (currentStep: number, child: any) => {
 
 export const ReturnToYourAccountButton = () => (
   <div css={{ marginTop: "15px" }}>
-    <a href={"https://profile." + window.guardian.domain + "/membership/edit"}>
+    <a
+      href={
+        "https://profile." +
+        (typeof window !== "undefined" ? window.guardian.domain : conf.DOMAIN) +
+        "/membership/edit"
+      }
+    >
       <Button
         text="Return to your account"
         textColor={palette.white}
