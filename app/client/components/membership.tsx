@@ -30,10 +30,13 @@ export function hasMembership(
 
 export class MembershipAsyncLoader extends AsyncLoader<
   MembersDataApiResponse
-  > { }
+> {}
 
 export const loadMembershipData: () => Promise<Response> = async () =>
-  await fetch("/api/me/membership", { credentials: "include" });
+  await fetch("/api/me/membership", {
+    credentials: "include",
+    mode: "same-origin"
+  });
 
 interface MembershipRowProps {
   label: string;
@@ -146,8 +149,8 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
         {data.regNumber ? (
           <MembershipRow label={"Membership number"} data={data.regNumber} />
         ) : (
-            undefined
-          )}
+          undefined
+        )}
         <MembershipRow
           label={"Membership tier"}
           data={

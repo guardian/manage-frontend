@@ -20,6 +20,7 @@ const getCancelFunc = (
   await fetch("/api/cancel/" + cancelApiUrlSuffix, {
     credentials: "include",
     method: "POST",
+    mode: "same-origin",
     body: JSON.stringify({ reason }),
     headers: { "Content-Type": "application/json" }
   }); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
