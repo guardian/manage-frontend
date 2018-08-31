@@ -26,7 +26,10 @@ interface WindowWithStripe extends Window {
 
 declare let window: WindowWithStripe;
 
-export class CardInputForm extends React.Component<CardInputFormProps, {}> {
+export class CardInputForm extends React.Component<
+  CardInputFormProps,
+  { stripe: any }
+> {
   public state = { stripe: null };
 
   public componentDidMount(): void {
