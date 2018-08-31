@@ -6,7 +6,6 @@ export interface FieldWrapperProps {
   label: string;
   width: string;
   children: any; // TODO refine the type to single StripeElement
-  grow?: true;
 }
 
 export interface FieldWrapperState {
@@ -15,6 +14,7 @@ export interface FieldWrapperState {
     message?: string;
     type?: string;
   };
+  focus: boolean;
 }
 
 export class FieldWrapper extends React.Component<
@@ -24,14 +24,17 @@ export class FieldWrapper extends React.Component<
   constructor(props: FieldWrapperProps) {
     super(props);
     this.state = {
-      error: {}
+      error: {},
+      focus: false
     };
   }
 
   public render(): React.ReactNode {
     const hydratedChildren = React.Children.map(this.props.children, child => {
       return React.cloneElement(child as React.ReactElement<any>, {
-        onChange: this.validateField
+        onChange: this.validateField,
+        onFocus: this.toggleFocus,
+        onBlur: this.toggleFocus
       });
     });
 
@@ -40,16 +43,31 @@ export class FieldWrapper extends React.Component<
         css={{
           width: this.props.width,
           maxWidth: "100%",
-          margin: "10px",
-          textAlign: "left"
+          marginBottom: "10px",
+          textAlign: "left",
+          ":not(:first-child)": {
+            marginLeft: "20px"
+          }
         }}
       >
-        <label css={{ marginLeft: "5px" }}>{this.props.label}</label>
+        <label>{this.props.label}</label>
         <div
           css={{
-            borderRadius: "10px",
-            backgroundColor: palette.neutral["7"],
-            padding: "5px 10px"
+            border: "1px solid #dcdcdc",
+            display: "block",
+            fontWeight: 400,
+            height: "42px",
+            lineHeight: "20px",
+            padding: "10px",
+            width: "100%",
+            transition: "all .2s ease-in-out",
+            "&:hover": {
+              boxShadow: this.state.focus
+                ? `0 0 0 3px ${palette.yellow.medium}`
+                : "0 0 0 3px #ededed"
+            },
+            outline: 0,
+            boxShadow: this.state.focus ? "0 0 0 3px #ffe500" : 0
           }}
         >
           {hydratedChildren}
@@ -79,5 +97,11 @@ export class FieldWrapper extends React.Component<
         error: {}
       });
     }
+  };
+
+  private toggleFocus = () => {
+    this.setState({
+      focus: !this.state.focus
+    });
   };
 }
