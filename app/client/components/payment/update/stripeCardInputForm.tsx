@@ -24,6 +24,7 @@ export interface StripeCardInputFormState {
     message?: string;
     type?: string;
   };
+  readyElements: string[]; // TODO: Explore Promises approach
 }
 
 export class StripeCardInputForm extends React.Component<
@@ -33,49 +34,69 @@ export class StripeCardInputForm extends React.Component<
   public state: StripeCardInputFormState = {
     isGeneratingToken: false,
     isValid: false,
-    error: {}
+    error: {},
+    readyElements: []
   };
 
   public render(): React.ReactNode {
     return this.props.stripe ? (
-      <div css={{ textAlign: "right" }}>
-        <FlexCardElement disabled={this.state.isGeneratingToken} />
-        <div css={{ margin: "20px 0" }}>
-          {this.state.isGeneratingToken ? (
-            <Spinner
-              loadingMessage="Validating your card detail..."
-              scale={0.7}
-              inline
-            />
-          ) : (
-            <NavigateFnContext.Consumer>
-              {nav =>
-                nav.navigate ? (
-                  <>
-                    <Button
-                      color={palette.neutral["1"]}
-                      textColor={palette.white}
-                      disabled={
-                        this.props.stripe ===
-                        undefined /*TODO add validation check on FlexCardElement*/
-                      }
-                      text="Review Payment Update"
-                      onClick={this.startCardUpdate(nav.navigate)}
-                    />
-                    {this.renderError()}
-                  </>
-                ) : (
-                  <GenericErrorScreen />
-                )
-              }
-            </NavigateFnContext.Consumer>
-          )}
+      <>
+        <div
+          css={{
+            display: this.state.readyElements.length === 3 ? "none" : "block"
+          }}
+        >
+          <Spinner loadingMessage="Preparing card details form..." />
         </div>
-      </div>
+        <div
+          css={{
+            textAlign: "right",
+            display: this.state.readyElements.length === 3 ? "block" : "none"
+          }}
+        >
+          <FlexCardElement
+            disabled={this.state.isGeneratingToken}
+            markElementReady={this.markElementReady}
+          />
+          <div css={{ margin: "20px 0" }}>
+            {this.state.isGeneratingToken ? (
+              <Spinner
+                loadingMessage="Validating your card detail..."
+                scale={0.7}
+                inline
+              />
+            ) : (
+              <NavigateFnContext.Consumer>
+                {nav =>
+                  nav.navigate ? (
+                    <>
+                      <Button
+                        color={palette.neutral["1"]}
+                        textColor={palette.white}
+                        disabled={this.props.stripe === undefined}
+                        text="Review Payment Update"
+                        onClick={this.startCardUpdate(nav.navigate)}
+                      />
+                      {this.renderError()}
+                    </>
+                  ) : (
+                    <GenericErrorScreen />
+                  )
+                }
+              </NavigateFnContext.Consumer>
+            )}
+          </div>
+        </div>
+      </>
     ) : (
       <GenericErrorScreen />
     );
   }
+
+  private markElementReady = (element: string) => () =>
+    this.setState(prevState => ({
+      readyElements: prevState.readyElements.concat(element)
+    }));
 
   private renderError = () => {
     if (this.state.error && this.state.error.message) {
