@@ -1,5 +1,6 @@
 import React from "react";
 import palette from "../../../colours";
+import { sans } from "../../../styles/fonts";
 
 export interface FieldWrapperProps {
   label: string;
@@ -16,7 +17,10 @@ export interface FieldWrapperState {
   };
 }
 
-export class FieldWrapper extends React.Component<FieldWrapperProps> {
+export class FieldWrapper extends React.Component<
+  FieldWrapperProps,
+  FieldWrapperState
+> {
   constructor(props: FieldWrapperProps) {
     super(props);
     this.state = {
@@ -25,11 +29,17 @@ export class FieldWrapper extends React.Component<FieldWrapperProps> {
   }
 
   public render(): React.ReactNode {
+    const hydratedChildren = React.Children.map(this.props.children, child => {
+      return React.cloneElement(child as React.ReactElement<any>, {
+        onChange: this.validateField
+      });
+    });
+
     return (
       <div
         css={{
-          minWidth: this.props.width,
-          flexGrow: this.props.grow ? "1" : undefined,
+          width: this.props.width,
+          maxWidth: "100%",
           margin: "10px",
           textAlign: "left"
         }}
@@ -42,14 +52,32 @@ export class FieldWrapper extends React.Component<FieldWrapperProps> {
             padding: "5px 10px"
           }}
         >
-          {this.props.children}
+          {hydratedChildren}
         </div>
-        <span
-          css={{
-            color: palette.red.medium
-          }}
-        />
+        {this.state.error && this.state.error.message ? (
+          <span
+            css={{
+              color: palette.red.medium,
+              fontFamily: sans,
+              fontSize: "0.8rem"
+            }}
+          >
+            {this.state.error.message}
+          </span>
+        ) : null}
       </div>
     );
   }
+
+  private validateField = (field: stripe.elements.ElementChangeResponse) => {
+    if (field.error && field.error.message) {
+      this.setState({
+        error: field.error
+      });
+    } else {
+      this.setState({
+        error: {}
+      });
+    }
+  };
 }

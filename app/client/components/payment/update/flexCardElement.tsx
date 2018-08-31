@@ -24,22 +24,23 @@ export class FlexCardElement extends React.PureComponent<FlexCardElementProps> {
 
   public render(): React.ReactNode {
     return (
-      <div
-        css={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap"
-        }}
-      >
-        <FieldWrapper width="210px" label="Card Number" grow>
+      <div>
+        <FieldWrapper width="500px" label="Card Number">
           <CardNumberElement style={baseStyle} placeholder="Card Number" />
         </FieldWrapper>
-        <FieldWrapper width="100px" label="Expiry Date">
-          <CardExpiryElement style={baseStyle} />
-        </FieldWrapper>
-        <FieldWrapper width="80px" label="CVC">
-          <CardCVCElement style={baseStyle} />
-        </FieldWrapper>
+        <div
+          css={{
+            display: "flex",
+            justifyContent: "flex-start"
+          }}
+        >
+          <FieldWrapper width="300px" label="Expiry Date">
+            <CardExpiryElement style={baseStyle} />
+          </FieldWrapper>
+          <FieldWrapper width="200px" label="CVC">
+            <CardCVCElement style={baseStyle} />
+          </FieldWrapper>
+        </div>
       </div>
     );
   }
