@@ -1,11 +1,11 @@
 import React from "react";
 import palette from "../../../colours";
+import { sans } from "../../../styles/fonts";
 
 export interface FieldWrapperProps {
   label: string;
   width: string;
   children: any; // TODO refine the type to single StripeElement
-  grow?: true;
 }
 
 export interface FieldWrapperState {
@@ -14,42 +14,94 @@ export interface FieldWrapperState {
     message?: string;
     type?: string;
   };
+  focus: boolean;
 }
 
-export class FieldWrapper extends React.Component<FieldWrapperProps> {
+export class FieldWrapper extends React.Component<
+  FieldWrapperProps,
+  FieldWrapperState
+> {
   constructor(props: FieldWrapperProps) {
     super(props);
     this.state = {
-      error: {}
+      error: {},
+      focus: false
     };
   }
 
   public render(): React.ReactNode {
+    const hydratedChildren = React.Children.map(this.props.children, child => {
+      return React.cloneElement(child as React.ReactElement<any>, {
+        onChange: this.validateField,
+        onFocus: this.toggleFocus,
+        onBlur: this.toggleFocus
+      });
+    });
+
     return (
       <div
         css={{
-          minWidth: this.props.width,
-          flexGrow: this.props.grow ? "1" : undefined,
-          margin: "10px",
-          textAlign: "left"
+          width: this.props.width,
+          maxWidth: "100%",
+          marginBottom: "10px",
+          textAlign: "left",
+          ":not(:first-child)": {
+            marginLeft: "20px"
+          }
         }}
       >
-        <label css={{ marginLeft: "5px" }}>{this.props.label}</label>
+        <label>{this.props.label}</label>
         <div
           css={{
-            borderRadius: "10px",
-            backgroundColor: palette.neutral["7"],
-            padding: "5px 10px"
+            border: "1px solid #dcdcdc",
+            display: "block",
+            fontWeight: 400,
+            height: "42px",
+            lineHeight: "20px",
+            padding: "10px",
+            width: "100%",
+            transition: "all .2s ease-in-out",
+            "&:hover": {
+              boxShadow: this.state.focus
+                ? `0 0 0 3px ${palette.yellow.medium}`
+                : "0 0 0 3px #ededed"
+            },
+            outline: 0,
+            boxShadow: this.state.focus ? "0 0 0 3px #ffe500" : 0
           }}
         >
-          {this.props.children}
+          {hydratedChildren}
         </div>
-        <span
-          css={{
-            color: palette.red.medium
-          }}
-        />
+        {this.state.error && this.state.error.message ? (
+          <span
+            css={{
+              color: palette.red.medium,
+              fontFamily: sans,
+              fontSize: "0.8rem"
+            }}
+          >
+            {this.state.error.message}
+          </span>
+        ) : null}
       </div>
     );
   }
+
+  private validateField = (field: stripe.elements.ElementChangeResponse) => {
+    if (field.error && field.error.message) {
+      this.setState({
+        error: field.error
+      });
+    } else {
+      this.setState({
+        error: {}
+      });
+    }
+  };
+
+  private toggleFocus = () => {
+    this.setState({
+      focus: !this.state.focus
+    });
+  };
 }

@@ -128,7 +128,7 @@ class PaymentUpdaterStep extends React.Component<
                 updatePaymentMethod={this.updatePaymentMethod}
                 value={this.state.selectedPaymentMethod}
               />
-              <h3 css={{ marginBottom: "0" }}>New Payment Details</h3>
+              <h3>New Payment Details</h3>
               {this.getInputForm(this.props.data.subscription)}
             </WizardStep>
           </NavigateFnContext.Provider>

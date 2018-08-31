@@ -7,6 +7,7 @@ import {
 import { sans } from "../../../styles/fonts";
 import { Spinner } from "../../spinner";
 import { FieldWrapper } from "./fieldWrapper";
+import { stripeLogo } from "./stripe-logo";
 
 export interface FlexCardElementProps {
   disabled?: boolean;
@@ -28,7 +29,6 @@ export class FlexCardElement extends React.Component<
   FlexCardElementState
 > {
   /*TODO find some way to lock these based on this.props.disabled*/
-  /*TODO add powered by Stripe badge - https://stripe.com/about/resources*/
 
   public state = { readyElements: [] };
 
@@ -37,30 +37,40 @@ export class FlexCardElement extends React.Component<
       <>
         <div
           css={{
-            display: this.state.readyElements.length === 3 ? "flex" : "none",
-            justifyContent: "space-between",
-            flexWrap: "wrap"
+            display: this.state.readyElements.length === 3 ? "block" : "none",
+            textAlign: "left"
           }}
         >
-          <FieldWrapper width="210px" label="Card Number" grow>
+          <FieldWrapper width="500px" label="Card Number">
             <CardNumberElement
               style={baseStyle}
               placeholder="Card Number"
               onReady={this.markElementReady("CardNumberElement")}
             />
           </FieldWrapper>
-          <FieldWrapper width="100px" label="Expiry Date">
-            <CardExpiryElement
-              style={baseStyle}
-              onReady={this.markElementReady("CardExpiryElement")}
-            />
-          </FieldWrapper>
-          <FieldWrapper width="80px" label="CVC">
-            <CardCVCElement
-              style={baseStyle}
-              onReady={this.markElementReady("CardCVCElement")}
-            />
-          </FieldWrapper>
+          <div
+            css={{
+              display: "flex",
+              justifyContent: "flex-start",
+              marginBottom: "12px"
+            }}
+          >
+            <FieldWrapper width="240px" label="Expiry Date">
+              <CardExpiryElement
+                style={baseStyle}
+                onReady={this.markElementReady("CardExpiryElement")}
+              />
+            </FieldWrapper>
+            <FieldWrapper width="240px" label="CVC">
+              <CardCVCElement
+                style={baseStyle}
+                onReady={this.markElementReady("CardCVCElement")}
+              />
+            </FieldWrapper>
+          </div>
+          <a href="https://stripe.com/" target="_blank">
+            {stripeLogo()}
+          </a>
         </div>
         <div
           css={{
