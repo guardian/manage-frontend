@@ -2,6 +2,7 @@ import { NavigateFn } from "@reach/router";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
 import palette from "../../../colours";
+import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { Spinner } from "../../spinner";
@@ -18,15 +19,21 @@ export interface StripeCardInputFormProps
 export interface StripeCardInputFormState {
   isGeneratingToken: boolean;
   isValid: boolean;
+  error: {
+    code?: string;
+    message?: string;
+    type?: string;
+  };
 }
 
 export class StripeCardInputForm extends React.Component<
   StripeCardInputFormProps,
   StripeCardInputFormState
 > {
-  public state = {
+  public state: StripeCardInputFormState = {
     isGeneratingToken: false,
-    isValid: false
+    isValid: false,
+    error: {}
   };
 
   public render(): React.ReactNode {
@@ -44,16 +51,19 @@ export class StripeCardInputForm extends React.Component<
             <NavigateFnContext.Consumer>
               {nav =>
                 nav.navigate ? (
-                  <Button
-                    color={palette.neutral["1"]}
-                    textColor={palette.white}
-                    disabled={
-                      this.props.stripe ===
-                      undefined /*TODO add validation check on FlexCardElement*/
-                    }
-                    text="Review Payment Update"
-                    onClick={this.startCardUpdate(nav.navigate)}
-                  />
+                  <>
+                    <Button
+                      color={palette.neutral["1"]}
+                      textColor={palette.white}
+                      disabled={
+                        this.props.stripe ===
+                        undefined /*TODO add validation check on FlexCardElement*/
+                      }
+                      text="Review Payment Update"
+                      onClick={this.startCardUpdate(nav.navigate)}
+                    />
+                    {this.renderError()}
+                  </>
                 ) : (
                   <GenericErrorScreen />
                 )
@@ -67,6 +77,25 @@ export class StripeCardInputForm extends React.Component<
     );
   }
 
+  private renderError = () => {
+    if (this.state.error && this.state.error.message) {
+      return (
+        <p
+          css={{
+            color: palette.red.medium,
+            fontFamily: sans,
+            fontSize: "0.8rem",
+            marginTop: "5px"
+          }}
+        >
+          {this.state.error.message}
+        </p>
+      );
+    } else {
+      return null;
+    }
+  };
+
   private setInProgress = (value: boolean) =>
     this.setState({ isGeneratingToken: value });
 
@@ -79,7 +108,9 @@ export class StripeCardInputForm extends React.Component<
         navigate("confirm");
       } else {
         if (tokenResponse.error) {
-          // @TODO handle error
+          this.setState({
+            error: tokenResponse.error
+          });
         }
         this.setInProgress(false);
       }
