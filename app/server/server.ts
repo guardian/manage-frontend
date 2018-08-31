@@ -27,6 +27,11 @@ if (conf.SERVER_DSN) {
   // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
 }
 
+if (conf.DOMAIN === "thegulocal.com") {
+  // tslint:disable-next-line:no-object-mutation
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
 const clientDSN =
   conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
     ? conf.CLIENT_DSN
