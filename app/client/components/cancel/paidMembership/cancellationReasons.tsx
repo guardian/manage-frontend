@@ -19,7 +19,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
     saveTitle:
       "We understand that financial circumstances can change from time to time",
     saveBody:
-      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to make support us and one of our customer service specialist would be happy to hear from you.",
+      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you.",
     experimentSaveBody: (
       <>
         <div css={{ marginTop: "10px" }}>
