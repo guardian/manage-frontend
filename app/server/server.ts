@@ -171,10 +171,11 @@ server.use((req: express.Request, res: express.Response) => {
     env:
       conf.ENVIRONMENT === Environments.PRODUCTION
         ? "production"
-        : "development"
+        : "development",
+    allowHigherVersions: true
   });
 
-  Object.assign(globals, { supportedBrowser });
+  // Object.assign(globals, { supportedBrowser });
 
   if (!supportedBrowser) {
     log.warn(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);

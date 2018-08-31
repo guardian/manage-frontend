@@ -18,6 +18,10 @@ const copyPlugin = new CopyWebpackPlugin([
   {
     from: path.resolve(__dirname, "client", "fonts"),
     to: path.resolve(__dirname, "dist", "static", "fonts")
+  },
+  {
+    from: path.resolve(__dirname, "package.json"),
+    to: path.resolve(__dirname, "dist", "package.json")
   }
 ]);
 
