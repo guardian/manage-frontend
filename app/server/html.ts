@@ -32,7 +32,7 @@ const html: (
       <title>${title}</title>
       ${insertGlobals(globals)}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/48bc5564bb01b74cf7cd1a08ae0dd98e/32x32.ico" />
-      <script src="https://js.stripe.com/v3/"></script> <!--TODO should really load as per https://github.com/stripe/react-stripe-elements#server-side-rendering-ssr-->
+      <script src="https://js.stripe.com/v3/" async></script>
     </head>
     <body style="margin:0">
         ${

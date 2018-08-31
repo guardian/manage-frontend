@@ -20,13 +20,28 @@ export interface CardInputFormProps {
   ) => void;
 }
 
-// TODO https://github.com/stripe/react-stripe-elements#loading-stripejs-asynchronously
-export const CardInputForm = (props: CardInputFormProps) => (
-  <StripeProvider apiKey={props.stripeApiKey}>
-    <Elements>
-      <InjectedStripeCardInputForm
-        stripeTokenUpdater={props.stripeTokenUpdater}
-      />
-    </Elements>
-  </StripeProvider>
-);
+interface WindowWithStripe extends Window {
+  Stripe: any;
+}
+
+declare let window: WindowWithStripe;
+
+export class CardInputForm extends React.Component<CardInputFormProps, {}> {
+  public state = { stripe: null };
+
+  public componentDidMount(): void {
+    // Create Stripe instance in componentDidMount
+    // https://github.com/stripe/react-stripe-elements#server-side-rendering-ssr
+    this.setState({ stripe: window.Stripe(this.props.stripeApiKey) });
+  }
+
+  public render(): JSX.Element {
+    return (
+      <StripeProvider stripe={this.state.stripe}>
+        <Elements>
+          <InjectedStripeCardInputForm {...this.props} />
+        </Elements>
+      </StripeProvider>
+    );
+  }
+}
