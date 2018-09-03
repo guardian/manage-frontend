@@ -3,6 +3,7 @@ import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
 import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
+import { minWidth } from "../../../styles/breakpoints";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
@@ -122,8 +123,29 @@ class PaymentUpdaterStep extends React.Component<
             value={{ navigate: this.props.routeableStepProps.navigate }}
           >
             <WizardStep routeableStepProps={this.props.routeableStepProps}>
-              <h3>Current Payment Details</h3>
-              <CurrentPaymentDetails {...this.props.data.subscription} />
+              <div
+                css={{
+                  [minWidth.phablet]: {
+                    display: "flex",
+                    flexDirection: this.props.data.alertText
+                      ? "row-reverse"
+                      : "row"
+                  }
+                }}
+              >
+                {this.props.data.alertText ? (
+                  <div>
+                    <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
+                    <span>{this.props.data.alertText}</span>
+                  </div>
+                ) : (
+                  undefined
+                )}
+                <div css={{ minWidth: "275px" }}>
+                  <h3>Current Payment Details</h3>
+                  <CurrentPaymentDetails {...this.props.data.subscription} />
+                </div>
+              </div>
               <PaymentMethodBar
                 updatePaymentMethod={this.updatePaymentMethod}
                 value={this.state.selectedPaymentMethod}
