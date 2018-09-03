@@ -28,12 +28,12 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
 
 const WithSubscriptionRenderer = (withSub: WithSubscription) => (
   <>
+    <h2>Payment details successfully updated</h2>
     Going forward your payment details are...
     <ConfirmedNewPaymentDetailsRenderer {...withSub.subscription} />
   </>
 );
 
-// TODO this should load an async loader to fetch membership details (passed in)
 export interface PaymentUpdatedProps extends RouteableStepProps {
   fetch: () => Promise<Response>;
 }
