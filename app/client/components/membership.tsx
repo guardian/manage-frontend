@@ -18,6 +18,7 @@ export interface MembershipData extends WithSubscription {
   tier: string;
   isPaidTier: boolean;
   joinDate: string;
+  alertText?: string;
 }
 
 export type MembersDataApiResponse = MembershipData | {};
