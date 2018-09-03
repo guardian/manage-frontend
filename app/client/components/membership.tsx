@@ -100,15 +100,24 @@ const getPaymentMethodRow = (subscription: Subscription) => {
         label={"Card details"}
         data={
           <div css={spaceBetweenCSS}>
-            <div css={{ marginRight: "15px" }}>
+            <div css={{ marginRight: "15px", minWidth: "190px" }}>
               <CardDisplay margin="0" {...subscription.card} />
             </div>
-            <LinkButton
-              text="Update Payment Details"
-              textColor={palette.white}
-              color={palette.neutral["1"]}
-              to="/payment/membership"
-            />
+            <div
+              css={{
+                marginTop: "10px",
+                [minWidth.mobileLandscape]: {
+                  marginTop: "0"
+                }
+              }}
+            >
+              <LinkButton
+                text="Update Payment Details"
+                textColor={palette.white}
+                color={palette.neutral["1"]}
+                to="/payment/membership"
+              />
+            </div>
           </div>
         }
       />
