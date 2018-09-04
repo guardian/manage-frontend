@@ -26,13 +26,17 @@
   "main": "./dist/server",
   "browserslist": [
     ">0.25%",
-    "chrome >= 49",
-    "firefox >= 46",
-    "ie >= 11",
-    "edge >= 13",
-    "safari >= 8",
-    "opera >= 27",
-    "iOS >= 9"
+    "Chrome >= 49",
+    "ChromeAndroid >= 49",
+    "Safari >= 8",
+    "ios_saf >= 9",
+    "IE >= 11",
+    "Edge >= 13",
+    "Firefox >= 46",
+    "FirefoxAndroid > 46",
+    "Samsung >= 4",
+    "Opera >= 54",
+    "OperaMini all"
   ],
   "devDependencies": {
     "@babel/cli": "^7.0.0",
