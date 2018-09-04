@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  CardNumberElement,
   Elements,
   injectStripe,
   ReactStripeElements,
@@ -41,7 +42,16 @@ export class CardInputForm extends React.Component<
   public render(): JSX.Element {
     return (
       <StripeProvider stripe={this.state.stripe}>
-        <Elements>
+        <Elements
+          fonts={[
+            {
+              src:
+                "url(https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2)",
+              family: "Guardian Text Sans Web",
+              style: "normal"
+            }
+          ]}
+        >
           <InjectedStripeCardInputForm {...this.props} />
         </Elements>
       </StripeProvider>
