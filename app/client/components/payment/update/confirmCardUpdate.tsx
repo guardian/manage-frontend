@@ -5,6 +5,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { hasMembership } from "../../membership";
+import { PageContainer } from "../../page";
 import { MembersDataApiResponseContext } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
@@ -23,7 +24,6 @@ interface ExecuteCardUpdateProps extends RouteableStepProps {
 
 interface ExecuteCardUpdateState {
   hasHitComplete: boolean;
-  error: boolean;
 }
 
 class ExecuteCardUpdate extends React.Component<
@@ -31,8 +31,7 @@ class ExecuteCardUpdate extends React.Component<
   ExecuteCardUpdateState
 > {
   public state = {
-    hasHitComplete: false,
-    error: false
+    hasHitComplete: false
   };
 
   public render(): React.ReactNode {
@@ -40,26 +39,17 @@ class ExecuteCardUpdate extends React.Component<
       <CardUpdateAsyncLoader
         fetch={this.executeCardUpdate}
         render={this.renderCardUpdateResponse}
+        errorRender={this.PaymentUpdateFailed}
         loadingMessage="Updating payment card details..."
         spinnerScale={0.7}
         inline
       />
     ) : (
-      <>
-        <Button
-          text="Complete Payment Update"
-          onClick={() => this.setState({ hasHitComplete: true })}
-          right
-        />
-        {this.state.error ? (
-          <div css={{ color: palette.red.medium }}>
-            Oh dear, the card update failed this time, you can try again.
-            <CallCentreNumbers prefixText="Or you can contact the call centre..." />
-          </div>
-        ) : (
-          undefined
-        )}
-      </>
+      <Button
+        text="Complete Payment Update"
+        onClick={() => this.setState({ hasHitComplete: true })}
+        right
+      />
     );
   }
 
@@ -85,18 +75,29 @@ class ExecuteCardUpdate extends React.Component<
       return null;
     }
 
+    return this.PaymentUpdateFailed();
+  };
+
+  private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
       eventAction: "card_update",
-      eventLabel: "failed"
+      eventLabel: `failed`
     });
 
     Raven.captureException("payment card update failed");
 
-    this.setState({
-      error: true,
-      hasHitComplete: false
-    });
+    return (
+      <div css={{ textAlign: "left", marginTop: "10px" }}>
+        <h2>Sorry, the card update failed.</h2>
+        <p>
+          To try again please go back and re-enter your new card details.
+          Alternatively, please call to speak to one of our customer service
+          specialists.
+        </p>
+        <CallCentreNumbers prefixText="To contact us" />
+      </div>
+    );
   };
 }
 

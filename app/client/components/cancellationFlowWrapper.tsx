@@ -5,7 +5,12 @@ import { GenericErrorScreen } from "./genericErrorScreen";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
-) => (props.validator(me) ? <>{props.children}</> : <GenericErrorScreen />);
+) =>
+  props.validator(me) ? (
+    <>{props.children}</>
+  ) : (
+    <GenericErrorScreen loggingMessage="Direct navigation in cancellation flow without having the corresponding product" />
+  );
 
 export type MeValidator = (me: MeResponse) => boolean;
 

@@ -141,10 +141,14 @@ const getPaymentPart = (data: MembershipData) => {
           data={formatDate(data.subscription.nextPaymentDate)}
         />
         <MembershipRow
-          label={"Annual payment"}
+          label={
+            data.subscription.plan.interval.charAt(0).toUpperCase() +
+            data.subscription.plan.interval.substr(1) +
+            "ly payment"
+          }
           data={
             data.subscription.plan.currency +
-            (data.subscription.plan.amount / 100.0).toFixed(2)
+            (data.subscription.nextPaymentPrice / 100.0).toFixed(2)
           }
         />
         {getPaymentMethodRow(data.subscription)}
@@ -166,6 +170,21 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
     }
     return (
       <div>
+        {data.alertText ? (
+          <div
+            css={{
+              backgroundColor: palette.neutral["7"],
+              border: "1px solid " + palette.neutral["4"],
+              padding: "10px",
+              marginBottom: "30px"
+            }}
+          >
+            <h2 css={{ fontWeight: "bold", margin: "0" }}>Action required</h2>
+            {data.alertText}
+          </div>
+        ) : (
+          undefined
+        )}
         {data.regNumber ? (
           <MembershipRow label={"Membership number"} data={data.regNumber} />
         ) : (

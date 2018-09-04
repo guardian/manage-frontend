@@ -34,11 +34,13 @@ export interface Subscription {
   end: string;
   cancelledAt: boolean;
   nextPaymentDate: string;
+  nextPaymentPrice: number;
   card?: Card;
   payPalEmail?: string;
   plan: {
     amount: number;
     currency: string;
+    interval: string;
   };
 }
 

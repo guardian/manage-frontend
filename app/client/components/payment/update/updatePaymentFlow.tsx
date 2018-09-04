@@ -176,7 +176,7 @@ class PaymentUpdaterStep extends React.Component<
             stripeTokenUpdater={this.stripeTokenUpdater}
           />
         ) : (
-          <GenericErrorScreen />
+          <GenericErrorScreen loggingMessage="No existing card information to update from" />
         );
       default:
         return (
@@ -192,7 +192,7 @@ const getPaymentUpdateRenderer = (routeableStepProps: RouteableStepProps) => (
   hasMembership(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    <GenericErrorScreen />
+    <GenericErrorScreen loggingMessage="No membership to update payment for" />
   );
 
 const createUpdatePaymentFlow = (productType: ProductType) => (

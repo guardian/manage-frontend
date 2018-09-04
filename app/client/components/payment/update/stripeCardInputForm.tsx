@@ -79,7 +79,7 @@ export class StripeCardInputForm extends React.Component<
                       {this.renderError()}
                     </>
                   ) : (
-                    <GenericErrorScreen />
+                    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
                   )
                 }
               </NavigateFnContext.Consumer>
@@ -88,7 +88,7 @@ export class StripeCardInputForm extends React.Component<
         </div>
       </>
     ) : (
-      <GenericErrorScreen />
+      <GenericErrorScreen loggingMessage="Stripe not loaded" />
     );
   }
 

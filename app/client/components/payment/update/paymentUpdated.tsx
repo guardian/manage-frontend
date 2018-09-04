@@ -1,7 +1,7 @@
 import React from "react";
 import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { Subscription, WithSubscription } from "../../user";
+import { formatDate, Subscription, WithSubscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
@@ -11,7 +11,9 @@ export const handleNoToken = (props: RouteableStepProps) => {
     props.navigate("..", { replace: true }); // step back up a level
     return null;
   }
-  return <GenericErrorScreen />;
+  return (
+    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+  );
 };
 
 export class WithSubscriptionAsyncLoader extends AsyncLoader<
@@ -20,17 +22,31 @@ export class WithSubscriptionAsyncLoader extends AsyncLoader<
 
 const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
   if (subscription.card) {
-    return <CardDisplay {...subscription.card} />;
+    return (
+      <>
+        <CardDisplay {...subscription.card} />
+        <div>
+          <b>Next Payment:</b> {subscription.plan.currency}
+          {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
+          {formatDate(subscription.nextPaymentDate)}
+        </div>
+        <div>
+          <b>Payment Frequency:</b> {subscription.plan.interval}ly
+        </div>
+      </>
+    );
   }
 
-  return <GenericErrorScreen />; // unsupported operation currently
+  return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
 const WithSubscriptionRenderer = (withSub: WithSubscription) => (
   <>
-    <h2>Payment details successfully updated</h2>
-    Going forward your payment details are...
+    <h1>Your payment details were updated successfully</h1>
     <ConfirmedNewPaymentDetailsRenderer {...withSub.subscription} />
+    <h2>
+      Thank you. You are helping to support independent investigative journalism
+    </h2>
   </>
 );
 

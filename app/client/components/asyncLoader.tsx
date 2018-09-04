@@ -64,7 +64,7 @@ export default class AsyncLoader<
     } else if (this.props.errorRender) {
       return this.props.errorRender();
     }
-    return <GenericErrorScreen />;
+    return <GenericErrorScreen loggingMessage={false} />;
   }
 
   private handleError(error: Error | ErrorEvent | string): void {
