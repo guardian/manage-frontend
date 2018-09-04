@@ -106,8 +106,6 @@ class FeedbackForm extends React.Component<
           <Button
             onClick={this.submitFeedback}
             text="Submit Feedback"
-            textColor={palette.white}
-            color={palette.neutral["2"]}
             disabled={this.state.feedback.length === 0}
           />
           <ConfirmCancellationButton
@@ -184,8 +182,8 @@ const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
   >
     <Button
       text="Confirm Cancellation"
-      textColor={palette.white}
-      color={palette.neutral["2"]}
+      textColour={palette.white}
+      colour={palette.neutral["2"]}
       onClick={() => {
         if (props.onClick) {
           props.onClick();

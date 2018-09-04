@@ -1,9 +1,7 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
-import { NotFound } from "./notFound";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressCounter } from "./progressCounter";
 
@@ -48,12 +46,7 @@ export const ReturnToYourAccountButton = () => (
         "/membership/edit"
       }
     >
-      <Button
-        text="Return to your account"
-        textColor={palette.white}
-        left
-        color={palette.neutral["2"]}
-      />
+      <Button text="Return to your account" left />
     </a>
   </div>
 );
@@ -73,13 +66,7 @@ const RootComponent = (props: RootComponentProps) => (
     {props.thisStageChildren}
 
     {props.backButtonLevelsUp ? (
-      <LinkButton
-        text="Back"
-        textColor={palette.white}
-        left
-        color={palette.neutral["2"]}
-        to=".."
-      />
+      <LinkButton text="Back" to=".." left />
     ) : (
       <ReturnToYourAccountButton />
     )}

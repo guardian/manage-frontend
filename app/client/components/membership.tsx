@@ -113,8 +113,6 @@ const getPaymentMethodRow = (subscription: Subscription) => {
             >
               <LinkButton
                 text="Update Payment Details"
-                textColor={palette.white}
-                color={palette.neutral["1"]}
                 to="/payment/membership"
               />
             </div>
@@ -187,8 +185,8 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
               >
                 <Button
                   text="Change tier"
-                  textColor={palette.white}
-                  color={palette.neutral["1"]}
+                  textColour={palette.white}
+                  colour={palette.neutral["1"]}
                 />
               </a>
             </div>

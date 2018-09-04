@@ -77,8 +77,6 @@ class ReasonPicker extends React.Component<
         <br />
         <div css={{ textAlign: "right" }}>
           <LinkButton
-            color={palette.neutral["2"]}
-            textColor={palette.white}
             text="Continue"
             to={this.state.reasonPath}
             disabled={!this.state.reasonPath}

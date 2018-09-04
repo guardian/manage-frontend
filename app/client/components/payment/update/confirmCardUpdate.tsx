@@ -47,10 +47,9 @@ class ExecuteCardUpdate extends React.Component<
     ) : (
       <>
         <Button
-          color={palette.neutral["1"]}
-          textColor={palette.white}
           text="Complete Payment Update"
           onClick={() => this.setState({ hasHitComplete: true })}
+          right
         />
         {this.state.error ? (
           <div css={{ color: palette.red.medium }}>

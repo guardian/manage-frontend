@@ -71,11 +71,10 @@ export class StripeCardInputForm extends React.Component<
                   nav.navigate ? (
                     <>
                       <Button
-                        color={palette.neutral["1"]}
-                        textColor={palette.white}
                         disabled={this.props.stripe === undefined}
                         text="Review Payment Update"
                         onClick={this.startCardUpdate(nav.navigate)}
+                        right
                       />
                       {this.renderError()}
                     </>
