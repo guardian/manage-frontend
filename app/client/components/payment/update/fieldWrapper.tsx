@@ -50,10 +50,22 @@ export class FieldWrapper extends React.Component<
           }
         }}
       >
-        <label>{this.props.label}</label>
+        <label
+          css={{
+            fontFamily: sans,
+            fontSize: "14px",
+            marginBottom: "5px"
+          }}
+        >
+          {this.props.label}
+        </label>
         <div
           css={{
-            border: "1px solid #dcdcdc",
+            border: `1px solid ${
+              this.state.error && this.state.error.message
+                ? palette.red.medium
+                : palette.neutral["5"]
+            }`,
             display: "block",
             fontWeight: 400,
             height: "42px",
