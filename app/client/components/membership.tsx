@@ -175,7 +175,7 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
             css={{
               backgroundColor: palette.neutral["7"],
               border: "1px solid " + palette.neutral["4"],
-              padding: "10px",
+              padding: "10px 15px",
               marginBottom: "30px"
             }}
           >
