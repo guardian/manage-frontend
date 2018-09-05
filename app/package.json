@@ -33,7 +33,7 @@
     "IE >= 11",
     "Edge >= 13",
     "Firefox >= 46",
-    "FirefoxAndroid => 46",
+    "FirefoxAndroid >= 46",
     "Samsung >= 4",
     "Opera >= 54",
     "OperaMini all"
