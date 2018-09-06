@@ -15,8 +15,8 @@ const backToTopArrow = css({
   border: "0.125rem solid #ffffff",
   borderBottom: 0,
   borderRight: 0,
-  height: "calc(11px + 0.25rem)",
-  width: "calc(11px + 0.25rem)",
+  height: "calc(7px + 0.25rem)",
+  width: "calc(7px + 0.25rem)",
   transform: "rotate(45deg)"
 });
 
@@ -64,7 +64,7 @@ const Footer = () => (
           }}
         >
           back to top
-            <span
+          <span
             css={{
               display: "inline-block",
               backgroundColor: palette.neutral["1"],
@@ -105,8 +105,7 @@ const Footer = () => (
 
               [minWidth.desktop]: {
                 padding: "0 0 0.75rem 0",
-                display: "flex",
-                justifyContent: "space-between"
+                display: "flex"
               }
             }}
           >
@@ -146,7 +145,8 @@ const Footer = () => (
                 marginTop: "0.75rem",
 
                 [minWidth.tablet]: {
-                  margin: "0"
+                  margin: "0",
+                  maxWidth: "40rem"
                 }
               }}
             >
@@ -219,9 +219,9 @@ const Footer = () => (
               paddingTop: "0.375rem"
             }}
           >
-            © 2018 Guardian News and Media Limited or its affiliated
-            companies. All&nbsp;rights&nbsp;reserved.
-            </div>
+            © 2018 Guardian News and Media Limited or its affiliated companies.
+            All&nbsp;rights&nbsp;reserved.
+          </div>
         </div>
       </div>
     </div>
