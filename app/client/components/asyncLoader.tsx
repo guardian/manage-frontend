@@ -2,6 +2,7 @@ import Raven from "raven-js";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
+import { PageContainer } from "./page";
 import { LoadingProps, Spinner } from "./spinner";
 
 export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
@@ -49,12 +50,16 @@ export default class AsyncLoader<
 
   public render(): React.ReactNode {
     if (this.state.loadingState === LoadingState.loading) {
-      return (
+      return this.props.inline ? (
         <Spinner
           loadingMessage={this.props.loadingMessage}
           inline={this.props.inline}
           scale={this.props.spinnerScale}
         />
+      ) : (
+        <PageContainer>
+          <Spinner loadingMessage={this.props.loadingMessage} />
+        </PageContainer>
       );
     } else if (
       this.state.loadingState === LoadingState.loaded &&

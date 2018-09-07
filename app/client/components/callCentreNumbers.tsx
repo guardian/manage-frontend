@@ -8,7 +8,7 @@ const contactUsStyles = css({
 });
 
 const callCenterStyles = css({
-  marginBottom: "50px",
+  marginBottom: "10px",
   display: "flex",
   flexWrap: "wrap"
 });

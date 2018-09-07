@@ -24,6 +24,7 @@ interface RootComponentProps {
   thisStageChildren: any;
   path: string;
   backButtonLevelsUp?: true;
+  extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
 const estimateTotal = (currentStep: number, child: any) => {
@@ -52,25 +53,28 @@ export const ReturnToYourAccountButton = () => (
 );
 
 const RootComponent = (props: RootComponentProps) => (
-  <PageContainer>
-    <PageContainerSection>
-      <ProgressCounter
-        current={props.routeableStepProps.currentStep}
-        total={estimateTotal(
-          props.routeableStepProps.currentStep,
-          props.routeableStepProps.children
-        )}
-      />
-    </PageContainerSection>
+  <>
+    <PageContainer>
+      <PageContainerSection>
+        <ProgressCounter
+          current={props.routeableStepProps.currentStep}
+          total={estimateTotal(
+            props.routeableStepProps.currentStep,
+            props.routeableStepProps.children
+          )}
+        />
+      </PageContainerSection>
 
-    {props.thisStageChildren}
+      {props.thisStageChildren}
 
-    {props.backButtonLevelsUp ? (
-      <LinkButton text="Back" to=".." left />
-    ) : (
-      <ReturnToYourAccountButton />
-    )}
-  </PageContainer>
+      {props.backButtonLevelsUp ? (
+        <LinkButton text="Back" to=".." left />
+      ) : (
+        <ReturnToYourAccountButton />
+      )}
+    </PageContainer>
+    {props.extraFooterComponents}
+  </>
 );
 
 const ThisStageContent = (props: WizardStepProps) => (
@@ -80,6 +84,7 @@ const ThisStageContent = (props: WizardStepProps) => (
       thisStageChildren={props.children}
       routeableStepProps={props.routeableStepProps}
       backButtonLevelsUp={props.backButtonLevelsUp}
+      extraFooterComponents={props.extraFooterComponents}
     />
   </Router>
 );
@@ -88,6 +93,7 @@ export interface WizardStepProps {
   routeableStepProps: RouteableStepProps;
   children: any;
   backButtonLevelsUp?: true;
+  extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
 export const WizardStep = (props: WizardStepProps) => (

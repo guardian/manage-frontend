@@ -1,11 +1,10 @@
 import Raven from "raven-js";
 import React from "react";
-import palette from "../../../colours";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
+import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { hasMembership } from "../../membership";
-import { PageContainer } from "../../page";
 import { MembersDataApiResponseContext } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
@@ -111,7 +110,11 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
           tokenResponse.token.card &&
           hasMembership(mdaResponse) &&
           mdaResponse.subscription.card ? (
-            <WizardStep routeableStepProps={props} backButtonLevelsUp>
+            <WizardStep
+              routeableStepProps={props}
+              backButtonLevelsUp
+              extraFooterComponents={<QuestionsFooter />}
+            >
               <h3>Please confirm your change from...</h3>
               <CurrentPaymentDetails {...mdaResponse.subscription} />
               <h3>...to...</h3>

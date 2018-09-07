@@ -5,6 +5,7 @@ import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
+import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
   hasMembership,
@@ -122,7 +123,10 @@ class PaymentUpdaterStep extends React.Component<
           <NavigateFnContext.Provider
             value={{ navigate: this.props.routeableStepProps.navigate }}
           >
-            <WizardStep routeableStepProps={this.props.routeableStepProps}>
+            <WizardStep
+              routeableStepProps={this.props.routeableStepProps}
+              extraFooterComponents={<QuestionsFooter />}
+            >
               <div
                 css={{
                   [minWidth.phablet]: {
@@ -207,17 +211,15 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
     >
       Update payment for your Guardian {productType.productName}
     </h1>
-    <PageContainer>
-      <CheckFlowIsValid {...productType}>
-        <MembershipAsyncLoader
-          fetch={loadMembershipData /*TODO reload on 'back' to page*/}
-          render={getPaymentUpdateRenderer(props)}
-          loadingMessage={`Retrieving current payment details for your ${
-            productType.productName
-          }...`}
-        />
-      </CheckFlowIsValid>
-    </PageContainer>
+    <CheckFlowIsValid {...productType}>
+      <MembershipAsyncLoader
+        fetch={loadMembershipData /*TODO reload on 'back' to page*/}
+        render={getPaymentUpdateRenderer(props)}
+        loadingMessage={`Retrieving current payment details for your ${
+          productType.productName
+        }...`}
+      />
+    </CheckFlowIsValid>
   </div>
 );
 

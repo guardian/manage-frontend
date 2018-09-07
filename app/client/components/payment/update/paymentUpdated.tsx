@@ -1,5 +1,7 @@
 import React from "react";
 import AsyncLoader from "../../asyncLoader";
+import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
+import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { formatDate, Subscription, WithSubscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
@@ -58,7 +60,13 @@ export const PaymentUpdated = (props: PaymentUpdatedProps) => (
   <StripeTokenResponseContext.Consumer>
     {tokenResponse =>
       tokenResponse.token && tokenResponse.token.card ? (
-        <WizardStep routeableStepProps={props}>
+        <WizardStep
+          routeableStepProps={props}
+          extraFooterComponents={[
+            <QuestionsFooter key="questions" />,
+            <SpreadTheWordFooter key="share" />
+          ]}
+        >
           <WithSubscriptionAsyncLoader
             fetch={props.fetch}
             render={WithSubscriptionRenderer}
