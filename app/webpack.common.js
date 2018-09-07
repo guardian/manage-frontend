@@ -21,7 +21,7 @@ const copyPlugin = new CopyWebpackPlugin([
   },
   {
     from: path.resolve(__dirname, "package.json"),
-    to: path.resolve(__dirname, "dist", "package.json")
+    to: path.resolve(__dirname, "dist", "static", "package.json")
   }
 ]);
 
