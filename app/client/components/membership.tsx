@@ -4,7 +4,7 @@ import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
-import { Button } from "./buttons";
+import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
 import { PageContainer, PageHeaderContainer } from "./page";
@@ -18,6 +18,7 @@ export interface MembershipData extends WithSubscription {
   tier: string;
   isPaidTier: boolean;
   joinDate: string;
+  alertText?: string;
 }
 
 export type MembersDataApiResponse = MembershipData | {};
@@ -97,7 +98,26 @@ const getPaymentMethodRow = (subscription: Subscription) => {
     return (
       <MembershipRow
         label={"Card details"}
-        data={<CardDisplay {...subscription.card} />}
+        data={
+          <div css={spaceBetweenCSS}>
+            <div css={{ marginRight: "15px", minWidth: "190px" }}>
+              <CardDisplay margin="0" {...subscription.card} />
+            </div>
+            <div
+              css={{
+                marginTop: "10px",
+                [minWidth.mobileLandscape]: {
+                  marginTop: "0"
+                }
+              }}
+            >
+              <LinkButton
+                text="Update Payment Details"
+                to="/payment/membership"
+              />
+            </div>
+          </div>
+        }
       />
     );
   } else if (subscription.payPalEmail) {
@@ -121,10 +141,14 @@ const getPaymentPart = (data: MembershipData) => {
           data={formatDate(data.subscription.nextPaymentDate)}
         />
         <MembershipRow
-          label={"Annual payment"}
+          label={
+            data.subscription.plan.interval.charAt(0).toUpperCase() +
+            data.subscription.plan.interval.substr(1) +
+            "ly payment"
+          }
           data={
             data.subscription.plan.currency +
-            (data.subscription.plan.amount / 100.0).toFixed(2)
+            (data.subscription.nextPaymentPrice / 100.0).toFixed(2)
           }
         />
         {getPaymentMethodRow(data.subscription)}
@@ -146,6 +170,21 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
     }
     return (
       <div>
+        {data.alertText ? (
+          <div
+            css={{
+              backgroundColor: palette.neutral["7"],
+              border: "1px solid " + palette.neutral["4"],
+              padding: "10px 15px",
+              marginBottom: "30px"
+            }}
+          >
+            <h2 css={{ fontWeight: "bold", margin: "0" }}>Action required</h2>
+            {data.alertText}
+          </div>
+        ) : (
+          undefined
+        )}
         {data.regNumber ? (
           <MembershipRow label={"Membership number"} data={data.regNumber} />
         ) : (
@@ -165,8 +204,8 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
               >
                 <Button
                   text="Change tier"
-                  textColor={palette.white}
-                  color={palette.neutral["1"]}
+                  textColour={palette.white}
+                  colour={palette.neutral["1"]}
                 />
               </a>
             </div>

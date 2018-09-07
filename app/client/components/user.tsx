@@ -1,15 +1,12 @@
-import { navigate, Router, ServerLocation } from "@reach/router";
-import React from "react";
-import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
+import { Router, ServerLocation } from "@reach/router";
+import React, { ReactNode } from "react";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
-import { ContributionsFlow } from "./cancel/contributionsFlow";
-import { FreeMembershipFlow } from "./cancel/freeMembershipFlow";
-import { NotFound } from "./cancel/notFound";
-import { membershipCancellationReasonMatrix } from "./cancel/paidMembership/cancellationReasons";
-import { PaidMembershipFlow } from "./cancel/paidMembership/paidMembershipFlow";
+import { ContributionsCancellationFlow } from "./cancel/contributions/contributionsCancellationFlow";
+import { membershipCancellationReasonMatrix } from "./cancel/membership/cancellationReasons";
+import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { FAQs } from "./faqs";
@@ -19,10 +16,17 @@ import {
   MembersDataApiResponse,
   Membership
 } from "./membership";
-import { navLinks, qualifyLink } from "./nav";
-import { PageContainer } from "./page";
+import { navLinks } from "./nav";
+import { NotFound } from "./notFound";
 import { CardProps } from "./payment/cardDisplay";
-import { RouteableProps } from "./wizardRouterAdapter";
+import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
+import { PaymentUpdated } from "./payment/update/paymentUpdated";
+import { MembershipPaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { RedirectOnMeResponse } from "./redirectOnMeResponse";
+
+export interface Card extends CardProps {
+  stripePublicKeyForUpdate: string;
+}
 
 export interface Subscription {
   subscriberId: string;
@@ -30,11 +34,13 @@ export interface Subscription {
   end: string;
   cancelledAt: boolean;
   nextPaymentDate: string;
-  card?: CardProps;
+  nextPaymentPrice: number;
+  card?: Card;
   payPalEmail?: string;
   plan: {
     amount: number;
     currency: string;
+    interval: string;
   };
 }
 
@@ -56,14 +62,6 @@ export interface CancellationReason {
   skipFeedback?: boolean;
 }
 
-export const CancellationReasonContext: React.Context<
-  string
-> = React.createContext("");
-
-export const CancellationCaseIdContext: React.Context<
-  string
-> = React.createContext("");
-
 export const MembersDataApiResponseContext: React.Context<
   MembersDataApiResponse
 > = React.createContext({});
@@ -72,39 +70,16 @@ export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toDateString();
 };
 
-const RedirectOnMeResponse = (props: RouteableProps) => (
-  <PageContainer>
-    <MeAsyncLoader
-      fetch={fetchMe}
-      render={(me: MeResponse) => {
-        const replace = { replace: true };
-        if (me.contentAccess.member) {
-          navigate(qualifyLink(navLinks.membership), replace);
-        } else if (me.contentAccess.recurringContributor) {
-          navigate(qualifyLink(navLinks.contributions), replace);
-        } else if (me.contentAccess.digitalPack) {
-          navigate(qualifyLink(navLinks.digiPack), replace);
-        } else {
-          navigate("https://" + window.guardian.domain, replace);
-        }
-        return null; // official way to render nothing
-      }}
-      loadingMessage={"Checking your products..."}
-    />
-  </PageContainer>
-);
-
 const User = () => (
   <Main>
     {injectGlobal`${global}`}
     {injectGlobal`${fonts}`}
 
     <Router>
-      <RedirectOnMeResponse path="/" currentStep={1} />
+      <RedirectOnMeResponse path="/" />
 
-      <Membership path={navLinks.membership.link} currentStep={1} />
-
-      <PaidMembershipFlow path="/cancel/membership" currentStep={1}>
+      <Membership path={navLinks.membership.link} />
+      <MembershipCancellationFlow path="/cancel/membership" currentStep={1}>
         {membershipCancellationReasonMatrix.map(
           (reason: CancellationReason) => (
             <GenericSaveAttempt
@@ -125,13 +100,23 @@ const User = () => (
             </GenericSaveAttempt>
           )
         )}
-      </PaidMembershipFlow>
+      </MembershipCancellationFlow>
+      <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
+        <ConfirmCardUpdate path="confirm" currentStep={2}>
+          <PaymentUpdated
+            fetch={loadMembershipData}
+            path="updated"
+            currentStep={3}
+          />
+        </ConfirmCardUpdate>
+      </MembershipPaymentUpdateFlow>
 
-      <FreeMembershipFlow path="/cancel/friend" currentStep={1} />
+      <ContributionsCancellationFlow
+        path="/cancel/contributions"
+        currentStep={1}
+      />
 
-      <ContributionsFlow path="/cancel/contributions" currentStep={1} />
-
-      <FAQs path="/help" currentStep={1} />
+      <FAQs path="/help" />
 
       <NotFound default={true} />
     </Router>

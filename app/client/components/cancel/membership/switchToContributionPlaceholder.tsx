@@ -34,8 +34,6 @@ export class SwitchToContributionPlaceholder extends React.Component<
           <div css={{ textAlign: "right" }}>
             <Button
               text="Switch to recurring contribution"
-              textColor={palette.white}
-              color={palette.neutral["2"]}
               onClick={() => {
                 trackEvent({
                   eventCategory: "switch",

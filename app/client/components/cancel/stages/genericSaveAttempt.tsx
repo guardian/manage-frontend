@@ -10,13 +10,12 @@ import { CaseCreationWrapper } from "../../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
+import { CancellationReason, MembersDataApiResponseContext } from "../../user";
+import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
-  CancellationReason,
-  CancellationReasonContext,
-  MembersDataApiResponseContext
-} from "../../user";
-import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
+  CancellationReasonContext
+} from "../cancellationContexts";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   sfProduct: string;
@@ -107,8 +106,6 @@ class FeedbackForm extends React.Component<
           <Button
             onClick={this.submitFeedback}
             text="Submit Feedback"
-            textColor={palette.white}
-            color={palette.neutral["2"]}
             disabled={this.state.feedback.length === 0}
           />
           <ConfirmCancellationButton
@@ -185,8 +182,8 @@ const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
   >
     <Button
       text="Confirm Cancellation"
-      textColor={palette.white}
-      color={palette.neutral["2"]}
+      textColour={palette.white}
+      colour={palette.neutral["2"]}
       onClick={() => {
         if (props.onClick) {
           props.onClick();
@@ -205,7 +202,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
           membersDataApiResponse={membersDataApiResponse}
           sfProduct={props.sfProduct}
         >
-          <WizardStep routeableProps={props}>
+          <WizardStep routeableStepProps={props}>
             <PageContainerSection>
               <h2 id="save_title">{props.reason.saveTitle}</h2>
               <GoogleOptimiseAwaitFlagWrapper

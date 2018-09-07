@@ -35,8 +35,6 @@ export class PayPalDisplay extends React.Component<
             }}
           >
             <Button
-              color={palette.neutral["1"]}
-              textColor={palette.white}
               text={
                 (this.state.shouldShowAccountName ? "Hide" : "Show") +
                 " account name"

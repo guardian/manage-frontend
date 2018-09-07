@@ -2,6 +2,7 @@ import Raven from "raven-js";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
+import { PageContainer } from "./page";
 import { LoadingProps, Spinner } from "./spinner";
 
 export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
@@ -12,6 +13,8 @@ export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly render: (data: T) => React.ReactNode;
   readonly loadingMessage: string;
   readonly errorRender?: () => React.ReactNode;
+  readonly inline?: true;
+  readonly spinnerScale?: number;
 }
 
 export enum LoadingState {
@@ -47,7 +50,17 @@ export default class AsyncLoader<
 
   public render(): React.ReactNode {
     if (this.state.loadingState === LoadingState.loading) {
-      return <Spinner loadingMessage={this.props.loadingMessage} />;
+      return this.props.inline ? (
+        <Spinner
+          loadingMessage={this.props.loadingMessage}
+          inline={this.props.inline}
+          scale={this.props.spinnerScale}
+        />
+      ) : (
+        <PageContainer>
+          <Spinner loadingMessage={this.props.loadingMessage} />
+        </PageContainer>
+      );
     } else if (
       this.state.loadingState === LoadingState.loaded &&
       this.state.data !== undefined
@@ -56,7 +69,7 @@ export default class AsyncLoader<
     } else if (this.props.errorRender) {
       return this.props.errorRender();
     }
-    return <GenericErrorScreen />;
+    return <GenericErrorScreen loggingMessage={false} />;
   }
 
   private handleError(error: Error | ErrorEvent | string): void {

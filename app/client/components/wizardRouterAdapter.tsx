@@ -1,26 +1,30 @@
-import { Router } from "@reach/router";
+import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressCounter } from "./progressCounter";
 
-export interface RouteableProps {
+export interface RouteableProps extends RouteComponentProps {
   path: string;
+}
+
+export interface RouteableStepProps extends RouteableProps {
   currentStep: number;
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
-export interface MultiRouteableProps extends RouteableProps {
-  // TODO is this is still needed??
+export interface MultiRouteableProps extends RouteableStepProps {
+  // TODO refactor this out by adding type params to children
   linkLabel: string;
 }
 
 interface RootComponentProps {
-  routeableProps: RouteableProps;
+  routeableStepProps: RouteableStepProps;
   thisStageChildren: any;
   path: string;
+  backButtonLevelsUp?: true;
+  extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
 const estimateTotal = (currentStep: number, child: any) => {
@@ -43,32 +47,34 @@ export const ReturnToYourAccountButton = () => (
         "/membership/edit"
       }
     >
-      <Button
-        text="Return to your account"
-        textColor={palette.white}
-        left
-        color={palette.neutral["2"]}
-      />
+      <Button text="Return to your account" left />
     </a>
   </div>
 );
 
 const RootComponent = (props: RootComponentProps) => (
-  <PageContainer>
-    <PageContainerSection>
-      <ProgressCounter
-        current={props.routeableProps.currentStep}
-        total={estimateTotal(
-          props.routeableProps.currentStep,
-          props.routeableProps.children
-        )}
-      />
-    </PageContainerSection>
+  <>
+    <PageContainer>
+      <PageContainerSection>
+        <ProgressCounter
+          current={props.routeableStepProps.currentStep}
+          total={estimateTotal(
+            props.routeableStepProps.currentStep,
+            props.routeableStepProps.children
+          )}
+        />
+      </PageContainerSection>
 
-    {props.thisStageChildren}
+      {props.thisStageChildren}
 
-    <ReturnToYourAccountButton />
-  </PageContainer>
+      {props.backButtonLevelsUp ? (
+        <LinkButton text="Back" to=".." left />
+      ) : (
+        <ReturnToYourAccountButton />
+      )}
+    </PageContainer>
+    {props.extraFooterComponents}
+  </>
 );
 
 const ThisStageContent = (props: WizardStepProps) => (
@@ -76,45 +82,23 @@ const ThisStageContent = (props: WizardStepProps) => (
     <RootComponent
       path="/"
       thisStageChildren={props.children}
-      routeableProps={props.routeableProps}
+      routeableStepProps={props.routeableStepProps}
+      backButtonLevelsUp={props.backButtonLevelsUp}
+      extraFooterComponents={props.extraFooterComponents}
     />
   </Router>
 );
 
-const getForwardNavigationIfApplicable = (routeableProps: RouteableProps) => {
-  if (
-    routeableProps.children &&
-    routeableProps.children.props.children &&
-    !Array.isArray(routeableProps.children.props.children)
-  ) {
-    const childProps: RouteableProps =
-      routeableProps.children.props.children.props;
-    return (
-      <LinkButton
-        to={childProps.path}
-        text={
-          childProps.children && childProps.children.props.children
-            ? "Continue Cancellation"
-            : "Confirm Cancellation"
-        }
-        textColor={palette.white}
-        color={palette.neutral["2"]}
-      />
-    );
-  }
-};
-
 export interface WizardStepProps {
-  routeableProps: RouteableProps;
+  routeableStepProps: RouteableStepProps;
   children: any;
+  backButtonLevelsUp?: true;
+  extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
 export const WizardStep = (props: WizardStepProps) => (
   <>
-    <ThisStageContent
-      children={props.children}
-      routeableProps={props.routeableProps}
-    />
-    {props.routeableProps.children}
+    <ThisStageContent {...props} />
+    {props.routeableStepProps.children}
   </>
 );

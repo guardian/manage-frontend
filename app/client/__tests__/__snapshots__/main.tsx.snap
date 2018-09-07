@@ -11,8 +11,8 @@ exports[`Main renders something 1`] = `
   border: 0.125rem solid #ffffff;
   border-bottom: 0;
   border-right: 0;
-  height: calc(11px + 0.25rem);
-  width: calc(11px + 0.25rem);
+  height: calc(7px + 0.25rem);
+  width: calc(7px + 0.25rem);
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
@@ -427,7 +427,6 @@ exports[`Main renders something 1`] = `
               Object {
                 "@media (min-width: 980px)": Object {
                   "display": "flex",
-                  "justifyContent": "space-between",
                   "padding": "0 0 0.75rem 0",
                 },
                 "padding": "0.75rem 0",
@@ -465,6 +464,7 @@ exports[`Main renders something 1`] = `
                 Object {
                   "@media (min-width: 740px)": Object {
                     "margin": "0",
+                    "maxWidth": "40rem",
                   },
                   "display": "flex",
                   "flexDirection": "row",
