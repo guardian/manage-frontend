@@ -10,6 +10,7 @@ export interface MeResponse {
     recurringContributor: boolean;
     digitalPack: boolean;
   };
+  alertAvailableFor?: string;
 }
 
 export const fetchMe: () => Promise<Response> = async () =>
