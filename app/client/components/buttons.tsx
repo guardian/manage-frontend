@@ -116,7 +116,7 @@ const styles = {
 };
 
 export const LinkButton = (props: LinkButtonProps) => (
-  <Link to={props.disabled ? undefined : props.to} css={buttonCss(props)}>
+  <Link to={props.disabled ? "" : props.to} css={buttonCss(props)}>
     {props.text}
     <ButtonArrow />
   </Link>
