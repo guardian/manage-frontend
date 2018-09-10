@@ -4,9 +4,6 @@ import { conf } from "../config";
 import { log } from "../log";
 import { getUser, IdentityError } from "./identity";
 
-const GU_U = "GU_U";
-const SC_GU_U = "SC_GU_U";
-
 export const withIdentity: express.RequestHandler = (
   req: express.Request,
   res: express.Response,
