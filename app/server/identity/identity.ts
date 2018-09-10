@@ -1,5 +1,6 @@
 import { decode } from "base-64";
 import { parse as parseCookie } from "es-cookie";
+import { log } from "../log";
 
 export const ONE_HOUR = 3600000;
 
@@ -61,14 +62,18 @@ const safely: <T>(f: () => T) => T | null = f => {
   try {
     return f();
   } catch (e) {
+    log.warn(e, f);
     return null;
   }
 };
 
+const decodeParseablePartOfGuCookie = (fullCookieValue: string) =>
+  decode(fullCookieValue.split(".", 1)[0]);
+
 export const checkScGuUExpiry: (
   SC_GU_U: string
 ) => IdentityError | undefined = (SC_GU_U: string) => {
-  const scGuGuStr = safely(() => decode(SC_GU_U.split(".", 1)[0]));
+  const scGuGuStr = safely(() => decodeParseablePartOfGuCookie(SC_GU_U));
   if (scGuGuStr == null) {
     return IdentityError.CouldNotParse;
   }
@@ -80,7 +85,7 @@ export const checkScGuUExpiry: (
   ) {
     return IdentityError.CouldNotParse;
   }
-  const [identityID, expires] = scGuGuParsed;
+  const [, expires] = scGuGuParsed;
   if (expires == null) {
     return IdentityError.CouldNotParse;
   }
@@ -90,6 +95,7 @@ export const checkScGuUExpiry: (
   }
   const remaining = expiry - new Date().getTime();
   if (remaining < ONE_HOUR) {
+    // if within one hour of overall expiry of the user's login
     return IdentityError.Expired;
   }
 };
@@ -97,7 +103,7 @@ export const checkScGuUExpiry: (
 export const checkScGuLaExpiry: (
   SC_GU_LA: string
 ) => IdentityError | undefined = (SC_GU_LA: string) => {
-  const scGuLaStr = safely(() => decode(SC_GU_LA.split(".")[0]));
+  const scGuLaStr = safely(() => decodeParseablePartOfGuCookie(SC_GU_LA));
   if (scGuLaStr == null) {
     return IdentityError.CouldNotParse;
   }
@@ -109,7 +115,7 @@ export const checkScGuLaExpiry: (
   ) {
     return IdentityError.CouldNotParse;
   }
-  const [la, id, lastAuthTimestampStr] = scGuLaParsed;
+  const [, , lastAuthTimestampStr] = scGuLaParsed;
   if (lastAuthTimestampStr == null) {
     return IdentityError.CouldNotParse;
   }
@@ -120,6 +126,7 @@ export const checkScGuLaExpiry: (
 
   const reauthDeadline = lastAuthTimestamp + ONE_HOUR;
   if (reauthDeadline < new Date().getTime()) {
+    // if authenticated more than an hour ago
     return IdentityError.Expired;
   }
 };

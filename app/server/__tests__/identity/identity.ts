@@ -8,7 +8,7 @@ import {
 
 const createFakeCookie = (
   epochTimestampPart: number,
-  prefixParts: string[] = []
+  ...prefixParts: string[]
 ) =>
   encode(
     // base64
@@ -43,7 +43,7 @@ test("non-expired SC_GU_U cookie", () => {
 test("reauth required based on SC_GU_LA cookie", () => {
   const reAuthScGuLaCookie = createFakeCookie(
     new Date().getTime() - ONE_HOUR * 2, // last logged in 2 hours ago
-    ["la"]
+    "LA"
   );
 
   expect(checkScGuLaExpiry(reAuthScGuLaCookie)).toBe(IdentityError.Expired);
@@ -52,7 +52,7 @@ test("reauth required based on SC_GU_LA cookie", () => {
 test("no reauth required based on SC_GU_LA cookie", () => {
   const freshSignInScGuLaCookie = createFakeCookie(
     new Date().getTime(), // signed in just now
-    ["la"]
+    "LA"
   );
 
   expect(checkScGuLaExpiry(freshSignInScGuLaCookie)).toBeUndefined();
