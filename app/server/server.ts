@@ -55,9 +55,7 @@ server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
   res.send("OK");
 });
 
-// server.use(bodyParser.json());
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
-server.use("/api/membership", withIdentity);
 server.use("/", withIdentity);
 
 server.use("/static", express.static(__dirname + "/static"));
