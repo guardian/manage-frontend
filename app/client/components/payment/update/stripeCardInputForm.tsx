@@ -39,11 +39,11 @@ export class StripeCardInputForm extends React.Component<
   };
 
   public render(): React.ReactNode {
-    return this.props.stripe ? (
+    return (
       <>
         <div
           css={{
-            display: this.state.readyElements.length === 3 ? "none" : "block"
+            display: this.isLoaded() ? "none" : "block"
           }}
         >
           <Spinner loadingMessage="Preparing card details form..." />
@@ -51,7 +51,7 @@ export class StripeCardInputForm extends React.Component<
         <div
           css={{
             textAlign: "right",
-            display: this.state.readyElements.length === 3 ? "block" : "none"
+            display: this.isLoaded() ? "block" : "none"
           }}
         >
           <FlexCardElement
@@ -87,10 +87,11 @@ export class StripeCardInputForm extends React.Component<
           </div>
         </div>
       </>
-    ) : (
-      <GenericErrorScreen loggingMessage="Stripe not loaded" />
     );
   }
+
+  private isLoaded = () =>
+    this.props.stripe && this.state.readyElements.length === 3;
 
   private markElementReady = (element: string) => () =>
     this.setState(prevState => ({
