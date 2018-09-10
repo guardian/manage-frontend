@@ -14,6 +14,7 @@ export interface StripeCardInputFormProps
   stripeTokenUpdater: (
     stripeTokenResponse: ReactStripeElements.PatchedTokenResponse
   ) => void;
+  userEmail?: string;
 }
 
 export interface StripeCardInputFormState {
@@ -123,7 +124,9 @@ export class StripeCardInputForm extends React.Component<
   private startCardUpdate = (navigate: NavigateFn) => async () => {
     this.setInProgress(true);
     if (this.props.stripe) {
-      const tokenResponse = await this.props.stripe.createToken(); // may need to add token options for product switch
+      const tokenResponse = await this.props.stripe.createToken(
+        { name: this.props.userEmail } // may need to add more token options for product switch
+      );
       if (tokenResponse.token && tokenResponse.token.card) {
         this.props.stripeTokenUpdater(tokenResponse);
         navigate("confirm");

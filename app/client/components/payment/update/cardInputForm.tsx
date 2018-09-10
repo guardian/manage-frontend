@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  CardNumberElement,
   Elements,
   injectStripe,
   ReactStripeElements,
@@ -16,6 +15,7 @@ const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
 
 export interface CardInputFormProps {
   stripeApiKey: string;
+  userEmail?: string;
   stripeTokenUpdater: (
     stripeTokenResponse: ReactStripeElements.PatchedTokenResponse
   ) => void;
