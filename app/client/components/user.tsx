@@ -26,6 +26,7 @@ import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 export interface Card extends CardProps {
   stripePublicKeyForUpdate: string;
+  email?: string;
 }
 
 export interface Subscription {

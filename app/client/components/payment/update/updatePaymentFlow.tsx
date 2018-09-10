@@ -1,4 +1,5 @@
 import { NavigateFn } from "@reach/router";
+import { get as getCookie } from "es-cookie";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
 import { ProductType, ProductTypes } from "../../../../shared/productTypes";
@@ -14,7 +15,6 @@ import {
   MembershipAsyncLoader,
   MembershipData
 } from "../../membership";
-import { PageContainer } from "../../page";
 import { MembersDataApiResponseContext, Subscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
@@ -103,6 +103,10 @@ interface PaymentUpdaterStepState {
   selectedPaymentMethod: PaymentMethod;
 }
 
+const getSignInEmailFromCookie = () => {
+  return getCookie("GU_SIGNIN_EMAIL");
+};
+
 class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepProps,
   PaymentUpdaterStepState
@@ -178,6 +182,7 @@ class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={subscription.card.stripePublicKeyForUpdate}
             stripeTokenUpdater={this.stripeTokenUpdater}
+            userEmail={subscription.card.email || getSignInEmailFromCookie()}
           />
         ) : (
           <GenericErrorScreen loggingMessage="No existing card information to update from" />
