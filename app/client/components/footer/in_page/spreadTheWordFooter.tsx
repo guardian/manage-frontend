@@ -21,7 +21,9 @@ export const SpreadTheWordFooter = () => (
       }}
     >
       <a
-        href={"" /* TODO add Facebook share URL*/}
+        href={
+          "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsupport.theguardian.com%2F%3FINTCMP%3Dsocial&t="
+        }
         onClick={() =>
           trackEvent({
             eventCategory: "payment",
@@ -35,7 +37,9 @@ export const SpreadTheWordFooter = () => (
         </svg>
       </a>
       <a
-        href={"" /* TODO add Twitter share URL*/}
+        href={
+          "https://twitter.com/intent/tweet?text=Join+me+in+supporting+independent+journalism+https%3A%2F%2Fsupport.theguardian.com&amp;related=guardian"
+        }
         onClick={() =>
           trackEvent({
             eventCategory: "payment",
