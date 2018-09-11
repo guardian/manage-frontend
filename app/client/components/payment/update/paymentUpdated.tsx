@@ -13,6 +13,7 @@ import {
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
+import { Button, LinkButton } from "../../buttons";
 
 export const handleNoToken = (props: RouteableStepProps) => {
   if (props.navigate) {
@@ -69,6 +70,14 @@ const WithSubscriptionRenderer = (withSub: WithSubscription) => (
     <h2>
       Thank you. You are helping to support independent investigative journalism
     </h2>
+    <div>
+      <LinkButton to="/" text="Manage your account" primary right />
+    </div>
+    <div css={{ marginTop: "20px" }}>
+      <a href="https://www.theguardian.com">
+        <Button text="Explore The Guardian" primary right />
+      </a>
+    </div>
   </>
 );
 
