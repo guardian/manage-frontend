@@ -1,5 +1,6 @@
 import React from "react";
 import AsyncLoader from "../../asyncLoader";
+import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -13,7 +14,6 @@ import {
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
-import { Button, LinkButton } from "../../buttons";
 
 export const handleNoToken = (props: RouteableStepProps) => {
   if (props.navigate) {
@@ -39,8 +39,8 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
             hasMembership(membersDataApiResponse) &&
             membersDataApiResponse.alertText ? (
               <div>
-                To resolve the previous payment failure we will retry the charge
-                within the next 24 hours.
+                We will take the outstanding amount from the failed payment
+                within 24 hours.
               </div>
             ) : (
               <>
