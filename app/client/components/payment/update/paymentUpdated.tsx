@@ -39,8 +39,8 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
             hasMembership(membersDataApiResponse) &&
             membersDataApiResponse.alertText ? (
               <div>
-                We will take the outstanding amount from the failed payment
-                within 24 hours.
+                We will take the outstanding payment within 24 hours, using your
+                new card details.
               </div>
             ) : (
               <>
