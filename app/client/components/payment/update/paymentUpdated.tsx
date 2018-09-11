@@ -3,7 +3,13 @@ import AsyncLoader from "../../asyncLoader";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { formatDate, Subscription, WithSubscription } from "../../user";
+import { hasMembership } from "../../membership";
+import {
+  formatDate,
+  MembersDataApiResponseContext,
+  Subscription,
+  WithSubscription
+} from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
@@ -27,14 +33,28 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
     return (
       <>
         <CardDisplay {...subscription.card} />
-        <div>
-          <b>Next Payment:</b> {subscription.plan.currency}
-          {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
-          {formatDate(subscription.nextPaymentDate)}
-        </div>
-        <div>
-          <b>Payment Frequency:</b> {subscription.plan.interval}ly
-        </div>
+        <MembersDataApiResponseContext.Consumer>
+          {membersDataApiResponse =>
+            hasMembership(membersDataApiResponse) &&
+            membersDataApiResponse.alertText ? (
+              <div>
+                To resolve the previous payment failure we will retry the charge
+                within the next 24 hours.
+              </div>
+            ) : (
+              <>
+                <div>
+                  <b>Next Payment:</b> {subscription.plan.currency}
+                  {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
+                  {formatDate(subscription.nextPaymentDate)}
+                </div>
+                <div>
+                  <b>Payment Frequency:</b> {subscription.plan.interval}ly
+                </div>
+              </>
+            )
+          }
+        </MembersDataApiResponseContext.Consumer>
       </>
     );
   }
