@@ -47,6 +47,7 @@ class ExecuteCardUpdate extends React.Component<
       <Button
         text="Complete Payment Update"
         onClick={() => this.setState({ hasHitComplete: true })}
+        primary
         right
       />
     );
@@ -118,6 +119,7 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
             <WizardStep
               routeableStepProps={props}
               backButtonLevelsUp
+              hollowReturnButton
               extraFooterComponents={<QuestionsFooter />}
             >
               <h3>Please confirm your change from...</h3>

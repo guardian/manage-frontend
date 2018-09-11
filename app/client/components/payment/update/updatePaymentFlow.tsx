@@ -130,6 +130,7 @@ class PaymentUpdaterStep extends React.Component<
             <WizardStep
               routeableStepProps={this.props.routeableStepProps}
               extraFooterComponents={<QuestionsFooter />}
+              hollowReturnButton
             >
               <div
                 css={{

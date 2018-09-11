@@ -86,6 +86,7 @@ export const PaymentUpdated = (props: PaymentUpdatedProps) => (
             <QuestionsFooter key="questions" />,
             <SpreadTheWordFooter key="share" />
           ]}
+          hideReturnButton
         >
           <WithSubscriptionAsyncLoader
             fetch={props.fetch}
