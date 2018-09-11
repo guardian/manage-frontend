@@ -11,6 +11,9 @@ export interface CommonButtonProps {
   disabled?: boolean;
   colour?: string;
   textColour?: string;
+  primary?: true;
+  hollow?: true;
+  hide?: boolean;
 }
 
 export interface LinkButtonProps extends CommonButtonProps {
@@ -39,28 +42,71 @@ const applyArrowStyleIfApplicable = (
   };
 };
 
+const calcBackgroundColour = (
+  disabled?: boolean,
+  colour?: string,
+  primary?: true,
+  hollow?: true
+) => {
+  if (disabled) {
+    return palette.neutral["4"];
+  } else if (primary) {
+    return palette.yellow.medium;
+  } else if (hollow) {
+    return palette.white;
+  }
+  return colour;
+};
+
+const calcTextColour = (
+  disabled?: boolean,
+  textColour?: string,
+  primary?: true,
+  hollow?: true
+) => {
+  if (disabled) {
+    return palette.white;
+  } else if (primary || hollow) {
+    return palette.neutral["1"];
+  }
+  return textColour;
+};
+
 const defaultColour = palette.neutral["2"];
 const buttonCss = ({
   disabled,
   colour = defaultColour,
   textColour = palette.white,
   left,
-  right
-}: CommonButtonProps) => ({
-  ...styles.common,
-  background: disabled ? palette.neutral["4"] : colour,
-  color: textColour,
-  ...applyArrowStyleIfApplicable(false, left, right),
-  ":hover": disabled
-    ? undefined
-    : {
-        background: Color(colour)
-          .darken(colour === defaultColour ? 0.3 : 0.1)
-          .string(),
-        ...applyArrowStyleIfApplicable(true, left, right)
-      },
-  cursor: disabled ? "not-allowed" : "pointer"
-});
+  right,
+  primary,
+  hollow,
+  hide
+}: CommonButtonProps) => {
+  const backgroundColour = calcBackgroundColour(
+    disabled,
+    colour,
+    primary,
+    hollow
+  );
+  return {
+    ...styles.common,
+    display: hide ? "none" : "inline-flex",
+    background: backgroundColour,
+    color: calcTextColour(disabled, textColour, primary, hollow),
+    border: hollow ? "1px solid" : "none",
+    ...applyArrowStyleIfApplicable(false, left, right),
+    ":hover": disabled
+      ? undefined
+      : {
+          background: Color(backgroundColour)
+            .darken(backgroundColour === defaultColour ? 0.3 : 0.1)
+            .string(),
+          ...applyArrowStyleIfApplicable(true, left, right)
+        },
+    cursor: disabled ? "not-allowed" : "pointer"
+  };
+};
 
 export const ButtonArrow = () => (
   <svg width="30" height="30" viewBox="0 0 30 30">
@@ -75,8 +121,6 @@ const styles = {
     fontSize: "16px",
     fontFamily: sans,
     borderRadius: "1000px",
-    border: "none",
-    display: "inline-flex",
     alignItems: "center",
     whiteSpace: "nowrap",
     position: "relative"

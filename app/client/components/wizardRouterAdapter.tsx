@@ -19,12 +19,21 @@ export interface MultiRouteableProps extends RouteableStepProps {
   linkLabel: string;
 }
 
-interface RootComponentProps {
+export interface ButtonStyleModifierProps {
+  hideReturnButton?: true;
+  hollowReturnButton?: true;
+}
+
+export interface CommonProps extends ButtonStyleModifierProps {
+  backButtonLevelsUp?: true;
+  extraFooterComponents?: JSX.Element | JSX.Element[];
+}
+
+interface RootComponentProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   thisStageChildren: any;
   path: string;
-  backButtonLevelsUp?: true;
-  extraFooterComponents?: JSX.Element | JSX.Element[];
+  children: null;
 }
 
 const estimateTotal = (currentStep: number, child: any) => {
@@ -38,7 +47,7 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export const ReturnToYourAccountButton = () => (
+export const ReturnToYourAccountButton = (props: ButtonStyleModifierProps) => (
   <div css={{ marginTop: "15px" }}>
     <a
       href={
@@ -47,7 +56,12 @@ export const ReturnToYourAccountButton = () => (
         "/membership/edit"
       }
     >
-      <Button text="Return to your account" left />
+      <Button
+        text="Return to your account"
+        hide={props.hideReturnButton}
+        hollow={props.hollowReturnButton}
+        left
+      />
     </a>
   </div>
 );
@@ -68,9 +82,15 @@ const RootComponent = (props: RootComponentProps) => (
       {props.thisStageChildren}
 
       {props.backButtonLevelsUp ? (
-        <LinkButton text="Back" to=".." left />
+        <LinkButton
+          hide={props.hideReturnButton}
+          text="Back"
+          to=".."
+          hollow={props.hollowReturnButton}
+          left
+        />
       ) : (
-        <ReturnToYourAccountButton />
+        <ReturnToYourAccountButton {...props} />
       )}
     </PageContainer>
     {props.extraFooterComponents}
@@ -80,20 +100,17 @@ const RootComponent = (props: RootComponentProps) => (
 const ThisStageContent = (props: WizardStepProps) => (
   <Router>
     <RootComponent
+      {...props}
+      children={null} // override passed prop from spread
       path="/"
       thisStageChildren={props.children}
-      routeableStepProps={props.routeableStepProps}
-      backButtonLevelsUp={props.backButtonLevelsUp}
-      extraFooterComponents={props.extraFooterComponents}
     />
   </Router>
 );
 
-export interface WizardStepProps {
+export interface WizardStepProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   children: any;
-  backButtonLevelsUp?: true;
-  extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
 export const WizardStep = (props: WizardStepProps) => (

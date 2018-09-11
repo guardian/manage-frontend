@@ -12,7 +12,7 @@ export class QuestionsFooter extends React.Component<{}, QuestionsFooterState> {
   public render(): JSX.Element {
     return (
       <InPageFooter title="Questions?">
-        If you have any questions about contributing to The Guardian, please{" "}
+        If you have any questions about updating your payment details, please{" "}
         <button
           onClick={this.toggleExpanded}
           css={{

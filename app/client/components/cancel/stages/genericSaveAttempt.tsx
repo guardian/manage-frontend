@@ -182,8 +182,6 @@ const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
   >
     <Button
       text="Confirm Cancellation"
-      textColour={palette.white}
-      colour={palette.neutral["2"]}
       onClick={() => {
         if (props.onClick) {
           props.onClick();

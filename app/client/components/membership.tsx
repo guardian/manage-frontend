@@ -202,11 +202,7 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
                   "/tier/change"
                 }
               >
-                <Button
-                  text="Change tier"
-                  textColour={palette.white}
-                  colour={palette.neutral["1"]}
-                />
+                <Button text="Change tier" />
               </a>
             </div>
           }

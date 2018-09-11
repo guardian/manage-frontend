@@ -75,6 +75,7 @@ export class StripeCardInputForm extends React.Component<
                         disabled={this.props.stripe === undefined}
                         text="Review Payment Update"
                         onClick={this.startCardUpdate(nav.navigate)}
+                        primary
                         right
                       />
                       {this.renderError()}

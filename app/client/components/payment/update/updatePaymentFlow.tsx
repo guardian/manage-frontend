@@ -23,7 +23,7 @@ import { CurrentPaymentDetails } from "./currentPaymentDetails";
 enum PaymentMethod {
   card = "Card",
   payPal = "PayPal",
-  dd = "Direct Debit"
+  dd = "Direct Debit" // TODO handle https://github.com/guardian/members-data-api/blob/2424286f14ea5b4655cd6a56e93088d8402b776e/membership-attribute-service/app/models/AccountDetails.scala#L50-L55
 }
 
 interface PaymentMethodProps {
@@ -130,6 +130,7 @@ class PaymentUpdaterStep extends React.Component<
             <WizardStep
               routeableStepProps={this.props.routeableStepProps}
               extraFooterComponents={<QuestionsFooter />}
+              hollowReturnButton
             >
               <div
                 css={{

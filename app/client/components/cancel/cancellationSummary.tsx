@@ -36,12 +36,7 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
     </p>
     <div css={{ textAlign: "right" }}>
       <a href={`https://support.${window.guardian.domain}`}>
-        <Button
-          text="Support The Guardian"
-          textColour={palette.neutral["1"]}
-          colour={palette.yellow.medium}
-          right
-        />
+        <Button text="Support The Guardian" primary right />
       </a>
     </div>
   </PageContainerSection>
