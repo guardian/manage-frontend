@@ -68,7 +68,11 @@ export const MembersDataApiResponseContext: React.Context<
 > = React.createContext({});
 
 export const formatDate = (shortForm: string) => {
-  return new Date(shortForm).toDateString();
+  return new Date(shortForm).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 };
 
 const User = () => (
