@@ -73,8 +73,7 @@ class ExecuteCardUpdate extends React.Component<
     ) {
       trackEvent({
         eventCategory: "payment",
-        eventAction: "card_update",
-        eventLabel: "success"
+        eventAction: "card_update_success"
       });
       this.props.navigate("updated", { replace: true });
       return null;
@@ -86,8 +85,7 @@ class ExecuteCardUpdate extends React.Component<
   private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: "card_update",
-      eventLabel: "failed"
+      eventAction: "card_update_failed"
     });
 
     Raven.captureException("payment card update failed");
