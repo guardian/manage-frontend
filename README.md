@@ -31,4 +31,3 @@ Frontend of `manage.theguardian.com`
 4.  then go to https://manage.thegulocal.com/
 
 You will need to have [identity](https://github.com/guardian/identity) running locally and [members-data-api](https://github.com/guardian/members-data-api) too, as it will require you are logged in first, and later you will need to be able to get a user.
-Or you can comment out this line: https://github.com/guardian/manage-frontend/blob/dc51f6207dc9040a790c868d7ba21cc39353fe8f/app/server/server.ts#L21
