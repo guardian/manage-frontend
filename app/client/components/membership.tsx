@@ -173,7 +173,7 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
         {data.alertText ? (
           <div
             css={{
-              backgroundColor: palette.neutral["7"],
+              backgroundColor: palette.yellow.medium,
               border: "1px solid " + palette.neutral["4"],
               padding: "10px 15px",
               marginBottom: "30px"
