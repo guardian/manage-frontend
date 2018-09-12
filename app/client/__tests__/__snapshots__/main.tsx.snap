@@ -522,7 +522,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://jobsthegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
+                    href="https://jobs.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
                   >
                     jobs
                   </a>
@@ -543,7 +543,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://soulmatesthegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES"
+                    href="https://soulmates.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES"
                   >
                     dating
                   </a>
@@ -564,7 +564,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://supportthegulocal.com/contribute?INTCMP=footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_contribute%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofilethegulocal.com%2Fmembership%2Fedit%22%7D"
+                    href="https://support.thegulocal.com/contribute?INTCMP=footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_contribute%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofile.thegulocal.com%2Fmembership%2Fedit%22%7D"
                   >
                     make a contribution
                   </a>
@@ -585,7 +585,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://supportthegulocal.com/subscribe?INTCMP=footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_subscribe%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofilethegulocal.com%2Fmembership%2Fedit%22%7D"
+                    href="https://support.thegulocal.com/subscribe?INTCMP=footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_subscribe%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofile.thegulocal.com%2Fmembership%2Fedit%22%7D"
                   >
                     subscribe
                   </a>
@@ -606,7 +606,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/guardian-labs"
+                    href="https://www.thegulocal.com/guardian-labs"
                   >
                     guardian labs
                   </a>
@@ -659,7 +659,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/about"
+                    href="https://www.thegulocal.com/about"
                   >
                     about us
                   </a>
@@ -680,7 +680,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://workforusthegulocal.com/locations/london"
+                    href="https://workforus.thegulocal.com/locations/london"
                   >
                     work for us
                   </a>
@@ -701,7 +701,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://advertisingthegulocal.com/"
+                    href="https://advertising.thegulocal.com/"
                   >
                     advertise with us
                   </a>
@@ -722,7 +722,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/help/contact-us"
+                    href="https://www.thegulocal.com/help/contact-us"
                   >
                     contact us
                   </a>
@@ -743,7 +743,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/help"
+                    href="https://www.thegulocal.com/help"
                   >
                     help
                   </a>
@@ -796,7 +796,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/help/terms-of-service"
+                    href="https://www.thegulocal.com/help/terms-of-service"
                   >
                     terms & conditions
                   </a>
@@ -817,7 +817,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/info/privacy"
+                    href="https://www.thegulocal.com/info/privacy"
                   >
                     privacy policy
                   </a>
@@ -838,7 +838,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/info/cookies"
+                    href="https://www.thegulocal.com/info/cookies"
                   >
                     cookie policy
                   </a>
@@ -859,7 +859,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://securedropthegulocal.com/"
+                    href="https://securedrop.thegulocal.com/"
                   >
                     securedrop
                   </a>
@@ -901,7 +901,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/info/complaints-and-corrections"
+                    href="https://www.thegulocal.com/info/complaints-and-corrections"
                   >
                     complaints & corrections
                   </a>
@@ -954,7 +954,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/index/subjects/a"
+                    href="https://www.thegulocal.com/index/subjects/a"
                   >
                     all topics
                   </a>
@@ -975,7 +975,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/index/contributors"
+                    href="https://www.thegulocal.com/index/contributors"
                   >
                     all contributors
                   </a>
@@ -996,7 +996,7 @@ exports[`Main renders something 1`] = `
                         "textTransform": "lowercase",
                       }
                     }
-                    href="https://wwwthegulocal.com/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT"
+                    href="https://www.thegulocal.com/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT"
                   >
                     modern slavery act
                   </a>
