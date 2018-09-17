@@ -258,15 +258,8 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
 
 export const MembershipCancellationFlow = (props: RouteableStepProps) => (
   <div>
-    <h1
-      css={{
-        fontSize: "20px",
-        margin: "10px 20px 0"
-      }}
-    >
-      Cancel your Guardian membership
-    </h1>
     <PageContainer>
+      <h1 css={{ fontSize: "20px" }}>Cancel your Guardian membership</h1>
       <CheckFlowIsValid
         {
           ...ProductTypes.membership /*TODO use for the whole flow*/
