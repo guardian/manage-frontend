@@ -15,6 +15,7 @@ import {
   MembershipAsyncLoader,
   MembershipData
 } from "../../membership";
+import { PageContainer } from "../../page";
 import { MembersDataApiResponseContext, Subscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
@@ -209,14 +210,11 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
   props: RouteableStepProps
 ) => (
   <div>
-    <h1
-      css={{
-        fontSize: "20px",
-        margin: "10px 20px 0"
-      }}
-    >
-      Update payment for your Guardian {productType.productName}
-    </h1>
+    <PageContainer>
+      <h1 css={{ fontSize: "20px" }}>
+        Update payment for your Guardian {productType.productName}
+      </h1>
+    </PageContainer>
     <CheckFlowIsValid {...productType}>
       <MembershipAsyncLoader
         fetch={loadMembershipData /*TODO reload on 'back' to page*/}
