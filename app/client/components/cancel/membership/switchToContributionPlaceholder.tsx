@@ -26,9 +26,9 @@ export class SwitchToContributionPlaceholder extends React.Component<
             }}
           >
             Sorry this is temporarily unavailable. We're working on a fix but in
-            the meantime please contact us to set up your contribution. One of
-            our customer service specialists would be happy to arrange this for
-            you.
+            the meantime you can complete the cancellation below, then please
+            follow the yellow "Support The Guardian" button on the cancellation
+            confirmation page.
           </div>
         ) : (
           <div css={{ textAlign: "right" }}>

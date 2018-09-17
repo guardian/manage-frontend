@@ -32,7 +32,7 @@ export const membershipCancellationReasonMatrix: CancellationReason[] = [
               color: palette.neutral["1"]
             }}
           >
-            For as little as £1 you can continue to support the Guardian - and
+            For as little as £2 you can continue to support the Guardian - and
             it only takes a minute.
           </span>
         </div>
