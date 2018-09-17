@@ -123,7 +123,7 @@ exports[`Main renders something 1`] = `
   <header
     css={
       Object {
-        "backgroundColor": "#e9eff1",
+        "backgroundColor": "#f6f6f6",
         "borderBottomColor": "rgba(0, 0, 0, 0.14)",
         "borderBottomStyle": "solid",
         "borderBottomWidth": "0.8px",
@@ -351,7 +351,7 @@ exports[`Main renders something 1`] = `
     <div
       css={
         Object {
-          "backgroundColor": "#e9eff1",
+          "backgroundColor": "#f6f6f6",
           "color": "#121212",
           "height": "42px",
           "text-align": "right",
