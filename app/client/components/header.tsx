@@ -6,7 +6,7 @@ import { UserNav } from "./userNav";
 const Header = () => (
   <header
     css={{
-      backgroundColor: palette.neutral.header,
+      backgroundColor: palette.neutral["7"],
       color: palette.neutral["1"],
       borderBottomWidth: "0.8px",
       borderBottomColor: "rgba(0, 0, 0, 0.14)",

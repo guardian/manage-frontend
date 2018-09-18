@@ -40,7 +40,7 @@ const Footer = () => (
   >
     <div
       css={{
-        backgroundColor: palette.neutral.header,
+        backgroundColor: palette.neutral["7"],
         color: palette.neutral["1"],
         height: "42px",
         "text-align": "right"

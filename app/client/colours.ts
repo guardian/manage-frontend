@@ -31,7 +31,6 @@ const palette = {
     dark: "#edd600"
   },
   neutral: {
-    header: "#e9eff1",
     "1": "#121212",
     "2": "#333333",
     "3": "#767676",
