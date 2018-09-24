@@ -18,7 +18,7 @@ export const RedirectOnMeResponse = (props: RouteableProps) => (
         } else if (me.contentAccess.digitalPack) {
           navigate(qualifyLink(navLinks.digiPack), replace);
         } else {
-          navigate("https://" + window.guardian.domain, replace);
+          navigate(qualifyLink(navLinks.membership), replace);
         }
         return null; // official way to render nothing
       }}
