@@ -214,7 +214,7 @@ exports[`Main renders something 1`] = `
           <li>
             <a
               className="emotion-1"
-              href="https://profile.thegulocal.com/membership/edit"
+              href="/membership"
             >
               <span>
                 Membership

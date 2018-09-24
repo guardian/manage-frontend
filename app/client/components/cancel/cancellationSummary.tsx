@@ -1,9 +1,8 @@
 import React from "react";
 import palette from "../../colours";
-import { trackEvent } from "../analytics";
-import { Button } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";
+import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { formatDate, Subscription } from "../user";
 
 const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
@@ -36,17 +35,7 @@ const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
       consider either a contribution or a subscription.
     </p>
     <div css={{ textAlign: "right" }}>
-      <a
-        href={`https://support.${window.guardian.domain}`}
-        onClick={() => {
-          trackEvent({
-            eventCategory: "href",
-            eventAction: "support_the_guardian"
-          });
-        }}
-      >
-        <Button text="Support The Guardian" primary right />
-      </a>
+      <SupportTheGuardianButton supportReferer="cancellation_summary" />
     </div>
   </PageContainerSection>
 );

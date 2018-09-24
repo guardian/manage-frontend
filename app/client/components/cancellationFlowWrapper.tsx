@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { ProductType } from "../../shared/productTypes";
-import { GenericErrorScreen } from "./genericErrorScreen";
+import { PageContainer } from "./page";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
@@ -9,7 +9,7 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   props.validator(me) ? (
     <>{props.children}</>
   ) : (
-    <GenericErrorScreen loggingMessage="Direct navigation in cancellation flow without having the corresponding product" />
+    <PageContainer>{props.invalidComponentRenderer}</PageContainer>
   );
 
 export type MeValidator = (me: MeResponse) => boolean;

@@ -6,6 +6,7 @@ import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
 import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
+import { NoMembership } from "./cancel/membership/noMembership";
 import { MembershipLinks } from "./membershipLinks";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
@@ -215,7 +216,7 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
       </div>
     );
   }
-  return <h2>No Membership</h2>;
+  return <NoMembership />;
 };
 
 const headerCss = css({
