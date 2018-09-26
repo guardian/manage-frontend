@@ -1,21 +1,9 @@
 import React from "react";
 import { css } from "../../node_modules/emotion";
-import { conf } from "../../server/config";
 import palette from "../colours";
 import { Accordion } from "./accordion";
-import {
-  PageContainer,
-  PageContainerSection,
-  PageHeaderContainer
-} from "./page";
+import { PageContainerSection, PageHeaderContainer } from "./page";
 import { RouteableProps } from "./wizardRouterAdapter";
-
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
 
 const headerCss = css({
   marginBottom: "12px",
@@ -83,7 +71,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://membership.${domain}/choose-tier"
+              href="https://membership.theguardian.com/choose-tier"
             >
               here
             </a>.
@@ -98,7 +86,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://contribute.${domain}/?INTCMP=membership_faq"
+              href="https://contribute.theguardian.com/?INTCMP=membership_faq"
             >
               contribution
             </a>{" "}
@@ -146,7 +134,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://www.${domain}/the-scott-trust"
+              href="https://www.theguardian.com/the-scott-trust"
             >
               here
             </a>.
@@ -165,7 +153,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://${domain}/guardianapp"
+              href="https://theguardian.com/guardianapp"
             >
               theguardian.com/guardianapp
             </a>, and then you simply need to sign in with your Guardian Members
@@ -186,7 +174,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://profile.${domain}/signin"
+              href="https://profile.theguardian.com/signin"
             >
               sign in
             </a>{" "}
@@ -197,7 +185,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://${domain}/"
+              href="https://theguardian.com/"
             >
               theguardian.com
             </a>{" "}
@@ -209,7 +197,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://profile.${domain}/reset"
+              href="https://profile.theguardian.com/reset"
             >
               here
             </a>.
@@ -226,7 +214,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://contribute.${domain}/?INTCMP=membership_faq"
+              href="https://contribute.theguardian.com/?INTCMP=membership_faq"
             >
               one-off contributions
             </a>{" "}
@@ -243,7 +231,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://profile.${domain}/signin"
+              href="https://profile.theguardian.com/signin"
             >
               signing in
             </a>{" "}
@@ -254,7 +242,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://profile.${domain}/account/edit"
+              href="https://profile.theguardian.com/account/edit"
             >
               edit profile
             </a>{" "}
@@ -290,7 +278,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://contribute.${domain}/?INTCMP=membership_faq"
+              href="https://contribute.theguardian.com/?INTCMP=membership_faq"
             >
               contributions
             </a>.
@@ -360,7 +348,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://www.${domain}/info/1999/nov/22/contributors-guide-and-contacts"
+              href="https://www.theguardian.com/info/1999/nov/22/contributors-guide-and-contacts"
             >
               here
             </a>. Readers can also get involved via{" "}
@@ -370,7 +358,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://witness.${domain}/"
+              href="https://witness.theguardian.com/"
             >
               GuardianWitness
             </a>. And we regularly ask Members for their views and opinions on
@@ -405,7 +393,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="http://www.${domain}/help/privacy-policy"
+              href="http://www.theguardian.com/help/privacy-policy"
             >
               privacy policy
             </a>.
@@ -435,7 +423,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://profile.${domain}/membership/edit"
+              href="https://profile.theguardian.com/membership/edit"
             >
               Profile page
             </a>{" "}
@@ -451,7 +439,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://membership.${domain}/tier/cancel"
+              href="https://membership.theguardian.com/tier/cancel"
             >
               this page
             </a>. Your membership will run until the end of your current payment
@@ -467,7 +455,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="https://www.${domain}/info/2014/sep/09/guardian-membership-terms-and-conditions"
+              href="https://www.theguardian.com/info/2014/sep/09/guardian-membership-terms-and-conditions"
             >
               here
             </a>.
@@ -531,7 +519,7 @@ export const FAQs = (props: RouteableProps) => (
                   color: palette.blue.dark,
                   ":visited": { color: palette.blue.dark }
                 }}
-                href="https://membership.${domain}/feedback"
+                href="https://membership.theguardian.com/feedback"
               >
                 this form
               </a>.
@@ -571,7 +559,7 @@ export const FAQs = (props: RouteableProps) => (
                   color: palette.blue.dark,
                   ":visited": { color: palette.blue.dark }
                 }}
-                href="http://membership.${domain}/events"
+                href="http://membership.theguardian.com/events"
               >
                 membership.theguardian.com/events
               </a>{" "}
@@ -691,7 +679,7 @@ export const FAQs = (props: RouteableProps) => (
                 color: palette.blue.dark,
                 ":visited": { color: palette.blue.dark }
               }}
-              href="http://www.${domain}/guardian-masterclasses/faqs"
+              href="http://www.theguardian.com/guardian-masterclasses/faqs"
             >
               here
             </a>.
