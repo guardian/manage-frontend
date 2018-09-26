@@ -5,6 +5,7 @@ import { ReactStripeElements } from "react-stripe-elements";
 import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
+import { NoMembership } from "../../cancel/membership/noMembership";
 import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -203,7 +204,7 @@ const getPaymentUpdateRenderer = (routeableStepProps: RouteableStepProps) => (
   hasMembership(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    <GenericErrorScreen loggingMessage="No membership to update payment for" />
+    <NoMembership />
   );
 
 const createUpdatePaymentFlow = (productType: ProductType) => (

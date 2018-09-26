@@ -49,13 +49,7 @@ const estimateTotal = (currentStep: number, child: any) => {
 
 export const ReturnToYourAccountButton = (props: ButtonStyleModifierProps) => (
   <div css={{ marginTop: "15px" }}>
-    <a
-      href={
-        "https://profile." +
-        (typeof window !== "undefined" ? window.guardian.domain : conf.DOMAIN) +
-        "/membership/edit"
-      }
-    >
+    <a href="/membership">
       <Button
         text="Return to your account"
         hide={props.hideReturnButton}

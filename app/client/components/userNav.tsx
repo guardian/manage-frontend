@@ -112,7 +112,7 @@ export class UserNav extends React.Component {
   public userNavItems: UserNavItem[] = [
     {
       title: "Comments & replies",
-      link: `/profile/user`
+      link: `/profile/user` // note this hits a redirect/proxy endpoint
     },
     {
       title: "Public profile",
@@ -129,7 +129,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Membership",
-      link: `${profileHostName}/membership/edit`
+      link: `/membership`
     },
     {
       title: "Contributions",

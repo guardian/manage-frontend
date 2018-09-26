@@ -22,6 +22,7 @@ import {
   WizardStep
 } from "../../wizardRouterAdapter";
 import { CancellationSummary } from "../cancellationSummary";
+import { NoMembership } from "./noMembership";
 
 interface ReasonPickerProps {
   options: ReactNode[];
@@ -163,6 +164,7 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
             <h4
               css={{
                 textAlign: "center",
+                marginTop: "0",
                 marginBottom: "10px"
               }}
             >
@@ -250,7 +252,7 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
 
   return (
     <>
-      <h2>No Membership</h2>
+      <NoMembership />
       <ReturnToYourAccountButton />
     </>
   );
