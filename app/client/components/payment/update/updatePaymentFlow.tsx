@@ -152,7 +152,7 @@ class PaymentUpdaterStep extends React.Component<
                 ) : (
                   undefined
                 )}
-                <div css={{ minWidth: "275px" }}>
+                <div css={{ minWidth: "260px" }}>
                   <h3>Current Payment Details</h3>
                   <CurrentPaymentDetails {...this.props.data.subscription} />
                 </div>
