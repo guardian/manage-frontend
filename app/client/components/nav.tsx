@@ -17,7 +17,6 @@ const navCss = css({
   background: "#fafafa",
   tableLayout: "fixed",
   gridTemplateColumns: "repeat(auto-fit, minmax(40%, 1fr))",
-  gridColumnGap: "0.125rem",
   display: "grid",
 
   [minWidth.desktop]: {
@@ -53,7 +52,9 @@ const navItemCss = (local: boolean | undefined) =>
     }`,
     borderTop: `0.1875rem solid ${palette.neutral["6"]}`,
     display: "table-cell",
-    width: "100%"
+    width: "100%",
+    minWidth: "155px", // gross hack to make IE11 work
+    borderRight: "0.125rem solid " + palette.white
   });
 
 export interface NavItem {
