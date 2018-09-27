@@ -1,7 +1,7 @@
 import { css } from "emotion";
 import React from "react";
 import palette from "../colours";
-import { minWidth } from "../styles/breakpoints";
+import { maxWidth, minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import AsyncLoader from "./asyncLoader";
 import { Button, LinkButton } from "./buttons";
@@ -48,18 +48,18 @@ interface MembershipRowProps {
 const membershipRowStyles = css({
   textAlign: "left",
   marginBottom: "25px",
-  verticalAlign: "top",
+  alignItems: "center",
 
   [minWidth.phablet]: {
     display: "flex"
   }
 });
 
-export const spaceBetweenCSS = {
+export const wrappingContainerCSS = {
   [minWidth.mobileLandscape]: {
     display: "flex",
-    alignItems: "top",
-    justifyContent: "space-between"
+    alignItems: "center",
+    flexWrap: "wrap"
   }
 };
 
@@ -68,28 +68,23 @@ const MembershipRow = (props: MembershipRowProps) => {
     <div className={membershipRowStyles}>
       <div
         css={{
-          flexBasis: "320px"
+          flexBasis: "320px",
+          [minWidth.phablet]: {
+            flexShrink: "0"
+          }
         }}
       >
         <p
           css={{
             fontSize: "18px",
-            margin: "0 0 5px 0",
+            margin: "5px 0",
             fontWeight: "bold"
           }}
         >
           {props.label}
         </p>
       </div>
-      <div
-        css={{
-          [minWidth.phablet]: {
-            width: "460px"
-          }
-        }}
-      >
-        {props.data}
-      </div>
+      <div>{props.data}</div>
     </div>
   );
 };
@@ -100,15 +95,14 @@ const getPaymentMethodRow = (subscription: Subscription) => {
       <MembershipRow
         label={"Card details"}
         data={
-          <div css={spaceBetweenCSS}>
+          <div css={wrappingContainerCSS}>
             <div css={{ marginRight: "15px", minWidth: "190px" }}>
               <CardDisplay margin="0" {...subscription.card} />
             </div>
             <div
               css={{
-                marginTop: "10px",
-                [minWidth.mobileLandscape]: {
-                  marginTop: "0"
+                [maxWidth.desktop]: {
+                  margin: "10px 0"
                 }
               }}
             >
@@ -174,49 +168,81 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
         {data.alertText ? (
           <div
             css={{
-              backgroundColor: palette.yellow.medium,
-              border: "1px solid " + palette.neutral["4"],
-              padding: "10px 15px",
+              backgroundColor: palette.blue.dark,
+              color: palette.white,
+              padding: "10px 15px 15px",
+              marginTop: "30px",
               marginBottom: "30px"
             }}
           >
-            <h2 css={{ fontWeight: "bold", margin: "0" }}>Action required</h2>
-            {data.alertText}
+            <PageContainer noVerticalMargin>
+              <h2 css={{ fontWeight: "bold", margin: "0" }}>Action required</h2>
+              <p
+                id="mma-alert-text"
+                css={{
+                  br: {
+                    display: "none",
+                    [minWidth.tablet]: {
+                      display: "inline"
+                    }
+                  }
+                }}
+              >
+                {data.alertText.replace(
+                  "Please check that the card details shown are up to date.",
+                  ""
+                )}
+                <br />
+                Please check that the card details shown are up to date.
+              </p>
+              <LinkButton
+                text="Update Payment Details"
+                to="/payment/membership"
+                primary
+                right
+              />
+            </PageContainer>
           </div>
         ) : (
           undefined
         )}
-        {data.regNumber ? (
-          <MembershipRow label={"Membership number"} data={data.regNumber} />
-        ) : (
-          undefined
-        )}
-        <MembershipRow
-          label={"Membership tier"}
-          data={
-            <div css={spaceBetweenCSS}>
-              <span css={{ marginRight: "15px" }}>{data.tier}</span>
-              <a
-                href={
-                  "https://membership." +
-                  window.guardian.domain +
-                  "/tier/change"
-                }
-              >
-                <Button text="Change tier" />
-              </a>
-            </div>
-          }
-        />
-        <MembershipRow
-          label={"Start date"}
-          data={formatDate(data.subscription.start || data.joinDate)}
-        />
-        {getPaymentPart(data)}
+        <PageContainer>
+          {data.regNumber ? (
+            <MembershipRow label={"Membership number"} data={data.regNumber} />
+          ) : (
+            undefined
+          )}
+          <MembershipRow
+            label={"Membership tier"}
+            data={
+              <div css={wrappingContainerCSS}>
+                <div css={{ marginRight: "15px" }}>{data.tier}</div>
+                <a
+                  href={
+                    "https://membership." +
+                    window.guardian.domain +
+                    "/tier/change"
+                  }
+                >
+                  <Button text="Change tier" />
+                </a>
+              </div>
+            }
+          />
+          <MembershipRow
+            label={"Start date"}
+            data={formatDate(data.subscription.start || data.joinDate)}
+          />
+          {getPaymentPart(data)}
+        </PageContainer>
       </div>
     );
   }
-  return <NoMembership />;
+  return (
+    <PageContainer>
+      <NoMembership />
+    </PageContainer>
+  );
 };
 
 const headerCss = css({
@@ -231,12 +257,12 @@ export const Membership = (props: RouteableProps) => (
     <PageHeaderContainer>
       <h1 className={headerCss}>Membership</h1>
     </PageHeaderContainer>
+    <MembershipAsyncLoader
+      fetch={loadMembershipData}
+      render={renderMembershipData}
+      loadingMessage="Loading your membership details..."
+    />
     <PageContainer>
-      <MembershipAsyncLoader
-        fetch={loadMembershipData}
-        render={renderMembershipData}
-        loadingMessage="Loading your membership details..."
-      />
       <MembershipLinks />
     </PageContainer>
   </>

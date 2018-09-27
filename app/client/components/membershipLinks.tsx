@@ -51,7 +51,7 @@ export const MembershipLinks = () => (
     <ul
       css={{
         fontSize: "0.875rem",
-        marginTop: "2rem",
+        marginTop: "3rem",
         marginLeft: "1.5625rem",
         padding: 0,
 

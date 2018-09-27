@@ -1,8 +1,7 @@
 import React from "react";
-import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { Button } from "../buttons";
-import { spaceBetweenCSS } from "../membership";
+import { wrappingContainerCSS } from "../membership";
 
 export interface PayPalProps {
   payPalEmail: string;
@@ -21,7 +20,7 @@ export class PayPalDisplay extends React.Component<
   public render(): React.ReactNode {
     return (
       <div>
-        <div css={spaceBetweenCSS}>
+        <div css={wrappingContainerCSS}>
           <span css={{ marginRight: "15px", display: "inline-block" }}>
             You are paying with PayPal. Please login to PayPal to change your
             payment details.
