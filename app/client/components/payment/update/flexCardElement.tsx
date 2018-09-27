@@ -5,9 +5,7 @@ import {
   CardNumberElement
 } from "react-stripe-elements";
 import { sans } from "../../../styles/fonts";
-import { Spinner } from "../../spinner";
 import { FieldWrapper } from "./fieldWrapper";
-import { stripeLogo } from "./stripe-logo";
 
 export interface FlexCardElementProps {
   disabled?: boolean;
@@ -56,9 +54,6 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
           />
         </FieldWrapper>
       </div>
-      <a href="https://stripe.com/" target="_blank">
-        {stripeLogo()}
-      </a>
     </div>
   </>
 );
