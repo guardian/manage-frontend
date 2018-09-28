@@ -156,6 +156,13 @@ server.get(
   withIdentity
 );
 
+server.use(
+  "/banner/:product",
+  (req: express.Request, res: express.Response) => {
+    res.redirect("/payment/" + req.params["product"] + "?INTCMP=BANNER");
+  }
+);
+
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use((req: express.Request, res: express.Response) => {
   /**
