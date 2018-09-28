@@ -156,10 +156,11 @@ server.get(
   withIdentity
 );
 
+const productParamName = "product";
 server.use(
-  "/banner/:product",
+  "/banner/:" + productParamName,
   (req: express.Request, res: express.Response) => {
-    res.redirect("/payment/" + req.params["product"] + "?INTCMP=BANNER");
+    res.redirect("/payment/" + req.params[productParamName] + "?INTCMP=BANNER");
   }
 );
 
