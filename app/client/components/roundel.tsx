@@ -13,7 +13,8 @@ const Roundel: React.SFC<{ size: number }> = ({ size }) => (
       xmlns="http://www.w3.org/2000/svg"
       className={
         css({
-          width: `${size}px`
+          width: `${size}px`,
+          height: `${size}px`
         }) /* emotion css property not recognised properly on <svg> tag */
       }
     >

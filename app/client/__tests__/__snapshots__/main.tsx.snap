@@ -106,6 +106,7 @@ exports[`Main renders something 1`] = `
 
 .emotion-12 {
   width: 56px;
+  height: 56px;
 }
 
 <div
@@ -325,7 +326,8 @@ exports[`Main renders something 1`] = `
   <div
     css={
       Object {
-        "flex": "1",
+        "flexGrow": "1",
+        "flexShrink": "0",
       }
     }
   >
