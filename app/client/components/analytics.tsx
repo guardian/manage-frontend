@@ -67,13 +67,11 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
     return (
       <Location>
         {({ location }) => {
-          if (
-            location &&
-            location.pathname &&
-            typeof window !== "undefined" &&
-            window.ga
-          ) {
-            window.ga("send", "pageview", location.pathname);
+          if (location && typeof window !== "undefined" && window.ga) {
+            window.ga("send", "pageview", {
+              location: location.href,
+              page: location.pathname + location.search
+            });
             applyAnyOptimiseExperiments();
           }
           return null; // null is a valid React node type, but void is not.
