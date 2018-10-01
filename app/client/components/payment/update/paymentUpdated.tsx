@@ -14,6 +14,7 @@ import {
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
+import { labelPaymentStepProps } from "./updatePaymentFlow";
 
 export const handleNoToken = (props: RouteableStepProps) => {
   if (props.navigate) {
@@ -90,7 +91,7 @@ export const PaymentUpdated = (props: PaymentUpdatedProps) => (
     {tokenResponse =>
       tokenResponse.token && tokenResponse.token.card ? (
         <WizardStep
-          routeableStepProps={props}
+          routeableStepProps={labelPaymentStepProps(props)}
           extraFooterComponents={[
             <QuestionsFooter key="questions" />,
             <SpreadTheWordFooter key="share" />
