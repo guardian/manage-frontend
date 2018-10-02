@@ -17,6 +17,7 @@ import {
   MembershipData
 } from "../../membership";
 import { PageContainer } from "../../page";
+import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import { MembersDataApiResponseContext, Subscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
@@ -25,7 +26,9 @@ import { CurrentPaymentDetails } from "./currentPaymentDetails";
 enum PaymentMethod {
   card = "Card",
   payPal = "PayPal",
-  dd = "Direct Debit" // TODO handle https://github.com/guardian/members-data-api/blob/2424286f14ea5b4655cd6a56e93088d8402b776e/membership-attribute-service/app/models/AccountDetails.scala#L50-L55
+  dd = "Direct Debit",
+  free = "FREE",
+  unknown = "Unknown"
 }
 
 interface PaymentMethodProps {
@@ -94,12 +97,22 @@ const PaymentMethodBar = (props: PaymentMethodProps) => (
 const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
   subscription: Subscription
 ) => {
-  if (subscription.card) {
+  if (subscription.paymentMethod === "Card" && subscription.card) {
     return PaymentMethod.card;
-  } else if (subscription.payPalEmail) {
+  } else if (
+    subscription.paymentMethod === "PayPal" &&
+    subscription.payPalEmail
+  ) {
     return PaymentMethod.payPal;
+  } else if (
+    subscription.paymentMethod === "DirectDebit" &&
+    subscription.account
+  ) {
+    return PaymentMethod.dd;
+  } else if (subscription.paymentMethod === undefined) {
+    return PaymentMethod.free;
   }
-  return PaymentMethod.dd;
+  return PaymentMethod.unknown;
 };
 
 interface PaymentUpdaterStepProps {
@@ -120,11 +133,12 @@ class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepProps,
   PaymentUpdaterStepState
 > {
+  public readonly currentPaymentMethod = subscriptionToPaymentMethod(
+    this.props.data.subscription
+  );
   public state = {
     stripeTokenResponse: {},
-    selectedPaymentMethod: subscriptionToPaymentMethod(
-      this.props.data.subscription
-    )
+    selectedPaymentMethod: this.currentPaymentMethod
   };
 
   public render(): React.ReactNode {
@@ -197,9 +211,29 @@ class PaymentUpdaterStep extends React.Component<
         ) : (
           <GenericErrorScreen loggingMessage="No existing card information to update from" />
         );
+      case PaymentMethod.free:
+        return (
+          <div>
+            <p>
+              If you are interested in supporting our journalism in other ways,
+              please consider either a contribution or a subscription.
+            </p>
+            <SupportTheGuardianButton supportReferer="payment_flow" />
+          </div>
+        );
+      case PaymentMethod.payPal:
+        return (
+          <p>
+            Updating your PayPal payment details is not possible here. Please
+            login to PayPal to change your payment details.
+          </p>
+        );
       default:
         return (
-          <span>TODO: {this.state.selectedPaymentMethod} details input</span>
+          <span>
+            Updating {this.state.selectedPaymentMethod} is not currently
+            possible online.
+          </span>
         );
     }
   };
