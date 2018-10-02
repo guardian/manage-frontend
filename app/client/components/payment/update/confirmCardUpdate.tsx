@@ -15,6 +15,7 @@ import {
 } from "./cardUpdateAsyncLoader";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { handleNoToken } from "./paymentUpdated";
+import { labelPaymentStepProps } from "./updatePaymentFlow";
 
 interface ExecuteCardUpdateProps extends RouteableStepProps {
   stripePublicKeyForUpdate: string;
@@ -115,7 +116,7 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
           hasMembership(mdaResponse) &&
           mdaResponse.subscription.card ? (
             <WizardStep
-              routeableStepProps={props}
+              routeableStepProps={labelPaymentStepProps(props)}
               backButtonLevelsUp
               hollowReturnButton
               extraFooterComponents={<QuestionsFooter />}

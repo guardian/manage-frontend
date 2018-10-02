@@ -41,6 +41,13 @@ export const NavigateFnContext: React.Context<{
   navigate?: NavigateFn;
 }> = React.createContext({});
 
+export const labelPaymentStepProps = (
+  routeableStepProps: RouteableStepProps
+) => ({
+  stepLabels: ["Change details", "Summary", "Confirmation"],
+  ...routeableStepProps
+});
+
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
   <label
     css={{
@@ -219,7 +226,7 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
     <CheckFlowIsValid {...productType}>
       <MembershipAsyncLoader
         fetch={loadMembershipData /*TODO reload on 'back' to page*/}
-        render={getPaymentUpdateRenderer(props)}
+        render={getPaymentUpdateRenderer(labelPaymentStepProps(props))}
         loadingMessage={`Retrieving current payment details for your ${
           productType.productName
         }...`}

@@ -1,8 +1,8 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
-import { conf } from "../../server/config";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
+import { ProgressBreadcrumb } from "./progressBreadcrumb";
 import { ProgressCounter } from "./progressCounter";
 
 export interface RouteableProps extends RouteComponentProps {
@@ -11,6 +11,7 @@ export interface RouteableProps extends RouteComponentProps {
 
 export interface RouteableStepProps extends RouteableProps {
   currentStep: number;
+  stepLabels?: string[];
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
@@ -63,15 +64,22 @@ export const ReturnToYourAccountButton = (props: ButtonStyleModifierProps) => (
 const RootComponent = (props: RootComponentProps) => (
   <>
     <PageContainer>
-      <PageContainerSection>
-        <ProgressCounter
+      {props.routeableStepProps.stepLabels ? (
+        <ProgressBreadcrumb
           current={props.routeableStepProps.currentStep}
-          total={estimateTotal(
-            props.routeableStepProps.currentStep,
-            props.routeableStepProps.children
-          )}
+          labels={props.routeableStepProps.stepLabels}
         />
-      </PageContainerSection>
+      ) : (
+        <PageContainerSection>
+          <ProgressCounter
+            current={props.routeableStepProps.currentStep}
+            total={estimateTotal(
+              props.routeableStepProps.currentStep,
+              props.routeableStepProps.children
+            )}
+          />
+        </PageContainerSection>
+      )}
 
       {props.thisStageChildren}
 
