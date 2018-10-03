@@ -1,85 +1,27 @@
 import { Router, ServerLocation } from "@reach/router";
-import React, { ReactNode } from "react";
+import React from "react";
+import { ProductTypes } from "../../shared/productTypes";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
+import {
+  CancellationReason,
+  membershipCancellationReasonMatrix
+} from "./cancel/cancellationReasons";
 import { ContributionsCancellationFlow } from "./cancel/contributions/contributionsCancellationFlow";
-import { membershipCancellationReasonMatrix } from "./cancel/membership/cancellationReasons";
 import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import { FAQs } from "./faqs";
 import { Main } from "./main";
-import {
-  loadMembershipData,
-  MembersDataApiResponse,
-  Membership
-} from "./membership";
+import { MembershipFAQs } from "./membershipFAQs";
 import { navLinks } from "./nav";
 import { NotFound } from "./notFound";
-import { CardProps } from "./payment/cardDisplay";
 import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { MembershipPaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { Contributions, Membership } from "./productPage";
 import { RedirectOnMeResponse } from "./redirectOnMeResponse";
-
-export interface Card extends CardProps {
-  stripePublicKeyForUpdate: string;
-  email?: string;
-}
-
-export interface DirectDebitDetails {
-  accountName: string;
-}
-
-export interface Subscription {
-  subscriberId: string;
-  start: string;
-  end: string;
-  cancelledAt: boolean;
-  nextPaymentDate: string;
-  nextPaymentPrice: number;
-  paymentMethod?: string;
-  card?: Card;
-  payPalEmail?: string;
-  account?: DirectDebitDetails;
-  plan: {
-    amount: number;
-    currency: string;
-    interval: string;
-  };
-}
-
-export interface WithSubscription {
-  subscription: Subscription;
-}
-
-export interface CancellationReason {
-  reasonId: string;
-  linkLabel: string;
-  saveTitle: string;
-  saveBody: string | JSX.Element;
-  experimentSaveBody?: JSX.Element;
-  experimentTriggerFlag?: string;
-  alternateCallUsPrefix?: string;
-  alternateFeedbackIntro?: string;
-  alternateFeedbackThankYouTitle?: string;
-  alternateFeedbackThankYouBody?: string;
-  skipFeedback?: boolean;
-}
-
-export const MembersDataApiResponseContext: React.Context<
-  MembersDataApiResponse
-> = React.createContext({});
-
-export const formatDate = (shortForm: string) => {
-  return new Date(shortForm).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-};
 
 const User = () => (
   <Main>
@@ -105,7 +47,9 @@ const User = () => (
                 path="confirmed"
                 cancelApiUrlSuffix="membership"
                 cancelType="membership"
-                withSubscriptionResponseFetcher={loadMembershipData}
+                withSubscriptionResponseFetcher={
+                  ProductTypes.membership.fetchProductDetail
+                }
                 currentStep={3}
               />
             </GenericSaveAttempt>
@@ -115,19 +59,20 @@ const User = () => (
       <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
         <ConfirmCardUpdate path="confirm" currentStep={2}>
           <PaymentUpdated
-            fetch={loadMembershipData}
+            fetch={ProductTypes.membership.fetchProductDetail}
             path="updated"
             currentStep={3}
           />
         </ConfirmCardUpdate>
       </MembershipPaymentUpdateFlow>
 
+      <Contributions path={navLinks.contributions.link} />
       <ContributionsCancellationFlow
         path="/cancel/contributions"
         currentStep={1}
       />
 
-      <FAQs path="/help" />
+      <MembershipFAQs path="/help" />
 
       <NotFound default={true} />
     </Router>

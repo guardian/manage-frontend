@@ -1,4 +1,4 @@
-import AsyncLoader from "./asyncLoader";
+import AsyncLoader from "../asyncLoader";
 
 export interface CaseUpdateResponse {
   message: string;

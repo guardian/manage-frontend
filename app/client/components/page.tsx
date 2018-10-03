@@ -1,7 +1,7 @@
 import React from "react";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
-import { Nav } from "./nav";
+import { Nav, NavProps } from "./nav";
 
 // Standard width, centered container
 export const PageContainer: React.SFC<{ noVerticalMargin?: true }> = ({
@@ -41,7 +41,13 @@ export const PageContainerSection: React.SFC<{}> = ({ children }) => (
   </div>
 );
 
-export const PageHeaderContainer: React.SFC<{}> = ({ children }) => (
+export interface PageHeaderContainerProps extends NavProps {
+  children: React.ReactNode;
+}
+
+export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
+  props: PageHeaderContainerProps
+) => (
   <div
     css={{
       borderBottom: `1px solid ${palette.neutral["5"]}`,
@@ -63,8 +69,8 @@ export const PageHeaderContainer: React.SFC<{}> = ({ children }) => (
         }
       }}
     >
-      {children}
-      <Nav />
+      {props.children}
+      <Nav {...props} />
     </div>
   </div>
 );

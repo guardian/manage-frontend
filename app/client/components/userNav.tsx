@@ -133,7 +133,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Contributions",
-      link: `${profileHostName}/contribution/recurring/edit`
+      link: `/contributions`
     },
     {
       title: "Digital Pack",

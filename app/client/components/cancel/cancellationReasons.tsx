@@ -1,8 +1,7 @@
 import React from "react";
-import { conf } from "../../../../server/config";
-import palette from "../../../colours";
-import { CancellationReason } from "../../user";
-import { SwitchToContributionPlaceholder } from "./switchToContributionPlaceholder";
+import { conf } from "../../../server/config";
+import palette from "../../colours";
+import { SwitchToContributionPlaceholder } from "./membership/switchToContributionPlaceholder";
 
 // Webpack doesn't like browser globals
 let domain: string;
@@ -10,6 +9,20 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = window.guardian.domain;
 } else {
   domain = conf.DOMAIN;
+}
+
+export interface CancellationReason {
+  reasonId: string;
+  linkLabel: string;
+  saveTitle: string;
+  saveBody: string | JSX.Element;
+  experimentSaveBody?: JSX.Element;
+  experimentTriggerFlag?: string;
+  alternateCallUsPrefix?: string;
+  alternateFeedbackIntro?: string;
+  alternateFeedbackThankYouTitle?: string;
+  alternateFeedbackThankYouBody?: string;
+  skipFeedback?: boolean;
 }
 
 export const membershipCancellationReasonMatrix: CancellationReason[] = [

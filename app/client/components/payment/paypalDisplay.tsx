@@ -1,7 +1,7 @@
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { Button } from "../buttons";
-import { wrappingContainerCSS } from "../membership";
+import { wrappingContainerCSS } from "../productPage";
 
 export interface PayPalProps {
   payPalEmail: string;

@@ -119,6 +119,11 @@ server.get(
   membersDataApiHandler("user-attributes/me/mma-membership"),
   withIdentity
 );
+server.get(
+  "/api/me/contributions",
+  membersDataApiHandler("user-attributes/me/mma-monthlycontribution"),
+  withIdentity
+);
 
 server.post(
   "/api/cancel/membership",

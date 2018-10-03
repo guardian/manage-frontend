@@ -1,53 +1,34 @@
 import { css } from "emotion";
 import Raven from "raven-js";
 import React from "react";
+import {
+  formatDate,
+  hasProduct,
+  MembersDataApiResponse,
+  MembersDatApiAsyncLoader,
+  ProductDetail,
+  Subscription
+} from "../../shared/meProductResponse";
+import { ProductType, ProductTypes } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
-import AsyncLoader from "./asyncLoader";
 import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
-import { NoMembership } from "./cancel/membership/noMembership";
 import { MembershipLinks } from "./membershipLinks";
+import { navLinks } from "./nav";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
-import { formatDate, Subscription, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
 
-export interface MembershipData extends WithSubscription {
-  regNumber?: string;
-  tier: string;
-  isPaidTier: boolean;
-  joinDate: string;
-  alertText?: string;
-}
-
-export type MembersDataApiResponse = MembershipData | {};
-
-export function hasMembership(
-  data: MembersDataApiResponse
-): data is MembershipData {
-  return data.hasOwnProperty("tier");
-}
-
-export class MembershipAsyncLoader extends AsyncLoader<
-  MembersDataApiResponse
-> {}
-
-export const loadMembershipData: () => Promise<Response> = async () =>
-  await fetch("/api/me/membership", {
-    credentials: "include",
-    mode: "same-origin"
-  });
-
-interface MembershipRowProps {
+interface ProductRowProps {
   label: string;
   data: string | React.ReactNode;
 }
 
-const membershipRowStyles = css({
+const productRowStyles = css({
   textAlign: "left",
   marginBottom: "25px",
   alignItems: "center",
@@ -65,9 +46,9 @@ export const wrappingContainerCSS = {
   }
 };
 
-const MembershipRow = (props: MembershipRowProps) => {
+const ProductDetailRow = (props: ProductRowProps) => {
   return (
-    <div className={membershipRowStyles}>
+    <div className={productRowStyles}>
       <div
         css={{
           flexBasis: "320px",
@@ -91,10 +72,13 @@ const MembershipRow = (props: MembershipRowProps) => {
   );
 };
 
-const getPaymentMethodRow = (subscription: Subscription) => {
+const getPaymentMethodRow = (
+  subscription: Subscription,
+  updatePaymentPath: string
+) => {
   if (subscription.card) {
     return (
-      <MembershipRow
+      <ProductDetailRow
         label="Card details"
         data={
           <div css={wrappingContainerCSS}>
@@ -110,7 +94,7 @@ const getPaymentMethodRow = (subscription: Subscription) => {
             >
               <LinkButton
                 text="Update Payment Details"
-                to="/payment/membership"
+                to={updatePaymentPath}
               />
             </div>
           </div>
@@ -119,14 +103,14 @@ const getPaymentMethodRow = (subscription: Subscription) => {
     );
   } else if (subscription.payPalEmail) {
     return (
-      <MembershipRow
+      <ProductDetailRow
         label="Payment method"
         data={<PayPalDisplay payPalEmail={subscription.payPalEmail} />}
       />
     );
   } else if (subscription.account) {
     return (
-      <MembershipRow
+      <ProductDetailRow
         label="Payment method"
         data={<DirectDebitDisplay {...subscription.account} />}
       />
@@ -137,15 +121,15 @@ const getPaymentMethodRow = (subscription: Subscription) => {
   return undefined;
 };
 
-const getPaymentPart = (data: MembershipData) => {
+const getPaymentPart = (data: ProductDetail, updatePaymentPath: string) => {
   if (data.isPaidTier) {
     return (
       <>
-        <MembershipRow
+        <ProductDetailRow
           label={"Next payment date"}
           data={formatDate(data.subscription.nextPaymentDate)}
         />
-        <MembershipRow
+        <ProductDetailRow
           label={
             data.subscription.plan.interval.charAt(0).toUpperCase() +
             data.subscription.plan.interval.substr(1) +
@@ -156,22 +140,21 @@ const getPaymentPart = (data: MembershipData) => {
             (data.subscription.nextPaymentPrice / 100.0).toFixed(2)
           }
         />
-        {getPaymentMethodRow(data.subscription)}
+        {getPaymentMethodRow(data.subscription, updatePaymentPath)}
       </>
     );
   } else {
-    return <MembershipRow label={"Annual payment"} data={"FREE"} />;
+    return <ProductDetailRow label={"Annual payment"} data={"FREE"} />;
   }
 };
 
-const membershipCancelled = (cancelType: string, subscription: Subscription) =>
-  CancellationSummary(cancelType)(subscription);
-
-const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
-  if (hasMembership(apiResponse)) {
-    const data: MembershipData = apiResponse;
+const getProductRenderer = (productType: ProductType) => (
+  apiResponse: MembersDataApiResponse
+) => {
+  if (hasProduct(apiResponse)) {
+    const data: ProductDetail = apiResponse;
     if (data.subscription.cancelledAt) {
-      return membershipCancelled("membership", data.subscription);
+      return CancellationSummary(productType.friendlyName)(data.subscription);
     }
     return (
       <div>
@@ -207,7 +190,7 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
               </p>
               <LinkButton
                 text="Update Payment Details"
-                to="/payment/membership"
+                to={"/payment/" + productType.urlPart}
                 primary
                 right
               />
@@ -218,41 +201,44 @@ const renderMembershipData = (apiResponse: MembersDataApiResponse) => {
         )}
         <PageContainer>
           {data.regNumber ? (
-            <MembershipRow label={"Membership number"} data={data.regNumber} />
+            <ProductDetailRow
+              label={"Registration number"}
+              data={data.regNumber}
+            />
           ) : (
             undefined
           )}
-          <MembershipRow
-            label={"Membership tier"}
-            data={
-              <div css={wrappingContainerCSS}>
-                <div css={{ marginRight: "15px" }}>{data.tier}</div>
-                <a
-                  href={
-                    "https://membership." +
-                    window.guardian.domain +
-                    "/tier/change"
-                  }
-                >
-                  <Button text="Change tier" />
-                </a>
-              </div>
-            }
-          />
-          <MembershipRow
+          {productType.tierRowLabel ? (
+            <ProductDetailRow
+              label={productType.tierRowLabel}
+              data={
+                <div css={wrappingContainerCSS}>
+                  <div css={{ marginRight: "15px" }}>{data.tier}</div>
+                  <a
+                    href={
+                      "https://membership." +
+                      window.guardian.domain +
+                      "/tier/change"
+                    }
+                  >
+                    <Button text="Change tier" />
+                  </a>
+                </div>
+              }
+            />
+          ) : (
+            undefined
+          )}
+          <ProductDetailRow
             label={"Start date"}
             data={formatDate(data.subscription.start || data.joinDate)}
           />
-          {getPaymentPart(data)}
+          {getPaymentPart(data, "/payment/" + productType.urlPart)}
         </PageContainer>
       </div>
     );
   }
-  return (
-    <PageContainer>
-      <NoMembership />
-    </PageContainer>
-  );
+  return <PageContainer>{productType.invalidComponentRenderer}</PageContainer>;
 };
 
 const headerCss = css({
@@ -264,16 +250,32 @@ const headerCss = css({
 
 export const Membership = (props: RouteableProps) => (
   <>
-    <PageHeaderContainer>
+    <PageHeaderContainer selectedNavItem={navLinks.membership}>
       <h1 className={headerCss}>Membership</h1>
     </PageHeaderContainer>
-    <MembershipAsyncLoader
-      fetch={loadMembershipData}
-      render={renderMembershipData}
+    <MembersDatApiAsyncLoader
+      fetch={ProductTypes.membership.fetchProductDetail}
+      render={getProductRenderer(ProductTypes.membership)}
       loadingMessage="Loading your membership details..."
     />
     <PageContainer>
       <MembershipLinks />
+    </PageContainer>
+  </>
+);
+
+export const Contributions = (props: RouteableProps) => (
+  <>
+    <PageHeaderContainer selectedNavItem={navLinks.contributions}>
+      <h1 className={headerCss}>Contributions</h1>
+    </PageHeaderContainer>
+    <MembersDatApiAsyncLoader
+      fetch={ProductTypes.contributions.fetchProductDetail}
+      render={getProductRenderer(ProductTypes.contributions)}
+      loadingMessage="Loading details of your contributions..."
+    />
+    <PageContainer>
+      <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
     </PageContainer>
   </>
 );

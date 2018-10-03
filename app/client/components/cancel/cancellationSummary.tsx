@@ -1,9 +1,10 @@
 import React from "react";
+import { formatDate } from "../../../shared/meProductResponse";
+import { Subscription } from "../../../shared/meProductResponse";
 import palette from "../../colours";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
-import { formatDate, Subscription } from "../user";
 
 const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
   <PageContainerSection>

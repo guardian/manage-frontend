@@ -1,5 +1,5 @@
 import React from "react";
-import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
+import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 
 export const NoMembership = () => (
   <div>

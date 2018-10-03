@@ -1,5 +1,5 @@
 import React from "react";
-import { Subscription } from "../../user";
+import { Subscription } from "../../../../shared/meProductResponse";
 import { CardDisplay } from "../cardDisplay";
 import { DirectDebitDisplay } from "../directDebitDisplay";
 import { PayPalDisplay } from "../paypalDisplay";

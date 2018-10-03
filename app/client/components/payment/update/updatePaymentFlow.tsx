@@ -2,23 +2,25 @@ import { NavigateFn } from "@reach/router";
 import { get as getCookie } from "es-cookie";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
+import {
+  MembersDataApiResponseContext,
+  MembersDatApiAsyncLoader
+} from "../../../../shared/meProductResponse";
+import {
+  hasProduct,
+  MembersDataApiResponse,
+  ProductDetail,
+  Subscription
+} from "../../../../shared/meProductResponse";
 import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { NoMembership } from "../../cancel/membership/noMembership";
-import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
+import { CheckFlowIsValid } from "../../cancel/cancellationFlowWrapper";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import {
-  hasMembership,
-  loadMembershipData,
-  MembersDataApiResponse,
-  MembershipAsyncLoader,
-  MembershipData
-} from "../../membership";
+import { NoMembership } from "../../noMembership";
 import { PageContainer } from "../../page";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
-import { MembersDataApiResponseContext, Subscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
@@ -116,7 +118,7 @@ const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
 };
 
 interface PaymentUpdaterStepProps {
-  data: MembershipData;
+  data: ProductDetail;
   routeableStepProps: RouteableStepProps;
 }
 
@@ -242,7 +244,7 @@ class PaymentUpdaterStep extends React.Component<
 const getPaymentUpdateRenderer = (routeableStepProps: RouteableStepProps) => (
   data: MembersDataApiResponse
 ) =>
-  hasMembership(data) ? (
+  hasProduct(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
     <NoMembership />
@@ -254,15 +256,15 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
   <div>
     <PageContainer>
       <h1 css={{ fontSize: "20px" }}>
-        Update payment for your Guardian {productType.productName}
+        Update payment for your Guardian {productType.friendlyName}
       </h1>
     </PageContainer>
     <CheckFlowIsValid {...productType}>
-      <MembershipAsyncLoader
-        fetch={loadMembershipData /*TODO reload on 'back' to page*/}
+      <MembersDatApiAsyncLoader
+        fetch={productType.fetchProductDetail /*TODO reload on 'back' to page*/}
         render={getPaymentUpdateRenderer(labelPaymentStepProps(props))}
         loadingMessage={`Retrieving current payment details for your ${
-          productType.productName
+          productType.friendlyName
         }...`}
       />
     </CheckFlowIsValid>

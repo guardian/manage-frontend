@@ -1,16 +1,15 @@
 import React from "react";
+import {
+  Subscription,
+  WithSubscription
+} from "../../../../shared/meProductResponse";
+import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
+import { formatDate, hasProduct } from "../../../../shared/meProductResponse";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { hasMembership } from "../../membership";
-import {
-  formatDate,
-  MembersDataApiResponseContext,
-  Subscription,
-  WithSubscription
-} from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
@@ -37,7 +36,7 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
         <CardDisplay {...subscription.card} />
         <MembersDataApiResponseContext.Consumer>
           {membersDataApiResponse =>
-            hasMembership(membersDataApiResponse) &&
+            hasProduct(membersDataApiResponse) &&
             membersDataApiResponse.alertText ? (
               <div>
                 We will take the outstanding payment within 24 hours, using your

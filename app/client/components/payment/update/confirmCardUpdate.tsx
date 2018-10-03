@@ -1,11 +1,11 @@
 import Raven from "raven-js";
 import React from "react";
+import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
+import { hasProduct } from "../../../../shared/meProductResponse";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { hasMembership } from "../../membership";
-import { MembersDataApiResponseContext } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
@@ -113,7 +113,7 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
           props.navigate &&
           tokenResponse.token &&
           tokenResponse.token.card &&
-          hasMembership(mdaResponse) &&
+          hasProduct(mdaResponse) &&
           mdaResponse.subscription.card ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}

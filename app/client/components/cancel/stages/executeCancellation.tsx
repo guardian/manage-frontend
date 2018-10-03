@@ -1,13 +1,14 @@
 import React from "react";
+import { Subscription } from "../../../../shared/meProductResponse";
+import { WithSubscription } from "../../../../shared/meProductResponse";
 import AsyncLoader from "../../asyncLoader";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
-import { Subscription, WithSubscription } from "../../user";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
 import { CancellationSummary, isCancelled } from "../cancellationSummary";
+import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
 
