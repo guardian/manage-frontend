@@ -1,5 +1,6 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
+import { ProductType } from "../../shared/productTypes";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
@@ -13,6 +14,10 @@ export interface RouteableStepProps extends RouteableProps {
   currentStep: number;
   stepLabels?: string[];
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
+}
+
+export interface RouteableProductStepProps extends RouteableStepProps {
+  productType: ProductType;
 }
 
 export interface MultiRouteableProps extends RouteableStepProps {

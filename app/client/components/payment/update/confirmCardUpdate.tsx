@@ -6,7 +6,10 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  RouteableProductStepProps,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
 import {
@@ -17,7 +20,7 @@ import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { handleNoToken } from "./paymentUpdated";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
 
-interface ExecuteCardUpdateProps extends RouteableStepProps {
+interface ExecuteCardUpdateProps extends RouteableProductStepProps {
   stripePublicKeyForUpdate: string;
   token: stripe.Token;
 }
@@ -55,8 +58,7 @@ class ExecuteCardUpdate extends React.Component<
   }
 
   private executeCardUpdate: () => Promise<Response> = async () =>
-    await fetch("/api/payment/membership/card", {
-      // TODO perhaps get 'membership' from product type / url
+    await fetch(`/api/payment/${this.props.productType.urlPart}/card`, {
       credentials: "include",
       method: "POST",
       body: JSON.stringify({
@@ -105,7 +107,7 @@ class ExecuteCardUpdate extends React.Component<
   };
 }
 
-export const ConfirmCardUpdate = (props: RouteableStepProps) => (
+export const ConfirmCardUpdate = (props: RouteableProductStepProps) => (
   <StripeTokenResponseContext.Consumer>
     {tokenResponse => (
       <MembersDataApiResponseContext.Consumer>

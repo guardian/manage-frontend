@@ -144,6 +144,11 @@ server.post(
   membersDataApiHandler("user-attributes/me/membership-update-card"),
   withIdentity
 );
+server.post(
+  "/api/payment/contributions/card",
+  membersDataApiHandler("user-attributes/me/contribution-update-card"),
+  withIdentity
+);
 
 const profileRedirectHandler: JsonHandler = (
   res: express.Response,

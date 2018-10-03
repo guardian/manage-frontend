@@ -18,7 +18,6 @@ import { minWidth } from "../../../styles/breakpoints";
 import { CheckFlowIsValid } from "../../cancel/cancellationFlowWrapper";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NoMembership } from "../../noMembership";
 import { PageContainer } from "../../page";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
@@ -241,13 +240,14 @@ class PaymentUpdaterStep extends React.Component<
   };
 }
 
-const getPaymentUpdateRenderer = (routeableStepProps: RouteableStepProps) => (
-  data: MembersDataApiResponse
-) =>
+const getPaymentUpdateRenderer = (
+  productType: ProductType,
+  routeableStepProps: RouteableStepProps
+) => (data: MembersDataApiResponse) =>
   hasProduct(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    <NoMembership />
+    productType.invalidComponentRenderer
   );
 
 const createUpdatePaymentFlow = (productType: ProductType) => (
@@ -262,7 +262,10 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
     <CheckFlowIsValid {...productType}>
       <MembersDatApiAsyncLoader
         fetch={productType.fetchProductDetail /*TODO reload on 'back' to page*/}
-        render={getPaymentUpdateRenderer(labelPaymentStepProps(props))}
+        render={getPaymentUpdateRenderer(
+          productType,
+          labelPaymentStepProps(props)
+        )}
         loadingMessage={`Retrieving current payment details for your ${
           productType.friendlyName
         }...`}
@@ -273,4 +276,7 @@ const createUpdatePaymentFlow = (productType: ProductType) => (
 
 export const MembershipPaymentUpdateFlow = createUpdatePaymentFlow(
   ProductTypes.membership
+);
+export const ContributionsPaymentUpdateFlow = createUpdatePaymentFlow(
+  ProductTypes.contributions
 );

@@ -68,54 +68,59 @@ export class StripeCardInputForm extends React.Component<
               maxWidth: "100%"
             }}
           >
-            {this.state.isGeneratingToken ? (
-              <Spinner
-                loadingMessage="Validating your card detail..."
-                scale={0.7}
-                inline
-              />
-            ) : (
-              <NavigateFnContext.Consumer>
-                {nav =>
-                  nav.navigate ? (
-                    <div
-                      css={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <a
-                        href="https://stripe.com/"
-                        target="_blank"
-                        css={{ marginBottom: "5px" }}
-                      >
-                        <StripeLogo />
-                      </a>
-                      <div
-                        css={{
-                          textAlign: "right",
-                          [maxWidth.mobileLandscape]: {
-                            width: "100%"
-                          }
-                        }}
-                      >
-                        <Button
-                          disabled={this.props.stripe === undefined}
-                          text="Review Payment Update"
-                          onClick={this.startCardUpdate(nav.navigate)}
-                          primary
-                          right
-                        />
-                        {this.renderError()}
-                      </div>
-                    </div>
-                  ) : (
-                    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-                  )
-                }
-              </NavigateFnContext.Consumer>
-            )}
+            <div
+              css={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between"
+              }}
+            >
+              {this.state.isGeneratingToken ? (
+                <>
+                  <StripeLogo />
+                  <Spinner
+                    loadingMessage="Validating your card detail..."
+                    scale={0.7}
+                    inline
+                  />
+                </>
+              ) : (
+                <NavigateFnContext.Consumer>
+                  {nav =>
+                    nav.navigate ? (
+                      <>
+                        <a
+                          href="https://stripe.com/"
+                          target="_blank"
+                          css={{ marginBottom: "5px" }}
+                        >
+                          <StripeLogo />
+                        </a>
+                        <div
+                          css={{
+                            textAlign: "right",
+                            [maxWidth.mobileLandscape]: {
+                              width: "100%"
+                            }
+                          }}
+                        >
+                          <Button
+                            disabled={this.props.stripe === undefined}
+                            text="Review Payment Update"
+                            onClick={this.startCardUpdate(nav.navigate)}
+                            primary
+                            right
+                          />
+                          {this.renderError()}
+                        </div>
+                      </>
+                    ) : (
+                      <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+                    )
+                  }
+                </NavigateFnContext.Consumer>
+              )}
+            </div>
           </div>
         </div>
       </>

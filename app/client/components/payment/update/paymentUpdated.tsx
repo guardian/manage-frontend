@@ -1,16 +1,21 @@
 import React from "react";
+import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
+import { formatDate, hasProduct } from "../../../../shared/meProductResponse";
 import {
   Subscription,
   WithSubscription
 } from "../../../../shared/meProductResponse";
-import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
-import { formatDate, hasProduct } from "../../../../shared/meProductResponse";
+import { ProductType } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  RouteableProductStepProps,
+  RouteableStepProps,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
@@ -63,15 +68,23 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
   return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
-const WithSubscriptionRenderer = (withSub: WithSubscription) => (
+const WithSubscriptionRenderer = (productType: ProductType) => (
+  withSub: WithSubscription
+) => (
   <>
     <h1>Your payment details were updated successfully</h1>
     <ConfirmedNewPaymentDetailsRenderer {...withSub.subscription} />
     <h2>
-      Thank you. You are helping to support independent investigative journalism
+      Thank you. You are helping to support independent investigative
+      journalism.
     </h2>
     <div>
-      <LinkButton to="/" text="Manage your account" primary right />
+      <LinkButton
+        to={"/" + productType.urlPart}
+        text={"Manage your " + productType.friendlyName}
+        primary
+        right
+      />
     </div>
     <div css={{ marginTop: "20px" }}>
       <a href="https://www.theguardian.com">
@@ -81,11 +94,7 @@ const WithSubscriptionRenderer = (withSub: WithSubscription) => (
   </>
 );
 
-export interface PaymentUpdatedProps extends RouteableStepProps {
-  fetch: () => Promise<Response>;
-}
-
-export const PaymentUpdated = (props: PaymentUpdatedProps) => (
+export const PaymentUpdated = (props: RouteableProductStepProps) => (
   <StripeTokenResponseContext.Consumer>
     {tokenResponse =>
       tokenResponse.token && tokenResponse.token.card ? (
@@ -98,8 +107,8 @@ export const PaymentUpdated = (props: PaymentUpdatedProps) => (
           hideReturnButton
         >
           <WithSubscriptionAsyncLoader
-            fetch={props.fetch}
-            render={WithSubscriptionRenderer}
+            fetch={props.productType.fetchProductDetail}
+            render={WithSubscriptionRenderer(props.productType)}
             loadingMessage="Looks good so far. Just checking everything is done..."
           />
         </WizardStep>

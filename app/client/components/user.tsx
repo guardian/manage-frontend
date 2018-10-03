@@ -19,7 +19,10 @@ import { navLinks } from "./nav";
 import { NotFound } from "./notFound";
 import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
-import { MembershipPaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import {
+  ContributionsPaymentUpdateFlow,
+  MembershipPaymentUpdateFlow
+} from "./payment/update/updatePaymentFlow";
 import { Contributions, Membership } from "./productPage";
 import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
@@ -57,9 +60,13 @@ const User = () => (
         )}
       </MembershipCancellationFlow>
       <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
-        <ConfirmCardUpdate path="confirm" currentStep={2}>
+        <ConfirmCardUpdate
+          path="confirm"
+          currentStep={2}
+          productType={ProductTypes.membership}
+        >
           <PaymentUpdated
-            fetch={ProductTypes.membership.fetchProductDetail}
+            productType={ProductTypes.membership}
             path="updated"
             currentStep={3}
           />
@@ -71,6 +78,22 @@ const User = () => (
         path="/cancel/contributions"
         currentStep={1}
       />
+      <ContributionsPaymentUpdateFlow
+        path="/payment/contributions"
+        currentStep={1}
+      >
+        <ConfirmCardUpdate
+          path="confirm"
+          currentStep={2}
+          productType={ProductTypes.contributions}
+        >
+          <PaymentUpdated
+            productType={ProductTypes.contributions}
+            path="updated"
+            currentStep={3}
+          />
+        </ConfirmCardUpdate>
+      </ContributionsPaymentUpdateFlow>
 
       <MembershipFAQs path="/help" />
 
