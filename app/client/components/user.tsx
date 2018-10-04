@@ -29,6 +29,10 @@ export interface Card extends CardProps {
   email?: string;
 }
 
+export interface DirectDebitDetails {
+  accountName: string;
+}
+
 export interface Subscription {
   subscriberId: string;
   start: string;
@@ -36,8 +40,10 @@ export interface Subscription {
   cancelledAt: boolean;
   nextPaymentDate: string;
   nextPaymentPrice: number;
+  paymentMethod?: string;
   card?: Card;
   payPalEmail?: string;
+  account?: DirectDebitDetails;
   plan: {
     amount: number;
     currency: string;

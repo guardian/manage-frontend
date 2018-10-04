@@ -1,4 +1,5 @@
 import { css } from "emotion";
+import Raven from "raven-js";
 import React from "react";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -10,6 +11,7 @@ import { NoMembership } from "./cancel/membership/noMembership";
 import { MembershipLinks } from "./membershipLinks";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
+import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
 import { formatDate, Subscription, WithSubscription } from "./user";
 import { RouteableProps } from "./wizardRouterAdapter";
@@ -93,7 +95,7 @@ const getPaymentMethodRow = (subscription: Subscription) => {
   if (subscription.card) {
     return (
       <MembershipRow
-        label={"Card details"}
+        label="Card details"
         data={
           <div css={wrappingContainerCSS}>
             <div css={{ marginRight: "15px", minWidth: "190px" }}>
@@ -118,12 +120,20 @@ const getPaymentMethodRow = (subscription: Subscription) => {
   } else if (subscription.payPalEmail) {
     return (
       <MembershipRow
-        label={"Payment method"}
+        label="Payment method"
         data={<PayPalDisplay payPalEmail={subscription.payPalEmail} />}
       />
     );
+  } else if (subscription.account) {
+    return (
+      <MembershipRow
+        label="Payment method"
+        data={<DirectDebitDisplay {...subscription.account} />}
+      />
+    );
+  } else {
+    Raven.captureException("Unknown payment method");
   }
-  // TODO send no payment method event via 'trackEvent'
   return undefined;
 };
 
