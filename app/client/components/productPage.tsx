@@ -9,19 +9,21 @@ import {
   ProductDetail,
   Subscription
 } from "../../shared/productResponse";
-import { ProductType, ProductTypes } from "../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  ProductType
+} from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
-import { navLinks } from "./nav";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
-import { RouteableProps } from "./wizardRouterAdapter";
+import { RouteableProductProps } from "./wizardRouterAdapter";
 
 interface ProductRowProps {
   label: string;
@@ -239,7 +241,7 @@ const getProductRenderer = (productType: ProductType) => (
       </div>
     );
   }
-  return <PageContainer>{productType.invalidComponentRenderer}</PageContainer>;
+  return <PageContainer>{productType.noProductRenderer}</PageContainer>;
 };
 
 const headerCss = css({
@@ -249,31 +251,15 @@ const headerCss = css({
   marginBottom: "30px"
 });
 
-export const Membership = (props: RouteableProps) => (
+export const ProductPage = (props: RouteableProductProps) => (
   <>
-    <PageHeaderContainer selectedNavItem={navLinks.membership}>
-      <h1 className={headerCss}>Membership</h1>
+    <PageHeaderContainer selectedNavItem={props.productType.navLink}>
+      <h1 className={headerCss}>{props.productType.productPageTitle}</h1>
     </PageHeaderContainer>
     <MembersDatApiAsyncLoader
-      fetch={ProductTypes.membership.fetchProductDetail}
-      render={getProductRenderer(ProductTypes.membership)}
-      loadingMessage="Loading your membership details..."
-    />
-    <PageContainer>
-      <MembershipLinks />
-    </PageContainer>
-  </>
-);
-
-export const Contributions = (props: RouteableProps) => (
-  <>
-    <PageHeaderContainer selectedNavItem={navLinks.contributions}>
-      <h1 className={headerCss}>Contributions</h1>
-    </PageHeaderContainer>
-    <MembersDatApiAsyncLoader
-      fetch={ProductTypes.contributions.fetchProductDetail}
-      render={getProductRenderer(ProductTypes.contributions)}
-      loadingMessage="Loading details of your contributions..."
+      fetch={createProductDetailFetcher(props.productType)}
+      render={getProductRenderer(props.productType)}
+      loadingMessage={`Loading your ${props.productType.urlPart} details...`}
     />
     <PageContainer>
       <MembershipLinks /> {/*TODO need to have contributions FAQ*/}

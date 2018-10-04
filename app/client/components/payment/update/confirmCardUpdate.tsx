@@ -6,10 +6,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import {
-  RouteableProductStepProps,
-  WizardStep
-} from "../../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
 import {
@@ -20,7 +17,7 @@ import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { handleNoToken } from "./paymentUpdated";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
 
-interface ExecuteCardUpdateProps extends RouteableProductStepProps {
+interface ExecuteCardUpdateProps extends RouteableStepProps {
   stripePublicKeyForUpdate: string;
   token: stripe.Token;
 }
@@ -107,7 +104,7 @@ class ExecuteCardUpdate extends React.Component<
   };
 }
 
-export const ConfirmCardUpdate = (props: RouteableProductStepProps) => (
+export const ConfirmCardUpdate = (props: RouteableStepProps) => (
   <StripeTokenResponseContext.Consumer>
     {tokenResponse => (
       <MembersDataApiResponseContext.Consumer>

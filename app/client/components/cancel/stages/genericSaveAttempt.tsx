@@ -14,12 +14,11 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
-import { CancellationReason } from "../cancellationReasons";
+import { CancellationReason } from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
-  sfProduct: string;
   reason: CancellationReason;
 }
 
@@ -199,7 +198,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
       <CancellationReasonContext.Provider value={props.path}>
         <CaseCreationWrapper
           membersDataApiResponse={membersDataApiResponse}
-          sfProduct={props.sfProduct}
+          sfProduct={props.productType.sfProduct}
         >
           <WizardStep routeableStepProps={props}>
             <PageContainerSection>

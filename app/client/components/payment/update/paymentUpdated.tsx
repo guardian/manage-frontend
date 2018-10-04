@@ -5,17 +5,16 @@ import {
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
-import { ProductType } from "../../../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  ProductType
+} from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import {
-  RouteableProductStepProps,
-  RouteableStepProps,
-  WizardStep
-} from "../../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardDisplay } from "../cardDisplay";
 import { StripeTokenResponseContext } from "./cardInputForm";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
@@ -94,7 +93,7 @@ const WithSubscriptionRenderer = (productType: ProductType) => (
   </>
 );
 
-export const PaymentUpdated = (props: RouteableProductStepProps) => (
+export const PaymentUpdated = (props: RouteableStepProps) => (
   <StripeTokenResponseContext.Consumer>
     {tokenResponse =>
       tokenResponse.token && tokenResponse.token.card ? (
@@ -107,7 +106,7 @@ export const PaymentUpdated = (props: RouteableProductStepProps) => (
           hideReturnButton
         >
           <WithSubscriptionAsyncLoader
-            fetch={props.productType.fetchProductDetail}
+            fetch={createProductDetailFetcher(props.productType)}
             render={WithSubscriptionRenderer(props.productType)}
             loadingMessage="Looks good so far. Just checking everything is done..."
           />

@@ -1,23 +1,39 @@
 import React from "react";
-import { MeValidator } from "../client/components/cancel/cancellationFlowWrapper";
+import { CancellationReason } from "../client/components/cancel/cancellationReason";
+import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
+import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
+import { MeValidator } from "../client/components/checkFlowIsValid";
+import { NavItem, navLinks } from "../client/components/nav";
 import { NoMembership } from "../client/components/noMembership";
 import { MeResponse } from "./meResponse";
 
 export type ProductFriendlyName = "membership" | "recurring contribution"; // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 export type ProductUrlPart = "membership" | "contributions";
+export type SfProduct = "Membership" | "Contributions";
+export type ProductTitle = "Membership" | "Contributions";
 
 export interface ProductType {
   friendlyName: ProductFriendlyName;
+  productPageTitle: ProductTitle;
   urlPart: ProductUrlPart;
+  navLink: NavItem;
   validator: MeValidator;
-  invalidComponentRenderer: JSX.Element;
-  fetchProductDetail: () => Promise<Response>;
+  noProductRenderer: JSX.Element;
+  sfProduct: SfProduct;
+  cancellationReasons: CancellationReason[];
+  cancellationStartPageBody: JSX.Element;
   tierRowLabel?: string; // no label means row is not displayed
 }
 
-const createProductFetcher = (productApiKeyword: string) => async () =>
+export interface WithProductType {
+  productType: ProductType;
+}
+
+export const createProductDetailFetcher = (
+  productType: ProductType
+) => async () =>
   await fetch(
-    `/api/me/${productApiKeyword}`, // TODO create shared file for all api endpoints
+    `/api/me/${productType.urlPart}`, // TODO create shared file for all api endpoints
     {
       credentials: "include",
       mode: "same-origin"
@@ -28,16 +44,24 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
     friendlyName: "membership",
     urlPart: "membership",
+    navLink: navLinks.membership,
     validator: (me: MeResponse) => me.contentAccess.member,
-    fetchProductDetail: createProductFetcher("membership"), // TODO re-use urlPart somehow
-    invalidComponentRenderer: <NoMembership />,
+    noProductRenderer: <NoMembership />,
+    sfProduct: "Membership",
+    productPageTitle: "Membership",
+    cancellationReasons: membershipCancellationReasons,
+    cancellationStartPageBody: membershipCancellationFlowStart,
     tierRowLabel: "Membership tier"
   },
   contributions: {
     friendlyName: "recurring contribution",
     urlPart: "contributions",
+    navLink: navLinks.contributions,
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
-    fetchProductDetail: createProductFetcher("contributions"),
-    invalidComponentRenderer: <h2>You do not have a Recurring Contribution.</h2>
+    noProductRenderer: <h2>You do not have a Recurring Contribution.</h2>,
+    sfProduct: "Contributions",
+    productPageTitle: "Contributions",
+    cancellationReasons: [],
+    cancellationStartPageBody: <h2>Coming Soon</h2>
   }
 };

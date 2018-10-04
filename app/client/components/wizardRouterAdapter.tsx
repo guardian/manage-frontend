@@ -1,6 +1,6 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
-import { ProductType } from "../../shared/productTypes";
+import { WithProductType } from "../../shared/productTypes";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
@@ -10,14 +10,12 @@ export interface RouteableProps extends RouteComponentProps {
   path: string;
 }
 
-export interface RouteableStepProps extends RouteableProps {
+export type RouteableProductProps = RouteableProps & WithProductType;
+
+export interface RouteableStepProps extends RouteableProductProps {
   currentStep: number;
   stepLabels?: string[];
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
-}
-
-export interface RouteableProductStepProps extends RouteableStepProps {
-  productType: ProductType;
 }
 
 export interface MultiRouteableProps extends RouteableStepProps {
@@ -53,9 +51,14 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export const ReturnToYourAccountButton = (props: ButtonStyleModifierProps) => (
+export type ReturnToYourProductButtonProps = ButtonStyleModifierProps &
+  WithProductType;
+
+export const ReturnToYourProductButton = (
+  props: ReturnToYourProductButtonProps
+) => (
   <div css={{ marginTop: "15px" }}>
-    <a href="/membership">
+    <a href={"/" + props.productType.urlPart}>
       <Button
         text="Return to your account"
         hide={props.hideReturnButton}
@@ -97,7 +100,7 @@ const RootComponent = (props: RootComponentProps) => (
           left
         />
       ) : (
-        <ReturnToYourAccountButton {...props} />
+        <ReturnToYourProductButton {...props} {...props.routeableStepProps} />
       )}
     </PageContainer>
     {props.extraFooterComponents}
