@@ -208,7 +208,8 @@ const getProductRenderer = (productType: ProductType) => (
           ) : (
             undefined
           )}
-          {productType.tierRowLabel ? (
+          {productType.tierRowLabel &&
+          productType.tierRowLabel.toLowerCase() !== "patron" ? (
             <ProductDetailRow
               label={productType.tierRowLabel}
               data={
