@@ -73,7 +73,8 @@ const User = () => (
         </ConfirmCardUpdate>
       </MembershipPaymentUpdateFlow>
 
-      <Contributions path={navLinks.contributions.link} />
+      {/*TODO change this to use navLinks once we fully mirgrate contributions tab*/}
+      <Contributions path="/contributions" />
       <ContributionsCancellationFlow
         path="/cancel/contributions"
         currentStep={1}
