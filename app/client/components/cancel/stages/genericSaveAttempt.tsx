@@ -14,7 +14,10 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
-import { CancellationReason } from "../cancellationReason";
+import {
+  CancellationReason,
+  CancellationReasonId
+} from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
@@ -166,7 +169,7 @@ class FeedbackForm extends React.Component<
 
 interface ConfirmCancellationButtonProps {
   onClick?: () => any;
-  reasonId: string;
+  reasonId: CancellationReasonId;
 }
 
 const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
