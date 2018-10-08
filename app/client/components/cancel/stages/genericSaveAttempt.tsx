@@ -14,12 +14,14 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
-import { CancellationReason } from "../cancellationReasons";
+import {
+  CancellationReason,
+  CancellationReasonId
+} from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
-  sfProduct: string;
   reason: CancellationReason;
 }
 
@@ -167,7 +169,7 @@ class FeedbackForm extends React.Component<
 
 interface ConfirmCancellationButtonProps {
   onClick?: () => any;
-  reasonId: string;
+  reasonId: CancellationReasonId;
 }
 
 const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
@@ -199,7 +201,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
       <CancellationReasonContext.Provider value={props.path}>
         <CaseCreationWrapper
           membersDataApiResponse={membersDataApiResponse}
-          sfProduct={props.sfProduct}
+          sfProduct={props.productType.sfProduct}
         >
           <WizardStep routeableStepProps={props}>
             <PageContainerSection>

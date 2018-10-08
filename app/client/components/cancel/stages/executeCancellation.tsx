@@ -1,6 +1,9 @@
 import React from "react";
-import { Subscription } from "../../../../shared/productResponse";
-import { WithSubscription } from "../../../../shared/productResponse";
+import {
+  Subscription,
+  WithSubscription
+} from "../../../../shared/productResponse";
+import { createProductDetailFetcher } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import {
@@ -47,7 +50,6 @@ const getCaseUpdateWithCancelOutcomeFunc = (
 export interface ExecuteCancellationRouteableProps extends RouteableStepProps {
   cancelApiUrlSuffix: string;
   cancelType: string;
-  withSubscriptionResponseFetcher: () => Promise<Response>;
 }
 
 const getCaseUpdatingCancellationSummary = (
@@ -77,7 +79,7 @@ export const ExecuteCancellation = (
               fetch={getCancelFunc(
                 props.cancelApiUrlSuffix,
                 reason,
-                props.withSubscriptionResponseFetcher
+                createProductDetailFetcher(props.productType)
               )}
               render={getCaseUpdatingCancellationSummary(
                 caseId,

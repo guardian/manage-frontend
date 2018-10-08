@@ -1,7 +1,7 @@
 import React from "react";
 import { ProductTypes } from "../../../../shared/productTypes";
+import { CheckFlowIsValid } from "../../checkFlowIsValid";
 import { RouteableStepProps } from "../../wizardRouterAdapter";
-import { CheckFlowIsValid } from "../cancellationFlowWrapper";
 
 export const ContributionsCancellationFlow = (props: RouteableStepProps) => (
   <CheckFlowIsValid {...ProductTypes.contributions}>

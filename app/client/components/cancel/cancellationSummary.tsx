@@ -50,5 +50,10 @@ export const CancellationSummary = (cancelType: string) => (
   isCancelled(subscription) ? (
     actuallyCancelled(cancelType, subscription)
   ) : (
-    <GenericErrorScreen loggingMessage="Not actually cancelled" />
+    <GenericErrorScreen
+      loggingMessage={
+        cancelType +
+        " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
+      }
+    />
   );

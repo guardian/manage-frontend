@@ -12,10 +12,13 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import { ProductType, ProductTypes } from "../../../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  ProductType
+} from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { CheckFlowIsValid } from "../../cancel/cancellationFlowWrapper";
+import { CheckFlowIsValid } from "../../checkFlowIsValid";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { PageContainer } from "../../page";
@@ -247,36 +250,31 @@ const getPaymentUpdateRenderer = (
   hasProduct(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    productType.invalidComponentRenderer
+    productType.noProductRenderer
   );
 
-const createUpdatePaymentFlow = (productType: ProductType) => (
-  props: RouteableStepProps
-) => (
+export const PaymentUpdateFlow = (props: RouteableStepProps) => (
   <div>
     <PageContainer>
       <h1 css={{ fontSize: "20px" }}>
-        Update payment for your Guardian {productType.friendlyName}
+        Update payment for your Guardian {props.productType.friendlyName}
       </h1>
     </PageContainer>
-    <CheckFlowIsValid {...productType}>
+    <CheckFlowIsValid {...props.productType}>
       <MembersDatApiAsyncLoader
-        fetch={productType.fetchProductDetail /*TODO reload on 'back' to page*/}
+        fetch={
+          createProductDetailFetcher(
+            props.productType
+          ) /*TODO reload on 'back' to page*/
+        }
         render={getPaymentUpdateRenderer(
-          productType,
+          props.productType,
           labelPaymentStepProps(props)
         )}
         loadingMessage={`Retrieving current payment details for your ${
-          productType.friendlyName
+          props.productType.friendlyName
         }...`}
       />
     </CheckFlowIsValid>
   </div>
-);
-
-export const MembershipPaymentUpdateFlow = createUpdatePaymentFlow(
-  ProductTypes.membership
-);
-export const ContributionsPaymentUpdateFlow = createUpdatePaymentFlow(
-  ProductTypes.contributions
 );

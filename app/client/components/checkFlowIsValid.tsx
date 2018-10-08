@@ -1,7 +1,7 @@
 import React from "react";
-import { fetchMe, MeAsyncLoader, MeResponse } from "../../../shared/meResponse";
-import { ProductType } from "../../../shared/productTypes";
-import { PageContainer } from "../page";
+import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
+import { ProductType } from "../../shared/productTypes";
+import { PageContainer } from "./page";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
@@ -9,7 +9,7 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   props.validator(me) ? (
     <>{props.children}</>
   ) : (
-    <PageContainer>{props.invalidComponentRenderer}</PageContainer>
+    <PageContainer>{props.noProductRenderer}</PageContainer>
   );
 
 export type MeValidator = (me: MeResponse) => boolean;

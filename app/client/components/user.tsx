@@ -5,12 +5,9 @@ import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
-import {
-  CancellationReason,
-  membershipCancellationReasonMatrix
-} from "./cancel/cancellationReasons";
+import { CancellationFlow } from "./cancel/cancellationFlow";
+import { CancellationReason } from "./cancel/cancellationReason";
 import { ContributionsCancellationFlow } from "./cancel/contributions/contributionsCancellationFlow";
-import { MembershipCancellationFlow } from "./cancel/membership/membershipCancellationFlow";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { Main } from "./main";
@@ -19,11 +16,8 @@ import { navLinks } from "./nav";
 import { NotFound } from "./notFound";
 import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
-import {
-  ContributionsPaymentUpdateFlow,
-  MembershipPaymentUpdateFlow
-} from "./payment/update/updatePaymentFlow";
-import { Contributions, Membership } from "./productPage";
+import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { ProductPage } from "./productPage";
 import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 const User = () => (
@@ -34,15 +28,24 @@ const User = () => (
     <Router>
       <RedirectOnMeResponse path="/" />
 
-      <Membership path={navLinks.membership.link} />
-      <MembershipCancellationFlow path="/cancel/membership" currentStep={1}>
-        {membershipCancellationReasonMatrix.map(
+      {/*TODO map over ProductTypes to produce all the routes for a product (after implementing contributions cancellation flow*/}
+
+      <ProductPage
+        path={navLinks.membership.link}
+        productType={ProductTypes.membership}
+      />
+      <CancellationFlow
+        path="/cancel/membership"
+        productType={ProductTypes.membership}
+        currentStep={1}
+      >
+        {ProductTypes.membership.cancellationReasons.map(
           (reason: CancellationReason) => (
             <GenericSaveAttempt
-              sfProduct="Membership"
+              path={reason.reasonId}
+              productType={ProductTypes.membership}
               reason={reason}
               key={reason.reasonId}
-              path={reason.reasonId}
               linkLabel={reason.linkLabel}
               currentStep={2}
             >
@@ -50,51 +53,57 @@ const User = () => (
                 path="confirmed"
                 cancelApiUrlSuffix="membership"
                 cancelType="membership"
-                withSubscriptionResponseFetcher={
-                  ProductTypes.membership.fetchProductDetail
-                }
+                productType={ProductTypes.membership}
                 currentStep={3}
               />
             </GenericSaveAttempt>
           )
         )}
-      </MembershipCancellationFlow>
-      <MembershipPaymentUpdateFlow path="/payment/membership" currentStep={1}>
-        <ConfirmCardUpdate
-          path="confirm"
-          currentStep={2}
-          productType={ProductTypes.membership}
-        >
-          <PaymentUpdated
-            productType={ProductTypes.membership}
-            path="updated"
-            currentStep={3}
-          />
-        </ConfirmCardUpdate>
-      </MembershipPaymentUpdateFlow>
-
-      {/*TODO change this to use navLinks once we fully mirgrate contributions tab*/}
-      <Contributions path="/contributions" />
-      <ContributionsCancellationFlow
-        path="/cancel/contributions"
-        currentStep={1}
-      />
-      <ContributionsPaymentUpdateFlow
-        path="/payment/contributions"
+      </CancellationFlow>
+      <PaymentUpdateFlow
+        path="/payment/membership"
+        productType={ProductTypes.membership}
         currentStep={1}
       >
         <ConfirmCardUpdate
           path="confirm"
+          productType={ProductTypes.membership}
           currentStep={2}
-          productType={ProductTypes.contributions}
         >
           <PaymentUpdated
-            productType={ProductTypes.contributions}
             path="updated"
+            productType={ProductTypes.membership}
             currentStep={3}
           />
         </ConfirmCardUpdate>
-      </ContributionsPaymentUpdateFlow>
+      </PaymentUpdateFlow>
+
+      <ProductPage
+        path={navLinks.contributions.link}
+        productType={ProductTypes.contributions}
+      />
+      <ContributionsCancellationFlow // TODO replace with generic CancellationFlow
+        path="/cancel/contributions"
+        productType={ProductTypes.contributions}
+        currentStep={1}
+      />
+      <PaymentUpdateFlow
+        path="/payment/contributions"
+        productType={ProductTypes.contributions}
+        currentStep={1}
+      >
+        <ConfirmCardUpdate
+          path="confirm"
+          productType={ProductTypes.contributions}
+          currentStep={2}
+        >
+          <PaymentUpdated
+            path="updated"
+            productType={ProductTypes.contributions}
+            currentStep={3}
+          />
+        </ConfirmCardUpdate>
+      </PaymentUpdateFlow>
 
       <MembershipFAQs path="/help" />
 
