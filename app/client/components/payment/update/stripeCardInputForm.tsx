@@ -79,7 +79,7 @@ export class StripeCardInputForm extends React.Component<
                 <>
                   <StripeLogo />
                   <Spinner
-                    loadingMessage="Validating your card detail..."
+                    loadingMessage="Validating your card details..."
                     scale={0.7}
                     inline
                   />

@@ -8,7 +8,7 @@ import {
   MembersDatApiAsyncLoader,
   ProductDetail,
   Subscription
-} from "../../shared/meProductResponse";
+} from "../../shared/productResponse";
 import { ProductType, ProductTypes } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -214,6 +214,7 @@ const getProductRenderer = (productType: ProductType) => (
               data={
                 <div css={wrappingContainerCSS}>
                   <div css={{ marginRight: "15px" }}>{data.tier}</div>
+                  {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
                   <a
                     href={
                       "https://membership." +

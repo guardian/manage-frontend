@@ -1,10 +1,10 @@
 import React from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
-import { formatDate, hasProduct } from "../../../../shared/meProductResponse";
+import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
+import { formatDate, hasProduct } from "../../../../shared/productResponse";
 import {
   Subscription,
   WithSubscription
-} from "../../../../shared/meProductResponse";
+} from "../../../../shared/productResponse";
 import { ProductType } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";

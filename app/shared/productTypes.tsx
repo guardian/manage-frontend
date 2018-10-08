@@ -3,7 +3,7 @@ import { MeValidator } from "../client/components/cancel/cancellationFlowWrapper
 import { NoMembership } from "../client/components/noMembership";
 import { MeResponse } from "./meResponse";
 
-export type ProductFriendlyName = "membership" | "recurring contribution";
+export type ProductFriendlyName = "membership" | "recurring contribution"; // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 export type ProductUrlPart = "membership" | "contributions";
 
 export interface ProductType {

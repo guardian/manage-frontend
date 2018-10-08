@@ -3,11 +3,11 @@ import { css } from "react-emotion";
 import {
   MembersDataApiResponseContext,
   MembersDatApiAsyncLoader
-} from "../../../../shared/meProductResponse";
+} from "../../../../shared/productResponse";
 import {
   hasProduct,
   MembersDataApiResponse
-} from "../../../../shared/meProductResponse";
+} from "../../../../shared/productResponse";
 import { ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";

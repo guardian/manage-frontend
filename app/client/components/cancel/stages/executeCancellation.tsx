@@ -1,6 +1,6 @@
 import React from "react";
-import { Subscription } from "../../../../shared/meProductResponse";
-import { WithSubscription } from "../../../../shared/meProductResponse";
+import { Subscription } from "../../../../shared/productResponse";
+import { WithSubscription } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import {

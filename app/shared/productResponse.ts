@@ -1,7 +1,6 @@
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { CardProps } from "../client/components/payment/cardDisplay";
-import { WithSubscription } from "./meProductResponse";
 
 export type MembersDataApiResponse = ProductDetail | {};
 

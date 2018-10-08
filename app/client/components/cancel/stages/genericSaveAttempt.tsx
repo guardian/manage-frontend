@@ -1,6 +1,6 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
+import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";

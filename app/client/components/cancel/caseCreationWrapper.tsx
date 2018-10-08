@@ -1,6 +1,6 @@
 import React from "react";
-import { ProductDetail } from "../../../shared/meProductResponse";
-import { MembersDataApiResponse } from "../../../shared/meProductResponse";
+import { ProductDetail } from "../../../shared/productResponse";
+import { MembersDataApiResponse } from "../../../shared/productResponse";
 import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";

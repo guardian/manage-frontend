@@ -1,6 +1,6 @@
 import React from "react";
-import { formatDate } from "../../../shared/meProductResponse";
-import { Subscription } from "../../../shared/meProductResponse";
+import { formatDate } from "../../../shared/productResponse";
+import { Subscription } from "../../../shared/productResponse";
 import palette from "../../colours";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";

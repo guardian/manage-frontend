@@ -5,13 +5,13 @@ import { ReactStripeElements } from "react-stripe-elements";
 import {
   MembersDataApiResponseContext,
   MembersDatApiAsyncLoader
-} from "../../../../shared/meProductResponse";
+} from "../../../../shared/productResponse";
 import {
   hasProduct,
   MembersDataApiResponse,
   ProductDetail,
   Subscription
-} from "../../../../shared/meProductResponse";
+} from "../../../../shared/productResponse";
 import { ProductType, ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";

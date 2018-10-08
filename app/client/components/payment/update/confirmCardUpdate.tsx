@@ -1,7 +1,7 @@
 import Raven from "raven-js";
 import React from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/meProductResponse";
-import { hasProduct } from "../../../../shared/meProductResponse";
+import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
+import { hasProduct } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
