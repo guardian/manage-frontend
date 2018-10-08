@@ -4,7 +4,6 @@ import { membershipCancellationFlowStart } from "../client/components/cancel/mem
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
 import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
-import { NoMembership } from "../client/components/noMembership";
 import { MeResponse } from "./meResponse";
 
 export type ProductFriendlyName = "membership" | "recurring contribution"; // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
@@ -18,7 +17,6 @@ export interface ProductType {
   urlPart: ProductUrlPart;
   navLink: NavItem;
   validator: MeValidator;
-  noProductRenderer: JSX.Element;
   sfProduct: SfProduct;
   cancellationReasons: CancellationReason[];
   cancellationStartPageBody: JSX.Element;
@@ -46,7 +44,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "membership",
     navLink: navLinks.membership,
     validator: (me: MeResponse) => me.contentAccess.member,
-    noProductRenderer: <NoMembership />,
     sfProduct: "Membership",
     productPageTitle: "Membership",
     cancellationReasons: membershipCancellationReasons,
@@ -58,7 +55,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "contributions",
     navLink: navLinks.contributions,
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
-    noProductRenderer: <h2>You do not have a Recurring Contribution.</h2>,
     sfProduct: "Contributions",
     productPageTitle: "Contributions",
     cancellationReasons: [],
