@@ -1,7 +1,7 @@
 import React from "react";
-import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
-import { ProductType } from "../../shared/productTypes";
-import { PageContainer } from "./page";
+import { fetchMe, MeAsyncLoader, MeResponse } from "../../../shared/meResponse";
+import { ProductType } from "../../../shared/productTypes";
+import { PageContainer } from "../page";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
@@ -22,6 +22,6 @@ export const CheckFlowIsValid = (props: CheckFlowIsValidProps) => (
   <MeAsyncLoader
     fetch={fetchMe}
     render={renderChildrenIfValidated(props)}
-    loadingMessage={"Confirming you have a " + props.productName + "..."}
+    loadingMessage={"Confirming you have a " + props.friendlyName + "..."}
   />
 );

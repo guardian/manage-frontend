@@ -119,6 +119,11 @@ server.get(
   membersDataApiHandler("user-attributes/me/mma-membership"),
   withIdentity
 );
+server.get(
+  "/api/me/contributions",
+  membersDataApiHandler("user-attributes/me/mma-monthlycontribution"),
+  withIdentity
+);
 
 server.post(
   "/api/cancel/membership",
@@ -137,6 +142,11 @@ server.patch(
 server.post(
   "/api/payment/membership/card",
   membersDataApiHandler("user-attributes/me/membership-update-card"),
+  withIdentity
+);
+server.post(
+  "/api/payment/contributions/card",
+  membersDataApiHandler("user-attributes/me/contribution-update-card"),
   withIdentity
 );
 

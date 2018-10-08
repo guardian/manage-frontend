@@ -24,7 +24,7 @@ const navCss = css({
   }
 });
 
-const navLinkCss = (local: boolean | undefined) =>
+const navLinkCss = (isSelected: boolean | undefined) =>
   css({
     fontSize: "1rem",
     fontWeight: "500",
@@ -40,15 +40,15 @@ const navLinkCss = (local: boolean | undefined) =>
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    background: local ? palette.white : palette.neutral["6"],
+    background: isSelected ? palette.white : palette.neutral["6"],
     color: "inherit"
   });
 
-const navItemCss = (local: boolean | undefined) =>
+const navItemCss = (isSelected: boolean | undefined) =>
   css({
     margin: 0,
     borderBottom: `0.0625rem solid ${
-      local ? palette.white : palette.neutral["5"]
+      isSelected ? palette.white : palette.neutral["5"]
     }`,
     borderTop: `0.1875rem solid ${palette.neutral["6"]}`,
     display: "table-cell",
@@ -110,11 +110,21 @@ if (typeof window !== "undefined" && window.guardian) {
 export const qualifyLink = (navItem: NavItem) =>
   navItem.local ? navItem.link : `https://profile.${domain}${navItem.link}`;
 
-export const Nav = () => (
+export interface NavProps {
+  selectedNavItem: NavItem;
+}
+
+export const Nav = (props: NavProps) => (
   <ul role="tablist" className={navCss}>
     {Object.values(navLinks).map((navItem: NavItem) => (
-      <li className={navItemCss(navItem.local)} key={navItem.title}>
-        <a className={navLinkCss(navItem.local)} href={qualifyLink(navItem)}>
+      <li
+        className={navItemCss(props.selectedNavItem === navItem)}
+        key={navItem.title}
+      >
+        <a
+          className={navLinkCss(props.selectedNavItem === navItem)}
+          href={qualifyLink(navItem)}
+        >
           {navItem.title}
         </a>
       </li>

@@ -1,21 +1,22 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
+import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { CaseCreationWrapper } from "../../caseCreationWrapper";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../../caseUpdate";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
-import { CancellationReason, MembersDataApiResponseContext } from "../../user";
 import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
+import { CancellationReason } from "../cancellationReasons";
+import { CaseCreationWrapper } from "../caseCreationWrapper";
+import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   sfProduct: string;

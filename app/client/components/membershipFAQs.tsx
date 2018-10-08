@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "../../node_modules/emotion";
 import palette from "../colours";
 import { Accordion } from "./accordion";
+import { navLinks } from "./nav";
 import { PageContainerSection, PageHeaderContainer } from "./page";
 import { RouteableProps } from "./wizardRouterAdapter";
 
@@ -10,9 +11,9 @@ const headerCss = css({
   borderBottom: `1px solid ${palette.neutral["5"]}`
 });
 
-export const FAQs = (props: RouteableProps) => (
+export const MembershipFAQs = (props: RouteableProps) => (
   <>
-    <PageHeaderContainer>
+    <PageHeaderContainer selectedNavItem={navLinks.membership}>
       <h1>Frequently asked questions</h1>
       <p>Common questions about Guardian Members</p>
     </PageHeaderContainer>

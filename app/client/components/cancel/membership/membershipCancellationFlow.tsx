@@ -1,28 +1,29 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import { css } from "react-emotion";
+import {
+  MembersDataApiResponseContext,
+  MembersDatApiAsyncLoader
+} from "../../../../shared/productResponse";
+import {
+  hasProduct,
+  MembersDataApiResponse
+} from "../../../../shared/productResponse";
 import { ProductTypes } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { LinkButton } from "../../buttons";
-import { CheckFlowIsValid } from "../../cancellationFlowWrapper";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
-import {
-  hasMembership,
-  loadMembershipData,
-  MembersDataApiResponse,
-  MembershipAsyncLoader
-} from "../../membership";
+import { NoMembership } from "../../noMembership";
 import { PageContainer, PageContainerSection } from "../../page";
-import { MembersDataApiResponseContext } from "../../user";
 import {
   MultiRouteableProps,
   ReturnToYourAccountButton,
   RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
+import { CheckFlowIsValid } from "../cancellationFlowWrapper";
 import { CancellationSummary } from "../cancellationSummary";
-import { NoMembership } from "./noMembership";
 
 interface ReasonPickerProps {
   options: ReactNode[];
@@ -142,7 +143,7 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
 const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
   data: MembersDataApiResponse
 ) => {
-  if (hasMembership(data)) {
+  if (hasProduct(data)) {
     if (data.subscription.cancelledAt) {
       return (
         <div>
@@ -267,8 +268,8 @@ export const MembershipCancellationFlow = (props: RouteableStepProps) => (
           ...ProductTypes.membership /*TODO use for the whole flow*/
         }
       >
-        <MembershipAsyncLoader
-          fetch={loadMembershipData}
+        <MembersDatApiAsyncLoader
+          fetch={ProductTypes.membership.fetchProductDetail}
           render={getReasonsRenderer(props)}
           loadingMessage="Checking the status of your current membership..."
         />
