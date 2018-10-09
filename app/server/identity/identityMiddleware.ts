@@ -18,6 +18,9 @@ export const withIdentity: express.RequestHandler = (
 
   const user = getUser(cookies);
 
+  const intcmp = req.query.INTCMP;
+  const intcmpUrlInfix = intcmp ? `INTCMP=${intcmp}&` : "";
+
   if (
     user === IdentityError.NotLoggedIn ||
     user === IdentityError.CouldNotParse
@@ -26,7 +29,9 @@ export const withIdentity: express.RequestHandler = (
 
     // somehow the redirect url is automatically encoded
     res.redirect(
-      `https://profile.${conf.DOMAIN}/signin?returnUrl=${returnUrl}`
+      `https://profile.${
+        conf.DOMAIN
+      }/signin?${intcmpUrlInfix}returnUrl=${returnUrl}`
     );
     return;
   }
@@ -35,7 +40,9 @@ export const withIdentity: express.RequestHandler = (
 
     // somehow the redirect url is automatically encoded
     res.redirect(
-      `https://profile.${conf.DOMAIN}/reauthenticate?returnUrl=${returnUrl}`
+      `https://profile.${
+        conf.DOMAIN
+      }/reauthenticate?${intcmpUrlInfix}returnUrl=${returnUrl}`
     );
     return;
   }
