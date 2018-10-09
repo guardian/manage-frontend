@@ -4,7 +4,10 @@ import { CheckFlowIsValid } from "../../checkFlowIsValid";
 import { RouteableStepProps } from "../../wizardRouterAdapter";
 
 export const ContributionsCancellationFlow = (props: RouteableStepProps) => (
-  <CheckFlowIsValid {...ProductTypes.contributions}>
+  <CheckFlowIsValid
+    supportRefererSuffix="cancellation_flow"
+    {...ProductTypes.contributions}
+  >
     <h1>Coming Soon</h1>
   </CheckFlowIsValid>
 );

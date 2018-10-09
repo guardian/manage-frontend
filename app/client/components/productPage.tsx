@@ -19,6 +19,7 @@ import { serif } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { CancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
+import { NoProduct } from "./noProduct";
 import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
@@ -241,7 +242,15 @@ const getProductRenderer = (productType: ProductType) => (
       </div>
     );
   }
-  return <PageContainer>{productType.noProductRenderer}</PageContainer>;
+  return (
+    <PageContainer>
+      <NoProduct
+        inTab={true}
+        supportRefererSuffix={"product_page"}
+        productType={productType}
+      />
+    </PageContainer>
+  );
 };
 
 const headerCss = css({

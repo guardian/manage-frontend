@@ -9,6 +9,7 @@ import { createProductDetailFetcher } from "../../../shared/productTypes";
 import palette from "../../colours";
 import { LinkButton } from "../buttons";
 import { CheckFlowIsValid } from "../checkFlowIsValid";
+import { NoProduct } from "../noProduct";
 import { PageContainer, PageContainerSection } from "../page";
 import {
   MultiRouteableProps,
@@ -122,7 +123,11 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
 
   return (
     <>
-      {routeableStepProps.productType.noProductRenderer}
+      <NoProduct
+        inTab={false}
+        supportRefererSuffix="cancellation_flow"
+        productType={routeableStepProps.productType}
+      />
       <ReturnToYourProductButton {...routeableStepProps} />
     </>
   );
@@ -134,7 +139,12 @@ export const CancellationFlow = (props: RouteableStepProps) => (
       <h1 css={{ fontSize: "20px" }}>
         Cancel your Guardian {props.productType.friendlyName}
       </h1>
-      <CheckFlowIsValid {...props.productType /*TODO use for the whole flow*/}>
+      <CheckFlowIsValid
+        supportRefererSuffix="cancellation_flow"
+        {
+          ...props.productType /*TODO use for the whole flow*/
+        }
+      >
         <MembersDatApiAsyncLoader
           fetch={createProductDetailFetcher(props.productType)}
           render={getReasonsRenderer(props)}

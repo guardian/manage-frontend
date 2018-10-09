@@ -21,6 +21,7 @@ import { minWidth } from "../../../styles/breakpoints";
 import { CheckFlowIsValid } from "../../checkFlowIsValid";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
+import { NoProduct } from "../../noProduct";
 import { PageContainer } from "../../page";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
@@ -250,7 +251,11 @@ const getPaymentUpdateRenderer = (
   hasProduct(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    productType.noProductRenderer
+    <NoProduct
+      inTab={false}
+      supportRefererSuffix="payment_flow"
+      productType={productType}
+    />
   );
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
@@ -260,7 +265,10 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
         Update payment for your Guardian {props.productType.friendlyName}
       </h1>
     </PageContainer>
-    <CheckFlowIsValid {...props.productType}>
+    <CheckFlowIsValid
+      {...props.productType}
+      supportRefererSuffix="payment_flow"
+    >
       <MembersDatApiAsyncLoader
         fetch={
           createProductDetailFetcher(

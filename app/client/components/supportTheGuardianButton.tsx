@@ -10,7 +10,9 @@ export const SupportTheGuardianButton = (
   props: SupportTheGuardianButtonProps
 ) => (
   <a
-    href={`https://support.${window.guardian.domain}`}
+    href={`https://support.${window.guardian.domain}?INTCMP=mma_${
+      props.supportReferer
+    }`}
     onClick={() => {
       trackEvent({
         eventCategory: "href",
