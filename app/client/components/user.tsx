@@ -78,8 +78,9 @@ const User = () => (
         </ConfirmCardUpdate>
       </PaymentUpdateFlow>
 
+      {/*TODO change this to use navLinks once we fully migrate contributions tab*/}
       <ProductPage
-        path={navLinks.contributions.link}
+        path="/contributions"
         productType={ProductTypes.contributions}
       />
       <ContributionsCancellationFlow // TODO replace with generic CancellationFlow
