@@ -47,11 +47,6 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
-export interface ExecuteCancellationRouteableProps extends RouteableStepProps {
-  cancelApiUrlSuffix: string;
-  cancelType: string;
-}
-
 const getCaseUpdatingCancellationSummary = (
   caseId: string,
   cancelType: string
@@ -67,9 +62,7 @@ const getCaseUpdatingCancellationSummary = (
   );
 };
 
-export const ExecuteCancellation = (
-  props: ExecuteCancellationRouteableProps
-) => (
+export const ExecuteCancellation = (props: RouteableStepProps) => (
   <WizardStep routeableStepProps={props}>
     <CancellationReasonContext.Consumer>
       {reason => (
@@ -77,13 +70,13 @@ export const ExecuteCancellation = (
           {caseId => (
             <PerformCancelAsyncLoader
               fetch={getCancelFunc(
-                props.cancelApiUrlSuffix,
+                props.productType.urlPart,
                 reason,
                 createProductDetailFetcher(props.productType)
               )}
               render={getCaseUpdatingCancellationSummary(
                 caseId,
-                props.cancelType
+                props.productType.friendlyName
               )}
               loadingMessage="Performing your cancellation..."
             />
