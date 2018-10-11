@@ -1,5 +1,7 @@
 import React from "react";
 import { CancellationReason } from "../client/components/cancel/cancellationReason";
+import { contributionsCancellationFlowStart } from "../client/components/cancel/contributions/contributionsCancellationFlowStart";
+import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
 import { MeValidator } from "../client/components/checkFlowIsValid";
@@ -57,7 +59,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
     sfProduct: "Contributions",
     productPageTitle: "Contributions",
-    cancellationReasons: [],
-    cancellationStartPageBody: <h2>Coming Soon</h2>
+    cancellationReasons: contributionsCancellationReasons,
+    cancellationStartPageBody: contributionsCancellationFlowStart
   }
 };
