@@ -45,8 +45,9 @@ export const ProgressBreadcrumb = ({
             overflow: "hidden",
             whiteSpace: "nowrap",
             [maxWidth.mobileLandscape]: {
+              display: "block", // fixes weird bug on some mobiles (mainly Mobile Safari)
               width: isCurrentStep
-                ? "initial"
+                ? "auto"
                 : `${
                     isFirstStep ? height / 1.5 : isLastStep ? 0 : height / 2
                   }px`,
@@ -82,20 +83,29 @@ export const ProgressBreadcrumb = ({
               background
             }}
           />
-          <span
+          <div
             css={{
-              display: "table-cell", // IE :(
-              textAlign: "center", // IE :(
-              verticalAlign: "middle", // IE :(
-              paddingLeft: "5px",
-              paddingRight: isLastStep ? "5px" : `${height}px`,
-              [maxWidth.mobileLandscape]: {
-                display: isCurrentStep ? undefined : "none"
-              }
+              // having this wrapper fixes weird bug on some mobiles (mainly Mobile Safari)
+              display: "table",
+              width: "100%",
+              height: "100%"
             }}
           >
-            {label}
-          </span>
+            <span
+              css={{
+                display: "table-cell", // IE :(
+                textAlign: "center", // IE :(
+                verticalAlign: "middle", // IE :(
+                paddingLeft: "5px",
+                paddingRight: isLastStep ? "5px" : `${height}px`,
+                [maxWidth.mobileLandscape]: {
+                  display: isCurrentStep ? undefined : "none"
+                }
+              }}
+            >
+              {label}
+            </span>
+          </div>
         </div>
       );
     })}
