@@ -7,6 +7,7 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { ProductType, ProductTypes } from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -114,39 +115,58 @@ server.get(
   withIdentity
 );
 
-server.get(
-  "/api/me/membership",
-  membersDataApiHandler("user-attributes/me/mma-membership"),
-  withIdentity
-);
-server.get(
-  "/api/me/contributions",
-  membersDataApiHandler("user-attributes/me/mma-monthlycontribution"),
-  withIdentity
-);
+Object.values(ProductTypes).forEach((productType: ProductType) => {
+  server.get(
+    "/api/me/" + productType.urlPart,
+    membersDataApiHandler(
+      "user-attributes/me/" +
+        (() => {
+          switch (productType.urlPart) {
+            case "membership":
+              return "mma-membership";
+            case "contributions":
+              return "mma-monthlycontribution";
+          }
+        })()
+    )
+  );
 
-server.post(
-  "/api/cancel/membership",
-  membersDataApiHandler("user-attributes/me/cancel-membership"),
-  withIdentity
-);
+  server.post(
+    "/api/cancel/" + productType.urlPart,
+    membersDataApiHandler(
+      "user-attributes/me/" +
+        (() => {
+          switch (productType.urlPart) {
+            case "membership":
+              return "cancel-membership";
+            case "contributions":
+              return "cancel-regular-contribution";
+          }
+        })()
+    )
+  );
+
+  server.post(
+    "/api/payment/" + productType.urlPart,
+    membersDataApiHandler(
+      "user-attributes/me/" +
+        (() => {
+          switch (productType.urlPart) {
+            case "membership":
+              return "membership-update-card";
+            case "contributions":
+              return "contribution-update-card";
+          }
+        })()
+    )
+  );
+});
 
 server.post("/api/case", sfCasesApiHandler("case"), withIdentity);
 
 server.patch(
   "/api/case/:caseId",
   sfCasesApiHandler("case/:caseId", ["caseId"]),
-  withIdentity
-);
-
-server.post(
-  "/api/payment/membership/card",
-  membersDataApiHandler("user-attributes/me/membership-update-card"),
-  withIdentity
-);
-server.post(
-  "/api/payment/contributions/card",
-  membersDataApiHandler("user-attributes/me/contribution-update-card"),
   withIdentity
 );
 

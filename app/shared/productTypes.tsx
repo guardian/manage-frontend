@@ -10,7 +10,7 @@ import { MeResponse } from "./meResponse";
 
 export type ProductFriendlyName = "membership" | "recurring contribution"; // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 export type ProductUrlPart = "membership" | "contributions";
-export type SfProduct = "Membership" | "Contributions";
+export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions";
 
 export interface ProductType {
@@ -32,13 +32,10 @@ export interface WithProductType {
 export const createProductDetailFetcher = (
   productType: ProductType
 ) => async () =>
-  await fetch(
-    `/api/me/${productType.urlPart}`, // TODO create shared file for all api endpoints
-    {
-      credentials: "include",
-      mode: "same-origin"
-    }
-  );
+  await fetch(`/api/me/${productType.urlPart}`, {
+    credentials: "include",
+    mode: "same-origin"
+  });
 
 export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
@@ -57,7 +54,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "contributions",
     navLink: navLinks.contributions,
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
-    sfProduct: "Contributions",
+    sfProduct: "Contribution",
     productPageTitle: "Contributions",
     cancellationReasons: contributionsCancellationReasons,
     cancellationStartPageBody: contributionsCancellationFlowStart
