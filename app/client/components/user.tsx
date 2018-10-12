@@ -28,6 +28,7 @@ const User = () => (
 
       {Object.values(ProductTypes).map((productType: ProductType) => (
         <ProductPage
+          key={productType.urlPart}
           path={"/" + productType.urlPart}
           productType={productType}
         />
@@ -35,6 +36,7 @@ const User = () => (
 
       {Object.values(ProductTypes).map((productType: ProductType) => (
         <CancellationFlow
+          key={productType.urlPart}
           path={"/cancel/" + productType.urlPart}
           productType={productType}
           currentStep={1}
@@ -60,6 +62,7 @@ const User = () => (
 
       {Object.values(ProductTypes).map((productType: ProductType) => (
         <PaymentUpdateFlow
+          key={productType.urlPart}
           path={"/payment/" + productType.urlPart}
           productType={productType}
           currentStep={1}

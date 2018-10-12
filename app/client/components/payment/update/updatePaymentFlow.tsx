@@ -24,7 +24,11 @@ import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NoProduct } from "../../noProduct";
 import { PageContainer } from "../../page";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  ReturnToYourProductButton,
+  RouteableStepProps,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 
@@ -158,7 +162,7 @@ class PaymentUpdaterStep extends React.Component<
             <WizardStep
               routeableStepProps={this.props.routeableStepProps}
               extraFooterComponents={<QuestionsFooter />}
-              hollowReturnButton
+              hideBackButton
             >
               <div
                 css={{
@@ -189,6 +193,10 @@ class PaymentUpdaterStep extends React.Component<
               />
               <h3>New Payment Details</h3>
               {this.getInputForm(this.props.data.subscription)}
+              <div css={{ height: "10px" }} />
+              <ReturnToYourProductButton
+                productType={this.props.routeableStepProps.productType}
+              />
             </WizardStep>
           </NavigateFnContext.Provider>
         </StripeTokenResponseContext.Provider>
@@ -261,8 +269,10 @@ const getPaymentUpdateRenderer = (
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
   <div>
     <PageContainer>
-      <h1 css={{ fontSize: "20px" }}>
-        Update payment for your Guardian {props.productType.friendlyName}
+      <h1 css={{ fontSize: "24px" }}>
+        Update payment for your{" "}
+        {props.productType.includeGuardianInTitles ? "Guardian " : ""}
+        {props.productType.friendlyName}
       </h1>
     </PageContainer>
     <CheckFlowIsValid

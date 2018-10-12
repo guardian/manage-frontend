@@ -109,7 +109,7 @@ const buttonCss = ({
 };
 
 export const ButtonArrow = () => (
-  <svg width="30" height="30" viewBox="0 0 30 30">
+  <svg viewBox="0 0 30 30">
     <path d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9" />
   </svg>
 );
@@ -132,13 +132,13 @@ const styles = {
     padding: "0 18px 0 40px",
     svg: {
       fill: "currentColor",
-      height: "28px",
+      height: "34px",
       position: "absolute",
-      left: "5px",
+      left: "0px",
       top: "50%",
       transform: "translate(0, -50%) rotate(180deg)",
       transition: "transform .3s, background .3s",
-      width: "28px"
+      width: "40px"
     }
   },
   rightHover: {

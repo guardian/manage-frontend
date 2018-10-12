@@ -3,14 +3,21 @@ import {
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
-import { createProductDetailFetcher } from "../../../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  ProductType
+} from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  ReturnToYourProductButton,
+  RouteableStepProps,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
-import { CancellationSummary, isCancelled } from "../cancellationSummary";
+import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
@@ -47,23 +54,36 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
+const getCancellationSummaryWithReturnButton = (
+  productType: ProductType,
+  subscription: Subscription
+) => (
+  <div>
+    {getCancellationSummary(productType)(subscription)}
+    <div css={{ height: "20px" }} />
+    <ReturnToYourProductButton productType={productType} />
+  </div>
+);
+
 const getCaseUpdatingCancellationSummary = (
   caseId: string,
-  cancelType: string
+  productType: ProductType
 ) => (withSubscription: WithSubscription | {}) => {
   const subscription =
     (withSubscription as WithSubscription).subscription || {};
   return (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, subscription)}
-      render={() => CancellationSummary(cancelType)(subscription)}
+      render={() =>
+        getCancellationSummaryWithReturnButton(productType, subscription)
+      }
       loadingMessage="Finalising your cancellation..."
     />
   );
 };
 
 export const ExecuteCancellation = (props: RouteableStepProps) => (
-  <WizardStep routeableStepProps={props}>
+  <WizardStep routeableStepProps={props} hideBackButton>
     <CancellationReasonContext.Consumer>
       {reason => (
         <CancellationCaseIdContext.Consumer>
@@ -76,7 +96,7 @@ export const ExecuteCancellation = (props: RouteableStepProps) => (
               )}
               render={getCaseUpdatingCancellationSummary(
                 caseId,
-                props.productType.friendlyName
+                props.productType
               )}
               loadingMessage="Performing your cancellation..."
             />

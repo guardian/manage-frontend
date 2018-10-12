@@ -46,7 +46,7 @@ class ExecuteCardUpdate extends React.Component<
       />
     ) : (
       <Button
-        text="Complete Payment Update"
+        text="Complete payment update"
         onClick={() => this.setState({ hasHitComplete: true })}
         primary
         right
@@ -73,7 +73,8 @@ class ExecuteCardUpdate extends React.Component<
     ) {
       trackEvent({
         eventCategory: "payment",
-        eventAction: "card_update_success"
+        eventAction: "card_update_success",
+        eventLabel: this.props.productType.urlPart
       });
       this.props.navigate("updated", { replace: true });
       return null;
@@ -85,7 +86,8 @@ class ExecuteCardUpdate extends React.Component<
   private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: "card_update_failed"
+      eventAction: "card_update_failed",
+      eventLabel: this.props.productType.urlPart
     });
 
     Raven.captureException("payment card update failed");
@@ -116,8 +118,6 @@ export const ConfirmCardUpdate = (props: RouteableStepProps) => (
           mdaResponse.subscription.card ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
-              backButtonLevelsUp
-              hollowReturnButton
               extraFooterComponents={<QuestionsFooter />}
             >
               <h3>Please confirm your change from...</h3>

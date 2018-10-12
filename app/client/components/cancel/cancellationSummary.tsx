@@ -1,58 +1,59 @@
 import React from "react";
-import { formatDate } from "../../../shared/productResponse";
 import { Subscription } from "../../../shared/productResponse";
-import palette from "../../colours";
+import { ProductType } from "../../../shared/productTypes";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
+import { CancellationReasonContext } from "./cancellationContexts";
 
-const actuallyCancelled = (cancelType: string, subscription: Subscription) => (
+const actuallyCancelled = (
+  productType: ProductType,
+  subscription: Subscription
+) => (
   <PageContainerSection>
-    <h2
-      css={{
-        padding: "0.9375rem 0 0.9375rem 0.25rem",
-        margin: "2rem 0 0.9375rem",
-        backgroundColor: palette.yellow.light,
-        borderTop: `0.0625rem solid ${palette.neutral["3"]}`,
-        borderBottom: `0.0625rem solid ${palette.neutral["3"]}`,
-        fontSize: "1.25rem",
-        lineHeight: "1.5rem",
-        fontWeight: 900,
-        color: palette.neutral["1"]
-      }}
-    >
-      Your {cancelType} is cancelled.
-    </h2>
-    {subscription.end ? (
-      <p>
-        You will continue to receive the benefits of your {cancelType} until{" "}
-        <b>{formatDate(subscription.end)}</b>. You will not be charged again.
-      </p>
-    ) : (
-      <p>Your cancellation is effective immediately.</p>
-    )}
-    <p>
-      If you are interested in supporting our journalism in other ways, please
-      consider either a contribution or a subscription.
-    </p>
-    <div css={{ textAlign: "right" }}>
-      <SupportTheGuardianButton supportReferer="cancellation_summary" />
-    </div>
+    <h3>Your {productType.friendlyName} is cancelled.</h3>
+    <p>{productType.cancellationSummaryMainPara(subscription)}</p>
+    <CancellationReasonContext.Consumer>
+      {reason =>
+        !productType.cancellationOnlyShowSupportSectionIfAlternateText ||
+        productType.cancellationSummaryReasonSpecificPara(reason) ? (
+          <>
+            <p>
+              {productType.cancellationSummaryReasonSpecificPara(reason) ||
+                "If you are interested in supporting our journalism in other ways, please consider either a contribution or a subscription."}
+            </p>
+            <div css={{ textAlign: "right" }}>
+              <SupportTheGuardianButton
+                urlSuffix={productType.cancellationAlternateSupportButtonUrlSuffix(
+                  reason
+                )}
+                alternateButtonText={productType.cancellationAlternateSupportButtonText(
+                  reason
+                )}
+                supportReferer={productType.urlPart + "_cancellation_summary"}
+              />
+            </div>
+          </>
+        ) : (
+          undefined
+        )
+      }
+    </CancellationReasonContext.Consumer>
   </PageContainerSection>
 );
 
 export const isCancelled = (subscription: Subscription) =>
   Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const CancellationSummary = (cancelType: string) => (
+export const getCancellationSummary = (productType: ProductType) => (
   subscription: Subscription
 ) =>
   isCancelled(subscription) ? (
-    actuallyCancelled(cancelType, subscription)
+    actuallyCancelled(productType, subscription)
   ) : (
     <GenericErrorScreen
       loggingMessage={
-        cancelType +
+        productType.friendlyName +
         " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
       }
     />

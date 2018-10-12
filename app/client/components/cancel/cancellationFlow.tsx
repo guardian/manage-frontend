@@ -5,8 +5,12 @@ import {
   MembersDataApiResponseContext,
   MembersDatApiAsyncLoader
 } from "../../../shared/productResponse";
-import { createProductDetailFetcher } from "../../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  WithProductType
+} from "../../../shared/productTypes";
 import palette from "../../colours";
+import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { CheckFlowIsValid } from "../checkFlowIsValid";
 import { NoProduct } from "../noProduct";
@@ -17,9 +21,9 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
-import { CancellationSummary } from "./cancellationSummary";
+import { getCancellationSummary } from "./cancellationSummary";
 
-interface ReasonPickerProps {
+interface ReasonPickerProps extends WithProductType {
   options: ReactNode[];
 }
 
@@ -65,18 +69,38 @@ class ReasonPicker extends React.Component<
           }}
         >
           <option disabled value="">
-            please select a reason from this dropdown
+            Please select a reason
           </option>
           {this.props.options}
         </select>
         <br />
         <br />
-        <div css={{ textAlign: "right" }}>
-          <LinkButton
-            text="Continue"
-            to={this.state.reasonPath}
-            disabled={!this.state.reasonPath}
-          />
+        <div
+          css={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row-reverse",
+            [maxWidth.mobileLandscape]: {
+              flexDirection: "column"
+            }
+          }}
+        >
+          <div
+            css={{
+              textAlign: "right",
+              marginBottom: "10px"
+            }}
+          >
+            <LinkButton
+              text="Continue"
+              to={this.state.reasonPath}
+              disabled={!this.state.reasonPath}
+              right
+            />
+          </div>
+          <div>
+            <ReturnToYourProductButton productType={this.props.productType} />
+          </div>
         </div>
       </>
     );
@@ -98,7 +122,7 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
     if (data.subscription.cancelledAt) {
       return (
         <div>
-          {CancellationSummary(routeableStepProps.productType.friendlyName)(
+          {getCancellationSummary(routeableStepProps.productType)(
             data.subscription
           )}
           <ReturnToYourProductButton {...routeableStepProps} />
@@ -107,10 +131,11 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
     }
     return (
       <MembersDataApiResponseContext.Provider value={data}>
-        <WizardStep routeableStepProps={routeableStepProps}>
+        <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
           {routeableStepProps.productType.cancellationStartPageBody}
           <PageContainerSection>
             <ReasonPicker
+              productType={routeableStepProps.productType}
               options={routeableStepProps.children.props.children.map(
                 childWithRouteablePropsToElement
               )}
@@ -136,8 +161,10 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
 export const CancellationFlow = (props: RouteableStepProps) => (
   <div>
     <PageContainer>
-      <h1 css={{ fontSize: "20px" }}>
-        Cancel your Guardian {props.productType.friendlyName}
+      <h1 css={{ fontSize: "24px" }}>
+        Cancel your{" "}
+        {props.productType.includeGuardianInTitles ? "Guardian " : ""}
+        {props.productType.friendlyName}
       </h1>
       <CheckFlowIsValid
         supportRefererSuffix="cancellation_flow"

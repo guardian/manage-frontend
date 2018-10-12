@@ -3,6 +3,10 @@ import { PageContainerSection } from "../../page";
 
 export const contributionsCancellationFlowStart = (
   <PageContainerSection>
+    <h3>
+      We’re sorry to hear you’re thinking of cancelling your recurring
+      contribution.
+    </h3>
     <p>
       Your support means The Guardian can remain editorially independent, free
       from the influence of billionaire owners and politicians. This enables us
@@ -12,10 +16,7 @@ export const contributionsCancellationFlowStart = (
     </p>
 
     <p>
-      We’re sorry to hear you’re thinking of cancelling your recurring
-      contribution.
-      <br />
-      Please could you take take a moment to tell us why?
+      Please could you take take a moment to tell us why you want to cancel?
     </p>
   </PageContainerSection>
 );

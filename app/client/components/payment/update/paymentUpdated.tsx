@@ -103,7 +103,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
             <QuestionsFooter key="questions" />,
             <SpreadTheWordFooter key="share" />
           ]}
-          hideReturnButton
+          hideBackButton
         >
           <WithSubscriptionAsyncLoader
             fetch={createProductDetailFetcher(props.productType)}

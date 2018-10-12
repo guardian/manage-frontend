@@ -10,7 +10,8 @@ const contactUsStyles = css({
 const callCenterStyles = css({
   marginBottom: "10px",
   display: "flex",
-  flexWrap: "wrap"
+  flexWrap: "wrap",
+  textAlign: "left"
 });
 
 export interface CallCentreNumbersProps {
