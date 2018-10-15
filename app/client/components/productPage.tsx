@@ -1,3 +1,4 @@
+import { Link } from "@reach/router";
 import { css } from "emotion";
 import Raven from "raven-js";
 import React from "react";
@@ -239,6 +240,20 @@ const getProductRenderer = (productType: ProductType) => (
             data={formatDate(data.subscription.start || data.joinDate)}
           />
           {getPaymentPart(data, "/payment/" + productType.urlPart)}
+          {productType.cancelLinkOnProductPage ? (
+            <Link
+              css={{
+                textDecoration: "underline",
+                color: palette.neutral["1"],
+                ":visited": { color: palette.neutral["1"] }
+              }}
+              to={"/cancel/" + productType.urlPart}
+            >
+              {"Cancel your " + productType.friendlyName}
+            </Link>
+          ) : (
+            undefined
+          )}
         </PageContainer>
       </div>
     );
