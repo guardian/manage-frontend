@@ -109,11 +109,7 @@ const membersDataApiHandler = proxyApiHandler(
 );
 const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
-server.get(
-  "/api/me",
-  membersDataApiHandler("user-attributes/me"),
-  withIdentity
-);
+server.get("/api/me", membersDataApiHandler("user-attributes/me"));
 
 Object.values(ProductTypes).forEach((productType: ProductType) => {
   server.get(
@@ -147,7 +143,7 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   );
 
   server.post(
-    "/api/payment/" + productType.urlPart,
+    "/api/payment/" + productType.urlPart + "/card",
     membersDataApiHandler(
       "user-attributes/me/" +
         (() => {
@@ -162,12 +158,11 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   );
 });
 
-server.post("/api/case", sfCasesApiHandler("case"), withIdentity);
+server.post("/api/case", sfCasesApiHandler("case"));
 
 server.patch(
   "/api/case/:caseId",
-  sfCasesApiHandler("case/:caseId", ["caseId"]),
-  withIdentity
+  sfCasesApiHandler("case/:caseId", ["caseId"])
 );
 
 const profileRedirectHandler: JsonHandler = (
