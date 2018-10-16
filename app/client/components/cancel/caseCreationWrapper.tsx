@@ -4,13 +4,14 @@ import { MembersDataApiResponse } from "../../../shared/productResponse";
 import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
+import { OptionalCancellationReasonId } from "./cancellationReason";
 
 export interface CaseCreationResponse {
   id: string;
 }
 
 const getCreateCaseFunc = (
-  reason: string,
+  reason: OptionalCancellationReasonId,
   sfProduct: string,
   membershipData: ProductDetail
 ) => async () =>

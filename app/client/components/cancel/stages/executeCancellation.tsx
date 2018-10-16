@@ -17,6 +17,7 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
+import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
@@ -24,7 +25,7 @@ class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
 
 const getCancelFunc = (
   cancelApiUrlSuffix: string,
-  reason: string,
+  reason: OptionalCancellationReasonId,
   withSubscriptionResponseFetcher: () => Promise<Response>
 ) => async () => {
   await fetch("/api/cancel/" + cancelApiUrlSuffix, {

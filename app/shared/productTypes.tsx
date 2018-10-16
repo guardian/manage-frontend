@@ -1,7 +1,7 @@
 import React from "react";
 import {
   CancellationReason,
-  CancellationReasonId
+  OptionalCancellationReasonId
 } from "../client/components/cancel/cancellationReason";
 import { contributionsCancellationFlowStart } from "../client/components/cancel/contributions/contributionsCancellationFlowStart";
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
@@ -32,14 +32,14 @@ export interface ProductType {
     subscription: Subscription
   ) => JSX.Element | string;
   cancellationSummaryReasonSpecificPara: (
-    reasonId: CancellationReasonId
+    reasonId: OptionalCancellationReasonId
   ) => string | undefined;
   cancellationOnlyShowSupportSectionIfAlternateText: boolean;
   cancellationAlternateSupportButtonText: (
-    reasonId: CancellationReasonId
+    reasonId: OptionalCancellationReasonId
   ) => string | undefined;
   cancellationAlternateSupportButtonUrlSuffix: (
-    reasonId: CancellationReasonId
+    reasonId: OptionalCancellationReasonId
   ) => string | undefined;
   cancellationSwapFeedbackAndContactUs?: true;
   tierRowLabel?: string; // no label means row is not displayed
@@ -68,6 +68,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPageTitle: "Membership",
     noProductInTabCopy:
       "To manage your existing contribution or subscription, please select from the tabs above.",
+    includeGuardianInTitles: true,
     cancellationReasons: membershipCancellationReasons,
     cancellationStartPageBody: membershipCancellationFlowStart,
     cancellationSummaryMainPara: (subscription: Subscription) =>
@@ -98,7 +99,9 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     cancellationStartPageBody: contributionsCancellationFlowStart,
     cancellationSaveTitlePrefix: "Reason: ",
     cancellationSummaryMainPara: () => "Thank you for your valuable support.",
-    cancellationSummaryReasonSpecificPara: (reasonId: CancellationReasonId) => {
+    cancellationSummaryReasonSpecificPara: (
+      reasonId: OptionalCancellationReasonId
+    ) => {
       switch (reasonId) {
         case "mma_financial_circumstances":
         case "mma_value_for_money":
@@ -114,7 +117,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     },
     cancellationOnlyShowSupportSectionIfAlternateText: true,
     cancellationAlternateSupportButtonText: (
-      reasonId: CancellationReasonId
+      reasonId: OptionalCancellationReasonId
     ) => {
       switch (reasonId) {
         case "mma_financial_circumstances":
@@ -130,7 +133,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       }
     },
     cancellationAlternateSupportButtonUrlSuffix: (
-      reasonId: CancellationReasonId
+      reasonId: OptionalCancellationReasonId
     ) => {
       switch (reasonId) {
         /*TODO tweak the support url to preselect single/monthly/annual once functionality is available*/

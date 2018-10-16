@@ -1,9 +1,9 @@
 import React from "react";
-import { CancellationReasonId } from "./cancellationReason";
+import { OptionalCancellationReasonId } from "./cancellationReason";
 
 export const CancellationReasonContext: React.Context<
-  CancellationReasonId
-> = React.createContext("" as CancellationReasonId);
+  OptionalCancellationReasonId
+> = React.createContext(undefined as OptionalCancellationReasonId);
 
 export const CancellationCaseIdContext: React.Context<
   string

@@ -28,5 +28,6 @@ export type CancellationReasonId =
   | "mma_health"
   | "mma_break_from_news"
   | "mma_values"
-  | "mma_other"
-  | "";
+  | "mma_other";
+
+export type OptionalCancellationReasonId = CancellationReasonId | undefined;
