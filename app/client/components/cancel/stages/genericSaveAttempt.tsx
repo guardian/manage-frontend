@@ -103,14 +103,10 @@ class FeedbackFormAndContactUs extends React.Component<
         ) : (
           undefined
         )}
-        {this.props.productType.cancellationSwapFeedbackAndContactUs ? (
-          undefined
-        ) : (
-          <p>
-            {this.props.reason.alternateFeedbackIntro ||
-              "Alternatively provide feedback in the box below"}
-          </p>
-        )}
+        <p>
+          {this.props.reason.alternateFeedbackIntro ||
+            "Alternatively provide feedback in the box below"}
+        </p>
         <textarea
           rows={5}
           maxLength={this.props.characterLimit}
@@ -285,10 +281,11 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
                     <div
                       css={{
                         display: "flex",
-                        flexDirection: props.productType
-                          .cancellationSwapFeedbackAndContactUs
-                          ? "column-reverse"
-                          : "column"
+                        flexDirection:
+                          props.productType
+                            .cancellationSwapFeedbackAndContactUs && caseId
+                            ? "column-reverse"
+                            : "column"
                       }}
                     >
                       <ContactUs {...props.reason} />

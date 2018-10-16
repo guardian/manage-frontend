@@ -4,33 +4,40 @@ import palette from "../../../colours";
 import { CancellationReason } from "../cancellationReason";
 
 const standardContributionsSaveBody =
-  "It would be really helpful for us to understand a bit more about your reason for cancelling. Please submit your comments in the box below. Thank you.";
+  "It would be really helpful for us to understand a bit more about your reason for cancelling.";
+
+const standardContributionsFeedbackIntro =
+  "Please submit your comments in the box below. Thank you.";
 
 export const contributionsCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_article",
     linkLabel: "As a result of a specific article I read",
     saveTitle: "As a result of a specific article you read",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I disagree with some editorial decisions",
     saveTitle: "You disagree with some of The Guardian’s editorial decisions",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveTitle: "You don’t feel that The Guardian values your support",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_support_another_way",
     linkLabel: "I support in another way, e.g. with a subscription",
     saveTitle:
       "You support The Guardian in another way, e.g. with a subscription",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -59,7 +66,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_value_for_money",
     linkLabel: "I wasn’t getting value for money",
     saveTitle: "You don’t feel your contribution offers you adequate value",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_payment_issue",
@@ -83,7 +91,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
         <p>{standardContributionsSaveBody}</p>
       </>
-    )
+    ),
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_direct_debit",
@@ -105,7 +114,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
         <p>{standardContributionsSaveBody}</p>
       </>
-    )
+    ),
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_wants_annual_contribution",
@@ -119,7 +129,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
         <p>{standardContributionsSaveBody}</p>
       </>
-    )
+    ),
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -133,7 +144,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
         <p>{standardContributionsSaveBody}</p>
       </>
-    )
+    ),
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   },
   {
     reasonId: "mma_health",
@@ -148,6 +160,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_other",
     linkLabel: "None of the above",
     saveTitle: "",
-    saveBody: standardContributionsSaveBody
+    saveBody: standardContributionsSaveBody,
+    alternateFeedbackIntro: standardContributionsFeedbackIntro
   }
 ];

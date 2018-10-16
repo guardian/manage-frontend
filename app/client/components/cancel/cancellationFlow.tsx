@@ -56,25 +56,26 @@ class ReasonPicker extends React.Component<
   public render(): React.ReactNode {
     return (
       <>
-        <select
-          value={this.state.reasonPath}
-          onChange={this.handleChange}
-          css={{
-            ...cssInheritFont,
-            width: "100%",
-            height: "32px",
-            border: "1px black solid",
-            color: this.state.reasonPath ? undefined : palette.neutral["4"]
-            // TODO fix the clipping of font top/bottom because of font-size
-          }}
-        >
-          <option disabled value="">
-            Please select a reason
-          </option>
-          {this.props.options}
-        </select>
-        <br />
-        <br />
+        <div css={{ marginBottom: "20px" }}>
+          <select
+            value={this.state.reasonPath}
+            onChange={this.handleChange}
+            css={{
+              ...cssInheritFont,
+              width: "100%",
+              height: "32px",
+              border: "1px black solid",
+              color: this.state.reasonPath ? undefined : palette.neutral["4"],
+              appearance: "menulist"
+              // TODO fix the clipping of font top/bottom because of font-size
+            }}
+          >
+            <option disabled value="">
+              Please select a reason
+            </option>
+            {this.props.options}
+          </select>
+        </div>
         <div
           css={{
             display: "flex",
