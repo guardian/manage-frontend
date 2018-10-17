@@ -92,7 +92,8 @@ export const navLinks: NavLinks = {
   },
   contributions: {
     title: "Contributions",
-    link: "/contribution/recurring/edit"
+    link: "/contributions",
+    local: true
   },
   emailPrefs: {
     title: "Emails & marketing",
