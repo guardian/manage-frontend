@@ -15,6 +15,10 @@ const palette = {
     medium: "#0084c6",
     dark: "#005689"
   },
+  green: {
+    dark: "#236925",
+    medium: "#3db540"
+  },
   gold: {
     light: "#eacca0",
     medium: "#ab8958",

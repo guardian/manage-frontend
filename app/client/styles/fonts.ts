@@ -1,3 +1,5 @@
+import palette from "../colours";
+
 export const fonts = `
 @font-face {
 	font-family: "GH Guardian Headline";
@@ -328,3 +330,9 @@ export const fonts = `
 export const sans = `"Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
 export const serif = `"GuardianTextEgyptian", Georgia, serif`;
 export const headline = `GH Guardian Headline, ${serif}`;
+
+export const validationWarningCSS = {
+  color: palette.red.medium,
+  fontFamily: sans,
+  fontSize: "0.8rem"
+};

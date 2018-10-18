@@ -1,9 +1,8 @@
 import { NavigateFn } from "@reach/router";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
-import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
-import { sans } from "../../../styles/fonts";
+import { validationWarningCSS } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { Spinner } from "../../spinner";
@@ -21,7 +20,6 @@ export interface StripeCardInputFormProps
 
 export interface StripeCardInputFormState {
   isGeneratingToken: boolean;
-  isValid: boolean;
   error: {
     code?: string;
     message?: string;
@@ -36,7 +34,6 @@ export class StripeCardInputForm extends React.Component<
 > {
   public state: StripeCardInputFormState = {
     isGeneratingToken: false,
-    isValid: false,
     error: {},
     readyElements: []
   };
@@ -140,9 +137,7 @@ export class StripeCardInputForm extends React.Component<
       return (
         <p
           css={{
-            color: palette.red.medium,
-            fontFamily: sans,
-            fontSize: "0.8rem",
+            ...validationWarningCSS,
             marginTop: "5px"
           }}
         >

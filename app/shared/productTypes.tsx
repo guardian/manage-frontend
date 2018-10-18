@@ -25,6 +25,7 @@ export interface ProductType {
   validator: MeValidator;
   sfProduct: SfProduct;
   noProductInTabCopy: string;
+  updateAmountMdaEndpoint?: string;
   cancelLinkOnProductPage?: true;
   cancellationReasons: CancellationReason[];
   cancellationStartPageBody: JSX.Element;
@@ -96,6 +97,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPageTitle: "Contributions",
     noProductInTabCopy:
       "To manage your existing membership or subscription, please select from the tabs above.",
+    updateAmountMdaEndpoint: "contribution-update-amount",
     cancelLinkOnProductPage: true,
     cancellationReasons: contributionsCancellationReasons,
     cancellationStartPageBody: contributionsCancellationFlowStart,
