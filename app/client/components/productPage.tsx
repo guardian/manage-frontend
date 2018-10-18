@@ -17,7 +17,7 @@ import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { serif } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
-import { CancellationSummary } from "./cancel/cancellationSummary";
+import { getCancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
 import { PageContainer, PageHeaderContainer } from "./page";
@@ -96,8 +96,9 @@ const getPaymentMethodRow = (
               }}
             >
               <LinkButton
-                text="Update Payment Details"
+                text="Update payment details"
                 to={updatePaymentPath}
+                right
               />
             </div>
           </div>
@@ -157,7 +158,7 @@ const getProductRenderer = (productType: ProductType) => (
   if (hasProduct(apiResponse)) {
     const data: ProductDetail = apiResponse;
     if (data.subscription.cancelledAt) {
-      return CancellationSummary(productType.friendlyName)(data.subscription);
+      return getCancellationSummary(productType)(data.subscription);
     }
     return (
       <div>
@@ -192,7 +193,7 @@ const getProductRenderer = (productType: ProductType) => (
                 Please check that the card details shown are up to date.
               </p>
               <LinkButton
-                text="Update Payment Details"
+                text="Update payment details"
                 to={"/payment/" + productType.urlPart}
                 primary
                 right
@@ -225,7 +226,7 @@ const getProductRenderer = (productType: ProductType) => (
                       "/tier/change"
                     }
                   >
-                    <Button text="Change tier" />
+                    <Button text="Change tier" right />
                   </a>
                 </div>
               }

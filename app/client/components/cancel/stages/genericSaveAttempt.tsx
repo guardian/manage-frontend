@@ -1,15 +1,20 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
+import { WithProductType } from "../../../../shared/productTypes";
 import palette from "../../../colours";
-import { minWidth } from "../../../styles/breakpoints";
+import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
-import { MultiRouteableProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  MultiRouteableProps,
+  ReturnToYourProductButton,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
@@ -25,7 +30,7 @@ export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
 }
 
-interface FeedbackFormProps {
+interface FeedbackFormProps extends WithProductType {
   reason: CancellationReason;
   characterLimit: number;
   caseId: string;
@@ -49,7 +54,16 @@ const gaTrackFeedback = (actionString: string) =>
     eventAction: actionString
   });
 
-class FeedbackForm extends React.Component<
+const ContactUs = (reason: CancellationReason) =>
+  reason.hideContactUs ? (
+    <></>
+  ) : (
+    <CallCentreNumbers
+      prefixText={reason.alternateCallUsPrefix || "To contact us"}
+    />
+  );
+
+class FeedbackFormAndContactUs extends React.Component<
   FeedbackFormProps,
   FeedbackFormState
 > {
@@ -73,12 +87,22 @@ class FeedbackForm extends React.Component<
             )}
             render={this.getFeedbackThankYouRenderer(this.props.reason)}
           />
-          <ConfirmCancellationButton reasonId={this.props.reason.reasonId} />
+          <div css={{ height: "20px" }} />
+          <ConfirmCancellationAndReturnRow
+            reasonId={this.props.reason.reasonId}
+            productType={this.props.productType}
+          />
         </>
       );
     }
     return (
       <div>
+        {!this.props.reason.hideContactUs &&
+        !this.props.productType.cancellationSwapFeedbackAndContactUs ? (
+          <ContactUs {...this.props.reason} />
+        ) : (
+          undefined
+        )}
         <p>
           {this.props.reason.alternateFeedbackIntro ||
             "Alternatively provide feedback in the box below"}
@@ -108,11 +132,12 @@ class FeedbackForm extends React.Component<
           </div>
           <Button
             onClick={this.submitFeedback}
-            text="Submit Feedback"
+            text="Submit feedback"
             disabled={this.state.feedback.length === 0}
           />
-          <ConfirmCancellationButton
+          <ConfirmCancellationAndReturnRow
             reasonId={this.props.reason.reasonId}
+            productType={this.props.productType}
             onClick={() => {
               if (this.state.feedback.length > 0) {
                 getPatchUpdateCaseFunc(
@@ -123,6 +148,14 @@ class FeedbackForm extends React.Component<
               }
             }}
           />
+          {!this.props.reason.hideContactUs &&
+          this.props.productType.cancellationSwapFeedbackAndContactUs ? (
+            <div css={{ marginTop: "20px" }}>
+              <ContactUs {...this.props.reason} />
+            </div>
+          ) : (
+            undefined
+          )}
         </div>
       </div>
     );
@@ -160,52 +193,72 @@ class FeedbackForm extends React.Component<
         </p>
         <span>
           {reason.alternateFeedbackThankYouBody ||
-            "The Guardian is dedicated to reporting the truth, holding power to account, and exposing corruption wherever we find it. Support from our readers makes what we do possible."}
+            "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible."}
         </span>
       </div>
     );
   }
 }
 
-interface ConfirmCancellationButtonProps {
+interface ConfirmCancellationAndReturnRowProps extends WithProductType {
   onClick?: () => any;
   reasonId: CancellationReasonId;
 }
 
-const ConfirmCancellationButton = (props: ConfirmCancellationButtonProps) => (
+const ConfirmCancellationAndReturnRow = (
+  props: ConfirmCancellationAndReturnRowProps
+) => (
   <div
     css={{
-      [minWidth.tablet]: {
-        transform: "translateY(51px)",
-        margin: 0
-      },
-      marginTop: "15px",
-      textAlign: "right"
+      display: "flex",
+      justifyContent: "space-between",
+      flexDirection: "row-reverse",
+      marginTop: "10px",
+      textAlign: "left",
+      [maxWidth.mobileLandscape]: {
+        flexDirection: "column"
+      }
     }}
   >
-    <Button
-      text="Confirm Cancellation"
-      onClick={() => {
-        if (props.onClick) {
-          props.onClick();
-        }
-        navigate(props.reasonId + "/confirmed");
+    <div
+      css={{
+        textAlign: "right",
+        marginBottom: "30px"
       }}
-    />
+    >
+      <Button
+        text="Confirm cancellation"
+        onClick={() => {
+          if (props.onClick) {
+            props.onClick();
+          }
+          navigate(props.reasonId + "/confirmed");
+        }}
+        right
+      />
+    </div>
+    <div>
+      <ReturnToYourProductButton productType={props.productType} />
+    </div>
   </div>
 );
 
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
   <MembersDataApiResponseContext.Consumer>
     {membersDataApiResponse => (
-      <CancellationReasonContext.Provider value={props.path}>
+      <CancellationReasonContext.Provider
+        value={props.path as CancellationReasonId}
+      >
         <CaseCreationWrapper
           membersDataApiResponse={membersDataApiResponse}
           sfProduct={props.productType.sfProduct}
         >
-          <WizardStep routeableStepProps={props}>
+          <WizardStep routeableStepProps={props} hideBackButton>
             <PageContainerSection>
-              <h2 id="save_title">{props.reason.saveTitle}</h2>
+              <h3 id="save_title">
+                {props.productType.cancellationSaveTitlePrefix || ""}
+                {props.reason.saveTitle}
+              </h3>
               <GoogleOptimiseAwaitFlagWrapper
                 experimentFlagName={props.reason.experimentTriggerFlag}
               >
@@ -215,27 +268,32 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
                 }}
               </GoogleOptimiseAwaitFlagWrapper>
 
-              {props.reason.skipFeedback ? (
-                undefined
-              ) : (
-                <CallCentreNumbers
-                  prefixText={
-                    props.reason.alternateCallUsPrefix || "To contact us"
-                  }
-                />
-              )}
               <CancellationCaseIdContext.Consumer>
                 {caseId =>
                   caseId && !props.reason.skipFeedback ? (
-                    <FeedbackForm
+                    <FeedbackFormAndContactUs
                       characterLimit={2500}
                       caseId={caseId}
                       reason={props.reason}
+                      productType={props.productType}
                     />
                   ) : (
-                    <ConfirmCancellationButton
-                      reasonId={props.reason.reasonId}
-                    />
+                    <div
+                      css={{
+                        display: "flex",
+                        flexDirection:
+                          props.productType
+                            .cancellationSwapFeedbackAndContactUs && caseId
+                            ? "column-reverse"
+                            : "column"
+                      }}
+                    >
+                      <ContactUs {...props.reason} />
+                      <ConfirmCancellationAndReturnRow
+                        reasonId={props.reason.reasonId}
+                        productType={props.productType}
+                      />
+                    </div>
                   )
                 }
               </CancellationCaseIdContext.Consumer>

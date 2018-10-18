@@ -24,12 +24,10 @@ export interface MultiRouteableProps extends RouteableStepProps {
 }
 
 export interface ButtonStyleModifierProps {
-  hideReturnButton?: true;
-  hollowReturnButton?: true;
+  hideBackButton?: true;
 }
 
 export interface CommonProps extends ButtonStyleModifierProps {
-  backButtonLevelsUp?: true;
   extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
@@ -51,22 +49,13 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export type ReturnToYourProductButtonProps = ButtonStyleModifierProps &
-  WithProductType;
-
-export const ReturnToYourProductButton = (
-  props: ReturnToYourProductButtonProps
-) => (
-  <div css={{ marginTop: "15px" }}>
-    <a href={"/" + props.productType.urlPart}>
-      <Button
-        text="Return to your account"
-        hide={props.hideReturnButton}
-        hollow={props.hollowReturnButton}
-        left
-      />
-    </a>
-  </div>
+export const ReturnToYourProductButton = (props: WithProductType) => (
+  <LinkButton
+    text="Return to your account"
+    to={"/" + props.productType.urlPart}
+    hollow
+    left
+  />
 );
 
 const RootComponent = (props: RootComponentProps) => (
@@ -91,17 +80,7 @@ const RootComponent = (props: RootComponentProps) => (
 
       {props.thisStageChildren}
 
-      {props.backButtonLevelsUp ? (
-        <LinkButton
-          hide={props.hideReturnButton}
-          text="Back"
-          to=".."
-          hollow={props.hollowReturnButton}
-          left
-        />
-      ) : (
-        <ReturnToYourProductButton {...props} {...props.routeableStepProps} />
-      )}
+      <LinkButton hide={props.hideBackButton} text="Back" to=".." hollow left />
     </PageContainer>
     {props.extraFooterComponents}
   </>
