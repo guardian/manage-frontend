@@ -90,7 +90,8 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle: "Thank you so much for your support.",
     saveBody:
       "Your contribution has ensured that our quality journalism remains open for everyone to read and enjoy. Please confirm your cancellation below.",
-    skipFeedback: true
+    skipFeedback: true,
+    hideContactUs: true
   },
   {
     reasonId: "mma_break_from_news",

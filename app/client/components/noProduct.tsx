@@ -10,14 +10,7 @@ export interface NoProductProps extends WithProductType {
 export const NoProduct = (props: NoProductProps) => (
   <div>
     <h2>You do not currently have a {props.productType.friendlyName}.</h2>
-    {props.inTab ? (
-      <p>
-        To manage your existing contribution or subscription, please select from
-        the tabs above.
-      </p>
-    ) : (
-      undefined
-    )}
+    {props.inTab ? <p>{props.productType.noProductInTabCopy}</p> : undefined}
     <p>
       Please support our journalism by making either a contribution or a
       subscription.
