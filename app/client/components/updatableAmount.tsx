@@ -47,7 +47,7 @@ const validateValue = (
   if (newValue === currentAmount) {
     return `Your current contribution is ${
       subscription.plan.currency
-    }${currentAmount.toFixed(2)} per ${
+    }${currentAmount.toFixed(2)} a ${
       subscription.plan.interval
     }. Please enter a different amount.`;
   }
@@ -58,7 +58,7 @@ const validateValue = (
   if (newValue < minAmount) {
     return `Please enter an amount of ${
       subscription.plan.currency
-    }${minAmount} or more per ${subscription.plan.interval}`;
+    }${minAmount} or more a ${subscription.plan.interval}`;
   }
   const maxAmount = calculateMinOrMaxAmount(
     MinOrMax.maximum,
@@ -67,12 +67,12 @@ const validateValue = (
   if (newValue > maxAmount) {
     return `Thank you but we cannot accept contributions over ${
       subscription.plan.currency
-    }${maxAmount} per ${subscription.plan.interval}`;
+    }${maxAmount} a ${subscription.plan.interval}`;
   }
   if (newValue > 10 * currentAmount) {
     return `Your current contribution is ${
       subscription.plan.currency
-    }${currentAmount.toFixed(2)} per ${
+    }${currentAmount.toFixed(2)} a ${
       subscription.plan.interval
     }. ${pleaseCheck}`;
   }
