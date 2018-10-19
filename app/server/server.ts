@@ -44,7 +44,11 @@ const globals: Globals = {
 
 server.use(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.header("Cache-Control", "private");
+    // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
+    res.header(
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate, max-age=0"
+    );
     res.header("Access-Control-Allow-Origin", "*." + conf.DOMAIN);
     next();
   }
