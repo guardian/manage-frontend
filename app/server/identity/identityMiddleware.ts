@@ -44,6 +44,7 @@ export const withIdentity: express.RequestHandler = (
   if (user === IdentityError.Expired) {
     log.info("User session expired.");
     res.redirect(getAuthRedirectUrl("reauthenticate"));
+    return;
   }
 
   // tslint:disable-next-line:no-object-mutation

@@ -9,7 +9,7 @@ deployments:
     parameters:
       templatePath: cloudformation/cfn.yaml
       amiTags:
-        Recipe: xenial-membership
+        Recipe: manage-frontend
         AmigoStage: PROD
       amiEncrypted: true
   manage-frontend:

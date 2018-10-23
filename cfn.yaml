@@ -89,10 +89,6 @@ Resources:
           - |+
             #!/bin/bash -ev
 
-            # get and install node
-            wget -nv https://nodejs.org/dist/v10.7.0/node-v10.7.0-linux-x64.tar.xz -P /tmp
-            tar -xf /tmp/node-v10.7.0-linux-x64.tar.xz  --directory /usr/local/
-
             # get runnable tar from S3
             aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/manage-frontend.tgz /tmp
             mkdir /etc/gu
@@ -108,7 +104,7 @@ Resources:
             # write out systemd file
             cat >/etc/systemd/system/manage-frontend.service <<EOL
             [Service]
-            ExecStart=/usr/local/node-v10.7.0-linux-x64/bin/node /etc/gu/dist/server.js
+            ExecStart=/usr/bin/node /etc/gu/dist/server.js
             Restart=always
             StandardOutput=syslog
             StandardError=syslog
