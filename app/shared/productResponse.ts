@@ -44,7 +44,6 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-  amount: number;
   currency: string;
   currencyISO: string;
   interval: string;

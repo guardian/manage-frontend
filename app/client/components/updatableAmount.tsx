@@ -36,9 +36,9 @@ const calculateMinOrMaxAmount = (
   return minOrMax === MinOrMax.minimum ? 10 : 2000; // annual
 };
 
-const pleaseCheck = "Please check the amount you've entered.";
+export const pleaseCheck = "Please check the amount you've entered.";
 
-const validateValue = (
+export const validateValue = (
   currentAmount: number,
   newValue: number,
   subscriptionPlan: SubscriptionPlan
