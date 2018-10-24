@@ -1,26 +1,34 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
-import { navLinks, qualifyLink } from "./nav";
+import { NavItem, navLinks, qualifyLink } from "./nav";
 import { PageContainer } from "./page";
 import { RouteableProps } from "./wizardRouterAdapter";
+
+export const startRedirect = (navLink: NavItem) => {
+  const qualifiedLink = qualifyLink(navLink);
+  if (navLink.local) {
+    navigate(qualifiedLink, { replace: true });
+  } else {
+    window.location.replace(qualifiedLink);
+  }
+};
 
 export const RedirectOnMeResponse = (props: RouteableProps) => (
   <PageContainer>
     <MeAsyncLoader
       fetch={fetchMe}
       render={(me: MeResponse) => {
-        const replace = { replace: true };
         if (me.contentAccess.member) {
-          navigate(qualifyLink(navLinks.membership), replace);
+          startRedirect(navLinks.membership);
         } else if (me.contentAccess.recurringContributor) {
-          navigate(qualifyLink(navLinks.contributions), replace);
+          startRedirect(navLinks.contributions);
         } else if (me.contentAccess.digitalPack) {
-          navigate(qualifyLink(navLinks.digiPack), replace);
+          startRedirect(navLinks.digitalPack);
         } else {
-          navigate(qualifyLink(navLinks.membership), replace);
+          startRedirect(navLinks.membership);
         }
-        return null; // official way to render nothing
+        return null; // official way to render nothing, while awaiting redirect to take effect
       }}
       loadingMessage={"Checking your products..."}
     />
