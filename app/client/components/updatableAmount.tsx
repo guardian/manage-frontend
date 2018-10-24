@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
 import {
-  Subscription,
   SubscriptionPlan,
   WithSubscription
 } from "../../shared/productResponse";
@@ -20,13 +19,16 @@ enum MinOrMax {
 // min & max values based on https://github.com/guardian/support-frontend/blob/5aa237d/assets/helpers/contributions.js
 const calculateMinOrMaxAmount = (
   minOrMax: MinOrMax,
-  plan: SubscriptionPlan
+  subscriptionPlan: SubscriptionPlan
 ) => {
-  if (plan.interval.toLowerCase() === "month") {
-    if (plan.currencyISO === "NZD" || plan.currencyISO === "AUD") {
+  if (subscriptionPlan.interval.toLowerCase() === "month") {
+    if (
+      subscriptionPlan.currencyISO === "NZD" ||
+      subscriptionPlan.currencyISO === "AUD"
+    ) {
       return minOrMax === MinOrMax.minimum ? 10 : 200;
     }
-    if (plan.currencyISO === "CAD") {
+    if (subscriptionPlan.currencyISO === "CAD") {
       return minOrMax === MinOrMax.minimum ? 5 : 166;
     }
     return minOrMax === MinOrMax.minimum ? 2 : 166; // monthly default
@@ -39,41 +41,35 @@ const pleaseCheck = "Please check the amount you've entered.";
 const validateValue = (
   currentAmount: number,
   newValue: number,
-  subscription: Subscription
+  subscriptionPlan: SubscriptionPlan
 ) => {
   if (isNaN(newValue)) {
     return "Please enter a valid number";
   }
   if (newValue === currentAmount) {
     return `Your current contribution is ${
-      subscription.plan.currency
+      subscriptionPlan.currency
     }${currentAmount.toFixed(2)} a ${
-      subscription.plan.interval
+      subscriptionPlan.interval
     }. Please enter a different amount.`;
   }
-  const minAmount = calculateMinOrMaxAmount(
-    MinOrMax.minimum,
-    subscription.plan
-  );
+  const minAmount = calculateMinOrMaxAmount(MinOrMax.minimum, subscriptionPlan);
   if (newValue < minAmount) {
     return `Please enter an amount of ${
-      subscription.plan.currency
-    }${minAmount} or more a ${subscription.plan.interval}`;
+      subscriptionPlan.currency
+    }${minAmount} or more a ${subscriptionPlan.interval}`;
   }
-  const maxAmount = calculateMinOrMaxAmount(
-    MinOrMax.maximum,
-    subscription.plan
-  );
+  const maxAmount = calculateMinOrMaxAmount(MinOrMax.maximum, subscriptionPlan);
   if (newValue > maxAmount) {
     return `Thank you but we cannot accept contributions over ${
-      subscription.plan.currency
-    }${maxAmount} a ${subscription.plan.interval}`;
+      subscriptionPlan.currency
+    }${maxAmount} a ${subscriptionPlan.interval}`;
   }
   if (newValue > 10 * currentAmount) {
     return `Your current contribution is ${
-      subscription.plan.currency
+      subscriptionPlan.currency
     }${currentAmount.toFixed(2)} a ${
-      subscription.plan.interval
+      subscriptionPlan.interval
     }. ${pleaseCheck}`;
   }
 };
@@ -103,8 +99,8 @@ export type UpdatableAmountProps = WithSubscription & WithProductType;
 export interface UpdatableAmountState {
   inEditMode: boolean;
   isApplyingUpdate: boolean;
-  currentAmount: number;
-  newAmount: number;
+  currentAmount: number; // this represents the value currently stored server-side
+  newAmount: number; // this represents the new (in-flux) value based on the users changes
   validationMessage?: string;
 }
 
@@ -117,8 +113,8 @@ export class UpdatableAmount extends React.Component<
   public state = {
     inEditMode: false,
     isApplyingUpdate: false,
-    currentAmount: this.initialAmount,
-    newAmount: this.initialAmount,
+    currentAmount: this.initialAmount, // this value should start at the value from the full api call
+    newAmount: this.initialAmount, // this value should start at the value from the full api call
     validationMessage: ""
   };
 
@@ -126,147 +122,15 @@ export class UpdatableAmount extends React.Component<
     return (
       <div css={wrappingContainerCSS}>
         {this.state.isApplyingUpdate ? (
-          <UpdateAmountLoader
-            fetch={getAmountUpdater(
-              this.state.newAmount,
-              this.props.productType
-            )}
-            readerOnOK={(resp: Response) => resp.text()}
-            render={() => {
-              this.setState({
-                isApplyingUpdate: false,
-                inEditMode: false,
-                currentAmount: this.state.newAmount
-              });
-              return null;
-            }}
-            loadingMessage={"Updating..."}
-            errorRender={() => {
-              this.setState({
-                isApplyingUpdate: false,
-                validationMessage:
-                  "Updating failed this time. Please try again later..."
-              });
-              return null;
-            }}
-            spinnerScale={0.7}
-            inline
-          />
+          this.getPerformUpdateLoader()
         ) : (
           <>
             <span css={{ width: "12px" }}>
               {this.props.subscription.plan.currency}
             </span>
-            {this.state.inEditMode ? (
-              <>
-                <input
-                  css={{
-                    fontSize: "inherit",
-                    fontFamily: "inherit",
-                    width: "70px",
-                    marginLeft: "3px",
-                    marginRight: "3px",
-                    height: "32px",
-                    border: "1px black solid"
-                  }}
-                  type="number"
-                  step="0.01"
-                  defaultValue={this.state.newAmount.toFixed(2)}
-                  onChange={this.handleChange}
-                  autoFocus
-                />
-                <span
-                  css={{
-                    marginRight: "10px"
-                  }}
-                >
-                  {this.props.subscription.plan.currencyISO}
-                </span>
-                <div
-                  css={{
-                    ...amountValidationWarningCSS,
-                    display: "block",
-                    [minWidth.mobileLandscape]: {
-                      display: "none"
-                    }
-                  }}
-                >
-                  {this.state.validationMessage || " "}
-                </div>
-                <div>
-                  <Button
-                    text="Confirm"
-                    onClick={() => this.setState({ isApplyingUpdate: true })}
-                    disabled={
-                      this.state.validationMessage !== undefined &&
-                      !this.state.validationMessage.endsWith(pleaseCheck)
-                    }
-                  />{" "}
-                  <Button
-                    text="Back"
-                    onClick={() => this.setState({ inEditMode: false })}
-                  />
-                </div>
-                <div
-                  css={{
-                    ...amountValidationWarningCSS,
-                    display: "none",
-                    [minWidth.mobileLandscape]: {
-                      display: "block"
-                    }
-                  }}
-                >
-                  {this.state.validationMessage || <>&nbsp;</>}
-                </div>
-              </>
-            ) : (
-              <>
-                <span
-                  css={{
-                    marginRight: "15px"
-                  }}
-                >
-                  {this.state.currentAmount.toFixed(2)}{" "}
-                  {this.props.subscription.plan.currencyISO}
-                </span>
-                {this.props.productType.updateAmountMdaEndpoint ? (
-                  <>
-                    <Button
-                      text="Change amount"
-                      onClick={() => {
-                        // tslint:disable-next-line:no-object-mutation
-                        this.initialAmount = this.state.currentAmount; // effectively clears any previous success message
-                        this.setState({
-                          inEditMode: true,
-                          validationMessage: validateValue(
-                            this.initialAmount,
-                            this.state.newAmount,
-                            this.props.subscription
-                          )
-                        });
-                      }}
-                    />
-                    {this.initialAmount !== this.state.currentAmount ? (
-                      <div
-                        css={{
-                          ...amountValidationWarningCSS,
-                          paddingLeft: "0",
-                          fontWeight: "bold",
-                          color: palette.green.dark
-                        }}
-                      >
-                        Your contribution amount was updated successfully. Thank
-                        you.
-                      </div>
-                    ) : (
-                      undefined
-                    )}
-                  </>
-                ) : (
-                  undefined
-                )}
-              </>
-            )}
+            {this.state.inEditMode
+              ? this.getEditModeRenderer()
+              : this.getDisplayModeRenderer()}
           </>
         )}
       </div>
@@ -280,8 +144,146 @@ export class UpdatableAmount extends React.Component<
       validationMessage: validateValue(
         this.state.currentAmount,
         newValue,
-        this.props.subscription
+        this.props.subscription.plan
       )
     });
   };
+
+  private getPerformUpdateLoader = () => (
+    <UpdateAmountLoader
+      fetch={getAmountUpdater(this.state.newAmount, this.props.productType)}
+      readerOnOK={(resp: Response) => resp.text()}
+      render={() => {
+        this.setState({
+          isApplyingUpdate: false,
+          inEditMode: false,
+          currentAmount: this.state.newAmount
+        });
+        return null;
+      }}
+      loadingMessage={"Updating..."}
+      errorRender={() => {
+        this.setState({
+          isApplyingUpdate: false,
+          validationMessage:
+            "Updating failed this time. Please try again later..."
+        });
+        return null;
+      }}
+      spinnerScale={0.7}
+      inline
+    />
+  );
+
+  private getEditModeRenderer = () => (
+    <>
+      <input
+        css={{
+          fontSize: "inherit",
+          fontFamily: "inherit",
+          width: "70px",
+          marginLeft: "3px",
+          marginRight: "3px",
+          height: "32px",
+          border: "1px black solid"
+        }}
+        type="number"
+        step="0.01"
+        defaultValue={this.state.newAmount.toFixed(2)}
+        onChange={this.handleChange}
+        autoFocus
+      />
+      <span
+        css={{
+          marginRight: "10px"
+        }}
+      >
+        {this.props.subscription.plan.currencyISO}
+      </span>
+      <div
+        css={{
+          ...amountValidationWarningCSS,
+          display: "block",
+          [minWidth.mobileLandscape]: {
+            display: "none"
+          }
+        }}
+      >
+        {this.state.validationMessage || " "}
+      </div>
+      <div>
+        <Button
+          text="Confirm"
+          onClick={() => this.setState({ isApplyingUpdate: true })}
+          disabled={
+            this.state.validationMessage !== undefined &&
+            !this.state.validationMessage.endsWith(pleaseCheck)
+          }
+        />{" "}
+        <Button
+          text="Back"
+          onClick={() => this.setState({ inEditMode: false })}
+        />
+      </div>
+      <div
+        css={{
+          ...amountValidationWarningCSS,
+          display: "none",
+          [minWidth.mobileLandscape]: {
+            display: "block"
+          }
+        }}
+      >
+        {this.state.validationMessage || <>&nbsp;</>}
+      </div>
+    </>
+  );
+
+  private getDisplayModeRenderer = () => (
+    <>
+      <span
+        css={{
+          marginRight: "15px"
+        }}
+      >
+        {this.state.currentAmount.toFixed(2)}{" "}
+        {this.props.subscription.plan.currencyISO}
+      </span>
+      {this.props.productType.updateAmountMdaEndpoint ? (
+        <>
+          <Button
+            text="Change amount"
+            onClick={() => {
+              // tslint:disable-next-line:no-object-mutation
+              this.initialAmount = this.state.currentAmount; // effectively clears any previous success message
+              this.setState({
+                inEditMode: true,
+                validationMessage: validateValue(
+                  this.initialAmount,
+                  this.state.newAmount,
+                  this.props.subscription.plan
+                )
+              });
+            }}
+          />
+          {this.initialAmount !== this.state.currentAmount ? (
+            <div
+              css={{
+                ...amountValidationWarningCSS,
+                paddingLeft: "0",
+                fontWeight: "bold",
+                color: palette.green.dark
+              }}
+            >
+              Your contribution amount was updated successfully. Thank you.
+            </div>
+          ) : (
+            undefined
+          )}
+        </>
+      ) : (
+        undefined
+      )}
+    </>
+  );
 }
