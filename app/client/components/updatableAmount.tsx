@@ -7,6 +7,7 @@ import { ProductType, WithProductType } from "../../shared/productTypes";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { validationWarningCSS } from "../styles/fonts";
+import { trackEvent } from "./analytics";
 import AsyncLoader from "./asyncLoader";
 import { Button } from "./buttons";
 import { wrappingContainerCSS } from "./productPage";
@@ -154,6 +155,13 @@ export class UpdatableAmount extends React.Component<
       fetch={getAmountUpdater(this.state.newAmount, this.props.productType)}
       readerOnOK={(resp: Response) => resp.text()}
       render={() => {
+        trackEvent({
+          eventCategory: "amount_change",
+          eventAction: "contributions_amount_change_success",
+          eventLabel: `by ${this.props.subscription.plan.currency}${(
+            this.state.newAmount - this.state.currentAmount
+          ).toFixed(2)}${this.props.subscription.plan.currencyISO}`
+        });
         this.setState({
           isApplyingUpdate: false,
           inEditMode: false,
@@ -163,6 +171,10 @@ export class UpdatableAmount extends React.Component<
       }}
       loadingMessage={"Updating..."}
       errorRender={() => {
+        trackEvent({
+          eventCategory: "amount_change",
+          eventAction: "contributions_amount_change_failed"
+        });
         this.setState({
           isApplyingUpdate: false,
           validationMessage:
