@@ -160,6 +160,22 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
         })()
     )
   );
+
+  server.use(
+    "/banner/" + productType.urlPart,
+    (req: express.Request, res: express.Response) => {
+      res.redirect("/payment/" + productType.urlPart + "?INTCMP=BANNER");
+    }
+  );
+
+  if (productType.updateAmountMdaEndpoint) {
+    server.post(
+      "/api/update/amount/" + productType.urlPart,
+      membersDataApiHandler(
+        "user-attributes/me/" + productType.updateAmountMdaEndpoint
+      )
+    );
+  }
 });
 
 server.post("/api/case", sfCasesApiHandler("case"));
@@ -183,14 +199,6 @@ server.get(
     "user-attributes/me"
   ),
   withIdentity
-);
-
-const productParamName = "product";
-server.use(
-  "/banner/:" + productParamName,
-  (req: express.Request, res: express.Response) => {
-    res.redirect("/payment/" + req.params[productParamName] + "?INTCMP=BANNER");
-  }
 );
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING

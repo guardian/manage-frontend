@@ -1,3 +1,4 @@
+import { Link } from "@reach/router";
 import { css } from "emotion";
 import Raven from "raven-js";
 import React from "react";
@@ -24,6 +25,7 @@ import { PageContainer, PageHeaderContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
+import { UpdatableAmount } from "./updatableAmount";
 import { RouteableProductProps } from "./wizardRouterAdapter";
 
 interface ProductRowProps {
@@ -125,7 +127,7 @@ const getPaymentMethodRow = (
   return undefined;
 };
 
-const getPaymentPart = (data: ProductDetail, updatePaymentPath: string) => {
+const getPaymentPart = (data: ProductDetail, productType: ProductType) => {
   if (data.isPaidTier) {
     return (
       <>
@@ -140,11 +142,16 @@ const getPaymentPart = (data: ProductDetail, updatePaymentPath: string) => {
             "ly payment"
           }
           data={
-            data.subscription.plan.currency +
-            (data.subscription.nextPaymentPrice / 100.0).toFixed(2)
+            <UpdatableAmount
+              subscription={data.subscription}
+              productType={productType}
+            />
           }
         />
-        {getPaymentMethodRow(data.subscription, updatePaymentPath)}
+        {getPaymentMethodRow(
+          data.subscription,
+          "/payment/" + productType.urlPart
+        )}
       </>
     );
   } else {
@@ -204,33 +211,35 @@ const getProductRenderer = (productType: ProductType) => (
           undefined
         )}
         <PageContainer>
-          {data.regNumber ? (
-            <ProductDetailRow
-              label={"Registration number"}
-              data={data.regNumber}
-            />
-          ) : (
-            undefined
-          )}
           {productType.tierRowLabel ? (
-            <ProductDetailRow
-              label={productType.tierRowLabel}
-              data={
-                <div css={wrappingContainerCSS}>
-                  <div css={{ marginRight: "15px" }}>{data.tier}</div>
-                  {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                  <a
-                    href={
-                      "https://membership." +
-                      window.guardian.domain +
-                      "/tier/change"
-                    }
-                  >
-                    <Button text="Change tier" right />
-                  </a>
-                </div>
-              }
-            />
+            <>
+              {data.regNumber ? (
+                <ProductDetailRow
+                  label={"Registration number"}
+                  data={data.regNumber}
+                />
+              ) : (
+                undefined
+              )}
+              <ProductDetailRow
+                label={productType.tierRowLabel}
+                data={
+                  <div css={wrappingContainerCSS}>
+                    <div css={{ marginRight: "15px" }}>{data.tier}</div>
+                    {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                    <a
+                      href={
+                        "https://membership." +
+                        window.guardian.domain +
+                        "/tier/change"
+                      }
+                    >
+                      <Button text="Change tier" right />
+                    </a>
+                  </div>
+                }
+              />
+            </>
           ) : (
             undefined
           )}
@@ -238,7 +247,21 @@ const getProductRenderer = (productType: ProductType) => (
             label={"Start date"}
             data={formatDate(data.subscription.start || data.joinDate)}
           />
-          {getPaymentPart(data, "/payment/" + productType.urlPart)}
+          {getPaymentPart(data, productType)}
+          {productType.cancelLinkOnProductPage ? (
+            <Link
+              css={{
+                textDecoration: "underline",
+                color: palette.neutral["1"],
+                ":visited": { color: palette.neutral["1"] }
+              }}
+              to={"/cancel/" + productType.urlPart}
+            >
+              {"Cancel your " + productType.friendlyName}
+            </Link>
+          ) : (
+            undefined
+          )}
         </PageContainer>
       </div>
     );

@@ -43,6 +43,12 @@ export interface DirectDebitDetails {
   accountName: string;
 }
 
+export interface SubscriptionPlan {
+  currency: string;
+  currencyISO: string;
+  interval: string;
+}
+
 export interface Subscription {
   subscriberId: string;
   start: string;
@@ -54,11 +60,7 @@ export interface Subscription {
   card?: Card;
   payPalEmail?: string;
   account?: DirectDebitDetails;
-  plan: {
-    amount: number;
-    currency: string;
-    interval: string;
-  };
+  plan: SubscriptionPlan;
 }
 
 export interface WithSubscription {
