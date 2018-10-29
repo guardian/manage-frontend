@@ -32,6 +32,15 @@ export const trackEvent = ({
       eventValue
     );
   }
+  if (window.guardian && window.guardian.ophan) {
+    window.guardian.ophan.record({
+      componentEvent: {
+        component: `MMA_${eventCategory.toUpperCase()}`,
+        action: `MMA_${eventAction.toUpperCase()}`,
+        value: eventLabel
+      }
+    });
+  }
 };
 
 export const applyAnyOptimiseExperiments = () => {
@@ -67,16 +76,22 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
     return (
       <Location>
         {({ location }) => {
-          if (location && typeof window !== "undefined" && window.ga) {
-            window.ga("send", "pageview", {
-              location: location.href,
-              page: location.pathname + location.search
-            });
-            applyAnyOptimiseExperiments();
-            // tslint:disable-next-line:no-object-mutation
-            document.body.scrollTop = 0; // For Safari
-            // tslint:disable-next-line:no-object-mutation
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+          if (location && typeof window !== "undefined") {
+            if (window.guardian && window.guardian.ophan) {
+              // TODO call window.guardian.ophan.sendInitialEvent here once new tracker-js is deployed
+            }
+            if (window.ga) {
+              window.ga("send", "pageview", {
+                location: location.href,
+                page: location.pathname + location.search
+              });
+              // TODO add ophan pageViewId as a GA dimension
+              applyAnyOptimiseExperiments();
+              // tslint:disable-next-line:no-object-mutation
+              document.body.scrollTop = 0; // For Safari
+              // tslint:disable-next-line:no-object-mutation
+              document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
           }
           return null; // null is a valid React node type, but void is not.
         }}
