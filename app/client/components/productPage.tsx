@@ -16,7 +16,7 @@ import {
 } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
-import { serif } from "../styles/fonts";
+import { headline } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
 import { MembershipLinks } from "./membershipLinks";
@@ -280,8 +280,9 @@ const getProductRenderer = (productType: ProductType) => (
 const headerCss = css({
   fontSize: "2rem",
   lineHeight: "2.25rem",
-  fontFamily: serif,
-  marginBottom: "30px"
+  fontFamily: headline,
+  marginBottom: "30px",
+  marginTop: "0"
 });
 
 export const ProductPage = (props: RouteableProductProps) => (

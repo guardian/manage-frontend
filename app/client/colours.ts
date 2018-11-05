@@ -13,7 +13,8 @@ const palette = {
   blue: {
     light: "#00b2ff",
     medium: "#0084c6",
-    dark: "#005689"
+    dark: "#005689",
+    header: "#052962"
   },
   green: {
     dark: "#236925",

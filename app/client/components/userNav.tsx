@@ -8,6 +8,7 @@ const userNavToggleCss = css({
   alignItems: "center",
   justifyContent: "space-between",
   cursor: "pointer",
+  color: palette.white,
 
   "::after": {
     content: "''",
@@ -46,7 +47,6 @@ const userNavMenuCss = (showMenu: boolean) =>
   });
 
 const userNavItemCss = css({
-  fontSize: "0.9375rem",
   padding: "7px 20px 15px 30px",
   textDecoration: "none",
   color: "currentColor",
@@ -152,7 +152,8 @@ export class UserNav extends React.Component {
       <nav
         css={{
           position: "relative",
-          transform: "translateY(-1px)"
+          transform: "translateY(-1px)",
+          fontSize: "16px"
         }}
       >
         <span
