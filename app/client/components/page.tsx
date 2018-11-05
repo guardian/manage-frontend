@@ -53,7 +53,8 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
       borderBottom: `1px solid ${palette.neutral["5"]}`,
       marginLeft: "auto",
       marginRight: "auto",
-      paddingTop: "0.3125rem"
+      paddingTop: "0.3125rem",
+      background: palette.neutral["7"]
     }}
   >
     <div
