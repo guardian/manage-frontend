@@ -1,5 +1,6 @@
 import { css } from "emotion";
 import React from "react";
+import { findDOMNode } from "react-dom";
 import { conf } from "../../server/config";
 import palette from "../colours";
 
@@ -8,19 +9,26 @@ const userNavToggleCss = css({
   alignItems: "center",
   justifyContent: "space-between",
   cursor: "pointer",
-  color: palette.white,
 
   "::after": {
     content: "''",
     display: "block",
     width: "5px",
     height: "5px",
-    transform: "translateY(-2px) rotate(45deg)",
     border: "1px solid currentColor",
     borderLeft: "transparent",
     borderTop: "transparent",
-    marginLeft: "5px",
-    transition: ".25s ease-out"
+    marginLeft: "5px"
+  },
+
+  ":hover": {
+    color: palette.yellow.medium,
+    "::after": {
+      transform: "translateY(0px) rotate(45deg)",
+      transitionProperty: "transform",
+      transitionDuration: "250ms",
+      transitionTimingFunction: "ease-in-out"
+    }
   }
 });
 
@@ -158,6 +166,14 @@ export class UserNav extends React.Component {
       >
         <span
           className={userNavToggleCss}
+          css={{
+            color: this.state.showMenu ? palette.yellow.medium : palette.white,
+            "::after": {
+              transform: `translateY(${
+                this.state.showMenu ? 0 : -2
+              }px) rotate(45deg)`
+            }
+          }}
           onClick={() => this.setState({ showMenu: !this.state.showMenu })}
         >
           My account
@@ -193,4 +209,19 @@ export class UserNav extends React.Component {
       </nav>
     );
   }
+
+  public componentDidMount(): void {
+    document.addEventListener("click", this.handleDissmissiveClick, false);
+  }
+
+  public componentWillUnmount(): void {
+    document.removeEventListener("click", this.handleDissmissiveClick, false);
+  }
+
+  private handleDissmissiveClick = (event: any) => {
+    const thisInDOM = findDOMNode(this);
+    if (thisInDOM && event.target && !thisInDOM.contains(event.target)) {
+      this.setState({ showMenu: false });
+    }
+  };
 }

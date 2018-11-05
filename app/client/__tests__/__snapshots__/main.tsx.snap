@@ -32,7 +32,6 @@ exports[`Main renders something 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   cursor: pointer;
-  color: #ffffff;
 }
 
 .emotion-0::after {
@@ -40,15 +39,27 @@ exports[`Main renders something 1`] = `
   display: block;
   width: 5px;
   height: 5px;
-  -webkit-transform: translateY(-2px) rotate(45deg);
-  -ms-transform: translateY(-2px) rotate(45deg);
-  transform: translateY(-2px) rotate(45deg);
   border: 1px solid currentColor;
   border-left: transparent;
   border-top: transparent;
   margin-left: 5px;
-  -webkit-transition: .25s ease-out;
-  transition: .25s ease-out;
+}
+
+.emotion-0:hover {
+  color: #ffe500;
+}
+
+.emotion-0:hover::after {
+  -webkit-transform: translateY(0px) rotate(45deg);
+  -ms-transform: translateY(0px) rotate(45deg);
+  transform: translateY(0px) rotate(45deg);
+  -webkit-transition-property: -webkit-transform;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 250ms;
+  transition-duration: 250ms;
+  -webkit-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
 }
 
 .emotion-1 {
@@ -158,6 +169,14 @@ exports[`Main renders something 1`] = `
       >
         <span
           className="emotion-0"
+          css={
+            Object {
+              "::after": Object {
+                "transform": "translateY(-2px) rotate(45deg)",
+              },
+              "color": "#ffffff",
+            }
+          }
           onClick={[Function]}
         >
           My account
