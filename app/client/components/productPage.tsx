@@ -172,7 +172,7 @@ const getProductRenderer = (productType: ProductType) => (
         {data.alertText ? (
           <div
             css={{
-              backgroundColor: palette.blue.dark,
+              backgroundColor: palette.red.dark,
               color: palette.white,
               padding: "10px 15px 15px",
               marginTop: "30px",
@@ -202,6 +202,8 @@ const getProductRenderer = (productType: ProductType) => (
               <LinkButton
                 text="Update payment details"
                 to={"/payment/" + productType.urlPart}
+                height="42px"
+                fontWeight="bold"
                 primary
                 right
               />

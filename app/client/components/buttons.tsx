@@ -6,6 +6,8 @@ import { sans } from "../styles/fonts";
 
 export interface CommonButtonProps {
   text: string;
+  height?: string;
+  fontWeight?: string;
   left?: true;
   right?: true;
   disabled?: boolean;
@@ -35,7 +37,7 @@ const applyArrowStyleIfApplicable = (
     return hover ? styles.rightHover : styles.right;
   }
   return {
-    padding: "0 18px 0 18px",
+    padding: "1px 18px 0 18px",
     svg: {
       display: "none"
     }
@@ -75,6 +77,8 @@ const calcTextColour = (
 const defaultColour = palette.neutral["2"];
 const buttonCss = ({
   disabled,
+  height,
+  fontWeight,
   colour = defaultColour,
   textColour = palette.white,
   left,
@@ -91,6 +95,9 @@ const buttonCss = ({
   );
   return {
     ...styles.common,
+    height: height || "36px",
+    lineHeight: height || "36px",
+    fontWeight,
     display: hide ? "none" : "inline-flex",
     background: backgroundColour,
     color: calcTextColour(disabled, textColour, primary, hollow),
@@ -116,8 +123,6 @@ export const ButtonArrow = () => (
 
 const styles = {
   common: {
-    height: "36px",
-    lineHeight: "36px",
     fontSize: "16px",
     fontFamily: sans,
     borderRadius: "1000px",
@@ -129,7 +134,7 @@ const styles = {
     svg: { transform: "translate(-5px, -50%) rotate(180deg)" }
   },
   left: {
-    padding: "0 18px 0 40px",
+    padding: "1px 18px 0 40px",
     svg: {
       fill: "currentColor",
       height: "34px",
@@ -145,7 +150,7 @@ const styles = {
     svg: { transform: "translate(5px, -50%)" }
   },
   right: {
-    padding: "0 40px 0 18px",
+    padding: "1px 40px 0 18px",
     svg: {
       fill: "currentColor",
       height: "34px",

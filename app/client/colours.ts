@@ -3,7 +3,7 @@ const palette = {
   red: {
     light: "#ff4e36",
     medium: "#c70000",
-    dark: "#ad0006"
+    dark: "#ab0613"
   },
   orange: {
     light: "#f5be2c",
