@@ -3,9 +3,9 @@ export interface Globals {
   dsn: string | null;
   supportedBrowser: boolean;
   ophan?: {
-    // viewId: string;
+    viewId: string;
     record: RecordOphanComponentEvent;
-    // sendInitialEvent: () => void;
+    sendInitialEvent: (url?: string, referer?: string) => void;
   };
 }
 

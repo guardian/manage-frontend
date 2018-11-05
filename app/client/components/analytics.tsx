@@ -77,8 +77,12 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
       <Location>
         {({ location }) => {
           if (location && typeof window !== "undefined") {
-            if (window.guardian && window.guardian.ophan) {
-              // TODO call window.guardian.ophan.sendInitialEvent here once new tracker-js is deployed
+            if (
+              window.guardian &&
+              window.guardian.ophan &&
+              window.guardian.ophan.sendInitialEvent
+            ) {
+              window.guardian.ophan.sendInitialEvent(location.href);
             }
             if (window.ga) {
               window.ga("send", "pageview", {
