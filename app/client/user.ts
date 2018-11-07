@@ -1,3 +1,4 @@
+import "ophan-tracker-js/build/ophan.manage-my-account";
 import Raven from "raven-js";
 import ReactDOM from "react-dom";
 import { BrowserUser } from "./components/user";
