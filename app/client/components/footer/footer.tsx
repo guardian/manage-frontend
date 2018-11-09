@@ -43,26 +43,30 @@ const Footer = () => (
               border: "1px solid rgba(255,255,255,0.3)",
               borderTop: 0,
               [minWidth.desktop]: {
-                padding: "0 20px",
+                padding: "0 20px"
+              },
+              [minWidth.leftCol]: {
                 display: "flex"
               }
             }}
           >
             <div
               css={{
-                paddingBottom: "0.75rem",
-
-                [minWidth.desktop]: {
-                  padding: 0,
-                  border: 0,
-                  width: "320px",
-                  margin: 0
+                padding: 0,
+                border: 0,
+                width: "100%",
+                margin: 0,
+                [minWidth.leftCol]: {
+                  width: "340px"
+                },
+                [minWidth.wide]: {
+                  width: "460px"
                 }
               }}
             >
               <iframe
                 title="Guardian Email Sign-up Form"
-                src={`https://profile.code.dev-theguardian.com/email/form/footer/today-uk`}
+                src={`https://profile.${domain}/email/form/footer/today-uk`}
                 scrolling="no"
                 seamless={false}
                 frameBorder="0"
@@ -81,7 +85,11 @@ const Footer = () => (
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                marginLeft: "140px"
+                paddingBottom: "18px",
+                borderTop: "1px solid rgba(255,255,255,0.3)",
+                [minWidth.wide]: {
+                  borderTop: 0
+                }
               }}
             >
               {footerLinks.map((linkList, i) => (
@@ -94,7 +102,6 @@ const Footer = () => (
                     position: "relative",
                     padding: "0 10px",
                     margin: 0,
-                    marginBottom: "18px",
 
                     "&:nth-child(even)": {
                       borderLeft: "1px solid rgba(255,255,255,0.3)"
@@ -140,28 +147,42 @@ const Footer = () => (
               ))}
               <div
                 css={{
-                  width: "300px",
+                  width: "50%",
                   borderLeft: "1px solid rgba(255,255,255,0.3)",
                   paddingLeft: "10px",
-                  marginBottom: "18px"
+                  [minWidth.phablet]: {
+                    width: "300px"
+                  },
+                  borderTop: "1px solid rgba(255,255,255,0.3)",
+                  [minWidth.tablet]: {
+                    borderTop: 0
+                  }
                 }}
               >
                 <div
                   css={{
                     color: palette.yellow.medium,
                     fontFamily: serif,
-                    fontSize: "32px",
-                    lineHeight: "32px",
+                    fontSize: "24px",
+                    lineHeight: "24px",
                     fontWeight: "800",
                     marginTop: "3px",
-                    marginBottom: "12px"
+                    marginBottom: "12px",
+                    [minWidth.phablet]: {
+                      fontSize: "32px",
+                      lineHeight: "32px"
+                    }
                   }}
                 >
                   Support The&nbsp;Guardian
                 </div>
                 <a
                   href="https://support.theguardian.com/contribute?INTCMP=footer_support_contribute"
-                  css={{ marginRight: "10px", marginBottom: "6px" }}
+                  css={{
+                    display: "inline-block",
+                    marginRight: "10px",
+                    marginBottom: "6px"
+                  }}
                 >
                   <Button text="Contribute" fontWeight="bold" primary right />
                 </a>
@@ -180,15 +201,6 @@ const Footer = () => (
               position: "relative"
             }}
           >
-            <span
-              css={{
-                paddingTop: "6px",
-                fontSize: "12px"
-              }}
-            >
-              © 2018 Guardian News and Media Limited or its affiliated
-              companies. All&nbsp;rights&nbsp;reserved.
-            </span>
             <a
               href="#top"
               css={{
@@ -238,6 +250,18 @@ const Footer = () => (
                 </span>
               </span>
             </a>
+            <div
+              css={{
+                [minWidth.tablet]: {
+                  paddingTop: "6px"
+                },
+                paddingTop: "26px",
+                fontSize: "12px"
+              }}
+            >
+              © 2018 Guardian News and Media Limited or its affiliated
+              companies. All&nbsp;rights&nbsp;reserved.
+            </div>
           </div>
         </div>
       </div>
