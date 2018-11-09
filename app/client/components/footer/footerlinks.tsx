@@ -15,94 +15,92 @@ export interface FooterLink {
 export const footerLinks: FooterLink[][] = [
   [
     {
-      title: "jobs",
-      link: `https://jobs.${domain}/?INTCMP=NGW_FOOTER_UK_GU_JOBS`
+      title: "About us",
+      link: `https://${domain}/about`
     },
     {
-      title: "dating",
-      link: `https://soulmates.${domain}/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES`
+      title: "Contact us",
+      link: `https://${domain}/help/contact-us`
     },
     {
-      title: "make a contribution",
-      link: `https://support.${domain}/contribute?INTCMP=footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_contribute%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofile.${domain}%2Fmembership%2Fedit%22%7D`
+      title: "Complaints & corrections",
+      link: `https:/${domain}/info/complaints-and-corrections`
     },
     {
-      title: "subscribe",
-      link: `https://support.${domain}/subscribe?INTCMP=footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_FOOTER%22%2C%22componentId%22%3A%22footer_support_subscribe%22%2C%22referrerPageviewId%22%3A%22jki3y55zbo7ri6mlon9r%22%2C%22referrerUrl%22%3A%22https%3A%2F%2Fprofile.${domain}%2Fmembership%2Fedit%22%7D`
+      title: "Secure Drop",
+      link: `https://securedrop.${domain}`
     },
     {
-      title: "guardian labs",
-      link: `https://www.${domain}/guardian-labs`
-    }
-  ],
-  [
-    {
-      title: "about us",
-      link: `https://www.${domain}/about`
+      title: "Work for us",
+      link: `https://workforus.${domain}`
     },
     {
-      title: "work for us",
-      link: `https://workforus.${domain}/locations/london`
+      title: "Privacy policy",
+      link: `https://${domain}/info/privacy`
     },
     {
-      title: "advertise with us",
-      link: `https://advertising.${domain}/`
+      title: "Cookie policy",
+      link: `https://${domain}/info/cookies`
     },
     {
-      title: "contact us",
-      link: `https://www.${domain}/help/contact-us`
+      title: "Terms & conditions",
+      link: `https://www.${domain}/help/terms-of-service`
     },
     {
-      title: "help",
+      title: "Help",
       link: `https://www.${domain}/help`
     }
   ],
   [
     {
-      title: "terms & conditions",
-      link: `https://www.${domain}/help/terms-of-service`
+      title: "All topics",
+      link: `https://${domain}/index/subjects/a`
     },
     {
-      title: "privacy policy",
-      link: `https://www.${domain}/info/privacy`
+      title: "All writers",
+      link: `https://${domain}/index/contributors`
     },
     {
-      title: "cookie policy",
-      link: `https://www.${domain}/info/cookies`
+      title: "Modern Slavery Act",
+      link: `https://${domain}/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT`
     },
     {
-      title: "securedrop",
-      link: `https://securedrop.${domain}/`
+      title: "Digital newspaper archive",
+      link: `https://${domain}.newspapers.com/`
     },
     {
-      title: "digital newspaper archive",
-      link: `https://theguardian.newspapers.com/`
+      title: "Facebook",
+      link: `https://www.facebook.com/theguardian`
     },
     {
-      title: "complaints & corrections",
-      link: `https://www.${domain}/info/complaints-and-corrections`
+      title: "Twitter",
+      link: `https://twitter.com/guardian`
     }
   ],
   [
     {
-      title: "all topics",
-      link: `https://www.${domain}/index/subjects/a`
+      title: "Advertise with us",
+      link: `https://advertising.${domain}`
     },
     {
-      title: "all contributors",
-      link: `https://www.${domain}/index/contributors`
+      title: "Guardian Labs",
+      link: `https://${domain}/guardian-labs`
     },
     {
-      title: "modern slavery act",
-      link: `https://www.${domain}/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT`
+      title: "Search jobs",
+      link: `https://jobs.${domain}/?INTCMP=NGW_FOOTER_UK_GU_JOBS`
     },
     {
-      title: "facebook",
-      link: `https://www.facebook.com/theguardian`
+      title: "Dating",
+      link: `https://soulmates.${domain}/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES`
     },
     {
-      title: "twitter",
-      link: `https://twitter.com/guardian`
+      title: "Patrons",
+      link: `https://patrons.${domain}/?INTCMP=footer_patrons`
+    },
+    {
+      title: "Discount Codes",
+      link: `https://discountcode.${domain}/uk?INTCMP=guardian_footer`
     }
   ]
 ];

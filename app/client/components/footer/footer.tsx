@@ -2,23 +2,9 @@ import React, { SyntheticEvent } from "react";
 import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
-import { css } from "../../styles/emotion";
+import { serif } from "../../styles/fonts";
+import { Button } from "../buttons";
 import { footerLinks } from "./footerlinks";
-
-const backToTopArrow = css({
-  position: "absolute",
-  top: "0.375rem",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  margin: "auto",
-  border: "0.125rem solid #ffffff",
-  borderBottom: 0,
-  borderRight: 0,
-  height: "calc(7px + 0.25rem)",
-  width: "calc(7px + 0.25rem)",
-  transform: "rotate(45deg)"
-});
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -38,93 +24,45 @@ const Footer = () => (
       marginTop: "2rem"
     }}
   >
-    <div
-      css={{
-        backgroundColor: palette.neutral["7"],
-        color: palette.neutral["1"],
-        height: "42px",
-        "text-align": "right"
-      }}
-    >
-      <div
-        css={{
-          maxWidth: "71.25rem",
-          margin: "auto",
-          lineHeight: "42px",
-          paddingRight: "2rem",
-          display: "flex",
-          justifyContent: "flex-end"
-        }}
-      >
-        <a
-          href={"#top"}
-          css={{
-            color: palette.neutral["1"],
-            display: "flex"
-          }}
-        >
-          back to top
-          <span
-            css={{
-              display: "inline-block",
-              backgroundColor: palette.neutral["1"],
-              height: "48px",
-              minWidth: "48px",
-              position: "relative",
-              borderRadius: "50%",
-              marginLeft: "10px",
-              transform: "translateY(-6px)"
-            }}
-          >
-            <i className={backToTopArrow} />
-          </span>
-        </a>
-      </div>
-    </div>
     <div>
       <div
         css={{
-          backgroundColor: palette.neutral["2"],
-          color: palette.neutral["5"]
+          backgroundColor: palette.blue.header,
+          color: palette.white
         }}
       >
         <div
           css={{
-            padding: "0 0.625rem",
-            maxWidth: "81.25rem",
-            margin: "auto",
-
-            [minWidth.tablet]: {
-              padding: "0 1.25rem"
-            }
+            maxWidth: "1300px",
+            margin: "auto"
           }}
         >
           <div
             css={{
-              padding: "0.75rem 0",
-
+              padding: "10px",
+              border: "1px solid rgba(255,255,255,0.3)",
+              borderTop: 0,
               [minWidth.desktop]: {
-                padding: "0 0 0.75rem 0",
+                padding: "0 20px",
                 display: "flex"
               }
             }}
           >
             <div
               css={{
-                borderBottom: "0.0625rem solid #434343",
                 paddingBottom: "0.75rem",
 
                 [minWidth.desktop]: {
                   padding: 0,
                   border: 0,
-                  width: "18.75rem",
-                  margin: "0.75rem 11.25rem 0.75rem 0"
+                  width: "320px",
+                  margin: 0
                 }
               }}
             >
               <iframe
                 title="Guardian Email Sign-up Form"
-                src={`https://profile.${domain}/email/form/footer/today-uk`}
+                src={`https://profile.code.dev-theguardian.com/email/form/footer/today-uk`}
                 scrolling="no"
                 seamless={false}
                 frameBorder="0"
@@ -137,52 +75,42 @@ const Footer = () => (
 
             <div
               css={{
-                fontSize: "0.875rem",
-                lineHeight: "0.875rem",
+                fontFeatureSettings: "kern",
+                fontSize: "16px",
+                lineHeight: "16px",
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                marginTop: "0.75rem",
-
-                [minWidth.tablet]: {
-                  margin: "0",
-                  maxWidth: "40rem"
-                }
+                marginLeft: "140px"
               }}
             >
               {footerLinks.map((linkList, i) => (
                 <ul
                   key={i}
                   css={{
-                    padding: 0,
+                    lineHeight: "19.2px",
                     width: "calc(50% - 1.250rem - 1px)",
                     listStyle: "none",
                     position: "relative",
+                    padding: "0 10px",
                     margin: 0,
+                    marginBottom: "18px",
 
                     "&:nth-child(even)": {
-                      borderLeft: "1px solid #434343",
-                      paddingLeft: "0.625rem"
+                      borderLeft: "1px solid rgba(255,255,255,0.3)"
                     },
 
                     [minWidth.tablet]: {
-                      padding: "0.75rem 0 0",
-                      margin: "0 0.625rem 2.25rem 0",
-
                       "&:not(:first-child)": {
-                        borderLeft: "1px solid #434343",
-                        paddingLeft: "0.625rem",
-                        marginLeft: "0.625rem"
+                        borderLeft: "1px solid rgba(255,255,255,0.3)"
                       },
 
-                      width: "20%",
+                      width: "161px",
                       flex: "1 0 0"
                     },
 
                     [minWidth.desktop]: {
-                      borderLeft: "1px solid #434343",
-                      padding: "0.75rem 0 0 0.625rem",
-                      margin: "0 0.625rem 2.25rem"
+                      borderLeft: "1px solid rgba(255,255,255,0.3)"
                     }
                   }}
                 >
@@ -197,9 +125,11 @@ const Footer = () => (
                         href={link}
                         css={{
                           display: "inline-block",
-                          paddingBottom: "0.75rem",
-                          textTransform: "lowercase",
-                          color: "#dcdcdc"
+                          padding: "6px 0",
+                          color: palette.white,
+                          ":hover": {
+                            color: palette.yellow.medium
+                          }
                         }}
                       >
                         {title}
@@ -208,19 +138,106 @@ const Footer = () => (
                   ))}
                 </ul>
               ))}
+              <div
+                css={{
+                  width: "300px",
+                  borderLeft: "1px solid rgba(255,255,255,0.3)",
+                  paddingLeft: "10px",
+                  marginBottom: "18px"
+                }}
+              >
+                <div
+                  css={{
+                    color: palette.yellow.medium,
+                    fontFamily: serif,
+                    fontSize: "32px",
+                    lineHeight: "32px",
+                    fontWeight: "800",
+                    marginTop: "3px",
+                    marginBottom: "12px"
+                  }}
+                >
+                  Support The&nbsp;Guardian
+                </div>
+                <a
+                  href="https://support.theguardian.com/contribute?INTCMP=footer_support_contribute"
+                  css={{ marginRight: "10px", marginBottom: "6px" }}
+                >
+                  <Button text="Contribute" fontWeight="bold" primary right />
+                </a>
+                <a href="https://support.theguardian.com/subscribe?INTCMP=footer_support_subscribe">
+                  <Button text="Subscribe" fontWeight="bold" primary right />
+                </a>
+              </div>
             </div>
           </div>
 
           <div
             css={{
-              padding: "1.150rem",
-              fontSize: "0.75rem",
-              borderTop: "0.0625rem solid #434343",
-              paddingTop: "0.375rem"
+              paddingBottom: "24px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+              position: "relative"
             }}
           >
-            © 2018 Guardian News and Media Limited or its affiliated companies.
-            All&nbsp;rights&nbsp;reserved.
+            <span
+              css={{
+                paddingTop: "6px",
+                fontSize: "12px"
+              }}
+            >
+              © 2018 Guardian News and Media Limited or its affiliated
+              companies. All&nbsp;rights&nbsp;reserved.
+            </span>
+            <a
+              href="#top"
+              css={{
+                fontSize: "16px",
+                color: palette.white,
+                fontWeight: "bold",
+                padding: "0 5px",
+                backgroundColor: palette.blue.header,
+                ":hover": {
+                  color: palette.yellow.medium
+                },
+                position: "absolute",
+                right: "20px",
+                transform: "translateY(-50%)"
+              }}
+            >
+              <span
+                css={{
+                  display: "inline-block",
+                  paddingRight: "5px",
+                  paddingTop: "9px"
+                }}
+              >
+                Back to top
+              </span>
+              <span
+                css={{
+                  position: "relative",
+                  float: "right",
+                  backgroundColor: "currentColor",
+                  borderRadius: "100%",
+                  height: "42px",
+                  width: "42px"
+                }}
+              >
+                <span
+                  css={{
+                    position: "absolute",
+                    fill: palette.blue.header,
+                    top: "9px",
+                    left: "9px"
+                  }}
+                >
+                  <svg width="24" height="18" viewBox="0 0 24 18">
+                    <path d="M.4 15.3l10.5-8.4L12 6l1.1.9 10.5 8.4-.5.7L12 9.7.9 16l-.5-.7z" />
+                  </svg>
+                </span>
+              </span>
+            </a>
           </div>
         </div>
       </div>
