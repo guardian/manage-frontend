@@ -24,7 +24,7 @@ export const footerLinks: FooterLink[][] = [
     },
     {
       title: "Complaints & corrections",
-      link: `https:/${domain}/info/complaints-and-corrections`
+      link: `https://${domain}/info/complaints-and-corrections`
     },
     {
       title: "Secure Drop",

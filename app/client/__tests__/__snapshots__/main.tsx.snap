@@ -514,7 +514,7 @@ exports[`Main renders something 1`] = `
                         "padding": "6px 0",
                       }
                     }
-                    href="https:/thegulocal.com/info/complaints-and-corrections"
+                    href="https://thegulocal.com/info/complaints-and-corrections"
                   >
                     Complaints & corrections
                   </a>
@@ -1010,7 +1010,7 @@ exports[`Main renders something 1`] = `
                         "lineHeight": "32px",
                       },
                       "color": "#ffe500",
-                      "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
+                      "fontFamily": "GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif",
                       "fontSize": "24px",
                       "fontWeight": "800",
                       "lineHeight": "24px",
