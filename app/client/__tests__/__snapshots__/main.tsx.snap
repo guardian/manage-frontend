@@ -1010,7 +1010,7 @@ exports[`Main renders something 1`] = `
                         "lineHeight": "32px",
                       },
                       "color": "#ffe500",
-                      "fontFamily": "GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif",
+                      "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
                       "fontSize": "24px",
                       "fontWeight": "800",
                       "lineHeight": "24px",
