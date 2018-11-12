@@ -770,7 +770,7 @@ exports[`Main renders something 1`] = `
                         "padding": "6px 0",
                       }
                     }
-                    href="https://guardian.newspapers.com/"
+                    href="https://theguardian.newspapers.com/"
                   >
                     Digital newspaper archive
                   </a>
