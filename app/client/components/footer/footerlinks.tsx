@@ -66,7 +66,7 @@ export const footerLinks: FooterLink[][] = [
     },
     {
       title: "Digital newspaper archive",
-      link: `https://${domain}.newspapers.com/`
+      link: `https://guardian.newspapers.com/`
     },
     {
       title: "Facebook",
