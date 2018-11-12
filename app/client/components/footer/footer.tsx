@@ -2,7 +2,7 @@ import React, { SyntheticEvent } from "react";
 import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
-import { serif } from "../../styles/fonts";
+import { headline } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { footerLinks } from "./footerlinks";
 
@@ -162,10 +162,10 @@ const Footer = () => (
                 <div
                   css={{
                     color: palette.yellow.medium,
-                    fontFamily: serif,
+                    fontFamily: headline,
                     fontSize: "24px",
                     lineHeight: "24px",
-                    fontWeight: "800",
+                    fontWeight: "bold",
                     marginTop: "3px",
                     marginBottom: "12px",
                     [minWidth.phablet]: {
