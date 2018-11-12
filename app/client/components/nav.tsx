@@ -5,6 +5,8 @@ import { minWidth } from "../styles/breakpoints";
 import { css } from "../styles/emotion";
 import { serif } from "../styles/fonts";
 
+const borderStyle = `1px solid ${palette.neutral["5"]}`;
+
 const navCss = css({
   width: "100%",
   position: "relative",
@@ -12,12 +14,11 @@ const navCss = css({
   padding: 0,
   borderBottom: 0,
   listStyleType: "none",
-  overflow: "hidden",
   zIndex: 2,
-  background: "#fafafa",
   tableLayout: "fixed",
   gridTemplateColumns: "repeat(auto-fit, minmax(40%, 1fr))",
   display: "grid",
+  borderRight: borderStyle,
 
   [minWidth.desktop]: {
     gridTemplateColumns: "repeat(auto-fit, minmax(7.5rem, 1fr))"
@@ -40,21 +41,27 @@ const navLinkCss = (isSelected: boolean | undefined) =>
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    background: isSelected ? palette.white : palette.neutral["6"],
-    color: "inherit"
+    background: isSelected ? palette.white : undefined,
+    color: "inherit",
+
+    [minWidth.desktop]: {
+      boxShadow: isSelected ? "0 1px 0 white" : undefined
+    }
   });
 
 const navItemCss = (isSelected: boolean | undefined) =>
   css({
     margin: 0,
-    borderBottom: `0.0625rem solid ${
+    background: `0.0625rem solid ${
       isSelected ? palette.white : palette.neutral["5"]
     }`,
-    borderTop: `0.1875rem solid ${palette.neutral["6"]}`,
+    borderLeft: borderStyle,
+    borderTop: borderStyle,
     display: "table-cell",
     width: "100%",
-    minWidth: "155px", // gross hack to make IE11 work
-    borderRight: "0.125rem solid " + palette.white
+    [minWidth.tablet]: {
+      minWidth: "155.5px" // gross hack to make IE11 work
+    }
   });
 
 export interface NavItem {
