@@ -1,6 +1,13 @@
 import { Router, ServerLocation } from "@reach/router";
 import React from "react";
-import { ProductType, ProductTypes } from "../../shared/productTypes";
+import {
+  hasCancellationFlow,
+  hasProductPage,
+  ProductType,
+  ProductTypes,
+  ProductTypeWithCancellationFlow,
+  ProductTypeWithProductPage
+} from "../../shared/productTypes";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -26,39 +33,45 @@ const User = () => (
     <Router>
       <RedirectOnMeResponse path="/" />
 
-      {Object.values(ProductTypes).map((productType: ProductType) => (
-        <ProductPage
-          key={productType.urlPart}
-          path={"/" + productType.urlPart}
-          productType={productType}
-        />
-      ))}
+      {Object.values(ProductTypes)
+        .filter(hasProductPage)
+        .map((productType: ProductTypeWithProductPage) => (
+          <ProductPage
+            key={productType.urlPart}
+            path={"/" + productType.urlPart}
+            productType={productType}
+          />
+        ))}
 
-      {Object.values(ProductTypes).map((productType: ProductType) => (
-        <CancellationFlow
-          key={productType.urlPart}
-          path={"/cancel/" + productType.urlPart}
-          productType={productType}
-          currentStep={1}
-        >
-          {productType.cancellationReasons.map((reason: CancellationReason) => (
-            <GenericSaveAttempt
-              path={reason.reasonId}
-              productType={productType}
-              reason={reason}
-              key={reason.reasonId}
-              linkLabel={reason.linkLabel}
-              currentStep={2}
-            >
-              <ExecuteCancellation
-                path="confirmed"
-                productType={productType}
-                currentStep={3}
-              />
-            </GenericSaveAttempt>
-          ))}
-        </CancellationFlow>
-      ))}
+      {Object.values(ProductTypes)
+        .filter(hasCancellationFlow)
+        .map((productType: ProductTypeWithCancellationFlow) => (
+          <CancellationFlow
+            key={productType.urlPart}
+            path={"/cancel/" + productType.urlPart}
+            productType={productType}
+            currentStep={1}
+          >
+            {productType.cancellation.reasons.map(
+              (reason: CancellationReason) => (
+                <GenericSaveAttempt
+                  path={reason.reasonId}
+                  productType={productType}
+                  reason={reason}
+                  key={reason.reasonId}
+                  linkLabel={reason.linkLabel}
+                  currentStep={2}
+                >
+                  <ExecuteCancellation
+                    path="confirmed"
+                    productType={productType}
+                    currentStep={3}
+                  />
+                </GenericSaveAttempt>
+              )
+            )}
+          </CancellationFlow>
+        ))}
 
       {Object.values(ProductTypes).map((productType: ProductType) => (
         <PaymentUpdateFlow

@@ -131,20 +131,22 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     )
   );
 
-  server.post(
-    "/api/cancel/" + productType.urlPart,
-    membersDataApiHandler(
-      "user-attributes/me/" +
-        (() => {
-          switch (productType.urlPart) {
-            case "membership":
-              return "cancel-membership";
-            case "contributions":
-              return "cancel-regular-contribution";
-          }
-        })()
-    )
-  );
+  if (productType.cancellation) {
+    server.post(
+      "/api/cancel/" + productType.urlPart,
+      membersDataApiHandler(
+        "user-attributes/me/" +
+          (() => {
+            switch (productType.urlPart) {
+              case "membership":
+                return "cancel-membership";
+              case "contributions":
+                return "cancel-regular-contribution";
+            }
+          })()
+      )
+    );
+  }
 
   server.post(
     "/api/payment/" + productType.urlPart + "/card",
@@ -168,11 +170,14 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     }
   );
 
-  if (productType.updateAmountMdaEndpoint) {
+  if (
+    productType.productPage &&
+    productType.productPage.updateAmountMdaEndpoint
+  ) {
     server.post(
       "/api/update/amount/" + productType.urlPart,
       membersDataApiHandler(
-        "user-attributes/me/" + productType.updateAmountMdaEndpoint
+        "user-attributes/me/" + productType.productPage.updateAmountMdaEndpoint
       )
     );
   }

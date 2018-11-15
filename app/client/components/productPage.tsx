@@ -12,7 +12,8 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductType
+  ProductTypeWithCancellationFlow,
+  ProductTypeWithProductPage
 } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -127,7 +128,10 @@ const getPaymentMethodRow = (
   return undefined;
 };
 
-const getPaymentPart = (data: ProductDetail, productType: ProductType) => {
+const getPaymentPart = (
+  data: ProductDetail,
+  productType: ProductTypeWithProductPage
+) => {
   if (data.isPaidTier) {
     return (
       <>
@@ -159,7 +163,7 @@ const getPaymentPart = (data: ProductDetail, productType: ProductType) => {
   }
 };
 
-const getProductRenderer = (productType: ProductType) => (
+const getProductRenderer = (productType: ProductTypeWithProductPage) => (
   apiResponse: MembersDataApiResponse
 ) => {
   if (hasProduct(apiResponse)) {
@@ -213,7 +217,7 @@ const getProductRenderer = (productType: ProductType) => (
           undefined
         )}
         <PageContainer>
-          {productType.tierRowLabel ? (
+          {productType.productPage.tierRowLabel ? (
             <>
               {data.regNumber ? (
                 <ProductDetailRow
@@ -224,7 +228,7 @@ const getProductRenderer = (productType: ProductType) => (
                 undefined
               )}
               <ProductDetailRow
-                label={productType.tierRowLabel}
+                label={productType.productPage.tierRowLabel}
                 data={
                   <div css={wrappingContainerCSS}>
                     <div css={{ marginRight: "15px" }}>{data.tier}</div>
@@ -250,7 +254,8 @@ const getProductRenderer = (productType: ProductType) => (
             data={formatDate(data.subscription.start || data.joinDate)}
           />
           {getPaymentPart(data, productType)}
-          {productType.cancelLinkOnProductPage ? (
+          {productType.cancellation &&
+          productType.cancellation.linkOnProductPage ? (
             <Link
               css={{
                 textDecoration: "underline",
@@ -287,10 +292,17 @@ const headerCss = css({
   marginTop: "0"
 });
 
-export const ProductPage = (props: RouteableProductProps) => (
+export interface RouteableProductPropsWithProductPage
+  extends RouteableProductProps {
+  productType: ProductTypeWithProductPage;
+}
+
+export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
   <>
-    <PageHeaderContainer selectedNavItem={props.productType.navLink}>
-      <h1 className={headerCss}>{props.productType.productPageTitle}</h1>
+    <PageHeaderContainer
+      selectedNavItem={props.productType.productPage.navLink}
+    >
+      <h1 className={headerCss}>{props.productType.productPage.title}</h1>
     </PageHeaderContainer>
     <MembersDatApiAsyncLoader
       fetch={createProductDetailFetcher(props.productType)}

@@ -1,6 +1,10 @@
 import React from "react";
+import { oc } from "ts-optchain";
 import { Subscription } from "../../../shared/productResponse";
-import { ProductType } from "../../../shared/productTypes";
+import {
+  ProductType,
+  ProductTypeWithCancellationFlow
+} from "../../../shared/productTypes";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainerSection } from "../page";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
@@ -12,22 +16,34 @@ const actuallyCancelled = (
 ) => (
   <PageContainerSection>
     <h3>Your {productType.friendlyName} is cancelled.</h3>
-    <p>{productType.cancellationSummaryMainPara(subscription)}</p>
+    {productType.cancellation ? (
+      <p>{productType.cancellation.summaryMainPara(subscription)}</p>
+    ) : (
+      undefined
+    )}
     <CancellationReasonContext.Consumer>
       {reason =>
-        !productType.cancellationOnlyShowSupportSectionIfAlternateText ||
-        productType.cancellationSummaryReasonSpecificPara(reason) ? (
+        !productType.cancellation ||
+        !productType.cancellation.onlyShowSupportSectionIfAlternateText ||
+        productType.cancellation.summaryReasonSpecificPara(reason) ? (
           <>
             <p>
-              {productType.cancellationSummaryReasonSpecificPara(reason) ||
-                "If you are interested in supporting our journalism in other ways, please consider either a contribution or a subscription."}
+              {oc(productType).cancellation.summaryReasonSpecificPara(
+                () => undefined
+              )(reason) ||
+                "If you are interested in supporting our journalism in other ways, " +
+                  "please consider either a contribution or a subscription."}
             </p>
-            <div css={{ textAlign: "right" }}>
+            <div css={{ marginBottom: "30px" }}>
               <SupportTheGuardianButton
-                urlSuffix={productType.cancellationAlternateSupportButtonUrlSuffix(
+                urlSuffix={oc(
+                  productType
+                ).cancellation.alternateSupportButtonUrlSuffix(() => undefined)(
                   reason
                 )}
-                alternateButtonText={productType.cancellationAlternateSupportButtonText(
+                alternateButtonText={oc(
+                  productType
+                ).cancellation.alternateSupportButtonText(() => undefined)(
                   reason
                 )}
                 supportReferer={productType.urlPart + "_cancellation_summary"}

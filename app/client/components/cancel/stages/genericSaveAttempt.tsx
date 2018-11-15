@@ -1,7 +1,10 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
-import { WithProductType } from "../../../../shared/productTypes";
+import {
+  ProductTypeWithCancellationFlow,
+  WithProductType
+} from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
@@ -28,9 +31,11 @@ import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
+  productType: ProductTypeWithCancellationFlow;
 }
 
-interface FeedbackFormProps extends WithProductType {
+interface FeedbackFormProps
+  extends WithProductType<ProductTypeWithCancellationFlow> {
   reason: CancellationReason;
   characterLimit: number;
   caseId: string;
@@ -98,7 +103,7 @@ class FeedbackFormAndContactUs extends React.Component<
     return (
       <div>
         {!this.props.reason.hideContactUs &&
-        !this.props.productType.cancellationSwapFeedbackAndContactUs ? (
+        !this.props.productType.cancellation.swapFeedbackAndContactUs ? (
           <ContactUs {...this.props.reason} />
         ) : (
           undefined
@@ -149,7 +154,7 @@ class FeedbackFormAndContactUs extends React.Component<
             }}
           />
           {!this.props.reason.hideContactUs &&
-          this.props.productType.cancellationSwapFeedbackAndContactUs ? (
+          this.props.productType.cancellation.swapFeedbackAndContactUs ? (
             <div css={{ marginTop: "20px" }}>
               <ContactUs {...this.props.reason} />
             </div>
@@ -200,7 +205,8 @@ class FeedbackFormAndContactUs extends React.Component<
   }
 }
 
-interface ConfirmCancellationAndReturnRowProps extends WithProductType {
+interface ConfirmCancellationAndReturnRowProps
+  extends WithProductType<ProductTypeWithCancellationFlow> {
   onClick?: () => any;
   reasonId: CancellationReasonId;
 }
@@ -251,12 +257,12 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
       >
         <CaseCreationWrapper
           membersDataApiResponse={membersDataApiResponse}
-          sfProduct={props.productType.sfProduct}
+          sfProduct={props.productType.cancellation.sfProduct}
         >
           <WizardStep routeableStepProps={props} hideBackButton>
             <PageContainerSection>
               <h3 id="save_title">
-                {props.productType.cancellationSaveTitlePrefix || ""}
+                {props.productType.cancellation.saveTitlePrefix || ""}
                 {props.reason.saveTitle}
               </h3>
               <GoogleOptimiseAwaitFlagWrapper
@@ -282,8 +288,8 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
                       css={{
                         display: "flex",
                         flexDirection:
-                          props.productType
-                            .cancellationSwapFeedbackAndContactUs && caseId
+                          props.productType.cancellation
+                            .swapFeedbackAndContactUs && caseId
                             ? "column-reverse"
                             : "column"
                       }}

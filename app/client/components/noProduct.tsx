@@ -1,8 +1,8 @@
 import React from "react";
-import { WithProductType } from "../../shared/productTypes";
+import { ProductType, WithProductType } from "../../shared/productTypes";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 
-export interface NoProductProps extends WithProductType {
+export interface NoProductProps extends WithProductType<ProductType> {
   inTab: boolean;
   supportRefererSuffix: string;
 }
@@ -10,7 +10,11 @@ export interface NoProductProps extends WithProductType {
 export const NoProduct = (props: NoProductProps) => (
   <div>
     <h2>You do not currently have a {props.productType.friendlyName}.</h2>
-    {props.inTab ? <p>{props.productType.noProductInTabCopy}</p> : undefined}
+    {props.inTab && props.productType.productPage ? (
+      <p>{props.productType.productPage.noProductInTabCopy}</p>
+    ) : (
+      undefined
+    )}
     <p>
       Please support our journalism by making either a contribution or a
       subscription.
