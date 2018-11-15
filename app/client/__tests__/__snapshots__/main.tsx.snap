@@ -1040,6 +1040,14 @@ exports[`Main renders something 1`] = `
                             "transform": "translate(5px, -50%)",
                           },
                         },
+                        "@media (max-width: 319px)": Object {
+                          "maxWidth": "280px",
+                        },
+                        "@media (max-width: 359px)": Object {
+                          "lineHeight": "16px",
+                          "maxWidth": "320px",
+                          "whiteSpace": "normal",
+                        },
                         "alignItems": "center",
                         "background": "#ffe500",
                         "border": "none",
@@ -1050,8 +1058,8 @@ exports[`Main renders something 1`] = `
                         "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
                         "fontSize": "16px",
                         "fontWeight": "bold",
-                        "height": "36px",
                         "lineHeight": "36px",
+                        "minHeight": "36px",
                         "padding": "1px 40px 0 18px",
                         "position": "relative",
                         "svg": Object {
@@ -1090,6 +1098,14 @@ exports[`Main renders something 1`] = `
                             "transform": "translate(5px, -50%)",
                           },
                         },
+                        "@media (max-width: 319px)": Object {
+                          "maxWidth": "280px",
+                        },
+                        "@media (max-width: 359px)": Object {
+                          "lineHeight": "16px",
+                          "maxWidth": "320px",
+                          "whiteSpace": "normal",
+                        },
                         "alignItems": "center",
                         "background": "#ffe500",
                         "border": "none",
@@ -1100,8 +1116,8 @@ exports[`Main renders something 1`] = `
                         "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
                         "fontSize": "16px",
                         "fontWeight": "bold",
-                        "height": "36px",
                         "lineHeight": "36px",
+                        "minHeight": "36px",
                         "padding": "1px 40px 0 18px",
                         "position": "relative",
                         "svg": Object {

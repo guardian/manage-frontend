@@ -2,12 +2,14 @@ import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
 import palette from "../colours";
+import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 
 export interface CommonButtonProps {
   text: string;
   height?: string;
   fontWeight?: string;
+  maxWidthIfWrapping?: string;
   left?: true;
   right?: true;
   disabled?: boolean;
@@ -79,6 +81,7 @@ const buttonCss = ({
   disabled,
   height,
   fontWeight,
+  maxWidthIfWrapping,
   colour = defaultColour,
   textColour = palette.white,
   left,
@@ -95,7 +98,7 @@ const buttonCss = ({
   );
   return {
     ...styles.common,
-    height: height || "36px",
+    minHeight: height || "36px",
     lineHeight: height || "36px",
     fontWeight,
     display: hide ? "none" : "inline-flex",
@@ -111,7 +114,15 @@ const buttonCss = ({
             .string(),
           ...applyArrowStyleIfApplicable(true, left, right)
         },
-    cursor: disabled ? "not-allowed" : "pointer"
+    cursor: disabled ? "not-allowed" : "pointer",
+    [maxWidth.mobile]: {
+      maxWidth: maxWidthIfWrapping || "280px"
+    },
+    [maxWidth.mobileMedium]: {
+      maxWidth: maxWidthIfWrapping || "320px",
+      whiteSpace: "normal",
+      lineHeight: "16px"
+    }
   };
 };
 
