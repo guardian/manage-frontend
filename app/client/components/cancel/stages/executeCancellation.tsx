@@ -5,7 +5,7 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductType
+  ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import {
@@ -17,6 +17,7 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
+import { RouteableStepPropsWithCancellationFlow } from "../cancellationFlow";
 import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
@@ -56,7 +57,7 @@ const getCaseUpdateWithCancelOutcomeFunc = (
   );
 
 const getCancellationSummaryWithReturnButton = (
-  productType: ProductType,
+  productType: ProductTypeWithCancellationFlow,
   subscription: Subscription
 ) => (
   <div>
@@ -68,7 +69,7 @@ const getCancellationSummaryWithReturnButton = (
 
 const getCaseUpdatingCancellationSummary = (
   caseId: string,
-  productType: ProductType
+  productType: ProductTypeWithCancellationFlow
 ) => (withSubscription: WithSubscription | {}) => {
   const subscription =
     (withSubscription as WithSubscription).subscription || {};
@@ -83,7 +84,9 @@ const getCaseUpdatingCancellationSummary = (
   );
 };
 
-export const ExecuteCancellation = (props: RouteableStepProps) => (
+export const ExecuteCancellation = (
+  props: RouteableStepPropsWithCancellationFlow
+) => (
   <WizardStep routeableStepProps={props} hideBackButton>
     <CancellationReasonContext.Consumer>
       {reason => (

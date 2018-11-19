@@ -3,7 +3,11 @@ import {
   SubscriptionPlan,
   WithSubscription
 } from "../../shared/productResponse";
-import { ProductType, WithProductType } from "../../shared/productTypes";
+import {
+  ProductType,
+  ProductTypeWithProductPage,
+  WithProductType
+} from "../../shared/productTypes";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { validationWarningCSS } from "../styles/fonts";
@@ -95,7 +99,8 @@ const getAmountUpdater = (
     body: JSON.stringify({ newPaymentAmount: newAmount })
   });
 
-export type UpdatableAmountProps = WithSubscription & WithProductType;
+export type UpdatableAmountProps = WithSubscription &
+  WithProductType<ProductTypeWithProductPage>;
 
 export interface UpdatableAmountState {
   inEditMode: boolean;
@@ -261,7 +266,7 @@ export class UpdatableAmount extends React.Component<
         {this.state.currentAmount.toFixed(2)}{" "}
         {this.props.subscription.plan.currencyISO}
       </span>
-      {this.props.productType.updateAmountMdaEndpoint ? (
+      {this.props.productType.productPage.updateAmountMdaEndpoint ? (
         <>
           <Button
             text="Change amount"

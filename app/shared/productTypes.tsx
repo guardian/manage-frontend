@@ -17,39 +17,61 @@ export type ProductUrlPart = "membership" | "contributions";
 export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions";
 
-export interface ProductType {
-  friendlyName: ProductFriendlyName;
-  productPageTitle: ProductTitle;
-  urlPart: ProductUrlPart;
-  navLink: NavItem;
-  validator: MeValidator;
+export interface CancellationFlowProperties {
+  reasons: CancellationReason[];
   sfProduct: SfProduct;
-  noProductInTabCopy: string;
-  updateAmountMdaEndpoint?: string;
-  cancelLinkOnProductPage?: true;
-  cancellationReasons: CancellationReason[];
-  cancellationStartPageBody: JSX.Element;
-  cancellationSaveTitlePrefix?: string;
-  cancellationSummaryMainPara: (
-    subscription: Subscription
-  ) => JSX.Element | string;
-  cancellationSummaryReasonSpecificPara: (
+  linkOnProductPage?: true;
+  startPageBody: JSX.Element;
+  saveTitlePrefix?: string;
+  summaryMainPara: (subscription: Subscription) => JSX.Element | string;
+  summaryReasonSpecificPara: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
-  cancellationOnlyShowSupportSectionIfAlternateText: boolean;
-  cancellationAlternateSupportButtonText: (
+  onlyShowSupportSectionIfAlternateText: boolean;
+  alternateSupportButtonText: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
-  cancellationAlternateSupportButtonUrlSuffix: (
+  alternateSupportButtonUrlSuffix: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
-  cancellationSwapFeedbackAndContactUs?: true;
-  tierRowLabel?: string; // no label means row is not displayed
-  includeGuardianInTitles?: true;
+  swapFeedbackAndContactUs?: true;
 }
 
-export interface WithProductType {
-  productType: ProductType;
+export interface ProductPageProperties {
+  title: ProductTitle;
+  navLink: NavItem;
+  noProductInTabCopy: string;
+  updateAmountMdaEndpoint?: string;
+  tierRowLabel?: string; // no label means row is not displayed
+}
+
+export interface ProductType {
+  friendlyName: ProductFriendlyName;
+  urlPart: ProductUrlPart;
+  validator: MeValidator;
+  includeGuardianInTitles?: true;
+  productPage?: ProductPageProperties; // undefined 'productPage' means no product page
+  cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
+}
+
+export interface ProductTypeWithCancellationFlow extends ProductType {
+  cancellation: CancellationFlowProperties;
+}
+export const hasCancellationFlow = (
+  productType: ProductType
+): productType is ProductTypeWithCancellationFlow =>
+  productType.cancellation !== undefined;
+
+export interface ProductTypeWithProductPage extends ProductType {
+  productPage: ProductPageProperties;
+}
+export const hasProductPage = (
+  productType: ProductType
+): productType is ProductTypeWithProductPage =>
+  productType.productPage !== undefined;
+
+export interface WithProductType<ProductTypeVariant extends ProductType> {
+  productType: ProductTypeVariant;
 }
 
 export const createProductDetailFetcher = (
@@ -64,87 +86,92 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
     friendlyName: "membership",
     urlPart: "membership",
-    navLink: navLinks.membership,
     validator: (me: MeResponse) => me.contentAccess.member,
-    sfProduct: "Membership",
-    productPageTitle: "Membership",
-    noProductInTabCopy:
-      "To manage your existing contribution or subscription, please select from the tabs above.",
+    productPage: {
+      title: "Membership",
+      navLink: navLinks.membership,
+      noProductInTabCopy:
+        "To manage your existing contribution or subscription, please select from the tabs above.",
+      tierRowLabel: "Membership tier"
+    },
     includeGuardianInTitles: true,
-    cancellationReasons: membershipCancellationReasons,
-    cancellationStartPageBody: membershipCancellationFlowStart,
-    cancellationSummaryMainPara: (subscription: Subscription) =>
-      subscription.end ? (
-        <>
-          You will continue to receive the benefits of your membership until{" "}
-          <b>{formatDate(subscription.end)}</b>. You will not be charged again.
-        </>
-      ) : (
-        "Your cancellation is effective immediately."
-      ),
-    cancellationSummaryReasonSpecificPara: () => undefined,
-    cancellationOnlyShowSupportSectionIfAlternateText: false,
-    cancellationAlternateSupportButtonText: () => undefined,
-    cancellationAlternateSupportButtonUrlSuffix: () => undefined,
-    tierRowLabel: "Membership tier"
+    cancellation: {
+      reasons: membershipCancellationReasons,
+      sfProduct: "Membership",
+      startPageBody: membershipCancellationFlowStart,
+      summaryMainPara: (subscription: Subscription) =>
+        subscription.end ? (
+          <>
+            You will continue to receive the benefits of your membership until{" "}
+            <b>{formatDate(subscription.end)}</b>. You will not be charged
+            again.
+          </>
+        ) : (
+          "Your cancellation is effective immediately."
+        ),
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: () => undefined,
+      alternateSupportButtonUrlSuffix: () => undefined
+    }
   },
   contributions: {
     friendlyName: "recurring contribution",
     urlPart: "contributions",
-    navLink: navLinks.contributions,
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
-    sfProduct: "Contribution",
-    productPageTitle: "Contributions",
-    noProductInTabCopy:
-      "To manage your existing membership or subscription, please select from the tabs above.",
-    updateAmountMdaEndpoint: "contribution-update-amount",
-    cancelLinkOnProductPage: true,
-    cancellationReasons: contributionsCancellationReasons,
-    cancellationStartPageBody: contributionsCancellationFlowStart,
-    cancellationSaveTitlePrefix: "Reason: ",
-    cancellationSummaryMainPara: () => "Thank you for your valuable support.",
-    cancellationSummaryReasonSpecificPara: (
-      reasonId: OptionalCancellationReasonId
-    ) => {
-      switch (reasonId) {
-        case "mma_financial_circumstances":
-        case "mma_value_for_money":
-        case "mma_one_off":
-          return "You can support The Guardian’s independent journalism with a single contribution, from as little as £1 – and it only takes a minute.";
-        case "mma_wants_annual_contribution":
-          return "You can support The Guardian’s independent journalism for the long term with an annual contribution.";
-        case "mma_wants_monthly_contribution":
-          return "You can support The Guardian’s independent journalism for the long term with a monthly contribution.";
-        default:
-          return undefined;
-      }
+    productPage: {
+      title: "Contributions",
+      navLink: navLinks.contributions,
+      noProductInTabCopy:
+        "To manage your existing membership or subscription, please select from the tabs above.",
+      updateAmountMdaEndpoint: "contribution-update-amount"
     },
-    cancellationOnlyShowSupportSectionIfAlternateText: true,
-    cancellationAlternateSupportButtonText: (
-      reasonId: OptionalCancellationReasonId
-    ) => {
-      switch (reasonId) {
-        case "mma_financial_circumstances":
-        case "mma_value_for_money":
-        case "mma_one_off":
-          return "Make a single contribution";
-        case "mma_wants_annual_contribution":
-          return "Make an annual contribution";
-        case "mma_wants_monthly_contribution":
-          return "Make a monthly contribution";
-        default:
-          return undefined;
-      }
-    },
-    cancellationAlternateSupportButtonUrlSuffix: (
-      reasonId: OptionalCancellationReasonId
-    ) => {
-      switch (reasonId) {
-        /*TODO tweak the support url to preselect single/monthly/annual once functionality is available*/
-        default:
-          return "/contribute";
-      }
-    },
-    cancellationSwapFeedbackAndContactUs: true
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: contributionsCancellationReasons,
+      sfProduct: "Contribution",
+      startPageBody: contributionsCancellationFlowStart,
+      saveTitlePrefix: "Reason: ",
+      summaryMainPara: () => "Thank you for your valuable support.",
+      summaryReasonSpecificPara: (reasonId: OptionalCancellationReasonId) => {
+        switch (reasonId) {
+          case "mma_financial_circumstances":
+          case "mma_value_for_money":
+          case "mma_one_off":
+            return "You can support The Guardian’s independent journalism with a single contribution, from as little as £1 – and it only takes a minute.";
+          case "mma_wants_annual_contribution":
+            return "You can support The Guardian’s independent journalism for the long term with an annual contribution.";
+          case "mma_wants_monthly_contribution":
+            return "You can support The Guardian’s independent journalism for the long term with a monthly contribution.";
+          default:
+            return undefined;
+        }
+      },
+      onlyShowSupportSectionIfAlternateText: true,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) => {
+        switch (reasonId) {
+          case "mma_financial_circumstances":
+          case "mma_value_for_money":
+          case "mma_one_off":
+            return "Make a single contribution";
+          case "mma_wants_annual_contribution":
+            return "Make an annual contribution";
+          case "mma_wants_monthly_contribution":
+            return "Make a monthly contribution";
+          default:
+            return undefined;
+        }
+      },
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) => {
+        switch (reasonId) {
+          /*TODO tweak the support url to preselect single/monthly/annual once functionality is available*/
+          default:
+            return "/contribute";
+        }
+      },
+      swapFeedbackAndContactUs: true
+    }
   }
 };

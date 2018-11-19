@@ -7,6 +7,7 @@ import {
 } from "../../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../shared/productTypes";
 import palette from "../../colours";
@@ -23,7 +24,8 @@ import {
 } from "../wizardRouterAdapter";
 import { getCancellationSummary } from "./cancellationSummary";
 
-interface ReasonPickerProps extends WithProductType {
+interface ReasonPickerProps
+  extends WithProductType<ProductTypeWithCancellationFlow> {
   options: ReactNode[];
 }
 
@@ -116,9 +118,9 @@ const childWithRouteablePropsToElement = (child: {
   </option>
 );
 
-const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
-  data: MembersDataApiResponse
-) => {
+const getReasonsRenderer = (
+  routeableStepProps: RouteableStepPropsWithCancellationFlow
+) => (data: MembersDataApiResponse) => {
   if (hasProduct(data)) {
     if (data.subscription.cancelledAt) {
       return (
@@ -133,7 +135,7 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
     return (
       <MembersDataApiResponseContext.Provider value={data}>
         <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
-          {routeableStepProps.productType.cancellationStartPageBody}
+          {routeableStepProps.productType.cancellation.startPageBody}
           <PageContainerSection>
             <ReasonPicker
               productType={routeableStepProps.productType}
@@ -159,7 +161,14 @@ const getReasonsRenderer = (routeableStepProps: RouteableStepProps) => (
   );
 };
 
-export const CancellationFlow = (props: RouteableStepProps) => (
+export interface RouteableStepPropsWithCancellationFlow
+  extends RouteableStepProps {
+  productType: ProductTypeWithCancellationFlow;
+}
+
+export const CancellationFlow = (
+  props: RouteableStepPropsWithCancellationFlow
+) => (
   <div>
     <PageContainer>
       <h1 css={{ fontSize: "24px" }}>

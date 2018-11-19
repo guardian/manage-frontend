@@ -1,6 +1,6 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
-import { WithProductType } from "../../shared/productTypes";
+import { ProductType, WithProductType } from "../../shared/productTypes";
 import { Button, LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
@@ -10,7 +10,8 @@ export interface RouteableProps extends RouteComponentProps {
   path: string;
 }
 
-export type RouteableProductProps = RouteableProps & WithProductType;
+export type RouteableProductProps = RouteableProps &
+  WithProductType<ProductType>;
 
 export interface RouteableStepProps extends RouteableProductProps {
   currentStep: number;
@@ -49,7 +50,9 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export const ReturnToYourProductButton = (props: WithProductType) => (
+export const ReturnToYourProductButton = (
+  props: WithProductType<ProductType>
+) => (
   <LinkButton
     text="Return to your account"
     to={"/" + props.productType.urlPart}

@@ -81,6 +81,7 @@ const WithSubscriptionRenderer = (productType: ProductType) => (
       <LinkButton
         to={"/" + productType.urlPart}
         text={"Manage your " + productType.friendlyName}
+        maxWidthIfWrapping="230px"
         primary
         right
       />
