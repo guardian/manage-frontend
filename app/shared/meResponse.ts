@@ -9,6 +9,7 @@ export interface MeResponse {
     paidMember: boolean;
     recurringContributor: boolean;
     digitalPack: boolean;
+    paperSubscriber: boolean;
   };
   alertAvailableFor?: string;
 }
