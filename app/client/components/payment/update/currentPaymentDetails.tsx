@@ -9,8 +9,8 @@ export const CurrentPaymentDetails = (subscription: Subscription) => {
     return <CardDisplay {...subscription.card} />;
   } else if (subscription.payPalEmail) {
     return <PayPalDisplay payPalEmail={subscription.payPalEmail} />;
-  } else if (subscription.account) {
-    return <DirectDebitDisplay {...subscription.account} />;
+  } else if (subscription.mandate) {
+    return <DirectDebitDisplay {...subscription.mandate} />;
   }
   return <span>Other Payment Method</span>; // Direct Debit ???
 };

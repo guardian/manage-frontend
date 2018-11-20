@@ -82,30 +82,33 @@ const getPaymentMethodRow = (
   subscription: Subscription,
   updatePaymentPath: string
 ) => {
+  const addUpdateButton = (displayElement: JSX.Element) => (
+    <div css={wrappingContainerCSS}>
+      <div css={{ marginRight: "15px", minWidth: "190px" }}>
+        {displayElement}
+      </div>
+      <div
+        css={{
+          [maxWidth.desktop]: {
+            margin: "10px 0"
+          }
+        }}
+      >
+        <LinkButton
+          text="Update payment details"
+          to={updatePaymentPath}
+          right
+        />
+      </div>
+    </div>
+  );
   if (subscription.card) {
     return (
       <ProductDetailRow
         label="Card details"
-        data={
-          <div css={wrappingContainerCSS}>
-            <div css={{ marginRight: "15px", minWidth: "190px" }}>
-              <CardDisplay margin="0" {...subscription.card} />
-            </div>
-            <div
-              css={{
-                [maxWidth.desktop]: {
-                  margin: "10px 0"
-                }
-              }}
-            >
-              <LinkButton
-                text="Update payment details"
-                to={updatePaymentPath}
-                right
-              />
-            </div>
-          </div>
-        }
+        data={addUpdateButton(
+          <CardDisplay margin="0" {...subscription.card} />
+        )}
       />
     );
   } else if (subscription.payPalEmail) {
@@ -115,11 +118,11 @@ const getPaymentMethodRow = (
         data={<PayPalDisplay payPalEmail={subscription.payPalEmail} />}
       />
     );
-  } else if (subscription.account) {
+  } else if (subscription.mandate) {
     return (
       <ProductDetailRow
         label="Payment method"
-        data={<DirectDebitDisplay {...subscription.account} />}
+        data={<DirectDebitDisplay {...subscription.mandate} />}
       />
     );
   } else {
