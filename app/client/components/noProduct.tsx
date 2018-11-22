@@ -23,6 +23,7 @@ export const NoProduct = (props: NoProductProps) => (
       supportReferer={`${props.productType.urlPart}_${
         props.supportRefererSuffix
       }`}
+      urlSuffix={props.productType.noProductSupportUrlSuffix}
     />
   </div>
 );
