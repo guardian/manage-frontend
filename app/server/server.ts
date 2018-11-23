@@ -126,6 +126,8 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
               return "mma-membership";
             case "contributions":
               return "mma-monthlycontribution";
+            case "paper":
+              return "mma-paper";
           }
         })()
     )
@@ -158,6 +160,8 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
               return "membership-update-card";
             case "contributions":
               return "contribution-update-card";
+            case "paper":
+              return "paper-update-card";
           }
         })()
     )

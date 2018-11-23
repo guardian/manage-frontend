@@ -12,8 +12,11 @@ import { NavItem, navLinks } from "../client/components/nav";
 import { MeResponse } from "./meResponse";
 import { formatDate, Subscription } from "./productResponse";
 
-export type ProductFriendlyName = "membership" | "recurring contribution"; // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
-export type ProductUrlPart = "membership" | "contributions";
+export type ProductFriendlyName =
+  | "membership"
+  | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
+  | "newspaper subscription";
+export type ProductUrlPart = "membership" | "contributions" | "paper";
 export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions";
 
@@ -50,6 +53,7 @@ export interface ProductType {
   urlPart: ProductUrlPart;
   validator: MeValidator;
   includeGuardianInTitles?: true;
+  alternateReturnToAccountDestination?: string;
   productPage?: ProductPageProperties; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
 }
@@ -173,5 +177,16 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       },
       swapFeedbackAndContactUs: true
     }
+  },
+  print: {
+    friendlyName: "newspaper subscription",
+    urlPart: "paper",
+    validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
+    includeGuardianInTitles: true,
+    alternateReturnToAccountDestination: `https://subscribe.${
+      typeof window !== "undefined" && window.guardian && window.guardian.domain
+        ? window.guardian.domain
+        : "theguardian.com"
+    }/manage`
   }
 };

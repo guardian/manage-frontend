@@ -1,7 +1,8 @@
 import React from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
-import { formatDate, hasProduct } from "../../../../shared/productResponse";
 import {
+  formatDate,
+  hasProduct,
+  MembersDataApiResponseContext,
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
@@ -48,11 +49,16 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
               </div>
             ) : (
               <>
-                <div>
-                  <b>Next Payment:</b> {subscription.plan.currency}
-                  {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
-                  {formatDate(subscription.nextPaymentDate)}
-                </div>
+                {subscription.nextPaymentPrice &&
+                subscription.nextPaymentDate ? (
+                  <div>
+                    <b>Next Payment:</b> {subscription.plan.currency}
+                    {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
+                    {formatDate(subscription.nextPaymentDate)}
+                  </div>
+                ) : (
+                  undefined
+                )}
                 <div>
                   <b>Payment Frequency:</b> {subscription.plan.interval}ly
                 </div>
@@ -78,13 +84,24 @@ const WithSubscriptionRenderer = (productType: ProductType) => (
       journalism.
     </h2>
     <div>
-      <LinkButton
-        to={"/" + productType.urlPart}
-        text={"Manage your " + productType.friendlyName}
-        maxWidthIfWrapping="230px"
-        primary
-        right
-      />
+      {productType.alternateReturnToAccountDestination ? (
+        <a href={productType.alternateReturnToAccountDestination}>
+          <Button
+            text={"Manage your " + productType.friendlyName}
+            maxWidthIfWrapping="230px"
+            primary
+            right
+          />
+        </a>
+      ) : (
+        <LinkButton
+          to={"/" + productType.urlPart}
+          text={"Manage your " + productType.friendlyName}
+          maxWidthIfWrapping="230px"
+          primary
+          right
+        />
+      )}
     </div>
     <div css={{ marginTop: "20px" }}>
       <a href="https://www.theguardian.com">
