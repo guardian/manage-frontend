@@ -54,6 +54,7 @@ export interface ProductType {
   validator: MeValidator;
   includeGuardianInTitles?: true;
   alternateReturnToAccountDestination?: string;
+  noProductSupportUrlSuffix?: string;
   productPage?: ProductPageProperties; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
 }
@@ -123,6 +124,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "recurring contribution",
     urlPart: "contributions",
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
+    noProductSupportUrlSuffix: "/contribute",
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
