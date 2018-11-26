@@ -5,7 +5,8 @@ import { sans } from "../../../styles/fonts";
 export interface FieldWrapperProps {
   label: string;
   width: string;
-  children: any; // TODO refine the type to single StripeElement
+  children: any;
+  onChange?: (event: any) => void;
 }
 
 export interface FieldWrapperState {
@@ -32,7 +33,7 @@ export class FieldWrapper extends React.Component<
   public render(): React.ReactNode {
     const hydratedChildren = React.Children.map(this.props.children, child => {
       return React.cloneElement(child as React.ReactElement<any>, {
-        onChange: this.validateField,
+        onChange: this.validateField(this.props.onChange),
         onFocus: this.toggleFocus,
         onBlur: this.toggleFocus
       });
@@ -74,12 +75,14 @@ export class FieldWrapper extends React.Component<
             width: "100%",
             transition: "all .2s ease-in-out",
             "&:hover": {
-              boxShadow: this.state.focus
-                ? `0 0 0 3px ${palette.yellow.medium}`
-                : "0 0 0 3px #ededed"
+              boxShadow: `0 0 0 3px ${
+                this.state.focus ? palette.yellow.medium : palette.neutral["6"]
+              }`
             },
             outline: 0,
-            boxShadow: this.state.focus ? "0 0 0 3px #ffe500" : 0
+            boxShadow: this.state.focus
+              ? `0 0 0 3px ${palette.yellow.medium}`
+              : undefined
           }}
         >
           {hydratedChildren}
@@ -99,7 +102,12 @@ export class FieldWrapper extends React.Component<
     );
   }
 
-  private validateField = (field: stripe.elements.ElementChangeResponse) => {
+  private validateField = (otherOnChange?: (event: any) => void) => (
+    field: stripe.elements.ElementChangeResponse
+  ) => {
+    if (otherOnChange) {
+      otherOnChange(field);
+    }
     if (field.error && field.error.message) {
       this.setState({
         error: field.error

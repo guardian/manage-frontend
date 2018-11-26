@@ -167,6 +167,19 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     )
   );
 
+  server.post(
+    "/api/payment/" + productType.urlPart + "/dd",
+    membersDataApiHandler(
+      "user-attributes/me/" +
+        (() => {
+          switch (productType.urlPart) {
+            case "contributions":
+              return "contribution-update-dd";
+          }
+        })()
+    )
+  );
+
   server.use(
     "/banner/" + productType.urlPart,
     (req: express.Request, res: express.Response) => {

@@ -30,6 +30,7 @@ import {
 } from "../../wizardRouterAdapter";
 import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
+import { DirectDebitInputForm } from "./dd/directDebitInputForm";
 import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
@@ -243,6 +244,12 @@ class PaymentUpdaterStep extends React.Component<
             Updating your PayPal payment details is not possible here. Please
             login to PayPal to change your payment details.
           </p>
+        );
+      case PaymentMethod.dd:
+        return (
+          <DirectDebitInputForm
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+          />
         );
       default:
         return (

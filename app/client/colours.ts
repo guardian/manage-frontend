@@ -18,7 +18,8 @@ const palette = {
   },
   green: {
     dark: "#236925",
-    medium: "#3db540"
+    medium: "#3db540",
+    checkbox: "#22834D"
   },
   gold: {
     light: "#eacca0",
