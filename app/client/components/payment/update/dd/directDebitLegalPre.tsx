@@ -9,8 +9,8 @@ const hrefStyle = {
   cursor: "pointer"
 };
 
-export class DirectDebitLegalStepOne extends React.Component<
-  {},
+export class DirectDebitLegalPre extends React.Component<
+  { extraCSS?: object },
   { guaranteeExpanded: boolean }
 > {
   public state = {
@@ -22,12 +22,13 @@ export class DirectDebitLegalStepOne extends React.Component<
       <div
         css={{
           background: palette.neutral["6"],
-          padding: "8px",
+          padding: "11px",
           color: palette.neutral["3"],
           fontSize: "12px",
           fontFamily: sans,
           flexGrow: "1",
-          marginTop: "25px"
+          marginTop: "25px",
+          ...this.props.extraCSS
         }}
       >
         Payments by GoCardless,{" "}
@@ -59,11 +60,9 @@ export class DirectDebitLegalStepOne extends React.Component<
         Your payments are protected by the{" "}
         <a
           css={hrefStyle}
-          onClick={() =>
-            this.setState({
-              guaranteeExpanded: !this.state.guaranteeExpanded
-            })
-          }
+          onClick={this.toggleGuaranteeDisplay}
+          onKeyPress={this.toggleGuaranteeDisplay}
+          tabIndex={0}
         >
           Direct Debit guarantee.
         </a>
@@ -107,4 +106,9 @@ export class DirectDebitLegalStepOne extends React.Component<
       </div>
     );
   }
+
+  private toggleGuaranteeDisplay = () =>
+    this.setState({
+      guaranteeExpanded: !this.state.guaranteeExpanded
+    });
 }

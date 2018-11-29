@@ -200,6 +200,11 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   }
 });
 
+server.post(
+  "/api/validate/payment/dd",
+  proxyApiHandler("https://subscribe." + conf.DOMAIN)("checkout/check-account")
+);
+
 server.post("/api/case", sfCasesApiHandler("case"));
 
 server.patch(

@@ -21,10 +21,13 @@ export const Checkbox = (props: CheckboxProps) => (
   >
     <input
       type="checkbox"
-      css={{ display: "none" }}
+      css={{
+        display: "none"
+      }}
       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
         props.onChange(event.target.checked)
       }
+      checked={props.checked}
     />
     <div
       className="checkbox"
@@ -39,8 +42,17 @@ export const Checkbox = (props: CheckboxProps) => (
         background: props.checked
           ? props.checkboxFill || palette.green.checkbox
           : undefined,
-        position: "relative"
+        position: "relative",
+        outline: 0,
+        ":focus": {
+          boxShadow: `0 0 0 3px ${palette.yellow.medium}`
+        }
       }}
+      // accessibility props below
+      role="checkbox"
+      aria-checked={props.checked}
+      tabIndex={0}
+      onKeyPress={() => props.onChange(!props.checked)}
     >
       <div
         css={{

@@ -17,6 +17,8 @@ import {
 import { handleNoNewPaymentDetails } from "./paymentUpdated";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
 
+export const CONFIRM_BUTTON_TEXT = "Complete payment update";
+
 interface ExecutePaymentUpdateProps extends RouteableStepProps {
   newPaymentMethodDetail: NewPaymentMethodDetail;
 }
@@ -47,7 +49,7 @@ class ExecutePaymentUpdate extends React.Component<
       />
     ) : (
       <Button
-        text="Complete payment update"
+        text={CONFIRM_BUTTON_TEXT}
         onClick={() => this.setState({ hasHitComplete: true })}
         primary
         right
@@ -133,6 +135,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               <h3>...to...</h3>
               {newPaymentMethodDetail.render()}
               <div css={{ margin: "20px 0", textAlign: "right" }}>
+                {newPaymentMethodDetail.extraConfirmElement}
                 <ExecutePaymentUpdate
                   {...props}
                   newPaymentMethodDetail={newPaymentMethodDetail}

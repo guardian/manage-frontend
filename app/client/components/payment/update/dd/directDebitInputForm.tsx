@@ -2,14 +2,16 @@ import { NavigateFn } from "@reach/router";
 import React from "react";
 import { DirectDebitDetails } from "../../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
-import { sans } from "../../../../styles/fonts";
+import { sans, validationWarningCSS } from "../../../../styles/fonts";
+import AsyncLoader from "../../../asyncLoader";
 import { Button } from "../../../buttons";
 import { Checkbox } from "../../../checkbox";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
+import { cleanSortCode, dashifySortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { NavigateFnContext } from "../updatePaymentFlow";
-import { DirectDebitLegalStepOne } from "./ddLegalStepOne";
+import { DirectDebitLegalPre } from "./directDebitLegalPre";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
 
 const inputBoxBaseStyle = {
@@ -23,23 +25,35 @@ const inputBoxBaseStyle = {
 
 const formWidth = "400px";
 
+interface DirectDebitValidationResponse {
+  accountValid: boolean;
+}
+
+class DirectDebitValidationLoader extends AsyncLoader<
+  DirectDebitValidationResponse
+> {}
+
 export interface DirectDebitUpdateFormProps {
   newPaymentMethodDetailUpdater: (ddDetails: NewPaymentMethodDetail) => void;
 }
 
 export interface DirectDebitUpdateFormState extends DirectDebitDetails {
   soleAccountHolderConfirmed: boolean;
+  isValidating: boolean;
+  error?: string;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class DirectDebitInputForm extends React.Component<
   DirectDebitUpdateFormProps,
   DirectDebitUpdateFormState
 > {
-  public state = {
+  public state: DirectDebitUpdateFormState = {
     soleAccountHolderConfirmed: false,
     accountName: "",
     accountNumber: "",
-    sortCode: ""
+    sortCode: "",
+    isValidating: false
   };
 
   public render(): React.ReactNode {
@@ -52,17 +66,15 @@ export class DirectDebitInputForm extends React.Component<
         <div
           css={{
             display: "flex",
-            flexDirection: "row",
-            [maxWidth.desktop]: {
-              flexWrap: "wrap"
-            }
+            flexDirection: "row"
           }}
         >
           <div
             css={{
               maxWidth: "100%",
               [minWidth.desktop]: {
-                marginRight: "20px"
+                marginRight: "20px",
+                maxWidth: formWidth
               }
             }}
           >
@@ -100,7 +112,7 @@ export class DirectDebitInputForm extends React.Component<
                 width="140px"
                 label="Sort Code"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  this.setState({ sortCode: event.target.value })
+                  this.setState({ sortCode: cleanSortCode(event.target.value) })
                 }
               >
                 <input
@@ -118,40 +130,110 @@ export class DirectDebitInputForm extends React.Component<
               checked={this.state.soleAccountHolderConfirmed}
               label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
             />
+            <DirectDebitLegalPre
+              extraCSS={{
+                [minWidth.desktop]: {
+                  display: "none"
+                }
+              }}
+            />
+            <NavigateFnContext.Consumer>
+              {nav =>
+                nav.navigate ? (
+                  <div
+                    css={{
+                      marginTop: "20px",
+                      textAlign: "right",
+                      width: formWidth,
+                      [maxWidth.desktop]: {
+                        width: "100%"
+                      }
+                    }}
+                  >
+                    {this.state.isValidating ? (
+                      <DirectDebitValidationLoader
+                        fetch={this.validateDirectDebitDetails}
+                        render={this.renderValidationResponse(nav.navigate)}
+                        errorRender={() => {
+                          this.setState({
+                            isValidating: false,
+                            error:
+                              "Could not validate your bank details, please check them and try again."
+                          });
+                          return null;
+                        }}
+                        loadingMessage="Validating your direct debit details..."
+                        spinnerScale={0.7}
+                        inline
+                      />
+                    ) : (
+                      <>
+                        <Button
+                          text="Review payment update"
+                          onClick={this.startDirectDebitUpdate}
+                          primary
+                          right
+                        />
+                        {this.state.error ? (
+                          <div
+                            css={{
+                              ...validationWarningCSS,
+                              marginTop: "5px"
+                            }}
+                          >
+                            {this.state.error}
+                          </div>
+                        ) : (
+                          undefined
+                        )}
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+                )
+              }
+            </NavigateFnContext.Consumer>
           </div>
-          <DirectDebitLegalStepOne />
+          <DirectDebitLegalPre
+            extraCSS={{
+              [maxWidth.desktop]: {
+                display: "none"
+              }
+            }}
+          />
         </div>
-        <NavigateFnContext.Consumer>
-          {nav =>
-            nav.navigate ? (
-              <div
-                css={{
-                  marginTop: "30px",
-                  textAlign: "right",
-                  width: formWidth,
-                  [maxWidth.desktop]: {
-                    width: "100%"
-                  }
-                }}
-              >
-                <Button
-                  text="Review payment update"
-                  onClick={this.startDirectDebitUpdate(nav.navigate)}
-                  primary
-                  right
-                />
-                {/*TODO {this.renderError()}*/}
-              </div>
-            ) : (
-              <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-            )
-          }
-        </NavigateFnContext.Consumer>
       </div>
     );
   }
 
-  private startDirectDebitUpdate = (navigate: NavigateFn) => () => {
+  private renderValidationResponse = (navigate: NavigateFn) => (
+    response: DirectDebitValidationResponse
+  ) => {
+    if (response && response.accountValid) {
+      navigate("confirm");
+    } else {
+      this.setState({
+        isValidating: false,
+        error: "Your bank details are invalid. Please check them and try again."
+      });
+    }
+    return null;
+  };
+
+  private validateDirectDebitDetails: () => Promise<Response> = async () =>
+    await fetch(`/api/validate/payment/dd`, {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({
+        account: this.state.accountNumber,
+        sortcode: dashifySortCode(this.state.sortCode),
+        holder: this.state.accountName
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+
+  private startDirectDebitUpdate = () => {
     // TODO make 'check' call with spinner plus validation on the checkbox
     this.props.newPaymentMethodDetailUpdater(
       new NewDirectDebitPaymentMethodDetail({
@@ -160,6 +242,15 @@ export class DirectDebitInputForm extends React.Component<
         sortCode: this.state.sortCode
       })
     );
-    navigate("confirm");
+    this.setState({ error: undefined });
+    if (this.state.accountName.length < 3) {
+      this.setState({ error: "Please enter a valid account name" }); // TODO add field highlighting
+    } else if (this.state.soleAccountHolderConfirmed) {
+      this.setState({ isValidating: true });
+    } else {
+      this.setState({
+        error: "You need to confirm that you are the account holder"
+      }); // TODO highlight checkbox
+    }
   };
 }
