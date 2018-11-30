@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "../../styles/emotion";
 
 export interface CardProps {
   last4: string;
@@ -26,7 +25,7 @@ const cardTypeToSVG = (cardType: string) => {
   if (backgroundImage) {
     return (
       <span
-        className={css({
+        css={{
           display: "inline-block",
           borderRadius: "6px",
           marginRight: "9px",
@@ -34,7 +33,7 @@ const cardTypeToSVG = (cardType: string) => {
           width: "54px",
           height: "35px",
           backgroundPosition: "0 0"
-        })}
+        }}
       />
     );
   }
@@ -43,11 +42,11 @@ const cardTypeToSVG = (cardType: string) => {
 
 export const CardDisplay = (props: CardDisplayProps) => (
   <div
-    className={css({
+    css={{
       display: "flex",
       alignItems: "center",
       margin: props.margin || "10px"
-    })}
+    }}
   >
     {cardTypeToSVG(props.type)}•••• •••• •••• {props.last4}
   </div>

@@ -115,7 +115,7 @@ const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
     return PaymentMethod.payPal;
   } else if (
     subscription.paymentMethod === "DirectDebit" &&
-    subscription.account
+    subscription.mandate
   ) {
     return PaymentMethod.dd;
   } else if (subscription.paymentMethod === undefined) {

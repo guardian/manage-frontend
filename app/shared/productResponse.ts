@@ -41,6 +41,8 @@ export interface Card extends CardProps {
 
 export interface DirectDebitDetails {
   accountName: string;
+  accountNumber: string;
+  sortCode: string;
 }
 
 export interface SubscriptionPlan {
@@ -59,7 +61,7 @@ export interface Subscription {
   paymentMethod?: string;
   card?: Card;
   payPalEmail?: string;
-  account?: DirectDebitDetails;
+  mandate?: DirectDebitDetails;
   plan: SubscriptionPlan;
 }
 
