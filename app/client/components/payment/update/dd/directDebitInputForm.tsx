@@ -11,7 +11,7 @@ import { cleanSortCode, dashifySortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { NavigateFnContext } from "../updatePaymentFlow";
-import { DirectDebitLegalPre } from "./directDebitLegalPre";
+import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
 
 const inputBoxBaseStyle = {
@@ -130,7 +130,7 @@ export class DirectDebitInputForm extends React.Component<
               checked={this.state.soleAccountHolderConfirmed}
               label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
             />
-            <DirectDebitLegalPre
+            <DirectDebitLegal
               extraCSS={{
                 [minWidth.desktop]: {
                   display: "none"
@@ -199,7 +199,7 @@ export class DirectDebitInputForm extends React.Component<
               }
             </NavigateFnContext.Consumer>
           </div>
-          <DirectDebitLegalPre
+          <DirectDebitLegal
             extraCSS={{
               [maxWidth.desktop]: {
                 display: "none"

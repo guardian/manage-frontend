@@ -7,7 +7,7 @@ import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { cleanSortCode, DirectDebitDisplay } from "../../directDebitDisplay";
 import { CONFIRM_BUTTON_TEXT } from "../confirmPaymentUpdate";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-import { DirectDebitLegalPre } from "./directDebitLegalPre";
+import { DirectDebitLegal, GoCardlessGuarantee } from "./directDebitLegal";
 
 export interface SubscriptionWithMandate extends Subscription {
   mandate: DirectDebitDetails;
@@ -38,7 +38,7 @@ export class NewDirectDebitPaymentMethodDetail
         }
       }}
     >
-      <DirectDebitLegalPre />
+      <DirectDebitLegal />
       <div
         css={{
           [minWidth.tablet]: {
@@ -58,6 +58,8 @@ export class NewDirectDebitPaymentMethodDetail
       </div>
     </div>
   );
+
+  public readonly updatedSuccessExtras = <GoCardlessGuarantee />;
 
   private readonly ddDetail: DirectDebitDetails;
 

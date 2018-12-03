@@ -9,54 +9,27 @@ const hrefStyle = {
   cursor: "pointer"
 };
 
-export class DirectDebitLegalPre extends React.Component<
-  { extraCSS?: object },
-  { guaranteeExpanded: boolean }
+const baseStyle = {
+  background: palette.neutral["6"],
+  padding: "11px",
+  color: palette.neutral["3"],
+  fontSize: "12px",
+  fontFamily: sans,
+  flexGrow: "1",
+  marginTop: "25px"
+};
+
+export class GoCardlessGuarantee extends React.Component<
+  { inner?: true },
+  { expanded: boolean }
 > {
   public state = {
-    guaranteeExpanded: false
+    expanded: false
   };
 
   public render(): React.ReactNode {
     return (
-      <div
-        css={{
-          background: palette.neutral["6"],
-          padding: "11px",
-          color: palette.neutral["3"],
-          fontSize: "12px",
-          fontFamily: sans,
-          flexGrow: "1",
-          marginTop: "25px",
-          ...this.props.extraCSS
-        }}
-      >
-        Payments by GoCardless,{" "}
-        <a
-          href="https://gocardless.com/legal/privacy"
-          css={hrefStyle}
-          target="_blank"
-        >
-          read the GoCardless privacy notice.
-        </a>
-        <br />
-        The details of your Direct Debit instruction including payment schedule,
-        due date, frequency and amount will be sent to you within three working
-        days. All the normal Direct Debit safeguards and guarantees apply.
-        <br />
-        Direct Debit
-        <br />
-        The Guardian, Unit 16, Coalfield Way, Ashby Park, Ashby-De-La-Zouch,
-        LE65 1JT United Kingdom
-        <br />
-        Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays,
-        8am-6pm at weekends (GMT/BST)
-        <br />
-        contribution.support@theguardian.com {/*TODO change this email*/}
-        <br />
-        <br />
-        <DirectDebitLogo fill={palette.neutral["4"]} />
-        <br />
+      <div css={this.props.inner ? { paddingTop: "5px" } : baseStyle}>
         Your payments are protected by the{" "}
         <a
           css={hrefStyle}
@@ -64,11 +37,11 @@ export class DirectDebitLegalPre extends React.Component<
           onKeyPress={this.toggleGuaranteeDisplay}
           tabIndex={0}
         >
-          Direct Debit guarantee.
+          Direct&nbsp;Debit&nbsp;guarantee.
         </a>
         <ul
           css={{
-            display: this.state.guaranteeExpanded ? "block" : "none",
+            display: this.state.expanded ? "block" : "none",
             paddingLeft: "30px"
           }}
         >
@@ -109,6 +82,43 @@ export class DirectDebitLegalPre extends React.Component<
 
   private toggleGuaranteeDisplay = () =>
     this.setState({
-      guaranteeExpanded: !this.state.guaranteeExpanded
+      expanded: !this.state.expanded
     });
 }
+
+export const DirectDebitLegal = ({ extraCSS }: { extraCSS?: object }) => (
+  <div
+    css={{
+      ...baseStyle,
+      ...extraCSS
+    }}
+  >
+    Payments by GoCardless. Read the{" "}
+    <a
+      href="https://gocardless.com/legal/privacy"
+      css={hrefStyle}
+      target="_blank"
+    >
+      GoCardless privacy notice.
+    </a>
+    <br />
+    The details of your Direct Debit instruction including payment schedule, due
+    date, frequency and amount will be sent to you within three working days.
+    All the normal Direct Debit safeguards and guarantees apply.
+    <br />
+    Direct Debit
+    <br />
+    The Guardian, Unit 16, Coalfield Way, Ashby Park, Ashby-De-La-Zouch, LE65
+    1JT United Kingdom
+    <br />
+    Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays, 8am-6pm
+    at weekends (GMT/BST)
+    <br />
+    contribution.support@theguardian.com {/*TODO change this email*/}
+    <br />
+    <br />
+    <DirectDebitLogo fill={palette.neutral["4"]} />
+    <br />
+    <GoCardlessGuarantee inner />
+  </div>
+);
