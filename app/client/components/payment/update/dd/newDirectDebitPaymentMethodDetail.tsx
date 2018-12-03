@@ -68,7 +68,10 @@ export class NewDirectDebitPaymentMethodDetail
   public readonly detailToPayloadObject = () => this.ddDetail;
 
   public readonly matchesResponse = (response: DirectDebitDetails) =>
-    response.accountNumber === this.ddDetail.accountNumber &&
+    response.accountNumber.length > 3 &&
+    this.ddDetail.accountNumber.endsWith(
+      response.accountNumber.substring(response.accountNumber.length - 3)
+    ) &&
     response.accountName === this.ddDetail.accountName &&
     response.sortCode === cleanSortCode(this.ddDetail.sortCode);
 
