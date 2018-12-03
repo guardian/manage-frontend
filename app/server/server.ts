@@ -81,13 +81,13 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
 
   const identity: IdentityUser = res.locals.identity;
 
-  const paramaterisedPath = pathParamNamesToReplace.reduce(
+  const parameterisedPath = pathParamNamesToReplace.reduce(
     (evolvingPath: string, pathParamName: string) =>
       evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
     path
   );
 
-  fetch(`${basePath}/${paramaterisedPath}`, {
+  fetch(`${basePath}/${parameterisedPath}`, {
     method: req.method,
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
