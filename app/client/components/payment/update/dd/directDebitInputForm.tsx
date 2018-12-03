@@ -153,15 +153,19 @@ export class DirectDebitInputForm extends React.Component<
                     {this.state.isValidating ? (
                       <DirectDebitValidationLoader
                         fetch={this.validateDirectDebitDetails}
-                        render={this.renderValidationResponse(nav.navigate)}
-                        errorRender={() => {
+                        shouldPreventRender={this.handleValidationResponse(
+                          nav.navigate
+                        )} // TODO change to alternateRenderAction (which returns a function to be executed after deciding to state change
+                        render={() => null}
+                        shouldPreventErrorRender={() => {
                           this.setState({
                             isValidating: false,
                             error:
                               "Could not validate your bank details, please check them and try again."
                           });
-                          return null;
+                          return true;
                         }}
+                        errorRender={() => null}
                         loadingMessage="Validating your direct debit details..."
                         spinnerScale={0.7}
                         inline
@@ -207,7 +211,7 @@ export class DirectDebitInputForm extends React.Component<
     );
   }
 
-  private renderValidationResponse = (navigate: NavigateFn) => (
+  private handleValidationResponse = (navigate: NavigateFn) => (
     response: DirectDebitValidationResponse
   ) => {
     if (response && response.accountValid) {
@@ -218,7 +222,7 @@ export class DirectDebitInputForm extends React.Component<
         error: "Your bank details are invalid. Please check them and try again."
       });
     }
-    return null;
+    return true;
   };
 
   private validateDirectDebitDetails: () => Promise<Response> = async () =>

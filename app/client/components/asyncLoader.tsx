@@ -10,8 +10,10 @@ export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly fetch: () => Promise<Response>;
   readonly readerOnOK?: ReaderOnOK<T>; // json reader by default
+  readonly shouldPreventRender?: (data: T) => boolean;
   readonly render: (data: T) => React.ReactNode;
   readonly loadingMessage: string;
+  readonly shouldPreventErrorRender?: () => boolean;
   readonly errorRender?: () => React.ReactNode;
   readonly inline?: true;
   readonly spinnerScale?: number;
@@ -44,7 +46,16 @@ export default class AsyncLoader<
             ? this.readerOnOK(resp)
             : this.handleError(`${resp.status} (${resp.statusText})`)
       )
-      .then(data => this.setState({ data, loadingState: LoadingState.loaded }))
+      .then(data => {
+        if (
+          !(
+            this.props.shouldPreventRender &&
+            this.props.shouldPreventRender(data)
+          )
+        ) {
+          this.setState({ data, loadingState: LoadingState.loaded });
+        }
+      })
       .catch(exception => this.handleError(exception));
   }
 
@@ -73,7 +84,14 @@ export default class AsyncLoader<
   }
 
   private handleError(error: Error | ErrorEvent | string): void {
-    this.setState({ loadingState: LoadingState.error });
+    if (
+      !(
+        this.props.shouldPreventErrorRender &&
+        this.props.shouldPreventErrorRender()
+      )
+    ) {
+      this.setState({ loadingState: LoadingState.error });
+    }
     trackEvent({
       eventCategory: "asyncLoader",
       eventAction: "error",
