@@ -12,7 +12,7 @@ export class Main extends React.PureComponent<{}> {
         css={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh",
+          height: "100vh",
           alignItems: "stretch",
           width: "100%",
           color: palette.neutral["2"]

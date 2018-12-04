@@ -110,7 +110,7 @@ exports[`Main renders something 1`] = `
       "color": "#333333",
       "display": "flex",
       "flexDirection": "column",
-      "minHeight": "100vh",
+      "height": "100vh",
       "width": "100%",
     }
   }
@@ -119,7 +119,8 @@ exports[`Main renders something 1`] = `
     css={
       Object {
         "backgroundColor": "#052962",
-        "height": "48px",
+        "maxHeight": "48px",
+        "minHeight": "48px",
         "overflow": "visible",
         "padding": "0.15625rem 0 0",
         "position": "relative",
