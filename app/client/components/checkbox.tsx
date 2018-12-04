@@ -6,12 +6,14 @@ export interface CheckboxProps {
   onChange: (newValue: boolean) => void;
   label: string;
   checkboxFill?: string;
+  maxWidth?: string;
 }
 
 export const Checkbox = (props: CheckboxProps) => (
   <label
     css={{
       display: "flex",
+      maxWidth: props.maxWidth,
       cursor: "pointer",
       userSelect: "none",
       ":hover .checkbox": {

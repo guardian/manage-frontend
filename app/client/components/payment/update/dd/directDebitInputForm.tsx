@@ -129,6 +129,7 @@ export class DirectDebitInputForm extends React.Component<
               }
               checked={this.state.soleAccountHolderConfirmed}
               label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+              maxWidth={formWidth}
             />
             <DirectDebitLegal
               extraCSS={{
