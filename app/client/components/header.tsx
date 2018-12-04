@@ -8,7 +8,8 @@ const Header = () => (
     css={{
       backgroundColor: palette.blue.header,
       padding: "0.15625rem 0 0",
-      height: "48px",
+      minHeight: "48px",
+      maxHeight: "48px",
       overflow: "visible",
       position: "relative",
       zIndex: 1070
