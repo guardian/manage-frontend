@@ -139,7 +139,10 @@ const styles = {
     borderRadius: "1000px",
     alignItems: "center",
     whiteSpace: "nowrap",
-    position: "relative"
+    position: "relative",
+    ":active": {
+      outline: "none"
+    }
   },
   leftHover: {
     svg: { transform: "translate(-5px, -50%) rotate(180deg)" }
@@ -187,6 +190,9 @@ export const Button = (props: ButtonProps) => (
     onClick={props.onClick}
     css={buttonCss(props)}
     disabled={props.disabled}
+    onMouseUp={(event: React.MouseEvent<HTMLButtonElement>) =>
+      (event.target as HTMLButtonElement).blur()
+    }
   >
     {props.text}
     <ButtonArrow />
