@@ -63,7 +63,7 @@ export class DirectDebitInputForm extends React.Component<
           marginBottom: "20px"
         }}
       >
-        <div
+        <form
           css={{
             display: "flex",
             flexDirection: "row"
@@ -85,7 +85,13 @@ export class DirectDebitInputForm extends React.Component<
                 this.setState({ accountName: event.target.value })
               }
             >
-              <input type="text" css={inputBoxBaseStyle} />
+              <input
+                type="text"
+                css={inputBoxBaseStyle}
+                pattern="[A-Za-z]{3,}"
+                title="The name of the account holder must have at least 3 letters."
+                required
+              />
             </FieldWrapper>
             <div
               css={{
@@ -103,9 +109,11 @@ export class DirectDebitInputForm extends React.Component<
               >
                 <input
                   type="text"
-                  pattern="[0-9]" // TODO get this validation take effect
+                  pattern="[0-9]{7,}"
                   css={inputBoxBaseStyle}
                   placeholder="e.g. 12345678"
+                  title="Account Number should typically be 8 digits"
+                  required
                 />
               </FieldWrapper>
               <FieldWrapper
@@ -117,9 +125,11 @@ export class DirectDebitInputForm extends React.Component<
               >
                 <input
                   type="text"
-                  pattern="[0-9]"
+                  pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
+                  title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
                   css={inputBoxBaseStyle}
                   placeholder="e.g. 10-20-30"
+                  required
                 />
               </FieldWrapper>
             </div>
@@ -130,6 +140,7 @@ export class DirectDebitInputForm extends React.Component<
               checked={this.state.soleAccountHolderConfirmed}
               label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
               maxWidth={formWidth}
+              required
             />
             <DirectDebitLegal
               extraCSS={{
@@ -207,7 +218,7 @@ export class DirectDebitInputForm extends React.Component<
               }
             }}
           />
-        </div>
+        </form>
       </div>
     );
   }

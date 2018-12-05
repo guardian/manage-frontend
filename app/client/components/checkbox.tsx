@@ -3,6 +3,7 @@ import palette from "../colours";
 
 export interface CheckboxProps {
   checked: boolean;
+  required?: true;
   onChange: (newValue: boolean) => void;
   label: string;
   checkboxFill?: string;
@@ -21,16 +22,6 @@ export const Checkbox = (props: CheckboxProps) => (
       }
     }}
   >
-    <input
-      type="checkbox"
-      css={{
-        display: "none"
-      }}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-        props.onChange(event.target.checked)
-      }
-      checked={props.checked}
-    />
     <div
       className="checkbox"
       css={{
@@ -43,7 +34,7 @@ export const Checkbox = (props: CheckboxProps) => (
         marginRight: "10px",
         background: props.checked
           ? props.checkboxFill || palette.green.checkbox
-          : undefined,
+          : palette.white,
         position: "relative",
         outline: 0,
         ":focus": {
@@ -56,6 +47,19 @@ export const Checkbox = (props: CheckboxProps) => (
       tabIndex={0}
       onKeyPress={() => props.onChange(!props.checked)}
     >
+      <input
+        type="checkbox"
+        css={{
+          position: "absolute",
+          zIndex: "-999999"
+        }}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          props.onChange(event.target.checked)
+        }
+        checked={props.checked}
+        required={props.required}
+        tabIndex={-1}
+      />
       <div
         css={{
           position: "absolute",
