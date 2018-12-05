@@ -124,7 +124,11 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
       Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays,
       8am-6pm at weekends (GMT/BST)
     </p>
-    <p>contribution.support@theguardian.com {/*TODO change this email*/}</p>
+    <p>
+      <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
+        customer.help@theguardian.com
+      </a>
+    </p>
     <DirectDebitLogo fill={palette.neutral["4"]} />
     <br />
     <GoCardlessGuarantee inner />
