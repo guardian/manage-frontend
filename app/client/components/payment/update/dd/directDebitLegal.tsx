@@ -86,37 +86,45 @@ export class GoCardlessGuarantee extends React.Component<
     });
 }
 
-export const DirectDebitLegal = ({ extraCSS }: { extraCSS?: object }) => (
+export interface DirectDebitLegalProps {
+  extraCSS?: object;
+  newDirectDebit?: true; // intended for use in a payment method 'switch' scenario
+}
+
+export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
   <div
     css={{
       ...baseStyle,
-      ...extraCSS
+      ...props.extraCSS
     }}
   >
-    Payments by GoCardless. Read the{" "}
-    <a
-      href="https://gocardless.com/legal/privacy"
-      css={hrefStyle}
-      target="_blank"
-    >
-      GoCardless privacy notice.
-    </a>
-    <br />
-    The details of your Direct Debit instruction including payment schedule, due
-    date, frequency and amount will be sent to you within three working days.
-    All the normal Direct Debit safeguards and guarantees apply.
-    <br />
-    Direct Debit
-    <br />
-    The Guardian, Unit 16, Coalfield Way, Ashby Park, Ashby-De-La-Zouch, LE65
-    1JT United Kingdom
-    <br />
-    Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays, 8am-6pm
-    at weekends (GMT/BST)
-    <br />
-    contribution.support@theguardian.com {/*TODO change this email*/}
-    <br />
-    <br />
+    <p>
+      Payments by GoCardless. Read the{" "}
+      <a
+        href="https://gocardless.com/legal/privacy"
+        css={hrefStyle}
+        target="_blank"
+      >
+        GoCardless privacy notice.
+      </a>
+      <br />
+      {props.newDirectDebit
+        ? "The details of your Direct Debit instruction including payment schedule, due date, frequency and amount " +
+          "will be sent to you within three working days. "
+        : undefined}
+      All the normal Direct Debit safeguards and guarantees apply.
+    </p>
+    <p>
+      Direct Debit, The Guardian, Unit 16, Coalfield Way, Ashby Park,
+      Ashby-De-La-Zouch
+      <br />
+      LE65 1JT, United Kingdom
+    </p>
+    <p>
+      Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays,
+      8am-6pm at weekends (GMT/BST)
+    </p>
+    <p>contribution.support@theguardian.com {/*TODO change this email*/}</p>
     <DirectDebitLogo fill={palette.neutral["4"]} />
     <br />
     <GoCardlessGuarantee inner />
