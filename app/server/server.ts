@@ -200,9 +200,13 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   }
 });
 
+const ddValidationDomain =
+  conf.DOMAIN === "thegulocal.com" ? "code.dev-theguardian.com" : conf.DOMAIN;
 server.post(
   "/api/validate/payment/dd",
-  proxyApiHandler("https://subscribe." + conf.DOMAIN)("checkout/check-account")
+  proxyApiHandler("https://subscribe." + ddValidationDomain)(
+    "checkout/check-account"
+  )
 );
 
 server.post("/api/case", sfCasesApiHandler("case"));
