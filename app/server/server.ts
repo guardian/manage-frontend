@@ -174,7 +174,9 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
         (() => {
           switch (productType.urlPart) {
             case "contributions":
-              return "contribution-update-dd";
+              return "contribution-update-direct-debit";
+            case "paper":
+              return "paper-update-direct-debit";
           }
         })()
     )
