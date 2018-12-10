@@ -135,11 +135,14 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               <h3>...to...</h3>
               {newPaymentMethodDetail.render()}
               <div css={{ margin: "20px 0", textAlign: "right" }}>
-                {newPaymentMethodDetail.extraConfirmElement}
-                <ExecutePaymentUpdate
-                  {...props}
-                  newPaymentMethodDetail={newPaymentMethodDetail}
-                />
+                {newPaymentMethodDetail.confirmButtonWrapper(
+                  <div css={{ marginTop: "20px", textAlign: "right" }}>
+                    <ExecutePaymentUpdate
+                      {...props}
+                      newPaymentMethodDetail={newPaymentMethodDetail}
+                    />
+                  </div>
+                )}
               </div>
             </WizardStep>
           ) : (

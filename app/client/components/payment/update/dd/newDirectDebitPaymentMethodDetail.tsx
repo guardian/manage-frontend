@@ -7,6 +7,7 @@ import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { cleanSortCode, DirectDebitDisplay } from "../../directDebitDisplay";
 import { CONFIRM_BUTTON_TEXT } from "../confirmPaymentUpdate";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
+import { ddFormWidth } from "./directDebitInputForm";
 import { DirectDebitLegal, GoCardlessGuarantee } from "./directDebitLegal";
 
 export interface SubscriptionWithMandate extends Subscription {
@@ -26,38 +27,6 @@ export class NewDirectDebitPaymentMethodDetail
   public readonly friendlyName = "direct debit";
 
   public readonly subHasExpectedPaymentType = isSubscriptionWithMandate;
-
-  public readonly extraConfirmElement = (
-    <div
-      css={{
-        display: "flex",
-        flexDirection: "row",
-        textAlign: "left",
-        [maxWidth.tablet]: {
-          flexDirection: "column"
-        }
-      }}
-    >
-      <DirectDebitLegal />
-      <div
-        css={{
-          [minWidth.tablet]: {
-            marginLeft: "20px"
-          }
-        }}
-      >
-        <h3>Declaration</h3>
-        <p>
-          I have confirmed that I am the account holder and that I am solely
-          able to authorise debit from the account.
-        </p>
-        <p>
-          If the details above are correct press '{CONFIRM_BUTTON_TEXT}' to set
-          up your direct debit, otherwise press 'Back' to make changes.
-        </p>
-      </div>
-    </div>
-  );
 
   public readonly updatedSuccessExtras = <GoCardlessGuarantee />;
 
@@ -83,4 +52,39 @@ export class NewDirectDebitPaymentMethodDetail
     ) : (
       <DirectDebitDisplay {...this.ddDetail} showAccountName />
     );
+
+  public readonly confirmButtonWrapper = (confirmButton: JSX.Element) => (
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "row",
+        textAlign: "left",
+        [maxWidth.desktop]: {
+          flexDirection: "column",
+          maxWidth: ddFormWidth
+        }
+      }}
+    >
+      <div
+        css={{
+          [minWidth.desktop]: {
+            marginRight: "20px",
+            maxWidth: ddFormWidth
+          }
+        }}
+      >
+        <h3>Declaration</h3>
+        <p>
+          I have confirmed that I am the account holder and that I am solely
+          able to authorise debit from the account.
+        </p>
+        <p>
+          If the details above are correct press '{CONFIRM_BUTTON_TEXT}' to set
+          up your direct debit, otherwise press 'Back' to make changes.
+        </p>
+        {confirmButton}
+      </div>
+      <DirectDebitLegal />
+    </div>
+  );
 }

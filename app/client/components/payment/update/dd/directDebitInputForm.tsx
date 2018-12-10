@@ -23,7 +23,7 @@ const inputBoxBaseStyle = {
   outline: "none"
 };
 
-const formWidth = "400px";
+export const ddFormWidth = "450px";
 
 interface DirectDebitValidationResponse {
   accountValid: boolean;
@@ -66,20 +66,25 @@ export class DirectDebitInputForm extends React.Component<
         <form
           css={{
             display: "flex",
-            flexDirection: "row"
+            [minWidth.desktop]: {
+              flexDirection: "row"
+            },
+            [maxWidth.desktop]: {
+              flexDirection: "column",
+              maxWidth: ddFormWidth
+            }
           }}
         >
           <div
             css={{
-              maxWidth: "100%",
+              maxWidth: ddFormWidth,
               [minWidth.desktop]: {
-                marginRight: "20px",
-                maxWidth: formWidth
+                marginRight: "20px"
               }
             }}
           >
             <FieldWrapper
-              width={formWidth}
+              width={ddFormWidth}
               label="Account Name"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                 this.setState({ accountName: event.target.value })
@@ -88,7 +93,7 @@ export class DirectDebitInputForm extends React.Component<
               <input
                 type="text"
                 css={inputBoxBaseStyle}
-                pattern="[A-Za-z]{3,}"
+                pattern="[A-Za-z\s]{3,}"
                 title="The name of the account holder must have at least 3 letters."
                 required
               />
@@ -101,23 +106,7 @@ export class DirectDebitInputForm extends React.Component<
               }}
             >
               <FieldWrapper
-                width="240px"
-                label="Account Number"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  this.setState({ accountNumber: event.target.value })
-                }
-              >
-                <input
-                  type="text"
-                  pattern="[0-9]{7,}"
-                  css={inputBoxBaseStyle}
-                  placeholder="e.g. 12345678"
-                  title="Account Number should typically be 8 digits"
-                  required
-                />
-              </FieldWrapper>
-              <FieldWrapper
-                width="140px"
+                width="170px"
                 label="Sort Code"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                   this.setState({ sortCode: cleanSortCode(event.target.value) })
@@ -132,6 +121,22 @@ export class DirectDebitInputForm extends React.Component<
                   required
                 />
               </FieldWrapper>
+              <FieldWrapper
+                width="260px"
+                label="Account Number"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  this.setState({ accountNumber: event.target.value })
+                }
+              >
+                <input
+                  type="text"
+                  pattern="[0-9]{7,}"
+                  css={inputBoxBaseStyle}
+                  placeholder="e.g. 12345678"
+                  title="Account Number should typically be 8 digits"
+                  required
+                />
+              </FieldWrapper>{" "}
             </div>
             <Checkbox
               onChange={newValue =>
@@ -139,15 +144,8 @@ export class DirectDebitInputForm extends React.Component<
               }
               checked={this.state.soleAccountHolderConfirmed}
               label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
-              maxWidth={formWidth}
+              maxWidth={ddFormWidth}
               required
-            />
-            <DirectDebitLegal
-              extraCSS={{
-                [minWidth.desktop]: {
-                  display: "none"
-                }
-              }}
             />
             <NavigateFnContext.Consumer>
               {nav =>
@@ -156,7 +154,7 @@ export class DirectDebitInputForm extends React.Component<
                     css={{
                       marginTop: "20px",
                       textAlign: "right",
-                      width: formWidth,
+                      width: ddFormWidth,
                       [maxWidth.desktop]: {
                         width: "100%"
                       }
@@ -167,7 +165,7 @@ export class DirectDebitInputForm extends React.Component<
                         fetch={this.validateDirectDebitDetails}
                         shouldPreventRender={this.handleValidationResponse(
                           nav.navigate
-                        )} // TODO change to alternateRenderAction (which returns a function to be executed after deciding to state change
+                        )}
                         render={() => null}
                         shouldPreventErrorRender={() => {
                           this.setState({
@@ -178,7 +176,7 @@ export class DirectDebitInputForm extends React.Component<
                           return true;
                         }}
                         errorRender={() => null}
-                        loadingMessage="Validating your direct debit details..."
+                        loadingMessage="Validating direct debit details..."
                         spinnerScale={0.7}
                         inline
                       />
@@ -211,13 +209,7 @@ export class DirectDebitInputForm extends React.Component<
               }
             </NavigateFnContext.Consumer>
           </div>
-          <DirectDebitLegal
-            extraCSS={{
-              [maxWidth.desktop]: {
-                display: "none"
-              }
-            }}
-          />
+          <DirectDebitLegal />
         </form>
       </div>
     );
@@ -250,7 +242,6 @@ export class DirectDebitInputForm extends React.Component<
     });
 
   private startDirectDebitUpdate = () => {
-    // TODO make 'check' call with spinner plus validation on the checkbox
     this.props.newPaymentMethodDetailUpdater(
       new NewDirectDebitPaymentMethodDetail({
         accountName: this.state.accountName,

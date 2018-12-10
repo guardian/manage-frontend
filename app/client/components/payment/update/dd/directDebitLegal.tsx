@@ -87,7 +87,6 @@ export class GoCardlessGuarantee extends React.Component<
 }
 
 export interface DirectDebitLegalProps {
-  extraCSS?: object;
   newDirectDebit?: true; // intended for use in a payment method 'switch' scenario
 }
 
@@ -95,7 +94,7 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
   <div
     css={{
       ...baseStyle,
-      ...props.extraCSS
+      maxWidth: "470px"
     }}
   >
     <p>
@@ -121,8 +120,9 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
       LE65 1JT, United Kingdom
     </p>
     <p>
-      Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays,
-      8am-6pm at weekends (GMT/BST)
+      Tel: 0330 333 6767 (within UK).
+      <br />
+      Lines are open 8am-8pm on weekdays, 8am-6pm at weekends (GMT/BST)
     </p>
     <p>
       <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
