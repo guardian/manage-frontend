@@ -1,7 +1,6 @@
 import { NavigateFn } from "@reach/router";
 import { get as getCookie } from "es-cookie";
 import React from "react";
-import { ReactStripeElements } from "react-stripe-elements";
 import {
   MembersDataApiResponseContext,
   MembersDatApiAsyncLoader
@@ -29,8 +28,12 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
-import { CardInputForm, StripeTokenResponseContext } from "./cardInputForm";
+import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
+import {
+  NewPaymentMethodContext,
+  NewPaymentMethodDetail
+} from "./newPaymentMethodDetail";
 
 enum PaymentMethod {
   card = "Card",
@@ -130,12 +133,12 @@ interface PaymentUpdaterStepProps {
 }
 
 interface PaymentUpdaterStepState {
-  stripeTokenResponse: ReactStripeElements.PatchedTokenResponse;
   selectedPaymentMethod: PaymentMethod;
+  newPaymentMethodDetail?: NewPaymentMethodDetail;
 }
 
 const getSignInEmailFromCookie = () => {
-  return getCookie("GU_SIGNIN_EMAIL");
+  return getCookie("GU_SIGNIN_EMAIL"); // TODO eliminate this because it can be incorrect in the case of 'social' accounts
 };
 
 class PaymentUpdaterStep extends React.Component<
@@ -146,15 +149,15 @@ class PaymentUpdaterStep extends React.Component<
     this.props.data.subscription
   );
   public state = {
-    stripeTokenResponse: {},
+    newPaymentMethodDetail: undefined,
     selectedPaymentMethod: this.currentPaymentMethod
   };
 
   public render(): React.ReactNode {
     return (
       <MembersDataApiResponseContext.Provider value={this.props.data}>
-        <StripeTokenResponseContext.Provider
-          value={this.state.stripeTokenResponse}
+        <NewPaymentMethodContext.Provider
+          value={this.state.newPaymentMethodDetail || {}}
         >
           <NavigateFnContext.Provider
             value={{ navigate: this.props.routeableStepProps.navigate }}
@@ -199,14 +202,14 @@ class PaymentUpdaterStep extends React.Component<
               />
             </WizardStep>
           </NavigateFnContext.Provider>
-        </StripeTokenResponseContext.Provider>
+        </NewPaymentMethodContext.Provider>
       </MembersDataApiResponseContext.Provider>
     );
   }
 
-  private stripeTokenUpdater = (
-    stripeTokenResponse: ReactStripeElements.PatchedTokenResponse
-  ) => this.setState({ stripeTokenResponse });
+  private newPaymentMethodDetailUpdater = (
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => this.setState({ newPaymentMethodDetail });
 
   private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
     this.setState({ selectedPaymentMethod: newPaymentMethod });
@@ -218,7 +221,7 @@ class PaymentUpdaterStep extends React.Component<
           subscription.card.stripePublicKeyForUpdate ? (
           <CardInputForm
             stripeApiKey={subscription.card.stripePublicKeyForUpdate}
-            stripeTokenUpdater={this.stripeTokenUpdater}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
             userEmail={subscription.card.email || getSignInEmailFromCookie()}
           />
         ) : (
@@ -259,11 +262,13 @@ const getPaymentUpdateRenderer = (
   hasProduct(data) ? (
     <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
   ) : (
-    <NoProduct
-      inTab={false}
-      supportRefererSuffix="payment_flow"
-      productType={productType}
-    />
+    <PageContainer>
+      <NoProduct
+        inTab={false}
+        supportRefererSuffix="payment_flow"
+        productType={productType}
+      />
+    </PageContainer>
   );
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
