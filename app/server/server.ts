@@ -67,10 +67,13 @@ server.use("/static", express.static(__dirname + "/static"));
 
 type JsonHandler = (res: express.Response, jsonString: string) => void;
 
-const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
-  path: string,
-  pathParamNamesToReplace: string[] = []
-) => (req: express.Request, res: express.Response) => {
+const apiHandler = (jsonHandler: JsonHandler) => (
+  basePath: string,
+  ...headersToForward: string[]
+) => (path: string, pathParamNamesToReplace: string[] = []) => (
+  req: express.Request,
+  res: express.Response
+) => {
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
     // Refactor this.
@@ -95,9 +98,15 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
       Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
     }
   })
-    .then(_ => {
-      res.status(_.status);
-      return _.text();
+    .then(intermediateResponse => {
+      res.status(intermediateResponse.status);
+      headersToForward.forEach((headerName: string) =>
+        res.header(
+          headerName,
+          intermediateResponse.headers.get(headerName) || undefined
+        )
+      );
+      return intermediateResponse.text();
     })
     .then(_ => jsonHandler(res, _))
     .catch(e => {
@@ -109,7 +118,8 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
 const proxyApiHandler = apiHandler((res, jsonString) => res.send(jsonString));
 
 const membersDataApiHandler = proxyApiHandler(
-  "https://members-data-api." + conf.DOMAIN
+  "https://members-data-api." + conf.DOMAIN,
+  "X-Gu-Membership-Test-User"
 );
 const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
