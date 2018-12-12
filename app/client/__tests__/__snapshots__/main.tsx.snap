@@ -1035,6 +1035,9 @@ exports[`Main renders something 1`] = `
                   <button
                     css={
                       Object {
+                        ":active": Object {
+                          "outline": "none",
+                        },
                         ":hover": Object {
                           "background": "hsl(53.89999999999998, 100%, 45%)",
                           "svg": Object {
@@ -1076,6 +1079,7 @@ exports[`Main renders something 1`] = `
                         "whiteSpace": "nowrap",
                       }
                     }
+                    onMouseUp={[Function]}
                   >
                     Contribute
                     <svg
@@ -1093,6 +1097,9 @@ exports[`Main renders something 1`] = `
                   <button
                     css={
                       Object {
+                        ":active": Object {
+                          "outline": "none",
+                        },
                         ":hover": Object {
                           "background": "hsl(53.89999999999998, 100%, 45%)",
                           "svg": Object {
@@ -1134,6 +1141,7 @@ exports[`Main renders something 1`] = `
                         "whiteSpace": "nowrap",
                       }
                     }
+                    onMouseUp={[Function]}
                   >
                     Subscribe
                     <svg
