@@ -5,8 +5,10 @@ import helmet from "helmet";
 import fetch from "node-fetch";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
+import { parse } from "url";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import { ProductType, ProductTypes } from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
@@ -26,6 +28,11 @@ if (conf.SERVER_DSN) {
     environment: conf.DOMAIN
   }).install();
   // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
+}
+
+if (conf.DOMAIN === "thegulocal.com") {
+  // tslint:disable-next-line:no-object-mutation
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
 const clientDSN =
@@ -70,10 +77,11 @@ type JsonHandler = (res: express.Response, jsonString: string) => void;
 const apiHandler = (jsonHandler: JsonHandler) => (
   basePath: string,
   ...headersToForward: string[]
-) => (path: string, pathParamNamesToReplace: string[] = []) => (
-  req: express.Request,
-  res: express.Response
-) => {
+) => (
+  path: string,
+  forwardQueryArgs?: boolean,
+  ...pathParamNamesToReplace: string[]
+) => (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
     // Refactor this.
@@ -90,7 +98,10 @@ const apiHandler = (jsonHandler: JsonHandler) => (
     path
   );
 
-  fetch(`${basePath}/${parameterisedPath}`, {
+  const queryString =
+    forwardQueryArgs && req.query ? `?${parse(req.url).query}` : "";
+
+  fetch(`${basePath}/${parameterisedPath}${queryString}`, {
     method: req.method,
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
@@ -119,7 +130,7 @@ const proxyApiHandler = apiHandler((res, jsonString) => res.send(jsonString));
 
 const membersDataApiHandler = proxyApiHandler(
   "https://members-data-api." + conf.DOMAIN,
-  "X-Gu-Membership-Test-User"
+  MDA_TEST_USER_HEADER
 );
 const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
@@ -212,12 +223,11 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   }
 });
 
-const ddValidationDomain =
-  conf.DOMAIN === "thegulocal.com" ? "code.dev-theguardian.com" : conf.DOMAIN;
 server.post(
   "/api/validate/payment/dd",
-  proxyApiHandler("https://subscribe." + ddValidationDomain)(
-    "checkout/check-account"
+  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
+    "direct-debit/check-account",
+    true
   )
 );
 
@@ -225,7 +235,7 @@ server.post("/api/case", sfCasesApiHandler("case"));
 
 server.patch(
   "/api/case/:caseId",
-  sfCasesApiHandler("case/:caseId", ["caseId"])
+  sfCasesApiHandler("case/:caseId", false, "caseId")
 );
 
 const profileRedirectHandler: JsonHandler = (

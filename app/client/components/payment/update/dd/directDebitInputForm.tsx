@@ -26,7 +26,10 @@ const inputBoxBaseStyle = {
 export const ddFormWidth = "450px";
 
 interface DirectDebitValidationResponse {
-  accountValid: boolean;
+  data: {
+    accountValid: boolean;
+    goCardlessStatusCode: null | number;
+  };
 }
 
 class DirectDebitValidationLoader extends AsyncLoader<
@@ -35,6 +38,7 @@ class DirectDebitValidationLoader extends AsyncLoader<
 
 export interface DirectDebitUpdateFormProps {
   newPaymentMethodDetailUpdater: (ddDetails: NewPaymentMethodDetail) => void;
+  testUser: boolean;
 }
 
 export interface DirectDebitUpdateFormState extends DirectDebitDetails {
@@ -218,8 +222,14 @@ export class DirectDebitInputForm extends React.Component<
   private handleValidationResponse = (navigate: NavigateFn) => (
     response: DirectDebitValidationResponse
   ) => {
-    if (response && response.accountValid) {
+    if (response && response.data.accountValid) {
       navigate("confirm");
+    } else if (response && response.data.goCardlessStatusCode === 429) {
+      this.setState({
+        isValidating: false,
+        error:
+          "We cannot currently validate your bank details. Please try again later."
+      });
     } else {
       this.setState({
         isValidating: false,
@@ -230,16 +240,18 @@ export class DirectDebitInputForm extends React.Component<
   };
 
   private validateDirectDebitDetails: () => Promise<Response> = async () =>
-    await fetch(`/api/validate/payment/dd`, {
-      credentials: "include",
-      method: "POST",
-      body: JSON.stringify({
-        account: this.state.accountNumber,
-        sortcode: dashifySortCode(this.state.sortCode),
-        holder: this.state.accountName
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
+    await fetch(
+      `/api/validate/payment/dd?mode=${this.props.testUser ? "test" : "live"}`,
+      {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({
+          accountNumber: this.state.accountNumber,
+          sortCode: cleanSortCode(this.state.sortCode)
+        }),
+        headers: { "Content-Type": "application/json" }
+      }
+    );
 
   private startDirectDebitUpdate = () => {
     this.props.newPaymentMethodDetailUpdater(

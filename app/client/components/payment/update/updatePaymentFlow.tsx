@@ -2,6 +2,7 @@ import { NavigateFn } from "@reach/router";
 import { get as getCookie } from "es-cookie";
 import React from "react";
 import {
+  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext,
   MembersDatApiAsyncLoader
 } from "../../../../shared/productResponse";
@@ -196,7 +197,10 @@ class PaymentUpdaterStep extends React.Component<
                 value={this.state.selectedPaymentMethod}
               />
               <h3>New Payment Details</h3>
-              {this.getInputForm(this.props.data.subscription)}
+              {this.getInputForm(
+                this.props.data.subscription,
+                this.props.data.isTestUser
+              )}
               <div css={{ height: "10px" }} />
               <ReturnToYourProductButton
                 productType={this.props.routeableStepProps.productType}
@@ -215,7 +219,7 @@ class PaymentUpdaterStep extends React.Component<
   private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
     this.setState({ selectedPaymentMethod: newPaymentMethod });
 
-  private getInputForm = (subscription: Subscription) => {
+  private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
     switch (this.state.selectedPaymentMethod) {
       case PaymentMethod.card:
         return subscription.card &&
@@ -249,6 +253,7 @@ class PaymentUpdaterStep extends React.Component<
         return (
           <DirectDebitInputForm
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            testUser={isTestUser}
           />
         );
       default:
@@ -278,6 +283,13 @@ const getPaymentUpdateRenderer = (
     </PageContainer>
   );
 
+export const annotateMdaResponseWithTestUserFromHeaders = async (
+  response: Response
+) =>
+  Object.assign(await response.json(), {
+    isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true"
+  });
+
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
   <div>
     <PageContainer>
@@ -297,6 +309,7 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
             props.productType
           ) /*TODO reload on 'back' to page*/
         }
+        readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
         render={getPaymentUpdateRenderer(
           props.productType,
           labelPaymentStepProps(props)
