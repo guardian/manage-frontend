@@ -1,22 +1,22 @@
 import { NavigateFn } from "@reach/router";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
-import { maxWidth } from "../../../styles/breakpoints";
-import { validationWarningCSS } from "../../../styles/fonts";
-import { Button } from "../../buttons";
-import { GenericErrorScreen } from "../../genericErrorScreen";
-import { Spinner } from "../../spinner";
+import { maxWidth } from "../../../../styles/breakpoints";
+import { validationWarningCSS } from "../../../../styles/fonts";
+import { Button } from "../../../buttons";
+import { GenericErrorScreen } from "../../../genericErrorScreen";
+import { Spinner } from "../../../spinner";
+import { NavigateFnContext } from "../updatePaymentFlow";
+import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
+import {
+  isTokenWithCard,
+  NewCardPaymentMethodDetail
+} from "./newCardPaymentMethodDetail";
 import { StripeLogo } from "./stripeLogo";
-import { NavigateFnContext } from "./updatePaymentFlow";
 
-export interface StripeCardInputFormProps
-  extends ReactStripeElements.InjectedStripeProps {
-  stripeTokenUpdater: (
-    stripeTokenResponse: ReactStripeElements.PatchedTokenResponse
-  ) => void;
-  userEmail?: string;
-}
+export type StripeCardInputFormProps = ReactStripeElements.InjectedStripeProps &
+  CardInputFormProps;
 
 export interface StripeCardInputFormState {
   isGeneratingToken: boolean;
@@ -158,8 +158,13 @@ export class StripeCardInputForm extends React.Component<
       const tokenResponse = await this.props.stripe.createToken(
         { name: this.props.userEmail } // may need to add more token options for product switch
       );
-      if (tokenResponse.token && tokenResponse.token.card) {
-        this.props.stripeTokenUpdater(tokenResponse);
+      if (tokenResponse.token && isTokenWithCard(tokenResponse.token)) {
+        this.props.newPaymentMethodDetailUpdater(
+          new NewCardPaymentMethodDetail(
+            tokenResponse.token,
+            this.props.stripeApiKey
+          )
+        );
         navigate("confirm");
       } else {
         if (tokenResponse.error) {

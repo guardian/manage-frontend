@@ -16,11 +16,14 @@ import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
-import { CardDisplay } from "../cardDisplay";
-import { StripeTokenResponseContext } from "./cardInputForm";
+import {
+  isNewPaymentMethodDetail,
+  NewPaymentMethodContext,
+  NewPaymentMethodDetail
+} from "./newPaymentMethodDetail";
 import { labelPaymentStepProps } from "./updatePaymentFlow";
 
-export const handleNoToken = (props: RouteableStepProps) => {
+export const handleNoNewPaymentDetails = (props: RouteableStepProps) => {
   if (props.navigate) {
     props.navigate("..", { replace: true }); // step back up a level
     return null;
@@ -34,19 +37,25 @@ export class WithSubscriptionAsyncLoader extends AsyncLoader<
   WithSubscription
 > {}
 
-const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
-  if (subscription.card) {
+interface ConfirmedNewPaymentDetailsRendererProps {
+  subscription: Subscription;
+  newPaymentMethodDetail: NewPaymentMethodDetail;
+}
+
+const ConfirmedNewPaymentDetailsRenderer = ({
+  subscription,
+  newPaymentMethodDetail
+}: ConfirmedNewPaymentDetailsRendererProps) => {
+  if (newPaymentMethodDetail.subHasExpectedPaymentType(subscription)) {
     return (
       <>
-        <CardDisplay {...subscription.card} />
+        {newPaymentMethodDetail.render(subscription)}
         <MembersDataApiResponseContext.Consumer>
           {membersDataApiResponse =>
             hasProduct(membersDataApiResponse) &&
-            membersDataApiResponse.alertText ? (
-              <div>
-                We will take the outstanding payment within 24 hours, using your
-                new card details.
-              </div>
+            membersDataApiResponse.alertText &&
+            newPaymentMethodDetail.paymentFailureRecoveryMessage ? (
+              <div>{newPaymentMethodDetail.paymentFailureRecoveryMessage}</div>
             ) : (
               <>
                 {subscription.nextPaymentPrice &&
@@ -66,6 +75,7 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
             )
           }
         </MembersDataApiResponseContext.Consumer>
+        <div>{newPaymentMethodDetail.updatedSuccessExtras}</div>
       </>
     );
   }
@@ -73,12 +83,16 @@ const ConfirmedNewPaymentDetailsRenderer = (subscription: Subscription) => {
   return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
-const WithSubscriptionRenderer = (productType: ProductType) => (
-  withSub: WithSubscription
-) => (
+const WithSubscriptionRenderer = (
+  productType: ProductType,
+  newPaymentMethodDetail: NewPaymentMethodDetail
+) => (withSub: WithSubscription) => (
   <>
     <h1>Your payment details were updated successfully</h1>
-    <ConfirmedNewPaymentDetailsRenderer {...withSub.subscription} />
+    <ConfirmedNewPaymentDetailsRenderer
+      subscription={withSub.subscription}
+      newPaymentMethodDetail={newPaymentMethodDetail}
+    />
     <h2>
       Thank you. You are helping to support independent investigative
       journalism.
@@ -112,9 +126,9 @@ const WithSubscriptionRenderer = (productType: ProductType) => (
 );
 
 export const PaymentUpdated = (props: RouteableStepProps) => (
-  <StripeTokenResponseContext.Consumer>
-    {tokenResponse =>
-      tokenResponse.token && tokenResponse.token.card ? (
+  <NewPaymentMethodContext.Consumer>
+    {newPaymentMethodDetail =>
+      isNewPaymentMethodDetail(newPaymentMethodDetail) ? (
         <WizardStep
           routeableStepProps={labelPaymentStepProps(props)}
           extraFooterComponents={[
@@ -125,13 +139,16 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
         >
           <WithSubscriptionAsyncLoader
             fetch={createProductDetailFetcher(props.productType)}
-            render={WithSubscriptionRenderer(props.productType)}
+            render={WithSubscriptionRenderer(
+              props.productType,
+              newPaymentMethodDetail
+            )}
             loadingMessage="Looks good so far. Just checking everything is done..."
           />
         </WizardStep>
       ) : (
-        handleNoToken(props)
+        handleNoNewPaymentDetails(props)
       )
     }
-  </StripeTokenResponseContext.Consumer>
+  </NewPaymentMethodContext.Consumer>
 );

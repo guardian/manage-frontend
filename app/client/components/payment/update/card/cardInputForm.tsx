@@ -1,23 +1,15 @@
 import React from "react";
-import {
-  Elements,
-  injectStripe,
-  ReactStripeElements,
-  StripeProvider
-} from "react-stripe-elements";
+import { Elements, injectStripe, StripeProvider } from "react-stripe-elements";
+import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { StripeCardInputForm } from "./stripeCardInputForm";
-
-export const StripeTokenResponseContext: React.Context<
-  ReactStripeElements.PatchedTokenResponse
-> = React.createContext({});
 
 const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
 
 export interface CardInputFormProps {
   stripeApiKey: string;
   userEmail?: string;
-  stripeTokenUpdater: (
-    stripeTokenResponse: ReactStripeElements.PatchedTokenResponse
+  newPaymentMethodDetailUpdater: (
+    newPaymentMethodDetail: NewPaymentMethodDetail
   ) => void;
 }
 

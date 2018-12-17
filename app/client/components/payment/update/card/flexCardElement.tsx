@@ -4,8 +4,8 @@ import {
   CardExpiryElement,
   CardNumberElement
 } from "react-stripe-elements";
-import { sans } from "../../../styles/fonts";
-import { FieldWrapper } from "./fieldWrapper";
+import { sans } from "../../../../styles/fonts";
+import { FieldWrapper } from "../fieldWrapper";
 
 export interface FlexCardElementProps {
   disabled?: boolean;

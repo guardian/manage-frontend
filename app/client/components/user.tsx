@@ -19,7 +19,7 @@ import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
 import { Main } from "./main";
 import { MembershipFAQs } from "./membershipFAQs";
 import { NotFound } from "./notFound";
-import { ConfirmCardUpdate } from "./payment/update/confirmCardUpdate";
+import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
 import { ProductPage } from "./productPage";
@@ -80,7 +80,7 @@ const User = () => (
           productType={productType}
           currentStep={1}
         >
-          <ConfirmCardUpdate
+          <ConfirmPaymentUpdate
             path="confirm"
             productType={productType}
             currentStep={2}
@@ -90,7 +90,7 @@ const User = () => (
               productType={productType}
               currentStep={3}
             />
-          </ConfirmCardUpdate>
+          </ConfirmPaymentUpdate>
         </PaymentUpdateFlow>
       ))}
 
