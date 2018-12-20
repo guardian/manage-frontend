@@ -5,8 +5,10 @@ import helmet from "helmet";
 import fetch from "node-fetch";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
+import { parse } from "url";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
+import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import { ProductType, ProductTypes } from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
@@ -26,6 +28,11 @@ if (conf.SERVER_DSN) {
     environment: conf.DOMAIN
   }).install();
   // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
+}
+
+if (conf.DOMAIN === "thegulocal.com") {
+  // tslint:disable-next-line:no-object-mutation
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
 const clientDSN =
@@ -67,9 +74,13 @@ server.use("/static", express.static(__dirname + "/static"));
 
 type JsonHandler = (res: express.Response, jsonString: string) => void;
 
-const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
+const apiHandler = (jsonHandler: JsonHandler) => (
+  basePath: string,
+  ...headersToForward: string[]
+) => (
   path: string,
-  pathParamNamesToReplace: string[] = []
+  forwardQueryArgs?: boolean,
+  ...pathParamNamesToReplace: string[]
 ) => (req: express.Request, res: express.Response) => {
   if (res.locals.identity == null) {
     // Check if the identity middleware is loaded for this route.
@@ -81,13 +92,16 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
 
   const identity: IdentityUser = res.locals.identity;
 
-  const paramaterisedPath = pathParamNamesToReplace.reduce(
+  const parameterisedPath = pathParamNamesToReplace.reduce(
     (evolvingPath: string, pathParamName: string) =>
       evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
     path
   );
 
-  fetch(`${basePath}/${paramaterisedPath}`, {
+  const queryString =
+    forwardQueryArgs && req.query ? `?${parse(req.url).query}` : "";
+
+  fetch(`${basePath}/${parameterisedPath}${queryString}`, {
     method: req.method,
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
@@ -95,9 +109,15 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
       Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
     }
   })
-    .then(_ => {
-      res.status(_.status);
-      return _.text();
+    .then(intermediateResponse => {
+      res.status(intermediateResponse.status);
+      headersToForward.forEach((headerName: string) =>
+        res.header(
+          headerName,
+          intermediateResponse.headers.get(headerName) || undefined
+        )
+      );
+      return intermediateResponse.text();
     })
     .then(_ => jsonHandler(res, _))
     .catch(e => {
@@ -109,7 +129,8 @@ const apiHandler = (jsonHandler: JsonHandler) => (basePath: string) => (
 const proxyApiHandler = apiHandler((res, jsonString) => res.send(jsonString));
 
 const membersDataApiHandler = proxyApiHandler(
-  "https://members-data-api." + conf.DOMAIN
+  "https://members-data-api." + conf.DOMAIN,
+  MDA_TEST_USER_HEADER
 );
 const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
@@ -167,6 +188,21 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     )
   );
 
+  server.post(
+    "/api/payment/" + productType.urlPart + "/dd",
+    membersDataApiHandler(
+      "user-attributes/me/" +
+        (() => {
+          switch (productType.urlPart) {
+            case "contributions":
+              return "contribution-update-direct-debit";
+            case "paper":
+              return "paper-update-direct-debit";
+          }
+        })()
+    )
+  );
+
   server.use(
     "/banner/" + productType.urlPart,
     (req: express.Request, res: express.Response) => {
@@ -187,11 +223,19 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
   }
 });
 
+server.post(
+  "/api/validate/payment/dd",
+  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
+    "direct-debit/check-account",
+    true
+  )
+);
+
 server.post("/api/case", sfCasesApiHandler("case"));
 
 server.patch(
   "/api/case/:caseId",
-  sfCasesApiHandler("case/:caseId", ["caseId"])
+  sfCasesApiHandler("case/:caseId", false, "caseId")
 );
 
 const profileRedirectHandler: JsonHandler = (

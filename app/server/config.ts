@@ -1,5 +1,6 @@
 export interface Config {
   readonly DOMAIN: string;
+  readonly API_DOMAIN: string;
   readonly SF_CASES_URL: string;
   readonly ENVIRONMENT: Environments;
   readonly BUILD: string;
@@ -26,6 +27,7 @@ export enum Environments {
 
 export const conf: Config = {
   DOMAIN: getConfig("DOMAIN") || "thegulocal.com",
+  API_DOMAIN: getConfig("API_DOMAIN") || "code.dev-guardianapis.com",
   SF_CASES_URL:
     getConfig("SF_CASES_URL") ||
     "https://zroqpkn357.execute-api.eu-west-1.amazonaws.com/DEV",

@@ -122,7 +122,7 @@ const getPaymentMethodRow = (
     return (
       <ProductDetailRow
         label="Payment method"
-        data={<DirectDebitDisplay {...subscription.mandate} />}
+        data={addUpdateButton(<DirectDebitDisplay {...subscription.mandate} />)}
       />
     );
   } else {

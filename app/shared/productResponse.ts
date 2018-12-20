@@ -20,7 +20,10 @@ export const formatDate = (shortForm: string) => {
   });
 };
 
+export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
+
 export interface ProductDetail extends WithSubscription {
+  isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
   regNumber?: string;
   tier: string;
   isPaidTier: boolean;
