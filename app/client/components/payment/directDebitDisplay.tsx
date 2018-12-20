@@ -45,25 +45,23 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
           marginLeft: "10px"
         }}
       >
-        {mandate.accountNumber &&
-        mandate.sortCode.length > NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-          ? "•".repeat(
-              mandate.accountNumber.length -
-                NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-            ) +
-            mandate.accountNumber.substr(
-              mandate.accountNumber.length -
-                NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-            )
-          : undefined}
+        {mandate.sortCode ? dashifySortCode(mandate.sortCode) : undefined}
       </span>
-      {mandate.sortCode ? (
+      {mandate.accountNumber &&
+      mandate.accountNumber.length > NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW ? (
         <span
           css={{
             marginLeft: "10px"
           }}
         >
-          {dashifySortCode(mandate.sortCode)}
+          {"•".repeat(
+            mandate.accountNumber.length -
+              NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+          ) +
+            mandate.accountNumber.substr(
+              mandate.accountNumber.length -
+                NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+            )}
         </span>
       ) : (
         undefined
