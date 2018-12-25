@@ -82,7 +82,12 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
               window.guardian.ophan &&
               window.guardian.ophan.sendInitialEvent
             ) {
-              window.guardian.ophan.sendInitialEvent(location.href);
+              if (window.guardian.spaTransition) {
+                window.guardian.ophan.sendInitialEvent(location.href);
+              } else {
+                // tslint:disable-next-line:no-object-mutation
+                window.guardian.spaTransition = true;
+              }
             }
             if (window.ga) {
               window.ga("send", "pageview", {

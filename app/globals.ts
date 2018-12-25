@@ -2,6 +2,7 @@ export interface Globals {
   domain: string;
   dsn: string | null;
   supportedBrowser: boolean;
+  spaTransition?: true;
   ophan?: {
     viewId: string;
     record: RecordOphanComponentEvent;
