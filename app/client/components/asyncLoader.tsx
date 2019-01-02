@@ -40,18 +40,23 @@ export default class AsyncLoader<
   public componentDidMount(): void {
     this.props
       .fetch()
-      .then(
-        resp =>
-          resp.ok
-            ? this.readerOnOK(resp)
-            : this.handleError(`${resp.status} (${resp.statusText})`)
-      )
+      .then(resp => {
+        const locationHeader = resp.headers.get("Location");
+        if (resp.status === 401 && locationHeader && window !== undefined) {
+          window.location.replace(locationHeader);
+          return Promise.resolve(null);
+        } else if (resp.ok) {
+          return this.readerOnOK(resp);
+        }
+        return this.handleError(`${resp.status} (${resp.statusText})`);
+      })
       .then(data => {
         if (
           !(
             this.props.shouldPreventRender &&
             this.props.shouldPreventRender(data)
-          )
+          ) &&
+          data !== null
         ) {
           this.setState({ data, loadingState: LoadingState.loaded });
         }

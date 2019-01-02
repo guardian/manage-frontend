@@ -33,17 +33,25 @@ export const withIdentity: express.RequestHandler = (
     });
   };
 
+  const redirectOr401 = (redirectURL: string) =>
+    req.url.startsWith("/api/")
+      ? res
+          .status(401)
+          .header("Location", redirectURL)
+          .send()
+      : res.redirect(redirectURL);
+
   if (
     user === IdentityError.NotLoggedIn ||
     user === IdentityError.CouldNotParse
   ) {
     log.info("Not logged in.");
-    res.redirect(getAuthRedirectUrl("signin"));
+    redirectOr401(getAuthRedirectUrl("signin"));
     return;
   }
   if (user === IdentityError.Expired) {
     log.info("User session expired.");
-    res.redirect(getAuthRedirectUrl("reauthenticate"));
+    redirectOr401(getAuthRedirectUrl("reauthenticate"));
     return;
   }
 
