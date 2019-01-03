@@ -13,8 +13,10 @@ import { ProductType, ProductTypes } from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
-import { IdentityUser } from "./identity/identity";
-import { withIdentity } from "./identity/identityMiddleware";
+import {
+  getCookiesOrEmptyString,
+  withIdentity
+} from "./identity/identityMiddleware";
 import { log } from "./log";
 
 const port = 9233;
@@ -82,16 +84,6 @@ const apiHandler = (jsonHandler: JsonHandler) => (
   forwardQueryArgs?: boolean,
   ...pathParamNamesToReplace: string[]
 ) => (req: express.Request, res: express.Response) => {
-  if (res.locals.identity == null) {
-    // Check if the identity middleware is loaded for this route.
-    // Refactor this.
-    log.error("Identity not present in locals.");
-    res.status(500).send("Something broke!");
-    return;
-  }
-
-  const identity: IdentityUser = res.locals.identity;
-
   const parameterisedPath = pathParamNamesToReplace.reduce(
     (evolvingPath: string, pathParamName: string) =>
       evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
@@ -106,7 +98,7 @@ const apiHandler = (jsonHandler: JsonHandler) => (
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
       "Content-Type": "application/json",
-      Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
+      Cookie: getCookiesOrEmptyString(req)
     }
   })
     .then(intermediateResponse => {

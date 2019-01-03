@@ -114,6 +114,7 @@ Resources:
             User=manage-frontend
             Group=manage-frontend
             Environment=NODE_ENV=production
+            Environment=STAGE=${Stage}
             Environment=DOMAIN=${DomainEnvVariable}
             Environment=API_DOMAIN=${ApiDomainEnvVariable}
             Environment=SF_CASES_URL=${SFCasesUrl}
@@ -156,6 +157,12 @@ Resources:
                 - logs:CreateLogStream
                 - logs:PutLogEvents
                 Resource: !GetAtt ManageFrontendLogGroup.Arn
+        - PolicyName: ReadPrivateCredentials
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action: s3:GetObject
+              Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
