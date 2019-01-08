@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 import url from "url";
 import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
-import { log } from "../log";
 
 interface RedirectResponseBody {
   status: string;
@@ -75,7 +74,7 @@ export const withIdentity: express.RequestHandler = (
 ) => {
   const errorHandler = (message: string, detail?: any) => {
     handleIdapiRelatedError(message, detail);
-    res.status(500).send(); // TODO maybe server side render a pretty response
+    res.sendStatus(500); // TODO maybe server side render a pretty response
   };
 
   idapiConfigPromise
@@ -100,7 +99,6 @@ export const withIdentity: express.RequestHandler = (
               redirectResponse.json() as Promise<RedirectResponseBody>
           )
           .then(redirectResponseBody => {
-            log.info(JSON.stringify(redirectResponseBody));
             if (redirectResponseBody.redirect) {
               redirectOr401(
                 req.url,

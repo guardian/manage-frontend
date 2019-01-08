@@ -65,9 +65,13 @@ server.use(
 
 server.use(helmet());
 
-server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
-  res.send("OK");
-});
+server.get(
+  "/_healthcheck",
+  withIdentity,
+  (req: express.Request, res: express.Response) => {
+    res.send("OK");
+  }
+);
 
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 server.use("/", withIdentity);
