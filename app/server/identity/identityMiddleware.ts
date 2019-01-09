@@ -15,13 +15,15 @@ export interface MockableExpressRequest {
   baseUrl: string;
   path: string;
   get: (name: string) => string | undefined;
+  header: (name: string) => string | undefined;
   query: any;
 }
 
 export const augmentRedirectURL = (
   req: MockableExpressRequest,
   simpleRedirectURL: string,
-  currentDomain: string
+  currentDomain: string,
+  useRefererHeaderForReturnURL: boolean
 ) => {
   const parsedSimpleURL = url.parse(
     // the replace below essentially allows DEV to use CODE IDAPI but still redirect to profile.thegulocal.com
@@ -29,17 +31,19 @@ export const augmentRedirectURL = (
     true
   );
 
-  const returnUrl = url.format({
-    protocol: "https",
-    host: req.get("host"),
-    pathname: req.baseUrl + req.path,
-    query: {
-      ...req.query,
-      profileReferrer: parsedSimpleURL.path
-        ? parsedSimpleURL.path.substring(1)
-        : undefined
-    }
-  });
+  const returnUrl = useRefererHeaderForReturnURL
+    ? req.header("referer")
+    : url.format({
+        protocol: "https",
+        host: req.get("host"),
+        pathname: req.baseUrl + req.path,
+        query: {
+          ...req.query,
+          profileReferrer: parsedSimpleURL.path
+            ? parsedSimpleURL.path.substring(1)
+            : undefined
+        }
+      });
 
   return url.format({
     protocol: parsedSimpleURL.protocol,
@@ -108,7 +112,8 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                 augmentRedirectURL(
                   req,
                   redirectResponseBody.redirect.url,
-                  conf.DOMAIN
+                  conf.DOMAIN,
+                  !!statusCode
                 ),
                 statusCode
               );
