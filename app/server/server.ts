@@ -67,14 +67,14 @@ server.use(helmet());
 
 server.get(
   "/_healthcheck",
-  withIdentity,
+  withIdentity(200), // healthcheck needs identity redirect service to be accessible (returns 200 if redirect required)
   (req: express.Request, res: express.Response) => {
-    res.send("OK");
+    res.send("OK - signed in");
   }
 );
 
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
-server.use("/", withIdentity);
+server.use("/api/", withIdentity(401));
 
 server.use("/static", express.static(__dirname + "/static"));
 
@@ -244,14 +244,14 @@ const profileRedirectHandler: JsonHandler = (
 
 server.get(
   "/profile/user",
+  withIdentity(401),
   apiHandler(profileRedirectHandler)("https://members-data-api." + conf.DOMAIN)(
     "user-attributes/me"
-  ),
-  withIdentity
+  )
 );
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
-server.use((req: express.Request, res: express.Response) => {
+server.use(withIdentity(), (req: express.Request, res: express.Response) => {
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
@@ -285,7 +285,7 @@ server.use((req: express.Request, res: express.Response) => {
       globals
     })
   );
-}, withIdentity);
+});
 
 if (conf.SERVER_DSN) {
   server.use(Raven.errorHandler());

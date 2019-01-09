@@ -10,6 +10,7 @@ const reauthPath = "reauthenticate";
 const codeReauthURL = profilePrefix + codeDomain + "/" + reauthPath;
 
 const requestedUrlSimple = {
+  baseUrl: "baseUrl",
   path: "path",
   get: () => "host",
   query: {}

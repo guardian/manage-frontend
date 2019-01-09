@@ -12,6 +12,7 @@ interface RedirectResponseBody {
 }
 
 export interface MockableExpressRequest {
+  baseUrl: string;
   path: string;
   get: (name: string) => string | undefined;
   query: any;
@@ -31,7 +32,7 @@ export const augmentRedirectURL = (
   const returnUrl = url.format({
     protocol: "https",
     host: req.get("host"),
-    pathname: req.path,
+    pathname: req.baseUrl + req.path,
     query: {
       ...req.query,
       profileReferrer: parsedSimpleURL.path
@@ -52,14 +53,14 @@ export const augmentRedirectURL = (
   });
 };
 
-const redirectOr401 = (
-  reqUrl: string,
+const redirectOrCustomStatusCode = (
   res: express.Response,
-  redirectURL: string
+  redirectURL: string,
+  statusCode?: number
 ) =>
-  reqUrl.startsWith("/api/")
+  statusCode
     ? res
-        .status(401)
+        .status(statusCode)
         .header("Location", redirectURL)
         .send()
     : res.redirect(redirectURL);
@@ -67,7 +68,9 @@ const redirectOr401 = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
-export const withIdentity: express.RequestHandler = (
+export const withIdentity: (statusCode?: number) => express.RequestHandler = (
+  statusCode?: number
+) => (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -100,14 +103,14 @@ export const withIdentity: express.RequestHandler = (
           )
           .then(redirectResponseBody => {
             if (redirectResponseBody.redirect) {
-              redirectOr401(
-                req.url,
+              redirectOrCustomStatusCode(
                 res,
                 augmentRedirectURL(
                   req,
                   redirectResponseBody.redirect.url,
                   conf.DOMAIN
-                )
+                ),
+                statusCode
               );
             } else if (redirectResponseBody.status === "ok") {
               next();
