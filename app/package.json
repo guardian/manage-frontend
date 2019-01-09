@@ -95,6 +95,7 @@
     "@reach/router": "^1.1.1",
     "@types/base-64": "^0.1.2",
     "@types/react-stripe-elements": "^1.1.7",
+    "aws-sdk": "^2.383.0",
     "babel-plugin-emotion": "^9.1.0",
     "babel-plugin-source-map-support": "^2.0.1",
     "base-64": "^0.1.0",

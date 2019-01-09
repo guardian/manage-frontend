@@ -1,4 +1,5 @@
 export interface Config {
+  readonly STAGE: string;
   readonly DOMAIN: string;
   readonly API_DOMAIN: string;
   readonly SF_CASES_URL: string;
@@ -26,6 +27,7 @@ export enum Environments {
 }
 
 export const conf: Config = {
+  STAGE: getConfig("STAGE") || "DEV",
   DOMAIN: getConfig("DOMAIN") || "thegulocal.com",
   API_DOMAIN: getConfig("API_DOMAIN") || "code.dev-guardianapis.com",
   SF_CASES_URL:

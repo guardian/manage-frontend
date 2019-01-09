@@ -13,8 +13,10 @@ import { ProductType, ProductTypes } from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
-import { IdentityUser } from "./identity/identity";
-import { withIdentity } from "./identity/identityMiddleware";
+import {
+  getCookiesOrEmptyString,
+  withIdentity
+} from "./identity/identityMiddleware";
 import { log } from "./log";
 
 const port = 9233;
@@ -63,12 +65,16 @@ server.use(
 
 server.use(helmet());
 
-server.get("/_healthcheck", (req: express.Request, res: express.Response) => {
-  res.send("OK");
-});
+server.get(
+  "/_healthcheck",
+  withIdentity(200), // healthcheck needs identity redirect service to be accessible (returns 200 if redirect required)
+  (req: express.Request, res: express.Response) => {
+    res.send("OK - signed in");
+  }
+);
 
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
-server.use("/", withIdentity);
+server.use("/api/", withIdentity(401));
 
 server.use("/static", express.static(__dirname + "/static"));
 
@@ -82,16 +88,6 @@ const apiHandler = (jsonHandler: JsonHandler) => (
   forwardQueryArgs?: boolean,
   ...pathParamNamesToReplace: string[]
 ) => (req: express.Request, res: express.Response) => {
-  if (res.locals.identity == null) {
-    // Check if the identity middleware is loaded for this route.
-    // Refactor this.
-    log.error("Identity not present in locals.");
-    res.status(500).send("Something broke!");
-    return;
-  }
-
-  const identity: IdentityUser = res.locals.identity;
-
   const parameterisedPath = pathParamNamesToReplace.reduce(
     (evolvingPath: string, pathParamName: string) =>
       evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
@@ -106,7 +102,7 @@ const apiHandler = (jsonHandler: JsonHandler) => (
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
       "Content-Type": "application/json",
-      Cookie: `GU_U=${identity.GU_U}; SC_GU_U=${identity.SC_GU_U}`
+      Cookie: getCookiesOrEmptyString(req)
     }
   })
     .then(intermediateResponse => {
@@ -248,14 +244,14 @@ const profileRedirectHandler: JsonHandler = (
 
 server.get(
   "/profile/user",
+  withIdentity(401),
   apiHandler(profileRedirectHandler)("https://members-data-api." + conf.DOMAIN)(
     "user-attributes/me"
-  ),
-  withIdentity
+  )
 );
 
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
-server.use((req: express.Request, res: express.Response) => {
+server.use(withIdentity(), (req: express.Request, res: express.Response) => {
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
@@ -289,7 +285,7 @@ server.use((req: express.Request, res: express.Response) => {
       globals
     })
   );
-}, withIdentity);
+});
 
 if (conf.SERVER_DSN) {
   server.use(Raven.errorHandler());
