@@ -5,7 +5,7 @@ import { CardProps } from "../client/components/payment/cardDisplay";
 export type MembersDataApiResponse = ProductDetail | {};
 
 export class MembersDatApiAsyncLoader extends AsyncLoader<
-  MembersDataApiResponse
+  MembersDataApiResponse[]
 > {}
 
 export const MembersDataApiResponseContext: React.Context<
@@ -22,6 +22,15 @@ export const formatDate = (shortForm: string) => {
 
 export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
 
+export const annotateMdaResponseWithTestUserFromHeaders = async (
+  response: Response
+) =>
+  ((await response.json()) as MembersDataApiResponse[]).map(data =>
+    Object.assign(data, {
+      isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true"
+    })
+  );
+
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
   regNumber?: string;
@@ -34,7 +43,7 @@ export interface ProductDetail extends WithSubscription {
 export function hasProduct(
   data: MembersDataApiResponse
 ): data is ProductDetail {
-  return data.hasOwnProperty("tier");
+  return data && data.hasOwnProperty("tier");
 }
 
 export interface Card extends CardProps {

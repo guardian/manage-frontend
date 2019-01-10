@@ -21,6 +21,7 @@ export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
 interface ExecutePaymentUpdateProps extends RouteableStepProps {
   newPaymentMethodDetail: NewPaymentMethodDetail;
+  subscriptionName: string;
 }
 
 interface ExecutePaymentUpdateState {
@@ -59,8 +60,8 @@ class ExecutePaymentUpdate extends React.Component<
 
   private executePaymentUpdate: () => Promise<Response> = async () =>
     await fetch(
-      `/api/payment/${this.props.productType.urlPart}/${
-        this.props.newPaymentMethodDetail.apiUrlPart
+      `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${
+        this.props.subscriptionName
       }`,
       {
         credentials: "include",
@@ -122,16 +123,16 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
   <NewPaymentMethodContext.Consumer>
     {newPaymentMethodDetail => (
       <MembersDataApiResponseContext.Consumer>
-        {mdaResponse =>
+        {productDetail =>
           props.navigate &&
           isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          hasProduct(mdaResponse) ? (
+          hasProduct(productDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
               extraFooterComponents={<QuestionsFooter />}
             >
               <h3>Please confirm your change from...</h3>
-              <CurrentPaymentDetails {...mdaResponse.subscription} />
+              <CurrentPaymentDetails {...productDetail.subscription} />
               <h3>...to...</h3>
               {newPaymentMethodDetail.render()}
               <div css={{ margin: "20px 0", textAlign: "right" }}>
@@ -139,6 +140,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
                   <div css={{ marginTop: "20px", textAlign: "right" }}>
                     <ExecutePaymentUpdate
                       {...props}
+                      subscriptionName={productDetail.subscription.subscriberId}
                       newPaymentMethodDetail={newPaymentMethodDetail}
                     />
                   </div>

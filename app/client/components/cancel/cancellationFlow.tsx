@@ -1,21 +1,17 @@
 import React, { ChangeEvent, ReactNode } from "react";
 import {
-  hasProduct,
-  MembersDataApiResponse,
   MembersDataApiResponseContext,
-  MembersDatApiAsyncLoader
+  ProductDetail
 } from "../../../shared/productResponse";
 import {
-  createProductDetailFetcher,
   ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../shared/productTypes";
 import palette from "../../colours";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
-import { CheckFlowIsValid } from "../checkFlowIsValid";
-import { NoProduct } from "../noProduct";
-import { PageContainer, PageContainerSection } from "../page";
+import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
+import { PageContainerSection } from "../page";
 import {
   MultiRouteableProps,
   ReturnToYourProductButton,
@@ -118,46 +114,36 @@ const childWithRouteablePropsToElement = (child: {
   </option>
 );
 
-const getReasonsRenderer = (
-  routeableStepProps: RouteableStepPropsWithCancellationFlow
-) => (data: MembersDataApiResponse) => {
-  if (hasProduct(data)) {
-    if (data.subscription.cancelledAt) {
-      return (
-        <div>
-          {getCancellationSummary(routeableStepProps.productType)(
-            data.subscription
-          )}
-          <ReturnToYourProductButton {...routeableStepProps} />
-        </div>
-      );
-    }
+const reasonsRenderer = (
+  routeableStepPropsWithCancellationFlow: RouteableStepPropsWithCancellationFlow
+) => (routeableStepProps: RouteableStepProps, productDetail: ProductDetail) => {
+  if (productDetail.subscription.cancelledAt) {
     return (
-      <MembersDataApiResponseContext.Provider value={data}>
-        <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
-          {routeableStepProps.productType.cancellation.startPageBody}
-          <PageContainerSection>
-            <ReasonPicker
-              productType={routeableStepProps.productType}
-              options={routeableStepProps.children.props.children.map(
-                childWithRouteablePropsToElement
-              )}
-            />
-          </PageContainerSection>
-        </WizardStep>
-      </MembersDataApiResponseContext.Provider>
+      <div>
+        {getCancellationSummary(routeableStepProps.productType)(
+          productDetail.subscription
+        )}
+        <ReturnToYourProductButton {...routeableStepProps} />
+      </div>
     );
   }
-
   return (
-    <>
-      <NoProduct
-        inTab={false}
-        supportRefererSuffix="cancellation_flow"
-        productType={routeableStepProps.productType}
-      />
-      <ReturnToYourProductButton {...routeableStepProps} />
-    </>
+    <MembersDataApiResponseContext.Provider value={productDetail}>
+      <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
+        {
+          routeableStepPropsWithCancellationFlow.productType.cancellation
+            .startPageBody
+        }
+        <PageContainerSection>
+          <ReasonPicker
+            productType={routeableStepPropsWithCancellationFlow.productType}
+            options={routeableStepProps.children.props.children.map(
+              childWithRouteablePropsToElement
+            )}
+          />
+        </PageContainerSection>
+      </WizardStep>
+    </MembersDataApiResponseContext.Provider>
   );
 };
 
@@ -169,27 +155,11 @@ export interface RouteableStepPropsWithCancellationFlow
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <div>
-    <PageContainer>
-      <h1 css={{ fontSize: "24px" }}>
-        Cancel your{" "}
-        {props.productType.includeGuardianInTitles ? "Guardian " : ""}
-        {props.productType.friendlyName}
-      </h1>
-      <CheckFlowIsValid
-        supportRefererSuffix="cancellation_flow"
-        {
-          ...props.productType /*TODO use for the whole flow*/
-        }
-      >
-        <MembersDatApiAsyncLoader
-          fetch={createProductDetailFetcher(props.productType)}
-          render={getReasonsRenderer(props)}
-          loadingMessage={`Checking the status of your current ${
-            props.productType.friendlyName
-          }...`}
-        />
-      </CheckFlowIsValid>
-    </PageContainer>
-  </div>
+  <FlowStartMultipleProductDetailHandler
+    {...props}
+    headingPrefix="Cancel"
+    supportRefererSuffix="cancellation_flow"
+    loadingMessagePrefix="Checking the status of your"
+    singleProductDetailRenderer={reasonsRenderer(props)}
+  />
 );
