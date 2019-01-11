@@ -3,6 +3,7 @@ const merge = require("webpack-merge");
 const AssetsPlugin = require("assets-webpack-plugin");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
 
 const assetsPluginInstance = new AssetsPlugin({
   path: path.resolve(__dirname, "./dist/")
@@ -11,7 +12,10 @@ const assetsPluginInstance = new AssetsPlugin({
 const definePlugin = new webpack.DefinePlugin({
   WEBPACK_BUILD: process.env.TEAMCITY_BUILD
     ? `'${process.env.TEAMCITY_BUILD}'`
-    : "'NO BUILD SET'"
+    : "'NO BUILD SET'",
+  GIT_COMMIT_HASH: process.env.BUILD_VCS_NUMBER
+    ? `'${process.env.BUILD_VCS_NUMBER}'`
+    : `'${new GitRevisionPlugin().commithash()}'`
 });
 
 const copyPlugin = new CopyWebpackPlugin([
