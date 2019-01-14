@@ -170,10 +170,8 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
   FlowStartMultipleProductDetailHandlerProps,
   FlowStartMultipleProductDetailHandlerState
 > {
-  public state = {
-    selectedProductDetail: this.props.location
-      ? this.props.location.state
-      : undefined
+  public state: FlowStartMultipleProductDetailHandlerState = {
+    selectedProductDetail: undefined
   };
 
   private readonly preWiredProductDetailSelector = getProductDetailSelector(
@@ -182,6 +180,15 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
       this.setState({ selectedProductDetail: productDetail }),
     this.props.supportRefererSuffix
   );
+
+  // client side render only
+  public componentDidMount(): void {
+    if (this.props.location && this.props.location.state) {
+      this.setState({
+        selectedProductDetail: this.props.location.state
+      });
+    }
+  }
 
   public render(): React.ReactNode {
     return (

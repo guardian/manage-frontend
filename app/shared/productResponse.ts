@@ -41,9 +41,9 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export function hasProduct(
-  data: MembersDataApiResponse
+  data: MembersDataApiResponse | undefined
 ): data is ProductDetail {
-  return data && data.hasOwnProperty("tier");
+  return !!data && data.hasOwnProperty("tier");
 }
 
 export interface Card extends CardProps {
