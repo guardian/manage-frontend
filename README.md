@@ -18,9 +18,9 @@ Frontend of `manage.theguardian.com`
 - [Yarn](https://yarnpkg.com/lang/en/)
 - [NGINX](https://www.nginx.com)
 
-## Installation and running
+## Installation for local development
 
-1.  Add the following line to to `/etc/hosts`
+1.  Add the following lines to to `/etc/hosts`:
 
 ```
 127.0.0.1 manage.thegulocal.com
@@ -28,10 +28,17 @@ Frontend of `manage.theguardian.com`
 127.0.0.1 members-data-api.thegulocal.com
 ```
 
-2.  You will need to have [identity-frontend](https://github.com/guardian/identity-frontend) and [members-data-api](https://github.com/guardian/members-data-api) running locally, as it will require you are logged in first. If this is the first time you'll need to do these sub-steps:
-    1.  follow the [nginx steps for identity-platform](https://github.com/guardian/identity-platform/blob/master/nginx/README.md#setup-nginx-with-ssl-for-dev)
-    2.  follow the [identity-frontend configuration steps](https://github.com/guardian/identity-frontend#configuration)
-    3.  follow the [setup instructions for members-data-api](https://github.com/guardian/members-data-api#setting-it-up-locally)
-3.  In `./nginx` run `./setup.sh`.
-4.  In `./app`, run `nvm use`, `yarn` and `yarn watch`.
-5.  Then go to https://manage.thegulocal.com/
+1.  Follow the [nginx steps for identity-platform](https://github.com/guardian/identity-platform/blob/master/nginx/README.md#setup-nginx-with-ssl-for-dev).
+2.  Follow the [identity-frontend configuration steps](https://github.com/guardian/identity-frontend#configuration).
+3.  Follow the [setup instructions for members-data-api](https://github.com/guardian/members-data-api#setting-it-up-locally).
+4.  In `./nginx` run `./setup.sh`.
+5.  In `./app`, run `nvm use` and `yarn`.
+
+## Running locally
+
+1.  First fetch credentials from [Janus](https://janus.gutools.co.uk/) for the `membership` profile.
+2.  You will need to have [identity-frontend](https://github.com/guardian/identity-frontend) running (`./start-frontend.sh`), to allow you to sign in (the sign-in cookies are required).
+3.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get CODE subscription data.
+4.  You will need to have nginx running (`sudo nginx`), if it's not running already.
+5.  In `./app`, run `yarn watch`.
+6.  Then go to https://manage.thegulocal.com/
