@@ -80,7 +80,7 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
 > {
   public state = {
     selectedProductDetail: this.props.location
-      ? (this.props.location as any).state
+      ? this.props.location.state
       : undefined
   };
 
