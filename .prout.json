@@ -1,0 +1,12 @@
+{
+  "checkpoints": {
+    "CODE": {
+      "url": "https://manage.code.dev-theguardian.com/_prout",
+      "overdue": "1H"
+    },
+    "PROD": {
+      "url": "https://manage.theguardian.com/_prout",
+      "overdue": "15M"
+    }
+  }
+}

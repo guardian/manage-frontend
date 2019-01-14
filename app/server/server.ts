@@ -73,6 +73,11 @@ server.get(
   }
 );
 
+declare var GIT_COMMIT_HASH: string;
+server.get("/_prout", (req: express.Request, res: express.Response) => {
+  res.send(`<pre>${GIT_COMMIT_HASH}</pre>`);
+});
+
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 server.use("/api/", withIdentity(401));
 
