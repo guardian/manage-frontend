@@ -40,5 +40,5 @@ Frontend of `manage.theguardian.com`
 2.  You will need to have [identity-frontend](https://github.com/guardian/identity-frontend) running (`./start-frontend.sh`), to allow you to sign in (the sign-in cookies are required).
 3.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get CODE subscription data.
 4.  You will need to have nginx running (`sudo nginx`), if it's not running already.
-5.  In `./app`, run `yarn watch`.
+5.  In `./app`, run `yarn install` and then `yarn watch`.
 6.  Then go to https://manage.thegulocal.com/
