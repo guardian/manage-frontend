@@ -1,50 +1,142 @@
 import React from "react";
 import {
   annotateMdaResponseWithTestUserFromHeaders,
+  formatDate,
   hasProduct,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
-  ProductDetail
+  ProductDetail,
+  Subscription
 } from "../../shared/productResponse";
 import { createProductDetailFetcher } from "../../shared/productTypes";
+import palette from "../colours";
 import { Button } from "./buttons";
 import { CheckFlowIsValid } from "./checkFlowIsValid";
 import { NoProduct } from "./noProduct";
 import { PageContainer } from "./page";
+import { CardDisplay } from "./payment/cardDisplay";
+import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { RouteableStepProps } from "./wizardRouterAdapter";
+
+const PaymentTypeRenderer = (subscription: Subscription) => {
+  if (subscription.card) {
+    return <CardDisplay margin="0" {...subscription.card} inline />;
+  } else if (subscription.mandate) {
+    return <DirectDebitDisplay {...subscription.mandate} inline />;
+  } else if (subscription.payPalEmail) {
+    return <span>via PayPal</span>;
+  }
+  return null;
+};
+
+const commonFlexCSS = {
+  alignItems: "center",
+  flexWrap: "wrap",
+  "span, div": {
+    marginRight: "10px"
+  }
+};
 
 const getProductDetailSelector = (
   props: FlowStartMultipleProductDetailHandlerProps,
   selectProductDetail: (productDetail: ProductDetail) => void,
   supportRefererSuffix: string
 ) => (data: MembersDataApiResponse[]) => {
-  if (data && data.length > 0) {
-    const first = data[0];
-    if (data.length === 1 && hasProduct(first)) {
+  const activeList = data
+    .filter(hasProduct)
+    .filter(_ => !_.subscription.cancelledAt);
+  if (activeList.length > 0) {
+    const first = activeList[0];
+    if (activeList.length === 1 && hasProduct(first)) {
       return props.singleProductDetailRenderer(props, first);
     }
-    if (data.length > 1) {
+    if (activeList.length > 1) {
       return (
-        <PageContainer>
-          <p>
-            It looks like you have {data.length}{" "}
-            {props.productType.friendlyName}s, please select the one you would
-            like to proceed with...
-          </p>
-          {data.filter(hasProduct).map(productDetail => (
+        <>
+          <PageContainer>
+            <p>
+              It looks like you have {activeList.length}{" "}
+              {props.productType.friendlyName}s, please select the one you would
+              like to proceed with...
+            </p>
+          </PageContainer>
+          {activeList.map((productDetail, listIndex) => (
             <div
               key={productDetail.subscription.subscriberId}
-              css={{ margin: "5px" }}
+              css={{
+                padding: "10px",
+                background:
+                  (listIndex + 1) % 2 !== 0 ? palette.neutral["7"] : undefined
+              }}
             >
-              <Button
-                text={productDetail.subscription.subscriberId}
-                onClick={() => selectProductDetail(productDetail)}
-                right
-                primary
-              />
+              <PageContainer noVerticalMargin>
+                <div
+                  css={{
+                    display: "flex",
+                    ...commonFlexCSS
+                  }}
+                >
+                  {props.productType.productPage &&
+                  props.productType.productPage.tierRowLabel ? (
+                    <span>
+                      <strong>Tier: </strong> {productDetail.tier}{" "}
+                    </span>
+                  ) : (
+                    undefined
+                  )}
+                  <span>
+                    <strong>Start Date:</strong>{" "}
+                    {formatDate(
+                      productDetail.subscription.start || productDetail.joinDate
+                    )}{" "}
+                  </span>
+                  <div
+                    css={{
+                      display: "inline-flex",
+                      ...commonFlexCSS
+                    }}
+                  >
+                    <strong>Payment:</strong>
+                    {productDetail.isPaidTier ? (
+                      <>
+                        <span>
+                          {" "}
+                          {productDetail.subscription.plan.currency}
+                          {(
+                            productDetail.subscription.nextPaymentPrice / 100.0
+                          ).toFixed(2)}{" "}
+                          {productDetail.subscription.plan.interval}ly
+                        </span>
+                        <PaymentTypeRenderer {...productDetail.subscription} />
+                      </>
+                    ) : (
+                      " FREE"
+                    )}
+                  </div>
+                  <span>
+                    <strong>Next payment date:</strong>{" "}
+                    {formatDate(productDetail.subscription.nextPaymentDate)}
+                  </span>
+                </div>
+                <div css={{ marginTop: "10px" }}>
+                  <Button
+                    text={
+                      props.headingPrefix +
+                      " this " +
+                      (props.productType.includeGuardianInTitles
+                        ? "Guardian "
+                        : "") +
+                      props.productType.friendlyName
+                    }
+                    onClick={() => selectProductDetail(productDetail)}
+                    right
+                    primary
+                  />
+                </div>
+              </PageContainer>
             </div>
           ))}
-        </PageContainer>
+        </>
       );
     }
   }
