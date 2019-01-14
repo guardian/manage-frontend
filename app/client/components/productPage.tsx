@@ -1,5 +1,6 @@
 import { Link } from "@reach/router";
 import { css } from "emotion";
+import { startCase } from "lodash";
 import Raven from "raven-js";
 import React from "react";
 import {
@@ -168,131 +169,168 @@ const getPaymentPart = (
 
 const getProductRenderer = (productType: ProductTypeWithProductPage) => (
   apiResponse: MembersDataApiResponse[]
-) =>
-  apiResponse && apiResponse.filter(hasProduct).length > 0 ? (
-    apiResponse.filter(hasProduct).map(productDetail => (
-      <div key={productDetail.subscription.subscriberId}>
-        {productDetail.subscription.cancelledAt ? (
-          getCancellationSummary(productType)(productDetail.subscription)
-        ) : (
-          <>
-            {productDetail.alertText ? (
-              <div
-                css={{
-                  backgroundColor: palette.red.dark,
-                  color: palette.white,
-                  padding: "10px 15px 15px",
-                  marginTop: "30px",
-                  marginBottom: "30px"
-                }}
-              >
-                <PageContainer noVerticalMargin>
-                  <h2 css={{ fontWeight: "bold", margin: "0" }}>
-                    Action required
-                  </h2>
-                  <p
-                    id="mma-alert-text"
+) => {
+  const productDetailList = apiResponse.filter(hasProduct);
+  return (
+    <>
+      {productDetailList.length > 1 ? (
+        <PageContainer>
+          <h3>
+            It appears you have {productDetailList.length} concurrent{" "}
+            {productType.friendlyName}s...
+          </h3>
+        </PageContainer>
+      ) : (
+        undefined
+      )}
+      {productDetailList.length > 0 ? (
+        productDetailList.map((productDetail, listIndex) => (
+          <div
+            key={productDetail.subscription.subscriberId}
+            css={{
+              background:
+                productDetailList.length > 1 && (listIndex + 1) % 2 !== 0
+                  ? palette.neutral["7"]
+                  : undefined,
+              padding: "5px 0 20px"
+            }}
+          >
+            {productDetail.subscription.cancelledAt ? (
+              getCancellationSummary(productType)(productDetail.subscription)
+            ) : (
+              <>
+                {productDetailList.length > 1 ? (
+                  <PageContainer noVerticalMargin>
+                    <h2>
+                      {startCase(productType.friendlyName.toLowerCase())}{" "}
+                      {listIndex + 1}
+                    </h2>
+                  </PageContainer>
+                ) : (
+                  undefined
+                )}
+                {productDetail.alertText ? (
+                  <div
                     css={{
-                      br: {
-                        display: "none",
-                        [minWidth.tablet]: {
-                          display: "inline"
-                        }
-                      }
+                      backgroundColor: palette.red.dark,
+                      color: palette.white,
+                      padding: "10px 15px 15px",
+                      margin: `30px ${
+                        productDetailList.length > 1 ? "15px" : "0"
+                      }`
                     }}
                   >
-                    {productDetail.alertText.replace(
-                      "Please check that the card details shown are up to date.",
-                      ""
-                    )}
-                    <br />
-                    Please check that the card details shown are up to date.
-                  </p>
-                  <LinkButton
-                    text="Update payment details"
-                    to={"/payment/" + productType.urlPart}
-                    height="42px"
-                    fontWeight="bold"
-                    primary
-                    right
-                  />
-                </PageContainer>
-              </div>
-            ) : (
-              undefined
-            )}
-            <PageContainer>
-              {productType.productPage.tierRowLabel ? (
-                <>
-                  {productDetail.regNumber ? (
-                    <ProductDetailRow
-                      label={"Registration number"}
-                      data={productDetail.regNumber}
-                    />
+                    <PageContainer noVerticalMargin>
+                      <h2 css={{ fontWeight: "bold", margin: "0" }}>
+                        Action required
+                      </h2>
+                      <p
+                        id="mma-alert-text"
+                        css={{
+                          br: {
+                            display: "none",
+                            [minWidth.tablet]: {
+                              display: "inline"
+                            }
+                          }
+                        }}
+                      >
+                        {productDetail.alertText.replace(
+                          "Please check that the card details shown are up to date.",
+                          ""
+                        )}
+                        <br />
+                        Please check that the card details shown are up to date.
+                      </p>
+                      <LinkButton
+                        text="Update payment details"
+                        to={"/payment/" + productType.urlPart}
+                        height="42px"
+                        fontWeight="bold"
+                        state={productDetail}
+                        primary
+                        right
+                      />
+                    </PageContainer>
+                  </div>
+                ) : (
+                  undefined
+                )}
+                <PageContainer>
+                  {productType.productPage.tierRowLabel ? (
+                    <>
+                      {productDetail.regNumber ? (
+                        <ProductDetailRow
+                          label={"Registration number"}
+                          data={productDetail.regNumber}
+                        />
+                      ) : (
+                        undefined
+                      )}
+                      <ProductDetailRow
+                        label={productType.productPage.tierRowLabel}
+                        data={
+                          <div css={wrappingContainerCSS}>
+                            <div css={{ marginRight: "15px" }}>
+                              {productDetail.tier}
+                            </div>
+                            {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                            <a
+                              href={
+                                "https://membership." +
+                                window.guardian.domain +
+                                "/tier/change"
+                              }
+                            >
+                              <Button text="Change tier" right />
+                            </a>
+                          </div>
+                        }
+                      />
+                    </>
                   ) : (
                     undefined
                   )}
                   <ProductDetailRow
-                    label={productType.productPage.tierRowLabel}
-                    data={
-                      <div css={wrappingContainerCSS}>
-                        <div css={{ marginRight: "15px" }}>
-                          {productDetail.tier}
-                        </div>
-                        {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                        <a
-                          href={
-                            "https://membership." +
-                            window.guardian.domain +
-                            "/tier/change"
-                          }
-                        >
-                          <Button text="Change tier" right />
-                        </a>
-                      </div>
-                    }
+                    label={"Start date"}
+                    data={formatDate(
+                      productDetail.subscription.start || productDetail.joinDate
+                    )}
                   />
-                </>
-              ) : (
-                undefined
-              )}
-              <ProductDetailRow
-                label={"Start date"}
-                data={formatDate(
-                  productDetail.subscription.start || productDetail.joinDate
-                )}
-              />
-              {getPaymentPart(productDetail, productType)}
-              {productType.cancellation &&
-              productType.cancellation.linkOnProductPage ? (
-                <Link
-                  css={{
-                    textDecoration: "underline",
-                    color: palette.neutral["1"],
-                    ":visited": { color: palette.neutral["1"] }
-                  }}
-                  to={"/cancel/" + productType.urlPart}
-                  state={productDetail}
-                >
-                  {"Cancel your " + productType.friendlyName}
-                </Link>
-              ) : (
-                undefined
-              )}
-            </PageContainer>
-          </>
-        )}
-      </div>
-    ))
-  ) : (
-    <PageContainer>
-      <NoProduct
-        inTab={true}
-        supportRefererSuffix={"product_page"}
-        productType={productType}
-      />
-    </PageContainer>
+                  {getPaymentPart(productDetail, productType)}
+                  {productType.cancellation &&
+                  productType.cancellation.linkOnProductPage ? (
+                    <Link
+                      css={{
+                        textDecoration: "underline",
+                        color: palette.neutral["1"],
+                        ":visited": { color: palette.neutral["1"] }
+                      }}
+                      to={"/cancel/" + productType.urlPart}
+                      state={productDetail}
+                    >
+                      {"Cancel this " + productType.friendlyName}
+                    </Link>
+                  ) : (
+                    undefined
+                  )}
+                </PageContainer>
+              </>
+            )}
+          </div>
+        ))
+      ) : (
+        <PageContainer>
+          <NoProduct
+            inTab={true}
+            supportRefererSuffix={"product_page"}
+            productType={productType}
+          />
+        </PageContainer>
+      )}
+    </>
   );
+};
 
 const headerCss = css({
   fontSize: "2rem",
