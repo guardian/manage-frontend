@@ -23,7 +23,7 @@ export type ProductUrlPart =
   | "paper"
   | "digitalpack";
 export type SfProduct = "Membership" | "Contribution";
-export type ProductTitle = "Membership" | "Contributions";
+export type ProductTitle = "Membership" | "Contributions" | "Digital Pack";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
@@ -56,7 +56,8 @@ export interface ProductPageProperties {
   navLink: NavItem;
   noProductInTabCopy: string;
   updateAmountMdaEndpoint?: string;
-  tierRowLabel?: string; // no label means row is not displayed
+  tierRowLabel?: string; // no label means row is not displayed;
+  tierChangeable?: true;
 }
 
 export interface ProductType {
@@ -117,7 +118,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       navLink: navLinks.membership,
       noProductInTabCopy:
         "To manage your existing contribution or subscription, please select from the tabs above.",
-      tierRowLabel: "Membership tier"
+      tierRowLabel: "Membership tier",
+      tierChangeable: true
     },
     includeGuardianInTitles: true,
     cancellation: {
@@ -222,6 +224,13 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       typeof window !== "undefined" && window.guardian && window.guardian.domain
         ? window.guardian.domain
         : "theguardian.com"
-    }/digitalpack/edit`
+    }/digitalpack/edit`,
+    productPage: {
+      title: "Digital Pack",
+      navLink: navLinks.digitalPack,
+      noProductInTabCopy:
+        "To manage your existing membership or contribution, please select from the tabs above.",
+      tierRowLabel: "Subscription product"
+    }
   }
 };

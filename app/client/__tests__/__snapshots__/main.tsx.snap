@@ -234,7 +234,7 @@ exports[`Main renders something 1`] = `
           <li>
             <a
               className="emotion-1"
-              href="https://profile.thegulocal.com/digitalpack/edit"
+              href="/digitalpack"
             >
               <span>
                 Digital Pack

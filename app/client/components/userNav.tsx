@@ -145,7 +145,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Digital Pack",
-      link: `${profileHostName}/digitalpack/edit`,
+      link: `/digitalpack`,
       border: true
     },
     {

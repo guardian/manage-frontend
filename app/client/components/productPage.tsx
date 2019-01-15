@@ -274,21 +274,25 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                       <ProductDetailRow
                         label={productType.productPage.tierRowLabel}
                         data={
-                          <div css={wrappingContainerCSS}>
-                            <div css={{ marginRight: "15px" }}>
-                              {productDetail.tier}
+                          productType.productPage.tierChangeable ? (
+                            <div css={wrappingContainerCSS}>
+                              <div css={{ marginRight: "15px" }}>
+                                {productDetail.tier}
+                              </div>
+                              {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                              <a
+                                href={
+                                  "https://membership." +
+                                  window.guardian.domain +
+                                  "/tier/change"
+                                }
+                              >
+                                <Button text="Change tier" right />
+                              </a>
                             </div>
-                            {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                            <a
-                              href={
-                                "https://membership." +
-                                window.guardian.domain +
-                                "/tier/change"
-                              }
-                            >
-                              <Button text="Change tier" right />
-                            </a>
-                          </div>
+                          ) : (
+                            productDetail.tier
+                          )
                         }
                       />
                     </>
