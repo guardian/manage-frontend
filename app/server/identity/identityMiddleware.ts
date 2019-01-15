@@ -52,6 +52,12 @@ export const augmentRedirectURL = (
     query: {
       ...parsedSimpleURL.query,
       ...(req.query.INTCMP && { INTCMP: req.query.INTCMP }), // if undefined then this param is omitted
+      // Some links in payment failure emails include the user's email (encrypted) as a query parameter.
+      // If present, include as a query parameter in the identity redirect url,
+      // since the data can be utilised to facilitate sign-in.
+      ...(req.query.encryptedEmail && {
+        encryptedEmail: req.query.encryptedEmail
+      }),
       returnUrl // this is automatically URL encoded
     }
   });
