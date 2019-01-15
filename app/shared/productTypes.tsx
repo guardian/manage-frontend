@@ -19,6 +19,12 @@ export type ProductFriendlyName =
 export type ProductUrlPart = "membership" | "contributions" | "paper";
 export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions";
+export type AllProductsProductTypeFilterString =
+  | "Weekly"
+  | "Paper"
+  | "Contribution"
+  | "Membership"
+  | "Digipack";
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
@@ -50,6 +56,7 @@ export interface ProductPageProperties {
 
 export interface ProductType {
   friendlyName: ProductFriendlyName;
+  allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
   validator: MeValidator;
   includeGuardianInTitles?: true;
@@ -80,16 +87,24 @@ export interface WithProductType<ProductTypeVariant extends ProductType> {
 }
 
 export const createProductDetailFetcher = (
-  productType: ProductType
+  productType: ProductType,
+  subscriptionName?: string
 ) => async () =>
-  await fetch(`/api/me/${productType.urlPart}`, {
-    credentials: "include",
-    mode: "same-origin"
-  });
+  await fetch(
+    "/api/me/mma" +
+      (subscriptionName
+        ? `/${subscriptionName}`
+        : `?productType=${productType.allProductsProductTypeFilterString}`),
+    {
+      credentials: "include",
+      mode: "same-origin"
+    }
+  );
 
 export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
     friendlyName: "membership",
+    allProductsProductTypeFilterString: "Membership",
     urlPart: "membership",
     validator: (me: MeResponse) => me.contentAccess.member,
     productPage: {
@@ -122,6 +137,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
   },
   contributions: {
     friendlyName: "recurring contribution",
+    allProductsProductTypeFilterString: "Contribution",
     urlPart: "contributions",
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
     noProductSupportUrlSuffix: "/contribute",
@@ -182,6 +198,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
   },
   print: {
     friendlyName: "newspaper subscription",
+    allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     includeGuardianInTitles: true,

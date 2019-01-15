@@ -1,6 +1,7 @@
 export interface Breakpoints {
   readonly mobile: number;
   readonly mobileMedium: number;
+  readonly mobileLarge: number;
   readonly mobileLandscape: number;
   readonly phablet: number;
   readonly tablet: number;
@@ -15,7 +16,8 @@ export type BreakpointQueries = { [_ in keyof Breakpoints]: string };
 
 export const namedBreakpoints: Breakpoints = {
   mobile: 320,
-  mobileMedium: 360,
+  mobileMedium: 375,
+  mobileLarge: 425,
   mobileLandscape: 480,
   phablet: 660,
   tablet: 740,
@@ -38,6 +40,7 @@ const mapBreakpointValues: (
 ) => BreakpointQueries = (bs, f) => ({
   mobile: f(bs.mobile),
   mobileMedium: f(bs.mobileMedium),
+  mobileLarge: f(bs.mobileLarge),
   mobileLandscape: f(bs.mobileLandscape),
   phablet: f(bs.phablet),
   tablet: f(bs.tablet),

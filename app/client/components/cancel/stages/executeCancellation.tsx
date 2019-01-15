@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  hasProduct,
+  MembersDataApiResponseContext,
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
@@ -8,9 +10,9 @@ import {
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
+import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
   ReturnToYourProductButton,
-  RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
 import {
@@ -25,11 +27,11 @@ import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
 
 const getCancelFunc = (
-  cancelApiUrlSuffix: string,
+  subscriptionName: string,
   reason: OptionalCancellationReasonId,
   withSubscriptionResponseFetcher: () => Promise<Response>
 ) => async () => {
-  await fetch("/api/cancel/" + cancelApiUrlSuffix, {
+  await fetch("/api/cancel/" + subscriptionName, {
     credentials: "include",
     method: "POST",
     mode: "same-origin",
@@ -92,18 +94,29 @@ export const ExecuteCancellation = (
       {reason => (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
-            <PerformCancelAsyncLoader
-              fetch={getCancelFunc(
-                props.productType.urlPart,
-                reason,
-                createProductDetailFetcher(props.productType)
-              )}
-              render={getCaseUpdatingCancellationSummary(
-                caseId,
-                props.productType
-              )}
-              loadingMessage="Performing your cancellation..."
-            />
+            <MembersDataApiResponseContext.Consumer>
+              {productDetail =>
+                hasProduct(productDetail) ? (
+                  <PerformCancelAsyncLoader
+                    fetch={getCancelFunc(
+                      productDetail.subscription.subscriberId,
+                      reason,
+                      createProductDetailFetcher(
+                        props.productType,
+                        productDetail.subscription.subscriberId
+                      )
+                    )}
+                    render={getCaseUpdatingCancellationSummary(
+                      caseId,
+                      props.productType
+                    )}
+                    loadingMessage="Performing your cancellation..."
+                  />
+                ) : (
+                  <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+                )
+              }
+            </MembersDataApiResponseContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>
       )}
