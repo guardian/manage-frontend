@@ -2,6 +2,7 @@ import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import palette from "../../colours";
 import { DirectDebitLogo } from "./directDebitLogo";
+import { Inlineable } from "./inlineable";
 
 const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 
@@ -22,14 +23,16 @@ export const dashifySortCode = (sortCode: string) => {
   );
 };
 
-export interface DirectDebitDisplayProps extends DirectDebitDetails {
+export interface DirectDebitDisplayProps
+  extends DirectDebitDetails,
+    Inlineable {
   showAccountName?: true;
 }
 
 export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
   <div
     css={{
-      display: "flex",
+      display: mandate.inline ? "inline-flex" : "flex",
       alignItems: "top"
     }}
   >

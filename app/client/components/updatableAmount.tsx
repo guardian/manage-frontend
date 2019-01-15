@@ -90,9 +90,10 @@ class UpdateAmountLoader extends AsyncLoader<string> {}
 
 const getAmountUpdater = (
   newAmount: number,
-  productType: ProductType
+  productType: ProductType,
+  subscriptionName: string
 ) => async () =>
-  await fetch(`/api/update/amount/${productType.urlPart}`, {
+  await fetch(`/api/update/amount/${productType.urlPart}/${subscriptionName}`, {
     credentials: "include",
     method: "POST",
     mode: "same-origin",
@@ -157,7 +158,11 @@ export class UpdatableAmount extends React.Component<
 
   private getPerformUpdateLoader = () => (
     <UpdateAmountLoader
-      fetch={getAmountUpdater(this.state.newAmount, this.props.productType)}
+      fetch={getAmountUpdater(
+        this.state.newAmount,
+        this.props.productType,
+        this.props.subscription.subscriberId
+      )}
       readerOnOK={(resp: Response) => resp.text()}
       render={() => {
         trackEvent({

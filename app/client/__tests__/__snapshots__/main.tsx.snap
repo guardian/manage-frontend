@@ -1047,7 +1047,7 @@ exports[`Main renders something 1`] = `
                         "@media (max-width: 319px)": Object {
                           "maxWidth": "280px",
                         },
-                        "@media (max-width: 359px)": Object {
+                        "@media (max-width: 424px)": Object {
                           "lineHeight": "16px",
                           "maxWidth": "320px",
                           "whiteSpace": "normal",
@@ -1109,7 +1109,7 @@ exports[`Main renders something 1`] = `
                         "@media (max-width: 319px)": Object {
                           "maxWidth": "280px",
                         },
-                        "@media (max-width: 359px)": Object {
+                        "@media (max-width: 424px)": Object {
                           "lineHeight": "16px",
                           "maxWidth": "320px",
                           "whiteSpace": "normal",

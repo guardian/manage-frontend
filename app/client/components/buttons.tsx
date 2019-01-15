@@ -22,6 +22,7 @@ export interface CommonButtonProps {
 
 export interface LinkButtonProps extends CommonButtonProps {
   to: string;
+  state?: any;
 }
 
 export interface ButtonProps extends CommonButtonProps {
@@ -118,7 +119,7 @@ const buttonCss = ({
     [maxWidth.mobile]: {
       maxWidth: maxWidthIfWrapping || "280px"
     },
-    [maxWidth.mobileMedium]: {
+    [maxWidth.mobileLarge]: {
       maxWidth: maxWidthIfWrapping || "320px",
       whiteSpace: "normal",
       lineHeight: "16px"
@@ -179,7 +180,11 @@ const styles = {
 };
 
 export const LinkButton = (props: LinkButtonProps) => (
-  <Link to={props.disabled ? "" : props.to} css={buttonCss(props)}>
+  <Link
+    to={props.disabled ? "" : props.to}
+    css={buttonCss(props)}
+    state={props.state}
+  >
     {props.text}
     <ButtonArrow />
   </Link>

@@ -2,27 +2,16 @@ import { NavigateFn } from "@reach/router";
 import { get as getCookie } from "es-cookie";
 import React from "react";
 import {
-  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext,
-  MembersDatApiAsyncLoader
-} from "../../../../shared/productResponse";
-import {
-  hasProduct,
-  MembersDataApiResponse,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import {
-  createProductDetailFetcher,
-  ProductType
-} from "../../../../shared/productTypes";
+import { ProductType } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { CheckFlowIsValid } from "../../checkFlowIsValid";
+import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NoProduct } from "../../noProduct";
-import { PageContainer } from "../../page";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
   ReturnToYourProductButton,
@@ -130,7 +119,7 @@ const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
 };
 
 interface PaymentUpdaterStepProps {
-  data: ProductDetail;
+  productDetail: ProductDetail;
   routeableStepProps: RouteableStepProps;
 }
 
@@ -148,7 +137,7 @@ class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepState
 > {
   public readonly currentPaymentMethod = subscriptionToPaymentMethod(
-    this.props.data.subscription
+    this.props.productDetail.subscription
   );
   public state = {
     newPaymentMethodDetail: undefined,
@@ -157,7 +146,7 @@ class PaymentUpdaterStep extends React.Component<
 
   public render(): React.ReactNode {
     return (
-      <MembersDataApiResponseContext.Provider value={this.props.data}>
+      <MembersDataApiResponseContext.Provider value={this.props.productDetail}>
         <NewPaymentMethodContext.Provider
           value={this.state.newPaymentMethodDetail || {}}
         >
@@ -173,23 +162,25 @@ class PaymentUpdaterStep extends React.Component<
                 css={{
                   [minWidth.phablet]: {
                     display: "flex",
-                    flexDirection: this.props.data.alertText
+                    flexDirection: this.props.productDetail.alertText
                       ? "row-reverse"
                       : "row"
                   }
                 }}
               >
-                {this.props.data.alertText ? (
+                {this.props.productDetail.alertText ? (
                   <div>
                     <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                    <span>{this.props.data.alertText}</span>
+                    <span>{this.props.productDetail.alertText}</span>
                   </div>
                 ) : (
                   undefined
                 )}
                 <div css={{ minWidth: "260px" }}>
                   <h3>Current Payment Details</h3>
-                  <CurrentPaymentDetails {...this.props.data.subscription} />
+                  <CurrentPaymentDetails
+                    {...this.props.productDetail.subscription}
+                  />
                 </div>
               </div>
               <PaymentMethodBar
@@ -198,8 +189,8 @@ class PaymentUpdaterStep extends React.Component<
               />
               <h3>New Payment Details</h3>
               {this.getInputForm(
-                this.props.data.subscription,
-                this.props.data.isTestUser
+                this.props.productDetail.subscription,
+                this.props.productDetail.isTestUser
               )}
               <div css={{ height: "10px" }} />
               <ReturnToYourProductButton
@@ -267,57 +258,20 @@ class PaymentUpdaterStep extends React.Component<
   };
 }
 
-const getPaymentUpdateRenderer = (
-  productType: ProductType,
-  routeableStepProps: RouteableStepProps
-) => (data: MembersDataApiResponse) =>
-  hasProduct(data) ? (
-    <PaymentUpdaterStep routeableStepProps={routeableStepProps} data={data} />
-  ) : (
-    <PageContainer>
-      <NoProduct
-        inTab={false}
-        supportRefererSuffix="payment_flow"
-        productType={productType}
-      />
-    </PageContainer>
-  );
-
-export const annotateMdaResponseWithTestUserFromHeaders = async (
-  response: Response
-) =>
-  Object.assign(await response.json(), {
-    isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true"
-  });
-
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <div>
-    <PageContainer>
-      <h1 css={{ fontSize: "24px" }}>
-        Update payment for your{" "}
-        {props.productType.includeGuardianInTitles ? "Guardian " : ""}
-        {props.productType.friendlyName}
-      </h1>
-    </PageContainer>
-    <CheckFlowIsValid
-      {...props.productType}
-      supportRefererSuffix="payment_flow"
-    >
-      <MembersDatApiAsyncLoader
-        fetch={
-          createProductDetailFetcher(
-            props.productType
-          ) /*TODO reload on 'back' to page*/
-        }
-        readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-        render={getPaymentUpdateRenderer(
-          props.productType,
-          labelPaymentStepProps(props)
-        )}
-        loadingMessage={`Retrieving current payment details for your ${
-          props.productType.friendlyName
-        }...`}
+  <FlowStartMultipleProductDetailHandler
+    {...labelPaymentStepProps(props)}
+    headingPrefix="Update payment for"
+    supportRefererSuffix="payment_flow"
+    loadingMessagePrefix="Retrieving current payment details for your"
+    singleProductDetailRenderer={(
+      routeableStepProps: RouteableStepProps,
+      productDetail: ProductDetail
+    ) => (
+      <PaymentUpdaterStep
+        routeableStepProps={routeableStepProps}
+        productDetail={productDetail}
       />
-    </CheckFlowIsValid>
-  </div>
+    )}
+  />
 );

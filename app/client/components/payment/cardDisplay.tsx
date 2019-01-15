@@ -1,4 +1,5 @@
 import React from "react";
+import { Inlineable } from "./inlineable";
 
 export interface CardProps {
   last4: string;
@@ -6,7 +7,7 @@ export interface CardProps {
   stripePublicKeyForUpdate?: string;
 }
 
-export interface CardDisplayProps extends CardProps {
+export interface CardDisplayProps extends CardProps, Inlineable {
   margin?: string;
 }
 
@@ -43,7 +44,7 @@ const cardTypeToSVG = (cardType: string) => {
 export const CardDisplay = (props: CardDisplayProps) => (
   <div
     css={{
-      display: "flex",
+      display: props.inline ? "inline-flex" : "flex",
       alignItems: "center",
       margin: props.margin || "10px"
     }}

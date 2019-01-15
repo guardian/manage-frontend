@@ -93,14 +93,21 @@ const apiHandler = (jsonHandler: JsonHandler) => (
   forwardQueryArgs?: boolean,
   ...pathParamNamesToReplace: string[]
 ) => (req: express.Request, res: express.Response) => {
-  const parameterisedPath = pathParamNamesToReplace.reduce(
-    (evolvingPath: string, pathParamName: string) =>
-      evolvingPath.replace(":" + pathParamName, req.params[pathParamName]),
-    path
-  );
+  const parameterisedPath = pathParamNamesToReplace
+    .reduce(
+      (evolvingPath: string, pathParamName: string) =>
+        evolvingPath.replace(
+          ":" + pathParamName,
+          req.params[pathParamName] || ""
+        ),
+      path
+    )
+    .replace(/\/$/, ""); // strips any trailing slashes
 
   const queryString =
-    forwardQueryArgs && req.query ? `?${parse(req.url).query}` : "";
+    forwardQueryArgs && req.query && Object.keys(req.query).length > 0
+      ? `?${parse(req.url).query}`
+      : "";
 
   fetch(`${basePath}/${parameterisedPath}${queryString}`, {
     method: req.method,
@@ -137,73 +144,50 @@ const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 
 server.get("/api/me", membersDataApiHandler("user-attributes/me"));
 
+server.get(
+  "/api/me/mma/:subscriptionName?",
+  membersDataApiHandler(
+    "user-attributes/me/mma/:subscriptionName",
+    true,
+    "subscriptionName"
+  )
+);
+
+server.post(
+  "/api/cancel/:subscriptionName?",
+  membersDataApiHandler(
+    "/user-attributes/me/cancel/:subscriptionName",
+    false,
+    "subscriptionName"
+  )
+);
+
+server.post(
+  "/api/payment/card/:subscriptionName?",
+  membersDataApiHandler(
+    "/user-attributes/me/update-card/:subscriptionName",
+    false,
+    "subscriptionName"
+  )
+);
+server.post(
+  "/api/payment/dd/:subscriptionName?",
+  membersDataApiHandler(
+    "/user-attributes/me/update-direct-debit/:subscriptionName",
+    false,
+    "subscriptionName"
+  )
+);
+
+server.post(
+  "/api/validate/payment/dd",
+  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
+    "direct-debit/check-account",
+    true
+  )
+);
+
 Object.values(ProductTypes).forEach((productType: ProductType) => {
-  server.get(
-    "/api/me/" + productType.urlPart,
-    membersDataApiHandler(
-      "user-attributes/me/" +
-        (() => {
-          switch (productType.urlPart) {
-            case "membership":
-              return "mma-membership";
-            case "contributions":
-              return "mma-monthlycontribution";
-            case "paper":
-              return "mma-paper";
-          }
-        })()
-    )
-  );
-
-  if (productType.cancellation) {
-    server.post(
-      "/api/cancel/" + productType.urlPart,
-      membersDataApiHandler(
-        "user-attributes/me/" +
-          (() => {
-            switch (productType.urlPart) {
-              case "membership":
-                return "cancel-membership";
-              case "contributions":
-                return "cancel-regular-contribution";
-            }
-          })()
-      )
-    );
-  }
-
-  server.post(
-    "/api/payment/" + productType.urlPart + "/card",
-    membersDataApiHandler(
-      "user-attributes/me/" +
-        (() => {
-          switch (productType.urlPart) {
-            case "membership":
-              return "membership-update-card";
-            case "contributions":
-              return "contribution-update-card";
-            case "paper":
-              return "paper-update-card";
-          }
-        })()
-    )
-  );
-
-  server.post(
-    "/api/payment/" + productType.urlPart + "/dd",
-    membersDataApiHandler(
-      "user-attributes/me/" +
-        (() => {
-          switch (productType.urlPart) {
-            case "contributions":
-              return "contribution-update-direct-debit";
-            case "paper":
-              return "paper-update-direct-debit";
-          }
-        })()
-    )
-  );
-
   server.use(
     "/banner/" + productType.urlPart,
     (req: express.Request, res: express.Response) => {
@@ -216,21 +200,17 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     productType.productPage.updateAmountMdaEndpoint
   ) {
     server.post(
-      "/api/update/amount/" + productType.urlPart,
+      "/api/update/amount/" + productType.urlPart + "/:subscriptionName",
       membersDataApiHandler(
-        "user-attributes/me/" + productType.productPage.updateAmountMdaEndpoint
+        "user-attributes/me/" +
+          productType.productPage.updateAmountMdaEndpoint +
+          "/:subscriptionName",
+        false,
+        "subscriptionName"
       )
     );
   }
 });
-
-server.post(
-  "/api/validate/payment/dd",
-  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
-    "direct-debit/check-account",
-    true
-  )
-);
 
 server.post("/api/case", sfCasesApiHandler("case"));
 
