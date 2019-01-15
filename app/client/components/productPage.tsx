@@ -4,11 +4,13 @@ import { startCase } from "lodash";
 import Raven from "raven-js";
 import React from "react";
 import {
+  annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
   hasProduct,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
-  ProductDetail
+  ProductDetail,
+  sortByStartDate
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
@@ -170,7 +172,9 @@ const getPaymentPart = (
 const getProductRenderer = (productType: ProductTypeWithProductPage) => (
   apiResponse: MembersDataApiResponse[]
 ) => {
-  const productDetailList = apiResponse.filter(hasProduct);
+  const productDetailList = apiResponse
+    .filter(hasProduct)
+    .sort(sortByStartDate);
   return (
     <>
       {productDetailList.length > 1 ? (
@@ -355,6 +359,7 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
     <MembersDatApiAsyncLoader
       fetch={createProductDetailFetcher(props.productType)}
       render={getProductRenderer(props.productType)}
+      readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
       loadingMessage={`Loading your ${props.productType.urlPart} details...`}
     />
     <PageContainer>

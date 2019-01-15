@@ -31,6 +31,9 @@ export const annotateMdaResponseWithTestUserFromHeaders = async (
     })
   );
 
+export const sortByStartDate = (a: ProductDetail, b: ProductDetail) =>
+  b.subscription.start.localeCompare(a.subscription.start);
+
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
   regNumber?: string;

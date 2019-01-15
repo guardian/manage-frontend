@@ -6,6 +6,7 @@ import {
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
+  sortByStartDate,
   Subscription
 } from "../../shared/productResponse";
 import { createProductDetailFetcher } from "../../shared/productTypes";
@@ -44,7 +45,8 @@ const getProductDetailSelector = (
 ) => (data: MembersDataApiResponse[]) => {
   const activeList = data
     .filter(hasProduct)
-    .filter(_ => !_.subscription.cancelledAt);
+    .filter(_ => !_.subscription.cancelledAt)
+    .sort(sortByStartDate);
   if (activeList.length > 0) {
     const first = activeList[0];
     if (activeList.length === 1 && hasProduct(first)) {
