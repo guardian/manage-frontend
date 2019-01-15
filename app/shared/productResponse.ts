@@ -31,6 +31,11 @@ export const annotateMdaResponseWithTestUserFromHeaders = async (
     })
   );
 
+export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
+  productDetail.alertText
+    ? productDetail.alertText.replace(/Please check .*/g, "")
+    : undefined;
+
 export const sortByStartDate = (a: ProductDetail, b: ProductDetail) =>
   b.subscription.start.localeCompare(a.subscription.start);
 

@@ -5,6 +5,7 @@ import { toWords } from "number-to-words";
 import Raven from "raven-js";
 import React from "react";
 import {
+  alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
   hasProduct,
@@ -240,12 +241,10 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                           }
                         }}
                       >
-                        {productDetail.alertText.replace(
-                          "Please check that the card details shown are up to date.",
-                          ""
-                        )}
+                        {alertTextWithoutCTA(productDetail)}
                         <br />
-                        Please check that the card details shown are up to date.
+                        Please check that the payment details shown are up to
+                        date.
                       </p>
                       <LinkButton
                         text="Update payment details"
