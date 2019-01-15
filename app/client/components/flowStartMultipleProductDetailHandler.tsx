@@ -1,3 +1,4 @@
+import { toWords } from "number-to-words";
 import React from "react";
 import {
   annotateMdaResponseWithTestUserFromHeaders,
@@ -57,9 +58,9 @@ const getProductDetailSelector = (
         <>
           <PageContainer>
             <p>
-              It looks like you have {activeList.length}{" "}
+              You have <strong>{toWords(activeList.length)}</strong> concurrent{" "}
               {props.productType.friendlyName}s, please select the one you would
-              like to proceed with...
+              like to proceed with:
             </p>
           </PageContainer>
           {activeList.map((productDetail, listIndex) => (

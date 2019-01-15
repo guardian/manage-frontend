@@ -1,6 +1,7 @@
 import { Link } from "@reach/router";
 import { css } from "emotion";
 import { startCase } from "lodash";
+import { toWords } from "number-to-words";
 import Raven from "raven-js";
 import React from "react";
 import {
@@ -180,8 +181,8 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
       {productDetailList.length > 1 ? (
         <PageContainer>
           <h3>
-            It appears you have {productDetailList.length} concurrent{" "}
-            {productType.friendlyName}s...
+            You have <strong>{toWords(productDetailList.length)}</strong>{" "}
+            concurrent {productType.friendlyName}s:
           </h3>
         </PageContainer>
       ) : (
