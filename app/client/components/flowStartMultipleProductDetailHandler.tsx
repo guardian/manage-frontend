@@ -131,6 +131,7 @@ const getProductDetailSelector = (
                       props.productType.friendlyName
                     }
                     onClick={() => selectProductDetail(productDetail)}
+                    maxWidthIfWrapping="290px"
                     right
                     primary
                   />

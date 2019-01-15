@@ -119,7 +119,7 @@ const buttonCss = ({
     [maxWidth.mobile]: {
       maxWidth: maxWidthIfWrapping || "280px"
     },
-    [maxWidth.mobileMedium]: {
+    [maxWidth.mobileLarge]: {
       maxWidth: maxWidthIfWrapping || "320px",
       whiteSpace: "normal",
       lineHeight: "16px"
