@@ -1,9 +1,11 @@
 import { Link } from "@reach/router";
 import { css } from "emotion";
 import { startCase } from "lodash";
+import { toWords } from "number-to-words";
 import Raven from "raven-js";
 import React from "react";
 import {
+  alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
   hasProduct,
@@ -180,8 +182,8 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
       {productDetailList.length > 1 ? (
         <PageContainer>
           <h3>
-            It appears you have {productDetailList.length} concurrent{" "}
-            {productType.friendlyName}s...
+            You have <strong>{toWords(productDetailList.length)}</strong>{" "}
+            concurrent {productType.friendlyName}s:
           </h3>
         </PageContainer>
       ) : (
@@ -239,12 +241,10 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                           }
                         }}
                       >
-                        {productDetail.alertText.replace(
-                          "Please check that the card details shown are up to date.",
-                          ""
-                        )}
+                        {alertTextWithoutCTA(productDetail)}
                         <br />
-                        Please check that the card details shown are up to date.
+                        Please check that the payment details shown are up to
+                        date.
                       </p>
                       <LinkButton
                         text="Update payment details"
