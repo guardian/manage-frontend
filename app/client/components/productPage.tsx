@@ -261,6 +261,14 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                   undefined
                 )}
                 <PageContainer>
+                  {productType.productPage.showSubscriberId ? (
+                    <ProductDetailRow
+                      label={"Subscriber ID"}
+                      data={productDetail.subscription.subscriberId}
+                    />
+                  ) : (
+                    undefined
+                  )}
                   {productType.productPage.tierRowLabel ? (
                     <>
                       {productDetail.regNumber ? (

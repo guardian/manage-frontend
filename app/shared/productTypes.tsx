@@ -58,6 +58,7 @@ export interface ProductPageProperties {
   updateAmountMdaEndpoint?: string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
+  showSubscriberId?: true;
 }
 
 export interface ProductType {
@@ -230,7 +231,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       navLink: navLinks.digitalPack,
       noProductInTabCopy:
         "To manage your existing membership or contribution, please select from the tabs above.",
-      tierRowLabel: "Subscription product"
+      tierRowLabel: "Subscription product",
+      showSubscriberId: true
     }
   }
 };
