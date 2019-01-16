@@ -1,5 +1,7 @@
+import { toWords } from "number-to-words";
 import React from "react";
 import {
+  alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
   hasProduct,
@@ -57,9 +59,9 @@ const getProductDetailSelector = (
         <>
           <PageContainer>
             <p>
-              It looks like you have {activeList.length}{" "}
+              You have <strong>{toWords(activeList.length)}</strong> concurrent{" "}
               {props.productType.friendlyName}s, please select the one you would
-              like to proceed with...
+              like to proceed with:
             </p>
           </PageContainer>
           {activeList.map((productDetail, listIndex) => (
@@ -102,7 +104,7 @@ const getProductDetailSelector = (
                     {productDetail.isPaidTier ? (
                       <>
                         <span>
-                          {" "}
+                          &nbsp;
                           {productDetail.subscription.plan.currency}
                           {(
                             productDetail.subscription.nextPaymentPrice / 100.0
@@ -120,6 +122,13 @@ const getProductDetailSelector = (
                     {formatDate(productDetail.subscription.nextPaymentDate)}
                   </span>
                 </div>
+                {productDetail.alertText ? (
+                  <div css={{ color: palette.red.dark }}>
+                    <strong>{alertTextWithoutCTA(productDetail)}</strong>
+                  </div>
+                ) : (
+                  undefined
+                )}
                 <div css={{ marginTop: "10px" }}>
                   <Button
                     text={
