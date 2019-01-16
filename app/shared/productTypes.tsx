@@ -15,8 +15,13 @@ import { formatDate, Subscription } from "./productResponse";
 export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
-  | "newspaper subscription";
-export type ProductUrlPart = "membership" | "contributions" | "paper";
+  | "newspaper subscription"
+  | "digital pack";
+export type ProductUrlPart =
+  | "membership"
+  | "contributions"
+  | "paper"
+  | "digitalpack";
 export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions";
 export type AllProductsProductTypeFilterString =
@@ -207,5 +212,16 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
         ? window.guardian.domain
         : "theguardian.com"
     }/manage`
+  },
+  digipack: {
+    friendlyName: "digital pack",
+    allProductsProductTypeFilterString: "Digipack",
+    urlPart: "digitalpack",
+    validator: (me: MeResponse) => me.contentAccess.digitalPack,
+    alternateReturnToAccountDestination: `https://profile.${
+      typeof window !== "undefined" && window.guardian && window.guardian.domain
+        ? window.guardian.domain
+        : "theguardian.com"
+    }/digitalpack/edit`
   }
 };
