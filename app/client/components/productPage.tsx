@@ -383,7 +383,9 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
       fetch={createProductDetailFetcher(props.productType)}
       render={getProductRenderer(props.productType)}
       readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-      loadingMessage={`Loading your ${props.productType.urlPart} details...`}
+      loadingMessage={`Loading your ${
+        props.productType.friendlyName
+      } details...`}
     />
     <PageContainer>
       <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
