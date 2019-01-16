@@ -59,6 +59,7 @@ export interface ProductPageProperties {
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriberId?: true;
+  showTrialRemainingIfApplicable?: true;
 }
 
 export interface ProductType {
@@ -232,7 +233,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       noProductInTabCopy:
         "To manage your existing membership or contribution, please select from the tabs above.",
       tierRowLabel: "Subscription product",
-      showSubscriberId: true
+      showSubscriberId: true,
+      showTrialRemainingIfApplicable: true
     }
   }
 };

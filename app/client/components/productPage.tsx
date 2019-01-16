@@ -313,6 +313,17 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                       productDetail.subscription.start || productDetail.joinDate
                     )}
                   />
+                  {productType.productPage.showTrialRemainingIfApplicable &&
+                  productDetail.subscription.trialLength > 0 ? (
+                    <ProductDetailRow
+                      label={"Trial remaining"}
+                      data={`${productDetail.subscription.trialLength} day${
+                        productDetail.subscription.trialLength !== 1 ? "s" : ""
+                      }`}
+                    />
+                  ) : (
+                    undefined
+                  )}
                   {getPaymentPart(productDetail, productType)}
                   {productType.cancellation &&
                   productType.cancellation.linkOnProductPage ? (

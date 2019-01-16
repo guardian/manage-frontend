@@ -83,6 +83,7 @@ export interface Subscription {
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
   plan: SubscriptionPlan;
+  trialLength: number;
 }
 
 export interface WithSubscription {
