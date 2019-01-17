@@ -261,6 +261,14 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                   undefined
                 )}
                 <PageContainer>
+                  {productType.productPage.showSubscriberId ? (
+                    <ProductDetailRow
+                      label={"Subscriber ID"}
+                      data={productDetail.subscription.subscriberId}
+                    />
+                  ) : (
+                    undefined
+                  )}
                   {productType.productPage.tierRowLabel ? (
                     <>
                       {productDetail.regNumber ? (
@@ -274,21 +282,25 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                       <ProductDetailRow
                         label={productType.productPage.tierRowLabel}
                         data={
-                          <div css={wrappingContainerCSS}>
-                            <div css={{ marginRight: "15px" }}>
-                              {productDetail.tier}
+                          productType.productPage.tierChangeable ? (
+                            <div css={wrappingContainerCSS}>
+                              <div css={{ marginRight: "15px" }}>
+                                {productDetail.tier}
+                              </div>
+                              {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                              <a
+                                href={
+                                  "https://membership." +
+                                  window.guardian.domain +
+                                  "/tier/change"
+                                }
+                              >
+                                <Button text="Change tier" right />
+                              </a>
                             </div>
-                            {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                            <a
-                              href={
-                                "https://membership." +
-                                window.guardian.domain +
-                                "/tier/change"
-                              }
-                            >
-                              <Button text="Change tier" right />
-                            </a>
-                          </div>
+                          ) : (
+                            productDetail.tier
+                          )
                         }
                       />
                     </>
@@ -301,6 +313,17 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                       productDetail.subscription.start || productDetail.joinDate
                     )}
                   />
+                  {productType.productPage.showTrialRemainingIfApplicable &&
+                  productDetail.subscription.trialLength > 0 ? (
+                    <ProductDetailRow
+                      label={"Trial remaining"}
+                      data={`${productDetail.subscription.trialLength} day${
+                        productDetail.subscription.trialLength !== 1 ? "s" : ""
+                      }`}
+                    />
+                  ) : (
+                    undefined
+                  )}
                   {getPaymentPart(productDetail, productType)}
                   {productType.cancellation &&
                   productType.cancellation.linkOnProductPage ? (
@@ -360,7 +383,9 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
       fetch={createProductDetailFetcher(props.productType)}
       render={getProductRenderer(props.productType)}
       readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-      loadingMessage={`Loading your ${props.productType.urlPart} details...`}
+      loadingMessage={`Loading your ${
+        props.productType.friendlyName
+      } details...`}
     />
     <PageContainer>
       <MembershipLinks /> {/*TODO need to have contributions FAQ*/}

@@ -95,7 +95,8 @@ export const navLinks: NavLinks = {
   },
   digitalPack: {
     title: "Digital Pack",
-    link: "/digitalpack/edit"
+    link: "/digitalpack",
+    local: true
   },
   contributions: {
     title: "Contributions",
