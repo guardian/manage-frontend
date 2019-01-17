@@ -120,7 +120,7 @@ export class UserNav extends React.Component {
   public userNavItems: UserNavItem[] = [
     {
       title: "Comments & replies",
-      link: `/profile/user` // note this hits a redirect/proxy endpoint
+      link: "/profile/user" // note this hits a redirect/proxy endpoint
     },
     {
       title: "Public profile",
@@ -137,15 +137,15 @@ export class UserNav extends React.Component {
     },
     {
       title: "Membership",
-      link: `/membership`
+      link: "/membership"
     },
     {
       title: "Contributions",
-      link: `/contributions`
+      link: "/contributions"
     },
     {
       title: "Digital Pack",
-      link: `/digitalpack`,
+      link: "/digitalpack",
       border: true
     },
     {
