@@ -71,18 +71,22 @@ export interface SubscriptionPlan {
   interval: string;
 }
 
+export interface SubscriptionPlanWithAmount extends SubscriptionPlan {
+  amount: number;
+}
+
 export interface Subscription {
   subscriberId: string;
-  start: string;
+  start?: string;
   end: string;
   cancelledAt: boolean;
-  nextPaymentDate: string;
-  nextPaymentPrice: number;
+  nextPaymentDate?: string;
+  nextPaymentPrice?: number;
   paymentMethod?: string;
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
-  plan: SubscriptionPlan;
+  plan: SubscriptionPlanWithAmount;
   trialLength: number;
 }
 

@@ -146,10 +146,12 @@ const getPaymentPart = (
   if (productDetail.isPaidTier) {
     return (
       <>
-        <ProductDetailRow
-          label={"Next payment date"}
-          data={formatDate(productDetail.subscription.nextPaymentDate)}
-        />
+        {productDetail.subscription.nextPaymentDate && (
+          <ProductDetailRow
+            label={"Next payment date"}
+            data={formatDate(productDetail.subscription.nextPaymentDate)}
+          />
+        )}
         <ProductDetailRow
           label={
             productDetail.subscription.plan.interval.charAt(0).toUpperCase() +

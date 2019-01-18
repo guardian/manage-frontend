@@ -107,7 +107,7 @@ const getProductDetailSelector = (
                           &nbsp;
                           {productDetail.subscription.plan.currency}
                           {(
-                            productDetail.subscription.nextPaymentPrice / 100.0
+                            productDetail.subscription.plan.amount / 100.0
                           ).toFixed(2)}{" "}
                           {productDetail.subscription.plan.interval}ly
                         </span>
@@ -117,10 +117,12 @@ const getProductDetailSelector = (
                       " FREE"
                     )}
                   </div>
-                  <span>
-                    <strong>Next payment date:</strong>{" "}
-                    {formatDate(productDetail.subscription.nextPaymentDate)}
-                  </span>
+                  {productDetail.subscription.nextPaymentDate && (
+                    <span>
+                      <strong>Next payment date:</strong>{" "}
+                      {formatDate(productDetail.subscription.nextPaymentDate)}
+                    </span>
+                  )}
                 </div>
                 {productDetail.alertText ? (
                   <div css={{ color: palette.red.dark }}>
