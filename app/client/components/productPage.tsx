@@ -12,7 +12,7 @@ import {
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
-  sortByStartDate
+  sortByJoinDate
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
@@ -146,10 +146,12 @@ const getPaymentPart = (
   if (productDetail.isPaidTier) {
     return (
       <>
-        <ProductDetailRow
-          label={"Next payment date"}
-          data={formatDate(productDetail.subscription.nextPaymentDate)}
-        />
+        {productDetail.subscription.nextPaymentDate && (
+          <ProductDetailRow
+            label={"Next payment date"}
+            data={formatDate(productDetail.subscription.nextPaymentDate)}
+          />
+        )}
         <ProductDetailRow
           label={
             productDetail.subscription.plan.interval.charAt(0).toUpperCase() +
@@ -174,9 +176,7 @@ const getPaymentPart = (
 const getProductRenderer = (productType: ProductTypeWithProductPage) => (
   apiResponse: MembersDataApiResponse[]
 ) => {
-  const productDetailList = apiResponse
-    .filter(hasProduct)
-    .sort(sortByStartDate);
+  const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
       {productDetailList.length > 1 ? (

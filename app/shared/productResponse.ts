@@ -36,8 +36,8 @@ export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
     ? productDetail.alertText.replace(/Please check .*/g, "")
     : undefined;
 
-export const sortByStartDate = (a: ProductDetail, b: ProductDetail) =>
-  b.subscription.start.localeCompare(a.subscription.start);
+export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
+  b.joinDate.localeCompare(a.joinDate);
 
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
@@ -71,18 +71,22 @@ export interface SubscriptionPlan {
   interval: string;
 }
 
+export interface SubscriptionPlanWithAmount extends SubscriptionPlan {
+  amount: number;
+}
+
 export interface Subscription {
   subscriberId: string;
-  start: string;
+  start?: string;
   end: string;
   cancelledAt: boolean;
-  nextPaymentDate: string;
-  nextPaymentPrice: number;
+  nextPaymentDate?: string;
+  nextPaymentPrice?: number;
   paymentMethod?: string;
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
-  plan: SubscriptionPlan;
+  plan: SubscriptionPlanWithAmount;
   trialLength: number;
 }
 

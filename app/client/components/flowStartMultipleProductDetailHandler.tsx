@@ -8,7 +8,7 @@ import {
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
-  sortByStartDate,
+  sortByJoinDate,
   Subscription
 } from "../../shared/productResponse";
 import { createProductDetailFetcher } from "../../shared/productTypes";
@@ -48,7 +48,7 @@ const getProductDetailSelector = (
   const activeList = data
     .filter(hasProduct)
     .filter(_ => !_.subscription.cancelledAt)
-    .sort(sortByStartDate);
+    .sort(sortByJoinDate);
   if (activeList.length > 0) {
     const first = activeList[0];
     if (activeList.length === 1 && hasProduct(first)) {
@@ -107,7 +107,7 @@ const getProductDetailSelector = (
                           &nbsp;
                           {productDetail.subscription.plan.currency}
                           {(
-                            productDetail.subscription.nextPaymentPrice / 100.0
+                            productDetail.subscription.plan.amount / 100.0
                           ).toFixed(2)}{" "}
                           {productDetail.subscription.plan.interval}ly
                         </span>
@@ -117,10 +117,12 @@ const getProductDetailSelector = (
                       " FREE"
                     )}
                   </div>
-                  <span>
-                    <strong>Next payment date:</strong>{" "}
-                    {formatDate(productDetail.subscription.nextPaymentDate)}
-                  </span>
+                  {productDetail.subscription.nextPaymentDate && (
+                    <span>
+                      <strong>Next payment date:</strong>{" "}
+                      {formatDate(productDetail.subscription.nextPaymentDate)}
+                    </span>
+                  )}
                 </div>
                 {productDetail.alertText ? (
                   <div css={{ color: palette.red.dark }}>

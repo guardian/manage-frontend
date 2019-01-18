@@ -116,7 +116,7 @@ export class UpdatableAmount extends React.Component<
   UpdatableAmountProps,
   UpdatableAmountState
 > {
-  public initialAmount = this.props.subscription.nextPaymentPrice / 100.0;
+  public initialAmount = this.props.subscription.plan.amount / 100.0;
   public state = {
     inEditMode: false,
     isApplyingUpdate: false,
