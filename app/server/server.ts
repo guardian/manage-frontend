@@ -229,7 +229,7 @@ const profileRedirectHandler: JsonHandler = (
 
 server.get(
   "/profile/user",
-  withIdentity(401),
+  withIdentity(),
   apiHandler(profileRedirectHandler)("https://members-data-api." + conf.DOMAIN)(
     "user-attributes/me"
   )
