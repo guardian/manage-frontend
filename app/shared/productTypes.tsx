@@ -16,12 +16,14 @@ export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
-  | "digital pack";
+  | "digital pack"
+  | "Guardian Weekly";
 export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
-  | "digitalpack";
+  | "digitalpack"
+  | "guardianweekly";
 export type SfProduct = "Membership" | "Contribution";
 export type ProductTitle = "Membership" | "Contributions" | "Digital Pack";
 export type AllProductsProductTypeFilterString =
@@ -108,6 +110,12 @@ export const createProductDetailFetcher = (
       mode: "same-origin"
     }
   );
+
+const domainSpecificSubsManageURL = `https://subscribe.${
+  typeof window !== "undefined" && window.guardian && window.guardian.domain
+    ? window.guardian.domain
+    : "theguardian.com"
+}/manage`;
 
 export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
@@ -205,28 +213,26 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       swapFeedbackAndContactUs: true
     }
   },
-  print: {
+  newspaper: {
     friendlyName: "newspaper subscription",
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     includeGuardianInTitles: true,
-    alternateReturnToAccountDestination: `https://subscribe.${
-      typeof window !== "undefined" && window.guardian && window.guardian.domain
-        ? window.guardian.domain
-        : "theguardian.com"
-    }/manage`
+    alternateReturnToAccountDestination: domainSpecificSubsManageURL
+  },
+  guardianweekly: {
+    friendlyName: "Guardian Weekly",
+    allProductsProductTypeFilterString: "Weekly",
+    urlPart: "guardianweekly",
+    validator: (me: MeResponse) => true, // TODO: change to me.contentAccess.weeklySubscriber once exposed by members-data-api
+    alternateReturnToAccountDestination: domainSpecificSubsManageURL
   },
   digipack: {
     friendlyName: "digital pack",
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
     validator: (me: MeResponse) => me.contentAccess.digitalPack,
-    alternateReturnToAccountDestination: `https://profile.${
-      typeof window !== "undefined" && window.guardian && window.guardian.domain
-        ? window.guardian.domain
-        : "theguardian.com"
-    }/digitalpack/edit`,
     productPage: {
       title: "Digital Pack",
       navLink: navLinks.digitalPack,

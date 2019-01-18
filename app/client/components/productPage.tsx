@@ -12,7 +12,7 @@ import {
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
-  sortByStartDate
+  sortByJoinDate
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
@@ -174,9 +174,7 @@ const getPaymentPart = (
 const getProductRenderer = (productType: ProductTypeWithProductPage) => (
   apiResponse: MembersDataApiResponse[]
 ) => {
-  const productDetailList = apiResponse
-    .filter(hasProduct)
-    .sort(sortByStartDate);
+  const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
       {productDetailList.length > 1 ? (

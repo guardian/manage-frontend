@@ -36,8 +36,8 @@ export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
     ? productDetail.alertText.replace(/Please check .*/g, "")
     : undefined;
 
-export const sortByStartDate = (a: ProductDetail, b: ProductDetail) =>
-  b.subscription.start.localeCompare(a.subscription.start);
+export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
+  b.joinDate.localeCompare(a.joinDate);
 
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
