@@ -97,7 +97,6 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    csr: ["whatwg-fetch", "./client/csr"],
     user: ["whatwg-fetch", "./client/user"]
   },
   output: {
