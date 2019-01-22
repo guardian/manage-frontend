@@ -7,7 +7,6 @@ module.exports = [
   merge(common.client, {
     mode: "production",
     output: {
-      //    filename: "[name].[chunkhash].js",
       chunkFilename: "[name].[chunkhash].js"
     },
     plugins: [
