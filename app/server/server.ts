@@ -51,6 +51,10 @@ const globals: Globals = {
   supportedBrowser: true
 };
 
+server.use(helmet());
+
+server.use("/static", express.static(__dirname + "/static"));
+
 server.use(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
@@ -62,8 +66,6 @@ server.use(
     next();
   }
 );
-
-server.use(helmet());
 
 server.get(
   "/_healthcheck",
@@ -80,8 +82,6 @@ server.get("/_prout", (req: express.Request, res: express.Response) => {
 
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 server.use("/api/", withIdentity(401));
-
-server.use("/static", express.static(__dirname + "/static"));
 
 type JsonHandler = (res: express.Response, jsonString: string) => void;
 
