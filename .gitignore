@@ -1,11 +1,9 @@
-dist/*
 target/
 lib/
 coverage/
 *.log
 
 .idea/
-.idea/workspace.xml
 *.iml
 
 *.code-workspace
@@ -17,5 +15,5 @@ logs/
 /public/*.js
 /public/webpack-assets.json
 
-app/dist/*
-app/coverage/*
+app/dist/
+tmp_client_bundle/

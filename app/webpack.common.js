@@ -45,7 +45,8 @@ const babelCommon = {
   plugins: [
     "emotion",
     "@babel/proposal-class-properties",
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    "lodash"
   ]
 };
 
@@ -97,7 +98,6 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    csr: ["whatwg-fetch", "./client/csr"],
     user: ["whatwg-fetch", "./client/user"]
   },
   output: {
