@@ -1,4 +1,4 @@
-# To build the frontend in React
+# To build the front end in React
 
 ## Context
 
@@ -8,4 +8,8 @@ The majority of client side developers at the Guardian have some React experienc
 
 ## Decision
 
-To build the front end in React.
+We will build the front end in React.
+
+## Status
+
+Accepted
