@@ -77,26 +77,31 @@ const User = () => (
           </CancellationFlow>
         ))}
 
-      {Object.values(ProductTypes).map((productType: ProductType) => (
-        <PaymentUpdateFlow
-          key={productType.urlPart}
-          path={"/payment/" + productType.urlPart}
-          productType={productType}
-          currentStep={1}
-        >
-          <ConfirmPaymentUpdate
-            path="confirm"
+      {Object.values(ProductTypes)
+        .filter(
+          // i.e. don't create payment update flow for grouped product types
+          (productType: ProductType) => !productType.mapSoCalledToSpecific
+        )
+        .map((productType: ProductType) => (
+          <PaymentUpdateFlow
+            key={productType.urlPart}
+            path={"/payment/" + productType.urlPart}
             productType={productType}
-            currentStep={2}
+            currentStep={1}
           >
-            <PaymentUpdated
-              path="updated"
+            <ConfirmPaymentUpdate
+              path="confirm"
               productType={productType}
-              currentStep={3}
-            />
-          </ConfirmPaymentUpdate>
-        </PaymentUpdateFlow>
-      ))}
+              currentStep={2}
+            >
+              <PaymentUpdated
+                path="updated"
+                productType={productType}
+                currentStep={3}
+              />
+            </ConfirmPaymentUpdate>
+          </PaymentUpdateFlow>
+        ))}
 
       <MembershipFAQs path="/help" />
 
