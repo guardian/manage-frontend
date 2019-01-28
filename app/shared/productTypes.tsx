@@ -17,21 +17,24 @@ export type ProductFriendlyName =
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
   | "digital pack"
-  | "Guardian Weekly";
+  | "Guardian Weekly"
+  | "subscription";
 export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
   | "digitalpack"
-  | "guardianweekly";
+  | "guardianweekly"
+  | "subscriptions";
 export type SfProduct = "Membership" | "Contribution";
-export type ProductTitle = "Membership" | "Contributions" | "Digital Pack";
+export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
   | "Contribution"
   | "Membership"
-  | "Digipack";
+  | "Digipack"
+  | "SoCalledSubscription";
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
@@ -61,7 +64,6 @@ export interface ProductPageProperties {
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriberId?: true;
-  showTrialRemainingIfApplicable?: true;
 }
 
 export interface ProductType {
@@ -72,8 +74,9 @@ export interface ProductType {
   includeGuardianInTitles?: true;
   alternateReturnToAccountDestination?: string;
   noProductSupportUrlSuffix?: string;
-  productPage?: ProductPageProperties; // undefined 'productPage' means no product page
+  productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
+  showTrialRemainingIfApplicable?: true;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -84,13 +87,23 @@ export const hasCancellationFlow = (
 ): productType is ProductTypeWithCancellationFlow =>
   productType.cancellation !== undefined;
 
-export interface ProductTypeWithProductPage extends ProductType {
+export interface ProductTypeWithProductPageProperties extends ProductType {
   productPage: ProductPageProperties;
 }
-export const hasProductPage = (
+export const hasProductPageProperties = (
   productType: ProductType
-): productType is ProductTypeWithProductPage =>
-  productType.productPage !== undefined;
+): productType is ProductTypeWithProductPageProperties =>
+  productType.productPage !== undefined &&
+  typeof productType.productPage === "object";
+
+export interface ProductTypeWithProductPageRedirect extends ProductType {
+  productPage: ProductUrlPart;
+}
+export const hasProductPageRedirect = (
+  productType: ProductType
+): productType is ProductTypeWithProductPageRedirect =>
+  productType.productPage !== undefined &&
+  typeof productType.productPage === "string";
 
 export interface WithProductType<ProductTypeVariant extends ProductType> {
   productType: ProductTypeVariant;
@@ -225,7 +238,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
-    validator: (me: MeResponse) => true, // TODO: change to me.contentAccess.weeklySubscriber once exposed by members-data-api
+    validator: (me: MeResponse) => me.contentAccess.weeklySubscriber,
     alternateReturnToAccountDestination: domainSpecificSubsManageURL
   },
   digipack: {
@@ -233,14 +246,24 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
     validator: (me: MeResponse) => me.contentAccess.digitalPack,
+    showTrialRemainingIfApplicable: true,
+    productPage: "subscriptions"
+  },
+  soCalledSubscriptions: {
+    friendlyName: "subscription",
+    allProductsProductTypeFilterString: "SoCalledSubscription",
+    urlPart: "subscriptions",
+    validator: (me: MeResponse) =>
+      me.contentAccess.digitalPack ||
+      me.contentAccess.paperSubscriber ||
+      me.contentAccess.weeklySubscriber,
     productPage: {
-      title: "Digital Pack",
-      navLink: navLinks.digitalPack,
+      title: "Subscriptions",
+      navLink: navLinks.subscriptions,
       noProductInTabCopy:
         "To manage your existing membership or contribution, please select from the tabs above.",
       tierRowLabel: "Subscription product",
-      showSubscriberId: true,
-      showTrialRemainingIfApplicable: true
+      showSubscriberId: true
     }
   }
 };

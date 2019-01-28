@@ -5,7 +5,7 @@ import {
 } from "../../shared/productResponse";
 import {
   ProductType,
-  ProductTypeWithProductPage,
+  ProductTypeWithProductPageProperties,
   WithProductType
 } from "../../shared/productTypes";
 import palette from "../colours";
@@ -101,7 +101,7 @@ const getAmountUpdater = (
   });
 
 export type UpdatableAmountProps = WithSubscription &
-  WithProductType<ProductTypeWithProductPage>;
+  WithProductType<ProductTypeWithProductPageProperties>;
 
 export interface UpdatableAmountState {
   inEditMode: boolean;

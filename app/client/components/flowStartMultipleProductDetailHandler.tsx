@@ -11,7 +11,10 @@ import {
   sortByJoinDate,
   Subscription
 } from "../../shared/productResponse";
-import { createProductDetailFetcher } from "../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  hasProductPageProperties
+} from "../../shared/productTypes";
 import palette from "../colours";
 import { Button } from "./buttons";
 import { CheckFlowIsValid } from "./checkFlowIsValid";
@@ -80,7 +83,7 @@ const getProductDetailSelector = (
                     ...commonFlexCSS
                   }}
                 >
-                  {props.productType.productPage &&
+                  {hasProductPageProperties(props.productType) &&
                   props.productType.productPage.tierRowLabel ? (
                     <span>
                       <strong>Tier: </strong> {productDetail.tier}{" "}

@@ -74,7 +74,7 @@ export interface NavLinks {
   publicProfile: NavItem;
   accountDetails: NavItem;
   membership: NavItem;
-  digitalPack: NavItem;
+  subscriptions: NavItem;
   contributions: NavItem;
   emailPrefs: NavItem;
 }
@@ -93,9 +93,9 @@ export const navLinks: NavLinks = {
     link: "/membership",
     local: true
   },
-  digitalPack: {
-    title: "Digital Pack",
-    link: "/digitalpack",
+  subscriptions: {
+    title: "Subscriptions",
+    link: "/subscriptions",
     local: true
   },
   contributions: {

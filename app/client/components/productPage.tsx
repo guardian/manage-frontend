@@ -16,7 +16,7 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductTypeWithProductPage
+  ProductTypeWithProductPageProperties
 } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -141,7 +141,7 @@ const getPaymentMethodRow = (
 
 const getPaymentPart = (
   productDetail: ProductDetail,
-  productType: ProductTypeWithProductPage
+  productType: ProductTypeWithProductPageProperties
 ) => {
   if (productDetail.isPaidTier) {
     return (
@@ -173,9 +173,9 @@ const getPaymentPart = (
   }
 };
 
-const getProductRenderer = (productType: ProductTypeWithProductPage) => (
-  apiResponse: MembersDataApiResponse[]
-) => {
+const getProductRenderer = (
+  productType: ProductTypeWithProductPageProperties
+) => (apiResponse: MembersDataApiResponse[]) => {
   const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
@@ -313,7 +313,7 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
                       productDetail.subscription.start || productDetail.joinDate
                     )}
                   />
-                  {productType.productPage.showTrialRemainingIfApplicable &&
+                  {productType.showTrialRemainingIfApplicable &&
                   productDetail.subscription.trialLength > 0 ? (
                     <ProductDetailRow
                       label={"Trial remaining"}
@@ -369,7 +369,7 @@ const headerCss = css({
 
 export interface RouteableProductPropsWithProductPage
   extends RouteableProductProps {
-  productType: ProductTypeWithProductPage;
+  productType: ProductTypeWithProductPageProperties;
 }
 
 export const ProductPage = (props: RouteableProductPropsWithProductPage) => (

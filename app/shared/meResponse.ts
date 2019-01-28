@@ -10,6 +10,7 @@ export interface MeResponse {
     recurringContributor: boolean;
     digitalPack: boolean;
     paperSubscriber: boolean;
+    weeklySubscriber: boolean;
   };
   alertAvailableFor?: string;
 }

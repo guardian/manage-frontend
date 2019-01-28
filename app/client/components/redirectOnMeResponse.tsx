@@ -23,10 +23,8 @@ export const RedirectOnMeResponse = (props: RouteableProps) => (
           startRedirect(navLinks.membership);
         } else if (me.contentAccess.recurringContributor) {
           startRedirect(navLinks.contributions);
-        } else if (me.contentAccess.digitalPack) {
-          startRedirect(navLinks.digitalPack);
         } else {
-          startRedirect(navLinks.membership);
+          startRedirect(navLinks.subscriptions);
         }
         return null; // official way to render nothing, while awaiting redirect to take effect
       }}

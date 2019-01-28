@@ -1,12 +1,16 @@
-import { Router, ServerLocation } from "@reach/router";
+import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
   hasCancellationFlow,
-  hasProductPage,
+  hasProductPageRedirect,
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
-  ProductTypeWithProductPage
+  ProductTypeWithProductPageProperties
+} from "../../shared/productTypes";
+import {
+  hasProductPageProperties,
+  ProductTypeWithProductPageRedirect
 } from "../../shared/productTypes";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
@@ -34,8 +38,8 @@ const User = () => (
       <RedirectOnMeResponse path="/" />
 
       {Object.values(ProductTypes)
-        .filter(hasProductPage)
-        .map((productType: ProductTypeWithProductPage) => (
+        .filter(hasProductPageProperties)
+        .map((productType: ProductTypeWithProductPageProperties) => (
           <ProductPage
             key={productType.urlPart}
             path={"/" + productType.urlPart}
