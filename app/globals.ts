@@ -3,6 +3,7 @@ export interface Globals {
   dsn: string | null;
   supportedBrowser: boolean;
   spaTransition?: true;
+  INTCMP?: string;
   ophan?: {
     viewId: string;
     record: RecordOphanComponentEvent;
