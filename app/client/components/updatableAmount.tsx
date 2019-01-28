@@ -101,7 +101,7 @@ const getAmountUpdater = (
   });
 
 export type UpdatableAmountProps = WithSubscription &
-  WithProductType<ProductTypeWithProductPageProperties>;
+  WithProductType<ProductType>;
 
 export interface UpdatableAmountState {
   inEditMode: boolean;
@@ -271,7 +271,7 @@ export class UpdatableAmount extends React.Component<
         {this.state.currentAmount.toFixed(2)}{" "}
         {this.props.subscription.plan.currencyISO}
       </span>
-      {this.props.productType.productPage.updateAmountMdaEndpoint ? (
+      {this.props.productType.updateAmountMdaEndpoint ? (
         <>
           <Button
             text="Change amount"

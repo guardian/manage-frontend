@@ -10,7 +10,7 @@ import { membershipCancellationReasons } from "../client/components/cancel/membe
 import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
 import { MeResponse } from "./meResponse";
-import { formatDate, Subscription } from "./productResponse";
+import { formatDate, ProductDetail, Subscription } from "./productResponse";
 
 export type ProductFriendlyName =
   | "membership"
@@ -60,7 +60,6 @@ export interface ProductPageProperties {
   title: ProductTitle;
   navLink: NavItem;
   noProductInTabCopy: string;
-  updateAmountMdaEndpoint?: string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriberId?: true;
@@ -77,6 +76,8 @@ export interface ProductType {
   productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
   showTrialRemainingIfApplicable?: true;
+  mapSoCalledToSpecific?: (productDetail: ProductDetail) => ProductType;
+  updateAmountMdaEndpoint?: string;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -171,12 +172,12 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "contributions",
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
     noProductSupportUrlSuffix: "/contribute",
+    updateAmountMdaEndpoint: "contribution-update-amount",
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
       noProductInTabCopy:
-        "To manage your existing membership or subscription, please select from the tabs above.",
-      updateAmountMdaEndpoint: "contribution-update-amount"
+        "To manage your existing membership or subscription, please select from the tabs above."
     },
     cancellation: {
       linkOnProductPage: true,
@@ -264,6 +265,16 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
         "To manage your existing membership or contribution, please select from the tabs above.",
       tierRowLabel: "Subscription product",
       showSubscriberId: true
+    },
+    mapSoCalledToSpecific: (productDetail: ProductDetail) => {
+      if (productDetail.tier === "Digital Pack") {
+        return ProductTypes.digipack;
+      } else if (productDetail.tier.startsWith("Newspaper")) {
+        return ProductTypes.newspaper;
+      } else if (productDetail.tier.startsWith("Guardian Weekly")) {
+        return ProductTypes.guardianweekly;
+      }
+      return ProductTypes.soCalledSubscriptions; // This should never happen!
     }
   }
 };

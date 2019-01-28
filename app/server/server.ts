@@ -200,15 +200,12 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     }
   );
 
-  if (
-    hasProductPageProperties(productType) &&
-    productType.productPage.updateAmountMdaEndpoint
-  ) {
+  if (productType.updateAmountMdaEndpoint) {
     server.post(
       "/api/update/amount/" + productType.urlPart + "/:subscriptionName",
       membersDataApiHandler(
         "user-attributes/me/" +
-          productType.productPage.updateAmountMdaEndpoint +
+          productType.updateAmountMdaEndpoint +
           "/:subscriptionName",
         false,
         "subscriptionName"

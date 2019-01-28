@@ -234,10 +234,10 @@ exports[`Main renders something 1`] = `
           <li>
             <a
               className="emotion-1"
-              href="/digitalpack"
+              href="/subscriptions"
             >
               <span>
-                Digital Pack
+                Subscriptions
               </span>
             </a>
           </li>
