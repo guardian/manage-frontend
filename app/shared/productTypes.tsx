@@ -71,7 +71,10 @@ export interface ProductType {
   urlPart: ProductUrlPart;
   validator: MeValidator;
   includeGuardianInTitles?: true;
-  alternateReturnToAccountDestination?: string;
+  alternateManagementUrl?: string;
+  alternateManagementCtaLabel?: (
+    productDetail: ProductDetail
+  ) => string | undefined;
   noProductSupportUrlSuffix?: string;
   productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
@@ -233,14 +236,19 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "paper",
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     includeGuardianInTitles: true,
-    alternateReturnToAccountDestination: domainSpecificSubsManageURL
+    alternateManagementUrl: domainSpecificSubsManageURL,
+    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
+      productDetail.tier === "Newspaper Delivery"
+        ? "To manage your holiday stops"
+        : undefined
   },
   guardianweekly: {
     friendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     validator: (me: MeResponse) => me.contentAccess.weeklySubscriber,
-    alternateReturnToAccountDestination: domainSpecificSubsManageURL
+    alternateManagementUrl: domainSpecificSubsManageURL,
+    alternateManagementCtaLabel: () => "To renew your Guardian Weekly"
   },
   digipack: {
     friendlyName: "digital pack",

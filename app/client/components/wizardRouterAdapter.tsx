@@ -53,8 +53,8 @@ const estimateTotal = (currentStep: number, child: any) => {
 export const ReturnToYourProductButton = (
   props: WithProductType<ProductType>
 ) =>
-  props.productType.alternateReturnToAccountDestination ? (
-    <a href={props.productType.alternateReturnToAccountDestination}>
+  props.productType.alternateManagementUrl ? (
+    <a href={props.productType.alternateManagementUrl}>
       <Button text="Return to your account" hollow left />
     </a>
   ) : (

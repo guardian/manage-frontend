@@ -11,7 +11,8 @@ const callCenterStyles = css({
   marginBottom: "10px",
   display: "flex",
   flexWrap: "wrap",
-  textAlign: "left"
+  textAlign: "left",
+  fontWeight: "normal"
 });
 
 export interface CallCentreNumbersProps {

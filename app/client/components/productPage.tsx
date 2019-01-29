@@ -24,6 +24,7 @@ import { maxWidth, minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
+import { InlineContactUs } from "./inlineContactUs";
 import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
 import { PageContainer, PageHeaderContainer } from "./page";
@@ -182,6 +183,9 @@ const getProductDetailRenderer = (
   const productType = originalProductType.mapSoCalledToSpecific
     ? originalProductType.mapSoCalledToSpecific(productDetail)
     : originalProductType;
+  const alternateManagementCtaLabel =
+    productType.alternateManagementCtaLabel &&
+    productType.alternateManagementCtaLabel(productDetail);
   return (
     <div
       key={productDetail.subscription.subscriberId}
@@ -326,6 +330,20 @@ const getProductDetailRenderer = (
             ) : (
               undefined
             )}
+            {productType.alternateManagementUrl &&
+              alternateManagementCtaLabel &&
+              (productDetailListLength > 1 ? (
+                <div css={{ fontWeight: "bold" }}>
+                  {alternateManagementCtaLabel}, please <InlineContactUs />
+                </div>
+              ) : (
+                <a href={productType.alternateManagementUrl}>
+                  <Button
+                    text={alternateManagementCtaLabel + " click here"}
+                    right
+                  />
+                </a>
+              ))}
           </PageContainer>
         </>
       )}

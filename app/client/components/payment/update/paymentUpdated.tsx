@@ -102,8 +102,8 @@ const WithSubscriptionRenderer = (
         journalism.
       </h2>
       <div>
-        {productType.alternateReturnToAccountDestination ? (
-          <a href={productType.alternateReturnToAccountDestination}>
+        {productType.alternateManagementUrl ? (
+          <a href={productType.alternateManagementUrl}>
             <Button
               text={"Manage your " + productType.friendlyName}
               maxWidthIfWrapping="230px"
