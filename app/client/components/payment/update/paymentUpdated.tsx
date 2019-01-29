@@ -102,24 +102,13 @@ const WithSubscriptionRenderer = (
         journalism.
       </h2>
       <div>
-        {productType.alternateManagementUrl ? (
-          <a href={productType.alternateManagementUrl}>
-            <Button
-              text={"Manage your " + productType.friendlyName}
-              maxWidthIfWrapping="230px"
-              primary
-              right
-            />
-          </a>
-        ) : (
-          <LinkButton
-            to={"/" + productType.urlPart}
-            text={"Manage your " + productType.friendlyName}
-            maxWidthIfWrapping="230px"
-            primary
-            right
-          />
-        )}
+        <LinkButton
+          to={"/" + productType.urlPart}
+          text={"Manage your " + productType.friendlyName}
+          maxWidthIfWrapping="230px"
+          primary
+          right
+        />
       </div>
       <div css={{ marginTop: "20px" }}>
         <a href="https://www.theguardian.com">

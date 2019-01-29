@@ -212,7 +212,7 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
       )
     );
   }
-  if (productType.productPage && hasProductPageRedirect(productType)) {
+  if (hasProductPageRedirect(productType)) {
     server.get(
       "/" + productType.urlPart,
       (req: express.Request, res: express.Response) => {

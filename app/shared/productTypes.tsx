@@ -240,7 +240,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.tier === "Newspaper Delivery"
         ? "To manage your holiday stops"
-        : undefined
+        : undefined,
+    productPage: "subscriptions"
   },
   guardianweekly: {
     friendlyName: "Guardian Weekly",
@@ -248,7 +249,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "guardianweekly",
     validator: (me: MeResponse) => me.contentAccess.weeklySubscriber,
     alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: () => "To renew your Guardian Weekly"
+    alternateManagementCtaLabel: () => "To renew your Guardian Weekly",
+    productPage: "subscriptions"
   },
   digipack: {
     friendlyName: "digital pack",

@@ -46,7 +46,15 @@ const User = () => (
             productType={productType}
           />
         ))}
-
+      {Object.values(ProductTypes)
+        .filter(hasProductPageRedirect)
+        .map((productType: ProductTypeWithProductPageRedirect) => (
+          <Redirect
+            key={productType.urlPart}
+            from={"/" + productType.urlPart}
+            to={"/" + productType.productPage}
+          />
+        ))}
       {Object.values(ProductTypes)
         .filter(hasCancellationFlow)
         .map((productType: ProductTypeWithCancellationFlow) => (
