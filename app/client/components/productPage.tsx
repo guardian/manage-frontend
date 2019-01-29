@@ -258,9 +258,9 @@ const getProductDetailRenderer = (
             undefined
           )}
           <PageContainer>
-            {productPageProperties.showSubscriberId ? (
+            {productPageProperties.showSubscriptionId ? (
               <ProductDetailRow
-                label={"Subscriber ID"}
+                label={"Subscription ID"}
                 data={productDetail.subscription.subscriberId}
               />
             ) : (
