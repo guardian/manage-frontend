@@ -1,3 +1,5 @@
+import { OphanComponentEvent } from "./ophanTypes";
+
 export interface Globals {
   domain: string;
   dsn: string | null;
@@ -6,19 +8,9 @@ export interface Globals {
   INTCMP?: string;
   ophan?: {
     viewId: string;
-    record: RecordOphanComponentEvent;
+    record: (payload: { componentEvent: OphanComponentEvent }) => void;
     sendInitialEvent: (url?: string, referer?: string) => void;
   };
-}
-
-export type RecordOphanComponentEvent = (
-  payload: { componentEvent: OphanComponentEvent }
-) => void;
-
-export interface OphanComponentEvent {
-  component: string;
-  action: string;
-  value?: string;
 }
 
 declare global {

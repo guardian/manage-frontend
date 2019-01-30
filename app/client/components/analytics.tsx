@@ -1,6 +1,9 @@
 import { Location } from "@reach/router";
 import React, { ReactNode } from "react";
 import parse from "url-parse";
+import { OphanProduct } from "../../shared/ophanTypes";
+import { ProductDetail } from "../../shared/productResponse";
+import { ProductType } from "../../shared/productTypes";
 
 declare global {
   interface Window {
@@ -13,6 +16,10 @@ declare global {
 export interface Event {
   eventCategory: string;
   eventAction: string;
+  product?: {
+    productType: ProductType;
+    productDetail: ProductDetail;
+  };
   eventLabel?: string;
   eventValue?: number;
 }
@@ -20,6 +27,7 @@ export interface Event {
 export const trackEvent = ({
   eventCategory,
   eventAction,
+  product,
   eventLabel,
   eventValue
 }: Event) => {
@@ -34,15 +42,25 @@ export const trackEvent = ({
     );
   }
   if (window.guardian && window.guardian.ophan) {
-    const actionSuffix =
-      window.guardian && window.guardian.INTCMP
-        ? ` | ${window.guardian.INTCMP}`
-        : "";
+    const ophanProduct: OphanProduct | undefined =
+      product &&
+      product.productType.getOphanProductType &&
+      product.productType.getOphanProductType(product.productDetail);
+
     window.guardian.ophan.record({
       componentEvent: {
-        component: `MMA_${eventCategory.toUpperCase()}`,
-        action: `MMA_${eventAction.toUpperCase()}${actionSuffix}`,
-        value: eventLabel
+        component: {
+          componentType: "ACQUISITIONS_MANAGE_MY_ACCOUNT",
+          products: ophanProduct ? [ophanProduct] : undefined,
+          campaignCode: window.guardian.INTCMP,
+          labels: [
+            eventCategory.toUpperCase(),
+            eventAction.toUpperCase(),
+            ...(eventLabel ? [eventLabel.toUpperCase()] : [])
+          ]
+        },
+        action: "VIEW",
+        value: eventValue !== undefined ? `${eventValue}` : undefined
       }
     });
   }

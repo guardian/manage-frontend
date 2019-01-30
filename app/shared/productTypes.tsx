@@ -10,6 +10,7 @@ import { membershipCancellationReasons } from "../client/components/cancel/membe
 import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
 import { MeResponse } from "./meResponse";
+import { OphanProduct } from "./ophanTypes";
 import { formatDate, ProductDetail, Subscription } from "./productResponse";
 
 export type ProductFriendlyName =
@@ -70,6 +71,9 @@ export interface ProductType {
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
   validator: MeValidator;
+  getOphanProductType?: (
+    productDetail: ProductDetail
+  ) => OphanProduct | undefined;
   includeGuardianInTitles?: true;
   alternateTierValue?: string;
   alternateManagementUrl?: string;
@@ -144,6 +148,16 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Membership",
     urlPart: "membership",
     validator: (me: MeResponse) => me.contentAccess.member,
+    getOphanProductType: (productDetail: ProductDetail) => {
+      switch (productDetail.tier) {
+        case "Supporter":
+          return "MEMBERSHIP_SUPPORTER";
+        case "Partner":
+          return "MEMBERSHIP_PARTNER";
+        case "Patron":
+          return "MEMBERSHIP_PATRON";
+      }
+    },
     productPage: {
       title: "Membership",
       navLink: navLinks.membership,
@@ -178,6 +192,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Contribution",
     urlPart: "contributions",
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
+    getOphanProductType: () => "RECURRING_CONTRIBUTION",
     noProductSupportUrlSuffix: "/contribute",
     updateAmountMdaEndpoint: "contribution-update-amount",
     productPage: {
@@ -239,6 +254,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
+    getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
@@ -252,6 +268,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
+    getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
     alternateTierValue: "Guardian Weekly",
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
@@ -265,6 +282,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
     validator: (me: MeResponse) => me.contentAccess.digitalPack,
+    getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
     productPage: "subscriptions"
   },

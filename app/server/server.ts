@@ -7,7 +7,7 @@ import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { parse } from "url";
 import { ServerUser } from "../client/components/user";
-import { Globals } from "../globals";
+import { Globals } from "../shared/globals";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import {
   hasProductPageProperties,
