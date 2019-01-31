@@ -333,12 +333,15 @@ const getProductDetailRenderer = (
               alternateManagementCtaLabel &&
               (productDetailListLength > 1 ? (
                 <div css={{ fontWeight: "bold" }}>
-                  {alternateManagementCtaLabel}, please <InlineContactUs />
+                  To {alternateManagementCtaLabel}, please <InlineContactUs />
                 </div>
               ) : (
                 <a href={productType.alternateManagementUrl}>
                   <Button
-                    text={alternateManagementCtaLabel + " click here"}
+                    text={
+                      alternateManagementCtaLabel.substr(0, 1).toUpperCase() +
+                      alternateManagementCtaLabel.substr(1)
+                    }
                     right
                   />
                 </a>

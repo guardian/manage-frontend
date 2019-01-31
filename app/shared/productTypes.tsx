@@ -242,7 +242,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.tier === "Newspaper Delivery"
-        ? "To manage your holiday stops"
+        ? "manage your holiday stops"
         : undefined,
     productPage: "subscriptions"
   },
@@ -255,7 +255,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.subscription.autoRenew
         ? undefined
-        : "To renew your one-off Guardian Weekly subscription",
+        : "renew your one-off Guardian Weekly subscription",
     productPage: "subscriptions"
   },
   digipack: {
