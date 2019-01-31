@@ -16,8 +16,8 @@ export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
-  | "digital pack"
-  | "Guardian Weekly"
+  | "digital pack subscription"
+  | "Guardian Weekly subscription"
   | "subscription";
 export type ProductUrlPart =
   | "membership"
@@ -244,16 +244,17 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: "subscriptions"
   },
   guardianweekly: {
-    friendlyName: "Guardian Weekly",
+    friendlyName: "Guardian Weekly subscription",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
-    validator: (me: MeResponse) => me.contentAccess.weeklySubscriber,
+    validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
     alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: () => "To renew your Guardian Weekly",
+    alternateManagementCtaLabel: () =>
+      "To renew your Guardian Weekly subscription",
     productPage: "subscriptions"
   },
   digipack: {
-    friendlyName: "digital pack",
+    friendlyName: "digital pack subscription",
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
     validator: (me: MeResponse) => me.contentAccess.digitalPack,
@@ -267,7 +268,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     validator: (me: MeResponse) =>
       me.contentAccess.digitalPack ||
       me.contentAccess.paperSubscriber ||
-      me.contentAccess.weeklySubscriber,
+      me.contentAccess.guardianWeeklySubscriber,
     productPage: {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
