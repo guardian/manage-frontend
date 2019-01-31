@@ -113,6 +113,9 @@ export interface WithProductType<ProductTypeVariant extends ProductType> {
   productType: ProductTypeVariant;
 }
 
+export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
+  !productType.mapGroupedToSpecific;
+
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
