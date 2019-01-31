@@ -9,7 +9,12 @@ import { parse } from "url";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../globals";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
-import { ProductType, ProductTypes } from "../shared/productTypes";
+import {
+  hasProductPageProperties,
+  hasProductPageRedirect,
+  ProductType,
+  ProductTypes
+} from "../shared/productTypes";
 import { conf, Environments } from "./config";
 import { renderStylesToString } from "./emotion-server";
 import html from "./html";
@@ -195,19 +200,24 @@ Object.values(ProductTypes).forEach((productType: ProductType) => {
     }
   );
 
-  if (
-    productType.productPage &&
-    productType.productPage.updateAmountMdaEndpoint
-  ) {
+  if (productType.updateAmountMdaEndpoint) {
     server.post(
       "/api/update/amount/" + productType.urlPart + "/:subscriptionName",
       membersDataApiHandler(
         "user-attributes/me/" +
-          productType.productPage.updateAmountMdaEndpoint +
+          productType.updateAmountMdaEndpoint +
           "/:subscriptionName",
         false,
         "subscriptionName"
       )
+    );
+  }
+  if (hasProductPageRedirect(productType)) {
+    server.get(
+      "/" + productType.urlPart,
+      (req: express.Request, res: express.Response) => {
+        res.redirect("/" + productType.productPage);
+      }
     );
   }
 });

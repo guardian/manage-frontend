@@ -1,5 +1,9 @@
 import React from "react";
-import { ProductType, WithProductType } from "../../shared/productTypes";
+import {
+  hasProductPageProperties,
+  ProductType,
+  WithProductType
+} from "../../shared/productTypes";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 
 export interface NoProductProps extends WithProductType<ProductType> {
@@ -10,7 +14,7 @@ export interface NoProductProps extends WithProductType<ProductType> {
 export const NoProduct = (props: NoProductProps) => (
   <div>
     <h2>You do not currently have a {props.productType.friendlyName}.</h2>
-    {props.inTab && props.productType.productPage ? (
+    {props.inTab && hasProductPageProperties(props.productType) ? (
       <p>{props.productType.productPage.noProductInTabCopy}</p>
     ) : (
       undefined

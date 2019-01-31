@@ -10,28 +10,31 @@ import { membershipCancellationReasons } from "../client/components/cancel/membe
 import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
 import { MeResponse } from "./meResponse";
-import { formatDate, Subscription } from "./productResponse";
+import { formatDate, ProductDetail, Subscription } from "./productResponse";
 
 export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
-  | "digital pack"
-  | "Guardian Weekly";
+  | "digital pack subscription"
+  | "Guardian Weekly subscription"
+  | "subscription";
 export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
   | "digitalpack"
-  | "guardianweekly";
+  | "guardianweekly"
+  | "subscriptions";
 export type SfProduct = "Membership" | "Contribution";
-export type ProductTitle = "Membership" | "Contributions" | "Digital Pack";
+export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
   | "Contribution"
   | "Membership"
-  | "Digipack";
+  | "Digipack"
+  | "ContentSubscription";
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
@@ -57,11 +60,9 @@ export interface ProductPageProperties {
   title: ProductTitle;
   navLink: NavItem;
   noProductInTabCopy: string;
-  updateAmountMdaEndpoint?: string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
-  showSubscriberId?: true;
-  showTrialRemainingIfApplicable?: true;
+  showSubscriptionId?: true;
 }
 
 export interface ProductType {
@@ -70,10 +71,17 @@ export interface ProductType {
   urlPart: ProductUrlPart;
   validator: MeValidator;
   includeGuardianInTitles?: true;
-  alternateReturnToAccountDestination?: string;
+  alternateTierValue?: string;
+  alternateManagementUrl?: string;
+  alternateManagementCtaLabel?: (
+    productDetail: ProductDetail
+  ) => string | undefined;
   noProductSupportUrlSuffix?: string;
-  productPage?: ProductPageProperties; // undefined 'productPage' means no product page
+  productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
+  showTrialRemainingIfApplicable?: true;
+  mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
+  updateAmountMdaEndpoint?: string;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -84,17 +92,30 @@ export const hasCancellationFlow = (
 ): productType is ProductTypeWithCancellationFlow =>
   productType.cancellation !== undefined;
 
-export interface ProductTypeWithProductPage extends ProductType {
+export interface ProductTypeWithProductPageProperties extends ProductType {
   productPage: ProductPageProperties;
 }
-export const hasProductPage = (
+export const hasProductPageProperties = (
   productType: ProductType
-): productType is ProductTypeWithProductPage =>
-  productType.productPage !== undefined;
+): productType is ProductTypeWithProductPageProperties =>
+  productType.productPage !== undefined &&
+  typeof productType.productPage === "object";
+
+export interface ProductTypeWithProductPageRedirect extends ProductType {
+  productPage: ProductUrlPart;
+}
+export const hasProductPageRedirect = (
+  productType: ProductType
+): productType is ProductTypeWithProductPageRedirect =>
+  productType.productPage !== undefined &&
+  typeof productType.productPage === "string";
 
 export interface WithProductType<ProductTypeVariant extends ProductType> {
   productType: ProductTypeVariant;
 }
+
+export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
+  !productType.mapGroupedToSpecific;
 
 export const createProductDetailFetcher = (
   productType: ProductType,
@@ -158,12 +179,12 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "contributions",
     validator: (me: MeResponse) => me.contentAccess.recurringContributor,
     noProductSupportUrlSuffix: "/contribute",
+    updateAmountMdaEndpoint: "contribution-update-amount",
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
       noProductInTabCopy:
-        "To manage your existing membership or subscription, please select from the tabs above.",
-      updateAmountMdaEndpoint: "contribution-update-amount"
+        "To manage your existing membership or subscription, please select from the tabs above."
     },
     cancellation: {
       linkOnProductPage: true,
@@ -219,28 +240,59 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "paper",
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     includeGuardianInTitles: true,
-    alternateReturnToAccountDestination: domainSpecificSubsManageURL
+    alternateManagementUrl: domainSpecificSubsManageURL,
+    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
+      productDetail.tier === "Newspaper Delivery"
+        ? "manage your holiday stops"
+        : undefined,
+    productPage: "subscriptions"
   },
   guardianweekly: {
-    friendlyName: "Guardian Weekly",
+    friendlyName: "Guardian Weekly subscription",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
-    validator: (me: MeResponse) => true, // TODO: change to me.contentAccess.weeklySubscriber once exposed by members-data-api
-    alternateReturnToAccountDestination: domainSpecificSubsManageURL
+    validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
+    alternateTierValue: "Guardian Weekly",
+    alternateManagementUrl: domainSpecificSubsManageURL,
+    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
+      productDetail.subscription.autoRenew
+        ? undefined
+        : "renew your one-off Guardian Weekly subscription",
+    productPage: "subscriptions"
   },
   digipack: {
-    friendlyName: "digital pack",
+    friendlyName: "digital pack subscription",
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
     validator: (me: MeResponse) => me.contentAccess.digitalPack,
+    showTrialRemainingIfApplicable: true,
+    productPage: "subscriptions"
+  },
+  contentSubscriptions: {
+    friendlyName: "subscription",
+    allProductsProductTypeFilterString: "ContentSubscription",
+    urlPart: "subscriptions",
+    validator: (me: MeResponse) =>
+      me.contentAccess.digitalPack ||
+      me.contentAccess.paperSubscriber ||
+      me.contentAccess.guardianWeeklySubscriber,
     productPage: {
-      title: "Digital Pack",
-      navLink: navLinks.digitalPack,
+      title: "Subscriptions",
+      navLink: navLinks.subscriptions,
       noProductInTabCopy:
         "To manage your existing membership or contribution, please select from the tabs above.",
       tierRowLabel: "Subscription product",
-      showSubscriberId: true,
-      showTrialRemainingIfApplicable: true
+      showSubscriptionId: true
+    },
+    mapGroupedToSpecific: (productDetail: ProductDetail) => {
+      if (productDetail.tier === "Digital Pack") {
+        return ProductTypes.digipack;
+      } else if (productDetail.tier.startsWith("Newspaper")) {
+        return ProductTypes.newspaper;
+      } else if (productDetail.tier.startsWith("Guardian Weekly")) {
+        return ProductTypes.guardianweekly;
+      }
+      return ProductTypes.contentSubscriptions; // This should never happen!
     }
   }
 };

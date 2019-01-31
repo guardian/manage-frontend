@@ -16,13 +16,15 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductTypeWithProductPage
+  ProductTypeWithProductPageProperties
 } from "../../shared/productTypes";
+import { ProductPageProperties, ProductType } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
+import { InlineContactUs } from "./inlineContactUs";
 import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
 import { PageContainer, PageHeaderContainer } from "./page";
@@ -141,7 +143,7 @@ const getPaymentMethodRow = (
 
 const getPaymentPart = (
   productDetail: ProductDetail,
-  productType: ProductTypeWithProductPage
+  productType: ProductType
 ) => {
   if (productDetail.isPaidTier) {
     return (
@@ -173,9 +175,187 @@ const getPaymentPart = (
   }
 };
 
-const getProductRenderer = (productType: ProductTypeWithProductPage) => (
-  apiResponse: MembersDataApiResponse[]
-) => {
+const getProductDetailRenderer = (
+  originalProductType: ProductType,
+  productPageProperties: ProductPageProperties,
+  productDetailListLength: number
+) => (productDetail: ProductDetail, listIndex: number) => {
+  const productType = originalProductType.mapGroupedToSpecific
+    ? originalProductType.mapGroupedToSpecific(productDetail)
+    : originalProductType;
+  const alternateManagementCtaLabel =
+    productType.alternateManagementCtaLabel &&
+    productType.alternateManagementCtaLabel(productDetail);
+  const shouldShowShadedBackground =
+    productDetailListLength > 1 && (listIndex + 1) % 2 !== 0;
+  return (
+    <div
+      key={productDetail.subscription.subscriptionId}
+      css={{
+        background: shouldShowShadedBackground && palette.neutral["7"],
+        padding: "5px 0 20px"
+      }}
+    >
+      {productDetail.subscription.cancelledAt ? (
+        getCancellationSummary(productType)(productDetail.subscription)
+      ) : (
+        <>
+          {productDetailListLength > 1 ? (
+            <PageContainer noVerticalMargin>
+              {productType.productPage === productPageProperties ? (
+                <h2>
+                  {startCase(productType.friendlyName.toLowerCase())}{" "}
+                  {listIndex + 1}
+                </h2>
+              ) : (
+                <h2>{productType.alternateTierValue || productDetail.tier}</h2>
+              )}
+            </PageContainer>
+          ) : (
+            undefined
+          )}
+          {productDetail.alertText ? (
+            <div
+              css={{
+                backgroundColor: palette.red.dark,
+                color: palette.white,
+                padding: "10px 15px 15px",
+                margin: `30px ${productDetailListLength > 1 ? "15px" : "0"}`
+              }}
+            >
+              <PageContainer noVerticalMargin>
+                <h2 css={{ fontWeight: "bold", margin: "0" }}>
+                  Action required
+                </h2>
+                <p
+                  id="mma-alert-text"
+                  css={{
+                    br: {
+                      display: "none",
+                      [minWidth.tablet]: {
+                        display: "inline"
+                      }
+                    }
+                  }}
+                >
+                  {alertTextWithoutCTA(productDetail)}
+                  <br />
+                  Please check that the payment details shown are up to date.
+                </p>
+                <LinkButton
+                  text="Update payment details"
+                  to={"/payment/" + productType.urlPart}
+                  height="42px"
+                  fontWeight="bold"
+                  state={productDetail}
+                  primary
+                  right
+                />
+              </PageContainer>
+            </div>
+          ) : (
+            undefined
+          )}
+          <PageContainer>
+            {productPageProperties.showSubscriptionId ? (
+              <ProductDetailRow
+                label={"Subscription ID"}
+                data={productDetail.subscription.subscriptionId}
+              />
+            ) : (
+              undefined
+            )}
+            {productPageProperties.tierRowLabel &&
+            (productDetailListLength === 1 ||
+              productPageProperties.tierChangeable) ? (
+              <ProductDetailRow
+                label={productPageProperties.tierRowLabel}
+                data={
+                  productPageProperties.tierChangeable ? (
+                    <div css={wrappingContainerCSS}>
+                      <div css={{ marginRight: "15px" }}>
+                        {productType.alternateTierValue || productDetail.tier}
+                      </div>
+                      {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                      <a
+                        href={
+                          "https://membership." +
+                          window.guardian.domain +
+                          "/tier/change"
+                        }
+                      >
+                        <Button text="Change tier" right />
+                      </a>
+                    </div>
+                  ) : (
+                    productType.alternateTierValue || productDetail.tier
+                  )
+                }
+              />
+            ) : (
+              undefined
+            )}
+            <ProductDetailRow
+              label={"Start date"}
+              data={formatDate(
+                productDetail.subscription.start || productDetail.joinDate
+              )}
+            />
+            {productType.showTrialRemainingIfApplicable &&
+            productDetail.subscription.trialLength > 0 ? (
+              <ProductDetailRow
+                label={"Trial remaining"}
+                data={`${productDetail.subscription.trialLength} day${
+                  productDetail.subscription.trialLength !== 1 ? "s" : ""
+                }`}
+              />
+            ) : (
+              undefined
+            )}
+            {getPaymentPart(productDetail, productType)}
+            {productType.cancellation &&
+            productType.cancellation.linkOnProductPage ? (
+              <Link
+                css={{
+                  textDecoration: "underline",
+                  color: palette.neutral["1"],
+                  ":visited": { color: palette.neutral["1"] }
+                }}
+                to={"/cancel/" + productType.urlPart}
+                state={productDetail}
+              >
+                {"Cancel this " + productType.friendlyName}
+              </Link>
+            ) : (
+              undefined
+            )}
+            {productType.alternateManagementUrl &&
+              alternateManagementCtaLabel &&
+              (productDetailListLength > 1 ? (
+                <div css={{ fontWeight: "bold" }}>
+                  To {alternateManagementCtaLabel}, please <InlineContactUs />
+                </div>
+              ) : (
+                <a href={productType.alternateManagementUrl}>
+                  <Button
+                    text={
+                      alternateManagementCtaLabel.substr(0, 1).toUpperCase() +
+                      alternateManagementCtaLabel.substr(1)
+                    }
+                    right
+                  />
+                </a>
+              ))}
+          </PageContainer>
+        </>
+      )}
+    </div>
+  );
+};
+
+const getProductRenderer = (
+  productType: ProductTypeWithProductPageProperties
+) => (apiResponse: MembersDataApiResponse[]) => {
   const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
@@ -190,162 +370,13 @@ const getProductRenderer = (productType: ProductTypeWithProductPage) => (
         undefined
       )}
       {productDetailList.length > 0 ? (
-        productDetailList.map((productDetail, listIndex) => (
-          <div
-            key={productDetail.subscription.subscriberId}
-            css={{
-              background:
-                productDetailList.length > 1 && (listIndex + 1) % 2 !== 0
-                  ? palette.neutral["7"]
-                  : undefined,
-              padding: "5px 0 20px"
-            }}
-          >
-            {productDetail.subscription.cancelledAt ? (
-              getCancellationSummary(productType)(productDetail.subscription)
-            ) : (
-              <>
-                {productDetailList.length > 1 ? (
-                  <PageContainer noVerticalMargin>
-                    <h2>
-                      {startCase(productType.friendlyName.toLowerCase())}{" "}
-                      {listIndex + 1}
-                    </h2>
-                  </PageContainer>
-                ) : (
-                  undefined
-                )}
-                {productDetail.alertText ? (
-                  <div
-                    css={{
-                      backgroundColor: palette.red.dark,
-                      color: palette.white,
-                      padding: "10px 15px 15px",
-                      margin: `30px ${
-                        productDetailList.length > 1 ? "15px" : "0"
-                      }`
-                    }}
-                  >
-                    <PageContainer noVerticalMargin>
-                      <h2 css={{ fontWeight: "bold", margin: "0" }}>
-                        Action required
-                      </h2>
-                      <p
-                        id="mma-alert-text"
-                        css={{
-                          br: {
-                            display: "none",
-                            [minWidth.tablet]: {
-                              display: "inline"
-                            }
-                          }
-                        }}
-                      >
-                        {alertTextWithoutCTA(productDetail)}
-                        <br />
-                        Please check that the payment details shown are up to
-                        date.
-                      </p>
-                      <LinkButton
-                        text="Update payment details"
-                        to={"/payment/" + productType.urlPart}
-                        height="42px"
-                        fontWeight="bold"
-                        state={productDetail}
-                        primary
-                        right
-                      />
-                    </PageContainer>
-                  </div>
-                ) : (
-                  undefined
-                )}
-                <PageContainer>
-                  {productType.productPage.showSubscriberId ? (
-                    <ProductDetailRow
-                      label={"Subscriber ID"}
-                      data={productDetail.subscription.subscriberId}
-                    />
-                  ) : (
-                    undefined
-                  )}
-                  {productType.productPage.tierRowLabel ? (
-                    <>
-                      {productDetail.regNumber ? (
-                        <ProductDetailRow
-                          label={"Registration number"}
-                          data={productDetail.regNumber}
-                        />
-                      ) : (
-                        undefined
-                      )}
-                      <ProductDetailRow
-                        label={productType.productPage.tierRowLabel}
-                        data={
-                          productType.productPage.tierChangeable ? (
-                            <div css={wrappingContainerCSS}>
-                              <div css={{ marginRight: "15px" }}>
-                                {productDetail.tier}
-                              </div>
-                              {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                              <a
-                                href={
-                                  "https://membership." +
-                                  window.guardian.domain +
-                                  "/tier/change"
-                                }
-                              >
-                                <Button text="Change tier" right />
-                              </a>
-                            </div>
-                          ) : (
-                            productDetail.tier
-                          )
-                        }
-                      />
-                    </>
-                  ) : (
-                    undefined
-                  )}
-                  <ProductDetailRow
-                    label={"Start date"}
-                    data={formatDate(
-                      productDetail.subscription.start || productDetail.joinDate
-                    )}
-                  />
-                  {productType.productPage.showTrialRemainingIfApplicable &&
-                  productDetail.subscription.trialLength > 0 ? (
-                    <ProductDetailRow
-                      label={"Trial remaining"}
-                      data={`${productDetail.subscription.trialLength} day${
-                        productDetail.subscription.trialLength !== 1 ? "s" : ""
-                      }`}
-                    />
-                  ) : (
-                    undefined
-                  )}
-                  {getPaymentPart(productDetail, productType)}
-                  {productType.cancellation &&
-                  productType.cancellation.linkOnProductPage ? (
-                    <Link
-                      css={{
-                        textDecoration: "underline",
-                        color: palette.neutral["1"],
-                        ":visited": { color: palette.neutral["1"] }
-                      }}
-                      to={"/cancel/" + productType.urlPart}
-                      state={productDetail}
-                    >
-                      {"Cancel this " + productType.friendlyName}
-                    </Link>
-                  ) : (
-                    undefined
-                  )}
-                </PageContainer>
-              </>
-            )}
-          </div>
-        ))
+        productDetailList.map(
+          getProductDetailRenderer(
+            productType,
+            productType.productPage,
+            productDetailList.length
+          )
+        )
       ) : (
         <PageContainer>
           <NoProduct
@@ -369,7 +400,7 @@ const headerCss = css({
 
 export interface RouteableProductPropsWithProductPage
   extends RouteableProductProps {
-  productType: ProductTypeWithProductPage;
+  productType: ProductTypeWithProductPageProperties;
 }
 
 export const ProductPage = (props: RouteableProductPropsWithProductPage) => (

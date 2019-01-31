@@ -1,12 +1,17 @@
-import { Router, ServerLocation } from "@reach/router";
+import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
   hasCancellationFlow,
-  hasProductPage,
+  hasProductPageRedirect,
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
-  ProductTypeWithProductPage
+  ProductTypeWithProductPageProperties,
+  shouldCreatePaymentUpdateFlow
+} from "../../shared/productTypes";
+import {
+  hasProductPageProperties,
+  ProductTypeWithProductPageRedirect
 } from "../../shared/productTypes";
 import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
@@ -34,15 +39,23 @@ const User = () => (
       <RedirectOnMeResponse path="/" />
 
       {Object.values(ProductTypes)
-        .filter(hasProductPage)
-        .map((productType: ProductTypeWithProductPage) => (
+        .filter(hasProductPageProperties)
+        .map((productType: ProductTypeWithProductPageProperties) => (
           <ProductPage
             key={productType.urlPart}
             path={"/" + productType.urlPart}
             productType={productType}
           />
         ))}
-
+      {Object.values(ProductTypes)
+        .filter(hasProductPageRedirect)
+        .map((productType: ProductTypeWithProductPageRedirect) => (
+          <Redirect
+            key={productType.urlPart}
+            from={"/" + productType.urlPart}
+            to={"/" + productType.productPage}
+          />
+        ))}
       {Object.values(ProductTypes)
         .filter(hasCancellationFlow)
         .map((productType: ProductTypeWithCancellationFlow) => (
@@ -73,26 +86,28 @@ const User = () => (
           </CancellationFlow>
         ))}
 
-      {Object.values(ProductTypes).map((productType: ProductType) => (
-        <PaymentUpdateFlow
-          key={productType.urlPart}
-          path={"/payment/" + productType.urlPart}
-          productType={productType}
-          currentStep={1}
-        >
-          <ConfirmPaymentUpdate
-            path="confirm"
+      {Object.values(ProductTypes)
+        .filter(shouldCreatePaymentUpdateFlow)
+        .map((productType: ProductType) => (
+          <PaymentUpdateFlow
+            key={productType.urlPart}
+            path={"/payment/" + productType.urlPart}
             productType={productType}
-            currentStep={2}
+            currentStep={1}
           >
-            <PaymentUpdated
-              path="updated"
+            <ConfirmPaymentUpdate
+              path="confirm"
               productType={productType}
-              currentStep={3}
-            />
-          </ConfirmPaymentUpdate>
-        </PaymentUpdateFlow>
-      ))}
+              currentStep={2}
+            >
+              <PaymentUpdated
+                path="updated"
+                productType={productType}
+                currentStep={3}
+              />
+            </ConfirmPaymentUpdate>
+          </PaymentUpdateFlow>
+        ))}
 
       <MembershipFAQs path="/help" />
 

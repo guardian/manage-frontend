@@ -140,7 +140,9 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
                   <div css={{ marginTop: "20px", textAlign: "right" }}>
                     <ExecutePaymentUpdate
                       {...props}
-                      subscriptionName={productDetail.subscription.subscriberId}
+                      subscriptionName={
+                        productDetail.subscription.subscriptionId
+                      }
                       newPaymentMethodDetail={newPaymentMethodDetail}
                     />
                   </div>

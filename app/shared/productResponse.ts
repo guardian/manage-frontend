@@ -76,7 +76,7 @@ export interface SubscriptionPlanWithAmount extends SubscriptionPlan {
 }
 
 export interface Subscription {
-  subscriberId: string;
+  subscriptionId: string;
   start?: string;
   end: string;
   cancelledAt: boolean;
@@ -86,6 +86,7 @@ export interface Subscription {
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
+  autoRenew: boolean;
   plan: SubscriptionPlanWithAmount;
   trialLength: number;
 }

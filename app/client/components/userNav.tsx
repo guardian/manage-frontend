@@ -144,8 +144,8 @@ export class UserNav extends React.Component {
       link: "/contributions"
     },
     {
-      title: "Digital Pack",
-      link: "/digitalpack",
+      title: "Subscriptions",
+      link: "/subscriptions",
       border: true
     },
     {

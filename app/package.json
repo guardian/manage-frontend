@@ -20,7 +20,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn fix && GIT_DIR=../.git && (yarn bundle-check-client & yarn type-check)"
+      "pre-commit": "yarn fix && GIT_DIR=../.git && yarn type-check && yarn bundle-check-client"
     }
   },
   "cloudformation": "../cfn.yaml",

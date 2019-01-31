@@ -99,11 +99,11 @@ export const ExecuteCancellation = (
                 hasProduct(productDetail) ? (
                   <PerformCancelAsyncLoader
                     fetch={getCancelFunc(
-                      productDetail.subscription.subscriberId,
+                      productDetail.subscription.subscriptionId,
                       reason,
                       createProductDetailFetcher(
                         props.productType,
-                        productDetail.subscription.subscriberId
+                        productDetail.subscription.subscriptionId
                       )
                     )}
                     render={getCaseUpdatingCancellationSummary(

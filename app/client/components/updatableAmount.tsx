@@ -5,7 +5,7 @@ import {
 } from "../../shared/productResponse";
 import {
   ProductType,
-  ProductTypeWithProductPage,
+  ProductTypeWithProductPageProperties,
   WithProductType
 } from "../../shared/productTypes";
 import palette from "../colours";
@@ -101,7 +101,7 @@ const getAmountUpdater = (
   });
 
 export type UpdatableAmountProps = WithSubscription &
-  WithProductType<ProductTypeWithProductPage>;
+  WithProductType<ProductType>;
 
 export interface UpdatableAmountState {
   inEditMode: boolean;
@@ -161,7 +161,7 @@ export class UpdatableAmount extends React.Component<
       fetch={getAmountUpdater(
         this.state.newAmount,
         this.props.productType,
-        this.props.subscription.subscriberId
+        this.props.subscription.subscriptionId
       )}
       readerOnOK={(resp: Response) => resp.text()}
       render={() => {
@@ -271,7 +271,7 @@ export class UpdatableAmount extends React.Component<
         {this.state.currentAmount.toFixed(2)}{" "}
         {this.props.subscription.plan.currencyISO}
       </span>
-      {this.props.productType.productPage.updateAmountMdaEndpoint ? (
+      {this.props.productType.updateAmountMdaEndpoint ? (
         <>
           <Button
             text="Change amount"

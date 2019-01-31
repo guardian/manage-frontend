@@ -11,7 +11,10 @@ import {
   sortByJoinDate,
   Subscription
 } from "../../shared/productResponse";
-import { createProductDetailFetcher } from "../../shared/productTypes";
+import {
+  createProductDetailFetcher,
+  hasProductPageProperties
+} from "../../shared/productTypes";
 import palette from "../colours";
 import { Button } from "./buttons";
 import { CheckFlowIsValid } from "./checkFlowIsValid";
@@ -66,7 +69,7 @@ const getProductDetailSelector = (
           </PageContainer>
           {activeList.map((productDetail, listIndex) => (
             <div
-              key={productDetail.subscription.subscriberId}
+              key={productDetail.subscription.subscriptionId}
               css={{
                 padding: "10px",
                 background:
@@ -80,7 +83,7 @@ const getProductDetailSelector = (
                     ...commonFlexCSS
                   }}
                 >
-                  {props.productType.productPage &&
+                  {hasProductPageProperties(props.productType) &&
                   props.productType.productPage.tierRowLabel ? (
                     <span>
                       <strong>Tier: </strong> {productDetail.tier}{" "}
