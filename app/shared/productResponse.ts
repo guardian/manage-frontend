@@ -86,6 +86,7 @@ export interface Subscription {
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
+  autoRenew: boolean;
   plan: SubscriptionPlanWithAmount;
   trialLength: number;
 }

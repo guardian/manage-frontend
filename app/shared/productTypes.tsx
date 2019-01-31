@@ -249,8 +249,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "guardianweekly",
     validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
     alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: () =>
-      "To renew your Guardian Weekly subscription",
+    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
+      productDetail.subscription.autoRenew
+        ? undefined
+        : "To renew your one-off Guardian Weekly subscription",
     productPage: "subscriptions"
   },
   digipack: {
