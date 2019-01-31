@@ -161,7 +161,7 @@ export class UpdatableAmount extends React.Component<
       fetch={getAmountUpdater(
         this.state.newAmount,
         this.props.productType,
-        this.props.subscription.subscriberId
+        this.props.subscription.subscriptionId
       )}
       readerOnOK={(resp: Response) => resp.text()}
       render={() => {

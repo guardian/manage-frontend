@@ -188,7 +188,7 @@ const getProductDetailRenderer = (
     productType.alternateManagementCtaLabel(productDetail);
   return (
     <div
-      key={productDetail.subscription.subscriberId}
+      key={productDetail.subscription.subscriptionId}
       css={{
         background:
           productDetailListLength > 1 && (listIndex + 1) % 2 !== 0
@@ -261,7 +261,7 @@ const getProductDetailRenderer = (
             {productPageProperties.showSubscriptionId ? (
               <ProductDetailRow
                 label={"Subscription ID"}
-                data={productDetail.subscription.subscriberId}
+                data={productDetail.subscription.subscriptionId}
               />
             ) : (
               undefined

@@ -143,7 +143,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
               <WithSubscriptionAsyncLoader
                 fetch={createProductDetailFetcher(
                   props.productType,
-                  previousProductDetail.subscription.subscriberId
+                  previousProductDetail.subscription.subscriptionId
                 )}
                 render={WithSubscriptionRenderer(
                   props.productType,
