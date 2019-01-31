@@ -71,6 +71,7 @@ export interface ProductType {
   urlPart: ProductUrlPart;
   validator: MeValidator;
   includeGuardianInTitles?: true;
+  alternateTierValue?: string;
   alternateManagementUrl?: string;
   alternateManagementCtaLabel?: (
     productDetail: ProductDetail
@@ -251,6 +252,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
+    alternateTierValue: "Guardian Weekly",
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.subscription.autoRenew

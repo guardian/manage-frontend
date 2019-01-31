@@ -208,7 +208,7 @@ const getProductDetailRenderer = (
                   {listIndex + 1}
                 </h2>
               ) : (
-                <h2>{productDetail.tier}</h2>
+                <h2>{productType.alternateTierValue || productDetail.tier}</h2>
               )}
             </PageContainer>
           ) : (
@@ -274,7 +274,7 @@ const getProductDetailRenderer = (
                   productPageProperties.tierChangeable ? (
                     <div css={wrappingContainerCSS}>
                       <div css={{ marginRight: "15px" }}>
-                        {productDetail.tier}
+                        {productType.alternateTierValue || productDetail.tier}
                       </div>
                       {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
                       <a
@@ -288,7 +288,7 @@ const getProductDetailRenderer = (
                       </a>
                     </div>
                   ) : (
-                    productDetail.tier
+                    productType.alternateTierValue || productDetail.tier
                   )
                 }
               />
