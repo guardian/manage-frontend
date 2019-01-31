@@ -34,7 +34,7 @@ export type AllProductsProductTypeFilterString =
   | "Contribution"
   | "Membership"
   | "Digipack"
-  | "SoCalledSubscription";
+  | "ContentSubscription";
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
@@ -79,7 +79,7 @@ export interface ProductType {
   productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
   showTrialRemainingIfApplicable?: true;
-  mapSoCalledToSpecific?: (productDetail: ProductDetail) => ProductType;
+  mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
 }
 
@@ -261,9 +261,9 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     showTrialRemainingIfApplicable: true,
     productPage: "subscriptions"
   },
-  soCalledSubscriptions: {
+  contentSubscriptions: {
     friendlyName: "subscription",
-    allProductsProductTypeFilterString: "SoCalledSubscription",
+    allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
     validator: (me: MeResponse) =>
       me.contentAccess.digitalPack ||
@@ -277,7 +277,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },
-    mapSoCalledToSpecific: (productDetail: ProductDetail) => {
+    mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
         return ProductTypes.digipack;
       } else if (productDetail.tier.startsWith("Newspaper")) {
@@ -285,7 +285,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
         return ProductTypes.guardianweekly;
       }
-      return ProductTypes.soCalledSubscriptions; // This should never happen!
+      return ProductTypes.contentSubscriptions; // This should never happen!
     }
   }
 };

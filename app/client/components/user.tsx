@@ -88,7 +88,7 @@ const User = () => (
       {Object.values(ProductTypes)
         .filter(
           // i.e. don't create payment update flow for grouped product types
-          (productType: ProductType) => !productType.mapSoCalledToSpecific
+          (productType: ProductType) => !productType.mapGroupedToSpecific
         )
         .map((productType: ProductType) => (
           <PaymentUpdateFlow

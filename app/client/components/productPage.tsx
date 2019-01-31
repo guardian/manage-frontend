@@ -180,8 +180,8 @@ const getProductDetailRenderer = (
   productPageProperties: ProductPageProperties,
   productDetailListLength: number
 ) => (productDetail: ProductDetail, listIndex: number) => {
-  const productType = originalProductType.mapSoCalledToSpecific
-    ? originalProductType.mapSoCalledToSpecific(productDetail)
+  const productType = originalProductType.mapGroupedToSpecific
+    ? originalProductType.mapGroupedToSpecific(productDetail)
     : originalProductType;
   const alternateManagementCtaLabel =
     productType.alternateManagementCtaLabel &&
