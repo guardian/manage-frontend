@@ -1,4 +1,4 @@
-import { Globals } from "../globals";
+import { Globals } from "../shared/globals";
 
 declare var WEBPACK_BUILD: string;
 

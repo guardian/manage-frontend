@@ -1,5 +1,5 @@
 import React from "react";
-import { Globals } from "../../globals";
+import { Globals } from "../../shared/globals";
 import { applyAnyOptimiseExperiments } from "./analytics";
 
 export interface GlobalsWithExperimentFlags extends Globals {

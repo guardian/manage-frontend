@@ -1,6 +1,9 @@
 import Raven from "raven-js";
 import React from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
+import {
+  MembersDataApiResponseContext,
+  ProductDetail
+} from "../../../../shared/productResponse";
 import { hasProduct } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
@@ -21,7 +24,7 @@ export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
 interface ExecutePaymentUpdateProps extends RouteableStepProps {
   newPaymentMethodDetail: NewPaymentMethodDetail;
-  subscriptionName: string;
+  productDetail: ProductDetail;
 }
 
 interface ExecutePaymentUpdateState {
@@ -61,7 +64,7 @@ class ExecutePaymentUpdate extends React.Component<
   private executePaymentUpdate: () => Promise<Response> = async () =>
     await fetch(
       `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${
-        this.props.subscriptionName
+        this.props.productDetail.subscription.subscriptionId
       }`,
       {
         credentials: "include",
@@ -81,6 +84,10 @@ class ExecutePaymentUpdate extends React.Component<
       trackEvent({
         eventCategory: "payment",
         eventAction: this.props.newPaymentMethodDetail.name + "_update_success",
+        product: {
+          productType: this.props.productType,
+          productDetail: this.props.productDetail
+        },
         eventLabel: this.props.productType.urlPart
       });
       this.props.navigate("updated", { replace: true });
@@ -94,6 +101,10 @@ class ExecutePaymentUpdate extends React.Component<
     trackEvent({
       eventCategory: "payment",
       eventAction: this.props.newPaymentMethodDetail.name + "_update_failed",
+      product: {
+        productType: this.props.productType,
+        productDetail: this.props.productDetail
+      },
       eventLabel: this.props.productType.urlPart
     });
 
@@ -140,9 +151,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
                   <div css={{ marginTop: "20px", textAlign: "right" }}>
                     <ExecutePaymentUpdate
                       {...props}
-                      subscriptionName={
-                        productDetail.subscription.subscriptionId
-                      }
+                      productDetail={productDetail}
                       newPaymentMethodDetail={newPaymentMethodDetail}
                     />
                   </div>
