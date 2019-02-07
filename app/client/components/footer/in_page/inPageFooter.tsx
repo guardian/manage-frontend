@@ -1,7 +1,6 @@
 import React from "react";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { CallCentreNumbers } from "../../callCentreNumbers";
 import { PageContainer } from "../../page";
 
 export interface InPageFooterProps {

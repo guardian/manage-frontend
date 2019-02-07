@@ -1,3 +1,4 @@
+import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
@@ -13,7 +14,6 @@ import {
   hasProductPageProperties,
   ProductTypeWithProductPageRedirect
 } from "../../shared/productTypes";
-import { injectGlobal } from "../styles/emotion";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
@@ -32,8 +32,8 @@ import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 const User = () => (
   <Main>
-    {injectGlobal`${global}`}
-    {injectGlobal`${fonts}`}
+    <Global styles={css(`${global}`)} />
+    <Global styles={css(`${fonts}`)} />
 
     <Router>
       <RedirectOnMeResponse path="/" />

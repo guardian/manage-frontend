@@ -190,7 +190,7 @@ class FeedbackFormAndContactUs extends React.Component<
         <p
           css={{
             fontSize: "1rem",
-            fontWeight: "500"
+            fontWeight: 500
           }}
         >
           {reason.alternateFeedbackThankYouTitle ||

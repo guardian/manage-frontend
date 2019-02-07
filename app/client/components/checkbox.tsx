@@ -51,9 +51,9 @@ export const Checkbox = (props: CheckboxProps) => (
         type="checkbox"
         css={{
           position: "absolute",
-          zIndex: "-999999",
+          zIndex: -999999,
           overflow: "hidden",
-          opacity: "0"
+          opacity: 0
         }}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           props.onChange(event.target.checked)

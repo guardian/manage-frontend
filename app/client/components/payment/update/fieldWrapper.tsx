@@ -46,7 +46,7 @@ export class FieldWrapper extends React.Component<
           maxWidth: "100%",
           marginBottom: "10px",
           textAlign: "left",
-          ":not(:first-child)": {
+          ":not(:first-of-type)": {
             marginLeft: "20px"
           }
         }}

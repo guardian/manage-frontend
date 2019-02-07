@@ -1,6 +1,5 @@
+import { Global } from "@emotion/core";
 import React from "react";
-import { injectGlobal } from "../styles/emotion";
-import { css } from "../styles/emotion";
 
 export interface LoadingProps {
   loadingMessage?: string;
@@ -18,12 +17,18 @@ export const Spinner = (props: LoadingProps) => (
       display: props.inline ? "inline-flex" : "flex"
     }}
   >
-    {injectGlobal`
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `}
+    <Global
+      styles={{
+        "@keyframes spin": {
+          "0%": {
+            transform: "rotate(0deg)"
+          },
+          "100%": {
+            transform: "rotate(360deg)"
+          }
+        }
+      }}
+    />
     <div
       css={{
         border: `${scaledPx(6, props.scale)} solid #f3f3f3`,

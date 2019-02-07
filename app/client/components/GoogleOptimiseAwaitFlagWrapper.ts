@@ -1,4 +1,3 @@
-import React from "react";
 import { Globals } from "../../shared/globals";
 import { applyAnyOptimiseExperiments } from "./analytics";
 

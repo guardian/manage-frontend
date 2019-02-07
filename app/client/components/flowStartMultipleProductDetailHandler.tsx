@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import { toWords } from "number-to-words";
 import React from "react";
 import {
@@ -35,13 +36,13 @@ const PaymentTypeRenderer = (subscription: Subscription) => {
   return null;
 };
 
-const commonFlexCSS = {
+const commonFlexCSS = css({
   alignItems: "center",
   flexWrap: "wrap",
   "span, div": {
     marginRight: "10px"
   }
-};
+});
 
 const getProductDetailSelector = (
   props: FlowStartMultipleProductDetailHandlerProps,
@@ -78,10 +79,10 @@ const getProductDetailSelector = (
             >
               <PageContainer noVerticalMargin>
                 <div
-                  css={{
+                  css={css({
                     display: "flex",
                     ...commonFlexCSS
-                  }}
+                  })}
                 >
                   {hasProductPageProperties(props.productType) &&
                   props.productType.productPage.tierRowLabel ? (
@@ -98,10 +99,10 @@ const getProductDetailSelector = (
                     )}{" "}
                   </span>
                   <div
-                    css={{
+                    css={css({
                       display: "inline-flex",
                       ...commonFlexCSS
-                    }}
+                    })}
                   >
                     <strong>Payment:</strong>
                     {productDetail.isPaidTier ? (

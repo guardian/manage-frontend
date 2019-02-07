@@ -1,7 +1,7 @@
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
-import { Button, LinkButton } from "./buttons";
+import { LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
 import { ProgressCounter } from "./progressCounter";

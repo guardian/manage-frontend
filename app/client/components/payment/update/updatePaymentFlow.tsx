@@ -6,7 +6,6 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import { ProductType } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
@@ -47,9 +46,9 @@ export const NavigateFnContext: React.Context<{
   navigate?: NavigateFn;
 }> = React.createContext({});
 
-export const labelPaymentStepProps = (
+export const labelPaymentStepProps: (
   routeableStepProps: RouteableStepProps
-) => ({
+) => RouteableStepProps = (routeableStepProps: RouteableStepProps) => ({
   stepLabels: ["Change details", "Summary", "Confirmation"],
   ...routeableStepProps
 });

@@ -1,11 +1,11 @@
+import { css } from "@emotion/core";
 import React from "react";
-import { css } from "../styles/emotion";
 import { Accordion } from "./accordion";
 
-const contactUsStyles = css({
+const contactUsStyles = {
   margin: "0 0 10px",
   paddingRight: "5px"
-});
+};
 
 const callCenterStyles = css({
   marginBottom: "10px",
@@ -20,8 +20,8 @@ export interface CallCentreNumbersProps {
 }
 
 export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
-  <div className={callCenterStyles}>
-    <p className={contactUsStyles}>{props.prefixText}</p>
+  <div css={callCenterStyles}>
+    <p css={contactUsStyles}>{props.prefixText}</p>
     <Accordion>
       <div title="United Kingdom, Europe and rest of world">
         <div>

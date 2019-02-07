@@ -15,7 +15,7 @@ const baseStyle = {
   color: palette.neutral["3"],
   fontSize: "12px",
   fontFamily: sans,
-  flexGrow: "1",
+  flexGrow: 1,
   marginTop: "25px"
 };
 

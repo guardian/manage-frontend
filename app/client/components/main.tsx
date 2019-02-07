@@ -21,8 +21,8 @@ export class Main extends React.PureComponent<{}> {
         <Header />
         <div
           css={{
-            flexGrow: "1",
-            flexShrink: "0"
+            flexGrow: 1,
+            flexShrink: 0
           }}
         >
           <main

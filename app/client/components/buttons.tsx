@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
@@ -8,7 +9,7 @@ import { sans } from "../styles/fonts";
 export interface CommonButtonProps {
   text: string;
   height?: string;
-  fontWeight?: string;
+  fontWeight?: "bold";
   maxWidthIfWrapping?: string;
   left?: true;
   right?: true;
@@ -97,8 +98,16 @@ const buttonCss = ({
     primary,
     hollow
   );
-  return {
-    ...styles.common,
+  return css({
+    fontSize: "16px",
+    fontFamily: sans,
+    borderRadius: "1000px",
+    alignItems: "center",
+    whiteSpace: "nowrap",
+    position: "relative",
+    ":active": {
+      outline: "none"
+    },
     minHeight: height || "36px",
     lineHeight: height || "36px",
     fontWeight,
@@ -124,7 +133,7 @@ const buttonCss = ({
       whiteSpace: "normal",
       lineHeight: "16px"
     }
-  };
+  });
 };
 
 export const ButtonArrow = () => (
@@ -134,17 +143,6 @@ export const ButtonArrow = () => (
 );
 
 const styles = {
-  common: {
-    fontSize: "16px",
-    fontFamily: sans,
-    borderRadius: "1000px",
-    alignItems: "center",
-    whiteSpace: "nowrap",
-    position: "relative",
-    ":active": {
-      outline: "none"
-    }
-  },
   leftHover: {
     svg: { transform: "translate(-5px, -50%) rotate(180deg)" }
   },

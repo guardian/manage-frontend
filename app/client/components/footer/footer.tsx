@@ -103,12 +103,12 @@ const Footer = () => (
                     padding: "0 10px",
                     margin: 0,
 
-                    "&:nth-child(even)": {
+                    "&:nth-of-type(even)": {
                       borderLeft: "1px solid rgba(255,255,255,0.3)"
                     },
 
                     [minWidth.tablet]: {
-                      "&:not(:first-child)": {
+                      "&:not(:first-of-type)": {
                         borderLeft: "1px solid rgba(255,255,255,0.3)"
                       },
 

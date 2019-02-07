@@ -1,18 +1,11 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
-import { NavItem, navLinks, qualifyLink } from "./nav";
+import { navLinks } from "./nav";
 import { PageContainer } from "./page";
 import { RouteableProps } from "./wizardRouterAdapter";
 
-export const startRedirect = (navLink: NavItem) => {
-  const qualifiedLink = qualifyLink(navLink);
-  if (navLink.local) {
-    navigate(qualifiedLink, { replace: true });
-  } else {
-    window.location.replace(qualifiedLink);
-  }
-};
+const startRedirect = (link: string) => navigate(link, { replace: true });
 
 export const RedirectOnMeResponse = (props: RouteableProps) => (
   <PageContainer>
@@ -20,11 +13,11 @@ export const RedirectOnMeResponse = (props: RouteableProps) => (
       fetch={fetchMe}
       render={(me: MeResponse) => {
         if (me.contentAccess.member) {
-          startRedirect(navLinks.membership);
+          startRedirect(navLinks.membership.link);
         } else if (me.contentAccess.recurringContributor) {
-          startRedirect(navLinks.contributions);
+          startRedirect(navLinks.contributions.link);
         } else {
-          startRedirect(navLinks.subscriptions);
+          startRedirect(navLinks.subscriptions.link);
         }
         return null; // official way to render nothing, while awaiting redirect to take effect
       }}
