@@ -305,7 +305,9 @@ const getProductDetailRenderer = (
               undefined
             )}
             <ProductDetailRow
-              label={"Start date"}
+              label={
+                productDetail.subscription.start ? "Start date" : "Join date"
+              }
               data={formatDate(
                 productDetail.subscription.start || productDetail.joinDate
               )}
