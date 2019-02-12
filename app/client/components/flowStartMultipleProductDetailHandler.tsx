@@ -93,12 +93,8 @@ const getProductDetailSelector = (
                     undefined
                   )}
                   <span>
-                    <strong>
-                      {productDetail.subscription.start ? "Start " : "Join "}Date:
-                    </strong>{" "}
-                    {formatDate(
-                      productDetail.subscription.start || productDetail.joinDate
-                    )}{" "}
+                    <strong>Join Date:</strong>{" "}
+                    {formatDate(productDetail.joinDate)}{" "}
                   </span>
                   <div
                     css={css({

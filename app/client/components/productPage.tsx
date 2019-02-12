@@ -304,14 +304,18 @@ const getProductDetailRenderer = (
             ) : (
               undefined
             )}
-            <ProductDetailRow
-              label={
-                productDetail.subscription.start ? "Start date" : "Join date"
-              }
-              data={formatDate(
-                productDetail.subscription.start || productDetail.joinDate
-              )}
-            />
+            {productDetail.joinDate !== productDetail.subscription.start && (
+              <ProductDetailRow
+                label={"Join date"}
+                data={formatDate(productDetail.joinDate)}
+              />
+            )}
+            {productDetail.subscription.start && (
+              <ProductDetailRow
+                label={"Start date"}
+                data={formatDate(productDetail.subscription.start)}
+              />
+            )}
             {productType.showTrialRemainingIfApplicable &&
             productDetail.subscription.trialLength > 0 ? (
               <ProductDetailRow
