@@ -1,15 +1,14 @@
 import React from "react";
-import { css } from "../../node_modules/emotion";
 import palette from "../colours";
 import { Accordion } from "./accordion";
 import { navLinks } from "./nav";
 import { PageContainerSection, PageHeaderContainer } from "./page";
 import { RouteableProps } from "./wizardRouterAdapter";
 
-const headerCss = css({
+const headerCss = {
   marginBottom: "12px",
   borderBottom: `1px solid ${palette.neutral["5"]}`
-});
+};
 
 export const MembershipFAQs = (props: RouteableProps) => (
   <>
@@ -19,7 +18,7 @@ export const MembershipFAQs = (props: RouteableProps) => (
     </PageHeaderContainer>
 
     <PageContainerSection>
-      <h2 className={headerCss}>Guardian Membership: the basics</h2>
+      <h2 css={headerCss}>Guardian Membership: the basics</h2>
       <Accordion initialIndex={-1}>
         <div title="What is membership?">
           <div>
@@ -529,7 +528,7 @@ export const MembershipFAQs = (props: RouteableProps) => (
         </div>
       </Accordion>
 
-      <h2 className={headerCss}>Guardian Live (Events)</h2>
+      <h2 css={headerCss}>Guardian Live (Events)</h2>
 
       <Accordion initialIndex={-1}>
         <div title="What is Guardian Live?">
@@ -661,7 +660,7 @@ export const MembershipFAQs = (props: RouteableProps) => (
         </div>
       </Accordion>
 
-      <h2 className={headerCss}>Guardian Masterclasses</h2>
+      <h2 css={headerCss}>Guardian Masterclasses</h2>
 
       <Accordion initialIndex={-1}>
         <div title="What are Guardian Masterclasses?">

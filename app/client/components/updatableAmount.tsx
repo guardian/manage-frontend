@@ -3,11 +3,7 @@ import {
   SubscriptionPlan,
   WithSubscription
 } from "../../shared/productResponse";
-import {
-  ProductType,
-  ProductTypeWithProductPageProperties,
-  WithProductType
-} from "../../shared/productTypes";
+import { ProductType, WithProductType } from "../../shared/productTypes";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { validationWarningCSS } from "../styles/fonts";

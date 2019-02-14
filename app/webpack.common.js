@@ -33,17 +33,11 @@ const nodeExternals = require("webpack-node-externals");
 
 const babelCommon = {
   presets: [
-    [
-      "@babel/env",
-      {
-        useBuiltIns: "usage"
-      }
-    ],
     "@babel/typescript",
-    "@babel/react"
+    "@babel/react",
+    "@emotion/babel-preset-css-prop"
   ],
   plugins: [
-    "emotion",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
     "lodash"
@@ -87,8 +81,7 @@ const server = merge(common, {
                 ignoreBrowserslistConfig: true
               }
             ],
-            "@babel/typescript",
-            "@babel/react"
+            ...babelCommon.presets
           ]
         }
       }
@@ -113,7 +106,18 @@ const client = merge(common, {
         test: /\.(tsx?)|(js)$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-        options: babelCommon
+        options: {
+          plugins: babelCommon.plugins,
+          presets: [
+            [
+              "@babel/env",
+              {
+                useBuiltIns: "usage"
+              }
+            ],
+            ...babelCommon.presets
+          ]
+        }
       }
     ]
   },

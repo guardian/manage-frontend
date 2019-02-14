@@ -7,7 +7,7 @@ import AsyncLoader from "../../../asyncLoader";
 import { Button } from "../../../buttons";
 import { Checkbox } from "../../../checkbox";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
-import { cleanSortCode, dashifySortCode } from "../../directDebitDisplay";
+import { cleanSortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { NavigateFnContext } from "../updatePaymentFlow";

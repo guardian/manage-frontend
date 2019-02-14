@@ -1,5 +1,5 @@
+import { css } from "@emotion/core";
 import { Link } from "@reach/router";
-import { css } from "emotion";
 import { startCase } from "lodash";
 import { toWords } from "number-to-words";
 import Raven from "raven-js";
@@ -39,32 +39,32 @@ interface ProductRowProps {
   data: string | React.ReactNode;
 }
 
-const productRowStyles = css({
-  textAlign: "left",
-  marginBottom: "25px",
-  alignItems: "center",
-
-  [minWidth.phablet]: {
-    display: "flex"
-  }
-});
-
-export const wrappingContainerCSS = {
+export const wrappingContainerCSS = css({
   [minWidth.mobileLandscape]: {
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap"
   }
-};
+});
 
 const ProductDetailRow = (props: ProductRowProps) => {
   return (
-    <div className={productRowStyles}>
+    <div
+      css={{
+        textAlign: "left",
+        marginBottom: "25px",
+        alignItems: "center",
+
+        [minWidth.phablet]: {
+          display: "flex"
+        }
+      }}
+    >
       <div
         css={{
           flexBasis: "320px",
           [minWidth.phablet]: {
-            flexShrink: "0"
+            flexShrink: 0
           }
         }}
       >
@@ -88,7 +88,7 @@ const getPaymentMethodRow = (
   updatePaymentPath: string
 ) => {
   const addUpdateButton = (displayElement: JSX.Element) => (
-    <div css={wrappingContainerCSS}>
+    <div css={css(wrappingContainerCSS)}>
       <div css={{ marginRight: "15px", minWidth: "190px" }}>
         {displayElement}
       </div>
@@ -192,7 +192,9 @@ const getProductDetailRenderer = (
     <div
       key={productDetail.subscription.subscriptionId}
       css={{
-        background: shouldShowShadedBackground && palette.neutral["7"],
+        background: shouldShowShadedBackground
+          ? palette.neutral["7"]
+          : undefined,
         padding: "5px 0 20px"
       }}
     >
@@ -390,14 +392,6 @@ const getProductRenderer = (
   );
 };
 
-const headerCss = css({
-  fontSize: "2rem",
-  lineHeight: "2.25rem",
-  fontFamily: headline,
-  marginBottom: "30px",
-  marginTop: "0"
-});
-
 export interface RouteableProductPropsWithProductPage
   extends RouteableProductProps {
   productType: ProductTypeWithProductPageProperties;
@@ -408,7 +402,17 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
     <PageHeaderContainer
       selectedNavItem={props.productType.productPage.navLink}
     >
-      <h1 className={headerCss}>{props.productType.productPage.title}</h1>
+      <h1
+        css={{
+          fontSize: "2rem",
+          lineHeight: "2.25rem",
+          fontFamily: headline,
+          marginBottom: "30px",
+          marginTop: "0"
+        }}
+      >
+        {props.productType.productPage.title}
+      </h1>
     </PageHeaderContainer>
     <MembersDatApiAsyncLoader
       fetch={createProductDetailFetcher(props.productType)}

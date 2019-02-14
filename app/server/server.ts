@@ -10,13 +10,11 @@ import { ServerUser } from "../client/components/user";
 import { Globals } from "../shared/globals";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import {
-  hasProductPageProperties,
   hasProductPageRedirect,
   ProductType,
   ProductTypes
 } from "../shared/productTypes";
 import { conf, Environments } from "./config";
-import { renderStylesToString } from "./emotion-server";
 import html from "./html";
 import {
   getCookiesOrEmptyString,
@@ -251,7 +249,7 @@ server.use(withIdentity(), (req: express.Request, res: express.Response) => {
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
    */
-  const body = renderStylesToString(renderToString(ServerUser(req.url)));
+  const body = renderToString(ServerUser(req.url));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
   const supportedBrowser = matchesUA(req.headers["user-agent"], {

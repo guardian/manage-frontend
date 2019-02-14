@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "../styles/emotion";
 
 export interface RoundelProps {
   size: number;
@@ -17,12 +16,10 @@ export const Roundel = (props: RoundelProps) => (
     <svg
       viewBox="0 0 56 56"
       xmlns="http://www.w3.org/2000/svg"
-      className={
-        css({
-          width: `${props.size}px`,
-          height: `${props.size}px`
-        }) /* emotion css property not recognised properly on <svg> tag */
-      }
+      css={{
+        width: `${props.size}px`,
+        height: `${props.size}px`
+      }}
     >
       <path
         d="M28 0a28 28 0 1 0 28 28A28 28 0 0 0 28 0"

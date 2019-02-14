@@ -1,4 +1,4 @@
-import { css } from "emotion";
+import { css } from "@emotion/core";
 import React from "react";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
@@ -6,19 +6,20 @@ import { trackEvent } from "../../analytics";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
 
-const cssBullet = (flexBasis: string = "50%") => css`
-  flex-basis: ${flexBasis};
-  flex-grow: 1;
-  list-style: none;
-  list-style-position: inside;
-  text-indent: -0.6em;
-  padding-left: 20px;
-  &::before {
-    display: inline-block;
-    content: "●";
-    margin-right: 0.6em;
-  }
-`;
+const cssBullet = (flexBasis: string = "50%") =>
+  css({
+    flexBasis,
+    flexGrow: 1,
+    listStyle: "none",
+    listStylePosition: "inside",
+    textIndent: "-0.6em",
+    paddingLeft: "20px",
+    "&::before": {
+      display: "inline-block",
+      content: "'●'",
+      marginRight: "0.6em"
+    }
+  });
 
 const benefitsCss = css({
   margin: 0,
@@ -70,11 +71,16 @@ export const membershipCancellationFlowStart = (
       <GoogleOptimiseAwaitFlagWrapper experimentFlagName="alternateMembershipBenefits">
         {{
           flagIsSet: (
-            <ul className={benefitsCss}>
-              <li className={cssBullet("100%")}>
+            <ul css={benefitsCss}>
+              <li css={cssBullet("100%")}>
                 Exclusive emails from our membership editor
               </li>
-              <li className={cssBullet("100%")} css={{ paddingTop: "5px" }}>
+              <li
+                css={{
+                  ...cssBullet("100%"),
+                  paddingTop: "5px"
+                }}
+              >
                 Free access to the ad-free premium tier of the Guardian app, now
                 featuring ‘Live’ & ‘Discover’ - two new ways to experience the
                 Guardian, set to the pace of your day.
@@ -101,12 +107,17 @@ export const membershipCancellationFlowStart = (
             </ul>
           ),
           flagIsNotSet: (
-            <ul className={benefitsCss}>
-              <li className={cssBullet()}>Access to events tickets</li>
-              <li className={cssBullet()}>
+            <ul css={benefitsCss}>
+              <li css={cssBullet()}>Access to events tickets</li>
+              <li css={cssBullet()}>
                 Exclusive emails from our membership editor
               </li>
-              <li className={cssBullet()} css={{ paddingTop: "5px" }}>
+              <li
+                css={{
+                  ...cssBullet("100%"),
+                  paddingTop: "5px"
+                }}
+              >
                 Free access to the premium tier of the Guardian app -{" "}
                 {clickHereToFindOutMoreAboutOurNewFeatures}
               </li>
@@ -119,7 +130,7 @@ export const membershipCancellationFlowStart = (
       <p
         css={{
           fontSize: "1rem",
-          fontWeight: "500"
+          fontWeight: 500
         }}
       >
         Your support means we can remain independent, open to all readers and

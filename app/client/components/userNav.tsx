@@ -1,45 +1,17 @@
-import { css } from "emotion";
+import { css } from "@emotion/core";
 import React from "react";
 import { findDOMNode } from "react-dom";
 import { conf } from "../../server/config";
 import palette from "../colours";
-
-const userNavToggleCss = css({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  cursor: "pointer",
-
-  "::after": {
-    content: "''",
-    display: "block",
-    width: "5px",
-    height: "5px",
-    border: "1px solid currentColor",
-    borderLeft: "transparent",
-    borderTop: "transparent",
-    marginLeft: "5px"
-  },
-
-  ":hover": {
-    color: palette.yellow.medium,
-    "::after": {
-      transform: "translateY(0px) rotate(45deg)",
-      transitionProperty: "transform",
-      transitionDuration: "250ms",
-      transitionTimingFunction: "ease-in-out"
-    }
-  }
-});
 
 const userNavMenuCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
     background: palette.white,
     position: "absolute",
-    left: "0",
+    left: 0,
     top: "2.2rem",
-    zIndex: "1071",
+    zIndex: 1071,
     listStyle: "none",
     lineHeight: "1.375rem",
     boxShadow: "0 0 0 0.0625rem rgba(0,0,0,0.1)",
@@ -165,25 +137,47 @@ export class UserNav extends React.Component {
         }}
       >
         <span
-          className={userNavToggleCss}
-          css={{
-            color: this.state.showMenu ? palette.yellow.medium : palette.white,
+          css={css({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+
             "::after": {
+              content: "''",
+              display: "block",
+              width: "5px",
+              height: "5px",
+              border: "1px solid currentColor",
+              borderLeft: "transparent",
+              borderTop: "transparent",
+              marginLeft: "5px",
               transform: `translateY(${
                 this.state.showMenu ? 0 : -2
               }px) rotate(45deg)`
-            }
-          }}
+            },
+
+            ":hover": {
+              color: palette.yellow.medium,
+              "::after": {
+                transform: "translateY(0px) rotate(45deg)",
+                transitionProperty: "transform",
+                transitionDuration: "250ms",
+                transitionTimingFunction: "ease-in-out"
+              }
+            },
+            color: this.state.showMenu ? palette.yellow.medium : palette.white
+          })}
           onClick={() => this.setState({ showMenu: !this.state.showMenu })}
         >
           My account
         </span>
 
-        <ul className={userNavMenuCss(this.state.showMenu)}>
+        <ul css={userNavMenuCss(this.state.showMenu)}>
           {this.userNavItems.map((item: UserNavItem) => (
             <React.Fragment key={item.title}>
               <li>
-                <a href={item.link} className={userNavItemCss}>
+                <a href={item.link} css={userNavItemCss}>
                   {item.icon ? (
                     <span
                       css={{
@@ -202,7 +196,7 @@ export class UserNav extends React.Component {
                   <span>{item.title}</span>
                 </a>
               </li>
-              {item.border ? <hr className={userNavBorderCss} /> : false}
+              {item.border ? <hr css={userNavBorderCss} /> : false}
             </React.Fragment>
           ))}
         </ul>

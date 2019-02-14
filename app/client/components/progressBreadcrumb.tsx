@@ -51,7 +51,7 @@ export const ProgressBreadcrumb = ({
                 : `${
                     isFirstStep ? height / 1.5 : isLastStep ? 0 : height / 2
                   }px`,
-              flexGrow: "1"
+              flexGrow: 1
             }
           }}
         >

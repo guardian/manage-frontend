@@ -1,108 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main renders something 1`] = `
-.emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.emotion-0::after {
-  content: '';
-  display: block;
-  width: 5px;
-  height: 5px;
-  border: 1px solid currentColor;
-  border-left: transparent;
-  border-top: transparent;
-  margin-left: 5px;
-}
-
-.emotion-0:hover {
-  color: #ffe500;
-}
-
-.emotion-0:hover::after {
-  -webkit-transform: translateY(0px) rotate(45deg);
-  -ms-transform: translateY(0px) rotate(45deg);
-  transform: translateY(0px) rotate(45deg);
-  -webkit-transition-property: -webkit-transform;
-  -webkit-transition-property: transform;
-  transition-property: transform;
-  -webkit-transition-duration: 250ms;
-  transition-duration: 250ms;
-  -webkit-transition-timing-function: ease-in-out;
-  transition-timing-function: ease-in-out;
-}
-
-.emotion-1 {
-  padding: 7px 20px 15px 30px;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: currentColor;
-  white-space: nowrap;
-  position: relative;
-  margin-top: -1px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-1:hover {
-  background-color: #ececec;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5 {
-  height: 0.0625rem;
-  background: #ececec;
-  border: 0;
-  display: block;
-  margin: 0 0 0 1.875rem;
-}
-
-.emotion-11 {
-  display: none;
-  background: #ffffff;
-  position: absolute;
-  left: 0px;
-  top: 2.2rem;
-  z-index: 1071;
-  list-style: none;
-  line-height: 1.375rem;
-  box-shadow: 0 0 0 0.0625rem rgba(0,0,0,0.1);
-  border-radius: 0.1875rem;
-  margin: 0;
-  padding: 0.375rem 0;
-  overflow: hidden;
-}
-
-.emotion-11 li {
-  padding: 0;
-  margin: 0;
-}
-
-.emotion-12 {
-  width: 42px;
-  height: 42px;
-}
-
 <div
   css={
     Object {
@@ -152,13 +50,12 @@ exports[`Main renders something 1`] = `
         }
       >
         <span
-          className="emotion-0"
           css={
             Object {
-              "::after": Object {
-                "transform": "translateY(-2px) rotate(45deg)",
-              },
-              "color": "#ffffff",
+              "map": undefined,
+              "name": "c8vi01",
+              "next": undefined,
+              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover{color:#ffe500;::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
             }
           }
           onClick={[Function]}
@@ -166,11 +63,25 @@ exports[`Main renders something 1`] = `
           My account
         </span>
         <ul
-          className="emotion-11"
+          css={
+            Object {
+              "map": undefined,
+              "name": "1v0t73g",
+              "next": undefined,
+              "styles": "display:none;background:#ffffff;position:absolute;left:0;top:2.2rem;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);border-radius:0.1875rem;margin:0;padding:0.375rem 0;overflow:hidden; li{padding:0;margin:0;}",
+            }
+          }
         >
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="/profile/user"
             >
               <span>
@@ -180,7 +91,14 @@ exports[`Main renders something 1`] = `
           </li>
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="https://profile.thegulocal.com/public/edit"
             >
               <span>
@@ -190,7 +108,14 @@ exports[`Main renders something 1`] = `
           </li>
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="https://profile.thegulocal.com/account/edit"
             >
               <span>
@@ -200,7 +125,14 @@ exports[`Main renders something 1`] = `
           </li>
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="https://profile.thegulocal.com/email-prefs"
             >
               <span>
@@ -209,11 +141,25 @@ exports[`Main renders something 1`] = `
             </a>
           </li>
           <hr
-            className="emotion-5"
+            css={
+              Object {
+                "map": undefined,
+                "name": "uomzng",
+                "next": undefined,
+                "styles": "height:0.0625rem;background:#ececec;border:0;display:block;margin:0 0 0 1.875rem;",
+              }
+            }
           />
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="/membership"
             >
               <span>
@@ -223,7 +169,14 @@ exports[`Main renders something 1`] = `
           </li>
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="/contributions"
             >
               <span>
@@ -233,7 +186,14 @@ exports[`Main renders something 1`] = `
           </li>
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="/subscriptions"
             >
               <span>
@@ -242,11 +202,25 @@ exports[`Main renders something 1`] = `
             </a>
           </li>
           <hr
-            className="emotion-5"
+            css={
+              Object {
+                "map": undefined,
+                "name": "uomzng",
+                "next": undefined,
+                "styles": "height:0.0625rem;background:#ececec;border:0;display:block;margin:0 0 0 1.875rem;",
+              }
+            }
           />
           <li>
             <a
-              className="emotion-1"
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "ipwub6",
+                  "next": undefined,
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                }
+              }
               href="https://profile.thegulocal.com/signout"
             >
               <span
@@ -306,7 +280,12 @@ exports[`Main renders something 1`] = `
         href="https://www.theguardian.com"
       >
         <svg
-          className="emotion-12"
+          css={
+            Object {
+              "height": "42px",
+              "width": "42px",
+            }
+          }
           viewBox="0 0 56 56"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -325,8 +304,8 @@ exports[`Main renders something 1`] = `
   <div
     css={
       Object {
-        "flexGrow": "1",
-        "flexShrink": "0",
+        "flexGrow": 1,
+        "flexShrink": 0,
       }
     }
   >
@@ -429,11 +408,11 @@ exports[`Main renders something 1`] = `
               <ul
                 css={
                   Object {
-                    "&:nth-child(even)": Object {
+                    "&:nth-of-type(even)": Object {
                       "borderLeft": "1px solid rgba(255,255,255,0.3)",
                     },
                     "@media (min-width: 740px)": Object {
-                      "&:not(:first-child)": Object {
+                      "&:not(:first-of-type)": Object {
                         "borderLeft": "1px solid rgba(255,255,255,0.3)",
                       },
                       "flex": "1 0 0",
@@ -662,11 +641,11 @@ exports[`Main renders something 1`] = `
               <ul
                 css={
                   Object {
-                    "&:nth-child(even)": Object {
+                    "&:nth-of-type(even)": Object {
                       "borderLeft": "1px solid rgba(255,255,255,0.3)",
                     },
                     "@media (min-width: 740px)": Object {
-                      "&:not(:first-child)": Object {
+                      "&:not(:first-of-type)": Object {
                         "borderLeft": "1px solid rgba(255,255,255,0.3)",
                       },
                       "flex": "1 0 0",
@@ -826,11 +805,11 @@ exports[`Main renders something 1`] = `
               <ul
                 css={
                   Object {
-                    "&:nth-child(even)": Object {
+                    "&:nth-of-type(even)": Object {
                       "borderLeft": "1px solid rgba(255,255,255,0.3)",
                     },
                     "@media (min-width: 740px)": Object {
-                      "&:not(:first-child)": Object {
+                      "&:not(:first-of-type)": Object {
                         "borderLeft": "1px solid rgba(255,255,255,0.3)",
                       },
                       "flex": "1 0 0",
@@ -1035,48 +1014,10 @@ exports[`Main renders something 1`] = `
                   <button
                     css={
                       Object {
-                        ":active": Object {
-                          "outline": "none",
-                        },
-                        ":hover": Object {
-                          "background": "hsl(53.89999999999998, 100%, 45%)",
-                          "svg": Object {
-                            "transform": "translate(5px, -50%)",
-                          },
-                        },
-                        "@media (max-width: 319px)": Object {
-                          "maxWidth": "280px",
-                        },
-                        "@media (max-width: 424px)": Object {
-                          "lineHeight": "16px",
-                          "maxWidth": "320px",
-                          "whiteSpace": "normal",
-                        },
-                        "alignItems": "center",
-                        "background": "#ffe500",
-                        "border": "none",
-                        "borderRadius": "1000px",
-                        "color": "#121212",
-                        "cursor": "pointer",
-                        "display": "inline-flex",
-                        "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-                        "fontSize": "16px",
-                        "fontWeight": "bold",
-                        "lineHeight": "36px",
-                        "minHeight": "36px",
-                        "padding": "1px 40px 0 18px",
-                        "position": "relative",
-                        "svg": Object {
-                          "fill": "currentColor",
-                          "height": "34px",
-                          "position": "absolute",
-                          "right": "0",
-                          "top": "50%",
-                          "transform": "translate(0, -50%)",
-                          "transition": "transform .3s, background .3s",
-                          "width": "40px",
-                        },
-                        "whiteSpace": "nowrap",
+                        "map": undefined,
+                        "name": "vigqs",
+                        "next": undefined,
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
                       }
                     }
                     onMouseUp={[Function]}
@@ -1097,48 +1038,10 @@ exports[`Main renders something 1`] = `
                   <button
                     css={
                       Object {
-                        ":active": Object {
-                          "outline": "none",
-                        },
-                        ":hover": Object {
-                          "background": "hsl(53.89999999999998, 100%, 45%)",
-                          "svg": Object {
-                            "transform": "translate(5px, -50%)",
-                          },
-                        },
-                        "@media (max-width: 319px)": Object {
-                          "maxWidth": "280px",
-                        },
-                        "@media (max-width: 424px)": Object {
-                          "lineHeight": "16px",
-                          "maxWidth": "320px",
-                          "whiteSpace": "normal",
-                        },
-                        "alignItems": "center",
-                        "background": "#ffe500",
-                        "border": "none",
-                        "borderRadius": "1000px",
-                        "color": "#121212",
-                        "cursor": "pointer",
-                        "display": "inline-flex",
-                        "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-                        "fontSize": "16px",
-                        "fontWeight": "bold",
-                        "lineHeight": "36px",
-                        "minHeight": "36px",
-                        "padding": "1px 40px 0 18px",
-                        "position": "relative",
-                        "svg": Object {
-                          "fill": "currentColor",
-                          "height": "34px",
-                          "position": "absolute",
-                          "right": "0",
-                          "top": "50%",
-                          "transform": "translate(0, -50%)",
-                          "transition": "transform .3s, background .3s",
-                          "width": "40px",
-                        },
-                        "whiteSpace": "nowrap",
+                        "map": undefined,
+                        "name": "vigqs",
+                        "next": undefined,
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
                       }
                     }
                     onMouseUp={[Function]}

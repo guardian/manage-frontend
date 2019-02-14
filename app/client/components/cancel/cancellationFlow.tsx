@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import React, { ChangeEvent, ReactNode } from "react";
 import {
   MembersDataApiResponseContext,
@@ -58,15 +59,15 @@ class ReasonPicker extends React.Component<
           <select
             value={this.state.reasonPath}
             onChange={this.handleChange}
-            css={{
+            css={css({
               ...cssInheritFont,
               width: "100%",
               height: "32px",
               border: "1px black solid",
-              color: this.state.reasonPath ? undefined : palette.neutral["4"],
-              appearance: "menulist"
+              color: this.state.reasonPath ? undefined : palette.neutral["4"]
+              // appearance: "menulist"
               // TODO fix the clipping of font top/bottom because of font-size
-            }}
+            })}
           >
             <option disabled value="">
               Please select a reason

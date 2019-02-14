@@ -72,7 +72,7 @@ export const MembershipLinks = () => (
                 display: "inline",
                 margin: 0,
 
-                ":not(:first-child)::before": {
+                ":not(:first-of-type)::before": {
                   display: "inline-block",
                   content: "'·'",
                   margin: "0 0.5625rem"
