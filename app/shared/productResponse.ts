@@ -83,6 +83,8 @@ export interface Subscription {
   nextPaymentDate?: string;
   nextPaymentPrice?: number;
   paymentMethod?: string;
+  stripePublicKeyForCardAddition?: string;
+  safeToUpdatePaymentMethod: boolean;
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
