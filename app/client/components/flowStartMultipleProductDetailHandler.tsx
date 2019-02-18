@@ -119,12 +119,13 @@ const getProductDetailSelector = (
                       " FREE"
                     )}
                   </div>
-                  {productDetail.subscription.nextPaymentDate && (
-                    <span>
-                      <strong>Next payment date:</strong>{" "}
-                      {formatDate(productDetail.subscription.nextPaymentDate)}
-                    </span>
-                  )}
+                  {productDetail.subscription.nextPaymentDate &&
+                    !productDetail.alertText && (
+                      <span>
+                        <strong>Next payment date:</strong>{" "}
+                        {formatDate(productDetail.subscription.nextPaymentDate)}
+                      </span>
+                    )}
                 </div>
                 {productDetail.alertText ? (
                   <div css={{ color: palette.red.dark }}>
