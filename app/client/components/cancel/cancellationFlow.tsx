@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import React, { ChangeEvent, ReactNode } from "react";
+import React from "react";
 import {
   MembersDataApiResponseContext,
   ProductDetail
@@ -8,11 +8,11 @@ import {
   ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../shared/productTypes";
-import palette from "../../colours";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { PageContainerSection } from "../page";
+import { RadioButton } from "../radioButton";
 import {
   MultiRouteableProps,
   ReturnToYourProductButton,
@@ -23,17 +23,12 @@ import { getCancellationSummary } from "./cancellationSummary";
 
 interface ReasonPickerProps
   extends WithProductType<ProductTypeWithCancellationFlow> {
-  options: ReactNode[];
+  options: MultiRouteableProps[];
 }
 
 interface ReasonPickerState {
   reasonPath: string;
 }
-
-const cssInheritFont = {
-  fontSize: "inherit",
-  fontFamily: "inherit"
-};
 
 class ReasonPicker extends React.Component<
   ReasonPickerProps,
@@ -44,37 +39,25 @@ class ReasonPicker extends React.Component<
     this.state = {
       reasonPath: ""
     };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  public handleChange(event: ChangeEvent<HTMLSelectElement>): void {
-    this.setState({ reasonPath: event.target.value });
   }
 
   public render(): React.ReactNode {
     return (
       <>
-        <div css={{ marginBottom: "20px" }}>
-          <select
-            value={this.state.reasonPath}
-            onChange={this.handleChange}
-            css={css({
-              ...cssInheritFont,
-              width: "100%",
-              height: "32px",
-              border: "1px black solid",
-              color: this.state.reasonPath ? undefined : palette.neutral["4"]
-              // appearance: "menulist"
-              // TODO fix the clipping of font top/bottom because of font-size
-            })}
-          >
-            <option disabled value="">
-              Please select a reason
-            </option>
-            {this.props.options}
-          </select>
-        </div>
+        <h4>Please select a reason</h4>
+        <form css={css({ marginBottom: "30px" })}>
+          {this.props.options.map((reason: MultiRouteableProps) => (
+            <RadioButton
+              key={reason.path}
+              value={reason.path}
+              label={reason.linkLabel}
+              checked={reason.path === this.state.reasonPath}
+              groupName="reasons"
+              onChange={this.getClickHandler(reason.path)}
+            />
+          ))}
+        </form>
+
         <div
           css={{
             display: "flex",
@@ -105,15 +88,14 @@ class ReasonPicker extends React.Component<
       </>
     );
   }
+
+  private getClickHandler = (reasonPath: string) => () => {
+    this.setState({ reasonPath });
+  };
 }
 
-const childWithRouteablePropsToElement = (child: {
-  props: MultiRouteableProps;
-}) => (
-  <option key={child.props.path} value={child.props.path} css={cssInheritFont}>
-    {child.props.linkLabel || child.props.path}
-  </option>
-);
+const extractRouteableProps = (child: { props: MultiRouteableProps }) =>
+  child.props;
 
 const reasonsRenderer = (
   routeableStepPropsWithCancellationFlow: RouteableStepPropsWithCancellationFlow
@@ -139,7 +121,7 @@ const reasonsRenderer = (
           <ReasonPicker
             productType={routeableStepPropsWithCancellationFlow.productType}
             options={routeableStepProps.children.props.children.map(
-              childWithRouteablePropsToElement
+              extractRouteableProps
             )}
           />
         </PageContainerSection>
