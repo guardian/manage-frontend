@@ -25,7 +25,7 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 
-enum PaymentMethod {
+export enum PaymentMethod {
   card = "Card",
   payPal = "PayPal",
   dd = "Direct Debit",
