@@ -39,6 +39,12 @@ class ExecutePaymentUpdate extends React.Component<
     hasHitComplete: false
   };
 
+  private paymentMethodChangeType: string =
+    this.props.productDetail.subscription.paymentMethod ===
+    PaymentMethod.resetRequired
+      ? "reset"
+      : "update";
+
   public render(): React.ReactNode {
     return this.state.hasHitComplete ? (
       <PaymentUpdateAsyncLoader
@@ -60,12 +66,6 @@ class ExecutePaymentUpdate extends React.Component<
       />
     );
   }
-
-  private paymentMethodChangeType: string =
-    this.props.productDetail.subscription.paymentMethod ===
-    PaymentMethod.resetRequired
-      ? "reset"
-      : "update";
 
   private executePaymentUpdate: () => Promise<Response> = async () =>
     await fetch(
@@ -89,9 +89,9 @@ class ExecutePaymentUpdate extends React.Component<
     ) {
       trackEvent({
         eventCategory: "payment",
-        eventAction:
-          this.props.newPaymentMethodDetail.name +
-          `_${this.paymentMethodChangeType}_success`,
+        eventAction: `${this.props.newPaymentMethodDetail.name}_${
+          this.paymentMethodChangeType
+        }_success`,
         product: {
           productType: this.props.productType,
           productDetail: this.props.productDetail
@@ -108,9 +108,9 @@ class ExecutePaymentUpdate extends React.Component<
   private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction:
-        this.props.newPaymentMethodDetail.name +
-        `_${this.paymentMethodChangeType}_failed`,
+      eventAction: `${this.props.newPaymentMethodDetail.name}_${
+        this.paymentMethodChangeType
+      }_failed`,
       product: {
         productType: this.props.productType,
         productDetail: this.props.productDetail
