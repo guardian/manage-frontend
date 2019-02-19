@@ -18,7 +18,7 @@ import {
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
 import { handleNoNewPaymentDetails } from "./paymentUpdated";
-import { labelPaymentStepProps } from "./updatePaymentFlow";
+import { labelPaymentStepProps, PaymentMethod } from "./updatePaymentFlow";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -38,6 +38,12 @@ class ExecutePaymentUpdate extends React.Component<
   public state = {
     hasHitComplete: false
   };
+
+  private paymentMethodChangeType: string =
+    this.props.productDetail.subscription.paymentMethod ===
+    PaymentMethod.resetRequired
+      ? "reset"
+      : "update";
 
   public render(): React.ReactNode {
     return this.state.hasHitComplete ? (
@@ -83,7 +89,9 @@ class ExecutePaymentUpdate extends React.Component<
     ) {
       trackEvent({
         eventCategory: "payment",
-        eventAction: this.props.newPaymentMethodDetail.name + "_update_success",
+        eventAction: `${this.props.newPaymentMethodDetail.name}_${
+          this.paymentMethodChangeType
+        }_success`,
         product: {
           productType: this.props.productType,
           productDetail: this.props.productDetail
@@ -100,7 +108,9 @@ class ExecutePaymentUpdate extends React.Component<
   private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: this.props.newPaymentMethodDetail.name + "_update_failed",
+      eventAction: `${this.props.newPaymentMethodDetail.name}_${
+        this.paymentMethodChangeType
+      }_failed`,
       product: {
         productType: this.props.productType,
         productDetail: this.props.productDetail

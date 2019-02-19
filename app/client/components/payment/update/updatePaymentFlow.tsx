@@ -25,10 +25,11 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 
-enum PaymentMethod {
+export enum PaymentMethod {
   card = "Card",
   payPal = "PayPal",
   dd = "Direct Debit",
+  resetRequired = "ResetRequired",
   free = "FREE",
   unknown = "Unknown"
 }
@@ -99,7 +100,9 @@ const PaymentMethodBar = (props: PaymentMethodProps) => (
 const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
   subscription: Subscription
 ) => {
-  if (subscription.paymentMethod === "Card" && subscription.card) {
+  if (!subscription.safeToUpdatePaymentMethod) {
+    return PaymentMethod.unknown;
+  } else if (subscription.paymentMethod === "Card" && subscription.card) {
     return PaymentMethod.card;
   } else if (
     subscription.paymentMethod === "PayPal" &&
@@ -111,6 +114,8 @@ const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
     subscription.mandate
   ) {
     return PaymentMethod.dd;
+  } else if (subscription.paymentMethod === "ResetRequired") {
+    return PaymentMethod.resetRequired;
   } else if (subscription.paymentMethod === undefined) {
     return PaymentMethod.free;
   }
@@ -211,6 +216,16 @@ class PaymentUpdaterStep extends React.Component<
 
   private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
     switch (this.state.selectedPaymentMethod) {
+      case PaymentMethod.resetRequired:
+        return subscription.stripePublicKeyForCardAddition ? (
+          <CardInputForm
+            stripeApiKey={subscription.stripePublicKeyForCardAddition}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            userEmail={getSignInEmailFromCookie()}
+          />
+        ) : (
+          <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
+        );
       case PaymentMethod.card:
         return subscription.card &&
           subscription.card.stripePublicKeyForUpdate ? (
@@ -249,8 +264,7 @@ class PaymentUpdaterStep extends React.Component<
       default:
         return (
           <span>
-            Updating {this.state.selectedPaymentMethod} is not currently
-            possible online.
+            It is not currently possible to update your payment method online.
           </span>
         );
     }

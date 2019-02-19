@@ -135,6 +135,13 @@ const getPaymentMethodRow = (
         )}
       />
     );
+  } else if (productDetail.subscription.stripePublicKeyForCardAddition) {
+    return (
+      <ProductDetailRow
+        label="Payment method"
+        data={addUpdateButton(<span>No Payment Method</span>)}
+      />
+    );
   } else {
     Raven.captureException("Unknown payment method");
   }

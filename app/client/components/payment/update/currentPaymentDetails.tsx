@@ -12,5 +12,5 @@ export const CurrentPaymentDetails = (subscription: Subscription) => {
   } else if (subscription.mandate) {
     return <DirectDebitDisplay {...subscription.mandate} />;
   }
-  return <span>Other Payment Method</span>; // Direct Debit ???
+  return <span>No Payment Method</span>;
 };
