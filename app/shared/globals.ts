@@ -1,4 +1,4 @@
-import { OphanComponentEvent } from "./ophanTypes";
+import { AbTest, OphanComponentEvent } from "./ophanTypes";
 
 export interface Globals {
   domain: string;
@@ -11,6 +11,7 @@ export interface Globals {
     record: (payload: { componentEvent: OphanComponentEvent }) => void;
     sendInitialEvent: (url?: string, referer?: string) => void;
   };
+  abTest?: AbTest;
 }
 
 declare global {

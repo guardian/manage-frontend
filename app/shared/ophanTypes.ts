@@ -66,8 +66,14 @@ export interface OphanComponent {
   labels?: string[];
 }
 
+export interface AbTest {
+  name: string;
+  variant: string;
+}
+
 export interface OphanComponentEvent {
   component: OphanComponent;
   action: OphanAction;
   value?: string;
+  abTest?: AbTest;
 }
