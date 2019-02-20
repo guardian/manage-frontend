@@ -34,12 +34,9 @@ class ReasonPicker extends React.Component<
   ReasonPickerProps,
   ReasonPickerState
 > {
-  constructor(props: ReasonPickerProps) {
-    super(props);
-    this.state = {
-      reasonPath: ""
-    };
-  }
+  public state = {
+    reasonPath: ""
+  };
 
   public render(): React.ReactNode {
     return (
