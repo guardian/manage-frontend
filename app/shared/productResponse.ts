@@ -1,3 +1,4 @@
+import Raven from "raven-js";
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { CardProps } from "../client/components/payment/cardDisplay";
@@ -43,7 +44,6 @@ export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
   regNumber?: string;
   tier: string;
-  isPaidTier: boolean;
   joinDate: string;
   alertText?: string;
 }
@@ -66,13 +66,31 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
+  productRatePlanId: string;
+  productName: string;
+  name: string;
+  start: string;
+  startsBeforeXDaysFromToday: boolean;
+}
+
+export interface CurrencyAndIntervalDetail {
   currency: string;
   currencyISO: string;
   interval: string;
 }
 
-export interface SubscriptionPlanWithAmount extends SubscriptionPlan {
+export interface PaidSubscriptionPlan
+  extends SubscriptionPlan,
+    CurrencyAndIntervalDetail {
+  end: string;
+  chargedThrough?: string;
   amount: number;
+}
+
+export function isPaidSubscriptionPlan(
+  subscriptionPlan: SubscriptionPlan
+): subscriptionPlan is PaidSubscriptionPlan {
+  return !!subscriptionPlan && subscriptionPlan.hasOwnProperty("amount");
 }
 
 export interface Subscription {
@@ -89,10 +107,33 @@ export interface Subscription {
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
   autoRenew: boolean;
-  plan: SubscriptionPlanWithAmount;
+  currentPlans: SubscriptionPlan[];
+  futurePlans: SubscriptionPlan[];
   trialLength: number;
 }
 
 export interface WithSubscription {
   subscription: Subscription;
 }
+
+export const getMainPlan = (subscription: Subscription) => {
+  if (subscription.currentPlans.length > 0) {
+    if (subscription.currentPlans.length > 1) {
+      Raven.captureException(
+        "User with more than one 'current plan' for a given subscription"
+      );
+    }
+    return subscription.currentPlans[0];
+  }
+  // fallback to use the first future plan (contributions for example are always future plans)
+  return subscription.futurePlans[0];
+};
+
+export const getFuturePlanIfStartsBeforeXDaysFromToday = (
+  subscription: Subscription
+) => {
+  const indexToFetch = subscription.currentPlans.length === 0 ? 1 : 0; // if main plan is using the first future plan use the 2nd future plan
+  return subscription.futurePlans
+    .filter(isPaidSubscriptionPlan)
+    .filter(plan => plan.startsBeforeXDaysFromToday)[indexToFetch];
+};

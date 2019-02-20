@@ -8,7 +8,10 @@ import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
+  getFuturePlanIfStartsBeforeXDaysFromToday,
+  getMainPlan,
   hasProduct,
+  isPaidSubscriptionPlan,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
@@ -152,7 +155,11 @@ const getPaymentPart = (
   productDetail: ProductDetail,
   productType: ProductType
 ) => {
-  if (productDetail.isPaidTier) {
+  const mainPlan = getMainPlan(productDetail.subscription);
+  const futurePlan = getFuturePlanIfStartsBeforeXDaysFromToday(
+    productDetail.subscription
+  );
+  if (isPaidSubscriptionPlan(mainPlan)) {
     return (
       <>
         {productDetail.subscription.nextPaymentDate &&
@@ -162,17 +169,34 @@ const getPaymentPart = (
               data={formatDate(productDetail.subscription.nextPaymentDate)}
             />
           )}
+        {}
         <ProductDetailRow
           label={
-            productDetail.subscription.plan.interval.charAt(0).toUpperCase() +
-            productDetail.subscription.plan.interval.substr(1) +
+            mainPlan.interval.charAt(0).toUpperCase() +
+            mainPlan.interval.substr(1) +
             "ly payment"
           }
           data={
-            <UpdatableAmount
-              subscription={productDetail.subscription}
-              productType={productType}
-            />
+            <>
+              <UpdatableAmount
+                mainPlan={mainPlan}
+                subscriptionId={productDetail.subscription.subscriptionId}
+                productType={productType}
+              />
+              {futurePlan &&
+                futurePlan.productRatePlanId !== mainPlan.productRatePlanId &&
+                futurePlan.amount !== mainPlan.amount && (
+                  <div css={{ fontStyle: "italic" }}>
+                    {futurePlan.currency}{" "}
+                    {(futurePlan.amount / 100.0).toFixed(2)}{" "}
+                    {futurePlan.currencyISO}{" "}
+                    {futurePlan.interval !== mainPlan.interval && (
+                      <strong>{`${futurePlan.interval}ly `}</strong>
+                    )}
+                    starting {formatDate(futurePlan.start)}
+                  </div>
+                )}
+            </>
           }
         />
         {getPaymentMethodRow(productDetail, "/payment/" + productType.urlPart)}

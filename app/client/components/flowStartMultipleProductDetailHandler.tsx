@@ -5,7 +5,9 @@ import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
   formatDate,
+  getMainPlan,
   hasProduct,
+  isPaidSubscriptionPlan,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
@@ -43,6 +45,23 @@ const commonFlexCSS = css({
     marginRight: "10px"
   }
 });
+
+const getPaymentPart = (productDetail: ProductDetail) => {
+  const mainPlan = getMainPlan(productDetail.subscription);
+  if (isPaidSubscriptionPlan(mainPlan)) {
+    return (
+      <>
+        <span>
+          &nbsp;
+          {mainPlan.currency}
+          {(mainPlan.amount / 100.0).toFixed(2)} {mainPlan.interval}ly
+        </span>
+        <PaymentTypeRenderer {...productDetail.subscription} />
+      </>
+    );
+  }
+  return " FREE";
+};
 
 const getProductDetailSelector = (
   props: FlowStartMultipleProductDetailHandlerProps,
@@ -103,21 +122,7 @@ const getProductDetailSelector = (
                     })}
                   >
                     <strong>Payment:</strong>
-                    {productDetail.isPaidTier ? (
-                      <>
-                        <span>
-                          &nbsp;
-                          {productDetail.subscription.plan.currency}
-                          {(
-                            productDetail.subscription.plan.amount / 100.0
-                          ).toFixed(2)}{" "}
-                          {productDetail.subscription.plan.interval}ly
-                        </span>
-                        <PaymentTypeRenderer {...productDetail.subscription} />
-                      </>
-                    ) : (
-                      " FREE"
-                    )}
+                    {getPaymentPart(productDetail)}
                   </div>
                   {productDetail.subscription.nextPaymentDate &&
                     !productDetail.alertText && (
