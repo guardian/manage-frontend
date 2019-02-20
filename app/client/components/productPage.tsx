@@ -7,6 +7,7 @@ import React from "react";
 import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
+  augmentInterval,
   formatDate,
   getFuturePlanIfStartsBeforeXDaysFromToday,
   getMainPlan,
@@ -160,6 +161,7 @@ const getPaymentPart = (
     productDetail.subscription
   );
   if (isPaidSubscriptionPlan(mainPlan)) {
+    const mainPlanInterval = augmentInterval(mainPlan.interval);
     return (
       <>
         {productDetail.subscription.nextPaymentDate &&
@@ -172,9 +174,9 @@ const getPaymentPart = (
         {}
         <ProductDetailRow
           label={
-            mainPlan.interval.charAt(0).toUpperCase() +
-            mainPlan.interval.substr(1) +
-            "ly payment"
+            mainPlanInterval.charAt(0).toUpperCase() +
+            mainPlanInterval.substr(1) +
+            " payment"
           }
           data={
             <>
@@ -191,7 +193,9 @@ const getPaymentPart = (
                     {(futurePlan.amount / 100.0).toFixed(2)}{" "}
                     {futurePlan.currencyISO}{" "}
                     {futurePlan.interval !== mainPlan.interval && (
-                      <strong>{`${futurePlan.interval}ly `}</strong>
+                      <strong>
+                        {augmentInterval(futurePlan.interval) + " "}
+                      </strong>
                     )}
                     starting {formatDate(futurePlan.start)}
                   </div>

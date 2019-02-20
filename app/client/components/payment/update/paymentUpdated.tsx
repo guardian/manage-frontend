@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  augmentInterval,
   formatDate,
   getMainPlan,
   hasProduct,
@@ -77,7 +78,7 @@ const ConfirmedNewPaymentDetailsRenderer = ({
                 </div>
               )}
             <div>
-              <b>Payment Frequency:</b> {mainPlan.interval}ly
+              <b>Payment Frequency:</b> {augmentInterval(mainPlan.interval)}
             </div>
           </>
         )}

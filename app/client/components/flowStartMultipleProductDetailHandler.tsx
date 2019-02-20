@@ -4,6 +4,7 @@ import React from "react";
 import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
+  augmentInterval,
   formatDate,
   getMainPlan,
   hasProduct,
@@ -54,7 +55,8 @@ const getPaymentPart = (productDetail: ProductDetail) => {
         <span>
           &nbsp;
           {mainPlan.currency}
-          {(mainPlan.amount / 100.0).toFixed(2)} {mainPlan.interval}ly
+          {(mainPlan.amount / 100.0).toFixed(2)}{" "}
+          {augmentInterval(mainPlan.interval)}
         </span>
         <PaymentTypeRenderer {...productDetail.subscription} />
       </>

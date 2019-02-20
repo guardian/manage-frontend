@@ -79,6 +79,9 @@ export interface CurrencyAndIntervalDetail {
   interval: string;
 }
 
+export const augmentInterval = (interval: string) =>
+  interval === "6 weeks" ? "One-off" : `${interval}ly`;
+
 export interface PaidSubscriptionPlan
   extends SubscriptionPlan,
     CurrencyAndIntervalDetail {
