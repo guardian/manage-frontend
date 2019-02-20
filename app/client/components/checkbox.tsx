@@ -33,7 +33,7 @@ export const Checkbox = (props: CheckboxProps) => (
         margin: "3px",
         marginRight: "10px",
         background: props.checked
-          ? props.checkboxFill || palette.green.checkbox
+          ? props.checkboxFill || palette.green.success
           : palette.white,
         position: "relative",
         outline: 0,
