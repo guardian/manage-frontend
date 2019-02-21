@@ -246,7 +246,16 @@ const getProductDetailRenderer = (
                   {listIndex + 1}
                 </h2>
               ) : (
-                <h2>{productType.alternateTierValue || productDetail.tier}</h2>
+                <h2>
+                  {productType.alternateTierValue || productDetail.tier}
+                  {productType.displayPlanName && (
+                    <i>
+                      {productType.displayPlanName(
+                        getMainPlan(productDetail.subscription)
+                      )}
+                    </i>
+                  )}
+                </h2>
               )}
             </PageContainer>
           ) : (
@@ -309,25 +318,34 @@ const getProductDetailRenderer = (
               <ProductDetailRow
                 label={productPageProperties.tierRowLabel}
                 data={
-                  productPageProperties.tierChangeable ? (
-                    <div css={wrappingContainerCSS}>
-                      <div css={{ marginRight: "15px" }}>
-                        {productType.alternateTierValue || productDetail.tier}
+                  <>
+                    {productPageProperties.tierChangeable ? (
+                      <div css={wrappingContainerCSS}>
+                        <div css={{ marginRight: "15px" }}>
+                          {productType.alternateTierValue || productDetail.tier}
+                        </div>
+                        {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                        <a
+                          href={
+                            "https://membership." +
+                            window.guardian.domain +
+                            "/tier/change"
+                          }
+                        >
+                          <Button text="Change tier" right />
+                        </a>
                       </div>
-                      {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                      <a
-                        href={
-                          "https://membership." +
-                          window.guardian.domain +
-                          "/tier/change"
-                        }
-                      >
-                        <Button text="Change tier" right />
-                      </a>
-                    </div>
-                  ) : (
-                    productType.alternateTierValue || productDetail.tier
-                  )
+                    ) : (
+                      productType.alternateTierValue || productDetail.tier
+                    )}
+                    {productType.displayPlanName && (
+                      <i>
+                        {productType.displayPlanName(
+                          getMainPlan(productDetail.subscription)
+                        )}
+                      </i>
+                    )}
+                  </>
                 }
               />
             ) : (

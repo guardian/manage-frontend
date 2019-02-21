@@ -39,13 +39,15 @@ const PaymentTypeRenderer = (subscription: Subscription) => {
   return null;
 };
 
-const commonFlexCSS = css({
-  alignItems: "center",
-  flexWrap: "wrap",
-  "span, div": {
-    marginRight: "10px"
-  }
-});
+const flexCSS = (display: "inline-flex" | "flex") =>
+  css({
+    display,
+    alignItems: "center",
+    flexWrap: "wrap",
+    "span, div": {
+      marginRight: "10px"
+    }
+  });
 
 const getPaymentPart = (productDetail: ProductDetail) => {
   const mainPlan = getMainPlan(productDetail.subscription);
@@ -99,12 +101,14 @@ const getProductDetailSelector = (
               }}
             >
               <PageContainer noVerticalMargin>
-                <div
-                  css={css({
-                    display: "flex",
-                    ...commonFlexCSS
-                  })}
-                >
+                {props.productType.displayPlanName && (
+                  <i>
+                    {props.productType
+                      .displayPlanName(getMainPlan(productDetail.subscription))
+                      .trim()}
+                  </i>
+                )}
+                <div css={flexCSS("flex")}>
                   {hasProductPageProperties(props.productType) &&
                   props.productType.productPage.tierRowLabel ? (
                     <span>
@@ -117,12 +121,7 @@ const getProductDetailSelector = (
                     <strong>Join Date:</strong>{" "}
                     {formatDate(productDetail.joinDate)}{" "}
                   </span>
-                  <div
-                    css={css({
-                      display: "inline-flex",
-                      ...commonFlexCSS
-                    })}
-                  >
+                  <div css={flexCSS("inline-flex")}>
                     <strong>Payment:</strong>
                     {getPaymentPart(productDetail)}
                   </div>

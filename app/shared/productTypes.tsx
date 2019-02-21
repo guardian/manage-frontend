@@ -11,7 +11,12 @@ import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
 import { MeResponse } from "./meResponse";
 import { OphanProduct } from "./ophanTypes";
-import { formatDate, ProductDetail, Subscription } from "./productResponse";
+import {
+  formatDate,
+  ProductDetail,
+  Subscription,
+  SubscriptionPlan
+} from "./productResponse";
 
 export type ProductFriendlyName =
   | "membership"
@@ -76,6 +81,7 @@ export interface ProductType {
   ) => OphanProduct | undefined;
   includeGuardianInTitles?: true;
   alternateTierValue?: string;
+  displayPlanName?: (plan: SubscriptionPlan) => string;
   alternateManagementUrl?: string;
   alternateManagementCtaLabel?: (
     productDetail: ProductDetail
@@ -250,6 +256,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    displayPlanName: (plan: SubscriptionPlan) =>
+      ` (${plan.name.replace("+", " plus Digital Pack")})`,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.tier === "Newspaper Delivery"
@@ -264,6 +272,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
     alternateTierValue: "Guardian Weekly",
+    displayPlanName: (plan: SubscriptionPlan) =>
+      plan.name.indexOf("Six for Six") !== -1
+        ? " (currently on '6 for 6')"
+        : "",
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: (productDetail: ProductDetail) =>
       productDetail.subscription.autoRenew
