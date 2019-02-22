@@ -45,22 +45,31 @@ export const augmentRedirectURL = (
         }
       });
 
+  // To avoid potential clashes with query parameters that have a special meaning on profile (e.g. error),
+  // only forward specific query parameters.
+  const queryParametersNamesToForward = [
+    "INTCMP",
+    // Some links in payment failure emails include the user's (encrypted) email as a query parameter
+    // and/or an auto sign-in token. If present, include these in the identity redirect url,
+    // since they can be utilised to facilitate sign-in by identity frontend.
+    "encryptedEmail",
+    "autoSignInToken",
+    // By passing these profile to, can measure the sign in rates across test segments.
+    "abName",
+    "abVariant"
+  ];
+
+  const queryParametersToForward = Object.entries(req.query).filter(
+    ([name, _]) => queryParametersNamesToForward.includes(name)
+  );
+
   return url.format({
     protocol: parsedSimpleURL.protocol,
     host: parsedSimpleURL.host,
     pathname: parsedSimpleURL.pathname,
     query: {
       ...parsedSimpleURL.query,
-      ...(req.query.INTCMP && { INTCMP: req.query.INTCMP }), // if undefined then this param is omitted
-      // Some links in payment failure emails include the user's (encrypted) email as a query parameter
-      // and/or an auto sign-in token. If present, include these in the identity redirect url,
-      // since they can be utilised to facilitate sign-in by identity frontend.
-      ...(req.query.encryptedEmail && {
-        encryptedEmail: req.query.encryptedEmail
-      }),
-      ...(req.query.autoSignInToken && {
-          autoSignInToken: req.query.autoSignInToken
-      }),
+      ...queryParametersToForward,
       returnUrl // this is automatically URL encoded
     }
   });
