@@ -54,13 +54,17 @@ export const augmentRedirectURL = (
     // since they can be utilised to facilitate sign-in by identity frontend.
     "encryptedEmail",
     "autoSignInToken",
-    // By passing these profile to, can measure the sign in rates across test segments.
+    // By passing these to profile, can measure the sign in rates across test segments.
     "abName",
     "abVariant"
   ];
 
-  const queryParametersToForward = Object.entries(req.query).filter(
-    ([name, _]) => queryParametersNamesToForward.includes(name)
+  const queryParametersToForward = queryParametersNamesToForward.reduce(
+    (params, name) => {
+      const value = req.query[name];
+      return value ? { ...params, [name]: value } : params;
+    },
+    {}
   );
 
   return url.format({
