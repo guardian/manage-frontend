@@ -60,7 +60,8 @@ export const trackEvent = ({
           ]
         },
         action: "VIEW",
-        value: eventValue !== undefined ? `${eventValue}` : undefined
+        value: eventValue !== undefined ? `${eventValue}` : undefined,
+        abTest: window.guardian.abTest
       }
     });
   }
@@ -78,11 +79,23 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
   constructor(props: {}) {
     super(props);
     if (typeof window !== "undefined" && window.ga) {
-      this.INTCMP = parse(window.location.href, true).query.INTCMP;
+      const queryParams = parse(window.location.href, true).query;
+
+      this.INTCMP = queryParams.INTCMP;
 
       if (window.guardian) {
         // tslint:disable-next-line:no-object-mutation
         window.guardian.INTCMP = this.INTCMP;
+
+        const abName = queryParams.abName;
+        const abVariant = queryParams.abVariant;
+
+        if (abName && abVariant) {
+          window.guardian.abTest = {
+            name: abName,
+            variant: abVariant
+          };
+        }
       }
 
       if (window.dataLayer === undefined) {
