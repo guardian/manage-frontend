@@ -17,9 +17,9 @@ const palette = {
     header: "#052962"
   },
   green: {
-    dark: "#236925",
+    dark: "#185E36",
     medium: "#3db540",
-    checkbox: "#22834D"
+    success: "#22834D"
   },
   gold: {
     light: "#eacca0",

@@ -239,13 +239,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       },
       alternateSupportButtonUrlSuffix: (
         reasonId: OptionalCancellationReasonId
-      ) => {
-        switch (reasonId) {
-          /*TODO tweak the support url to preselect single/monthly/annual once functionality is available*/
-          default:
-            return "/contribute";
-        }
-      },
+      ) => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
       swapFeedbackAndContactUs: true
     }
   },

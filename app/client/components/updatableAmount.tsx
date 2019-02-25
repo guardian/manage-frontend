@@ -290,7 +290,7 @@ export class UpdatableAmount extends React.Component<
                 ...amountValidationWarningCSS,
                 paddingLeft: "0",
                 fontWeight: "bold",
-                color: palette.green.dark
+                color: palette.green.success
               }}
             >
               Your contribution amount was updated successfully. Thank you.
