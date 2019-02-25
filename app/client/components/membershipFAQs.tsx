@@ -85,7 +85,7 @@ export const MembershipFAQs = (props: RouteableProps) => (
               the website.{" "}
               <a
                 css={linkCss}
-                href="https://support.theguardian.com/uk/subscribe/digital"
+                href="https://support.theguardian.com/subscribe/digital"
               >
                 Sign up for Digital Pack here
               </a>
