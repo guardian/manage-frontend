@@ -19,6 +19,20 @@ export interface MockableExpressRequest {
   query: any;
 }
 
+interface QueryParameters {
+  [name: string]: string;
+}
+
+// Filter query parameters to include only those whose name satisfies the predicate p.
+const filterQueryParametersByName = (
+  params: QueryParameters,
+  p: (name: string) => boolean
+): QueryParameters => {
+  return Object.entries(params)
+    .filter(([name, _]) => p(name))
+    .reduce((params2, [name, value]) => ({ ...params2, [name]: value }), {});
+};
+
 export const augmentRedirectURL = (
   req: MockableExpressRequest,
   simpleRedirectURL: string,
@@ -31,6 +45,16 @@ export const augmentRedirectURL = (
     true
   );
 
+  // These query parameters are included in payment failure links
+  // so that they can be forwarded to profile to facilitate sign-in.
+  // However, they are not required by manage, so remove them from the return url.
+  const queryParameterNamesToRemove = ["encryptedEmail", "autoSignInToken"];
+
+  const returnUrlQueryParameters = filterQueryParametersByName(
+    req.query,
+    name => !queryParameterNamesToRemove.includes(name)
+  );
+
   const returnUrl = useRefererHeaderForReturnURL
     ? req.header("referer")
     : url.format({
@@ -38,7 +62,7 @@ export const augmentRedirectURL = (
         host: req.get("host"),
         pathname: req.baseUrl + req.path,
         query: {
-          ...req.query,
+          ...returnUrlQueryParameters,
           profileReferrer: parsedSimpleURL.path
             ? parsedSimpleURL.path.substring(1)
             : undefined
@@ -46,8 +70,8 @@ export const augmentRedirectURL = (
       });
 
   // To avoid potential clashes with query parameters that have a special meaning on profile (e.g. error),
-  // only forward specific query parameters.
-  const queryParametersNamesToForward = [
+  // only forward specific query parameters to profile.
+  const profileQueryParameterNames = [
     "INTCMP",
     // Some links in payment failure emails include the user's (encrypted) email as a query parameter
     // and/or an auto sign-in token. If present, include these in the identity redirect url,
@@ -59,12 +83,8 @@ export const augmentRedirectURL = (
     "abVariant"
   ];
 
-  const queryParametersToForward = queryParametersNamesToForward.reduce(
-    (params, name) => {
-      const value = req.query[name];
-      return value ? { ...params, [name]: value } : params;
-    },
-    {}
+  const profileQueryParameters = filterQueryParametersByName(req.query, name =>
+    profileQueryParameterNames.includes(name)
   );
 
   return url.format({
@@ -73,7 +93,7 @@ export const augmentRedirectURL = (
     pathname: parsedSimpleURL.pathname,
     query: {
       ...parsedSimpleURL.query,
-      ...queryParametersToForward,
+      ...profileQueryParameters,
       returnUrl // this is automatically URL encoded
     }
   });
