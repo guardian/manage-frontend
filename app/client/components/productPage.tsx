@@ -186,7 +186,6 @@ const getPaymentPart = (
                 productType={productType}
               />
               {futurePlan &&
-                futurePlan.productRatePlanId !== mainPlan.productRatePlanId &&
                 futurePlan.amount !== mainPlan.amount && (
                   <div css={{ fontStyle: "italic" }}>
                     {futurePlan.currency}{" "}
