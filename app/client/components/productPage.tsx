@@ -312,84 +312,81 @@ const getProductDetailRenderer = (
               undefined
             )}
             {productPageProperties.tierRowLabel &&
-            (productDetailListLength === 1 ||
-              productPageProperties.tierChangeable) ? (
-              <ProductDetailRow
-                label={productPageProperties.tierRowLabel}
-                data={
-                  <>
-                    {productPageProperties.tierChangeable ? (
-                      <div css={wrappingContainerCSS}>
-                        <div css={{ marginRight: "15px" }}>
-                          {productType.alternateTierValue || productDetail.tier}
+              (productDetailListLength === 1 ||
+                productPageProperties.tierChangeable) && (
+                <ProductDetailRow
+                  label={productPageProperties.tierRowLabel}
+                  data={
+                    <>
+                      {productPageProperties.tierChangeable ? (
+                        <div css={wrappingContainerCSS}>
+                          <div css={{ marginRight: "15px" }}>
+                            {productType.alternateTierValue ||
+                              productDetail.tier}
+                          </div>
+                          {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                          <a
+                            href={
+                              "https://membership." +
+                              window.guardian.domain +
+                              "/tier/change"
+                            }
+                          >
+                            <Button text="Change tier" right />
+                          </a>
                         </div>
-                        {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                        <a
-                          href={
-                            "https://membership." +
-                            window.guardian.domain +
-                            "/tier/change"
-                          }
-                        >
-                          <Button text="Change tier" right />
-                        </a>
-                      </div>
-                    ) : (
-                      productType.alternateTierValue || productDetail.tier
-                    )}
-                    {productType.displayPlanName && (
-                      <i>
-                        {productType.displayPlanName(
-                          getMainPlan(productDetail.subscription)
-                        )}
-                      </i>
-                    )}
-                  </>
-                }
-              />
-            ) : (
-              undefined
-            )}
-            {productDetail.joinDate !== productDetail.subscription.start && (
+                      ) : (
+                        productType.alternateTierValue || productDetail.tier
+                      )}
+                      {productType.displayPlanName && (
+                        <i>
+                          {productType.displayPlanName(
+                            getMainPlan(productDetail.subscription)
+                          )}
+                        </i>
+                      )}
+                    </>
+                  }
+                />
+              )}
+            {(productPageProperties.forceShowJoinDateOnly ||
+              !productDetail.subscription.start) && (
               <ProductDetailRow
                 label={"Join date"}
                 data={formatDate(productDetail.joinDate)}
               />
             )}
-            {productDetail.subscription.start && (
-              <ProductDetailRow
-                label={"Start date"}
-                data={formatDate(productDetail.subscription.start)}
-              />
-            )}
+            {productDetail.subscription.start &&
+              !productPageProperties.forceShowJoinDateOnly && (
+                <ProductDetailRow
+                  label={"Start date"}
+                  data={formatDate(productDetail.subscription.start)}
+                />
+              )}
             {productType.showTrialRemainingIfApplicable &&
-            productDetail.subscription.trialLength > 0 ? (
-              <ProductDetailRow
-                label={"Trial remaining"}
-                data={`${productDetail.subscription.trialLength} day${
-                  productDetail.subscription.trialLength !== 1 ? "s" : ""
-                }`}
-              />
-            ) : (
-              undefined
-            )}
+              productDetail.subscription.trialLength > 0 && (
+                <ProductDetailRow
+                  label={"Trial remaining"}
+                  data={`${productDetail.subscription.trialLength} day${
+                    productDetail.subscription.trialLength !== 1 ? "s" : ""
+                  }`}
+                />
+              )}
             {getPaymentPart(productDetail, productType)}
             {productType.cancellation &&
-            productType.cancellation.linkOnProductPage ? (
-              <Link
-                css={{
-                  textDecoration: "underline",
-                  color: palette.neutral["1"],
-                  ":visited": { color: palette.neutral["1"] }
-                }}
-                to={"/cancel/" + productType.urlPart}
-                state={productDetail}
-              >
-                {"Cancel this " + productType.friendlyName}
-              </Link>
-            ) : (
-              undefined
-            )}
+              productType.cancellation.linkOnProductPage && (
+                <Link
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.neutral["1"],
+                    ":visited": { color: palette.neutral["1"] }
+                  }}
+                  to={"/cancel/" + productType.urlPart}
+                  state={productDetail}
+                >
+                  {"Cancel this " + productType.friendlyName}
+                </Link>
+              )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
               (productDetailListLength > 1 ? (

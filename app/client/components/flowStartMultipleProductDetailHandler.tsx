@@ -110,17 +110,29 @@ const getProductDetailSelector = (
                 )}
                 <div css={flexCSS("flex")}>
                   {hasProductPageProperties(props.productType) &&
-                  props.productType.productPage.tierRowLabel ? (
+                    props.productType.productPage.tierRowLabel && (
+                      <span>
+                        <strong>Tier: </strong> {productDetail.tier}{" "}
+                      </span>
+                    )}
+                  {((hasProductPageProperties(props.productType) &&
+                    props.productType.productPage.forceShowJoinDateOnly) ||
+                    !productDetail.subscription.start) && (
                     <span>
-                      <strong>Tier: </strong> {productDetail.tier}{" "}
+                      <strong>Join Date:</strong>{" "}
+                      {formatDate(productDetail.joinDate)}{" "}
                     </span>
-                  ) : (
-                    undefined
                   )}
-                  <span>
-                    <strong>Join Date:</strong>{" "}
-                    {formatDate(productDetail.joinDate)}{" "}
-                  </span>
+                  {productDetail.subscription.start &&
+                    !(
+                      hasProductPageProperties(props.productType) &&
+                      props.productType.productPage.forceShowJoinDateOnly
+                    ) && (
+                      <span>
+                        <strong>Start Date:</strong>{" "}
+                        {formatDate(productDetail.subscription.start)}{" "}
+                      </span>
+                    )}
                   <div css={flexCSS("inline-flex")}>
                     <strong>Payment:</strong>
                     {getPaymentPart(productDetail)}
@@ -133,12 +145,10 @@ const getProductDetailSelector = (
                       </span>
                     )}
                 </div>
-                {productDetail.alertText ? (
+                {productDetail.alertText && (
                   <div css={{ color: palette.red.dark }}>
                     <strong>{alertTextWithoutCTA(productDetail)}</strong>
                   </div>
-                ) : (
-                  undefined
                 )}
                 <div css={{ marginTop: "10px" }}>
                   <Button

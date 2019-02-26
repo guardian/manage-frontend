@@ -69,6 +69,7 @@ export interface ProductPageProperties {
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriptionId?: true;
+  forceShowJoinDateOnly?: true;
 }
 
 export interface ProductType {
@@ -170,7 +171,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       noProductInTabCopy:
         "To manage your existing contribution or subscription, please select from the tabs above.",
       tierRowLabel: "Membership tier",
-      tierChangeable: true
+      tierChangeable: true,
+      forceShowJoinDateOnly: true
     },
     includeGuardianInTitles: true,
     cancellation: {
