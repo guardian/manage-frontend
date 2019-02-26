@@ -16,7 +16,7 @@
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "updateSnapshot": "jest -u",
-    "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner",
+    "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && tslint --fix -p .",
     "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
   },
