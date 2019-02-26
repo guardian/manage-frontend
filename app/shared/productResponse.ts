@@ -66,7 +66,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-  name: string;
+  name?: string;
   start: string;
   shouldBeVisible: boolean;
 }

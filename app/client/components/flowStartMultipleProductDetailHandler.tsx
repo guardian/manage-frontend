@@ -101,12 +101,8 @@ const getProductDetailSelector = (
               }}
             >
               <PageContainer noVerticalMargin>
-                {props.productType.displayPlanName && (
-                  <i>
-                    {props.productType
-                      .displayPlanName(getMainPlan(productDetail.subscription))
-                      .trim()}
-                  </i>
+                {getMainPlan(productDetail.subscription).name && (
+                  <i>({getMainPlan(productDetail.subscription).name})</i>
                 )}
                 <div css={flexCSS("flex")}>
                   {hasProductPageProperties(props.productType) &&

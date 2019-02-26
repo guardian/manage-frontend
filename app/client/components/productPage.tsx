@@ -223,6 +223,7 @@ const getProductDetailRenderer = (
     productType.alternateManagementCtaLabel(productDetail);
   const shouldShowShadedBackground =
     productDetailListLength > 1 && (listIndex + 1) % 2 !== 0;
+  const mainPlan = getMainPlan(productDetail.subscription);
   return (
     <div
       key={productDetail.subscription.subscriptionId}
@@ -237,7 +238,7 @@ const getProductDetailRenderer = (
         getCancellationSummary(productType)(productDetail.subscription)
       ) : (
         <>
-          {productDetailListLength > 1 ? (
+          {productDetailListLength > 1 && (
             <PageContainer noVerticalMargin>
               {productType.productPage === productPageProperties ? (
                 <h2>
@@ -247,20 +248,12 @@ const getProductDetailRenderer = (
               ) : (
                 <h2>
                   {productType.alternateTierValue || productDetail.tier}
-                  {productType.displayPlanName && (
-                    <i>
-                      {productType.displayPlanName(
-                        getMainPlan(productDetail.subscription)
-                      )}
-                    </i>
-                  )}
+                  {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
                 </h2>
               )}
             </PageContainer>
-          ) : (
-            undefined
           )}
-          {productDetail.alertText ? (
+          {productDetail.alertText && (
             <div
               css={{
                 backgroundColor: palette.red.dark,
@@ -299,17 +292,13 @@ const getProductDetailRenderer = (
                 />
               </PageContainer>
             </div>
-          ) : (
-            undefined
           )}
           <PageContainer>
-            {productPageProperties.showSubscriptionId ? (
+            {productPageProperties.showSubscriptionId && (
               <ProductDetailRow
                 label={"Subscription ID"}
                 data={productDetail.subscription.subscriptionId}
               />
-            ) : (
-              undefined
             )}
             {productPageProperties.tierRowLabel &&
               (productDetailListLength === 1 ||
@@ -338,11 +327,9 @@ const getProductDetailRenderer = (
                       ) : (
                         productType.alternateTierValue || productDetail.tier
                       )}
-                      {productType.displayPlanName && (
+                      {getMainPlan(productDetail.subscription).name && (
                         <i>
-                          {productType.displayPlanName(
-                            getMainPlan(productDetail.subscription)
-                          )}
+                          &nbsp;({getMainPlan(productDetail.subscription).name})
                         </i>
                       )}
                     </>
@@ -417,15 +404,13 @@ const getProductRenderer = (
   const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
-      {productDetailList.length > 1 ? (
+      {productDetailList.length > 1 && (
         <PageContainer>
           <h3>
             You have <strong>{toWords(productDetailList.length)}</strong>{" "}
             concurrent {productType.friendlyName}s:
           </h3>
         </PageContainer>
-      ) : (
-        undefined
       )}
       {productDetailList.length > 0 ? (
         productDetailList.map(
