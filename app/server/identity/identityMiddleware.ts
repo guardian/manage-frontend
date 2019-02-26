@@ -49,7 +49,7 @@ const updateManageUrl = (
   useRefererHeader: boolean,
   redirectUrl?: UrlWithParsedQuery
 ): string => {
-  // It is vital that trh sign-in query parameters are removed.
+  // It is vital that the sign-in query parameters are removed.
   // See the implementation of withIdentity() for more context.
   const queryParameters = filterQueryParametersByName(
     req.query,
