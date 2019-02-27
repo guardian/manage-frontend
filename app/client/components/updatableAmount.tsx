@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import {
-  SubscriptionPlan,
-  WithSubscription
+  CurrencyAndIntervalDetail,
+  PaidSubscriptionPlan
 } from "../../shared/productResponse";
 import { ProductType, WithProductType } from "../../shared/productTypes";
 import palette from "../colours";
@@ -20,16 +20,16 @@ enum MinOrMax {
 // min & max values based on https://github.com/guardian/support-frontend/blob/5aa237d/assets/helpers/contributions.js
 const calculateMinOrMaxAmount = (
   minOrMax: MinOrMax,
-  subscriptionPlan: SubscriptionPlan
+  currencyAndIntervalDetail: CurrencyAndIntervalDetail
 ) => {
-  if (subscriptionPlan.interval.toLowerCase() === "month") {
+  if (currencyAndIntervalDetail.interval.toLowerCase() === "month") {
     if (
-      subscriptionPlan.currencyISO === "NZD" ||
-      subscriptionPlan.currencyISO === "AUD"
+      currencyAndIntervalDetail.currencyISO === "NZD" ||
+      currencyAndIntervalDetail.currencyISO === "AUD"
     ) {
       return minOrMax === MinOrMax.minimum ? 10 : 200;
     }
-    if (subscriptionPlan.currencyISO === "CAD") {
+    if (currencyAndIntervalDetail.currencyISO === "CAD") {
       return minOrMax === MinOrMax.minimum ? 5 : 166;
     }
     return minOrMax === MinOrMax.minimum ? 2 : 166; // monthly default
@@ -42,35 +42,41 @@ export const pleaseCheck = "Please check the amount you've entered.";
 export const validateValue = (
   currentAmount: number,
   newValue: number,
-  subscriptionPlan: SubscriptionPlan
+  currencyAndIntervalDetail: CurrencyAndIntervalDetail
 ) => {
   if (isNaN(newValue)) {
     return "Please enter a valid number";
   }
   if (newValue === currentAmount) {
     return `Your current contribution is ${
-      subscriptionPlan.currency
+      currencyAndIntervalDetail.currency
     }${currentAmount.toFixed(2)} a ${
-      subscriptionPlan.interval
+      currencyAndIntervalDetail.interval
     }. Please enter a different amount.`;
   }
-  const minAmount = calculateMinOrMaxAmount(MinOrMax.minimum, subscriptionPlan);
+  const minAmount = calculateMinOrMaxAmount(
+    MinOrMax.minimum,
+    currencyAndIntervalDetail
+  );
   if (newValue < minAmount) {
     return `Please enter an amount of ${
-      subscriptionPlan.currency
-    }${minAmount} or more a ${subscriptionPlan.interval}`;
+      currencyAndIntervalDetail.currency
+    }${minAmount} or more a ${currencyAndIntervalDetail.interval}`;
   }
-  const maxAmount = calculateMinOrMaxAmount(MinOrMax.maximum, subscriptionPlan);
+  const maxAmount = calculateMinOrMaxAmount(
+    MinOrMax.maximum,
+    currencyAndIntervalDetail
+  );
   if (newValue > maxAmount) {
     return `Thank you but we cannot accept contributions over ${
-      subscriptionPlan.currency
-    }${maxAmount} a ${subscriptionPlan.interval}`;
+      currencyAndIntervalDetail.currency
+    }${maxAmount} a ${currencyAndIntervalDetail.interval}`;
   }
   if (newValue > 10 * currentAmount) {
     return `Your current contribution is ${
-      subscriptionPlan.currency
+      currencyAndIntervalDetail.currency
     }${currentAmount.toFixed(2)} a ${
-      subscriptionPlan.interval
+      currencyAndIntervalDetail.interval
     }. ${pleaseCheck}`;
   }
 };
@@ -96,8 +102,10 @@ const getAmountUpdater = (
     body: JSON.stringify({ newPaymentAmount: newAmount })
   });
 
-export type UpdatableAmountProps = WithSubscription &
-  WithProductType<ProductType>;
+export type UpdatableAmountProps = WithProductType<ProductType> & {
+  mainPlan: PaidSubscriptionPlan;
+  subscriptionId: string;
+};
 
 export interface UpdatableAmountState {
   inEditMode: boolean;
@@ -112,7 +120,7 @@ export class UpdatableAmount extends React.Component<
   UpdatableAmountProps,
   UpdatableAmountState
 > {
-  public initialAmount = this.props.subscription.plan.amount / 100.0;
+  public initialAmount = this.props.mainPlan.amount / 100.0;
   public state = {
     inEditMode: false,
     isApplyingUpdate: false,
@@ -128,9 +136,7 @@ export class UpdatableAmount extends React.Component<
           this.getPerformUpdateLoader()
         ) : (
           <>
-            <span css={{ width: "12px" }}>
-              {this.props.subscription.plan.currency}
-            </span>
+            <span css={{ width: "12px" }}>{this.props.mainPlan.currency}</span>
             {this.state.inEditMode
               ? this.getEditModeRenderer()
               : this.getDisplayModeRenderer()}
@@ -147,7 +153,7 @@ export class UpdatableAmount extends React.Component<
       validationMessage: validateValue(
         this.state.currentAmount,
         newValue,
-        this.props.subscription.plan
+        this.props.mainPlan
       )
     });
   };
@@ -157,16 +163,16 @@ export class UpdatableAmount extends React.Component<
       fetch={getAmountUpdater(
         this.state.newAmount,
         this.props.productType,
-        this.props.subscription.subscriptionId
+        this.props.subscriptionId
       )}
       readerOnOK={(resp: Response) => resp.text()}
       render={() => {
         trackEvent({
           eventCategory: "amount_change",
           eventAction: "contributions_amount_change_success",
-          eventLabel: `by ${this.props.subscription.plan.currency}${(
+          eventLabel: `by ${this.props.mainPlan.currency}${(
             this.state.newAmount - this.state.currentAmount
-          ).toFixed(2)}${this.props.subscription.plan.currencyISO}`
+          ).toFixed(2)}${this.props.mainPlan.currencyISO}`
         });
         this.setState({
           isApplyingUpdate: false,
@@ -216,7 +222,7 @@ export class UpdatableAmount extends React.Component<
           marginRight: "10px"
         }}
       >
-        {this.props.subscription.plan.currencyISO}
+        {this.props.mainPlan.currencyISO}
       </span>
       <div
         css={{
@@ -264,8 +270,7 @@ export class UpdatableAmount extends React.Component<
           marginRight: "15px"
         }}
       >
-        {this.state.currentAmount.toFixed(2)}{" "}
-        {this.props.subscription.plan.currencyISO}
+        {this.state.currentAmount.toFixed(2)} {this.props.mainPlan.currencyISO}
       </span>
       {this.props.productType.updateAmountMdaEndpoint ? (
         <>
@@ -279,7 +284,7 @@ export class UpdatableAmount extends React.Component<
                 validationMessage: validateValue(
                   this.initialAmount,
                   this.state.newAmount,
-                  this.props.subscription.plan
+                  this.props.mainPlan
                 )
               });
             }}

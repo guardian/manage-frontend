@@ -7,8 +7,12 @@ import React from "react";
 import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
+  augmentInterval,
   formatDate,
+  getFuturePlanIfStartsBeforeXDaysFromToday,
+  getMainPlan,
   hasProduct,
+  isPaidSubscriptionPlan,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
@@ -152,26 +156,50 @@ const getPaymentPart = (
   productDetail: ProductDetail,
   productType: ProductType
 ) => {
-  if (productDetail.isPaidTier) {
+  const mainPlan = getMainPlan(productDetail.subscription);
+  const futurePlan = getFuturePlanIfStartsBeforeXDaysFromToday(
+    productDetail.subscription
+  );
+  if (isPaidSubscriptionPlan(mainPlan)) {
+    const mainPlanInterval = augmentInterval(mainPlan.interval);
     return (
       <>
-        {productDetail.subscription.nextPaymentDate && (
-          <ProductDetailRow
-            label={"Next payment date"}
-            data={formatDate(productDetail.subscription.nextPaymentDate)}
-          />
-        )}
+        {productDetail.subscription.nextPaymentDate &&
+          !productDetail.alertText && (
+            <ProductDetailRow
+              label={"Next payment date"}
+              data={formatDate(productDetail.subscription.nextPaymentDate)}
+            />
+          )}
+        {}
         <ProductDetailRow
           label={
-            productDetail.subscription.plan.interval.charAt(0).toUpperCase() +
-            productDetail.subscription.plan.interval.substr(1) +
-            "ly payment"
+            mainPlanInterval.charAt(0).toUpperCase() +
+            mainPlanInterval.substr(1) +
+            " payment"
           }
           data={
-            <UpdatableAmount
-              subscription={productDetail.subscription}
-              productType={productType}
-            />
+            <>
+              <UpdatableAmount
+                mainPlan={mainPlan}
+                subscriptionId={productDetail.subscription.subscriptionId}
+                productType={productType}
+              />
+              {futurePlan &&
+                futurePlan.amount !== mainPlan.amount && (
+                  <div css={{ fontStyle: "italic" }}>
+                    {futurePlan.currency}{" "}
+                    {(futurePlan.amount / 100.0).toFixed(2)}{" "}
+                    {futurePlan.currencyISO}{" "}
+                    {futurePlan.interval !== mainPlan.interval && (
+                      <strong>
+                        {augmentInterval(futurePlan.interval) + " "}
+                      </strong>
+                    )}
+                    starting {formatDate(futurePlan.start)}
+                  </div>
+                )}
+            </>
           }
         />
         {getPaymentMethodRow(productDetail, "/payment/" + productType.urlPart)}
@@ -195,6 +223,7 @@ const getProductDetailRenderer = (
     productType.alternateManagementCtaLabel(productDetail);
   const shouldShowShadedBackground =
     productDetailListLength > 1 && (listIndex + 1) % 2 !== 0;
+  const mainPlan = getMainPlan(productDetail.subscription);
   return (
     <div
       key={productDetail.subscription.subscriptionId}
@@ -209,7 +238,7 @@ const getProductDetailRenderer = (
         getCancellationSummary(productType)(productDetail.subscription)
       ) : (
         <>
-          {productDetailListLength > 1 ? (
+          {productDetailListLength > 1 && (
             <PageContainer noVerticalMargin>
               {productType.productPage === productPageProperties ? (
                 <h2>
@@ -217,13 +246,14 @@ const getProductDetailRenderer = (
                   {listIndex + 1}
                 </h2>
               ) : (
-                <h2>{productType.alternateTierValue || productDetail.tier}</h2>
+                <h2>
+                  {productType.alternateTierValue || productDetail.tier}
+                  {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                </h2>
               )}
             </PageContainer>
-          ) : (
-            undefined
           )}
-          {productDetail.alertText ? (
+          {productDetail.alertText && (
             <div
               css={{
                 backgroundColor: palette.red.dark,
@@ -262,82 +292,88 @@ const getProductDetailRenderer = (
                 />
               </PageContainer>
             </div>
-          ) : (
-            undefined
           )}
           <PageContainer>
-            {productPageProperties.showSubscriptionId ? (
+            {productPageProperties.showSubscriptionId && (
               <ProductDetailRow
                 label={"Subscription ID"}
                 data={productDetail.subscription.subscriptionId}
               />
-            ) : (
-              undefined
             )}
             {productPageProperties.tierRowLabel &&
-            (productDetailListLength === 1 ||
-              productPageProperties.tierChangeable) ? (
-              <ProductDetailRow
-                label={productPageProperties.tierRowLabel}
-                data={
-                  productPageProperties.tierChangeable ? (
-                    <div css={wrappingContainerCSS}>
-                      <div css={{ marginRight: "15px" }}>
-                        {productType.alternateTierValue || productDetail.tier}
-                      </div>
-                      {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
-                      <a
-                        href={
-                          "https://membership." +
-                          window.guardian.domain +
-                          "/tier/change"
-                        }
-                      >
-                        <Button text="Change tier" right />
-                      </a>
-                    </div>
-                  ) : (
-                    productType.alternateTierValue || productDetail.tier
-                  )
-                }
-              />
-            ) : (
-              undefined
-            )}
-            <ProductDetailRow
-              label={"Start date"}
-              data={formatDate(
-                productDetail.subscription.start || productDetail.joinDate
+              (productDetailListLength === 1 ||
+                productPageProperties.tierChangeable) && (
+                <ProductDetailRow
+                  label={productPageProperties.tierRowLabel}
+                  data={
+                    <>
+                      {productPageProperties.tierChangeable ? (
+                        <div css={wrappingContainerCSS}>
+                          <div css={{ marginRight: "15px" }}>
+                            {productType.alternateTierValue ||
+                              productDetail.tier}
+                          </div>
+                          {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
+                          <a
+                            href={
+                              "https://membership." +
+                              window.guardian.domain +
+                              "/tier/change"
+                            }
+                          >
+                            <Button text="Change tier" right />
+                          </a>
+                        </div>
+                      ) : (
+                        productType.alternateTierValue || productDetail.tier
+                      )}
+                      {getMainPlan(productDetail.subscription).name && (
+                        <i>
+                          &nbsp;({getMainPlan(productDetail.subscription).name})
+                        </i>
+                      )}
+                    </>
+                  }
+                />
               )}
-            />
-            {productType.showTrialRemainingIfApplicable &&
-            productDetail.subscription.trialLength > 0 ? (
+            {(productPageProperties.forceShowJoinDateOnly ||
+              !productDetail.subscription.start) && (
               <ProductDetailRow
-                label={"Trial remaining"}
-                data={`${productDetail.subscription.trialLength} day${
-                  productDetail.subscription.trialLength !== 1 ? "s" : ""
-                }`}
+                label={"Join date"}
+                data={formatDate(productDetail.joinDate)}
               />
-            ) : (
-              undefined
             )}
+            {productDetail.subscription.start &&
+              !productPageProperties.forceShowJoinDateOnly && (
+                <ProductDetailRow
+                  label={"Start date"}
+                  data={formatDate(productDetail.subscription.start)}
+                />
+              )}
+            {productType.showTrialRemainingIfApplicable &&
+              productDetail.subscription.trialLength > 0 && (
+                <ProductDetailRow
+                  label={"Trial remaining"}
+                  data={`${productDetail.subscription.trialLength} day${
+                    productDetail.subscription.trialLength !== 1 ? "s" : ""
+                  }`}
+                />
+              )}
             {getPaymentPart(productDetail, productType)}
             {productType.cancellation &&
-            productType.cancellation.linkOnProductPage ? (
-              <Link
-                css={{
-                  textDecoration: "underline",
-                  color: palette.neutral["1"],
-                  ":visited": { color: palette.neutral["1"] }
-                }}
-                to={"/cancel/" + productType.urlPart}
-                state={productDetail}
-              >
-                {"Cancel this " + productType.friendlyName}
-              </Link>
-            ) : (
-              undefined
-            )}
+              productType.cancellation.linkOnProductPage && (
+                <Link
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.neutral["1"],
+                    ":visited": { color: palette.neutral["1"] }
+                  }}
+                  to={"/cancel/" + productType.urlPart}
+                  state={productDetail}
+                >
+                  {"Cancel this " + productType.friendlyName}
+                </Link>
+              )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
               (productDetailListLength > 1 ? (
@@ -368,15 +404,13 @@ const getProductRenderer = (
   const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
   return (
     <>
-      {productDetailList.length > 1 ? (
+      {productDetailList.length > 1 && (
         <PageContainer>
           <h3>
             You have <strong>{toWords(productDetailList.length)}</strong>{" "}
             concurrent {productType.friendlyName}s:
           </h3>
         </PageContainer>
-      ) : (
-        undefined
       )}
       {productDetailList.length > 0 ? (
         productDetailList.map(

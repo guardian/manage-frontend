@@ -4,8 +4,11 @@ import React from "react";
 import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
+  augmentInterval,
   formatDate,
+  getMainPlan,
   hasProduct,
+  isPaidSubscriptionPlan,
   MembersDataApiResponse,
   MembersDatApiAsyncLoader,
   ProductDetail,
@@ -36,13 +39,33 @@ const PaymentTypeRenderer = (subscription: Subscription) => {
   return null;
 };
 
-const commonFlexCSS = css({
-  alignItems: "center",
-  flexWrap: "wrap",
-  "span, div": {
-    marginRight: "10px"
+const flexCSS = (display: "inline-flex" | "flex") =>
+  css({
+    display,
+    alignItems: "center",
+    flexWrap: "wrap",
+    "span, div": {
+      marginRight: "10px"
+    }
+  });
+
+const getPaymentPart = (productDetail: ProductDetail) => {
+  const mainPlan = getMainPlan(productDetail.subscription);
+  if (isPaidSubscriptionPlan(mainPlan)) {
+    return (
+      <>
+        <span>
+          &nbsp;
+          {mainPlan.currency}
+          {(mainPlan.amount / 100.0).toFixed(2)}{" "}
+          {augmentInterval(mainPlan.interval)}
+        </span>
+        <PaymentTypeRenderer {...productDetail.subscription} />
+      </>
+    );
   }
-});
+  return " FREE";
+};
 
 const getProductDetailSelector = (
   props: FlowStartMultipleProductDetailHandlerProps,
@@ -78,62 +101,50 @@ const getProductDetailSelector = (
               }}
             >
               <PageContainer noVerticalMargin>
-                <div
-                  css={css({
-                    display: "flex",
-                    ...commonFlexCSS
-                  })}
-                >
+                {getMainPlan(productDetail.subscription).name && (
+                  <i>({getMainPlan(productDetail.subscription).name})</i>
+                )}
+                <div css={flexCSS("flex")}>
                   {hasProductPageProperties(props.productType) &&
-                  props.productType.productPage.tierRowLabel ? (
-                    <span>
-                      <strong>Tier: </strong> {productDetail.tier}{" "}
-                    </span>
-                  ) : (
-                    undefined
-                  )}
-                  <span>
-                    <strong>Start Date:</strong>{" "}
-                    {formatDate(
-                      productDetail.subscription.start || productDetail.joinDate
-                    )}{" "}
-                  </span>
-                  <div
-                    css={css({
-                      display: "inline-flex",
-                      ...commonFlexCSS
-                    })}
-                  >
-                    <strong>Payment:</strong>
-                    {productDetail.isPaidTier ? (
-                      <>
-                        <span>
-                          &nbsp;
-                          {productDetail.subscription.plan.currency}
-                          {(
-                            productDetail.subscription.plan.amount / 100.0
-                          ).toFixed(2)}{" "}
-                          {productDetail.subscription.plan.interval}ly
-                        </span>
-                        <PaymentTypeRenderer {...productDetail.subscription} />
-                      </>
-                    ) : (
-                      " FREE"
+                    props.productType.productPage.tierRowLabel && (
+                      <span>
+                        <strong>Tier: </strong> {productDetail.tier}{" "}
+                      </span>
                     )}
-                  </div>
-                  {productDetail.subscription.nextPaymentDate && (
+                  {((hasProductPageProperties(props.productType) &&
+                    props.productType.productPage.forceShowJoinDateOnly) ||
+                    !productDetail.subscription.start) && (
                     <span>
-                      <strong>Next payment date:</strong>{" "}
-                      {formatDate(productDetail.subscription.nextPaymentDate)}
+                      <strong>Join Date:</strong>{" "}
+                      {formatDate(productDetail.joinDate)}{" "}
                     </span>
                   )}
+                  {productDetail.subscription.start &&
+                    !(
+                      hasProductPageProperties(props.productType) &&
+                      props.productType.productPage.forceShowJoinDateOnly
+                    ) && (
+                      <span>
+                        <strong>Start Date:</strong>{" "}
+                        {formatDate(productDetail.subscription.start)}{" "}
+                      </span>
+                    )}
+                  <div css={flexCSS("inline-flex")}>
+                    <strong>Payment:</strong>
+                    {getPaymentPart(productDetail)}
+                  </div>
+                  {productDetail.subscription.nextPaymentDate &&
+                    !productDetail.alertText && (
+                      <span>
+                        <strong>Next payment date:</strong>{" "}
+                        {formatDate(productDetail.subscription.nextPaymentDate)}
+                      </span>
+                    )}
                 </div>
-                {productDetail.alertText ? (
+                {productDetail.alertText && (
                   <div css={{ color: palette.red.dark }}>
                     <strong>{alertTextWithoutCTA(productDetail)}</strong>
                   </div>
-                ) : (
-                  undefined
                 )}
                 <div css={{ marginTop: "10px" }}>
                   <Button

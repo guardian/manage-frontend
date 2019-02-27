@@ -1,7 +1,10 @@
 import React from "react";
 import {
+  augmentInterval,
   formatDate,
+  getMainPlan,
   hasProduct,
+  isPaidSubscriptionPlan,
   MembersDataApiResponseContext,
   ProductDetail,
   Subscription,
@@ -53,7 +56,11 @@ const ConfirmedNewPaymentDetailsRenderer = ({
   newPaymentMethodDetail,
   previousProductDetail
 }: ConfirmedNewPaymentDetailsRendererProps) => {
-  if (newPaymentMethodDetail.subHasExpectedPaymentType(subscription)) {
+  const mainPlan = getMainPlan(subscription);
+  if (
+    newPaymentMethodDetail.subHasExpectedPaymentType(subscription) &&
+    isPaidSubscriptionPlan(mainPlan)
+  ) {
     return (
       <>
         {newPaymentMethodDetail.render(subscription)}
@@ -62,17 +69,16 @@ const ConfirmedNewPaymentDetailsRenderer = ({
           <div>{newPaymentMethodDetail.paymentFailureRecoveryMessage}</div>
         ) : (
           <>
-            {subscription.nextPaymentPrice && subscription.nextPaymentDate ? (
-              <div>
-                <b>Next Payment:</b> {subscription.plan.currency}
-                {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
-                {formatDate(subscription.nextPaymentDate)}
-              </div>
-            ) : (
-              undefined
-            )}
+            {subscription.nextPaymentPrice &&
+              subscription.nextPaymentDate && (
+                <div>
+                  <b>Next Payment:</b> {mainPlan.currency}
+                  {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
+                  {formatDate(subscription.nextPaymentDate)}
+                </div>
+              )}
             <div>
-              <b>Payment Frequency:</b> {subscription.plan.interval}ly
+              <b>Payment Frequency:</b> {augmentInterval(mainPlan.interval)}
             </div>
           </>
         )}
