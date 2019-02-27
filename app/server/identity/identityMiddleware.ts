@@ -98,8 +98,9 @@ export const augmentRedirectURL = (
     "INTCMP",
     // By passing these to profile, can measure the sign in rates across test segments.
     "abName",
-    "abVariant"
-  ].concat(signInTokenQueryParameterNames);
+    "abVariant",
+    ...signInTokenQueryParameterNames
+  ];
 
   const profileQueryParameters = filterQueryParametersByName(req.query, name =>
     profileQueryParameterNames.includes(name)
