@@ -108,6 +108,7 @@ export interface Subscription {
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
   autoRenew: boolean;
+  plan: SubscriptionPlan;
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
@@ -125,9 +126,11 @@ export const getMainPlan = (subscription: Subscription) => {
       );
     }
     return subscription.currentPlans[0];
+  } else if (subscription.futurePlans.length > 0) {
+    // fallback to use the first future plan (contributions for example are always future plans)
+    return subscription.futurePlans[0];
   }
-  // fallback to use the first future plan (contributions for example are always future plans)
-  return subscription.futurePlans[0];
+  return subscription.plan;
 };
 
 export const getFuturePlanIfStartsBeforeXDaysFromToday = (
