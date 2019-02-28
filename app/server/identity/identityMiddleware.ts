@@ -1,6 +1,6 @@
 import express from "express";
 import fetch from "node-fetch";
-import url from "url";
+import url, { UrlWithParsedQuery } from "url";
 import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
 
@@ -33,6 +33,47 @@ const filterQueryParametersByName = (
     .reduce((params2, [name, value]) => ({ ...params2, [name]: value }), {});
 };
 
+// Names of query parameters to that facilitate sign-in on profile.
+const signInTokenQueryParameterNames = ["encryptedEmail", "autoSignInToken"];
+
+const containsSignInTokenQueryParameters = (
+  req: MockableExpressRequest
+): boolean =>
+  signInTokenQueryParameterNames.some(name => req.query[name] !== undefined);
+
+// Adds the redirect url (if defined) as query parameter profileReferer,
+// and removes the sign-in token query parameters since they are not required by manage
+// (only used by profile if the user is redirected their to sign-in).
+const updateManageUrl = (
+  req: MockableExpressRequest,
+  useRefererHeader: boolean,
+  redirectUrl?: UrlWithParsedQuery
+): string => {
+  // It is vital that the sign-in query parameters are removed.
+  // See the implementation of withIdentity() for more context.
+  const queryParameters = filterQueryParametersByName(
+    req.query,
+    name => !signInTokenQueryParameterNames.includes(name)
+  );
+
+  const profileReferrer =
+    redirectUrl && redirectUrl.path ? redirectUrl.path.substring(1) : undefined;
+
+  const refererHeader = req.header("referer");
+
+  return useRefererHeader && refererHeader
+    ? refererHeader
+    : url.format({
+        protocol: "https",
+        host: req.get("host"),
+        pathname: req.baseUrl + req.path,
+        query: {
+          ...queryParameters,
+          profileReferrer
+        }
+      });
+};
+
 export const augmentRedirectURL = (
   req: MockableExpressRequest,
   simpleRedirectURL: string,
@@ -45,42 +86,20 @@ export const augmentRedirectURL = (
     true
   );
 
-  // These query parameters are included in payment failure links
-  // so that they can be forwarded to profile to facilitate sign-in.
-  // However, they are not required by manage, so remove them from the return url.
-  const queryParameterNamesToRemove = ["encryptedEmail", "autoSignInToken"];
-
-  const returnUrlQueryParameters = filterQueryParametersByName(
-    req.query,
-    name => !queryParameterNamesToRemove.includes(name)
+  const returnUrl = updateManageUrl(
+    req,
+    useRefererHeaderForReturnURL,
+    parsedSimpleURL
   );
-
-  const returnUrl = useRefererHeaderForReturnURL
-    ? req.header("referer")
-    : url.format({
-        protocol: "https",
-        host: req.get("host"),
-        pathname: req.baseUrl + req.path,
-        query: {
-          ...returnUrlQueryParameters,
-          profileReferrer: parsedSimpleURL.path
-            ? parsedSimpleURL.path.substring(1)
-            : undefined
-        }
-      });
 
   // To avoid potential clashes with query parameters that have a special meaning on profile (e.g. error),
   // only forward specific query parameters to profile.
   const profileQueryParameterNames = [
     "INTCMP",
-    // Some links in payment failure emails include the user's (encrypted) email as a query parameter
-    // and/or an auto sign-in token. If present, include these in the identity redirect url,
-    // since they can be utilised to facilitate sign-in by identity frontend.
-    "encryptedEmail",
-    "autoSignInToken",
     // By passing these to profile, can measure the sign in rates across test segments.
     "abName",
-    "abVariant"
+    "abVariant",
+    ...signInTokenQueryParameterNames
   ];
 
   const profileQueryParameters = filterQueryParametersByName(req.query, name =>
@@ -126,6 +145,8 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
     res.sendStatus(500); // TODO maybe server side render a pretty response
   };
 
+  const useRefererHeaderForManageUrl = !!statusCode;
+
   idapiConfigPromise
     .then(idapiConfig => {
       if (idapiConfig) {
@@ -155,12 +176,25 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                   req,
                   redirectResponseBody.redirect.url,
                   conf.DOMAIN,
-                  !!statusCode
+                  useRefererHeaderForManageUrl
                 ),
                 statusCode
               );
             } else if (redirectResponseBody.status === "ok") {
-              next();
+              // If the request to manage contains sign-in token query parameters,
+              // but they are not needed because the user is already signed in,
+              // redirect them to the same url, but with the sign-in token query parameters removed.
+              // This ensures the sensitive query parameters will not be recorded by GA or Ophan,
+              // in addition to the url the user sees in the browser being simpler.
+              if (containsSignInTokenQueryParameters(req)) {
+                // Note it is vital that updateManageUrl() removes the auto sign-in query parameters,
+                // otherwise, on redirect this branch of code would get executed again, causing a redirect loop to occur!
+                res.redirect(
+                  updateManageUrl(req, useRefererHeaderForManageUrl)
+                );
+              } else {
+                next();
+              }
             } else {
               errorHandler(
                 "error back from IDAPI redirect service",
