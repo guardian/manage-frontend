@@ -9,7 +9,7 @@ import {
   annotateMdaResponseWithTestUserFromHeaders,
   augmentInterval,
   formatDate,
-  getFuturePlanIfStartsBeforeXDaysFromToday,
+  getFuturePlanIfVisible,
   getMainPlan,
   hasProduct,
   isPaidSubscriptionPlan,
@@ -157,9 +157,7 @@ const getPaymentPart = (
   productType: ProductType
 ) => {
   const mainPlan = getMainPlan(productDetail.subscription);
-  const futurePlan = getFuturePlanIfStartsBeforeXDaysFromToday(
-    productDetail.subscription
-  );
+  const futurePlan = getFuturePlanIfVisible(productDetail.subscription);
   if (isPaidSubscriptionPlan(mainPlan)) {
     const mainPlanInterval = augmentInterval(mainPlan.interval);
     return (
