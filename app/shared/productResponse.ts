@@ -66,8 +66,8 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-  name?: string;
-  start: string;
+  name: string | null;
+  start?: string;
   shouldBeVisible: boolean;
 }
 
@@ -83,6 +83,7 @@ export const augmentInterval = (interval: string) =>
 export interface PaidSubscriptionPlan
   extends SubscriptionPlan,
     CurrencyAndIntervalDetail {
+  start: string;
   end: string;
   chargedThrough?: string;
   amount: number;
@@ -108,7 +109,6 @@ export interface Subscription {
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
   autoRenew: boolean;
-  plan: SubscriptionPlan;
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
@@ -118,7 +118,9 @@ export interface WithSubscription {
   subscription: Subscription;
 }
 
-export const getMainPlan = (subscription: Subscription) => {
+export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
+  subscription: Subscription
+) => {
   if (subscription.currentPlans.length > 0) {
     if (subscription.currentPlans.length > 1) {
       Raven.captureException(
@@ -130,7 +132,11 @@ export const getMainPlan = (subscription: Subscription) => {
     // fallback to use the first future plan (contributions for example are always future plans)
     return subscription.futurePlans[0];
   }
-  return subscription.plan;
+  return {
+    name: null,
+    start: subscription.start,
+    shouldBeVisible: true
+  };
 };
 
 export const getFuturePlanIfStartsBeforeXDaysFromToday = (
