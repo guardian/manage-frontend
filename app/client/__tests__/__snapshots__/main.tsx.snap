@@ -1007,7 +1007,7 @@ exports[`Main renders something 1`] = `
                       "marginRight": "10px",
                     }
                   }
-                  href="https://support.theguardian.com/contribute?INTCMP=footer_support_contribute"
+                  href="https://support.theguardian.com/contribute?INTCMP=mma_footer_support_contribute"
                 >
                   <button
                     css={
@@ -1031,7 +1031,7 @@ exports[`Main renders something 1`] = `
                   </button>
                 </a>
                 <a
-                  href="https://support.theguardian.com/subscribe?INTCMP=footer_support_subscribe"
+                  href="https://support.theguardian.com/subscribe?INTCMP=mma_footer_support_subscribe"
                 >
                   <button
                     css={
