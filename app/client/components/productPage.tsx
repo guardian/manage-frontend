@@ -171,15 +171,12 @@ const getPaymentPart = (
           )}
         {}
         <ProductDetailRow
-          label={
-            mainPlanInterval.charAt(0).toUpperCase() +
-            mainPlanInterval.substr(1) +
-            " payment"
-          }
+          label={`Next ${mainPlanInterval} payment`}
           data={
             <>
               <UpdatableAmount
                 mainPlan={mainPlan}
+                nextPaymentPrice={productDetail.subscription.nextPaymentPrice}
                 subscriptionId={productDetail.subscription.subscriptionId}
                 productType={productType}
               />
