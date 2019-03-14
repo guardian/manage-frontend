@@ -57,7 +57,10 @@ const getPaymentPart = (productDetail: ProductDetail) => {
         <span>
           &nbsp;
           {mainPlan.currency}
-          {(mainPlan.amount / 100.0).toFixed(2)}{" "}
+          {(
+            (productDetail.subscription.nextPaymentPrice || mainPlan.amount) /
+            100.0
+          ).toFixed(2)}{" "}
           {augmentInterval(mainPlan.interval)}
         </span>
         <PaymentTypeRenderer {...productDetail.subscription} />

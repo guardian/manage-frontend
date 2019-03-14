@@ -100,8 +100,8 @@ export interface Subscription {
   start?: string;
   end: string;
   cancelledAt: boolean;
-  nextPaymentDate?: string;
-  nextPaymentPrice?: number;
+  nextPaymentDate: string | null;
+  nextPaymentPrice: number | null;
   paymentMethod?: string;
   stripePublicKeyForCardAddition?: string;
   safeToUpdatePaymentMethod: boolean;

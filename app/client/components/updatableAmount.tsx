@@ -104,6 +104,7 @@ const getAmountUpdater = (
 
 export type UpdatableAmountProps = WithProductType<ProductType> & {
   mainPlan: PaidSubscriptionPlan;
+  nextPaymentPrice: number | null;
   subscriptionId: string;
 };
 
@@ -120,7 +121,8 @@ export class UpdatableAmount extends React.Component<
   UpdatableAmountProps,
   UpdatableAmountState
 > {
-  public initialAmount = this.props.mainPlan.amount / 100.0;
+  public initialAmount =
+    (this.props.nextPaymentPrice || this.props.mainPlan.amount) / 100.0;
   public state = {
     inEditMode: false,
     isApplyingUpdate: false,
