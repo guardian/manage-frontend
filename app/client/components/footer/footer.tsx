@@ -177,7 +177,7 @@ const Footer = () => (
                   Support The&nbsp;Guardian
                 </div>
                 <a
-                  href="https://support.theguardian.com/contribute?INTCMP=footer_support_contribute"
+                  href="https://support.theguardian.com/contribute?INTCMP=mma_footer_support_contribute"
                   css={{
                     display: "inline-block",
                     marginRight: "10px",
@@ -186,7 +186,7 @@ const Footer = () => (
                 >
                   <Button text="Contribute" fontWeight="bold" primary right />
                 </a>
-                <a href="https://support.theguardian.com/subscribe?INTCMP=footer_support_subscribe">
+                <a href="https://support.theguardian.com/subscribe?INTCMP=mma_footer_support_subscribe">
                   <Button text="Subscribe" fontWeight="bold" primary right />
                 </a>
               </div>
