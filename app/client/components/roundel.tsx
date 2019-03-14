@@ -12,6 +12,7 @@ export const Roundel = (props: RoundelProps) => (
       alignSelf: "flex-start"
     }}
     href="https://www.theguardian.com"
+    title="The Guardian - Back to home"
   >
     <svg
       viewBox="0 0 56 56"

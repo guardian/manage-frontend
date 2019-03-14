@@ -41,45 +41,42 @@ exports[`Main renders something 1`] = `
       }
     >
       <nav
-        css={
-          Object {
-            "fontSize": "16px",
-            "position": "relative",
-            "transform": "translateY(-1px)",
-          }
-        }
+        onKeyDown={[Function]}
       >
-        <span
+        <button
+          aria-expanded={false}
           css={
             Object {
               "map": undefined,
-              "name": "c8vi01",
+              "name": "1puykvp",
               "next": undefined,
-              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover{color:#ffe500;::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
+              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#ffe500;::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
             }
           }
           onClick={[Function]}
+          type="button"
         >
           My account
-        </span>
+        </button>
         <ul
           css={
             Object {
               "map": undefined,
-              "name": "1v0t73g",
+              "name": "1dp5ejy",
               "next": undefined,
-              "styles": "display:none;background:#ffffff;position:absolute;left:0;top:2.2rem;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);border-radius:0.1875rem;margin:0;padding:0.375rem 0;overflow:hidden; li{padding:0;margin:0;}",
+              "styles": "display:none;background:#ffffff;position:absolute;top:3.05rem;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);border-radius:0.1875rem;margin:0;padding:0.375rem 0;overflow:hidden; li{padding:0;margin:0;}",
             }
           }
+          role="tablist"
         >
           <li>
             <a
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="/profile/user"
@@ -94,9 +91,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="https://profile.thegulocal.com/public/edit"
@@ -111,9 +108,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="https://profile.thegulocal.com/account/edit"
@@ -128,9 +125,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="https://profile.thegulocal.com/email-prefs"
@@ -155,9 +152,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="/membership"
@@ -172,9 +169,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="/contributions"
@@ -189,9 +186,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="/subscriptions"
@@ -216,9 +213,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "ipwub6",
+                  "name": "1cruahm",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover{background-color:#ececec;text-decoration:none;}",
+                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
               href="https://profile.thegulocal.com/signout"
@@ -278,6 +275,7 @@ exports[`Main renders something 1`] = `
           }
         }
         href="https://www.theguardian.com"
+        title="The Guardian - Back to home"
       >
         <svg
           css={

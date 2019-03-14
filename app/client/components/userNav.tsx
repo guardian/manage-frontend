@@ -9,8 +9,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     display: `${showMenu ? "block" : "none"}`,
     background: palette.white,
     position: "absolute",
-    left: 0,
-    top: "2.2rem",
+    top: "3.05rem",
     zIndex: 1071,
     listStyle: "none",
     lineHeight: "1.375rem",
@@ -19,7 +18,6 @@ const userNavMenuCss = (showMenu: boolean) =>
     margin: 0,
     padding: "0.375rem 0",
     overflow: "hidden",
-
     " li": {
       padding: 0,
       margin: 0
@@ -35,10 +33,12 @@ const userNavItemCss = css({
   marginTop: "-1px",
   display: "flex",
   alignItems: "center",
-
-  ":hover": {
+  ":hover, :focus": {
     backgroundColor: palette.neutral["6"],
     textDecoration: "none"
+  },
+  ":focus": {
+    outline: 0
   }
 });
 
@@ -49,6 +49,43 @@ const userNavBorderCss = css({
   display: "block",
   margin: "0 0 0 1.875rem"
 });
+
+const userNavButtonCss = (showMenu: boolean) =>
+  css({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    cursor: "pointer",
+    border: "0",
+    background: "none",
+    textAlign: "left",
+    fontFamily: "inherit",
+    fontSize: "16px",
+    padding: "10px 1px 10px 0",
+    position: "relative",
+    transform: "translateY(-1px)",
+    "::after": {
+      content: "''",
+      display: "block",
+      width: "5px",
+      height: "5px",
+      border: "1px solid currentColor",
+      borderLeft: "transparent",
+      borderTop: "transparent",
+      marginLeft: "5px",
+      transform: `translateY(${showMenu ? 0 : -2}px) rotate(45deg)`
+    },
+    ":hover, :focus": {
+      color: palette.yellow.medium,
+      "::after": {
+        transform: "translateY(0px) rotate(45deg)",
+        transitionProperty: "transform",
+        transitionDuration: "250ms",
+        transitionTimingFunction: "ease-in-out"
+      }
+    },
+    color: showMenu ? palette.yellow.medium : palette.white
+  });
 
 const signOutIcon = (
   <svg width="100%" height="100%" viewBox="0 0 20 22" fill="none">
@@ -127,53 +164,22 @@ export class UserNav extends React.Component {
     }
   ];
 
+  private buttonElement = React.createRef<HTMLButtonElement>();
+
   public render(): JSX.Element {
     return (
-      <nav
-        css={{
-          position: "relative",
-          transform: "translateY(-1px)",
-          fontSize: "16px"
-        }}
-      >
-        <span
-          css={css({
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            cursor: "pointer",
-
-            "::after": {
-              content: "''",
-              display: "block",
-              width: "5px",
-              height: "5px",
-              border: "1px solid currentColor",
-              borderLeft: "transparent",
-              borderTop: "transparent",
-              marginLeft: "5px",
-              transform: `translateY(${
-                this.state.showMenu ? 0 : -2
-              }px) rotate(45deg)`
-            },
-
-            ":hover": {
-              color: palette.yellow.medium,
-              "::after": {
-                transform: "translateY(0px) rotate(45deg)",
-                transitionProperty: "transform",
-                transitionDuration: "250ms",
-                transitionTimingFunction: "ease-in-out"
-              }
-            },
-            color: this.state.showMenu ? palette.yellow.medium : palette.white
-          })}
+      <nav onKeyDown={this.handleKeyDown}>
+        <button
+          css={userNavButtonCss(this.state.showMenu)}
+          type="button"
+          aria-expanded={this.state.showMenu}
           onClick={() => this.setState({ showMenu: !this.state.showMenu })}
+          ref={this.buttonElement}
         >
           My account
-        </span>
+        </button>
 
-        <ul css={userNavMenuCss(this.state.showMenu)}>
+        <ul role="tablist" css={userNavMenuCss(this.state.showMenu)}>
           {this.userNavItems.map((item: UserNavItem) => (
             <React.Fragment key={item.title}>
               <li>
@@ -216,6 +222,15 @@ export class UserNav extends React.Component {
     const thisInDOM = findDOMNode(this);
     if (thisInDOM && event.target && !thisInDOM.contains(event.target)) {
       this.setState({ showMenu: false });
+    }
+  };
+
+  private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.keyCode === 27 && this.state.showMenu) {
+      this.setState({ showMenu: false });
+      if (this.buttonElement.current) {
+        this.buttonElement.current.focus();
+      }
     }
   };
 }
