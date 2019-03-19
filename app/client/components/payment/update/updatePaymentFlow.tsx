@@ -1,5 +1,6 @@
 import { NavigateFn } from "@reach/router";
 import { get as getCookie } from "es-cookie";
+import Raven from "raven-js";
 import React from "react";
 import {
   MembersDataApiResponseContext,
@@ -97,26 +98,27 @@ const PaymentMethodBar = (props: PaymentMethodProps) => (
   </form>
 );
 
-const subscriptionToPaymentMethod: (sub: Subscription) => PaymentMethod = (
-  subscription: Subscription
-) => {
-  if (!subscription.safeToUpdatePaymentMethod) {
+const subscriptionToPaymentMethod = (productDetail: ProductDetail) => {
+  if (!productDetail.subscription.safeToUpdatePaymentMethod) {
     return PaymentMethod.unknown;
-  } else if (subscription.paymentMethod === "Card" && subscription.card) {
+  } else if (
+    productDetail.subscription.paymentMethod === "Card" &&
+    productDetail.subscription.card
+  ) {
     return PaymentMethod.card;
   } else if (
-    subscription.paymentMethod === "PayPal" &&
-    subscription.payPalEmail
+    productDetail.subscription.paymentMethod === "PayPal" &&
+    productDetail.subscription.payPalEmail
   ) {
     return PaymentMethod.payPal;
   } else if (
-    subscription.paymentMethod === "DirectDebit" &&
-    subscription.mandate
+    productDetail.subscription.paymentMethod === "DirectDebit" &&
+    productDetail.subscription.mandate
   ) {
     return PaymentMethod.dd;
-  } else if (subscription.paymentMethod === "ResetRequired") {
+  } else if (productDetail.subscription.paymentMethod === "ResetRequired") {
     return PaymentMethod.resetRequired;
-  } else if (subscription.paymentMethod === undefined) {
+  } else if (!productDetail.isPaidTier) {
     return PaymentMethod.free;
   }
   return PaymentMethod.unknown;
@@ -141,7 +143,7 @@ class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepState
 > {
   public readonly currentPaymentMethod = subscriptionToPaymentMethod(
-    this.props.productDetail.subscription
+    this.props.productDetail
   );
   public state = {
     newPaymentMethodDetail: undefined,
@@ -262,6 +264,7 @@ class PaymentUpdaterStep extends React.Component<
           />
         );
       default:
+        Raven.captureException("user cannot update their payment online");
         return (
           <span>
             It is not currently possible to update your payment method online.

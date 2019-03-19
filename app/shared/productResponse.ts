@@ -42,6 +42,7 @@ export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
 
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
+  isPaidTier: boolean;
   regNumber?: string;
   tier: string;
   joinDate: string;
