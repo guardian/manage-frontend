@@ -20,10 +20,10 @@ if (hasWindow) {
   domain = conf.DOMAIN;
 }
 
-const buildAcquisitionData = (supportReferer: string) => ({
+const buildAcquisitionData = (componentId: string) => ({
   source: "GUARDIAN_WEB",
   componentType: "ACQUISITIONS_MANAGE_MY_ACCOUNT",
-  componentId: `mma_${supportReferer}`,
+  componentId,
   referrerPageviewId:
     hasWindow && window.guardian.ophan
       ? window.guardian.ophan.viewId
@@ -37,8 +37,9 @@ export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
     host: `support.${domain || "theguardian.com"}`,
     pathname: props.urlSuffix || "",
     query: {
+      INTCMP: `mma_${props.supportReferer}`,
       acquisitionData: JSON.stringify(
-        buildAcquisitionData(props.supportReferer)
+        buildAcquisitionData(`mma_${props.supportReferer}`)
       )
     }
   });
