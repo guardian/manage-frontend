@@ -40,7 +40,8 @@ export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
       INTCMP: `mma_${props.supportReferer}`,
       acquisitionData: JSON.stringify(
         buildAcquisitionData(`mma_${props.supportReferer}`)
-      )
+      ),
+      displayExistingPaymentOptions: true
     }
   });
 
