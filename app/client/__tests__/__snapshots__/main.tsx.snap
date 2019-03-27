@@ -999,7 +999,7 @@ exports[`Main renders something 1`] = `
                 >
                   Support The Guardian
                 </div>
-                <a
+                <div
                   css={
                     Object {
                       "display": "inline-block",
@@ -1007,31 +1007,36 @@ exports[`Main renders something 1`] = `
                       "marginRight": "10px",
                     }
                   }
-                  href="https://support.theguardian.com/contribute?INTCMP=mma_footer_support_contribute"
                 >
-                  <button
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "vigqs",
-                        "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
-                      }
-                    }
-                    onMouseUp={[Function]}
+                  <a
+                    href="https://support.thegulocal.com/contribute?acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D"
+                    onClick={[Function]}
                   >
-                    Contribute
-                    <svg
-                      viewBox="0 0 30 30"
+                    <button
+                      css={
+                        Object {
+                          "map": undefined,
+                          "name": "vigqs",
+                          "next": undefined,
+                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
+                        }
+                      }
+                      onMouseUp={[Function]}
                     >
-                      <path
-                        d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9"
-                      />
-                    </svg>
-                  </button>
-                </a>
+                      Contribute
+                      <svg
+                        viewBox="0 0 30 30"
+                      >
+                        <path
+                          d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9"
+                        />
+                      </svg>
+                    </button>
+                  </a>
+                </div>
                 <a
-                  href="https://support.theguardian.com/subscribe?INTCMP=mma_footer_support_subscribe"
+                  href="https://support.thegulocal.com/subscribe?acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_subscribe%22%7D"
+                  onClick={[Function]}
                 >
                   <button
                     css={

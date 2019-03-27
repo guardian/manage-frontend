@@ -1,12 +1,23 @@
 import React from "react";
+import url from "url";
+import { conf } from "../../server/config";
 import { trackEvent } from "./analytics";
 import { Button } from "./buttons";
-import url from "url";
 
 export interface SupportTheGuardianButtonProps {
   supportReferer: string;
   alternateButtonText?: string;
   urlSuffix?: string;
+  fontWeight?: "bold";
+}
+
+const hasWindow = typeof window !== "undefined" && window.guardian;
+
+let domain: string;
+if (hasWindow) {
+  domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
 }
 
 const buildAcquisitionData = (supportReferer: string) => ({
@@ -14,19 +25,21 @@ const buildAcquisitionData = (supportReferer: string) => ({
   componentType: "ACQUISITIONS_MANAGE_MY_ACCOUNT",
   componentId: `mma_${supportReferer}`,
   referrerPageviewId:
-    window && window.guardian && window.guardian.ophan
+    hasWindow && window.guardian.ophan
       ? window.guardian.ophan.viewId
       : undefined,
-  referrerUrl: window ? window.location.href : undefined
+  referrerUrl: hasWindow ? window.location.href : undefined
 });
 
-const buildHref = (supportReferer: string, urlSuffix: string | undefined) =>
+export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
   url.format({
     protocol: "https",
-    host: `support.${window.guardian.domain}`,
-    pathname: urlSuffix || "",
+    host: `support.${domain || "theguardian.com"}`,
+    pathname: props.urlSuffix || "",
     query: {
-      acquisitionData: JSON.stringify(buildAcquisitionData(supportReferer))
+      acquisitionData: JSON.stringify(
+        buildAcquisitionData(props.supportReferer)
+      )
     }
   });
 
@@ -34,7 +47,7 @@ export const SupportTheGuardianButton = (
   props: SupportTheGuardianButtonProps
 ) => (
   <a
-    href={buildHref(props.supportReferer, props.urlSuffix)}
+    href={buildSupportHref(props)}
     onClick={() => {
       trackEvent({
         eventCategory: "href",
@@ -45,6 +58,7 @@ export const SupportTheGuardianButton = (
   >
     <Button
       text={props.alternateButtonText || "Support The Guardian"}
+      fontWeight={props.fontWeight}
       primary
       right
     />

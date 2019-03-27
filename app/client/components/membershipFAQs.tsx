@@ -3,6 +3,7 @@ import palette from "../colours";
 import { Accordion } from "./accordion";
 import { navLinks } from "./nav";
 import { PageContainerSection, PageHeaderContainer } from "./page";
+import { buildSupportHref } from "./supportTheGuardianButton";
 import { RouteableProps } from "./wizardRouterAdapter";
 
 const headerCss = {
@@ -38,7 +39,10 @@ export const MembershipFAQs = (props: RouteableProps) => (
               it. Rather than setting up a paywall, we are asking those who can
               afford it to make their contribution to our fearless, independent
               journalism.{" "}
-              <a css={linkCss} href="https://support.theguardian.com/">
+              <a
+                css={linkCss}
+                href={buildSupportHref({ supportReferer: "membership_faq" })}
+              >
                 Become a Supporter
               </a>{" "}
               if you share our belief that the open exchange of information,
@@ -85,7 +89,10 @@ export const MembershipFAQs = (props: RouteableProps) => (
               the website.{" "}
               <a
                 css={linkCss}
-                href="https://support.theguardian.com/subscribe/digital"
+                href={buildSupportHref({
+                  supportReferer: "membership_faq",
+                  urlSuffix: "subscribe/digital"
+                })}
               >
                 Sign up for Digital Pack here
               </a>
@@ -117,7 +124,10 @@ export const MembershipFAQs = (props: RouteableProps) => (
             created a{" "}
             <a
               css={linkCss}
-              href="https://support.theguardian.com/contribute?INTCMP=membership_faq"
+              href={buildSupportHref({
+                supportReferer: "membership_faq",
+                urlSuffix: "contribute"
+              })}
             >
               one-off contributions
             </a>{" "}
