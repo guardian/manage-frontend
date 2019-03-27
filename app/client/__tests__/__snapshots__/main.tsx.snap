@@ -1009,7 +1009,7 @@ exports[`Main renders something 1`] = `
                   }
                 >
                   <a
-                    href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D"
+                    href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
                     <button
@@ -1035,7 +1035,7 @@ exports[`Main renders something 1`] = `
                   </a>
                 </div>
                 <a
-                  href="https://support.thegulocal.com/subscribe?INTCMP=mma_footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_subscribe%22%7D"
+                  href="https://support.thegulocal.com/subscribe?INTCMP=mma_footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_subscribe%22%7D&displayExistingPaymentOptions=true"
                   onClick={[Function]}
                 >
                   <button

@@ -18,11 +18,11 @@ import {
   ProductDetail,
   sortByJoinDate
 } from "../../shared/productResponse";
+import { ProductPageProperties, ProductType } from "../../shared/productTypes";
 import {
   createProductDetailFetcher,
   ProductTypeWithProductPageProperties
 } from "../../shared/productTypes";
-import { ProductPageProperties, ProductType } from "../../shared/productTypes";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
@@ -416,13 +416,11 @@ const getProductRenderer = (
           )
         )
       ) : (
-        <PageContainer>
-          <NoProduct
-            inTab={true}
-            supportRefererSuffix={"product_page"}
-            productType={productType}
-          />
-        </PageContainer>
+        <NoProduct
+          inTab={true}
+          supportRefererSuffix={"product_page"}
+          productType={productType}
+        />
       )}
     </>
   );

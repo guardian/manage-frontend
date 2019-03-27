@@ -173,13 +173,11 @@ const getProductDetailSelector = (
     }
   }
   return (
-    <PageContainer>
-      <NoProduct
-        inTab={false}
-        supportRefererSuffix={supportRefererSuffix}
-        productType={props.productType}
-      />
-    </PageContainer>
+    <NoProduct
+      inTab={false}
+      supportRefererSuffix={supportRefererSuffix}
+      productType={props.productType}
+    />
   );
 };
 
