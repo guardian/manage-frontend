@@ -3,7 +3,7 @@ import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { headline } from "../../styles/fonts";
-import { Button } from "../buttons";
+import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { footerLinks } from "./footerlinks";
 
 let domain: string;
@@ -176,19 +176,26 @@ const Footer = () => (
                 >
                   Support The&nbsp;Guardian
                 </div>
-                <a
-                  href="https://support.theguardian.com/contribute?INTCMP=mma_footer_support_contribute"
+                <div
                   css={{
                     display: "inline-block",
                     marginRight: "10px",
                     marginBottom: "6px"
                   }}
                 >
-                  <Button text="Contribute" fontWeight="bold" primary right />
-                </a>
-                <a href="https://support.theguardian.com/subscribe?INTCMP=mma_footer_support_subscribe">
-                  <Button text="Subscribe" fontWeight="bold" primary right />
-                </a>
+                  <SupportTheGuardianButton
+                    urlSuffix="contribute"
+                    supportReferer="footer_support_contribute"
+                    alternateButtonText="Contribute"
+                    fontWeight="bold"
+                  />
+                </div>
+                <SupportTheGuardianButton
+                  urlSuffix="subscribe"
+                  supportReferer="footer_support_subscribe"
+                  alternateButtonText="Subscribe"
+                  fontWeight="bold"
+                />
               </div>
             </div>
           </div>

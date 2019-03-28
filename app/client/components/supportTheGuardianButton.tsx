@@ -1,4 +1,6 @@
 import React from "react";
+import url from "url";
+import { conf } from "../../server/config";
 import { trackEvent } from "./analytics";
 import { Button } from "./buttons";
 
@@ -6,14 +8,47 @@ export interface SupportTheGuardianButtonProps {
   supportReferer: string;
   alternateButtonText?: string;
   urlSuffix?: string;
+  fontWeight?: "bold";
 }
+
+const hasWindow = typeof window !== "undefined" && window.guardian;
+
+let domain: string;
+if (hasWindow) {
+  domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
+}
+
+const buildAcquisitionData = (componentId: string) => ({
+  source: "GUARDIAN_WEB",
+  componentType: "ACQUISITIONS_MANAGE_MY_ACCOUNT",
+  componentId,
+  referrerPageviewId:
+    hasWindow && window.guardian.ophan
+      ? window.guardian.ophan.viewId
+      : undefined,
+  referrerUrl: hasWindow ? window.location.href : undefined
+});
+
+export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
+  url.format({
+    protocol: "https",
+    host: `support.${domain || "theguardian.com"}`,
+    pathname: props.urlSuffix || "",
+    query: {
+      INTCMP: `mma_${props.supportReferer}`,
+      acquisitionData: JSON.stringify(
+        buildAcquisitionData(`mma_${props.supportReferer}`)
+      )
+    }
+  });
 
 export const SupportTheGuardianButton = (
   props: SupportTheGuardianButtonProps
 ) => (
   <a
-    href={`https://support.${window.guardian.domain}${props.urlSuffix ||
-      ""}?INTCMP=mma_${props.supportReferer}`}
+    href={buildSupportHref(props)}
     onClick={() => {
       trackEvent({
         eventCategory: "href",
@@ -24,6 +59,7 @@ export const SupportTheGuardianButton = (
   >
     <Button
       text={props.alternateButtonText || "Support The Guardian"}
+      fontWeight={props.fontWeight}
       primary
       right
     />
