@@ -133,6 +133,13 @@ const redirectOrCustomStatusCode = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
+const getScopeFromRequestPathOrEmptyString = (requestPath: string) => {
+  if (requestPath.indexOf("/payment/") !== -1) {
+    return "payment-flow";
+  }
+  return "";
+};
+
 export const withIdentity: (statusCode?: number) => express.RequestHandler = (
   statusCode?: number
 ) => (
@@ -160,7 +167,9 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
             headers: {
               "X-GU-ID-Client-Access-Token":
                 "Bearer " + idapiConfig.accessToken,
-              "X-GU-ID-FORWARDED-SCOPE": "payment-flow",
+              "X-GU-ID-FORWARDED-SCOPE": getScopeFromRequestPathOrEmptyString(
+                req.path
+              ),
               Cookie: getCookiesOrEmptyString(req)
             }
           }
