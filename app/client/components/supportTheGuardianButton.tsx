@@ -9,6 +9,8 @@ export interface SupportTheGuardianButtonProps {
   alternateButtonText?: string;
   urlSuffix?: string;
   fontWeight?: "bold";
+  height?: string;
+  notPrimary?: true;
 }
 
 const hasWindow = typeof window !== "undefined" && window.guardian;
@@ -40,7 +42,8 @@ export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
       INTCMP: `mma_${props.supportReferer}`,
       acquisitionData: JSON.stringify(
         buildAcquisitionData(`mma_${props.supportReferer}`)
-      )
+      ),
+      displayExistingPaymentOptions: true
     }
   });
 
@@ -60,7 +63,8 @@ export const SupportTheGuardianButton = (
     <Button
       text={props.alternateButtonText || "Support The Guardian"}
       fontWeight={props.fontWeight}
-      primary
+      height={props.height}
+      primary={props.notPrimary ? undefined : true}
       right
     />
   </a>

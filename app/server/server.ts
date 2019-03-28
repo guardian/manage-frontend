@@ -148,6 +148,11 @@ const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
 server.get("/api/me", membersDataApiHandler("user-attributes/me"));
 
 server.get(
+  "/api/existing-payment-options",
+  membersDataApiHandler("user-attributes/me/existing-payment-options")
+);
+
+server.get(
   "/api/me/mma/:subscriptionName?",
   membersDataApiHandler(
     "user-attributes/me/mma/:subscriptionName",

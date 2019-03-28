@@ -2,7 +2,6 @@ import React from "react";
 import { fetchMe, MeAsyncLoader, MeResponse } from "../../shared/meResponse";
 import { ProductType } from "../../shared/productTypes";
 import { NoProduct } from "./noProduct";
-import { PageContainer } from "./page";
 
 const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   me: MeResponse
@@ -10,13 +9,11 @@ const renderChildrenIfValidated = (props: CheckFlowIsValidProps) => (
   props.validator(me) ? (
     <>{props.children}</>
   ) : (
-    <PageContainer>
-      <NoProduct
-        inTab={false}
-        supportRefererSuffix={props.supportRefererSuffix}
-        productType={props}
-      />
-    </PageContainer>
+    <NoProduct
+      inTab={false}
+      supportRefererSuffix={props.supportRefererSuffix}
+      productType={props}
+    />
   );
 
 export type MeValidator = (me: MeResponse) => boolean;
