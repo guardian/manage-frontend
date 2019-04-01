@@ -99,6 +99,7 @@ export const augmentRedirectURL = (
     // By passing these to profile, can measure the sign in rates across test segments.
     "abName",
     "abVariant",
+    "journey",
     ...signInTokenQueryParameterNames
   ];
 
