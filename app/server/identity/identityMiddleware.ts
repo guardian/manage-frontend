@@ -134,6 +134,13 @@ const redirectOrCustomStatusCode = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
+const getScopeFromRequestPathOrEmptyString = (requestPath: string) => {
+  if (requestPath.indexOf("/payment/") !== -1) {
+    return "payment-flow";
+  }
+  return "";
+};
+
 export const withIdentity: (statusCode?: number) => express.RequestHandler = (
   statusCode?: number
 ) => (
@@ -161,6 +168,9 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
             headers: {
               "X-GU-ID-Client-Access-Token":
                 "Bearer " + idapiConfig.accessToken,
+              "X-GU-ID-FORWARDED-SCOPE": getScopeFromRequestPathOrEmptyString(
+                req.path
+              ),
               Cookie: getCookiesOrEmptyString(req)
             }
           }
@@ -181,7 +191,10 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                 ),
                 statusCode
               );
-            } else if (redirectResponseBody.status === "ok") {
+            } else if (
+              redirectResponseBody.status === "ok" ||
+              redirectResponseBody.status === "signedIn"
+            ) {
               // If the request to manage contains sign-in token query parameters,
               // but they are not needed because the user is already signed in,
               // redirect them to the same url, but with the sign-in token query parameters removed.
