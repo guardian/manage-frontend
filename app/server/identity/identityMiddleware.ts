@@ -5,7 +5,8 @@ import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
 
 interface RedirectResponseBody {
-  status: string;
+  status?: string; // TODO remove after https://github.com/guardian/identity/pull/1527
+  signInStatus?: string;
   redirect?: {
     url: string;
   };
@@ -192,8 +193,8 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                 statusCode
               );
             } else if (
-              redirectResponseBody.status === "ok" ||
-              redirectResponseBody.status === "signedIn"
+              redirectResponseBody.status === "ok" || // TODO remove after https://github.com/guardian/identity/pull/1527
+              redirectResponseBody.signInStatus === "signedInRecently"
             ) {
               // If the request to manage contains sign-in token query parameters,
               // but they are not needed because the user is already signed in,
