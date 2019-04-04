@@ -17,6 +17,7 @@ import {
 import { conf, Environments } from "./config";
 import html from "./html";
 import {
+  augmentRedirectURL,
   getCookiesOrEmptyString,
   withIdentity
 } from "./identity/identityMiddleware";
@@ -128,6 +129,15 @@ const apiHandler = (jsonHandler: JsonHandler) => (
           intermediateResponse.headers.get(headerName) || undefined
         )
       );
+      const idapiRedirect = intermediateResponse.headers.get(
+        "X-GU-IDAPI-Redirect"
+      );
+      if (intermediateResponse.status === 401 && idapiRedirect) {
+        res.header(
+          "Location",
+          augmentRedirectURL(req, idapiRedirect, conf.DOMAIN, true)
+        );
+      }
       return intermediateResponse.text();
     })
     .then(_ => jsonHandler(res, _))
