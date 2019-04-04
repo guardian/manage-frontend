@@ -1,6 +1,10 @@
 import express from "express";
 import fetch from "node-fetch";
 import url, { UrlWithParsedQuery } from "url";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../shared/identity";
 import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
 
@@ -135,13 +139,6 @@ const redirectOrCustomStatusCode = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
-const getScopeFromRequestPathOrEmptyString = (requestPath: string) => {
-  if (requestPath.indexOf("/payment/") !== -1) {
-    return "payment-flow";
-  }
-  return "";
-};
-
 export const withIdentity: (statusCode?: number) => express.RequestHandler = (
   statusCode?: number
 ) => (
@@ -169,7 +166,7 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
             headers: {
               "X-GU-ID-Client-Access-Token":
                 "Bearer " + idapiConfig.accessToken,
-              "X-GU-ID-FORWARDED-SCOPE": getScopeFromRequestPathOrEmptyString(
+              [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
                 req.path
               ),
               Cookie: getCookiesOrEmptyString(req)

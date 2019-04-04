@@ -1,4 +1,8 @@
 import AsyncLoader from "../client/components/asyncLoader";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "./identity";
 
 export interface MeResponse {
   userId: string;
@@ -16,6 +20,13 @@ export interface MeResponse {
 }
 
 export const fetchMe: () => Promise<Response> = async () =>
-  await fetch("/api/me", { credentials: "include" });
+  await fetch("/api/me", {
+    credentials: "include",
+    headers: {
+      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+      )
+    }
+  });
 
 export class MeAsyncLoader extends AsyncLoader<MeResponse> {}
