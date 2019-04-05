@@ -8,6 +8,7 @@ import { renderToString } from "react-dom/server";
 import { parse } from "url";
 import { ServerUser } from "../client/components/user";
 import { Globals } from "../shared/globals";
+import { X_GU_ID_FORWARDED_SCOPE } from "../shared/identity";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import {
   hasProductPageRedirect,
@@ -17,6 +18,7 @@ import {
 import { conf, Environments } from "./config";
 import html from "./html";
 import {
+  augmentRedirectURL,
   getCookiesOrEmptyString,
   withIdentity
 } from "./identity/identityMiddleware";
@@ -117,7 +119,8 @@ const apiHandler = (jsonHandler: JsonHandler) => (
     body: Buffer.isBuffer(req.body) ? req.body : undefined,
     headers: {
       "Content-Type": "application/json",
-      Cookie: getCookiesOrEmptyString(req)
+      Cookie: getCookiesOrEmptyString(req),
+      [X_GU_ID_FORWARDED_SCOPE]: req.header(X_GU_ID_FORWARDED_SCOPE) || ""
     }
   })
     .then(intermediateResponse => {
@@ -128,6 +131,15 @@ const apiHandler = (jsonHandler: JsonHandler) => (
           intermediateResponse.headers.get(headerName) || undefined
         )
       );
+      const idapiRedirect = intermediateResponse.headers.get(
+        "X-GU-IDAPI-Redirect"
+      );
+      if (intermediateResponse.status === 401 && idapiRedirect) {
+        res.header(
+          "Location",
+          augmentRedirectURL(req, idapiRedirect, conf.DOMAIN, true)
+        );
+      }
       return intermediateResponse.text();
     })
     .then(_ => jsonHandler(res, _))

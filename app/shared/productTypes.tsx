@@ -9,6 +9,10 @@ import { membershipCancellationFlowStart } from "../client/components/cancel/mem
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
 import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "./identity";
 import { MeResponse } from "./meResponse";
 import { OphanProduct } from "./ophanTypes";
 import { formatDate, ProductDetail, Subscription } from "./productResponse";
@@ -133,7 +137,12 @@ export const createProductDetailFetcher = (
         : `?productType=${productType.allProductsProductTypeFilterString}`),
     {
       credentials: "include",
-      mode: "same-origin"
+      mode: "same-origin",
+      headers: {
+        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+          window.location.href
+        )
+      }
     }
   );
 
