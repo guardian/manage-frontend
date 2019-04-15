@@ -9,8 +9,7 @@ import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
 
 interface RedirectResponseBody {
-  status?: string; // TODO remove after https://github.com/guardian/identity/pull/1527
-  signInStatus?: string;
+  signInStatus: string;
   redirect?: {
     url: string;
   };
@@ -190,7 +189,6 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                 statusCode
               );
             } else if (
-              redirectResponseBody.status === "ok" || // TODO remove after https://github.com/guardian/identity/pull/1527
               redirectResponseBody.signInStatus === "signedInRecently"
             ) {
               // If the request to manage contains sign-in token query parameters,

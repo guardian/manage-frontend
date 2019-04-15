@@ -21,7 +21,6 @@ import {
 } from "../../shared/productTypes";
 import palette from "../colours";
 import { Button } from "./buttons";
-import { CheckFlowIsValid } from "./checkFlowIsValid";
 import { NoProduct } from "./noProduct";
 import { PageContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
@@ -234,26 +233,21 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
         {hasProduct(this.state.selectedProductDetail) ? (
           this.preWiredProductDetailSelector([this.state.selectedProductDetail])
         ) : (
-          <CheckFlowIsValid
-            {...this.props.productType}
-            supportRefererSuffix={this.props.supportRefererSuffix}
-          >
-            <MembersDatApiAsyncLoader
-              fetch={
-                createProductDetailFetcher(
-                  this.props.productType
-                ) /*TODO reload on 'back' to page*/
-              }
-              readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-              render={this.preWiredProductDetailSelector}
-              loadingMessage={
-                this.props.loadingMessagePrefix +
-                " " +
-                this.props.productType.friendlyName +
-                "..."
-              }
-            />
-          </CheckFlowIsValid>
+          <MembersDatApiAsyncLoader
+            fetch={
+              createProductDetailFetcher(
+                this.props.productType
+              ) /*TODO reload on 'back' to page*/
+            }
+            readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
+            render={this.preWiredProductDetailSelector}
+            loadingMessage={
+              this.props.loadingMessagePrefix +
+              " " +
+              this.props.productType.friendlyName +
+              "..."
+            }
+          />
         )}
       </div>
     );

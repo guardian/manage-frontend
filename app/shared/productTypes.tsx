@@ -7,13 +7,11 @@ import { contributionsCancellationFlowStart } from "../client/components/cancel/
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
-import { MeValidator } from "../client/components/checkFlowIsValid";
 import { NavItem, navLinks } from "../client/components/nav";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "./identity";
-import { MeResponse } from "./meResponse";
 import { OphanProduct } from "./ophanTypes";
 import { formatDate, ProductDetail, Subscription } from "./productResponse";
 
@@ -75,7 +73,6 @@ export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
-  validator: MeValidator;
   getOphanProductType?: (
     productDetail: ProductDetail
   ) => OphanProduct | undefined;
@@ -157,7 +154,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "membership",
     allProductsProductTypeFilterString: "Membership",
     urlPart: "membership",
-    validator: (me: MeResponse) => me.contentAccess.member,
     getOphanProductType: (productDetail: ProductDetail) => {
       switch (productDetail.tier) {
         case "Supporter":
@@ -202,7 +198,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "recurring contribution",
     allProductsProductTypeFilterString: "Contribution",
     urlPart: "contributions",
-    validator: (me: MeResponse) => me.contentAccess.recurringContributor,
     getOphanProductType: () => "RECURRING_CONTRIBUTION",
     noProductSupportUrlSuffix: "/contribute",
     updateAmountMdaEndpoint: "contribution-update-amount",
@@ -258,7 +253,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "newspaper subscription",
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
-    validator: (me: MeResponse) => me.contentAccess.paperSubscriber,
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
@@ -272,7 +266,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "Guardian Weekly subscription",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
-    validator: (me: MeResponse) => me.contentAccess.guardianWeeklySubscriber,
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
     alternateTierValue: "Guardian Weekly",
     alternateManagementUrl: domainSpecificSubsManageURL,
@@ -286,7 +279,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "digital pack subscription",
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digitalpack",
-    validator: (me: MeResponse) => me.contentAccess.digitalPack,
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
     productPage: "subscriptions"
@@ -295,10 +287,6 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     friendlyName: "subscription",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
-    validator: (me: MeResponse) =>
-      me.contentAccess.digitalPack ||
-      me.contentAccess.paperSubscriber ||
-      me.contentAccess.guardianWeeklySubscriber,
     productPage: {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
