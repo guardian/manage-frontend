@@ -111,8 +111,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.7",
-    "@emotion/styled": "^10.0.7",
+    "@emotion/core": "^10.0.10",
+    "@emotion/styled": "^10.0.10",
     "@reach/router": "^1.2.1",
     "aws-sdk": "^2.383.0",
     "base-64": "^0.1.0",

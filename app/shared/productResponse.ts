@@ -27,7 +27,7 @@ export const annotateMdaResponseWithTestUserFromHeaders = async (
   response: Response
 ) =>
   ((await response.json()) as MembersDataApiResponse[]).map(data =>
-    Object.assign(data, {
+    Object.assign({}, data, {
       isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true"
     })
   );
