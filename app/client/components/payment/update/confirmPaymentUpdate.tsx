@@ -1,10 +1,14 @@
 import Raven from "raven-js";
 import React from "react";
 import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
+import { hasProduct } from "../../../../shared/productResponse";
+import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import { hasProduct } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
@@ -78,7 +82,12 @@ class ExecutePaymentUpdate extends React.Component<
         body: JSON.stringify(
           this.props.newPaymentMethodDetail.detailToPayloadObject()
         ),
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+            window.location.href
+          )
+        }
       }
     );
 

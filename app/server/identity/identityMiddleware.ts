@@ -165,9 +165,9 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
             headers: {
               "X-GU-ID-Client-Access-Token":
                 "Bearer " + idapiConfig.accessToken,
-              [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-                req.path
-              ),
+              [X_GU_ID_FORWARDED_SCOPE]:
+                req.header(X_GU_ID_FORWARDED_SCOPE) ||
+                getScopeFromRequestPathOrEmptyString(req.path),
               Cookie: getCookiesOrEmptyString(req)
             }
           }
