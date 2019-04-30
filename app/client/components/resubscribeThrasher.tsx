@@ -49,7 +49,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
       )
   )
     ? []
-    : existingPaymentOptions.filter(option => option.paymentType === "Card");
+    : existingPaymentOptions;
 
   if (eligiblePaymentOptionsIfNoActiveExistingContribution.length) {
     trackEvent({
