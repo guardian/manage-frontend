@@ -1,4 +1,8 @@
 import React, { ReactNode } from "react";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../shared/identity";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
@@ -9,7 +13,12 @@ import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 const fetchExistingPaymentOptions = () =>
   fetch("/api/existing-payment-options", {
     credentials: "include",
-    mode: "same-origin"
+    mode: "same-origin",
+    headers: {
+      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+      )
+    }
   });
 
 interface ExistingPaymentSubscriptionInfo {
