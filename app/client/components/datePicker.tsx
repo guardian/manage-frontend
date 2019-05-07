@@ -1,5 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { DateRange } from "moment-range";
+import moment from "moment";
 import React from "react";
 import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
 
@@ -21,6 +22,8 @@ export interface DatePickerProps {
   onSelect: (range: OnSelectCallbackParam) => void;
 }
 
+const DATE_INPUT_FORMAT = "YYYY-MM-DD";
+
 export const DatePicker = (props: DatePickerProps) => (
   <>
     <DateRangePicker
@@ -37,7 +40,42 @@ export const DatePicker = (props: DatePickerProps) => (
       }))}
       defaultState="available"
     />
-    {/* <input type="date" value={props.selectedRange.start}/> */}
+    <div>
+      FROM:{" "}
+      <input
+        type="date"
+        value={
+          props.selectedRange
+            ? props.selectedRange.start.format(DATE_INPUT_FORMAT)
+            : ""
+        }
+        onChange={event =>
+          props.selectedRange &&
+          props.onSelect({
+            start: moment(event.target.value, DATE_INPUT_FORMAT),
+            end: props.selectedRange.end
+          })
+        }
+      />
+    </div>
+    <div>
+      TO:{" "}
+      <input
+        type="date"
+        value={
+          props.selectedRange
+            ? props.selectedRange.end.format(DATE_INPUT_FORMAT)
+            : ""
+        }
+        onChange={event =>
+          props.selectedRange &&
+          props.onSelect({
+            start: props.selectedRange.start,
+            end: moment(event.target.value, DATE_INPUT_FORMAT)
+          })
+        }
+      />
+    </div>
     <Global styles={css(cssHack)} />
     <Global
       styles={css(`
