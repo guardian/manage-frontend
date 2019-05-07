@@ -8,7 +8,8 @@ import {
   ProductTypes,
   ProductTypeWithCancellationFlow,
   ProductTypeWithProductPageProperties,
-  shouldCreatePaymentUpdateFlow
+  shouldCreatePaymentUpdateFlow,
+  shouldHaveHolidayStopsFlow
 } from "../../shared/productTypes";
 import {
   hasProductPageProperties,
@@ -25,6 +26,7 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
+import { HolidayStopFlow } from "./holiday/holidayStopFlow";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { Main } from "./main";
 import { MembershipFAQs } from "./membershipFAQs";
@@ -112,6 +114,17 @@ const User = () => (
               />
             </ConfirmPaymentUpdate>
           </PaymentUpdateFlow>
+        ))}
+
+      {Object.values(ProductTypes)
+        .filter(shouldHaveHolidayStopsFlow)
+        .map((productType: ProductType) => (
+          <HolidayStopFlow
+            key={productType.urlPart}
+            path={"/holiday/" + productType.urlPart}
+            productType={productType}
+            currentStep={1}
+          />
         ))}
 
       <MembershipFAQs path="/help" />

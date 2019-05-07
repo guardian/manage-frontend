@@ -1,8 +1,7 @@
 import { css, Global } from "@emotion/core";
-import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
-import DateRangePicker from "react-daterange-picker";
+import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
 
 const stateDefinitions = {
   available: {
@@ -16,68 +15,40 @@ const stateDefinitions = {
   }
 };
 
-const dateRanges = [
-  {
-    state: "unavailable",
-    range: new DateRange(
-      moment().add(3, "weeks"),
-      moment()
-        .add(3, "weeks")
-        .add(5, "days")
-    )
-  },
-  {
-    state: "unavailable",
-    range: new DateRange(
-      moment().add(5, "weeks"),
-      moment()
-        .add(5, "weeks")
-        .add(6, "days")
-    )
-  }
-];
-
-// export interface DatePickerProps {
-//
-// }
-
-export interface DatePickerState {
+export interface DatePickerProps {
+  unavailableDates: DateRange[];
   selectedRange?: DateRange;
+  onSelect: (range: OnSelectCallbackParam) => void;
 }
 
-export class DatePicker extends React.Component<
-  /*DatePickerProps*/ {},
-  DatePickerState
-> {
-  public state: DatePickerState = {};
-
-  public render = () => (
-    <>
-      <DateRangePicker
-        numberOfCalendars={2}
-        minimumDate={new Date()}
-        value={this.state.selectedRange}
-        onSelect={({ start, end }) =>
-          this.setState({ selectedRange: new DateRange(start, end) })
-        }
-        singleDateRange={true}
-        showLegend={true}
-        stateDefinitions={stateDefinitions}
-        dateStates={dateRanges}
-        defaultState="available"
-      />
-      <Global styles={css(cssHack)} />
-      <Global
-        styles={css(`
+export const DatePicker = (props: DatePickerProps) => (
+  <>
+    <DateRangePicker
+      numberOfCalendars={2}
+      minimumDate={new Date()}
+      value={props.selectedRange}
+      onSelect={props.onSelect}
+      singleDateRange={true}
+      showLegend={true}
+      stateDefinitions={stateDefinitions}
+      dateStates={props.unavailableDates.map(range => ({
+        state: "unavailable",
+        range
+      }))}
+      defaultState="available"
+    />
+    {/* <input type="date" value={props.selectedRange.start}/> */}
+    <Global styles={css(cssHack)} />
+    <Global
+      styles={css(`
         .DateRangePicker__HalfDateStates {
           transform: none;
           right: 0;
         }
       `)}
-      />
-    </>
-  );
-}
+    />
+  </>
+);
 
 const cssHack = `.DateRangePicker {
   display: inline-block;

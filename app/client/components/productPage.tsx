@@ -18,7 +18,11 @@ import {
   ProductDetail,
   sortByJoinDate
 } from "../../shared/productResponse";
-import { ProductPageProperties, ProductType } from "../../shared/productTypes";
+import {
+  ProductPageProperties,
+  ProductType,
+  shouldHaveHolidayStopsFlow
+} from "../../shared/productTypes";
 import {
   createProductDetailFetcher,
   ProductTypeWithProductPageProperties
@@ -386,6 +390,14 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
+            {shouldHaveHolidayStopsFlow(productType) && (
+              <LinkButton
+                text="Manage your holiday stops"
+                to={"/holiday/" + productType.urlPart}
+                state={productDetail}
+                right
+              />
+            )}
           </PageContainer>
         </>
       )}
