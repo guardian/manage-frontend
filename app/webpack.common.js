@@ -123,7 +123,7 @@ const client = merge(common, {
       }
     ]
   },
-  plugins: [copyPlugin]
+  plugins: [copyPlugin, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
 });
 module.exports = {
   client: client,
