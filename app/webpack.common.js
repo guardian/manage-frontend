@@ -120,6 +120,11 @@ const client = merge(common, {
             ...babelCommon.presets
           ]
         }
+      },
+      {
+        test: /\.css$/i,
+        use: "raw-loader",
+        include: /node_modules/
       }
     ]
   },
