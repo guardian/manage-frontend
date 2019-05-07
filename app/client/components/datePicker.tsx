@@ -25,6 +25,15 @@ const dateRanges = [
         .add(3, "weeks")
         .add(5, "days")
     )
+  },
+  {
+    state: "unavailable",
+    range: new DateRange(
+      moment().add(5, "weeks"),
+      moment()
+        .add(5, "weeks")
+        .add(6, "days")
+    )
   }
 ];
 
@@ -58,6 +67,14 @@ export class DatePicker extends React.Component<
         defaultState="available"
       />
       <Global styles={css(cssHack)} />
+      <Global
+        styles={css(`
+        .DateRangePicker__HalfDateStates {
+          transform: none;
+          right: 0;
+        }
+      `)}
+      />
     </>
   );
 }
