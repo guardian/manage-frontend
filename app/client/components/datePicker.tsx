@@ -35,10 +35,12 @@ export const DatePicker = (props: DatePickerProps) => (
       singleDateRange={true}
       showLegend={true}
       stateDefinitions={stateDefinitions}
-      dateStates={props.unavailableDates.map(range => ({
-        state: "unavailable",
-        range
-      }))}
+      dateStates={props.unavailableDates
+        .sort((range1, range2) => range1.start.unix() - range2.start.unix())
+        .map(range => ({
+          state: "unavailable",
+          range
+        }))}
       defaultState="available"
     />
     <div>
