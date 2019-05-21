@@ -8,7 +8,7 @@ import {
 import { conf } from "../config";
 import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
 
-interface RedirectResponseBody {
+interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
   redirect?: {
     url: string;
@@ -203,6 +203,8 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                   updateManageUrl(req, useRefererHeaderForManageUrl)
                 );
               } else {
+                // tslint:disable-next-line:no-object-mutation
+                Object.assign(res.locals, { identity: redirectResponseBody });
                 next();
               }
             } else {
