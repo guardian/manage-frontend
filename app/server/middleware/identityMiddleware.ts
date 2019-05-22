@@ -5,8 +5,9 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../shared/identity";
+import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
-import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
+import { idapiConfigPromise } from "../idapiConfig";
 
 interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
@@ -146,7 +147,7 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
   next: express.NextFunction
 ) => {
   const errorHandler = (message: string, detail?: any) => {
-    handleIdapiRelatedError(message, detail);
+    handleAwsRelatedError(message, detail);
     res.sendStatus(500); // TODO maybe server side render a pretty response
   };
 
