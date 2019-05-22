@@ -27,18 +27,26 @@ interface ManageHolidayStopStepState {
   selectedRange?: DateRange;
 }
 
-const unavailableDates = [
+const noticePeriod = new DateRange(moment(), moment().add(10, "days"));
+
+const existingHolidayStops = [
   new DateRange(
-    moment().add(3, "weeks"),
-    moment()
-      .add(3, "weeks")
-      .add(5, "days")
+    moment({
+      year: 2019,
+      month: 6,
+      day: 9
+    }),
+    moment({
+      year: 2019,
+      month: 6,
+      day: 11
+    })
   ),
   new DateRange(
     moment().add(5, "weeks"),
     moment()
       .add(5, "weeks")
-      .add(6, "days")
+      .add(3, "days")
   )
 ];
 
@@ -46,7 +54,12 @@ class ManageHolidayStopStep extends React.Component<
   ManageHolidayStopStepProps,
   ManageHolidayStopStepState
 > {
-  public state: ManageHolidayStopStepState = {};
+  public state: ManageHolidayStopStepState = {
+    selectedRange: new DateRange(
+      noticePeriod.clone().end,
+      noticePeriod.clone().end
+    )
+  };
 
   public render = () => (
     <MembersDataApiResponseContext.Provider value={this.props.productDetail}>
@@ -59,7 +72,8 @@ class ManageHolidayStopStep extends React.Component<
           hideBackButton
         >
           <DatePicker
-            unavailableDates={unavailableDates}
+            noticePeriod={noticePeriod}
+            existingHolidayStops={existingHolidayStops}
             selectedRange={this.state.selectedRange}
             onSelect={({ start, end }) =>
               this.setState({ selectedRange: new DateRange(start, end) })
