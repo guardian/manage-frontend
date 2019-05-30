@@ -1,9 +1,5 @@
 import bodyParser from "body-parser";
-import {
-  default as express,
-  NextFunction,
-  Response
-} from "express";
+import { default as express, NextFunction, Response } from "express";
 import helmet from "helmet";
 import Raven from "raven";
 import { conf } from "./config";
@@ -32,17 +28,18 @@ server.use(helmet());
 
 server.use("/static", express.static(__dirname + "/static"));
 
-server.use(
-  (_, res: Response, next: NextFunction) => {
-    // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
-    res.header(
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate, max-age=0"
-    );
-    res.header("Access-Control-Allow-Origin", "*." + conf.DOMAIN);
-    next();
-  }
-);
+server.get("/consents", consentsUI);
+server.post("/consents", consentsPOST);
+
+server.use((_, res: Response, next: NextFunction) => {
+  // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
+  res.header(
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate, max-age=0"
+  );
+  res.header("Access-Control-Allow-Origin", "*." + conf.DOMAIN);
+  next();
+});
 
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 
