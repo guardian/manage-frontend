@@ -27,39 +27,31 @@ interface ManageHolidayStopStepState {
   selectedRange?: DateRange;
 }
 
-const noticePeriod = new DateRange(moment(), moment().add(10, "days"));
+const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
-const existingHolidayStops = [
-  new DateRange(
-    moment({
-      year: 2019,
-      month: 6,
-      day: 9
-    }),
-    moment({
-      year: 2019,
-      month: 6,
-      day: 11
-    })
-  ),
-  new DateRange(
-    moment().add(5, "weeks"),
-    moment()
-      .add(5, "weeks")
-      .add(3, "days")
-  )
-];
+const mockApiObject = {
+  firstAvailableDate: "2019-06-11",
+  existing: [
+    {
+      id: "",
+      start: "2019-06-23",
+      end: "2019-06-25",
+      subscriptionName: "Guardian Weekly"
+    },
+    {
+      id: "",
+      start: "2019-07-15",
+      end: "2019-07-22",
+      subscriptionName: "Guardian Weekly"
+    }
+  ]
+};
 
 class ManageHolidayStopStep extends React.Component<
   ManageHolidayStopStepProps,
   ManageHolidayStopStepState
 > {
-  public state: ManageHolidayStopStepState = {
-    selectedRange: new DateRange(
-      noticePeriod.clone().end,
-      noticePeriod.clone().end
-    )
-  };
+  public state: ManageHolidayStopStepState = {};
 
   public render = () => (
     <MembersDataApiResponseContext.Provider value={this.props.productDetail}>
@@ -72,8 +64,19 @@ class ManageHolidayStopStep extends React.Component<
           hideBackButton
         >
           <DatePicker
-            noticePeriod={noticePeriod}
-            existingHolidayStops={existingHolidayStops}
+            // noticePeriod={noticePeriod}
+            firstAvailableDate={moment(
+              mockApiObject.firstAvailableDate,
+              DATE_INPUT_FORMAT
+            )}
+            // existingHolidayStops={existingHolidayStops}
+            existingHolidayStops={mockApiObject.existing.map(
+              obj =>
+                new DateRange(
+                  moment(obj.start, DATE_INPUT_FORMAT),
+                  moment(obj.end, DATE_INPUT_FORMAT)
+                )
+            )}
             selectedRange={this.state.selectedRange}
             onSelect={({ start, end }) =>
               this.setState({ selectedRange: new DateRange(start, end) })
