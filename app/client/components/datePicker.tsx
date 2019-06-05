@@ -138,12 +138,6 @@ export class DatePicker extends React.Component<
       <div id="validation-message" role="alert" css={this.validationMsgCss}>
         {this.state.validationMessage}
       </div>
-      <Button
-        text="Review details"
-        right={true}
-        disabled={false}
-        primary={true}
-      />
 
       <Global styles={css(rawDateRangePickerCSS)} />
       <Global

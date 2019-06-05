@@ -9,7 +9,13 @@ import { DatePicker } from "../datePicker";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
-import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
+import {
+  RouteableStepProps,
+  WizardStep,
+  ReturnToYourProductButton
+} from "../wizardRouterAdapter";
+import { Button } from "../buttons";
+import { NavigateFn } from "@reach/router";
 
 export const labelHolidayStopStepProps: (
   routeableStepProps: RouteableStepProps
@@ -47,11 +53,42 @@ const mockApiObject = {
   ]
 };
 
+// const navigate: NavigateFn;
+
 class ManageHolidayStopStep extends React.Component<
   ManageHolidayStopStepProps,
   ManageHolidayStopStepState
 > {
   public state: ManageHolidayStopStepState = {};
+
+  // private startCardUpdate = (navigate: NavigateFn) => async () => {
+  //   this.setInProgress(true);
+  //   if (this.props.stripe) {
+  //     const tokenResponse = await this.props.stripe.createToken(
+  //       { name: this.props.userEmail } // may need to add more token options for product switch
+  //     );
+  //     if (tokenResponse.token && isTokenWithCard(tokenResponse.token)) {
+  //       this.props.newPaymentMethodDetailUpdater(
+  //         new NewCardPaymentMethodDetail(
+  //           tokenResponse.token,
+  //           this.props.stripeApiKey
+  //         )
+  //       );
+  //       navigate("confirm");
+  //     } else {
+  //       if (tokenResponse.error) {
+  //         this.setState({
+  //           error: tokenResponse.error
+  //         });
+  //       }
+  //       this.setInProgress(false);
+  //     }
+  //   }
+  // };
+
+  // private handleClick = (navigate: NavigateFn) => {
+  //   navigate("confirm");
+  // };
 
   public render = () => (
     <MembersDataApiResponseContext.Provider value={this.props.productDetail}>
@@ -81,6 +118,21 @@ class ManageHolidayStopStep extends React.Component<
             onSelect={({ start, end }) =>
               this.setState({ selectedRange: new DateRange(start, end) })
             }
+          />
+          <div>
+            <Button text="Cancel" left={true} disabled={false} />
+
+            <Button
+              text="Review details"
+              right={true}
+              disabled={this.state.selectedRange === undefined}
+              // onClick={this.handleClick("confirm")}
+              primary={true}
+            />
+          </div>
+          <div css={{ height: "10px" }} />
+          <ReturnToYourProductButton
+            productType={this.props.routeableStepProps.productType}
           />
         </WizardStep>
       </NavigateFnContext.Provider>
