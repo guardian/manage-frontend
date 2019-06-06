@@ -5,7 +5,6 @@ import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
 import { DateInput, DateInputState } from "./dateInput";
-import { Button } from "./buttons";
 
 const stateDefinitions = {
   available: {
@@ -27,7 +26,7 @@ const stateDefinitions = {
 
 export interface DatePickerProps {
   firstAvailableDate: Moment;
-  existingHolidayStops: DateRange[];
+  existingDates: DateRange[];
   selectedRange?: DateRange;
   onSelect: (range: OnSelectCallbackParam) => void;
 }
@@ -41,23 +40,6 @@ const adjustDateRangeToDisplayProperly = (range: DateRange) =>
     range.start.clone().subtract(1, "day"),
     range.end.clone().add(1, "day")
   );
-
-// const createDespatchDateRangeArray = (firstDate: Moment) => {
-//   console.log("firstDate", firstDate, typeof firstDate, firstDate.year());
-//   let despatchDateRangeArray = [];
-//   const daysInYear = firstDate.isLeapYear() ? 366 : 365;
-//   console.log("days in year", daysInYear);
-//   for (let i = 0; i < daysInYear; i++) {
-//     const date = firstDate.clone().add(i, "days");
-//     console.log("date after add", date.year(), date.month(), date.day());
-//     console.log("weekday", date.day());
-//     if (date.day() === 3) {
-//       despatchDateRangeArray.push(new DateRange(date, date));
-//     }
-//   }
-//   console.log("despatchDateRangeArray", despatchDateRangeArray);
-//   return despatchDateRangeArray;
-// };
 
 const daysInYear = (firstDate: Moment) => (firstDate.isLeapYear() ? 366 : 365);
 
@@ -77,22 +59,6 @@ export class DatePicker extends React.Component<
 
   public render = () => (
     <>
-      <p>
-        Choose the dates that you will be away. We will automatically calculate
-        the number of issues you are going to miss and estimated credit you will
-        get.
-      </p>
-      <p>
-        The first available date is{" "}
-        <strong>
-          {this.props.firstAvailableDate.day()} /{" "}
-          {this.props.firstAvailableDate.month()} /{" "}
-          {this.props.firstAvailableDate.year()}
-        </strong>{" "}
-        due to printing and delivery schedules, and you can book up to one year
-        ahead.
-      </p>
-      <p>You can select only one schedule at a time.</p>
       <DateRangePicker
         numberOfCalendars={2}
         minimumDate={this.props.firstAvailableDate.toDate()}
@@ -106,7 +72,7 @@ export class DatePicker extends React.Component<
         showLegend={true}
         stateDefinitions={stateDefinitions}
         dateStates={[
-          ...this.props.existingHolidayStops.map(range => ({
+          ...this.props.existingDates.map(range => ({
             state: "existing",
             range: adjustDateRangeToDisplayProperly(range)
           }))
