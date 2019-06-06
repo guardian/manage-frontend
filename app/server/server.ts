@@ -28,8 +28,8 @@ server.use(helmet());
 
 server.use("/static", express.static(__dirname + "/static"));
 
-server.get("/consents", consentsUI);
-server.post("/consents", consentsPOST);
+server.get("/consent", consentUI);
+server.post("/consent", consentPOST);
 
 server.use((_, res: Response, next: NextFunction) => {
   // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)

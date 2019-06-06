@@ -1,9 +1,9 @@
 import express from "express";
 import { renderToString } from "react-dom/server";
-import { ConsentManagementPortal } from "../client/components/consents/ConsentMangementPortal";
-import html from "./consents/html";
+import { ConsentManagementPortal } from "../client/components/consent/ConsentMangementPortal";
+import html from "./consent/html";
 
-export const consentsUI = (req: express.Request, res: express.Response) => {
+export const consentUI = (req: express.Request, res: express.Response) => {
   try {
     const body = renderToString(ConsentManagementPortal());
     const title = "Consent Management Platform | The Guardian";
@@ -19,6 +19,6 @@ export const consentsUI = (req: express.Request, res: express.Response) => {
   }
 };
 
-export const consentsPOST = (req: express.Request, res: express.Response) => {
-  res.status(200).send("Consents POST");
+export const consentPOST = (req: express.Request, res: express.Response) => {
+  res.status(200).send("Consent POST");
 };
