@@ -1,6 +1,6 @@
 import Raven from "raven-js";
 import ReactDOM from "react-dom";
-import { ConsentManagementPortal } from "../client/components/consent/ConsentMangementPortal";
+import { App } from "../client/components/consent/App";
 
 declare var WEBPACK_BUILD: string;
 
@@ -14,4 +14,4 @@ if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
 
 const element = document.getElementById("app");
 
-ReactDOM.hydrate(ConsentManagementPortal, element);
+ReactDOM.hydrate(<App />, element);

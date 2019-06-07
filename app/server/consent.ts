@@ -1,16 +1,18 @@
 import express from "express";
 import { renderToString } from "react-dom/server";
-import { ConsentManagementPortal } from "../client/components/consent/ConsentMangementPortal";
+import { App } from "../client/components/consent/App";
 import html from "./consent/html";
 
 export const consentUI = (req: express.Request, res: express.Response) => {
   try {
-    const body = renderToString(ConsentManagementPortal());
+    const src = "/static/consent.js";
+    const body = renderToString(App());
     const title = "Consent Management Platform | The Guardian";
 
     const resp = html({
       body,
-      title
+      title,
+      src
     });
 
     res.status(200).send(resp);

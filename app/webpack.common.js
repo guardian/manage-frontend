@@ -92,7 +92,7 @@ const server = merge(common, {
 const client = merge(common, {
   entry: {
     user: ["whatwg-fetch", "./client/user"],
-    consent: ["whatwg-fetch", "./client/consent"]
+    consent: ["whatwg-fetch", "./client/consent.tsx"]
   },
   output: {
     path: path.resolve(__dirname, "dist", "static"),
