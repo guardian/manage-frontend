@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
+import { Button } from "./Button";
 
 const headerStyles = color => css`
   color: ${color};
@@ -15,18 +16,31 @@ export class ConsentManagementPortal extends Component<{}, { color: string }> {
   }
 
   public componentDidMount() {
-    setInterval(() => {
-      const newColor = this.state.color === "red" ? "blue" : "red";
+    console.log(
+      "componentDidMount() is invoked once - immediately after a component is mounted in the browser"
+    );
+  }
 
-      this.setState({
-        color: newColor
-      });
-    }, 500);
+  public toggleColor() {
+    const newColor = this.state.color === "red" ? "blue" : "red";
+
+    this.setState({
+      color: newColor
+    });
   }
 
   public render() {
     const { color } = this.state;
 
-    return <h1 css={headerStyles(color)}>Wait for it...</h1>;
+    return (
+      <>
+        <h1 css={headerStyles(color)}>Click the button...</h1>
+        <Button
+          onClick={() => {
+            this.toggleColor();
+          }}
+        />
+      </>
+    );
   }
 }
