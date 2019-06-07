@@ -4,7 +4,11 @@ import { Button } from "./Button";
 
 const headerStyles = color => css`
   color: ${color};
+  font-family: "GH Guardian Headline", Georgia, serif;
+  font-weight: 500;
   font-size: 24px;
+  line-height: 28px;
+  margin: 12px;
 `;
 export class ConsentManagementPortal extends Component<{}, { color: string }> {
   constructor(props: {}) {
