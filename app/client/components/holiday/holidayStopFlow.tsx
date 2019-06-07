@@ -17,13 +17,6 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 
-export const labelHolidayStopStepProps: (
-  routeableStepProps: RouteableStepProps
-) => RouteableStepProps = (routeableStepProps: RouteableStepProps) => ({
-  stepLabels: ["Select dates", "Summary", "Confirmation"],
-  ...routeableStepProps
-});
-
 interface ManageHolidayStopStepProps {
   productDetail: ProductDetail;
   routeableStepProps: RouteableStepProps;
@@ -210,7 +203,7 @@ class ManageHolidayStopStep extends React.Component<
 
 export const HolidayStopFlow = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
-    {...labelHolidayStopStepProps(props)}
+    {...props}
     headingPrefix="Manage holiday stops for"
     supportRefererSuffix="holiday_stop_flow"
     loadingMessagePrefix="Retrieving current holiday stops for your"

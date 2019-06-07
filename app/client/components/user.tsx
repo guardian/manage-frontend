@@ -121,10 +121,16 @@ const User = () => (
         .map((productType: ProductType) => (
           <HolidayStopFlow
             key={productType.urlPart}
-            path={"/holiday/" + productType.urlPart}
+            path={"/suspend/" + productType.urlPart}
             productType={productType}
             currentStep={1}
-          />
+          >
+            {/* <ConfirmDates
+              path="confirm"
+              productType={productType}
+              currentStep={2}
+            /> */}
+          </HolidayStopFlow>
         ))}
 
       <MembershipFAQs path="/help" />
