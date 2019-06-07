@@ -1,3 +1,5 @@
+declare var WEBPACK_BUILD: string;
+
 const html: (
   _: {
     readonly body: string;
@@ -13,10 +15,10 @@ const html: (
       <title>${title}</title>
       <link rel="preload" href="${src}" as="script">
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
-      <script src="${src}" defer></script>
     </head>
     <body>
       <div id="app">${body}</div>
+      <script src="${src}?release=${WEBPACK_BUILD}"></script>
     </body>
   </html>
 `;
