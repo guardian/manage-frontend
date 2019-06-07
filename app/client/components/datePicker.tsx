@@ -12,11 +12,6 @@ const stateDefinitions = {
     color: "white",
     label: ""
   },
-  // despatch: {
-  //   selectable: true,
-  //   color: "#f1f8fc",
-  //   label: "Issue despatch"
-  // },
   existing: {
     selectable: false,
     color: "#dcdcdc",
@@ -26,6 +21,7 @@ const stateDefinitions = {
 
 export interface DatePickerProps {
   firstAvailableDate: Moment;
+  issueDayOfWeek: number;
   existingDates: DateRange[];
   selectedRange?: DateRange;
   onSelect: (range: OnSelectCallbackParam) => void;
@@ -144,6 +140,20 @@ export class DatePicker extends React.Component<
         .DateRangePicker__Date.DateRangePicker__Date--weekend {
           background-color: transparent;
         }
+        .DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${
+          this.props.issueDayOfWeek
+        })::after {
+
+          content: "";
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          background-color: red;
+          transform: rotate(45deg);
+          top: -7px;
+          left: -7px;
+      
+      }
       `)}
       />
     </>

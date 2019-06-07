@@ -67,8 +67,8 @@ const firstAvailableDateMoment = moment(
 );
 
 const createDespatchDateArray = () => {
-  const firstDate = firstAvailableDateMoment.clone(); //change this to customer acquire date
-  let despatchDateArray = [];
+  const firstDate = firstAvailableDateMoment.clone(); // change this to customer acquire date
+  const despatchDateArray = [];
   const daysInYear = firstDate.isLeapYear() ? 366 : 365;
   for (let i = 0; i < daysInYear; i++) {
     const date = firstDate.clone().add(i, "days");
@@ -158,7 +158,7 @@ class ManageHolidayStopStep extends React.Component<
           <DatePicker
             // noticePeriod={noticePeriod}
             firstAvailableDate={firstAvailableDateMoment}
-            // existingHolidayStops={existingHolidayStops}
+            issueDayOfWeek={6}
             existingDates={existingDates}
             selectedRange={this.state.selectedRange}
             onSelect={({ start, end }) => {
