@@ -20,6 +20,7 @@ export class ConsentManagementPortal extends Component<{}, { color: string }> {
   }
 
   public componentDidMount() {
+    // get cookies here
     console.log(
       "componentDidMount() is invoked once - immediately after a component is mounted in the browser"
     );
