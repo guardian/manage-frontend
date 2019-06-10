@@ -29,7 +29,7 @@ const stateDefinitions = {
   },
   existing: {
     selectable: false,
-    color: "#dcdcdc",
+    color: palette.pink.light,
     label: "Existing holiday stops"
   }
 };
@@ -80,9 +80,7 @@ const LegendItem = (props: LegendItemProps) => (
         css(props.extraCss)
       ]}
       className="DateRangePicker__Date"
-    >
-      99
-    </div>
+    />
     <span
       css={{
         marginRight: "20px"
@@ -92,6 +90,8 @@ const LegendItem = (props: LegendItemProps) => (
     </span>
   </>
 );
+
+const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
 
 export class DatePicker extends React.Component<
   DatePickerProps,
@@ -116,7 +116,7 @@ export class DatePicker extends React.Component<
           marginBottom: "10px"
         }}
       >
-        {legendItems.map(LegendItem)}
+        {legendItems.map(props => <LegendItem key={props.label} {...props} />)}
       </div>
       <DateRangePicker
         numberOfCalendars={2}
@@ -169,7 +169,6 @@ export class DatePicker extends React.Component<
         styles={css(`
         .DateRangePicker {
           --selectedColour: ${palette.green.medium};
-          --existingColour: ${palette.neutral["5"]};
           margin-left: -20px;
         }
         .DateRangePicker__HalfDateStates {
@@ -197,10 +196,12 @@ export class DatePicker extends React.Component<
         .DateRangePicker__DateLabel {
           border: 1px solid darken(var(--selectedColour), 5);
         }
+        .DateRangePicker__WeekdayHeading {
+          border-bottom: ${gridBorderCssValue}
+        }
         .DateRangePicker__Date {
-          border: 1px solid ${palette.neutral["4"]} !important;
+          border: ${gridBorderCssValue}
           font-family: ${sans};
-
         }
         .DateRangePicker__Date.DateRangePicker__Date--weekend {
           background-color: transparent;
@@ -211,11 +212,6 @@ export class DatePicker extends React.Component<
         .DateRangePicker__MonthDates {
           border-collapse: collapse;
         }
-        .DateRangePicker__WeekdayHeading {
-          border-bottom: 1px solid ${palette.neutral["4"]} !important;
-
-        }
-      
       `)}
       />
     </>

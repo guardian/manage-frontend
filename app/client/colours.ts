@@ -28,7 +28,7 @@ const palette = {
     dark: "#6b5840"
   },
   pink: {
-    light: "#ffabdb",
+    light: "#feeef7",
     medium: "#bb3b80",
     dark: "#7d0068"
   },
