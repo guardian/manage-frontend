@@ -1,8 +1,9 @@
 import { Moment } from "moment";
 import React from "react";
+import { sans } from "../styles/fonts";
 
 const inputBoxCss = {
-  fontFamily: "inherit",
+  fontFamily: sans,
   height: "2rem",
   border: "0",
   width: "4rem",

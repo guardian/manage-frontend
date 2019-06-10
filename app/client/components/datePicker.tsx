@@ -4,7 +4,22 @@ import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
-import { DateInput, DateInputState } from "./dateInput";
+import { DateInput } from "./dateInput";
+import { sans } from "../styles/fonts";
+import palette from "../colours";
+
+const issueDayAfterSuffixCss = `
+::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: red;
+  transform: rotate(45deg);
+  top: -7px;
+  left: -7px;
+}
+`;
 
 const stateDefinitions = {
   available: {
@@ -18,6 +33,17 @@ const stateDefinitions = {
     label: "Existing holiday stops"
   }
 };
+
+export interface LegendItemProps {
+  color?: string;
+  label: string;
+  extraCss?: string;
+}
+
+const legendItems: LegendItemProps[] = [
+  stateDefinitions.existing,
+  { extraCss: issueDayAfterSuffixCss, label: "Issue day" }
+];
 
 export interface DatePickerProps {
   firstAvailableDate: Moment;
@@ -39,6 +65,34 @@ const adjustDateRangeToDisplayProperly = (range: DateRange) =>
 
 const daysInYear = (firstDate: Moment) => (firstDate.isLeapYear() ? 366 : 365);
 
+const LegendItem = (props: LegendItemProps) => (
+  <>
+    <div
+      css={[
+        {
+          width: "38px",
+          height: "32px",
+          backgroundColor: props.color,
+          display: "inline-block",
+          marginRight: "10px",
+          fontFamily: sans
+        },
+        css(props.extraCss)
+      ]}
+      className="DateRangePicker__Date"
+    >
+      99
+    </div>
+    <span
+      css={{
+        marginRight: "20px"
+      }}
+    >
+      {props.label}
+    </span>
+  </>
+);
+
 export class DatePicker extends React.Component<
   DatePickerProps,
   DatePickerState
@@ -55,6 +109,15 @@ export class DatePicker extends React.Component<
 
   public render = () => (
     <>
+      <div
+        css={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px"
+        }}
+      >
+        {legendItems.map(LegendItem)}
+      </div>
       <DateRangePicker
         numberOfCalendars={2}
         minimumDate={this.props.firstAvailableDate.toDate()}
@@ -65,7 +128,7 @@ export class DatePicker extends React.Component<
         value={this.props.selectedRange}
         onSelect={this.props.onSelect}
         singleDateRange={true}
-        showLegend={true}
+        showLegend={false}
         stateDefinitions={stateDefinitions}
         dateStates={[
           ...this.props.existingDates.map(range => ({
@@ -105,8 +168,9 @@ export class DatePicker extends React.Component<
       <Global
         styles={css(`
         .DateRangePicker {
-          --selectedColour: #3db540;
-          --grey: #f4f5f6;
+          --selectedColour: ${palette.green.medium};
+          --existingColour: ${palette.neutral["5"]};
+          margin-left: -20px;
         }
         .DateRangePicker__HalfDateStates {
           transform: none;
@@ -133,27 +197,25 @@ export class DatePicker extends React.Component<
         .DateRangePicker__DateLabel {
           border: 1px solid darken(var(--selectedColour), 5);
         }
-        td.DateRangePicker__Date {
-          border-left-color: var(--grey);
-          border-right-color: var(--grey);
+        .DateRangePicker__Date {
+          border: 1px solid ${palette.neutral["4"]} !important;
+          font-family: ${sans};
+
         }
         .DateRangePicker__Date.DateRangePicker__Date--weekend {
           background-color: transparent;
         }
         .DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${
           this.props.issueDayOfWeek
-        })::after {
+        })${issueDayAfterSuffixCss}
+        .DateRangePicker__MonthDates {
+          border-collapse: collapse;
+        }
+        .DateRangePicker__WeekdayHeading {
+          border-bottom: 1px solid ${palette.neutral["4"]} !important;
 
-          content: "";
-          position: absolute;
-          width: 14px;
-          height: 14px;
-          background-color: red;
-          transform: rotate(45deg);
-          top: -7px;
-          left: -7px;
+        }
       
-      }
       `)}
       />
     </>
