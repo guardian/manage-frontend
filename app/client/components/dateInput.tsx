@@ -33,6 +33,8 @@ const dateInputCss = {
   // margin: "0 10px 0 10px"
 };
 
+const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
+
 export interface DateInputProps {
   selectedDate?: Moment;
   defaultDate: Moment;
@@ -47,14 +49,9 @@ export interface DateInputState {
 }
 
 export class DateInput extends React.Component<DateInputProps, DateInputState> {
-  // Moment months are zero-indexed, this allows input to match calendar view
-  public adjustZeroIndexedMonth = (selectedDate: Moment) => {
-    return selectedDate.month() + 1;
-  };
-
   public state: DateInputState = {
     day: this.props.defaultDate.date(),
-    month: this.adjustZeroIndexedMonth(this.props.defaultDate),
+    month: adjustZeroIndexedMonth(this.props.defaultDate),
     year: this.props.defaultDate.year(),
     dateVisible: false
   };
@@ -67,7 +64,7 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
     ) {
       this.setState({
         day: this.props.selectedDate.date(),
-        month: this.adjustZeroIndexedMonth(this.props.selectedDate),
+        month: adjustZeroIndexedMonth(this.props.selectedDate),
         // month: this.props.selectedDate.month(),
         year: this.props.selectedDate.year(),
         dateVisible: true

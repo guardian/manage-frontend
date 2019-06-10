@@ -64,22 +64,23 @@ export const ReturnToYourProductButton = (
 const RootComponent = (props: RootComponentProps) => (
   <>
     <PageContainer>
-      {props.routeableStepProps.stepLabels ? (
-        <ProgressBreadcrumb
-          current={props.routeableStepProps.currentStep}
-          labels={props.routeableStepProps.stepLabels}
-        />
-      ) : (
-        <PageContainerSection>
-          <ProgressCounter
+      {!!props.routeableStepProps.currentStep &&
+        (props.routeableStepProps.stepLabels ? (
+          <ProgressBreadcrumb
             current={props.routeableStepProps.currentStep}
-            total={estimateTotal(
-              props.routeableStepProps.currentStep,
-              props.routeableStepProps.children
-            )}
+            labels={props.routeableStepProps.stepLabels}
           />
-        </PageContainerSection>
-      )}
+        ) : (
+          <PageContainerSection>
+            <ProgressCounter
+              current={props.routeableStepProps.currentStep}
+              total={estimateTotal(
+                props.routeableStepProps.currentStep,
+                props.routeableStepProps.children
+              )}
+            />
+          </PageContainerSection>
+        ))}
 
       {props.thisStageChildren}
 
