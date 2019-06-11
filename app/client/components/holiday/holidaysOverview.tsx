@@ -6,7 +6,11 @@ import {
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
-import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
+import {
+  RouteableStepProps,
+  WizardStep,
+  ReturnToYourProductButton
+} from "../wizardRouterAdapter";
 import { navigate } from "@reach/router";
 import {
   HolidayStopsLoader as HolidayStopsAsyncLoader,
@@ -20,7 +24,7 @@ const renderHolidayStopsOverview = (
   routeableStepProps: RouteableStepProps
 ) => (holidayStopsResponse: GetHolidayStopsResponse) => (
   <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
-    <WizardStep routeableStepProps={routeableStepProps}>
+    <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
       <div>
         <h1>
           Suspensions Overview ({productDetail.subscription.subscriptionId})
@@ -33,6 +37,7 @@ const renderHolidayStopsOverview = (
           onClick={() => (routeableStepProps.navigate || navigate)("create")}
         />
       </div>
+      <ReturnToYourProductButton productType={routeableStepProps.productType} />
     </WizardStep>
   </HolidayStopsResponseContext.Provider>
 );

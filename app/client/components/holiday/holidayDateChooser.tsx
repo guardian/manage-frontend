@@ -91,7 +91,6 @@ export class HolidayDateChooser extends React.Component<
         <WizardStep
           routeableStepProps={this.props}
           extraFooterComponents={<QuestionsFooter />}
-          hideBackButton
         >
           <p>
             Choose the dates that you will be away. We will automatically
@@ -151,18 +150,15 @@ export class HolidayDateChooser extends React.Component<
             }.`}
           </p>
           <div>
-            <Button text="Cancel" left={true} disabled={false} />
-
             <Button
               text="Review details"
-              right={true}
-              disabled={this.state.selectedRange === undefined}
+              right
+              disabled={!!this.state.selectedRange}
               // onClick={this.handleClick("confirm")}
-              primary={true}
+              primary
             />
           </div>
           <div css={{ height: "10px" }} />
-          <ReturnToYourProductButton productType={this.props.productType} />
         </WizardStep>
       )}
     </HolidayStopsResponseContext.Consumer>
