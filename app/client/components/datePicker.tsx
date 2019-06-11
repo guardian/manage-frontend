@@ -30,7 +30,7 @@ const stateDefinitions = {
   existing: {
     selectable: false,
     color: palette.pink.light,
-    label: "Existing holiday stops"
+    label: "Existing suspensions"
   }
 };
 

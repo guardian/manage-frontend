@@ -27,10 +27,10 @@ const renderHolidayStopsOverview = (
         </h1>
         <pre>{JSON.stringify(holidayStopsResponse)}</pre>
         <Button
-          text="New Suspension"
+          text="Create suspension"
           right
           primary
-          onClick={() => (routeableStepProps.navigate || navigate)("new")}
+          onClick={() => (routeableStepProps.navigate || navigate)("create")}
         />
       </div>
     </WizardStep>
@@ -40,7 +40,7 @@ const renderHolidayStopsOverview = (
 export const HolidaysOverview = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
-    headingPrefix="Manage holiday stops for"
+    headingPrefix="Manage suspensions of"
     supportRefererSuffix="holiday_stop_flow"
     loadingMessagePrefix="Retrieving details of your"
     singleProductDetailRenderer={(

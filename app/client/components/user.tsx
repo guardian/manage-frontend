@@ -129,7 +129,7 @@ const User = () => (
             currentStep={0}
           >
             <HolidayDateChooser
-              path="new"
+              path="create"
               productType={productType}
               currentStep={1}
             >
