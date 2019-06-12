@@ -4,14 +4,9 @@ import React from "react";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
-import {
-  ReturnToYourProductButton,
-  RouteableStepProps,
-  WizardStep
-} from "../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
 import {
   HolidayStopsResponseContext,
-  HolidayStopRequest,
   isHolidayStopsResponse
 } from "./holidayStopApi";
 
@@ -43,20 +38,6 @@ const createDespatchDateArray = () => {
 };
 
 const despatchDateArray = createDespatchDateArray();
-
-// for use later whend displaying despatch days on calendar
-const despatchDateRangeArray = despatchDateArray.map(
-  date => new DateRange(date, date)
-);
-
-const transformStringDatesToMoments = (existing: HolidayStopRequest[]) =>
-  existing.map(
-    obj =>
-      new DateRange(
-        moment(obj.start, DATE_INPUT_FORMAT),
-        moment(obj.end, DATE_INPUT_FORMAT)
-      )
-  );
 
 const calculateNumberOfIssuesAffected = (
   datesArray: Moment[],
@@ -117,11 +98,11 @@ export class HolidayDateChooser extends React.Component<
             // noticePeriod={noticePeriod}
             firstAvailableDate={firstAvailableDateMoment}
             issueDayOfWeek={6}
-            existingDates={transformStringDatesToMoments(
+            existingDates={
               isHolidayStopsResponse(holidayStopsResponse)
-                ? holidayStopsResponse.existing
+                ? holidayStopsResponse.existing.map(hsr => hsr.dateRange)
                 : []
-            )}
+            }
             selectedRange={this.state.selectedRange}
             onSelect={({ start, end }) => {
               const range = new DateRange(start, end);
