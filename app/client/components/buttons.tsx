@@ -19,6 +19,8 @@ export interface CommonButtonProps {
   primary?: true;
   hollow?: true;
   hide?: boolean;
+  hoverColour?: string;
+  leftTick?: true;
 }
 
 export interface LinkButtonProps extends CommonButtonProps {
@@ -30,15 +32,20 @@ export interface ButtonProps extends CommonButtonProps {
   onClick?: () => void;
 }
 
-const applyArrowStyleIfApplicable = (
+const applyIconStyleIfApplicable = (
   hover: boolean,
   left?: true,
-  right?: true
+  right?: true,
+  leftTick?: true
 ) => {
   if (left) {
     return hover ? styles.leftHover : styles.left;
   } else if (right) {
     return hover ? styles.rightHover : styles.right;
+  } else if (leftTick) {
+    return {
+      padding: "4px 21px 3px 16px"
+    };
   }
   return {
     padding: "1px 18px 0 18px",
@@ -90,7 +97,9 @@ const buttonCss = ({
   right,
   primary,
   hollow,
-  hide
+  hide,
+  hoverColour,
+  leftTick
 }: CommonButtonProps) => {
   const backgroundColour = calcBackgroundColour(
     disabled,
@@ -115,14 +124,16 @@ const buttonCss = ({
     background: backgroundColour,
     color: calcTextColour(disabled, textColour, primary, hollow),
     border: hollow ? "1px solid" : "none",
-    ...applyArrowStyleIfApplicable(false, left, right),
+    ...applyIconStyleIfApplicable(false, left, right, leftTick),
     ":hover": disabled
       ? undefined
       : {
-          background: Color(backgroundColour)
-            .darken(backgroundColour === defaultColour ? 0.3 : 0.1)
-            .string(),
-          ...applyArrowStyleIfApplicable(true, left, right)
+          background:
+            hoverColour ||
+            Color(backgroundColour)
+              .darken(backgroundColour === defaultColour ? 0.3 : 0.1)
+              .string(),
+          ...applyIconStyleIfApplicable(true, left, right, leftTick)
         },
     cursor: disabled ? "not-allowed" : "pointer",
     [maxWidth.mobile]: {
@@ -136,9 +147,18 @@ const buttonCss = ({
   });
 };
 
-export const ButtonArrow = () => (
+export const ArrowIcon = () => (
   <svg viewBox="0 0 30 30">
     <path d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9" />
+  </svg>
+);
+
+export const TickIcon = () => (
+  <svg
+    viewBox="0 0 10.79 8.608"
+    css={{ height: "auto", width: "21px", marginRight: "10px" }}
+  >
+    <path d="M2.99 6.58L10.24 0l.55.53-7.8 8.08h-.26L0 4.79l.55-.55 2.44 2.33z" />
   </svg>
 );
 
@@ -184,7 +204,7 @@ export const LinkButton = (props: LinkButtonProps) => (
     state={props.state}
   >
     {props.text}
-    <ButtonArrow />
+    <ArrowIcon />
   </Link>
 );
 
@@ -197,7 +217,8 @@ export const Button = (props: ButtonProps) => (
       (event.target as HTMLButtonElement).blur()
     }
   >
+    {props.leftTick && <TickIcon />}
     {props.text}
-    <ButtonArrow />
+    {(props.left || props.right) && <ArrowIcon />}
   </button>
 );
