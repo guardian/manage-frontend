@@ -1,15 +1,17 @@
 import { Moment } from "moment";
 import React from "react";
 import { sans } from "../styles/fonts";
+import palette from "../colours";
 
 const inputBoxCss = {
   fontFamily: sans,
   height: "2rem",
   border: "0",
   width: "4rem",
+  padding: "0 2px 0 2px",
   fontSize: "1rem",
   appearance: "textfield",
-  textAlign: "center"
+  textAlign: "left"
 };
 
 const dayMonthCss = {
@@ -24,14 +26,7 @@ const hiddenDateCss = {
 const dividerCss = {
   display: "inline-block",
   fontSize: "1rem",
-  margin: "0 2px 0 2px"
-};
-
-const dateInputCss = {
-  display: "inline-block",
-  border: 0
-  // borderBottom: "1px solid #767676",
-  // margin: "0 10px 0 10px"
+  margin: "0 5px 0 5px"
 };
 
 const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
@@ -74,7 +69,14 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
   };
 
   public render = () => (
-    <fieldset css={dateInputCss} aria-describedby="validation-message">
+    <fieldset
+      css={{
+        // display: "inline-block",
+        border: "1px solid" + palette.neutral["5"],
+        padding: "5px 10px 5px 10px"
+      }}
+      aria-describedby="validation-message"
+    >
       <input
         css={dayMonthCss}
         type="number"

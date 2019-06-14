@@ -4,9 +4,11 @@ import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
-import { DateInput } from "./dateInput";
-import { sans } from "../styles/fonts";
 import palette from "../colours";
+import { sans } from "../styles/fonts";
+import { DateInput } from "./dateInput";
+import { maxWidth } from "../styles/breakpoints";
+import moment from "moment";
 
 const issueDayAfterSuffixCss = `
 ::after {
@@ -14,7 +16,7 @@ const issueDayAfterSuffixCss = `
   position: absolute;
   width: 14px;
   height: 14px;
-  background-color: red;
+  background-color: ${palette.blue.dark};
   transform: rotate(45deg);
   top: -7px;
   left: -7px;
@@ -31,6 +33,11 @@ const stateDefinitions = {
     selectable: false,
     color: palette.pink.light,
     label: "Existing suspensions"
+  },
+  notice: {
+    selectable: false,
+    color: palette.orange.medium,
+    label: "Notice period"
   }
 };
 
@@ -118,47 +125,76 @@ export class DatePicker extends React.Component<
       >
         {legendItems.map(props => <LegendItem key={props.label} {...props} />)}
       </div>
-      <DateRangePicker
-        numberOfCalendars={2}
-        minimumDate={this.props.firstAvailableDate.toDate()}
-        maximumDate={this.props.firstAvailableDate
-          .clone()
-          .add(daysInYear(this.props.firstAvailableDate.clone()), "days")
-          .toDate()}
-        value={this.props.selectedRange}
-        onSelect={this.props.onSelect}
-        singleDateRange={true}
-        showLegend={false}
-        stateDefinitions={stateDefinitions}
-        dateStates={[
-          ...this.props.existingDates.map(range => ({
-            state: "existing",
-            range: adjustDateRangeToDisplayProperly(range)
-          }))
-        ].sort((a, b) => a.range.start.unix() - b.range.start.unix())}
-        defaultState="available"
-      />
+      <div
+        css={{
+          display: "flex",
+          flexFlow: "wrap",
+          [maxWidth.mobile]: {
+            flexDirection: "row-reverse"
+          }
+        }}
+      >
+        <DateRangePicker
+          numberOfCalendars={2}
+          minimumDate={new Date()}
+          maximumDate={this.props.firstAvailableDate
+            .clone()
+            .add(daysInYear(this.props.firstAvailableDate.clone()), "days")
+            .toDate()}
+          value={this.props.selectedRange}
+          onSelect={this.props.onSelect}
+          singleDateRange={true}
+          showLegend={false}
+          stateDefinitions={stateDefinitions}
+          dateStates={[
+            {
+              state: "notice",
+              range: adjustDateRangeToDisplayProperly(
+                new DateRange(
+                  moment(),
+                  this.props.firstAvailableDate.subtract(1, "day")
+                )
+              )
+            },
+            ...this.props.existingDates.map(range => ({
+              state: "existing",
+              range: adjustDateRangeToDisplayProperly(range)
+            }))
+          ].sort((a, b) => a.range.start.unix() - b.range.start.unix())}
+          defaultState="available"
+          firstOfWeek={1}
+        />
 
-      <div>
-        <span>
-          From:{" "}
-          <DateInput
-            selectedDate={
-              this.props.selectedRange && this.props.selectedRange.start
-            }
-            defaultDate={this.props.firstAvailableDate}
-          />
-        </span>
-        <span>
-          {" "}
-          To:{" "}
-          <DateInput
-            selectedDate={
-              this.props.selectedRange && this.props.selectedRange.end
-            }
-            defaultDate={this.props.firstAvailableDate}
-          />
-        </span>
+        <div
+          css={{
+            border: "1px solid" + palette.neutral["5"],
+            maxWidth: "600px",
+            flex: "1 1 250px"
+          }}
+        >
+          <div>
+            <div>
+              <div>
+                From:<br />
+              </div>
+              <DateInput
+                selectedDate={
+                  this.props.selectedRange && this.props.selectedRange.start
+                }
+                defaultDate={this.props.firstAvailableDate}
+              />
+            </div>
+            <div>
+              <div> To:</div>
+              <DateInput
+                selectedDate={
+                  this.props.selectedRange && this.props.selectedRange.end
+                }
+                defaultDate={this.props.firstAvailableDate}
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div id="validation-message" role="alert" css={this.validationMsgCss}>
         {this.state.validationMessage}
@@ -170,6 +206,7 @@ export class DatePicker extends React.Component<
         .DateRangePicker {
           --selectedColour: ${palette.green.medium};
           margin-left: -20px;
+          margin-right: 20px;
         }
         .DateRangePicker__HalfDateStates {
           transform: none;
@@ -211,6 +248,9 @@ export class DatePicker extends React.Component<
         })${issueDayAfterSuffixCss}
         .DateRangePicker__MonthDates {
           border-collapse: collapse;
+        }
+        .DateRangePicker__Month {
+          margin-right: 0;
         }
       `)}
       />

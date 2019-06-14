@@ -392,7 +392,7 @@ const getProductDetailRenderer = (
               ))}
             {shouldHaveHolidayStopsFlow(productType) && (
               <LinkButton
-                text="Manage your holiday stops"
+                text="Manage your suspensions"
                 to={"/suspend/" + productType.urlPart}
                 state={productDetail}
                 right

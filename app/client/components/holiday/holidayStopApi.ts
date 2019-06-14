@@ -1,8 +1,10 @@
+import moment, { Moment } from "moment";
+import { DateRange } from "moment-range";
+import React from "react";
 import { ProductUrlPart } from "../../../shared/productTypes";
 import AsyncLoader from "../asyncLoader";
-import React from "react";
-import { DateRange } from "moment-range";
-import moment from "moment";
+
+const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
 export interface RawHolidayStopRequest {
   start: string;
@@ -15,17 +17,25 @@ export interface HolidayStopRequest {
   dateRange: DateRange;
   id: string;
   subscriptionName: string;
+  issuesImpactedPerYear: IssuesImpactedPerYear;
 }
 
-export interface CommonHolidayStopsResponse {
-  firstAvailableDate?: string;
+export interface CommonProductSpecifics {
+  issueDayOfWeek: number;
+  annualIssueLimit: number;
 }
 
-export interface GetHolidayStopsResponse extends CommonHolidayStopsResponse {
+export interface GetHolidayStopsResponse {
+  productSpecifics: CommonProductSpecifics & {
+    firstAvailableDate: Moment;
+  };
   existing: HolidayStopRequest[];
 }
 
-interface RawGetHolidayStopsResponse extends CommonHolidayStopsResponse {
+interface RawGetHolidayStopsResponse {
+  productSpecifics: CommonProductSpecifics & {
+    firstAvailableDate: string;
+  };
   existing: RawHolidayStopRequest[];
 }
 
@@ -48,19 +58,74 @@ export function isHolidayStopsResponse(
   return !!data && data.hasOwnProperty("existing");
 }
 
-const augmentWithDateRange = (rawHolidayStopRequest: RawHolidayStopRequest) =>
-  Object.assign({}, rawHolidayStopRequest, {
-    dateRange: new DateRange(
-      moment(rawHolidayStopRequest.start),
-      moment(rawHolidayStopRequest.end)
+const embellishRawHolidayStop = (
+  nextYearStartDateStr: string,
+  issueDayOfWeek: number
+) => (rawHolidayStopRequest: RawHolidayStopRequest) => {
+  const dateRange = new DateRange(
+    moment(rawHolidayStopRequest.start, DATE_INPUT_FORMAT),
+    moment(rawHolidayStopRequest.end, DATE_INPUT_FORMAT)
+  );
+  return {
+    ...rawHolidayStopRequest,
+    dateRange,
+    issuesImpactedPerYear: calculateIssuesInRange(
+      dateRange,
+      nextYearStartDateStr,
+      issueDayOfWeek
     )
-  });
-
-export const augmentExistingHolidayStopsWithDateRange = async (
-  response: Response
-) => {
-  const raw = (await response.json()) as RawGetHolidayStopsResponse;
-  return Object.assign({}, raw, {
-    existing: raw.existing.map(augmentWithDateRange)
-  });
+  } as HolidayStopRequest;
 };
+
+export const embellishExistingHolidayStops = (
+  nextYearStartDateStr: string
+) => async (response: Response) => {
+  const raw = (await response.json()) as RawGetHolidayStopsResponse;
+  return {
+    ...raw,
+    productSpecifics: raw.productSpecifics
+      ? {
+          ...raw.productSpecifics,
+          firstAvailableDate: moment(
+            raw.productSpecifics.firstAvailableDate,
+            DATE_INPUT_FORMAT
+          )
+        }
+      : undefined,
+    existing: raw.existing.map(
+      embellishRawHolidayStop(
+        nextYearStartDateStr,
+        raw.productSpecifics.issueDayOfWeek
+      )
+    )
+  } as GetHolidayStopsResponse;
+};
+
+export interface IssuesImpactedPerYear {
+  issuesThisYear: number;
+  issuesNextYear: number;
+}
+
+export const calculateIssuesInRange = (
+  range: DateRange,
+  nextYearStartDateStr: string,
+  issueDayOfWeek: number
+) => {
+  const nextYearStartDate = moment(nextYearStartDateStr, DATE_INPUT_FORMAT);
+  return {
+    issuesThisYear: 4,
+    issuesNextYear: 0
+  } as IssuesImpactedPerYear;
+};
+
+// const calculateNumberOfIssuesAffected = (range: DateRange) => {
+//   let count = 0;
+
+//   for (let i = range.start; i <= range.end; i = i.add(1, "day")) {
+//     if (i.day() === ISSUE_DAY_OF_WEEK) {
+//       count++;
+//     }
+//   }
+//   console.log("count", count);
+//   return count;
+// };

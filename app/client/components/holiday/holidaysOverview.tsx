@@ -1,3 +1,5 @@
+import { navigate } from "@reach/router";
+import { DateRange } from "moment-range";
 import React from "react";
 import {
   MembersDataApiResponseContext,
@@ -7,20 +9,19 @@ import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import {
+  ReturnToYourProductButton,
   RouteableStepProps,
-  WizardStep,
-  ReturnToYourProductButton
+  WizardStep
 } from "../wizardRouterAdapter";
-import { navigate } from "@reach/router";
 import {
-  HolidayStopsAsyncLoader,
+  embellishExistingHolidayStops,
   createGetHolidayStopsFetcher,
   GetHolidayStopsResponse,
-  HolidayStopsResponseContext,
-  augmentExistingHolidayStopsWithDateRange,
-  HolidayStopRequest
+  HolidayStopRequest,
+  HolidayStopsAsyncLoader,
+  HolidayStopsResponseContext
 } from "./holidayStopApi";
-import { DateRange } from "moment-range";
+import { GenericErrorScreen } from "../genericErrorScreen";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;
@@ -67,67 +68,71 @@ const renderHolidayStopsOverview = (
   routeableStepProps: RouteableStepProps
 ) => (holidayStopsResponse: GetHolidayStopsResponse) => (
   <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
-    <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
-      <div>
-        <h2>
-          Suspensions overview ({productDetail.subscription.subscriptionId})
-        </h2>
+    <MembersDataApiResponseContext.Provider value={productDetail}>
+      <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
+        <div>
+          <h2>
+            Suspensions overview ({productDetail.subscription.subscriptionId})
+          </h2>
 
-        <OverviewRow
-          heading="How"
-          content={
-            <>
+          <OverviewRow
+            heading="How"
+            content={
+              <>
+                <div>
+                  Going on holiday, or need time off from Guardian Weekly?
+                </div>
+                <div>
+                  You can suspend up to 6 issues and be credited on your next
+                  bill(s).
+                </div>
+              </>
+            }
+          />
+          <OverviewRow
+            heading="Summary"
+            content={
               <div>
-                Going on holiday, or need time off from Guardian Weekly?
-              </div>
-              <div>
-                You can suspend up to 6 issues and be credited on your next
-                bill(s).
-              </div>
-            </>
-          }
+                You can suspend up to <strong>4</strong> issues until 10 June
+                2020.
+              </div> // TODO: replace number of issues and date with data from holidayStopResponse
+            }
+          />
+          <OverviewRow
+            heading="Details"
+            content={
+              holidayStopsResponse.existing.length > 0 ? (
+                <table css={{ width: "100%" }}>
+                  <tbody>
+                    <tr css={{ textAlign: "left" }}>
+                      <th>When</th>
+                      <th>Suspended</th>
+                      <th>Amend</th>
+                    </tr>
+                    {holidayStopsResponse.existing.map(
+                      (holidayStopRequest, index) => (
+                        <DetailsTableRow key={index} {...holidayStopRequest} />
+                      )
+                    )}
+                  </tbody>
+                </table>
+              ) : (
+                "You currently don't have any scheduled suspensions."
+              )
+            }
+          />
+          <Button
+            text="Create suspension"
+            right
+            primary
+            onClick={() => (routeableStepProps.navigate || navigate)("create")}
+          />
+        </div>
+        <ReturnToYourProductButton
+          productType={routeableStepProps.productType}
         />
-        <OverviewRow
-          heading="Summary"
-          content={
-            <div>
-              You can suspend up to <strong>4</strong> issues until 10 June
-              2020.
-            </div> // TODO: replace number of issues and date with data from holidayStopResponse
-          }
-        />
-        <OverviewRow
-          heading="Details"
-          content={
-            holidayStopsResponse.existing.length > 0 ? (
-              <table css={{ width: "100%" }}>
-                <tbody>
-                  <tr css={{ textAlign: "left" }}>
-                    <th>When</th>
-                    <th>Suspended</th>
-                    <th>Amend</th>
-                  </tr>
-                  {holidayStopsResponse.existing.map(
-                    (holidayStopRequest, index) => (
-                      <DetailsTableRow key={index} {...holidayStopRequest} />
-                    )
-                  )}
-                </tbody>
-              </table>
-            ) : (
-              "You currrently don't have any scheduled suspensions."
-            )
-          }
-        />
-        <Button
-          text="Create suspension"
-          right
-          primary
-          onClick={() => (routeableStepProps.navigate || navigate)("create")}
-        />
-      </div>
-      <ReturnToYourProductButton productType={routeableStepProps.productType} />
-    </WizardStep>
+      </WizardStep>
+    </MembersDataApiResponseContext.Provider>
   </HolidayStopsResponseContext.Provider>
 );
 
@@ -143,18 +148,25 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
     ) => (
       <MembersDataApiResponseContext.Provider value={productDetail}>
         <NavigateFnContext.Provider value={{ navigate: props.navigate }}>
-          <HolidayStopsAsyncLoader
-            fetch={createGetHolidayStopsFetcher(
-              routeableStepProps.productType.urlPart,
-              productDetail.subscription.subscriptionId
-            )}
-            render={renderHolidayStopsOverview(
-              productDetail,
-              routeableStepProps
-            )}
-            loadingMessage="Loading existing suspensions"
-            readerOnOK={augmentExistingHolidayStopsWithDateRange}
-          />
+          {" "}
+          {productDetail.subscription.start ? (
+            <HolidayStopsAsyncLoader
+              fetch={createGetHolidayStopsFetcher(
+                routeableStepProps.productType.urlPart,
+                productDetail.subscription.subscriptionId
+              )}
+              render={renderHolidayStopsOverview(
+                productDetail,
+                routeableStepProps
+              )}
+              loadingMessage="Loading existing suspensions"
+              readerOnOK={embellishExistingHolidayStops(
+                productDetail.subscription.start
+              )}
+            />
+          ) : (
+            <GenericErrorScreen loggingMessage="Subscription had no start date" />
+          )}
         </NavigateFnContext.Provider>
       </MembersDataApiResponseContext.Provider>
     )}
