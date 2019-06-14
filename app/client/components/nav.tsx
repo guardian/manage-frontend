@@ -105,7 +105,8 @@ export const navLinks: NavLinks = {
   },
   emailPrefs: {
     title: "Emails & marketing",
-    link: "/email-prefs"
+    link: "/email-prefs",
+    local: true
   }
 };
 

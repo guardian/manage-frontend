@@ -25,6 +25,7 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
+import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { Main } from "./main";
 import { MembershipFAQs } from "./membershipFAQs";
 import { NotFound } from "./notFound";
@@ -114,6 +115,8 @@ const User = () => (
         ))}
 
       <MembershipFAQs path="/help" />
+
+      <EmailAndMarketing path="/email-prefs" />
 
       <NotFound default={true} />
     </Router>

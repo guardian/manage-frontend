@@ -141,7 +141,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Emails & marketing",
-      link: `${profileHostName}/email-prefs`,
+      link: `/email-prefs`,
       border: true
     },
     {
