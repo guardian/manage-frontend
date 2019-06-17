@@ -1,5 +1,5 @@
-import React from "react";
 import { css } from "@emotion/core";
+import React from "react";
 
 const buttonStyles = color => css`
   margin: 12px;
@@ -11,6 +11,6 @@ interface ButtonProps extends CommonButtonProps {
 
 export const Button = (props: ButtonProps) => (
   <button css={buttonStyles} onClick={props.onClick}>
-    Click me!
+    {props.text}
   </button>
 );
