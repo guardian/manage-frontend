@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
+<div
+  onClick={[Function]}
+>
+  test component
+</div>
+`;
+
+exports[`DropMenu open on click 1`] = `
+Array [
+  <div
+    className="open"
+    onClick={[Function]}
+  >
+    test component
+  </div>,
+  <h1>
+    SHOULD BE VISIBLE
+  </h1>,
+]
+`;
+
+exports[`DropMenu should close on click if already open 1`] = `
+Array [
+  <div
+    className="open"
+    onClick={[Function]}
+  >
+    test component
+  </div>,
+  <h1>
+    SHOULD NOT BE VISIBLE
+  </h1>,
+]
+`;
