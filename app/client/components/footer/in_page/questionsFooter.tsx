@@ -2,9 +2,12 @@ import React from "react";
 import { InlineContactUs } from "../../inlineContactUs";
 import { InPageFooter } from "./inPageFooter";
 
-export const QuestionsFooter = () => (
+export interface QuestionsFooterProps {
+  topic: string;
+}
+
+export const QuestionsFooter = (props: QuestionsFooterProps) => (
   <InPageFooter title="Questions?">
-    If you have any questions about updating your payment details, please{" "}
-    <InlineContactUs />
+    If you have any questions about {props.topic}, please <InlineContactUs />
   </InPageFooter>
 );

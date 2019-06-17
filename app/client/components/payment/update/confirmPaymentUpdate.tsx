@@ -22,7 +22,11 @@ import {
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
 import { handleNoNewPaymentDetails } from "./paymentUpdated";
-import { labelPaymentStepProps, PaymentMethod } from "./updatePaymentFlow";
+import {
+  labelPaymentStepProps,
+  PaymentMethod,
+  paymentQuestionsTopicString
+} from "./updatePaymentFlow";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -159,7 +163,9 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
           hasProduct(productDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
-              extraFooterComponents={<QuestionsFooter />}
+              extraFooterComponents={
+                <QuestionsFooter topic={paymentQuestionsTopicString} />
+              }
             >
               <h3>Please confirm your change from...</h3>
               <CurrentPaymentDetails {...productDetail.subscription} />

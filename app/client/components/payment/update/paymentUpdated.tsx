@@ -29,7 +29,10 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-import { labelPaymentStepProps } from "./updatePaymentFlow";
+import {
+  labelPaymentStepProps,
+  paymentQuestionsTopicString
+} from "./updatePaymentFlow";
 
 export const handleNoNewPaymentDetails = (props: RouteableStepProps) => {
   if (props.navigate) {
@@ -141,7 +144,10 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
               extraFooterComponents={[
-                <QuestionsFooter key="questions" />,
+                <QuestionsFooter
+                  key="questions"
+                  topic={paymentQuestionsTopicString}
+                />,
                 <SpreadTheWordFooter key="share" />
               ]}
               hideBackButton
