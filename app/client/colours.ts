@@ -37,6 +37,9 @@ const palette = {
     medium: "#ffe500",
     dark: "#ffbb50"
   },
+  labs: {
+    main: "#69d1ca"
+  },
   neutral: {
     "1": "#121212",
     "2": "#333333",
