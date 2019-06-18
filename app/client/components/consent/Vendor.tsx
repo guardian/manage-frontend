@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { url } from "inspector";
 import React, { Component } from "react";
+import { OnOffButton } from "./OnOffButton";
 
 const onButtonCSS = vendor => css`
   float: right;
@@ -38,36 +39,24 @@ export class Vendor extends Component<
   public render() {
     return (
       <div>
-        {/* Label */}
-        {this.props.label}
-
-        {/* Toggle button */}
-        {this.printButton()}
+        <a href={this.props.url}>{this.props.label}</a>
+        {this.renderButton()}
       </div>
     );
   }
 
-  private printButton() {
+  private renderButton() {
     if (this.props.hasButton) {
       return (
-        <>
-          <button
-            css={onButtonCSS(this.state.vendor)}
-            onClick={() => {
-              this.vendorOn();
-            }}
-          >
-            on
-          </button>
-          <button
-            css={offButtonCSS(this.state.vendor)}
-            onClick={() => {
-              this.vendorOff();
-            }}
-          >
-            off
-          </button>
-        </>
+        <OnOffButton
+          value={this.state.vendor}
+          onOnClick={() => {
+            this.vendorOn();
+          }}
+          onOffClick={() => {
+            this.vendorOff();
+          }}
+        />
       );
     }
 

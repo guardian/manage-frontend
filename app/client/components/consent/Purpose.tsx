@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { Vendor } from "./Vendor";
+import { OnOffButton } from "./OnOffButton";
 
 const purposeTypes = {
   essential: {
@@ -84,6 +85,24 @@ export class Purpose extends Component<{}, { type: string }> {
     });
   }
 
+  private renderVendors() {
+    //TODO: Break this up to read from vendors list
+    if (this.props.type == "personalised-ads") {
+      return (
+        <>
+          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
+          <Vendor
+            label="testWithbutton"
+            url="www.guardian.co.uk"
+            hasButton={true}
+          />
+        </>
+      );
+    }
+
+    return null;
+  }
+
   public render() {
     return (
       <div>
@@ -99,47 +118,23 @@ export class Purpose extends Component<{}, { type: string }> {
         {/* Label */}
         {purposeTypes[this.props.type].label}
 
-        {/* Toggle button */}
-        <button
-          css={onButtonCSS(this.state.purpose)}
-          onClick={() => {
+        {/* On/Off button */}
+        <OnOffButton
+          value={this.state.purpose}
+          onOnClick={() => {
             this.purposeOn();
           }}
-        >
-          on
-        </button>
-        <button
-          css={offButtonCSS(this.state.purpose)}
-          onClick={() => {
+          onOffClick={() => {
             this.purposeOff();
           }}
-        >
-          off
-        </button>
+        />
 
         {/* Collapsible div */}
         <div css={collapsibleDivCSS(this.state.collapsed)}>
           {purposeTypes[this.props.type].description}
-          {this.printVendors()}
+          {this.renderVendors()}
         </div>
       </div>
     );
-  }
-
-  private printVendors() {
-    if (this.props.type == "personalised-ads") {
-      return (
-        <>
-          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
-          <Vendor
-            label="testWithbutton"
-            url="www.guardian.co.uk"
-            hasButton={true}
-          />
-        </>
-      );
-    }
-
-    return null;
   }
 }
