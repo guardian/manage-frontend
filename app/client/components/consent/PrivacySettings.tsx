@@ -27,13 +27,22 @@ export class PrivacySettings extends Component<{}, {}> {
     );
   }
 
-  public toggleColor() {
-    const newColor = this.state.color === "red" ? "blue" : "red";
+  public enableAllAndClose() {
+    // TODO: Enable all purposes and vendors
+    this.saveAndClose();
   }
 
-  public saveAndClose() {}
+  public saveAndClose() {
+    this.saveSettings();
+    // TODO: If save was successful and it's on a modal, close the modal
+  }
 
-  public enableAllAndClose() {}
+  public saveSettings() {
+    // TODO: Check if all purposes have been answered
+    // TODO: Actually save the settings to the cookie
+    const success = true;
+    return success;
+  }
 
   public render() {
     return (
