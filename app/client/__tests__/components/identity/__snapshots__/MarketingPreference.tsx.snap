@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarketingPreference component renders correctly and displays marketing information 1`] = `
+Array [
+  <input
+    type="checkbox"
+  />,
+  <p>
+    Test title
+  </p>,
+  <p>
+    Test description
+  </p>,
+  <p>
+    Test frequency
+  </p>,
+]
+`;
+
+exports[`MarketingPreference component will select the checkbox when the selected prop is passed 1`] = `
+Array [
+  <input
+    checked={true}
+    type="checkbox"
+  />,
+  <p>
+    Test title
+  </p>,
+  <p>
+    Test description
+  </p>,
+  <p>
+    Test frequency
+  </p>,
+]
+`;
