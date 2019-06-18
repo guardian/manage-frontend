@@ -1,6 +1,5 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { Button } from "./Button";
 import { Purpose } from "./Purpose";
 
 const choicesCSS = css`

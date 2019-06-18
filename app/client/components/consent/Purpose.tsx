@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
+import { Vendor } from "./Vendor";
 
 const purposeTypes = {
   essential: {
@@ -60,17 +61,15 @@ export class Purpose extends Component<{}, { type: string }> {
     super(props);
 
     this.state = {
-      type: props.type,
+      purpose: null,
       collapsed: false
     };
   }
 
   public toggleCollapsed() {
-    const newCollapsed = !this.state.collapsed;
-
-    this.setState({
-      collapsed: newCollapsed
-    });
+    this.setState((state, props) => ({
+      collapsed: !state.collapsed
+    }));
   }
 
   public purposeOn() {
@@ -98,7 +97,7 @@ export class Purpose extends Component<{}, { type: string }> {
         </button>
 
         {/* Label */}
-        {purposeTypes[this.state.type].label}
+        {purposeTypes[this.props.type].label}
 
         {/* Toggle button */}
         <button
@@ -120,9 +119,27 @@ export class Purpose extends Component<{}, { type: string }> {
 
         {/* Collapsible div */}
         <div css={collapsibleDivCSS(this.state.collapsed)}>
-          {purposeTypes[this.state.type].description}
+          {purposeTypes[this.props.type].description}
+          {this.printVendors()}
         </div>
       </div>
     );
+  }
+
+  private printVendors() {
+    if (this.props.type == "personalised-ads") {
+      return (
+        <>
+          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
+          <Vendor
+            label="testWithbutton"
+            url="www.guardian.co.uk"
+            hasButton={true}
+          />
+        </>
+      );
+    }
+
+    return null;
   }
 }
