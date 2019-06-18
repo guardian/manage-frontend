@@ -1,6 +1,9 @@
+import serializer from "jest-emotion";
 import React from "React";
 import { act, create } from "react-test-renderer";
 import { DropMenu } from "../../../components/identity/DropMenu";
+
+expect.addSnapshotSerializer(serializer);
 
 describe("DropMenu", () => {
   it("initalises in the unopened state and displays the title", () => {
