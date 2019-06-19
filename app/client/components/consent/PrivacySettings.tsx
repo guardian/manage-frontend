@@ -20,31 +20,28 @@ export class PrivacySettings extends Component<{}, {}> {
     super(props);
   }
 
-  public componentDidMount() {
-    // get cookies here
-    console.log(
-      "componentDidMount() is invoked once - immediately after a component is mounted in the browser"
-    );
+  public componentDidMount(): void {
+    // TODO: get cookies here
   }
 
-  public enableAllAndClose() {
+  public enableAllAndClose(): void {
     // TODO: Enable all purposes and vendors
     this.saveAndClose();
   }
 
-  public saveAndClose() {
+  public saveAndClose(): void {
     this.saveSettings();
     // TODO: If save was successful and it's on a modal, close the modal
   }
 
-  public saveSettings() {
+  public saveSettings(): boolean {
     // TODO: Check if all purposes have been answered
     // TODO: Actually save the settings to the cookie
     const success = true;
     return success;
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <>
         {/* Choices */}
@@ -58,10 +55,10 @@ export class PrivacySettings extends Component<{}, {}> {
             <a href={cookiePolicyURL}>cooking policy</a>
           </p>
           <br />
-          <Purpose type="essential" />
-          <Purpose type="performance" />
-          <Purpose type="functionality" />
-          <Purpose type="personalised-ads" />
+          <Purpose type="essential" value={null} />
+          <Purpose type="performance" value={null} />
+          <Purpose type="functionality" value={null} />
+          <Purpose type="personalised-ads" value={null} />
           <p css={bottomPrintCSS}>
             You can change the above settings for this browser at any time by
             accessing the <a href={cookiePolicyURL}>cooking policy</a>

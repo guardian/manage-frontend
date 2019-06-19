@@ -20,7 +20,7 @@ export class ConsentManagementPortal extends Component<{}, {}> {
     super(props);
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <div className="cmp-container" css={containerCSS}>
         {/* Header */}

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
 import { Vendor } from "./Vendor";
 
-const purposeTypes = {
+const purposeTypes: PurposeTypes = {
   essential: {
     label: "Essential",
     description: "This is essential.",
@@ -30,18 +30,8 @@ const purposeTypes = {
   }
 };
 
-const collapsibleDivCSS = collapsed => css`
+const collapsibleDivCSS = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
-`;
-
-const onButtonCSS = purpose => css`
-  float: right;
-  ${purpose === true ? "background-color: gray;" : ""};
-`;
-
-const offButtonCSS = purpose => css`
-  float: right;
-  ${purpose === false ? "background-color: gray;" : ""};
 `;
 
 const arrowDown = (
@@ -56,36 +46,61 @@ const arrowDown = (
   </svg>
 );
 
+type PurposeValues =
+  | "essential"
+  | "performance"
+  | "functionality"
+  | "personalised-ads";
+
+type PurposeTypes = {
+  [K in PurposeValues]: {
+    label: string;
+    description: string;
+    hasToggle: boolean;
+    vendors: any; // TODO: any for now only!
+  }
+};
+
+interface Props {
+  type: PurposeValues;
+  value: boolean | null;
+}
+
+interface State {
+  value: boolean | null;
+  collapsed: boolean;
+}
+
 // TODO: Limit type to 'essential', 'performance', 'functionality' or 'personalised-ads'
-export class Purpose extends Component<{}, { type: string }> {
-  constructor(props: {}) {
+export class Purpose extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      purpose: null,
+      value: props.value,
       collapsed: false
     };
   }
 
-  public toggleCollapsed() {
+  public toggleCollapsed(): void {
     this.setState((state, props) => ({
       collapsed: !state.collapsed
     }));
   }
 
-  public purposeOn() {
+  public purposeOn(): void {
     this.setState({
-      purpose: true
+      value: true
     });
   }
 
-  public purposeOff() {
+  public purposeOff(): void {
     this.setState({
-      purpose: false
+      value: false
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <div>
         {/* Expand button */}
@@ -102,7 +117,7 @@ export class Purpose extends Component<{}, { type: string }> {
 
         {/* On/Off button */}
         <OnOffButton
-          value={this.state.purpose}
+          value={this.state.value}
           onOnClick={() => {
             this.purposeOn();
           }}
@@ -120,13 +135,19 @@ export class Purpose extends Component<{}, { type: string }> {
     );
   }
 
-  private renderVendors() {
+  private renderVendors(): React.ReactNode | void {
     // TODO: Break this up to read from vendors list
-    if (this.props.type == "personalised-ads") {
+    if (this.props.type === "personalised-ads") {
       return (
         <>
-          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
           <Vendor
+            value={null}
+            label="test"
+            url="www.guardian.co.uk"
+            hasButton={false}
+          />
+          <Vendor
+            value={null}
             label="testWithbutton"
             url="www.guardian.co.uk"
             hasButton={true}
@@ -134,7 +155,5 @@ export class Purpose extends Component<{}, { type: string }> {
         </>
       );
     }
-
-    return null;
   }
 }

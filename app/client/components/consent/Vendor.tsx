@@ -1,42 +1,40 @@
-import { css } from "@emotion/core";
-import { url } from "inspector";
+// import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
 
-const onButtonCSS = vendor => css`
-  float: right;
-  ${vendor === true ? "background-color: gray;" : ""};
-`;
+interface Props {
+  label: string;
+  url: string;
+  hasButton?: boolean;
+  value: boolean | null;
+}
 
-const offButtonCSS = vendor => css`
-  float: right;
-  ${vendor === false ? "background-color: gray;" : ""};
-`;
+interface State {
+  value: boolean | null;
+}
 
-export class Vendor extends Component<
-  {},
-  { label: string; url: string; hasButton: boolean }
-> {
-  constructor(props: {}) {
+export class Vendor extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      vendor: null
+      value: props.value // Do we want to allow null or just undefined?
     };
   }
-  public vendorOn() {
+
+  public vendorOn(): void {
     this.setState({
-      vendor: true
+      value: true
     });
   }
 
-  public vendorOff() {
+  public vendorOff(): void {
     this.setState({
-      vendor: false
+      value: false
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <div>
         <a href={this.props.url}>{this.props.label}</a>
@@ -45,11 +43,11 @@ export class Vendor extends Component<
     );
   }
 
-  private renderButton() {
+  private renderButton(): React.ReactNode | void {
     if (this.props.hasButton) {
       return (
         <OnOffButton
-          value={this.state.vendor}
+          value={this.state.value}
           onOnClick={() => {
             this.vendorOn();
           }}
@@ -59,7 +57,5 @@ export class Vendor extends Component<
         />
       );
     }
-
-    return null;
   }
 }
