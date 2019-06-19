@@ -1,18 +1,25 @@
-import Raven from "raven-js";
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "../client/components/consent/App";
 
-declare var WEBPACK_BUILD: string;
+const onPolyfilled = (): void => {
+  const element = document.getElementById("app");
 
-// TODO: Add CMP feature tag to Raven/Sentry error logs
-if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
-  Raven.config(window.guardian.dsn, {
-    release: WEBPACK_BUILD || "local",
-    environment: window.guardian.domain
-  }).install();
-}
+  ReactDOM.hydrate(<App />, element);
+};
 
-const element = document.getElementById("app");
+const run = (): void => {
+  /*
+      We want to run `onPolyfilled` only after polyfill.io has initialised
+      By the time this script runs, if `window.guardian.polyfilled` is true,
+      meaning that polyfill.io has initialised, then we run onPolyfilled(), otherwise
+      we stick it in window.guardian.onPolyfilled to be ran later.
+  */
+  if (window.guardian.polyfilled) {
+    onPolyfilled();
+  } else {
+    window.guardian.onPolyfilled = onPolyfilled;
+  }
+};
 
-ReactDOM.hydrate(<App />, element);
+run();
