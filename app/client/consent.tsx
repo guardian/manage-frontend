@@ -1,3 +1,4 @@
+import React from "react";
 import Raven from "raven-js";
 import ReactDOM from "react-dom";
 import { App } from "../client/components/consent/App";

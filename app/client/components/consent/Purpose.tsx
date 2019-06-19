@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { Vendor } from "./Vendor";
 import { OnOffButton } from "./OnOffButton";
+import { Vendor } from "./Vendor";
 
 const purposeTypes = {
   essential: {
@@ -85,24 +85,6 @@ export class Purpose extends Component<{}, { type: string }> {
     });
   }
 
-  private renderVendors() {
-    //TODO: Break this up to read from vendors list
-    if (this.props.type == "personalised-ads") {
-      return (
-        <>
-          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
-          <Vendor
-            label="testWithbutton"
-            url="www.guardian.co.uk"
-            hasButton={true}
-          />
-        </>
-      );
-    }
-
-    return null;
-  }
-
   public render() {
     return (
       <div>
@@ -136,5 +118,23 @@ export class Purpose extends Component<{}, { type: string }> {
         </div>
       </div>
     );
+  }
+
+  private renderVendors() {
+    // TODO: Break this up to read from vendors list
+    if (this.props.type == "personalised-ads") {
+      return (
+        <>
+          <Vendor label="test" url="www.guardian.co.uk" hasButton={false} />
+          <Vendor
+            label="testWithbutton"
+            url="www.guardian.co.uk"
+            hasButton={true}
+          />
+        </>
+      );
+    }
+
+    return null;
   }
 }

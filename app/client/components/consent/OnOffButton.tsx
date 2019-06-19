@@ -43,7 +43,7 @@ export class OnOffButton extends Component<
     });
   }
 
-  //TODO: Do we need a container div here? And if so should we get its css from properties?
+  // TODO: Do we need a container div here? And if so should we get its css from properties?
   public render() {
     return (
       <>
