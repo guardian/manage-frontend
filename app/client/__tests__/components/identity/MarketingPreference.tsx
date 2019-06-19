@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 import { create } from "react-test-renderer";
 import { MarketingPreference } from "../../../components/identity/MarketingPreference";
 

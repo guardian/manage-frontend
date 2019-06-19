@@ -244,9 +244,28 @@ Array [
       }
     }
   >
-    <p>
-      Email editing
-    </p>
+    <h2>
+      Email and Marketing preferences
+    </h2>
+    <div
+      css={
+        Object {
+          "&.open:after": Object {
+            "transform": "rotate(180deg)",
+          },
+          ":after": Object {
+            "content": "'▲'",
+            "display": "inline-block",
+            "height": "15px",
+            "lineHeight": "15px",
+            "width": "15px",
+          },
+        }
+      }
+      onClick={[Function]}
+    >
+      development
+    </div>
   </div>,
 ]
 `;

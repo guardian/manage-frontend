@@ -1,5 +1,5 @@
 import serializer from "jest-emotion";
-import React from "React";
+import React from "react";
 import { act, create } from "react-test-renderer";
 import { DropMenu } from "../../../components/identity/DropMenu";
 
