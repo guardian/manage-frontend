@@ -31,7 +31,7 @@ export const DropMenu: FC<DropMenuProps> = props => {
       >
         {title}
       </div>
-      {open ? children : null}
+      {open && children}
     </>
   );
 };

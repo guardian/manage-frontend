@@ -5,6 +5,12 @@ import { PageContainer, PageHeaderContainer } from "../page";
 import { DropMenu } from "./DropMenu";
 import { MarketingPreference } from "./MarketingPreference";
 
+interface Consent {
+  id: string;
+  name: string;
+  description: string;
+}
+
 interface ExactTargetEntity {
   exactTargetListId: number;
 }
@@ -64,7 +70,7 @@ const toNewsletterGroups = (
 };
 
 // @TODO: DEV: TESTING FUNCTION
-const setNewsletter = async (id: string, subscribed: boolean = true) => {
+const updateNewsletter = async (id: string, subscribed: boolean = true) => {
   const url = "https://idapi.thegulocal.com/users/me/newsletters";
   const payload = {
     id,
@@ -80,7 +86,7 @@ const setNewsletter = async (id: string, subscribed: boolean = true) => {
   const response = await fetch(url, options);
   if (!response.ok) {
     throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to set newsletter data"
+      "This is a test function and should NOT be present in the final merge: Failed to update newsletter data"
     );
   } else {
     return;
@@ -88,7 +94,7 @@ const setNewsletter = async (id: string, subscribed: boolean = true) => {
 };
 
 // @TODO: DEV: TESTING FUNCTION
-const getNewsletters = async (): Promise<NewsletterGroup[]> => {
+const readNewsletters = async (): Promise<NewsletterGroup[]> => {
   const url = "https://idapi.thegulocal.com/newsletters";
   const response = await fetch(url);
   if (!response.ok) {
@@ -100,7 +106,44 @@ const getNewsletters = async (): Promise<NewsletterGroup[]> => {
   }
 };
 
-const getNewsletterPreference = (newsletter: Newsletter) => {
+// @TODO: DEV: TESTING FUNCTION
+const updateConsent = async (id: string, consented: boolean = true) => {
+  const url = "https://idapi.thegulocal.com/users/me/consents";
+  const payload = {
+    id,
+    consented
+  };
+  const options = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  };
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to update consent data"
+    );
+  } else {
+    return;
+  }
+};
+
+// @TODO: DEV: TESTING FUNCTION
+const readConsents = async (): Promise<Consent[]> => {
+  const url = "https://idapi.thegulocal.com/consents";
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to retrieve consents data"
+    );
+  } else {
+    return await response.json();
+  }
+};
+
+const newsletterPreference = (newsletter: Newsletter) => {
   const { id, name, description, frequency } = newsletter;
   return (
     <MarketingPreference
@@ -109,17 +152,30 @@ const getNewsletterPreference = (newsletter: Newsletter) => {
       title={name}
       description={description}
       frequency={frequency}
-      onClick={setNewsletter}
+      onClick={updateNewsletter}
     />
   );
 };
 
-const getNewsletterPreferences = (newsletterGroups: NewsletterGroup[]) =>
+const consentPreference = (consent: Consent) => {
+  const { id, name, description } = consent;
+  return (
+    <MarketingPreference
+      id={id}
+      key={id}
+      title={name}
+      description={description}
+      onClick={updateConsent}
+    />
+  );
+};
+
+const newsletterPreferences = (newsletterGroups: NewsletterGroup[]) =>
   newsletterGroups.map(newsletterGroup => {
     const { theme, newsletters } = newsletterGroup;
     return (
       <DropMenu key={theme} title={theme}>
-        {newsletters.map(getNewsletterPreference)}
+        {newsletters.map(newsletterPreference)}
       </DropMenu>
     );
   });
@@ -128,9 +184,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const [newsletterGroups, setNewsletterGroups] = useState(
     [] as NewsletterGroup[]
   );
-
+  const [consents, setConsents] = useState([] as Consent[]);
   useEffect(() => {
-    getNewsletters().then(ns => setNewsletterGroups(ns));
+    readNewsletters().then(ns => setNewsletterGroups(ns));
+    readConsents().then(cs => setConsents(cs));
   }, []);
 
   return (
@@ -150,7 +207,11 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageHeaderContainer>
       <PageContainer>
         <h2>Email and Marketing preferences</h2>
-        {getNewsletterPreferences(newsletterGroups)}
+        {newsletterPreferences(newsletterGroups)}
+      </PageContainer>
+      <PageContainer>
+        <h2>Consents</h2>
+        {consents.map(consentPreference)}
       </PageContainer>
     </>
   );

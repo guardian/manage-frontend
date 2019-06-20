@@ -40,6 +40,19 @@ describe("MarketingPreference component", () => {
     expect(rendered.toJSON()).toMatchSnapshot();
   });
 
+  it("will omit the frequency information if it is not supplied", () => {
+    const rendered = create(
+      <MarketingPreference
+        id={input.id}
+        description={input.description}
+        title={input.title}
+        selected={true}
+        onClick={input.clickHandler}
+      />
+    );
+    expect(rendered.toJSON()).toMatchSnapshot();
+  });
+
   it("will call the click handler when it is clicked", () => {
     const { getByText } = render(
       <MarketingPreference
@@ -52,5 +65,6 @@ describe("MarketingPreference component", () => {
     );
     fireEvent.click(getByText(input.title));
     expect(input.clickHandler).toHaveBeenCalledTimes(1);
+    expect(input.clickHandler).toHaveBeenLastCalledWith(input.id);
   });
 });

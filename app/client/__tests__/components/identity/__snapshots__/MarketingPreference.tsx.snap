@@ -19,6 +19,23 @@ exports[`MarketingPreference component renders correctly and displays marketing 
 </div>
 `;
 
+exports[`MarketingPreference component will omit the frequency information if it is not supplied 1`] = `
+<div
+  onClick={[Function]}
+>
+  <input
+    checked={true}
+    type="checkbox"
+  />
+  <p>
+    Test title
+  </p>
+  <p>
+    Test description
+  </p>
+</div>
+`;
+
 exports[`MarketingPreference component will select the checkbox when the selected prop is passed 1`] = `
 <div
   onClick={[Function]}
