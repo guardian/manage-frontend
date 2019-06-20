@@ -1,36 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MarketingPreference component renders correctly and displays marketing information 1`] = `
-Array [
+<div
+  onClick={[Function]}
+>
   <input
     type="checkbox"
-  />,
+  />
   <p>
     Test title
-  </p>,
+  </p>
   <p>
     Test description
-  </p>,
+  </p>
   <p>
     Test frequency
-  </p>,
-]
+  </p>
+</div>
 `;
 
 exports[`MarketingPreference component will select the checkbox when the selected prop is passed 1`] = `
-Array [
+<div
+  onClick={[Function]}
+>
   <input
     checked={true}
     type="checkbox"
-  />,
+  />
   <p>
     Test title
-  </p>,
+  </p>
   <p>
     Test description
-  </p>,
+  </p>
   <p>
     Test frequency
-  </p>,
-]
+  </p>
+</div>
 `;

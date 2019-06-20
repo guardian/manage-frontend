@@ -5,8 +5,12 @@ import { PageContainer, PageHeaderContainer } from "../page";
 import { DropMenu } from "./DropMenu";
 import { MarketingPreference } from "./MarketingPreference";
 
+interface ExactTargetEntity {
+  exactTargetListId: number;
+}
+
 interface Newsletter {
-  id: number;
+  id: string;
   theme: string;
   name: string;
   description: string;
@@ -18,7 +22,30 @@ interface NewsletterGroup {
   newsletters: Newsletter[];
 }
 
-const toNewsletters = (newsletters: Newsletter[]): NewsletterGroup[] => {
+// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
+const toNewsletter = (
+  rawNewsletter: Newsletter & ExactTargetEntity
+): Newsletter => {
+  const {
+    theme,
+    name,
+    description,
+    frequency,
+    exactTargetListId
+  } = rawNewsletter;
+  return {
+    id: exactTargetListId.toString(),
+    description,
+    theme,
+    name,
+    frequency
+  };
+};
+
+// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
+const toNewsletterGroups = (
+  newsletters: Array<Newsletter & ExactTargetEntity>
+): NewsletterGroup[] => {
   const template = [
     "news",
     "features",
@@ -30,10 +57,37 @@ const toNewsletters = (newsletters: Newsletter[]): NewsletterGroup[] => {
   ];
   return template.map(theme => ({
     theme,
-    newsletters: newsletters.filter(newsletter => newsletter.theme === theme)
+    newsletters: newsletters
+      .filter(newsletter => newsletter.theme === theme)
+      .map(toNewsletter)
   }));
 };
 
+// @TODO: DEV: TESTING FUNCTION
+const setNewsletter = async (id: string, subscribed: boolean = true) => {
+  const url = "https://idapi.thegulocal.com/users/me/newsletters";
+  const payload = {
+    id,
+    subscribed
+  };
+  const options = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  };
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to set newsletter data"
+    );
+  } else {
+    return;
+  }
+};
+
+// @TODO: DEV: TESTING FUNCTION
 const getNewsletters = async (): Promise<NewsletterGroup[]> => {
   const url = "https://idapi.thegulocal.com/newsletters";
   const response = await fetch(url);
@@ -42,7 +96,7 @@ const getNewsletters = async (): Promise<NewsletterGroup[]> => {
       "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
     );
   } else {
-    return toNewsletters(await response.json());
+    return toNewsletterGroups(await response.json());
   }
 };
 
@@ -50,10 +104,12 @@ const getNewsletterPreference = (newsletter: Newsletter) => {
   const { id, name, description, frequency } = newsletter;
   return (
     <MarketingPreference
+      id={id}
       key={id}
       title={name}
       description={description}
       frequency={frequency}
+      onClick={setNewsletter}
     />
   );
 };
