@@ -1,34 +1,44 @@
 import { DateRange } from "moment-range";
 import React from "react";
+import {
+  hasProduct,
+  MembersDataApiResponseContext
+} from "../../../shared/productResponse";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
+import { GenericErrorScreen } from "../genericErrorScreen";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
+import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
+  issuesInRange,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
-  calculateIssuesInRange
+  DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-import {
-  MembersDataApiResponseContext,
-  hasProduct
-} from "../../../shared/productResponse";
-import { GenericErrorScreen } from "../genericErrorScreen";
+import moment from "moment";
+import { sans } from "../../styles/fonts";
 
 interface HolidayDateChooserState {
   selectedRange?: DateRange;
-  numberOfIssuesSelected?: number;
+  numberOfIssuesSelectedThisYear?: number;
+  numberOfIssuesSelectedNextYear?: number;
   numberOfIssuesRemaining: number;
 }
 
 const issuesRemaining = 4; // TODO: replace with real data passed down via context
+
+const infoCss = {
+  fontFamily: sans,
+  fontSize: "14px"
+};
 
 export class HolidayDateChooser extends React.Component<
   RouteableStepProps,
   HolidayDateChooserState
 > {
   public state: HolidayDateChooserState = {
-    numberOfIssuesSelected: 0,
+    // numberOfIssuesSelectedThisYear: 0,
     numberOfIssuesRemaining: issuesRemaining
   };
 
@@ -41,37 +51,27 @@ export class HolidayDateChooser extends React.Component<
               hasProduct(productDetail) ? (
                 <WizardStep
                   routeableStepProps={this.props}
-                  extraFooterComponents={<QuestionsFooter />}
+                  extraFooterComponents={
+                    <QuestionsFooter topic={holidayQuestionsTopicString} />
+                  }
+                  hideBackButton
                 >
+                  <h2>Schedule your time away</h2>
                   <p>
-                    Choose the dates that you will be away. We will
-                    automatically calculate the number of issues you are going
-                    to miss (up to a maximum of 6 per year) and estimated credit
-                    you will get.
-                  </p>
-                  <p>
-                    The first available date is{" "}
+                    Choose the dates you will be away. You will be credited for
+                    the suspended issues on your future bill(s). The first
+                    available date is{" "}
                     <strong>
                       {holidayStopsResponse.productSpecifics.firstAvailableDate.format(
                         "dddd D MMMM"
                       )}
                     </strong>{" "}
-                    due to printing and delivery schedules, and you can book up
-                    to one year ahead.
+                    due to our printing and delivery schedule (notice period).
                   </p>
-                  <p>
-                    You can select only one schedule at a time. You have{" "}
-                    <strong>{issuesRemaining}</strong> issues out of{" "}
-                    {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
-                    available to suspend until{" "}
-                    {holidayStopsResponse.productSpecifics.firstAvailableDate
-                      .clone()
-                      .add(1, "year")
-                      .subtract(1, "day")
-                      .format("D MMMM YYYY")
-                    // TODO: use {productDetail.subscription.renewalDate} instead here
-                    }
+                  <p css={infoCss}>
+                    You can schedule one suspension at a time.
                   </p>
+
                   <DatePicker
                     firstAvailableDate={
                       holidayStopsResponse.productSpecifics.firstAvailableDate
@@ -83,38 +83,82 @@ export class HolidayDateChooser extends React.Component<
                       hsr => hsr.dateRange
                     )}
                     selectedRange={this.state.selectedRange}
+                    selectionInfo={
+                      <>
+                        {this.state.numberOfIssuesSelectedThisYear ? (
+                          <>
+                            <div>Suspending</div>
+                            <div css={{ fontSize: "16px" }}>
+                              <strong>
+                                {this.state.numberOfIssuesSelectedThisYear &&
+                                  this.state.numberOfIssuesSelectedThisYear}
+                                {" issue"}
+                                {this.state.numberOfIssuesSelectedThisYear !== 1
+                                  ? "s"
+                                  : ""}
+                              </strong>{" "}
+                            </div>
+                            <div>before </div>
+                          </>
+                        ) : (
+                          <div>{issuesRemaining} issues remaining until </div>
+                        )}
+                        <div>
+                          {moment(
+                            productDetail.subscription.renewalDate,
+                            DATE_INPUT_FORMAT
+                          ).format("D/M/YYYY")}
+                          <sup>*</sup>
+                        </div>
+                        {this.state.numberOfIssuesSelectedNextYear &&
+                        this.state.numberOfIssuesSelectedNextYear > 0 ? (
+                          <>
+                            <div>and</div>
+                            <div css={{ fontSize: "16px" }}>
+                              <strong>
+                                {this.state.numberOfIssuesSelectedNextYear &&
+                                  this.state.numberOfIssuesSelectedNextYear}
+                                {" issue"}
+                                {this.state.numberOfIssuesSelectedNextYear !== 1
+                                  ? "s"
+                                  : ""}
+                              </strong>
+                            </div>
+                            <div>the following year</div>{" "}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    }
                     onSelect={({ start, end }) => {
                       const range = new DateRange(start, end);
 
-                      const issuesAffectedBySelection = calculateIssuesInRange(
+                      const issuesAffectedBySelection = issuesInRange(
                         range,
                         productDetail.subscription.renewalDate,
                         holidayStopsResponse.productSpecifics.issueDayOfWeek
                       );
-                      // const allowedIssues =
-                      //   issuesAffectedBySelection > issuesRemaining
-                      //     ? issuesRemaining
-                      //     : issuesAffectedBySelection;
                       this.setState({
-                        selectedRange: range
-                        // numberOfIssuesSelected: allowedIssues
+                        selectedRange: range,
+                        numberOfIssuesSelectedThisYear:
+                          issuesAffectedBySelection.issuesThisYear,
+                        numberOfIssuesSelectedNextYear:
+                          issuesAffectedBySelection.issuesNextYear
                       });
                     }}
                   />
-                  <p>
-                    {`You will miss ${this.state.numberOfIssuesSelected &&
-                      this.state.numberOfIssuesSelected} issue${
-                      this.state.numberOfIssuesSelected &&
-                      this.state.numberOfIssuesSelected !== 1
-                        ? "s"
-                        : ""
-                    }.`}
-                  </p>
+                  <div css={{ ...infoCss, margin: "10px 0 10px 0" }}>
+                    <sup>*</sup>This is the anniversary of your subscription.
+                    The number of issues you can suspend per year is reset on
+                    this date.
+                  </div>
+                  <div>Cancel</div>
                   <div>
                     <Button
                       text="Review details"
                       right
-                      disabled={!!this.state.selectedRange}
+                      disabled={!this.state.selectedRange}
                       // onClick={this.handleClick("confirm")}
                       primary
                     />

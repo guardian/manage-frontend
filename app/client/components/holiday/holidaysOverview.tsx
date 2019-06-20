@@ -7,6 +7,7 @@ import {
 } from "../../../shared/productResponse";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
+import { GenericErrorScreen } from "../genericErrorScreen";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import {
   ReturnToYourProductButton,
@@ -14,18 +15,22 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import {
-  embellishExistingHolidayStops,
   createGetHolidayStopsFetcher,
+  embellishExistingHolidayStops,
   GetHolidayStopsResponse,
   HolidayStopRequest,
   HolidayStopsAsyncLoader,
-  HolidayStopsResponseContext
+  HolidayStopsResponseContext,
+  DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-import { GenericErrorScreen } from "../genericErrorScreen";
+import moment from "moment";
+import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;
 }
+
+export const holidayQuestionsTopicString = "scheduling a suspension";
 
 const OverviewRow = (props: OverviewRowProps) => (
   <div
@@ -69,10 +74,16 @@ const renderHolidayStopsOverview = (
 ) => (holidayStopsResponse: GetHolidayStopsResponse) => (
   <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
     <MembersDataApiResponseContext.Provider value={productDetail}>
-      <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
+      <WizardStep
+        routeableStepProps={routeableStepProps}
+        extraFooterComponents={
+          <QuestionsFooter topic={holidayQuestionsTopicString} />
+        }
+        hideBackButton
+      >
         <div>
           <h2>
-            Suspensions overview ({productDetail.subscription.subscriptionId})
+            Suspend Guardian Weekly ({productDetail.subscription.subscriptionId})
           </h2>
 
           <OverviewRow
@@ -80,11 +91,9 @@ const renderHolidayStopsOverview = (
             content={
               <>
                 <div>
-                  Going on holiday, or need time off from Guardian Weekly?
-                </div>
-                <div>
-                  You can suspend up to 6 issues and be credited on your next
-                  bill(s).
+                  You can suspend up to 6 issues and be credited on your future
+                  bills.<br />You can book up to one year ahead and can schedule
+                  one suspension at a time.
                 </div>
               </>
             }
@@ -93,8 +102,13 @@ const renderHolidayStopsOverview = (
             heading="Summary"
             content={
               <div>
-                You can suspend up to <strong>4</strong> issues until 10 June
-                2020.
+                You can suspend up to <strong>4</strong> issues out of{" "}
+                {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
+                available to suspend until{" "}
+                {moment(
+                  productDetail.subscription.renewalDate,
+                  DATE_INPUT_FORMAT
+                ).format("D MMMM YYYY")}
               </div> // TODO: replace number of issues and date with data from holidayStopResponse
             }
           />

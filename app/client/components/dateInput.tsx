@@ -1,22 +1,20 @@
 import { Moment } from "moment";
 import React from "react";
-import { sans } from "../styles/fonts";
 import palette from "../colours";
+import { sans } from "../styles/fonts";
 
 const inputBoxCss = {
   fontFamily: sans,
-  height: "2rem",
   border: "0",
-  width: "4rem",
-  padding: "0 2px 0 2px",
-  fontSize: "1rem",
+  width: "50px",
+  fontSize: "16px",
   appearance: "textfield",
-  textAlign: "left"
+  textAlign: "center"
 };
 
 const dayMonthCss = {
   ...inputBoxCss,
-  width: "2rem"
+  width: "25px"
 };
 
 const hiddenDateCss = {
@@ -25,8 +23,7 @@ const hiddenDateCss = {
 
 const dividerCss = {
   display: "inline-block",
-  fontSize: "1rem",
-  margin: "0 5px 0 5px"
+  fontSize: "12px"
 };
 
 const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
@@ -34,6 +31,7 @@ const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
 export interface DateInputProps {
   selectedDate?: Moment;
   defaultDate: Moment;
+  labelText: string;
   // onChange: (newValue: DateInputState) => void; // TODO: UNCOMMENT WHEN INPUT ACTIVATED
 }
 
@@ -69,59 +67,71 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
   };
 
   public render = () => (
-    <fieldset
-      css={{
-        // display: "inline-block",
-        border: "1px solid" + palette.neutral["5"],
-        padding: "5px 10px 5px 10px"
-      }}
-      aria-describedby="validation-message"
-    >
-      <input
-        css={dayMonthCss}
-        type="number"
-        aria-label="day"
-        value={this.state.day}
-        // onChange={event => {
-        //   const day = parseInt(event.target.value, 10);
-        //   if (day > 0) {
-        //     this.setState({ day }, this.pushStateUpwards);
-        //   }
-        // }}
-        readOnly // TODO: remove and replace with onChange when input boxes become active
-      />
-      <div css={dividerCss}>/</div>
-      <input
-        css={dayMonthCss}
-        type="number"
-        aria-label="month"
-        value={this.state.month}
-        // onChange={event => {
-        //   const month = parseInt(event.target.value, 10);
-        //   if (month > 0) {
-        //     this.setState(
-        //       { month: parseInt(event.target.value, 10) },
-        //       this.pushStateUpwards
-        //     );
-        //   }
-        // }}
-        readOnly // TODO: remove and replace with onChange when input boxes become active
-      />
-      <div css={dividerCss}>/</div>
-      <input
-        css={inputBoxCss}
-        type="number"
-        arial-label="year"
-        value={this.state.year}
-        // onChange={event => {
-        //   const year = parseInt(event.target.value, 10);
-        //   if (year > 0) {
-        //     this.setState({ year }, this.pushStateUpwards);
-        //   }
-        // }}
-        readOnly // TODO: remove and replace with onChange when input boxes become active
-      />
-    </fieldset>
+    <>
+      <div
+        css={{
+          fontFamily: sans,
+          fontSize: "14px"
+        }}
+      >
+        {this.props.labelText}
+        <br />
+      </div>
+      <fieldset
+        css={{
+          // display: "inline-block",
+          border: "1px solid" + palette.neutral["5"],
+          padding: "5px 10px 5px 10px"
+        }}
+        aria-describedby="validation-message"
+      >
+        <input
+          css={dayMonthCss}
+          type="number"
+          aria-label="day"
+          value={this.state.day}
+          // onChange={event => {
+
+          //   const day = parseInt(event.target.value, 10);
+          //   if (day > 0) {
+          //     this.setState({ day }, this.pushStateUpwards);
+          //   }
+          // }}
+          readOnly // TODO: remove and replace with onChange when input boxes become active
+        />
+        <div css={dividerCss}>/</div>
+        <input
+          css={dayMonthCss}
+          type="number"
+          aria-label="month"
+          value={this.state.month}
+          // onChange={event => {
+          //   const month = parseInt(event.target.value, 10);
+          //   if (month > 0) {
+          //     this.setState(
+          //       { month: parseInt(event.target.value, 10) },
+          //       this.pushStateUpwards
+          //     );
+          //   }
+          // }}
+          readOnly // TODO: remove and replace with onChange when input boxes become active
+        />
+        <div css={dividerCss}>/</div>
+        <input
+          css={inputBoxCss}
+          type="number"
+          arial-label="year"
+          value={this.state.year}
+          // onChange={event => {
+          //   const year = parseInt(event.target.value, 10);
+          //   if (year > 0) {
+          //     this.setState({ year }, this.pushStateUpwards);
+          //   }
+          // }}
+          readOnly // TODO: remove and replace with onChange when input boxes become active
+        />
+      </fieldset>
+    </>
   );
 
   // private pushStateUpwards = () => this.props.onChange(this.state);

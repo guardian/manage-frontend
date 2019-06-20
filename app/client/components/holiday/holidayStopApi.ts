@@ -4,7 +4,7 @@ import React from "react";
 import { ProductUrlPart } from "../../../shared/productTypes";
 import AsyncLoader from "../asyncLoader";
 
-const DATE_INPUT_FORMAT = "YYYY-MM-DD";
+export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
 export interface RawHolidayStopRequest {
   start: string;
@@ -69,7 +69,7 @@ const embellishRawHolidayStop = (
   return {
     ...rawHolidayStopRequest,
     dateRange,
-    issuesImpactedPerYear: calculateIssuesInRange(
+    issuesImpactedPerYear: issuesInRange(
       dateRange,
       nextYearStartDateStr,
       issueDayOfWeek
@@ -106,15 +106,15 @@ export interface IssuesImpactedPerYear {
   issuesNextYear: number;
 }
 
-export const calculateIssuesInRange = (
+export const issuesInRange = (
   range: DateRange,
   nextYearStartDateStr: string,
   issueDayOfWeek: number
 ) => {
-  const nextYearStartDate = moment(nextYearStartDateStr, DATE_INPUT_FORMAT);
+  // const nextYearStartDate = moment(nextYearStartDateStr, DATE_INPUT_FORMAT);
   return {
     issuesThisYear: 4,
-    issuesNextYear: 0
+    issuesNextYear: 1
   } as IssuesImpactedPerYear;
 };
 
