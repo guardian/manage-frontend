@@ -63,7 +63,12 @@ const formatDateRangeAsFriendly = (range: DateRange) =>
 const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
   <tr>
     <td>{formatDateRangeAsFriendly(holidayStopRequest.dateRange)}</td>
-    <td>1 issue</td>
+    <td>
+      {holidayStopRequest.publicationDatesToBeStopped.length} issue{holidayStopRequest
+        .publicationDatesToBeStopped.length !== 1
+        ? "s"
+        : ""}
+    </td>
   </tr>
 );
 

@@ -11,9 +11,11 @@ export interface RawHolidayStopRequest {
   end: string;
   id: string;
   subscriptionName: string;
+  publicationDatesToBeStopped: string[];
 }
 
 export interface HolidayStopRequest {
+  publicationDatesToBeStopped: string[];
   dateRange: DateRange;
   id: string;
   subscriptionName: string;
