@@ -9,7 +9,9 @@ const inputBoxCss = {
   width: "50px",
   fontSize: "16px",
   appearance: "textfield",
-  textAlign: "center"
+  textAlign: "center",
+  padding: 0,
+  margin: 0
 };
 
 const dayMonthCss = {
@@ -23,7 +25,9 @@ const hiddenDateCss = {
 
 const dividerCss = {
   display: "inline-block",
-  fontSize: "12px"
+  fontSize: "16px",
+  padding: 0,
+  margin: 0
 };
 
 const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
@@ -81,13 +85,13 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
         css={{
           // display: "inline-block",
           border: "1px solid" + palette.neutral["5"],
-          padding: "5px 10px 5px 10px"
+          padding: "5px"
         }}
         aria-describedby="validation-message"
       >
         <input
           css={dayMonthCss}
-          type="number"
+          // type="number"
           aria-label="day"
           value={this.state.day}
           // onChange={event => {
@@ -102,7 +106,7 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
         <div css={dividerCss}>/</div>
         <input
           css={dayMonthCss}
-          type="number"
+          // type="number"
           aria-label="month"
           value={this.state.month}
           // onChange={event => {
@@ -119,7 +123,7 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
         <div css={dividerCss}>/</div>
         <input
           css={inputBoxCss}
-          type="number"
+          // type="number"
           arial-label="year"
           value={this.state.year}
           // onChange={event => {
