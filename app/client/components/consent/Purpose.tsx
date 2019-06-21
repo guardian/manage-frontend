@@ -109,6 +109,7 @@ export class Purpose extends Component<Props, State> {
 
             this.props.updatePurpose(newPurposeState);
           }}
+          key={vendorId}
         />
       );
     });

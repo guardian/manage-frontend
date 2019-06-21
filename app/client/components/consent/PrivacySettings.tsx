@@ -122,6 +122,7 @@ export class PrivacySettings extends Component<{}, State> {
                 updatePurpose={(updatedPurpose: PurposeType) => {
                   this.updateState(purposeId, updatedPurpose);
                 }}
+                key={purposeId}
               />
             );
           })}
