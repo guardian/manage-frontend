@@ -3,33 +3,6 @@ import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
 import { Vendor } from "./Vendor";
 
-const purposeTypes: PurposeTypes = {
-  essential: {
-    label: "Essential",
-    description: "This is essential.",
-    hasToggle: false,
-    vendors: {}
-  },
-  performance: {
-    label: "Performance",
-    description: "This is performance.",
-    hasToggle: true,
-    vendors: {}
-  },
-  functionality: {
-    label: "Functionality",
-    description: "This is functionality.",
-    hasToggle: true,
-    vendors: {}
-  },
-  "personalised-ads": {
-    label: "Personalised adversiting",
-    description: "This is personalised adversiting",
-    hasToggle: true,
-    vendors: {} // TODO: Fill these
-  }
-};
-
 const collapsibleDivCSS = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
 `;
@@ -46,38 +19,21 @@ const arrowDown = (
   </svg>
 );
 
-type PurposeValues =
-  | "essential"
-  | "performance"
-  | "functionality"
-  | "personalised-ads";
-
-type PurposeTypes = {
-  [K in PurposeValues]: {
-    label: string;
-    description: string;
-    hasToggle: boolean;
-    vendors: any; // TODO: any for now only!
-  }
-};
-
 interface Props {
-  type: PurposeValues;
-  value: boolean | null;
+  purpose: Purpose;
+  purposeValue: PurposeValue;
+  onClickHandler: (value: PurposeValue) => void;
 }
 
 interface State {
-  value: boolean | null;
   collapsed: boolean;
 }
 
-// TODO: Limit type to 'essential', 'performance', 'functionality' or 'personalised-ads'
 export class Purpose extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
+    console.log("Purpose props", props);
     this.state = {
-      value: props.value,
       collapsed: false
     };
   }
@@ -88,16 +44,27 @@ export class Purpose extends Component<Props, State> {
     }));
   }
 
-  public purposeOn(): void {
-    this.setState({
-      value: true
-    });
+  public updtPurpose(newPuposeValue: boolean): void {
+    const purposeValue: PurposeValue = {
+      purposeValue: newPuposeValue,
+      vendorValues: this.props.purposeValue.vendorValues
+    };
+    this.props.onClickHandler(purposeValue);
   }
 
-  public purposeOff(): void {
-    this.setState({
-      value: false
-    });
+  public updtVendorValue(vendorID: number, newVendorValue: boolean): void {
+    // Pass the vendor change only vendors: {newVendorValue: thing}
+    //this.props.onClickHandler(newVendorValue);
+
+    const purposeValue: PurposeValue = {
+      purposeValue: this.props.purposeValue.purposeValue,
+      vendorValues: this.props.purposeValue.vendorValues
+    };
+
+    purposeValue.vendorValues[vendorID].vendorValue = newVendorValue;
+    console.log(vendorID, newVendorValue, purposeValue);
+
+    //this.props.onClickHandler(purposeValue);
   }
 
   public render(): React.ReactNode {
@@ -113,22 +80,19 @@ export class Purpose extends Component<Props, State> {
         </button>
 
         {/* Label */}
-        {purposeTypes[this.props.type].label}
+        {this.props.label}
 
         {/* On/Off button */}
         <OnOffButton
-          value={this.state.value}
-          onOnClick={() => {
-            this.purposeOn();
-          }}
-          onOffClick={() => {
-            this.purposeOff();
+          buttonValue={this.props.purposeValue}
+          onClickHandler={(newPurposeValue: PurposeType) => {
+            this.updtPurpose(newPurposeValue);
           }}
         />
 
         {/* Collapsible div */}
         <div css={collapsibleDivCSS(this.state.collapsed)}>
-          {purposeTypes[this.props.type].description}
+          {this.props.description}
           {this.renderVendors()}
         </div>
       </div>
@@ -136,24 +100,21 @@ export class Purpose extends Component<Props, State> {
   }
 
   private renderVendors(): React.ReactNode | void {
-    // TODO: Break this up to read from vendors list
-    if (this.props.type === "personalised-ads") {
+    const vendors = this.props.vendors;
+    if (!vendors) return;
+    return Object.keys(vendors).map((vendor: number) => {
+      const { vendorValue, label, url, hasButton } = this.props.vendors[vendor];
       return (
-        <>
-          <Vendor
-            value={null}
-            label="test"
-            url="www.guardian.co.uk"
-            hasButton={false}
-          />
-          <Vendor
-            value={null}
-            label="testWithbutton"
-            url="www.guardian.co.uk"
-            hasButton={true}
-          />
-        </>
+        <Vendor
+          vendorValue={vendorValue}
+          label={label}
+          url={url}
+          hasButton={hasButton}
+          onClickHandler={(value: number) => {
+            this.updtVendorValue(vendor, value);
+          }}
+        />
       );
-    }
+    });
   }
 }

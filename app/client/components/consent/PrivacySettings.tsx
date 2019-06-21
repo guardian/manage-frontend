@@ -2,6 +2,44 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { Purpose } from "./Purpose";
 
+const purposeTypes: PurposeList = {
+  essential: {
+    label: "Essential",
+    description: "This is essential.",
+    hasButton: false,
+    vendors: null
+  },
+  performance: {
+    label: "Performance",
+    description: "This is performance.",
+    hasButton: true,
+    vendors: null
+  },
+  functionality: {
+    label: "Functionality",
+    description: "This is functionality.",
+    hasButton: true,
+    vendors: null
+  },
+  personalisedAds: {
+    label: "Personalised adversiting",
+    description: "This is personalised adversiting",
+    hasButton: true,
+    vendors: {
+      1: {
+        label: "vendor 1",
+        url: "http://www.guardin.co.uk",
+        hasButton: false
+      },
+      2: {
+        label: "vendor 2",
+        url: "http://www.guardin.co.uk",
+        hasButton: true
+      }
+    }
+  }
+};
+
 const choicesCSS = css`
   border-top: 2px solid black;
   border-bottom: 2px solid black;
@@ -15,9 +53,44 @@ const privacyPolicyURL = "http://www.theguardian.com";
 
 const cookiePolicyURL = "http://www.theguardian.com";
 
-export class PrivacySettings extends Component<{}, {}> {
+interface State extends PurposeValueList {}
+
+export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
+
+    this.state = this.buildPurposeValues();
+    console.log(this.state);
+  }
+
+  private buildPurposeValues(): PurposeValueList {
+    const purposeValues = Object.keys(purposeTypes).reduce(
+      (prevPurposeState: Object, purpose: PurposeType) => {
+        prevPurposeState[purpose] = {
+          purposeValue: null,
+          vendorValues: this.buildVendorValues(purpose)
+        };
+        return prevPurposeState;
+      },
+      {}
+    );
+
+    return Object.entries(purposeValues).length ? purposeValues : null;
+  }
+
+  private buildVendorValues(purpose: PurposeType): VendorValueList {
+    const vendors = purposeTypes[purpose].vendors;
+    if (!vendors) return null;
+    const vendorValues = Object.keys(vendors).reduce(
+      (prevVendorState: Object, vendor: string) => {
+        prevVendorState[vendor] = {
+          vendorValue: null
+        };
+        return prevVendorState;
+      },
+      {}
+    );
+    return Object.entries(vendorValues).length ? vendorValues : null;
   }
 
   public componentDidMount(): void {
@@ -41,7 +114,14 @@ export class PrivacySettings extends Component<{}, {}> {
     return success;
   }
 
+  public updtState(purposeID: PurposeType, newValue: PurposeValue): void {
+    const newState = this.state;
+    newState[purposeID] = newValue;
+    this.setState(newState);
+  }
+
   public render(): React.ReactNode {
+    console.log("Render", this.state);
     return (
       <>
         {/* Choices */}
@@ -55,10 +135,23 @@ export class PrivacySettings extends Component<{}, {}> {
             <a href={cookiePolicyURL}>cooking policy</a>
           </p>
           <br />
-          <Purpose type="essential" value={null} />
-          <Purpose type="performance" value={null} />
-          <Purpose type="functionality" value={null} />
-          <Purpose type="personalised-ads" value={null} />
+          {Object.keys(purposeTypes).map((purpose: PurposeType) => {
+            const { label, description, hasButton, vendors } = purposeTypes[
+              purpose
+            ];
+            return (
+              <Purpose
+                purposeValue={this.state[purpose].purposeValue}
+                label={label}
+                description={description}
+                hasButton={hasButton}
+                vendors={vendors}
+                onClickHandler={(value: PurposeType) => {
+                  this.updtState(purpose, value);
+                }}
+              />
+            );
+          })}
           <p css={bottomPrintCSS}>
             You can change the above settings for this browser at any time by
             accessing the <a href={cookiePolicyURL}>cooking policy</a>

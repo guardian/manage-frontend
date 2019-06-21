@@ -11,57 +11,37 @@ const offButtonCSS = (value: boolean | null) => css`
   ${value === false ? "background-color: gray;" : ""};
 `;
 
-// TODO: These prop names could probably be improved
-// TODO: Should we get the button classes from props?
-
 interface Props {
-  onOnClick: () => void;
-  onOffClick: () => void;
-  value: boolean | null;
+  onClickHandler: (value: boolean) => void;
+  buttonValue: boolean | null;
 }
 
-interface State {
-  value: boolean | null;
-}
+// TODO: Should we get the button classes from props?
 export class OnOffButton extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      value: props.value
-    };
   }
 
-  public onOnButtonClick(): void {
-    this.props.onOnClick();
-    this.setState({
-      value: true
-    });
+  public updtValue(newButtonValue: boolean): void {
+    this.props.onClickHandler(newButtonValue);
   }
 
-  public onOffButtonClick(): void {
-    this.props.onOffClick();
-    this.setState({
-      value: false
-    });
-  }
-
-  // TODO: Do we need a container div here? And if so should we get its css from properties?
+  // TODO: Do we need a container div here? And if so should we get its css from props?
   public render(): React.ReactNode {
     return (
       <>
         <button
-          css={onButtonCSS(this.state.value)}
+          css={onButtonCSS(this.props.buttonValue)}
           onClick={() => {
-            this.onOnButtonClick();
+            this.updtValue(true);
           }}
         >
           on
         </button>
         <button
-          css={offButtonCSS(this.state.value)}
+          css={offButtonCSS(this.props.buttonValue)}
           onClick={() => {
-            this.onOffButtonClick();
+            this.updtValue(false);
           }}
         >
           off

@@ -2,36 +2,17 @@
 import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
 
-interface Props {
-  label: string;
-  url: string;
-  hasButton?: boolean;
-  value: boolean | null;
+interface Props extends Vendor, VendorValue {
+  onClickHandler: (newVendorValue: VendorValue) => void;
 }
 
-interface State {
-  value: boolean | null;
-}
-
-export class Vendor extends Component<Props, State> {
+export class Vendor extends Component<Props, {}> {
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      value: props.value // Do we want to allow null or just undefined?
-    };
   }
 
-  public vendorOn(): void {
-    this.setState({
-      value: true
-    });
-  }
-
-  public vendorOff(): void {
-    this.setState({
-      value: false
-    });
+  public updtVendor(newVendorValue: boolean): void {
+    this.props.onClickHandler(newVendorValue);
   }
 
   public render(): React.ReactNode {
@@ -47,12 +28,9 @@ export class Vendor extends Component<Props, State> {
     if (this.props.hasButton) {
       return (
         <OnOffButton
-          value={this.state.value}
-          onOnClick={() => {
-            this.vendorOn();
-          }}
-          onOffClick={() => {
-            this.vendorOff();
+          buttonValue={this.props.vendorValue}
+          onClickHandler={(newVendorValue: boolean) => {
+            this.updtVendor(newVendorValue);
           }}
         />
       );
