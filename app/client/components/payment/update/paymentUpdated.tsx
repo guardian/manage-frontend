@@ -22,7 +22,8 @@ import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
   ReturnToYourProductButton,
   RouteableStepProps,
-  WizardStep
+  WizardStep,
+  visuallyNavigateToParent
 } from "../../wizardRouterAdapter";
 import {
   isNewPaymentMethodDetail,
@@ -33,16 +34,6 @@ import {
   labelPaymentStepProps,
   paymentQuestionsTopicString
 } from "./updatePaymentFlow";
-
-export const handleNoNewPaymentDetails = (props: RouteableStepProps) => {
-  if (props.navigate) {
-    props.navigate("..", { replace: true }); // step back up a level
-    return null;
-  }
-  return (
-    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-  );
-};
 
 export class WithSubscriptionAsyncLoader extends AsyncLoader<
   WithSubscription[]
@@ -166,7 +157,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
               />
             </WizardStep>
           ) : (
-            handleNoNewPaymentDetails(props)
+            visuallyNavigateToParent(props)
           )
         }
       </NewPaymentMethodContext.Consumer>

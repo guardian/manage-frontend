@@ -44,8 +44,13 @@ export const createGetHolidayStopsFetcher = (
   subscriptionName: string
 ) => () => fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`);
 
-export class HolidayStopsAsyncLoader extends AsyncLoader<
+export class GetHolidayStopsAsyncLoader extends AsyncLoader<
   GetHolidayStopsResponse
+> {}
+
+export interface CreateHolidayStopsResponse {}
+export class CreateHolidayStopsAsyncLoader extends AsyncLoader<
+  CreateHolidayStopsResponse
 > {}
 
 export const HolidayStopsResponseContext: React.Context<

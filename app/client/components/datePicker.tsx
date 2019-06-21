@@ -203,7 +203,7 @@ export class DatePicker extends React.Component<
               range: adjustDateRangeToDisplayProperly(
                 new DateRange(
                   moment(),
-                  this.props.firstAvailableDate.subtract(1, "day")
+                  this.props.firstAvailableDate.clone().subtract(1, "day")
                 )
               )
             },

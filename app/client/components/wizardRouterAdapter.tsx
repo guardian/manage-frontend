@@ -5,6 +5,7 @@ import { LinkButton } from "./buttons";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
 import { ProgressCounter } from "./progressCounter";
+import { GenericErrorScreen } from "./genericErrorScreen";
 
 export interface RouteableProps extends RouteComponentProps {
   path: string;
@@ -48,6 +49,16 @@ const estimateTotal = (currentStep: number, child: any) => {
   // }
   // return currentStep;
   return 3; // TODO dynamically estimate total steps by recursively exploring children
+};
+
+export const visuallyNavigateToParent = (props: RouteableStepProps) => {
+  if (props.navigate) {
+    props.navigate("..", { replace: true }); // step back up a level
+    return null;
+  }
+  return (
+    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+  );
 };
 
 export const ReturnToYourProductButton = (

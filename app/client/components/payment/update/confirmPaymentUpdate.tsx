@@ -13,7 +13,11 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  RouteableStepProps,
+  WizardStep,
+  visuallyNavigateToParent
+} from "../../wizardRouterAdapter";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import {
   isNewPaymentMethodDetail,
@@ -21,7 +25,6 @@ import {
   NewPaymentMethodDetail,
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
-import { handleNoNewPaymentDetails } from "./paymentUpdated";
 import {
   labelPaymentStepProps,
   PaymentMethod,
@@ -184,7 +187,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               </div>
             </WizardStep>
           ) : (
-            handleNoNewPaymentDetails(props)
+            visuallyNavigateToParent(props)
           )
         }
       </MembersDataApiResponseContext.Consumer>

@@ -19,7 +19,7 @@ import {
   embellishExistingHolidayStops,
   GetHolidayStopsResponse,
   HolidayStopRequest,
-  HolidayStopsAsyncLoader,
+  GetHolidayStopsAsyncLoader,
   HolidayStopsResponseContext,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
@@ -64,7 +64,6 @@ const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
   <tr>
     <td>{formatDateRangeAsFriendly(holidayStopRequest.dateRange)}</td>
     <td>1 issue</td>
-    <td>Amend / Delete</td>
   </tr>
 );
 
@@ -121,7 +120,6 @@ const renderHolidayStopsOverview = (
                     <tr css={{ textAlign: "left" }}>
                       <th>When</th>
                       <th>Suspended</th>
-                      <th>Amend</th>
                     </tr>
                     {holidayStopsResponse.existing.map(
                       (holidayStopRequest, index) => (
@@ -164,7 +162,7 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
         <NavigateFnContext.Provider value={{ navigate: props.navigate }}>
           {" "}
           {productDetail.subscription.start ? (
-            <HolidayStopsAsyncLoader
+            <GetHolidayStopsAsyncLoader
               fetch={createGetHolidayStopsFetcher(
                 routeableStepProps.productType.urlPart,
                 productDetail.subscription.subscriptionId
