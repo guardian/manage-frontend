@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { Purpose } from "./Purpose";
+import { PurposeItem } from "./PurposeItem";
 
 const purposes: PurposeList = {
   essential: {
@@ -56,7 +56,9 @@ const privacyPolicyURL = "http://www.theguardian.com";
 
 const cookiePolicyURL = "http://www.theguardian.com";
 
-interface State extends PurposeValueList {}
+interface State {
+  purposes: PurposeList;
+}
 
 export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
@@ -86,13 +88,10 @@ export class PrivacySettings extends Component<{}, State> {
     return success;
   }
 
-  public updateState(
-    purposeId: PurposeType,
-    updatedPurposeType: PurposeValue
-  ): void {
+  public updateState(purposeId: PurposeType, updatedPurpose: Purpose): void {
     const newState = this.state;
 
-    newState.purposes[purposeId] = updatedPurposeType;
+    newState.purposes[purposeId] = updatedPurpose;
 
     this.setState(newState);
   }
@@ -100,7 +99,7 @@ export class PrivacySettings extends Component<{}, State> {
   public render(): React.ReactNode {
     console.log("render --->", this.state.purposes);
 
-    const { purposes } = this.state;
+    const { purposes }: { purposes: PurposeList } = this.state;
 
     return (
       <>
@@ -112,20 +111,24 @@ export class PrivacySettings extends Component<{}, State> {
             technologies for this service. These technologies are provided by us
             and by our third-party partners. To find out more, read our{" "}
             <a href={privacyPolicyURL}>privacy policy</a> and{" "}
-            <a href={cookiePolicyURL}>cooking policy</a>
+            <a href={cookiePolicyURL}>cookie policy</a>
           </p>
           <br />
-          {Object.keys(purposes).map((purposeId: PurposeType) => {
-            return (
-              <Purpose
-                purpose={purposes[purposeId]}
-                updatePurpose={(updatedPurpose: PurposeType) => {
-                  this.updateState(purposeId, updatedPurpose);
-                }}
-                key={purposeId}
-              />
-            );
-          })}
+          {Object.keys(purposes).map(
+            (key: string): React.ReactNode => {
+              const purposeId = key as PurposeType;
+
+              return (
+                <PurposeItem
+                  purpose={purposes[purposeId]}
+                  updatePurpose={(updatedPurpose: Purpose) => {
+                    this.updateState(purposeId, updatedPurpose);
+                  }}
+                  key={purposeId}
+                />
+              );
+            }
+          )}
           <p css={bottomPrintCSS}>
             You can change the above settings for this browser at any time by
             accessing the <a href={cookiePolicyURL}>cooking policy</a>

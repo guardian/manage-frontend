@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
-import { Vendor } from "./Vendor";
+import { VendorItem } from "./VendorItem";
 
 const collapsibleDivCSS = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
@@ -21,15 +21,14 @@ const arrowDown = (
 
 interface Props {
   purpose: Purpose;
-  purposeValue: PurposeValue;
-  onClickHandler: (value: PurposeValue) => void;
+  updatePurpose: (updatedPurpose: Purpose) => void;
 }
 
 interface State {
   collapsed: boolean;
 }
 
-export class Purpose extends Component<Props, State> {
+export class PurposeItem extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -45,7 +44,7 @@ export class Purpose extends Component<Props, State> {
   }
 
   updatePurposeOnClick(newPurposeValue: boolean): void {
-    const newPurposeState = this.props.purpose;
+    const newPurposeState: Purpose = this.props.purpose;
 
     newPurposeState.purposeValue = newPurposeValue;
 
@@ -53,7 +52,13 @@ export class Purpose extends Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const { label, purposeValue, description, hasButton } = this.props.purpose;
+    const {
+      label,
+      purposeValue,
+      description,
+      hasButton,
+      vendors
+    } = this.props.purpose;
     const { collapsed } = this.state;
 
     return (
@@ -74,7 +79,7 @@ export class Purpose extends Component<Props, State> {
         {hasButton && (
           <OnOffButton
             buttonValue={purposeValue}
-            onClickHandler={(newPurposeValue: PurposeType) => {
+            onClickHandler={(newPurposeValue: boolean) => {
               this.updatePurposeOnClick(newPurposeValue);
             }}
           />
@@ -83,31 +88,30 @@ export class Purpose extends Component<Props, State> {
         {/* Collapsible div */}
         <div css={collapsibleDivCSS(collapsed)}>
           {description}
-          {this.renderVendors()}
+          {vendors && this.renderVendors(vendors)}
         </div>
       </div>
     );
   }
 
-  renderVendors(): React.ReactNode | void {
-    const { vendors } = this.props.purpose;
-
-    if (!vendors) {
-      return;
-    }
-
-    return Object.keys(vendors).map((vendorId: number) => {
-      const vendor = vendors[vendorId];
+  renderVendors(vendors: VendorList): React.ReactNode | void {
+    return Object.keys(vendors).map((key: string) => {
+      const vendorId = parseInt(key, 10) as number;
 
       return (
-        <Vendor
+        <VendorItem
           vendor={vendors[vendorId]}
           updateVendor={(newVendorValue: boolean): void => {
-            const newPurposeState = this.props.purpose;
+            const newPurposeState: Purpose = this.props.purpose;
 
-            newPurposeState.vendors[vendorId].vendorValue = newVendorValue;
+            if (newPurposeState.vendors) {
+              const vendor = newPurposeState.vendors[vendorId];
 
-            this.props.updatePurpose(newPurposeState);
+              if (vendor) {
+                vendor.vendorValue = newVendorValue;
+                this.props.updatePurpose(newPurposeState);
+              }
+            }
           }}
           key={vendorId}
         />

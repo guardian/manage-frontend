@@ -17,7 +17,7 @@ interface Props {
 }
 
 // TODO: Should we get the button classes from props?
-export class OnOffButton extends Component<Props, State> {
+export class OnOffButton extends Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }

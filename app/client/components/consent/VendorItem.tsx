@@ -2,11 +2,12 @@
 import React, { Component } from "react";
 import { OnOffButton } from "./OnOffButton";
 
-interface Props extends Vendor, VendorValue {
-  updateVendor: (newVendorValue: VendorValue) => void;
+interface Props {
+  vendor: Vendor;
+  updateVendor: (newVendorValue: boolean) => void;
 }
 
-export class Vendor extends Component<Props, {}> {
+export class VendorItem extends Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }
@@ -25,7 +26,7 @@ export class Vendor extends Component<Props, {}> {
     );
   }
 
-  private renderButton(vendorValue): React.ReactNode | void {
+  private renderButton(vendorValue: boolean | null): React.ReactNode | void {
     return (
       <OnOffButton
         buttonValue={vendorValue}

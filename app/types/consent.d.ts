@@ -8,9 +8,10 @@ type PurposeType =
 
 type Purpose = {
   label: string;
+  purposeValue: boolean | null;
   description: string;
   hasButton: boolean;
-  vendors: VendorList | null;
+  vendors?: VendorList;
 };
 
 type VendorList = {
@@ -21,19 +22,5 @@ type Vendor = {
   label: string;
   url: string;
   hasButton: boolean;
-};
-
-type PurposeValueList = { [K in PurposeType]: PurposeValue };
-
-type PurposeValue = {
-  purposeValue: boolean | null;
-  vendorValues: VendorValueList | null;
-};
-
-type VendorValueList = {
-  [K: number]: VendorValue;
-};
-
-type VendorValue = {
   vendorValue: boolean | null;
 };
