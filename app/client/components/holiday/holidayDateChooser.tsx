@@ -18,6 +18,7 @@ import {
 } from "./holidayStopApi";
 import moment from "moment";
 import { sans } from "../../styles/fonts";
+import { Link } from "@reach/router";
 
 interface HolidayDateChooserState {
   selectedRange?: DateRange;
@@ -153,15 +154,30 @@ export class HolidayDateChooser extends React.Component<
                     The number of issues you can suspend per year is reset on
                     this date.
                   </div>
-                  <div>Cancel</div>
-                  <div>
-                    <Button
-                      text="Review details"
-                      right
-                      disabled={!this.state.selectedRange}
-                      // onClick={this.handleClick("confirm")}
-                      primary
-                    />
+                  <div
+                    css={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Link
+                      css={{
+                        marginRight: "20px"
+                      }}
+                      to=".."
+                    >
+                      Back
+                    </Link>
+                    <div>
+                      <Button
+                        text="Review details"
+                        right
+                        disabled={!this.state.selectedRange}
+                        // onClick={this.handleClick("confirm")}
+                        primary
+                      />
+                    </div>
                   </div>
                   <div css={{ height: "10px" }} />
                 </WizardStep>
