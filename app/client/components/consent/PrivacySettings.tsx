@@ -2,37 +2,40 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { Purpose } from "./Purpose";
 
-const purposeTypes: PurposeList = {
+const purposes: PurposeList = {
   essential: {
     label: "Essential",
+    purposeValue: null,
     description: "This is essential.",
-    hasButton: false,
-    vendors: null
+    hasButton: false
   },
   performance: {
     label: "Performance",
+    purposeValue: null,
     description: "This is performance.",
-    hasButton: true,
-    vendors: null
+    hasButton: true
   },
   functionality: {
     label: "Functionality",
+    purposeValue: null,
     description: "This is functionality.",
-    hasButton: true,
-    vendors: null
+    hasButton: true
   },
   personalisedAds: {
     label: "Personalised adversiting",
+    purposeValue: null,
     description: "This is personalised adversiting",
     hasButton: true,
     vendors: {
       1: {
         label: "vendor 1",
+        vendorValue: null,
         url: "http://www.guardin.co.uk",
         hasButton: false
       },
       2: {
         label: "vendor 2",
+        vendorValue: null,
         url: "http://www.guardin.co.uk",
         hasButton: true
       }
@@ -59,38 +62,7 @@ export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.state = this.buildPurposeValues();
-    console.log(this.state);
-  }
-
-  private buildPurposeValues(): PurposeValueList {
-    const purposeValues = Object.keys(purposeTypes).reduce(
-      (prevPurposeState: Object, purpose: PurposeType) => {
-        prevPurposeState[purpose] = {
-          purposeValue: null,
-          vendorValues: this.buildVendorValues(purpose)
-        };
-        return prevPurposeState;
-      },
-      {}
-    );
-
-    return Object.entries(purposeValues).length ? purposeValues : null;
-  }
-
-  private buildVendorValues(purpose: PurposeType): VendorValueList {
-    const vendors = purposeTypes[purpose].vendors;
-    if (!vendors) return null;
-    const vendorValues = Object.keys(vendors).reduce(
-      (prevVendorState: Object, vendor: string) => {
-        prevVendorState[vendor] = {
-          vendorValue: null
-        };
-        return prevVendorState;
-      },
-      {}
-    );
-    return Object.entries(vendorValues).length ? vendorValues : null;
+    this.state = { purposes };
   }
 
   public componentDidMount(): void {
@@ -114,14 +86,22 @@ export class PrivacySettings extends Component<{}, State> {
     return success;
   }
 
-  public updtState(purposeID: PurposeType, newValue: PurposeValue): void {
+  public updateState(
+    purposeId: PurposeType,
+    updatedPurposeType: PurposeValue
+  ): void {
     const newState = this.state;
-    newState[purposeID] = newValue;
+
+    newState.purposes[purposeId] = updatedPurposeType;
+
     this.setState(newState);
   }
 
   public render(): React.ReactNode {
-    console.log("Render", this.state);
+    console.log("render --->", this.state.purposes);
+
+    const { purposes } = this.state;
+
     return (
       <>
         {/* Choices */}
@@ -135,19 +115,12 @@ export class PrivacySettings extends Component<{}, State> {
             <a href={cookiePolicyURL}>cooking policy</a>
           </p>
           <br />
-          {Object.keys(purposeTypes).map((purpose: PurposeType) => {
-            const { label, description, hasButton, vendors } = purposeTypes[
-              purpose
-            ];
+          {Object.keys(purposes).map((purposeId: PurposeType) => {
             return (
               <Purpose
-                purposeValue={this.state[purpose].purposeValue}
-                label={label}
-                description={description}
-                hasButton={hasButton}
-                vendors={vendors}
-                onClickHandler={(value: PurposeType) => {
-                  this.updtState(purpose, value);
+                purpose={purposes[purposeId]}
+                updatePurpose={(updatedPurpose: PurposeType) => {
+                  this.updateState(purposeId, updatedPurpose);
                 }}
               />
             );

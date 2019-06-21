@@ -32,42 +32,30 @@ interface State {
 export class Purpose extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    console.log("Purpose props", props);
+
     this.state = {
       collapsed: false
     };
   }
 
-  public toggleCollapsed(): void {
+  toggleCollapsed(): void {
     this.setState((state, props) => ({
       collapsed: !state.collapsed
     }));
   }
 
-  public updtPurpose(newPuposeValue: boolean): void {
-    const purposeValue: PurposeValue = {
-      purposeValue: newPuposeValue,
-      vendorValues: this.props.purposeValue.vendorValues
-    };
-    this.props.onClickHandler(purposeValue);
+  updatePurposeOnClick(newPurposeValue: boolean): void {
+    const newPurposeState = this.props.purpose;
+
+    newPurposeState.purposeValue = newPurposeValue;
+
+    this.props.updatePurpose(newPurposeState);
   }
 
-  public updtVendorValue(vendorID: number, newVendorValue: boolean): void {
-    // Pass the vendor change only vendors: {newVendorValue: thing}
-    //this.props.onClickHandler(newVendorValue);
+  render(): React.ReactNode {
+    const { label, purposeValue, description, hasButton } = this.props.purpose;
+    const { collapsed } = this.state;
 
-    const purposeValue: PurposeValue = {
-      purposeValue: this.props.purposeValue.purposeValue,
-      vendorValues: this.props.purposeValue.vendorValues
-    };
-
-    purposeValue.vendorValues[vendorID].vendorValue = newVendorValue;
-    console.log(vendorID, newVendorValue, purposeValue);
-
-    //this.props.onClickHandler(purposeValue);
-  }
-
-  public render(): React.ReactNode {
     return (
       <div>
         {/* Expand button */}
@@ -80,38 +68,46 @@ export class Purpose extends Component<Props, State> {
         </button>
 
         {/* Label */}
-        {this.props.label}
+        {label}
 
         {/* On/Off button */}
-        <OnOffButton
-          buttonValue={this.props.purposeValue}
-          onClickHandler={(newPurposeValue: PurposeType) => {
-            this.updtPurpose(newPurposeValue);
-          }}
-        />
+        {hasButton && (
+          <OnOffButton
+            buttonValue={purposeValue}
+            onClickHandler={(newPurposeValue: PurposeType) => {
+              this.updatePurposeOnClick(newPurposeValue);
+            }}
+          />
+        )}
 
         {/* Collapsible div */}
-        <div css={collapsibleDivCSS(this.state.collapsed)}>
-          {this.props.description}
+        <div css={collapsibleDivCSS(collapsed)}>
+          {description}
           {this.renderVendors()}
         </div>
       </div>
     );
   }
 
-  private renderVendors(): React.ReactNode | void {
-    const vendors = this.props.vendors;
-    if (!vendors) return;
-    return Object.keys(vendors).map((vendor: number) => {
-      const { vendorValue, label, url, hasButton } = this.props.vendors[vendor];
+  renderVendors(): React.ReactNode | void {
+    const { vendors } = this.props.purpose;
+
+    if (!vendors) {
+      return;
+    }
+
+    return Object.keys(vendors).map((vendorId: number) => {
+      const vendor = vendors[vendorId];
+
       return (
         <Vendor
-          vendorValue={vendorValue}
-          label={label}
-          url={url}
-          hasButton={hasButton}
-          onClickHandler={(value: number) => {
-            this.updtVendorValue(vendor, value);
+          vendor={vendors[vendorId]}
+          updateVendor={(newVendorValue: boolean): void => {
+            const newPurposeState = this.props.purpose;
+
+            newPurposeState.vendors[vendorId].vendorValue = newVendorValue;
+
+            this.props.updatePurpose(newPurposeState);
           }}
         />
       );
