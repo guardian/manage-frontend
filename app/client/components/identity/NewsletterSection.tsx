@@ -1,4 +1,6 @@
 import React, { FC } from "react";
+import palette from "../../colours";
+import { sans } from "../../styles/fonts";
 import { DropMenu } from "./DropMenu";
 import { Newsletter, NewsletterGroup } from "./identity";
 import { MarketingPreference } from "./MarketingPreference";
@@ -32,9 +34,9 @@ const newsletterPreferences = (
   clickHandler: ClickHandler
 ) =>
   newsletterGroups.map(newsletterGroup => {
-    const { theme, newsletters } = newsletterGroup;
+    const { theme, color, newsletters } = newsletterGroup;
     return (
-      <DropMenu key={theme} title={theme}>
+      <DropMenu key={theme} color={color} title={theme}>
         {newsletters.map(nl => newsletterPreference(nl, clickHandler))}
       </DropMenu>
     );
@@ -44,12 +46,36 @@ export const NewsletterSection: FC<NewsletterSectionProps> = props => {
   const { newsletterGroups, clickHandler } = props;
   return (
     <>
-      <h2>Email and Marketing preferences</h2>
-      <p>
+      <h2
+        css={{
+          fontSize: "1.0625rem",
+          lineHeight: "1.5rem",
+          fontWeight: "bold",
+          margin: "0"
+        }}
+      >
+        Your newsletters
+      </h2>
+      <p
+        css={{
+          fontFamily: sans,
+          fontSize: "0.875rem",
+          marginBottom: "0.5rem"
+        }}
+      >
         Our regular newsletters help you get closer to our quality, independent
         journalism. Pick the issues and topics that interest you below.
       </p>
-      <p>
+      <p
+        css={{
+          fontSize: "0.8125rem",
+          lineHeight: "1.125rem",
+          fontFamily: sans,
+          color: palette.neutral["3"],
+          marginBottom: "0.75rem",
+          marginTop: "0"
+        }}
+      >
         The Guardian’s newsletters include content from our website, which may
         be funded by outside parties. Newsletters may also display information
         about Guardian News and Media's other products, services or events (such

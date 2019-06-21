@@ -1,3 +1,16 @@
+import palette from "../../colours";
+
+enum Theme {
+  news = "news",
+  features = "features",
+  sport = "sport",
+  culture = "culture",
+  lifestyle = "lifestyle",
+  comment = "comment",
+  work = "work",
+  FromThePapers = "From the papers"
+}
+
 export interface Consent {
   id: string;
   name: string;
@@ -17,9 +30,21 @@ export interface Newsletter {
 }
 
 export interface NewsletterGroup {
-  theme: string;
+  theme: Theme;
+  color: string;
   newsletters: Newsletter[];
 }
+
+const colors: { [T in Theme]: string } = {
+  [Theme.news]: palette.red.medium,
+  [Theme.features]: palette.neutral["1"],
+  [Theme.sport]: palette.blue.medium,
+  [Theme.culture]: "#a1845c",
+  [Theme.lifestyle]: palette.pink.medium,
+  [Theme.comment]: "#e05e00",
+  [Theme.work]: palette.neutral["1"],
+  [Theme.FromThePapers]: palette.neutral["1"]
+};
 
 // @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
 const toNewsletter = (
@@ -46,16 +71,18 @@ const toNewsletterGroups = (
   newsletters: Array<Newsletter & ExactTargetEntity>
 ): NewsletterGroup[] => {
   const template = [
-    "news",
-    "features",
-    "sport",
-    "culture",
-    "lifestyle",
-    "comment",
-    "From the papers"
+    Theme.news,
+    Theme.features,
+    Theme.sport,
+    Theme.culture,
+    Theme.lifestyle,
+    Theme.comment,
+    Theme.work,
+    Theme.FromThePapers
   ];
   return template.map(theme => ({
     theme,
+    color: colors[theme],
     newsletters: newsletters
       .filter(newsletter => newsletter.theme === theme)
       .map(toNewsletter)
