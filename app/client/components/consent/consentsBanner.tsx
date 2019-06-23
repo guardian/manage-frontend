@@ -3,12 +3,15 @@ import React from "react";
 import palette from "../../colours";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
+import { trackEventInOphanOnly } from "../analytics";
 import { Button } from "../buttons";
 import { PageContainer } from "../page";
 import { Roundel } from "../roundel";
 
 const CONSENT_COOKIE_NAME = "GU_TK";
 const CONSENT_COOKIE_DAYS_TO_LIVE = 30 * 18;
+
+const CONSENTS_BANNER_OPHAN_EVENT_CATEGORY = "consents_banner";
 
 const documentIsAvailable = typeof document !== "undefined" && document;
 
@@ -45,6 +48,10 @@ export class ConsentsBanner extends React.Component<
           color: palette.white
         }}
       >
+        {trackEventInOphanOnly({
+          eventCategory: CONSENTS_BANNER_OPHAN_EVENT_CATEGORY,
+          eventAction: "impression"
+        })}
         <PageContainer noVerticalMargin>
           <div
             css={{
@@ -90,7 +97,14 @@ export class ConsentsBanner extends React.Component<
             </p>
             <Button
               text="I'm OK with that"
-              onClick={this.writeConsents}
+              onClick={() => {
+                this.writeConsents();
+                trackEventInOphanOnly({
+                  eventCategory: CONSENTS_BANNER_OPHAN_EVENT_CATEGORY,
+                  eventAction: "click",
+                  eventLabel: "im_ok_with_that"
+                });
+              }}
               hoverColour={palette.yellow.dark}
               fontWeight="bold"
               leftTick
@@ -99,6 +113,13 @@ export class ConsentsBanner extends React.Component<
             <a
               href="https://profile.theguardian.com/privacy-settings"
               css={{ marginLeft: "10px", fontWeight: "bold", fontFamily: sans }}
+              onClick={() =>
+                trackEventInOphanOnly({
+                  eventCategory: CONSENTS_BANNER_OPHAN_EVENT_CATEGORY,
+                  eventAction: "click",
+                  eventLabel: "my_options"
+                })
+              }
             >
               My options
             </a>
