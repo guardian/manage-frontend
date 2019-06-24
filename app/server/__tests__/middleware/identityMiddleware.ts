@@ -1,4 +1,4 @@
-import { augmentRedirectURL } from "../../identity/identityMiddleware";
+import { augmentRedirectURL } from "../../middleware/identityMiddleware";
 
 const gulocalDomain = "thegulocal.com";
 const codeDomain = "code.dev-theguardian.com";
