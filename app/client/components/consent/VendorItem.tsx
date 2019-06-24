@@ -16,17 +16,7 @@ export class VendorItem extends Component<Props, {}> {
     this.props.updateVendor(newVendorValue);
   }
 
-  public render(): React.ReactNode {
-    const { url, label, hasButton, vendorValue } = this.props.vendor;
-    return (
-      <div>
-        <a href={url}>{label}</a>
-        {hasButton && this.renderButton(vendorValue)}
-      </div>
-    );
-  }
-
-  private renderButton(vendorValue: boolean | null): React.ReactNode | void {
+  public renderButton(vendorValue: boolean | null): React.ReactNode | void {
     return (
       <OnOffButton
         buttonValue={vendorValue}
@@ -35,6 +25,15 @@ export class VendorItem extends Component<Props, {}> {
         }}
       />
     );
-    // }
+  }
+
+  public render(): React.ReactNode {
+    const { url, label, hasButton, vendorValue } = this.props.vendor;
+    return (
+      <div>
+        <a href={url}>{label}</a>
+        {hasButton && this.renderButton(vendorValue)}
+      </div>
+    );
   }
 }

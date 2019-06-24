@@ -89,17 +89,17 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public updateState(purposeId: PurposeType, updatedPurpose: Purpose): void {
-    const newState = this.state;
-
-    newState.purposes[purposeId] = updatedPurpose;
-
-    this.setState(newState);
+    this.setState({
+      ...this.state,
+      purposes: {
+        ...this.state.purposes,
+        [purposeId]: updatedPurpose
+      }
+    });
   }
 
   public render(): React.ReactNode {
     console.log("render --->", this.state.purposes);
-
-    const { purposes }: { purposes: PurposeList } = this.state;
 
     return (
       <>
@@ -114,13 +114,13 @@ export class PrivacySettings extends Component<{}, State> {
             <a href={cookiePolicyURL}>cookie policy</a>
           </p>
           <br />
-          {Object.keys(purposes).map(
+          {Object.keys(this.state.purposes).map(
             (key: string): React.ReactNode => {
               const purposeId = key as PurposeType;
 
               return (
                 <PurposeItem
-                  purpose={purposes[purposeId]}
+                  purpose={this.state.purposes[purposeId]}
                   updatePurpose={(updatedPurpose: Purpose) => {
                     this.updateState(purposeId, updatedPurpose);
                   }}

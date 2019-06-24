@@ -37,21 +37,35 @@ export class PurposeItem extends Component<Props, State> {
     };
   }
 
-  toggleCollapsed(): void {
+  public toggleCollapsed(): void {
     this.setState((state, props) => ({
       collapsed: !state.collapsed
     }));
   }
 
-  updatePurposeOnClick(newPurposeValue: boolean): void {
-    const newPurposeState: Purpose = this.props.purpose;
-
-    newPurposeState.purposeValue = newPurposeValue;
-
-    this.props.updatePurpose(newPurposeState);
+  public updatePurposeOnClick(newPurposeValue: boolean): void {
+    this.props.updatePurpose({
+      ...this.props.purpose,
+      purposeValue: newPurposeValue
+    });
   }
 
-  render(): React.ReactNode {
+  public updateVendor(vendorId: number, newVendorValue: boolean): void {
+    if (this.props.purpose.vendors && this.props.purpose.vendors[vendorId]) {
+      this.props.updatePurpose({
+        ...this.props.purpose,
+        vendors: {
+          ...this.props.purpose.vendors,
+          [vendorId]: {
+            ...this.props.purpose.vendors[vendorId],
+            vendorValue: newVendorValue
+          }
+        }
+      });
+    }
+  }
+
+  public render(): React.ReactNode {
     const {
       label,
       purposeValue,
@@ -94,7 +108,7 @@ export class PurposeItem extends Component<Props, State> {
     );
   }
 
-  renderVendors(vendors: VendorList): React.ReactNode | void {
+  public renderVendors(vendors: VendorList): React.ReactNode | void {
     return Object.keys(vendors).map((key: string) => {
       const vendorId = parseInt(key, 10) as number;
 
@@ -102,16 +116,7 @@ export class PurposeItem extends Component<Props, State> {
         <VendorItem
           vendor={vendors[vendorId]}
           updateVendor={(newVendorValue: boolean): void => {
-            const newPurposeState: Purpose = this.props.purpose;
-
-            if (newPurposeState.vendors) {
-              const vendor = newPurposeState.vendors[vendorId];
-
-              if (vendor) {
-                vendor.vendorValue = newVendorValue;
-                this.props.updatePurpose(newPurposeState);
-              }
-            }
+            this.updateVendor(vendorId, newVendorValue);
           }}
           key={vendorId}
         />
