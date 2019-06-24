@@ -1,4 +1,5 @@
 import { navigate } from "@reach/router";
+import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import {
@@ -7,6 +8,7 @@ import {
 } from "../../../shared/productResponse";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
+import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import {
@@ -15,24 +17,45 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import {
+  calculateIssuesImpactedPerYear,
   createGetHolidayStopsFetcher,
+  DATE_INPUT_FORMAT,
   embellishExistingHolidayStops,
+  GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopRequest,
-  GetHolidayStopsAsyncLoader,
   HolidayStopsResponseContext,
-  DATE_INPUT_FORMAT,
-  calculateIssuesImpactedPerYear,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
-import moment from "moment";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
+import { sans } from "../../styles/fonts";
+import palette from "../../colours";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;
 }
 
 export const holidayQuestionsTopicString = "scheduling a suspension";
+
+const tableCellCss = {
+  padding: "8px 16px 8px 16px",
+  borderBottom: "1px solid " + palette.neutral["5"]
+};
+
+const tableCss = {
+  width: "100%",
+  fontFamily: sans,
+  fontSize: "16px",
+  border: "1px solid " + palette.neutral["5"],
+  borderCollapse: "collapse",
+  td: {
+    ...tableCellCss
+  },
+  th: {
+    ...tableCellCss,
+    backgroundColor: palette.neutral["7"],
+    margin: 0
+  }
+};
 
 const OverviewRow = (props: OverviewRowProps) => (
   <div
@@ -46,7 +69,13 @@ const OverviewRow = (props: OverviewRowProps) => (
     <div css={{ flex: "1 1 150px" }}>
       <h3 css={{ marginTop: "0", paddingTop: "0" }}>{props.heading}</h3>
     </div>
-    <div css={{ flex: "4 4 350px" }}>{props.content}</div>
+    <div
+      css={{
+        flex: "4 4 350px"
+      }}
+    >
+      {props.content}
+    </div>
   </div>
 );
 
@@ -71,7 +100,7 @@ const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
         ? "s"
         : ""}{" "}
       {holidayStopRequest.publicationDatesToBeStopped.map((date, index) => (
-        <div key={index}>{date.format("D MMM")}</div>
+        <div key={index}>- {date.format("D MMM")}</div>
       ))}
     </td>
   </tr>
@@ -131,7 +160,7 @@ const renderHolidayStopsOverview = (
                   <div>
                     You can suspend up to{" "}
                     {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
-                    issues per year.<br />You will be credited on your future
+                    issues per year and you will be credited on your future
                     bills.<br />You can schedule one suspension at a time.
                   </div>
                 </>
@@ -141,15 +170,39 @@ const renderHolidayStopsOverview = (
               heading="Summary"
               content={
                 holidayStopsResponse.existing.length > 0 ? (
-                  <div>
-                    You have suspended{" "}
-                    <strong>
-                      {combinedIssuesImpactedPerYear.issueDatesThisYear.length}/{
-                        holidayStopsResponse.productSpecifics.annualIssueLimit
-                      }
-                    </strong>{" "}
-                    issues until {renewalDateMoment.format("D MMMM YYYY")}
-                  </div> // TODO: replace number of issues and date with data from holidayStopResponse
+                  <>
+                    <div>
+                      You have suspended{" "}
+                      <strong>
+                        {
+                          combinedIssuesImpactedPerYear.issueDatesThisYear
+                            .length
+                        }/{
+                          holidayStopsResponse.productSpecifics.annualIssueLimit
+                        }
+                      </strong>{" "}
+                      issues until {renewalDateMoment.format("D MMMM YYYY")}
+                      {combinedIssuesImpactedPerYear.issueDatesNextYear.length >
+                      0 ? (
+                        <span>
+                          {" "}
+                          and{" "}
+                          <strong>
+                            {
+                              combinedIssuesImpactedPerYear.issueDatesNextYear
+                                .length
+                            }/{
+                              holidayStopsResponse.productSpecifics
+                                .annualIssueLimit
+                            }
+                          </strong>{" "}
+                          issues the following year.
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </>
                 ) : (
                   <div>
                     You have{" "}
@@ -165,7 +218,7 @@ const renderHolidayStopsOverview = (
               heading="Details"
               content={
                 holidayStopsResponse.existing.length > 0 ? (
-                  <table css={{ width: "100%" }}>
+                  <table css={tableCss}>
                     <tbody>
                       <tr css={{ textAlign: "left" }}>
                         <th>When</th>
@@ -186,18 +239,27 @@ const renderHolidayStopsOverview = (
                 )
               }
             />
-            <Button
-              text="Create suspension"
-              right
-              primary
-              onClick={() =>
-                (routeableStepProps.navigate || navigate)("create")
-              }
-            />
+            <div
+              css={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}
+            >
+              <ReturnToYourProductButton
+                productType={routeableStepProps.productType}
+              />
+              <div css={{ marginRight: "24px" }} />
+              <Button
+                text="Create suspension"
+                right
+                primary
+                onClick={() =>
+                  (routeableStepProps.navigate || navigate)("create")
+                }
+              />
+            </div>
           </div>
-          <ReturnToYourProductButton
-            productType={routeableStepProps.productType}
-          />
         </WizardStep>
       </MembersDataApiResponseContext.Provider>
     </HolidayStopsResponseContext.Provider>
