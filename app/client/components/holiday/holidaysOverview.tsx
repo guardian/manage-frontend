@@ -115,26 +115,12 @@ const renderHolidayStopsOverview = (
     DATE_INPUT_FORMAT
   );
 
-  const combinedIssuesImpactedPerYear = holidayStopsResponse.existing
-    .map(existing =>
-      calculateIssuesImpactedPerYear(
-        existing.publicationDatesToBeStopped,
-        renewalDateMoment
-      )
-    )
-    .reduce(
-      (prev, curr) =>
-        ({
-          issueDatesThisYear: [
-            ...prev.issueDatesThisYear,
-            ...curr.issueDatesThisYear
-          ],
-          issueDatesNextYear: [
-            ...prev.issueDatesNextYear,
-            ...curr.issueDatesNextYear
-          ]
-        } as IssuesImpactedPerYear)
-    );
+  const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
+    holidayStopsResponse.existing
+      .map(existing => existing.publicationDatesToBeStopped)
+      .flat(),
+    renewalDateMoment
+  );
 
   return (
     <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>

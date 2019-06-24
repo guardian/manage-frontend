@@ -251,7 +251,7 @@ export class DatePicker extends React.Component<
               fontSize: "14px"
             }}
           >
-            {this.props.selectionInfo ? this.props.selectionInfo : undefined}
+            {this.props.selectionInfo && this.props.selectionInfo}
           </div>
         </div>
         <div id="validation-message" role="alert" css={this.validationMsgCss}>
