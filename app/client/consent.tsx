@@ -18,6 +18,7 @@ const run = (): void => {
   if (window.guardian.polyfilled) {
     onPolyfilled();
   } else {
+    // tslint:disable-next-line:no-object-mutation
     window.guardian.onPolyfilled = onPolyfilled;
   }
 };
