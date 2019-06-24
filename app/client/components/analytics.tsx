@@ -24,14 +24,11 @@ export interface Event {
   eventValue?: number;
 }
 
-export const trackEvent = ({
-  eventCategory,
-  eventAction,
-  product,
-  eventLabel,
-  eventValue
-}: Event) => {
-  if (window.ga) {
+export const trackEvent = (
+  { eventCategory, eventAction, product, eventLabel, eventValue }: Event,
+  alsoTrackInGA = true
+) => {
+  if (alsoTrackInGA && window.ga) {
     window.ga(
       "send",
       "event",
@@ -66,6 +63,8 @@ export const trackEvent = ({
     });
   }
 };
+
+export const trackEventInOphanOnly = (event: Event) => trackEvent(event, false);
 
 export const applyAnyOptimiseExperiments = () => {
   if (typeof window !== "undefined" && window.ga && window.dataLayer) {

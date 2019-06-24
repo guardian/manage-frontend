@@ -21,6 +21,10 @@ import { CancellationFlow } from "./cancel/cancellationFlow";
 import { CancellationReason } from "./cancel/cancellationReason";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import {
+  ConsentsBanner,
+  SuppressConsentBanner
+} from "./consent/consentsBanner";
 import { Main } from "./main";
 import { MembershipFAQs } from "./membershipFAQs";
 import { NotFound } from "./notFound";
@@ -112,6 +116,10 @@ const User = () => (
       <MembershipFAQs path="/help" />
 
       <NotFound default={true} />
+    </Router>
+    <Router>
+      <SuppressConsentBanner path="/payment/*" />
+      <ConsentsBanner default={true} />
     </Router>
   </Main>
 );
