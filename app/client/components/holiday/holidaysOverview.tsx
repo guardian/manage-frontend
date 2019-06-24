@@ -21,7 +21,9 @@ import {
   HolidayStopRequest,
   GetHolidayStopsAsyncLoader,
   HolidayStopsResponseContext,
-  DATE_INPUT_FORMAT
+  DATE_INPUT_FORMAT,
+  calculateIssuesImpactedPerYear,
+  IssuesImpactedPerYear
 } from "./holidayStopApi";
 import moment from "moment";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
@@ -67,7 +69,10 @@ const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
       {holidayStopRequest.publicationDatesToBeStopped.length} issue{holidayStopRequest
         .publicationDatesToBeStopped.length !== 1
         ? "s"
-        : ""}
+        : ""}{" "}
+      {holidayStopRequest.publicationDatesToBeStopped.map((date, index) => (
+        <div key={index}>{date.format("D MMM")}</div>
+      ))}
     </td>
   </tr>
 );
@@ -75,83 +80,129 @@ const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
 const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
   routeableStepProps: RouteableStepProps
-) => (holidayStopsResponse: GetHolidayStopsResponse) => (
-  <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
-    <MembersDataApiResponseContext.Provider value={productDetail}>
-      <WizardStep
-        routeableStepProps={routeableStepProps}
-        extraFooterComponents={
-          <QuestionsFooter topic={holidayQuestionsTopicString} />
-        }
-        hideBackButton
-      >
-        <div>
-          <h2>
-            Suspend Guardian Weekly ({productDetail.subscription.subscriptionId})
-          </h2>
+) => (holidayStopsResponse: GetHolidayStopsResponse) => {
+  const renewalDateMoment = moment(
+    productDetail.subscription.renewalDate,
+    DATE_INPUT_FORMAT
+  );
 
-          <OverviewRow
-            heading="How"
-            content={
-              <>
-                <div>
-                  You can suspend up to 6 issues and be credited on your future
-                  bills.<br />You can book up to one year ahead and can schedule
-                  one suspension at a time.
-                </div>
-              </>
-            }
+  const combinedIssuesImpactedPerYear = holidayStopsResponse.existing
+    .map(existing =>
+      calculateIssuesImpactedPerYear(
+        existing.publicationDatesToBeStopped,
+        renewalDateMoment
+      )
+    )
+    .reduce(
+      (prev, curr) =>
+        ({
+          issueDatesThisYear: [
+            ...prev.issueDatesThisYear,
+            ...curr.issueDatesThisYear
+          ],
+          issueDatesNextYear: [
+            ...prev.issueDatesNextYear,
+            ...curr.issueDatesNextYear
+          ]
+        } as IssuesImpactedPerYear)
+    );
+
+  return (
+    <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
+      <MembersDataApiResponseContext.Provider value={productDetail}>
+        <WizardStep
+          routeableStepProps={routeableStepProps}
+          extraFooterComponents={
+            <QuestionsFooter topic={holidayQuestionsTopicString} />
+          }
+          hideBackButton
+        >
+          <div>
+            <h2>
+              Suspend Guardian Weekly ({
+                productDetail.subscription.subscriptionId
+              })
+            </h2>
+
+            <OverviewRow
+              heading="How"
+              content={
+                <>
+                  <div>
+                    You can suspend up to{" "}
+                    {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
+                    issues per year.<br />You will be credited on your future
+                    bills.<br />You can schedule one suspension at a time.
+                  </div>
+                </>
+              }
+            />
+            <OverviewRow
+              heading="Summary"
+              content={
+                holidayStopsResponse.existing.length > 0 ? (
+                  <div>
+                    You have suspended{" "}
+                    <strong>
+                      {combinedIssuesImpactedPerYear.issueDatesThisYear.length}/{
+                        holidayStopsResponse.productSpecifics.annualIssueLimit
+                      }
+                    </strong>{" "}
+                    issues until {renewalDateMoment.format("D MMMM YYYY")}
+                  </div> // TODO: replace number of issues and date with data from holidayStopResponse
+                ) : (
+                  <div>
+                    You have{" "}
+                    <strong>
+                      {holidayStopsResponse.productSpecifics.annualIssueLimit}
+                    </strong>{" "}
+                    issues remainining to suspend until {productDetail.joinDate}
+                  </div>
+                )
+              }
+            />
+            <OverviewRow
+              heading="Details"
+              content={
+                holidayStopsResponse.existing.length > 0 ? (
+                  <table css={{ width: "100%" }}>
+                    <tbody>
+                      <tr css={{ textAlign: "left" }}>
+                        <th>When</th>
+                        <th>Suspended</th>
+                      </tr>
+                      {holidayStopsResponse.existing.map(
+                        (holidayStopRequest, index) => (
+                          <DetailsTableRow
+                            key={index}
+                            {...holidayStopRequest}
+                          />
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                ) : (
+                  "You currently don't have any scheduled suspensions."
+                )
+              }
+            />
+            <Button
+              text="Create suspension"
+              right
+              primary
+              onClick={() =>
+                (routeableStepProps.navigate || navigate)("create")
+              }
+            />
+          </div>
+          <ReturnToYourProductButton
+            productType={routeableStepProps.productType}
           />
-          <OverviewRow
-            heading="Summary"
-            content={
-              <div>
-                You can suspend up to <strong>4</strong> issues out of{" "}
-                {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
-                available to suspend until{" "}
-                {moment(
-                  productDetail.subscription.renewalDate,
-                  DATE_INPUT_FORMAT
-                ).format("D MMMM YYYY")}
-              </div> // TODO: replace number of issues and date with data from holidayStopResponse
-            }
-          />
-          <OverviewRow
-            heading="Details"
-            content={
-              holidayStopsResponse.existing.length > 0 ? (
-                <table css={{ width: "100%" }}>
-                  <tbody>
-                    <tr css={{ textAlign: "left" }}>
-                      <th>When</th>
-                      <th>Suspended</th>
-                    </tr>
-                    {holidayStopsResponse.existing.map(
-                      (holidayStopRequest, index) => (
-                        <DetailsTableRow key={index} {...holidayStopRequest} />
-                      )
-                    )}
-                  </tbody>
-                </table>
-              ) : (
-                "You currently don't have any scheduled suspensions."
-              )
-            }
-          />
-          <Button
-            text="Create suspension"
-            right
-            primary
-            onClick={() => (routeableStepProps.navigate || navigate)("create")}
-          />
-        </div>
-        <ReturnToYourProductButton
-          productType={routeableStepProps.productType}
-        />
-      </WizardStep>
-    </MembersDataApiResponseContext.Provider>
-  </HolidayStopsResponseContext.Provider>
-);
+        </WizardStep>
+      </MembersDataApiResponseContext.Provider>
+    </HolidayStopsResponseContext.Provider>
+  );
+};
 
 export const HolidaysOverview = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler

@@ -15,11 +15,10 @@ export interface RawHolidayStopRequest {
 }
 
 export interface HolidayStopRequest {
-  publicationDatesToBeStopped: string[];
+  publicationDatesToBeStopped: Moment[];
   dateRange: DateRange;
   id: string;
   subscriptionName: string;
-  issuesImpactedPerYear: IssuesImpactedPerYear;
 }
 
 export interface CommonProductSpecifics {
@@ -68,21 +67,17 @@ export function isHolidayStopsResponse(
 const embellishRawHolidayStop = (
   nextYearStartDateStr: string,
   issueDayOfWeek: number
-) => (rawHolidayStopRequest: RawHolidayStopRequest) => {
-  const dateRange = new DateRange(
-    moment(rawHolidayStopRequest.start, DATE_INPUT_FORMAT),
-    moment(rawHolidayStopRequest.end, DATE_INPUT_FORMAT)
-  );
-  return {
+) => (rawHolidayStopRequest: RawHolidayStopRequest) =>
+  ({
     ...rawHolidayStopRequest,
-    dateRange,
-    issuesImpactedPerYear: issuesInRange(
-      dateRange,
-      nextYearStartDateStr,
-      issueDayOfWeek
+    dateRange: new DateRange(
+      moment(rawHolidayStopRequest.start, DATE_INPUT_FORMAT),
+      moment(rawHolidayStopRequest.end, DATE_INPUT_FORMAT)
+    ),
+    publicationDatesToBeStopped: rawHolidayStopRequest.publicationDatesToBeStopped.map(
+      dateStr => moment(dateStr, DATE_INPUT_FORMAT)
     )
-  } as HolidayStopRequest;
-};
+  } as HolidayStopRequest);
 
 export const embellishExistingHolidayStops = (
   nextYearStartDateStr: string
@@ -109,30 +104,20 @@ export const embellishExistingHolidayStops = (
 };
 
 export interface IssuesImpactedPerYear {
-  issuesThisYear: number;
-  issuesNextYear: number;
+  issueDatesThisYear: Moment[];
+  issueDatesNextYear: Moment[];
 }
 
-export const issuesInRange = (
-  range: DateRange,
-  nextYearStartDateStr: string,
-  issueDayOfWeek: number
+export const calculateIssuesImpactedPerYear = (
+  publicationDatesToBeStopped: Moment[],
+  nextYearStartDate: Moment
 ) => {
-  // const nextYearStartDate = moment(nextYearStartDateStr, DATE_INPUT_FORMAT);
   return {
-    issuesThisYear: 4,
-    issuesNextYear: 1
+    issueDatesThisYear: publicationDatesToBeStopped.filter(date =>
+      date.isBefore(nextYearStartDate)
+    ),
+    issueDatesNextYear: publicationDatesToBeStopped.filter(date =>
+      date.isSameOrAfter(nextYearStartDate)
+    )
   } as IssuesImpactedPerYear;
 };
-
-// const calculateNumberOfIssuesAffected = (range: DateRange) => {
-//   let count = 0;
-
-//   for (let i = range.start; i <= range.end; i = i.add(1, "day")) {
-//     if (i.day() === ISSUE_DAY_OF_WEEK) {
-//       count++;
-//     }
-//   }
-//   console.log("count", count);
-//   return count;
-// };

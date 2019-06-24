@@ -11,7 +11,7 @@ import { GenericErrorScreen } from "../genericErrorScreen";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
 import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
-  issuesInRange,
+  calculateIssuesImpactedPerYear,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   DATE_INPUT_FORMAT
@@ -143,17 +143,16 @@ export class HolidayDateChooser extends React.Component<
                       onSelect={({ start, end }) => {
                         const range = new DateRange(start, end);
 
-                        const issuesAffectedBySelection = issuesInRange(
-                          range,
-                          productDetail.subscription.renewalDate,
-                          holidayStopsResponse.productSpecifics.issueDayOfWeek
-                        );
+                        // const issuesAffectedBySelection = calculateIssuesImpactedPerYear(
+                        //   range,
+                        //   productDetail.subscription.renewalDate,
+                        // );
                         this.setState({
-                          selectedRange: range,
-                          numberOfIssuesSelectedThisYear:
-                            issuesAffectedBySelection.issuesThisYear,
-                          numberOfIssuesSelectedNextYear:
-                            issuesAffectedBySelection.issuesNextYear
+                          selectedRange: range
+                          // numberOfIssuesSelectedThisYear:
+                          //   issuesAffectedBySelection.issueDatesThisYear,
+                          // numberOfIssuesSelectedNextYear:
+                          //   issuesAffectedBySelection.issuesNextYear
                         });
                       }}
                     />
