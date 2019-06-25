@@ -4,7 +4,10 @@ import { Moment } from "moment";
 import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
-import DateRangePicker, { OnSelectCallbackParam } from "react-daterange-picker";
+import DateRangePicker, {
+  OnSelectCallbackParam,
+  PaginationArrowProps
+} from "react-daterange-picker";
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
@@ -34,11 +37,6 @@ const stateDefinitions = {
     selectable: false,
     color: palette.labs.main,
     label: "Existing suspension"
-  },
-  notice: {
-    selectable: false,
-    color: palette.neutral["5"],
-    label: "Notice period"
   }
 };
 
@@ -64,7 +62,6 @@ const legendItems: LegendItemProps[] = [
   `,
     label: "Issue day"
   },
-  stateDefinitions.notice,
   stateDefinitions.existing
 ];
 
@@ -81,11 +78,34 @@ export interface DatePickerState {
   validationMessage?: string;
 }
 
-const adjustDateRangeToDisplayProperly = (range: DateRange) =>
+const adjustDateRangeToOvercomeHalfDateStates = (range: DateRange) =>
   new DateRange(
     range.start.clone().subtract(1, "day"),
     range.end.clone().add(1, "day")
   );
+
+const mergeAdjacentDateRanges = (
+  accumulator: DateRange[],
+  currentValue: DateRange
+) => {
+  if (accumulator.length > 0) {
+    const indexOfLast = accumulator.length - 1;
+    const allButTheLast = accumulator.slice(0, indexOfLast);
+    const last = accumulator[indexOfLast];
+    if (
+      last.end
+        .clone()
+        .add(1, "day")
+        .isSame(currentValue.start) // i.e. they're adjacent
+    ) {
+      return [...allButTheLast, new DateRange(last.start, currentValue.end)];
+    } else {
+      return [...accumulator, currentValue];
+    }
+  } else {
+    return [currentValue];
+  }
+};
 
 const daysInYear = (firstDate: Moment) => (firstDate.isLeapYear() ? 366 : 365);
 
@@ -117,13 +137,7 @@ const LegendItem = (props: LegendItemProps) => (
   </>
 );
 
-export interface CustomArrowProps {
-  disabled: boolean;
-  onTrigger: () => void;
-  direction: "next" | "previous";
-}
-
-const CustomArrow = (props: CustomArrowProps) => (
+const CustomArrow = (props: PaginationArrowProps) => (
   <div
     css={{
       zIndex: 999,
@@ -187,7 +201,7 @@ export class DatePicker extends React.Component<
       >
         <DateRangePicker
           numberOfCalendars={2}
-          minimumDate={new Date()}
+          minimumDate={this.props.firstAvailableDate.toDate()}
           maximumDate={this.props.firstAvailableDate
             .clone()
             .add(daysInYear(this.props.firstAvailableDate.clone()), "days")
@@ -197,21 +211,13 @@ export class DatePicker extends React.Component<
           singleDateRange={true}
           showLegend={false}
           stateDefinitions={stateDefinitions}
-          dateStates={[
-            {
-              state: "notice",
-              range: adjustDateRangeToDisplayProperly(
-                new DateRange(
-                  moment(),
-                  this.props.firstAvailableDate.clone().subtract(1, "day")
-                )
-              )
-            },
-            ...this.props.existingDates.map(range => ({
+          dateStates={this.props.existingDates
+            .sort((a, b) => a.start.unix() - b.start.unix())
+            .reduce(mergeAdjacentDateRanges, [])
+            .map(range => ({
               state: "existing",
-              range: adjustDateRangeToDisplayProperly(range)
-            }))
-          ].sort((a, b) => a.range.start.unix() - b.range.start.unix())}
+              range: adjustDateRangeToOvercomeHalfDateStates(range)
+            }))}
           defaultState="available"
           firstOfWeek={1}
           paginationArrowComponent={CustomArrow}
@@ -260,8 +266,9 @@ export class DatePicker extends React.Component<
       </div>
 
       <Global styles={css(rawDateRangePickerCSS)} />
-      <Global
-        styles={css(`
+      {
+        <Global
+          styles={css(`
         .DateRangePicker {
           --selectedBackgroundColour: ${palette.yellow.medium};
           --selectedTextColour: #333;
@@ -269,34 +276,24 @@ export class DatePicker extends React.Component<
           margin-right: 0;
         }
         .DateRangePicker__HalfDateStates {
-          transform: none;
-          right: 0;
-          left: 50px;
-          top: 0;
+          display: none; /* Safe to hide half dates, because we already adjust the dates - see adjustDateRangeToOvercomeHalfDateStates function */
         }        
         .DateRangePicker__Date--is-selected {
           color: var(--selectedTextColour);
         }
         .DateRangePicker__selection {
           background-color: var(--selectedBackgroundColour);
-          // color: var(--selectedTextColour);
         }       
         .DateRangePicker__CalendarSelection {
           background-color: var(--selectedBackgroundColour);
           border: 3px solid darken(var(--selectedBackgroundColour), 5); 
-          // color: var(--selectedTextColour);       
         }
         .DateRangePicker--is-pending {
           background-color: rgba(var(--selectedBackgroundColour), .75);
         }
         .DateRangePicker__CalendarHighlight.DateRangePicker__CalendarHighlight--single {
           border: 1px solid var(--selectedBackgroundColour);
-          // color: var(--selectedTextColour);
         }
-        // .DateRangePicker__LegendItemColor--selection {
-        //   background-color: var(--selectedBackgroundColour);
-
-        // }
         .DateRangePicker__DateLabel {
           border: 1px solid darken(var(--selectedBackgroundColour), 5);
         }
@@ -328,56 +325,9 @@ export class DatePicker extends React.Component<
         .DateRangePicker__Weekend {
           font-size: 16px;
         }
-        // .DateRangePicker__CalendarDatePeriod
-        .DateRangePicker__CalendarDatePeriod--am {
-          // background-color: #fff;
-          width: 0;
-        }
-        // .DateRangePicker__PaginationArrow {
-        //   width: 40px;
-        //   height: 40px;
-        //   border: 1px solid red;
-        //   border-radius: 50%;
-        // }
       `)}
-      />
+        />
+      }
     </>
   );
-  //       );
-  //     } else if (this.props.selectedRange) {
-  //       const potentialRange = isStartDate
-  //         ? new DateRange(potentialDate, this.props.selectedRange.end)
-  //         : new DateRange(this.props.selectedRange.start, potentialDate);
-  //       if (potentialRange.start > potentialRange.end) {
-  //         return this.setValidationMessage(
-  //           `Please choose a${isStartDate ? " start" : "n end"} date ${
-  //             isStartDate ? "before" : "after"
-  //           } the ${isStartDate ? "end" : "start"} date`
-  //         );
-  //       } else {
-  //         const overlaps = this.props.existingHolidayStops.filter(range =>
-  //           potentialRange.overlaps(range)
-  //         );
-  //         if (overlaps.length) {
-  //           return this.setValidationMessage(
-  //             `Please choose dates that do not overlap your existing holiday stop${
-  //               overlaps.length > 1 ? "s" : ""
-  //             }`
-  //           );
-  //         } else {
-  //           this.setValidationMessage("");
-  //           return this.props.onSelect(potentialRange);
-  //         }
-  //       }
-  //     } else {
-  //       return this.setValidationMessage(
-  //         `Please choose a valid ${isStartDate ? "end" : "start"} date`
-  //       );
-  //     }
-  //   } else {
-  //     return this.setValidationMessage(
-  //       `Please choose a valid ${isStartDate ? "start" : "end"} date`
-  //     );
-  //   }
-  // };
 }

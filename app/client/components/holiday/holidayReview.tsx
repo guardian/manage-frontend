@@ -18,6 +18,7 @@ import {
   hasProduct
 } from "../../../shared/productResponse";
 import { NavigateFn } from "@reach/router";
+import { ProductType } from "../../../shared/productTypes";
 
 export function isDateRange(range: DateRange | {}): range is DateRange {
   return (
@@ -27,9 +28,10 @@ export function isDateRange(range: DateRange | {}): range is DateRange {
 
 const getPerformCreation = (
   selectedRange: DateRange,
-  subscriptionName: string
+  subscriptionName: string,
+  productType: ProductType
 ) => () =>
-  fetch("/api/holidays/", {
+  fetch(`/api/holidays/${productType.urlPart}`, {
     credentials: "include",
     method: "POST",
     mode: "same-origin",
@@ -86,7 +88,8 @@ export class HolidayReview extends React.Component<
                     <CreateHolidayStopsAsyncLoader
                       fetch={getPerformCreation(
                         selectedRange,
-                        productDetail.subscription.subscriptionId
+                        productDetail.subscription.subscriptionId,
+                        this.props.productType
                       )}
                       render={getRenderCreationSuccess(this.props.navigate)}
                       errorRender={renderCreationError}
