@@ -1,3 +1,4 @@
+import { CSSObject } from "@emotion/core";
 import React, { FC, useState } from "react";
 import palette from "../../colours";
 import { serif } from "../../styles/fonts";
@@ -11,20 +12,20 @@ const styles = {
     borderColor: palette.neutral["4"],
     borderTop: `0.0625rem solid ${palette.neutral["6"]}`,
     padding: "0.1875rem 0 0.75rem",
-    position: "relative" as "relative"
-  },
+    position: "relative"
+  } as CSSObject,
   header: {
     fontSize: "1.0625rem",
-    lineHeight: "1.5rem",
     fontFamily: serif,
-    fontWeight: "bold" as "bold",
-    textTransform: "capitalize" as "capitalize",
+    fontWeight: "bold",
+    lineHeight: "1.5rem",
+    textTransform: "capitalize",
     ":after": {
       content: "''",
       border: "0.125rem solid currentColor",
       borderLeft: "transparent",
       borderTop: "transparent",
-      boxSizing: "content-box" as "content-box",
+      boxSizing: "content-box",
       display: "inline-block",
       height: "0.3125rem",
       color: "inherit",
@@ -37,7 +38,7 @@ const styles = {
     "&.open:after": {
       transform: "rotate(225deg)"
     }
-  }
+  } as CSSObject
 };
 
 export const DropMenu: FC<DropMenuProps> = props => {
