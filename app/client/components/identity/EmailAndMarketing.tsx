@@ -4,6 +4,7 @@ import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
 import { MarketingPreference } from "./MarketingPreference";
 import { NewsletterSection } from "./NewsletterSection";
+import { QuadLine } from "./QuadLine";
 
 import {
   Consent,
@@ -57,6 +58,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           newsletterGroups={newsletterGroups}
           clickHandler={updateNewsletter}
         />
+      </PageContainer>
+      <PageContainer>
+        <QuadLine />
       </PageContainer>
       <PageContainer>
         <h2>Consents</h2>
