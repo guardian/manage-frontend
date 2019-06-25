@@ -1,44 +1,45 @@
 import express from "express";
 import fetch from "node-fetch";
 import url from "url";
+import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import { HolidayStopsApiProductNamePrefix } from "../shared/productTypes";
 import { holidayStopApiConfigPromise } from "./holidayStopApiConfig";
 import { log } from "./log";
 
 export const getHolidayStopApiHandler = (
   holidayStopsApiProductNamePrefix?: HolidayStopsApiProductNamePrefix
-) => (
-  { params, method, body, query }: express.Request,
-  res: express.Response
-) =>
+) => (req: express.Request, res: express.Response) =>
   holidayStopApiConfigPromise
     .then(hsrConfig => {
       if (hsrConfig && res.locals.identity && res.locals.identity.userId) {
+        const testUserHeader = req.header(MDA_TEST_USER_HEADER);
+        const hsrEnvConfig =
+          testUserHeader === "true" ? hsrConfig.testMode : hsrConfig.normalMode;
         fetch(
           url.format({
             protocol: "https",
-            host: hsrConfig.host,
+            host: hsrEnvConfig.host,
             pathname:
-              (params && params.subscriptionName
-                ? params.subscriptionName === "potential"
+              (req.params && req.params.subscriptionName
+                ? req.params.subscriptionName === "potential"
                   ? "/potential"
-                  : `/hsr/${params.subscriptionName}`
+                  : `/hsr/${req.params.subscriptionName}`
                 : "/hsr") +
-              (params && params.subscriptionName && params.sfId
-                ? `/${params.sfId}`
+              (req.params && req.params.subscriptionName && req.params.sfId
+                ? `/${req.params.sfId}`
                 : ""),
-            query
+            query: req.query
           }),
           {
-            method,
+            method: req.method,
             headers: {
-              "x-api-key": hsrConfig.apiKey,
+              "x-api-key": hsrEnvConfig.apiKey,
               "x-identity-id": res.locals.identity.userId,
               ...(holidayStopsApiProductNamePrefix
                 ? { "x-product-name-prefix": holidayStopsApiProductNamePrefix }
                 : {})
             },
-            body: method !== "GET" ? body : undefined
+            body: req.method !== "GET" ? req.body : undefined
           }
         )
           .then(intermediateResponse => {

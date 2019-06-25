@@ -1,10 +1,19 @@
 import { s3ConfigPromise } from "./awsIntegration";
 
-export interface HolidayStopApiConfig {
+export interface HolidayStopApiEnvConfig {
   host: string;
   apiKey: string;
 }
 
+export interface HolidayStopApisConfig {
+  normalMode: HolidayStopApiEnvConfig;
+  testMode: HolidayStopApiEnvConfig;
+}
+
 export const holidayStopApiConfigPromise: Promise<
-  HolidayStopApiConfig | undefined
-> = s3ConfigPromise<HolidayStopApiConfig>("holiday-stop-api", "host", "apiKey");
+  HolidayStopApisConfig | undefined
+> = s3ConfigPromise<HolidayStopApisConfig>(
+  "holiday-stop-api",
+  "normalMode",
+  "testMode"
+);
