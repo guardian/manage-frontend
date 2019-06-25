@@ -1,6 +1,7 @@
 import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
+import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import { ProductUrlPart } from "../../../shared/productTypes";
 import AsyncLoader from "../asyncLoader";
 
@@ -42,8 +43,14 @@ interface RawGetHolidayStopsResponse {
 
 export const createGetHolidayStopsFetcher = (
   productUrlPart: ProductUrlPart,
-  subscriptionName: string
-) => () => fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`);
+  subscriptionName: string,
+  isTestUser: boolean
+) => () =>
+  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  });
 
 export class GetHolidayStopsAsyncLoader extends AsyncLoader<
   GetHolidayStopsResponse

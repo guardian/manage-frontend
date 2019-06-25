@@ -2,10 +2,10 @@ import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
 import { LinkButton } from "./buttons";
+import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
 import { ProgressCounter } from "./progressCounter";
-import { GenericErrorScreen } from "./genericErrorScreen";
 
 export interface RouteableProps extends RouteComponentProps {
   path: string;

@@ -11,8 +11,8 @@ import DateRangePicker, {
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
-import { DateInput } from "./dateInput";
 import { Button } from "./buttons";
+import { DateInput } from "./dateInput";
 
 const issueDayAfterSuffixCss = `
 ::after {

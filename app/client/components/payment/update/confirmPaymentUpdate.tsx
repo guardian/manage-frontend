@@ -15,8 +15,8 @@ import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import {
   RouteableStepProps,
-  WizardStep,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
+  WizardStep
 } from "../../wizardRouterAdapter";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import {

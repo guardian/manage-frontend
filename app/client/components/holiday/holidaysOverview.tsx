@@ -6,6 +6,8 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import palette from "../../colours";
+import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
@@ -27,8 +29,6 @@ import {
   HolidayStopsResponseContext,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
-import { sans } from "../../styles/fonts";
-import palette from "../../colours";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;
@@ -268,7 +268,8 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
             <GetHolidayStopsAsyncLoader
               fetch={createGetHolidayStopsFetcher(
                 routeableStepProps.productType.urlPart,
-                productDetail.subscription.subscriptionId
+                productDetail.subscription.subscriptionId,
+                productDetail.isTestUser
               )}
               render={renderHolidayStopsOverview(
                 productDetail,

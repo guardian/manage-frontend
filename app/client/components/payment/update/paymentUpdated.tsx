@@ -22,8 +22,8 @@ import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
   ReturnToYourProductButton,
   RouteableStepProps,
-  WizardStep,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
+  WizardStep
 } from "../../wizardRouterAdapter";
 import {
   isNewPaymentMethodDetail,

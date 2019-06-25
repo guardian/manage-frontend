@@ -1,24 +1,25 @@
+import { NavigateFn } from "@reach/router";
+import { DateRange } from "moment-range";
 import React from "react";
+import {
+  hasProduct,
+  MDA_TEST_USER_HEADER,
+  MembersDataApiResponseContext
+} from "../../../shared/productResponse";
+import { ProductType } from "../../../shared/productTypes";
 import { Button } from "../buttons";
+import { CallCentreNumbers } from "../callCentreNumbers";
 import {
   RouteableStepProps,
-  WizardStep,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
+  WizardStep
 } from "../wizardRouterAdapter";
 import { SelectedHolidayRangeContext } from "./holidayDateChooser";
-import { DateRange } from "moment-range";
 import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-import { CallCentreNumbers } from "../callCentreNumbers";
-import {
-  MembersDataApiResponseContext,
-  hasProduct
-} from "../../../shared/productResponse";
-import { NavigateFn } from "@reach/router";
-import { ProductType } from "../../../shared/productTypes";
 
 export function isDateRange(range: DateRange | {}): range is DateRange {
   return (
@@ -29,6 +30,7 @@ export function isDateRange(range: DateRange | {}): range is DateRange {
 const getPerformCreation = (
   selectedRange: DateRange,
   subscriptionName: string,
+  isTestUser: boolean,
   productType: ProductType
 ) => () =>
   fetch(`/api/holidays/${productType.urlPart}`, {
@@ -40,7 +42,10 @@ const getPerformCreation = (
       end: selectedRange.end.format(DATE_INPUT_FORMAT),
       subscriptionName
     }),
-    headers: { "Content-Type": "application/json" }
+    headers: {
+      "Content-Type": "application/json",
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
   });
 
 const getRenderCreationSuccess = (navigate: NavigateFn) => (
@@ -68,10 +73,10 @@ export class HolidayReview extends React.Component<
   RouteableStepProps,
   HolidayReviewState
 > {
-  state: HolidayReviewState = {
+  public state: HolidayReviewState = {
     isCreating: false
   };
-  render = () => (
+  public render = () => (
     <MembersDataApiResponseContext.Consumer>
       {productDetail => (
         <SelectedHolidayRangeContext.Consumer>
@@ -89,6 +94,7 @@ export class HolidayReview extends React.Component<
                       fetch={getPerformCreation(
                         selectedRange,
                         productDetail.subscription.subscriptionId,
+                        productDetail.isTestUser,
                         this.props.productType
                       )}
                       render={getRenderCreationSuccess(this.props.navigate)}

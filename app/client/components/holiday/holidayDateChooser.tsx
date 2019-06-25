@@ -1,27 +1,28 @@
+import { Link, navigate } from "@reach/router";
+import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
+import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
   hasProduct,
+  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext
 } from "../../../shared/productResponse";
+import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { Spinner } from "../spinner";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
 import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
   calculateIssuesImpactedPerYear,
+  DATE_INPUT_FORMAT,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
-  DATE_INPUT_FORMAT,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
-import moment, { Moment } from "moment";
-import { sans } from "../../styles/fonts";
-import { Link, navigate } from "@reach/router";
-import { OnSelectCallbackParam } from "react-daterange-picker";
-import { Spinner } from "../spinner";
 
 const infoCss = {
   fontFamily: sans,
@@ -116,7 +117,10 @@ export class HolidayDateChooser extends React.Component<
                           combinedIssuesImpactedPerYear,
                           holidayStopsResponse.productSpecifics.annualIssueLimit
                         )}
-                        onSelect={this.onSelect(renewalDateMoment)}
+                        onSelect={this.onSelect(
+                          renewalDateMoment,
+                          productDetail.isTestUser
+                        )}
                       />
                       <div css={{ ...infoCss, margin: "10px 0 10px 0" }}>
                         <sup>*</sup>This is the anniversary of your
@@ -168,7 +172,7 @@ export class HolidayDateChooser extends React.Component<
       }
     </HolidayStopsResponseContext.Consumer>
   );
-  private onSelect = (renewalDateMoment: Moment) => ({
+  private onSelect = (renewalDateMoment: Moment, isTestUser: boolean) => ({
     start,
     end
   }: OnSelectCallbackParam) =>
@@ -183,7 +187,12 @@ export class HolidayDateChooser extends React.Component<
             this.props.productType.urlPart
           }/potential?startDate=${start.format(
             DATE_INPUT_FORMAT
-          )}&endDate=${end.format(DATE_INPUT_FORMAT)}`
+          )}&endDate=${end.format(DATE_INPUT_FORMAT)}`,
+          {
+            headers: {
+              [MDA_TEST_USER_HEADER]: `${isTestUser}`
+            }
+          }
         )
           .then(response => response.json() as Promise<string[]>)
           .then(potentialIssuesImpacted =>

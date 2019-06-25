@@ -2,8 +2,8 @@ import React from "react";
 import { Button } from "../buttons";
 import {
   RouteableStepProps,
-  WizardStep,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
+  WizardStep
 } from "../wizardRouterAdapter";
 import { SelectedHolidayRangeContext } from "./holidayDateChooser";
 import { isDateRange } from "./holidayReview";
