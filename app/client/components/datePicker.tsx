@@ -212,7 +212,6 @@ export class DatePicker extends React.Component<
           showLegend={false}
           stateDefinitions={stateDefinitions}
           dateStates={this.props.existingDates
-            .sort((a, b) => a.start.unix() - b.start.unix())
             .reduce(mergeAdjacentDateRanges, [])
             .map(range => ({
               state: "existing",

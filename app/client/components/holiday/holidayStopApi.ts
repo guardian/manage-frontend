@@ -94,12 +94,14 @@ export const embellishExistingHolidayStops = (
           )
         }
       : undefined,
-    existing: raw.existing.map(
-      embellishRawHolidayStop(
-        nextYearStartDateStr,
-        raw.productSpecifics.issueDayOfWeek
+    existing: raw.existing
+      .map(
+        embellishRawHolidayStop(
+          nextYearStartDateStr,
+          raw.productSpecifics.issueDayOfWeek
+        )
       )
-    )
+      .sort((a, b) => a.dateRange.start.unix() - b.dateRange.start.unix())
   } as GetHolidayStopsResponse;
 };
 
