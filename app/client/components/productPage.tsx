@@ -390,14 +390,14 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
-            {shouldHaveHolidayStopsFlow(productType) && (
+            {/* {shouldHaveHolidayStopsFlow(productType) && (
               <LinkButton
                 text="Manage your suspensions"
                 to={"/suspend/" + productType.urlPart}
                 state={productDetail}
                 right
               />
-            )}
+            )} */}
           </PageContainer>
         </>
       )}
