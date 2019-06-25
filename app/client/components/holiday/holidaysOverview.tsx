@@ -255,7 +255,6 @@ const renderHolidayStopsOverview = (
 export const HolidaysOverview = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
-    headingPrefix="Manage suspensions of"
     supportRefererSuffix="holiday_stop_flow"
     loadingMessagePrefix="Retrieving details of your"
     singleProductDetailRenderer={(
