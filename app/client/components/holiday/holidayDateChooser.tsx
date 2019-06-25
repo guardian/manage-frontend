@@ -23,16 +23,43 @@ import {
   isHolidayStopsResponse,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
+import palette from "../../colours";
 
-const infoCss = {
-  fontFamily: sans,
-  fontSize: "14px"
-};
+const infoIconSvg = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+  >
+    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+      <circle
+        cx="7"
+        cy="7"
+        r="7"
+        stroke="#121212"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.4"
+      />
+      <path
+        stroke="#121212"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.4"
+        d="M7 9.8V7"
+      />
+      <circle cx="7" cy="4.2" r="1" fill="#121212" />
+    </g>
+  </svg>
+);
 
 const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
   return (
     <div>
-      <strong>{numberOfIssues}</strong> issue{numberOfIssues !== 1 ? "s" : ""}
+      <strong>
+        {numberOfIssues} issue{numberOfIssues !== 1 ? "s" : ""}
+      </strong>
     </div>
   );
 };
@@ -96,9 +123,16 @@ export class HolidayDateChooser extends React.Component<
                         due to our printing and delivery schedule (notice
                         period).
                       </p>
-                      <p css={infoCss}>
+                      <div
+                        css={{
+                          fontFamily: sans,
+                          fontSize: "14px",
+                          marginBottom: "27px"
+                        }}
+                      >
+                        <span>{infoIconSvg}</span>
                         You can schedule one suspension at a time.
-                      </p>
+                      </div>
 
                       <DatePicker
                         firstAvailableDate={
@@ -122,7 +156,13 @@ export class HolidayDateChooser extends React.Component<
                           productDetail.isTestUser
                         )}
                       />
-                      <div css={{ ...infoCss, margin: "10px 0 10px 0" }}>
+                      <div
+                        css={{
+                          fontFamily: sans,
+                          fontSize: "14px",
+                          margin: "10px 0 10px 0"
+                        }}
+                      >
                         <sup>*</sup>This is the anniversary of your
                         subscription. The number of issues you can suspend per
                         year is reset on this date.
@@ -136,12 +176,17 @@ export class HolidayDateChooser extends React.Component<
                       >
                         <Link
                           css={{
-                            marginRight: "20px"
+                            marginRight: "20px",
+                            fontFamily: sans,
+                            fontWeight: "bold",
+                            textDecoration: "underline",
+                            fontSize: "16px",
+                            color: palette.neutral["2"]
                           }}
                           to=".."
                           replace={true}
                         >
-                          Back
+                          Cancel
                         </Link>
                         <div>
                           <Button
@@ -224,7 +269,14 @@ export class HolidayDateChooser extends React.Component<
       <>
         {this.state.selectedRange ? (
           this.state.issuesImpactedBySelection ? (
-            "got API response"
+            <div>
+              Suspending{" "}
+              <div>
+                {displayNumberOfIssuesAsText(
+                  this.state.issuesImpactedBySelection.issueDatesThisYear.length
+                )}
+              </div>
+            </div>
           ) : (
             <Spinner />
           )
@@ -235,11 +287,13 @@ export class HolidayDateChooser extends React.Component<
               until {renewalDateMoment.format("D/M/Y")}
               <sup>*</sup>
             </div>
-            <div>
-              and
-              {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
-              following year
-            </div>
+            {issuesRemainingNextYear > 0 && (
+              <div>
+                and
+                {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
+                following year
+              </div>
+            )}
           </>
         )}
 
@@ -248,6 +302,7 @@ export class HolidayDateChooser extends React.Component<
             <div>Suspending</div>
             <div css={{ fontSize: "16px" }}>
               <strong>
+
                 {this.state.numberOfIssuesSelectedThisYear &&
                   this.state.numberOfIssuesSelectedThisYear}
                 {" issue"}
