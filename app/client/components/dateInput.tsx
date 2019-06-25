@@ -2,14 +2,15 @@ import { Moment } from "moment";
 import React from "react";
 import palette from "../colours";
 import { sans } from "../styles/fonts";
+import { AppearanceProperty, TextAlignProperty } from "csstype";
 
 const inputBoxCss = {
   fontFamily: sans,
-  border: "0",
+  border: 0,
   width: "50px",
   fontSize: "16px",
-  appearance: "textfield",
-  textAlign: "center",
+  appearance: "textfield" as AppearanceProperty,
+  textAlign: "center" as TextAlignProperty, // this cast shouldn't be required (weird TypeScript issue here)
   padding: 0,
   margin: 0
 };
@@ -17,10 +18,6 @@ const inputBoxCss = {
 const dayMonthCss = {
   ...inputBoxCss,
   width: "25px"
-};
-
-const hiddenDateCss = {
-  color: "transparent"
 };
 
 const dividerCss = {

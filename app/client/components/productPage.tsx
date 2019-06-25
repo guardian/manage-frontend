@@ -18,11 +18,7 @@ import {
   ProductDetail,
   sortByJoinDate
 } from "../../shared/productResponse";
-import {
-  ProductPageProperties,
-  ProductType,
-  shouldHaveHolidayStopsFlow
-} from "../../shared/productTypes";
+import { ProductPageProperties, ProductType } from "../../shared/productTypes";
 import {
   createProductDetailFetcher,
   ProductTypeWithProductPageProperties

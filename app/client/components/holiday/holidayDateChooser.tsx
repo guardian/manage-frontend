@@ -8,6 +8,7 @@ import {
   MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext
 } from "../../../shared/productResponse";
+import palette from "../../colours";
 import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
@@ -23,7 +24,6 @@ import {
   isHolidayStopsResponse,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
-import palette from "../../colours";
 
 const infoIconSvg = (
   <svg

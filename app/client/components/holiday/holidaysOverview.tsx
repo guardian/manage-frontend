@@ -26,9 +26,9 @@ import {
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopRequest,
-  HolidayStopsResponseContext,
-  IssuesImpactedPerYear
+  HolidayStopsResponseContext
 } from "./holidayStopApi";
+import { BorderCollapseProperty } from "csstype";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;
@@ -46,7 +46,7 @@ const tableCss = {
   fontFamily: sans,
   fontSize: "16px",
   border: "1px solid " + palette.neutral["5"],
-  borderCollapse: "collapse",
+  borderCollapse: "collapse" as BorderCollapseProperty,
   td: {
     ...tableCellCss
   },
@@ -62,7 +62,7 @@ const OverviewRow = (props: OverviewRowProps) => (
     css={{
       display: "flex",
       flexWrap: "wrap",
-      textAlign: "top",
+      alignItems: "top",
       marginBottom: "2%"
     }}
   >

@@ -1,7 +1,6 @@
 import rawDateRangePickerCSS from "!!raw-loader!react-daterange-picker/dist/css/react-calendar.css";
 import { css, Global } from "@emotion/core";
 import { Moment } from "moment";
-import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, {
@@ -13,6 +12,7 @@ import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 import { DateInput } from "./dateInput";
+import { FontWeightProperty } from "csstype";
 
 const issueDayAfterSuffixCss = `
 ::after {
@@ -176,7 +176,7 @@ export class DatePicker extends React.Component<
   public validationMsgCss = {
     height: "2rem",
     paddingTop: "0.5rem",
-    fontWeight: "bold"
+    fontWeight: "bold" as FontWeightProperty
   };
 
   public render = () => (

@@ -56,7 +56,11 @@ export class GetHolidayStopsAsyncLoader extends AsyncLoader<
   GetHolidayStopsResponse
 > {}
 
-export interface CreateHolidayStopsResponse {}
+export interface CreateHolidayStopsResponse {
+  success: string;
+}
+
+// tslint:disable-next-line:max-classes-per-file
 export class CreateHolidayStopsAsyncLoader extends AsyncLoader<
   CreateHolidayStopsResponse
 > {}
