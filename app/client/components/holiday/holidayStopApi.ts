@@ -72,9 +72,8 @@ export function isHolidayStopsResponse(
 }
 
 const embellishRawHolidayStop = (
-  nextYearStartDateStr: string,
-  issueDayOfWeek: number
-) => (rawHolidayStopRequest: RawHolidayStopRequest) =>
+  rawHolidayStopRequest: RawHolidayStopRequest
+) =>
   ({
     ...rawHolidayStopRequest,
     dateRange: new DateRange(
@@ -86,9 +85,7 @@ const embellishRawHolidayStop = (
     )
   } as HolidayStopRequest);
 
-export const embellishExistingHolidayStops = (
-  nextYearStartDateStr: string
-) => async (response: Response) => {
+export const embellishExistingHolidayStops = async (response: Response) => {
   const raw = (await response.json()) as RawGetHolidayStopsResponse;
   return {
     ...raw,
@@ -102,12 +99,7 @@ export const embellishExistingHolidayStops = (
         }
       : undefined,
     existing: raw.existing
-      .map(
-        embellishRawHolidayStop(
-          nextYearStartDateStr,
-          raw.productSpecifics.issueDayOfWeek
-        )
-      )
+      .map(embellishRawHolidayStop)
       .sort((a, b) => a.dateRange.start.unix() - b.dateRange.start.unix())
   } as GetHolidayStopsResponse;
 };

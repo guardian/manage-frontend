@@ -276,9 +276,7 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
                 routeableStepProps
               )}
               loadingMessage="Loading existing suspensions"
-              readerOnOK={embellishExistingHolidayStops(
-                productDetail.subscription.start
-              )}
+              readerOnOK={embellishExistingHolidayStops}
             />
           ) : (
             <GenericErrorScreen loggingMessage="Subscription had no start date" />
