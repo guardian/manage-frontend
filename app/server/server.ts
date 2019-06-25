@@ -28,9 +28,6 @@ server.use(helmet());
 
 server.use("/static", express.static(__dirname + "/static"));
 
-server.get("/consent", consentUI);
-server.post("/consent", consentPOST);
-
 server.use((_, res: Response, next: NextFunction) => {
   // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
   res.header(
@@ -47,6 +44,7 @@ server.use(routes.core);
 server.use("/api/", routes.api);
 server.use("/profile/", routes.profile);
 server.use(routes.productsProvider("/api/"));
+server.use("/consent/", routes.consent);
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use(routes.frontend);
 

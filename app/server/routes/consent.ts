@@ -1,9 +1,11 @@
-import express from "express";
+import { Response, Router } from "express";
 import { renderToString } from "react-dom/server";
-import { App } from "../client/components/consent/App";
-import html from "./consent/html";
+import { App } from "../../client/components/consent/App";
+import html from "../consent/html";
 
-export const consentUI = (req: express.Request, res: express.Response) => {
+const router = Router();
+
+router.get("/", (req: Request, res: Response) => {
   try {
     const polyfillIO =
       "https://assets.guim.co.uk/polyfill.io/v3/polyfill.min.js?rum=0&features=es6,es7,es2017,default-3.6,HTMLPictureElement,IntersectionObserver,IntersectionObserverEntry&flags=gated&callback=guardianPolyfilled&unknown=polyfill";
@@ -22,8 +24,6 @@ export const consentUI = (req: express.Request, res: express.Response) => {
   } catch (e) {
     res.status(500).send(`<pre>${e.stack}</pre>`);
   }
-};
+});
 
-export const consentPOST = (req: express.Request, res: express.Response) => {
-  res.status(200).send("Consent POST");
-};
+export default router;
