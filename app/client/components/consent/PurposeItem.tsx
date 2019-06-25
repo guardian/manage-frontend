@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { OnOffButton } from "./OnOffButton";
+import { OnOffRadio } from "./OnOffRadio";
 import { VendorItem } from "./VendorItem";
 
 const collapsibleDivCSS = (collapsed: boolean) => css`
@@ -20,6 +20,7 @@ const arrowDown = (
 );
 
 interface Props {
+  purposeItemId: PurposeType;
   purpose: Purpose;
   updatePurpose: (updatedPurpose: Purpose) => void;
 }
@@ -73,47 +74,47 @@ export class PurposeItem extends Component<Props, State> {
       hasButton,
       vendors
     } = this.props.purpose;
+    const { purposeItemId } = this.props;
     const { collapsed } = this.state;
 
     return (
       <div>
-        {/* Expand button */}
         <button
+          type="button"
           onClick={() => {
             this.toggleCollapsed();
           }}
         >
           {arrowDown}
         </button>
-
-        {/* Label */}
         {label}
-
-        {/* On/Off button */}
         {hasButton && (
-          <OnOffButton
-            buttonValue={purposeValue}
-            onClickHandler={(newPurposeValue: boolean) => {
+          <OnOffRadio
+            radioId={purposeItemId}
+            selectedValue={purposeValue}
+            onChangeHandler={(newPurposeValue: boolean) => {
               this.updatePurposeOnClick(newPurposeValue);
             }}
           />
         )}
-
-        {/* Collapsible div */}
         <div css={collapsibleDivCSS(collapsed)}>
           {description}
-          {vendors && this.renderVendors(vendors)}
+          {vendors && this.renderVendors(vendors, purposeItemId)}
         </div>
       </div>
     );
   }
 
-  public renderVendors(vendors: VendorList): React.ReactNode | void {
+  public renderVendors(
+    vendors: VendorList,
+    purposeItemId: PurposeType
+  ): React.ReactNode | void {
     return Object.keys(vendors).map((key: string) => {
       const vendorId = parseInt(key, 10) as number;
-
+      const vendorItemId = `${purposeItemId}-${vendorId}`;
       return (
         <VendorItem
+          vendorItemId={vendorItemId}
           vendor={vendors[vendorId]}
           updateVendor={(newVendorValue: boolean): void => {
             this.updateVendor(vendorId, newVendorValue);

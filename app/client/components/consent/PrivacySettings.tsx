@@ -99,13 +99,12 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public render(): React.ReactNode {
-    console.log("render --->", this.state.purposes);
-
     return (
       <>
         {/* Choices */}
         <div css={choicesCSS}>
           <h2>Privacy settings</h2>
+
           <p>
             Below you can manage your privacy settings for cookies and similar
             technologies for this service. These technologies are provided by us
@@ -113,43 +112,46 @@ export class PrivacySettings extends Component<{}, State> {
             <a href={privacyPolicyURL}>privacy policy</a> and{" "}
             <a href={cookiePolicyURL}>cookie policy</a>
           </p>
-          <br />
-          {Object.keys(this.state.purposes).map(
-            (key: string): React.ReactNode => {
-              const purposeId = key as PurposeType;
 
-              return (
-                <PurposeItem
-                  purpose={this.state.purposes[purposeId]}
-                  updatePurpose={(updatedPurpose: Purpose) => {
-                    this.updateState(purposeId, updatedPurpose);
-                  }}
-                  key={purposeId}
-                />
-              );
-            }
-          )}
-          <p css={bottomPrintCSS}>
-            You can change the above settings for this browser at any time by
-            accessing the <a href={cookiePolicyURL}>cooking policy</a>
-          </p>
-          <br />
+          <form id="cmp-form">
+            {Object.keys(this.state.purposes).map(
+              (key: string): React.ReactNode => {
+                const purposeId = key as PurposeType;
+
+                return (
+                  <PurposeItem
+                    purposeItemId={purposeId}
+                    purpose={this.state.purposes[purposeId]}
+                    updatePurpose={(updatedPurpose: Purpose) => {
+                      this.updateState(purposeId, updatedPurpose);
+                    }}
+                    key={purposeId}
+                  />
+                );
+              }
+            )}
+            <p css={bottomPrintCSS}>
+              You can change the above settings for this browser at any time by
+              accessing the <a href={cookiePolicyURL}>cooking policy</a>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                this.enableAllAndClose();
+              }}
+            >
+              Enable all and close
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                this.saveAndClose();
+              }}
+            >
+              Save and close
+            </button>
+          </form>
         </div>
-        {/* Buttons */}
-        <button
-          onClick={() => {
-            this.enableAllAndClose();
-          }}
-        >
-          Enable all and close
-        </button>
-        <button
-          onClick={() => {
-            this.saveAndClose();
-          }}
-        >
-          Save and close
-        </button>
       </>
     );
   }
