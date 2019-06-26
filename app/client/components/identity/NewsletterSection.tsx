@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import palette from "../../colours";
+import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { DropMenu } from "./DropMenu";
 import { Newsletter, NewsletterGroup } from "./identity";
@@ -45,44 +46,66 @@ const newsletterPreferences = (
 export const NewsletterSection: FC<NewsletterSectionProps> = props => {
   const { newsletterGroups, clickHandler } = props;
   return (
-    <>
-      <h2
+    <div
+      css={{
+        [minWidth.desktop]: {
+          display: "flex"
+        }
+      }}
+    >
+      <div
         css={{
-          fontSize: "1.0625rem",
-          lineHeight: "1.5rem",
-          fontWeight: "bold",
-          margin: "0"
+          [minWidth.desktop]: {
+            paddingRight: "6.25rem",
+            width: "26.25rem"
+          }
         }}
       >
-        Your newsletters
-      </h2>
-      <p
+        <h2
+          css={{
+            fontSize: "1.0625rem",
+            lineHeight: "1.5rem",
+            fontWeight: "bold",
+            margin: "0"
+          }}
+        >
+          Your newsletters
+        </h2>
+        <p
+          css={{
+            fontFamily: sans,
+            fontSize: "0.875rem",
+            marginBottom: "0.5rem"
+          }}
+        >
+          Our regular newsletters help you get closer to our quality,
+          independent journalism. Pick the issues and topics that interest you
+          below.
+        </p>
+        <p
+          css={{
+            fontSize: "0.8125rem",
+            lineHeight: "1.125rem",
+            fontFamily: sans,
+            color: palette.neutral["3"],
+            marginBottom: "0.75rem",
+            marginTop: "0"
+          }}
+        >
+          The Guardian’s newsletters include content from our website, which may
+          be funded by outside parties. Newsletters may also display information
+          about Guardian News and Media's other products, services or events
+          (such as Guardian Jobs or Masterclasses), chosen charities or online
+          advertisements.
+        </p>
+      </div>
+      <div
         css={{
-          fontFamily: sans,
-          fontSize: "0.875rem",
-          marginBottom: "0.5rem"
+          width: "100%"
         }}
       >
-        Our regular newsletters help you get closer to our quality, independent
-        journalism. Pick the issues and topics that interest you below.
-      </p>
-      <p
-        css={{
-          fontSize: "0.8125rem",
-          lineHeight: "1.125rem",
-          fontFamily: sans,
-          color: palette.neutral["3"],
-          marginBottom: "0.75rem",
-          marginTop: "0"
-        }}
-      >
-        The Guardian’s newsletters include content from our website, which may
-        be funded by outside parties. Newsletters may also display information
-        about Guardian News and Media's other products, services or events (such
-        as Guardian Jobs or Masterclasses), chosen charities or online
-        advertisements.
-      </p>
-      {newsletterPreferences(newsletterGroups, clickHandler)}
-    </>
+        {newsletterPreferences(newsletterGroups, clickHandler)}
+      </div>
+    </div>
   );
 };
