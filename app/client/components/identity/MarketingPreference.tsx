@@ -6,7 +6,7 @@ interface MarketingPreferenceProps {
   id: string;
   description: string;
   frequency?: string;
-  title: string;
+  title?: string;
   selected?: boolean;
   onClick: (id: string) => {};
 }
@@ -15,6 +15,7 @@ const standardText = {
   fontSize: "0.875rem",
   fontFamily: sans
 };
+
 const clockSVG = (
   <svg
     css={{ fill: palette.neutral["5"] }}
@@ -25,6 +26,59 @@ const clockSVG = (
     <path d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z" />
   </svg>
 );
+
+const getTitle = (title: MarketingPreferenceProps["title"]) => (
+  <p
+    css={[
+      standardText,
+      {
+        cursor: "pointer",
+        fontSize: "0.875rem",
+        lineHeight: "1.375rem",
+        fontFamily: sans,
+        fontWeight: "bold",
+        margin: "-0.0625rem 0 0"
+      }
+    ]}
+  >
+    {title}
+  </p>
+);
+
+const getDescription = (
+  description: MarketingPreferenceProps["description"]
+) => (
+  <p
+    css={{
+      margin: "0.17857rem 0 0 0"
+    }}
+  >
+    {description}
+  </p>
+);
+
+const getFrequency = (frequency: MarketingPreferenceProps["frequency"]) => (
+  <p
+    css={{
+      fontSize: "0.75rem",
+      lineHeight: "1rem",
+      margin: "0.1875rem 0 0 0",
+      opacity: 0.75
+    }}
+  >
+    <span
+      css={{
+        display: "inline-block",
+        marginRight: "0.5rem",
+        verticalAlign: "middle"
+      }}
+    >
+      {clockSVG}
+    </span>
+    {frequency}
+  </p>
+);
+
 export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
   const { id, description, frequency, selected, title, onClick } = props;
   return (
@@ -45,49 +99,9 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
         type="checkbox"
         checked={selected}
       />
-      <p
-        css={[
-          standardText,
-          {
-            cursor: "pointer",
-            fontSize: "0.875rem",
-            lineHeight: "1.375rem",
-            fontFamily: sans,
-            fontWeight: "bold",
-            margin: "-0.0625rem 0 0"
-          }
-        ]}
-      >
-        {title}
-      </p>
-      <p
-        css={{
-          margin: "0.17857rem 0 0 0"
-        }}
-      >
-        {description}
-      </p>
-      {frequency && (
-        <p
-          css={{
-            fontSize: "0.75rem",
-            lineHeight: "1rem",
-            margin: "0.1875rem 0 0 0",
-            opacity: 0.75
-          }}
-        >
-          <span
-            css={{
-              display: "inline-block",
-              marginRight: "0.5rem",
-              verticalAlign: "middle"
-            }}
-          >
-            {clockSVG}
-          </span>
-          {frequency}
-        </p>
-      )}
+      {title && getTitle(title)}
+      {getDescription(description)}
+      {frequency && getFrequency(frequency)}
     </div>
   );
 };
