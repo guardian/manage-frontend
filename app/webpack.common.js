@@ -85,6 +85,10 @@ const server = merge(common, {
             ...babelCommon.presets
           ]
         }
+      },
+      {
+        test: /\.svg$/,
+        use: ["desvg-loader/react", "svg-loader"]
       }
     ]
   }
