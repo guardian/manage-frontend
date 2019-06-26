@@ -2,31 +2,19 @@ import React, { useEffect, useState } from "react";
 import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
-import { MarketingPreference } from "./MarketingPreference";
+import { ConsentSection } from "./ConsentSection";
 import { NewsletterSection } from "./NewsletterSection";
 import { QuadLine } from "./QuadLine";
 
 import {
   Consent,
+  mapConsentGroup,
   NewsletterGroup,
   readConsents,
   readNewsletters,
   updateConsent,
   updateNewsletter
 } from "./identity";
-
-const consentPreference = (consent: Consent) => {
-  const { id, name, description } = consent;
-  return (
-    <MarketingPreference
-      id={id}
-      key={id}
-      title={name}
-      description={description}
-      onClick={updateConsent}
-    />
-  );
-};
 
 export const EmailAndMarketing = (props: { path?: string }) => {
   const [newsletterGroups, setNewsletterGroups] = useState(
@@ -63,8 +51,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         <QuadLine />
       </PageContainer>
       <PageContainer>
-        <h2>Consents</h2>
-        {consents.map(consentPreference)}
+        <ConsentSection
+          consents={mapConsentGroup(consents)}
+          clickHandler={updateConsent}
+        />
       </PageContainer>
     </>
   );

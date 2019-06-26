@@ -129,6 +129,18 @@ export const readNewsletters = async (): Promise<NewsletterGroup[]> => {
   }
 };
 
+// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
+export const mapConsentGroup = (consents: Consent[]): Consent[] => {
+  const template = ["supporter", "jobs", "holidays", "events", "offers"];
+  return template.reduce((consentGroup: Consent[], id) => {
+    const consent = consents.find(c => c.id === id);
+    if (consent) {
+      consentGroup.push(consent);
+    }
+    return consentGroup;
+  }, []);
+};
+
 // @TODO: DEV: TESTING FUNCTION
 export const updateConsent = async (id: string, consented: boolean = true) => {
   const url = "https://idapi.thegulocal.com/users/me/consents";
