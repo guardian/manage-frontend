@@ -1,4 +1,5 @@
 import { navigate } from "@reach/router";
+import { BorderCollapseProperty } from "csstype";
 import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
@@ -28,7 +29,6 @@ import {
   HolidayStopRequest,
   HolidayStopsResponseContext
 } from "./holidayStopApi";
-import { BorderCollapseProperty } from "csstype";
 export interface OverviewRowProps {
   heading: string;
   content: React.ReactFragment;

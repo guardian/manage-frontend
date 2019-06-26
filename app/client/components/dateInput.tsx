@@ -1,8 +1,8 @@
+import { AppearanceProperty, TextAlignProperty } from "csstype";
 import { Moment } from "moment";
 import React from "react";
 import palette from "../colours";
 import { sans } from "../styles/fonts";
-import { AppearanceProperty, TextAlignProperty } from "csstype";
 
 const inputBoxCss = {
   fontFamily: sans,
