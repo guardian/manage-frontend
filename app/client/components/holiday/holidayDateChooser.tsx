@@ -210,7 +210,7 @@ export class HolidayDateChooser extends React.Component<
                           <Button
                             text="Review details"
                             right
-                            disabled={!this.state.selectionIsValid}
+                            disabled={!this.state.selectionIsValid.isValid}
                             onClick={() =>
                               (this.props.navigate || navigate)("review")
                             }
