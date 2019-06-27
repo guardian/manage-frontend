@@ -68,10 +68,15 @@ export const SelectedHolidayRangeContext: React.Context<
   DateRange | {}
 > = React.createContext({});
 
+interface SelectionValidationAndErrorMsg {
+  isValid: boolean;
+  errorMsg: string;
+}
+
 interface HolidayDateChooserState {
   selectedRange?: DateRange;
   issuesImpactedBySelection: IssuesImpactedPerYear | null;
-  selectionIsValid: boolean;
+  selectionIsValid: SelectionValidationAndErrorMsg;
 }
 export class HolidayDateChooser extends React.Component<
   RouteableStepProps,
@@ -79,7 +84,10 @@ export class HolidayDateChooser extends React.Component<
 > {
   public state: HolidayDateChooserState = {
     issuesImpactedBySelection: null,
-    selectionIsValid: false
+    selectionIsValid: {
+      isValid: false,
+      errorMsg: ""
+    }
   };
 
   public render = () => (
@@ -263,38 +271,55 @@ export class HolidayDateChooser extends React.Component<
               annualIssueLimit -
               combinedIssuesImpactedPerYear.issueDatesNextYear.length;
 
-            const selectionIsValid = this.isValidNumberOfIssuesSelected(
-              issuesImpactedBySelection,
+            const numPotentialIssuesThisYear =
+              issuesImpactedBySelection.issueDatesThisYear.length;
+
+            const numPotentialIssuesNextYear =
+              issuesImpactedBySelection.issueDatesNextYear.length;
+
+            const selectionIsValidWithErrorMsg = this.isValidNumberOfIssuesSelected(
+              numPotentialIssuesThisYear,
               issuesRemainingThisYear,
+              numPotentialIssuesNextYear,
               issuesRemainingNextYear
             );
-
             this.setState({
               issuesImpactedBySelection,
-              selectionIsValid
+              selectionIsValid: selectionIsValidWithErrorMsg
             });
           })
     );
 
+  private overLimit = (potential: number, remaining: number) =>
+    potential > remaining;
+
   private isValidNumberOfIssuesSelected = (
-    potentialIssuesImpacted: IssuesImpactedPerYear,
+    numPotentialIssuesThisYear: number,
     issuesRemainingThisYear: number,
+    numPotentialIssuesNextYear: number,
     issuesRemainingNextYear: number
   ) => {
-    const numPotentialIssuesThisYear =
-      potentialIssuesImpacted.issueDatesThisYear.length;
-    const numPotentialIssuesNextYear =
-      potentialIssuesImpacted.issueDatesNextYear.length;
-    const overLimit = (potential: number, remaining: number) => {
-      return potential > remaining;
-    };
-    if (
-      overLimit(numPotentialIssuesThisYear, issuesRemainingThisYear) ||
-      overLimit(numPotentialIssuesNextYear, issuesRemainingNextYear)
+    if (this.overLimit(numPotentialIssuesThisYear, issuesRemainingThisYear)) {
+      return {
+        isValid: false,
+        errorMsg:
+          "exceeded issue limit for this year - please choose fewer issues"
+      };
+    } else if (
+      this.overLimit(numPotentialIssuesNextYear, issuesRemainingNextYear)
     ) {
-      return false;
+      return {
+        isValid: false,
+        errorMsg:
+          "exceeded issue limit for this year - please choose fewer issues"
+      };
+    } else if (
+      numPotentialIssuesThisYear < 1 &&
+      numPotentialIssuesNextYear < 1
+    ) {
+      return { isValid: false, errorMsg: "no issues selected" };
     }
-    return true;
+    return { isValid: true, errorMsg: "" };
   };
 
   private selectionInfo = (
@@ -316,7 +341,7 @@ export class HolidayDateChooser extends React.Component<
       <>
         {this.state.selectedRange ? (
           this.state.issuesImpactedBySelection ? (
-            this.state.selectionIsValid ? (
+            this.state.selectionIsValid.isValid ? (
               <div>
                 Suspending{" "}
                 <div>
@@ -344,7 +369,14 @@ export class HolidayDateChooser extends React.Component<
                 )}
               </div>
             ) : (
-              <div>Error: number of issues exceeded</div>
+              <div
+                css={{
+                  color: palette.red.medium,
+                  fontWeight: "bold"
+                }}
+              >
+                Error: {this.state.selectionIsValid.errorMsg}
+              </div>
             )
           ) : (
             <Spinner />
@@ -356,7 +388,7 @@ export class HolidayDateChooser extends React.Component<
               until {formattedRenewalDate}
               <sup>*</sup>
             </div>
-            {issuesRemainingNextYear > 0 && (
+            {issuesRemainingNextYear < annualIssueLimit && (
               <div>
                 and
                 {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
