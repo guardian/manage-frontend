@@ -5,8 +5,6 @@ import TheGuardianLogoSVG from "../../../images/the-guardian.svg";
 import { minWidth } from "../../styles/breakpoints";
 import palette from "../../colours";
 
-const containerCSS = css``;
-
 const headerCSS = css`
   background-color: ${palette.blue.header};
   position: relative;
@@ -55,7 +53,7 @@ export class ConsentManagementPortal extends Component<{}, {}> {
 
   public render(): React.ReactNode {
     return (
-      <div css={containerCSS}>
+      <div>
         <div css={headerCSS}>
           <SVG />
         </div>

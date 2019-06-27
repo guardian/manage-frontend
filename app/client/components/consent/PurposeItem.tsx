@@ -1,23 +1,32 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { OnOffRadio } from "./OnOffRadio";
+import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
 import { VendorItem } from "./VendorItem";
+import palette from "../../colours";
 
-const collapsibleDivCSS = (collapsed: boolean) => css`
-  display: ${collapsed ? "block" : "none"};
+const purposeStyles = css`
+  margin-top: 6px;
+  border-top: 1px solid #dcdcdc;
+  padding-top: 4px;
+  padding-bottom: 12px;
 `;
 
-const arrowDown = (
-  <svg
-    width="12"
-    height="9"
-    viewBox="-0.525 -4 24 18"
-    overflow="visible"
-    enable-background="new -0.525 -4 24 18"
-  >
-    <path d="M23.2.7L12.7 9.1l-1.1.9-1.1-.898L0 .7.5 0l11.1 6.3L22.7 0l.5.7z" />
-  </svg>
-);
+const purposeLabelStyles = css`
+  font-family: "GH Guardian Headline", Georgia, serif;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+`;
+
+const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
+  display: ${collapsed ? "block" : "none"};
+  margin-top: 16px;
+
+  p {
+    margin-bottom: 0;
+  }
+`;
 
 interface Props {
   purposeItemId: PurposeType;
@@ -39,6 +48,7 @@ export class PurposeItem extends Component<Props, State> {
   }
 
   public toggleCollapsed(): void {
+    console.log("*** toggleCollapsed ***");
     this.setState((state, props) => ({
       collapsed: !state.collapsed
     }));
@@ -78,17 +88,15 @@ export class PurposeItem extends Component<Props, State> {
     const { collapsed } = this.state;
 
     return (
-      <div>
-        <button
-          type="button"
-          onClick={() => {
+      <div css={purposeStyles}>
+        <CollapsePurposeItemButton
+          collapsed={collapsed}
+          toggleCollapsed={() => {
             this.toggleCollapsed();
           }}
-        >
-          {arrowDown}
-        </button>
-        {label}
-        {hasButton && (
+        />
+        <div css={purposeLabelStyles}>{label}</div>
+        {/* {hasButton && (
           <OnOffRadio
             radioId={purposeItemId}
             selectedValue={purposeValue}
@@ -96,10 +104,10 @@ export class PurposeItem extends Component<Props, State> {
               this.updatePurposeOnClick(newPurposeValue);
             }}
           />
-        )}
-        <div css={collapsibleDivCSS(collapsed)}>
-          {description}
-          {vendors && this.renderVendors(vendors, purposeItemId)}
+        )} */}
+        <div css={purposeDescriptionPanelStyles(collapsed)}>
+          <p>{description}</p>
+          {/* {vendors && this.renderVendors(vendors, purposeItemId)} */}
         </div>
       </div>
     );

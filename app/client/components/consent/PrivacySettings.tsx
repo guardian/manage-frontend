@@ -1,30 +1,35 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { PurposeItem } from "./PurposeItem";
+import palette from "../../colours";
 
 const purposes: PurposeList = {
   essential: {
     label: "Essential",
     purposeValue: null,
-    description: "This is essential.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     hasButton: false
   },
   performance: {
     label: "Performance",
     purposeValue: null,
-    description: "This is performance.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     hasButton: true
   },
   functionality: {
     label: "Functionality",
     purposeValue: null,
-    description: "This is functionality.",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     hasButton: true
   },
   personalisedAds: {
     label: "Personalised adversiting",
     purposeValue: null,
-    description: "This is personalised adversiting",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     hasButton: true,
     vendors: {
       1: {
@@ -42,14 +47,28 @@ const purposes: PurposeList = {
     }
   }
 };
-
-const choicesCSS = css``;
-
-const bottomPrintCSS = css``;
-
 const privacyPolicyURL = "http://www.theguardian.com";
-
 const cookiePolicyURL = "http://www.theguardian.com";
+
+const containerStyles = css`
+  margin: 6px 12px;
+  color: ${palette.neutral[2]};
+
+  p {
+    margin-bottom: 16px;
+    font-size: 17;
+    line-height: 24px;
+    font-family: "Guardian Text Egyptian Web", Georgia, serif;
+  }
+`;
+
+const headerStyles = css`
+  font-size: 28px;
+  line-height: 32px;
+  font-family: "GH Guardian Headline", Georgia, serif;
+  font-weight: 400;
+  margin-bottom: 12px;
+`;
 
 interface State {
   purposes: PurposeList;
@@ -95,59 +114,56 @@ export class PrivacySettings extends Component<{}, State> {
 
   public render(): React.ReactNode {
     return (
-      <>
-        {/* Choices */}
-        <div css={choicesCSS}>
-          <h2>Privacy settings</h2>
+      <div css={containerStyles}>
+        <h1 css={headerStyles}>Privacy settings</h1>
 
+        <p>
+          Below you can manage your privacy settings for cookies and similar
+          technologies for this service. These technologies are provided by us
+          and by our third-party partners. To find out more, read our{" "}
+          <a href={privacyPolicyURL}>privacy policy</a> and{" "}
+          <a href={cookiePolicyURL}>cookie policy</a>
+        </p>
+
+        <form id="cmp-form">
+          {Object.keys(this.state.purposes).map(
+            (key: string): React.ReactNode => {
+              const purposeId = key as PurposeType;
+
+              return (
+                <PurposeItem
+                  purposeItemId={purposeId}
+                  purpose={this.state.purposes[purposeId]}
+                  updatePurpose={(updatedPurpose: Purpose) => {
+                    this.updateState(purposeId, updatedPurpose);
+                  }}
+                  key={purposeId}
+                />
+              );
+            }
+          )}
           <p>
-            Below you can manage your privacy settings for cookies and similar
-            technologies for this service. These technologies are provided by us
-            and by our third-party partners. To find out more, read our{" "}
-            <a href={privacyPolicyURL}>privacy policy</a> and{" "}
-            <a href={cookiePolicyURL}>cookie policy</a>
+            You can change the above settings for this browser at any time by
+            accessing the <a href={cookiePolicyURL}>cooking policy</a>
           </p>
-
-          <form id="cmp-form">
-            {Object.keys(this.state.purposes).map(
-              (key: string): React.ReactNode => {
-                const purposeId = key as PurposeType;
-
-                return (
-                  <PurposeItem
-                    purposeItemId={purposeId}
-                    purpose={this.state.purposes[purposeId]}
-                    updatePurpose={(updatedPurpose: Purpose) => {
-                      this.updateState(purposeId, updatedPurpose);
-                    }}
-                    key={purposeId}
-                  />
-                );
-              }
-            )}
-            <p css={bottomPrintCSS}>
-              You can change the above settings for this browser at any time by
-              accessing the <a href={cookiePolicyURL}>cooking policy</a>
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                this.enableAllAndClose();
-              }}
-            >
-              Enable all and close
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                this.saveAndClose();
-              }}
-            >
-              Save and close
-            </button>
-          </form>
-        </div>
-      </>
+          <button
+            type="button"
+            onClick={() => {
+              this.enableAllAndClose();
+            }}
+          >
+            Enable all and close
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              this.saveAndClose();
+            }}
+          >
+            Save and close
+          </button>
+        </form>
+      </div>
     );
   }
 }

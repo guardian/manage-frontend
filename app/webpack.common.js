@@ -124,6 +124,10 @@ const client = merge(common, {
             ...babelCommon.presets
           ]
         }
+      },
+      {
+        test: /\.svg$/,
+        use: ["desvg-loader/react", "svg-loader"]
       }
     ]
   },
