@@ -31,6 +31,11 @@ const infoIconSvg = (
     width="16"
     height="16"
     viewBox="0 0 16 16"
+    css={{
+      position: "relative",
+      top: "2px",
+      marginRight: "5px"
+    }}
   >
     <g fill="none" fillRule="evenodd" transform="translate(1 1)">
       <circle
