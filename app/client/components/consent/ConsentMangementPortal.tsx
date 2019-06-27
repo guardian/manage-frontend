@@ -5,8 +5,6 @@ import { minWidth } from "../../styles/breakpoints";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { PrivacySettings } from "./PrivacySettings";
 
-const containerCSS = css``;
-
 const headerCSS = css`
   background-color: ${palette.blue.header};
   position: relative;
@@ -53,7 +51,7 @@ export class ConsentManagementPortal extends Component<{}, {}> {
 
   public render(): React.ReactNode {
     return (
-      <div css={containerCSS}>
+      <div>
         <div css={headerCSS}>
           <TheGuardianLogo css={logoStyles} />
         </div>
