@@ -3,8 +3,9 @@ import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
 import { ConsentSection } from "./ConsentSection";
+import { Lines } from "./Lines";
 import { NewsletterSection } from "./NewsletterSection";
-import { QuadLine } from "./QuadLine";
+import { OptOutSection } from "./OptOutSection";
 
 import {
   Consent,
@@ -48,13 +49,19 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <QuadLine />
+        <Lines n={4} />
       </PageContainer>
       <PageContainer>
         <ConsentSection
           consents={mapConsentGroup(consents)}
           clickHandler={updateConsent}
         />
+      </PageContainer>
+      <PageContainer>
+        <Lines n={4} />
+      </PageContainer>
+      <PageContainer>
+        <OptOutSection consents={consents} clickHandler={updateConsent} />
       </PageContainer>
     </>
   );

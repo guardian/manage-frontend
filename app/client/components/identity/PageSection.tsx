@@ -63,7 +63,8 @@ export const PageSection: FC<PageSectionProps> = props => {
         css={{
           [minWidth.desktop]: {
             paddingRight: "6.25rem",
-            width: "26.25rem"
+            width: "13.75rem",
+            boxSizing: "content-box"
           }
         }}
       >
@@ -73,7 +74,7 @@ export const PageSection: FC<PageSectionProps> = props => {
       </div>
       <div
         css={{
-          width: "100%"
+          width: "28.75rem"
         }}
       >
         {children}
