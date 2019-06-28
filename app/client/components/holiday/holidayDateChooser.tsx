@@ -24,6 +24,7 @@ import {
   isHolidayStopsResponse,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
+import { FontWeightProperty } from "csstype";
 
 const infoIconSvg = (
   <svg
@@ -58,6 +59,21 @@ const infoIconSvg = (
     </g>
   </svg>
 );
+
+export const cancelLinkCss = {
+  marginRight: "20px",
+  fontFamily: sans,
+  fontWeight: "bold" as FontWeightProperty,
+  textDecoration: "underline",
+  fontSize: "16px",
+  color: palette.neutral["2"]
+};
+
+export const cancelConfirmCss = {
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center"
+};
 
 const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
   return (
@@ -125,7 +141,7 @@ export class HolidayDateChooser extends React.Component<
                       }
                       hideBackButton
                     >
-                      <h2>Schedule your time away</h2>
+                      <h1>Schedule your time away</h1>
                       <p>
                         Choose the dates you will be away. You will be credited
                         for the suspended issues on your future bill(s). The
@@ -185,25 +201,8 @@ export class HolidayDateChooser extends React.Component<
                         subscription. The number of issues you can suspend per
                         year is reset on this date.
                       </div>
-                      <div
-                        css={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          alignItems: "center"
-                        }}
-                      >
-                        <Link
-                          css={{
-                            marginRight: "20px",
-                            fontFamily: sans,
-                            fontWeight: "bold",
-                            textDecoration: "underline",
-                            fontSize: "16px",
-                            color: palette.neutral["2"]
-                          }}
-                          to=".."
-                          replace={true}
-                        >
+                      <div css={cancelConfirmCss}>
+                        <Link css={cancelLinkCss} to=".." replace={true}>
                           Cancel
                         </Link>
                         <div>

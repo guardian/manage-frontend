@@ -1,5 +1,5 @@
 import { navigate } from "@reach/router";
-import { BorderCollapseProperty } from "csstype";
+import { BorderCollapseProperty, TextAlignProperty } from "csstype";
 import moment from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
@@ -41,19 +41,22 @@ const tableCellCss = {
   borderBottom: "1px solid " + palette.neutral["5"]
 };
 
-const tableCss = {
+export const summaryTableCss = {
   width: "100%",
   fontFamily: sans,
   fontSize: "16px",
   border: "1px solid " + palette.neutral["5"],
   borderCollapse: "collapse" as BorderCollapseProperty,
-  td: {
-    ...tableCellCss
+  tr: {
+    textAlign: "left" as TextAlignProperty
   },
   th: {
     ...tableCellCss,
     backgroundColor: palette.neutral["7"],
     margin: 0
+  },
+  td: {
+    ...tableCellCss
   }
 };
 
@@ -83,7 +86,7 @@ const friendlyDateFormatPrefix = "D MMM";
 
 const friendlyDateFormatSuffix = " YYYY";
 
-const formatDateRangeAsFriendly = (range: DateRange) =>
+export const formatDateRangeAsFriendly = (range: DateRange) =>
   range.start.format(
     friendlyDateFormatPrefix +
       (range.start.year() !== range.end.year() ? friendlyDateFormatSuffix : "")
@@ -133,10 +136,9 @@ const renderHolidayStopsOverview = (
           hideBackButton
         >
           <div>
+            <h1>Suspend Guardian Weekly</h1>
             <h2>
-              Suspend Guardian Weekly ({
-                productDetail.subscription.subscriptionId
-              })
+              Subscription ID: {productDetail.subscription.subscriptionId}
             </h2>
 
             <OverviewRow
@@ -204,9 +206,9 @@ const renderHolidayStopsOverview = (
               heading="Details"
               content={
                 holidayStopsResponse.existing.length > 0 ? (
-                  <table css={tableCss}>
+                  <table css={summaryTableCss}>
                     <tbody>
-                      <tr css={{ textAlign: "left" }}>
+                      <tr>
                         <th>When</th>
                         <th>Suspended</th>
                       </tr>

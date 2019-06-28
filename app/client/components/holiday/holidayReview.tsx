@@ -1,4 +1,4 @@
-import { NavigateFn } from "@reach/router";
+import { NavigateFn, Link, navigate } from "@reach/router";
 import { DateRange } from "moment-range";
 import React from "react";
 import {
@@ -14,12 +14,22 @@ import {
   visuallyNavigateToParent,
   WizardStep
 } from "../wizardRouterAdapter";
-import { SelectedHolidayRangeContext } from "./holidayDateChooser";
+import {
+  SelectedHolidayRangeContext,
+  cancelLinkCss,
+  cancelConfirmCss
+} from "./holidayDateChooser";
 import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
+import {
+  summaryTableCss,
+  formatDateRangeAsFriendly,
+  holidayQuestionsTopicString
+} from "./holidaysOverview";
+import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 
 export function isDateRange(range: DateRange | {}): range is DateRange {
   return (
@@ -84,11 +94,47 @@ export class HolidayReview extends React.Component<
             isDateRange(selectedRange) &&
             hasProduct(productDetail) &&
             this.props.navigate ? (
-              <WizardStep routeableStepProps={this.props}>
+              <WizardStep
+                routeableStepProps={this.props}
+                hideBackButton
+                extraFooterComponents={
+                  <QuestionsFooter topic={holidayQuestionsTopicString} />
+                }
+              >
+                <div css={{ maxWidth: "606px" }}>
+                  <h1>Review details before confirming</h1>
+                  <p>
+                    You will be credited for the suspended issues on your future
+                    bill(s). Check the details carefully and amend them if
+                    necessary.{" "}
+                  </p>{" "}
+                  <table css={summaryTableCss}>
+                    <tbody>
+                      <tr>
+                        <th>When</th>
+                        <th>Suspended</th>
+                      </tr>
+                      <tr>
+                        <td>{formatDateRangeAsFriendly(selectedRange)}</td>
+                        <td>details here</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    css={{
+                      marginTop: "20px",
+                      textAlign: "right"
+                    }}
+                  >
+                    <Button
+                      text="Amend"
+                      onClick={() => (this.props.navigate || navigate)("..")}
+                      left
+                      hollow
+                    />
+                  </div>
+                </div>
                 <div>
-                  <h1>New Suspension Review</h1>
-                  {selectedRange.start.toString()}{" "}
-                  {selectedRange.end.toString()}
                   {this.state.isCreating ? (
                     <CreateHolidayStopsAsyncLoader
                       fetch={getPerformCreation(
@@ -104,12 +150,22 @@ export class HolidayReview extends React.Component<
                       inline
                     />
                   ) : (
-                    <Button
-                      text="Confirm"
-                      onClick={() => this.setState({ isCreating: true })}
-                      right
-                      primary
-                    />
+                    <div
+                      css={{
+                        marginTop: "40px",
+                        ...cancelConfirmCss
+                      }}
+                    >
+                      <Link css={cancelLinkCss} to="../.." replace={true}>
+                        Cancel
+                      </Link>
+                      <Button
+                        text="Confirm"
+                        onClick={() => this.setState({ isCreating: true })}
+                        right
+                        primary
+                      />
+                    </div>
                   )}
                 </div>
               </WizardStep>
