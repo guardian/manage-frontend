@@ -5,11 +5,19 @@ import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
 import { VendorItem } from "./VendorItem";
 import palette from "../../colours";
 
-const purposeStyles = css`
+const purposeContainerStyles = css`
   margin-top: 6px;
-  border-top: 1px solid #dcdcdc;
+  border-top: 1px solid ${palette.neutral[5]};
   padding-top: 4px;
   padding-bottom: 12px;
+`;
+
+const purposeTabStyles = css`
+  display: flex;
+`;
+
+const purposeLabelContainerStyles = css`
+  flex-grow: 1;
 `;
 
 const purposeLabelStyles = css`
@@ -17,6 +25,7 @@ const purposeLabelStyles = css`
   font-size: 17px;
   line-height: 20px;
   font-weight: 700;
+  max-width: 200px;
 `;
 
 const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
@@ -88,26 +97,30 @@ export class PurposeItem extends Component<Props, State> {
     const { collapsed } = this.state;
 
     return (
-      <div css={purposeStyles}>
-        <CollapsePurposeItemButton
-          collapsed={collapsed}
-          toggleCollapsed={() => {
-            this.toggleCollapsed();
-          }}
-        />
-        <div css={purposeLabelStyles}>{label}</div>
-        {/* {hasButton && (
-          <OnOffRadio
-            radioId={purposeItemId}
-            selectedValue={purposeValue}
-            onChangeHandler={(newPurposeValue: boolean) => {
-              this.updatePurposeOnClick(newPurposeValue);
+      <div css={purposeContainerStyles}>
+        <div css={purposeTabStyles}>
+          <CollapsePurposeItemButton
+            collapsed={collapsed}
+            toggleCollapsed={() => {
+              this.toggleCollapsed();
             }}
           />
-        )} */}
+          <div css={purposeLabelContainerStyles}>
+            <div css={purposeLabelStyles}>{label}</div>
+          </div>
+          {hasButton && (
+            <OnOffRadio
+              radioId={purposeItemId}
+              selectedValue={purposeValue}
+              onChangeHandler={(newPurposeValue: boolean) => {
+                this.updatePurposeOnClick(newPurposeValue);
+              }}
+            />
+          )}
+        </div>
         <div css={purposeDescriptionPanelStyles(collapsed)}>
           <p>{description}</p>
-          {/* {vendors && this.renderVendors(vendors, purposeItemId)} */}
+          {vendors && this.renderVendors(vendors, purposeItemId)}
         </div>
       </div>
     );
