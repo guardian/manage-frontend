@@ -1,7 +1,33 @@
-// import { css } from "@emotion/core";
+import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { OnOffRadio } from "./OnOffRadio";
+import palette from "../../colours";
 
+const vendorTabStyles = css`
+  display: flex;
+  margin-top: 6px;
+  border-top: 1px solid ${palette.neutral[5]};
+  padding-top: 4px;
+  padding-bottom: 12px;
+`;
+
+const vendorLabelContainerStyles = css`
+  flex-grow: 1;
+`;
+
+const vendorLabelStyles = css`
+  font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+    Lucida Grande, sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+  max-width: 200px;
+
+  a {
+    text-decoration: none;
+  }
+`;
 interface Props {
   vendorItemId: string;
   vendor: Vendor;
@@ -13,28 +39,26 @@ export class VendorItem extends Component<Props, {}> {
     super(props);
   }
 
-  public updateVendorOnClick(newVendorValue: boolean): void {
-    this.props.updateVendor(newVendorValue);
-  }
-
-  public renderButton(vendorValue: boolean | null): React.ReactNode | void {
-    return (
-      <OnOffRadio
-        radioId={this.props.vendorItemId}
-        selectedValue={vendorValue}
-        onChangeHandler={(newVendorValue: boolean) => {
-          this.updateVendorOnClick(newVendorValue);
-        }}
-      />
-    );
-  }
-
   public render(): React.ReactNode {
-    const { url, label, hasButton, vendorValue } = this.props.vendor;
+    const { vendorItemId, vendor, updateVendor } = this.props;
+    const { url, label, hasButton, vendorValue } = vendor;
+
     return (
-      <div>
-        <a href={url}>{label}</a>
-        {hasButton && this.renderButton(vendorValue)}
+      <div css={vendorTabStyles}>
+        <div css={vendorLabelContainerStyles}>
+          <div css={vendorLabelStyles}>
+            <a href={url}>{label}</a>
+          </div>
+        </div>
+        {hasButton && (
+          <OnOffRadio
+            radioId={vendorItemId}
+            selectedValue={vendorValue}
+            onChangeHandler={(newVendorValue: boolean) => {
+              updateVendor(newVendorValue);
+            }}
+          />
+        )}
       </div>
     );
   }

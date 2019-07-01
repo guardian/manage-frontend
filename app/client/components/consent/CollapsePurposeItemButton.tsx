@@ -32,15 +32,8 @@ const collapsePurposeItemButtonStyles = (collapsed: boolean) => css`
 
 export const CollapsePurposeItemButton: React.FC<{
   collapsed: boolean;
-  toggleCollapsed: () => void;
-}> = ({ collapsed, toggleCollapsed }) => {
+}> = ({ collapsed }) => {
   return (
-    <button
-      type="button"
-      css={collapsePurposeItemButtonStyles(collapsed)}
-      onClick={() => {
-        toggleCollapsed(collapsed);
-      }}
-    />
+    <button type="button" css={collapsePurposeItemButtonStyles(collapsed)} />
   );
 };

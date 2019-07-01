@@ -5,6 +5,16 @@ import palette from "../../colours";
 const radioContainerStyles = css`
   position: relative;
   display: flex;
+
+  :before {
+    content: "";
+    position: absolute;
+    height: 28px;
+    width: 1px;
+    top: -4px;
+    left: 0;
+    background-color: ${palette.neutral[5]};
+  }
 `;
 
 const radioInputStyles = css`
@@ -38,7 +48,7 @@ const radioLabelStyles = (isSelected: boolean) => css`
     height: 18px;
     border: 1px solid
       ${isSelected ? `${palette.blue.header}` : `${palette.neutral[5]}`};
-    box-shadow: inset 0 0 0 3px #fff;
+    box-shadow: inset 0 0 0 3px ${palette.white};
     border-radius: 60px;
     margin-left: 10px;
     margin-right: 5px;
