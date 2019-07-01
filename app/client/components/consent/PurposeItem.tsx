@@ -30,10 +30,11 @@ const purposeLabelStyles = css`
 
 const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
-  margin-top: 16px;
+  padding-top: 16px;
+  padding-left: 20px;
 
   p {
-    margin-bottom: 0;
+    margin-bottom: 16px;
   }
 `;
 
@@ -98,13 +99,13 @@ export class PurposeItem extends Component<Props, State> {
 
     return (
       <div css={purposeContainerStyles}>
-        <div css={purposeTabStyles}>
-          <CollapsePurposeItemButton
-            collapsed={collapsed}
-            toggleCollapsed={() => {
-              this.toggleCollapsed();
-            }}
-          />
+        <div
+          css={purposeTabStyles}
+          onClick={() => {
+            this.toggleCollapsed();
+          }}
+        >
+          <CollapsePurposeItemButton collapsed={collapsed} />
           <div css={purposeLabelContainerStyles}>
             <div css={purposeLabelStyles}>{label}</div>
           </div>
