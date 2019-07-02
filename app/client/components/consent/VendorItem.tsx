@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import React, { Component } from "react";
+import React from "react";
 import { OnOffRadio } from "./OnOffRadio";
 import palette from "../../colours";
 
@@ -35,7 +35,7 @@ interface Props {
   updateVendor: (newVendorValue: boolean) => void;
 }
 
-export const VendorItem: React.SFC<{ Props }> = ({
+export const VendorItem: React.SFC<Props> = ({
   vendorItemId,
   vendor,
   updateVendor

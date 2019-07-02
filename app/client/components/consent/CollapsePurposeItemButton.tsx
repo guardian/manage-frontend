@@ -1,5 +1,5 @@
 import React from "react";
-import { css, cx } from "@emotion/core";
+import { css } from "@emotion/core";
 import palette from "../../colours";
 
 const collapsePurposeItemButtonStyles = (collapsed: boolean) => css`
