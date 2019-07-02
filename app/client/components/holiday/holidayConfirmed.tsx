@@ -1,6 +1,5 @@
-import { navigate } from "@reach/router";
 import React from "react";
-import { Button, LinkButton } from "../buttons";
+import { LinkButton } from "../buttons";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import {
   RouteableStepProps,
@@ -41,11 +40,6 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
                 ...rightAlignedButtonsCss
               }}
             >
-              <Button
-                text="Create another schedule"
-                onClick={() => (props.navigate || navigate)("create")}
-                right
-              />
               <LinkButton
                 to={"/suspend/" + props.productType.urlPart}
                 text="Schedule another suspension"

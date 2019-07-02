@@ -86,6 +86,8 @@ const friendlyDateFormatPrefix = "D MMM";
 
 const friendlyDateFormatSuffix = " YYYY";
 
+const friendlyLongDateFormat = "D MMMM YYYY";
+
 export const formatDateRangeAsFriendly = (range: DateRange) =>
   range.start.format(
     friendlyDateFormatPrefix +
@@ -103,7 +105,7 @@ const DetailsTableRow = (holidayStopRequest: HolidayStopRequest) => (
         ? "s"
         : ""}{" "}
       {holidayStopRequest.publicationDatesToBeStopped.map((date, index) => (
-        <div key={index}>- {date.format("D MMM")}</div>
+        <div key={index}>- {date.format(friendlyDateFormatPrefix)}</div>
       ))}
     </td>
   </tr>
@@ -169,7 +171,8 @@ const renderHolidayStopsOverview = (
                           holidayStopsResponse.productSpecifics.annualIssueLimit
                         }
                       </strong>{" "}
-                      issues until {renewalDateMoment.format("D MMMM YYYY")}
+                      issues until{" "}
+                      {renewalDateMoment.format(friendlyLongDateFormat)}
                       {combinedIssuesImpactedPerYear.issueDatesNextYear.length >
                       0 ? (
                         <span>
@@ -197,7 +200,8 @@ const renderHolidayStopsOverview = (
                     <strong>
                       {holidayStopsResponse.productSpecifics.annualIssueLimit}
                     </strong>{" "}
-                    issues remainining to suspend until {productDetail.joinDate}
+                    issues remainining to suspend until{" "}
+                    {renewalDateMoment.format(friendlyLongDateFormat)}.
                   </div>
                 )
               }
