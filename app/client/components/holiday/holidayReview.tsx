@@ -1,4 +1,4 @@
-import { NavigateFn, Link, navigate } from "@reach/router";
+import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
 import React from "react";
 import {
@@ -9,27 +9,27 @@ import {
 import { ProductType } from "../../../shared/productTypes";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
+import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
 } from "../wizardRouterAdapter";
 import {
-  SelectedHolidayRangeContext,
   cancelLinkCss,
-  cancelConfirmCss
+  rightAlignedButtonsCss,
+  SelectedHolidayRangeContext
 } from "./holidayDateChooser";
+import {
+  formatDateRangeAsFriendly,
+  holidayQuestionsTopicString,
+  summaryTableCss
+} from "./holidaysOverview";
 import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-import {
-  summaryTableCss,
-  formatDateRangeAsFriendly,
-  holidayQuestionsTopicString
-} from "./holidaysOverview";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 
 export function isDateRange(range: DateRange | {}): range is DateRange {
   return (
@@ -58,10 +58,10 @@ const getPerformCreation = (
     }
   });
 
-const getRenderCreationSuccess = (navigate: NavigateFn) => (
+const getRenderCreationSuccess = (nav: NavigateFn) => (
   response: CreateHolidayStopsResponse
 ) => {
-  navigate("confirmed", { replace: true });
+  nav("confirmed", { replace: true });
   return null;
 };
 
@@ -78,6 +78,28 @@ const renderCreationError = () => (
 export interface HolidayReviewState {
   isCreating: boolean;
 }
+
+const MAX_WIDTH = "606px";
+
+export interface SummaryTableProps {
+  selectedRange: DateRange;
+  issueDetails: any;
+}
+
+export const SummaryTable = (props: SummaryTableProps) => (
+  <table css={{ ...summaryTableCss, maxWidth: MAX_WIDTH }}>
+    <tbody>
+      <tr>
+        <th>When</th>
+        <th>Suspended</th>
+      </tr>
+      <tr>
+        <td>{formatDateRangeAsFriendly(props.selectedRange)}</td>
+        <td>{props.issueDetails}</td>
+      </tr>
+    </tbody>
+  </table>
+);
 
 export class HolidayReview extends React.Component<
   RouteableStepProps,
@@ -101,25 +123,17 @@ export class HolidayReview extends React.Component<
                   <QuestionsFooter topic={holidayQuestionsTopicString} />
                 }
               >
-                <div css={{ maxWidth: "606px" }}>
+                <div css={{ maxWidth: MAX_WIDTH }}>
                   <h1>Review details before confirming</h1>
                   <p>
                     You will be credited for the suspended issues on your future
                     bill(s). Check the details carefully and amend them if
                     necessary.{" "}
                   </p>{" "}
-                  <table css={summaryTableCss}>
-                    <tbody>
-                      <tr>
-                        <th>When</th>
-                        <th>Suspended</th>
-                      </tr>
-                      <tr>
-                        <td>{formatDateRangeAsFriendly(selectedRange)}</td>
-                        <td>details here</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <SummaryTable
+                    selectedRange={selectedRange}
+                    issueDetails="details here"
+                  />
                   <div
                     css={{
                       marginTop: "20px",
@@ -153,7 +167,7 @@ export class HolidayReview extends React.Component<
                     <div
                       css={{
                         marginTop: "40px",
-                        ...cancelConfirmCss
+                        ...rightAlignedButtonsCss
                       }}
                     >
                       <Link css={cancelLinkCss} to="../.." replace={true}>

@@ -1,4 +1,5 @@
 import { Link, navigate } from "@reach/router";
+import { FontWeightProperty } from "csstype";
 import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
@@ -24,7 +25,6 @@ import {
   isHolidayStopsResponse,
   IssuesImpactedPerYear
 } from "./holidayStopApi";
-import { FontWeightProperty } from "csstype";
 
 const infoIconSvg = (
   <svg
@@ -69,7 +69,7 @@ export const cancelLinkCss = {
   color: palette.neutral["2"]
 };
 
-export const cancelConfirmCss = {
+export const rightAlignedButtonsCss = {
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "center"
@@ -201,7 +201,7 @@ export class HolidayDateChooser extends React.Component<
                         subscription. The number of issues you can suspend per
                         year is reset on this date.
                       </div>
-                      <div css={cancelConfirmCss}>
+                      <div css={rightAlignedButtonsCss}>
                         <Link css={cancelLinkCss} to=".." replace={true}>
                           Cancel
                         </Link>
