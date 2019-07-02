@@ -5,7 +5,7 @@ import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
 import { VendorItem } from "./VendorItem";
 import palette from "../../colours";
 
-const purposeContainerStyles = (isLastItem: boolean): string => css`
+const purposeContainerStyles = (isLastItem: boolean) => css`
   margin-top: 6px;
   margin-bottom: ${isLastItem ? "12px" : "0"};
   border-top: 1px solid ${palette.neutral[5]};

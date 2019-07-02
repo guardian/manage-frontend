@@ -111,7 +111,6 @@ const tickIconStyles = css`
   flex-grow: 0;
 `;
 
-const tickStyles = css``;
 interface State {
   purposes: PurposeList;
 }
