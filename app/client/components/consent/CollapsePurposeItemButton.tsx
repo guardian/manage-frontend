@@ -19,7 +19,7 @@ const collapsePurposeItemButtonStyles = (collapsed: boolean) => css`
     position: absolute;
     top: ${collapsed ? "7px" : "5px"};
     left: 6px;
-    border: 2px solid ${palette.neutral[4]};
+    border: 2px solid ${collapsed ? palette.blue.header : palette.neutral[4]};
     border-top: 0;
     border-left: 0;
     content: "";

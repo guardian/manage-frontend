@@ -33,12 +33,13 @@ const purposeLabelContainerStyles = css`
   flex-grow: 1;
 `;
 
-const purposeLabelStyles = css`
+const purposeLabelStyles = (collapsed: boolean) => css`
   font-family: "GH Guardian Headline", Georgia, serif;
   font-size: 17px;
   line-height: 20px;
   font-weight: 700;
   max-width: 200px;
+  color: ${collapsed ? palette.blue.header : "inherit"};
 `;
 
 const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
@@ -68,7 +69,6 @@ export class PurposeItem extends Component<Props, State> {
   }
 
   public toggleCollapsed(): void {
-    console.log("*** toggleCollapsed ***");
     this.setState((state, props) => ({
       collapsed: !state.collapsed
     }));
@@ -117,7 +117,7 @@ export class PurposeItem extends Component<Props, State> {
         >
           <CollapsePurposeItemButton collapsed={collapsed} />
           <div css={purposeLabelContainerStyles}>
-            <div css={purposeLabelStyles}>{label}</div>
+            <div css={purposeLabelStyles(collapsed)}>{label}</div>
           </div>
           {hasButton && (
             <OnOffRadio

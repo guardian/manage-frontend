@@ -171,7 +171,15 @@ export class PrivacySettings extends Component<{}, State> {
 
           <p>
             You can change the above settings for this browser at any time by
-            accessing the <a href={cookiePolicyURL}>cooking policy</a>
+            accessing the{" "}
+            <a
+              href={cookiePolicyURL}
+              css={css`
+                color: ${palette.neutral[2]};
+              `}
+            >
+              cookie policy
+            </a>
           </p>
 
           <div css={buttonContainerStyles}>
