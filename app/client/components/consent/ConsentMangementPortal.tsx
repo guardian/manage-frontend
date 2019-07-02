@@ -44,8 +44,6 @@ const multiLine = css`
   height: 13px;
 `;
 
-const SVG = () => <TheGuardianLogoSVG css={logoStyles} />;
-
 export class ConsentManagementPortal extends Component<{}, {}> {
   constructor(props: {}) {
     super(props);
@@ -55,7 +53,7 @@ export class ConsentManagementPortal extends Component<{}, {}> {
     return (
       <div>
         <div css={headerCSS}>
-          <SVG />
+          <TheGuardianLogoSVG css={logoStyles} />
         </div>
         <div css={multiLine} />
         <PrivacySettings />

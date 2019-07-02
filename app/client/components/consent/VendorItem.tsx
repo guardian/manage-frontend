@@ -26,6 +26,7 @@ const vendorLabelStyles = css`
 
   a {
     text-decoration: none;
+    color: inherit;
   }
 `;
 interface Props {
@@ -34,32 +35,29 @@ interface Props {
   updateVendor: (newVendorValue: boolean) => void;
 }
 
-export class VendorItem extends Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
+export const VendorItem: React.SFC<{ Props }> = ({
+  vendorItemId,
+  vendor,
+  updateVendor
+}) => {
+  const { url, label, hasButton, vendorValue } = vendor;
 
-  public render(): React.ReactNode {
-    const { vendorItemId, vendor, updateVendor } = this.props;
-    const { url, label, hasButton, vendorValue } = vendor;
-
-    return (
-      <div css={vendorTabStyles}>
-        <div css={vendorLabelContainerStyles}>
-          <div css={vendorLabelStyles}>
-            <a href={url}>{label}</a>
-          </div>
+  return (
+    <div css={vendorTabStyles}>
+      <div css={vendorLabelContainerStyles}>
+        <div css={vendorLabelStyles}>
+          <a href={url}>{label}</a>
         </div>
-        {hasButton && (
-          <OnOffRadio
-            radioId={vendorItemId}
-            selectedValue={vendorValue}
-            onChangeHandler={(newVendorValue: boolean) => {
-              updateVendor(newVendorValue);
-            }}
-          />
-        )}
       </div>
-    );
-  }
-}
+      {hasButton && (
+        <OnOffRadio
+          radioId={vendorItemId}
+          selectedValue={vendorValue}
+          onChangeHandler={(newVendorValue: boolean) => {
+            updateVendor(newVendorValue);
+          }}
+        />
+      )}
+    </div>
+  );
+};
