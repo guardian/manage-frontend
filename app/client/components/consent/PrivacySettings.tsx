@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import { PurposeItem } from "./PurposeItem";
 import palette from "../../colours";
+import { TickIcon } from "../svgs/tickIcon";
 
 const purposes: PurposeList = {
   essential: {
@@ -36,7 +37,7 @@ const purposes: PurposeList = {
         label: "vendor 1",
         vendorValue: null,
         url: "http://www.guardin.co.uk",
-        hasButton: false
+        hasButton: true
       },
       2: {
         label: "vendor 2",
@@ -51,12 +52,12 @@ const privacyPolicyURL = "http://www.theguardian.com";
 const cookiePolicyURL = "http://www.theguardian.com";
 
 const containerStyles = css`
-  margin: 6px 12px;
+  margin: 6px 12px 0;
   color: ${palette.neutral[2]};
 
   p {
     margin-bottom: 16px;
-    font-size: 17;
+    font-size: 17px;
     line-height: 24px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
   }
@@ -70,6 +71,47 @@ const headerStyles = css`
   margin-bottom: 12px;
 `;
 
+const buttonContainerStyles = css`
+  height: 66px;
+  bottom: 0;
+  position: sticky;
+  margin-left: -12px;
+  margin-right: -12px;
+  background-color: ${palette.neutral[7]};
+  border-top: 1px solid ${palette.neutral[5]};
+  display: flex;
+  padding: 12px 6px;
+`;
+
+const buttonStyles = css`
+  font-size: 16px;
+  line-height: 22px;
+  font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+    Lucida Grande, sans-serif;
+  font-weight: 700;
+  align-items: center;
+  text-decoration: none;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 21px;
+  box-sizing: border-box;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  background-color: ${palette.yellow.medium};
+  flex-grow: 1;
+  margin: 0 6px;
+`;
+
+const tickIconStyles = css`
+  height: 20px;
+  width: 20px;
+  flex-grow: 0;
+`;
+
+const tickStyles = css``;
 interface State {
   purposes: PurposeList;
 }
@@ -126,44 +168,74 @@ export class PrivacySettings extends Component<{}, State> {
         </p>
 
         <form id="cmp-form">
-          {Object.keys(this.state.purposes).map(
-            (key: string): React.ReactNode => {
-              const purposeId = key as PurposeType;
+          {this.renderPurposeItems()}
 
-              return (
-                <PurposeItem
-                  purposeItemId={purposeId}
-                  purpose={this.state.purposes[purposeId]}
-                  updatePurpose={(updatedPurpose: Purpose) => {
-                    this.updateState(purposeId, updatedPurpose);
-                  }}
-                  key={purposeId}
-                />
-              );
-            }
-          )}
           <p>
             You can change the above settings for this browser at any time by
             accessing the <a href={cookiePolicyURL}>cooking policy</a>
           </p>
-          <button
-            type="button"
-            onClick={() => {
-              this.enableAllAndClose();
-            }}
-          >
-            Enable all and close
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              this.saveAndClose();
-            }}
-          >
-            Save and close
-          </button>
+
+          <div css={buttonContainerStyles}>
+            <button
+              type="button"
+              onClick={() => {
+                this.enableAllAndClose();
+              }}
+              css={css`
+                ${buttonStyles};
+                min-width: 190px;
+                display: flex;
+                padding-left: 16px;
+              `}
+            >
+              <TickIcon css={tickIconStyles} />
+              <span
+                css={css`
+                  flex-grow: 1;
+                `}
+              >
+                Enable all and close
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                this.saveAndClose();
+              }}
+              css={css`
+                ${buttonStyles};
+                background-color: ${palette.yellow.dark};
+              `}
+            >
+              Save and close
+            </button>
+          </div>
         </form>
       </div>
+    );
+  }
+
+  public renderPurposeItems() {
+    const purposeItemKeys = Object.keys(this.state.purposes);
+    const purposeItemCount = purposeItemKeys.length;
+
+    return purposeItemKeys.map(
+      (key: string, index: number): React.ReactNode => {
+        const purposeId = key as PurposeType;
+
+        return (
+          <PurposeItem
+            purposeItemId={purposeId}
+            purpose={this.state.purposes[purposeId]}
+            updatePurpose={(updatedPurpose: Purpose) => {
+              this.updateState(purposeId, updatedPurpose);
+            }}
+            key={purposeId}
+            isLastItem={index === purposeItemCount - 1}
+          />
+        );
+      }
     );
   }
 }

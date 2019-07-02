@@ -5,11 +5,24 @@ import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
 import { VendorItem } from "./VendorItem";
 import palette from "../../colours";
 
-const purposeContainerStyles = css`
+const purposeContainerStyles = (isLastItem: boolean): string => css`
   margin-top: 6px;
+  margin-bottom: ${isLastItem ? "12px" : "0"};
   border-top: 1px solid ${palette.neutral[5]};
   padding-top: 4px;
-  padding-bottom: 12px;
+  padding-bottom: ${isLastItem ? "18px" : "12px"};
+  position: relative;
+
+  :after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    right: -12px;
+    bottom: 0;
+    height: 1px;
+    background-color: ${palette.neutral[5]};
+    display: ${isLastItem ? "block" : "none"};
+  }
 `;
 
 const purposeTabStyles = css`
@@ -32,16 +45,13 @@ const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
   padding-top: 16px;
   padding-left: 20px;
-
-  p {
-    margin-bottom: 16px;
-  }
 `;
 
 interface Props {
   purposeItemId: PurposeType;
   purpose: Purpose;
   updatePurpose: (updatedPurpose: Purpose) => void;
+  isLastItem: boolean;
 }
 
 interface State {
@@ -94,11 +104,11 @@ export class PurposeItem extends Component<Props, State> {
       hasButton,
       vendors
     } = this.props.purpose;
-    const { purposeItemId } = this.props;
+    const { purposeItemId, isLastItem } = this.props;
     const { collapsed } = this.state;
 
     return (
-      <div css={purposeContainerStyles}>
+      <div css={purposeContainerStyles(isLastItem)}>
         <div
           css={purposeTabStyles}
           onClick={() => {
