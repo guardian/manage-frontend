@@ -307,7 +307,7 @@ export class HolidayDateChooser extends React.Component<
       return {
         isValid: false,
         errorMsg:
-          "exceeded issue limit for this year - please choose fewer issues"
+          "Exceeded issue limit for this year - please choose fewer issues"
       };
     } else if (
       this.overLimit(numPotentialIssuesNextYear, issuesRemainingNextYear)
@@ -315,13 +315,13 @@ export class HolidayDateChooser extends React.Component<
       return {
         isValid: false,
         errorMsg:
-          "exceeded issue limit for this year - please choose fewer issues"
+          "Exceeded issue limit for next year - please choose fewer issues"
       };
     } else if (
       numPotentialIssuesThisYear < 1 &&
       numPotentialIssuesNextYear < 1
     ) {
-      return { isValid: false, errorMsg: "no issues selected" };
+      return { isValid: false, errorMsg: "No issues selected" };
     }
     return { isValid: true, errorMsg: "" };
   };
@@ -379,7 +379,7 @@ export class HolidayDateChooser extends React.Component<
                   fontWeight: "bold"
                 }}
               >
-                Error: {this.state.selectionIsValid.errorMsg}
+                {this.state.selectionIsValid.errorMsg}
               </div>
             )
           ) : (
