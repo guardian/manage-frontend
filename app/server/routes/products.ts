@@ -1,13 +1,10 @@
-import { 
-  Request,
-  Response,
-  Router 
-} from 'express';
+import { Request, Response, Router } from "express";
 import {
   hasProductPageRedirect,
   ProductType,
   ProductTypes
 } from "../../shared/productTypes";
+import { getHolidayStopApiHandler } from "../holidayStopApiHandlers";
 import { membersDataApiHandler } from "../middleware/apiMiddleware";
 
 const routeProvider = (apiPathPrefix: string) => {
@@ -23,26 +20,35 @@ const routeProvider = (apiPathPrefix: string) => {
 
     if (productType.updateAmountMdaEndpoint) {
       router.post(
-        `${apiPathPrefix}update/amount/` + productType.urlPart + "/:subscriptionName",
+        `${apiPathPrefix}update/amount/` +
+          productType.urlPart +
+          "/:subscriptionName",
         membersDataApiHandler(
           "user-attributes/me/" +
-          productType.updateAmountMdaEndpoint +
-          "/:subscriptionName",
+            productType.updateAmountMdaEndpoint +
+            "/:subscriptionName",
           false,
           "subscriptionName"
         )
       );
     }
     if (hasProductPageRedirect(productType)) {
-      router.get(
-        "/" + productType.urlPart,
-        (req: Request, res: Response) => {
-          res.redirect("/" + productType.productPage);
-        }
+      router.get("/" + productType.urlPart, (req: Request, res: Response) => {
+        res.redirect("/" + productType.productPage);
+      });
+    }
+    if (productType.holidayStopsApiProductNamePrefix) {
+      router.use(
+        `${apiPathPrefix}holidays/${
+          productType.urlPart
+        }/:subscriptionName?/:sfId?`,
+        getHolidayStopApiHandler(productType.holidayStopsApiProductNamePrefix)
       );
     }
   });
+
+  router.get(`${apiPathPrefix}holidays/`, getHolidayStopApiHandler());
   return router;
-}
+};
 
 export default routeProvider;

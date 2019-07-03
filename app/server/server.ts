@@ -41,8 +41,8 @@ server.use((_, res: Response, next: NextFunction) => {
 server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
 
 server.use(routes.core);
-server.use("/api/", routes.api);
 server.use("/profile/", routes.profile);
+server.use("/api/", routes.api);
 server.use(routes.productsProvider("/api/"));
 server.use("/consent/", routes.consent);
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING

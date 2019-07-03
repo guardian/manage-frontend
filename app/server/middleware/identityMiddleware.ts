@@ -5,10 +5,11 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../shared/identity";
+import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
-import { handleIdapiRelatedError, idapiConfigPromise } from "../idapiConfig";
+import { idapiConfigPromise } from "../idapiConfig";
 
-interface RedirectResponseBody {
+interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
   redirect?: {
     url: string;
@@ -146,7 +147,7 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
   next: express.NextFunction
 ) => {
   const errorHandler = (message: string, detail?: any) => {
-    handleIdapiRelatedError(message, detail);
+    handleAwsRelatedError(message, detail);
     res.sendStatus(500); // TODO maybe server side render a pretty response
   };
 
@@ -203,6 +204,8 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                   updateManageUrl(req, useRefererHeaderForManageUrl)
                 );
               } else {
+                // tslint:disable-next-line:no-object-mutation
+                Object.assign(res.locals, { identity: redirectResponseBody });
                 next();
               }
             } else {
