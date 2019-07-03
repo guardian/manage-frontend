@@ -116,9 +116,12 @@ export const updateNewsletter = async (
   }
 };
 
+// @TODO: DEV: FOR TESTING FUNCTIONS
+const TODO_DEV_TESTING_BASE_URL = "https://idapi.code.dev-theguardian.com";
+
 // @TODO: DEV: TESTING FUNCTION
 export const readNewsletters = async (): Promise<NewsletterGroup[]> => {
-  const url = "https://idapi.thegulocal.com/newsletters";
+  const url = TODO_DEV_TESTING_BASE_URL + "/newsletters";
   const response = await fetch(url);
   if (!response.ok) {
     throw Error(
@@ -143,11 +146,13 @@ export const mapConsentGroup = (consents: Consent[]): Consent[] => {
 
 // @TODO: DEV: TESTING FUNCTION
 export const updateConsent = async (id: string, consented: boolean = true) => {
-  const url = "https://idapi.thegulocal.com/users/me/consents";
-  const payload = {
-    id,
-    consented
-  };
+  const url = TODO_DEV_TESTING_BASE_URL + "/users/me/consents";
+  const payload = [
+    {
+      id,
+      consented
+    }
+  ];
   const options = {
     method: "PATCH",
     headers: {
@@ -167,7 +172,7 @@ export const updateConsent = async (id: string, consented: boolean = true) => {
 
 // @TODO: DEV: TESTING FUNCTION
 export const readConsents = async (): Promise<Consent[]> => {
-  const url = "https://idapi.thegulocal.com/consents";
+  const url = TODO_DEV_TESTING_BASE_URL + "/consents";
   const response = await fetch(url);
   if (!response.ok) {
     throw Error(
