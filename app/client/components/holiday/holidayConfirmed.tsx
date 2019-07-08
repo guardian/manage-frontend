@@ -7,16 +7,18 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import {
-  rightAlignedButtonsCss,
-  SelectedHolidayRangeContext
+  HolidayDateChooserStateContext,
+  isHolidayDateChooserState,
+  rightAlignedButtonsCss
 } from "./holidayDateChooser";
-import { isDateRange, SummaryTable } from "./holidayReview";
+import { SummaryTable } from "./holidayReview";
 import { holidayQuestionsTopicString } from "./holidaysOverview";
 
 export const HolidayConfirmed = (props: RouteableStepProps) => (
-  <SelectedHolidayRangeContext.Consumer>
-    {selectedRange =>
-      isDateRange(selectedRange) ? (
+  <HolidayDateChooserStateContext.Consumer>
+    {dateChooserState =>
+      isHolidayDateChooserState(dateChooserState) &&
+      dateChooserState.selectedRange ? (
         <WizardStep
           routeableStepProps={props}
           extraFooterComponents={
@@ -31,7 +33,7 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
               credited for the missing issues on your future bill(s).
             </p>
             <SummaryTable
-              selectedRange={selectedRange}
+              selectedRange={dateChooserState.selectedRange}
               issueDetails="details here"
             />
             <div
@@ -61,5 +63,5 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
         visuallyNavigateToParent(props)
       )
     }
-  </SelectedHolidayRangeContext.Consumer>
+  </HolidayDateChooserStateContext.Consumer>
 );

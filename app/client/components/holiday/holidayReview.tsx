@@ -17,8 +17,9 @@ import {
 } from "../wizardRouterAdapter";
 import {
   cancelLinkCss,
-  rightAlignedButtonsCss,
-  SelectedHolidayRangeContext
+  HolidayDateChooserStateContext,
+  isHolidayDateChooserState,
+  rightAlignedButtonsCss
 } from "./holidayDateChooser";
 import {
   formatDateRangeAsFriendly,
@@ -30,12 +31,6 @@ import {
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-
-export function isDateRange(range: DateRange | {}): range is DateRange {
-  return (
-    !!range && range.hasOwnProperty("start") && range.hasOwnProperty("end")
-  );
-}
 
 const getPerformCreation = (
   selectedRange: DateRange,
@@ -111,9 +106,10 @@ export class HolidayReview extends React.Component<
   public render = () => (
     <MembersDataApiResponseContext.Consumer>
       {productDetail => (
-        <SelectedHolidayRangeContext.Consumer>
-          {selectedRange =>
-            isDateRange(selectedRange) &&
+        <HolidayDateChooserStateContext.Consumer>
+          {dateChooserState =>
+            isHolidayDateChooserState(dateChooserState) &&
+            dateChooserState.selectedRange &&
             hasProduct(productDetail) &&
             this.props.navigate ? (
               <WizardStep
@@ -131,7 +127,7 @@ export class HolidayReview extends React.Component<
                     necessary.{" "}
                   </p>{" "}
                   <SummaryTable
-                    selectedRange={selectedRange}
+                    selectedRange={dateChooserState.selectedRange}
                     issueDetails="details here"
                   />
                   <div
@@ -152,7 +148,7 @@ export class HolidayReview extends React.Component<
                   {this.state.isCreating ? (
                     <CreateHolidayStopsAsyncLoader
                       fetch={getPerformCreation(
-                        selectedRange,
+                        dateChooserState.selectedRange,
                         productDetail.subscription.subscriptionId,
                         productDetail.isTestUser,
                         this.props.productType
@@ -187,7 +183,7 @@ export class HolidayReview extends React.Component<
               visuallyNavigateToParent(this.props)
             )
           }
-        </SelectedHolidayRangeContext.Consumer>
+        </HolidayDateChooserStateContext.Consumer>
       )}
     </MembersDataApiResponseContext.Consumer>
   );

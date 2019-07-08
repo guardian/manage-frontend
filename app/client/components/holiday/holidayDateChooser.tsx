@@ -85,9 +85,19 @@ const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
   );
 };
 
-export const SelectedHolidayRangeContext: React.Context<
-  DateRange | {}
+export const HolidayDateChooserStateContext: React.Context<
+  HolidayDateChooserState | {}
 > = React.createContext({});
+
+export function isHolidayDateChooserState(
+  state: HolidayDateChooserState | {}
+): state is HolidayDateChooserState {
+  return (
+    !!state &&
+    state.hasOwnProperty("selectedRange") &&
+    state.hasOwnProperty("issuesImpactedBySelection")
+  );
+}
 
 interface SelectionValidationAndErrorMsg {
   isValid: boolean;
@@ -131,8 +141,8 @@ export class HolidayDateChooser extends React.Component<
                 );
 
                 return (
-                  <SelectedHolidayRangeContext.Provider
-                    value={this.state.selectedRange || {}}
+                  <HolidayDateChooserStateContext.Provider
+                    value={this.state || {}}
                   >
                     <WizardStep
                       routeableStepProps={this.props}
@@ -219,7 +229,7 @@ export class HolidayDateChooser extends React.Component<
                       </div>
                       <div css={{ height: "10px" }} />
                     </WizardStep>
-                  </SelectedHolidayRangeContext.Provider>
+                  </HolidayDateChooserStateContext.Provider>
                 );
               } else {
                 return (
