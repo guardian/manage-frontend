@@ -18,7 +18,9 @@
     "updateSnapshot": "jest -u",
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && tslint --fix -p .",
-    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
+    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -136,7 +138,9 @@
     "stylis-pxtorem": "^0.0.2",
     "url-parse": "^1.4.4",
     "webpack-node-externals": "^1.7.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "snyk": "^1.192.3"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "snyk": true
 }
