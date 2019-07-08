@@ -18,7 +18,9 @@
     "updateSnapshot": "jest -u",
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && tslint --fix -p .",
-    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact"
+    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -109,7 +111,8 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
     "webpack-merge": "^4.1.4",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "snyk": "^1.192.3"
   },
   "dependencies": {
     "@emotion/core": "^10.0.14",
@@ -138,5 +141,6 @@
     "webpack-node-externals": "^1.7.2",
     "winston": "^3.2.1"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "snyk": true
 }
