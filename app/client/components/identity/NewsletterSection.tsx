@@ -15,7 +15,7 @@ const newsletterPreference = (
   newsletter: Newsletter,
   clickHandler: ClickHandler
 ) => {
-  const { id, name, description, frequency } = newsletter;
+  const { id, name, description, frequency, subscribed } = newsletter;
   return (
     <MarketingPreference
       id={id}
@@ -23,6 +23,7 @@ const newsletterPreference = (
       title={name}
       description={description}
       frequency={frequency}
+      selected={subscribed}
       onClick={clickHandler}
     />
   );

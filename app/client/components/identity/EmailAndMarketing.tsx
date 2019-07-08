@@ -10,23 +10,38 @@ import { OptOutSection } from "./OptOutSection";
 import {
   Consent,
   mapConsentGroup,
-  NewsletterGroup,
+  mapSubscriptionsToNewsletters,
+  Newsletter,
   readConsents,
   readNewsletters,
+  readNewsletterSubscriptions,
+  toNewsletterGroups,
   updateConsent,
   updateNewsletter
 } from "./identity";
 
 export const EmailAndMarketing = (props: { path?: string }) => {
-  const [newsletterGroups, setNewsletterGroups] = useState(
-    [] as NewsletterGroup[]
-  );
+  const [newsletters, setNewsletters] = useState([] as Newsletter[]);
   const [consents, setConsents] = useState([] as Consent[]);
+  const [subscribed, setSubscribed] = useState([] as string[]);
+  const setNewsletterConsent = (id: string) => {
+    const location = subscribed.indexOf(id);
+    const consented = location >= 0;
+    // Eager UI
+    if (!consented) {
+      setSubscribed([...subscribed, id]);
+    } else {
+      const update = [...subscribed];
+      update.splice(location, 1);
+      setSubscribed(update);
+    }
+    return updateNewsletter(id, !consented);
+  };
   useEffect(() => {
-    readNewsletters().then(ns => setNewsletterGroups(ns));
-    readConsents().then(cs => setConsents(cs));
+    readNewsletterSubscriptions().then(setSubscribed);
+    readNewsletters().then(setNewsletters);
+    readConsents().then(setConsents);
   }, []);
-
   return (
     <>
       <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
@@ -44,8 +59,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageHeaderContainer>
       <PageContainer>
         <NewsletterSection
-          newsletterGroups={newsletterGroups}
-          clickHandler={updateNewsletter}
+          newsletterGroups={toNewsletterGroups(
+            mapSubscriptionsToNewsletters(newsletters, subscribed)
+          )}
+          clickHandler={setNewsletterConsent}
         />
       </PageContainer>
       <PageContainer>

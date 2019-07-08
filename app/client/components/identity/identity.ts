@@ -17,6 +17,10 @@ export interface Consent {
   description: string;
 }
 
+interface Subscription {
+  listId: number;
+}
+
 interface ExactTargetEntity {
   exactTargetListId: number;
 }
@@ -27,6 +31,7 @@ export interface Newsletter {
   name: string;
   description: string;
   frequency: string;
+  subscribed: boolean;
 }
 
 export interface NewsletterGroup {
@@ -46,7 +51,9 @@ const colors: { [T in Theme]: string } = {
   [Theme.FromThePapers]: palette.neutral["1"]
 };
 
-// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
+const toSubscriptionIdList = (subscriptions: Subscription[]): string[] =>
+  subscriptions.map(s => s.listId.toString());
+
 const toNewsletter = (
   rawNewsletter: Newsletter & ExactTargetEntity
 ): Newsletter => {
@@ -62,13 +69,13 @@ const toNewsletter = (
     description,
     theme,
     name,
-    frequency
+    frequency,
+    subscribed: false
   };
 };
 
-// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
-const toNewsletterGroups = (
-  newsletters: Array<Newsletter & ExactTargetEntity>
+export const toNewsletterGroups = (
+  newsletters: Newsletter[]
 ): NewsletterGroup[] => {
   const template = [
     Theme.news,
@@ -83,10 +90,53 @@ const toNewsletterGroups = (
   return template.map(theme => ({
     theme,
     color: colors[theme],
-    newsletters: newsletters
-      .filter(newsletter => newsletter.theme === theme)
-      .map(toNewsletter)
+    newsletters: newsletters.filter(newsletter => newsletter.theme === theme)
   }));
+};
+
+export const mapSubscriptionsToNewsletters = (
+  newsletters: Newsletter[],
+  subscriptionIds: string[]
+): Newsletter[] => {
+  return newsletters.map(newsletter => {
+    if (subscriptionIds.includes(newsletter.id)) {
+      return {
+        ...newsletter,
+        subscribed: true
+      };
+    } else {
+      return newsletter;
+    }
+  });
+};
+
+export const mapConsentGroup = (consents: Consent[]): Consent[] => {
+  const template = ["supporter", "jobs", "holidays", "events", "offers"];
+  return template.reduce((consentGroup: Consent[], id) => {
+    const consent = consents.find(c => c.id === id);
+    if (consent) {
+      consentGroup.push(consent);
+    }
+    return consentGroup;
+  }, []);
+};
+
+// @TODO: DEV: FOR TESTING FUNCTIONS
+const TODO_DEV_TESTING_BASE_URL = "https://idapi.code.dev-theguardian.com";
+
+// @TODO: DEV: TESTING FUNCTION
+export const readNewsletterSubscriptions = async (): Promise<string[]> => {
+  // const url = TODO_DEV_TESTING_BASE_URL + "/users/me/newsletters";
+  const url = "/relprox/users/me/newsletters";
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
+    );
+  } else {
+    const data = await response.json();
+    return toSubscriptionIdList(data.result.subscriptions);
+  }
 };
 
 // @TODO: DEV: TESTING FUNCTION
@@ -116,11 +166,8 @@ export const updateNewsletter = async (
   }
 };
 
-// @TODO: DEV: FOR TESTING FUNCTIONS
-const TODO_DEV_TESTING_BASE_URL = "https://idapi.code.dev-theguardian.com";
-
 // @TODO: DEV: TESTING FUNCTION
-export const readNewsletters = async (): Promise<NewsletterGroup[]> => {
+export const readNewsletters = async (): Promise<Newsletter[]> => {
   const url = TODO_DEV_TESTING_BASE_URL + "/newsletters";
   const response = await fetch(url);
   if (!response.ok) {
@@ -128,20 +175,10 @@ export const readNewsletters = async (): Promise<NewsletterGroup[]> => {
       "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
     );
   } else {
-    return toNewsletterGroups(await response.json());
+    return ((await response.json()) as Array<
+      Newsletter & ExactTargetEntity
+    >).map(toNewsletter);
   }
-};
-
-// @TODO: DEV: POTENTIALLY REPLACEABLE IF CALLS PROXIED
-export const mapConsentGroup = (consents: Consent[]): Consent[] => {
-  const template = ["supporter", "jobs", "holidays", "events", "offers"];
-  return template.reduce((consentGroup: Consent[], id) => {
-    const consent = consents.find(c => c.id === id);
-    if (consent) {
-      consentGroup.push(consent);
-    }
-    return consentGroup;
-  }, []);
 };
 
 // @TODO: DEV: TESTING FUNCTION
