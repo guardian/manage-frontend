@@ -40,6 +40,7 @@ const babelCommon = {
   plugins: [
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
+    "babel-plugin-preval",
     "lodash"
   ]
 };
@@ -91,7 +92,8 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    user: ["whatwg-fetch", "./client/user"]
+    user: ["whatwg-fetch", "./client/user"],
+    consent: ["whatwg-fetch", "./client/consent.tsx"]
   },
   output: {
     path: path.resolve(__dirname, "dist", "static"),

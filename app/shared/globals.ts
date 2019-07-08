@@ -12,6 +12,8 @@ export interface Globals {
     sendInitialEvent: (url?: string, referer?: string) => void;
   };
   abTest?: AbTest;
+  polyfilled?: boolean;
+  onPolyfilled?: () => void;
 }
 
 declare global {

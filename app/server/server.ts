@@ -44,6 +44,7 @@ server.use(routes.core);
 server.use("/profile/", routes.profile);
 server.use("/api/", routes.api);
 server.use(routes.productsProvider("/api/"));
+server.use("/consent/", routes.consent);
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use(routes.frontend);
 
