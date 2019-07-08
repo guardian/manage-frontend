@@ -182,7 +182,8 @@ const getProductDetailSelector = (
 
 export interface FlowStartMultipleProductDetailHandlerProps
   extends RouteableStepProps {
-  headingPrefix?: string;
+  headingPrefix: string;
+  hideHeading?: true;
   supportRefererSuffix: string;
   loadingMessagePrefix: string;
   singleProductDetailRenderer: (
@@ -221,7 +222,7 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
   public render(): React.ReactNode {
     return (
       <div>
-        {this.props.headingPrefix && (
+        {!this.props.hideHeading && (
           <PageContainer>
             <h1 css={{ fontSize: "24px" }}>
               {this.props.headingPrefix + " your "}
