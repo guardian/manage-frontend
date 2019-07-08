@@ -15,6 +15,7 @@ export interface Consent {
   id: string;
   name: string;
   description: string;
+  subscribed: boolean;
 }
 
 interface Subscription {
@@ -74,6 +75,13 @@ const toNewsletter = (
   };
 };
 
+const toConsent = (raw: any): Consent => {
+  return {
+    ...raw,
+    subscribed: false
+  };
+};
+
 export const toNewsletterGroups = (
   newsletters: Newsletter[]
 ): NewsletterGroup[] => {
@@ -94,10 +102,10 @@ export const toNewsletterGroups = (
   }));
 };
 
-export const mapSubscriptionsToNewsletters = (
-  newsletters: Newsletter[],
+export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
+  newsletters: T[],
   subscriptionIds: string[]
-): Newsletter[] => {
+): T[] => {
   return newsletters.map(newsletter => {
     if (subscriptionIds.includes(newsletter.id)) {
       return {
@@ -182,6 +190,23 @@ export const readNewsletters = async (): Promise<Newsletter[]> => {
 };
 
 // @TODO: DEV: TESTING FUNCTION
+export const readConsentSubscriptions = async (): Promise<string[]> => {
+  const url = TODO_DEV_TESTING_BASE_URL + "/user/me";
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
+    );
+  } else {
+    const data = await response.json();
+    const consents = data.user.consents
+      .filter((consent: any) => consent.consented)
+      .map((consent: any) => consent.id);
+    return consents;
+  }
+};
+
+// @TODO: DEV: TESTING FUNCTION
 export const updateConsent = async (id: string, consented: boolean = true) => {
   const url = TODO_DEV_TESTING_BASE_URL + "/users/me/consents";
   const payload = [
@@ -216,6 +241,6 @@ export const readConsents = async (): Promise<Consent[]> => {
       "This is a test function and should NOT be present in the final merge: Failed to retrieve consents data"
     );
   } else {
-    return await response.json();
+    return (await response.json()).map(toConsent);
   }
 };

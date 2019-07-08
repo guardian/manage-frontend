@@ -20,6 +20,7 @@ const optOutFinder = (consents: Consent[], clickHandler: ClickHandler) => (
       <MarketingPreference
         id={consent.id}
         description={consent.description}
+        selected={consent.subscribed}
         onClick={clickHandler}
       />
     )

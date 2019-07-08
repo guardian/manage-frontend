@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
@@ -10,9 +10,10 @@ import { OptOutSection } from "./OptOutSection";
 import {
   Consent,
   mapConsentGroup,
-  mapSubscriptionsToNewsletters,
+  mapSubscriptions,
   Newsletter,
   readConsents,
+  readConsentSubscriptions,
   readNewsletters,
   readNewsletterSubscriptions,
   toNewsletterGroups,
@@ -20,25 +21,42 @@ import {
   updateNewsletter
 } from "./identity";
 
+const setSubscription = (
+  list: string[],
+  setList: Dispatch<SetStateAction<string[]>>,
+  updateModel: (id: string, consent: boolean) => {}
+) => (id: string) => {
+  const location = list.indexOf(id);
+  const consent = location >= 0;
+  // Eager UI
+  if (!consent) {
+    setList([...list, id]);
+  } else {
+    const update = [...list];
+    update.splice(location, 1);
+    setList(update);
+  }
+  return updateModel(id, !consent);
+};
+
 export const EmailAndMarketing = (props: { path?: string }) => {
   const [newsletters, setNewsletters] = useState([] as Newsletter[]);
   const [consents, setConsents] = useState([] as Consent[]);
   const [subscribed, setSubscribed] = useState([] as string[]);
-  const setNewsletterConsent = (id: string) => {
-    const location = subscribed.indexOf(id);
-    const consented = location >= 0;
-    // Eager UI
-    if (!consented) {
-      setSubscribed([...subscribed, id]);
-    } else {
-      const update = [...subscribed];
-      update.splice(location, 1);
-      setSubscribed(update);
-    }
-    return updateNewsletter(id, !consented);
-  };
+  const [consented, setConsented] = useState([] as string[]);
+  const setNewsletterSubscription = setSubscription(
+    subscribed,
+    setSubscribed,
+    updateNewsletter
+  );
+  const setUserConsent = setSubscription(
+    consented,
+    setConsented,
+    updateConsent
+  );
   useEffect(() => {
     readNewsletterSubscriptions().then(setSubscribed);
+    readConsentSubscriptions().then(setConsented);
     readNewsletters().then(setNewsletters);
     readConsents().then(setConsents);
   }, []);
@@ -60,9 +78,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       <PageContainer>
         <NewsletterSection
           newsletterGroups={toNewsletterGroups(
-            mapSubscriptionsToNewsletters(newsletters, subscribed)
+            mapSubscriptions(newsletters, subscribed)
           )}
-          clickHandler={setNewsletterConsent}
+          clickHandler={setNewsletterSubscription}
         />
       </PageContainer>
       <PageContainer>
@@ -70,15 +88,18 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <ConsentSection
-          consents={mapConsentGroup(consents)}
-          clickHandler={updateConsent}
+          consents={mapConsentGroup(mapSubscriptions(consents, consented))}
+          clickHandler={setUserConsent}
         />
       </PageContainer>
       <PageContainer>
         <Lines n={4} />
       </PageContainer>
       <PageContainer>
-        <OptOutSection consents={consents} clickHandler={updateConsent} />
+        <OptOutSection
+          consents={mapSubscriptions(consents, consented)}
+          clickHandler={setUserConsent}
+        />
       </PageContainer>
     </>
   );

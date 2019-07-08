@@ -11,13 +11,14 @@ interface ConsentSectionProps {
 }
 
 const consentPreference = (consent: Consent, clickHandler: ClickHandler) => {
-  const { id, name, description } = consent;
+  const { id, name, description, subscribed } = consent;
   return (
     <MarketingPreference
       id={id}
       key={id}
       title={name}
       description={description}
+      selected={subscribed}
       onClick={clickHandler}
     />
   );
