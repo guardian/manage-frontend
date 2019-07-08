@@ -1146,7 +1146,9 @@ exports[`Main renders something 1`] = `
                 }
               }
             >
-              © 2018 Guardian News and Media Limited or its affiliated companies. All rights reserved.
+              © 
+              2019
+               Guardian News and Media Limited or its affiliated companies. All rights reserved.
             </div>
           </div>
         </div>

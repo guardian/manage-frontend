@@ -13,6 +13,8 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
+const TODAY = new Date();
+
 const fillEmailSignup = (emailForm: SyntheticEvent<HTMLIFrameElement>) => {
   // Placeholder method to autofill user email when the iframe is hosted on the same hostname
   return;
@@ -266,8 +268,8 @@ const Footer = () => (
                 fontSize: "12px"
               }}
             >
-              © 2018 Guardian News and Media Limited or its affiliated
-              companies. All&nbsp;rights&nbsp;reserved.
+              © {TODAY.getFullYear()} Guardian News and Media Limited or its
+              affiliated companies. All&nbsp;rights&nbsp;reserved.
             </div>
           </div>
         </div>
