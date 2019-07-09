@@ -9,6 +9,11 @@ export enum Theme {
   FromThePapers = "From the papers"
 }
 
+export interface User {
+  email: string;
+  consents: Consent[];
+}
+
 export interface Consent {
   id: string;
   name: string;
@@ -139,22 +144,6 @@ export const readNewsletters = async (): Promise<Newsletter[]> => {
   }
 };
 
-// @TODO: DEV: TESTING FUNCTION
-export const readConsentSubscriptions = async (): Promise<string[]> => {
-  const url = TODO_DEV_TESTING_BASE_URL + "/user/me";
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
-    );
-  } else {
-    const data = await response.json();
-    const consents = data.user.consents
-      .filter((consent: any) => consent.consented)
-      .map((consent: any) => consent.id);
-    return consents;
-  }
-};
 
 // @TODO: DEV: TESTING FUNCTION
 export const updateConsent = async (id: string, consented: boolean = true) => {
@@ -192,5 +181,25 @@ export const readConsents = async (): Promise<Consent[]> => {
     );
   } else {
     return (await response.json()).map(toConsent);
+  }
+};
+
+// @TODO: DEV: TESTING FUNCTION
+export const readUserDetails = async (): Promise<User> => {
+  const url = TODO_DEV_TESTING_BASE_URL + "/users/me/newsletters";
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw Error(
+      "This is a test function and should NOT be present in the final merge: Failed to retrieve user data"
+    );
+  } else {
+    const data = await response.json();
+    const consents = data.user.consents
+      .filter((consent: any) => consent.consented)
+      .map((consent: any) => consent.id);
+    return {
+      email: data.user.primaryEmailAddress,
+      consents
+    };
   }
 };

@@ -3,6 +3,7 @@ import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
 import { ConsentSection } from "./ConsentSection";
+import { EmailSettingsSection } from "./EmailSettingsSection";
 import { Lines } from "./Lines";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
@@ -12,9 +13,9 @@ import {
   mapSubscriptions,
   Newsletter,
   readConsents,
-  readConsentSubscriptions,
   readNewsletters,
   readNewsletterSubscriptions,
+  readUserDetails,
   updateConsent,
   updateNewsletter
 } from "./identity";
@@ -42,6 +43,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const [consents, setConsents] = useState([] as Consent[]);
   const [subscribed, setSubscribed] = useState([] as string[]);
   const [consented, setConsented] = useState([] as string[]);
+  const [email, setEmail] = useState();
   const setNewsletterSubscription = setSubscription(
     subscribed,
     setSubscribed,
@@ -54,7 +56,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   );
   useEffect(() => {
     readNewsletterSubscriptions().then(setSubscribed);
-    readConsentSubscriptions().then(setConsented);
+    readUserDetails().then(user => {
+      setConsents(user.consents);
+      setEmail(user.email);
+    });
     readNewsletters().then(setNewsletters);
     readConsents().then(setConsents);
   }, []);
@@ -87,6 +92,12 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           consents={mapSubscriptions(consents, consented)}
           clickHandler={setUserConsent}
         />
+      </PageContainer>
+      <PageContainer>
+        <Lines n={1} />
+      </PageContainer>
+      <PageContainer>
+        <EmailSettingsSection email={email} />
       </PageContainer>
       <PageContainer>
         <Lines n={4} />
