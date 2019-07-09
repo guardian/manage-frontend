@@ -18,7 +18,11 @@ import {
   ProductDetail,
   sortByJoinDate
 } from "../../shared/productResponse";
-import { ProductPageProperties, ProductType } from "../../shared/productTypes";
+import {
+  ProductPageProperties,
+  ProductType,
+  shouldHaveHolidayStopsFlow
+} from "../../shared/productTypes";
 import {
   createProductDetailFetcher,
   ProductTypeWithProductPageProperties
@@ -386,14 +390,14 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
-            {/* {shouldHaveHolidayStopsFlow(productType) && (
+            {shouldHaveHolidayStopsFlow(productType) && (
               <LinkButton
                 text="Manage your suspensions"
                 to={"/suspend/" + productType.urlPart}
                 state={productDetail}
                 right
               />
-            )} */}
+            )}
           </PageContainer>
         </>
       )}
