@@ -1,15 +1,27 @@
 import React, { FC } from "react";
+import palette from "../../colours";
 import { DropMenu } from "./DropMenu";
-import { Newsletter, NewsletterGroup } from "./identity";
+import { Newsletter, Theme } from "./identity";
 import { MarketingPreference } from "./MarketingPreference";
 import { PageSection } from "./PageSection";
 
 type ClickHandler = (id: string) => {};
 
 export interface NewsletterSectionProps {
-  newsletterGroups: NewsletterGroup[];
+  newsletters: Newsletter[];
   clickHandler: ClickHandler;
 }
+
+const colors: { [T in Theme]: string } = {
+  [Theme.news]: palette.red.medium,
+  [Theme.features]: palette.neutral["1"],
+  [Theme.sport]: palette.blue.medium,
+  [Theme.culture]: "#a1845c",
+  [Theme.lifestyle]: palette.pink.medium,
+  [Theme.comment]: "#e05e00",
+  [Theme.work]: palette.neutral["1"],
+  [Theme.FromThePapers]: palette.neutral["1"]
+};
 
 const newsletterPreference = (
   newsletter: Newsletter,
@@ -29,21 +41,31 @@ const newsletterPreference = (
   );
 };
 
-const newsletterPreferences = (
-  newsletterGroups: NewsletterGroup[],
+const newsletterPreferenceGroups = (
+  newsletters: Newsletter[],
   clickHandler: ClickHandler
-) =>
-  newsletterGroups.map(newsletterGroup => {
-    const { theme, color, newsletters } = newsletterGroup;
-    return (
-      <DropMenu key={theme} color={color} title={theme}>
-        {newsletters.map(nl => newsletterPreference(nl, clickHandler))}
-      </DropMenu>
-    );
-  });
+) => {
+  const themes = [
+    Theme.news,
+    Theme.features,
+    Theme.sport,
+    Theme.culture,
+    Theme.lifestyle,
+    Theme.comment,
+    Theme.work,
+    Theme.FromThePapers
+  ];
+  return themes.map(theme => (
+    <DropMenu key={theme} color={colors[theme]} title={theme}>
+      {newsletters
+        .filter(n => n.theme === theme)
+        .map(n => newsletterPreference(n, clickHandler))}
+    </DropMenu>
+  ));
+};
 
 export const NewsletterSection: FC<NewsletterSectionProps> = props => {
-  const { newsletterGroups, clickHandler } = props;
+  const { newsletters, clickHandler } = props;
   return (
     <PageSection
       title="Your newsletters"
@@ -59,7 +81,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = props => {
         advertisements.
       `}
     >
-      {newsletterPreferences(newsletterGroups, clickHandler)}
+      {newsletterPreferenceGroups(newsletters, clickHandler)}
     </PageSection>
   );
 };

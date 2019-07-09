@@ -1,6 +1,4 @@
-import palette from "../../colours";
-
-enum Theme {
+export enum Theme {
   news = "news",
   features = "features",
   sport = "sport",
@@ -35,23 +33,6 @@ export interface Newsletter {
   subscribed: boolean;
 }
 
-export interface NewsletterGroup {
-  theme: Theme;
-  color: string;
-  newsletters: Newsletter[];
-}
-
-const colors: { [T in Theme]: string } = {
-  [Theme.news]: palette.red.medium,
-  [Theme.features]: palette.neutral["1"],
-  [Theme.sport]: palette.blue.medium,
-  [Theme.culture]: "#a1845c",
-  [Theme.lifestyle]: palette.pink.medium,
-  [Theme.comment]: "#e05e00",
-  [Theme.work]: palette.neutral["1"],
-  [Theme.FromThePapers]: palette.neutral["1"]
-};
-
 const toSubscriptionIdList = (subscriptions: Subscription[]): string[] =>
   subscriptions.map(s => s.listId.toString());
 
@@ -82,26 +63,6 @@ const toConsent = (raw: any): Consent => {
   };
 };
 
-export const toNewsletterGroups = (
-  newsletters: Newsletter[]
-): NewsletterGroup[] => {
-  const template = [
-    Theme.news,
-    Theme.features,
-    Theme.sport,
-    Theme.culture,
-    Theme.lifestyle,
-    Theme.comment,
-    Theme.work,
-    Theme.FromThePapers
-  ];
-  return template.map(theme => ({
-    theme,
-    color: colors[theme],
-    newsletters: newsletters.filter(newsletter => newsletter.theme === theme)
-  }));
-};
-
 export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
   newsletters: T[],
   subscriptionIds: string[]
@@ -116,17 +77,6 @@ export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
       return newsletter;
     }
   });
-};
-
-export const mapConsentGroup = (consents: Consent[]): Consent[] => {
-  const template = ["supporter", "jobs", "holidays", "events", "offers"];
-  return template.reduce((consentGroup: Consent[], id) => {
-    const consent = consents.find(c => c.id === id);
-    if (consent) {
-      consentGroup.push(consent);
-    }
-    return consentGroup;
-  }, []);
 };
 
 // @TODO: DEV: FOR TESTING FUNCTIONS

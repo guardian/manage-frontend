@@ -9,14 +9,12 @@ import { OptOutSection } from "./OptOutSection";
 
 import {
   Consent,
-  mapConsentGroup,
   mapSubscriptions,
   Newsletter,
   readConsents,
   readConsentSubscriptions,
   readNewsletters,
   readNewsletterSubscriptions,
-  toNewsletterGroups,
   updateConsent,
   updateNewsletter
 } from "./identity";
@@ -77,9 +75,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageHeaderContainer>
       <PageContainer>
         <NewsletterSection
-          newsletterGroups={toNewsletterGroups(
-            mapSubscriptions(newsletters, subscribed)
-          )}
+          newsletters={mapSubscriptions(newsletters, subscribed)}
           clickHandler={setNewsletterSubscription}
         />
       </PageContainer>
@@ -88,7 +84,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <ConsentSection
-          consents={mapConsentGroup(mapSubscriptions(consents, consented))}
+          consents={mapSubscriptions(consents, consented)}
           clickHandler={setUserConsent}
         />
       </PageContainer>

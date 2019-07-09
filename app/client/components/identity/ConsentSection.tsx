@@ -10,6 +10,13 @@ interface ConsentSectionProps {
   consents: Consent[];
 }
 
+export const otherEmailConsents = (consents: Consent[]): Consent[] => {
+  const ids = ["supporter", "jobs", "holidays", "events", "offers"];
+  return ids
+    .map(id => consents.find(c => c.id === id))
+    .filter((x): x is Consent => x !== undefined);
+};
+
 const consentPreference = (consent: Consent, clickHandler: ClickHandler) => {
   const { id, name, description, subscribed } = consent;
   return (
@@ -37,7 +44,7 @@ export const ConsentSection: FC<ConsentSectionProps> = props => {
         our products, services and events.
       `}
     >
-      {consentPreferences(consents, clickHandler)}
+      {consentPreferences(otherEmailConsents(consents), clickHandler)}
     </PageSection>
   );
 };
