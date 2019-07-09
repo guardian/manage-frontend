@@ -18,19 +18,16 @@ import {
 import {
   cancelLinkCss,
   HolidayDateChooserStateContext,
-  isHolidayDateChooserState,
+  isSharedHolidayDateChooserState,
   rightAlignedButtonsCss
 } from "./holidayDateChooser";
-import {
-  formatDateRangeAsFriendly,
-  holidayQuestionsTopicString,
-  summaryTableCss
-} from "./holidaysOverview";
+import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
+import { MAX_WIDTH, SummaryTable } from "./summaryTable";
 
 const getPerformCreation = (
   selectedRange: DateRange,
@@ -74,28 +71,6 @@ export interface HolidayReviewState {
   isCreating: boolean;
 }
 
-const MAX_WIDTH = "606px";
-
-export interface SummaryTableProps {
-  selectedRange: DateRange;
-  issueDetails: any;
-}
-
-export const SummaryTable = (props: SummaryTableProps) => (
-  <table css={{ ...summaryTableCss, maxWidth: MAX_WIDTH }}>
-    <tbody>
-      <tr>
-        <th>When</th>
-        <th>Suspended</th>
-      </tr>
-      <tr>
-        <td>{formatDateRangeAsFriendly(props.selectedRange)}</td>
-        <td>{props.issueDetails}</td>
-      </tr>
-    </tbody>
-  </table>
-);
-
 export class HolidayReview extends React.Component<
   RouteableStepProps,
   HolidayReviewState
@@ -108,8 +83,7 @@ export class HolidayReview extends React.Component<
       {productDetail => (
         <HolidayDateChooserStateContext.Consumer>
           {dateChooserState =>
-            isHolidayDateChooserState(dateChooserState) &&
-            dateChooserState.selectedRange &&
+            isSharedHolidayDateChooserState(dateChooserState) &&
             hasProduct(productDetail) &&
             this.props.navigate ? (
               <WizardStep
@@ -127,8 +101,8 @@ export class HolidayReview extends React.Component<
                     necessary.{" "}
                   </p>{" "}
                   <SummaryTable
-                    selectedRange={dateChooserState.selectedRange}
-                    issueDetails="details here"
+                    data={dateChooserState}
+                    alternateSuspendedColumnHeading="To be suspended"
                   />
                   <div
                     css={{

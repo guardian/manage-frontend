@@ -8,17 +8,16 @@ import {
 } from "../wizardRouterAdapter";
 import {
   HolidayDateChooserStateContext,
-  isHolidayDateChooserState,
+  isSharedHolidayDateChooserState,
   rightAlignedButtonsCss
 } from "./holidayDateChooser";
-import { SummaryTable } from "./holidayReview";
 import { holidayQuestionsTopicString } from "./holidaysOverview";
+import { SummaryTable } from "./summaryTable";
 
 export const HolidayConfirmed = (props: RouteableStepProps) => (
   <HolidayDateChooserStateContext.Consumer>
     {dateChooserState =>
-      isHolidayDateChooserState(dateChooserState) &&
-      dateChooserState.selectedRange ? (
+      isSharedHolidayDateChooserState(dateChooserState) ? (
         <WizardStep
           routeableStepProps={props}
           extraFooterComponents={
@@ -32,10 +31,7 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
               We will send you an email to confirm the details. You will be
               credited for the missing issues on your future bill(s).
             </p>
-            <SummaryTable
-              selectedRange={dateChooserState.selectedRange}
-              issueDetails="details here"
-            />
+            <SummaryTable data={dateChooserState} />
             <div
               css={{
                 marginTop: "20px",

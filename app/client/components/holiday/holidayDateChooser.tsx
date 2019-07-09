@@ -89,14 +89,10 @@ export const HolidayDateChooserStateContext: React.Context<
   HolidayDateChooserState | {}
 > = React.createContext({});
 
-export function isHolidayDateChooserState(
-  state: HolidayDateChooserState | {}
-): state is HolidayDateChooserState {
-  return (
-    !!state &&
-    state.hasOwnProperty("selectedRange") &&
-    state.hasOwnProperty("issuesImpactedBySelection")
-  );
+export function isSharedHolidayDateChooserState(
+  state: any
+): state is SharedHolidayDateChooserState {
+  return !!state && state.selectedRange && state.issuesImpactedBySelection;
 }
 
 interface SelectionValidationAndErrorMsg {
@@ -109,6 +105,12 @@ interface HolidayDateChooserState {
   issuesImpactedBySelection: IssuesImpactedPerYear | null;
   selectionIsValid: SelectionValidationAndErrorMsg;
 }
+
+export interface SharedHolidayDateChooserState {
+  selectedRange: DateRange;
+  issuesImpactedBySelection: IssuesImpactedPerYear;
+}
+
 export class HolidayDateChooser extends React.Component<
   RouteableStepProps,
   HolidayDateChooserState
