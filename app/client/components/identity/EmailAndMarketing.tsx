@@ -57,7 +57,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   useEffect(() => {
     readNewsletterSubscriptions().then(setSubscribed);
     readUserDetails().then(user => {
-      setConsents(user.consents);
+      setConsented(user.consents);
       setEmail(user.email);
     });
     readNewsletters().then(setNewsletters);

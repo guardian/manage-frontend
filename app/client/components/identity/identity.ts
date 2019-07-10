@@ -11,7 +11,7 @@ export enum Theme {
 
 export interface User {
   email: string;
-  consents: Consent[];
+  consents: string[];
 }
 
 export interface Consent {
@@ -38,9 +38,11 @@ export interface Newsletter {
   subscribed: boolean;
 }
 
+// @TODO: NO TEST
 const toSubscriptionIdList = (subscriptions: Subscription[]): string[] =>
   subscriptions.map(s => s.listId.toString());
 
+// @TODO: NO TEST
 const toNewsletter = (
   rawNewsletter: Newsletter & ExactTargetEntity
 ): Newsletter => {
@@ -61,6 +63,7 @@ const toNewsletter = (
   };
 };
 
+// @TODO: NO TEST
 const toConsent = (raw: any): Consent => {
   return {
     ...raw,
@@ -68,6 +71,7 @@ const toConsent = (raw: any): Consent => {
   };
 };
 
+// @TODO: NO TEST
 export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
   newsletters: T[],
   subscriptionIds: string[]
@@ -84,122 +88,98 @@ export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
   });
 };
 
-// @TODO: DEV: FOR TESTING FUNCTIONS
-const TODO_DEV_TESTING_BASE_URL = "https://idapi.code.dev-theguardian.com";
-
-// @TODO: DEV: TESTING FUNCTION
-export const readNewsletterSubscriptions = async (): Promise<string[]> => {
-  // const url = TODO_DEV_TESTING_BASE_URL + "/users/me/newsletters";
-  const url = "/relprox/users/me/newsletters";
-  const response = await fetch(url);
+// @TODO: NO TEST
+const APIFetch = (baseUrl: string) => async (
+  url: string,
+  options?: RequestInit
+): Promise<any> => {
+  const response = await fetch(baseUrl + url, options);
   if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
-    );
+    let err;
+    try {
+      err = await response.json();
+    } catch (e) {
+      err = await response.text();
+    }
+    throw new Error(`Response error: ${err}`);
   } else {
-    const data = await response.json();
-    return toSubscriptionIdList(data.result.subscriptions);
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error(`Error decoding JSON response: ${e}`);
+    }
+    return data;
   }
 };
 
-// @TODO: DEV: TESTING FUNCTION
-export const updateNewsletter = async (
-  id: string,
-  subscribed: boolean = true
-) => {
-  const url = "https://idapi.thegulocal.com/users/me/newsletters";
-  const payload = {
-    id,
-    subscribed
-  };
-  const options = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  };
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to update newsletter data"
-    );
-  } else {
-    return;
-  }
+// @TODO: NO TEST
+const APIPatchOptions = (payload: any): RequestInit => ({
+  method: "PATCH",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
+
+const IDAPI_URL = "https://idapi.code.dev-theguardian.com";
+const identityFetch = APIFetch(IDAPI_URL);
+
+// @TODO: NO TEST
+export const readConsents = async (): Promise<Consent[]> => {
+  const url = "/consents";
+  return (await identityFetch(url)).map(toConsent);
 };
 
-// @TODO: DEV: TESTING FUNCTION
-export const readNewsletters = async (): Promise<Newsletter[]> => {
-  const url = TODO_DEV_TESTING_BASE_URL + "/newsletters";
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to retrieve newsletter data"
-    );
-  } else {
-    return ((await response.json()) as Array<
-      Newsletter & ExactTargetEntity
-    >).map(toNewsletter);
-  }
-};
-
-
-// @TODO: DEV: TESTING FUNCTION
+// @TODO: NO TEST
 export const updateConsent = async (id: string, consented: boolean = true) => {
-  const url = TODO_DEV_TESTING_BASE_URL + "/users/me/consents";
+  const url = "/users/me/consents";
   const payload = [
     {
       id,
       consented
     }
   ];
-  const options = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
+  await identityFetch(url, APIPatchOptions(payload));
+};
+
+// @TODO: NO TEST
+export const readNewsletters = async (): Promise<Newsletter[]> => {
+  const url = "/newsletters";
+  return ((await identityFetch(url)) as Array<
+    Newsletter & ExactTargetEntity
+  >).map(toNewsletter);
+};
+
+// @TODO: NO TEST
+export const updateNewsletter = async (
+  id: string,
+  subscribed: boolean = true
+) => {
+  const url = "/users/me/newsletters";
+  const payload = {
+    id,
+    subscribed
   };
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to update consent data"
-    );
-  } else {
-    return;
-  }
+  identityFetch(url, APIPatchOptions(payload));
 };
 
-// @TODO: DEV: TESTING FUNCTION
-export const readConsents = async (): Promise<Consent[]> => {
-  const url = TODO_DEV_TESTING_BASE_URL + "/consents";
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to retrieve consents data"
-    );
-  } else {
-    return (await response.json()).map(toConsent);
-  }
+// @TODO: NO TEST
+export const readNewsletterSubscriptions = async (): Promise<string[]> => {
+  const url = "/users/me/newsletters";
+  const data = await identityFetch(url);
+  return toSubscriptionIdList(data.result.subscriptions);
 };
 
-// @TODO: DEV: TESTING FUNCTION
+// @TODO: NO TEST
 export const readUserDetails = async (): Promise<User> => {
-  const url = TODO_DEV_TESTING_BASE_URL + "/users/me/newsletters";
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw Error(
-      "This is a test function and should NOT be present in the final merge: Failed to retrieve user data"
-    );
-  } else {
-    const data = await response.json();
-    const consents = data.user.consents
-      .filter((consent: any) => consent.consented)
-      .map((consent: any) => consent.id);
-    return {
-      email: data.user.primaryEmailAddress,
-      consents
-    };
-  }
+  const url = "/user/me";
+  const data = await identityFetch(url);
+  const consents = data.user.consents
+    .filter((consent: any) => consent.consented)
+    .map((consent: any) => consent.id);
+  return {
+    email: data.user.primaryEmailAddress,
+    consents
+  };
 };
