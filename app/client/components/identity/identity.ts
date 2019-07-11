@@ -17,6 +17,7 @@ export interface User {
 export interface Consent {
   id: string;
   name: string;
+  isOptOut: boolean;
   description: string;
   subscribed: boolean;
 }
@@ -73,18 +74,15 @@ const toConsent = (raw: any): Consent => {
 
 // @TODO: NO TEST
 export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
-  newsletters: T[],
+  subscribables: T[],
   subscriptionIds: string[]
 ): T[] => {
-  return newsletters.map(newsletter => {
-    if (subscriptionIds.includes(newsletter.id)) {
-      return {
-        ...newsletter,
-        subscribed: true
-      };
-    } else {
-      return newsletter;
-    }
+  return subscribables.map(subscribable => {
+    const subscribed = subscriptionIds.includes(subscribable.id);
+    return {
+      ...subscribable,
+      subscribed
+    };
   });
 };
 
@@ -102,6 +100,8 @@ const APIFetch = (baseUrl: string) => async (
       err = await response.text();
     }
     throw new Error(`Response error: ${err}`);
+  } else if (response.status === 204) {
+    return null;
   } else {
     let data;
     try {
@@ -124,6 +124,18 @@ const APIPatchOptions = (payload: any): RequestInit => ({
 
 const IDAPI_URL = "https://idapi.code.dev-theguardian.com";
 const identityFetch = APIFetch(IDAPI_URL);
+
+// @TODO: NO TEST
+export const updateRemoveAllConsents = async () => {
+  const url = "remove/consent/all";
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  return identityFetch(url, options);
+};
 
 // @TODO: NO TEST
 export const readConsents = async (): Promise<Consent[]> => {
