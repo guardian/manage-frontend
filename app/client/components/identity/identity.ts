@@ -9,9 +9,25 @@ export enum Theme {
   FromThePapers = "From the papers"
 }
 
+export enum ConsentOptionType {
+  EMAIL = "EMAIL",
+  NEWSLETTER = "NEWSLETTER",
+  OPT_OUT = "OPT_OUT"
+}
+
 export interface User {
   email: string;
   consents: string[];
+}
+
+export interface ConsentOption {
+  id: string;
+  description: string;
+  frequency?: string;
+  name: string;
+  theme?: string;
+  type: ConsentOptionType;
+  subscribed: boolean;
 }
 
 export interface Consent {
@@ -40,13 +56,33 @@ export interface Newsletter {
 }
 
 // @TODO: NO TEST
+export const filterNewsletters = (options: ConsentOption[]): ConsentOption[] =>
+  options.filter(option => option.type === ConsentOptionType.NEWSLETTER);
+
+// @TODO: NO TEST
+export const filterEmailConsents = (
+  options: ConsentOption[]
+): ConsentOption[] =>
+  options.filter(option => option.type === ConsentOptionType.EMAIL);
+
+// @TODO: NO TEST
+export const filterOptOuts = (options: ConsentOption[]): ConsentOption[] =>
+  options.filter(option => option.type === ConsentOptionType.OPT_OUT);
+
+// @TODO: NO TEST
+export const filterConsents = (options: ConsentOption[]): ConsentOption[] => [
+  ...filterOptOuts(options),
+  ...filterEmailConsents(options)
+];
+
+// @TODO: NO TEST
 const toSubscriptionIdList = (subscriptions: Subscription[]): string[] =>
   subscriptions.map(s => s.listId.toString());
 
 // @TODO: NO TEST
 const toNewsletter = (
   rawNewsletter: Newsletter & ExactTargetEntity
-): Newsletter => {
+): ConsentOption => {
   const {
     theme,
     name,
@@ -58,6 +94,7 @@ const toNewsletter = (
     id: exactTargetListId.toString(),
     description,
     theme,
+    type: ConsentOptionType.NEWSLETTER,
     name,
     frequency,
     subscribed: false
@@ -65,25 +102,12 @@ const toNewsletter = (
 };
 
 // @TODO: NO TEST
-const toConsent = (raw: any): Consent => {
+const toConsent = (raw: any): ConsentOption => {
   return {
     ...raw,
+    type: raw.isOptOut ? ConsentOptionType.OPT_OUT : ConsentOptionType.EMAIL,
     subscribed: false
   };
-};
-
-// @TODO: NO TEST
-export const mapSubscriptions = <T extends { id: string; subscribed: boolean }>(
-  subscribables: T[],
-  subscriptionIds: string[]
-): T[] => {
-  return subscribables.map(subscribable => {
-    const subscribed = subscriptionIds.includes(subscribable.id);
-    return {
-      ...subscribable,
-      subscribed
-    };
-  });
 };
 
 // @TODO: NO TEST
@@ -138,7 +162,7 @@ export const updateRemoveAllConsents = async () => {
 };
 
 // @TODO: NO TEST
-export const readConsents = async (): Promise<Consent[]> => {
+export const readConsents = async (): Promise<ConsentOption[]> => {
   const url = "/consents";
   return (await identityFetch(url)).map(toConsent);
 };
@@ -156,7 +180,7 @@ export const updateConsent = async (id: string, consented: boolean = true) => {
 };
 
 // @TODO: NO TEST
-export const readNewsletters = async (): Promise<Newsletter[]> => {
+export const readNewsletters = async (): Promise<ConsentOption[]> => {
   const url = "/newsletters";
   return ((await identityFetch(url)) as Array<
     Newsletter & ExactTargetEntity

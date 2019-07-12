@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Consent } from "./identity";
+import { ConsentOption } from "./identity";
 import { Lines } from "./Lines";
 import { MarketingPreference } from "./MarketingPreference";
 import { PageSection } from "./PageSection";
@@ -7,13 +7,14 @@ import { PageSection } from "./PageSection";
 type ClickHandler = (id: string) => {};
 
 interface OptOutSectionProps {
-  consents: Consent[];
+  consents: ConsentOption[];
   clickHandler: ClickHandler;
 }
 
-const optOutFinder = (consents: Consent[], clickHandler: ClickHandler) => (
-  id: string
-) => {
+const optOutFinder = (
+  consents: ConsentOption[],
+  clickHandler: ClickHandler
+) => (id: string) => {
   const consent = consents.find(c => c.id === id);
   return (
     consent && (
@@ -32,7 +33,8 @@ const standardTextSize = {
 };
 
 export const OptOutSection: FC<OptOutSectionProps> = props => {
-  const getOptOut = optOutFinder(props.consents, props.clickHandler);
+  const { consents, clickHandler } = props;
+  const getOptOut = optOutFinder(consents, clickHandler);
   return (
     <>
       <PageSection

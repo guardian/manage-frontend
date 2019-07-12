@@ -1,16 +1,15 @@
 import React, { FC } from "react";
 import palette from "../../colours";
 import { DropMenu } from "./DropMenu";
-import { Newsletter, Theme } from "./identity";
+import { ConsentOption, Theme } from "./identity";
 import { MarketingPreference } from "./MarketingPreference";
 import { PageSection } from "./PageSection";
 
 type ClickHandler = (id: string) => {};
 
 export interface NewsletterSectionProps {
-  newsletters: Newsletter[];
+  newsletters: ConsentOption[];
   clickHandler: ClickHandler;
-  loading: boolean;
 }
 
 const colors: { [T in Theme]: string } = {
@@ -25,7 +24,7 @@ const colors: { [T in Theme]: string } = {
 };
 
 const newsletterPreference = (
-  newsletter: Newsletter,
+  newsletter: ConsentOption,
   clickHandler: ClickHandler
 ) => {
   const { id, name, description, frequency, subscribed } = newsletter;
@@ -43,7 +42,7 @@ const newsletterPreference = (
 };
 
 const newsletterPreferenceGroups = (
-  newsletters: Newsletter[],
+  newsletters: ConsentOption[],
   clickHandler: ClickHandler
 ) => {
   const themes = [
@@ -66,7 +65,7 @@ const newsletterPreferenceGroups = (
 };
 
 export const NewsletterSection: FC<NewsletterSectionProps> = props => {
-  const { newsletters, loading, clickHandler } = props;
+  const { newsletters, clickHandler } = props;
   return (
     <PageSection
       title="Your newsletters"
@@ -82,9 +81,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = props => {
         advertisements.
       `}
     >
-      {loading
-        ? "Loading ... "
-        : newsletterPreferenceGroups(newsletters, clickHandler)}
+      {newsletterPreferenceGroups(newsletters, clickHandler)}
     </PageSection>
   );
 };

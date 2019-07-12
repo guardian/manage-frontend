@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
@@ -7,10 +7,12 @@ import { EmailSettingsSection } from "./EmailSettingsSection";
 import { Lines } from "./Lines";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
+import { Actions, useConsentOptions } from "./useConsentOptions";
 
 import {
-  Consent,
-  mapSubscriptions,
+  ConsentOption,
+  filterConsents,
+  filterNewsletters,
   memoReadUserDetails,
   readConsents,
   readNewsletters,
@@ -22,181 +24,53 @@ import {
 
 const [memoReadConsentSubscriptions, memoReadEmail] = memoReadUserDetails();
 
-enum SubscribableActionTypes {
-  FETCH = "FETCH",
-  SET = "SET",
-  SET_SUBSCRIBED = "SET_SUBSCRIBED",
-  SUBSCRIBE = "SUBSCRIBE",
-  UNSUBSCRIBE = "UNSUBSCRIBE",
-  UNSUBSCRIBE_ALL = "UNSUBSCRIBE_ALL",
-  ERROR = "ERROR"
-}
-
-interface Action {
-  type: string;
-  payload?: any;
-}
-
-const initialState = {
-  error: null,
-  loading: true,
-  subscribables: [],
-  subscriptions: []
-};
-
-const subscribableReducer = (state: any, action: Action) => {
-  const {
-    ERROR,
-    FETCH,
-    SET,
-    SET_SUBSCRIBED,
-    SUBSCRIBE,
-    UNSUBSCRIBE
-  } = SubscribableActionTypes;
-  const { payload } = action;
-  switch (action.type) {
-    case FETCH:
-      return {
-        ...state,
-        error: null,
-        loading: true
-      };
-    case SET_SUBSCRIBED:
-      return {
-        ...state,
-        subscriptions: payload,
-        subscribables: mapSubscriptions(state.subscribables, payload)
-      };
-    case SET:
-      return {
-        ...state,
-        subscribables: payload,
-        error: null,
-        loading: false
-      };
-    case SUBSCRIBE: {
-      const subscriptions = [...state.subscriptions, payload];
-      return {
-        ...state,
-        subscriptions,
-        subscribables: mapSubscriptions(state.subscribables, subscriptions)
-      };
-    }
-    case UNSUBSCRIBE: {
-      const subscriptions = state.subscriptions.filter(
-        (id: string) => !payload(id)
-      );
-      return {
-        ...state,
-        subscriptions,
-        subscribables: mapSubscriptions(state.subscribables, subscriptions)
-      };
-    }
-    case ERROR:
-      return {
-        ...state,
-        error: payload,
-        loading: false
-      };
-  }
-};
-
-const useSubscribable = (
-  subscribableFetcher: () => Promise<any>,
-  subscriptionFetcher: () => Promise<any>,
-  updateSubscribable: (id: string, subscribe: boolean) => Promise<any>
-) => {
-  const [state, dispatch] = useReducer(subscribableReducer, initialState);
-  const {
-    FETCH,
-    SET,
-    SET_SUBSCRIBED,
-    SUBSCRIBE,
-    UNSUBSCRIBE
-  } = SubscribableActionTypes;
-  const fetchSubscribables = async () => {
-    dispatch({ type: FETCH });
-    const [subscribables, subscriptions] = await Promise.all([
-      subscribableFetcher(),
-      subscriptionFetcher()
-    ]);
-    dispatch({ type: SET, payload: subscribables });
-    dispatch({ type: SET_SUBSCRIBED, payload: subscriptions });
-  };
-
-  const toggleSubscription = async (id: string) => {
-    const subscribed = state.subscriptions.includes(id);
-    await updateSubscribable(id, !subscribed);
-    subscribed
-      ? dispatch({ type: UNSUBSCRIBE, payload: (x: string) => x === id })
-      : dispatch({ type: SUBSCRIBE, payload: id });
-  };
-
-  const unsubscribe = (predicate: (x: string) => boolean = _ => true) =>
-    dispatch({ type: UNSUBSCRIBE, payload: predicate });
-  return [state, fetchSubscribables, unsubscribe, toggleSubscription];
-};
-
 export const EmailAndMarketing = (props: { path?: string }) => {
+  const { options, subscribe, unsubscribe, unsubscribeAll } = Actions;
   const [email, setEmail] = useState();
   const [removed, setRemoved] = useState(false);
-  const [
-    newsletterState,
-    fetchNewsletters,
-    unsubscribeAllNewsletters,
-    toggleNewsletterSubscription
-  ] = useSubscribable(
-    readNewsletters,
-    readNewsletterSubscriptions,
-    updateNewsletter
-  );
-  const [
-    consentState,
-    fetchConsents,
-    unsubscribeAllConsents,
-    toggleConsentSubscription
-  ] = useSubscribable(
-    readConsents,
-    memoReadConsentSubscriptions,
-    updateConsent
-  );
+  const [state, dispatch] = useConsentOptions();
 
-  const newsletters = newsletterState.subscribables;
-  const consents = consentState.subscribables as Consent[];
+  const toggleSubscription = (
+    updateSubscribable: (id: string, subscribe: boolean) => Promise<any>
+  ) => async (id: string) => {
+    const subscribed = state.options.find((x: any) => id === x.id).subscribed;
+    await updateSubscribable(id, !subscribed);
+    subscribed ? dispatch(subscribe([id])) : dispatch(unsubscribe([id]));
+  };
 
   const setRemoveAllEmailConsents = async () => {
     await updateRemoveAllConsents();
-    const optouts = consents.filter(consent => consent.isOptOut).map(c => c.id);
     setRemoved(true);
-    unsubscribeAllConsents((x: string) => !optouts.includes(x));
-    unsubscribeAllNewsletters();
+    dispatch(unsubscribeAll());
   };
 
+  const toggleNewsletterSubscription = toggleSubscription(updateNewsletter);
+  const toggleConsentSubscription = toggleSubscription(updateConsent);
+
+  const newsletters = filterNewsletters(state.options);
+  const consents = filterConsents(state.options);
+  const loading = newsletters.length === 0 && consents.length === 0;
+
   useEffect(() => {
+    const dispatchBoth = (responses: [ConsentOption[], string[]]) => {
+      dispatch(options(responses[0]));
+      dispatch(subscribe(responses[1]));
+    };
+    Promise.all([readNewsletters(), readNewsletterSubscriptions()]).then(
+      dispatchBoth
+    );
+    Promise.all([readConsents(), memoReadConsentSubscriptions()]).then(
+      dispatchBoth
+    );
     memoReadEmail().then(primaryEmailAddress => {
       setEmail(primaryEmailAddress);
     });
-    fetchNewsletters();
-    fetchConsents();
   }, []);
-  return (
+
+  const content = (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
-        <h1
-          css={{
-            fontSize: "2rem",
-            lineHeight: "2.25rem",
-            fontFamily: headline,
-            marginBottom: "30px",
-            marginTop: "0"
-          }}
-        >
-          Edit your profile
-        </h1>
-      </PageHeaderContainer>
       <PageContainer>
         <NewsletterSection
-          loading={newsletterState.loading}
           newsletters={newsletters}
           clickHandler={toggleNewsletterSubscription}
         />
@@ -208,7 +82,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         <ConsentSection
           consents={consents}
           clickHandler={toggleConsentSubscription}
-          loading={consentState.loading}
         />
       </PageContainer>
       <PageContainer>
@@ -230,6 +103,28 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           clickHandler={toggleConsentSubscription}
         />
       </PageContainer>
+    </>
+  );
+
+  const loader = (
+    <PageContainer>Loading your subscripton information...</PageContainer>
+  );
+  return (
+    <>
+      <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
+        <h1
+          css={{
+            fontSize: "2rem",
+            lineHeight: "2.25rem",
+            fontFamily: headline,
+            marginBottom: "30px",
+            marginTop: "0"
+          }}
+        >
+          Edit your profile
+        </h1>
+      </PageHeaderContainer>
+      {loading ? loader : content}
     </>
   );
 };
