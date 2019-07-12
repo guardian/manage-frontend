@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useReducer,
-  useState
-} from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { headline } from "../../styles/fonts";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
@@ -17,32 +11,16 @@ import { OptOutSection } from "./OptOutSection";
 import {
   Consent,
   mapSubscriptions,
+  memoReadUserDetails,
   readConsents,
   readNewsletters,
   readNewsletterSubscriptions,
-  readUserDetails,
   updateConsent,
   updateNewsletter,
   updateRemoveAllConsents
 } from "./identity";
 
-const setSubscription = (
-  list: string[],
-  setList: Dispatch<SetStateAction<string[]>>,
-  updateModel: (id: string, consent: boolean) => {}
-) => (id: string) => {
-  const location = list.indexOf(id);
-  const consent = location >= 0;
-  // Eager UI
-  if (!consent) {
-    setList([...list, id]);
-  } else {
-    const update = [...list];
-    update.splice(location, 1);
-    setList(update);
-  }
-  return updateModel(id, !consent);
-};
+const [memoReadConsentSubscriptions, memoReadEmail] = memoReadUserDetails();
 
 enum SubscribableActionTypes {
   FETCH = "FETCH",
@@ -61,7 +39,7 @@ interface Action {
 
 const initialState = {
   error: null,
-  loading: false,
+  loading: true,
   subscribables: [],
   subscriptions: []
 };
@@ -73,8 +51,7 @@ const subscribableReducer = (state: any, action: Action) => {
     SET,
     SET_SUBSCRIBED,
     SUBSCRIBE,
-    UNSUBSCRIBE,
-    UNSUBSCRIBE_ALL
+    UNSUBSCRIBE
   } = SubscribableActionTypes;
   const { payload } = action;
   switch (action.type) {
@@ -106,23 +83,15 @@ const subscribableReducer = (state: any, action: Action) => {
       };
     }
     case UNSUBSCRIBE: {
-      const location = state.subscriptions.indexOf(payload);
-      const subscriptions = [
-        ...state.subscriptions.slice(0, location),
-        ...state.subscriptions.slice(location + 1)
-      ];
+      const subscriptions = state.subscriptions.filter(
+        (id: string) => !payload(id)
+      );
       return {
         ...state,
         subscriptions,
         subscribables: mapSubscriptions(state.subscribables, subscriptions)
       };
     }
-    case UNSUBSCRIBE_ALL:
-      return {
-        ...state,
-        subscriptions: [],
-        subscribables: mapSubscriptions(state.subscribables, [])
-      };
     case ERROR:
       return {
         ...state,
@@ -132,72 +101,83 @@ const subscribableReducer = (state: any, action: Action) => {
   }
 };
 
-const useNewsletters = () => {
+const useSubscribable = (
+  subscribableFetcher: () => Promise<any>,
+  subscriptionFetcher: () => Promise<any>,
+  updateSubscribable: (id: string, subscribe: boolean) => Promise<any>
+) => {
   const [state, dispatch] = useReducer(subscribableReducer, initialState);
   const {
     FETCH,
     SET,
     SET_SUBSCRIBED,
     SUBSCRIBE,
-    UNSUBSCRIBE,
-    UNSUBSCRIBE_ALL
+    UNSUBSCRIBE
   } = SubscribableActionTypes;
-  const fetchNewsletters = async () => {
+  const fetchSubscribables = async () => {
     dispatch({ type: FETCH });
-    const [newsletters, subscriptions] = await Promise.all([
-      readNewsletters(),
-      readNewsletterSubscriptions()
+    const [subscribables, subscriptions] = await Promise.all([
+      subscribableFetcher(),
+      subscriptionFetcher()
     ]);
-    dispatch({ type: SET, payload: newsletters });
+    dispatch({ type: SET, payload: subscribables });
     dispatch({ type: SET_SUBSCRIBED, payload: subscriptions });
   };
 
   const toggleSubscription = async (id: string) => {
     const subscribed = state.subscriptions.includes(id);
-    await updateNewsletter(id, !subscribed);
+    await updateSubscribable(id, !subscribed);
     subscribed
-      ? dispatch({ type: UNSUBSCRIBE, payload: id })
+      ? dispatch({ type: UNSUBSCRIBE, payload: (x: string) => x === id })
       : dispatch({ type: SUBSCRIBE, payload: id });
   };
 
-  const unsubscribeAll = () => dispatch({ type: UNSUBSCRIBE_ALL });
-
-  return [state, fetchNewsletters, unsubscribeAll, toggleSubscription];
+  const unsubscribe = (predicate: (x: string) => boolean = _ => true) =>
+    dispatch({ type: UNSUBSCRIBE, payload: predicate });
+  return [state, fetchSubscribables, unsubscribe, toggleSubscription];
 };
 
 export const EmailAndMarketing = (props: { path?: string }) => {
-  const [consents, setConsents] = useState([] as Consent[]);
-  const [consented, setConsented] = useState([] as string[]);
   const [email, setEmail] = useState();
   const [removed, setRemoved] = useState(false);
-
   const [
     newsletterState,
     fetchNewsletters,
-    unsubscribeAll,
-    toggleSubscription
-  ] = useNewsletters();
+    unsubscribeAllNewsletters,
+    toggleNewsletterSubscription
+  ] = useSubscribable(
+    readNewsletters,
+    readNewsletterSubscriptions,
+    updateNewsletter
+  );
+  const [
+    consentState,
+    fetchConsents,
+    unsubscribeAllConsents,
+    toggleConsentSubscription
+  ] = useSubscribable(
+    readConsents,
+    memoReadConsentSubscriptions,
+    updateConsent
+  );
+
   const newsletters = newsletterState.subscribables;
+  const consents = consentState.subscribables as Consent[];
 
   const setRemoveAllEmailConsents = async () => {
     await updateRemoveAllConsents();
     const optouts = consents.filter(consent => consent.isOptOut).map(c => c.id);
     setRemoved(true);
-    setConsented(consented.filter(id => optouts.includes(id)));
-    unsubscribeAll();
+    unsubscribeAllConsents((x: string) => !optouts.includes(x));
+    unsubscribeAllNewsletters();
   };
-  const setUserConsent = setSubscription(
-    consented,
-    setConsented,
-    updateConsent
-  );
+
   useEffect(() => {
-    readUserDetails().then(user => {
-      setConsented(user.consents);
-      setEmail(user.email);
+    memoReadEmail().then(primaryEmailAddress => {
+      setEmail(primaryEmailAddress);
     });
     fetchNewsletters();
-    readConsents().then(setConsents);
+    fetchConsents();
   }, []);
   return (
     <>
@@ -216,8 +196,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageHeaderContainer>
       <PageContainer>
         <NewsletterSection
+          loading={newsletterState.loading}
           newsletters={newsletters}
-          clickHandler={toggleSubscription}
+          clickHandler={toggleNewsletterSubscription}
         />
       </PageContainer>
       <PageContainer>
@@ -225,8 +206,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <ConsentSection
-          consents={mapSubscriptions(consents, consented)}
-          clickHandler={setUserConsent}
+          consents={consents}
+          clickHandler={toggleConsentSubscription}
+          loading={consentState.loading}
         />
       </PageContainer>
       <PageContainer>
@@ -244,8 +226,8 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <OptOutSection
-          consents={mapSubscriptions(consents, consented)}
-          clickHandler={setUserConsent}
+          consents={consents}
+          clickHandler={toggleConsentSubscription}
         />
       </PageContainer>
     </>

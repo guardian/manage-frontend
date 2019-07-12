@@ -8,6 +8,7 @@ type ClickHandler = (id: string) => {};
 interface ConsentSectionProps {
   clickHandler: ClickHandler;
   consents: Consent[];
+  loading: boolean;
 }
 
 export const otherEmailConsents = (consents: Consent[]): Consent[] => {
@@ -35,7 +36,7 @@ const consentPreferences = (consents: Consent[], clickHandler: ClickHandler) =>
   consents.map(consent => consentPreference(consent, clickHandler));
 
 export const ConsentSection: FC<ConsentSectionProps> = props => {
-  const { consents, clickHandler } = props;
+  const { consents, clickHandler, loading } = props;
   return (
     <PageSection
       title="What else would you like to hear about by email?"
@@ -44,7 +45,9 @@ export const ConsentSection: FC<ConsentSectionProps> = props => {
         our products, services and events.
       `}
     >
-      {consentPreferences(otherEmailConsents(consents), clickHandler)}
+      {loading
+        ? "Loading ..."
+        : consentPreferences(otherEmailConsents(consents), clickHandler)}
     </PageSection>
   );
 };

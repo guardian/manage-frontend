@@ -195,3 +195,21 @@ export const readUserDetails = async (): Promise<User> => {
     consents
   };
 };
+
+// @TODO: NO TEST
+export const memoReadUserDetails = (): [
+  () => Promise<string[]>,
+  () => Promise<string>
+] => {
+  let user: Promise<User> | undefined;
+  const getUser = (): Promise<User> => {
+    if (user === undefined) {
+      user = readUserDetails();
+    }
+    return Promise.resolve(user);
+  };
+  return [
+    async () => (await getUser()).consents,
+    async () => (await getUser()).email
+  ];
+};

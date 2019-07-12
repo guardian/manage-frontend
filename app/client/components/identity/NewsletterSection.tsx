@@ -10,6 +10,7 @@ type ClickHandler = (id: string) => {};
 export interface NewsletterSectionProps {
   newsletters: Newsletter[];
   clickHandler: ClickHandler;
+  loading: boolean;
 }
 
 const colors: { [T in Theme]: string } = {
@@ -65,7 +66,7 @@ const newsletterPreferenceGroups = (
 };
 
 export const NewsletterSection: FC<NewsletterSectionProps> = props => {
-  const { newsletters, clickHandler } = props;
+  const { newsletters, loading, clickHandler } = props;
   return (
     <PageSection
       title="Your newsletters"
@@ -81,7 +82,9 @@ export const NewsletterSection: FC<NewsletterSectionProps> = props => {
         advertisements.
       `}
     >
-      {newsletterPreferenceGroups(newsletters, clickHandler)}
+      {loading
+        ? "Loading ... "
+        : newsletterPreferenceGroups(newsletters, clickHandler)}
     </PageSection>
   );
 };
