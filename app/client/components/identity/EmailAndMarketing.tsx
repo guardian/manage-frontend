@@ -35,7 +35,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   ) => async (id: string) => {
     const subscribed = state.options.find((x: any) => id === x.id).subscribed;
     await updateSubscribable(id, !subscribed);
-    subscribed ? dispatch(subscribe([id])) : dispatch(unsubscribe([id]));
+    subscribed ? dispatch(unsubscribe([id])) : dispatch(subscribe([id]));
   };
 
   const setRemoveAllEmailConsents = async () => {
