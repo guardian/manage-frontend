@@ -57,7 +57,7 @@ const reducer = (state: State, action: Action) => {
     case SUBSCRIBE: {
       const options = state.options.map((option: any) => ({
         ...option,
-        subscribed: option.subscribed ? true : payload.includes(option.id)
+        subscribed: option.subscribed ? true : payload === option.id
       }));
       return {
         ...state,
@@ -67,7 +67,7 @@ const reducer = (state: State, action: Action) => {
     case UNSUBSCRIBE: {
       const options = state.options.map((option: any) => ({
         ...option,
-        subscribed: payload.includes(option.id) ? false : option.subscribed
+        subscribed: payload === option.id ? false : option.subscribed
       }));
       return {
         ...state,
@@ -83,8 +83,11 @@ export const Actions = {
     type: ActionType.OPTIONS,
     payload
   }),
-  subscribe: (payload: string[]) => ({ type: ActionType.SUBSCRIBE, payload }),
-  unsubscribe: (payload: string[]) => ({
+  subscribe: (payload: string) => ({
+    type: ActionType.SUBSCRIBE,
+    payload
+  }),
+  unsubscribe: (payload: string) => ({
     type: ActionType.UNSUBSCRIBE,
     payload
   }),

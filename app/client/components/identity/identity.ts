@@ -15,7 +15,7 @@ export enum ConsentOptionType {
   OPT_OUT = "OPT_OUT"
 }
 
-export interface User {
+interface User {
   email: string;
   consents: string[];
 }
@@ -30,14 +30,6 @@ export interface ConsentOption {
   subscribed: boolean;
 }
 
-export interface Consent {
-  id: string;
-  name: string;
-  isOptOut: boolean;
-  description: string;
-  subscribed: boolean;
-}
-
 interface Subscription {
   listId: number;
 }
@@ -46,7 +38,7 @@ interface ExactTargetEntity {
   exactTargetListId: number;
 }
 
-export interface Newsletter {
+interface Newsletter {
   id: string;
   theme: string;
   name: string;
@@ -55,31 +47,29 @@ export interface Newsletter {
   subscribed: boolean;
 }
 
-// @TODO: NO TEST
+export interface ConsentOptionCollection {
+  getAll: () => Promise<ConsentOption[]>;
+  subscribe: (id: string) => Promise<void>;
+  unsubscribe: (id: string) => Promise<void>;
+}
+
 export const filterNewsletters = (options: ConsentOption[]): ConsentOption[] =>
   options.filter(option => option.type === ConsentOptionType.NEWSLETTER);
 
-// @TODO: NO TEST
-export const filterEmailConsents = (
-  options: ConsentOption[]
-): ConsentOption[] =>
+const filterEmailConsents = (options: ConsentOption[]): ConsentOption[] =>
   options.filter(option => option.type === ConsentOptionType.EMAIL);
 
-// @TODO: NO TEST
-export const filterOptOuts = (options: ConsentOption[]): ConsentOption[] =>
+const filterOptOuts = (options: ConsentOption[]): ConsentOption[] =>
   options.filter(option => option.type === ConsentOptionType.OPT_OUT);
 
-// @TODO: NO TEST
 export const filterConsents = (options: ConsentOption[]): ConsentOption[] => [
-  ...filterOptOuts(options),
-  ...filterEmailConsents(options)
+  ...filterEmailConsents(options),
+  ...filterOptOuts(options)
 ];
 
-// @TODO: NO TEST
 const toSubscriptionIdList = (subscriptions: Subscription[]): string[] =>
   subscriptions.map(s => s.listId.toString());
 
-// @TODO: NO TEST
 const toNewsletter = (
   rawNewsletter: Newsletter & ExactTargetEntity
 ): ConsentOption => {
@@ -101,7 +91,6 @@ const toNewsletter = (
   };
 };
 
-// @TODO: NO TEST
 const toConsent = (raw: any): ConsentOption => {
   return {
     ...raw,
@@ -110,7 +99,6 @@ const toConsent = (raw: any): ConsentOption => {
   };
 };
 
-// @TODO: NO TEST
 const APIFetch = (baseUrl: string) => async (
   url: string,
   options?: RequestInit
@@ -137,7 +125,6 @@ const APIFetch = (baseUrl: string) => async (
   }
 };
 
-// @TODO: NO TEST
 const APIPatchOptions = (payload: any): RequestInit => ({
   method: "PATCH",
   headers: {
@@ -149,7 +136,47 @@ const APIPatchOptions = (payload: any): RequestInit => ({
 const IDAPI_URL = "https://idapi.code.dev-theguardian.com";
 const identityFetch = APIFetch(IDAPI_URL);
 
-// @TODO: NO TEST
+const mapSubscriptions = (
+  subscriptions: string[],
+  options: ConsentOption[]
+): ConsentOption[] =>
+  options.map(option => ({
+    ...option,
+    subscribed: option.subscribed ? true : subscriptions.includes(option.id)
+  }));
+
+export const Newsletters: ConsentOptionCollection = {
+  async getAll(): Promise<ConsentOption[]> {
+    const [newsletters, subscriptions] = await Promise.all([
+      readNewsletters(),
+      readNewsletterSubscriptions()
+    ]);
+    return mapSubscriptions(subscriptions, newsletters);
+  },
+  async subscribe(id: string): Promise<void> {
+    return updateNewsletter(id, true);
+  },
+  async unsubscribe(id: string): Promise<void> {
+    return updateNewsletter(id, false);
+  }
+};
+
+export const Consents: ConsentOptionCollection = {
+  async getAll(): Promise<ConsentOption[]> {
+    const [consents, subscriptions] = await Promise.all([
+      readConsents(),
+      memoReadConsentSubscriptions()
+    ]);
+    return mapSubscriptions(subscriptions, consents);
+  },
+  async subscribe(id: string): Promise<void> {
+    return updateConsent(id, true);
+  },
+  async unsubscribe(id: string): Promise<void> {
+    return updateConsent(id, false);
+  }
+};
+
 export const updateRemoveAllConsents = async () => {
   const url = "remove/consent/all";
   const options = {
@@ -161,14 +188,12 @@ export const updateRemoveAllConsents = async () => {
   return identityFetch(url, options);
 };
 
-// @TODO: NO TEST
-export const readConsents = async (): Promise<ConsentOption[]> => {
+const readConsents = async (): Promise<ConsentOption[]> => {
   const url = "/consents";
   return (await identityFetch(url)).map(toConsent);
 };
 
-// @TODO: NO TEST
-export const updateConsent = async (id: string, consented: boolean = true) => {
+const updateConsent = async (id: string, consented: boolean = true) => {
   const url = "/users/me/consents";
   const payload = [
     {
@@ -176,22 +201,17 @@ export const updateConsent = async (id: string, consented: boolean = true) => {
       consented
     }
   ];
-  await identityFetch(url, APIPatchOptions(payload));
+  await proxFetch(url, APIPatchOptions(payload));
 };
 
-// @TODO: NO TEST
-export const readNewsletters = async (): Promise<ConsentOption[]> => {
+const readNewsletters = async (): Promise<ConsentOption[]> => {
   const url = "/newsletters";
   return ((await identityFetch(url)) as Array<
     Newsletter & ExactTargetEntity
   >).map(toNewsletter);
 };
 
-// @TODO: NO TEST
-export const updateNewsletter = async (
-  id: string,
-  subscribed: boolean = true
-) => {
+const updateNewsletter = async (id: string, subscribed: boolean = true) => {
   const url = "/users/me/newsletters";
   const payload = {
     id,
@@ -200,15 +220,13 @@ export const updateNewsletter = async (
   identityFetch(url, APIPatchOptions(payload));
 };
 
-// @TODO: NO TEST
-export const readNewsletterSubscriptions = async (): Promise<string[]> => {
+const readNewsletterSubscriptions = async (): Promise<string[]> => {
   const url = "/users/me/newsletters";
   const data = await identityFetch(url);
   return toSubscriptionIdList(data.result.subscriptions);
 };
 
-// @TODO: NO TEST
-export const readUserDetails = async (): Promise<User> => {
+const readUserDetails = async (): Promise<User> => {
   const url = "/user/me";
   const data = await identityFetch(url);
   const consents = data.user.consents
@@ -220,7 +238,6 @@ export const readUserDetails = async (): Promise<User> => {
   };
 };
 
-// @TODO: NO TEST
 export const memoReadUserDetails = (): [
   () => Promise<string[]>,
   () => Promise<string>
@@ -237,3 +254,8 @@ export const memoReadUserDetails = (): [
     async () => (await getUser()).email
   ];
 };
+
+export const [
+  memoReadConsentSubscriptions,
+  memoReadEmail
+] = memoReadUserDetails();

@@ -10,19 +10,14 @@ import { OptOutSection } from "./OptOutSection";
 import { Actions, useConsentOptions } from "./useConsentOptions";
 
 import {
-  ConsentOption,
+  ConsentOptionCollection,
+  Consents,
   filterConsents,
   filterNewsletters,
-  memoReadUserDetails,
-  readConsents,
-  readNewsletters,
-  readNewsletterSubscriptions,
-  updateConsent,
-  updateNewsletter,
+  memoReadEmail,
+  Newsletters,
   updateRemoveAllConsents
 } from "./identity";
-
-const [memoReadConsentSubscriptions, memoReadEmail] = memoReadUserDetails();
 
 export const EmailAndMarketing = (props: { path?: string }) => {
   const { options, subscribe, unsubscribe, unsubscribeAll } = Actions;
@@ -30,12 +25,17 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const [removed, setRemoved] = useState(false);
   const [state, dispatch] = useConsentOptions();
 
-  const toggleSubscription = (
-    updateSubscribable: (id: string, subscribe: boolean) => Promise<any>
-  ) => async (id: string) => {
-    const subscribed = state.options.find((x: any) => id === x.id).subscribed;
-    await updateSubscribable(id, !subscribed);
-    subscribed ? dispatch(unsubscribe([id])) : dispatch(subscribe([id]));
+  const toggleSubscription = (collection: ConsentOptionCollection) => async (
+    id: string
+  ) => {
+    const subscribed = state.options.find((o: any) => id === o.id).subscribed;
+    if (subscribed) {
+      await collection.unsubscribe(id);
+      dispatch(unsubscribe(id));
+    } else {
+      await collection.subscribe(id);
+      dispatch(subscribe(id));
+    }
   };
 
   const setRemoveAllEmailConsents = async () => {
@@ -44,24 +44,16 @@ export const EmailAndMarketing = (props: { path?: string }) => {
     dispatch(unsubscribeAll());
   };
 
-  const toggleNewsletterSubscription = toggleSubscription(updateNewsletter);
-  const toggleConsentSubscription = toggleSubscription(updateConsent);
+  const toggleNewsletterSubscription = toggleSubscription(Newsletters);
+  const toggleConsentSubscription = toggleSubscription(Consents);
 
   const newsletters = filterNewsletters(state.options);
   const consents = filterConsents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
 
   useEffect(() => {
-    const dispatchBoth = (responses: [ConsentOption[], string[]]) => {
-      dispatch(options(responses[0]));
-      dispatch(subscribe(responses[1]));
-    };
-    Promise.all([readNewsletters(), readNewsletterSubscriptions()]).then(
-      dispatchBoth
-    );
-    Promise.all([readConsents(), memoReadConsentSubscriptions()]).then(
-      dispatchBoth
-    );
+    Newsletters.getAll().then(n => dispatch(options(n)));
+    Consents.getAll().then(c => dispatch(options(c)));
     memoReadEmail().then(primaryEmailAddress => {
       setEmail(primaryEmailAddress);
     });
