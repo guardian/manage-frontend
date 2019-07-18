@@ -5,7 +5,7 @@ export interface CheckboxProps {
   checked: boolean;
   required?: true;
   onChange: (newValue: boolean) => void;
-  label: string;
+  label?: string;
   checkboxFill?: string;
   maxWidth?: string;
 }

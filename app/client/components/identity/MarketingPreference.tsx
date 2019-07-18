@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import palette from "../../colours";
 import { sans } from "../../styles/fonts";
+import { Checkbox } from "../checkbox";
 
 interface MarketingPreferenceProps {
   id: string;
@@ -83,22 +84,32 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
   const { id, description, frequency, selected, title, onClick } = props;
   return (
     <div
-      onClick={() => onClick(id)}
+      onClick={e => {
+        // Checkboxes inside labels will trigger click events twice.
+        // Ignore the input click event
+        if (e.target instanceof Element && e.target.nodeName === "INPUT") {
+          return;
+        }
+        onClick(id);
+      }}
       css={[
         standardText,
         {
           lineHeight: "1.333",
           marginTop: "0.75rem",
-          paddingLeft: "1.48214rem",
+          paddingLeft: "30px",
           position: "relative"
         }
       ]}
     >
-      <input
-        css={{ position: "absolute", left: 0 }}
-        type="checkbox"
-        checked={selected}
-      />
+      <div css={{ position: "absolute", left: 0 }}>
+        <Checkbox
+          checked={!!selected}
+          onChange={_ => {
+            return;
+          }}
+        />
+      </div>
       {title && getTitle(title)}
       {getDescription(description)}
       {frequency && getFrequency(frequency)}
