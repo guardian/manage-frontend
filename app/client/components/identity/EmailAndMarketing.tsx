@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { headline } from "../../styles/fonts";
+import { MembershipLinks } from "../membershipLinks";
 import { navLinks } from "../nav";
 import { PageContainer, PageHeaderContainer } from "../page";
+import { Spinner } from "../spinner";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
 import { Lines } from "./Lines";
@@ -95,11 +97,16 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           clickHandler={toggleConsentSubscription}
         />
       </PageContainer>
+      <PageContainer>
+        <MembershipLinks />
+      </PageContainer>
     </>
   );
 
   const loader = (
-    <PageContainer>Loading your subscripton information...</PageContainer>
+    <PageContainer>
+      <Spinner loadingMessage="Loading your subscripton information..." />
+    </PageContainer>
   );
   return (
     <>
