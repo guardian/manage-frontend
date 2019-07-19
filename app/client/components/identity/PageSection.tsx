@@ -12,8 +12,8 @@ interface PageSectionProps {
 const getTitle = (title: PageSectionProps["title"]) => (
   <h2
     css={{
-      fontSize: "1.0625rem",
-      lineHeight: "1.5rem",
+      fontSize: "17px",
+      lineHeight: "24px",
       fontWeight: "bold",
       margin: "0"
     }}
@@ -26,8 +26,8 @@ const getDescription = (description: PageSectionProps["description"]) => (
   <p
     css={{
       fontFamily: sans,
-      fontSize: "0.875rem",
-      marginBottom: "0.5rem"
+      fontSize: "14px",
+      marginBottom: "8px"
     }}
   >
     {description}
@@ -37,11 +37,11 @@ const getDescription = (description: PageSectionProps["description"]) => (
 const getSubtext = (subtext: PageSectionProps["subtext"]) => (
   <p
     css={{
-      fontSize: "0.8125rem",
-      lineHeight: "1.125rem",
+      fontSize: "13px",
+      lineHeight: "18px",
       fontFamily: sans,
       color: palette.neutral["3"],
-      marginBottom: "0.75rem",
+      marginBottom: "12px",
       marginTop: "0"
     }}
   >
@@ -54,6 +54,7 @@ export const PageSection: FC<PageSectionProps> = props => {
   return (
     <div
       css={{
+        boxSizing: "border-box",
         [minWidth.desktop]: {
           display: "flex"
         }
@@ -62,9 +63,7 @@ export const PageSection: FC<PageSectionProps> = props => {
       <div
         css={{
           [minWidth.desktop]: {
-            paddingRight: "6.25rem",
-            width: "13.75rem",
-            boxSizing: "content-box"
+            paddingRight: "100px"
           }
         }}
       >
@@ -72,13 +71,7 @@ export const PageSection: FC<PageSectionProps> = props => {
         {description && getDescription(description)}
         {subtext && getSubtext(subtext)}
       </div>
-      <div
-        css={{
-          width: "28.75rem"
-        }}
-      >
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   );
 };

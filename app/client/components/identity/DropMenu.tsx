@@ -10,30 +10,30 @@ interface DropMenuProps {
 const styles = {
   root: {
     borderColor: palette.neutral["4"],
-    borderTop: `0.0625rem solid ${palette.neutral["6"]}`,
-    padding: "0.1875rem 0 0.75rem",
+    borderTop: `1px solid ${palette.neutral["6"]}`,
+    padding: "3px 0 12px",
     position: "relative"
   } as CSSObject,
   header: {
-    fontSize: "1.0625rem",
+    fontSize: "17px",
     fontFamily: serif,
     fontWeight: "bold",
-    lineHeight: "1.5rem",
+    lineHeight: "24px",
     textTransform: "capitalize",
     ":after": {
       content: "''",
-      border: "0.125rem solid currentColor",
+      border: "2px solid currentColor",
       borderLeft: "transparent",
       borderTop: "transparent",
       boxSizing: "content-box",
       display: "inline-block",
-      height: "0.3125rem",
+      height: "5px",
       color: "inherit",
-      transform: "translateY(-0.125rem) rotate(45deg)",
+      transform: "translateY(-2px) rotate(45deg)",
       transition: "transform 250ms ease-out",
       verticalAlign: "middle",
-      width: "0.3125rem",
-      marginLeft: "0.25rem"
+      width: "5px",
+      marginLeft: "4px"
     },
     "&.open:after": {
       transform: "rotate(225deg)"

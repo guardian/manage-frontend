@@ -18,7 +18,7 @@ export const Lines: FC<LinesProps> = props => {
           backgroundPosition: "top",
           height: `${height}px`,
           border: 0,
-          margin: "0.75rem auto 0.375rem"
+          margin: "12px auto 6px"
         }}
       />
     </>

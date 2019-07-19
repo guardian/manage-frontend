@@ -13,15 +13,15 @@ interface MarketingPreferenceProps {
 }
 
 const standardText = {
-  fontSize: "0.875rem",
+  fontSize: "14px",
   fontFamily: sans
 };
 
 const clockSVG = (
   <svg
     css={{ fill: palette.neutral["5"] }}
-    width="11"
-    height="11"
+    width="11px"
+    height="11px"
     viewBox="0 0 11 11"
   >
     <path d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z" />
@@ -34,11 +34,11 @@ const getTitle = (title: MarketingPreferenceProps["title"]) => (
       standardText,
       {
         cursor: "pointer",
-        fontSize: "0.875rem",
-        lineHeight: "1.375rem",
+        fontSize: "14px",
+        lineHeight: "22px",
         fontFamily: sans,
         fontWeight: "bold",
-        margin: "-0.0625rem 0 0"
+        margin: "-1px 0 0"
       }
     ]}
   >
@@ -51,7 +51,7 @@ const getDescription = (
 ) => (
   <p
     css={{
-      margin: "0.17857rem 0 0 0"
+      margin: "2.88px 0 0 0"
     }}
   >
     {description}
@@ -61,16 +61,16 @@ const getDescription = (
 const getFrequency = (frequency: MarketingPreferenceProps["frequency"]) => (
   <p
     css={{
-      fontSize: "0.75rem",
-      lineHeight: "1rem",
-      margin: "0.1875rem 0 0 0",
+      fontSize: "12px",
+      lineHeight: "16px",
+      margin: "3px 0 0 0",
       opacity: 0.75
     }}
   >
     <span
       css={{
         display: "inline-block",
-        marginRight: "0.5rem",
+        marginRight: "8px",
         verticalAlign: "middle"
       }}
     >
@@ -96,7 +96,7 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
         standardText,
         {
           lineHeight: "1.333",
-          marginTop: "0.75rem",
+          marginTop: "12px",
           paddingLeft: "30px",
           position: "relative"
         }

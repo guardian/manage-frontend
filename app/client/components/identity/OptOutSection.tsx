@@ -29,7 +29,7 @@ const optOutFinder = (
 };
 
 const standardTextSize = {
-  fontSize: "1.0625rem"
+  fontSize: "17px"
 };
 
 export const OptOutSection: FC<OptOutSectionProps> = props => {

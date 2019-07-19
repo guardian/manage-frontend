@@ -25,14 +25,14 @@ const pCss = {
 const successMessage = (
   <div
     css={{
-      fontSize: "0.8125rem",
-      lineHeight: "1.125rem",
+      fontSize: "13px",
+      lineHeight: "18px",
       fontFamily: sans,
-      borderBottom: `0.0625rem solid ${palette.green.light}`,
-      borderTop: `0.0625rem solid ${palette.green.light}`,
+      borderBottom: `1px solid ${palette.green.light}`,
+      borderTop: `1px solid ${palette.green.light}`,
       color: palette.green.medium,
-      marginTop: "0.375rem",
-      padding: "0.4375rem 0.5rem"
+      marginTop: "6px",
+      padding: "7px 8px"
     }}
   >
     You've been unsubscribed from all Guardian marketing newsletters and emails.
