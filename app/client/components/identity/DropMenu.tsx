@@ -11,6 +11,7 @@ const styles = {
   root: {
     borderColor: palette.neutral["4"],
     borderTop: `1px solid ${palette.neutral["6"]}`,
+    cursor: "pointer",
     padding: "3px 0 12px",
     position: "relative"
   } as CSSObject,
