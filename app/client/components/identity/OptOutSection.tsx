@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { ConsentOption } from "./identity";
 import { Lines } from "./Lines";
+import { MarginWrapper } from "./MarginWrapper";
 import { MarketingPreference } from "./MarketingPreference";
 import { PageSection } from "./PageSection";
 
@@ -62,7 +63,9 @@ export const OptOutSection: FC<OptOutSectionProps> = props => {
         </p>
         {getOptOut("market_research_optout")}
       </PageSection>
-      <Lines n={1} />
+      <MarginWrapper>
+        <Lines n={1} />
+      </MarginWrapper>
       <PageSection title="Using your data for marketing analysis">
         <p css={standardTextSize}>
           From time to time we may use your personal data for marketing

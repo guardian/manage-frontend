@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
+import { MarginWrapper } from "./MarginWrapper";
 
 interface PageSectionProps {
   title: string;
@@ -52,26 +53,39 @@ const getSubtext = (subtext: PageSectionProps["subtext"]) => (
 export const PageSection: FC<PageSectionProps> = props => {
   const { children, description, title, subtext } = props;
   return (
-    <div
-      css={{
-        boxSizing: "border-box",
-        [minWidth.desktop]: {
-          display: "flex"
-        }
-      }}
-    >
+    <MarginWrapper>
       <div
         css={{
           [minWidth.desktop]: {
-            paddingRight: "100px"
+            display: "flex"
           }
         }}
       >
-        {getTitle(title)}
-        {description && getDescription(description)}
-        {subtext && getSubtext(subtext)}
+        <div
+          css={{
+            [minWidth.desktop]: {
+              paddingRight: "100px",
+              boxSizing: "content-box",
+              flexBasis: "220px",
+              minWidth: "220px"
+            }
+          }}
+        >
+          {getTitle(title)}
+          {description && getDescription(description)}
+          {subtext && getSubtext(subtext)}
+        </div>
+        <div
+          css={{
+            [minWidth.desktop]: {
+              maxWidth: "460px",
+              flexGrow: 1
+            }
+          }}
+        >
+          {children}
+        </div>
       </div>
-      <div>{children}</div>
-    </div>
+    </MarginWrapper>
   );
 };

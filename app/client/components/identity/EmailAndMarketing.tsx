@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import palette from "../../colours";
 import { headline } from "../../styles/fonts";
 import { MembershipLinks } from "../membershipLinks";
 import { navLinks } from "../nav";
@@ -7,6 +8,7 @@ import { Spinner } from "../spinner";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
 import { Lines } from "./Lines";
+import { MarginWrapper } from "./MarginWrapper";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
 import { Actions, useConsentOptions } from "./useConsentOptions";
@@ -22,7 +24,7 @@ import {
 } from "./identity";
 
 export const EmailAndMarketing = (props: { path?: string }) => {
-  const { options, subscribe, unsubscribe, unsubscribeAll } = Actions;
+  const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;
   const [email, setEmail] = useState();
   const [removed, setRemoved] = useState(false);
   const [state, dispatch] = useConsentOptions();
@@ -31,19 +33,29 @@ export const EmailAndMarketing = (props: { path?: string }) => {
     id: string
   ) => {
     const subscribed = state.options.find((o: any) => id === o.id).subscribed;
-    if (subscribed) {
-      await collection.unsubscribe(id);
-      dispatch(unsubscribe(id));
-    } else {
-      await collection.subscribe(id);
-      dispatch(subscribe(id));
+    try {
+      if (subscribed) {
+        await collection.unsubscribe(id);
+        dispatch(unsubscribe(id));
+      } else {
+        await collection.subscribe(id);
+        dispatch(subscribe(id));
+      }
+    } catch (e) {
+      // @TODO: LOGGER
+      dispatch(error());
     }
   };
 
   const setRemoveAllEmailConsents = async () => {
-    await updateRemoveAllConsents();
-    setRemoved(true);
-    dispatch(unsubscribeAll());
+    try {
+      await updateRemoveAllConsents();
+      setRemoved(true);
+      dispatch(unsubscribeAll());
+    } catch (e) {
+      // @TODO: LOGGER
+      dispatch(error());
+    }
   };
 
   const toggleNewsletterSubscription = toggleSubscription(Newsletters);
@@ -54,15 +66,40 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const loading = newsletters.length === 0 && consents.length === 0;
 
   useEffect(() => {
-    Newsletters.getAll().then(n => dispatch(options(n)));
-    Consents.getAll().then(c => dispatch(options(c)));
-    memoReadEmail().then(primaryEmailAddress => {
-      setEmail(primaryEmailAddress);
-    });
+    try {
+      Newsletters.getAll().then(n => dispatch(options(n)));
+      Consents.getAll().then(c => dispatch(options(c)));
+      memoReadEmail().then(primaryEmailAddress => {
+        setEmail(primaryEmailAddress);
+      });
+    } catch (e) {
+      // @TODO: Logger
+      dispatch(error());
+    }
   }, []);
+
+  const errorMessage = (
+    <PageContainer>
+      <div
+        css={{
+          fontSize: "0.8125rem",
+          lineHeight: "1.125rem",
+          backgroundColor: "#ffe1e1",
+          borderBottom: `0.0625rem solid ${palette.red.light}`,
+          borderTop: `0.0625rem solid ${palette.red.light}`,
+          color: palette.red.medium,
+          marginTop: "0.375rem",
+          padding: "0.4375rem 0.5rem"
+        }}
+      >
+        Sorry, something went wrong!
+      </div>
+    </PageContainer>
+  );
 
   const content = (
     <>
+      {state.error ? errorMessage : null}
       <PageContainer>
         <NewsletterSection
           newsletters={newsletters}
@@ -70,7 +107,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <Lines n={4} />
+        <MarginWrapper>
+          <Lines n={4} />
+        </MarginWrapper>
       </PageContainer>
       <PageContainer>
         <ConsentSection
@@ -79,7 +118,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <Lines n={1} />
+        <MarginWrapper>
+          <Lines n={1} />
+        </MarginWrapper>
       </PageContainer>
       <PageContainer>
         <EmailSettingsSection
@@ -89,7 +130,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <Lines n={4} />
+        <MarginWrapper>
+          <Lines n={4} />
+        </MarginWrapper>
       </PageContainer>
       <PageContainer>
         <OptOutSection
@@ -98,7 +141,9 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <MembershipLinks />
+        <MarginWrapper>
+          <MembershipLinks />
+        </MarginWrapper>
       </PageContainer>
     </>
   );

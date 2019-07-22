@@ -15,12 +15,12 @@ interface Action {
 }
 
 interface State {
-  error: string;
+  error: boolean;
   options: ConsentOption[];
 }
 
 const initialState = {
-  error: null,
+  error: false,
   options: []
 };
 
@@ -37,7 +37,7 @@ const reducer = (state: State, action: Action) => {
     case ERROR:
       return {
         ...state,
-        error: payload
+        error: true
       };
     case OPTIONS:
       return {
@@ -78,7 +78,7 @@ const reducer = (state: State, action: Action) => {
 };
 
 export const Actions = {
-  error: (payload: string) => ({ type: ActionType.ERROR, payload }),
+  error: () => ({ type: ActionType.ERROR }),
   options: (payload: ConsentOption[]) => ({
     type: ActionType.OPTIONS,
     payload
