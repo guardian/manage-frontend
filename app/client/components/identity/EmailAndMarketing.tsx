@@ -58,25 +58,25 @@ export const EmailAndMarketing = (props: { path?: string }) => {
     }
   };
 
+  useEffect(() => {
+    Promise.all([Newsletters.getAll(), Consents.getAll(), memoReadEmail()])
+      .then(([ns, cs, e]) => {
+        dispatch(options(ns));
+        dispatch(options(cs));
+        setEmail(e);
+      })
+      .catch(() => {
+        // @TODO: LOGGER
+        dispatch(error());
+      });
+  }, []);
+
   const toggleNewsletterSubscription = toggleSubscription(Newsletters);
   const toggleConsentSubscription = toggleSubscription(Consents);
 
   const newsletters = filterNewsletters(state.options);
   const consents = filterConsents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
-
-  useEffect(() => {
-    try {
-      Newsletters.getAll().then(n => dispatch(options(n)));
-      Consents.getAll().then(c => dispatch(options(c)));
-      memoReadEmail().then(primaryEmailAddress => {
-        setEmail(primaryEmailAddress);
-      });
-    } catch (e) {
-      // @TODO: Logger
-      dispatch(error());
-    }
-  }, []);
 
   const errorMessage = (
     <PageContainer>
@@ -99,7 +99,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const content = (
     <>
-      {state.error ? errorMessage : null}
       <PageContainer>
         <NewsletterSection
           newsletters={newsletters}
@@ -153,6 +152,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       <Spinner loadingMessage="Loading your subscripton information..." />
     </PageContainer>
   );
+
   return (
     <>
       <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
@@ -168,7 +168,8 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      {loading ? loader : content}
+      {state.error ? errorMessage : null}
+      {loading ? (!state.error ? loader : null) : content}
     </>
   );
 };
