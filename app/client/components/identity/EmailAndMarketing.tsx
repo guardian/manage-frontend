@@ -78,21 +78,44 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const consents = filterConsents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
 
+  const errorRef = React.createRef<HTMLDivElement>();
+
+  useEffect(
+    () => {
+      if (state.error && errorRef.current) {
+        window.scrollTo(0, errorRef.current.offsetTop - 20);
+      }
+    },
+    [state.error]
+  );
+
   const errorMessage = (
     <PageContainer>
       <div
+        ref={errorRef}
         css={{
-          fontSize: "0.8125rem",
-          lineHeight: "1.125rem",
+          fontSize: "13px",
+          lineHeight: "18px",
           backgroundColor: "#ffe1e1",
-          borderBottom: `0.0625rem solid ${palette.red.light}`,
-          borderTop: `0.0625rem solid ${palette.red.light}`,
+          borderBottom: `1px solid ${palette.red.light}`,
+          borderTop: `1px solid ${palette.red.light}`,
           color: palette.red.medium,
-          marginTop: "0.375rem",
-          padding: "0.4375rem 0.5rem"
+          marginTop: "6px",
+          padding: "7px 8px"
         }}
       >
-        Sorry, something went wrong!
+        <p css={{ marginBottom: "10px" }}>Sorry, something went wrong!</p>
+        <p css={{ marginBottom: "0" }}>
+          <a
+            css={{
+              color: palette.blue.dark,
+              cursor: "pointer"
+            }}
+            onClick={() => window.location.reload()}
+          >
+            Refresh this page
+          </a>
+        </p>
       </div>
     </PageContainer>
   );
@@ -158,8 +181,8 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
         <h1
           css={{
-            fontSize: "2rem",
-            lineHeight: "2.25rem",
+            fontSize: "32px",
+            lineHeight: "36px",
             fontFamily: headline,
             marginBottom: "30px",
             marginTop: "0"
