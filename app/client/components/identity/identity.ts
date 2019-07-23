@@ -201,7 +201,7 @@ const updateConsent = async (id: string, consented: boolean = true) => {
       consented
     }
   ];
-  await proxFetch(url, APIPatchOptions(payload));
+  await identityFetch(url, APIPatchOptions(payload));
 };
 
 const readNewsletters = async (): Promise<ConsentOption[]> => {
