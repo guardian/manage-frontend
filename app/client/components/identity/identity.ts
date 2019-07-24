@@ -187,7 +187,7 @@ export const updateRemoveAllConsents = async () => {
   const options = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/x-www-form-urlencoded"
     }
   };
   return identityFetch(url, useCredentials(options));
