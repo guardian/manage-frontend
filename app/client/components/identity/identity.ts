@@ -183,7 +183,7 @@ export const Consents: ConsentOptionCollection = {
 };
 
 export const updateRemoveAllConsents = async () => {
-  const url = "remove/consent/all";
+  const url = "/remove/consent/all";
   const options = {
     method: "POST",
     headers: {
