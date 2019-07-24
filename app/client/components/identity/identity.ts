@@ -133,6 +133,11 @@ const APIPatchOptions = (payload: any): RequestInit => ({
   body: JSON.stringify(payload)
 });
 
+const useCredentials = (options: RequestInit): RequestInit => ({
+  ...options,
+  credentials: "include"
+});
+
 const IDAPI_URL = "https://idapi.code.dev-theguardian.com";
 const identityFetch = APIFetch(IDAPI_URL);
 
@@ -201,7 +206,7 @@ const updateConsent = async (id: string, consented: boolean = true) => {
       consented
     }
   ];
-  await identityFetch(url, APIPatchOptions(payload));
+  await identityFetch(url, useCredentials(APIPatchOptions(payload)));
 };
 
 const readNewsletters = async (): Promise<ConsentOption[]> => {
@@ -217,18 +222,18 @@ const updateNewsletter = async (id: string, subscribed: boolean = true) => {
     id,
     subscribed
   };
-  identityFetch(url, APIPatchOptions(payload));
+  identityFetch(url, useCredentials(APIPatchOptions(payload)));
 };
 
 const readNewsletterSubscriptions = async (): Promise<string[]> => {
   const url = "/users/me/newsletters";
-  const data = await identityFetch(url);
+  const data = await identityFetch(url, useCredentials({}));
   return toSubscriptionIdList(data.result.subscriptions);
 };
 
 const readUserDetails = async (): Promise<User> => {
   const url = "/user/me";
-  const data = await identityFetch(url);
+  const data = await identityFetch(url, useCredentials({}));
   const consents = data.user.consents
     .filter((consent: any) => consent.consented)
     .map((consent: any) => consent.id);
