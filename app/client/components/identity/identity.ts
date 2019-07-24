@@ -190,7 +190,7 @@ export const updateRemoveAllConsents = async () => {
       "Content-Type": "application/json"
     }
   };
-  return identityFetch(url, options);
+  return identityFetch(url, useCredentials(options));
 };
 
 const readConsents = async (): Promise<ConsentOption[]> => {
