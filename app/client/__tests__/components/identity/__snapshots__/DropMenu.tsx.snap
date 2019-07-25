@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
+exports[`DropMenu displays the text in the supplied color 1`] = `
 <div
   css={
     Object {
@@ -33,7 +33,7 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
           "verticalAlign": "middle",
           "width": "5px",
         },
-        "color": "red",
+        "color": "green",
         "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
         "fontSize": "17px",
         "fontWeight": "bold",
@@ -43,7 +43,53 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
     }
     onClick={[Function]}
   >
-    test component
+    TEST DROPMENU
+  </div>
+</div>
+`;
+
+exports[`DropMenu if closed, opens and shows children on click 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      class="open"
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
+    <p>
+      TEST_CONTENT
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DropMenu if open, closes and hides children on click 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
   </div>
 </div>
 `;
