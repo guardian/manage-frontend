@@ -42,7 +42,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         dispatch(subscribe(id));
       }
     } catch (e) {
-      // @TODO: LOGGER
       dispatch(error());
     }
   };
@@ -53,7 +52,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       setRemoved(true);
       dispatch(unsubscribeAll());
     } catch (e) {
-      // @TODO: LOGGER
       dispatch(error());
     }
   };
@@ -66,7 +64,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         setEmail(e);
       })
       .catch(() => {
-        // @TODO: LOGGER
         dispatch(error());
       });
   }, []);

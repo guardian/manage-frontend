@@ -243,7 +243,7 @@ const readUserDetails = async (): Promise<User> => {
   };
 };
 
-export const memoReadUserDetails = (): [
+const memoReadUserDetails = (): [
   () => Promise<string[]>,
   () => Promise<string>
 ] => {
