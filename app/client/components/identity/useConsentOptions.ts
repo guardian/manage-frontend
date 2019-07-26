@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { ConsentOption } from "./identity";
+import { ConsentOption } from "./models";
 
 enum ActionType {
   ERROR = "ERROR",

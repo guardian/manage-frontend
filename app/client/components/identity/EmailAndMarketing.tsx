@@ -7,21 +7,20 @@ import { PageContainer, PageHeaderContainer } from "../page";
 import { Spinner } from "../spinner";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
-import { Lines } from "./Lines";
-import { MarginWrapper } from "./MarginWrapper";
-import { NewsletterSection } from "./NewsletterSection";
-import { OptOutSection } from "./OptOutSection";
-import { Actions, useConsentOptions } from "./useConsentOptions";
-
+import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
+import * as UserAPI from "./idapi/user";
 import {
-  ConsentOptionCollection,
   Consents,
   filterConsents,
   filterNewsletters,
-  memoReadEmail,
-  Newsletters,
-  updateRemoveAllConsents
+  Newsletters
 } from "./identity";
+import { Lines } from "./Lines";
+import { MarginWrapper } from "./MarginWrapper";
+import { ConsentOptionCollection } from "./models";
+import { NewsletterSection } from "./NewsletterSection";
+import { OptOutSection } from "./OptOutSection";
+import { Actions, useConsentOptions } from "./useConsentOptions";
 
 export const EmailAndMarketing = (props: { path?: string }) => {
   const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;
@@ -48,7 +47,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const setRemoveAllEmailConsents = async () => {
     try {
-      await updateRemoveAllConsents();
+      await RemoveSubscriptionsAPI.execute();
       setRemoved(true);
       dispatch(unsubscribeAll());
     } catch (e) {
@@ -57,11 +56,11 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   };
 
   useEffect(() => {
-    Promise.all([Newsletters.getAll(), Consents.getAll(), memoReadEmail()])
+    Promise.all([Newsletters.getAll(), Consents.getAll(), UserAPI.memoRead()])
       .then(([ns, cs, e]) => {
         dispatch(options(ns));
         dispatch(options(cs));
-        setEmail(e);
+        setEmail(e.email);
       })
       .catch(() => {
         dispatch(error());

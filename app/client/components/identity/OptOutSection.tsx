@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { ConsentOption } from "./identity";
+import { ConsentOption } from "./models";
 import { Lines } from "./Lines";
 import { MarginWrapper } from "./MarginWrapper";
 import { MarketingPreference } from "./MarketingPreference";
