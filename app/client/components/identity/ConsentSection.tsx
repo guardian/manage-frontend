@@ -10,14 +10,22 @@ interface ConsentSectionProps {
   consents: ConsentOption[];
 }
 
-export const otherEmailConsents = (
-  consents: ConsentOption[]
+const getConsentsById = (
+  consents: ConsentOption[],
+  ids: string[]
 ): ConsentOption[] => {
-  const ids = ["supporter", "jobs", "holidays", "events", "offers"];
   return ids
     .map(id => consents.find(c => c.id === id))
     .filter((x): x is ConsentOption => x !== undefined);
 };
+
+const otherEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
+  const ids = ["supporter", "jobs", "holidays", "events", "offers"];
+  return getConsentsById(consents, ids);
+};
+
+const smsConsent = (consents: ConsentOption[]) =>
+  getConsentsById(consents, ["sms"]);
 
 const consentPreference = (
   consent: ConsentOption,
@@ -52,6 +60,15 @@ export const ConsentSection: FC<ConsentSectionProps> = props => {
       `}
     >
       {consentPreferences(otherEmailConsents(consents), clickHandler)}
+      <h2
+        css={{
+          fontSize: "17px",
+          fontWeight: "bold"
+        }}
+      >
+        Would you also like to hear about the above by SMS?
+      </h2>
+      {consentPreferences(smsConsent(consents), clickHandler)}
     </PageSection>
   );
 };
