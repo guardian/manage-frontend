@@ -21,6 +21,9 @@ export const filterConsents = (options: ConsentOption[]): ConsentOption[] => [
   ...filterOptOuts(options)
 ];
 
+const isNewsletter = (option: ConsentOption): boolean =>
+  option.type === ConsentOptionType.NEWSLETTER;
+
 const mapSubscriptions = (
   subscriptions: string[],
   options: ConsentOption[]
@@ -30,34 +33,33 @@ const mapSubscriptions = (
     subscribed: option.subscribed ? true : subscriptions.includes(option.id)
   }));
 
-export const Newsletters: ConsentOptionCollection = {
+export const ConsentOptions: ConsentOptionCollection = {
   async getAll(): Promise<ConsentOption[]> {
     const [newsletters, subscriptions] = await Promise.all([
       NewslettersAPI.read(),
       NewslettersAPI.readSubscriptions()
     ]);
-    return mapSubscriptions(subscriptions, newsletters);
-  },
-  async subscribe(id: string): Promise<void> {
-    return NewslettersAPI.update(id, true);
-  },
-  async unsubscribe(id: string): Promise<void> {
-    return NewslettersAPI.update(id, false);
-  }
-};
-
-export const Consents: ConsentOptionCollection = {
-  async getAll(): Promise<ConsentOption[]> {
     const [consents, user] = await Promise.all([
       ConsentsAPI.read(),
       UserAPI.memoRead()
     ]);
-    return mapSubscriptions(user.consents, consents);
+    return mapSubscriptions(
+      [...subscriptions, ...user.consents],
+      [...newsletters, ...consents]
+    );
   },
-  async subscribe(id: string): Promise<void> {
-    return ConsentsAPI.update(id, true);
+  async subscribe(option: ConsentOption): Promise<void> {
+    if (isNewsletter(option)) {
+      return NewslettersAPI.update(option.id, true);
+    } else {
+      return ConsentsAPI.update(option.id, true);
+    }
   },
-  async unsubscribe(id: string): Promise<void> {
-    return ConsentsAPI.update(id, false);
+  async unsubscribe(option: ConsentOption): Promise<void> {
+    if (isNewsletter(option)) {
+      return NewslettersAPI.update(option.id, false);
+    } else {
+      return ConsentsAPI.update(option.id, false);
+    }
   }
 };

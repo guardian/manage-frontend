@@ -9,15 +9,9 @@ import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
 import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
 import * as UserAPI from "./idapi/user";
-import {
-  Consents,
-  filterConsents,
-  filterNewsletters,
-  Newsletters
-} from "./identity";
+import { ConsentOptions, filterConsents, filterNewsletters } from "./identity";
 import { Lines } from "./Lines";
 import { MarginWrapper } from "./MarginWrapper";
-import { ConsentOptionCollection } from "./models";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
 import { Actions, useConsentOptions } from "./useConsentOptions";
@@ -28,16 +22,14 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const [removed, setRemoved] = useState(false);
   const [state, dispatch] = useConsentOptions();
 
-  const toggleSubscription = (collection: ConsentOptionCollection) => async (
-    id: string
-  ) => {
-    const subscribed = state.options.find((o: any) => id === o.id).subscribed;
+  const toggleSubscription = async (id: string) => {
+    const option = state.options.find((o: any) => id === o.id);
     try {
-      if (subscribed) {
-        await collection.unsubscribe(id);
+      if (option.subscribed) {
+        await ConsentOptions.unsubscribe(option);
         dispatch(unsubscribe(id));
       } else {
-        await collection.subscribe(id);
+        await ConsentOptions.subscribe(option);
         dispatch(subscribe(id));
       }
     } catch (e) {
@@ -56,19 +48,15 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   };
 
   useEffect(() => {
-    Promise.all([Newsletters.getAll(), Consents.getAll(), UserAPI.memoRead()])
-      .then(([ns, cs, e]) => {
-        dispatch(options(ns));
-        dispatch(options(cs));
+    Promise.all([ConsentOptions.getAll(), UserAPI.memoRead()])
+      .then(([os, e]) => {
+        dispatch(options(os));
         setEmail(e.email);
       })
       .catch(() => {
         dispatch(error());
       });
   }, []);
-
-  const toggleNewsletterSubscription = toggleSubscription(Newsletters);
-  const toggleConsentSubscription = toggleSubscription(Consents);
 
   const newsletters = filterNewsletters(state.options);
   const consents = filterConsents(state.options);
@@ -121,7 +109,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       <PageContainer>
         <NewsletterSection
           newsletters={newsletters}
-          clickHandler={toggleNewsletterSubscription}
+          clickHandler={toggleSubscription}
         />
       </PageContainer>
       <PageContainer>
@@ -130,10 +118,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         </MarginWrapper>
       </PageContainer>
       <PageContainer>
-        <ConsentSection
-          consents={consents}
-          clickHandler={toggleConsentSubscription}
-        />
+        <ConsentSection consents={consents} clickHandler={toggleSubscription} />
       </PageContainer>
       <PageContainer>
         <MarginWrapper>
@@ -153,10 +138,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         </MarginWrapper>
       </PageContainer>
       <PageContainer>
-        <OptOutSection
-          consents={consents}
-          clickHandler={toggleConsentSubscription}
-        />
+        <OptOutSection consents={consents} clickHandler={toggleSubscription} />
       </PageContainer>
       <PageContainer>
         <MarginWrapper>

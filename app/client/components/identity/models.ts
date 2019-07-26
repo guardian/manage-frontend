@@ -32,6 +32,6 @@ export interface ConsentOption {
 
 export interface ConsentOptionCollection {
   getAll: () => Promise<ConsentOption[]>;
-  subscribe: (id: string) => Promise<void>;
-  unsubscribe: (id: string) => Promise<void>;
+  subscribe: (option: ConsentOption) => Promise<void>;
+  unsubscribe: (option: ConsentOption) => Promise<void>;
 }
