@@ -42,7 +42,7 @@ const reducer = (state: State, action: Action) => {
     case OPTIONS:
       return {
         ...state,
-        options: [...state.options, ...payload]
+        options: payload
       };
     case UNSUBSCRIBE_ALL: {
       const options = state.options.map((option: any) => ({

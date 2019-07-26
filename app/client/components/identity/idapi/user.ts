@@ -13,10 +13,14 @@ export const read = async (): Promise<User> => {
   };
 };
 
-export const memoRead = (): Promise<User> => {
+const memoizedRead = (): (() => Promise<User>) => {
   let user: Promise<User> | undefined;
-  if (user === undefined) {
-    user = read();
-  }
-  return Promise.resolve(user);
+  return (): Promise<User> => {
+    if (user === undefined) {
+      user = read();
+    }
+    return Promise.resolve(user);
+  };
 };
+
+export const memoRead = memoizedRead();
