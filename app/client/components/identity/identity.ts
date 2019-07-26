@@ -1,28 +1,18 @@
 import * as ConsentsAPI from "./idapi/consents";
 import * as NewslettersAPI from "./idapi/newsletters";
+import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
 import * as UserAPI from "./idapi/user";
+
 import {
   ConsentOption,
   ConsentOptionCollection,
   ConsentOptionType
 } from "./models";
 
-export const filterNewsletters = (options: ConsentOption[]): ConsentOption[] =>
-  options.filter(option => option.type === ConsentOptionType.NEWSLETTER);
-
-const filterEmailConsents = (options: ConsentOption[]): ConsentOption[] =>
-  options.filter(option => option.type === ConsentOptionType.EMAIL);
-
-const filterOptOuts = (options: ConsentOption[]): ConsentOption[] =>
-  options.filter(option => option.type === ConsentOptionType.OPT_OUT);
-
-export const filterConsents = (options: ConsentOption[]): ConsentOption[] => [
-  ...filterEmailConsents(options),
-  ...filterOptOuts(options)
-];
-
 const isNewsletter = (option: ConsentOption): boolean =>
   option.type === ConsentOptionType.NEWSLETTER;
+const isConsent = (option: ConsentOption): boolean =>
+  option.type !== ConsentOptionType.NEWSLETTER;
 
 const mapSubscriptions = (
   subscriptions: string[],
@@ -61,5 +51,17 @@ export const ConsentOptions: ConsentOptionCollection = {
     } else {
       return ConsentsAPI.update(option.id, false);
     }
+  },
+  async unsubscribeAll(): Promise<void> {
+    return await RemoveSubscriptionsAPI.execute();
+  },
+  newsletters(options: ConsentOption[]): ConsentOption[] {
+    return options.filter(isNewsletter);
+  },
+  consents(options: ConsentOption[]): ConsentOption[] {
+    return options.filter(isConsent);
+  },
+  findById(options, id): ConsentOption | undefined {
+    return options.find(o => id === o.id);
   }
 };

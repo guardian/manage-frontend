@@ -7,9 +7,8 @@ import { PageContainer, PageHeaderContainer } from "../page";
 import { Spinner } from "../spinner";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
-import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
 import * as UserAPI from "./idapi/user";
-import { ConsentOptions, filterConsents, filterNewsletters } from "./identity";
+import { ConsentOptions } from "./identity";
 import { Lines } from "./Lines";
 import { MarginWrapper } from "./MarginWrapper";
 import { NewsletterSection } from "./NewsletterSection";
@@ -23,8 +22,11 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const [state, dispatch] = useConsentOptions();
 
   const toggleSubscription = async (id: string) => {
-    const option = state.options.find((o: any) => id === o.id);
+    const option = ConsentOptions.findById(state.options, id);
     try {
+      if (option === undefined) {
+        throw Error("Id not found");
+      }
       if (option.subscribed) {
         await ConsentOptions.unsubscribe(option);
         dispatch(unsubscribe(id));
@@ -39,7 +41,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const setRemoveAllEmailConsents = async () => {
     try {
-      await RemoveSubscriptionsAPI.execute();
+      await ConsentOptions.unsubscribeAll();
       setRemoved(true);
       dispatch(unsubscribeAll());
     } catch (e) {
@@ -58,8 +60,8 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       });
   }, []);
 
-  const newsletters = filterNewsletters(state.options);
-  const consents = filterConsents(state.options);
+  const newsletters = ConsentOptions.newsletters(state.options);
+  const consents = ConsentOptions.consents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
 
   const errorRef = React.createRef<HTMLDivElement>();
