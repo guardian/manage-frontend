@@ -1,4 +1,4 @@
-import { identityFetch, APIUseCredentials } from "./fetch";
+import { APIUseCredentials, identityFetch } from "./fetch";
 
 interface Subscription {
   listId: number;
