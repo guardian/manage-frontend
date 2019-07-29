@@ -1,8 +1,8 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { PurposeItem } from "./PurposeItem";
-import palette from "../../colours";
 import TickIcon from "../../../images/tick.svg";
+import palette from "../../colours";
+import { PurposeItem } from "./PurposeItem";
 
 const purposes: PurposeList = {
   essential: {
@@ -223,7 +223,7 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  public renderPurposeItems() {
+  public renderPurposeItems(): React.ReactNode {
     const purposeItemKeys = Object.keys(this.state.purposes);
     const purposeItemCount = purposeItemKeys.length;
 

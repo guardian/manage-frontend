@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import React from "react";
-import { OnOffRadio } from "./OnOffRadio";
 import palette from "../../colours";
+import { OnOffRadio } from "./OnOffRadio";
 
 const vendorTabStyles = css`
   display: flex;

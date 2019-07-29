@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { PrivacySettings } from "./PrivacySettings";
 import TheGuardianLogoSVG from "../../../images/the-guardian.svg";
-import { minWidth } from "../../styles/breakpoints";
 import palette from "../../colours";
+import { minWidth } from "../../styles/breakpoints";
+import { PrivacySettings } from "./PrivacySettings";
 
 const headerCSS = css`
   background-color: ${palette.blue.header};
