@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { ConsentOptions } from "./identity";
 import { MarketingPreference } from "./MarketingPreference";
 import { ConsentOption } from "./models";
 import { PageSection } from "./PageSection";
@@ -10,22 +11,13 @@ interface ConsentSectionProps {
   consents: ConsentOption[];
 }
 
-const getConsentsById = (
-  consents: ConsentOption[],
-  ids: string[]
-): ConsentOption[] => {
-  return ids
-    .map(id => consents.find(c => c.id === id))
-    .filter((x): x is ConsentOption => x !== undefined);
-};
-
 const otherEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
   const ids = ["supporter", "jobs", "holidays", "events", "offers"];
-  return getConsentsById(consents, ids);
+  return ConsentOptions.findByIds(consents, ids);
 };
 
 const smsConsent = (consents: ConsentOption[]) =>
-  getConsentsById(consents, ["sms"]);
+  ConsentOptions.findByIds(consents, ["sms"]);
 
 const consentPreference = (
   consent: ConsentOption,

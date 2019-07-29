@@ -1,5 +1,6 @@
 import * as ConsentsAPI from "./idapi/consents";
 import * as NewslettersAPI from "./idapi/newsletters";
+import * as NewslettersSubscriptionsAPI from "./idapi/newsletterSubscriptions";
 import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
 import * as UserAPI from "./idapi/user";
 
@@ -27,7 +28,7 @@ export const ConsentOptions: ConsentOptionCollection = {
   async getAll(): Promise<ConsentOption[]> {
     const [newsletters, subscriptions] = await Promise.all([
       NewslettersAPI.read(),
-      NewslettersAPI.readSubscriptions()
+      NewslettersSubscriptionsAPI.read()
     ]);
     const [consents, user] = await Promise.all([
       ConsentsAPI.read(),
@@ -63,5 +64,10 @@ export const ConsentOptions: ConsentOptionCollection = {
   },
   findById(options, id): ConsentOption | undefined {
     return options.find(o => id === o.id);
+  },
+  findByIds(options, ids): ConsentOption[] {
+    return ids
+      .map(id => options.find(c => c.id === id))
+      .filter((x): x is ConsentOption => x !== undefined);
   }
 };

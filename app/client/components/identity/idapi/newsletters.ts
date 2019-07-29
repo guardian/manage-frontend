@@ -1,5 +1,10 @@
 import { ConsentOption, ConsentOptionType } from "../models";
-import { APIPatchOptions, APIUseCredentials, identityFetch } from "./fetch";
+import {
+  APIFetch,
+  APIPatchOptions,
+  APIUseCredentials,
+  identityFetch
+} from "./fetch";
 
 interface Newsletter {
   id: string;
@@ -11,9 +16,6 @@ interface Newsletter {
   exactTargetListId: number;
 }
 
-interface Subscription {
-  listId: number;
-}
 const newsletterToConsentOption = (
   rawNewsletter: Newsletter
 ): ConsentOption => {
@@ -49,12 +51,4 @@ export const update = async (id: string, subscribed: boolean = true) => {
     subscribed
   };
   identityFetch(url, APIUseCredentials(APIPatchOptions(payload)));
-};
-
-export const readSubscriptions = async (): Promise<string[]> => {
-  const url = "/users/me/newsletters";
-  const data = await identityFetch(url, APIUseCredentials({}));
-  return data.result.subscriptions.map((s: Subscription) =>
-    s.listId.toString()
-  );
 };

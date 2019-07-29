@@ -41,4 +41,5 @@ export interface ConsentOptionCollection {
     options: ConsentOption[],
     id: ConsentOption["id"]
   ) => ConsentOption | undefined;
+  findByIds: (options: ConsentOption[], ids: string[]) => ConsentOption[];
 }
