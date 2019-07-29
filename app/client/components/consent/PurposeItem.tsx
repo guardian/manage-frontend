@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { OnOffRadio } from "./OnOffRadio";
-import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
-import { VendorItem } from "./VendorItem";
 import palette from "../../colours";
+import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
+import { OnOffRadio } from "./OnOffRadio";
+import { VendorItem } from "./VendorItem";
 
 const purposeContainerStyles = (isLastItem: boolean) => css`
   margin-top: 6px;

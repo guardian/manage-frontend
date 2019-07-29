@@ -223,7 +223,7 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  public renderPurposeItems() {
+  public renderPurposeItems(): React.ReactNode {
     const purposeItemKeys = Object.keys(this.state.purposes);
     const purposeItemCount = purposeItemKeys.length;
 
