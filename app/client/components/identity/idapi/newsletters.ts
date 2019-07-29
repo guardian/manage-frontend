@@ -1,10 +1,5 @@
 import { ConsentOption, ConsentOptionType } from "../models";
-import {
-  APIFetch,
-  APIPatchOptions,
-  APIUseCredentials,
-  identityFetch
-} from "./fetch";
+import { APIPatchOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface Newsletter {
   id: string;
