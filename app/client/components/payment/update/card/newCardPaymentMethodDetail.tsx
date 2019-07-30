@@ -1,17 +1,8 @@
 import * as React from "react";
 import { Card, Subscription } from "../../../../../shared/productResponse";
+import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
 import { CardDisplay } from "../../cardDisplay";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-
-export interface TokenWithCard extends stripe.Token {
-  card: stripe.Card;
-}
-
-export function isTokenWithCard(
-  maybeTokenWithCard: stripe.Token
-): maybeTokenWithCard is TokenWithCard {
-  return maybeTokenWithCard.hasOwnProperty("card");
-}
 
 export interface SubscriptionWithCard extends Subscription {
   card: Card;
@@ -40,21 +31,27 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
 
   public readonly subHasExpectedPaymentType = isSubscriptionWithCard;
 
-  private readonly stripeToken: TokenWithCard;
+  private readonly card: stripe.Card;
+  private readonly stripeSetupIntent: StripeSetupIntent;
   private readonly stripePublicKeyForUpdate: string;
 
-  constructor(stripeToken: TokenWithCard, stripePublicKeyForUpdate: string) {
-    this.stripeToken = stripeToken;
+  constructor(
+    card: stripe.Card,
+    stripeSetupIntent: StripeSetupIntent,
+    stripePublicKeyForUpdate: string
+  ) {
+    this.card = card;
+    this.stripeSetupIntent = stripeSetupIntent;
     this.stripePublicKeyForUpdate = stripePublicKeyForUpdate;
   }
 
   public readonly detailToPayloadObject = () => ({
-    stripeToken: this.stripeToken.id,
+    stripeSetupIntentId: this.stripeSetupIntent.id,
     publicKey: this.stripePublicKeyForUpdate
   });
 
   public readonly matchesResponse = (response: CardUpdateResponse) =>
-    response.last4 === this.stripeToken.card.last4;
+    response.last4 === this.card.last4;
 
   public readonly render = (subscription?: Subscription) =>
     isSubscriptionWithCard(subscription) ? (
@@ -63,10 +60,7 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
         type={subscription.card.type}
       />
     ) : (
-      <CardDisplay
-        last4={this.stripeToken.card.last4}
-        type={this.stripeToken.card.brand}
-      />
+      <CardDisplay last4={this.card.last4} type={this.card.brand} />
     );
 
   public readonly confirmButtonWrapper = (confirmButton: JSX.Element) =>
