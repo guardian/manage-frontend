@@ -14,6 +14,7 @@ export interface Globals {
   abTest?: AbTest;
   polyfilled?: boolean;
   onPolyfilled?: () => void;
+  identityDetails: IdentityDetails;
 }
 
 declare global {
