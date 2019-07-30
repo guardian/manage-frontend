@@ -1,47 +1,18 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import TheGuardianLogoSVG from "../../../images/the-guardian.svg";
-import palette from "../../colours";
-import { minWidth } from "../../styles/breakpoints";
 import { PrivacySettings } from "./PrivacySettings";
 
+const containerCSS = css`
+  max-width: 340px;
+  border: 1px solid black;
+`;
+
 const headerCSS = css`
-  background-color: ${palette.blue.header};
-  position: relative;
-  height: 90px;
-`;
-
-const logoStyles = css`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 44px;
-  width: 135px;
-  ${minWidth.mobileMedium} {
-    height: 56px;
-    width: 175px;
-  }
-  path {
-    fill: ${palette.white};
-  }
-`;
-
-const multiLine = css`
-  background-image: repeating-linear-gradient(
-    to bottom,
-    ${palette.neutral[5]},
-    ${palette.neutral[5]} 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  background-repeat: repeat-x;
-  background-position: bottom;
-  background-size: 1px 13px;
-  background-color: ${palette.white};
-  content: "";
-  clear: left;
-  display: block;
-  height: 13px;
+  font-family: "GH Guardian Headline", Georgia, serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  margin: 12px;
 `;
 
 export class ConsentManagementPortal extends Component<{}, {}> {
@@ -51,11 +22,8 @@ export class ConsentManagementPortal extends Component<{}, {}> {
 
   public render(): React.ReactNode {
     return (
-      <div>
-        <div css={headerCSS}>
-          <TheGuardianLogoSVG css={logoStyles} />
-        </div>
-        <div css={multiLine} />
+      <div className="cmp-container" css={containerCSS}>
+        <h1 css={headerCSS}>The Guardian</h1>
         <PrivacySettings />
       </div>
     );
