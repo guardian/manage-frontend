@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { ConsentOption } from "./models";
+import { ConsentOption, ConsentOptionType } from "./models";
 
 enum ActionType {
   ERROR = "ERROR",
@@ -45,9 +45,9 @@ const reducer = (state: State, action: Action) => {
         options: payload
       };
     case UNSUBSCRIBE_ALL: {
-      const options = state.options.map((option: any) => ({
+      const options = state.options.map((option: ConsentOption) => ({
         ...option,
-        subscribed: !!option.isOptOut
+        subscribed: option.type === ConsentOptionType.OPT_OUT
       }));
       return {
         ...state,
@@ -55,7 +55,7 @@ const reducer = (state: State, action: Action) => {
       };
     }
     case SUBSCRIBE: {
-      const options = state.options.map((option: any) => ({
+      const options = state.options.map((option: ConsentOption) => ({
         ...option,
         subscribed: option.subscribed ? true : payload === option.id
       }));
@@ -65,7 +65,7 @@ const reducer = (state: State, action: Action) => {
       };
     }
     case UNSUBSCRIBE: {
-      const options = state.options.map((option: any) => ({
+      const options = state.options.map((option: ConsentOption) => ({
         ...option,
         subscribed: payload === option.id ? false : option.subscribed
       }));
