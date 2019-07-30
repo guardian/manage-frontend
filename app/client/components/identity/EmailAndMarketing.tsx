@@ -9,6 +9,7 @@ import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
 import * as UserAPI from "./idapi/user";
 import { ConsentOptions } from "./identity";
+import { IdentityLocations } from "./IdentityLocations";
 import { Lines } from "./Lines";
 import { MarginWrapper } from "./MarginWrapper";
 import { NewsletterSection } from "./NewsletterSection";
@@ -50,14 +51,21 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   };
 
   useEffect(() => {
-    Promise.all([ConsentOptions.getAll(), UserAPI.memoRead()])
-      .then(([os, e]) => {
-        dispatch(options(os));
-        setEmail(e.email);
-      })
-      .catch(() => {
+    const makeInitialAPICalls = async () => {
+      try {
+        const user = await UserAPI.memoRead();
+        if (!user.validated) {
+          window.location.assign(IdentityLocations.VERIFY_EMAIL);
+          return;
+        }
+        const consentOptions = await ConsentOptions.getAll();
+        setEmail(user.email);
+        dispatch(options(consentOptions));
+      } catch (e) {
         dispatch(error());
-      });
+      }
+    };
+    makeInitialAPICalls();
   }, []);
 
   const newsletters = ConsentOptions.newsletters(state.options);

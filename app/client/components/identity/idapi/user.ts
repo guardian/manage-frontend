@@ -9,7 +9,8 @@ export const read = async (): Promise<User> => {
     .map((consent: any) => consent.id);
   return {
     email: data.user.primaryEmailAddress,
-    consents
+    consents,
+    validated: data.user.statusFields.userEmailValidated
   };
 };
 
