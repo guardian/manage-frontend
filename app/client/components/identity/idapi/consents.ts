@@ -5,7 +5,6 @@ interface ConsentAPIResponse {
   id: string;
   description: string;
   name: string;
-  isChannel: boolean;
   isOptOut: boolean;
 }
 

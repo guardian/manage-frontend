@@ -1,16 +1,34 @@
 import { User } from "../models";
 import { APIUseCredentials, identityFetch } from "./fetch";
 
+interface UserAPIResponse {
+  user: {
+    consents: [
+      {
+        id: string;
+        consented: boolean;
+      }
+    ];
+    primaryEmailAddress: string;
+    statusFields: {
+      userEmailValidated: boolean;
+    };
+  };
+}
+
 export const read = async (): Promise<User> => {
   const url = "/user/me";
-  const data = await identityFetch(url, APIUseCredentials({}));
-  const consents = data.user.consents
+  const response: UserAPIResponse = await identityFetch(
+    url,
+    APIUseCredentials({})
+  );
+  const consents = response.user.consents
     .filter((consent: any) => consent.consented)
     .map((consent: any) => consent.id);
   return {
-    email: data.user.primaryEmailAddress,
+    email: response.user.primaryEmailAddress,
     consents,
-    validated: data.user.statusFields.userEmailValidated
+    validated: response.user.statusFields.userEmailValidated
   };
 };
 

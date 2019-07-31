@@ -1,7 +1,7 @@
 import { ConsentOption, ConsentOptionType } from "../models";
 import { APIPatchOptions, APIUseCredentials, identityFetch } from "./fetch";
 
-interface Newsletter {
+interface NewsletterAPIResponse {
   id: string;
   theme: string;
   name: string;
@@ -12,15 +12,9 @@ interface Newsletter {
 }
 
 const newsletterToConsentOption = (
-  rawNewsletter: Newsletter
+  newsletter: NewsletterAPIResponse
 ): ConsentOption => {
-  const {
-    theme,
-    name,
-    description,
-    frequency,
-    exactTargetListId
-  } = rawNewsletter;
+  const { theme, name, description, frequency, exactTargetListId } = newsletter;
   return {
     id: exactTargetListId.toString(),
     description,
@@ -34,7 +28,7 @@ const newsletterToConsentOption = (
 
 export const read = async (): Promise<ConsentOption[]> => {
   const url = "/newsletters";
-  return ((await identityFetch(url)) as Newsletter[]).map(
+  return ((await identityFetch(url)) as NewsletterAPIResponse[]).map(
     newsletterToConsentOption
   );
 };
