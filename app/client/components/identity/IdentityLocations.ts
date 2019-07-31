@@ -1,10 +1,10 @@
-import { conf, Environments } from "../../../server/config";
+import { conf } from "../../../server/config";
 
 const url = (subdomain: string, domain: string, path?: string) =>
   `https://${subdomain}.${domain}${path}`;
 
 const getIDAPIUrl = () => {
-  if (conf.ENVIRONMENT === Environments.DEVELOPMENT) {
+  if (conf.DOMAIN === "thegulocal.com") {
     return "/idapicodeproxy";
   } else {
     return url("idapi", conf.DOMAIN);
