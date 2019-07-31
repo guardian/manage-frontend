@@ -1,10 +1,23 @@
 import { ConsentOption, ConsentOptionType } from "../models";
 import { APIPatchOptions, APIUseCredentials, identityFetch } from "./fetch";
 
-const consentToConsentOption = (raw: any): ConsentOption => {
+interface ConsentAPIResponse {
+  id: string;
+  description: string;
+  name: string;
+  isChannel: boolean;
+  isOptOut: boolean;
+}
+
+const consentToConsentOption = (
+  response: ConsentAPIResponse
+): ConsentOption => {
+  const { id, description, name, isOptOut } = response;
   return {
-    ...raw,
-    type: raw.isOptOut ? ConsentOptionType.OPT_OUT : ConsentOptionType.EMAIL,
+    id,
+    description,
+    name,
+    type: isOptOut ? ConsentOptionType.OPT_OUT : ConsentOptionType.EMAIL,
     subscribed: false
   };
 };
