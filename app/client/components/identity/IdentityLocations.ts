@@ -1,7 +1,7 @@
 import { conf } from "../../../server/config";
 
 const url = (subdomain: string, domain: string, path?: string) =>
-  `https://${subdomain}.${domain}${path}`;
+  `https://${subdomain}.${domain}${path ? path : ""}`;
 
 const getIDAPIUrl = () => {
   let domain: string;
