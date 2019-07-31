@@ -16,7 +16,7 @@ const otherEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
   return ConsentOptions.findByIds(consents, ids);
 };
 
-const smsConsent = (consents: ConsentOption[]) =>
+const smsConsent = (consents: ConsentOption[]): ConsentOption[] =>
   ConsentOptions.findByIds(consents, ["sms"]);
 
 const consentPreference = (
