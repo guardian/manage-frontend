@@ -3,7 +3,6 @@ import { Request, Response, Router } from "express";
 import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../../client/components/user";
-import { Globals } from "../../shared/globals";
 import { conf, Environments } from "../config";
 import html from "../html";
 import { log } from "../log";
@@ -18,12 +17,6 @@ const clientDSN =
 if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
   log.error("NO SENTRY IN CLIENT PROD!");
 }
-
-const globals: Globals = {
-  domain: conf.DOMAIN,
-  dsn: clientDSN,
-  supportedBrowser: true
-};
 
 router.use(withIdentity(), (req: Request, res: Response) => {
   /**
@@ -56,7 +49,12 @@ router.use(withIdentity(), (req: Request, res: Response) => {
       body,
       title,
       src,
-      globals
+      globals: {
+        domain: conf.DOMAIN,
+        dsn: clientDSN,
+        supportedBrowser: true,
+        identityDetails: res.locals.identity
+      }
     })
   );
 });

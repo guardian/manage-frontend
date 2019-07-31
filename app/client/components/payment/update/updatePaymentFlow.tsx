@@ -1,5 +1,4 @@
 import { NavigateFn } from "@reach/router";
-import { get as getCookie } from "es-cookie";
 import Raven from "raven-js";
 import React from "react";
 import {
@@ -134,10 +133,6 @@ interface PaymentUpdaterStepState {
   newPaymentMethodDetail?: NewPaymentMethodDetail;
 }
 
-const getSignInEmailFromCookie = () => {
-  return getCookie("GU_SIGNIN_EMAIL"); // TODO eliminate this because it can be incorrect in the case of 'social' accounts
-};
-
 class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepProps,
   PaymentUpdaterStepState
@@ -223,7 +218,7 @@ class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={subscription.stripePublicKeyForCardAddition}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={getSignInEmailFromCookie()}
+            userEmail={window.guardian.identityDetails.email}
           />
         ) : (
           <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
@@ -234,7 +229,9 @@ class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={subscription.card.stripePublicKeyForUpdate}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={subscription.card.email || getSignInEmailFromCookie()}
+            userEmail={
+              subscription.card.email || window.guardian.identityDetails.email
+            }
           />
         ) : (
           <GenericErrorScreen loggingMessage="No existing card information to update from" />
