@@ -160,7 +160,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const loader = (
     <PageContainer>
-      <Spinner loadingMessage="Loading your subscripton information..." />
+      <Spinner loadingMessage="Loading your email preferences..." />
     </PageContainer>
   );
 
