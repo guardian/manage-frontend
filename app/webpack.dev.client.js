@@ -10,10 +10,21 @@ module.exports = merge(common.client, {
     inline: true,
     open: true,
     index: "/", // specify to enable root proxying
-    proxy: {
-      "**": {
+    proxy: [
+      {
+        context: "/idapicodeproxy",
+        target: "https://idapi.code.dev-theguardian.com",
+        pathRewrite: { "^/idapicodeproxy": "" },
+        changeOrigin: true,
+        headers: {
+          host: "https://idapi.code.dev-theguardian.com",
+          origin: "https://manage.code.dev-theguardian.com"
+        }
+      },
+      {
+        context: "**",
         target: "http://localhost:9233"
       }
-    }
+    ]
   }
 });

@@ -1,3 +1,5 @@
+import { IdentityLocations } from "../IdentityLocations";
+
 const handleResponseFailure = async (response: Response) => {
   let err;
   try {
@@ -43,5 +45,4 @@ export const APIUseCredentials = (options: RequestInit): RequestInit => ({
   credentials: "include"
 });
 
-const IDAPI_URL = "https://idapi.code.dev-theguardian.com";
-export const identityFetch = APIFetch(IDAPI_URL);
+export const identityFetch = APIFetch(IdentityLocations.IDAPI);
