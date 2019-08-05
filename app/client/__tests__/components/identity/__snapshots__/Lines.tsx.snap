@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lines draws one line when n = 1 1`] = `
+<hr
+  css={
+    Object {
+      "backgroundImage": "repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px)",
+      "backgroundPosition": "top",
+      "backgroundRepeat": "repeat",
+      "border": 0,
+      "height": "4px",
+      "margin": "12px auto 6px",
+    }
+  }
+/>
+`;
+
+exports[`Lines draws one line when n = 2 1`] = `
+<hr
+  css={
+    Object {
+      "backgroundImage": "repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px)",
+      "backgroundPosition": "top",
+      "backgroundRepeat": "repeat",
+      "border": 0,
+      "height": "8px",
+      "margin": "12px auto 6px",
+    }
+  }
+/>
+`;

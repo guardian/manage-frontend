@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropMenu displays the text in the supplied color 1`] = `
+<div
+  css={
+    Object {
+      "borderColor": "#999999",
+      "borderTop": "1px solid #ececec",
+      "cursor": "pointer",
+      "padding": "3px 0 12px",
+      "position": "relative",
+    }
+  }
+>
+  <div
+    css={
+      Object {
+        "&.open:after": Object {
+          "transform": "rotate(225deg)",
+        },
+        ":after": Object {
+          "border": "2px solid currentColor",
+          "borderLeft": "transparent",
+          "borderTop": "transparent",
+          "boxSizing": "content-box",
+          "color": "inherit",
+          "content": "''",
+          "display": "inline-block",
+          "height": "5px",
+          "marginLeft": "4px",
+          "transform": "translateY(-2px) rotate(45deg)",
+          "transition": "transform 250ms ease-out",
+          "verticalAlign": "middle",
+          "width": "5px",
+        },
+        "color": "green",
+        "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
+        "fontSize": "17px",
+        "fontWeight": "bold",
+        "lineHeight": "24px",
+        "textTransform": "capitalize",
+      }
+    }
+    onClick={[Function]}
+  >
+    TEST DROPMENU
+  </div>
+</div>
+`;
+
+exports[`DropMenu if closed, opens and shows children on click 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      class="open"
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
+    <p>
+      TEST_CONTENT
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DropMenu if open, closes and hides children on click 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
+<div>
+  <div
+    css="[object Object]"
+  >
+    <div
+      css="[object Object]"
+    >
+      TEST DROPMENU
+    </div>
+  </div>
+</div>
+`;
