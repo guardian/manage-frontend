@@ -8,19 +8,14 @@ const DOMAIN =
     ? window.guardian.domain
     : conf.DOMAIN;
 
-const getIDAPIUrl = () => {
-  if (DOMAIN === "thegulocal.com") {
-    return "/idapicodeproxy";
-  } else {
-    return url("idapi", DOMAIN);
-  }
-};
+const IDAPI_URL =
+  DOMAIN === "thegulocal.com" ? "/idapicodeproxy" : url("idapi", DOMAIN);
 
 const getIdentityLocations = (domain: string) => ({
   CHANGE_EMAIL: url("profile", domain, "/account/edit"),
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
   VERIFY_EMAIL: url("profile", domain, "/verify-email"),
-  IDAPI: getIDAPIUrl()
+  IDAPI: IDAPI_URL
 });
 
 export const IdentityLocations = getIdentityLocations(DOMAIN);
