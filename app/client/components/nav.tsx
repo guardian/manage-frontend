@@ -82,7 +82,8 @@ export interface NavLinks {
 export const navLinks: NavLinks = {
   publicProfile: {
     title: "Public profile",
-    link: "/public/edit"
+    link: "/public-profile",
+    local: true
   },
   accountDetails: {
     title: "Account details",
