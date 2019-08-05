@@ -1,7 +1,9 @@
 import React from "react";
 import { headline } from "../../../styles/fonts";
 import { navLinks } from "../../nav";
-import { PageHeaderContainer } from "../../page";
+import { PageContainer, PageHeaderContainer } from "../../page";
+import { IdentityLocations } from "../IdentityLocations";
+import { Lines } from "../Lines";
 
 export const PublicProfile = (props: { path?: string }) => {
   return (
@@ -19,6 +21,14 @@ export const PublicProfile = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
+      <PageContainer>
+        These details will be publicly visible to everyone who sees your profile
+        in the <a href={IdentityLocations.COMMUNITY_FAQS}>commenting</a>{" "}
+        section.
+      </PageContainer>
+      <PageContainer>
+        <Lines n={1} />
+      </PageContainer>
     </>
   );
 };

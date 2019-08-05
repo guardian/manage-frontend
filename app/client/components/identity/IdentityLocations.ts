@@ -12,6 +12,7 @@ const IDAPI_URL =
   DOMAIN === "thegulocal.com" ? "/idapicodeproxy" : url("idapi", DOMAIN);
 
 const getIdentityLocations = (domain: string) => ({
+  COMMUNITY_FAQS: url("www", domain, "/community-faqs"),
   CHANGE_EMAIL: url("profile", domain, "/account/edit"),
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
   VERIFY_EMAIL: url("profile", domain, "/verify-email"),
