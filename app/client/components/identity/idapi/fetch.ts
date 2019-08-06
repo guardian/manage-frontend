@@ -32,6 +32,14 @@ export const APIFetch = (baseUrl: string) => async (
   }
 };
 
+export const APIPostOptions = (payload: any): RequestInit => ({
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
+
 export const APIPatchOptions = (payload: any): RequestInit => ({
   method: "PATCH",
   headers: {

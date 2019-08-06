@@ -18,6 +18,8 @@ export enum ConsentOptionType {
 export interface User {
   email: string;
   location: string;
+  aboutMe: string;
+  interests: string;
   consents: string[];
   validated: boolean;
 }
@@ -34,6 +36,7 @@ export interface ConsentOption {
 
 export interface UserCollection {
   getCurrentUser: () => Promise<User>;
+  save: (user: User) => Promise<void>;
 }
 
 export interface ConsentOptionCollection {

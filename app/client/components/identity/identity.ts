@@ -29,6 +29,9 @@ const mapSubscriptions = (
 export const Users: UserCollection = {
   async getCurrentUser(): Promise<User> {
     return await UserAPI.memoRead();
+  },
+  async save(user: User): Promise<void> {
+    return await UserAPI.write(user);
   }
 };
 

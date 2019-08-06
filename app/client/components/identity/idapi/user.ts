@@ -1,5 +1,5 @@
 import { User } from "../models";
-import { APIUseCredentials, identityFetch } from "./fetch";
+import { APIPostOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface UserAPIResponse {
   user: {
@@ -10,6 +10,8 @@ interface UserAPIResponse {
       }
     ];
     publicFields: {
+      aboutMe: string;
+      interests: string;
       location: string;
     };
     primaryEmailAddress: string;
@@ -19,6 +21,22 @@ interface UserAPIResponse {
   };
 }
 
+interface UserAPIRequest {
+  publicFields: {
+    aboutMe: string;
+    interests: string;
+    location: string;
+  };
+}
+
+const userToUserAPIRequest = (user: User): UserAPIRequest => ({
+  publicFields: {
+    aboutMe: user.aboutMe,
+    interests: user.interests,
+    location: user.location
+  }
+});
+
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
     return response.user.consents
@@ -27,6 +45,13 @@ const getConsentedTo = (response: UserAPIResponse) => {
   } else {
     return [];
   }
+};
+
+export const write = async (user: User): Promise<void> => {
+  const url = "/user/me";
+  const body = userToUserAPIRequest(user);
+  const options = APIUseCredentials(APIPostOptions(body));
+  await identityFetch(url, options);
 };
 
 export const read = async (): Promise<User> => {
@@ -40,6 +65,8 @@ export const read = async (): Promise<User> => {
   return {
     email: user.primaryEmailAddress,
     location: user.publicFields.location,
+    aboutMe: user.publicFields.aboutMe,
+    interests: user.publicFields.interests,
     consents,
     validated: user.statusFields.userEmailValidated
   };
