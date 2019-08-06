@@ -7,19 +7,45 @@ import { Spinner } from "../../spinner";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
+import { User } from "../models";
 import { PageSection } from "../PageSection";
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     Users.getCurrentUser().then(setUser);
   }, []);
+
+  const saveUserLocation = async (u: User) => {
+    setLoading(true);
+    await Users.save(u);
+    setLoading(false);
+  };
+
+  const inputHandler = (e: React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    const name = target.name;
+    setUser({
+      ...user,
+      [name]: target.value
+    });
+  };
 
   const loader = (
     <PageContainer>
       <Spinner loadingMessage="Loading your profile ..." />
     </PageContainer>
   );
+
+  const labelCss = {
+    display: "block",
+    width: "100%",
+    "& input, & textarea": {
+      display: "block"
+    }
+  };
 
   const content = () => (
     <>
@@ -33,11 +59,32 @@ export const PublicProfile = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <PageSection title="Profile">
-          <label>
+          <label css={labelCss}>
             Location
-            <input type="text" value={user.location} />
+            <input
+              name="location"
+              type="text"
+              value={user.location}
+              onChange={inputHandler}
+            />
           </label>
-          <Button text="Save changes" onClick={() => void 0} />
+          <label css={labelCss}>
+            About Me
+            <textarea
+              name="aboutMe"
+              value={user.aboutMe}
+              onChange={inputHandler}
+            />
+          </label>
+          <label css={labelCss}>
+            Interests
+            <textarea
+              name="interests"
+              value={user.interests}
+              onChange={inputHandler}
+            />
+          </label>
+          <Button text="Save changes" onClick={() => saveUserLocation(user)} />
         </PageSection>
       </PageContainer>
     </>
