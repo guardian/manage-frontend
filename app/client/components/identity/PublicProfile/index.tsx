@@ -12,13 +12,15 @@ import { PageSection } from "../PageSection";
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Users.getCurrentUser().then(setUser);
+    Users.getCurrentUser()
+      .then(setUser)
+      .then(() => setLoading(false));
   }, []);
 
-  const saveUserLocation = async (u: User) => {
+  const saveUser = async (u: User) => {
     setLoading(true);
     await Users.save(u);
     setLoading(false);
@@ -84,7 +86,7 @@ export const PublicProfile = (props: { path?: string }) => {
               onChange={inputHandler}
             />
           </label>
-          <Button text="Save changes" onClick={() => saveUserLocation(user)} />
+          <Button text="Save changes" onClick={() => saveUser(user)} />
         </PageSection>
       </PageContainer>
     </>
@@ -105,7 +107,7 @@ export const PublicProfile = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      {user ? content() : loader}
+      {loading ? loader : content()}
     </>
   );
 };
