@@ -17,6 +17,7 @@ export enum ConsentOptionType {
 
 export interface User {
   email: string;
+  location: string;
   consents: string[];
   validated: boolean;
 }

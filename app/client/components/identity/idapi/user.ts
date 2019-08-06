@@ -9,6 +9,9 @@ interface UserAPIResponse {
         consented: boolean;
       }
     ];
+    publicFields: {
+      location: string;
+    };
     primaryEmailAddress: string;
     statusFields: {
       userEmailValidated: boolean;
@@ -33,10 +36,12 @@ export const read = async (): Promise<User> => {
     APIUseCredentials({})
   );
   const consents = getConsentedTo(response);
+  const { user } = response;
   return {
-    email: response.user.primaryEmailAddress,
+    email: user.primaryEmailAddress,
+    location: user.publicFields.location,
     consents,
-    validated: response.user.statusFields.userEmailValidated
+    validated: user.statusFields.userEmailValidated
   };
 };
 
