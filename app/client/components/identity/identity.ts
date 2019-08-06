@@ -7,7 +7,9 @@ import * as UserAPI from "./idapi/user";
 import {
   ConsentOption,
   ConsentOptionCollection,
-  ConsentOptionType
+  ConsentOptionType,
+  User,
+  UserCollection
 } from "./models";
 
 const isNewsletter = (option: ConsentOption): boolean =>
@@ -23,6 +25,12 @@ const mapSubscriptions = (
     ...option,
     subscribed: option.subscribed ? true : subscriptions.includes(option.id)
   }));
+
+export const Users: UserCollection = {
+  async getCurrentUser(): Promise<User> {
+    return await UserAPI.memoRead();
+  }
+};
 
 export const ConsentOptions: ConsentOptionCollection = {
   async getAll(): Promise<ConsentOption[]> {

@@ -31,6 +31,10 @@ export interface ConsentOption {
   subscribed: boolean;
 }
 
+export interface UserCollection {
+  getCurrentUser: () => Promise<User>;
+}
+
 export interface ConsentOptionCollection {
   getAll: () => Promise<ConsentOption[]>;
   subscribe: (option: ConsentOption) => Promise<void>;
