@@ -38,7 +38,7 @@ const getTitle = (title: MarketingPreferenceProps["title"]) => (
         lineHeight: "22px",
         fontFamily: sans,
         fontWeight: "bold",
-        margin: "-1px 0 0"
+        margin: "0"
       }
     ]}
   >
@@ -51,7 +51,7 @@ const getDescription = (
 ) => (
   <p
     css={{
-      margin: "2.88px 0 0 0"
+      padding: "2.88px 0 0 0"
     }}
   >
     {description}

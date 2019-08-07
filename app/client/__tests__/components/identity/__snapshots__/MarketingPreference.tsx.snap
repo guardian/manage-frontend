@@ -121,7 +121,7 @@ exports[`MarketingPreference component renders correctly and displays marketing 
           "fontSize": "14px",
           "fontWeight": "bold",
           "lineHeight": "22px",
-          "margin": "-1px 0 0",
+          "margin": "0",
         },
       ]
     }
@@ -131,7 +131,7 @@ exports[`MarketingPreference component renders correctly and displays marketing 
   <p
     css={
       Object {
-        "margin": "2.88px 0 0 0",
+        "padding": "2.88px 0 0 0",
       }
     }
   >
@@ -297,7 +297,7 @@ exports[`MarketingPreference component will omit the frequency information if it
           "fontSize": "14px",
           "fontWeight": "bold",
           "lineHeight": "22px",
-          "margin": "-1px 0 0",
+          "margin": "0",
         },
       ]
     }
@@ -307,7 +307,7 @@ exports[`MarketingPreference component will omit the frequency information if it
   <p
     css={
       Object {
-        "margin": "2.88px 0 0 0",
+        "padding": "2.88px 0 0 0",
       }
     }
   >
@@ -437,7 +437,7 @@ exports[`MarketingPreference component will select the checkbox when the selecte
           "fontSize": "14px",
           "fontWeight": "bold",
           "lineHeight": "22px",
-          "margin": "-1px 0 0",
+          "margin": "0",
         },
       ]
     }
@@ -447,7 +447,7 @@ exports[`MarketingPreference component will select the checkbox when the selecte
   <p
     css={
       Object {
-        "margin": "2.88px 0 0 0",
+        "padding": "2.88px 0 0 0",
       }
     }
   >
