@@ -46,7 +46,7 @@ export const EmailSettingsSection: FC<EmailSettingsSectionProps> = props => {
   return (
     <PageSection title={"Email settings"}>
       <p css={pCss}>
-        You are recieving newsletters, notifications an all other emails to{" "}
+        You are receiving newsletters, notifications and all other emails to{" "}
         <strong>{email}</strong>
       </p>
       <p css={pCss}>
