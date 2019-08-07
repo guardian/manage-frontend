@@ -1,4 +1,6 @@
+import Raven from "raven-js";
 import { useReducer } from "react";
+import { trackEvent } from "../analytics";
 import { ConsentOption, ConsentOptionType } from "./models";
 
 enum ActionType {
@@ -35,6 +37,12 @@ const reducer = (state: State, action: Action) => {
   const { payload } = action;
   switch (action.type) {
     case ERROR:
+      Raven.captureException(payload);
+      trackEvent({
+        eventCategory: "emailPrefError",
+        eventAction: "error",
+        eventLabel: payload.toString()
+      });
       return {
         ...state,
         error: true
@@ -78,7 +86,7 @@ const reducer = (state: State, action: Action) => {
 };
 
 export const Actions = {
-  error: () => ({ type: ActionType.ERROR }),
+  error: (payload: Error) => ({ type: ActionType.ERROR, payload }),
   options: (payload: ConsentOption[]) => ({
     type: ActionType.OPTIONS,
     payload
