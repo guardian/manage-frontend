@@ -36,7 +36,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         dispatch(subscribe(id));
       }
     } catch (e) {
-      dispatch(error());
+      dispatch(error(e));
     }
   };
 
@@ -46,7 +46,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       setRemoved(true);
       dispatch(unsubscribeAll());
     } catch (e) {
-      dispatch(error());
+      dispatch(error(e));
     }
   };
 
@@ -62,7 +62,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         setEmail(user.email);
         dispatch(options(consentOptions));
       } catch (e) {
-        dispatch(error());
+        dispatch(error(e));
       }
     };
     makeInitialAPICalls();
