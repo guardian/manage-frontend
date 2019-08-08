@@ -41,7 +41,7 @@ export interface SummaryTableProps {
   alternateSuspendedColumnHeading?: string;
 }
 
-const friendlyDateFormatPrefix = "D MMM";
+const friendlyDateFormatPrefix = "D MMMM";
 
 const friendlyDateFormatSuffix = " YYYY";
 
@@ -67,7 +67,9 @@ const SummaryTableRow = (props: SummaryTableRowProps) => (
         ? "s"
         : ""}{" "}
       {props.publicationDatesToBeStopped.map((date, index) => (
-        <div key={index}>- {date.format(friendlyDateFormatPrefix)}</div>
+        <div key={index}>
+          - {date.format(friendlyDateFormatPrefix + friendlyDateFormatSuffix)}
+        </div>
       ))}
     </td>
   </tr>
