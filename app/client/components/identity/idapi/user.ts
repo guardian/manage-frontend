@@ -16,15 +16,23 @@ interface UserAPIResponse {
   };
 }
 
+const getConsentedTo = (response: UserAPIResponse) => {
+  if ("consents" in response.user) {
+    return response.user.consents
+      .filter((consent: any) => consent.consented)
+      .map((consent: any) => consent.id);
+  } else {
+    return [];
+  }
+};
+
 export const read = async (): Promise<User> => {
   const url = "/user/me";
   const response: UserAPIResponse = await identityFetch(
     url,
     APIUseCredentials({})
   );
-  const consents = response.user.consents
-    .filter((consent: any) => consent.consented)
-    .map((consent: any) => consent.id);
+  const consents = getConsentedTo(response);
   return {
     email: response.user.primaryEmailAddress,
     consents,
