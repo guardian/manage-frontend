@@ -12,7 +12,9 @@ export interface RawHolidayStopRequest {
   end: string;
   id: string;
   subscriptionName: string;
-  publicationDatesToBeStopped: string[];
+  publicationsImpacted: Array<{
+    publicationDate: string;
+  }>;
 }
 
 export interface HolidayStopRequest {
@@ -84,8 +86,9 @@ const embellishRawHolidayStop = (
       moment(rawHolidayStopRequest.start, DATE_INPUT_FORMAT),
       moment(rawHolidayStopRequest.end, DATE_INPUT_FORMAT)
     ),
-    publicationDatesToBeStopped: rawHolidayStopRequest.publicationDatesToBeStopped.map(
-      dateStr => moment(dateStr, DATE_INPUT_FORMAT)
+    publicationDatesToBeStopped: rawHolidayStopRequest.publicationsImpacted.map(
+      publicationImpacted =>
+        moment(publicationImpacted.publicationDate, DATE_INPUT_FORMAT)
     )
   } as HolidayStopRequest);
 
