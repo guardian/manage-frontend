@@ -176,43 +176,45 @@ export class StripeCardInputForm extends React.Component<
   private startCardUpdate = (navigate: NavigateFn) => async () => {
     this.setState({ isValidating: true });
     if (this.props.stripe && this.props.stripeSetupIntent) {
-      const [intentResult, tokenResult] = await Promise.all([
-        this.props.stripe.handleCardSetup(
-          this.props.stripeSetupIntent.client_secret,
-          {
-            payment_method_data: {
-              billing_details: {
-                name: this.props.userEmail,
-                email: this.props.userEmail
-              }
+      const intentResult = await this.props.stripe.handleCardSetup(
+        this.props.stripeSetupIntent.client_secret,
+        {
+          payment_method_data: {
+            billing_details: {
+              name: this.props.userEmail,
+              email: this.props.userEmail
             }
-          }
-        ),
-        this.props.stripe.createToken() // just to get the card last4 & brand
-      ]);
+          },
+          expand: ["payment_method"] // to get the card last4 & brand
+        }
+      );
       if (
         intentResult.setupIntent &&
         intentResult.setupIntent.status &&
         intentResult.setupIntent.status === "succeeded" &&
-        tokenResult.token &&
-        tokenResult.token.card
+        intentResult.setupIntent.payment_method &&
+        intentResult.setupIntent.payment_method.card &&
+        intentResult.setupIntent.payment_method.card.brand &&
+        intentResult.setupIntent.payment_method.card.last4
       ) {
         this.props.newPaymentMethodDetailUpdater(
           new NewCardPaymentMethodDetail(
-            tokenResult.token.card,
+            intentResult.setupIntent.payment_method.card,
             this.props.stripeSetupIntent,
             this.props.stripeApiKey
           )
         );
         navigate("confirm");
       } else {
-        Raven.captureException(intentResult.error || tokenResult.error);
+        Raven.captureException(
+          intentResult.error ||
+            "something missing from the SetupIntent response"
+        );
         this.setState({
-          error: intentResult.error ||
-            tokenResult.error || {
-              message:
-                "Something went wrong, please check the details and try again."
-            },
+          error: intentResult.error || {
+            message:
+              "Something went wrong, please check the details and try again."
+          },
           isValidating: false
         });
       }
