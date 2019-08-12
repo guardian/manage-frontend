@@ -5,6 +5,8 @@ import React from "react";
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
+import { ArrowIcon } from "./svgs/arrowIcon";
+import { TickIcon } from "./svgs/tickIcon";
 
 export interface CommonButtonProps {
   text: string;
@@ -146,21 +148,6 @@ const buttonCss = ({
     }
   });
 };
-
-export const ArrowIcon = () => (
-  <svg viewBox="0 0 30 30">
-    <path d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9" />
-  </svg>
-);
-
-export const TickIcon = () => (
-  <svg
-    viewBox="0 0 10.79 8.608"
-    css={{ height: "16px", width: "21px", marginRight: "10px" }}
-  >
-    <path d="M2.99 6.58L10.24 0l.55.53-7.8 8.08h-.26L0 4.79l.55-.55 2.44 2.33z" />
-  </svg>
-);
 
 const styles = {
   leftHover: {

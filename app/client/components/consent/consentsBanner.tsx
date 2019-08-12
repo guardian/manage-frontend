@@ -6,7 +6,7 @@ import { sans } from "../../styles/fonts";
 import { trackEventInOphanOnly } from "../analytics";
 import { Button } from "../buttons";
 import { PageContainer } from "../page";
-import { Roundel } from "../roundel";
+import { Roundel } from "../svgs/roundel";
 
 const CONSENT_COOKIE_NAME = "GU_TK";
 const CONSENT_COOKIE_DAYS_TO_LIVE = 30 * 18;
