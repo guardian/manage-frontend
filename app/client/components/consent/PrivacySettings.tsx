@@ -43,14 +43,9 @@ const purposes: PurposeList = {
   }
 };
 
-const choicesCSS = css`
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-`;
+const choicesCSS = css``;
 
-const bottomPrintCSS = css`
-  font-style: italic;
-`;
+const bottomPrintCSS = css``;
 
 const privacyPolicyURL = "http://www.theguardian.com";
 
