@@ -1,8 +1,8 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { PurposeItem } from "./PurposeItem";
 import palette from "../../colours";
 import { TickIcon } from "../svgs/tickIcon";
+import { PurposeItem } from "./PurposeItem";
 
 const purposes: PurposeList = {
   essential: {
