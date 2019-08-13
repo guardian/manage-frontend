@@ -1,28 +1,58 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
+import palette from "../../colours";
+import { CollapsePurposeItemButton } from "./CollapsePurposeItemButton";
 import { OnOffRadio } from "./OnOffRadio";
 import { VendorItem } from "./VendorItem";
 
-const collapsibleDivCSS = (collapsed: boolean) => css`
-  display: ${collapsed ? "block" : "none"};
+const purposeContainerStyles = (isLastItem: boolean) => css`
+  margin-top: 6px;
+  margin-bottom: ${isLastItem ? "12px" : "0"};
+  border-top: 1px solid ${palette.neutral[5]};
+  padding-top: 4px;
+  padding-bottom: ${isLastItem ? "18px" : "12px"};
+  position: relative;
+
+  :after {
+    content: "";
+    position: absolute;
+    left: -12px;
+    right: -12px;
+    bottom: 0;
+    height: 1px;
+    background-color: ${palette.neutral[5]};
+    display: ${isLastItem ? "block" : "none"};
+  }
 `;
 
-const arrowDown = (
-  <svg
-    width="12"
-    height="9"
-    viewBox="-0.525 -4 24 18"
-    overflow="visible"
-    enable-background="new -0.525 -4 24 18"
-  >
-    <path d="M23.2.7L12.7 9.1l-1.1.9-1.1-.898L0 .7.5 0l11.1 6.3L22.7 0l.5.7z" />
-  </svg>
-);
+const purposeTabStyles = css`
+  display: flex;
+`;
+
+const purposeLabelContainerStyles = css`
+  flex-grow: 1;
+`;
+
+const purposeLabelStyles = (collapsed: boolean) => css`
+  font-family: "GH Guardian Headline", Georgia, serif;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+  max-width: 200px;
+  color: ${collapsed ? palette.blue.header : "inherit"};
+`;
+
+const purposeDescriptionPanelStyles = (collapsed: boolean) => css`
+  display: ${collapsed ? "block" : "none"};
+  padding-top: 16px;
+  padding-left: 20px;
+`;
 
 interface Props {
   purposeItemId: PurposeType;
   purpose: Purpose;
   updatePurpose: (updatedPurpose: Purpose) => void;
+  isLastItem: boolean;
 }
 
 interface State {
@@ -74,31 +104,33 @@ export class PurposeItem extends Component<Props, State> {
       hasButton,
       vendors
     } = this.props.purpose;
-    const { purposeItemId } = this.props;
+    const { purposeItemId, isLastItem } = this.props;
     const { collapsed } = this.state;
 
     return (
-      <div>
-        <button
-          type="button"
+      <div css={purposeContainerStyles(isLastItem)}>
+        <div
+          css={purposeTabStyles}
           onClick={() => {
             this.toggleCollapsed();
           }}
         >
-          {arrowDown}
-        </button>
-        {label}
-        {hasButton && (
-          <OnOffRadio
-            radioId={purposeItemId}
-            selectedValue={purposeValue}
-            onChangeHandler={(newPurposeValue: boolean) => {
-              this.updatePurposeOnClick(newPurposeValue);
-            }}
-          />
-        )}
-        <div css={collapsibleDivCSS(collapsed)}>
-          {description}
+          <CollapsePurposeItemButton collapsed={collapsed} />
+          <div css={purposeLabelContainerStyles}>
+            <div css={purposeLabelStyles(collapsed)}>{label}</div>
+          </div>
+          {hasButton && (
+            <OnOffRadio
+              radioId={purposeItemId}
+              selectedValue={purposeValue}
+              onChangeHandler={(newPurposeValue: boolean) => {
+                this.updatePurposeOnClick(newPurposeValue);
+              }}
+            />
+          )}
+        </div>
+        <div css={purposeDescriptionPanelStyles(collapsed)}>
+          <p>{description}</p>
           {vendors && this.renderVendors(vendors, purposeItemId)}
         </div>
       </div>

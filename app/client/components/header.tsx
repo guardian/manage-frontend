@@ -1,6 +1,6 @@
 import React from "react";
 import palette from "../colours";
-import { Roundel } from "./roundel";
+import { Roundel } from "./svgs/roundel";
 import { UserNav } from "./userNav";
 
 const Header = () => (
