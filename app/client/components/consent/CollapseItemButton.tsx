@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import React from "react";
 import palette from "../../colours";
 
-const collapsePurposeItemButtonStyles = (collapsed: boolean) => css`
+const collapseItemButtonStyles = (collapsed: boolean) => css`
   background-color: transparent;
   border: 0;
   box-sizing: border-box;
@@ -30,10 +30,8 @@ const collapsePurposeItemButtonStyles = (collapsed: boolean) => css`
   }
 `;
 
-export const CollapsePurposeItemButton: React.FC<{
+export const CollapseItemButton: React.FC<{
   collapsed: boolean;
 }> = ({ collapsed }) => {
-  return (
-    <button type="button" css={collapsePurposeItemButtonStyles(collapsed)} />
-  );
+  return <button type="button" css={collapseItemButtonStyles(collapsed)} />;
 };

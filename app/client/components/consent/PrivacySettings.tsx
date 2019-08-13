@@ -2,52 +2,8 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import palette from "../../colours";
 import { TickIcon } from "../svgs/tickIcon";
-import { PurposeItem } from "./PurposeItem";
+import { CmpItem } from "./CmpItem";
 
-const purposes: PurposeList = {
-  essential: {
-    label: "Essential",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: false
-  },
-  performance: {
-    label: "Performance",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true
-  },
-  functionality: {
-    label: "Functionality",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true
-  },
-  personalisedAds: {
-    label: "Personalised adversiting",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true,
-    vendors: {
-      1: {
-        label: "vendor 1",
-        vendorValue: null,
-        url: "http://www.guardin.co.uk",
-        hasButton: true
-      },
-      2: {
-        label: "vendor 2",
-        vendorValue: null,
-        url: "http://www.guardin.co.uk",
-        hasButton: true
-      }
-    }
-  }
-};
 const privacyPolicyURL = "http://www.theguardian.com";
 const cookiePolicyURL = "http://www.theguardian.com";
 
@@ -112,18 +68,76 @@ const tickIconStyles = css`
 `;
 
 interface State {
-  purposes: PurposeList;
+  iabPurposes: { [key: number]: boolean | null };
+}
+
+interface IabPurpose {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface IabFeature {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface IabVendors {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
 }
 
 export class PrivacySettings extends Component<{}, State> {
+  public iabVendorList?: {
+    vendorListVersion: number;
+    lastUpdated: string;
+    purposes: IabPurpose[];
+    features: IabFeature[];
+    vendors: IabVendors[];
+  };
+
   constructor(props: {}) {
     super(props);
 
-    this.state = { purposes };
+    this.state = { iabPurposes: {} };
   }
 
   public componentDidMount(): void {
+    fetch(
+      "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json"
+    )
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Vendor List not ok");
+        }
+      })
+      .then(json => {
+        // tslint:disable-next-line: no-object-mutation
+        this.iabVendorList = json;
+        this.buildState();
+      })
+      .catch(error => {
+        // tslint:disable-next-line: no-console
+        console.log("ERROR:", error);
+      });
     // TODO: get cookies here
+  }
+
+  public buildState(): void {
+    if (this.iabVendorList && this.iabVendorList.purposes) {
+      const iabPurposes = this.iabVendorList.purposes.reduce((acc, purpose) => {
+        return { ...acc, [purpose.id]: null };
+      }, {});
+
+      this.setState({ iabPurposes });
+    }
   }
 
   public enableAllAndClose(): void {
@@ -143,14 +157,13 @@ export class PrivacySettings extends Component<{}, State> {
     return success;
   }
 
-  public updateState(purposeId: PurposeType, updatedPurpose: Purpose): void {
-    this.setState({
-      ...this.state,
-      purposes: {
-        ...this.state.purposes,
-        [purposeId]: updatedPurpose
+  public updatePurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      iabPurposes: {
+        ...prevState.iabPurposes,
+        [purposeId]: value
       }
-    });
+    }));
   }
 
   public render(): React.ReactNode {
@@ -224,22 +237,26 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public renderPurposeItems(): React.ReactNode {
-    const purposeItemKeys = Object.keys(this.state.purposes);
-    const purposeItemCount = purposeItemKeys.length;
+    if (!this.iabVendorList || !this.iabVendorList.purposes) {
+      return "";
+    }
 
-    return purposeItemKeys.map(
-      (key: string, index: number): React.ReactNode => {
-        const purposeId = key as PurposeType;
+    const length = this.iabVendorList.purposes.length;
+    return this.iabVendorList.purposes.map(
+      (purpose: IabPurpose, index: number): React.ReactNode => {
+        const { id, name, description } = purpose;
 
         return (
-          <PurposeItem
-            purposeItemId={purposeId}
-            purpose={this.state.purposes[purposeId]}
-            updatePurpose={(updatedPurpose: Purpose) => {
-              this.updateState(purposeId, updatedPurpose);
+          <CmpItem
+            id={id}
+            name={name}
+            description={description}
+            value={this.state.iabPurposes[id]}
+            updateItem={(updatedValue: boolean) => {
+              this.updatePurpose(id, updatedValue);
             }}
-            key={purposeId}
-            isLastItem={index === purposeItemCount - 1}
+            key={id}
+            isLastItem={index === length - 1}
           />
         );
       }

@@ -76,7 +76,7 @@ const radioLabelStyles = (isSelected: boolean) => css`
 `;
 
 interface Props {
-  radioId: string;
+  radioId: number;
   onChangeHandler: (value: boolean) => void;
   selectedValue: boolean | null;
 }
