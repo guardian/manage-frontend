@@ -192,16 +192,14 @@ export interface FlowStartMultipleProductDetailHandlerProps
 }
 
 export interface FlowStartMultipleProductDetailHandlerState {
-  selectedProductDetail?: any;
+  selectedProductDetail?: ProductDetail | null;
 }
 
 export class FlowStartMultipleProductDetailHandler extends React.Component<
   FlowStartMultipleProductDetailHandlerProps,
   FlowStartMultipleProductDetailHandlerState
 > {
-  public state: FlowStartMultipleProductDetailHandlerState = {
-    selectedProductDetail: undefined
-  };
+  public state: FlowStartMultipleProductDetailHandlerState = {};
 
   private readonly preWiredProductDetailSelector = getProductDetailSelector(
     this.props,
@@ -212,11 +210,12 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
 
   // client side render only
   public componentDidMount(): void {
-    if (this.props.location && this.props.location.state) {
-      this.setState({
-        selectedProductDetail: this.props.location.state
-      });
-    }
+    this.setState({
+      selectedProductDetail:
+        this.props.location && hasProduct(this.props.location.state)
+          ? this.props.location.state
+          : null
+    });
   }
 
   public render(): React.ReactNode {
@@ -229,27 +228,34 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
             {this.props.productType.friendlyName}
           </h1>
         </PageContainer>
-
-        {hasProduct(this.state.selectedProductDetail) ? (
-          this.preWiredProductDetailSelector([this.state.selectedProductDetail])
-        ) : (
-          <MembersDatApiAsyncLoader
-            fetch={
-              createProductDetailFetcher(
-                this.props.productType
-              ) /*TODO reload on 'back' to page*/
-            }
-            readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-            render={this.preWiredProductDetailSelector}
-            loadingMessage={
-              this.props.loadingMessagePrefix +
-              " " +
-              this.props.productType.friendlyName +
-              "..."
-            }
-          />
-        )}
+        {this.renderInner()}
       </div>
     );
   }
+
+  private renderInner = () => {
+    if (this.state.selectedProductDetail) {
+      return this.preWiredProductDetailSelector([
+        this.state.selectedProductDetail
+      ]);
+    } else if (this.state.selectedProductDetail === null) {
+      return (
+        <MembersDatApiAsyncLoader
+          fetch={
+            createProductDetailFetcher(
+              this.props.productType
+            ) /*TODO reload on 'back' to page*/
+          }
+          readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
+          render={this.preWiredProductDetailSelector}
+          loadingMessage={
+            this.props.loadingMessagePrefix +
+            " " +
+            this.props.productType.friendlyName +
+            "..."
+          }
+        />
+      );
+    }
+  };
 }
