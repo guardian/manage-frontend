@@ -5,6 +5,12 @@ import { StripeCardInputForm } from "./stripeCardInputForm";
 
 const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
 
+interface WindowWithStripe extends Window {
+  Stripe: any;
+}
+
+declare let window: WindowWithStripe;
+
 export interface CardInputFormProps {
   stripeApiKey: string;
   userEmail?: string;
@@ -13,27 +19,31 @@ export interface CardInputFormProps {
   ) => void;
 }
 
-interface WindowWithStripe extends Window {
-  Stripe: any;
+export interface CardInputFormState {
+  stripe?: stripe.Stripe;
 }
-
-declare let window: WindowWithStripe;
 
 export class CardInputForm extends React.Component<
   CardInputFormProps,
-  { stripe: any }
+  CardInputFormState
 > {
-  public state = { stripe: null };
+  public state: CardInputFormState = {};
 
   public componentDidMount(): void {
-    // Create Stripe instance in componentDidMount
-    // https://github.com/stripe/react-stripe-elements#server-side-rendering-ssr
-    this.setState({ stripe: window.Stripe(this.props.stripeApiKey) });
+    if (window.Stripe) {
+      // prevents multiple loading of Stripe.js
+      this.updateStripeStateFromWindow();
+    } else {
+      const script = document.createElement("script");
+      script.setAttribute("src", "https://js.stripe.com/v3/");
+      script.addEventListener("load", this.updateStripeStateFromWindow);
+      document.head.appendChild(script);
+    }
   }
 
   public render(): JSX.Element {
     return (
-      <StripeProvider stripe={this.state.stripe}>
+      <StripeProvider stripe={this.state.stripe || null}>
         <Elements
           fonts={[
             {
@@ -49,4 +59,7 @@ export class CardInputForm extends React.Component<
       </StripeProvider>
     );
   }
+
+  private updateStripeStateFromWindow = () =>
+    this.setState({ stripe: window.Stripe(this.props.stripeApiKey) });
 }

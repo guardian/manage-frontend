@@ -32,7 +32,6 @@ const html: (
       <title>${title}</title>
       ${insertGlobals(globals)}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
-      <script src="https://js.stripe.com/v3/" async></script>
     </head>
     <body style="margin:0">
         ${
