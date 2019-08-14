@@ -1,14 +1,7 @@
 import { IdentityLocations } from "../IdentityLocations";
 
 const handleResponseFailure = async (response: Response) => {
-  let err;
-  // json() and text() can only be used once on a response, so a copy is needed
-  const responseCopy = response.clone();
-  try {
-    err = await response.json();
-  } catch (e) {
-    err = await responseCopy.text();
-  }
+  const err = await response.text();
   throw new Error(`Response error: ${err}`);
 };
 
