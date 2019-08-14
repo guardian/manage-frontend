@@ -10,9 +10,10 @@ interface UserAPIResponse {
       }
     ];
     publicFields: {
-      aboutMe: string;
-      interests: string;
-      location: string;
+      aboutMe?: string;
+      interests?: string;
+      location?: string;
+      username?: string;
     };
     primaryEmailAddress: string;
     statusFields: {
@@ -23,17 +24,19 @@ interface UserAPIResponse {
 
 interface UserAPIRequest {
   publicFields: {
-    aboutMe: string;
-    interests: string;
-    location: string;
+    aboutMe?: string;
+    username?: string;
+    interests?: string;
+    location?: string;
   };
 }
 
-const userToUserAPIRequest = (user: User): UserAPIRequest => ({
+const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
   publicFields: {
     aboutMe: user.aboutMe,
     interests: user.interests,
-    location: user.location
+    location: user.location,
+    username: user.username
   }
 });
 
@@ -47,7 +50,7 @@ const getConsentedTo = (response: UserAPIResponse) => {
   }
 };
 
-export const write = async (user: User): Promise<void> => {
+export const write = async (user: Partial<User>): Promise<void> => {
   const url = "/user/me";
   const body = userToUserAPIRequest(user);
   const options = APIUseCredentials(APIPostOptions(body));
@@ -64,9 +67,10 @@ export const read = async (): Promise<User> => {
   const { user } = response;
   return {
     email: user.primaryEmailAddress,
-    location: user.publicFields.location,
-    aboutMe: user.publicFields.aboutMe,
-    interests: user.publicFields.interests,
+    location: user.publicFields.location || "",
+    aboutMe: user.publicFields.aboutMe || "",
+    interests: user.publicFields.interests || "",
+    username: user.publicFields.username || "",
     consents,
     validated: user.statusFields.userEmailValidated
   };

@@ -21,6 +21,7 @@ export interface User {
   aboutMe: string;
   interests: string;
   consents: string[];
+  username: string;
   validated: boolean;
 }
 
@@ -37,6 +38,7 @@ export interface ConsentOption {
 export interface UserCollection {
   getCurrentUser: () => Promise<User>;
   save: (user: User) => Promise<void>;
+  saveChanges: (original: User, changed: User) => Promise<void>;
 }
 
 export interface ConsentOptionCollection {

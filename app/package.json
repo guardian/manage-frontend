@@ -127,6 +127,7 @@
     "color": "^3.0.0",
     "consent-string": "^1.5.1",
     "express": "^4.16.3",
+    "formik": "^1.5.8",
     "helmet": "^3.12.1",
     "lodash": "^4.17.15",
     "moment": "^2.18.1",
@@ -145,7 +146,8 @@
     "stylis-pxtorem": "^0.0.2",
     "url-parse": "^1.4.4",
     "webpack-node-externals": "^1.7.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "yup": "^0.27.0"
   },
   "license": "UNLICENSED",
   "snyk": true

@@ -1,3 +1,4 @@
+import { Field, Form, Formik, FormikProps } from "formik";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
 import { Button } from "../../buttons";
@@ -12,27 +13,25 @@ import { PageSection } from "../PageSection";
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
+  const [hasUsername, setHasUsername] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Users.getCurrentUser()
-      .then(setUser)
+      .then((u: User) => {
+        setHasUsername(!!u.username);
+        setUser(u);
+      })
       .then(() => setLoading(false));
   }, []);
 
-  const saveUser = async (u: User) => {
+  const saveUser = async (values: User) => {
     setLoading(true);
-    await Users.save(u);
+    const changedUser = { ...user, ...values };
+    await Users.saveChanges(user, changedUser);
+    setUser(changedUser);
+    setHasUsername(!!changedUser.username);
     setLoading(false);
-  };
-
-  const inputHandler = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    const name = target.name;
-    setUser({
-      ...user,
-      [name]: target.value
-    });
   };
 
   const loader = (
@@ -49,6 +48,24 @@ export const PublicProfile = (props: { path?: string }) => {
     }
   };
 
+  const usernameInput = () => (
+    <label css={labelCss}>
+      Username
+      <Field type="text" name="username" />
+    </label>
+  );
+
+  const usernameDisplay = (u: User) => (
+    <>
+      <PageContainer>
+        <PageSection title="username">{u.username}</PageSection>
+      </PageContainer>
+      <PageContainer>
+        <Lines n={1} />
+      </PageContainer>
+    </>
+  );
+
   const content = () => (
     <>
       <PageContainer>
@@ -59,34 +76,36 @@ export const PublicProfile = (props: { path?: string }) => {
       <PageContainer>
         <Lines n={1} />
       </PageContainer>
+      {hasUsername ? usernameDisplay(user) : null}
       <PageContainer>
         <PageSection title="Profile">
-          <label css={labelCss}>
-            Location
-            <input
-              name="location"
-              type="text"
-              value={user.location}
-              onChange={inputHandler}
-            />
-          </label>
-          <label css={labelCss}>
-            About Me
-            <textarea
-              name="aboutMe"
-              value={user.aboutMe}
-              onChange={inputHandler}
-            />
-          </label>
-          <label css={labelCss}>
-            Interests
-            <textarea
-              name="interests"
-              value={user.interests}
-              onChange={inputHandler}
-            />
-          </label>
-          <Button text="Save changes" onClick={() => saveUser(user)} />
+          <Formik
+            initialValues={{
+              ...user
+            }}
+            onSubmit={saveUser}
+            render={(formikBag: FormikProps<User>) => (
+              <Form>
+                {!hasUsername ? usernameInput() : null}
+                <label css={labelCss}>
+                  Location
+                  <Field type="text" name="location" />
+                </label>
+                <label css={labelCss}>
+                  About Me
+                  <Field type="textarea" name="aboutMe" />
+                </label>
+                <label css={labelCss}>
+                  Interests
+                  <Field type="textarea" name="interests" />
+                </label>
+                <Button
+                  text="Save changes"
+                  onClick={() => formikBag.submitForm()}
+                />
+              </Form>
+            )}
+          />
         </PageSection>
       </PageContainer>
     </>
