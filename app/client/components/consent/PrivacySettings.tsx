@@ -2,7 +2,9 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import palette from "../../colours";
 import { TickIcon } from "../svgs/tickIcon";
+import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
+import { CmpSeparator } from "./CmpSeparator";
 
 const privacyPolicyURL = "http://www.theguardian.com";
 const cookiePolicyURL = "http://www.theguardian.com";
@@ -83,7 +85,7 @@ interface IabFeature {
   description: string;
 }
 
-interface IabVendors {
+interface IabVendor {
   id: number;
   name: string;
   policyUrl: string;
@@ -92,14 +94,30 @@ interface IabVendors {
   featureIds: number[];
 }
 
+interface ParsedIabVendor {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
+  description: React.ReactNode;
+}
+
+interface IabVendorList {
+  vendorListVersion: number;
+  lastUpdated: string;
+  purposes: IabPurpose[];
+  features: IabFeature[];
+  vendors: IabVendor[];
+}
+
+interface ParsedIabVendorList extends IabVendorList {
+  vendors: ParsedIabVendor[];
+}
+
 export class PrivacySettings extends Component<{}, State> {
-  public iabVendorList?: {
-    vendorListVersion: number;
-    lastUpdated: string;
-    purposes: IabPurpose[];
-    features: IabFeature[];
-    vendors: IabVendors[];
-  };
+  private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
     super(props);
@@ -120,7 +138,7 @@ export class PrivacySettings extends Component<{}, State> {
       })
       .then(json => {
         // tslint:disable-next-line: no-object-mutation
-        this.iabVendorList = json;
+        this.iabVendorList = this.parseVendorList(json);
         this.buildState();
       })
       .catch(error => {
@@ -128,42 +146,6 @@ export class PrivacySettings extends Component<{}, State> {
         console.log("ERROR:", error);
       });
     // TODO: get cookies here
-  }
-
-  public buildState(): void {
-    if (this.iabVendorList && this.iabVendorList.purposes) {
-      const iabPurposes = this.iabVendorList.purposes.reduce((acc, purpose) => {
-        return { ...acc, [purpose.id]: null };
-      }, {});
-
-      this.setState({ iabPurposes });
-    }
-  }
-
-  public enableAllAndClose(): void {
-    // TODO: Enable all purposes and vendors
-    this.saveAndClose();
-  }
-
-  public saveAndClose(): void {
-    this.saveSettings();
-    // TODO: If save was successful and it's on a modal, close the modal
-  }
-
-  public saveSettings(): boolean {
-    // TODO: Check if all purposes have been answered
-    // TODO: Actually save the settings to the cookie
-    const success = true;
-    return success;
-  }
-
-  public updatePurpose(purposeId: number, value: boolean): void {
-    this.setState((prevState, props) => ({
-      iabPurposes: {
-        ...prevState.iabPurposes,
-        [purposeId]: value
-      }
-    }));
   }
 
   public render(): React.ReactNode {
@@ -181,7 +163,11 @@ export class PrivacySettings extends Component<{}, State> {
 
         <form id="cmp-form">
           {this.renderPurposeItems()}
-
+          <CmpSeparator />
+          {this.renderVendorItems()}
+          <CmpSeparator />
+          {this.renderFeatureItems()}
+          <CmpSeparator />
           <p>
             You can change the above settings for this browser at any time by
             accessing the{" "}
@@ -236,30 +222,201 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  public renderPurposeItems(): React.ReactNode {
+  private buildState(): void {
+    if (this.iabVendorList && this.iabVendorList.purposes) {
+      const iabPurposes = this.iabVendorList.purposes.reduce((acc, purpose) => {
+        return { ...acc, [purpose.id]: null };
+      }, {});
+
+      this.setState({ iabPurposes });
+    }
+  }
+
+  private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
+    const vendors = iabVendorList.vendors.map(vendor => ({
+      ...vendor,
+      description: this.getVendorDescription(vendor, iabVendorList)
+    }));
+
+    return {
+      ...iabVendorList,
+      vendors
+    };
+  }
+
+  private getVendorDescription(
+    vendor: IabVendor,
+    iabVendorList: IabVendorList
+  ): React.ReactNode {
+    const {
+      name,
+      policyUrl,
+      purposeIds,
+      legIntPurposeIds,
+      featureIds
+    } = vendor;
+
+    return (
+      <>
+        <p>
+          <a href={policyUrl}>{name}'s Privacy policy</a>
+        </p>
+        <p>
+          Purpose(s):{" "}
+          {this.getIabPurposesDescriptions(purposeIds, iabVendorList.purposes)}
+        </p>
+        <p>
+          Legitimate interest(s):{" "}
+          {this.getIabPurposesDescriptions(
+            legIntPurposeIds,
+            iabVendorList.purposes
+          )}
+        </p>
+        <p>
+          Feature(s):{" "}
+          {this.getFeaturesDescriptions(featureIds, iabVendorList.features)}
+        </p>
+      </>
+    );
+  }
+
+  private getIabPurposesDescriptions(
+    ids: number[],
+    purposes: IabPurpose[]
+  ): string {
+    const result = ids
+      .reduce((acc, id) => {
+        let str = "";
+
+        const purpose = purposes.find(item => item.id === id);
+        str = purpose ? purpose.name : "";
+
+        if (str.length) {
+          return acc + str + " | ";
+        } else {
+          // TODO: Throw error
+          return acc;
+        }
+      }, "")
+      .slice(0, -3);
+
+    return result.length ? result : "None";
+  }
+
+  private getFeaturesDescriptions(
+    ids: number[],
+    features: IabFeature[]
+  ): string {
+    const result = ids
+      .reduce((acc, id) => {
+        let str = "";
+
+        const feature = features.find(item => item.id === id);
+        str = feature ? feature.name : "";
+
+        if (str.length) {
+          return acc + str + " | ";
+        } else {
+          // TODO: Throw error
+          return acc;
+        }
+      }, "")
+      .slice(0, -3);
+
+    return result.length ? result : "None";
+  }
+
+  private renderPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
     }
 
-    const length = this.iabVendorList.purposes.length;
     return this.iabVendorList.purposes.map(
       (purpose: IabPurpose, index: number): React.ReactNode => {
         const { id, name, description } = purpose;
 
         return (
           <CmpItem
-            id={id}
             name={name}
-            description={description}
             value={this.state.iabPurposes[id]}
             updateItem={(updatedValue: boolean) => {
               this.updatePurpose(id, updatedValue);
             }}
-            key={id}
-            isLastItem={index === length - 1}
-          />
+            key={`purpose-${id}`}
+          >
+            <p>{description}</p>
+          </CmpItem>
         );
       }
     );
+  }
+
+  private renderVendorItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.vendors) {
+      return "";
+    }
+
+    return (
+      <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
+        {this.iabVendorList.vendors.map(
+          (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+            const { id, name, description } = vendor;
+
+            return (
+              <CmpItem name={name} key={`vendor-${id}`}>
+                {description}
+              </CmpItem>
+            );
+          }
+        )}
+      </CmpCollapsible>
+    );
+  }
+
+  private renderFeatureItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.features) {
+      return "";
+    }
+
+    return (
+      <CmpCollapsible title="Features" key={`featuresCollapsible`}>
+        {this.iabVendorList.features.map(
+          (feature: IabFeature, index: number): React.ReactNode => {
+            const { id, name, description } = feature;
+            return (
+              <CmpItem name={name} key={`feature-${id}`}>
+                <p>{description}</p>
+              </CmpItem>
+            );
+          }
+        )}
+      </CmpCollapsible>
+    );
+  }
+
+  private enableAllAndClose(): void {
+    // TODO: Enable all purposes and vendors
+    this.saveAndClose();
+  }
+
+  private saveAndClose(): void {
+    this.saveSettings();
+    // TODO: If save was successful and it's on a modal, close the modal
+  }
+
+  private saveSettings(): boolean {
+    // TODO: Check if all purposes have been answered
+    // TODO: Actually save the settings to the cookie
+    const success = true;
+    return success;
+  }
+
+  private updatePurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      iabPurposes: {
+        ...prevState.iabPurposes,
+        [purposeId]: value
+      }
+    }));
   }
 }

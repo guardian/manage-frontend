@@ -12,6 +12,7 @@ const collapseItemButtonStyles = (collapsed: boolean) => css`
   position: relative;
   width: 20px;
   height: 20px;
+  margin-top: 4px;
   > * {
     pointer-events: none;
   }
