@@ -137,9 +137,7 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(json => {
-        // tslint:disable-next-line: no-object-mutation
-        this.iabVendorList = this.parseVendorList(json);
-        this.buildState();
+        this.buildState(this.parseVendorList(json));
       })
       .catch(error => {
         // tslint:disable-next-line: no-console
@@ -222,14 +220,17 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private buildState(): void {
-    if (this.iabVendorList && this.iabVendorList.purposes) {
-      const iabPurposes = this.iabVendorList.purposes.reduce((acc, purpose) => {
+  private buildState(iabVendorList: ParsedIabVendorList): void {
+    if (iabVendorList && iabVendorList.purposes) {
+      const iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
         return { ...acc, [purpose.id]: null };
       }, {});
 
       this.setState({ iabPurposes });
     }
+
+    // tslint:disable-next-line: no-object-mutation
+    this.iabVendorList = iabVendorList;
   }
 
   private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
