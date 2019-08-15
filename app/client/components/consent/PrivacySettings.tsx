@@ -5,6 +5,8 @@ import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
 
+const iabVendorListURL =
+  "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
 const privacyPolicyURL = "http://www.theguardian.com";
 const cookiePolicyURL = "http://www.theguardian.com";
 
@@ -127,9 +129,7 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public componentDidMount(): void {
-    fetch(
-      "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json"
-    )
+    fetch(iabVendorListURL)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -137,8 +137,8 @@ export class PrivacySettings extends Component<{}, State> {
           throw new Error("Vendor List not ok");
         }
       })
-      .then(json => {
-        this.buildState(this.parseVendorList(json));
+      .then(remoteVendorList => {
+        this.buildState(this.parseVendorList(remoteVendorList));
       })
       .catch(error => {
         // tslint:disable-next-line: no-console
