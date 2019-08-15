@@ -129,6 +129,13 @@ export class OnOffRadio extends Component<Props, {}> {
     );
   }
 
+  public shouldComponentUpdate(nextProps: Props): boolean {
+    if (this.props.selectedValue === nextProps.selectedValue) {
+      return false;
+    }
+    return true;
+  }
+
   private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     const value: boolean = evt.currentTarget.value === "on";
     this.props.onChangeHandler(value);
