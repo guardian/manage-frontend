@@ -221,6 +221,9 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
+    // tslint:disable-next-line: no-object-mutation
+    this.iabVendorList = iabVendorList;
+
     if (iabVendorList && iabVendorList.purposes) {
       const iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
         return { ...acc, [purpose.id]: null };
@@ -228,9 +231,6 @@ export class PrivacySettings extends Component<{}, State> {
 
       this.setState({ iabPurposes });
     }
-
-    // tslint:disable-next-line: no-object-mutation
-    this.iabVendorList = iabVendorList;
   }
 
   private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
