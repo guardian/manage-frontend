@@ -1,6 +1,4 @@
-import { matchesUA } from "browserslist-useragent";
 import { Request, Response, Router } from "express";
-import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../../client/components/user";
 import { conf, Environments } from "../config";
@@ -26,23 +24,6 @@ router.use(withIdentity(), (req: Request, res: Response) => {
   const body = renderToString(ServerUser(req.url));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
-  const supportedBrowser = matchesUA(req.headers["user-agent"], {
-    env:
-      conf.ENVIRONMENT === Environments.PRODUCTION
-        ? "production"
-        : "development",
-    allowHigherVersions: true
-  });
-
-  // Object.assign(globals, { supportedBrowser });
-
-  if (!supportedBrowser) {
-    log.warn(`Unsupported Browser. UA: ${req.headers["user-agent"]}`);
-
-    Raven.captureMessage("Unsupported Browser", {
-      extra: { "User-Agent": req.headers["user-agent"] }
-    });
-  }
 
   res.send(
     html({
@@ -52,7 +33,6 @@ router.use(withIdentity(), (req: Request, res: Response) => {
       globals: {
         domain: conf.DOMAIN,
         dsn: clientDSN,
-        supportedBrowser: true,
         identityDetails: res.locals.identity
       }
     })

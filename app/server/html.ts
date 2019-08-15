@@ -34,11 +34,6 @@ const html: (
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
     </head>
     <body style="margin:0">
-        ${
-          globals.supportedBrowser
-            ? ""
-            : '<p style="text-align: center; margin: 0; padding: 10px; background-color: #005689; color: #fff">manage.theguardian.com is not optimised for your current browser, for more information, see <a href="https://www.theguardian.com/help/recommended-browsers" style="color: #FFF; text-decoration: underline">our list of recommended browsers</a></p>'
-        }
       <div id="app">${body}</div>
       </body>
       <script>

@@ -121,7 +121,6 @@
     "@reach/router": "^1.2.1",
     "aws-sdk": "^2.383.0",
     "base-64": "^0.1.0",
-    "browserslist-useragent": "^3.0.0",
     "color": "^3.0.0",
     "express": "^4.16.3",
     "helmet": "^3.12.1",
