@@ -29,6 +29,14 @@ const headerStyles = css`
   margin-bottom: 12px;
 `;
 
+const topButtonContainerStyles = css`
+  height: 66px;
+  margin-left: -12px;
+  margin-right: -12px;
+  display: flex;
+  padding: 6px 6px;
+`;
+
 const buttonContainerStyles = css`
   height: 66px;
   bottom: 0;
@@ -158,14 +166,47 @@ export class PrivacySettings extends Component<{}, State> {
           <a href={privacyPolicyURL}>privacy policy</a> and{" "}
           <a href={cookiePolicyURL}>cookie policy</a>
         </p>
-
         <form id="cmp-form">
-          {this.renderPurposeItems()}
-          <CmpSeparator />
-          {this.renderVendorItems()}
-          <CmpSeparator />
-          {this.renderFeatureItems()}
-          <CmpSeparator />
+          <div css={topButtonContainerStyles}>
+            <button
+              type="button"
+              onClick={() => {
+                this.doScrolling("#cmp-options", 250);
+              }}
+              css={css`
+                ${buttonStyles};
+                display: flex;
+              `}
+            >
+              <span
+                css={css`
+                  flex-grow: 1;
+                `}
+              >
+                Options
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                this.enableAllAndClose();
+              }}
+              css={css`
+                ${buttonStyles};
+              `}
+            >
+              I'm OK with that
+            </button>
+          </div>
+          <div id="cmp-options">
+            {this.renderPurposeItems()}
+            <CmpSeparator />
+            {this.renderVendorItems()}
+            <CmpSeparator />
+            {this.renderFeatureItems()}
+            <CmpSeparator />
+          </div>
           <p>
             You can change the above settings for this browser at any time by
             accessing the{" "}
@@ -218,6 +259,39 @@ export class PrivacySettings extends Component<{}, State> {
         </form>
       </div>
     );
+  }
+
+  private doScrolling(query: string, duration: number): void {
+    const element: HTMLElement | null = document.querySelector(query);
+    if (!element) {
+      return;
+    }
+
+    const elementY: number =
+      window.pageYOffset + element.getBoundingClientRect().top;
+    const startingY: number = window.pageYOffset;
+    const diff: number = elementY - startingY;
+    let start: number;
+
+    const animationStep: FrameRequestCallback = timestamp => {
+      if (!start) {
+        start = timestamp;
+      }
+      // Elapsed milliseconds since start of scrolling.
+      const time: number = timestamp - start;
+      // Get percent of completion in range [0, 1].
+      const percent: number = Math.min(time / duration, 1);
+
+      window.scrollTo(0, startingY + diff * percent);
+
+      // Proceed with animation as long as we wanted it to.
+      if (time < duration) {
+        window.requestAnimationFrame(animationStep);
+      }
+    };
+
+    // Bootstrap our animation - it will get called right before next frame shall be rendered.
+    window.requestAnimationFrame(animationStep);
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
@@ -396,16 +470,21 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    // TODO: Enable all purposes and vendors
-    this.saveAndClose();
+    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+
+    this.saveAndClose({ iabPurposes });
   }
 
-  private saveAndClose(): void {
-    this.saveSettings();
+  private saveAndClose(stateToSave?: State): void {
+    this.saveSettings(stateToSave || this.state);
+
     // TODO: If save was successful and it's on a modal, close the modal
   }
 
-  private saveSettings(): boolean {
+  private saveSettings(stateToSave: State): boolean {
     // TODO: Check if all purposes have been answered
     // TODO: Actually save the settings to the cookie
     const success = true;
