@@ -1,7 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import palette from "../../colours";
-import { TickIcon } from "../svgs/tickIcon";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
@@ -67,14 +66,8 @@ const buttonStyles = css`
   cursor: pointer;
   position: relative;
   background-color: ${palette.yellow.medium};
-  flex-grow: 1;
+  flex: 1;
   margin: 0 6px;
-`;
-
-const tickIconStyles = css`
-  height: 20px;
-  width: 20px;
-  flex-grow: 0;
 `;
 
 interface State {
@@ -175,16 +168,9 @@ export class PrivacySettings extends Component<{}, State> {
               }}
               css={css`
                 ${buttonStyles};
-                display: flex;
               `}
             >
-              <span
-                css={css`
-                  flex-grow: 1;
-                `}
-              >
-                Options
-              </span>
+              Options
             </button>
 
             <button
@@ -228,19 +214,9 @@ export class PrivacySettings extends Component<{}, State> {
               }}
               css={css`
                 ${buttonStyles};
-                min-width: 190px;
-                display: flex;
-                padding-left: 16px;
               `}
             >
-              <TickIcon css={tickIconStyles} />
-              <span
-                css={css`
-                  flex-grow: 1;
-                `}
-              >
-                Enable all and close
-              </span>
+              Cancel
             </button>
 
             <button
@@ -250,10 +226,9 @@ export class PrivacySettings extends Component<{}, State> {
               }}
               css={css`
                 ${buttonStyles};
-                background-color: ${palette.yellow.dark};
               `}
             >
-              Save and close
+              Save and continue
             </button>
           </div>
         </form>
