@@ -32,6 +32,15 @@ export const APIFetch = (baseUrl: string) => async (
   }
 };
 
+export const APIFilePostOptions = (payload: File): RequestInit => {
+  const data = new FormData();
+  data.append("file", payload);
+  return {
+    method: "POST",
+    body: data
+  };
+};
+
 export const APIPostOptions = (payload: any): RequestInit => ({
   method: "POST",
   headers: {
