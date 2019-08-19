@@ -1,28 +1,21 @@
 import { Field, Form, Formik, FormikProps } from "formik";
 import React, { useEffect, useState } from "react";
-import palette from "../../../colours";
-import { sans } from "../../../styles/fonts";
 import { headline } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
-import * as AvatarAPI from "../idapi/avatar";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
+import { AvatarSection } from "./AvatarSection";
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [hasUsername, setHasUsername] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [avatarSet, setAvatarSet] = useState(false);
-
-  interface AvatarPayload {
-    file: File | null;
-  }
 
   useEffect(() => {
     Users.getCurrentUser()
@@ -40,13 +33,6 @@ export const PublicProfile = (props: { path?: string }) => {
     setUser(changedUser);
     setHasUsername(!!changedUser.username);
     setLoading(false);
-  };
-
-  const saveAvatar = async (values: AvatarPayload) => {
-    if (values.file) {
-      await AvatarAPI.write(values.file);
-      setAvatarSet(true);
-    }
   };
 
   const loader = (
@@ -86,51 +72,6 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
     </>
-  );
-
-  const avatarUploadForm = () => (
-    <Formik
-      initialValues={{
-        file: null
-      }}
-      onSubmit={saveAvatar}
-      render={(formikBag: any) => (
-        <Form>
-          <label css={labelCss}>
-            <p>img here!</p>
-            <input
-              type="file"
-              name="file"
-              onChange={(e: React.ChangeEvent) => {
-                const target = e.currentTarget as HTMLInputElement;
-                if (target.files) {
-                  formikBag.setFieldValue("file", target.files[0]);
-                }
-              }}
-            />
-          </label>
-          <Button text="Upload image" onClick={() => formikBag.submitForm()} />
-        </Form>
-      )}
-    />
-  );
-
-  const avatarUploadSuccessNotice = () => (
-    <div
-      css={{
-        fontSize: "13px",
-        lineHeight: "18px",
-        fontFamily: sans,
-        borderBottom: `1px solid ${palette.green.light}`,
-        borderTop: `1px solid ${palette.green.light}`,
-        color: palette.green.medium,
-        marginTop: "6px",
-        padding: "7px 8px"
-      }}
-    >
-      Thank you for uploading your avatar. It will be checked by Guardian
-      moderators shortly.
-    </div>
   );
 
   const content = () => (
@@ -174,12 +115,7 @@ export const PublicProfile = (props: { path?: string }) => {
             )}
           />
         </PageSection>
-        <PageSection
-          title="Profile image"
-          description="This image will appear next to your comments. Only .jpg, .png or .gif files of up to 1MB are accepted"
-        >
-          {avatarSet ? avatarUploadSuccessNotice() : avatarUploadForm()}
-        </PageSection>
+        <AvatarSection />
       </PageContainer>
     </>
   );
