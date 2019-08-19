@@ -1,53 +1,12 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
 import palette from "../../colours";
-import { TickIcon } from "../svgs/tickIcon";
-import { PurposeItem } from "./PurposeItem";
+import { CmpCollapsible } from "./CmpCollapsible";
+import { CmpItem } from "./CmpItem";
+import { CmpSeparator } from "./CmpSeparator";
 
-const purposes: PurposeList = {
-  essential: {
-    label: "Essential",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: false
-  },
-  performance: {
-    label: "Performance",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true
-  },
-  functionality: {
-    label: "Functionality",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true
-  },
-  personalisedAds: {
-    label: "Personalised adversiting",
-    purposeValue: null,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    hasButton: true,
-    vendors: {
-      1: {
-        label: "vendor 1",
-        vendorValue: null,
-        url: "http://www.guardin.co.uk",
-        hasButton: true
-      },
-      2: {
-        label: "vendor 2",
-        vendorValue: null,
-        url: "http://www.guardin.co.uk",
-        hasButton: true
-      }
-    }
-  }
-};
+const iabVendorListURL =
+  "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
 const privacyPolicyURL = "http://www.theguardian.com";
 const cookiePolicyURL = "http://www.theguardian.com";
 
@@ -69,6 +28,14 @@ const headerStyles = css`
   font-family: "GH Guardian Headline", Georgia, serif;
   font-weight: 400;
   margin-bottom: 12px;
+`;
+
+const topButtonContainerStyles = css`
+  height: 66px;
+  margin-left: -12px;
+  margin-right: -12px;
+  display: flex;
+  padding: 6px 6px;
 `;
 
 const buttonContainerStyles = css`
@@ -101,56 +68,83 @@ const buttonStyles = css`
   cursor: pointer;
   position: relative;
   background-color: ${palette.yellow.medium};
-  flex-grow: 1;
+  flex: 1;
   margin: 0 6px;
 `;
 
-const tickIconStyles = css`
-  height: 20px;
-  width: 20px;
-  flex-grow: 0;
-`;
-
 interface State {
-  purposes: PurposeList;
+  iabPurposes: { [key: number]: boolean | null };
+}
+
+interface IabPurpose {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface IabFeature {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface IabVendor {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
+}
+
+interface ParsedIabVendor {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
+  description: React.ReactNode;
+}
+
+interface IabVendorList {
+  vendorListVersion: number;
+  lastUpdated: string;
+  purposes: IabPurpose[];
+  features: IabFeature[];
+  vendors: IabVendor[];
+}
+
+interface ParsedIabVendorList extends IabVendorList {
+  vendors: ParsedIabVendor[];
 }
 
 export class PrivacySettings extends Component<{}, State> {
+  private iabVendorList?: ParsedIabVendorList;
+
   constructor(props: {}) {
     super(props);
 
-    this.state = { purposes };
+    this.state = { iabPurposes: {} };
   }
 
   public componentDidMount(): void {
+    fetch(iabVendorListURL)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Vendor List not ok");
+        }
+      })
+      .then(remoteVendorList => {
+        this.buildState(this.parseVendorList(remoteVendorList));
+      })
+      .catch(error => {
+        // tslint:disable-next-line: no-console
+        console.log("ERROR:", error);
+      });
     // TODO: get cookies here
-  }
-
-  public enableAllAndClose(): void {
-    // TODO: Enable all purposes and vendors
-    this.saveAndClose();
-  }
-
-  public saveAndClose(): void {
-    this.saveSettings();
-    // TODO: If save was successful and it's on a modal, close the modal
-  }
-
-  public saveSettings(): boolean {
-    // TODO: Check if all purposes have been answered
-    // TODO: Actually save the settings to the cookie
-    const success = true;
-    return success;
-  }
-
-  public updateState(purposeId: PurposeType, updatedPurpose: Purpose): void {
-    this.setState({
-      ...this.state,
-      purposes: {
-        ...this.state.purposes,
-        [purposeId]: updatedPurpose
-      }
-    });
   }
 
   public render(): React.ReactNode {
@@ -165,10 +159,40 @@ export class PrivacySettings extends Component<{}, State> {
           <a href={privacyPolicyURL}>privacy policy</a> and{" "}
           <a href={cookiePolicyURL}>cookie policy</a>
         </p>
-
         <form id="cmp-form">
-          {this.renderPurposeItems()}
+          <div css={topButtonContainerStyles}>
+            <button
+              type="button"
+              onClick={() => {
+                this.doScrolling("#cmp-options", 250);
+              }}
+              css={css`
+                ${buttonStyles};
+              `}
+            >
+              Options
+            </button>
 
+            <button
+              type="button"
+              onClick={() => {
+                this.enableAllAndClose();
+              }}
+              css={css`
+                ${buttonStyles};
+              `}
+            >
+              I'm OK with that
+            </button>
+          </div>
+          <div id="cmp-options">
+            {this.renderPurposeItems()}
+            <CmpSeparator />
+            {this.renderVendorItems()}
+            <CmpSeparator />
+            {this.renderFeatureItems()}
+            <CmpSeparator />
+          </div>
           <p>
             You can change the above settings for this browser at any time by
             accessing the{" "}
@@ -190,19 +214,9 @@ export class PrivacySettings extends Component<{}, State> {
               }}
               css={css`
                 ${buttonStyles};
-                min-width: 190px;
-                display: flex;
-                padding-left: 16px;
               `}
             >
-              <TickIcon css={tickIconStyles} />
-              <span
-                css={css`
-                  flex-grow: 1;
-                `}
-              >
-                Enable all and close
-              </span>
+              Cancel
             </button>
 
             <button
@@ -212,10 +226,9 @@ export class PrivacySettings extends Component<{}, State> {
               }}
               css={css`
                 ${buttonStyles};
-                background-color: ${palette.yellow.dark};
               `}
             >
-              Save and close
+              Save and continue
             </button>
           </div>
         </form>
@@ -223,26 +236,242 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  public renderPurposeItems(): React.ReactNode {
-    const purposeItemKeys = Object.keys(this.state.purposes);
-    const purposeItemCount = purposeItemKeys.length;
+  private doScrolling(query: string, duration: number): void {
+    const element: HTMLElement | null = document.querySelector(query);
+    if (!element) {
+      return;
+    }
 
-    return purposeItemKeys.map(
-      (key: string, index: number): React.ReactNode => {
-        const purposeId = key as PurposeType;
+    const elementY: number =
+      window.pageYOffset + element.getBoundingClientRect().top;
+    const startingY: number = window.pageYOffset;
+    const diff: number = elementY - startingY;
+    let start: number;
+
+    const animationStep: FrameRequestCallback = timestamp => {
+      if (!start) {
+        start = timestamp;
+      }
+      // Elapsed milliseconds since start of scrolling.
+      const time: number = timestamp - start;
+      // Get percent of completion in range [0, 1].
+      const percent: number = Math.min(time / duration, 1);
+
+      window.scrollTo(0, startingY + diff * percent);
+
+      // Proceed with animation as long as we wanted it to.
+      if (time < duration) {
+        window.requestAnimationFrame(animationStep);
+      }
+    };
+
+    // Bootstrap our animation - it will get called right before next frame shall be rendered.
+    window.requestAnimationFrame(animationStep);
+  }
+
+  private buildState(iabVendorList: ParsedIabVendorList): void {
+    // tslint:disable-next-line: no-object-mutation
+    this.iabVendorList = iabVendorList;
+
+    if (iabVendorList && iabVendorList.purposes) {
+      const iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
+        return { ...acc, [purpose.id]: null };
+      }, {});
+
+      this.setState({ iabPurposes });
+    }
+  }
+
+  private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
+    const vendors = iabVendorList.vendors.map(vendor => ({
+      ...vendor,
+      description: this.getVendorDescription(vendor, iabVendorList)
+    }));
+
+    return {
+      ...iabVendorList,
+      vendors
+    };
+  }
+
+  private getVendorDescription(
+    vendor: IabVendor,
+    iabVendorList: IabVendorList
+  ): React.ReactNode {
+    const {
+      name,
+      policyUrl,
+      purposeIds,
+      legIntPurposeIds,
+      featureIds
+    } = vendor;
+
+    return (
+      <>
+        <p>
+          <a href={policyUrl}>{name}'s Privacy policy</a>
+        </p>
+        <p>
+          Purpose(s):{" "}
+          {this.getIabPurposesDescriptions(purposeIds, iabVendorList.purposes)}
+        </p>
+        <p>
+          Legitimate interest(s):{" "}
+          {this.getIabPurposesDescriptions(
+            legIntPurposeIds,
+            iabVendorList.purposes
+          )}
+        </p>
+        <p>
+          Feature(s):{" "}
+          {this.getFeaturesDescriptions(featureIds, iabVendorList.features)}
+        </p>
+      </>
+    );
+  }
+
+  private getIabPurposesDescriptions(
+    ids: number[],
+    purposes: IabPurpose[]
+  ): string {
+    const result = ids
+      .reduce((acc, id) => {
+        let str = "";
+
+        const purpose = purposes.find(item => item.id === id);
+        str = purpose ? purpose.name : "";
+
+        if (str.length) {
+          return acc + str + " | ";
+        } else {
+          // TODO: Throw error
+          return acc;
+        }
+      }, "")
+      .slice(0, -3);
+
+    return result.length ? result : "None";
+  }
+
+  private getFeaturesDescriptions(
+    ids: number[],
+    features: IabFeature[]
+  ): string {
+    const result = ids
+      .reduce((acc, id) => {
+        let str = "";
+
+        const feature = features.find(item => item.id === id);
+        str = feature ? feature.name : "";
+
+        if (str.length) {
+          return acc + str + " | ";
+        } else {
+          // TODO: Throw error
+          return acc;
+        }
+      }, "")
+      .slice(0, -3);
+
+    return result.length ? result : "None";
+  }
+
+  private renderPurposeItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.purposes) {
+      return "";
+    }
+
+    return this.iabVendorList.purposes.map(
+      (purpose: IabPurpose, index: number): React.ReactNode => {
+        const { id, name, description } = purpose;
 
         return (
-          <PurposeItem
-            purposeItemId={purposeId}
-            purpose={this.state.purposes[purposeId]}
-            updatePurpose={(updatedPurpose: Purpose) => {
-              this.updateState(purposeId, updatedPurpose);
+          <CmpItem
+            name={name}
+            value={this.state.iabPurposes[id]}
+            updateItem={(updatedValue: boolean) => {
+              this.updatePurpose(id, updatedValue);
             }}
-            key={purposeId}
-            isLastItem={index === purposeItemCount - 1}
-          />
+            key={`purpose-${id}`}
+          >
+            <p>{description}</p>
+          </CmpItem>
         );
       }
     );
+  }
+
+  private renderVendorItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.vendors) {
+      return "";
+    }
+
+    return (
+      <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
+        {this.iabVendorList.vendors.map(
+          (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+            const { id, name, description } = vendor;
+
+            return (
+              <CmpItem name={name} key={`vendor-${id}`}>
+                {description}
+              </CmpItem>
+            );
+          }
+        )}
+      </CmpCollapsible>
+    );
+  }
+
+  private renderFeatureItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.features) {
+      return "";
+    }
+
+    return (
+      <CmpCollapsible title="Features" key={`featuresCollapsible`}>
+        {this.iabVendorList.features.map(
+          (feature: IabFeature, index: number): React.ReactNode => {
+            const { id, name, description } = feature;
+            return (
+              <CmpItem name={name} key={`feature-${id}`}>
+                <p>{description}</p>
+              </CmpItem>
+            );
+          }
+        )}
+      </CmpCollapsible>
+    );
+  }
+
+  private enableAllAndClose(): void {
+    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+
+    this.saveAndClose({ iabPurposes });
+  }
+
+  private saveAndClose(stateToSave?: State): void {
+    this.saveSettings(stateToSave || this.state);
+
+    // TODO: If save was successful and it's on a modal, close the modal
+  }
+
+  private saveSettings(stateToSave: State): boolean {
+    // TODO: Check if all purposes have been answered
+    // TODO: Actually save the settings to the cookie
+    const success = true;
+    return success;
+  }
+
+  private updatePurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      iabPurposes: {
+        ...prevState.iabPurposes,
+        [purposeId]: value
+      }
+    }));
   }
 }
