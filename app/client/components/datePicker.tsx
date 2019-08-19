@@ -165,6 +165,21 @@ const CustomArrow = (props: PaginationArrowProps) => (
 
 const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
 
+// this is a bit nasty but is necessary to bold today's date. works on the assumption minimum date will always be
+// after today and so can safely just find all the disabled days and bold the one matching today's day of the month
+const emboldenTodaysDate = () => {
+  if (document) {
+    const dayCellsBeforeMinimumDay = document.getElementsByClassName(
+      "DateRangePicker__Date--is-disabled"
+    );
+    for (let dayCell of dayCellsBeforeMinimumDay) {
+      if (dayCell.textContent === `${new Date().getDate()}`) {
+        dayCell.setAttribute("style", "font-weight:bold");
+      }
+    }
+  }
+};
+
 export class DatePicker extends React.Component<
   DatePickerProps,
   DatePickerState
@@ -178,6 +193,9 @@ export class DatePicker extends React.Component<
     paddingTop: "0.5rem",
     fontWeight: "bold" as FontWeightProperty
   };
+
+  public componentDidMount = emboldenTodaysDate;
+  public componentDidUpdate = emboldenTodaysDate;
 
   public render = () => (
     <>
