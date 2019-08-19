@@ -2,6 +2,8 @@ import { css } from "@emotion/core";
 import React, { Component } from "react";
 import palette from "../../colours";
 
+let idCounter: number = 0;
+
 const radioContainerStyles = css`
   position: relative;
   display: flex;
@@ -76,23 +78,20 @@ const radioLabelStyles = (isSelected: boolean) => css`
 `;
 
 interface Props {
-  radioId: string;
   onChangeHandler: (value: boolean) => void;
   selectedValue: boolean | null;
 }
 export class OnOffRadio extends Component<Props, {}> {
+  private myIdCounter: number;
+
   constructor(props: Props) {
     super(props);
-  }
-
-  public updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
-    const value: boolean = evt.currentTarget.value === "on";
-    this.props.onChangeHandler(value);
+    this.myIdCounter = ++idCounter;
   }
 
   public render(): React.ReactNode {
-    const { selectedValue, radioId } = this.props;
-    const id = `radio-${radioId}`;
+    const { selectedValue } = this.props;
+    const id = `radio-${this.myIdCounter}`;
     const onId = `${id}-on`;
     const offId = `${id}-off`;
 
@@ -128,5 +127,13 @@ export class OnOffRadio extends Component<Props, {}> {
         </label>
       </div>
     );
+  }
+
+  public shouldComponentUpdate = (nextProps: Props) =>
+    this.props.selectedValue !== nextProps.selectedValue;
+
+  private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
+    const value: boolean = evt.currentTarget.value === "on";
+    this.props.onChangeHandler(value);
   }
 }
