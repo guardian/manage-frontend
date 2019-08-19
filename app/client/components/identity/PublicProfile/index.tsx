@@ -5,6 +5,7 @@ import { Button } from "../../buttons";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
+import * as AvatarAPI from "../idapi/avatar";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
@@ -15,6 +16,10 @@ export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [hasUsername, setHasUsername] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  interface AvatarPayload {
+    file: File | null;
+  }
 
   useEffect(() => {
     Users.getCurrentUser()
@@ -34,6 +39,12 @@ export const PublicProfile = (props: { path?: string }) => {
     setLoading(false);
   };
 
+  const saveAvatar = async (values: AvatarPayload) => {
+    if (values.file) {
+      await AvatarAPI.write(values.file);
+    }
+  };
+
   const loader = (
     <PageContainer>
       <Spinner loadingMessage="Loading your profile ..." />
@@ -49,16 +60,23 @@ export const PublicProfile = (props: { path?: string }) => {
   };
 
   const usernameInput = () => (
-    <label css={labelCss}>
-      Username
-      <Field type="text" name="username" />
-    </label>
+    <>
+      <label css={labelCss}>
+        Username
+        <Field type="text" name="username" />
+      </label>
+      <p>
+        You can only set your username once. It must be 6-20 characters, letters
+        and/or numbers only and have no spaces. If you do not set your username,
+        then your full name will be used.
+      </p>
+    </>
   );
 
   const usernameDisplay = (u: User) => (
     <>
       <PageContainer>
-        <PageSection title="username">{u.username}</PageSection>
+        <PageSection title="Username">{u.username}</PageSection>
       </PageContainer>
       <PageContainer>
         <Lines n={1} />
@@ -101,6 +119,38 @@ export const PublicProfile = (props: { path?: string }) => {
                 </label>
                 <Button
                   text="Save changes"
+                  onClick={() => formikBag.submitForm()}
+                />
+              </Form>
+            )}
+          />
+        </PageSection>
+        <PageSection
+          title="Profile image"
+          description="This image will appear next to your comments. Only .jpg, .png or .gif files of up to 1MB are accepted"
+        >
+          <Formik
+            initialValues={{
+              file: null
+            }}
+            onSubmit={saveAvatar}
+            render={(formikBag: any) => (
+              <Form>
+                <label css={labelCss}>
+                  <p>img here!</p>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={(e: React.ChangeEvent) => {
+                      const target = e.currentTarget as HTMLInputElement;
+                      if (target.files) {
+                        formikBag.setFieldValue("file", target.files[0]);
+                      }
+                    }}
+                  />
+                </label>
+                <Button
+                  text="Upload image"
                   onClick={() => formikBag.submitForm()}
                 />
               </Form>
