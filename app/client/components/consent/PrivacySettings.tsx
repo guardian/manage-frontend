@@ -185,7 +185,7 @@ export class PrivacySettings extends Component<{}, State> {
             <button
               type="button"
               onClick={() => {
-                this.doScrolling("#cmp-options", 250);
+                doScrolling("#cmp-options", 250);
               }}
               css={css`
                 ${buttonStyles};
@@ -225,7 +225,7 @@ export class PrivacySettings extends Component<{}, State> {
             <button
               type="button"
               onClick={() => {
-                this.enableAllAndClose();
+                close();
               }}
               css={css`
                 ${buttonStyles};
@@ -249,39 +249,6 @@ export class PrivacySettings extends Component<{}, State> {
         </form>
       </div>
     );
-  }
-
-  private doScrolling(query: string, duration: number): void {
-    const element: HTMLElement | null = document.querySelector(query);
-    if (!element) {
-      return;
-    }
-
-    const elementY: number =
-      window.pageYOffset + element.getBoundingClientRect().top;
-    const startingY: number = window.pageYOffset;
-    const diff: number = elementY - startingY;
-    let start: number;
-
-    const animationStep: FrameRequestCallback = timestamp => {
-      if (!start) {
-        start = timestamp;
-      }
-      // Elapsed milliseconds since start of scrolling.
-      const time: number = timestamp - start;
-      // Get percent of completion in range [0, 1].
-      const percent: number = Math.min(time / duration, 1);
-
-      window.scrollTo(0, startingY + diff * percent);
-
-      // Proceed with animation as long as we wanted it to.
-      if (time < duration) {
-        window.requestAnimationFrame(animationStep);
-      }
-    };
-
-    // Bootstrap our animation - it will get called right before next frame shall be rendered.
-    window.requestAnimationFrame(animationStep);
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
@@ -471,9 +438,9 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private saveAndClose(stateToSave?: State): void {
-    this.saveSettings(stateToSave || this.state);
-
-    // TODO: If save was successful and it's on a modal, close the modal
+    if (this.saveSettings(stateToSave || this.state)) {
+      close();
+    }
   }
 
   private saveSettings(stateToSave: State): boolean {
@@ -510,9 +477,6 @@ export class PrivacySettings extends Component<{}, State> {
 
     writeVendorConsentCookie(consentData.getConsentString());
 
-    // tslint:disable-next-line: no-console
-    console.log("[IAB] Consent String is:", consentData.getConsentString());
-
     return true;
   }
 
@@ -525,3 +489,40 @@ export class PrivacySettings extends Component<{}, State> {
     }));
   }
 }
+
+const close = () => {
+  window.parent.postMessage("closeCmp", "*");
+};
+
+const doScrolling = (query: string, duration: number): void => {
+  const element: HTMLElement | null = document.querySelector(query);
+  if (!element) {
+    return;
+  }
+
+  const elementY: number =
+    window.pageYOffset + element.getBoundingClientRect().top;
+  const startingY: number = window.pageYOffset;
+  const diff: number = elementY - startingY;
+  let start: number;
+
+  const animationStep: FrameRequestCallback = timestamp => {
+    if (!start) {
+      start = timestamp;
+    }
+    // Elapsed milliseconds since start of scrolling.
+    const time: number = timestamp - start;
+    // Get percent of completion in range [0, 1].
+    const percent: number = Math.min(time / duration, 1);
+
+    window.scrollTo(0, startingY + diff * percent);
+
+    // Proceed with animation as long as we wanted it to.
+    if (time < duration) {
+      window.requestAnimationFrame(animationStep);
+    }
+  };
+
+  // Bootstrap our animation - it will get called right before next frame shall be rendered.
+  window.requestAnimationFrame(animationStep);
+};
