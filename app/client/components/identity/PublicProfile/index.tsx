@@ -14,13 +14,13 @@ import { AvatarSection } from "./AvatarSection";
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
-  const [hasUsername, setHasUsername] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const hasUsername = (u: User) => !!u.username;
 
   useEffect(() => {
     Users.getCurrentUser()
       .then((u: User) => {
-        setHasUsername(!!u.username);
         setUser(u);
       })
       .then(() => setLoading(false));
@@ -31,7 +31,6 @@ export const PublicProfile = (props: { path?: string }) => {
     const changedUser = { ...user, ...values };
     await Users.saveChanges(user, changedUser);
     setUser(changedUser);
-    setHasUsername(!!changedUser.username);
     setLoading(false);
   };
 
@@ -84,7 +83,7 @@ export const PublicProfile = (props: { path?: string }) => {
       <PageContainer>
         <Lines n={1} />
       </PageContainer>
-      {hasUsername ? usernameDisplay(user) : null}
+      {hasUsername(user) ? usernameDisplay(user) : null}
       <PageContainer>
         <PageSection title="Profile">
           <Formik
@@ -94,7 +93,7 @@ export const PublicProfile = (props: { path?: string }) => {
             onSubmit={saveUser}
             render={(formikBag: FormikProps<User>) => (
               <Form>
-                {!hasUsername ? usernameInput() : null}
+                {!hasUsername(user) ? usernameInput() : null}
                 <label css={labelCss}>
                   Location
                   <Field type="text" name="location" />
