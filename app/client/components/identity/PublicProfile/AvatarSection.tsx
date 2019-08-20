@@ -1,3 +1,4 @@
+import { CSSObject } from "@emotion/core";
 import { Form, Formik, FormikProps } from "formik";
 import React, { FC, useEffect } from "react";
 import palette from "../../../colours";
@@ -6,6 +7,8 @@ import { Button } from "../../buttons";
 import * as AvatarAPI from "../idapi/avatar";
 import { IdentityLocations } from "../IdentityLocations";
 import { PageSection } from "../PageSection";
+import { labelCss } from "../sharedStyles";
+
 import {
   getData,
   isLoading,
@@ -16,6 +19,13 @@ import {
 interface AvatarSectionProps {
   userId: string;
 }
+
+const imgCss: CSSObject = {
+  border: "0",
+  borderRadius: "50%",
+  height: "60px",
+  width: "60px"
+};
 
 export const AvatarSection: FC<AvatarSectionProps> = props => {
   const { userId } = props;
@@ -30,20 +40,12 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
     getAvatar();
   }, []);
 
-  const labelCss = {
-    display: "block",
-    width: "100%",
-    "& input, & textarea": {
-      display: "block"
-    }
-  };
-
   const avatarDisplay = () => {
     const url = isSuccessful(avatarGetState)
       ? getData(avatarGetState).data.avatarUrl
       : `${IdentityLocations.AVATAR_USER_IMAGES}/${userId}`;
     const loading = isLoading(avatarGetState);
-    return <>{loading ? "Loading..." : <img src={url} />}</>;
+    return <>{loading ? "Loading..." : <img css={imgCss} src={url} />}</>;
   };
 
   const avatarUploadForm = () => (

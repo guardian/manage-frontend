@@ -10,13 +10,14 @@ import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
+import { labelCss } from "../sharedStyles";
 import { AvatarSection } from "./AvatarSection";
+
+const hasUsername = (user: User) => !!user.username;
 
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-
-  const hasUsername = (u: User) => !!u.username;
 
   useEffect(() => {
     Users.getCurrentUser()
@@ -39,14 +40,6 @@ export const PublicProfile = (props: { path?: string }) => {
       <Spinner loadingMessage="Loading your profile ..." />
     </PageContainer>
   );
-
-  const labelCss = {
-    display: "block",
-    width: "100%",
-    "& input, & textarea": {
-      display: "block"
-    }
-  };
 
   const usernameInput = () => (
     <>
@@ -76,9 +69,11 @@ export const PublicProfile = (props: { path?: string }) => {
   const content = () => (
     <>
       <PageContainer>
-        These details will be publicly visible to everyone who sees your profile
-        in the <a href={IdentityLocations.COMMUNITY_FAQS}>commenting</a>{" "}
-        section.
+        <p css={{ fontSize: "14px" }}>
+          These details will be publicly visible to everyone who sees your
+          profile in the{" "}
+          <a href={IdentityLocations.COMMUNITY_FAQS}>commenting</a> section.
+        </p>
       </PageContainer>
       <PageContainer>
         <Lines n={1} />
@@ -100,11 +95,11 @@ export const PublicProfile = (props: { path?: string }) => {
                 </label>
                 <label css={labelCss}>
                   About Me
-                  <Field type="textarea" name="aboutMe" />
+                  <Field component="textarea" name="aboutMe" />
                 </label>
                 <label css={labelCss}>
                   Interests
-                  <Field type="textarea" name="interests" />
+                  <Field component="textarea" name="interests" />
                 </label>
                 <Button
                   text="Save changes"
@@ -114,6 +109,11 @@ export const PublicProfile = (props: { path?: string }) => {
             )}
           />
         </PageSection>
+      </PageContainer>
+      <PageContainer>
+        <Lines n={1} />
+      </PageContainer>
+      <PageContainer>
         <AvatarSection userId={user.id} />
       </PageContainer>
     </>
