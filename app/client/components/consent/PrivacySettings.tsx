@@ -7,8 +7,8 @@ import { CmpSeparator } from "./CmpSeparator";
 
 const iabVendorListURL =
   "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
-const privacyPolicyURL = "http://www.theguardian.com";
-const cookiePolicyURL = "http://www.theguardian.com";
+const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
+const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
 const containerStyles = css`
   margin: 6px 12px 0;
@@ -164,8 +164,13 @@ export class PrivacySettings extends Component<{}, State> {
         <p>
           These technologies are provided by us and by our third-party partners.
           To find out more, read our{" "}
-          <a href={privacyPolicyURL}>privacy policy</a> and{" "}
-          <a href={cookiePolicyURL}>cookie policy</a>.
+          <a href={privacyPolicyURL} target="_blank">
+            privacy policy
+          </a>{" "}
+          and{" "}
+          <a href={cookiePolicyURL} target="_blank">
+            cookie policy
+          </a>.
         </p>
 
         <form id="cmp-form">
@@ -202,6 +207,13 @@ export class PrivacySettings extends Component<{}, State> {
             {this.renderFeatureItems()}
             <CmpSeparator />
           </div>
+          <p>
+            You can change the above settings for this browser at any time by
+            accessing the{" "}
+            <a href={cookiePolicyURL} target="_blank">
+              cookie policy
+            </a>
+          </p>
           <div css={buttonContainerStyles}>
             <button
               type="button"
