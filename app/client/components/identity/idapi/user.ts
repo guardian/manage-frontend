@@ -3,6 +3,7 @@ import { APIPostOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface UserAPIResponse {
   user: {
+    id: string;
     consents: [
       {
         id: string;
@@ -66,6 +67,7 @@ export const read = async (): Promise<User> => {
   const consents = getConsentedTo(response);
   const { user } = response;
   return {
+    id: user.id,
     email: user.primaryEmailAddress,
     location: user.publicFields.location || "",
     aboutMe: user.publicFields.aboutMe || "",

@@ -18,7 +18,7 @@ interface AvatarSectionProps {
 }
 
 export const AvatarSection: FC<AvatarSectionProps> = props => {
-  const userId = { props };
+  const { userId } = props;
   const [avatarSaveState, saveAvatar] = useAsyncSource(AvatarAPI.write);
   const [avatarGetState, getAvatar] = useAsyncSource(AvatarAPI.read);
 
