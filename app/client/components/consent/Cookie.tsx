@@ -19,10 +19,10 @@ const getDomainAttribute = (): string => {
 };
 
 const writeVendorConsentCookie = (iabString: string): void => {
-  addCookie(IAB_COOKIE_NAME, iabString, COOKIE_MAX_AGE);
+  addCookie(IAB_COOKIE_NAME, iabString);
 };
 
-const addCookie = (name: string, value: string, daysToLive: number): void => {
+const addCookie = (name: string, value: string): void => {
   const expires = new Date();
 
   if (!isValidCookieValue(name) || !isValidCookieValue(value)) {
@@ -31,7 +31,7 @@ const addCookie = (name: string, value: string, daysToLive: number): void => {
     // TODO: Add error reporting
   }
 
-  expires.setDate(expires.getDate() + daysToLive);
+  expires.setDate(expires.getDate() + COOKIE_MAX_AGE);
 
   // tslint:disable-next-line: no-object-mutation
   document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()};${getDomainAttribute()}`;
