@@ -7,8 +7,8 @@ import { CmpSeparator } from "./CmpSeparator";
 
 const iabVendorListURL =
   "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
-const privacyPolicyURL = "http://www.theguardian.com";
-const cookiePolicyURL = "http://www.theguardian.com";
+const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
+const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
 const containerStyles = css`
   margin: 6px 12px 0;
@@ -150,15 +150,29 @@ export class PrivacySettings extends Component<{}, State> {
   public render(): React.ReactNode {
     return (
       <div css={containerStyles}>
-        <h1 css={headerStyles}>Privacy settings</h1>
+        <h1 css={headerStyles}>We need to talk about data...</h1>
 
         <p>
-          Below you can manage your privacy settings for cookies and similar
-          technologies for this service. These technologies are provided by us
-          and by our third-party partners. To find out more, read our{" "}
-          <a href={privacyPolicyURL}>privacy policy</a> and{" "}
-          <a href={cookiePolicyURL}>cookie policy</a>
+          ...and how we use yours specifically. Please review and manage your
+          privacy settings below.
         </p>
+        <p>
+          As part of our reader funded strategy, we use cookie identifiers and
+          information about your interests to improve experiences and show
+          personalised advertising.
+        </p>
+        <p>
+          These technologies are provided by us and by our third-party partners.
+          To find out more, read our{" "}
+          <a href={privacyPolicyURL} target="_blank">
+            privacy policy
+          </a>{" "}
+          and{" "}
+          <a href={cookiePolicyURL} target="_blank">
+            cookie policy
+          </a>.
+        </p>
+
         <form id="cmp-form">
           <div css={topButtonContainerStyles}>
             <button
@@ -182,7 +196,7 @@ export class PrivacySettings extends Component<{}, State> {
                 ${buttonStyles};
               `}
             >
-              I'm OK with that
+              Enable all and close
             </button>
           </div>
           <div id="cmp-options">
@@ -196,16 +210,10 @@ export class PrivacySettings extends Component<{}, State> {
           <p>
             You can change the above settings for this browser at any time by
             accessing the{" "}
-            <a
-              href={cookiePolicyURL}
-              css={css`
-                color: ${palette.neutral[2]};
-              `}
-            >
+            <a href={cookiePolicyURL} target="_blank">
               cookie policy
             </a>
           </p>
-
           <div css={buttonContainerStyles}>
             <button
               type="button"
