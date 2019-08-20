@@ -484,21 +484,19 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    const iabKeys = Object.keys(stateToSave.iabPurposes).map(purpose =>
-      parseInt(purpose, 10)
-    );
-
-    const nullsExist: boolean = !!iabKeys.filter(
-      key => stateToSave.iabPurposes[key] === null
+    const nullCount: number = Object.keys(stateToSave.iabPurposes).filter(
+      key => stateToSave.iabPurposes[parseInt(key, 10)] === null
     ).length;
 
-    if (nullsExist) {
+    if (nullCount > 0) {
       // tslint:disable-next-line: no-console
       console.log("ERROR: Missing answers");
       return false;
     }
 
-    const allowedPurposes = iabKeys.filter(key => stateToSave.iabPurposes[key]);
+    const allowedPurposes = Object.keys(stateToSave.iabPurposes)
+      .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
+      .map(purpose => parseInt(purpose, 10));
     const allowedVendors = this.iabVendorList.vendors.map(vendor => vendor.id);
 
     const consentData = new ConsentString();
