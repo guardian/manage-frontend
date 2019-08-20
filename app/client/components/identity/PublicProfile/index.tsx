@@ -115,7 +115,7 @@ export const PublicProfile = (props: { path?: string }) => {
             )}
           />
         </PageSection>
-        <AvatarSection />
+        <AvatarSection userId={user.id} />
       </PageContainer>
     </>
   );

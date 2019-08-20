@@ -8,6 +8,9 @@ const DOMAIN =
     ? window.guardian.domain
     : conf.DOMAIN;
 
+const IMAGE_DOMAIN =
+  DOMAIN === "theguardian.com" ? "guim.co.uk" : "guimcode.co.uk";
+
 const IDAPI_URL =
   DOMAIN === "thegulocal.com" ? "/idapicodeproxy" : url("idapi", DOMAIN);
 
@@ -20,7 +23,8 @@ const getIdentityLocations = (domain: string) => ({
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
   VERIFY_EMAIL: url("profile", domain, "/verify-email"),
   IDAPI: IDAPI_URL,
-  AVATAR: AVATAR_URL
+  AVATAR: AVATAR_URL,
+  AVATAR_USER_IMAGES: url("avatar", IMAGE_DOMAIN, "/user")
 });
 
 export const IdentityLocations = getIdentityLocations(DOMAIN);
