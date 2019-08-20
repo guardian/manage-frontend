@@ -10,7 +10,7 @@ import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
-import { labelCss } from "../sharedStyles";
+import { aCss, labelCss, textSmall } from "../sharedStyles";
 import { AvatarSection } from "./AvatarSection";
 
 const hasUsername = (user: User) => !!user.username;
@@ -47,7 +47,7 @@ export const PublicProfile = (props: { path?: string }) => {
         Username
         <Field type="text" name="username" />
       </label>
-      <p>
+      <p css={textSmall}>
         You can only set your username once. It must be 6-20 characters, letters
         and/or numbers only and have no spaces. If you do not set your username,
         then your full name will be used.
@@ -72,7 +72,10 @@ export const PublicProfile = (props: { path?: string }) => {
         <p css={{ fontSize: "14px" }}>
           These details will be publicly visible to everyone who sees your
           profile in the{" "}
-          <a href={IdentityLocations.COMMUNITY_FAQS}>commenting</a> section.
+          <a css={aCss} href={IdentityLocations.COMMUNITY_FAQS}>
+            commenting
+          </a>{" "}
+          section.
         </p>
       </PageContainer>
       <PageContainer>

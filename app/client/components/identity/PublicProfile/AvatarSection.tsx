@@ -7,7 +7,7 @@ import { Button } from "../../buttons";
 import * as AvatarAPI from "../idapi/avatar";
 import { IdentityLocations } from "../IdentityLocations";
 import { PageSection } from "../PageSection";
-import { labelCss } from "../sharedStyles";
+import { labelCss, textSmall } from "../sharedStyles";
 
 import {
   getData,
@@ -79,7 +79,7 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
   const avatarUploadSuccessNotice = () => (
     <div
       css={{
-        fontSize: "13px",
+        ...textSmall,
         lineHeight: "18px",
         fontFamily: sans,
         borderBottom: `1px solid ${palette.green.light}`,
