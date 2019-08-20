@@ -150,15 +150,24 @@ export class PrivacySettings extends Component<{}, State> {
   public render(): React.ReactNode {
     return (
       <div css={containerStyles}>
-        <h1 css={headerStyles}>Privacy settings</h1>
+        <h1 css={headerStyles}>We need to talk about data...</h1>
 
         <p>
-          Below you can manage your privacy settings for cookies and similar
-          technologies for this service. These technologies are provided by us
-          and by our third-party partners. To find out more, read our{" "}
-          <a href={privacyPolicyURL}>privacy policy</a> and{" "}
-          <a href={cookiePolicyURL}>cookie policy</a>
+          ...and how we use yours specifically. Please review and manage your
+          privacy settings below.
         </p>
+        <p>
+          As part of our reader funded strategy, we use cookie identifiers and
+          information about your interests to improve experiences and show
+          personalised advertising.
+        </p>
+        <p>
+          These technologies are provided by us and by our third-party partners.
+          To find out more, read our{" "}
+          <a href={privacyPolicyURL}>privacy policy</a> and{" "}
+          <a href={cookiePolicyURL}>cookie policy</a>.
+        </p>
+
         <form id="cmp-form">
           <div css={topButtonContainerStyles}>
             <button
@@ -193,19 +202,6 @@ export class PrivacySettings extends Component<{}, State> {
             {this.renderFeatureItems()}
             <CmpSeparator />
           </div>
-          <p>
-            You can change the above settings for this browser at any time by
-            accessing the{" "}
-            <a
-              href={cookiePolicyURL}
-              css={css`
-                color: ${palette.neutral[2]};
-              `}
-            >
-              cookie policy
-            </a>
-          </p>
-
           <div css={buttonContainerStyles}>
             <button
               type="button"
