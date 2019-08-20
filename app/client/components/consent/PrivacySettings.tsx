@@ -196,7 +196,7 @@ export class PrivacySettings extends Component<{}, State> {
                 ${buttonStyles};
               `}
             >
-              I'm OK with that
+              Enable all and close
             </button>
           </div>
           <div id="cmp-options">
