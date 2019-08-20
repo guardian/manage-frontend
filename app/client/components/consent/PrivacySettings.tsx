@@ -1,9 +1,16 @@
 import { css } from "@emotion/core";
+import { ConsentString } from "consent-string";
 import React, { Component } from "react";
 import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
+import { writeVendorConsentCookie } from "./Cookie";
+
+const CMP_ID = 112;
+const CMP_VERSION = 1;
+const CONSENT_SCREEN = 0;
+const CONSENT_LANGUAGE = "en";
 
 const iabVendorListURL =
   "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
@@ -453,12 +460,14 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
-      (acc, key) => ({ ...acc, [key]: true }),
-      {}
-    );
+    if (this.state.iabPurposes) {
+      const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+        (acc, key) => ({ ...acc, [key]: true }),
+        {}
+      );
 
-    this.saveAndClose({ iabPurposes });
+      this.saveAndClose({ iabPurposes });
+    }
   }
 
   private saveAndClose(stateToSave?: State): void {
@@ -468,10 +477,43 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private saveSettings(stateToSave: State): boolean {
-    // TODO: Check if all purposes have been answered
-    // TODO: Actually save the settings to the cookie
-    const success = true;
-    return success;
+    if (!this.iabVendorList) {
+      // TODO: Trigger error
+      // tslint:disable-next-line: no-console
+      console.log("ERROR: IAB vendor list not present.");
+      return false;
+    }
+
+    const nullCount: number = Object.keys(stateToSave.iabPurposes).filter(
+      key => stateToSave.iabPurposes[parseInt(key, 10)] === null
+    ).length;
+
+    if (nullCount > 0) {
+      // tslint:disable-next-line: no-console
+      console.log("ERROR: Missing answers");
+      return false;
+    }
+
+    const allowedPurposes = Object.keys(stateToSave.iabPurposes)
+      .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
+      .map(purpose => parseInt(purpose, 10));
+    const allowedVendors = this.iabVendorList.vendors.map(vendor => vendor.id);
+
+    const consentData = new ConsentString();
+    consentData.setGlobalVendorList(this.iabVendorList);
+    consentData.setCmpId(CMP_ID);
+    consentData.setCmpVersion(CMP_VERSION);
+    consentData.setConsentScreen(CONSENT_SCREEN);
+    consentData.setConsentLanguage(CONSENT_LANGUAGE);
+    consentData.setPurposesAllowed(allowedPurposes);
+    consentData.setVendorsAllowed(allowedVendors);
+
+    writeVendorConsentCookie(consentData.getConsentString());
+
+    // tslint:disable-next-line: no-console
+    console.log("[IAB] Consent String is:", consentData.getConsentString());
+
+    return true;
   }
 
   private updatePurpose(purposeId: number, value: boolean): void {
