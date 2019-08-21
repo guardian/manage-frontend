@@ -1,7 +1,5 @@
-import { Field, Form, Formik, FormikProps } from "formik";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
-import { Button } from "../../buttons";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
@@ -10,8 +8,9 @@ import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
-import { aCss, labelCss, textSmall } from "../sharedStyles";
+import { aCss } from "../sharedStyles";
 import { AvatarSection } from "./AvatarSection";
+import { ProfileFormSection } from "./ProfileFormSection";
 
 const hasUsername = (user: User) => !!user.username;
 
@@ -41,20 +40,6 @@ export const PublicProfile = (props: { path?: string }) => {
     </PageContainer>
   );
 
-  const usernameInput = () => (
-    <>
-      <label css={labelCss}>
-        Username
-        <Field type="text" name="username" />
-      </label>
-      <p css={textSmall}>
-        You can only set your username once. It must be 6-20 characters, letters
-        and/or numbers only and have no spaces. If you do not set your username,
-        then your full name will be used.
-      </p>
-    </>
-  );
-
   const usernameDisplay = (u: User) => (
     <>
       <PageContainer>
@@ -82,37 +67,7 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
-      <PageContainer>
-        <PageSection title="Profile">
-          <Formik
-            initialValues={{
-              ...user
-            }}
-            onSubmit={saveUser}
-            render={(formikBag: FormikProps<User>) => (
-              <Form>
-                {!hasUsername(user) ? usernameInput() : null}
-                <label css={labelCss}>
-                  Location
-                  <Field type="text" name="location" />
-                </label>
-                <label css={labelCss}>
-                  About Me
-                  <Field component="textarea" name="aboutMe" />
-                </label>
-                <label css={labelCss}>
-                  Interests
-                  <Field component="textarea" name="interests" />
-                </label>
-                <Button
-                  text="Save changes"
-                  onClick={() => formikBag.submitForm()}
-                />
-              </Form>
-            )}
-          />
-        </PageSection>
-      </PageContainer>
+      <ProfileFormSection user={user} saveUser={saveUser} />
       <PageContainer>
         <Lines n={1} />
       </PageContainer>
