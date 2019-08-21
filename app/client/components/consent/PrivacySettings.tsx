@@ -5,7 +5,7 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { writeVendorConsentCookie } from "./Cookie";
+import { writeIabCookie } from "./Cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
@@ -508,7 +508,7 @@ export class PrivacySettings extends Component<{}, State> {
     consentData.setPurposesAllowed(allowedPurposes);
     consentData.setVendorsAllowed(allowedVendors);
 
-    writeVendorConsentCookie(consentData.getConsentString());
+    writeIabCookie(consentData.getConsentString());
 
     // tslint:disable-next-line: no-console
     console.log("[IAB] Consent String is:", consentData.getConsentString());

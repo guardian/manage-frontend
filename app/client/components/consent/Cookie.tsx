@@ -18,7 +18,7 @@ const getDomainAttribute = (): string => {
   return shortDomain === "localhost" ? "" : ` domain=${shortDomain};`;
 };
 
-const writeVendorConsentCookie = (iabString: string): void => {
+const writeIabCookie = (iabString: string): void => {
   addCookie(IAB_COOKIE_NAME, iabString);
 };
 
@@ -37,4 +37,4 @@ const addCookie = (name: string, value: string): void => {
   document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()};${getDomainAttribute()}`;
 };
 
-export { writeVendorConsentCookie };
+export { writeIabCookie };
