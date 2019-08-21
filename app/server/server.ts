@@ -58,7 +58,7 @@ server.use(
     res.removeHeader("X-Frame-Options");
     res.setHeader(
       "Content-Security-Policy",
-      `frame-src ${allowedDomains.join(" ")}`
+      `frame-ancestors ${allowedDomains.join(" ")}`
     );
     next();
   },
