@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import { default as express, NextFunction, Response } from "express";
 import helmet from "helmet";
 import Raven from "raven";
-import { conf, Environments } from "./config";
+import { conf } from "./config";
 import { log } from "./log";
 import * as routes from "./routes";
 
@@ -51,9 +51,7 @@ server.use(
     // This route can be loaded in an iframe from the domains listed below only
     res.setHeader(
       "Content-Security-Policy",
-      `frame-ancestors https://*.${conf.DOMAIN} ${
-        conf.ENVIRONMENT !== Environments.PRODUCTION ? "http://localhost:*" : ""
-      }`
+      `frame-ancestors https://*.${conf.DOMAIN} http://localhost:*`
     );
     next();
   },
