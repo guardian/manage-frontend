@@ -48,6 +48,7 @@ server.use(routes.productsProvider("/api/"));
 server.use(
   "/consent/",
   (req, res, next) => {
+    // we want this route to be loaded in an iframe
     res.removeHeader("X-Frame-Options");
     next();
   },
