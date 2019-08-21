@@ -1,10 +1,9 @@
-import rawDateRangePickerCSS from "!!raw-loader!react-daterange-picker/dist/css/react-calendar.css";
-import { css, Global } from "@emotion/core";
+import { css } from "@emotion/core";
 import { FontWeightProperty } from "csstype";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
-import DateRangePicker, {
+import {
   OnSelectCallbackParam,
   PaginationArrowProps
 } from "react-daterange-picker";
@@ -13,19 +12,7 @@ import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 import { DateInput } from "./dateInput";
-
-const issueDayAfterSuffixCss = `
-::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background-color: ${palette.blue.dark};
-  transform: rotate(45deg);
-  top: -7px;
-  left: -7px;
-}
-`;
+import { WrappedDateRangePicker } from "./hackedDateRangePicker";
 
 const stateDefinitions = {
   available: {
@@ -72,6 +59,7 @@ export interface DatePickerProps {
   selectedRange?: DateRange;
   selectionInfo?: React.ReactFragment;
   onSelect: (range: OnSelectCallbackParam) => void;
+  dateToAsterisk?: Moment;
 }
 
 export interface DatePickerState {
@@ -163,21 +151,10 @@ const CustomArrow = (props: PaginationArrowProps) => (
   </div>
 );
 
-const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
-
-// this is a bit nasty but is necessary to bold today's date. works on the assumption minimum date will always be
-// after today and so can safely just find all the disabled days and bold the one matching today's day of the month
-const emboldenTodaysDate = () => {
-  if (document) {
-    const dayCellsBeforeMinimumDay = document.getElementsByClassName(
-      "DateRangePicker__Date--is-disabled"
-    );
-    for (let dayCell of dayCellsBeforeMinimumDay) {
-      if (dayCell.textContent === `${new Date().getDate()}`) {
-        dayCell.setAttribute("style", "font-weight:bold");
-      }
-    }
-  }
+const validationMsgCss = {
+  height: "2rem",
+  paddingTop: "0.5rem",
+  fontWeight: "bold" as FontWeightProperty
 };
 
 export class DatePicker extends React.Component<
@@ -187,15 +164,6 @@ export class DatePicker extends React.Component<
   public state: DatePickerState = {
     validationMessage: ""
   };
-
-  public validationMsgCss = {
-    height: "2rem",
-    paddingTop: "0.5rem",
-    fontWeight: "bold" as FontWeightProperty
-  };
-
-  public componentDidMount = emboldenTodaysDate;
-  public componentDidUpdate = emboldenTodaysDate;
 
   public render = () => (
     <>
@@ -217,7 +185,7 @@ export class DatePicker extends React.Component<
           }
         }}
       >
-        <DateRangePicker
+        <WrappedDateRangePicker
           numberOfCalendars={2}
           minimumDate={this.props.firstAvailableDate.toDate()}
           maximumDate={this.props.firstAvailableDate
@@ -238,6 +206,8 @@ export class DatePicker extends React.Component<
           defaultState="available"
           firstOfWeek={1}
           paginationArrowComponent={CustomArrow}
+          dayOfWeekToIconify={this.props.issueDayOfWeek}
+          dateToAsterisk={this.props.dateToAsterisk}
         />
 
         <div
@@ -277,74 +247,10 @@ export class DatePicker extends React.Component<
             {this.props.selectionInfo && this.props.selectionInfo}
           </div>
         </div>
-        <div id="validation-message" role="alert" css={this.validationMsgCss}>
+        <div id="validation-message" role="alert" css={validationMsgCss}>
           {this.state.validationMessage}
         </div>
       </div>
-
-      <Global styles={css(rawDateRangePickerCSS)} />
-      {
-        <Global
-          styles={css(`
-        .DateRangePicker {
-          --selectedBackgroundColour: ${palette.yellow.medium};
-          --selectedTextColour: #333;
-          margin-left: -20px;
-          margin-right: 0;
-        }
-        .DateRangePicker__HalfDateStates {
-          display: none; /* Safe to hide half dates, because we already adjust the dates - see adjustDateRangeToOvercomeHalfDateStates function */
-        }        
-        .DateRangePicker__Date--is-selected {
-          color: var(--selectedTextColour);
-        }
-        .DateRangePicker__selection {
-          background-color: var(--selectedBackgroundColour);
-        }       
-        .DateRangePicker__CalendarSelection {
-          background-color: var(--selectedBackgroundColour);
-          border: 3px solid darken(var(--selectedBackgroundColour), 5); 
-        }
-        .DateRangePicker--is-pending {
-          background-color: rgba(var(--selectedBackgroundColour), .75);
-        }
-        .DateRangePicker__CalendarHighlight.DateRangePicker__CalendarHighlight--single {
-          border: 1px solid var(--selectedBackgroundColour);
-        }
-        .DateRangePicker__DateLabel {
-          border: 1px solid darken(var(--selectedBackgroundColour), 5);
-        }
-        .DateRangePicker__WeekdayHeading {
-          border-bottom: ${gridBorderCssValue}
-        }
-        .DateRangePicker__Date {
-          border: ${gridBorderCssValue}
-          font-family: ${sans};
-          font-size: 16px;
-          line-height: 1.5;
-        }
-        .DateRangePicker__Date.DateRangePicker__Date--weekend {
-          background-color: transparent;
-        }
-        .DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${
-          this.props.issueDayOfWeek
-        })${issueDayAfterSuffixCss}
-        .DateRangePicker__MonthDates {
-          border-collapse: collapse;
-        }
-        .DateRangePicker__Month {
-          margin-right: 0;
-          width: 371px;
-        }
-        .DateRangePicker__MonthHeader {
-          font-size: 16px;
-        }
-        .DateRangePicker__Weekend {
-          font-size: 16px;
-        }
-      `)}
-        />
-      }
     </>
   );
 }

@@ -201,6 +201,7 @@ export class HolidayDateChooser extends React.Component<
                             .annualIssueLimit,
                           productDetail.isTestUser
                         )}
+                        dateToAsterisk={renewalDateMoment}
                       />
                       <div
                         css={{
