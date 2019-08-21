@@ -48,8 +48,18 @@ server.use(routes.productsProvider("/api/"));
 server.use(
   "/consent/",
   (req, res, next) => {
-    // we want this route to be loaded in an iframe
+    // This route can be loaded in an iframe from the domains listed below only
+    const allowedDomains = [
+      "https://*.theguardian.com/",
+      "https://*.dev-theguardian.com/",
+      "https://*.thegulocal.com/",
+      "http://localhost:*/"
+    ];
     res.removeHeader("X-Frame-Options");
+    res.setHeader(
+      "Content-Security-Policy",
+      `frame-src ${allowedDomains.join(" ")}`
+    );
     next();
   },
   routes.consent
