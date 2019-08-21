@@ -284,11 +284,6 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
-    if (iabVendorList && iabVendorList.purposes) {
-      // TODO: Trigger error
-      // tslint:disable-next-line: no-console
-      console.log("ERROR: iabVendorList not present");
-    }
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
