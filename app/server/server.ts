@@ -51,7 +51,7 @@ server.use(
     // This route can be loaded in an iframe from the domains listed below only
     res.setHeader(
       "Content-Security-Policy",
-      `frame-ancestors https://*.${conf.DOMAIN} http://localhost:*`
+      `frame-ancestors https://*.${conf.DOMAIN}`
     );
     next();
   },
