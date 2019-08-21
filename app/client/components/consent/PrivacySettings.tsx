@@ -5,7 +5,7 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { readIabCookie, writeIabCookie } from "./Cookie";
+import { readIabCookie, writeIabCookie } from "./cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
