@@ -18,8 +18,33 @@ const getDomainAttribute = (): string => {
   return shortDomain === "localhost" ? "" : ` domain=${shortDomain};`;
 };
 
-const writeVendorConsentCookie = (iabString: string): void => {
+const readIabCookie = (): string | null => getCookie(IAB_COOKIE_NAME);
+
+const writeIabCookie = (iabString: string): void =>
   addCookie(IAB_COOKIE_NAME, iabString);
+
+const getCookie = (name: string): string | null => {
+  const cookieVal = getCookieValues(name);
+
+  if (cookieVal.length > 0) {
+    return cookieVal[0];
+  }
+  return null;
+};
+
+const getCookieValues = (name: string): string[] => {
+  const nameEq = `${name}=`;
+  const cookies = document.cookie.split(";");
+
+  return cookies.reduce((acc: string[], cookie: string) => {
+    const cookieTrimmed = cookie.trim();
+
+    if (cookieTrimmed.indexOf(nameEq) === 0) {
+      acc.push(cookieTrimmed.substring(nameEq.length, cookieTrimmed.length));
+    }
+
+    return acc;
+  }, []);
 };
 
 const addCookie = (name: string, value: string): void => {
@@ -37,4 +62,4 @@ const addCookie = (name: string, value: string): void => {
   document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()};${getDomainAttribute()}`;
 };
 
-export { writeVendorConsentCookie };
+export { readIabCookie, writeIabCookie };
