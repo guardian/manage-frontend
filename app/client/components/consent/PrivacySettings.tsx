@@ -5,7 +5,7 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { readIabCookie, writeIabCookie } from "./Cookie";
+import { readIabCookie, writeIabCookie } from "./cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
@@ -284,11 +284,6 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
-    if (iabVendorList && iabVendorList.purposes) {
-      // TODO: Trigger error
-      // tslint:disable-next-line: no-console
-      console.log("ERROR: iabVendorList not present");
-    }
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
