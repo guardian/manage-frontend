@@ -5,7 +5,7 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { writeIabCookie } from "./Cookie";
+import { readIabCookie, writeIabCookie } from "./Cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
@@ -151,7 +151,6 @@ export class PrivacySettings extends Component<{}, State> {
         // tslint:disable-next-line: no-console
         console.log("ERROR:", error);
       });
-    // TODO: get cookies here
   }
 
   public render(): React.ReactNode {
@@ -285,16 +284,29 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private buildState(iabVendorList: ParsedIabVendorList): void {
+    if (iabVendorList && iabVendorList.purposes) {
+      // TODO: Trigger error
+      // tslint:disable-next-line: no-console
+      console.log("ERROR: iabVendorList not present");
+    }
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
-    if (iabVendorList && iabVendorList.purposes) {
-      const iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
+    const iabStr = readIabCookie();
+
+    let iabPurposes = {};
+    if (iabStr) {
+      const iabData = new ConsentString(iabStr);
+      iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
+        return { ...acc, [purpose.id]: iabData.isPurposeAllowed(purpose.id) };
+      }, {});
+    } else {
+      iabPurposes = iabVendorList.purposes.reduce((acc, purpose) => {
         return { ...acc, [purpose.id]: null };
       }, {});
-
-      this.setState({ iabPurposes });
     }
+
+    this.setState({ iabPurposes });
   }
 
   private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
