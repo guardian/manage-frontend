@@ -15,6 +15,7 @@ import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { Modal } from "../modal";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
@@ -169,17 +170,6 @@ export class HolidayDateChooser extends React.Component<
                         )}
                         dateToAsterisk={renewalDateMoment}
                       />
-                      <div
-                        css={{
-                          fontFamily: sans,
-                          fontSize: "14px",
-                          margin: "10px 0 10px 0"
-                        }}
-                      >
-                        <sup>*</sup>This is the anniversary of your
-                        subscription. The number of issues you can suspend per
-                        year is reset on this date.
-                      </div>
                       <div css={rightAlignedButtonsCss}>
                         <Link css={cancelLinkCss} to=".." replace={true}>
                           Cancel
@@ -305,6 +295,7 @@ export class HolidayDateChooser extends React.Component<
     ) {
       return "No issues occur during selected period";
     }
+    return null; // important don't remove
   };
 
   private getSelectionInfoElement = (
@@ -365,6 +356,26 @@ export class HolidayDateChooser extends React.Component<
                   available the following year
                 </>
               )}
+            <Modal
+              instigator={
+                <a
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.blue.medium,
+                    cursor: "pointer"
+                  }}
+                >
+                  What is this date?
+                </a>
+              }
+              title="What is this date?"
+            >
+              <p>
+                {anniversaryDateToElement(renewalDateMoment)} is the anniversary
+                of your subscription. The number of issues you can suspend per
+                year is reset on this date.
+              </p>
+            </Modal>
           </div>
         </>
       );
