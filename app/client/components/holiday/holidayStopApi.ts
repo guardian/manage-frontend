@@ -7,6 +7,9 @@ import AsyncLoader from "../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
+export const momentiseDateStr = (dateStr: string) =>
+  moment(dateStr, DATE_INPUT_FORMAT);
+
 export interface RawHolidayStopRequest {
   start: string;
   end: string;
@@ -83,12 +86,12 @@ const embellishRawHolidayStop = (
   ({
     ...rawHolidayStopRequest,
     dateRange: new DateRange(
-      moment(rawHolidayStopRequest.start, DATE_INPUT_FORMAT),
-      moment(rawHolidayStopRequest.end, DATE_INPUT_FORMAT)
+      momentiseDateStr(rawHolidayStopRequest.start),
+      momentiseDateStr(rawHolidayStopRequest.end)
     ),
     publicationDatesToBeStopped: rawHolidayStopRequest.publicationsImpacted.map(
       publicationImpacted =>
-        moment(publicationImpacted.publicationDate, DATE_INPUT_FORMAT)
+        momentiseDateStr(publicationImpacted.publicationDate)
     )
   } as HolidayStopRequest);
 
@@ -99,9 +102,8 @@ export const embellishExistingHolidayStops = async (response: Response) => {
     productSpecifics: raw.productSpecifics
       ? {
           ...raw.productSpecifics,
-          firstAvailableDate: moment(
-            raw.productSpecifics.firstAvailableDate,
-            DATE_INPUT_FORMAT
+          firstAvailableDate: momentiseDateStr(
+            raw.productSpecifics.firstAvailableDate
           )
         }
       : undefined,
@@ -121,11 +123,11 @@ export const calculateIssuesImpactedPerYear = (
   nextYearStartDate: Moment
 ) => {
   return {
-    issueDatesThisYear: publicationDatesToBeStopped.filter(date =>
-      date.isBefore(nextYearStartDate)
+    issueDatesThisYear: publicationDatesToBeStopped.filter(
+      date => date.isBefore(nextYearStartDate) // TODO ensure ONLY this year
     ),
-    issueDatesNextYear: publicationDatesToBeStopped.filter(date =>
-      date.isSameOrAfter(nextYearStartDate)
+    issueDatesNextYear: publicationDatesToBeStopped.filter(
+      date => date.isSameOrAfter(nextYearStartDate) // TODO ensure ONLY next year
     )
   } as IssuesImpactedPerYear;
 };

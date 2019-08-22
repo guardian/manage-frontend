@@ -1,5 +1,4 @@
 import { navigate } from "@reach/router";
-import moment from "moment";
 import React from "react";
 import {
   MembersDataApiResponseContext,
@@ -18,11 +17,11 @@ import {
 import {
   calculateIssuesImpactedPerYear,
   createGetHolidayStopsFetcher,
-  DATE_INPUT_FORMAT,
   embellishExistingHolidayStops,
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
-  HolidayStopsResponseContext
+  HolidayStopsResponseContext,
+  momentiseDateStr
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
@@ -61,9 +60,8 @@ const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
   routeableStepProps: RouteableStepProps
 ) => (holidayStopsResponse: GetHolidayStopsResponse) => {
-  const renewalDateMoment = moment(
-    productDetail.subscription.renewalDate,
-    DATE_INPUT_FORMAT
+  const renewalDateMoment = momentiseDateStr(
+    productDetail.subscription.renewalDate
   );
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(

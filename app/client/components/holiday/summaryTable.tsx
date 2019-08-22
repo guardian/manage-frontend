@@ -85,8 +85,8 @@ export const SummaryTable = (props: SummaryTableProps) => (
       {isSharedHolidayDateChooserState(props.data) ? (
         <SummaryTableRow
           publicationDatesToBeStopped={[
-            ...props.data.issuesImpactedBySelection.issueDatesThisYear,
-            ...props.data.issuesImpactedBySelection.issueDatesNextYear
+            ...props.data.issuesImpactedPerYearBySelection.issueDatesThisYear,
+            ...props.data.issuesImpactedPerYearBySelection.issueDatesNextYear
           ]}
           dateRange={props.data.selectedRange}
         />

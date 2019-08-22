@@ -53,7 +53,7 @@ export interface DatePickerProps {
   issueDayOfWeek: number;
   existingDates: DateRange[];
   selectedRange?: DateRange;
-  selectionInfo?: React.ReactFragment;
+  selectionInfo?: React.ReactElement;
   onSelect: (range: OnSelectCallbackParam) => void;
   dateToAsterisk?: Moment;
 }
@@ -208,12 +208,12 @@ export class DatePicker extends React.Component<
           </div>
           <div
             css={{
-              marginTop: "24px",
+              marginTop: "18px",
               fontFamily: sans,
               fontSize: "14px"
             }}
           >
-            {this.props.selectionInfo && this.props.selectionInfo}
+            {this.props.selectionInfo}
           </div>
         </div>
         <div id="validation-message" role="alert" css={validationMsgCss}>

@@ -1,6 +1,6 @@
 import { Link, navigate } from "@reach/router";
 import { FontWeightProperty } from "csstype";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
@@ -16,6 +16,7 @@ import { DatePicker } from "../datePicker";
 import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Spinner } from "../spinner";
+import { InfoIcon } from "../svgs/infoIcon";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
 import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
@@ -23,42 +24,9 @@ import {
   DATE_INPUT_FORMAT,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
-  IssuesImpactedPerYear
+  IssuesImpactedPerYear,
+  momentiseDateStr
 } from "./holidayStopApi";
-
-const infoIconSvg = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    css={{
-      position: "relative",
-      top: "2px",
-      marginRight: "5px"
-    }}
-  >
-    <g fill="none" fillRule="evenodd" transform="translate(1 1)">
-      <circle
-        cx="7"
-        cy="7"
-        r="7"
-        stroke="#121212"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.4"
-      />
-      <path
-        stroke="#121212"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.4"
-        d="M7 9.8V7"
-      />
-      <circle cx="7" cy="4.2" r="1" fill="#121212" />
-    </g>
-  </svg>
-);
 
 export const cancelLinkCss = {
   marginRight: "20px",
@@ -77,13 +45,19 @@ export const rightAlignedButtonsCss = {
 
 const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
   return (
-    <div>
-      <strong>
-        {numberOfIssues} issue{numberOfIssues !== 1 ? "s" : ""}
-      </strong>
-    </div>
+    <strong>
+      {numberOfIssues}&nbsp;issue{numberOfIssues !== 1 ? "s" : ""}
+    </strong>
   );
 };
+
+const anniversaryDateToElement = (renewalDateMoment: Moment) => (
+  <>
+    {renewalDateMoment.format("D")}&nbsp;
+    {renewalDateMoment.format("MMMM")}&nbsp;
+    {renewalDateMoment.format("Y")}*
+  </>
+);
 
 export const HolidayDateChooserStateContext: React.Context<
   HolidayDateChooserState | {}
@@ -92,23 +66,21 @@ export const HolidayDateChooserStateContext: React.Context<
 export function isSharedHolidayDateChooserState(
   state: any
 ): state is SharedHolidayDateChooserState {
-  return !!state && state.selectedRange && state.issuesImpactedBySelection;
-}
-
-interface SelectionValidationAndErrorMsg {
-  isValid: boolean;
-  errorMsg: string;
+  return (
+    !!state && state.selectedRange && state.issuesImpactedPerYearBySelection
+  );
 }
 
 interface HolidayDateChooserState {
   selectedRange?: DateRange;
-  issuesImpactedBySelection: IssuesImpactedPerYear | null;
-  selectionIsValid: SelectionValidationAndErrorMsg;
+  totalIssueCountImpactedBySelection?: number;
+  issuesImpactedPerYearBySelection?: IssuesImpactedPerYear | null;
+  validationErrorMessage: React.ReactNode | null;
 }
 
 export interface SharedHolidayDateChooserState {
   selectedRange: DateRange;
-  issuesImpactedBySelection: IssuesImpactedPerYear;
+  issuesImpactedPerYearBySelection: IssuesImpactedPerYear;
 }
 
 export class HolidayDateChooser extends React.Component<
@@ -116,11 +88,8 @@ export class HolidayDateChooser extends React.Component<
   HolidayDateChooserState
 > {
   public state: HolidayDateChooserState = {
-    issuesImpactedBySelection: null,
-    selectionIsValid: {
-      isValid: false,
-      errorMsg: ""
-    }
+    issuesImpactedPerYearBySelection: null,
+    validationErrorMessage: null
   };
 
   public render = () => (
@@ -130,9 +99,8 @@ export class HolidayDateChooser extends React.Component<
           <MembersDataApiResponseContext.Consumer>
             {productDetail => {
               if (hasProduct(productDetail)) {
-                const renewalDateMoment = moment(
-                  productDetail.subscription.renewalDate,
-                  DATE_INPUT_FORMAT
+                const renewalDateMoment = momentiseDateStr(
+                  productDetail.subscription.renewalDate
                 );
 
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
@@ -172,8 +140,7 @@ export class HolidayDateChooser extends React.Component<
                           marginBottom: "27px"
                         }}
                       >
-                        <span>{infoIconSvg}</span>
-                        You can schedule one suspension at a time.
+                        <InfoIcon /> You can schedule one suspension at a time.
                       </div>
 
                       <DatePicker
@@ -188,7 +155,7 @@ export class HolidayDateChooser extends React.Component<
                           hsr => hsr.dateRange
                         )}
                         selectedRange={this.state.selectedRange}
-                        selectionInfo={this.selectionInfo(
+                        selectionInfo={this.getSelectionInfoElement(
                           renewalDateMoment,
                           combinedIssuesImpactedPerYear,
                           holidayStopsResponse.productSpecifics.annualIssueLimit
@@ -221,7 +188,7 @@ export class HolidayDateChooser extends React.Component<
                           <Button
                             text="Review details"
                             right
-                            disabled={!this.state.selectionIsValid.isValid}
+                            disabled={!!this.state.validationErrorMessage}
                             onClick={() =>
                               (this.props.navigate || navigate)("review")
                             }
@@ -255,7 +222,7 @@ export class HolidayDateChooser extends React.Component<
     this.setState(
       {
         selectedRange: new DateRange(start, end),
-        issuesImpactedBySelection: null
+        issuesImpactedPerYearBySelection: null
       },
       () =>
         fetch(
@@ -272,10 +239,8 @@ export class HolidayDateChooser extends React.Component<
         )
           .then(response => response.json() as Promise<string[]>)
           .then(potentialIssuesImpacted => {
-            const issuesImpactedBySelection = calculateIssuesImpactedPerYear(
-              potentialIssuesImpacted.map(dateStr =>
-                moment(dateStr, DATE_INPUT_FORMAT)
-              ),
+            const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
+              potentialIssuesImpacted.map(momentiseDateStr),
               renewalDateMoment
             );
 
@@ -287,133 +252,122 @@ export class HolidayDateChooser extends React.Component<
               annualIssueLimit -
               combinedIssuesImpactedPerYear.issueDatesNextYear.length;
 
-            const numPotentialIssuesThisYear =
-              issuesImpactedBySelection.issueDatesThisYear.length;
-
-            const numPotentialIssuesNextYear =
-              issuesImpactedBySelection.issueDatesNextYear.length;
-
-            const selectionIsValidWithErrorMsg = this.isValidNumberOfIssuesSelected(
-              numPotentialIssuesThisYear,
+            const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
+              renewalDateMoment,
+              annualIssueLimit,
+              issuesImpactedPerYearBySelection.issueDatesThisYear.length,
               issuesRemainingThisYear,
-              numPotentialIssuesNextYear,
+              issuesImpactedPerYearBySelection.issueDatesNextYear.length,
               issuesRemainingNextYear
             );
             this.setState({
-              issuesImpactedBySelection,
-              selectionIsValid: selectionIsValidWithErrorMsg
+              totalIssueCountImpactedBySelection:
+                potentialIssuesImpacted.length,
+              issuesImpactedPerYearBySelection,
+              validationErrorMessage
             });
           })
     );
 
-  private overLimit = (potential: number, remaining: number) =>
-    potential > remaining;
-
-  private isValidNumberOfIssuesSelected = (
+  private validateIssuesSelected = (
+    renewalDateMoment: Moment,
+    annualIssueLimit: number,
     numPotentialIssuesThisYear: number,
     issuesRemainingThisYear: number,
     numPotentialIssuesNextYear: number,
     issuesRemainingNextYear: number
   ) => {
-    if (this.overLimit(numPotentialIssuesThisYear, issuesRemainingThisYear)) {
-      return {
-        isValid: false,
-        errorMsg:
-          "Exceeded issue limit for this year - please choose fewer issues"
-      };
-    } else if (
-      this.overLimit(numPotentialIssuesNextYear, issuesRemainingNextYear)
-    ) {
-      return {
-        isValid: false,
-        errorMsg:
-          "Exceeded issue limit for next year - please choose fewer issues"
-      };
+    if (numPotentialIssuesThisYear > issuesRemainingThisYear) {
+      return (
+        <>
+          Exceeded issue limit of {annualIssueLimit} before{" "}
+          {anniversaryDateToElement(renewalDateMoment)}
+          <br />
+          Please choose fewer issues...
+        </>
+      );
+    } else if (numPotentialIssuesNextYear > issuesRemainingNextYear) {
+      return (
+        <>
+          Exceeded issue limit of {annualIssueLimit} between ${anniversaryDateToElement(
+            renewalDateMoment
+          )}{" "}
+          and ${anniversaryDateToElement(
+            renewalDateMoment.clone().add(1, "year")
+          )}{" "}
+          <br />
+          Please choose fewer issues...
+        </>
+      );
     } else if (
       numPotentialIssuesThisYear < 1 &&
       numPotentialIssuesNextYear < 1
     ) {
-      return { isValid: false, errorMsg: "No issues selected" };
+      return "No issues occur during selected period";
     }
-    return { isValid: true, errorMsg: "" };
   };
 
-  private selectionInfo = (
+  private getSelectionInfoElement = (
     renewalDateMoment: Moment,
     combinedIssuesImpactedPerYear: IssuesImpactedPerYear,
     annualIssueLimit: number
   ) => {
     const issuesRemainingThisYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueDatesThisYear.length;
+      combinedIssuesImpactedPerYear.issueDatesThisYear.length -
+      (this.state.issuesImpactedPerYearBySelection
+        ? this.state.issuesImpactedPerYearBySelection.issueDatesThisYear.length
+        : 0);
 
     const issuesRemainingNextYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueDatesNextYear.length;
+      combinedIssuesImpactedPerYear.issueDatesNextYear.length -
+      (this.state.issuesImpactedPerYearBySelection
+        ? this.state.issuesImpactedPerYearBySelection.issueDatesNextYear.length
+        : 0);
 
-    const formattedRenewalDate = renewalDateMoment.format("D MMMM Y");
-
-    return (
-      <>
-        {this.state.selectedRange ? (
-          this.state.issuesImpactedBySelection ? (
-            this.state.selectionIsValid.isValid ? (
-              <div>
-                Suspending{" "}
-                <div>
-                  {displayNumberOfIssuesAsText(
-                    this.state.issuesImpactedBySelection.issueDatesThisYear
-                      .length
-                  )}
-                </div>
-                <div>
-                  before {formattedRenewalDate}
-                  <sup>*</sup>
-                </div>
-                {this.state.issuesImpactedBySelection.issueDatesNextYear
-                  .length > 0 && (
-                  <>
-                    <div>and</div>
-                    <div>
-                      {displayNumberOfIssuesAsText(
-                        this.state.issuesImpactedBySelection.issueDatesNextYear
-                          .length
-                      )}
-                    </div>
-                    <div>the following year</div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div
-                css={{
-                  color: palette.red.medium,
-                  fontWeight: "bold"
-                }}
-              >
-                {this.state.selectionIsValid.errorMsg}
-              </div>
-            )
-          ) : (
-            <Spinner />
-          )
-        ) : (
-          <>
-            <div>
-              {displayNumberOfIssuesAsText(issuesRemainingThisYear)} remaining
-              until {formattedRenewalDate}
-              <sup>*</sup>
-            </div>
-            {issuesRemainingNextYear < annualIssueLimit && (
-              <div>
-                and
-                {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
-                following year
-              </div>
+    if (this.state.validationErrorMessage) {
+      return (
+        <div
+          css={{
+            color: palette.red.medium,
+            fontWeight: "bold"
+          }}
+        >
+          {this.state.validationErrorMessage}
+        </div>
+      );
+    } else if (
+      !this.state.selectedRange ||
+      this.state.issuesImpactedPerYearBySelection
+    ) {
+      return (
+        <>
+          <div>
+            Suspending{" "}
+            {displayNumberOfIssuesAsText(
+              this.state.totalIssueCountImpactedBySelection || 0
             )}
-          </>
-        )}
-      </>
-    );
+          </div>
+          <hr />
+          <div>
+            Leaving you with{" "}
+            {displayNumberOfIssuesAsText(issuesRemainingThisYear)} available to
+            suspend before {anniversaryDateToElement(renewalDateMoment)}
+            {this.state.issuesImpactedPerYearBySelection &&
+              this.state.issuesImpactedPerYearBySelection.issueDatesNextYear
+                .length > 0 && (
+                <>
+                  {" "}
+                  and {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
+                  following year
+                </>
+              )}
+          </div>
+        </>
+      );
+    } else {
+      return <Spinner />;
+    }
   };
 }
