@@ -178,7 +178,11 @@ export class HolidayDateChooser extends React.Component<
                           <Button
                             text="Review details"
                             right
-                            disabled={!!this.state.validationErrorMessage}
+                            disabled={
+                              !!this.state.validationErrorMessage ||
+                              !this.state.selectedRange ||
+                              !this.state.issuesImpactedPerYearBySelection
+                            }
                             onClick={() =>
                               (this.props.navigate || navigate)("review")
                             }
