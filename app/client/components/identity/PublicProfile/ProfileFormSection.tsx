@@ -1,11 +1,19 @@
-import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik,
+  FormikErrors,
+  FormikProps,
+  FormikTouched
+} from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { Button } from "../../buttons";
 import { PageContainer } from "../../page";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
-import { labelCss, textSmall } from "../sharedStyles";
+import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
 interface ProfileFormSectionProps {
   user: User;
@@ -15,17 +23,38 @@ interface ProfileFormSectionProps {
 const hasUsername = (user: User) => !!user.username;
 
 const formValidationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(6, "Must be 6 characters minimum")
+    .max(20, "Must be 20 characters or less"),
   location: Yup.string().max(255, "Maximum length is 255"),
-  aboutMe: Yup.string(),
-  interests: Yup.string()
+  aboutMe: Yup.string().max(1500, "Maximum length is 1500"),
+  interests: Yup.string().max(255, "Maximum length is 255")
 });
 
-const usernameInput = () => (
-  <>
-    <label css={labelCss}>
-      Username
-      <Field type="text" name="username" />
+const formField = (
+  name: string,
+  label: string,
+  inputType: "textarea" | "text",
+  { errors, touched }: FormikProps<User>
+) => {
+  const hasError =
+    errors[name as keyof FormikErrors<User>] &&
+    touched[name as keyof FormikTouched<User>];
+  const inputTypeProps =
+    inputType === "text" ? { type: "text" } : { component: "textarea" };
+  const errorCss = hasError ? formFieldErrorCss : {};
+  return (
+    <label css={{ ...labelCss, ...errorCss }}>
+      {label}
+      <Field {...inputTypeProps} name={name} />
+      <ErrorMessage component="p" name={name} />
     </label>
+  );
+};
+
+const usernameInput = (formikProps: FormikProps<User>) => (
+  <>
+    {formField("username", "Username", "text", formikProps)}
     <p css={textSmall}>
       You can only set your username once. It must be 6-20 characters, letters
       and/or numbers only and have no spaces. If you do not set your username,
@@ -45,26 +74,16 @@ export const ProfileFormSection = (props: ProfileFormSectionProps) => {
           }}
           onSubmit={saveUser}
           validationSchema={formValidationSchema}
-          render={(formikBag: FormikProps<User>) => (
+          render={(formikProps: FormikProps<User>) => (
             <Form>
-              {!hasUsername(user) ? usernameInput() : null}
-              <label css={labelCss}>
-                Location
-                <Field type="text" name="location" />
-                <ErrorMessage name="location" />
-              </label>
-              <label css={labelCss}>
-                About Me
-                <Field component="textarea" name="aboutMe" />
-              </label>
-              <label css={labelCss}>
-                Interests
-                <Field component="textarea" name="interests" />
-              </label>
+              {!hasUsername(user) ? usernameInput(formikProps) : null}
+              {formField("location", "Location", "text", formikProps)}
+              {formField("aboutMe", "About Me", "textarea", formikProps)}
+              {formField("interests", "Interests", "textarea", formikProps)}
               <Button
                 text="Save changes"
                 type="button"
-                onClick={() => formikBag.submitForm()}
+                onClick={() => formikProps.submitForm()}
               />
             </Form>
           )}
