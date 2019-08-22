@@ -1,7 +1,18 @@
 import { Response, Router } from "express";
 import { renderToString } from "react-dom/server";
 import { App } from "../../client/components/consent/App";
+import { conf, Environments } from "../config";
 import html from "../consent/html";
+import { log } from "../log";
+
+const clientDSN =
+  conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
+    ? conf.CLIENT_DSN
+    : null;
+
+if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
+  log.error("NO SENTRY IN CLIENT PROD!");
+}
 
 const router = Router();
 
@@ -13,11 +24,17 @@ router.get("/", (_, res: Response) => {
     const scripts = [polyfillIO, consentJS];
     const body = renderToString(App());
     const title = "Consent Management Platform | The Guardian";
+    const globals = {
+      domain: conf.DOMAIN,
+      dsn: clientDSN,
+      polyfilled: false
+    };
 
     const resp = html({
       body,
       title,
-      scripts
+      scripts,
+      globals
     });
 
     res.status(200).send(resp);

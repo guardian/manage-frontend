@@ -1,11 +1,20 @@
+import { CommonGlobals } from "../../shared/globals";
+
+const insertGlobals = (globals: CommonGlobals) => {
+  return `<script>
+  window.guardian = ${JSON.stringify(globals)}
+  </script>`;
+};
+
 const fontLoaderClassName = "gu-font-loader-iframe";
 const html: (
   _: {
     readonly body: string;
     readonly title: string;
     readonly scripts: string[];
+    readonly globals: CommonGlobals;
   }
-) => string = ({ body, title, scripts }) => `
+) => string = ({ body, title, scripts, globals }) => `
   <!DOCTYPE html>
   <html>
     <head>
@@ -16,14 +25,9 @@ const html: (
         .map(url => `<link rel="preload" href="${url}" as="script">`)
         .join("\n")}
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
+      ${insertGlobals(globals)}
       <script>
-        // we use the window.guardian.polyfilled to identify whether polyfill.io has run
-        window.guardian = {
-          polyfilled: false
-        };
-        // this is a global that's called at the bottom of the pf.io response,
-        // once the polyfills have run. This may be useful for debugging.
-        // mainly to support browsers that don't support async=false or defer
+        // we use the window.guardian.polyfilled to identify whether polyfill.io has run.
         function guardianPolyfilled() {
             try {
                 window.guardian.polyfilled = true;
