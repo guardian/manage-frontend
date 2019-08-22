@@ -10,7 +10,7 @@ const lightBorder: CSSObject = {
 };
 
 const errorBorder: CSSObject = {
-  border: `1px solid ${palette.red.light}`
+  border: `1px solid ${palette.red.medium}`
 };
 
 export const aCss = {
@@ -57,7 +57,7 @@ export const formFieldErrorCss: CSSObject = {
   },
   "& p": {
     ...textSmall,
-    color: palette.red.light,
+    color: palette.red.medium,
     marginTop: "6px"
   }
 };
