@@ -164,8 +164,9 @@ export class PrivacySettings extends Component<{}, State> {
         </p>
         <p>
           As part of our reader funded strategy, we use cookie identifiers and
-          information about your interests to improve experiences and show
-          personalised advertising.
+          information about your interests such as how many times you visited
+          our website and which articles you've read to improve experiences and
+          show personalised advertising.
         </p>
         <p>
           These technologies are provided by us and by our third-party partners.
@@ -215,10 +216,7 @@ export class PrivacySettings extends Component<{}, State> {
           </div>
           <p>
             You can change the above settings for this browser at any time by
-            accessing the{" "}
-            <a href={cookiePolicyURL} target="_blank">
-              cookie policy
-            </a>
+            navigating to the Privacy Settings from the main page.
           </p>
           <div css={buttonContainerStyles}>
             <button
@@ -301,11 +299,11 @@ export class PrivacySettings extends Component<{}, State> {
           <a href={policyUrl}>{name}'s Privacy policy</a>
         </p>
         <p>
-          Purpose(s):{" "}
+          Consent purpose(s):{" "}
           {this.getIabPurposesDescriptions(purposeIds, iabVendorList.purposes)}
         </p>
         <p>
-          Legitimate interest(s):{" "}
+          Legitimate interest purpose(s):{" "}
           {this.getIabPurposesDescriptions(
             legIntPurposeIds,
             iabVendorList.purposes
