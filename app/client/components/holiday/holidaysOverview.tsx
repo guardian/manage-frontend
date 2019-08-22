@@ -144,7 +144,7 @@ const renderHolidayStopsOverview = (
                     <strong>
                       {holidayStopsResponse.productSpecifics.annualIssueLimit}
                     </strong>{" "}
-                    issues remainining to suspend until{" "}
+                    issues available to suspend until{" "}
                     {renewalDateMoment.format(friendlyLongDateFormat)}.
                   </div>
                 )

@@ -359,8 +359,10 @@ export class HolidayDateChooser extends React.Component<
                 .length > 0 && (
                 <>
                   {" "}
-                  and {displayNumberOfIssuesAsText(issuesRemainingNextYear)} the
-                  following year
+                  and {displayNumberOfIssuesAsText(
+                    issuesRemainingNextYear
+                  )}{" "}
+                  available the following year
                 </>
               )}
           </div>

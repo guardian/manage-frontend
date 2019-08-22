@@ -124,10 +124,14 @@ export const calculateIssuesImpactedPerYear = (
 ) => {
   return {
     issueDatesThisYear: publicationDatesToBeStopped.filter(
-      date => date.isBefore(nextYearStartDate) // TODO ensure ONLY this year
+      date =>
+        date.isBefore(nextYearStartDate) &&
+        date.isSameOrAfter(nextYearStartDate.clone().subtract(1, "year"))
     ),
     issueDatesNextYear: publicationDatesToBeStopped.filter(
-      date => date.isSameOrAfter(nextYearStartDate) // TODO ensure ONLY next year
+      date =>
+        date.isSameOrAfter(nextYearStartDate) &&
+        date.isBefore(nextYearStartDate.clone().add(1, "year"))
     )
   } as IssuesImpactedPerYear;
 };
