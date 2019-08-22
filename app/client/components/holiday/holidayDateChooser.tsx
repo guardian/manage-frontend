@@ -153,18 +153,17 @@ export class HolidayDateChooser extends React.Component<
                       }
                       hideBackButton
                     >
-                      <h1>Schedule your time away</h1>
+                      <h1>Choose the dates you will be away</h1>
                       <p>
-                        Choose the dates you will be away. You will be credited
-                        for the suspended issues on your future bill(s). The
-                        first available date is{" "}
+                        The first available date is{" "}
                         <strong>
                           {holidayStopsResponse.productSpecifics.firstAvailableDate.format(
                             "dddd D MMMM"
                           )}
                         </strong>{" "}
                         due to our printing and delivery schedule (notice
-                        period).
+                        period). You will be credited for the suspended issues
+                        on your future bill(s).
                       </p>
                       <div
                         css={{
@@ -352,7 +351,7 @@ export class HolidayDateChooser extends React.Component<
       annualIssueLimit -
       combinedIssuesImpactedPerYear.issueDatesNextYear.length;
 
-    const formattedRenewalDate = renewalDateMoment.format("D MMM Y");
+    const formattedRenewalDate = renewalDateMoment.format("D MMMM Y");
 
     return (
       <>
