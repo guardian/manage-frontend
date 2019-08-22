@@ -2,9 +2,13 @@ import rawDateRangePickerCSS from "!!raw-loader!react-daterange-picker/dist/css/
 import { css, Global } from "@emotion/core";
 import { Moment } from "moment";
 import React from "react";
-import DateRangePicker, { Props } from "react-daterange-picker";
+import DateRangePicker, {
+  PaginationArrowProps,
+  Props
+} from "react-daterange-picker";
 import palette from "../colours";
 import { sans } from "../styles/fonts";
+import { Button } from "./buttons";
 
 const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
 
@@ -20,6 +24,33 @@ const iconDayPseudoAfterCss = `
   left: -7px;
 }
 `;
+
+const CustomArrow = (props: PaginationArrowProps) => (
+  <div
+    css={{
+      zIndex: 999,
+      position: "absolute",
+      padding: "8px",
+      top: 0,
+      ...(props.direction === "previous"
+        ? {
+            left: "20px"
+          }
+        : {
+            right: 0
+          })
+    }}
+  >
+    <Button
+      text=""
+      left={props.direction === "previous" ? true : undefined}
+      right={props.direction === "next" ? true : undefined}
+      disabled={props.disabled}
+      onClick={props.onTrigger}
+      forceCircle
+    />
+  </div>
+);
 
 const classNameForAddingAsterisk = "day-asterisk";
 
@@ -86,6 +117,7 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
   <>
     <HackedDateRangePicker
       {...props}
+      paginationArrowComponent={CustomArrow}
       ref={undefined /* hushes type warning */}
     />
     <Global styles={css(rawDateRangePickerCSS)} />
@@ -156,6 +188,18 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
         }
         .DateRangePicker__Weekend {
           font-size: 16px;
+        }
+        .DateRangePicker__Weekdays {
+          border-left: ${gridBorderCssValue}
+          border-right: ${gridBorderCssValue}
+        }
+        .DateRangePicker__MonthHeader {
+          border-top: ${gridBorderCssValue}
+          border-left: ${gridBorderCssValue}
+          border-right: ${gridBorderCssValue}
+          height: auto;
+          padding-top: 8px;
+          padding-bottom: 5px;
         }
       `)}
     />

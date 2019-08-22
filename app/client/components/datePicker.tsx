@@ -3,14 +3,10 @@ import { FontWeightProperty } from "csstype";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
-import {
-  OnSelectCallbackParam,
-  PaginationArrowProps
-} from "react-daterange-picker";
+import { OnSelectCallbackParam } from "react-daterange-picker";
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
-import { Button } from "./buttons";
 import { DateInput } from "./dateInput";
 import { WrappedDateRangePicker } from "./hackedDateRangePicker";
 
@@ -125,32 +121,6 @@ const LegendItem = (props: LegendItemProps) => (
   </>
 );
 
-const CustomArrow = (props: PaginationArrowProps) => (
-  <div
-    css={{
-      zIndex: 999,
-      position: "absolute",
-      top: 0,
-      ...(props.direction === "previous"
-        ? {
-            left: "20px"
-          }
-        : {
-            right: 0
-          })
-    }}
-  >
-    <Button
-      text=""
-      left={props.direction === "previous" ? true : undefined}
-      right={props.direction === "next" ? true : undefined}
-      disabled={props.disabled}
-      onClick={props.onTrigger}
-      forceCircle
-    />
-  </div>
-);
-
 const validationMsgCss = {
   height: "2rem",
   paddingTop: "0.5rem",
@@ -205,14 +175,13 @@ export class DatePicker extends React.Component<
             }))}
           defaultState="available"
           firstOfWeek={1}
-          paginationArrowComponent={CustomArrow}
           dayOfWeekToIconify={this.props.issueDayOfWeek}
           dateToAsterisk={this.props.dateToAsterisk}
         />
 
         <div
           css={{
-            marginLeft: "20px",
+            marginLeft: "18px",
             maxWidth: "136px",
             flex: "1 1 136px"
           }}
@@ -227,7 +196,7 @@ export class DatePicker extends React.Component<
                 labelText="From"
               />
             </div>
-            <div>
+            <div css={{ marginTop: "8px" }}>
               <DateInput
                 selectedDate={
                   this.props.selectedRange && this.props.selectedRange.end
