@@ -1,3 +1,25 @@
+type GuPurposeType = "essential" | "functional" | "performance";
+
+interface GuPurposeState {
+  [key in GuPurposeType]: boolean | null;
+}
+
+interface GuPurposeList {
+  purposes: GuPurpose[];
+}
+
+interface GuPurpose {
+  id: string;
+  name: string;
+  description: string;
+  integrations: GuIntegration[];
+}
+
+interface GuIntegration {
+  name: string;
+  policyUrl: string;
+}
+
 interface IabPurposeState {
   [key: number]: boolean | null;
 }
