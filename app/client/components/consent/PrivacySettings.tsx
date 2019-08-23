@@ -86,20 +86,20 @@ const buttonStyles = css`
 const cleanGuPurposeList: GuPurposeList = {
   purposes: [
     {
-      id: "essential",
+      id: 1,
       name: "Essential",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       integrations: []
     },
     {
-      id: "functional",
+      id: 2,
       name: "Functional",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
       integrations: []
     },
     {
-      id: "performance",
+      id: 3,
       name: "Performance",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
@@ -109,6 +109,7 @@ const cleanGuPurposeList: GuPurposeList = {
 };
 
 interface State {
+  guPurposes: GuPurposeState;
   iabPurposes: IabPurposeState;
 }
 
@@ -119,7 +120,7 @@ export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.state = { iabPurposes: {} };
+    this.state = { guPurposes: {}, iabPurposes: {} };
   }
 
   public componentDidMount(): void {
@@ -252,6 +253,10 @@ export class PrivacySettings extends Component<{}, State> {
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
+    const guPurposes = guPurposeList.purposes.reduce((acc, purpose) => {
+      return { ...acc, [purpose.id]: null };
+    }, {});
+
     const iabStr = readIabCookie();
 
     let iabPurposes = {};
@@ -267,7 +272,7 @@ export class PrivacySettings extends Component<{}, State> {
     }
 
     return new Promise(resolve =>
-      this.setState({ iabPurposes }, () => resolve())
+      this.setState({ guPurposes, iabPurposes }, () => resolve())
     );
   }
 
@@ -283,9 +288,9 @@ export class PrivacySettings extends Component<{}, State> {
         return (
           <CmpItem
             name={name}
-            value={true} // TODO: Update state
+            value={this.state.guPurposes[id]}
             updateItem={(updatedValue: boolean) => {
-              // this.updateGuPurpose(id, updatedValue);
+              this.updateGuPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
           >
@@ -365,14 +370,17 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    if (this.state.iabPurposes) {
-      const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
-        (acc, key) => ({ ...acc, [key]: true }),
-        {}
-      );
+    const guPurposes = Object.keys(this.state.guPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
 
-      this.saveAndClose({ iabPurposes });
-    }
+    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+
+    this.saveAndClose({ guPurposes, iabPurposes });
   }
 
   private saveAndClose(stateToSave?: State): void {
@@ -417,8 +425,23 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
+  private updateGuPurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes,
+        [purposeId]: value
+      },
+      iabPurposes: {
+        ...prevState.iabPurposes
+      }
+    }));
+  }
+
   private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes
+      },
       iabPurposes: {
         ...prevState.iabPurposes,
         [purposeId]: value
@@ -502,7 +525,6 @@ const getFeaturesDescriptions = (
       if (str.length) {
         return acc + str + " | ";
       } else {
-        // TODO: Throw error
         return acc;
       }
     }, "")

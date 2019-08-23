@@ -1,7 +1,5 @@
-type GuPurposeType = "essential" | "functional" | "performance";
-
 interface GuPurposeState {
-  [key in GuPurposeType]: boolean | null;
+  [key: string]: boolean | null;
 }
 
 interface GuPurposeList {
@@ -9,7 +7,7 @@ interface GuPurposeList {
 }
 
 interface GuPurpose {
-  id: string;
+  id: GuPurposeType;
   name: string;
   description: string;
   integrations: GuIntegration[];
