@@ -1,6 +1,17 @@
+import Raven from "raven-js";
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "../client/components/consent/App";
+
+declare var WEBPACK_BUILD: string;
+
+if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
+  Raven.config(window.guardian.dsn, {
+    release: WEBPACK_BUILD || "local",
+    environment: window.guardian.domain,
+    tags: { feature: "CMP" }
+  }).install();
+}
 
 const onPolyfilled = (): void => {
   const element = document.getElementById("app");

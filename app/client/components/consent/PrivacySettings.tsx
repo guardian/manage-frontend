@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import { ConsentString } from "consent-string";
+import Raven from "raven-js";
 import React, { Component } from "react";
 import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
@@ -141,15 +142,16 @@ export class PrivacySettings extends Component<{}, State> {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error("Vendor List not ok");
+          throw new Error(`${response.status} | ${response.statusText}`);
         }
       })
       .then(remoteVendorList => {
         this.buildState(this.parseVendorList(remoteVendorList));
       })
       .catch(error => {
-        // tslint:disable-next-line: no-console
-        console.log("ERROR:", error);
+        Raven.captureException(`error fetching CMP Vendor List: ${error}`, {
+          tags: { feature: "CMP" }
+        });
       });
   }
 
@@ -450,9 +452,6 @@ export class PrivacySettings extends Component<{}, State> {
 
   private saveSettings(stateToSave: State): boolean {
     if (!this.iabVendorList) {
-      // TODO: Trigger error
-      // tslint:disable-next-line: no-console
-      console.log("ERROR: IAB vendor list not present.");
       return false;
     }
 
@@ -461,8 +460,7 @@ export class PrivacySettings extends Component<{}, State> {
     ).length;
 
     if (nullCount > 0) {
-      // tslint:disable-next-line: no-console
-      console.log("ERROR: Missing answers");
+      // TODO: Show validation error as no nulls are allowed.
       return false;
     }
 

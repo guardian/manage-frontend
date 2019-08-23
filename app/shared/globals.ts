@@ -1,8 +1,13 @@
 import { AbTest, OphanComponentEvent } from "./ophanTypes";
 
-export interface Globals {
+export interface CommonGlobals {
   domain: string;
   dsn: string | null;
+  polyfilled?: boolean;
+  onPolyfilled?: () => void;
+}
+
+export interface Globals extends CommonGlobals {
   spaTransition?: true;
   INTCMP?: string;
   ophan?: {
@@ -11,8 +16,6 @@ export interface Globals {
     sendInitialEvent: (url?: string, referer?: string) => void;
   };
   abTest?: AbTest;
-  polyfilled?: boolean;
-  onPolyfilled?: () => void;
   identityDetails: IdentityDetails;
 }
 
