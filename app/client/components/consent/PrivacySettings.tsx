@@ -12,6 +12,8 @@ const CMP_ID = 112;
 const CMP_VERSION = 1;
 const CONSENT_SCREEN = 0;
 const CONSENT_LANGUAGE = "en";
+const CMP_READY_MSG = "readyCmp";
+const CMP_CLOSE_MSG = "closeCmp";
 
 const iabVendorListURL =
   "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
@@ -146,7 +148,10 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
-        this.buildState(this.parseVendorList(remoteVendorList));
+        return this.buildState(this.parseVendorList(remoteVendorList));
+      })
+      .then(() => {
+        window.parent.postMessage(CMP_READY_MSG, "*");
       })
       .catch(error => {
         Raven.captureException(`error fetching CMP Vendor List: ${error}`, {
@@ -250,7 +255,7 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private buildState(iabVendorList: ParsedIabVendorList): void {
+  private buildState(iabVendorList: ParsedIabVendorList): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
@@ -268,7 +273,9 @@ export class PrivacySettings extends Component<{}, State> {
       }, {});
     }
 
-    this.setState({ iabPurposes });
+    return new Promise(resolve =>
+      this.setState({ iabPurposes }, () => resolve())
+    );
   }
 
   private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
@@ -494,7 +501,7 @@ export class PrivacySettings extends Component<{}, State> {
 }
 
 const close = () => {
-  window.parent.postMessage("closeCmp", "*");
+  window.parent.postMessage(CMP_CLOSE_MSG, "*");
 };
 
 const doScrolling = (query: string, duration: number): void => {
