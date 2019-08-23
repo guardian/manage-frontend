@@ -1,26 +1,46 @@
-type PurposeList = { [K in PurposeType]: Purpose };
+interface IabPurposeState {
+  [key: number]: boolean | null;
+}
 
-type PurposeType =
-  | "essential"
-  | "performance"
-  | "functionality"
-  | "personalisedAds";
-
-type Purpose = {
-  label: string;
-  purposeValue: boolean | null;
+interface IabPurpose {
+  id: number;
+  name: string;
   description: string;
-  hasButton: boolean;
-  vendors?: VendorList;
-};
+}
 
-type VendorList = {
-  [K: number]: Vendor;
-};
+interface IabFeature {
+  id: number;
+  name: string;
+  description: string;
+}
 
-type Vendor = {
-  label: string;
-  url: string;
-  hasButton: boolean;
-  vendorValue: boolean | null;
-};
+interface IabVendor {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
+}
+
+interface ParsedIabVendor {
+  id: number;
+  name: string;
+  policyUrl: string;
+  purposeIds: number[];
+  legIntPurposeIds: number[];
+  featureIds: number[];
+  description: React.ReactNode;
+}
+
+interface IabVendorList {
+  vendorListVersion: number;
+  lastUpdated: string;
+  purposes: IabPurpose[];
+  features: IabFeature[];
+  vendors: IabVendor[];
+}
+
+interface ParsedIabVendorList extends IabVendorList {
+  vendors: ParsedIabVendor[];
+}

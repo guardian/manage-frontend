@@ -83,50 +83,7 @@ const buttonStyles = css`
 `;
 
 interface State {
-  iabPurposes: { [key: number]: boolean | null };
-}
-
-interface IabPurpose {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface IabFeature {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface IabVendor {
-  id: number;
-  name: string;
-  policyUrl: string;
-  purposeIds: number[];
-  legIntPurposeIds: number[];
-  featureIds: number[];
-}
-
-interface ParsedIabVendor {
-  id: number;
-  name: string;
-  policyUrl: string;
-  purposeIds: number[];
-  legIntPurposeIds: number[];
-  featureIds: number[];
-  description: React.ReactNode;
-}
-
-interface IabVendorList {
-  vendorListVersion: number;
-  lastUpdated: string;
-  purposes: IabPurpose[];
-  features: IabFeature[];
-  vendors: IabVendor[];
-}
-
-interface ParsedIabVendorList extends IabVendorList {
-  vendors: ParsedIabVendor[];
+  iabPurposes: IabPurposeState;
 }
 
 export class PrivacySettings extends Component<{}, State> {
@@ -148,7 +105,7 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
-        return this.buildState(this.parseVendorList(remoteVendorList));
+        return this.buildState(parseVendorList(remoteVendorList));
       })
       .then(() => {
         window.parent.postMessage(CMP_READY_MSG, "*");
@@ -278,100 +235,6 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private parseVendorList(iabVendorList: IabVendorList): ParsedIabVendorList {
-    const vendors = iabVendorList.vendors.map(vendor => ({
-      ...vendor,
-      description: this.getVendorDescription(vendor, iabVendorList)
-    }));
-
-    return {
-      ...iabVendorList,
-      vendors
-    };
-  }
-
-  private getVendorDescription(
-    vendor: IabVendor,
-    iabVendorList: IabVendorList
-  ): React.ReactNode {
-    const {
-      name,
-      policyUrl,
-      purposeIds,
-      legIntPurposeIds,
-      featureIds
-    } = vendor;
-
-    return (
-      <>
-        <p>
-          <a href={policyUrl}>{name}'s Privacy policy</a>
-        </p>
-        <p>
-          Consent purpose(s):{" "}
-          {this.getIabPurposesDescriptions(purposeIds, iabVendorList.purposes)}
-        </p>
-        <p>
-          Legitimate interest purpose(s):{" "}
-          {this.getIabPurposesDescriptions(
-            legIntPurposeIds,
-            iabVendorList.purposes
-          )}
-        </p>
-        <p>
-          Feature(s):{" "}
-          {this.getFeaturesDescriptions(featureIds, iabVendorList.features)}
-        </p>
-      </>
-    );
-  }
-
-  private getIabPurposesDescriptions(
-    ids: number[],
-    purposes: IabPurpose[]
-  ): string {
-    const result = ids
-      .reduce((acc, id) => {
-        let str = "";
-
-        const purpose = purposes.find(item => item.id === id);
-        str = purpose ? purpose.name : "";
-
-        if (str.length) {
-          return acc + str + " | ";
-        } else {
-          // TODO: Throw error
-          return acc;
-        }
-      }, "")
-      .slice(0, -3);
-
-    return result.length ? result : "None";
-  }
-
-  private getFeaturesDescriptions(
-    ids: number[],
-    features: IabFeature[]
-  ): string {
-    const result = ids
-      .reduce((acc, id) => {
-        let str = "";
-
-        const feature = features.find(item => item.id === id);
-        str = feature ? feature.name : "";
-
-        if (str.length) {
-          return acc + str + " | ";
-        } else {
-          // TODO: Throw error
-          return acc;
-        }
-      }, "")
-      .slice(0, -3);
-
-    return result.length ? result : "None";
-  }
-
   private renderPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
@@ -499,6 +362,90 @@ export class PrivacySettings extends Component<{}, State> {
     }));
   }
 }
+
+const parseVendorList = (iabVendorList: IabVendorList): ParsedIabVendorList => {
+  const vendors = iabVendorList.vendors.map(vendor => ({
+    ...vendor,
+    description: getVendorDescription(vendor, iabVendorList)
+  }));
+
+  return {
+    ...iabVendorList,
+    vendors
+  };
+};
+
+const getVendorDescription = (
+  vendor: IabVendor,
+  iabVendorList: IabVendorList
+): React.ReactNode => {
+  const { name, policyUrl, purposeIds, legIntPurposeIds, featureIds } = vendor;
+
+  return (
+    <>
+      <p>
+        <a href={policyUrl}>{name}'s Privacy policy</a>
+      </p>
+      <p>
+        Consent purpose(s):{" "}
+        {getIabPurposesDescriptions(purposeIds, iabVendorList.purposes)}
+      </p>
+      <p>
+        Legitimate interest purpose(s):{" "}
+        {getIabPurposesDescriptions(legIntPurposeIds, iabVendorList.purposes)}
+      </p>
+      <p>
+        Feature(s):{" "}
+        {getFeaturesDescriptions(featureIds, iabVendorList.features)}
+      </p>
+    </>
+  );
+};
+
+const getIabPurposesDescriptions = (
+  ids: number[],
+  purposes: IabPurpose[]
+): string => {
+  const result = ids
+    .reduce((acc, id) => {
+      let str = "";
+
+      const purpose = purposes.find(item => item.id === id);
+      str = purpose ? purpose.name : "";
+
+      if (str.length) {
+        return acc + str + " | ";
+      } else {
+        return acc;
+      }
+    }, "")
+    .slice(0, -3);
+
+  return result.length ? result : "None";
+};
+
+const getFeaturesDescriptions = (
+  ids: number[],
+  features: IabFeature[]
+): string => {
+  const result = ids
+    .reduce((acc, id) => {
+      let str = "";
+
+      const feature = features.find(item => item.id === id);
+      str = feature ? feature.name : "";
+
+      if (str.length) {
+        return acc + str + " | ";
+      } else {
+        // TODO: Throw error
+        return acc;
+      }
+    }, "")
+    .slice(0, -3);
+
+  return result.length ? result : "None";
+};
 
 const close = () => {
   window.parent.postMessage(CMP_CLOSE_MSG, "*");
