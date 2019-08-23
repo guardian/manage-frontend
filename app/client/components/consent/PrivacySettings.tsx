@@ -83,11 +83,37 @@ const buttonStyles = css`
   margin: 0 6px;
 `;
 
+const cleanGuPurposeList: GuPurposeList = {
+  purposes: [
+    {
+      id: "essential",
+      name: "Essential",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      integrations: []
+    },
+    {
+      id: "functional",
+      name: "Functional",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
+      integrations: []
+    },
+    {
+      id: "performance",
+      name: "Performance",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
+      integrations: []
+    }
+  ]
+};
+
 interface State {
   iabPurposes: IabPurposeState;
 }
 
 export class PrivacySettings extends Component<{}, State> {
+  private guPurposeList?: GuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -106,7 +132,10 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
-        return this.buildState(parseVendorList(remoteVendorList));
+        return this.buildState(
+          cleanGuPurposeList,
+          parseVendorList(remoteVendorList)
+        );
       })
       .then(() => {
         window.parent.postMessage(CMP_READY_MSG, "*");
@@ -172,7 +201,8 @@ export class PrivacySettings extends Component<{}, State> {
             </button>
           </div>
           <div id="cmp-options">
-            {this.renderPurposeItems()}
+            {this.renderGuPurposeItems()}
+            {this.renderIabPurposeItems()}
             <CmpSeparator />
             {this.renderVendorItems()}
             <CmpSeparator />
@@ -213,7 +243,12 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private buildState(iabVendorList: ParsedIabVendorList): Promise<void> {
+  private buildState(
+    guPurposeList: GuPurposeList,
+    iabVendorList: ParsedIabVendorList
+  ): Promise<void> {
+    // tslint:disable-next-line: no-object-mutation
+    this.guPurposeList = guPurposeList;
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
@@ -236,7 +271,32 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderPurposeItems(): React.ReactNode {
+  private renderGuPurposeItems(): React.ReactNode {
+    if (!this.guPurposeList || !this.guPurposeList.purposes) {
+      return "";
+    }
+
+    return this.guPurposeList.purposes.map(
+      (purpose: GuPurpose, index: number): React.ReactNode => {
+        const { id, name, description } = purpose;
+
+        return (
+          <CmpItem
+            name={name}
+            value={true} // TODO: Update state
+            updateItem={(updatedValue: boolean) => {
+              // this.updateGuPurpose(id, updatedValue);
+            }}
+            key={`purpose-${id}`}
+          >
+            <p>{description}</p>
+          </CmpItem>
+        );
+      }
+    );
+  }
+
+  private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
     }
@@ -250,7 +310,7 @@ export class PrivacySettings extends Component<{}, State> {
             name={name}
             value={this.state.iabPurposes[id]}
             updateItem={(updatedValue: boolean) => {
-              this.updatePurpose(id, updatedValue);
+              this.updateIabPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
           >
@@ -357,7 +417,7 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
-  private updatePurpose(purposeId: number, value: boolean): void {
+  private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
       iabPurposes: {
         ...prevState.iabPurposes,
