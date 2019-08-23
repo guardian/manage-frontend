@@ -8,7 +8,7 @@ export const InfoIcon = () => (
     viewBox="0 0 16 16"
     css={{
       position: "relative",
-      top: "2px",
+      top: "2.5px",
       marginRight: "5px"
     }}
   >

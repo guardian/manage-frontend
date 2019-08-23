@@ -9,7 +9,6 @@ import {
 import { ProductType } from "../../../shared/productTypes";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
@@ -21,13 +20,12 @@ import {
   isSharedHolidayDateChooserState,
   rightAlignedButtonsCss
 } from "./holidayDateChooser";
-import { holidayQuestionsTopicString } from "./holidaysOverview";
 import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
   DATE_INPUT_FORMAT
 } from "./holidayStopApi";
-import { MAX_WIDTH, SummaryTable } from "./summaryTable";
+import { SummaryTable } from "./summaryTable";
 
 const getPerformCreation = (
   selectedRange: DateRange,
@@ -86,14 +84,8 @@ export class HolidayReview extends React.Component<
             isSharedHolidayDateChooserState(dateChooserState) &&
             hasProduct(productDetail) &&
             this.props.navigate ? (
-              <WizardStep
-                routeableStepProps={this.props}
-                hideBackButton
-                extraFooterComponents={
-                  <QuestionsFooter topic={holidayQuestionsTopicString} />
-                }
-              >
-                <div css={{ maxWidth: MAX_WIDTH }}>
+              <WizardStep routeableStepProps={this.props} hideBackButton>
+                <div>
                   <h1>Review details before confirming</h1>
                   <p>
                     You will be credited for the suspended issues on your future

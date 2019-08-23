@@ -1,6 +1,5 @@
 import React from "react";
 import { LinkButton } from "../buttons";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
@@ -11,20 +10,13 @@ import {
   isSharedHolidayDateChooserState,
   rightAlignedButtonsCss
 } from "./holidayDateChooser";
-import { holidayQuestionsTopicString } from "./holidaysOverview";
 import { SummaryTable } from "./summaryTable";
 
 export const HolidayConfirmed = (props: RouteableStepProps) => (
   <HolidayDateChooserStateContext.Consumer>
     {dateChooserState =>
       isSharedHolidayDateChooserState(dateChooserState) ? (
-        <WizardStep
-          routeableStepProps={props}
-          extraFooterComponents={
-            <QuestionsFooter topic={holidayQuestionsTopicString} />
-          }
-          hideBackButton
-        >
+        <WizardStep routeableStepProps={props} hideBackButton>
           <div>
             <h1>Your schedule has been set</h1>
             <p>

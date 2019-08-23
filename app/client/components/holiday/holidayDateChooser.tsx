@@ -1,5 +1,5 @@
 import { Link, navigate } from "@reach/router";
-import { FontWeightProperty } from "csstype";
+import { FlexWrapProperty, FontWeightProperty } from "csstype";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
@@ -13,13 +13,12 @@ import palette from "../../colours";
 import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Modal } from "../modal";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
-import { holidayQuestionsTopicString } from "./holidaysOverview";
+import { HolidayQuestionsModal } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
   DATE_INPUT_FORMAT,
@@ -30,6 +29,7 @@ import {
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
+  marginLeft: "30px",
   marginRight: "20px",
   fontFamily: sans,
   fontWeight: "bold" as FontWeightProperty,
@@ -41,7 +41,9 @@ export const cancelLinkCss = {
 export const rightAlignedButtonsCss = {
   display: "flex",
   justifyContent: "flex-end",
-  alignItems: "center"
+  alignItems: "center",
+  marginTop: "40px",
+  flexWrap: "wrap" as FlexWrapProperty
 };
 
 const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
@@ -115,13 +117,7 @@ export class HolidayDateChooser extends React.Component<
                   <HolidayDateChooserStateContext.Provider
                     value={this.state || {}}
                   >
-                    <WizardStep
-                      routeableStepProps={this.props}
-                      extraFooterComponents={
-                        <QuestionsFooter topic={holidayQuestionsTopicString} />
-                      }
-                      hideBackButton
-                    >
+                    <WizardStep routeableStepProps={this.props} hideBackButton>
                       <h1>Choose the dates you will be away</h1>
                       <p>
                         The first available date is{" "}
@@ -141,7 +137,7 @@ export class HolidayDateChooser extends React.Component<
                           marginBottom: "27px"
                         }}
                       >
-                        <InfoIcon /> You can schedule one suspension at a time.
+                        <InfoIcon />You can schedule one suspension at a time.
                       </div>
 
                       <DatePicker
@@ -171,6 +167,12 @@ export class HolidayDateChooser extends React.Component<
                         dateToAsterisk={renewalDateMoment}
                       />
                       <div css={rightAlignedButtonsCss}>
+                        <HolidayQuestionsModal
+                          annualIssueLimit={
+                            holidayStopsResponse.productSpecifics
+                              .annualIssueLimit
+                          }
+                        />
                         <Link css={cancelLinkCss} to=".." replace={true}>
                           Cancel
                         </Link>

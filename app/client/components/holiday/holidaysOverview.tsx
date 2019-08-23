@@ -4,16 +4,18 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
-import { QuestionsFooter } from "../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
+import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToYourProductButton,
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
+import { HolidayQuestionsModal } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
   createGetHolidayStopsFetcher,
@@ -30,15 +32,13 @@ export interface OverviewRowProps {
   content: React.ReactFragment;
 }
 
-export const holidayQuestionsTopicString = "scheduling a suspension";
-
 const OverviewRow = (props: OverviewRowProps) => (
   <div
     css={{
       display: "flex",
       flexWrap: "wrap",
       alignItems: "top",
-      marginBottom: "2%"
+      marginBottom: "20px"
     }}
   >
     <div css={{ flex: "1 1 150px" }}>
@@ -74,18 +74,9 @@ const renderHolidayStopsOverview = (
   return (
     <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
       <MembersDataApiResponseContext.Provider value={productDetail}>
-        <WizardStep
-          routeableStepProps={routeableStepProps}
-          extraFooterComponents={
-            <QuestionsFooter topic={holidayQuestionsTopicString} />
-          }
-          hideBackButton
-        >
+        <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
           <div>
             <h1>Suspend Guardian Weekly</h1>
-            <h2>
-              Subscription ID: {productDetail.subscription.subscriptionId}
-            </h2>
 
             <OverviewRow
               heading="How"
@@ -93,10 +84,40 @@ const renderHolidayStopsOverview = (
                 <>
                   <div>
                     You can suspend up to{" "}
-                    {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
-                    issues per year and you will be credited on your future
-                    bills.<br />You can schedule one suspension at a time.
+                    <strong>
+                      {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
+                      issues
+                    </strong>{" "}
+                    per year of your subscription. <br />
                   </div>
+                  <div>
+                    You will be credited for each suspended issue on the next
+                    bill after the issue date.
+                  </div>
+                  <div
+                    css={{
+                      fontFamily: sans,
+                      fontSize: "14px",
+                      margin: "10px",
+                      display: "flex",
+                      alignItems: "top"
+                    }}
+                  >
+                    <InfoIcon />
+                    <div>
+                      <strong>
+                        {renewalDateMoment.format(friendlyLongDateFormat)}
+                      </strong>{" "}
+                      is the next anniversary of your subscription.
+                      <br />The number of issues you can suspend per year is
+                      reset on this date.
+                    </div>
+                  </div>
+                  <HolidayQuestionsModal
+                    annualIssueLimit={
+                      holidayStopsResponse.productSpecifics.annualIssueLimit
+                    }
+                  />
                 </>
               }
             />
@@ -164,13 +185,14 @@ const renderHolidayStopsOverview = (
               css={{
                 display: "flex",
                 justifyContent: "flex-end",
-                alignItems: "center"
+                alignItems: "center",
+                marginTop: "40px"
               }}
             >
               <ReturnToYourProductButton
                 productType={routeableStepProps.productType}
               />
-              <div css={{ marginRight: "24px" }} />
+              <div css={{ width: "20px" }} />
               <Button
                 text="Create suspension"
                 right
