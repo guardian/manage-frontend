@@ -6,7 +6,12 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { readIabCookie, writeIabCookie } from "./cookie";
+import {
+  readGuCookie,
+  readIabCookie,
+  writeGuCookie,
+  writeIabCookie
+} from "./cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
@@ -253,9 +258,16 @@ export class PrivacySettings extends Component<{}, State> {
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
-    const guPurposes = guPurposeList.purposes.reduce((acc, purpose) => {
-      return { ...acc, [purpose.id]: null };
-    }, {});
+    const guState = readGuCookie();
+
+    let guPurposes = {};
+    if (guState) {
+      guPurposes = guState;
+    } else {
+      guPurposes = guPurposeList.purposes.reduce((acc, purpose) => {
+        return { ...acc, [purpose.id]: null };
+      }, {});
+    }
 
     const iabStr = readIabCookie();
 
@@ -393,6 +405,8 @@ export class PrivacySettings extends Component<{}, State> {
     if (!this.iabVendorList) {
       return false;
     }
+
+    writeGuCookie(stateToSave.guPurposes);
 
     const nullCount: number = Object.keys(stateToSave.iabPurposes).filter(
       key => stateToSave.iabPurposes[parseInt(key, 10)] === null
