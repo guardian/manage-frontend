@@ -82,8 +82,6 @@ const html: (
                 e.data.fonts.forEach(useFont);
               }
             });
-
-            document.body.appendChild(iframe);
           };
 
           document.addEventListener('DOMContentLoaded', loadFonts);

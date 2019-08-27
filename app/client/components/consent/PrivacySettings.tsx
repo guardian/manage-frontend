@@ -14,6 +14,7 @@ const CONSENT_SCREEN = 0;
 const CONSENT_LANGUAGE = "en";
 const CMP_READY_MSG = "readyCmp";
 const CMP_CLOSE_MSG = "closeCmp";
+const CMP_SAVED_MSG = "savedCmp";
 
 const iabVendorListURL =
   "https://assets.guim.co.uk/data/vendor/4f4a6324c7fe376c17ceb2288a84a076/cmp_vendorlist.json";
@@ -349,6 +350,9 @@ export class PrivacySettings extends Component<{}, State> {
     consentData.setVendorsAllowed(allowedVendors);
 
     writeIabCookie(consentData.getConsentString());
+
+    // Notify parent that consent has been saved
+    window.parent.postMessage(CMP_SAVED_MSG, "*");
 
     return true;
   }
