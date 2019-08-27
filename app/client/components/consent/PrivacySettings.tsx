@@ -290,16 +290,14 @@ export class PrivacySettings extends Component<{}, State> {
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
-    const guState = readGuCookie();
-
-    let guPurposes = {};
-    if (guState) {
-      guPurposes = guState;
-    } else {
-      guPurposes = guPurposeList.purposes.reduce((acc, purpose) => {
-        return { ...acc, [purpose.id]: !purpose.id ? true : null };
+    const guPurposes =
+      readGuCookie() ||
+      guPurposeList.purposes.reduce((acc, purpose) => {
+        return {
+          ...acc,
+          [purpose.id]: !purpose.id ? true : null
+        };
       }, {});
-    }
 
     const iabStr = readIabCookie();
 
