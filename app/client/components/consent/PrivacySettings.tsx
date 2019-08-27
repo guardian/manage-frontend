@@ -99,7 +99,7 @@ const integStyles = css`
 const cleanGuPurposeList: GuPurposeList = {
   purposes: [
     {
-      id: 1,
+      id: 0,
       name: "Essential",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       integrations: [
@@ -114,7 +114,7 @@ const cleanGuPurposeList: GuPurposeList = {
       ]
     },
     {
-      id: 2,
+      id: 1,
       name: "Functional",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
@@ -126,7 +126,7 @@ const cleanGuPurposeList: GuPurposeList = {
       ]
     },
     {
-      id: 3,
+      id: 2,
       name: "Performance",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
@@ -238,6 +238,7 @@ export class PrivacySettings extends Component<{}, State> {
             </button>
           </div>
           <div id="cmp-options">
+            <CmpSeparator />
             {this.renderGuPurposeItems()}
             {this.renderIabPurposeItems()}
             <CmpSeparator />
@@ -296,7 +297,7 @@ export class PrivacySettings extends Component<{}, State> {
       guPurposes = guState;
     } else {
       guPurposes = guPurposeList.purposes.reduce((acc, purpose) => {
-        return { ...acc, [purpose.id]: null };
+        return { ...acc, [purpose.id]: !purpose.id ? true : null };
       }, {});
     }
 
@@ -325,18 +326,22 @@ export class PrivacySettings extends Component<{}, State> {
     }
 
     return this.guPurposeList.purposes.map(
-      (purpose: ParsedGuPurpose, index: number): React.ReactNode => {
+      (purpose: ParsedGuPurpose): React.ReactNode => {
         const { id, name, description, integDescription } = purpose;
 
+        // Remove radio button for Essential
+        const optProps =
+          id === 0
+            ? {}
+            : {
+                value: this.state.guPurposes[id],
+                updateItem: (updatedValue: boolean) => {
+                  this.updateGuPurpose(id, updatedValue);
+                }
+              };
+
         return (
-          <CmpItem
-            name={name}
-            value={this.state.guPurposes[id]}
-            updateItem={(updatedValue: boolean) => {
-              this.updateGuPurpose(id, updatedValue);
-            }}
-            key={`purpose-${id}`}
-          >
+          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
             <p>{description}</p>
             <p>{integDescription}</p>
           </CmpItem>
@@ -351,7 +356,7 @@ export class PrivacySettings extends Component<{}, State> {
     }
 
     return this.iabVendorList.purposes.map(
-      (purpose: IabPurpose, index: number): React.ReactNode => {
+      (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
 
         return (
@@ -438,16 +443,20 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    writeGuCookie(stateToSave.guPurposes);
+    const guNullCount: number = Object.keys(stateToSave.guPurposes).filter(
+      key => stateToSave.guPurposes[parseInt(key, 10)] === null
+    ).length;
 
-    const nullCount: number = Object.keys(stateToSave.iabPurposes).filter(
+    const iabNullCount: number = Object.keys(stateToSave.iabPurposes).filter(
       key => stateToSave.iabPurposes[parseInt(key, 10)] === null
     ).length;
 
-    if (nullCount > 0) {
+    if (guNullCount + iabNullCount > 0) {
       // TODO: Show validation error as no nulls are allowed.
       return false;
     }
+
+    writeGuCookie(stateToSave.guPurposes);
 
     const allowedPurposes = Object.keys(stateToSave.iabPurposes)
       .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
