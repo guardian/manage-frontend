@@ -88,27 +88,58 @@ const buttonStyles = css`
   margin: 0 6px;
 `;
 
+const integStyles = css`
+  margin-right: 5px;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 10px;
+  background-color: ${palette.neutral[6]};
+`;
+
 const cleanGuPurposeList: GuPurposeList = {
   purposes: [
     {
       id: 1,
       name: "Essential",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      integrations: []
+      integrations: [
+        {
+          name: "Ophan",
+          policyUrl: "https://www.theguardian.com/info/privacy"
+        },
+        {
+          name: "Confiant",
+          policyUrl: "https://www.confiant.com/privacy"
+        }
+      ]
     },
     {
       id: 2,
       name: "Functional",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
-      integrations: []
+      integrations: [
+        {
+          name: "Pinterest",
+          policyUrl: "https://policy.pinterest.com/"
+        }
+      ]
     },
     {
       id: 3,
       name: "Performance",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
-      integrations: []
+      integrations: [
+        {
+          name: "Sentry",
+          policyUrl: "https://sentry.io/privacy/"
+        },
+        {
+          name: "Google Analytics",
+          policyUrl: "https://policies.google.com/privacy?hl=en-US"
+        }
+      ]
     }
   ]
 };
@@ -119,7 +150,7 @@ interface State {
 }
 
 export class PrivacySettings extends Component<{}, State> {
-  private guPurposeList?: GuPurposeList;
+  private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -139,8 +170,8 @@ export class PrivacySettings extends Component<{}, State> {
       })
       .then(remoteVendorList => {
         return this.buildState(
-          cleanGuPurposeList,
-          parseVendorList(remoteVendorList)
+          parseGuPurposeList(cleanGuPurposeList),
+          parseIabVendorList(remoteVendorList)
         );
       })
       .then(() => {
@@ -250,7 +281,7 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private buildState(
-    guPurposeList: GuPurposeList,
+    guPurposeList: ParsedGuPurposeList,
     iabVendorList: ParsedIabVendorList
   ): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
@@ -294,8 +325,8 @@ export class PrivacySettings extends Component<{}, State> {
     }
 
     return this.guPurposeList.purposes.map(
-      (purpose: GuPurpose, index: number): React.ReactNode => {
-        const { id, name, description } = purpose;
+      (purpose: ParsedGuPurpose, index: number): React.ReactNode => {
+        const { id, name, description, integDescription } = purpose;
 
         return (
           <CmpItem
@@ -307,6 +338,7 @@ export class PrivacySettings extends Component<{}, State> {
             key={`purpose-${id}`}
           >
             <p>{description}</p>
+            <p>{integDescription}</p>
           </CmpItem>
         );
       }
@@ -464,7 +496,22 @@ export class PrivacySettings extends Component<{}, State> {
   }
 }
 
-const parseVendorList = (iabVendorList: IabVendorList): ParsedIabVendorList => {
+const parseGuPurposeList = (
+  guPurposeList: GuPurposeList
+): ParsedGuPurposeList => {
+  const purposes = guPurposeList.purposes.map(purpose => ({
+    ...purpose,
+    integDescription: getGuIntegrationDescription(purpose.integrations)
+  }));
+
+  return {
+    purposes
+  };
+};
+
+const parseIabVendorList = (
+  iabVendorList: IabVendorList
+): ParsedIabVendorList => {
   const vendors = iabVendorList.vendors.map(vendor => ({
     ...vendor,
     description: getVendorDescription(vendor, iabVendorList)
@@ -474,6 +521,19 @@ const parseVendorList = (iabVendorList: IabVendorList): ParsedIabVendorList => {
     ...iabVendorList,
     vendors
   };
+};
+
+const getGuIntegrationDescription = (
+  integrations: GuIntegration[]
+): React.ReactNode => {
+  return integrations.map(integration => {
+    const { name, policyUrl } = integration;
+    return (
+      <a href={policyUrl} key={name} css={integStyles}>
+        {name}
+      </a>
+    );
+  });
 };
 
 const getVendorDescription = (

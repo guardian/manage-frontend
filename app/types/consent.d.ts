@@ -6,6 +6,21 @@ interface GuPurposeList {
   purposes: GuPurpose[];
 }
 
+interface ParsedGuPurposeList {
+  purposes: ParsedGuPurpose[];
+}
+
+interface GuPurpose {
+  id: GuPurposeType;
+  name: string;
+  description: string;
+  integrations: GuIntegration[];
+}
+
+interface ParsedGuPurpose extends GuPurpose {
+  integDescription: React.ReactNode;
+}
+
 interface GuPurpose {
   id: GuPurposeType;
   name: string;
@@ -43,13 +58,7 @@ interface IabVendor {
   featureIds: number[];
 }
 
-interface ParsedIabVendor {
-  id: number;
-  name: string;
-  policyUrl: string;
-  purposeIds: number[];
-  legIntPurposeIds: number[];
-  featureIds: number[];
+interface ParsedIabVendor extends IabVendor {
   description: React.ReactNode;
 }
 
