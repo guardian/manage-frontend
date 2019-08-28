@@ -15,17 +15,11 @@ interface GuPurpose {
   name: string;
   description: string;
   integrations: GuIntegration[];
+  hideRadio?: boolean;
 }
 
 interface ParsedGuPurpose extends GuPurpose {
   integDescription: React.ReactNode;
-}
-
-interface GuPurpose {
-  id: GuPurposeType;
-  name: string;
-  description: string;
-  integrations: GuIntegration[];
 }
 
 interface GuIntegration {

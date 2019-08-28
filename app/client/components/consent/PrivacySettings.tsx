@@ -111,7 +111,8 @@ const cleanGuPurposeList: GuPurposeList = {
           name: "Confiant",
           policyUrl: "https://www.confiant.com/privacy"
         }
-      ]
+      ],
+      hideRadio: true
     },
     {
       id: 1,
@@ -325,18 +326,16 @@ export class PrivacySettings extends Component<{}, State> {
 
     return this.guPurposeList.purposes.map(
       (purpose: ParsedGuPurpose): React.ReactNode => {
-        const { id, name, description, integDescription } = purpose;
+        const { id, name, description, integDescription, hideRadio } = purpose;
 
-        // Remove radio button for Essential
-        const optProps =
-          id === 0
-            ? {}
-            : {
-                value: this.state.guPurposes[id],
-                updateItem: (updatedValue: boolean) => {
-                  this.updateGuPurpose(id, updatedValue);
-                }
-              };
+        const optProps = hideRadio
+          ? {}
+          : {
+              value: this.state.guPurposes[id],
+              updateItem: (updatedValue: boolean) => {
+                this.updateGuPurpose(id, updatedValue);
+              }
+            };
 
         return (
           <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
