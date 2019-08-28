@@ -193,14 +193,14 @@ export class StripeCardInputForm extends React.Component<
         intentResult.setupIntent.status &&
         intentResult.setupIntent.status === "succeeded" &&
         intentResult.setupIntent.payment_method &&
+        intentResult.setupIntent.payment_method.id &&
         intentResult.setupIntent.payment_method.card &&
         intentResult.setupIntent.payment_method.card.brand &&
         intentResult.setupIntent.payment_method.card.last4
       ) {
         this.props.newPaymentMethodDetailUpdater(
           new NewCardPaymentMethodDetail(
-            intentResult.setupIntent.payment_method.card,
-            this.props.stripeSetupIntent,
+            intentResult.setupIntent.payment_method,
             this.props.stripeApiKey
           )
         );
