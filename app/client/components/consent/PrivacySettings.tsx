@@ -6,7 +6,12 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { readIabCookie, writeIabCookie } from "./cookie";
+import {
+  readGuCookie,
+  readIabCookie,
+  writeGuCookie,
+  writeIabCookie
+} from "./cookie";
 
 const CMP_ID = 112;
 const CMP_VERSION = 1;
@@ -83,17 +88,76 @@ const buttonStyles = css`
   margin: 0 6px;
 `;
 
+const integStyles = css`
+  margin-right: 5px;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 10px;
+  background-color: ${palette.neutral[6]};
+`;
+
+const cleanGuPurposeList: GuPurposeList = {
+  purposes: [
+    {
+      id: 0,
+      name: "Essential",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      integrations: [
+        {
+          name: "Ophan",
+          policyUrl: "https://www.theguardian.com/info/privacy"
+        },
+        {
+          name: "Confiant",
+          policyUrl: "https://www.confiant.com/privacy"
+        }
+      ],
+      hideRadio: true
+    },
+    {
+      id: 1,
+      name: "Functional",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
+      integrations: [
+        {
+          name: "Pinterest",
+          policyUrl: "https://policy.pinterest.com/"
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "Performance",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
+      integrations: [
+        {
+          name: "Sentry",
+          policyUrl: "https://sentry.io/privacy/"
+        },
+        {
+          name: "Google Analytics",
+          policyUrl: "https://policies.google.com/privacy?hl=en-US"
+        }
+      ]
+    }
+  ]
+};
+
 interface State {
+  guPurposes: GuPurposeState;
   iabPurposes: IabPurposeState;
 }
 
 export class PrivacySettings extends Component<{}, State> {
+  private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
     super(props);
 
-    this.state = { iabPurposes: {} };
+    this.state = { guPurposes: {}, iabPurposes: {} };
   }
 
   public componentDidMount(): void {
@@ -106,7 +170,10 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
-        return this.buildState(parseVendorList(remoteVendorList));
+        return this.buildState(
+          parseGuPurposeList(cleanGuPurposeList),
+          parseIabVendorList(remoteVendorList)
+        );
       })
       .then(() => {
         window.parent.postMessage(CMP_READY_MSG, "*");
@@ -172,7 +239,9 @@ export class PrivacySettings extends Component<{}, State> {
             </button>
           </div>
           <div id="cmp-options">
-            {this.renderPurposeItems()}
+            <CmpSeparator />
+            {this.renderGuPurposeItems()}
+            {this.renderIabPurposeItems()}
             <CmpSeparator />
             {this.renderVendorItems()}
             <CmpSeparator />
@@ -213,9 +282,23 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private buildState(iabVendorList: ParsedIabVendorList): Promise<void> {
+  private buildState(
+    guPurposeList: ParsedGuPurposeList,
+    iabVendorList: ParsedIabVendorList
+  ): Promise<void> {
+    // tslint:disable-next-line: no-object-mutation
+    this.guPurposeList = guPurposeList;
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
+
+    const guPurposes =
+      readGuCookie() ||
+      guPurposeList.purposes.reduce((acc, purpose) => {
+        return {
+          ...acc,
+          [purpose.id]: !purpose.id ? true : null
+        };
+      }, {});
 
     const iabStr = readIabCookie();
 
@@ -232,17 +315,45 @@ export class PrivacySettings extends Component<{}, State> {
     }
 
     return new Promise(resolve =>
-      this.setState({ iabPurposes }, () => resolve())
+      this.setState({ guPurposes, iabPurposes }, () => resolve())
     );
   }
 
-  private renderPurposeItems(): React.ReactNode {
+  private renderGuPurposeItems(): React.ReactNode {
+    if (!this.guPurposeList || !this.guPurposeList.purposes) {
+      return "";
+    }
+
+    return this.guPurposeList.purposes.map(
+      (purpose: ParsedGuPurpose): React.ReactNode => {
+        const { id, name, description, integDescription, hideRadio } = purpose;
+
+        const optProps = hideRadio
+          ? {}
+          : {
+              value: this.state.guPurposes[id],
+              updateItem: (updatedValue: boolean) => {
+                this.updateGuPurpose(id, updatedValue);
+              }
+            };
+
+        return (
+          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
+            <p>{description}</p>
+            <p>{integDescription}</p>
+          </CmpItem>
+        );
+      }
+    );
+  }
+
+  private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
     }
 
     return this.iabVendorList.purposes.map(
-      (purpose: IabPurpose, index: number): React.ReactNode => {
+      (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
 
         return (
@@ -250,7 +361,7 @@ export class PrivacySettings extends Component<{}, State> {
             name={name}
             value={this.state.iabPurposes[id]}
             updateItem={(updatedValue: boolean) => {
-              this.updatePurpose(id, updatedValue);
+              this.updateIabPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
           >
@@ -305,14 +416,17 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    if (this.state.iabPurposes) {
-      const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
-        (acc, key) => ({ ...acc, [key]: true }),
-        {}
-      );
+    const guPurposes = Object.keys(this.state.guPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
 
-      this.saveAndClose({ iabPurposes });
-    }
+    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+
+    this.saveAndClose({ guPurposes, iabPurposes });
   }
 
   private saveAndClose(stateToSave?: State): void {
@@ -326,14 +440,20 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    const nullCount: number = Object.keys(stateToSave.iabPurposes).filter(
+    const guNullCount: number = Object.keys(stateToSave.guPurposes).filter(
+      key => stateToSave.guPurposes[parseInt(key, 10)] === null
+    ).length;
+
+    const iabNullCount: number = Object.keys(stateToSave.iabPurposes).filter(
       key => stateToSave.iabPurposes[parseInt(key, 10)] === null
     ).length;
 
-    if (nullCount > 0) {
+    if (guNullCount + iabNullCount > 0) {
       // TODO: Show validation error as no nulls are allowed.
       return false;
     }
+
+    writeGuCookie(stateToSave.guPurposes);
 
     const allowedPurposes = Object.keys(stateToSave.iabPurposes)
       .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
@@ -357,8 +477,23 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
-  private updatePurpose(purposeId: number, value: boolean): void {
+  private updateGuPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes,
+        [purposeId]: value
+      },
+      iabPurposes: {
+        ...prevState.iabPurposes
+      }
+    }));
+  }
+
+  private updateIabPurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes
+      },
       iabPurposes: {
         ...prevState.iabPurposes,
         [purposeId]: value
@@ -367,7 +502,22 @@ export class PrivacySettings extends Component<{}, State> {
   }
 }
 
-const parseVendorList = (iabVendorList: IabVendorList): ParsedIabVendorList => {
+const parseGuPurposeList = (
+  guPurposeList: GuPurposeList
+): ParsedGuPurposeList => {
+  const purposes = guPurposeList.purposes.map(purpose => ({
+    ...purpose,
+    integDescription: getGuIntegrationDescription(purpose.integrations)
+  }));
+
+  return {
+    purposes
+  };
+};
+
+const parseIabVendorList = (
+  iabVendorList: IabVendorList
+): ParsedIabVendorList => {
   const vendors = iabVendorList.vendors.map(vendor => ({
     ...vendor,
     description: getVendorDescription(vendor, iabVendorList)
@@ -377,6 +527,19 @@ const parseVendorList = (iabVendorList: IabVendorList): ParsedIabVendorList => {
     ...iabVendorList,
     vendors
   };
+};
+
+const getGuIntegrationDescription = (
+  integrations: GuIntegration[]
+): React.ReactNode => {
+  return integrations.map(integration => {
+    const { name, policyUrl } = integration;
+    return (
+      <a href={policyUrl} key={name} css={integStyles}>
+        {name}
+      </a>
+    );
+  });
 };
 
 const getVendorDescription = (
@@ -442,7 +605,6 @@ const getFeaturesDescriptions = (
       if (str.length) {
         return acc + str + " | ";
       } else {
-        // TODO: Throw error
         return acc;
       }
     }, "")

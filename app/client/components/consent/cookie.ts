@@ -1,9 +1,10 @@
+const GU_COOKIE_NAME = "guconsent";
 const IAB_COOKIE_NAME = "euconsent";
 const COOKIE_MAX_AGE = 395; // 13 months
 
 // subset of https://github.com/guzzle/guzzle/pull/1131
 const isValidCookieValue = (name: string): boolean =>
-  !/[()<>@,;"\\/[\]?={} \t]/g.test(name);
+  !/[()<>@;\\/[\]? \t]/g.test(name);
 
 const getShortDomain = (): string => {
   const domain = document.domain || "";
@@ -18,7 +19,18 @@ const getDomainAttribute = (): string => {
   return shortDomain === "localhost" ? "" : ` domain=${shortDomain};`;
 };
 
+const readGuCookie = (): GuPurposeState | null => {
+  const cookie = getCookie(GU_COOKIE_NAME);
+  if (!cookie) {
+    return null;
+  }
+  return JSON.parse(cookie);
+};
+
 const readIabCookie = (): string | null => getCookie(IAB_COOKIE_NAME);
+
+const writeGuCookie = (guState: GuPurposeState): void =>
+  addCookie(GU_COOKIE_NAME, JSON.stringify(guState));
 
 const writeIabCookie = (iabString: string): void =>
   addCookie(IAB_COOKIE_NAME, iabString);
@@ -62,4 +74,4 @@ const addCookie = (name: string, value: string): void => {
   document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()};${getDomainAttribute()}`;
 };
 
-export { readIabCookie, writeIabCookie };
+export { readGuCookie, writeGuCookie, readIabCookie, writeIabCookie };
