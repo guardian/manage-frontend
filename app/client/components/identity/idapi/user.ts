@@ -1,4 +1,4 @@
-import { User } from "../models";
+import { ErrorTypes, User, UserError } from "../models";
 import { APIPostOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface UserAPIResponse {
@@ -32,6 +32,19 @@ interface UserAPIRequest {
   };
 }
 
+interface UserAPIErrorResponse {
+  status: string;
+  errors: Array<{
+    context: string;
+    description: string;
+    [key: string]: string;
+  }>;
+}
+
+export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
+  return error.status && error.status === "error";
+};
+
 const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
   publicFields: {
     aboutMe: user.aboutMe,
@@ -51,11 +64,35 @@ const getConsentedTo = (response: UserAPIResponse) => {
   }
 };
 
+const getFieldNameFromContext = (context: string): string => {
+  return context.split(".").pop() as string;
+};
+
+const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
+  const error = response.errors.reduce(
+    (a, e) => {
+      return {
+        ...a,
+        [getFieldNameFromContext(e.context)]: e.description
+      };
+    },
+    {} as UserError["error"]
+  );
+  return {
+    type: ErrorTypes.VALIDATION,
+    error
+  };
+};
+
 export const write = async (user: Partial<User>): Promise<void> => {
   const url = "/user/me";
   const body = userToUserAPIRequest(user);
   const options = APIUseCredentials(APIPostOptions(body));
-  await identityFetch(url, options);
+  try {
+    await identityFetch(url, options);
+  } catch (e) {
+    throw isErrorResponse(e) ? userAPIErrorToUserError(e) : e;
+  }
 };
 
 export const read = async (): Promise<User> => {

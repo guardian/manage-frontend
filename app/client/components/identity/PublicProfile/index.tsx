@@ -17,6 +17,7 @@ const hasUsername = (user: User) => !!user.username;
 export const PublicProfile = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
   useEffect(() => {
     Users.getCurrentUser()
@@ -27,11 +28,8 @@ export const PublicProfile = (props: { path?: string }) => {
   }, []);
 
   const saveUser = async (values: User) => {
-    setLoading(true);
     const changedUser = { ...user, ...values };
-    await Users.saveChanges(user, changedUser);
-    setUser(changedUser);
-    setLoading(false);
+    return await Users.saveChanges(user, changedUser);
   };
 
   const loader = (
@@ -67,7 +65,12 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
-      <ProfileFormSection user={user} saveUser={saveUser} />
+      <ProfileFormSection
+        user={user}
+        saveUser={saveUser}
+        onError={setError}
+        onSuccess={setUser}
+      />
       <PageContainer>
         <Lines n={1} />
       </PageContainer>
