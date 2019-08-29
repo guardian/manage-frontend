@@ -18,7 +18,10 @@ import { Modal } from "../modal";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
-import { HolidayQuestionsModal } from "./holidayQuestionsModal";
+import {
+  creditExplainerSentence,
+  HolidayQuestionsModal
+} from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
   DATE_INPUT_FORMAT,
@@ -127,8 +130,9 @@ export class HolidayDateChooser extends React.Component<
                           )}
                         </strong>{" "}
                         due to our printing and delivery schedule (notice
-                        period). You will be credited for the suspended issues
-                        on your future bill(s).
+                        period).
+                        <br />
+                        {creditExplainerSentence}
                       </p>
                       <div
                         css={{

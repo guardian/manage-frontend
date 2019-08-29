@@ -1,7 +1,11 @@
 import React from "react";
 import { sans } from "../../styles/fonts";
+import { CallCentreNumbers } from "../callCentreNumbers";
 import { Modal } from "../modal";
 import { InfoIcon } from "../svgs/infoIcon";
+
+export const creditExplainerSentence =
+  "You will be credited for each suspended issue on the next bill after the issue date.";
 
 export interface HolidayQuestionsModalProps {
   annualIssueLimit: number;
@@ -33,10 +37,7 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
         A new suspension cannot begin from today as there is a notice period.
       </li>
       <li>Notice period is for our printing and delivery schedule.</li>
-      <li>
-        You will be credited for each suspended issue on the next bill after the
-        issue date.
-      </li>
+      <li>{creditExplainerSentence}</li>
     </ul>
     <h3>You will need to contact us by phone or email if you...</h3>
     <ul>
@@ -49,5 +50,10 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
         year.
       </li>
     </ul>
+    <h3>How to contact us</h3>
+    <div css={{ marginLeft: "20px" }}>
+      {/*TODO add email address*/}
+      <CallCentreNumbers />
+    </div>
   </Modal>
 );

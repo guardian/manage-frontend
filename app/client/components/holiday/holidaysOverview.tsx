@@ -5,6 +5,7 @@ import {
   ProductDetail
 } from "../../../shared/productResponse";
 import { sans } from "../../styles/fonts";
+import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -15,7 +16,10 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
-import { HolidayQuestionsModal } from "./holidayQuestionsModal";
+import {
+  creditExplainerSentence,
+  HolidayQuestionsModal
+} from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
   createGetHolidayStopsFetcher,
@@ -59,7 +63,7 @@ const friendlyLongDateFormat = "D MMMM YYYY";
 const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
   routeableStepProps: RouteableStepProps
-) => (holidayStopsResponse: GetHolidayStopsResponse) => {
+) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDateMoment = momentiseDateStr(
     productDetail.subscription.renewalDate
   );
@@ -72,12 +76,13 @@ const renderHolidayStopsOverview = (
   );
 
   return (
-    <HolidayStopsResponseContext.Provider value={holidayStopsResponse}>
+    <HolidayStopsResponseContext.Provider
+      value={{ ...holidayStopsResponse, reload }}
+    >
       <MembersDataApiResponseContext.Provider value={productDetail}>
         <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
           <div>
             <h1>Suspend Guardian Weekly</h1>
-
             <OverviewRow
               heading="How"
               content={
@@ -90,10 +95,7 @@ const renderHolidayStopsOverview = (
                     </strong>{" "}
                     per year of your subscription. <br />
                   </div>
-                  <div>
-                    You will be credited for each suspended issue on the next
-                    bill after the issue date.
-                  </div>
+                  <div>{creditExplainerSentence}</div>
                   <div
                     css={{
                       fontFamily: sans,

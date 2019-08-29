@@ -7,11 +7,13 @@ import { LoadingProps, Spinner } from "./spinner";
 
 export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 
+export type ReFetch = () => void;
+
 export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly fetch: () => Promise<Response>;
   readonly readerOnOK?: ReaderOnOK<T>; // json reader by default
   readonly shouldPreventRender?: (data: T) => boolean;
-  readonly render: (data: T) => React.ReactNode;
+  readonly render: (data: T, reFetch: ReFetch) => React.ReactNode;
   readonly loadingMessage: string;
   readonly shouldPreventErrorRender?: () => boolean;
   readonly errorRender?: () => React.ReactNode;
@@ -81,7 +83,12 @@ export default class AsyncLoader<
       this.state.loadingState === LoadingState.loaded &&
       this.state.data !== undefined
     ) {
-      return this.props.render(this.state.data);
+      return this.props.render(this.state.data, () =>
+        this.setState(
+          { loadingState: LoadingState.loading },
+          this.componentDidMount
+        )
+      );
     } else if (this.props.errorRender) {
       return this.props.errorRender();
     }

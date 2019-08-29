@@ -64,6 +64,7 @@ const User = () => (
             key={productType.urlPart}
             from={"/" + productType.urlPart}
             to={"/" + productType.productPage}
+            noThrow
           />
         ))}
       {Object.values(ProductTypes)

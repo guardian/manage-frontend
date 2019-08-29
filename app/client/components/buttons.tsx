@@ -8,8 +8,9 @@ import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
 import { TickIcon } from "./svgs/tickIcon";
 
-export interface CommonButtonProps {
+export interface ButtonProps {
   text: string;
+  onClick?: () => void;
   height?: string;
   fontWeight?: "bold";
   maxWidthIfWrapping?: string;
@@ -26,13 +27,9 @@ export interface CommonButtonProps {
   leftTick?: true;
 }
 
-export interface LinkButtonProps extends CommonButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   to: string;
   state?: any;
-}
-
-export interface ButtonProps extends CommonButtonProps {
-  onClick?: () => void;
 }
 
 const applyIconStyleIfApplicable = (
@@ -104,7 +101,7 @@ const buttonCss = ({
   forceCircle,
   hoverColour,
   leftTick
-}: CommonButtonProps) => {
+}: ButtonProps) => {
   const backgroundColour = calcBackgroundColour(
     disabled,
     colour,
@@ -194,6 +191,7 @@ const styles = {
 export const LinkButton = (props: LinkButtonProps) => (
   <Link
     to={props.disabled ? "" : props.to}
+    onClick={props.onClick}
     css={buttonCss(props)}
     state={props.state}
   >

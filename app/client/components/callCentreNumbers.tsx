@@ -16,12 +16,12 @@ const callCenterStyles = css({
 });
 
 export interface CallCentreNumbersProps {
-  prefixText: string;
+  prefixText?: string;
 }
 
 export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
   <div css={callCenterStyles}>
-    <p css={contactUsStyles}>{props.prefixText}</p>
+    {props.prefixText && <p css={contactUsStyles}>{props.prefixText}</p>}
     <Accordion>
       <div title="United Kingdom, Europe and rest of world">
         <div>

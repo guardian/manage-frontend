@@ -3,7 +3,7 @@ import { DateRange } from "moment-range";
 import React from "react";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import { ProductUrlPart } from "../../../shared/productTypes";
-import AsyncLoader from "../asyncLoader";
+import AsyncLoader, { ReFetch } from "../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
@@ -39,6 +39,11 @@ export interface GetHolidayStopsResponse {
   existing: HolidayStopRequest[];
 }
 
+export interface ReloadableGetHolidayStopsResponse
+  extends GetHolidayStopsResponse {
+  reload: ReFetch;
+}
+
 interface RawGetHolidayStopsResponse {
   productSpecifics: CommonProductSpecifics & {
     firstAvailableDate: string;
@@ -71,13 +76,15 @@ export class CreateHolidayStopsAsyncLoader extends AsyncLoader<
 > {}
 
 export const HolidayStopsResponseContext: React.Context<
-  GetHolidayStopsResponse | {}
+  ReloadableGetHolidayStopsResponse | {}
 > = React.createContext({});
 
 export function isHolidayStopsResponse(
-  data: GetHolidayStopsResponse | {} | undefined
-): data is GetHolidayStopsResponse {
-  return !!data && data.hasOwnProperty("existing");
+  data: ReloadableGetHolidayStopsResponse | {} | undefined
+): data is ReloadableGetHolidayStopsResponse {
+  return (
+    !!data && data.hasOwnProperty("existing") && data.hasOwnProperty("reload")
+  );
 }
 
 const embellishRawHolidayStop = (

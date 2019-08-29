@@ -45,12 +45,12 @@ export class Modal extends React.Component<ModalProps, ModalState> {
           <div
             css={{
               background: palette.white,
-              padding: "10px",
+              padding: "15px",
               fontSize: "16px",
-              maxWidth: "500px",
+              maxWidth: "600px",
               maxHeight: "100vh",
               margin: "10px",
-              borderRadius: "3px",
+              borderRadius: "5px",
               position: "relative"
             }}
             onClick={e => e.stopPropagation()}

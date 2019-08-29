@@ -9,6 +9,7 @@ import {
 import { ProductType } from "../../../shared/productTypes";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
+import { GenericErrorScreen } from "../genericErrorScreen";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
@@ -21,9 +22,15 @@ import {
   rightAlignedButtonsCss
 } from "./holidayDateChooser";
 import {
+  creditExplainerSentence,
+  HolidayQuestionsModal
+} from "./holidayQuestionsModal";
+import {
   CreateHolidayStopsAsyncLoader,
   CreateHolidayStopsResponse,
-  DATE_INPUT_FORMAT
+  DATE_INPUT_FORMAT,
+  HolidayStopsResponseContext,
+  isHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
@@ -77,80 +84,100 @@ export class HolidayReview extends React.Component<
     isCreating: false
   };
   public render = () => (
-    <MembersDataApiResponseContext.Consumer>
-      {productDetail => (
-        <HolidayDateChooserStateContext.Consumer>
-          {dateChooserState =>
-            isSharedHolidayDateChooserState(dateChooserState) &&
-            hasProduct(productDetail) &&
-            this.props.navigate ? (
-              <WizardStep routeableStepProps={this.props} hideBackButton>
-                <div>
-                  <h1>Review details before confirming</h1>
-                  <p>
-                    You will be credited for the suspended issues on your future
-                    bill(s). Check the details carefully and amend them if
-                    necessary.{" "}
-                  </p>{" "}
-                  <SummaryTable
-                    data={dateChooserState}
-                    alternateSuspendedColumnHeading="To be suspended"
-                  />
-                  <div
-                    css={{
-                      marginTop: "20px",
-                      textAlign: "right"
-                    }}
-                  >
-                    <Button
-                      text="Amend"
-                      onClick={() => (this.props.navigate || navigate)("..")}
-                      left
-                      hollow
-                    />
-                  </div>
-                </div>
-                <div>
-                  {this.state.isCreating ? (
-                    <CreateHolidayStopsAsyncLoader
-                      fetch={getPerformCreation(
-                        dateChooserState.selectedRange,
-                        productDetail.subscription.subscriptionId,
-                        productDetail.isTestUser,
-                        this.props.productType
+    <HolidayStopsResponseContext.Consumer>
+      {holidayStopsResponse =>
+        isHolidayStopsResponse(holidayStopsResponse) ? (
+          <MembersDataApiResponseContext.Consumer>
+            {productDetail => (
+              <HolidayDateChooserStateContext.Consumer>
+                {dateChooserState =>
+                  isSharedHolidayDateChooserState(dateChooserState) &&
+                  hasProduct(productDetail) &&
+                  this.props.navigate ? (
+                    <WizardStep routeableStepProps={this.props} hideBackButton>
+                      <div>
+                        <h1>Review details before confirming</h1>
+                        <p>
+                          Check the details carefully and amend them if
+                          necessary. {creditExplainerSentence}
+                        </p>
+                        <HolidayQuestionsModal
+                          annualIssueLimit={
+                            holidayStopsResponse.productSpecifics
+                              .annualIssueLimit
+                          }
+                        />
+                        <div css={{ height: "25px" }} />
+                        <SummaryTable
+                          data={dateChooserState}
+                          alternateSuspendedColumnHeading="To be suspended"
+                        />
+                      </div>
+                      {this.state.isCreating ? (
+                        <div css={{ marginTop: "40px", textAlign: "right" }}>
+                          <CreateHolidayStopsAsyncLoader
+                            fetch={getPerformCreation(
+                              dateChooserState.selectedRange,
+                              productDetail.subscription.subscriptionId,
+                              productDetail.isTestUser,
+                              this.props.productType
+                            )}
+                            render={getRenderCreationSuccess(
+                              this.props.navigate
+                            )}
+                            errorRender={renderCreationError}
+                            loadingMessage="Creating your suspension"
+                            spinnerScale={0.7}
+                            inline
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          css={{
+                            ...rightAlignedButtonsCss,
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <Button
+                            text="Amend"
+                            onClick={() =>
+                              (this.props.navigate || navigate)("..")
+                            }
+                            left
+                            hollow
+                          />
+                          <div
+                            css={{
+                              ...rightAlignedButtonsCss,
+                              marginTop: 0
+                            }}
+                          >
+                            <Link css={cancelLinkCss} to="../.." replace={true}>
+                              Cancel
+                            </Link>
+                            <Button
+                              text="Confirm"
+                              onClick={() =>
+                                this.setState({ isCreating: true })
+                              }
+                              right
+                              primary
+                            />
+                          </div>
+                        </div>
                       )}
-                      render={getRenderCreationSuccess(this.props.navigate)}
-                      errorRender={renderCreationError}
-                      loadingMessage="Creating your suspension"
-                      spinnerScale={0.7}
-                      inline
-                    />
+                    </WizardStep>
                   ) : (
-                    <div
-                      css={{
-                        marginTop: "40px",
-                        ...rightAlignedButtonsCss
-                      }}
-                    >
-                      <Link css={cancelLinkCss} to="../.." replace={true}>
-                        Cancel
-                      </Link>
-                      <Button
-                        text="Confirm"
-                        onClick={() => this.setState({ isCreating: true })}
-                        right
-                        primary
-                      />
-                    </div>
-                  )}
-                </div>
-              </WizardStep>
-            ) : (
-              visuallyNavigateToParent(this.props)
-            )
-          }
-        </HolidayDateChooserStateContext.Consumer>
-      )}
-    </MembersDataApiResponseContext.Consumer>
+                    visuallyNavigateToParent(this.props)
+                  )
+                }
+              </HolidayDateChooserStateContext.Consumer>
+            )}
+          </MembersDataApiResponseContext.Consumer>
+        ) : (
+          <GenericErrorScreen loggingMessage="No holiday stop response" />
+        )
+      }
+    </HolidayStopsResponseContext.Consumer>
   );
 }
