@@ -4,6 +4,7 @@ import { startCase } from "lodash";
 import { toWords } from "number-to-words";
 import Raven from "raven-js";
 import React from "react";
+import parse from "url-parse";
 import {
   alertTextWithoutCTA,
   annotateMdaResponseWithTestUserFromHeaders,
@@ -390,14 +391,19 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
-            {shouldHaveHolidayStopsFlow(productType) && (
-              <LinkButton
-                text="Manage your suspensions"
-                to={"/suspend/" + productType.urlPart}
-                state={productDetail}
-                right
-              />
-            )}
+            {shouldHaveHolidayStopsFlow(
+              productType
+            ) /* `${window.guardian.identityDetails.userId}`.endsWith("2") || /* approx 10% rollout TODO uncomment to launch the canary release*/ &&
+              (window &&
+                parse(window.location.href, true).query.showHolidayStops ===
+                  "true") && (
+                <LinkButton
+                  text="Manage your suspensions"
+                  to={"/suspend/" + productType.urlPart}
+                  state={productDetail}
+                  right
+                />
+              )}
           </PageContainer>
         </>
       )}
