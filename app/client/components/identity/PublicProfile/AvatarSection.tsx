@@ -6,11 +6,14 @@ import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
 import * as AvatarAPI from "../idapi/avatar";
 import { IdentityLocations } from "../IdentityLocations";
+import { ErrorTypes } from "../models";
 import { PageSection } from "../PageSection";
+import { errorMessageCss } from "../sharedStyles";
 import { labelCss, textSmall } from "../sharedStyles";
 
 import {
   getData,
+  isErrored,
   isLoading,
   isSuccessful,
   useAsyncSource
@@ -94,11 +97,25 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
     </div>
   );
 
+  const getErrorMessage = (error: any) => {
+    let message;
+    if (error.type && error.type === ErrorTypes.VALIDATION) {
+      message = error.error;
+    } else {
+      message =
+        "An error occured trying to upload your avatar. Please try again.";
+    }
+    return <div css={errorMessageCss}>{message}</div>;
+  };
+
   return (
     <PageSection
       title="Profile image"
       description="This image will appear next to your comments. Only .jpg, .png or .gif files of up to 1MB are accepted"
     >
+      {isErrored(avatarSaveState)
+        ? getErrorMessage(avatarSaveState.error)
+        : null}
       {isSuccessful(avatarSaveState)
         ? avatarUploadSuccessNotice()
         : avatarUploadForm()}

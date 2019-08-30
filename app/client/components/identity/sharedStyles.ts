@@ -51,6 +51,17 @@ export const labelCss: CSSObject = {
   "& textarea": textareaCss
 };
 
+export const errorMessageCss: CSSObject = {
+  fontSize: "13px",
+  lineHeight: "18px",
+  backgroundColor: "#ffe1e1",
+  borderBottom: `1px solid ${palette.red.light}`,
+  borderTop: `1px solid ${palette.red.light}`,
+  color: palette.red.medium,
+  marginTop: "6px",
+  padding: "7px 8px"
+};
+
 export const formFieldErrorCss: CSSObject = {
   "& input:not([type='file']), & textarea, & input": {
     ...errorBorder
