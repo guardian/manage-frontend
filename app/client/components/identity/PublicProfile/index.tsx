@@ -3,6 +3,7 @@ import { headline } from "../../../styles/fonts";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
+import { GenericErrorMessage, GenericErrorMessageRef } from "../ErrorMessage";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
@@ -19,6 +20,8 @@ export const PublicProfile = (props: { path?: string }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
+  const errorRef = React.createRef<GenericErrorMessageRef>();
+
   useEffect(() => {
     Users.getCurrentUser()
       .then((u: User) => {
@@ -31,6 +34,15 @@ export const PublicProfile = (props: { path?: string }) => {
     const changedUser = { ...user, ...values };
     return await Users.saveChanges(user, changedUser);
   };
+
+  useEffect(
+    () => {
+      if (error && errorRef.current) {
+        window.scrollTo(0, errorRef.current.offsetTop - 20);
+      }
+    },
+    [error]
+  );
 
   const loader = (
     <PageContainer>
@@ -65,6 +77,7 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
+      <PageContainer>{error ? <GenericErrorMessage /> : null}</PageContainer>
       <ProfileFormSection
         user={user}
         saveUser={saveUser}
