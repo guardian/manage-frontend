@@ -4,6 +4,7 @@ import React, { FC, useEffect } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
+import { Spinner } from "../../spinner";
 import * as AvatarAPI from "../idapi/avatar";
 import { IdentityLocations } from "../IdentityLocations";
 import { ErrorTypes } from "../models";
@@ -48,7 +49,7 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
       ? getData(avatarGetState).data.avatarUrl
       : `${IdentityLocations.AVATAR_USER_IMAGES}/${userId}`;
     const loading = isLoading(avatarGetState);
-    return <>{loading ? "Loading..." : <img css={imgCss} src={url} />}</>;
+    return <>{loading ? <Spinner /> : <img css={imgCss} src={url} />}</>;
   };
 
   const avatarUploadForm = () => (
