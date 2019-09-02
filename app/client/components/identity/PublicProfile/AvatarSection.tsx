@@ -56,12 +56,16 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
       initialValues={{
         file: null
       }}
-      onSubmit={(values: AvatarPayload) => saveAvatar(values.file)}
+      onSubmit={async (values: AvatarPayload, formikBag) => {
+        await saveAvatar(values.file);
+        formikBag.setSubmitting(false);
+      }}
       render={(formikBag: FormikProps<AvatarPayload>) => (
         <Form>
           <label css={labelCss}>
             {avatarDisplay()}
             <input
+              disabled={formikBag.isSubmitting}
               type="file"
               name="file"
               accept="image/gif, image/jpeg, image/png"
@@ -73,7 +77,11 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
               }}
             />
           </label>
-          <Button text="Upload image" onClick={() => formikBag.submitForm()} />
+          <Button
+            disabled={formikBag.isSubmitting}
+            text="Upload image"
+            onClick={() => formikBag.submitForm()}
+          />
         </Form>
       )}
     />
