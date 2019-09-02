@@ -172,7 +172,7 @@ export const DatePicker = (props: DatePickerProps) => (
           fontSize: "14px",
           [maxWidth.desktop]: {
             position: "sticky",
-            zIndex: 999,
+            zIndex: 998,
             top: 0,
             left: 0,
             right: 0,

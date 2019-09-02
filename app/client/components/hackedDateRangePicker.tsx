@@ -95,6 +95,7 @@ class HackedDateRangePicker extends DateRangePicker {
       super.componentDidMount();
     }
     afterRenderActions(this.props as WrappedDateRangePickerProps);
+    this.preventJumpingToSelection();
   }
 
   public componentDidUpdate(
@@ -106,7 +107,21 @@ class HackedDateRangePicker extends DateRangePicker {
       super.componentDidUpdate(prevProps, prevState, snapshot);
     }
     afterRenderActions(this.props as WrappedDateRangePickerProps);
+    // only prevent jumping on the update related to value changing, otherwise laggy
+    if (prevProps.value !== this.props.value) {
+      this.preventJumpingToSelection();
+    }
   }
+
+  private preventJumpingToSelection = () => {
+    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 2) {
+      const today = new Date();
+      this.setState({
+        year: today.getFullYear(),
+        month: today.getMonth()
+      });
+    }
+  };
 }
 
 export interface WrappedDateRangePickerProps extends Props {
@@ -129,6 +144,7 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
         {...props}
         numberOfCalendars={13}
         paginationArrowComponent={() => null}
+        disableNavigation={true}
         ref={undefined /* hushes type warning */}
       />
     </div>
