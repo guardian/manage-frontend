@@ -2,6 +2,7 @@ import { AppearanceProperty, TextAlignProperty } from "csstype";
 import { Moment } from "moment";
 import React from "react";
 import palette from "../colours";
+import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 
 const inputBoxCss = {
@@ -72,7 +73,10 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
       <div
         css={{
           fontFamily: sans,
-          fontSize: "14px"
+          fontSize: "14px",
+          [maxWidth.desktop]: {
+            display: "none"
+          }
         }}
       >
         {this.props.labelText}
@@ -82,7 +86,9 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
         css={{
           // display: "inline-block",
           border: "1px solid" + palette.neutral["5"],
-          padding: "5px"
+          padding: "5px",
+          whiteSpace: "nowrap",
+          margin: 0
         }}
         aria-describedby="validation-message"
       >

@@ -10,14 +10,15 @@ import {
   MembersDataApiResponseContext
 } from "../../../shared/productResponse";
 import palette from "../../colours";
+import { maxWidth, minWidth, queries } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { Modal } from "../modal";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
 import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
+import { HolidayAnniversaryDateExplainerModal } from "./holidayAnniversaryDateExplainerModal";
 import {
   creditExplainerSentence,
   HolidayQuestionsModal
@@ -32,7 +33,6 @@ import {
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
-  marginLeft: "30px",
   marginRight: "20px",
   fontFamily: sans,
   fontWeight: "bold" as FontWeightProperty,
@@ -47,6 +47,22 @@ export const rightAlignedButtonsCss = {
   alignItems: "center",
   marginTop: "40px",
   flexWrap: "wrap" as FlexWrapProperty
+};
+
+const fixedButtonFooterCss = {
+  [maxWidth.mobileLandscape]: {
+    justifyContent: "space-between"
+  },
+  [maxWidth.phablet]: {
+    position: "fixed",
+    zIndex: 998,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: palette.white,
+    padding: "10px",
+    boxShadow: "0 0 5px" + palette.neutral["4"]
+  }
 };
 
 const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
@@ -141,7 +157,21 @@ export class HolidayDateChooser extends React.Component<
                           marginBottom: "27px"
                         }}
                       >
-                        <InfoIcon />You can schedule one suspension at a time.
+                        <div css={{ margin: "10px" }}>
+                          <InfoIcon />You can schedule one suspension at a time.
+                        </div>
+                        <div
+                          css={{
+                            [minWidth.mobileLandscape]: { display: "none" }
+                          }}
+                        >
+                          <HolidayQuestionsModal
+                            annualIssueLimit={
+                              holidayStopsResponse.productSpecifics
+                                .annualIssueLimit
+                            }
+                          />
+                        </div>
                       </div>
 
                       <DatePicker
@@ -170,13 +200,27 @@ export class HolidayDateChooser extends React.Component<
                         )}
                         dateToAsterisk={renewalDateMoment}
                       />
-                      <div css={rightAlignedButtonsCss}>
-                        <HolidayQuestionsModal
-                          annualIssueLimit={
-                            holidayStopsResponse.productSpecifics
-                              .annualIssueLimit
-                          }
-                        />
+                      <div
+                        css={{
+                          ...rightAlignedButtonsCss,
+                          ...fixedButtonFooterCss
+                        }}
+                      >
+                        <div
+                          css={{
+                            marginRight: "30px",
+                            [maxWidth.mobileLandscape]: {
+                              display: "none"
+                            }
+                          }}
+                        >
+                          <HolidayQuestionsModal
+                            annualIssueLimit={
+                              holidayStopsResponse.productSpecifics
+                                .annualIssueLimit
+                            }
+                          />
+                        </div>
                         <Link css={cancelLinkCss} to=".." replace={true}>
                           Cancel
                         </Link>
@@ -278,23 +322,25 @@ export class HolidayDateChooser extends React.Component<
     issuesRemainingNextYear: number
   ) => {
     if (numPotentialIssuesThisYear > issuesRemainingThisYear) {
+      const dateElement = anniversaryDateToElement(renewalDateMoment);
       return (
         <>
-          Exceeded issue limit of {annualIssueLimit} before{" "}
-          {anniversaryDateToElement(renewalDateMoment)}
+          Exceeded issue limit of {annualIssueLimit} before {dateElement}{" "}
+          <HolidayAnniversaryDateExplainerModal dateElement={dateElement} />
           <br />
           Please choose fewer issues...
         </>
       );
     } else if (numPotentialIssuesNextYear > issuesRemainingNextYear) {
+      const firstDateElement = anniversaryDateToElement(renewalDateMoment);
       return (
         <>
-          Exceeded issue limit of {annualIssueLimit} between ${anniversaryDateToElement(
-            renewalDateMoment
-          )}{" "}
-          and ${anniversaryDateToElement(
-            renewalDateMoment.clone().add(1, "year")
-          )}{" "}
+          Exceeded issue limit of {annualIssueLimit} between {firstDateElement}{" "}
+          and{" "}
+          {anniversaryDateToElement(renewalDateMoment.clone().add(1, "year"))}{" "}
+          <HolidayAnniversaryDateExplainerModal
+            dateElement={firstDateElement}
+          />
           <br />
           Please choose fewer issues...
         </>
@@ -332,7 +378,8 @@ export class HolidayDateChooser extends React.Component<
         <div
           css={{
             color: palette.red.medium,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            marginTop: "10px"
           }}
         >
           {this.state.validationErrorMessage}
@@ -344,14 +391,31 @@ export class HolidayDateChooser extends React.Component<
     ) {
       return (
         <>
-          <div>
+          <div
+            css={{
+              marginTop: "10px",
+              fontSize: "16px",
+              [maxWidth.desktop]: {
+                marginRight: "20px"
+              }
+            }}
+          >
             Suspending{" "}
             {displayNumberOfIssuesAsText(
               this.state.totalIssueCountImpactedBySelection || 0
             )}
           </div>
-          <hr />
-          <div>
+          <div
+            css={{
+              [queries.maxHeight(600)]: {
+                display: "none"
+              },
+              [maxWidth.desktop]: {
+                marginTop: "10px"
+              }
+            }}
+          >
+            <hr css={{ [maxWidth.desktop]: { display: "none" } }} />
             Leaving you with{" "}
             {displayNumberOfIssuesAsText(issuesRemainingThisYear)} available to
             suspend before {anniversaryDateToElement(renewalDateMoment)}
@@ -365,27 +429,10 @@ export class HolidayDateChooser extends React.Component<
                   )}{" "}
                   available the following year
                 </>
-              )}
-            <Modal
-              instigator={
-                <a
-                  css={{
-                    textDecoration: "underline",
-                    color: palette.blue.medium,
-                    cursor: "pointer"
-                  }}
-                >
-                  What is this date?
-                </a>
-              }
-              title="What is this date?"
-            >
-              <p>
-                {anniversaryDateToElement(renewalDateMoment)} is the anniversary
-                of your subscription. The number of issues you can suspend per
-                year is reset on this date.
-              </p>
-            </Modal>
+              )}{" "}
+            <HolidayAnniversaryDateExplainerModal
+              dateElement={anniversaryDateToElement(renewalDateMoment)}
+            />
           </div>
         </>
       );

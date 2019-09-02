@@ -26,12 +26,17 @@ export const namedBreakpoints: Breakpoints = {
   wide: 1300
 };
 
+const toMediaQuery = (
+  bound: "min" | "max",
+  dimension: "width" | "height",
+  value: number
+) => `@media (${bound}-${dimension}: ${value}px)`;
+
 export const queries = {
-  minWidth: (from: number): string => `@media (min-width: ${`${from}px`})`,
-  maxWidth: (until: number): string =>
-    `@media (max-width: ${`${until - 1}px`})`,
-  minWidthMaxWidth: (from: number, until: number): string =>
-    `@media (min-width: ${`${from}px`}) and (max-width: ${`${until - 1}px`})`
+  minWidth: (from: number): string => toMediaQuery("min", "width", from),
+  maxWidth: (until: number): string => toMediaQuery("max", "width", until - 1),
+  minHeight: (from: number): string => toMediaQuery("min", "height", from),
+  maxHeight: (until: number): string => toMediaQuery("max", "height", until - 1)
 };
 
 const mapBreakpointValues: (

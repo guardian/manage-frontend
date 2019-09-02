@@ -51,7 +51,9 @@ export class Modal extends React.Component<ModalProps, ModalState> {
               maxHeight: "100vh",
               margin: "10px",
               borderRadius: "5px",
-              position: "relative"
+              position: "relative",
+              color: "initial",
+              fontWeight: "initial"
             }}
             onClick={e => e.stopPropagation()}
           >
