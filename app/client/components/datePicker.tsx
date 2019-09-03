@@ -165,7 +165,7 @@ export const DatePicker = (props: DatePickerProps) => (
       <div
         css={{
           marginLeft: "18px",
-          maxWidth: "136px",
+          width: "136px",
           display: "flex",
           flexDirection: "column",
           fontFamily: sans,
@@ -177,7 +177,6 @@ export const DatePicker = (props: DatePickerProps) => (
             left: 0,
             right: 0,
             width: "100vw",
-            maxWidth: "100vw",
             flexDirection: "row",
             flexWrap: "wrap",
             alignItems: "center",
