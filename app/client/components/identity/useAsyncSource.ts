@@ -68,7 +68,8 @@ const reducer = (state: ApiFetchState, action: Action): ApiFetchState => {
 };
 
 export const useAsyncSource = (
-  getter: (...args: any[]) => Promise<any>
+  getter: (...args: any[]) => Promise<any>,
+  errorHandler?: (e: any) => void
 ): [ApiFetchState, (...args: any[]) => Promise<ApiFetchState>] => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const doFetch = async (...args: any[]) => {
@@ -78,6 +79,9 @@ export const useAsyncSource = (
       dispatch(ActionSuccess(response));
     } catch (e) {
       dispatch(ActionError(e));
+      if (errorHandler) {
+        errorHandler(e);
+      }
     }
     return state;
   };

@@ -6,8 +6,10 @@ import {
   FormikTouched,
   withFormik
 } from "formik";
+import Raven from "raven-js";
 import React from "react";
 import * as Yup from "yup";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { PageContainer } from "../../page";
 import { ErrorTypes, User } from "../models";
@@ -113,6 +115,12 @@ const EnhancedProfileForm = withFormik({
         setStatus(e.error);
       } else {
         onError(e);
+        Raven.captureException(e);
+        trackEvent({
+          eventCategory: "publicProfileError",
+          eventAction: "error",
+          eventLabel: e.toString()
+        });
       }
     }
     setSubmitting(false);

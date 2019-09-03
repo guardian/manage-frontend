@@ -1,8 +1,10 @@
 import { CSSObject } from "@emotion/core";
 import { Form, Formik, FormikProps } from "formik";
+import Raven from "raven-js";
 import React, { FC, useEffect } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { Spinner } from "../../spinner";
 import * as AvatarAPI from "../idapi/avatar";
@@ -31,10 +33,25 @@ const imgCss: CSSObject = {
   width: "60px"
 };
 
+const errorHandler = (e: any) => {
+  Raven.captureException(e);
+  trackEvent({
+    eventCategory: "publicProfileError",
+    eventAction: "error",
+    eventLabel: e.toString()
+  });
+};
+
 export const AvatarSection: FC<AvatarSectionProps> = props => {
   const { userId } = props;
-  const [avatarSaveState, saveAvatar] = useAsyncSource(AvatarAPI.write);
-  const [avatarGetState, getAvatar] = useAsyncSource(AvatarAPI.read);
+  const [avatarSaveState, saveAvatar] = useAsyncSource(
+    AvatarAPI.write,
+    errorHandler
+  );
+  const [avatarGetState, getAvatar] = useAsyncSource(
+    AvatarAPI.read,
+    errorHandler
+  );
 
   interface AvatarPayload {
     file: File | null;
