@@ -268,7 +268,8 @@ export class HolidayDateChooser extends React.Component<
     this.setState(
       {
         selectedRange: new DateRange(start, end),
-        issuesImpactedPerYearBySelection: null
+        issuesImpactedPerYearBySelection: null,
+        validationErrorMessage: null
       },
       () =>
         fetch(
