@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import palette from "../../colours";
-import { DropMenu } from "./DropMenu";
-import { MarketingPreference } from "./MarketingPreference";
-import { ConsentOption, Theme } from "./models";
-import { PageSection } from "./PageSection";
+import palette from "../../../colours";
+import { DropMenu } from "../DropMenu";
+import { MarketingPreference } from "../MarketingPreference";
+import { ConsentOption, Theme } from "../models";
+import { PageSection } from "../PageSection";
 
 type ClickHandler = (id: string) => {};
 

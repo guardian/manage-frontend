@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import palette from "../../colours";
-import { headline } from "../../styles/fonts";
-import { MembershipLinks } from "../membershipLinks";
-import { navLinks } from "../nav";
-import { PageContainer, PageHeaderContainer } from "../page";
-import { Spinner } from "../spinner";
+import palette from "../../../colours";
+import { headline } from "../../../styles/fonts";
+import { MembershipLinks } from "../../membershipLinks";
+import { navLinks } from "../../nav";
+import { PageContainer, PageHeaderContainer } from "../../page";
+import { Spinner } from "../../spinner";
+import * as UserAPI from "../idapi/user";
+import { ConsentOptions } from "../identity";
+import { IdentityLocations } from "../IdentityLocations";
+import { Lines } from "../Lines";
+import { MarginWrapper } from "../MarginWrapper";
+import { Actions, useConsentOptions } from "../useConsentOptions";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
-import * as UserAPI from "./idapi/user";
-import { ConsentOptions } from "./identity";
-import { IdentityLocations } from "./IdentityLocations";
-import { Lines } from "./Lines";
-import { MarginWrapper } from "./MarginWrapper";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
-import { Actions, useConsentOptions } from "./useConsentOptions";
 
 export const EmailAndMarketing = (props: { path?: string }) => {
   const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;

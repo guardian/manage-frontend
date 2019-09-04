@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { Lines } from "./Lines";
-import { MarginWrapper } from "./MarginWrapper";
-import { MarketingPreference } from "./MarketingPreference";
-import { ConsentOption } from "./models";
-import { PageSection } from "./PageSection";
+import { Lines } from "../Lines";
+import { MarginWrapper } from "../MarginWrapper";
+import { MarketingPreference } from "../MarketingPreference";
+import { ConsentOption } from "../models";
+import { PageSection } from "../PageSection";
 
 type ClickHandler = (id: string) => {};
 
