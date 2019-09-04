@@ -139,7 +139,10 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
         ref={undefined /* hushes type warning */}
       />
     </div>
-    <div css={{ [minWidth.phablet]: { display: "none" } }}>
+    <div
+      css={{ [minWidth.phablet]: { display: "none" } }}
+      onTouchStartCapture={e => e.stopPropagation()}
+    >
       <HackedDateRangePicker
         {...props}
         numberOfCalendars={13}
