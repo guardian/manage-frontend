@@ -29,7 +29,7 @@ const iconDayPseudoAfterCss = `
 const CustomArrow = (props: PaginationArrowProps) => (
   <div
     css={{
-      zIndex: 999,
+      zIndex: 998,
       position: "absolute",
       padding: "8px",
       top: 0,
