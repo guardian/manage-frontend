@@ -40,14 +40,12 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
                       to={"/suspend/" + props.productType.urlPart + "/create"}
                       onClick={holidayStopsResponse.reload}
                       text="Schedule another suspension"
-                      maxWidthIfWrapping="230px"
                       right
                     />
                     <div css={{ width: "24px" }} />
                     <LinkButton
                       to={"/" + props.productType.urlPart}
                       text="Manage your subscriptions"
-                      maxWidthIfWrapping="230px"
                       primary
                       right
                     />
