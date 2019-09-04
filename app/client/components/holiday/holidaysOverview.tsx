@@ -4,7 +4,7 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { maxWidth } from "../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
@@ -127,51 +127,72 @@ const renderHolidayStopsOverview = (
             <OverviewRow
               heading="Summary"
               content={
-                holidayStopsResponse.existing.length > 0 ? (
-                  <>
+                <>
+                  {holidayStopsResponse.existing.length > 0 ? (
+                    <>
+                      <div>
+                        You have suspended{" "}
+                        <strong>
+                          {
+                            combinedIssuesImpactedPerYear.issueDatesThisYear
+                              .length
+                          }/{
+                            holidayStopsResponse.productSpecifics
+                              .annualIssueLimit
+                          }
+                        </strong>{" "}
+                        issues until{" "}
+                        {renewalDateMoment.format(friendlyLongDateFormat)}
+                        {combinedIssuesImpactedPerYear.issueDatesNextYear
+                          .length > 0 ? (
+                          <span>
+                            {" "}
+                            and{" "}
+                            <strong>
+                              {
+                                combinedIssuesImpactedPerYear.issueDatesNextYear
+                                  .length
+                              }/{
+                                holidayStopsResponse.productSpecifics
+                                  .annualIssueLimit
+                              }
+                            </strong>{" "}
+                            issues the following year.
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </>
+                  ) : (
                     <div>
-                      You have suspended{" "}
+                      You have{" "}
                       <strong>
-                        {
-                          combinedIssuesImpactedPerYear.issueDatesThisYear
-                            .length
-                        }/{
-                          holidayStopsResponse.productSpecifics.annualIssueLimit
-                        }
+                        {holidayStopsResponse.productSpecifics.annualIssueLimit}
                       </strong>{" "}
-                      issues until{" "}
-                      {renewalDateMoment.format(friendlyLongDateFormat)}
-                      {combinedIssuesImpactedPerYear.issueDatesNextYear.length >
-                      0 ? (
-                        <span>
-                          {" "}
-                          and{" "}
-                          <strong>
-                            {
-                              combinedIssuesImpactedPerYear.issueDatesNextYear
-                                .length
-                            }/{
-                              holidayStopsResponse.productSpecifics
-                                .annualIssueLimit
-                            }
-                          </strong>{" "}
-                          issues the following year.
-                        </span>
-                      ) : (
-                        ""
-                      )}
+                      issues available to suspend until{" "}
+                      {renewalDateMoment.format(friendlyLongDateFormat)}.
                     </div>
-                  </>
-                ) : (
-                  <div>
-                    You have{" "}
-                    <strong>
-                      {holidayStopsResponse.productSpecifics.annualIssueLimit}
-                    </strong>{" "}
-                    issues available to suspend until{" "}
-                    {renewalDateMoment.format(friendlyLongDateFormat)}.
+                  )}
+                  <div
+                    css={{
+                      textAlign: "right",
+                      marginTop: "10px",
+                      [minWidth.phablet]: {
+                        display: "none"
+                      }
+                    }}
+                  >
+                    <Button
+                      text="Create suspension"
+                      right
+                      primary
+                      onClick={() =>
+                        (routeableStepProps.navigate || navigate)("create")
+                      }
+                    />
                   </div>
-                )
+                </>
               }
             />
             <OverviewRow
