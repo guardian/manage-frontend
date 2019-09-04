@@ -90,12 +90,28 @@ const afterRenderActions = (props: WrappedDateRangePickerProps) => {
 };
 
 class HackedDateRangePicker extends DateRangePicker {
+  constructor(props: Props) {
+    super(props);
+    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
+      // this prevents jumping to the selection when in 'infinite mode' (i.e. loads of vertically stacked cals)
+      // @ts-ignore
+      super.isStartOrEndVisible = () => true;
+    }
+  }
+
   public componentDidMount(): void {
     if (super.componentDidMount) {
       super.componentDidMount();
     }
     afterRenderActions(this.props as WrappedDateRangePickerProps);
-    this.preventJumpingToSelection();
+    // this prevents jumping to the selection when returning from review stage in 'infinite mode'
+    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
+      const today = new Date();
+      this.setState({
+        year: today.getFullYear(),
+        month: today.getMonth()
+      });
+    }
   }
 
   public componentDidUpdate(
@@ -107,21 +123,7 @@ class HackedDateRangePicker extends DateRangePicker {
       super.componentDidUpdate(prevProps, prevState, snapshot);
     }
     afterRenderActions(this.props as WrappedDateRangePickerProps);
-    // only prevent jumping on the update related to value changing, otherwise laggy
-    if (prevProps.value !== this.props.value) {
-      this.preventJumpingToSelection();
-    }
   }
-
-  private preventJumpingToSelection = () => {
-    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 2) {
-      const today = new Date();
-      this.setState({
-        year: today.getFullYear(),
-        month: today.getMonth()
-      });
-    }
-  };
 }
 
 export interface WrappedDateRangePickerProps extends Props {
