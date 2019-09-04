@@ -5,8 +5,7 @@ import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
-import * as UserAPI from "../idapi/user";
-import { ConsentOptions } from "../identity";
+import { ConsentOptions, Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { MarginWrapper } from "../MarginWrapper";
@@ -53,7 +52,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   useEffect(() => {
     const makeInitialAPICalls = async () => {
       try {
-        const user = await UserAPI.memoRead();
+        const user = await Users.getCurrentUser();
         if (!user.validated) {
           window.location.assign(IdentityLocations.VERIFY_EMAIL);
           return;
