@@ -2,6 +2,7 @@ import { Link, navigate } from "@reach/router";
 import { FlexWrapProperty, FontWeightProperty } from "csstype";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
+import * as Raven from "raven-js";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
@@ -12,6 +13,7 @@ import {
 import palette from "../../colours";
 import { maxWidth, minWidth, queries } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
+import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -281,7 +283,20 @@ export class HolidayDateChooser extends React.Component<
             }
           }
         )
-          .then(response => response.json() as Promise<string[]>)
+          .then(response => {
+            const locationHeader = response.headers.get("Location");
+            if (
+              response.status === 401 &&
+              locationHeader &&
+              window !== undefined
+            ) {
+              window.location.replace(locationHeader);
+              return Promise.resolve([]);
+            } else if (response.ok) {
+              return response.json() as Promise<string[]>;
+            }
+            return Promise.reject(`${response.status} from holiday-stop-api`);
+          })
           .then(potentialIssuesImpacted => {
             const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
               potentialIssuesImpacted.map(momentiseDateStr),
@@ -310,6 +325,18 @@ export class HolidayDateChooser extends React.Component<
               issuesImpactedPerYearBySelection,
               validationErrorMessage
             });
+          })
+          .catch(error => {
+            this.setState({
+              validationErrorMessage:
+                "Failed to calculate issues impacted by selected dates. Please try again later..."
+            });
+            trackEvent({
+              eventCategory: "holidayDateChooser",
+              eventAction: "error",
+              eventLabel: error ? error.toString() : undefined
+            });
+            Raven.captureException(error);
           })
     );
 
