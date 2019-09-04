@@ -3,7 +3,10 @@ import { headline } from "../../../styles/fonts";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
-import { GenericErrorMessage, GenericErrorMessageRef } from "../ErrorMessage";
+import {
+  GenericErrorMessage,
+  GenericErrorMessageRef
+} from "../GenericErrorMessage";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
@@ -77,7 +80,9 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
-      <PageContainer>{error ? <GenericErrorMessage /> : null}</PageContainer>
+      <PageContainer>
+        {error ? <GenericErrorMessage ref={errorRef} /> : null}
+      </PageContainer>
       <ProfileFormSection
         user={user}
         saveUser={saveUser}
