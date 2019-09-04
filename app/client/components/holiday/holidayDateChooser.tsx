@@ -41,9 +41,8 @@ export const cancelLinkCss = {
   color: palette.neutral["2"]
 };
 
-export const rightAlignedButtonsCss = {
+export const buttonBarCss = {
   display: "flex",
-  justifyContent: "flex-end",
   alignItems: "center",
   marginTop: "40px",
   flexWrap: "wrap" as FlexWrapProperty
@@ -202,7 +201,8 @@ export class HolidayDateChooser extends React.Component<
                       />
                       <div
                         css={{
-                          ...rightAlignedButtonsCss,
+                          ...buttonBarCss,
+                          justifyContent: "flex-end",
                           ...fixedButtonFooterCss
                         }}
                       >

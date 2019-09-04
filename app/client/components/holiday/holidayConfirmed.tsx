@@ -7,9 +7,9 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import {
+  buttonBarCss,
   HolidayDateChooserStateContext,
-  isSharedHolidayDateChooserState,
-  rightAlignedButtonsCss
+  isSharedHolidayDateChooserState
 } from "./holidayDateChooser";
 import { creditExplainerSentence } from "./holidayQuestionsModal";
 import {
@@ -30,25 +30,23 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
                   <h1>Your schedule has been set</h1>
                   <p>{creditExplainerSentence}</p>
                   <SummaryTable data={dateChooserState} />
-                  <div
-                    css={{
-                      marginTop: "20px",
-                      ...rightAlignedButtonsCss
-                    }}
-                  >
-                    <LinkButton
-                      to={"/suspend/" + props.productType.urlPart + "/create"}
-                      onClick={holidayStopsResponse.reload}
-                      text="Schedule another suspension"
-                      right
-                    />
-                    <div css={{ width: "24px" }} />
-                    <LinkButton
-                      to={"/" + props.productType.urlPart}
-                      text="Manage your subscriptions"
-                      primary
-                      right
-                    />
+                  <div css={{ ...buttonBarCss, justifyContent: "flex-end" }}>
+                    <div css={{ marginBottom: "10px" }}>
+                      <LinkButton
+                        to={"/suspend/" + props.productType.urlPart + "/create"}
+                        onClick={holidayStopsResponse.reload}
+                        text="Schedule another suspension"
+                        right
+                      />
+                    </div>
+                    <div css={{ marginBottom: "10px", marginLeft: "20px" }}>
+                      <LinkButton
+                        to={"/" + props.productType.urlPart}
+                        text="Manage your subscriptions"
+                        primary
+                        right
+                      />
+                    </div>
                   </div>
                 </div>
               </WizardStep>

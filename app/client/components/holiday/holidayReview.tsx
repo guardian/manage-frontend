@@ -7,6 +7,7 @@ import {
   MembersDataApiResponseContext
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
+import { maxWidth } from "../../styles/breakpoints";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -16,10 +17,10 @@ import {
   WizardStep
 } from "../wizardRouterAdapter";
 import {
+  buttonBarCss,
   cancelLinkCss,
   HolidayDateChooserStateContext,
-  isSharedHolidayDateChooserState,
-  rightAlignedButtonsCss
+  isSharedHolidayDateChooserState
 } from "./holidayDateChooser";
 import {
   creditExplainerSentence,
@@ -134,22 +135,35 @@ export class HolidayReview extends React.Component<
                       ) : (
                         <div
                           css={{
-                            ...rightAlignedButtonsCss,
-                            justifyContent: "space-between"
+                            ...buttonBarCss,
+                            justifyContent: "space-between",
+                            marginTop: "20px",
+                            [maxWidth.mobileMedium]: {
+                              flexDirection: "column",
+                              marginTop: 0
+                            }
                           }}
                         >
-                          <Button
-                            text="Amend"
-                            onClick={() =>
-                              (this.props.navigate || navigate)("..")
-                            }
-                            left
-                            hollow
-                          />
                           <div
                             css={{
-                              ...rightAlignedButtonsCss,
-                              marginTop: 0
+                              marginTop: "20px",
+                              alignSelf: "flex-start"
+                            }}
+                          >
+                            <Button
+                              text="Amend"
+                              onClick={() =>
+                                (this.props.navigate || navigate)("..")
+                              }
+                              left
+                              hollow
+                            />
+                          </div>
+                          <div
+                            css={{
+                              ...buttonBarCss,
+                              marginTop: "20px",
+                              alignSelf: "flex-end"
                             }}
                           >
                             <Link css={cancelLinkCss} to="../.." replace={true}>

@@ -4,6 +4,7 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
@@ -186,23 +187,29 @@ const renderHolidayStopsOverview = (
             <div
               css={{
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: "40px"
+                marginTop: "30px",
+                [maxWidth.phablet]: {
+                  flexDirection: "column-reverse"
+                }
               }}
             >
-              <ReturnToYourProductButton
-                productType={routeableStepProps.productType}
-              />
-              <div css={{ width: "20px" }} />
-              <Button
-                text="Create suspension"
-                right
-                primary
-                onClick={() =>
-                  (routeableStepProps.navigate || navigate)("create")
-                }
-              />
+              <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
+                <ReturnToYourProductButton
+                  productType={routeableStepProps.productType}
+                />
+              </div>
+              <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
+                <Button
+                  text="Create suspension"
+                  right
+                  primary
+                  onClick={() =>
+                    (routeableStepProps.navigate || navigate)("create")
+                  }
+                />
+              </div>
             </div>
           </div>
         </WizardStep>
