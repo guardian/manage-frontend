@@ -154,7 +154,7 @@ const User = () => (
 
       <EmailAndMarketing path="/email-prefs" />
 
-      <PublicProfile path="/public-profile" />
+      <PublicProfile path="/public-settings" />
 
       <NotFound default={true} />
     </Router>
