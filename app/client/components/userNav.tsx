@@ -133,7 +133,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Public profile",
-      link: `/public-profile`
+      link: `${profileHostName}/public/edit`
     },
     {
       title: "Account details",
