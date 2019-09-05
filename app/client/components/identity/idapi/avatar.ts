@@ -40,7 +40,7 @@ export const read = async () => {
 
 export const write = async (file: File) => {
   const url = "/v1/avatars";
-  const options = APIFilePostOptions(file);
+  const options = APIUseCredentials(APIFilePostOptions(file));
   try {
     await avatarFetch(url, options);
   } catch (e) {
