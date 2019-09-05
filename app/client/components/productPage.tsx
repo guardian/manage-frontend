@@ -391,10 +391,11 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
-            {shouldHaveHolidayStopsFlow(
-              productType
-            ) /* `${window.guardian.identityDetails.userId}`.endsWith("2") || /* approx 10% rollout TODO uncomment to launch the canary release*/ &&
-              (window &&
+            {shouldHaveHolidayStopsFlow(productType) &&
+              window &&
+              (`${window.guardian.identityDetails.userId}`.endsWith(
+                "2" /* approx 10% rollout */
+              ) ||
                 parse(window.location.href, true).query.showHolidayStops ===
                   "true") && (
                 <LinkButton
