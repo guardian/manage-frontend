@@ -10,6 +10,7 @@
   "rules": {
     "object-literal-sort-keys": false, // we use emotion css objects for styles alphabetising the rules will make them harder to reason about
     "interface-name": false,
+    "no-empty-interface": true,
     // Recommended built-in rules
     "no-var-keyword": true,
     "no-parameter-reassignment": true,
