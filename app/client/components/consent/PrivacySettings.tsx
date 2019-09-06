@@ -22,7 +22,7 @@ const CMP_CLOSE_MSG = "closeCmp";
 const CMP_SAVED_MSG = "savedCmp";
 
 const iabVendorListURL =
-  "https://www.theguardian.com/commercial/cmp/vendorlist.json";
+  "https://assets.guim.co.uk/data/vendor/3cfb1b1f8f2cef3252479db8026dcb97/cmp_vendorlist.json";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
