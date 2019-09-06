@@ -1,5 +1,16 @@
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
+import {
+  GuIntegration,
+  GuPurpose,
+  GuPurposeList,
+  GuPurposeState,
+  IabFeature,
+  IabPurpose,
+  IabPurposeState,
+  IabVendor,
+  IabVendorList
+} from "@guardian/consent-management-platform/lib/types";
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
@@ -80,6 +91,22 @@ const integStyles = css`
   padding: 5px 10px;
   background-color: ${palette.neutral[6]};
 `;
+
+interface ParsedGuPurposeList {
+  purposes: ParsedGuPurpose[];
+}
+
+interface ParsedGuPurpose extends GuPurpose {
+  integDescription: React.ReactNode;
+}
+
+interface ParsedIabVendorList extends IabVendorList {
+  vendors: ParsedIabVendor[];
+}
+
+interface ParsedIabVendor extends IabVendor {
+  description: React.ReactNode;
+}
 
 interface State {
   guPurposes: GuPurposeState;
