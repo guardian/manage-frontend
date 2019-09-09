@@ -144,7 +144,7 @@ const renderHolidayStopsOverview = (
                         issues until{" "}
                         {renewalDateMoment.format(friendlyLongDateFormat)}
                         {combinedIssuesImpactedPerYear.issueDatesNextYear
-                          .length && (
+                          .length > 0 && (
                           <span>
                             {" "}
                             and{" "}
