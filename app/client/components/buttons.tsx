@@ -138,14 +138,6 @@ const buttonCss = ({
         },
     cursor: disabled ? "not-allowed" : "pointer",
     maxWidth: "calc(100vw - 40px)"
-    // [maxWidth.mobile]: {
-    //   maxWidth: maxWidthIfWrapping || "280px"
-    // },
-    // [maxWidth.mobileLarge]: {
-    //   maxWidth: maxWidthIfWrapping || "320px",
-    //   whiteSpace: "normal",
-    //   lineHeight: "16px"
-    // }
   });
 };
 
