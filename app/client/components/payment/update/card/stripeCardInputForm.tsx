@@ -176,31 +176,51 @@ export class StripeCardInputForm extends React.Component<
   private startCardUpdate = (navigate: NavigateFn) => async () => {
     this.setState({ isValidating: true });
     if (this.props.stripe && this.props.stripeSetupIntent) {
-      const intentResult = await this.props.stripe.handleCardSetup(
-        this.props.stripeSetupIntent.client_secret,
+      const createPaymentMethodResult = await this.props.stripe.createPaymentMethod(
+        "card",
         {
-          payment_method_data: {
-            billing_details: {
-              name: this.props.userEmail,
-              email: this.props.userEmail
-            }
-          },
-          expand: ["payment_method"] // to get the card last4 & brand
+          billing_details: {
+            name: this.props.userEmail,
+            email: this.props.userEmail
+          }
         }
+      );
+
+      if (
+        !(
+          createPaymentMethodResult &&
+          createPaymentMethodResult.paymentMethod &&
+          createPaymentMethodResult.paymentMethod.id &&
+          createPaymentMethodResult.paymentMethod.card &&
+          createPaymentMethodResult.paymentMethod.card.brand &&
+          createPaymentMethodResult.paymentMethod.card.last4
+        )
+      ) {
+        Raven.captureException(
+          createPaymentMethodResult.error ||
+            "something missing from the createPaymentMethod response"
+        );
+        this.setState({
+          error: createPaymentMethodResult.error || {
+            message:
+              "Something went wrong, please check the details and try again."
+          },
+          isValidating: false
+        });
+        return;
+      }
+
+      const intentResult = await this.props.stripe.handleCardSetup(
+        this.props.stripeSetupIntent.client_secret
       );
       if (
         intentResult.setupIntent &&
         intentResult.setupIntent.status &&
-        intentResult.setupIntent.status === "succeeded" &&
-        intentResult.setupIntent.payment_method &&
-        intentResult.setupIntent.payment_method.id &&
-        intentResult.setupIntent.payment_method.card &&
-        intentResult.setupIntent.payment_method.card.brand &&
-        intentResult.setupIntent.payment_method.card.last4
+        intentResult.setupIntent.status === "succeeded"
       ) {
         this.props.newPaymentMethodDetailUpdater(
           new NewCardPaymentMethodDetail(
-            intentResult.setupIntent.payment_method,
+            createPaymentMethodResult.paymentMethod,
             this.props.stripeApiKey
           )
         );
