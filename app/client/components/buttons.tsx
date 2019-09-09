@@ -3,7 +3,6 @@ import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
 import palette from "../colours";
-import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
 import { TickIcon } from "./svgs/tickIcon";
@@ -13,7 +12,6 @@ export interface ButtonProps {
   onClick?: () => void;
   height?: string;
   fontWeight?: "bold";
-  maxWidthIfWrapping?: string;
   left?: true;
   right?: true;
   disabled?: boolean;
@@ -90,7 +88,6 @@ const buttonCss = ({
   disabled,
   height,
   fontWeight,
-  maxWidthIfWrapping,
   colour = defaultColour,
   textColour = palette.white,
   left,
@@ -113,13 +110,11 @@ const buttonCss = ({
     fontFamily: sans,
     borderRadius: "1000px",
     alignItems: "center",
-    whiteSpace: "nowrap",
     position: "relative",
     ":active": {
       outline: "none"
     },
     minHeight: height || "36px",
-    lineHeight: height || "36px",
     fontWeight,
     display: hide ? "none" : "inline-flex",
     background: backgroundColour,
@@ -142,14 +137,7 @@ const buttonCss = ({
           ...applyIconStyleIfApplicable(true, left, right, leftTick)
         },
     cursor: disabled ? "not-allowed" : "pointer",
-    [maxWidth.mobile]: {
-      maxWidth: maxWidthIfWrapping || "280px"
-    },
-    [maxWidth.mobileLarge]: {
-      maxWidth: maxWidthIfWrapping || "320px",
-      whiteSpace: "normal",
-      lineHeight: "16px"
-    }
+    maxWidth: "calc(100vw - 40px)"
   });
 };
 

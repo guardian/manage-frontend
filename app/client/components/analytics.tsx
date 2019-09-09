@@ -124,6 +124,12 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
       <Location>
         {({ location }) => {
           if (location && typeof window !== "undefined") {
+            setTimeout(() => {
+              // tslint:disable-next-line:no-object-mutation
+              document.body.scrollTop = 0; // For Safari
+              // tslint:disable-next-line:no-object-mutation
+              document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }, 250);
             if (
               window.guardian &&
               window.guardian.ophan &&
@@ -144,10 +150,6 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
               });
               // TODO add ophan pageViewId as a GA dimension
               applyAnyOptimiseExperiments();
-              // tslint:disable-next-line:no-object-mutation
-              document.body.scrollTop = 0; // For Safari
-              // tslint:disable-next-line:no-object-mutation
-              document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
             }
           }
           return null; // null is a valid React node type, but void is not.

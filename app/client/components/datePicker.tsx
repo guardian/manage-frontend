@@ -1,11 +1,10 @@
 import { css } from "@emotion/core";
-import { FontWeightProperty } from "csstype";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import palette from "../colours";
-import { maxWidth } from "../styles/breakpoints";
+import { maxWidth, minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { DateInput } from "./dateInput";
 import { WrappedDateRangePicker } from "./hackedDateRangePicker";
@@ -47,20 +46,6 @@ const legendItems: LegendItemProps[] = [
   },
   stateDefinitions.existing
 ];
-
-export interface DatePickerProps {
-  firstAvailableDate: Moment;
-  issueDayOfWeek: number;
-  existingDates: DateRange[];
-  selectedRange?: DateRange;
-  selectionInfo?: React.ReactElement;
-  onSelect: (range: OnSelectCallbackParam) => void;
-  dateToAsterisk?: Moment;
-}
-
-export interface DatePickerState {
-  validationMessage?: string;
-}
 
 const adjustDateRangeToOvercomeHalfDateStates = (range: DateRange) =>
   new DateRange(
@@ -121,53 +106,50 @@ const LegendItem = (props: LegendItemProps) => (
   </>
 );
 
-const validationMsgCss = {
-  height: "2rem",
-  paddingTop: "0.5rem",
-  fontWeight: "bold" as FontWeightProperty
-};
+export interface DatePickerProps {
+  firstAvailableDate: Moment;
+  issueDayOfWeek: number;
+  existingDates: DateRange[];
+  selectedRange?: DateRange;
+  selectionInfo?: React.ReactElement;
+  onSelect: (range: OnSelectCallbackParam) => void;
+  dateToAsterisk?: Moment;
+}
 
-export class DatePicker extends React.Component<
-  DatePickerProps,
-  DatePickerState
-> {
-  public state: DatePickerState = {
-    validationMessage: ""
-  };
-
-  public render = () => (
-    <>
-      <div
-        css={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "10px"
-        }}
-      >
-        {legendItems.map(props => <LegendItem key={props.label} {...props} />)}
-      </div>
-      <div
-        css={{
-          display: "flex",
-          flexFlow: "wrap",
-          [maxWidth.mobile]: {
-            flexDirection: "row-reverse"
-          }
-        }}
-      >
+export const DatePicker = (props: DatePickerProps) => (
+  <>
+    <div
+      css={{
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "10px"
+      }}
+    >
+      {legendItems.map(itemProps => (
+        <LegendItem key={itemProps.label} {...itemProps} />
+      ))}
+    </div>
+    <div
+      css={{
+        display: "flex",
+        [maxWidth.desktop]: {
+          flexDirection: "column-reverse"
+        }
+      }}
+    >
+      <div css={{ flexGrow: 1 }}>
         <WrappedDateRangePicker
-          numberOfCalendars={2}
-          minimumDate={this.props.firstAvailableDate.toDate()}
-          maximumDate={this.props.firstAvailableDate
+          minimumDate={props.firstAvailableDate.toDate()}
+          maximumDate={props.firstAvailableDate
             .clone()
-            .add(daysInYear(this.props.firstAvailableDate.clone()), "days")
+            .add(daysInYear(props.firstAvailableDate.clone()), "days")
             .toDate()}
-          value={this.props.selectedRange}
-          onSelect={this.props.onSelect}
+          value={props.selectedRange}
+          onSelect={props.onSelect}
           singleDateRange={true}
           showLegend={false}
           stateDefinitions={stateDefinitions}
-          dateStates={this.props.existingDates
+          dateStates={props.existingDates
             .reduce(mergeAdjacentDateRanges, [])
             .map(range => ({
               state: "existing",
@@ -175,51 +157,71 @@ export class DatePicker extends React.Component<
             }))}
           defaultState="available"
           firstOfWeek={1}
-          dayOfWeekToIconify={this.props.issueDayOfWeek}
-          dateToAsterisk={this.props.dateToAsterisk}
+          dayOfWeekToIconify={props.issueDayOfWeek}
+          dateToAsterisk={props.dateToAsterisk}
         />
+      </div>
 
+      <div
+        css={{
+          marginLeft: "18px",
+          width: "136px",
+          display: "flex",
+          flexDirection: "column",
+          fontFamily: sans,
+          fontSize: "14px",
+          [maxWidth.desktop]: {
+            position: "sticky",
+            zIndex: 998,
+            top: 0,
+            left: 0,
+            right: 0,
+            width: "100vw",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            background: palette.white,
+            padding: "10px",
+            paddingTop: 0,
+            marginBottom: "15px",
+            marginLeft: "-20px",
+            marginRight: "-20px",
+            boxShadow: "0 3px 5px -3px " + palette.neutral["4"]
+          }
+        }}
+      >
         <div
           css={{
-            marginLeft: "18px",
-            maxWidth: "136px",
-            flex: "1 1 136px"
+            [maxWidth.desktop]: {
+              display: "flex",
+              alignItems: "center",
+              marginRight: "10px",
+              marginTop: "10px"
+            }
           }}
         >
           <div>
-            <div>
-              <DateInput
-                selectedDate={
-                  this.props.selectedRange && this.props.selectedRange.start
-                }
-                defaultDate={this.props.firstAvailableDate}
-                labelText="From"
-              />
-            </div>
-            <div css={{ marginTop: "8px" }}>
-              <DateInput
-                selectedDate={
-                  this.props.selectedRange && this.props.selectedRange.end
-                }
-                defaultDate={this.props.firstAvailableDate}
-                labelText="To"
-              />
-            </div>
+            <DateInput
+              selectedDate={props.selectedRange && props.selectedRange.start}
+              defaultDate={props.firstAvailableDate}
+              labelText="From"
+            />
           </div>
-          <div
-            css={{
-              marginTop: "18px",
-              fontFamily: sans,
-              fontSize: "14px"
-            }}
+          <span
+            css={{ margin: "0 5px", [minWidth.desktop]: { display: "none" } }}
           >
-            {this.props.selectionInfo}
+            to
+          </span>
+          <div css={{ [minWidth.desktop]: { marginTop: "8px" } }}>
+            <DateInput
+              selectedDate={props.selectedRange && props.selectedRange.end}
+              defaultDate={props.firstAvailableDate}
+              labelText="To"
+            />
           </div>
         </div>
-        <div id="validation-message" role="alert" css={validationMsgCss}>
-          {this.state.validationMessage}
-        </div>
+        {props.selectionInfo}
       </div>
-    </>
-  );
-}
+    </div>
+  </>
+);

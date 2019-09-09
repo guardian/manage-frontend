@@ -7,6 +7,7 @@ import DateRangePicker, {
   Props
 } from "react-daterange-picker";
 import palette from "../colours";
+import { maxWidth, minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 
@@ -28,13 +29,13 @@ const iconDayPseudoAfterCss = `
 const CustomArrow = (props: PaginationArrowProps) => (
   <div
     css={{
-      zIndex: 999,
+      zIndex: 998,
       position: "absolute",
       padding: "8px",
       top: 0,
       ...(props.direction === "previous"
         ? {
-            left: "20px"
+            left: 0
           }
         : {
             right: 0
@@ -89,11 +90,28 @@ const afterRenderActions = (props: WrappedDateRangePickerProps) => {
 };
 
 class HackedDateRangePicker extends DateRangePicker {
+  constructor(props: Props) {
+    super(props);
+    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
+      // this prevents jumping to the selection when in 'infinite mode' (i.e. loads of vertically stacked cals)
+      // @ts-ignore
+      super.isStartOrEndVisible = () => true;
+    }
+  }
+
   public componentDidMount(): void {
     if (super.componentDidMount) {
       super.componentDidMount();
     }
     afterRenderActions(this.props as WrappedDateRangePickerProps);
+    // this prevents jumping to the selection when returning from review stage in 'infinite mode'
+    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
+      const today = new Date();
+      this.setState({
+        year: today.getFullYear(),
+        month: today.getMonth()
+      });
+    }
   }
 
   public componentDidUpdate(
@@ -115,11 +133,26 @@ export interface WrappedDateRangePickerProps extends Props {
 
 export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
   <>
-    <HackedDateRangePicker
-      {...props}
-      paginationArrowComponent={CustomArrow}
-      ref={undefined /* hushes type warning */}
-    />
+    <div css={{ [maxWidth.phablet]: { display: "none" } }}>
+      <HackedDateRangePicker
+        {...props}
+        numberOfCalendars={2}
+        paginationArrowComponent={CustomArrow}
+        ref={undefined /* hushes type warning */}
+      />
+    </div>
+    <div
+      css={{ [minWidth.phablet]: { display: "none" } }}
+      onTouchStartCapture={e => e.stopPropagation()}
+    >
+      <HackedDateRangePicker
+        {...props}
+        numberOfCalendars={13}
+        paginationArrowComponent={() => null}
+        disableNavigation={true}
+        ref={undefined /* hushes type warning */}
+      />
+    </div>
     <Global styles={css(rawDateRangePickerCSS)} />
     <Global
       styles={css(`
@@ -136,8 +169,10 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
         .DateRangePicker {
           --selectedBackgroundColour: ${palette.yellow.medium};
           --selectedTextColour: #333;
-          margin-left: -20px;
-          margin-right: 0;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
         }
         .DateRangePicker__HalfDateStates {
           display: none; /* Safe to hide half dates, because we already adjust the dates - see adjustDateRangeToOvercomeHalfDateStates function */
@@ -180,8 +215,18 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
           border-collapse: collapse;
         }
         .DateRangePicker__Month {
-          margin-right: 0;
-          width: 371px;
+          margin: 0;
+        }
+        ${minWidth.phablet} { 
+          .DateRangePicker__Month {
+            width: calc(50% - 10px);
+          }
+        }
+        ${maxWidth.phablet} { 
+          .DateRangePicker__Month {
+            width: 100%;
+            margin-bottom: 10px;
+          }
         }
         .DateRangePicker__MonthHeader {
           font-size: 16px;
