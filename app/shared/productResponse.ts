@@ -100,6 +100,7 @@ export interface Subscription {
   subscriptionId: string;
   start?: string;
   end: string;
+  renewalDate: string;
   cancelledAt: boolean;
   nextPaymentDate: string | null;
   nextPaymentPrice: number | null;

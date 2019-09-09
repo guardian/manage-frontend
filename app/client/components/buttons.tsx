@@ -8,8 +8,9 @@ import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
 import { TickIcon } from "./svgs/tickIcon";
 
-export interface CommonButtonProps {
+export interface ButtonProps {
   text: string;
+  onClick?: () => void;
   height?: string;
   fontWeight?: "bold";
   maxWidthIfWrapping?: string;
@@ -21,17 +22,14 @@ export interface CommonButtonProps {
   primary?: true;
   hollow?: true;
   hide?: boolean;
+  forceCircle?: true;
   hoverColour?: string;
   leftTick?: true;
 }
 
-export interface LinkButtonProps extends CommonButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   to: string;
   state?: any;
-}
-
-export interface ButtonProps extends CommonButtonProps {
-  onClick?: () => void;
 }
 
 const applyIconStyleIfApplicable = (
@@ -50,7 +48,7 @@ const applyIconStyleIfApplicable = (
     };
   }
   return {
-    padding: "1px 18px 0 18px",
+    padding: "1px 15px 0 15px",
     svg: {
       display: "none"
     }
@@ -100,9 +98,10 @@ const buttonCss = ({
   primary,
   hollow,
   hide,
+  forceCircle,
   hoverColour,
   leftTick
-}: CommonButtonProps) => {
+}: ButtonProps) => {
   const backgroundColour = calcBackgroundColour(
     disabled,
     colour,
@@ -127,6 +126,11 @@ const buttonCss = ({
     color: calcTextColour(disabled, textColour, primary, hollow),
     border: hollow ? "1px solid" : "none",
     ...applyIconStyleIfApplicable(false, left, right, leftTick),
+    ...(forceCircle
+      ? {
+          padding: "1px 18px 0 18px"
+        }
+      : {}),
     ":hover": disabled
       ? undefined
       : {
@@ -151,7 +155,7 @@ const buttonCss = ({
 
 const styles = {
   leftHover: {
-    svg: { transform: "translate(-5px, -50%) rotate(180deg)" }
+    svg: { transform: "translate(-3px, -50%) rotate(180deg)" }
   },
   left: {
     padding: "1px 18px 0 40px",
@@ -163,11 +167,11 @@ const styles = {
       top: "50%",
       transform: "translate(0, -50%) rotate(180deg)",
       transition: "transform .3s, background .3s",
-      width: "40px"
+      width: "36px"
     }
   },
   rightHover: {
-    svg: { transform: "translate(5px, -50%)" }
+    svg: { transform: "translate(3px, -50%)" }
   },
   right: {
     padding: "1px 40px 0 18px",
@@ -179,7 +183,7 @@ const styles = {
       top: "50%",
       transform: "translate(0, -50%)",
       transition: "transform .3s, background .3s",
-      width: "40px"
+      width: "36px"
     }
   }
 };
@@ -187,6 +191,7 @@ const styles = {
 export const LinkButton = (props: LinkButtonProps) => (
   <Link
     to={props.disabled ? "" : props.to}
+    onClick={props.onClick}
     css={buttonCss(props)}
     state={props.state}
   >

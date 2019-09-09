@@ -13,7 +13,11 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  RouteableStepProps,
+  visuallyNavigateToParent,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import {
   isNewPaymentMethodDetail,
@@ -21,8 +25,11 @@ import {
   NewPaymentMethodDetail,
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
-import { handleNoNewPaymentDetails } from "./paymentUpdated";
-import { labelPaymentStepProps, PaymentMethod } from "./updatePaymentFlow";
+import {
+  labelPaymentStepProps,
+  PaymentMethod,
+  paymentQuestionsTopicString
+} from "./updatePaymentFlow";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -159,7 +166,9 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
           hasProduct(productDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
-              extraFooterComponents={<QuestionsFooter />}
+              extraFooterComponents={
+                <QuestionsFooter topic={paymentQuestionsTopicString} />
+              }
             >
               <h3>Please confirm your change from...</h3>
               <CurrentPaymentDetails {...productDetail.subscription} />
@@ -178,7 +187,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               </div>
             </WizardStep>
           ) : (
-            handleNoNewPaymentDetails(props)
+            visuallyNavigateToParent(props)
           )
         }
       </MembersDataApiResponseContext.Consumer>

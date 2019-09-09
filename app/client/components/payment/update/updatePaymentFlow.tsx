@@ -25,6 +25,8 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 
+export const paymentQuestionsTopicString = "updating your payment details";
+
 export enum PaymentMethod {
   card = "Card",
   payPal = "PayPal",
@@ -156,7 +158,9 @@ class PaymentUpdaterStep extends React.Component<
           >
             <WizardStep
               routeableStepProps={this.props.routeableStepProps}
-              extraFooterComponents={<QuestionsFooter />}
+              extraFooterComponents={
+                <QuestionsFooter topic={paymentQuestionsTopicString} />
+              }
               hideBackButton
             >
               <div

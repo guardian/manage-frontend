@@ -27,7 +27,7 @@ export class InlineContactUs extends React.Component<{}, InlineContactUsState> {
         >
           contact us
         </button>
-        {this.state.expanded && <CallCentreNumbers prefixText="" />}
+        {this.state.expanded && <CallCentreNumbers />}
       </>
     );
   }

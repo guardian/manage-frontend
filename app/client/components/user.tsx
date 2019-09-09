@@ -8,7 +8,8 @@ import {
   ProductTypes,
   ProductTypeWithCancellationFlow,
   ProductTypeWithProductPageProperties,
-  shouldCreatePaymentUpdateFlow
+  shouldCreatePaymentUpdateFlow,
+  shouldHaveHolidayStopsFlow
 } from "../../shared/productTypes";
 import {
   hasProductPageProperties,
@@ -25,6 +26,10 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
+import { HolidayConfirmed } from "./holiday/holidayConfirmed";
+import { HolidayDateChooser } from "./holiday/holidayDateChooser";
+import { HolidayReview } from "./holiday/holidayReview";
+import { HolidaysOverview } from "./holiday/holidaysOverview";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { Main } from "./main";
 import { MembershipFAQs } from "./membershipFAQs";
@@ -59,6 +64,7 @@ const User = () => (
             key={productType.urlPart}
             from={"/" + productType.urlPart}
             to={"/" + productType.productPage}
+            noThrow
           />
         ))}
       {Object.values(ProductTypes)
@@ -112,6 +118,35 @@ const User = () => (
               />
             </ConfirmPaymentUpdate>
           </PaymentUpdateFlow>
+        ))}
+
+      {Object.values(ProductTypes)
+        .filter(shouldHaveHolidayStopsFlow)
+        .map((productType: ProductType) => (
+          <HolidaysOverview
+            key={productType.urlPart}
+            path={"/suspend/" + productType.urlPart}
+            productType={productType}
+            currentStep={0}
+          >
+            <HolidayDateChooser
+              path="create"
+              productType={productType}
+              currentStep={1}
+            >
+              <HolidayReview
+                path="review"
+                productType={productType}
+                currentStep={2}
+              >
+                <HolidayConfirmed
+                  path="confirmed"
+                  productType={productType}
+                  currentStep={3}
+                />
+              </HolidayReview>
+            </HolidayDateChooser>
+          </HolidaysOverview>
         ))}
 
       <MembershipFAQs path="/help" />

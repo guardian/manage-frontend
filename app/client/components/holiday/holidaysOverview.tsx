@@ -1,0 +1,249 @@
+import { navigate } from "@reach/router";
+import React from "react";
+import {
+  MembersDataApiResponseContext,
+  ProductDetail
+} from "../../../shared/productResponse";
+import { sans } from "../../styles/fonts";
+import { ReFetch } from "../asyncLoader";
+import { Button } from "../buttons";
+import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
+import { GenericErrorScreen } from "../genericErrorScreen";
+import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
+import { InfoIcon } from "../svgs/infoIcon";
+import {
+  ReturnToYourProductButton,
+  RouteableStepProps,
+  WizardStep
+} from "../wizardRouterAdapter";
+import {
+  creditExplainerSentence,
+  HolidayQuestionsModal
+} from "./holidayQuestionsModal";
+import {
+  calculateIssuesImpactedPerYear,
+  createGetHolidayStopsFetcher,
+  embellishExistingHolidayStops,
+  GetHolidayStopsAsyncLoader,
+  GetHolidayStopsResponse,
+  HolidayStopsResponseContext,
+  momentiseDateStr
+} from "./holidayStopApi";
+import { SummaryTable } from "./summaryTable";
+
+export interface OverviewRowProps {
+  heading: string;
+  content: React.ReactFragment;
+}
+
+const OverviewRow = (props: OverviewRowProps) => (
+  <div
+    css={{
+      display: "flex",
+      flexWrap: "wrap",
+      alignItems: "top",
+      marginBottom: "20px"
+    }}
+  >
+    <div css={{ flex: "1 1 150px" }}>
+      <h3 css={{ marginTop: "0", paddingTop: "0" }}>{props.heading}</h3>
+    </div>
+    <div
+      css={{
+        flex: "4 4 350px"
+      }}
+    >
+      {props.content}
+    </div>
+  </div>
+);
+
+const friendlyLongDateFormat = "D MMMM YYYY";
+
+const renderHolidayStopsOverview = (
+  productDetail: ProductDetail,
+  routeableStepProps: RouteableStepProps
+) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
+  const renewalDateMoment = momentiseDateStr(
+    productDetail.subscription.renewalDate
+  );
+
+  const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
+    holidayStopsResponse.existing
+      .map(existing => existing.publicationDatesToBeStopped)
+      .flat(),
+    renewalDateMoment
+  );
+
+  return (
+    <HolidayStopsResponseContext.Provider
+      value={{ ...holidayStopsResponse, reload }}
+    >
+      <MembersDataApiResponseContext.Provider value={productDetail}>
+        <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
+          <div>
+            <h1>Suspend Guardian Weekly</h1>
+            <OverviewRow
+              heading="How"
+              content={
+                <>
+                  <div>
+                    You can suspend up to{" "}
+                    <strong>
+                      {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
+                      issues
+                    </strong>{" "}
+                    per year of your subscription. <br />
+                  </div>
+                  <div>{creditExplainerSentence}</div>
+                  <div
+                    css={{
+                      fontFamily: sans,
+                      fontSize: "14px",
+                      margin: "10px",
+                      display: "flex",
+                      alignItems: "top"
+                    }}
+                  >
+                    <InfoIcon />
+                    <div>
+                      <strong>
+                        {renewalDateMoment.format(friendlyLongDateFormat)}
+                      </strong>{" "}
+                      is the next anniversary of your subscription.
+                      <br />The number of issues you can suspend per year is
+                      reset on this date.
+                    </div>
+                  </div>
+                  <HolidayQuestionsModal
+                    annualIssueLimit={
+                      holidayStopsResponse.productSpecifics.annualIssueLimit
+                    }
+                  />
+                </>
+              }
+            />
+            <OverviewRow
+              heading="Summary"
+              content={
+                holidayStopsResponse.existing.length > 0 ? (
+                  <>
+                    <div>
+                      You have suspended{" "}
+                      <strong>
+                        {
+                          combinedIssuesImpactedPerYear.issueDatesThisYear
+                            .length
+                        }/{
+                          holidayStopsResponse.productSpecifics.annualIssueLimit
+                        }
+                      </strong>{" "}
+                      issues until{" "}
+                      {renewalDateMoment.format(friendlyLongDateFormat)}
+                      {combinedIssuesImpactedPerYear.issueDatesNextYear.length >
+                      0 ? (
+                        <span>
+                          {" "}
+                          and{" "}
+                          <strong>
+                            {
+                              combinedIssuesImpactedPerYear.issueDatesNextYear
+                                .length
+                            }/{
+                              holidayStopsResponse.productSpecifics
+                                .annualIssueLimit
+                            }
+                          </strong>{" "}
+                          issues the following year.
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    You have{" "}
+                    <strong>
+                      {holidayStopsResponse.productSpecifics.annualIssueLimit}
+                    </strong>{" "}
+                    issues available to suspend until{" "}
+                    {renewalDateMoment.format(friendlyLongDateFormat)}.
+                  </div>
+                )
+              }
+            />
+            <OverviewRow
+              heading="Details"
+              content={
+                holidayStopsResponse.existing.length > 0 ? (
+                  <SummaryTable data={holidayStopsResponse.existing} />
+                ) : (
+                  "You currently don't have any scheduled suspensions."
+                )
+              }
+            />
+            <div
+              css={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                marginTop: "40px"
+              }}
+            >
+              <ReturnToYourProductButton
+                productType={routeableStepProps.productType}
+              />
+              <div css={{ width: "20px" }} />
+              <Button
+                text="Create suspension"
+                right
+                primary
+                onClick={() =>
+                  (routeableStepProps.navigate || navigate)("create")
+                }
+              />
+            </div>
+          </div>
+        </WizardStep>
+      </MembersDataApiResponseContext.Provider>
+    </HolidayStopsResponseContext.Provider>
+  );
+};
+
+export const HolidaysOverview = (props: RouteableStepProps) => (
+  <FlowStartMultipleProductDetailHandler
+    {...props}
+    headingPrefix="Manage suspensions of"
+    hideHeading
+    supportRefererSuffix="holiday_stop_flow"
+    loadingMessagePrefix="Retrieving details of your"
+    singleProductDetailRenderer={(
+      routeableStepProps: RouteableStepProps,
+      productDetail: ProductDetail
+    ) => (
+      <MembersDataApiResponseContext.Provider value={productDetail}>
+        <NavigateFnContext.Provider value={{ navigate: props.navigate }}>
+          {" "}
+          {productDetail.subscription.start ? (
+            <GetHolidayStopsAsyncLoader
+              fetch={createGetHolidayStopsFetcher(
+                routeableStepProps.productType.urlPart,
+                productDetail.subscription.subscriptionId,
+                productDetail.isTestUser
+              )}
+              render={renderHolidayStopsOverview(
+                productDetail,
+                routeableStepProps
+              )}
+              loadingMessage="Loading existing suspensions"
+              readerOnOK={embellishExistingHolidayStops}
+            />
+          ) : (
+            <GenericErrorScreen loggingMessage="Subscription had no start date" />
+          )}
+        </NavigateFnContext.Provider>
+      </MembersDataApiResponseContext.Provider>
+    )}
+  />
+);

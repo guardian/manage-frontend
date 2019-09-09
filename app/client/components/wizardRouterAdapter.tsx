@@ -2,6 +2,7 @@ import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
 import { LinkButton } from "./buttons";
+import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer, PageContainerSection } from "./page";
 import { ProgressBreadcrumb } from "./progressBreadcrumb";
 import { ProgressCounter } from "./progressCounter";
@@ -50,6 +51,16 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
+export const visuallyNavigateToParent = (props: RouteableStepProps) => {
+  if (props.navigate) {
+    props.navigate("..", { replace: true }); // step back up a level
+    return null;
+  }
+  return (
+    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+  );
+};
+
 export const ReturnToYourProductButton = (
   props: WithProductType<ProductType>
 ) => (
@@ -64,22 +75,23 @@ export const ReturnToYourProductButton = (
 const RootComponent = (props: RootComponentProps) => (
   <>
     <PageContainer>
-      {props.routeableStepProps.stepLabels ? (
-        <ProgressBreadcrumb
-          current={props.routeableStepProps.currentStep}
-          labels={props.routeableStepProps.stepLabels}
-        />
-      ) : (
-        <PageContainerSection>
-          <ProgressCounter
+      {!!props.routeableStepProps.currentStep &&
+        (props.routeableStepProps.stepLabels ? (
+          <ProgressBreadcrumb
             current={props.routeableStepProps.currentStep}
-            total={estimateTotal(
-              props.routeableStepProps.currentStep,
-              props.routeableStepProps.children
-            )}
+            labels={props.routeableStepProps.stepLabels}
           />
-        </PageContainerSection>
-      )}
+        ) : (
+          <PageContainerSection>
+            <ProgressCounter
+              current={props.routeableStepProps.currentStep}
+              total={estimateTotal(
+                props.routeableStepProps.currentStep,
+                props.routeableStepProps.children
+              )}
+            />
+          </PageContainerSection>
+        ))}
 
       {props.thisStageChildren}
 

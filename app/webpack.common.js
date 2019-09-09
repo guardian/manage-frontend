@@ -120,10 +120,15 @@ const client = merge(common, {
             ...babelCommon.presets
           ]
         }
+      },
+      {
+        test: /\.css$/i,
+        use: "raw-loader",
+        include: /node_modules/
       }
     ]
   },
-  plugins: [copyPlugin]
+  plugins: [copyPlugin, new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
 });
 module.exports = {
   client: client,

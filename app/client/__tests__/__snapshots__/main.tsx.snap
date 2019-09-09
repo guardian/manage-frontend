@@ -1016,9 +1016,9 @@ exports[`Main renders something 1`] = `
                       css={
                         Object {
                           "map": undefined,
-                          "name": "vigqs",
+                          "name": "3u56ol",
                           "next": undefined,
-                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
+                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
                         }
                       }
                       onMouseUp={[Function]}
@@ -1042,9 +1042,9 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "vigqs",
+                        "name": "3u56ol",
                         "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:40px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(5px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;white-space:nowrap;position:relative;:active{outline:none;}min-height:36px;line-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;@media (max-width: 319px){max-width:280px;}@media (max-width: 424px){max-width:320px;white-space:normal;line-height:16px;}",
                       }
                     }
                     onMouseUp={[Function]}
