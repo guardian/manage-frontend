@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { ItemState } from "@guardian/consent-management-platform/lib/types";
 import React, { Component } from "react";
 import palette from "../../colours";
 import { CollapseItemButton } from "./CollapseItemButton";
@@ -30,7 +31,7 @@ const panelStyles = (collapsed: boolean) => css`
 
 interface Props {
   title: string;
-  value?: boolean | null;
+  value?: ItemState;
   updateItem?: (updatedValue: boolean) => void;
 }
 

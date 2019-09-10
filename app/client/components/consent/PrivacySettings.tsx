@@ -1,4 +1,16 @@
 import { css } from "@emotion/core";
+import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
+import {
+  GuIntegration,
+  GuPurpose,
+  GuPurposeList,
+  GuPurposeState,
+  IabFeature,
+  IabPurpose,
+  IabPurposeState,
+  IabVendor,
+  IabVendorList
+} from "@guardian/consent-management-platform/lib/types";
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
@@ -6,23 +18,7 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import {
-  readGuCookie,
-  readIabCookie,
-  writeGuCookie,
-  writeIabCookie
-} from "./cookie";
 
-const CMP_ID = 112;
-const CMP_VERSION = 1;
-const CONSENT_SCREEN = 0;
-const CONSENT_LANGUAGE = "en";
-const CMP_READY_MSG = "readyCmp";
-const CMP_CLOSE_MSG = "closeCmp";
-const CMP_SAVED_MSG = "savedCmp";
-
-const iabVendorListURL =
-  "https://assets.guim.co.uk/data/vendor/3cfb1b1f8f2cef3252479db8026dcb97/cmp_vendorlist.json";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
@@ -96,54 +92,21 @@ const integStyles = css`
   background-color: ${palette.neutral[6]};
 `;
 
-const cleanGuPurposeList: GuPurposeList = {
-  purposes: [
-    {
-      id: 0,
-      name: "Essential",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      integrations: [
-        {
-          name: "Ophan",
-          policyUrl: "https://www.theguardian.com/info/privacy"
-        },
-        {
-          name: "Confiant",
-          policyUrl: "https://www.confiant.com/privacy"
-        }
-      ],
-      hideRadio: true
-    },
-    {
-      id: 1,
-      name: "Functional",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante.",
-      integrations: [
-        {
-          name: "Pinterest",
-          policyUrl: "https://policy.pinterest.com/"
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "Performance",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis malesuada ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
-      integrations: [
-        {
-          name: "Sentry",
-          policyUrl: "https://sentry.io/privacy/"
-        },
-        {
-          name: "Google Analytics",
-          policyUrl: "https://policies.google.com/privacy?hl=en-US"
-        }
-      ]
-    }
-  ]
-};
+interface ParsedGuPurposeList {
+  purposes: ParsedGuPurpose[];
+}
+
+interface ParsedGuPurpose extends GuPurpose {
+  integDescription: React.ReactNode;
+}
+
+interface ParsedIabVendorList extends IabVendorList {
+  vendors: ParsedIabVendor[];
+}
+
+interface ParsedIabVendor extends IabVendor {
+  description: React.ReactNode;
+}
 
 interface State {
   guPurposes: GuPurposeState;
@@ -151,7 +114,7 @@ interface State {
 }
 
 export class PrivacySettings extends Component<{}, State> {
-  // private guPurposeList?: ParsedGuPurposeList;
+  private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -161,7 +124,7 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public componentDidMount(): void {
-    fetch(iabVendorListURL)
+    fetch(cmpConfig.IAB_VENDOR_LIST_URL)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -171,12 +134,12 @@ export class PrivacySettings extends Component<{}, State> {
       })
       .then(remoteVendorList => {
         return this.buildState(
-          parseGuPurposeList(cleanGuPurposeList),
+          parseGuPurposeList(cmpConfig.GU_PURPOSE_LIST),
           parseIabVendorList(remoteVendorList)
         );
       })
       .then(() => {
-        window.parent.postMessage(CMP_READY_MSG, "*");
+        window.parent.postMessage(cmpConfig.CMP_READY_MSG, "*");
       })
       .catch(error => {
         Raven.captureException(`error fetching CMP Vendor List: ${error}`, {
@@ -239,8 +202,8 @@ export class PrivacySettings extends Component<{}, State> {
             </button>
           </div>
           <div id="cmp-options">
-            {/* <CmpSeparator /> */}
-            {/* {this.renderGuPurposeItems()} */}
+            <CmpSeparator />
+            {this.renderGuPurposeItems()}
             {this.renderIabPurposeItems()}
             <CmpSeparator />
             {this.renderVendorItems()}
@@ -287,12 +250,12 @@ export class PrivacySettings extends Component<{}, State> {
     iabVendorList: ParsedIabVendorList
   ): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
-    // this.guPurposeList = guPurposeList;
+    this.guPurposeList = guPurposeList;
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
     const guPurposes =
-      readGuCookie() ||
+      cmpCookie.readGuCookie() ||
       guPurposeList.purposes.reduce((acc, purpose) => {
         return {
           ...acc,
@@ -300,7 +263,7 @@ export class PrivacySettings extends Component<{}, State> {
         };
       }, {});
 
-    const iabStr = readIabCookie();
+    const iabStr = cmpCookie.readIabCookie();
 
     let iabPurposes = {};
     if (iabStr) {
@@ -319,33 +282,39 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  // private renderGuPurposeItems(): React.ReactNode {
-  //   if (!this.guPurposeList || !this.guPurposeList.purposes) {
-  //     return "";
-  //   }
+  private renderGuPurposeItems(): React.ReactNode {
+    if (!this.guPurposeList || !this.guPurposeList.purposes) {
+      return "";
+    }
 
-  //   return this.guPurposeList.purposes.map(
-  //     (purpose: ParsedGuPurpose): React.ReactNode => {
-  //       const { id, name, description, integDescription, hideRadio } = purpose;
+    return this.guPurposeList.purposes.map(
+      (purpose: ParsedGuPurpose): React.ReactNode => {
+        const {
+          id,
+          name,
+          description,
+          integDescription,
+          alwaysEnabled
+        } = purpose;
 
-  //       const optProps = hideRadio
-  //         ? {}
-  //         : {
-  //             value: this.state.guPurposes[id],
-  //             updateItem: (updatedValue: boolean) => {
-  //               this.updateGuPurpose(id, updatedValue);
-  //             }
-  //           };
+        const optProps = alwaysEnabled
+          ? {}
+          : {
+              value: this.state.guPurposes[id],
+              updateItem: (updatedValue: boolean) => {
+                this.updateGuPurpose(id, updatedValue);
+              }
+            };
 
-  //       return (
-  //         <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
-  //           <p>{description}</p>
-  //           <p>{integDescription}</p>
-  //         </CmpItem>
-  //       );
-  //     }
-  //   );
-  // }
+        return (
+          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
+            <p>{description}</p>
+            <p>{integDescription}</p>
+          </CmpItem>
+        );
+      }
+    );
+  }
 
   private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
@@ -453,7 +422,7 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    writeGuCookie(stateToSave.guPurposes);
+    cmpCookie.writeGuCookie(stateToSave.guPurposes);
 
     const allowedPurposes = Object.keys(stateToSave.iabPurposes)
       .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
@@ -462,32 +431,32 @@ export class PrivacySettings extends Component<{}, State> {
 
     const consentData = new ConsentString();
     consentData.setGlobalVendorList(this.iabVendorList);
-    consentData.setCmpId(CMP_ID);
-    consentData.setCmpVersion(CMP_VERSION);
-    consentData.setConsentScreen(CONSENT_SCREEN);
-    consentData.setConsentLanguage(CONSENT_LANGUAGE);
+    consentData.setCmpId(cmpConfig.IAB_CMP_ID);
+    consentData.setCmpVersion(cmpConfig.IAB_CMP_VERSION);
+    consentData.setConsentScreen(cmpConfig.IAB_CONSENT_SCREEN);
+    consentData.setConsentLanguage(cmpConfig.IAB_CONSENT_LANGUAGE);
     consentData.setPurposesAllowed(allowedPurposes);
     consentData.setVendorsAllowed(allowedVendors);
 
-    writeIabCookie(consentData.getConsentString());
+    cmpCookie.writeIabCookie(consentData.getConsentString());
 
     // Notify parent that consent has been saved
-    window.parent.postMessage(CMP_SAVED_MSG, "*");
+    window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
 
     return true;
   }
 
-  // private updateGuPurpose(purposeId: number, value: boolean): void {
-  //   this.setState((prevState, props) => ({
-  //     guPurposes: {
-  //       ...prevState.guPurposes,
-  //       [purposeId]: value
-  //     },
-  //     iabPurposes: {
-  //       ...prevState.iabPurposes
-  //     }
-  //   }));
-  // }
+  private updateGuPurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes,
+        [purposeId]: value
+      },
+      iabPurposes: {
+        ...prevState.iabPurposes
+      }
+    }));
+  }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
@@ -614,7 +583,7 @@ const getFeaturesDescriptions = (
 };
 
 const close = () => {
-  window.parent.postMessage(CMP_CLOSE_MSG, "*");
+  window.parent.postMessage(cmpConfig.CMP_CLOSE_MSG, "*");
 };
 
 const doScrolling = (query: string, duration: number): void => {

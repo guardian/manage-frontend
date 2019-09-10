@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { ItemState } from "@guardian/consent-management-platform/lib/types";
 import React, { Component } from "react";
 import palette from "../../colours";
 
@@ -79,7 +80,7 @@ const radioLabelStyles = (isSelected: boolean) => css`
 
 interface Props {
   onChangeHandler: (value: boolean) => void;
-  selectedValue: boolean | null;
+  selectedValue: ItemState;
 }
 export class OnOffRadio extends Component<Props, {}> {
   private myIdCounter: number;
