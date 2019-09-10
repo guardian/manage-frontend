@@ -114,7 +114,7 @@ interface State {
 }
 
 export class PrivacySettings extends Component<{}, State> {
-  // private guPurposeList?: ParsedGuPurposeList;
+  private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -202,8 +202,8 @@ export class PrivacySettings extends Component<{}, State> {
             </button>
           </div>
           <div id="cmp-options">
-            {/* <CmpSeparator /> */}
-            {/* {this.renderGuPurposeItems()} */}
+            <CmpSeparator />
+            {this.renderGuPurposeItems()}
             {this.renderIabPurposeItems()}
             <CmpSeparator />
             {this.renderVendorItems()}
@@ -250,7 +250,7 @@ export class PrivacySettings extends Component<{}, State> {
     iabVendorList: ParsedIabVendorList
   ): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
-    // this.guPurposeList = guPurposeList;
+    this.guPurposeList = guPurposeList;
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
@@ -282,33 +282,39 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  // private renderGuPurposeItems(): React.ReactNode {
-  //   if (!this.guPurposeList || !this.guPurposeList.purposes) {
-  //     return "";
-  //   }
+  private renderGuPurposeItems(): React.ReactNode {
+    if (!this.guPurposeList || !this.guPurposeList.purposes) {
+      return "";
+    }
 
-  //   return this.guPurposeList.purposes.map(
-  //     (purpose: ParsedGuPurpose): React.ReactNode => {
-  //       const { id, name, description, integDescription, alwaysEnabled } = purpose;
+    return this.guPurposeList.purposes.map(
+      (purpose: ParsedGuPurpose): React.ReactNode => {
+        const {
+          id,
+          name,
+          description,
+          integDescription,
+          alwaysEnabled
+        } = purpose;
 
-  //       const optProps = alwaysEnabled
-  //         ? {}
-  //         : {
-  //             value: this.state.guPurposes[id],
-  //             updateItem: (updatedValue: boolean) => {
-  //               this.updateGuPurpose(id, updatedValue);
-  //             }
-  //           };
+        const optProps = alwaysEnabled
+          ? {}
+          : {
+              value: this.state.guPurposes[id],
+              updateItem: (updatedValue: boolean) => {
+                this.updateGuPurpose(id, updatedValue);
+              }
+            };
 
-  //       return (
-  //         <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
-  //           <p>{description}</p>
-  //           <p>{integDescription}</p>
-  //         </CmpItem>
-  //       );
-  //     }
-  //   );
-  // }
+        return (
+          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
+            <p>{description}</p>
+            <p>{integDescription}</p>
+          </CmpItem>
+        );
+      }
+    );
+  }
 
   private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
@@ -440,17 +446,17 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
-  // private updateGuPurpose(purposeId: number, value: boolean): void {
-  //   this.setState((prevState, props) => ({
-  //     guPurposes: {
-  //       ...prevState.guPurposes,
-  //       [purposeId]: value
-  //     },
-  //     iabPurposes: {
-  //       ...prevState.iabPurposes
-  //     }
-  //   }));
-  // }
+  private updateGuPurpose(purposeId: number, value: boolean): void {
+    this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes,
+        [purposeId]: value
+      },
+      iabPurposes: {
+        ...prevState.iabPurposes
+      }
+    }));
+  }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
