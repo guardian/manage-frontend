@@ -289,9 +289,9 @@ export class PrivacySettings extends Component<{}, State> {
 
   //   return this.guPurposeList.purposes.map(
   //     (purpose: ParsedGuPurpose): React.ReactNode => {
-  //       const { id, name, description, integDescription, hideRadio } = purpose;
+  //       const { id, name, description, integDescription, alwaysEnabled } = purpose;
 
-  //       const optProps = hideRadio
+  //       const optProps = alwaysEnabled
   //         ? {}
   //         : {
   //             value: this.state.guPurposes[id],
