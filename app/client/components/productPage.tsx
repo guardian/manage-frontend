@@ -393,16 +393,34 @@ const getProductDetailRenderer = (
               ))}
             {shouldHaveHolidayStopsFlow(productType) &&
               window &&
-              (`${window.guardian.identityDetails.userId}`.endsWith(
-                "2" /* approx 10% rollout */
+              (["0", "2", "4", "6", "8"].includes(
+                `${window.guardian.identityDetails.userId}`.charAt(
+                  `${window.guardian.identityDetails.userId}`.length - 1
+                )
               ) ||
                 parse(window.location.href, true).query.showHolidayStops ===
                   "true") && (
-                <LinkButton
-                  text="Manage your suspensions"
-                  to={"/suspend/" + productType.urlPart}
-                  state={productDetail}
-                  right
+                <ProductDetailRow
+                  label="Holiday stop"
+                  data={
+                    <div>
+                      <div
+                        css={{
+                          display: "inline-block",
+                          margin: "10px",
+                          marginLeft: 0
+                        }}
+                      >
+                        Going on holiday?
+                      </div>
+                      <LinkButton
+                        text="Manage your suspensions"
+                        to={"/suspend/" + productType.urlPart}
+                        state={productDetail}
+                        right
+                      />
+                    </div>
+                  }
                 />
               )}
           </PageContainer>
