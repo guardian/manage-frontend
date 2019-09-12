@@ -28,10 +28,12 @@ import {
 import {
   calculateIssuesImpactedPerYear,
   DATE_INPUT_FORMAT,
+  HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   IssuesImpactedPerYear,
-  momentiseDateStr
+  momentiseDateStr,
+  PotentialHolidayStopsResponse
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
@@ -194,6 +196,7 @@ export class HolidayDateChooser extends React.Component<
                         )}
                         onSelect={this.onSelect(
                           renewalDateMoment,
+                          productDetail.subscription.subscriptionId,
                           combinedIssuesImpactedPerYear,
                           holidayStopsResponse.productSpecifics
                             .annualIssueLimit,
@@ -261,6 +264,7 @@ export class HolidayDateChooser extends React.Component<
   );
   private onSelect = (
     renewalDateMoment: Moment,
+    subscriptionName: string,
     combinedIssuesImpactedPerYear: IssuesImpactedPerYear,
     annualIssueLimit: number,
     isTestUser: boolean
@@ -275,7 +279,7 @@ export class HolidayDateChooser extends React.Component<
         fetch(
           `/api/holidays/${
             this.props.productType.urlPart
-          }/potential?startDate=${start.format(
+          }/${subscriptionName}/potential?startDate=${start.format(
             DATE_INPUT_FORMAT
           )}&endDate=${end.format(DATE_INPUT_FORMAT)}`,
           {
@@ -294,39 +298,44 @@ export class HolidayDateChooser extends React.Component<
               window.location.replace(locationHeader);
               return Promise.resolve([]);
             } else if (response.ok) {
-              return response.json() as Promise<string[]>;
+              return response.json();
             }
             return Promise.reject(`${response.status} from holiday-stop-api`);
           })
-          .then(potentialIssuesImpacted => {
-            const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
-              potentialIssuesImpacted.map(momentiseDateStr),
-              renewalDateMoment
-            );
+          .then(
+            ({
+              potentials
+            }: PotentialHolidayStopsResponse<HolidayStopDetail>) => {
+              const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
+                potentials.map(({ publicationDate }) =>
+                  momentiseDateStr(publicationDate)
+                ),
+                renewalDateMoment
+              );
 
-            const issuesRemainingThisYear =
-              annualIssueLimit -
-              combinedIssuesImpactedPerYear.issueDatesThisYear.length;
+              const issuesRemainingThisYear =
+                annualIssueLimit -
+                combinedIssuesImpactedPerYear.issueDatesThisYear.length;
 
-            const issuesRemainingNextYear =
-              annualIssueLimit -
-              combinedIssuesImpactedPerYear.issueDatesNextYear.length;
+              const issuesRemainingNextYear =
+                annualIssueLimit -
+                combinedIssuesImpactedPerYear.issueDatesNextYear.length;
 
-            const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
-              renewalDateMoment,
-              annualIssueLimit,
-              issuesImpactedPerYearBySelection.issueDatesThisYear.length,
-              issuesRemainingThisYear,
-              issuesImpactedPerYearBySelection.issueDatesNextYear.length,
-              issuesRemainingNextYear
-            );
-            this.setState({
-              totalIssueCountImpactedBySelection:
-                potentialIssuesImpacted.length,
-              issuesImpactedPerYearBySelection,
-              validationErrorMessage
-            });
-          })
+              const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
+                renewalDateMoment,
+                annualIssueLimit,
+                issuesImpactedPerYearBySelection.issueDatesThisYear.length,
+                issuesRemainingThisYear,
+                issuesImpactedPerYearBySelection.issueDatesNextYear.length,
+                issuesRemainingNextYear
+              );
+              this.setState({
+                totalIssueCountImpactedBySelection: potentials.length,
+                issuesImpactedPerYearBySelection,
+                validationErrorMessage
+              });
+            }
+          )
           .catch(error => {
             this.setState({
               validationErrorMessage:

@@ -20,6 +20,14 @@ export interface RawHolidayStopRequest {
   }>;
 }
 
+export interface HolidayStopDetail {
+  publicationDate: string;
+}
+
+export interface PotentialHolidayStopsResponse<T extends HolidayStopDetail> {
+  potentials: T[];
+}
+
 export interface HolidayStopRequest {
   publicationDatesToBeStopped: Moment[];
   dateRange: DateRange;

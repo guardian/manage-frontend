@@ -15,19 +15,20 @@ export const getHolidayStopApiHandler = (
         const testUserHeader = req.header(MDA_TEST_USER_HEADER);
         const hsrEnvConfig =
           testUserHeader === "true" ? hsrConfig.testMode : hsrConfig.normalMode;
+        const isPotentialCall = req.params.sfId === "potential";
+        const maybeActualExistingSfId = !isPotentialCall
+          ? req.params.sfId
+          : undefined;
         fetch(
           url.format({
             protocol: "https",
             host: hsrEnvConfig.host,
             pathname:
-              (req.params && req.params.subscriptionName
-                ? req.params.subscriptionName === "potential"
-                  ? "/potential"
-                  : `/hsr/${req.params.subscriptionName}`
-                : "/hsr") +
-              (req.params && req.params.subscriptionName && req.params.sfId
-                ? `/${req.params.sfId}`
-                : ""),
+              req.params && req.params.subscriptionName
+                ? `/${isPotentialCall ? "potential" : "hsr"}/${
+                    req.params.subscriptionName
+                  }/${maybeActualExistingSfId || ""}`
+                : "/hsr",
             query: req.query
           }),
           {
