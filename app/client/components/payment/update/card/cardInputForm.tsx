@@ -1,14 +1,21 @@
+import Raven from "raven-js";
 import React from "react";
 import { Elements, injectStripe, StripeProvider } from "react-stripe-elements";
+import {
+  STRIPE_PUBLIC_KEY_HEADER,
+  StripeSetupIntent
+} from "../../../../../shared/stripeSetupIntent";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-import { StripeCardInputForm } from "./stripeCardInputForm";
+import {
+  StripeCardInputForm,
+  StripeSetupIntentDetails
+} from "./stripeCardInputForm";
 
 const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
 
 interface WindowWithStripe extends Window {
   Stripe: any;
 }
-
 declare let window: WindowWithStripe;
 
 export interface CardInputFormProps {
@@ -19,7 +26,7 @@ export interface CardInputFormProps {
   ) => void;
 }
 
-export interface CardInputFormState {
+export interface CardInputFormState extends StripeSetupIntentDetails {
   stripe?: stripe.Stripe;
 }
 
@@ -39,6 +46,38 @@ export class CardInputForm extends React.Component<
       script.addEventListener("load", this.updateStripeStateFromWindow);
       document.head.appendChild(script);
     }
+
+    fetch("/api/payment/card", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        [STRIPE_PUBLIC_KEY_HEADER]: this.props.stripeApiKey
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      const locationHeaderValue = response.headers.get("Location");
+      if (response.status === 401 && locationHeaderValue) {
+        window.location.replace(locationHeaderValue);
+        return;
+      } else {
+        throw new Error(
+          `Failed to load SetupIntent : ${response.status} ${
+            response.statusText
+            } : ${response.text()}`
+        );
+      }
+    })
+    .then((setupIntent: StripeSetupIntent) =>
+      this.setState({ stripeSetupIntent: setupIntent })
+    )
+    .catch(error => {
+      Raven.captureException(error);
+      this.setState({ stripeSetupIntentError: error });
+    });
   }
 
   public render(): JSX.Element {
@@ -54,7 +93,7 @@ export class CardInputForm extends React.Component<
             }
           ]}
         >
-          <InjectedStripeCardInputForm {...this.props} />
+          <InjectedStripeCardInputForm {...this.props} {...this.state} />
         </Elements>
       </StripeProvider>
     );

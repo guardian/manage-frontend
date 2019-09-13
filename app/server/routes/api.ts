@@ -6,6 +6,7 @@ import {
   sfCasesApiHandler
 } from "../middleware/apiMiddleware";
 import { withIdentity } from "../middleware/identityMiddleware";
+import { stripeSetupIntentHandler } from "../stripeSetupIntentsHandler";
 
 const router = Router();
 
@@ -37,15 +38,16 @@ router.post(
 );
 
 router.post(
-  "/payment/card/:subscriptionName?",
+  "/payment/card/:subscriptionName",
   membersDataApiHandler(
     "/user-attributes/me/update-card/:subscriptionName",
     false,
     "subscriptionName"
   )
 );
+router.post("/payment/card", stripeSetupIntentHandler);
 router.post(
-  "/payment/dd/:subscriptionName?",
+  "/payment/dd/:subscriptionName",
   membersDataApiHandler(
     "/user-attributes/me/update-direct-debit/:subscriptionName",
     false,

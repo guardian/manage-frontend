@@ -3,16 +3,6 @@ import { Card, Subscription } from "../../../../../shared/productResponse";
 import { CardDisplay } from "../../cardDisplay";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 
-export interface TokenWithCard extends stripe.Token {
-  card: stripe.Card;
-}
-
-export function isTokenWithCard(
-  maybeTokenWithCard: stripe.Token
-): maybeTokenWithCard is TokenWithCard {
-  return maybeTokenWithCard.hasOwnProperty("card");
-}
-
 export interface SubscriptionWithCard extends Subscription {
   card: Card;
 }
@@ -21,6 +11,11 @@ function isSubscriptionWithCard(
   subscription?: Subscription
 ): subscription is SubscriptionWithCard {
   return subscription !== undefined && subscription.card !== undefined;
+}
+
+interface StripePaymentMethod {
+  id: string;
+  card: stripe.Card;
 }
 
 export interface CardUpdateResponse {
@@ -40,21 +35,24 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
 
   public readonly subHasExpectedPaymentType = isSubscriptionWithCard;
 
-  private readonly stripeToken: TokenWithCard;
+  private readonly stripePaymentMethod: StripePaymentMethod;
   private readonly stripePublicKeyForUpdate: string;
 
-  constructor(stripeToken: TokenWithCard, stripePublicKeyForUpdate: string) {
-    this.stripeToken = stripeToken;
+  constructor(
+    stripePaymentMethod: StripePaymentMethod,
+    stripePublicKeyForUpdate: string
+  ) {
+    this.stripePaymentMethod = stripePaymentMethod;
     this.stripePublicKeyForUpdate = stripePublicKeyForUpdate;
   }
 
   public readonly detailToPayloadObject = () => ({
-    stripeToken: this.stripeToken.id,
-    publicKey: this.stripePublicKeyForUpdate
+    stripePaymentMethodID: this.stripePaymentMethod.id,
+    stripePublicKey: this.stripePublicKeyForUpdate
   });
 
   public readonly matchesResponse = (response: CardUpdateResponse) =>
-    response.last4 === this.stripeToken.card.last4;
+    response.last4 === this.stripePaymentMethod.card.last4;
 
   public readonly render = (subscription?: Subscription) =>
     isSubscriptionWithCard(subscription) ? (
@@ -64,8 +62,8 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
       />
     ) : (
       <CardDisplay
-        last4={this.stripeToken.card.last4}
-        type={this.stripeToken.card.brand}
+        last4={this.stripePaymentMethod.card.last4}
+        type={this.stripePaymentMethod.card.brand}
       />
     );
 

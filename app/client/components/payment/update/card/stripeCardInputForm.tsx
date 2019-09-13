@@ -1,6 +1,8 @@
 import { NavigateFn } from "@reach/router";
+import Raven from "raven-js";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
+import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
 import { validationWarningCSS } from "../../../../styles/fonts";
 import { Button } from "../../../buttons";
@@ -9,17 +11,20 @@ import { Spinner } from "../../../spinner";
 import { NavigateFnContext } from "../updatePaymentFlow";
 import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
-import {
-  isTokenWithCard,
-  NewCardPaymentMethodDetail
-} from "./newCardPaymentMethodDetail";
+import { NewCardPaymentMethodDetail } from "./newCardPaymentMethodDetail";
 import { StripeLogo } from "./stripeLogo";
 
+export interface StripeSetupIntentDetails {
+  stripeSetupIntent?: StripeSetupIntent;
+  stripeSetupIntentError?: Error;
+}
+
 export type StripeCardInputFormProps = ReactStripeElements.InjectedStripeProps &
-  CardInputFormProps;
+  CardInputFormProps &
+  StripeSetupIntentDetails;
 
 export interface StripeCardInputFormState {
-  isGeneratingToken: boolean;
+  isValidating: boolean;
   error: {
     code?: string;
     message?: string;
@@ -33,13 +38,15 @@ export class StripeCardInputForm extends React.Component<
   StripeCardInputFormState
 > {
   public state: StripeCardInputFormState = {
-    isGeneratingToken: false,
+    isValidating: false,
     error: {},
     readyElements: []
   };
 
   public render(): React.ReactNode {
-    return (
+    return this.props.stripeSetupIntentError ? (
+      <GenericErrorScreen loggingMessage={"error loading SetupIntent"} />
+    ) : (
       <>
         <div
           css={{
@@ -55,7 +62,7 @@ export class StripeCardInputForm extends React.Component<
           }}
         >
           <FlexCardElement
-            disabled={this.state.isGeneratingToken}
+            disabled={this.state.isValidating}
             markElementReady={this.markElementReady}
           />
           <div
@@ -72,7 +79,7 @@ export class StripeCardInputForm extends React.Component<
                 justifyContent: "space-between"
               }}
             >
-              {this.state.isGeneratingToken ? (
+              {this.state.isValidating ? (
                 <>
                   <StripeLogo />
                   <Spinner
@@ -102,14 +109,19 @@ export class StripeCardInputForm extends React.Component<
                           }}
                         >
                           <Button
-                            disabled={this.props.stripe === undefined}
+                            disabled={
+                              !(
+                                this.props.stripe &&
+                                this.props.stripeSetupIntent
+                              )
+                            }
                             text="Review payment update"
                             onClick={this.startCardUpdate(nav.navigate)}
                             primary
                             right
                           />
-                          {this.renderError()}
                         </div>
+                        {this.renderError()}
                       </>
                     ) : (
                       <GenericErrorScreen loggingMessage="No navigate function - very odd" />
@@ -125,7 +137,9 @@ export class StripeCardInputForm extends React.Component<
   }
 
   private isLoaded = () =>
-    this.props.stripe && this.state.readyElements.length === 3;
+    this.props.stripe &&
+    this.state.readyElements.length === 3 &&
+    this.props.stripeSetupIntent;
 
   private markElementReady = (element: string) => () =>
     this.setState(prevState => ({
@@ -135,44 +149,94 @@ export class StripeCardInputForm extends React.Component<
   private renderError = () => {
     if (this.state.error && this.state.error.message) {
       return (
-        <p
+        <div
           css={{
             ...validationWarningCSS,
-            marginTop: "5px"
+            marginTop: "5px",
+            width: "100%",
+            textAlign: "right"
           }}
         >
-          {this.state.error.message}
-        </p>
+          {this.state.error.message
+            .split(".")
+            .filter(_ => _.trim().length)
+            .map((sentence, index) => (
+              <div key={index}>
+                {sentence}
+                {sentence.includes(".") ? "" : "."}
+              </div>
+            ))}
+        </div>
       );
     } else {
       return null;
     }
   };
 
-  private setInProgress = (value: boolean) =>
-    this.setState({ isGeneratingToken: value });
-
   private startCardUpdate = (navigate: NavigateFn) => async () => {
-    this.setInProgress(true);
-    if (this.props.stripe) {
-      const tokenResponse = await this.props.stripe.createToken(
-        { name: this.props.userEmail } // may need to add more token options for product switch
+    this.setState({ isValidating: true });
+    if (this.props.stripe && this.props.stripeSetupIntent) {
+      const createPaymentMethodResult = await this.props.stripe.createPaymentMethod(
+        "card",
+        {
+          billing_details: {
+            name: this.props.userEmail,
+            email: this.props.userEmail
+          }
+        }
       );
-      if (tokenResponse.token && isTokenWithCard(tokenResponse.token)) {
+
+      if (
+        !(
+          createPaymentMethodResult &&
+          createPaymentMethodResult.paymentMethod &&
+          createPaymentMethodResult.paymentMethod.id &&
+          createPaymentMethodResult.paymentMethod.card &&
+          createPaymentMethodResult.paymentMethod.card.brand &&
+          createPaymentMethodResult.paymentMethod.card.last4
+        )
+      ) {
+        Raven.captureException(
+          createPaymentMethodResult.error ||
+            "something missing from the createPaymentMethod response"
+        );
+        this.setState({
+          error: createPaymentMethodResult.error || {
+            message:
+              "Something went wrong, please check the details and try again."
+          },
+          isValidating: false
+        });
+        return;
+      }
+
+      const intentResult = await this.props.stripe.handleCardSetup(
+        this.props.stripeSetupIntent.client_secret
+      );
+      if (
+        intentResult.setupIntent &&
+        intentResult.setupIntent.status &&
+        intentResult.setupIntent.status === "succeeded"
+      ) {
         this.props.newPaymentMethodDetailUpdater(
           new NewCardPaymentMethodDetail(
-            tokenResponse.token,
+            createPaymentMethodResult.paymentMethod,
             this.props.stripeApiKey
           )
         );
         navigate("confirm");
       } else {
-        if (tokenResponse.error) {
-          this.setState({
-            error: tokenResponse.error
-          });
-        }
-        this.setInProgress(false);
+        Raven.captureException(
+          intentResult.error ||
+            "something missing from the SetupIntent response"
+        );
+        this.setState({
+          error: intentResult.error || {
+            message:
+              "Something went wrong, please check the details and try again."
+          },
+          isValidating: false
+        });
       }
     }
   };
