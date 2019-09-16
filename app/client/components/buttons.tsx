@@ -23,6 +23,7 @@ export interface ButtonProps {
   forceCircle?: true;
   hoverColour?: string;
   leftTick?: true;
+  type?: "button" | "submit" | "reset";
 }
 
 export interface LinkButtonProps extends ButtonProps {
@@ -196,6 +197,7 @@ export const Button = (props: ButtonProps) => (
     onMouseUp={(event: React.MouseEvent<HTMLButtonElement>) =>
       (event.target as HTMLButtonElement).blur()
     }
+    type={props.type}
   >
     {props.leftTick && <TickIcon />}
     {props.text}

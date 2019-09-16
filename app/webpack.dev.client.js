@@ -22,6 +22,16 @@ module.exports = merge(common.client, {
         }
       },
       {
+        context: "/avatarcodeproxy",
+        target: "https://avatar.code.dev-theguardian.com",
+        pathRewrite: { "^/avatarcodeproxy": "" },
+        changeOrigin: true,
+        headers: {
+          host: "https://avatar.code.dev-theguardian.com",
+          origin: "https://manage.code.dev-theguardian.com"
+        }
+      },
+      {
         context: "**",
         target: "http://localhost:9233"
       }

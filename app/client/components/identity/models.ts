@@ -9,6 +9,11 @@ export enum Theme {
   FromThePapers = "From the papers"
 }
 
+export enum ErrorTypes {
+  GENERAL = "GENERAL",
+  VALIDATION = "VALIDATION"
+}
+
 export enum ConsentOptionType {
   EMAIL = "EMAIL",
   NEWSLETTER = "NEWSLETTER",
@@ -16,9 +21,30 @@ export enum ConsentOptionType {
 }
 
 export interface User {
+  id: string;
   email: string;
+  location: string;
+  aboutMe: string;
+  interests: string;
   consents: string[];
+  username: string;
   validated: boolean;
+}
+
+export interface UserError {
+  type: ErrorTypes.VALIDATION;
+  error: {
+    aboutMe: string;
+    location: string;
+    interests: string;
+    username: string;
+  };
+}
+
+export interface UserCollection {
+  getCurrentUser: () => Promise<User>;
+  save: (user: User) => Promise<void>;
+  saveChanges: (original: User, changed: User) => Promise<void>;
 }
 
 export interface ConsentOption {

@@ -1,20 +1,58 @@
-import { User } from "../models";
-import { APIUseCredentials, identityFetch } from "./fetch";
+import { ErrorTypes, User, UserError } from "../models";
+import { APIPostOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface UserAPIResponse {
   user: {
+    id: string;
     consents: [
       {
         id: string;
         consented: boolean;
       }
     ];
+    publicFields: {
+      aboutMe?: string;
+      interests?: string;
+      location?: string;
+      username?: string;
+    };
     primaryEmailAddress: string;
     statusFields: {
       userEmailValidated: boolean;
     };
   };
 }
+
+interface UserAPIRequest {
+  publicFields: {
+    aboutMe?: string;
+    username?: string;
+    interests?: string;
+    location?: string;
+  };
+}
+
+interface UserAPIErrorResponse {
+  status: string;
+  errors: Array<{
+    context: string;
+    description: string;
+    [key: string]: string;
+  }>;
+}
+
+export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
+  return error.status && error.status === "error";
+};
+
+const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
+  publicFields: {
+    aboutMe: user.aboutMe,
+    interests: user.interests,
+    location: user.location,
+    username: user.username
+  }
+});
 
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
@@ -26,6 +64,37 @@ const getConsentedTo = (response: UserAPIResponse) => {
   }
 };
 
+const getFieldNameFromContext = (context: string): string => {
+  return context.split(".").pop() as string;
+};
+
+const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
+  const error = response.errors.reduce(
+    (a, e) => {
+      return {
+        ...a,
+        [getFieldNameFromContext(e.context)]: e.description
+      };
+    },
+    {} as UserError["error"]
+  );
+  return {
+    type: ErrorTypes.VALIDATION,
+    error
+  };
+};
+
+export const write = async (user: Partial<User>): Promise<void> => {
+  const url = "/user/me";
+  const body = userToUserAPIRequest(user);
+  const options = APIUseCredentials(APIPostOptions(body));
+  try {
+    await identityFetch(url, options);
+  } catch (e) {
+    throw isErrorResponse(e) ? userAPIErrorToUserError(e) : e;
+  }
+};
+
 export const read = async (): Promise<User> => {
   const url = "/user/me";
   const response: UserAPIResponse = await identityFetch(
@@ -33,10 +102,16 @@ export const read = async (): Promise<User> => {
     APIUseCredentials({})
   );
   const consents = getConsentedTo(response);
+  const { user } = response;
   return {
-    email: response.user.primaryEmailAddress,
+    id: user.id,
+    email: user.primaryEmailAddress,
+    location: user.publicFields.location || "",
+    aboutMe: user.publicFields.aboutMe || "",
+    interests: user.publicFields.interests || "",
+    username: user.publicFields.username || "",
     consents,
-    validated: response.user.statusFields.userEmailValidated
+    validated: user.statusFields.userEmailValidated
   };
 };
 

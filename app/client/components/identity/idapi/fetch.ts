@@ -2,12 +2,13 @@ import { IdentityLocations } from "../IdentityLocations";
 
 const handleResponseFailure = async (response: Response) => {
   let err;
+  const raw = await response.text();
   try {
-    err = await response.json();
-  } catch (e) {
-    err = await response.text();
+    err = JSON.parse(raw);
+  } catch (_) {
+    err = raw;
   }
-  throw new Error(`Response error: ${err}`);
+  throw err;
 };
 
 const handleResponseSuccess = async (response: Response) => {
@@ -24,13 +25,30 @@ export const APIFetch = (baseUrl: string) => async (
 ): Promise<any> => {
   const response = await fetch(baseUrl + url, options);
   if (!response.ok) {
-    await handleResponseFailure(response);
+    return await handleResponseFailure(response);
   } else if (response.status === 204) {
     return null;
   } else {
     return await handleResponseSuccess(response);
   }
 };
+
+export const APIFilePostOptions = (payload: File): RequestInit => {
+  const data = new FormData();
+  data.append("file", payload);
+  return {
+    method: "POST",
+    body: data
+  };
+};
+
+export const APIPostOptions = (payload: any): RequestInit => ({
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
 
 export const APIPatchOptions = (payload: any): RequestInit => ({
   method: "PATCH",

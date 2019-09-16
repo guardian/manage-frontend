@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { ConsentOptions } from "./identity";
-import { MarketingPreference } from "./MarketingPreference";
-import { ConsentOption } from "./models";
-import { PageSection } from "./PageSection";
+import { ConsentOptions } from "../identity";
+import { MarketingPreference } from "../MarketingPreference";
+import { ConsentOption } from "../models";
+import { PageSection } from "../PageSection";
 
 type ClickHandler = (id: string) => {};
 

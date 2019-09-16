@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import palette from "../../colours";
-import { headline } from "../../styles/fonts";
-import { MembershipLinks } from "../membershipLinks";
-import { navLinks } from "../nav";
-import { PageContainer, PageHeaderContainer } from "../page";
-import { Spinner } from "../spinner";
+import { headline } from "../../../styles/fonts";
+import { MembershipLinks } from "../../membershipLinks";
+import { navLinks } from "../../nav";
+import { PageContainer, PageHeaderContainer } from "../../page";
+import { Spinner } from "../../spinner";
+import {
+  GenericErrorMessage,
+  GenericErrorMessageRef
+} from "../GenericErrorMessage";
+import { ConsentOptions, Users } from "../identity";
+import { IdentityLocations } from "../IdentityLocations";
+import { Lines } from "../Lines";
+import { MarginWrapper } from "../MarginWrapper";
+import { Actions, useConsentOptions } from "../useConsentOptions";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
-import * as UserAPI from "./idapi/user";
-import { ConsentOptions } from "./identity";
-import { IdentityLocations } from "./IdentityLocations";
-import { Lines } from "./Lines";
-import { MarginWrapper } from "./MarginWrapper";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
-import { Actions, useConsentOptions } from "./useConsentOptions";
 
 export const EmailAndMarketing = (props: { path?: string }) => {
   const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;
@@ -53,7 +55,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   useEffect(() => {
     const makeInitialAPICalls = async () => {
       try {
-        const user = await UserAPI.memoRead();
+        const user = await Users.getCurrentUser();
         if (!user.validated) {
           window.location.assign(IdentityLocations.VERIFY_EMAIL);
           return;
@@ -72,7 +74,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
   const consents = ConsentOptions.consents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
 
-  const errorRef = React.createRef<HTMLDivElement>();
+  const errorRef = React.createRef<GenericErrorMessageRef>();
 
   useEffect(
     () => {
@@ -85,32 +87,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const errorMessage = (
     <PageContainer>
-      <div
-        ref={errorRef}
-        css={{
-          fontSize: "13px",
-          lineHeight: "18px",
-          backgroundColor: "#ffe1e1",
-          borderBottom: `1px solid ${palette.red.light}`,
-          borderTop: `1px solid ${palette.red.light}`,
-          color: palette.red.medium,
-          marginTop: "6px",
-          padding: "7px 8px"
-        }}
-      >
-        <p css={{ marginBottom: "10px" }}>Sorry, something went wrong!</p>
-        <p css={{ marginBottom: "0" }}>
-          <a
-            css={{
-              color: palette.blue.dark,
-              cursor: "pointer"
-            }}
-            onClick={() => window.location.reload()}
-          >
-            Refresh this page
-          </a>
-        </p>
-      </div>
+      <GenericErrorMessage ref={errorRef} />
     </PageContainer>
   );
 

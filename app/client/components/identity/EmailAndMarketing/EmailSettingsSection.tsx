@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import palette from "../../colours";
-import { sans } from "../../styles/fonts";
-import { Button } from "../buttons";
-import { IdentityLocations } from "./IdentityLocations";
-import { PageSection } from "./PageSection";
+import palette from "../../../colours";
+import { sans } from "../../../styles/fonts";
+import { Button } from "../../buttons";
+import { IdentityLocations } from "../IdentityLocations";
+import { PageSection } from "../PageSection";
 
 interface EmailSettingsSectionProps {
   actionHandler: () => void;

@@ -7,7 +7,9 @@ import * as UserAPI from "./idapi/user";
 import {
   ConsentOption,
   ConsentOptionCollection,
-  ConsentOptionType
+  ConsentOptionType,
+  User,
+  UserCollection
 } from "./models";
 
 const isNewsletter = (option: ConsentOption): boolean =>
@@ -23,6 +25,25 @@ const mapSubscriptions = (
     ...option,
     subscribed: option.subscribed ? true : subscriptions.includes(option.id)
   }));
+
+export const Users: UserCollection = {
+  async getCurrentUser(): Promise<User> {
+    return await UserAPI.memoRead();
+  },
+  async save(user: User): Promise<void> {
+    return await UserAPI.write(user);
+  },
+  async saveChanges(original: User, changed: User): Promise<void> {
+    type UserKey = keyof User;
+    let fields: Partial<User> = {};
+    for (const key in changed) {
+      if (original[key as UserKey] !== changed[key as UserKey]) {
+        fields = { ...fields, [key as UserKey]: changed[key as UserKey] };
+      }
+    }
+    return await UserAPI.write(fields);
+  }
+};
 
 export const ConsentOptions: ConsentOptionCollection = {
   async getAll(): Promise<ConsentOption[]> {
