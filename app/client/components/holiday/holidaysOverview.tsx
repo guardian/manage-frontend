@@ -70,9 +70,9 @@ const renderHolidayStopsOverview = (
   );
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-    holidayStopsResponse.existing
-      .map(existing => existing.publicationDatesToBeStopped)
-      .flat(),
+    holidayStopsResponse.existing.flatMap(
+      existing => existing.publicationDatesToBeStopped
+    ),
     renewalDateMoment
   );
 

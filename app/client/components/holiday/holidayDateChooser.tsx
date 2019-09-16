@@ -129,9 +129,9 @@ export class HolidayDateChooser extends React.Component<
                 );
 
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-                  holidayStopsResponse.existing
-                    .map(existing => existing.publicationDatesToBeStopped)
-                    .flat(),
+                  holidayStopsResponse.existing.flatMap(
+                    existing => existing.publicationDatesToBeStopped
+                  ),
                   renewalDateMoment
                 );
 
