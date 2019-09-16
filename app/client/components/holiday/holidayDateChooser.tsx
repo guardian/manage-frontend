@@ -474,7 +474,11 @@ export class HolidayDateChooser extends React.Component<
         </>
       );
     } else {
-      return <Spinner />;
+      return (
+        <div css={{ [maxWidth.phablet]: { width: "100%" } }}>
+          <Spinner />
+        </div>
+      );
     }
   };
 }
