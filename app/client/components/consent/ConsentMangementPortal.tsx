@@ -7,20 +7,25 @@ import { PrivacySettings } from "./PrivacySettings";
 
 const headerCSS = css`
   background-color: ${palette.blue.header};
-  position: relative;
-  height: 90px;
+  position: fixed;
+  top: 0;
+  width: 95%;
+  max-width: 450px;
+  border-bottom: 1px solid red;
 `;
 
 const logoStyles = css`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 44px;
-  width: 135px;
-  ${minWidth.mobileMedium} {
-    height: 56px;
-    width: 175px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  margin-left: 48px;
+  height: 72px;
+  width: 224px;
+
+  ${minWidth.mobileLandscape} {
+    height: 95px;
+    width: 295px;
   }
+
   path {
     fill: ${palette.white};
   }
@@ -55,7 +60,6 @@ export class ConsentManagementPortal extends Component<{}, {}> {
         <div css={headerCSS}>
           <TheGuardianLogo css={logoStyles} />
         </div>
-        <div css={multiLine} />
         <PrivacySettings />
       </div>
     );

@@ -18,19 +18,44 @@ import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
+import { minWidth } from "../../styles/breakpoints";
+import { ConsentGraphic } from "../svgs/consentGraphic";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
 const containerStyles = css`
-  margin: 6px 12px 0;
-  color: ${palette.neutral[2]};
+  margin-top: 94px;
+  ${minWidth.mobileLandscape} {
+    margin-top: 118px;
+  }
+  background-color: #041f4a;
+  color: ${palette.white};
+  width: 95%;
+  max-width: 450px;
+  border-right: 1px solid red;
+`;
+
+const content = css`
+  padding: 8px 16px;
+
+  h1 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    font-family: "Guardian Egyptian Web", Georgia, serif;
+    margin-bottom: 12px;
+  }
 
   p {
     margin-bottom: 16px;
     font-size: 17px;
     line-height: 24px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
+  }
+
+  a {
+    color: ${palette.white};
   }
 `;
 
@@ -58,7 +83,6 @@ const buttonContainerStyles = css`
   margin-right: -12px;
   background-color: ${palette.neutral[7]};
   border-top: 1px solid ${palette.neutral[5]};
-  display: flex;
   padding: 12px 6px;
 `;
 
@@ -72,16 +96,24 @@ const buttonStyles = css`
   text-decoration: none;
   height: 42px;
   min-height: 42px;
-  padding: 0 6px;
+  padding: 0 16px;
   border: none;
   border-radius: 21px;
   box-sizing: border-box;
   background: transparent;
   cursor: pointer;
   position: relative;
-  background-color: ${palette.yellow.medium};
-  flex: 1;
   margin: 0 6px;
+`;
+
+const yellowButtonStyles = css`
+  background-color: ${palette.yellow.medium};
+`;
+
+const optionsButtonStyles = css`
+  background-color: #041f4a;
+  border: 1px solid ${palette.white};
+  color: ${palette.white};
 `;
 
 const integStyles = css`
@@ -151,7 +183,58 @@ export class PrivacySettings extends Component<{}, State> {
   public render(): React.ReactNode {
     return (
       <div css={containerStyles}>
-        <h1 css={headerStyles}>We need to talk about data...</h1>
+        <ConsentGraphic />
+        <div css={content}>
+          <h1>
+            Please review and manage your data and privacy settings below.
+          </h1>
+          <p>
+            When you visit this site, we'd like to use cookies and identifiers
+            to understand things like which pages you've visited and how long
+            you've spent with us. It helps us improve our service to you.{" "}
+          </p>
+          <p>
+            Our advertising partners would like to do the same so the adverts
+            are more relevant, and we make more money to invest in Guardian
+            journalism. To find out more, read our{" "}
+            <a href={privacyPolicyURL} target="_blank">
+              privacy policy
+            </a>{" "}
+            and{" "}
+            <a href={cookiePolicyURL} target="_blank">
+              cookie policy
+            </a>.
+          </p>
+          <form id="cmp-form">
+            <div css={topButtonContainerStyles}>
+              <button
+                type="button"
+                onClick={() => {
+                  doScrolling("#cmp-options", 250);
+                }}
+                css={css`
+                  ${buttonStyles};
+                  ${optionsButtonStyles};
+                `}
+              >
+                Options
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  this.enableAllAndClose();
+                }}
+                css={css`
+                  ${buttonStyles};
+                  ${yellowButtonStyles};
+                `}
+              >
+                Enable all and close
+              </button>
+            </div>
+          </form>
+        </div>
+        {/* <h1 css={headerStyles}>We need to talk about data...</h1>
 
         <p>
           ...and how we use yours specifically. Please review and manage your
@@ -240,7 +323,7 @@ export class PrivacySettings extends Component<{}, State> {
               Save and continue
             </button>
           </div>
-        </form>
+        </form> */}
       </div>
     );
   }
