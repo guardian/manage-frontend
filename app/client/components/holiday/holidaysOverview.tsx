@@ -71,7 +71,7 @@ const renderHolidayStopsOverview = (
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
     holidayStopsResponse.existing.flatMap(
-      existing => existing.publicationDatesToBeStopped
+      existing => existing.publicationsImpacted
     ),
     renewalDateMoment
   );
@@ -133,24 +133,21 @@ const renderHolidayStopsOverview = (
                       <div>
                         You have suspended{" "}
                         <strong>
-                          {
-                            combinedIssuesImpactedPerYear.issueDatesThisYear
-                              .length
-                          }/{
+                          {combinedIssuesImpactedPerYear.issueThisYear.length}/{
                             holidayStopsResponse.productSpecifics
                               .annualIssueLimit
                           }
                         </strong>{" "}
                         issues until{" "}
                         {renewalDateMoment.format(friendlyLongDateFormat)}
-                        {combinedIssuesImpactedPerYear.issueDatesNextYear
-                          .length > 0 && (
+                        {combinedIssuesImpactedPerYear.issueNextYear.length >
+                          0 && (
                           <span>
                             {" "}
                             and{" "}
                             <strong>
                               {
-                                combinedIssuesImpactedPerYear.issueDatesNextYear
+                                combinedIssuesImpactedPerYear.issueNextYear
                                   .length
                               }/{
                                 holidayStopsResponse.productSpecifics
@@ -197,7 +194,10 @@ const renderHolidayStopsOverview = (
               heading="Details"
               content={
                 holidayStopsResponse.existing.length > 0 ? (
-                  <SummaryTable data={holidayStopsResponse.existing} />
+                  <SummaryTable
+                    data={holidayStopsResponse.existing}
+                    subscription={productDetail.subscription}
+                  />
                 ) : (
                   "You currently don't have any scheduled suspensions."
                 )

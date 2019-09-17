@@ -28,12 +28,13 @@ import {
 import {
   calculateIssuesImpactedPerYear,
   DATE_INPUT_FORMAT,
-  HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   IssuesImpactedPerYear,
   momentiseDateStr,
-  PotentialHolidayStopsResponse
+  momentiseRawHolidayStopDetail,
+  PotentialHolidayStopsResponse,
+  RawHolidayStopDetail
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
@@ -130,7 +131,7 @@ export class HolidayDateChooser extends React.Component<
 
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
                   holidayStopsResponse.existing.flatMap(
-                    existing => existing.publicationDatesToBeStopped
+                    existing => existing.publicationsImpacted
                   ),
                   renewalDateMoment
                 );
@@ -305,28 +306,26 @@ export class HolidayDateChooser extends React.Component<
           .then(
             ({
               potentials
-            }: PotentialHolidayStopsResponse<HolidayStopDetail>) => {
+            }: PotentialHolidayStopsResponse<RawHolidayStopDetail>) => {
               const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
-                potentials.map(({ publicationDate }) =>
-                  momentiseDateStr(publicationDate)
-                ),
+                potentials.map(momentiseRawHolidayStopDetail),
                 renewalDateMoment
               );
 
               const issuesRemainingThisYear =
                 annualIssueLimit -
-                combinedIssuesImpactedPerYear.issueDatesThisYear.length;
+                combinedIssuesImpactedPerYear.issueThisYear.length;
 
               const issuesRemainingNextYear =
                 annualIssueLimit -
-                combinedIssuesImpactedPerYear.issueDatesNextYear.length;
+                combinedIssuesImpactedPerYear.issueNextYear.length;
 
               const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
                 renewalDateMoment,
                 annualIssueLimit,
-                issuesImpactedPerYearBySelection.issueDatesThisYear.length,
+                issuesImpactedPerYearBySelection.issueThisYear.length,
                 issuesRemainingThisYear,
-                issuesImpactedPerYearBySelection.issueDatesNextYear.length,
+                issuesImpactedPerYearBySelection.issueNextYear.length,
                 issuesRemainingNextYear
               );
               this.setState({
@@ -398,16 +397,16 @@ export class HolidayDateChooser extends React.Component<
   ) => {
     const issuesRemainingThisYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueDatesThisYear.length -
+      combinedIssuesImpactedPerYear.issueThisYear.length -
       (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issueDatesThisYear.length
+        ? this.state.issuesImpactedPerYearBySelection.issueThisYear.length
         : 0);
 
     const issuesRemainingNextYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueDatesNextYear.length -
+      combinedIssuesImpactedPerYear.issueNextYear.length -
       (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issueDatesNextYear.length
+        ? this.state.issuesImpactedPerYearBySelection.issueNextYear.length
         : 0);
 
     if (this.state.validationErrorMessage) {
@@ -457,8 +456,8 @@ export class HolidayDateChooser extends React.Component<
             {displayNumberOfIssuesAsText(issuesRemainingThisYear)} available to
             suspend before {anniversaryDateToElement(renewalDateMoment)}
             {this.state.issuesImpactedPerYearBySelection &&
-              this.state.issuesImpactedPerYearBySelection.issueDatesNextYear
-                .length > 0 && (
+              this.state.issuesImpactedPerYearBySelection.issueNextYear.length >
+                0 && (
                 <>
                   {" "}
                   and {displayNumberOfIssuesAsText(

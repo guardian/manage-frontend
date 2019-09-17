@@ -10,26 +10,33 @@ export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 export const momentiseDateStr = (dateStr: string) =>
   moment(dateStr, DATE_INPUT_FORMAT);
 
+export interface CommonCreditProperties {
+  estimatedPrice?: number;
+  actualPrice?: number;
+}
+
+export interface RawHolidayStopDetail extends CommonCreditProperties {
+  publicationDate: string;
+}
+
+export interface HolidayStopDetail extends CommonCreditProperties {
+  publicationDate: Moment;
+}
+
 export interface RawHolidayStopRequest {
   start: string;
   end: string;
   id: string;
   subscriptionName: string;
-  publicationsImpacted: Array<{
-    publicationDate: string;
-  }>;
+  publicationsImpacted: RawHolidayStopDetail[];
 }
 
-export interface HolidayStopDetail {
-  publicationDate: string;
-}
-
-export interface PotentialHolidayStopsResponse<T extends HolidayStopDetail> {
+export interface PotentialHolidayStopsResponse<T extends RawHolidayStopDetail> {
   potentials: T[];
 }
 
 export interface HolidayStopRequest {
-  publicationDatesToBeStopped: Moment[];
+  publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
   id: string;
   subscriptionName: string;
@@ -58,6 +65,11 @@ interface RawGetHolidayStopsResponse {
   };
   existing: RawHolidayStopRequest[];
 }
+
+export const momentiseRawHolidayStopDetail = (raw: RawHolidayStopDetail) => ({
+  ...raw,
+  publicationDate: momentiseDateStr(raw.publicationDate)
+});
 
 export const createGetHolidayStopsFetcher = (
   productUrlPart: ProductUrlPart,
@@ -104,9 +116,8 @@ const embellishRawHolidayStop = (
       momentiseDateStr(rawHolidayStopRequest.start),
       momentiseDateStr(rawHolidayStopRequest.end)
     ),
-    publicationDatesToBeStopped: rawHolidayStopRequest.publicationsImpacted.map(
-      publicationImpacted =>
-        momentiseDateStr(publicationImpacted.publicationDate)
+    publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
+      momentiseRawHolidayStopDetail
     )
   } as HolidayStopRequest);
 
@@ -129,24 +140,26 @@ export const embellishExistingHolidayStops = async (response: Response) => {
 };
 
 export interface IssuesImpactedPerYear {
-  issueDatesThisYear: Moment[];
-  issueDatesNextYear: Moment[];
+  issueThisYear: HolidayStopDetail[];
+  issueNextYear: HolidayStopDetail[];
 }
 
 export const calculateIssuesImpactedPerYear = (
-  publicationDatesToBeStopped: Moment[],
+  publicationsImpacted: HolidayStopDetail[],
   nextYearStartDate: Moment
 ) => {
   return {
-    issueDatesThisYear: publicationDatesToBeStopped.filter(
-      date =>
-        date.isBefore(nextYearStartDate) &&
-        date.isSameOrAfter(nextYearStartDate.clone().subtract(1, "year"))
+    issueThisYear: publicationsImpacted.filter(
+      issue =>
+        issue.publicationDate.isBefore(nextYearStartDate) &&
+        issue.publicationDate.isSameOrAfter(
+          nextYearStartDate.clone().subtract(1, "year")
+        )
     ),
-    issueDatesNextYear: publicationDatesToBeStopped.filter(
-      date =>
-        date.isSameOrAfter(nextYearStartDate) &&
-        date.isBefore(nextYearStartDate.clone().add(1, "year"))
+    issueNextYear: publicationsImpacted.filter(
+      issue =>
+        issue.publicationDate.isSameOrAfter(nextYearStartDate) &&
+        issue.publicationDate.isBefore(nextYearStartDate.clone().add(1, "year"))
     )
   } as IssuesImpactedPerYear;
 };

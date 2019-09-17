@@ -112,6 +112,7 @@ export class HolidayReview extends React.Component<
                         <SummaryTable
                           data={dateChooserState}
                           alternateSuspendedColumnHeading="To be suspended"
+                          subscription={productDetail.subscription}
                         />
                       </div>
                       {this.state.isCreating ? (
