@@ -39,7 +39,7 @@ const containerStyles = css`
   color: ${palette.neutral[100]};
   width: 95%;
   max-width: 450px;
-  border-right: 1px solid red;
+  border-right: 1px solid ${palette.brand.pastel};
 `;
 
 const content = css`
@@ -74,13 +74,7 @@ const headerStyles = css`
   margin-bottom: 12px;
 `;
 
-const topButtonContainerStyles = css`
-  height: 66px;
-  margin-left: -12px;
-  margin-right: -12px;
-  display: flex;
-  padding: 6px 6px;
-`;
+const topButtonContainerStyles = css``;
 
 const buttonContainerStyles = css`
   height: 66px;
@@ -139,35 +133,16 @@ const yellowButtonStyles = css`
   }
 `;
 
-// const buttonStyles = css`
-//   font-size: 16px;
-//   line-height: 22px;
-//   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
-//     Lucida Grande, sans-serif;
-//   font-weight: 700;
-//   align-items: center;
-//   text-decoration: none;
-//   height: 42px;
-//   min-height: 42px;
-//   padding: 0 16px;
-//   border: none;
-//   border-radius: 21px;
-//   box-sizing: border-box;
-//   background: transparent;
-//   cursor: pointer;
-//   position: relative;
-//   margin: 0 6px;
-// `;
+const optionsButtonStyles = css`
+  background-color: ${palette.brand.dark};
+  color: ${palette.neutral[100]};
+  border: 1px solid ${palette.neutral[100]};
+  margin-right: 12px;
 
-// const yellowButtonStyles = css`
-//   background-color: ${palette.yellow.main};
-// `;
-
-// const optionsButtonStyles = css`
-//   background-color: #041f4a;
-//   border: 1px solid ${palette.neutral[100]};
-//   color: ${palette.neutral[100]};
-// `;
+  &:hover :not(:disabled) {
+    background-color: ${palette.sport.bright};
+  }
+`;
 
 const integStyles = css`
   margin-right: 5px;
@@ -260,7 +235,7 @@ export class PrivacySettings extends Component<{}, State> {
           </p>
           <form id="cmp-form">
             <div css={topButtonContainerStyles}>
-              {/* <button
+              <button
                 type="button"
                 onClick={() => {
                   doScrolling("#cmp-options", 250);
@@ -271,7 +246,7 @@ export class PrivacySettings extends Component<{}, State> {
                 `}
               >
                 Options
-              </button> */}
+              </button>
               <button
                 type="button"
                 onClick={() => {
