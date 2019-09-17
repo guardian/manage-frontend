@@ -14,12 +14,18 @@ import {
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
-import { palette } from "@guardian/src-foundations";
+import {
+  palette,
+  size,
+  focusHalo,
+  transitions
+} from "@guardian/src-foundations";
 import { minWidth } from "../../styles/breakpoints";
 import { ConsentGraphic } from "../svgs/consentGraphic";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
+import { ArrowIcon } from "../svgs/arrowIcon";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
@@ -86,34 +92,82 @@ const buttonContainerStyles = css`
 `;
 
 const buttonStyles = css`
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  text-decoration: none;
   font-size: 16px;
   line-height: 22px;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
   font-weight: 700;
-  align-items: center;
-  text-decoration: none;
-  height: 42px;
-  min-height: 42px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 21px;
   box-sizing: border-box;
+  border: none;
   background: transparent;
   cursor: pointer;
-  position: relative;
-  margin: 0 6px;
+  transition: ${transitions.medium};
+  &:focus {
+    ${focusHalo};
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  height: ${size.large}px;
+  min-height: ${size.large}px;
+  padding: 0 ${size.large / 2}px;
+  border-radius: ${size.large / 2}px;
+
+  svg {
+    flex: 0 0 auto;
+    display: block;
+    fill: currentColor;
+    position: relative;
+    width: ${size.large}px;
+    height: auto;
+    margin: 0 ${-size.large / 3}px 0 ${size.large / 16}px;
+  }
 `;
 
 const yellowButtonStyles = css`
   background-color: ${palette.yellow.main};
+  color: ${palette.neutral[7]};
+
+  &:hover :not(:disabled) {
+    background-color: ${palette.yellow.dark};
+  }
 `;
 
-const optionsButtonStyles = css`
-  background-color: #041f4a;
-  border: 1px solid ${palette.neutral[100]};
-  color: ${palette.neutral[100]};
-`;
+// const buttonStyles = css`
+//   font-size: 16px;
+//   line-height: 22px;
+//   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+//     Lucida Grande, sans-serif;
+//   font-weight: 700;
+//   align-items: center;
+//   text-decoration: none;
+//   height: 42px;
+//   min-height: 42px;
+//   padding: 0 16px;
+//   border: none;
+//   border-radius: 21px;
+//   box-sizing: border-box;
+//   background: transparent;
+//   cursor: pointer;
+//   position: relative;
+//   margin: 0 6px;
+// `;
+
+// const yellowButtonStyles = css`
+//   background-color: ${palette.yellow.main};
+// `;
+
+// const optionsButtonStyles = css`
+//   background-color: #041f4a;
+//   border: 1px solid ${palette.neutral[100]};
+//   color: ${palette.neutral[100]};
+// `;
 
 const integStyles = css`
   margin-right: 5px;
@@ -206,7 +260,7 @@ export class PrivacySettings extends Component<{}, State> {
           </p>
           <form id="cmp-form">
             <div css={topButtonContainerStyles}>
-              <button
+              {/* <button
                 type="button"
                 onClick={() => {
                   doScrolling("#cmp-options", 250);
@@ -217,7 +271,7 @@ export class PrivacySettings extends Component<{}, State> {
                 `}
               >
                 Options
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => {
@@ -228,7 +282,8 @@ export class PrivacySettings extends Component<{}, State> {
                   ${yellowButtonStyles};
                 `}
               >
-                Enable all and close
+                <span>Enable all and close</span>
+                <ArrowIcon />
               </button>
             </div>
           </form>
