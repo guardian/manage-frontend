@@ -2,7 +2,6 @@ import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
-import { ProductUrlPart } from "../../../shared/productTypes";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
@@ -31,8 +30,13 @@ export interface RawHolidayStopRequest {
   publicationsImpacted: RawHolidayStopDetail[];
 }
 
-export interface PotentialHolidayStopsResponse<T extends RawHolidayStopDetail> {
-  potentials: T[];
+export interface RawPotentialHolidayStopDetail {
+  publicationDate: string;
+  credit?: number;
+}
+
+export interface PotentialHolidayStopsResponse {
+  potentials: RawPotentialHolidayStopDetail[];
 }
 
 export interface HolidayStopRequest {
@@ -66,25 +70,42 @@ interface RawGetHolidayStopsResponse {
   existing: RawHolidayStopRequest[];
 }
 
-export const momentiseRawHolidayStopDetail = (raw: RawHolidayStopDetail) => ({
-  ...raw,
+export const convertRawPotentialHolidayStopDetail = (
+  raw: RawPotentialHolidayStopDetail
+) => ({
+  estimatedPrice: raw.credit,
   publicationDate: momentiseDateStr(raw.publicationDate)
 });
-
-export const createGetHolidayStopsFetcher = (
-  productUrlPart: ProductUrlPart,
-  subscriptionName: string,
-  isTestUser: boolean
-) => () =>
-  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
-    }
-  });
 
 export class GetHolidayStopsAsyncLoader extends AsyncLoader<
   GetHolidayStopsResponse
 > {}
+
+// tslint:disable-next-line:max-classes-per-file
+export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
+  PotentialHolidayStopsResponse
+> {}
+
+export const createPotentialHolidayStopsFetcher = (
+  shouldEstimateCredit: boolean,
+  productTypeUrlPart: string,
+  subscriptionName: string,
+  start: Moment,
+  end: Moment,
+  isTestUser: boolean
+) => () =>
+  fetch(
+    `/api/holidays/${productTypeUrlPart}/${subscriptionName}/potential?startDate=${start.format(
+      DATE_INPUT_FORMAT
+    )}&endDate=${end.format(DATE_INPUT_FORMAT)}${
+      shouldEstimateCredit ? "&estimateCredit=true" : ""
+    }`,
+    {
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${isTestUser}`
+      }
+    }
+  );
 
 export interface CreateHolidayStopsResponse {
   success: string;
@@ -117,7 +138,10 @@ const embellishRawHolidayStop = (
       momentiseDateStr(rawHolidayStopRequest.end)
     ),
     publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
-      momentiseRawHolidayStopDetail
+      raw => ({
+        ...raw,
+        publicationDate: momentiseDateStr(raw.publicationDate)
+      })
     )
   } as HolidayStopRequest);
 

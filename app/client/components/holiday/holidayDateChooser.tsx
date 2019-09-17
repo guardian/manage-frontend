@@ -7,7 +7,6 @@ import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
   hasProduct,
-  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext
 } from "../../../shared/productResponse";
 import palette from "../../colours";
@@ -27,14 +26,14 @@ import {
 } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
-  DATE_INPUT_FORMAT,
+  convertRawPotentialHolidayStopDetail,
+  createPotentialHolidayStopsFetcher,
+  HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   IssuesImpactedPerYear,
   momentiseDateStr,
-  momentiseRawHolidayStopDetail,
-  PotentialHolidayStopsResponse,
-  RawHolidayStopDetail
+  PotentialHolidayStopsResponse
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
@@ -85,28 +84,26 @@ const anniversaryDateToElement = (renewalDateMoment: Moment) => (
   </>
 );
 
-export const HolidayDateChooserStateContext: React.Context<
-  HolidayDateChooserState | {}
-> = React.createContext({});
-
-export function isSharedHolidayDateChooserState(
-  state: any
-): state is SharedHolidayDateChooserState {
-  return (
-    !!state && state.selectedRange && state.issuesImpactedPerYearBySelection
-  );
-}
-
 interface HolidayDateChooserState {
   selectedRange?: DateRange;
-  totalIssueCountImpactedBySelection?: number;
+  publicationsImpacted?: HolidayStopDetail[];
   issuesImpactedPerYearBySelection?: IssuesImpactedPerYear | null;
   validationErrorMessage: React.ReactNode | null;
 }
 
 export interface SharedHolidayDateChooserState {
   selectedRange: DateRange;
-  issuesImpactedPerYearBySelection: IssuesImpactedPerYear;
+  publicationsImpacted: HolidayStopDetail[];
+}
+
+export const HolidayDateChooserStateContext: React.Context<
+  SharedHolidayDateChooserState | {}
+> = React.createContext({});
+
+export function isSharedHolidayDateChooserState(
+  state: any
+): state is SharedHolidayDateChooserState {
+  return !!state && state.selectedRange && state.publicationsImpacted;
 }
 
 export class HolidayDateChooser extends React.Component<
@@ -277,18 +274,14 @@ export class HolidayDateChooser extends React.Component<
         validationErrorMessage: null
       },
       () =>
-        fetch(
-          `/api/holidays/${
-            this.props.productType.urlPart
-          }/${subscriptionName}/potential?startDate=${start.format(
-            DATE_INPUT_FORMAT
-          )}&endDate=${end.format(DATE_INPUT_FORMAT)}`,
-          {
-            headers: {
-              [MDA_TEST_USER_HEADER]: `${isTestUser}`
-            }
-          }
-        )
+        createPotentialHolidayStopsFetcher(
+          false,
+          this.props.productType.urlPart,
+          subscriptionName,
+          start,
+          end,
+          isTestUser
+        )()
           .then(response => {
             const locationHeader = response.headers.get("Location");
             if (
@@ -303,38 +296,38 @@ export class HolidayDateChooser extends React.Component<
             }
             return Promise.reject(`${response.status} from holiday-stop-api`);
           })
-          .then(
-            ({
-              potentials
-            }: PotentialHolidayStopsResponse<RawHolidayStopDetail>) => {
-              const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
-                potentials.map(momentiseRawHolidayStopDetail),
-                renewalDateMoment
-              );
+          .then(({ potentials }: PotentialHolidayStopsResponse) => {
+            const publicationsImpacted = potentials.map(
+              convertRawPotentialHolidayStopDetail
+            );
 
-              const issuesRemainingThisYear =
-                annualIssueLimit -
-                combinedIssuesImpactedPerYear.issueThisYear.length;
+            const issuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
+              publicationsImpacted,
+              renewalDateMoment
+            );
 
-              const issuesRemainingNextYear =
-                annualIssueLimit -
-                combinedIssuesImpactedPerYear.issueNextYear.length;
+            const issuesRemainingThisYear =
+              annualIssueLimit -
+              combinedIssuesImpactedPerYear.issueThisYear.length;
 
-              const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
-                renewalDateMoment,
-                annualIssueLimit,
-                issuesImpactedPerYearBySelection.issueThisYear.length,
-                issuesRemainingThisYear,
-                issuesImpactedPerYearBySelection.issueNextYear.length,
-                issuesRemainingNextYear
-              );
-              this.setState({
-                totalIssueCountImpactedBySelection: potentials.length,
-                issuesImpactedPerYearBySelection,
-                validationErrorMessage
-              });
-            }
-          )
+            const issuesRemainingNextYear =
+              annualIssueLimit -
+              combinedIssuesImpactedPerYear.issueNextYear.length;
+
+            const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
+              renewalDateMoment,
+              annualIssueLimit,
+              issuesImpactedPerYearBySelection.issueThisYear.length,
+              issuesRemainingThisYear,
+              issuesImpactedPerYearBySelection.issueNextYear.length,
+              issuesRemainingNextYear
+            );
+            this.setState({
+              publicationsImpacted,
+              issuesImpactedPerYearBySelection,
+              validationErrorMessage
+            });
+          })
           .catch(error => {
             this.setState({
               validationErrorMessage:
@@ -438,7 +431,7 @@ export class HolidayDateChooser extends React.Component<
           >
             Suspending{" "}
             {displayNumberOfIssuesAsText(
-              this.state.totalIssueCountImpactedBySelection || 0
+              (this.state.publicationsImpacted || []).length
             )}
           </div>
           <div

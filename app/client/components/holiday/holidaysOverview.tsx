@@ -1,9 +1,11 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import {
+  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import { ProductUrlPart } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -23,7 +25,6 @@ import {
 } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
-  createGetHolidayStopsFetcher,
   embellishExistingHolidayStops,
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
@@ -237,6 +238,17 @@ const renderHolidayStopsOverview = (
   );
 };
 
+const createGetHolidayStopsFetcher = (
+  productUrlPart: ProductUrlPart,
+  subscriptionName: string,
+  isTestUser: boolean
+) => () =>
+  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  });
+
 export const HolidaysOverview = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
@@ -262,7 +274,7 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
                 productDetail,
                 routeableStepProps
               )}
-              loadingMessage="Loading existing suspensions"
+              loadingMessage="Loading existing suspensions..."
               readerOnOK={embellishExistingHolidayStops}
             />
           ) : (

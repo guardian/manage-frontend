@@ -107,10 +107,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
     ? [
         {
           dateRange: props.data.selectedRange,
-          publicationsImpacted: [
-            ...props.data.issuesImpactedPerYearBySelection.issueThisYear,
-            ...props.data.issuesImpactedPerYearBySelection.issueNextYear
-          ]
+          publicationsImpacted: props.data.publicationsImpacted
         }
       ]
     : props.data;
