@@ -1,12 +1,12 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import palette from "../../colours";
+import { palette } from "@guardian/src-foundations";
 import { minWidth } from "../../styles/breakpoints";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { PrivacySettings } from "./PrivacySettings";
 
 const headerCSS = css`
-  background-color: ${palette.blue.header};
+  background-color: ${palette.brand.main};
   position: fixed;
   top: 0;
   width: 95%;
@@ -33,26 +33,8 @@ const logoStyles = css`
   }
 
   path {
-    fill: ${palette.white};
+    fill: ${palette.neutral[100]};
   }
-`;
-
-const multiLine = css`
-  background-image: repeating-linear-gradient(
-    to bottom,
-    ${palette.neutral[5]},
-    ${palette.neutral[5]} 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  background-repeat: repeat-x;
-  background-position: bottom;
-  background-size: 1px 13px;
-  background-color: ${palette.white};
-  content: "";
-  clear: left;
-  display: block;
-  height: 13px;
 `;
 
 export class ConsentManagementPortal extends Component<{}, {}> {

@@ -14,7 +14,7 @@ import {
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
-import palette from "../../colours";
+import { palette } from "@guardian/src-foundations";
 import { minWidth } from "../../styles/breakpoints";
 import { ConsentGraphic } from "../svgs/consentGraphic";
 import { CmpCollapsible } from "./CmpCollapsible";
@@ -29,15 +29,15 @@ const containerStyles = css`
   ${minWidth.mobileLandscape} {
     margin-top: 114px;
   }
-  background-color: #041f4a;
-  color: ${palette.white};
+  background-color: ${palette.brand.dark};
+  color: ${palette.neutral[100]};
   width: 95%;
   max-width: 450px;
   border-right: 1px solid red;
 `;
 
 const content = css`
-  padding: 8px 16px;
+  padding: 10px 16px;
 
   h1 {
     font-size: 20px;
@@ -54,8 +54,9 @@ const content = css`
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
   }
 
-  a {
-    color: ${palette.white};
+  a,
+  a:visited {
+    color: ${palette.neutral[100]};
   }
 `;
 
@@ -81,8 +82,6 @@ const buttonContainerStyles = css`
   position: sticky;
   margin-left: -12px;
   margin-right: -12px;
-  background-color: ${palette.neutral[7]};
-  border-top: 1px solid ${palette.neutral[5]};
   padding: 12px 6px;
 `;
 
@@ -107,13 +106,13 @@ const buttonStyles = css`
 `;
 
 const yellowButtonStyles = css`
-  background-color: ${palette.yellow.medium};
+  background-color: ${palette.yellow.main};
 `;
 
 const optionsButtonStyles = css`
   background-color: #041f4a;
-  border: 1px solid ${palette.white};
-  color: ${palette.white};
+  border: 1px solid ${palette.neutral[100]};
+  color: ${palette.neutral[100]};
 `;
 
 const integStyles = css`
