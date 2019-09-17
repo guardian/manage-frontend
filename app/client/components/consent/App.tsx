@@ -1,9 +1,9 @@
 import { css, Global } from "@emotion/core";
 import React from "react";
+import palette from "../../colours";
 // @ts-ignore
 import resetCSS from /* preval */ "../../styles/reset-css";
 import { ConsentManagementPortal } from "./ConsentMangementPortal";
-import palette from "../../colours";
 
 export const App = () => (
   <>

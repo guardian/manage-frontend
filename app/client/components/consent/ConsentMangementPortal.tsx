@@ -12,17 +12,23 @@ const headerCSS = css`
   width: 95%;
   max-width: 450px;
   border-bottom: 1px solid red;
+  display: flex;
+
+  ::before {
+    content: "";
+    display: block;
+    flex: 1;
+    height: 90px;
+    ${minWidth.mobileLandscape} {
+      height: 114px;
+    }
+  }
 `;
 
 const logoStyles = css`
-  margin-top: 6px;
-  margin-bottom: 12px;
-  margin-left: 48px;
-  height: 72px;
   width: 224px;
 
   ${minWidth.mobileLandscape} {
-    height: 95px;
     width: 295px;
   }
 

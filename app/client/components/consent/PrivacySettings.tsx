@@ -15,19 +15,19 @@ import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
 import palette from "../../colours";
+import { minWidth } from "../../styles/breakpoints";
+import { ConsentGraphic } from "../svgs/consentGraphic";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
 import { CmpSeparator } from "./CmpSeparator";
-import { minWidth } from "../../styles/breakpoints";
-import { ConsentGraphic } from "../svgs/consentGraphic";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
 const containerStyles = css`
-  margin-top: 94px;
+  margin-top: 90px;
   ${minWidth.mobileLandscape} {
-    margin-top: 118px;
+    margin-top: 114px;
   }
   background-color: #041f4a;
   color: ${palette.white};
