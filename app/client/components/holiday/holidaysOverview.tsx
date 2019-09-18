@@ -134,21 +134,21 @@ const renderHolidayStopsOverview = (
                       <div>
                         You have suspended{" "}
                         <strong>
-                          {combinedIssuesImpactedPerYear.issueThisYear.length}/{
+                          {combinedIssuesImpactedPerYear.issuesThisYear.length}/{
                             holidayStopsResponse.productSpecifics
                               .annualIssueLimit
                           }
                         </strong>{" "}
                         issues until{" "}
                         {renewalDateMoment.format(friendlyLongDateFormat)}
-                        {combinedIssuesImpactedPerYear.issueNextYear.length >
+                        {combinedIssuesImpactedPerYear.issuesNextYear.length >
                           0 && (
                           <span>
                             {" "}
                             and{" "}
                             <strong>
                               {
-                                combinedIssuesImpactedPerYear.issueNextYear
+                                combinedIssuesImpactedPerYear.issuesNextYear
                                   .length
                               }/{
                                 holidayStopsResponse.productSpecifics

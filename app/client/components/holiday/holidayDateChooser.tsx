@@ -308,18 +308,18 @@ export class HolidayDateChooser extends React.Component<
 
             const issuesRemainingThisYear =
               annualIssueLimit -
-              combinedIssuesImpactedPerYear.issueThisYear.length;
+              combinedIssuesImpactedPerYear.issuesThisYear.length;
 
             const issuesRemainingNextYear =
               annualIssueLimit -
-              combinedIssuesImpactedPerYear.issueNextYear.length;
+              combinedIssuesImpactedPerYear.issuesNextYear.length;
 
             const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
               renewalDateMoment,
               annualIssueLimit,
-              issuesImpactedPerYearBySelection.issueThisYear.length,
+              issuesImpactedPerYearBySelection.issuesThisYear.length,
               issuesRemainingThisYear,
-              issuesImpactedPerYearBySelection.issueNextYear.length,
+              issuesImpactedPerYearBySelection.issuesNextYear.length,
               issuesRemainingNextYear
             );
             this.setState({
@@ -390,16 +390,16 @@ export class HolidayDateChooser extends React.Component<
   ) => {
     const issuesRemainingThisYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueThisYear.length -
+      combinedIssuesImpactedPerYear.issuesThisYear.length -
       (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issueThisYear.length
+        ? this.state.issuesImpactedPerYearBySelection.issuesThisYear.length
         : 0);
 
     const issuesRemainingNextYear =
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issueNextYear.length -
+      combinedIssuesImpactedPerYear.issuesNextYear.length -
       (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issueNextYear.length
+        ? this.state.issuesImpactedPerYearBySelection.issuesNextYear.length
         : 0);
 
     if (this.state.validationErrorMessage) {
@@ -449,8 +449,8 @@ export class HolidayDateChooser extends React.Component<
             {displayNumberOfIssuesAsText(issuesRemainingThisYear)} available to
             suspend before {anniversaryDateToElement(renewalDateMoment)}
             {this.state.issuesImpactedPerYearBySelection &&
-              this.state.issuesImpactedPerYearBySelection.issueNextYear.length >
-                0 && (
+              this.state.issuesImpactedPerYearBySelection.issuesNextYear
+                .length > 0 && (
                 <>
                   {" "}
                   and {displayNumberOfIssuesAsText(

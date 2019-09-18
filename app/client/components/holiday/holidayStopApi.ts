@@ -164,8 +164,8 @@ export const embellishExistingHolidayStops = async (response: Response) => {
 };
 
 export interface IssuesImpactedPerYear {
-  issueThisYear: HolidayStopDetail[];
-  issueNextYear: HolidayStopDetail[];
+  issuesThisYear: HolidayStopDetail[];
+  issuesNextYear: HolidayStopDetail[];
 }
 
 export const calculateIssuesImpactedPerYear = (
@@ -173,14 +173,14 @@ export const calculateIssuesImpactedPerYear = (
   nextYearStartDate: Moment
 ) => {
   return {
-    issueThisYear: publicationsImpacted.filter(
+    issuesThisYear: publicationsImpacted.filter(
       issue =>
         issue.publicationDate.isBefore(nextYearStartDate) &&
         issue.publicationDate.isSameOrAfter(
           nextYearStartDate.clone().subtract(1, "year")
         )
     ),
-    issueNextYear: publicationsImpacted.filter(
+    issuesNextYear: publicationsImpacted.filter(
       issue =>
         issue.publicationDate.isSameOrAfter(nextYearStartDate) &&
         issue.publicationDate.isBefore(nextYearStartDate.clone().add(1, "year"))
