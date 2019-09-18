@@ -12,32 +12,16 @@ import {
 let idCounter: number = 0;
 
 const radioContainerStyles = css`
+  cursor: default;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  label {
-    margin-right: ${space[3]}px;
-    input {
-      color: ${palette.brand.pastel};
-      &:checked {
-        color: ${palette.neutral[100]};
-      }
-    }
-    span {
-      color: ${palette.neutral[100]};
-    }
-    &:hover {
-      input {
-        border-color: ${palette.neutral[100]};
-      }
-    }
-  }
 `;
 const radioInputStyles = css`
+  color: ${palette.brand.pastel};
   @supports (appearance: none) {
     appearance: none;
     outline: 0;
-    cursor: pointer;
     color: inherit;
     box-sizing: border-box;
     display: inline-block;
@@ -49,10 +33,10 @@ const radioInputStyles = css`
     position: relative;
     transition: box-shadow ${transitions.short};
     transition-delay: 0.08s;
-    &:focus {
+    :focus {
       ${focusHalo};
     }
-    &:after {
+    :after {
       background: currentColor;
       position: absolute;
       content: "";
@@ -65,27 +49,46 @@ const radioInputStyles = css`
       transform-origin: center;
       transition: transform ${transitions.short};
     }
-    &:checked {
+    :checked {
+      color: ${palette.neutral[100]};
       &:after {
         transform: scale(0.6);
       }
     }
+    :disabled {
+      color: ${palette.brand.pastel};
+      &:checked {
+        color: ${palette.brand.pastel};
+      }
+      border-color: ${palette.brand.pastel};
+    }
+    :not([disabled]) {
+      cursor: pointer;
+    }
   }
 `;
-const radioLabelStyles = css`
-  cursor: pointer;
+const radioLabelStyles = (disabled: boolean) => css`
+  margin-right: ${space[3]}px;
+  cursor: ${disabled ? "default" : "pointer"};
   display: flex;
   align-items: center;
   &:last-of-type {
     margin-bottom: 0;
   }
   height: fit-content;
+
+  :hover {
+    input:not([disabled]) {
+      border-color: ${palette.neutral[100]};
+    }
+  }
 `;
-const radioLabelTextStyles = css`
+const radioLabelTextStyles = (disabled: boolean) => css`
   position: relative;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
   font-size: 17px;
+  color: ${disabled ? palette.brand.pastel : palette.neutral[100]};
 `;
 
 interface Props {
@@ -105,41 +108,42 @@ export class OnOffRadio extends Component<Props, {}> {
     const id = `radio-${this.myIdCounter}`;
     const onId = `${id}-on`;
     const offId = `${id}-off`;
+    const disabled: boolean = selectedValue === undefined || !onChangeHandler;
 
-    if (selectedValue !== undefined && onChangeHandler) {
-      return (
-        <div css={radioContainerStyles}>
-          <label css={radioLabelStyles}>
-            <input
-              id={offId}
-              name={id}
-              type="radio"
-              value="off"
-              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                this.updateValue(evt);
-              }}
-              defaultChecked={selectedValue === false}
-              css={radioInputStyles}
-            />
-            <span css={radioLabelTextStyles}>Off</span>
-          </label>
-          <label css={radioLabelStyles}>
-            <input
-              id={onId}
-              name={id}
-              type="radio"
-              value="on"
-              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                this.updateValue(evt);
-              }}
-              defaultChecked={selectedValue === true}
-              css={radioInputStyles}
-            />
-            <span css={radioLabelTextStyles}>On</span>
-          </label>
-        </div>
-      );
-    }
+    return (
+      <div css={radioContainerStyles}>
+        <label css={radioLabelStyles(disabled)}>
+          <input
+            id={offId}
+            name={id}
+            type="radio"
+            value="off"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              this.updateValue(evt);
+            }}
+            defaultChecked={disabled ? false : selectedValue === false}
+            css={radioInputStyles}
+            disabled={disabled}
+          />
+          <span css={radioLabelTextStyles(disabled)}>Off</span>
+        </label>
+        <label css={radioLabelStyles(disabled)}>
+          <input
+            id={onId}
+            name={id}
+            type="radio"
+            value="on"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              this.updateValue(evt);
+            }}
+            defaultChecked={disabled ? true : selectedValue === true}
+            css={radioInputStyles}
+            disabled={disabled}
+          />
+          <span css={radioLabelTextStyles(disabled)}>On</span>
+        </label>
+      </div>
+    );
 
     return "";
   }
