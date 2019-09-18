@@ -60,16 +60,23 @@ export class CmpCollapsible extends Component<Props, State> {
     const { title, value, children, updateItem } = this.props;
     return (
       <>
-        <div
-          css={titleTabStyles}
-          onClick={() => {
-            this.toggleCollapsed();
-          }}
-        >
-          <CollapseItemButton collapsed={collapsed} />
-          <div css={titleContainerStyles}>
-            <div css={titleStyles(collapsed)}>{title}</div>
+        <div css={titleTabStyles}>
+          <div
+            css={css`
+              flex-grow: 1;
+              display: flex;
+            `}
+            onClick={() => {
+              this.toggleCollapsed();
+            }}
+          >
+            <CollapseItemButton collapsed={collapsed} />
+            <div css={titleContainerStyles}>
+              <div css={titleStyles(collapsed)}>{title}</div>
+            </div>
           </div>
+
+          <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
 
           {/* {typeof value !== "undefined" &&
             updateItem && (

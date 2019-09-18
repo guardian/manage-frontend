@@ -18,12 +18,8 @@ interface Props {
 }
 
 export class CmpItem extends Component<Props, {}> {
-  private hasRadio: boolean;
-
   constructor(props: Props) {
     super(props);
-
-    this.hasRadio = typeof this.props.value !== "undefined";
   }
 
   public render(): React.ReactNode {

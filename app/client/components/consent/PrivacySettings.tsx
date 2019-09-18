@@ -633,7 +633,11 @@ const getGuIntegrationDescription = (
 ): React.ReactNode => {
   if (integrations.length) {
     return (
-      <ul>
+      <ul
+        css={css`
+          padding-bottom: 16px;
+        `}
+      >
         {integrations.map(integration => {
           const { name, policyUrl } = integration;
           return (
