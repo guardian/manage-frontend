@@ -13,6 +13,7 @@ const headerCSS = css`
   max-width: 450px;
   border-bottom: 1px solid ${palette.brand.pastel};
   display: flex;
+  z-index: 1;
 
   ::before {
     content: "";

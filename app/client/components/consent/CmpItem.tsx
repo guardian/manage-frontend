@@ -1,19 +1,15 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
 import React, { Component } from "react";
-import palette from "../../colours";
 import { CmpCollapsible } from "./CmpCollapsible";
+import { palette } from "@guardian/src-foundations";
 
-const itemContainerStyles = (hasRadio: boolean) => {
-  // console.log("*** hasRadio", hasRadio);
-  return css`
-    margin-top: 6px;
-    border-top: ${hasRadio ? "1px" : "0"} solid ${palette.neutral[5]};
-    padding-top: 4px;
-    padding-bottom: "12px";
-    position: relative;
-  `;
-};
+const itemContainerStyles = css`
+  margin-top: 6px;
+  border-top: 1px solid ${palette.brand.pastel};
+  padding: 10px 16px 0 16px;
+  position: relative;
+`;
 
 interface Props {
   name: string;
@@ -34,7 +30,7 @@ export class CmpItem extends Component<Props, {}> {
     const { name, value, updateItem } = this.props;
 
     return (
-      <div css={itemContainerStyles(this.hasRadio)}>
+      <div css={itemContainerStyles}>
         <CmpCollapsible title={name} value={value} updateItem={updateItem}>
           {this.props.children}
         </CmpCollapsible>

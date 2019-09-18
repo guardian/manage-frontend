@@ -31,6 +31,7 @@ const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 
 const containerStyles = css`
+  z-index: 0;
   margin-top: 90px;
   ${minWidth.mobileLandscape} {
     margin-top: 114px;
@@ -74,7 +75,9 @@ const headerStyles = css`
   margin-bottom: 12px;
 `;
 
-const topButtonContainerStyles = css``;
+const topButtonContainerStyles = css`
+  margin-bottom: 36px;
+`;
 
 const buttonContainerStyles = css`
   height: 66px;
@@ -145,11 +148,11 @@ const optionsButtonStyles = css`
 `;
 
 const integStyles = css`
-  margin-right: 5px;
-  border: none;
-  border-radius: 15px;
-  padding: 5px 10px;
-  background-color: ${palette.neutral[6]};
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 24px;
+  font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+    Lucida Grande, sans-serif;
 `;
 
 interface ParsedGuPurposeList {
@@ -211,7 +214,12 @@ export class PrivacySettings extends Component<{}, State> {
   public render(): React.ReactNode {
     return (
       <div css={containerStyles}>
-        <ConsentGraphic />
+        <img
+          src="/static/images/consent-graphic.png"
+          css={css`
+            width: 100%;
+          `}
+        />
         <div css={content}>
           <h1>
             Please review and manage your data and privacy settings below.
@@ -260,6 +268,16 @@ export class PrivacySettings extends Component<{}, State> {
                 <span>Enable all and close</span>
                 <ArrowIcon />
               </button>
+            </div>
+            <div
+              css={css`
+                margin-left: -16px;
+                margin-right: -16px;
+              `}
+              id="cmp-options"
+            >
+              {this.renderGuPurposeItems()}
+              {this.renderIabPurposeItems()}
             </div>
           </form>
         </div>
@@ -421,7 +439,7 @@ export class PrivacySettings extends Component<{}, State> {
         return (
           <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
             <p>{description}</p>
-            <p>{integDescription}</p>
+            {integDescription}
           </CmpItem>
         );
       }
@@ -613,14 +631,24 @@ const parseIabVendorList = (
 const getGuIntegrationDescription = (
   integrations: GuIntegration[]
 ): React.ReactNode => {
-  return integrations.map(integration => {
-    const { name, policyUrl } = integration;
+  if (integrations.length) {
     return (
-      <a href={policyUrl} key={name} css={integStyles}>
-        {name}
-      </a>
+      <ul>
+        {integrations.map(integration => {
+          const { name, policyUrl } = integration;
+          return (
+            <li key={name}>
+              <a href={policyUrl} key={name} css={integStyles}>
+                {name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     );
-  });
+  }
+
+  return "";
 };
 
 const getVendorDescription = (

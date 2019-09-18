@@ -20,6 +20,10 @@ const definePlugin = new webpack.DefinePlugin({
 
 const copyPlugin = new CopyWebpackPlugin([
   {
+    from: path.resolve(__dirname, "images"),
+    to: path.resolve(__dirname, "dist", "static", "images")
+  },
+  {
     from: path.resolve(__dirname, "client", "fonts"),
     to: path.resolve(__dirname, "dist", "static", "fonts")
   },
