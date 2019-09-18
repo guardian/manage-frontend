@@ -1,9 +1,11 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import {
+  MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import { ProductUrlPart } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -23,7 +25,6 @@ import {
 } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
-  createGetHolidayStopsFetcher,
   embellishExistingHolidayStops,
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
@@ -71,7 +72,7 @@ const renderHolidayStopsOverview = (
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
     holidayStopsResponse.existing.flatMap(
-      existing => existing.publicationDatesToBeStopped
+      existing => existing.publicationsImpacted
     ),
     renewalDateMoment
   );
@@ -133,24 +134,21 @@ const renderHolidayStopsOverview = (
                       <div>
                         You have suspended{" "}
                         <strong>
-                          {
-                            combinedIssuesImpactedPerYear.issueDatesThisYear
-                              .length
-                          }/{
+                          {combinedIssuesImpactedPerYear.issuesThisYear.length}/{
                             holidayStopsResponse.productSpecifics
                               .annualIssueLimit
                           }
                         </strong>{" "}
                         issues until{" "}
                         {renewalDateMoment.format(friendlyLongDateFormat)}
-                        {combinedIssuesImpactedPerYear.issueDatesNextYear
-                          .length > 0 && (
+                        {combinedIssuesImpactedPerYear.issuesNextYear.length >
+                          0 && (
                           <span>
                             {" "}
                             and{" "}
                             <strong>
                               {
-                                combinedIssuesImpactedPerYear.issueDatesNextYear
+                                combinedIssuesImpactedPerYear.issuesNextYear
                                   .length
                               }/{
                                 holidayStopsResponse.productSpecifics
@@ -197,7 +195,10 @@ const renderHolidayStopsOverview = (
               heading="Details"
               content={
                 holidayStopsResponse.existing.length > 0 ? (
-                  <SummaryTable data={holidayStopsResponse.existing} />
+                  <SummaryTable
+                    data={holidayStopsResponse.existing}
+                    subscription={productDetail.subscription}
+                  />
                 ) : (
                   "You currently don't have any scheduled suspensions."
                 )
@@ -237,6 +238,17 @@ const renderHolidayStopsOverview = (
   );
 };
 
+const createGetHolidayStopsFetcher = (
+  productUrlPart: ProductUrlPart,
+  subscriptionName: string,
+  isTestUser: boolean
+) => () =>
+  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  });
+
 export const HolidaysOverview = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
@@ -262,7 +274,7 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
                 productDetail,
                 routeableStepProps
               )}
-              loadingMessage="Loading existing suspensions"
+              loadingMessage="Loading existing suspensions..."
               readerOnOK={embellishExistingHolidayStops}
             />
           ) : (

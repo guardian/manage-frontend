@@ -2,7 +2,6 @@ import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
-import { ProductUrlPart } from "../../../shared/productTypes";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
@@ -10,26 +9,38 @@ export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 export const momentiseDateStr = (dateStr: string) =>
   moment(dateStr, DATE_INPUT_FORMAT);
 
+export interface CommonCreditProperties {
+  estimatedPrice?: number;
+  actualPrice?: number;
+}
+
+export interface RawHolidayStopDetail extends CommonCreditProperties {
+  publicationDate: string;
+}
+
+export interface HolidayStopDetail extends CommonCreditProperties {
+  publicationDate: Moment;
+}
+
 export interface RawHolidayStopRequest {
   start: string;
   end: string;
   id: string;
   subscriptionName: string;
-  publicationsImpacted: Array<{
-    publicationDate: string;
-  }>;
+  publicationsImpacted: RawHolidayStopDetail[];
 }
 
-export interface HolidayStopDetail {
+export interface RawPotentialHolidayStopDetail {
   publicationDate: string;
+  credit?: number;
 }
 
-export interface PotentialHolidayStopsResponse<T extends HolidayStopDetail> {
-  potentials: T[];
+export interface PotentialHolidayStopsResponse {
+  potentials: RawPotentialHolidayStopDetail[];
 }
 
 export interface HolidayStopRequest {
-  publicationDatesToBeStopped: Moment[];
+  publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
   id: string;
   subscriptionName: string;
@@ -59,20 +70,42 @@ interface RawGetHolidayStopsResponse {
   existing: RawHolidayStopRequest[];
 }
 
-export const createGetHolidayStopsFetcher = (
-  productUrlPart: ProductUrlPart,
-  subscriptionName: string,
-  isTestUser: boolean
-) => () =>
-  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
-    }
-  });
+export const convertRawPotentialHolidayStopDetail = (
+  raw: RawPotentialHolidayStopDetail
+) => ({
+  estimatedPrice: raw.credit,
+  publicationDate: momentiseDateStr(raw.publicationDate)
+});
 
 export class GetHolidayStopsAsyncLoader extends AsyncLoader<
   GetHolidayStopsResponse
 > {}
+
+// tslint:disable-next-line:max-classes-per-file
+export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
+  PotentialHolidayStopsResponse
+> {}
+
+export const createPotentialHolidayStopsFetcher = (
+  shouldEstimateCredit: boolean,
+  productTypeUrlPart: string,
+  subscriptionName: string,
+  start: Moment,
+  end: Moment,
+  isTestUser: boolean
+) => () =>
+  fetch(
+    `/api/holidays/${productTypeUrlPart}/${subscriptionName}/potential?startDate=${start.format(
+      DATE_INPUT_FORMAT
+    )}&endDate=${end.format(DATE_INPUT_FORMAT)}${
+      shouldEstimateCredit ? "&estimateCredit=true" : ""
+    }`,
+    {
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${isTestUser}`
+      }
+    }
+  );
 
 export interface CreateHolidayStopsResponse {
   success: string;
@@ -104,9 +137,11 @@ const embellishRawHolidayStop = (
       momentiseDateStr(rawHolidayStopRequest.start),
       momentiseDateStr(rawHolidayStopRequest.end)
     ),
-    publicationDatesToBeStopped: rawHolidayStopRequest.publicationsImpacted.map(
-      publicationImpacted =>
-        momentiseDateStr(publicationImpacted.publicationDate)
+    publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
+      raw => ({
+        ...raw,
+        publicationDate: momentiseDateStr(raw.publicationDate)
+      })
     )
   } as HolidayStopRequest);
 
@@ -129,24 +164,26 @@ export const embellishExistingHolidayStops = async (response: Response) => {
 };
 
 export interface IssuesImpactedPerYear {
-  issueDatesThisYear: Moment[];
-  issueDatesNextYear: Moment[];
+  issuesThisYear: HolidayStopDetail[];
+  issuesNextYear: HolidayStopDetail[];
 }
 
 export const calculateIssuesImpactedPerYear = (
-  publicationDatesToBeStopped: Moment[],
+  publicationsImpacted: HolidayStopDetail[],
   nextYearStartDate: Moment
 ) => {
   return {
-    issueDatesThisYear: publicationDatesToBeStopped.filter(
-      date =>
-        date.isBefore(nextYearStartDate) &&
-        date.isSameOrAfter(nextYearStartDate.clone().subtract(1, "year"))
+    issuesThisYear: publicationsImpacted.filter(
+      issue =>
+        issue.publicationDate.isBefore(nextYearStartDate) &&
+        issue.publicationDate.isSameOrAfter(
+          nextYearStartDate.clone().subtract(1, "year")
+        )
     ),
-    issueDatesNextYear: publicationDatesToBeStopped.filter(
-      date =>
-        date.isSameOrAfter(nextYearStartDate) &&
-        date.isBefore(nextYearStartDate.clone().add(1, "year"))
+    issuesNextYear: publicationsImpacted.filter(
+      issue =>
+        issue.publicationDate.isSameOrAfter(nextYearStartDate) &&
+        issue.publicationDate.isBefore(nextYearStartDate.clone().add(1, "year"))
     )
   } as IssuesImpactedPerYear;
 };

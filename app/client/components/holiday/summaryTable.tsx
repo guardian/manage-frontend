@@ -1,7 +1,11 @@
 import { BorderCollapseProperty, TextAlignProperty } from "csstype";
-import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
+import {
+  getMainPlan,
+  isPaidSubscriptionPlan,
+  Subscription
+} from "../../../shared/productResponse";
 import palette from "../../colours";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -9,7 +13,7 @@ import {
   isSharedHolidayDateChooserState,
   SharedHolidayDateChooserState
 } from "./holidayDateChooser";
-import { HolidayStopRequest } from "./holidayStopApi";
+import { HolidayStopDetail, HolidayStopRequest } from "./holidayStopApi";
 
 const cellCss = {
   padding: "8px 16px 8px 16px",
@@ -18,6 +22,7 @@ const cellCss = {
 
 export interface SummaryTableProps {
   data: HolidayStopRequest[] | SharedHolidayDateChooserState;
+  subscription: Subscription;
   alternateSuspendedColumnHeading?: string;
 }
 
@@ -35,9 +40,21 @@ const formatDateRangeAsFriendly = (range: DateRange) =>
 
 interface SummaryTableRowProps {
   dateRange: DateRange;
-  publicationDatesToBeStopped: Moment[];
+  publicationsImpacted: HolidayStopDetail[];
+  currency?: string;
   asTD?: true;
 }
+
+const formattedCreditIfAvailable = (
+  detail: HolidayStopDetail,
+  currency?: string
+) => {
+  const rawAmount = detail.actualPrice || detail.estimatedPrice;
+  const amountTwoDecimalPlaces = rawAmount ? rawAmount.toFixed(2) : undefined;
+  return currency && rawAmount
+    ? ` (${currency}${amountTwoDecimalPlaces})`
+    : undefined;
+};
 
 const SummaryTableRow = (props: SummaryTableRowProps) => {
   const dateRangeStr = formatDateRangeAsFriendly(props.dateRange);
@@ -45,14 +62,18 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
   const detailPart = (
     <>
       <strong>
-        {props.publicationDatesToBeStopped.length} issue{props
-          .publicationDatesToBeStopped.length !== 1
+        {props.publicationsImpacted.length} issue{props.publicationsImpacted
+          .length !== 1
           ? "s"
           : ""}
       </strong>
-      {props.publicationDatesToBeStopped.map((date, index) => (
+      {props.publicationsImpacted.map((detail, index) => (
         <div key={index}>
-          - {date.format(friendlyDateFormatPrefix + friendlyDateFormatSuffix)}
+          -{" "}
+          {detail.publicationDate.format(
+            friendlyDateFormatPrefix + friendlyDateFormatSuffix
+          )}
+          {formattedCreditIfAvailable(detail, props.currency)}
         </div>
       ))}
     </>
@@ -86,13 +107,15 @@ export const SummaryTable = (props: SummaryTableProps) => {
     ? [
         {
           dateRange: props.data.selectedRange,
-          publicationDatesToBeStopped: [
-            ...props.data.issuesImpactedPerYearBySelection.issueDatesThisYear,
-            ...props.data.issuesImpactedPerYearBySelection.issueDatesNextYear
-          ]
+          publicationsImpacted: props.data.publicationsImpacted
         }
       ]
     : props.data;
+
+  const mainPlan = getMainPlan(props.subscription);
+  const currency = isPaidSubscriptionPlan(mainPlan)
+    ? mainPlan.currency
+    : undefined;
 
   return (
     <div
@@ -127,7 +150,12 @@ export const SummaryTable = (props: SummaryTableProps) => {
             <th>{props.alternateSuspendedColumnHeading || "Suspended"}</th>
           </tr>
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
-            <SummaryTableRow asTD key={index} {...holidayStopRequest} />
+            <SummaryTableRow
+              asTD
+              key={index}
+              currency={currency}
+              {...holidayStopRequest}
+            />
           ))}
         </tbody>
       </table>
@@ -139,7 +167,11 @@ export const SummaryTable = (props: SummaryTableProps) => {
         }}
       >
         {holidayStopRequestsList.map((holidayStopRequest, index) => (
-          <SummaryTableRow key={index} {...holidayStopRequest} />
+          <SummaryTableRow
+            key={index}
+            currency={currency}
+            {...holidayStopRequest}
+          />
         ))}
       </div>
     </div>
