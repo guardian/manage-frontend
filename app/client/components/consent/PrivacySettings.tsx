@@ -21,7 +21,7 @@ import {
   transitions,
   space
 } from "@guardian/src-foundations";
-import { minWidth } from "../../styles/breakpoints";
+import { minWidth, maxWidth } from "../../styles/breakpoints";
 import { ConsentGraphic } from "../svgs/consentGraphic";
 import { CmpCollapsible } from "./CmpCollapsible";
 import { CmpItem } from "./CmpItem";
@@ -30,6 +30,7 @@ import { ArrowIcon } from "../svgs/arrowIcon";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
+const CONTAINER_ID = "container";
 
 const containerStyles = css`
   z-index: 0;
@@ -84,7 +85,20 @@ const headerStyles = css`
 `;
 
 const topButtonContainerStyles = css`
-  margin-bottom: 36px;
+  position: sticky;
+  bottom: 0;
+  margin-left: -12px;
+  margin-right: -12px;
+  padding: 12px;
+  ${minWidth.mobileLarge} {
+    position: initial;
+    position: initial;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+  background-color: ${palette.brand.dark};
+  margin-bottom: 24px;
 `;
 
 const buttonStyles = css`
@@ -219,7 +233,7 @@ export class PrivacySettings extends Component<{}, State> {
 
   public render(): React.ReactNode {
     return (
-      <div css={containerStyles}>
+      <div id={CONTAINER_ID} css={containerStyles}>
         <img
           src="/static/images/consent-graphic.png"
           css={css`
@@ -227,28 +241,38 @@ export class PrivacySettings extends Component<{}, State> {
           `}
         />
         <div css={content}>
-          <h1>
-            Please review and manage your data and privacy settings below.
-          </h1>
-          <p>
-            When you visit this site, we'd like to use cookies and identifiers
-            to understand things like which pages you've visited and how long
-            you've spent with us. It helps us improve our service to you.{" "}
-          </p>
-          <p>
-            Our advertising partners would like to do the same so the adverts
-            are more relevant, and we make more money to invest in Guardian
-            journalism. To find out more, read our{" "}
-            <a href={privacyPolicyURL} target="_blank">
-              privacy policy
-            </a>{" "}
-            and{" "}
-            <a href={cookiePolicyURL} target="_blank">
-              cookie policy
-            </a>.
-          </p>
           <form id="cmp-form">
-            <div css={topButtonContainerStyles}>
+            <h1>
+              Please review and manage your data and privacy settings below.
+            </h1>
+            <p>
+              When you visit this site, we'd like to use cookies and identifiers
+              to understand things like which pages you've visited and how long
+              you've spent with us. It helps us improve our service to you.{" "}
+            </p>
+            <p>
+              Our advertising partners would like to do the same so the adverts
+              are more relevant, and we make more money to invest in Guardian
+              journalism. To find out more, read our{" "}
+              <a href={privacyPolicyURL} target="_blank">
+                privacy policy
+              </a>{" "}
+              and{" "}
+              <a href={cookiePolicyURL} target="_blank">
+                cookie policy
+              </a>.
+            </p>
+            {/* <div
+              css={css`
+                position: sticky;
+                bottom: 0;
+                height: 100px;
+                width: 100%;
+                background-color: green;
+                margin-bottom: 16px;
+              `}
+            /> */}
+            <div id="test" css={topButtonContainerStyles}>
               <button
                 type="button"
                 onClick={() => {
@@ -743,15 +767,17 @@ const close = () => {
 };
 
 const doScrolling = (query: string, duration: number): void => {
+  const container = document.getElementById(CONTAINER_ID);
   const element: HTMLElement | null = document.querySelector(query);
-  if (!element) {
+
+  if (!element | !container) {
     return;
   }
 
   const elementY: number =
     window.pageYOffset + element.getBoundingClientRect().top;
   const startingY: number = window.pageYOffset;
-  const diff: number = elementY - startingY;
+  const diff: number = elementY - startingY - container.offsetTop;
   let start: number;
 
   const animationStep: FrameRequestCallback = timestamp => {
