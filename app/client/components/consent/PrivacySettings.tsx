@@ -18,7 +18,8 @@ import {
   palette,
   size,
   focusHalo,
-  transitions
+  transitions,
+  space
 } from "@guardian/src-foundations";
 import { minWidth } from "../../styles/breakpoints";
 import { ConsentGraphic } from "../svgs/consentGraphic";
@@ -38,13 +39,20 @@ const containerStyles = css`
   }
   background-color: ${palette.brand.dark};
   color: ${palette.neutral[100]};
-  width: 95%;
-  max-width: 450px;
+  width: 100%;
+  ${minWidth.mobileMedium} {
+    width: 95%;
+    max-width: 450px;
+  }
   border-right: 1px solid ${palette.brand.pastel};
 `;
 
 const content = css`
-  padding: 10px 16px;
+  padding: ${space[2]}px;
+
+  ${minWidth.mobileMedium} {
+    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+  }
 
   h1 {
     font-size: 20px;
@@ -79,15 +87,6 @@ const topButtonContainerStyles = css`
   margin-bottom: 36px;
 `;
 
-const buttonContainerStyles = css`
-  height: 66px;
-  bottom: 0;
-  position: sticky;
-  margin-left: -12px;
-  margin-right: -12px;
-  padding: 12px 6px;
-`;
-
 const buttonStyles = css`
   display: inline-flex;
   align-items: center;
@@ -113,9 +112,14 @@ const buttonStyles = css`
   }
   height: ${size.large}px;
   min-height: ${size.large}px;
-  padding: 0 ${size.large / 2}px;
+  padding: 0 ${size.small / 2}px;
+  ${minWidth.mobileMedium} {
+    padding: 0 ${size.medium / 2}px;
+  }
+  ${minWidth.mobileLandscape} {
+    padding: 0 ${size.large / 2}px;
+  }
   border-radius: ${size.large / 2}px;
-
   svg {
     flex: 0 0 auto;
     display: block;
@@ -140,8 +144,10 @@ const optionsButtonStyles = css`
   background-color: ${palette.brand.dark};
   color: ${palette.neutral[100]};
   border: 1px solid ${palette.neutral[100]};
-  margin-right: 12px;
-
+  margin-right: 8px;
+  ${minWidth.mobileLandscape} {
+    margin-right: 12px;
+  }
   &:hover :not(:disabled) {
     background-color: ${palette.sport.bright};
   }
@@ -271,13 +277,19 @@ export class PrivacySettings extends Component<{}, State> {
             </div>
             <div
               css={css`
-                margin-left: -16px;
-                margin-right: -16px;
+                margin-left: -${space[2]}px;
+                margin-right: -${space[2]}px;
+                ${minWidth.mobileMedium} {
+                  margin-left: -${space[2] + space[2] / 3}px;
+                  margin-right: -${space[2] + space[2] / 3}px;
+                }
               `}
               id="cmp-options"
             >
-              {this.renderGuPurposeItems()}
-              {this.renderIabPurposeItems()}
+              <ul>
+                {this.renderGuPurposeItems()}
+                {this.renderIabPurposeItems()}
+              </ul>
             </div>
           </form>
         </div>

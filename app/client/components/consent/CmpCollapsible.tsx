@@ -8,11 +8,11 @@ import { OnOffRadio } from "./OnOffRadio";
 const titleTabStyles = css`
   display: flex;
   cursor: pointer;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 `;
 
 const titleContainerStyles = css`
-  flex-grow: 1;
+  flex: 1;
 `;
 
 const titleStyles = (collapsed: boolean) => css`

@@ -68,7 +68,7 @@ const radioInputStyles = css`
   }
 `;
 const radioLabelStyles = (disabled: boolean) => css`
-  margin-right: ${space[3]}px;
+  margin-left: ${space[2]}px;
   cursor: ${disabled ? "default" : "pointer"};
   display: flex;
   align-items: center;

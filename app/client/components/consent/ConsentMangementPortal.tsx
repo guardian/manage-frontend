@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import React, { Component } from "react";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { minWidth } from "../../styles/breakpoints";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { PrivacySettings } from "./PrivacySettings";
@@ -9,8 +9,13 @@ const headerCSS = css`
   background-color: ${palette.brand.main};
   position: fixed;
   top: 0;
-  width: 95%;
-  max-width: 450px;
+  width: 100%;
+  padding-right: ${space[2]}px;
+  ${minWidth.mobileMedium} {
+    width: 95%;
+    max-width: 450px;
+    padding-right: 0;
+  }
   border-bottom: 1px solid ${palette.brand.pastel};
   display: flex;
   z-index: 1;
