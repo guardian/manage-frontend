@@ -10,32 +10,29 @@ const headerCSS = css`
   position: fixed;
   top: 0;
   width: 100%;
-  padding-right: ${space[2]}px;
-  ${minWidth.mobileMedium} {
+  padding: 6px ${space[2]}px 12px 0;
+  ${minWidth.mobileLandscape} {
     width: 95%;
     max-width: 450px;
     padding-right: 0;
   }
   border-bottom: 1px solid ${palette.brand.pastel};
   display: flex;
-  z-index: 1;
+  z-index: 10;
 
   ::before {
     content: "";
     display: block;
     flex: 1;
-    height: 90px;
-    ${minWidth.mobileLandscape} {
-      height: 114px;
-    }
+    height: 100%;
   }
 `;
 
 const logoStyles = css`
-  width: 224px;
+  height: 55px;
 
   ${minWidth.mobileLandscape} {
-    width: 295px;
+    height: 90px;
   }
 
   path {

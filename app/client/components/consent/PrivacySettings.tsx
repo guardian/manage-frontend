@@ -31,17 +31,18 @@ import { ArrowIcon } from "../svgs/arrowIcon";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
+const PURPOSES_ID = "purposes";
 
 const containerStyles = css`
   z-index: 0;
-  margin-top: 90px;
+  margin-top: 73px;
   ${minWidth.mobileLandscape} {
-    margin-top: 114px;
+    margin-top: 108px;
   }
   background-color: ${palette.brand.dark};
   color: ${palette.neutral[100]};
   width: 100%;
-  ${minWidth.mobileMedium} {
+  ${minWidth.mobileLandscape} {
     width: 95%;
     max-width: 450px;
   }
@@ -51,7 +52,7 @@ const containerStyles = css`
 const content = css`
   padding: ${space[2]}px;
 
-  ${minWidth.mobileMedium} {
+  ${minWidth.mobileLandscape} {
     padding: ${space[2]}px ${space[2] + space[2] / 3}px;
   }
 
@@ -119,6 +120,7 @@ const buttonStyles = css`
   transition: ${transitions.medium};
   &:focus {
     ${focusHalo};
+    outline: none;
   }
   &:disabled {
     opacity: 0.3;
@@ -262,22 +264,10 @@ export class PrivacySettings extends Component<{}, State> {
                 cookie policy
               </a>.
             </p>
-            {/* <div
-              css={css`
-                position: sticky;
-                bottom: 0;
-                height: 100px;
-                width: 100%;
-                background-color: green;
-                margin-bottom: 16px;
-              `}
-            /> */}
             <div id="test" css={topButtonContainerStyles}>
               <button
                 type="button"
-                onClick={() => {
-                  doScrolling("#cmp-options", 250);
-                }}
+                onClick={scrollToPurposes}
                 css={css`
                   ${buttonStyles};
                   ${optionsButtonStyles};
@@ -308,7 +298,7 @@ export class PrivacySettings extends Component<{}, State> {
                   margin-right: -${space[2] + space[2] / 3}px;
                 }
               `}
-              id="cmp-options"
+              id={PURPOSES_ID}
             >
               <ul>
                 {this.renderGuPurposeItems()}
@@ -766,37 +756,70 @@ const close = () => {
   window.parent.postMessage(cmpConfig.CMP_CLOSE_MSG, "*");
 };
 
-const doScrolling = (query: string, duration: number): void => {
-  const container = document.getElementById(CONTAINER_ID);
-  const element: HTMLElement | null = document.querySelector(query);
+const scrollToPurposes = (): void => {
+  const destination: HTMLElement | null = document.getElementById(PURPOSES_ID);
+  const container: HTMLElement | null = document.getElementById(CONTAINER_ID);
 
-  if (!element | !container) {
+  if (!destination || !container) {
     return;
   }
 
-  const elementY: number =
-    window.pageYOffset + element.getBoundingClientRect().top;
-  const startingY: number = window.pageYOffset;
-  const diff: number = elementY - startingY - container.offsetTop;
-  let start: number;
+  const duration: number = 750;
+  const start: number = window.pageYOffset;
+  const startTime: number =
+    "now" in window.performance ? performance.now() : new Date().getTime();
 
-  const animationStep: FrameRequestCallback = timestamp => {
-    if (!start) {
-      start = timestamp;
+  const scroll = (): void => {
+    const now: number =
+      "now" in window.performance ? performance.now() : new Date().getTime();
+    const time: number = Math.min(1, (now - startTime) / duration);
+    const easing: number =
+      time < 0.5
+        ? 4 * time * time * time
+        : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
+
+    window.scroll(
+      0,
+      Math.ceil(easing * (destinationOffsetToScroll - start) + start)
+    );
+
+    if (window.pageYOffset === destinationOffsetToScroll) {
+      document.activeElement.blur();
+      return;
     }
-    // Elapsed milliseconds since start of scrolling.
-    const time: number = timestamp - start;
-    // Get percent of completion in range [0, 1].
-    const percent: number = Math.min(time / duration, 1);
 
-    window.scrollTo(0, startingY + diff * percent);
-
-    // Proceed with animation as long as we wanted it to.
-    if (time < duration) {
-      window.requestAnimationFrame(animationStep);
-    }
+    requestAnimationFrame(scroll);
   };
 
-  // Bootstrap our animation - it will get called right before next frame shall be rendered.
-  window.requestAnimationFrame(animationStep);
+  const documentHeight: number = Math.max(
+    document.body.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.clientHeight,
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight
+  );
+
+  const windowHeight: number =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.getElementsByTagName("body")[0].clientHeight;
+
+  const destinationOffset: number =
+    typeof destination === "number"
+      ? destination - container.offsetTop
+      : destination.offsetTop - container.offsetTop;
+
+  const destinationOffsetToScroll: number = Math.round(
+    documentHeight - destinationOffset < windowHeight
+      ? documentHeight - windowHeight
+      : destinationOffset
+  );
+
+  if ("requestAnimationFrame" in window === false) {
+    window.scroll(0, destinationOffsetToScroll);
+    document.activeElement.blur();
+    return;
+  }
+
+  scroll();
 };
