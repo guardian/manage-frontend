@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
-import React, { Component } from "react";
 import { palette } from "@guardian/src-foundations";
+import React, { Component } from "react";
 import { CollapseItemButton } from "./CollapseItemButton";
 import { OnOffRadio } from "./OnOffRadio";
 

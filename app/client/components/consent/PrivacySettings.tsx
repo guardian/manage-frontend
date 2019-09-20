@@ -85,12 +85,17 @@ const headerStyles = css`
   margin-bottom: 12px;
 `;
 
-const topButtonContainerStyles = css`
+const buttonContainerStyles = css`
   position: sticky;
   bottom: 0;
+  padding: 12px;
+  background-color: ${palette.brand.dark};
+  margin-bottom: 24px;
+`;
+
+const topButtonContainerStyles = css`
   margin-left: -12px;
   margin-right: -12px;
-  padding: 12px;
   ${minWidth.mobileLarge} {
     position: initial;
     position: initial;
@@ -98,8 +103,6 @@ const topButtonContainerStyles = css`
     margin-right: 0;
     padding: 0;
   }
-  background-color: ${palette.brand.dark};
-  margin-bottom: 24px;
 `;
 
 const buttonStyles = css`
@@ -156,7 +159,7 @@ const yellowButtonStyles = css`
   }
 `;
 
-const optionsButtonStyles = css`
+const blueButtonStyles = css`
   background-color: ${palette.brand.dark};
   color: ${palette.neutral[100]};
   border: 1px solid ${palette.neutral[100]};
@@ -175,6 +178,27 @@ const integStyles = css`
   line-height: 24px;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
+`;
+
+const purposesContainerStyles = css`
+  margin-left: -${space[2]}px;
+  margin-right: -${space[2]}px;
+  ${minWidth.mobileMedium} {
+    margin-left: -${space[2] + space[2] / 3}px;
+    margin-right: -${space[2] + space[2] / 3}px;
+  }
+`;
+
+const bottomContainerStyles = css`
+  padding: ${space[2]}px;
+  ${minWidth.mobileLandscape} {
+    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 20px;
+    font-family: "Guardian Text Egyptian Web", Georgia, serif;
+  }
 `;
 
 interface ParsedGuPurposeList {
@@ -264,13 +288,19 @@ export class PrivacySettings extends Component<{}, State> {
                 cookie policy
               </a>.
             </p>
-            <div id="test" css={topButtonContainerStyles}>
+            <div
+              id="test"
+              css={css`
+                ${buttonContainerStyles};
+                ${topButtonContainerStyles};
+              `}
+            >
               <button
                 type="button"
                 onClick={scrollToPurposes}
                 css={css`
                   ${buttonStyles};
-                  ${optionsButtonStyles};
+                  ${blueButtonStyles};
                 `}
               >
                 Options
@@ -289,21 +319,48 @@ export class PrivacySettings extends Component<{}, State> {
                 <ArrowIcon />
               </button>
             </div>
-            <div
-              css={css`
-                margin-left: -${space[2]}px;
-                margin-right: -${space[2]}px;
-                ${minWidth.mobileMedium} {
-                  margin-left: -${space[2] + space[2] / 3}px;
-                  margin-right: -${space[2] + space[2] / 3}px;
-                }
-              `}
-              id={PURPOSES_ID}
-            >
-              <ul>
-                {this.renderGuPurposeItems()}
-                {this.renderIabPurposeItems()}
-              </ul>
+            <div css={purposesContainerStyles} id={PURPOSES_ID}>
+              <ul>{this.renderGuPurposeItems()}</ul>
+              <div>
+                <ul>{this.renderIabPurposeItems()}</ul>
+                <div
+                  css={css`
+                    ${buttonContainerStyles};
+                    ${bottomContainerStyles};
+                  `}
+                >
+                  <p>
+                    You can change the above settings for this browser at any
+                    time by navigating to the Privacy Settings from the main
+                    page.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      close();
+                    }}
+                    css={css`
+                      ${buttonStyles};
+                      ${blueButtonStyles};
+                    `}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      this.saveAndClose();
+                    }}
+                    css={css`
+                      ${buttonStyles};
+                      ${yellowButtonStyles};
+                    `}
+                  >
+                    <span>Save and continue</span>
+                    <ArrowIcon />
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>

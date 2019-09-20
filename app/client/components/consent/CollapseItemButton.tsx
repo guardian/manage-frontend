@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
-import React from "react";
 import { palette } from "@guardian/src-foundations";
+import React from "react";
 
 const collapseItemButtonStyles = (collapsed: boolean) => css`
   background-color: transparent;
