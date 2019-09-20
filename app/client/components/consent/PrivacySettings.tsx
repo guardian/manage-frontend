@@ -331,8 +331,10 @@ export class PrivacySettings extends Component<{}, State> {
                 >
                   <p>
                     You can change the above settings for this browser at any
-                    time by navigating to the Privacy Settings from the main
-                    page.
+                    time by accessing our{" "}
+                    <a href={privacyPolicyURL} target="_blank">
+                      privacy policy
+                    </a>.
                   </p>
                   <button
                     type="button"
@@ -364,96 +366,6 @@ export class PrivacySettings extends Component<{}, State> {
             </div>
           </form>
         </div>
-        {/* <h1 css={headerStyles}>We need to talk about data...</h1>
-
-        <p>
-          ...and how we use yours specifically. Please review and manage your
-          privacy settings below.
-        </p>
-        <p>
-          As part of our reader funded strategy, we use cookie identifiers and
-          information about your interests such as how many times you visited
-          our website and which articles you've read to improve experiences and
-          show personalised advertising.
-        </p>
-        <p>
-          These technologies are provided by us and by our third-party partners.
-          To find out more, read our{" "}
-          <a href={privacyPolicyURL} target="_blank">
-            privacy policy
-          </a>{" "}
-          and{" "}
-          <a href={cookiePolicyURL} target="_blank">
-            cookie policy
-          </a>.
-        </p>
-
-        <form id="cmp-form">
-          <div css={topButtonContainerStyles}>
-            <button
-              type="button"
-              onClick={() => {
-                doScrolling("#cmp-options", 250);
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Options
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                this.enableAllAndClose();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Enable all and close
-            </button>
-          </div>
-          <div id="cmp-options">
-            <CmpSeparator />
-            {this.renderGuPurposeItems()}
-            {this.renderIabPurposeItems()}
-            <CmpSeparator />
-            {this.renderVendorItems()}
-            <CmpSeparator />
-            {this.renderFeatureItems()}
-            <CmpSeparator />
-          </div>
-          <p>
-            You can change the above settings for this browser at any time by
-            navigating to the Privacy Settings from the main page.
-          </p>
-          <div css={buttonContainerStyles}>
-            <button
-              type="button"
-              onClick={() => {
-                close();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                this.saveAndClose();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Save and continue
-            </button>
-          </div>
-        </form> */}
       </div>
     );
   }
