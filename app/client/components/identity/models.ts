@@ -11,6 +11,7 @@ export enum Theme {
 
 export enum ErrorTypes {
   GENERAL = "GENERAL",
+  NOT_FOUND = "NOT_FOUND",
   VALIDATION = "VALIDATION"
 }
 

@@ -7,8 +7,13 @@ interface AvatarAPIErrorResponse {
   errors: string[];
 }
 
-interface AvatarError {
+interface AvatarGeneralError {
   type: ErrorTypes.VALIDATION;
+  error: string[];
+}
+
+interface AvatarNotFoundError {
+  type: ErrorTypes.NOT_FOUND;
   error: string[];
 }
 
@@ -21,11 +26,24 @@ const isAvatarAPIErrorResponse = (
   return false;
 };
 
-const avatarApiErrorToAvatarError = (
+const isAvatarNotFoundError = (error: AvatarAPIErrorResponse): boolean => {
+  return error.message === "Avatar not found";
+};
+
+const avatarApiErrorToAvatarGeneralError = (
   apiError: AvatarAPIErrorResponse
-): AvatarError => {
+): AvatarGeneralError => {
   return {
     type: ErrorTypes.VALIDATION,
+    error: apiError.errors
+  };
+};
+
+const avatarApiErrorToAvatarNotFoundError = (
+  apiError: AvatarAPIErrorResponse
+): AvatarNotFoundError => {
+  return {
+    type: ErrorTypes.NOT_FOUND,
     error: apiError.errors
   };
 };
@@ -35,7 +53,17 @@ const avatarFetch = APIFetch(IdentityLocations.AVATAR);
 export const read = async () => {
   const url = "/v1/avatars/user/me/active";
   const options = APIUseCredentials({});
-  return await avatarFetch(url, options);
+  try {
+    return await avatarFetch(url, options);
+  } catch (e) {
+    if (isAvatarAPIErrorResponse(e)) {
+      throw isAvatarNotFoundError(e)
+        ? avatarApiErrorToAvatarNotFoundError(e)
+        : avatarApiErrorToAvatarGeneralError(e);
+    } else {
+      throw e;
+    }
+  }
 };
 
 export const write = async (file: File) => {
@@ -44,6 +72,8 @@ export const write = async (file: File) => {
   try {
     await avatarFetch(url, options);
   } catch (e) {
-    throw isAvatarAPIErrorResponse(e) ? avatarApiErrorToAvatarError(e) : e;
+    throw isAvatarAPIErrorResponse(e)
+      ? avatarApiErrorToAvatarGeneralError(e)
+      : e;
   }
 };
