@@ -11,22 +11,19 @@ import {
   IabVendor,
   IabVendorList
 } from "@guardian/consent-management-platform/lib/types";
+import {
+  focusHalo,
+  palette,
+  size,
+  space,
+  transitions
+} from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
-import {
-  palette,
-  size,
-  focusHalo,
-  transitions,
-  space
-} from "@guardian/src-foundations";
-import { minWidth, maxWidth } from "../../styles/breakpoints";
-import { ConsentGraphic } from "../svgs/consentGraphic";
-import { CmpCollapsible } from "./CmpCollapsible";
-import { CmpItem } from "./CmpItem";
-import { CmpSeparator } from "./CmpSeparator";
+import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
+import { CmpItem } from "./CmpItem";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
@@ -75,14 +72,6 @@ const content = css`
   a:visited {
     color: ${palette.neutral[100]};
   }
-`;
-
-const headerStyles = css`
-  font-size: 28px;
-  line-height: 32px;
-  font-family: "GH Guardian Headline", Georgia, serif;
-  font-weight: 400;
-  margin-bottom: 12px;
 `;
 
 const buttonContainerStyles = css`
@@ -466,48 +455,50 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderVendorItems(): React.ReactNode {
-    if (!this.iabVendorList || !this.iabVendorList.vendors) {
-      return "";
-    }
+  // TODO: Temporarily commented out, to be uncommented following designs
+  // private renderVendorItems(): React.ReactNode {
+  //   if (!this.iabVendorList || !this.iabVendorList.vendors) {
+  //     return "";
+  //   }
 
-    return (
-      <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
-        {this.iabVendorList.vendors.map(
-          (vendor: ParsedIabVendor, index: number): React.ReactNode => {
-            const { id, name, description } = vendor;
+  //   return (
+  //     <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
+  //       {this.iabVendorList.vendors.map(
+  //         (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+  //           const { id, name, description } = vendor;
 
-            return (
-              <CmpItem name={name} key={`vendor-${id}`}>
-                {description}
-              </CmpItem>
-            );
-          }
-        )}
-      </CmpCollapsible>
-    );
-  }
+  //           return (
+  //             <CmpItem name={name} key={`vendor-${id}`}>
+  //               {description}
+  //             </CmpItem>
+  //           );
+  //         }
+  //       )}
+  //     </CmpCollapsible>
+  //   );
+  // }
 
-  private renderFeatureItems(): React.ReactNode {
-    if (!this.iabVendorList || !this.iabVendorList.features) {
-      return "";
-    }
+  // TODO: Temporarily commented out, to be uncommented following designs
+  // private renderFeatureItems(): React.ReactNode {
+  //   if (!this.iabVendorList || !this.iabVendorList.features) {
+  //     return "";
+  //   }
 
-    return (
-      <CmpCollapsible title="Features" key={`featuresCollapsible`}>
-        {this.iabVendorList.features.map(
-          (feature: IabFeature, index: number): React.ReactNode => {
-            const { id, name, description } = feature;
-            return (
-              <CmpItem name={name} key={`feature-${id}`}>
-                <p>{description}</p>
-              </CmpItem>
-            );
-          }
-        )}
-      </CmpCollapsible>
-    );
-  }
+  //   return (
+  //     <CmpCollapsible title="Features" key={`featuresCollapsible`}>
+  //       {this.iabVendorList.features.map(
+  //         (feature: IabFeature, index: number): React.ReactNode => {
+  //           const { id, name, description } = feature;
+  //           return (
+  //             <CmpItem name={name} key={`feature-${id}`}>
+  //               <p>{description}</p>
+  //             </CmpItem>
+  //           );
+  //         }
+  //       )}
+  //     </CmpCollapsible>
+  //   );
+  // }
 
   private enableAllAndClose(): void {
     const guPurposes = Object.keys(this.state.guPurposes).reduce(
@@ -753,7 +744,7 @@ const scrollToPurposes = (): void => {
     );
 
     if (window.pageYOffset === destinationOffsetToScroll) {
-      document.activeElement.blur();
+      // document.activeElement.blur();
       return;
     }
 
@@ -786,7 +777,7 @@ const scrollToPurposes = (): void => {
 
   if ("requestAnimationFrame" in window === false) {
     window.scroll(0, destinationOffsetToScroll);
-    document.activeElement.blur();
+    // document.activeElement.blur();
     return;
   }
 

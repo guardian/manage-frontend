@@ -75,13 +75,7 @@ export class CmpCollapsible extends Component<Props, State> {
               <div css={titleStyles(collapsed)}>{title}</div>
             </div>
           </div>
-
           <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
-
-          {/* {typeof value !== "undefined" &&
-            updateItem && (
-              <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
-            )} */}
         </div>
         <div css={panelStyles(collapsed)}>{children}</div>
       </>

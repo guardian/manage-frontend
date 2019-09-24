@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
-import React, { Component } from "react";
-import { CmpCollapsible } from "./CmpCollapsible";
 import { palette } from "@guardian/src-foundations";
+import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
+import { CmpCollapsible } from "./CmpCollapsible";
 
 const itemContainerStyles = css`
   margin-top: 6px;

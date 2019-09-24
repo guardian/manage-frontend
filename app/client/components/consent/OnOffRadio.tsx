@@ -92,8 +92,8 @@ const radioLabelTextStyles = (disabled: boolean) => css`
 `;
 
 interface Props {
-  onChangeHandler: (value: boolean) => void;
-  selectedValue: ItemState;
+  onChangeHandler?: (value: boolean) => void;
+  selectedValue?: ItemState;
 }
 export class OnOffRadio extends Component<Props, {}> {
   private myIdCounter: number;
@@ -153,6 +153,10 @@ export class OnOffRadio extends Component<Props, {}> {
 
   private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     const value: boolean = evt.currentTarget.value === "on";
-    this.props.onChangeHandler(value);
+    const { onChangeHandler } = this.props;
+
+    if (onChangeHandler) {
+      onChangeHandler(value);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
-import React, { Component } from "react";
 import { palette, space } from "@guardian/src-foundations";
+import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { PrivacySettings } from "./PrivacySettings";
