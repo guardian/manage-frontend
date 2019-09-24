@@ -33,7 +33,14 @@ const imgCss: CSSObject = {
   width: "60px"
 };
 
+const isEmptyAvatarError = (e: any): boolean => {
+  return e.type && e.type === ErrorTypes.NOT_FOUND;
+};
+
 const errorHandler = (e: any) => {
+  if (isEmptyAvatarError(e)) {
+    return;
+  }
   Raven.captureException(e);
   trackEvent({
     eventCategory: "publicProfileError",
