@@ -1,47 +1,43 @@
 import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import React, { Component } from "react";
-import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { PrivacySettings } from "./PrivacySettings";
 
 const headerCSS = css`
-  background-color: ${palette.blue.header};
-  position: relative;
-  height: 90px;
+  background-color: ${palette.brand.main};
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 6px ${space[2]}px 12px 0;
+  ${minWidth.mobileLandscape} {
+    width: 95%;
+    max-width: 450px;
+    padding-right: 0;
+  }
+  border-bottom: 1px solid ${palette.brand.pastel};
+  display: flex;
+  z-index: 10;
+
+  ::before {
+    content: "";
+    display: block;
+    flex: 1;
+    height: 100%;
+  }
 `;
 
 const logoStyles = css`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: 44px;
-  width: 135px;
-  ${minWidth.mobileMedium} {
-    height: 56px;
-    width: 175px;
-  }
-  path {
-    fill: ${palette.white};
-  }
-`;
+  height: 55px;
 
-const multiLine = css`
-  background-image: repeating-linear-gradient(
-    to bottom,
-    ${palette.neutral[5]},
-    ${palette.neutral[5]} 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  background-repeat: repeat-x;
-  background-position: bottom;
-  background-size: 1px 13px;
-  background-color: ${palette.white};
-  content: "";
-  clear: left;
-  display: block;
-  height: 13px;
+  ${minWidth.mobileLandscape} {
+    height: 90px;
+  }
+
+  path {
+    fill: ${palette.neutral[100]};
+  }
 `;
 
 export class ConsentManagementPortal extends Component<{}, {}> {
@@ -55,7 +51,6 @@ export class ConsentManagementPortal extends Component<{}, {}> {
         <div css={headerCSS}>
           <TheGuardianLogo css={logoStyles} />
         </div>
-        <div css={multiLine} />
         <PrivacySettings />
       </div>
     );

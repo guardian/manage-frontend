@@ -1,32 +1,39 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
+import { palette } from "@guardian/src-foundations";
 import React, { Component } from "react";
-import palette from "../../colours";
 import { CollapseItemButton } from "./CollapseItemButton";
 import { OnOffRadio } from "./OnOffRadio";
 
 const titleTabStyles = css`
   display: flex;
+  cursor: pointer;
+  margin-bottom: 18px;
 `;
 
 const titleContainerStyles = css`
-  flex-grow: 1;
+  flex: 1;
 `;
 
 const titleStyles = (collapsed: boolean) => css`
-  font-family: "GH Guardian Headline", Georgia, serif;
-  font-size: 17px;
-  line-height: 20px;
+  font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+    Lucida Grande, sans-serif;
+  font-size: 20px;
+  line-height: 22px;
   font-weight: 700;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  color: ${collapsed ? palette.blue.header : "inherit"};
+  color: ${collapsed ? palette.yellow.dark : palette.neutral[100]};
 `;
 
 const panelStyles = (collapsed: boolean) => css`
   display: ${collapsed ? "block" : "none"};
-  padding-top: 10px;
   padding-left: 20px;
+
+  p {
+    font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+      Lucida Grande, sans-serif;
+    fontsize: 17px;
+    lineheight: 24px;
+  }
 `;
 
 interface Props {
@@ -53,21 +60,22 @@ export class CmpCollapsible extends Component<Props, State> {
     const { title, value, children, updateItem } = this.props;
     return (
       <>
-        <div
-          css={titleTabStyles}
-          onClick={() => {
-            this.toggleCollapsed();
-          }}
-        >
-          <CollapseItemButton collapsed={collapsed} />
-          <div css={titleContainerStyles}>
-            <div css={titleStyles(collapsed)}>{title}</div>
+        <div css={titleTabStyles}>
+          <div
+            css={css`
+              flex-grow: 1;
+              display: flex;
+            `}
+            onClick={() => {
+              this.toggleCollapsed();
+            }}
+          >
+            <CollapseItemButton collapsed={collapsed} />
+            <div css={titleContainerStyles}>
+              <div css={titleStyles(collapsed)}>{title}</div>
+            </div>
           </div>
-
-          {typeof value !== "undefined" &&
-            updateItem && (
-              <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
-            )}
+          <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
         </div>
         <div css={panelStyles(collapsed)}>{children}</div>
       </>

@@ -1,86 +1,99 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
+import {
+  focusHalo,
+  palette,
+  size,
+  space,
+  transitions
+} from "@guardian/src-foundations";
 import React, { Component } from "react";
-import palette from "../../colours";
 
 let idCounter: number = 0;
 
 const radioContainerStyles = css`
-  position: relative;
+  cursor: default;
   display: flex;
-
-  :before {
-    content: "";
-    position: absolute;
-    height: 28px;
-    width: 1px;
-    top: -4px;
-    left: 0;
-    background-color: ${palette.neutral[5]};
+  justify-content: flex-start;
+  flex-direction: row;
+`;
+const radioInputStyles = css`
+  color: ${palette.brand.pastel};
+  @supports (appearance: none) {
+    appearance: none;
+    outline: 0;
+    color: inherit;
+    box-sizing: border-box;
+    display: inline-block;
+    width: ${size.small}px;
+    height: ${size.small}px;
+    margin: 0 ${space[1]}px 0 0;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    position: relative;
+    transition: box-shadow ${transitions.short};
+    transition-delay: 0.08s;
+    :focus {
+      ${focusHalo};
+    }
+    :after {
+      background: currentColor;
+      position: absolute;
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 50%;
+      transform: scale(0);
+      transform-origin: center;
+      transition: transform ${transitions.short};
+    }
+    :checked {
+      color: ${palette.neutral[100]};
+      &:after {
+        transform: scale(0.6);
+      }
+    }
+    :disabled {
+      color: ${palette.brand.pastel};
+      &:checked {
+        color: ${palette.brand.pastel};
+      }
+      border-color: ${palette.brand.pastel};
+    }
+    :not([disabled]) {
+      cursor: pointer;
+    }
   }
 `;
-
-const radioInputStyles = css`
-  position: absolute;
-  opacity: 0;
-  height: 0;
-  width: 0;
-  top: 0;
-  left: 0;
-`;
-
-/**
- * backface-visibility: hidden fixes blur of text
- * caused by transforming scale of :after
- */
-const radioLabelStyles = (isSelected: boolean) => css`
+const radioLabelStyles = (disabled: boolean) => css`
+  margin-left: ${space[2]}px;
+  cursor: ${disabled ? "default" : "pointer"};
   display: flex;
   align-items: center;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+  height: fit-content;
+
+  :hover {
+    input:not([disabled]) {
+      border-color: ${palette.neutral[100]};
+    }
+  }
+`;
+const radioLabelTextStyles = (disabled: boolean) => css`
   position: relative;
-  font-size: 16px;
-  line-height: 22px;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
-  font-weight: 600;
-  backface-visibility: hidden;
-
-  :before {
-    display: inline-block;
-    content: "";
-    width: 18px;
-    height: 18px;
-    border: 1px solid
-      ${isSelected ? `${palette.blue.header}` : `${palette.neutral[5]}`};
-    box-shadow: inset 0 0 0 3px ${palette.white};
-    border-radius: 60px;
-    margin-left: 10px;
-    margin-right: 5px;
-    transition: background 0.2s, box-shadow 0.2s;
-  }
-
-  :after {
-    display: inline-block;
-    content: "";
-    width: 18px;
-    height: 18px;
-    background: ${palette.blue.header};
-    border-radius: 60px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    margin: auto;
-    margin-left: 10px;
-    transition: 0.3s ease-in-out;
-    transition-duration: 0.2s;
-    transform: scale(${isSelected ? "0.6" : "0.2"});
-    opacity: ${isSelected ? "1" : "0"};
-  }
+  font-size: 17px;
+  color: ${disabled ? palette.brand.pastel : palette.neutral[100]};
 `;
 
 interface Props {
-  onChangeHandler: (value: boolean) => void;
-  selectedValue: ItemState;
+  onChangeHandler?: (value: boolean) => void;
+  selectedValue?: ItemState;
 }
 export class OnOffRadio extends Component<Props, {}> {
   private myIdCounter: number;
@@ -91,43 +104,48 @@ export class OnOffRadio extends Component<Props, {}> {
   }
 
   public render(): React.ReactNode {
-    const { selectedValue } = this.props;
+    const { selectedValue, onChangeHandler } = this.props;
     const id = `radio-${this.myIdCounter}`;
     const onId = `${id}-on`;
     const offId = `${id}-off`;
+    const disabled: boolean = selectedValue === undefined || !onChangeHandler;
 
     return (
       <div css={radioContainerStyles}>
-        <input
-          type="radio"
-          id={onId}
-          name={id}
-          value="on"
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            this.updateValue(evt);
-          }}
-          defaultChecked={selectedValue === true}
-          css={radioInputStyles}
-        />
-        <label htmlFor={onId}>
-          <span css={radioLabelStyles(selectedValue === true)}>On</span>
+        <label css={radioLabelStyles(disabled)}>
+          <input
+            id={offId}
+            name={id}
+            type="radio"
+            value="off"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              this.updateValue(evt);
+            }}
+            defaultChecked={disabled ? false : selectedValue === false}
+            css={radioInputStyles}
+            disabled={disabled}
+          />
+          <span css={radioLabelTextStyles(disabled)}>Off</span>
         </label>
-        <input
-          type="radio"
-          id={offId}
-          name={id}
-          value="off"
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            this.updateValue(evt);
-          }}
-          defaultChecked={selectedValue === false}
-          css={radioInputStyles}
-        />
-        <label htmlFor={offId}>
-          <span css={radioLabelStyles(selectedValue === false)}>Off</span>
+        <label css={radioLabelStyles(disabled)}>
+          <input
+            id={onId}
+            name={id}
+            type="radio"
+            value="on"
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+              this.updateValue(evt);
+            }}
+            defaultChecked={disabled ? true : selectedValue === true}
+            css={radioInputStyles}
+            disabled={disabled}
+          />
+          <span css={radioLabelTextStyles(disabled)}>On</span>
         </label>
       </div>
     );
+
+    return "";
   }
 
   public shouldComponentUpdate = (nextProps: Props) =>
@@ -135,6 +153,10 @@ export class OnOffRadio extends Component<Props, {}> {
 
   private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     const value: boolean = evt.currentTarget.value === "on";
-    this.props.onChangeHandler(value);
+    const { onChangeHandler } = this.props;
+
+    if (onChangeHandler) {
+      onChangeHandler(value);
+    }
   }
 }

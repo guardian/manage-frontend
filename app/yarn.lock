@@ -893,6 +893,11 @@
   dependencies:
     js-cookie "^2.2.1"
 
+"@guardian/src-foundations@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.2.0.tgz#297a10493aba89063f849d6da4fc29aaeba39f5e"
+  integrity sha512-afugaiVEY2wT1YntxO9g4no7RMN6kBFkYXzGr9CWoijlsVpsUCfdUAqDFH2js7BBrmGEUQDZvMnF++tERErDQg==
+
 "@jest/types@^24.8.0":
   version "24.8.0"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-24.8.0.tgz#f31e25948c58f0abd8c845ae26fcea1491dea7ad"

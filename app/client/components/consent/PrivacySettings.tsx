@@ -11,20 +11,55 @@ import {
   IabVendor,
   IabVendorList
 } from "@guardian/consent-management-platform/lib/types";
+import {
+  focusHalo,
+  palette,
+  size,
+  space,
+  transitions
+} from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
-import palette from "../../colours";
-import { CmpCollapsible } from "./CmpCollapsible";
+import { minWidth } from "../../styles/breakpoints";
+import { ArrowIcon } from "../svgs/arrowIcon";
 import { CmpItem } from "./CmpItem";
-import { CmpSeparator } from "./CmpSeparator";
 
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
+const CONTAINER_ID = "container";
+const PURPOSES_ID = "purposes";
 
 const containerStyles = css`
-  margin: 6px 12px 0;
-  color: ${palette.neutral[2]};
+  z-index: 0;
+  margin-top: 73px;
+  ${minWidth.mobileLandscape} {
+    margin-top: 108px;
+  }
+  background-color: ${palette.brand.dark};
+  color: ${palette.neutral[100]};
+  width: 100%;
+  ${minWidth.mobileLandscape} {
+    width: 95%;
+    max-width: 450px;
+  }
+  border-right: 1px solid ${palette.brand.pastel};
+`;
+
+const content = css`
+  padding: ${space[2]}px;
+
+  ${minWidth.mobileLandscape} {
+    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+  }
+
+  h1 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    font-family: "Guardian Egyptian Web", Georgia, serif;
+    margin-bottom: 12px;
+  }
 
   p {
     margin-bottom: 16px;
@@ -32,64 +67,127 @@ const containerStyles = css`
     line-height: 24px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
   }
-`;
 
-const headerStyles = css`
-  font-size: 28px;
-  line-height: 32px;
-  font-family: "GH Guardian Headline", Georgia, serif;
-  font-weight: 400;
-  margin-bottom: 12px;
-`;
-
-const topButtonContainerStyles = css`
-  height: 66px;
-  margin-left: -12px;
-  margin-right: -12px;
-  display: flex;
-  padding: 6px 6px;
+  a,
+  a:visited {
+    color: ${palette.neutral[100]};
+  }
 `;
 
 const buttonContainerStyles = css`
-  height: 66px;
-  bottom: 0;
   position: sticky;
+  bottom: 0;
+  padding: 12px;
+  background-color: ${palette.brand.dark};
+  margin-bottom: 24px;
+`;
+
+const topButtonContainerStyles = css`
   margin-left: -12px;
   margin-right: -12px;
-  background-color: ${palette.neutral[7]};
-  border-top: 1px solid ${palette.neutral[5]};
-  display: flex;
-  padding: 12px 6px;
+  ${minWidth.mobileLarge} {
+    position: initial;
+    position: initial;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
 `;
 
 const buttonStyles = css`
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  text-decoration: none;
   font-size: 16px;
   line-height: 22px;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
   font-weight: 700;
-  align-items: center;
-  text-decoration: none;
-  height: 42px;
-  min-height: 42px;
-  padding: 0 6px;
-  border: none;
-  border-radius: 21px;
   box-sizing: border-box;
+  border: none;
   background: transparent;
   cursor: pointer;
-  position: relative;
-  background-color: ${palette.yellow.medium};
-  flex: 1;
-  margin: 0 6px;
+  transition: ${transitions.medium};
+  &:focus {
+    ${focusHalo};
+    outline: none;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  height: ${size.large}px;
+  min-height: ${size.large}px;
+  padding: 0 ${size.small / 2}px;
+  ${minWidth.mobileMedium} {
+    padding: 0 ${size.medium / 2}px;
+  }
+  ${minWidth.mobileLandscape} {
+    padding: 0 ${size.large / 2}px;
+  }
+  border-radius: ${size.large / 2}px;
+  svg {
+    flex: 0 0 auto;
+    display: block;
+    fill: currentColor;
+    position: relative;
+    width: ${size.large}px;
+    height: auto;
+    margin: 0 ${-size.large / 3}px 0 ${size.large / 16}px;
+  }
+`;
+
+const yellowButtonStyles = css`
+  background-color: ${palette.yellow.main};
+  color: ${palette.neutral[7]};
+
+  &:hover :not(:disabled) {
+    background-color: ${palette.yellow.dark};
+  }
+`;
+
+const blueButtonStyles = css`
+  background-color: ${palette.brand.dark};
+  color: ${palette.neutral[100]};
+  border: 1px solid ${palette.neutral[100]};
+  margin-right: 8px;
+  ${minWidth.mobileLandscape} {
+    margin-right: 12px;
+  }
+  &:hover :not(:disabled) {
+    background-color: ${palette.sport.bright};
+  }
 `;
 
 const integStyles = css`
-  margin-right: 5px;
-  border: none;
-  border-radius: 15px;
-  padding: 5px 10px;
-  background-color: ${palette.neutral[6]};
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 24px;
+  font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
+    Lucida Grande, sans-serif;
+`;
+
+const purposesContainerStyles = css`
+  margin-left: -${space[2]}px;
+  margin-right: -${space[2]}px;
+  ${minWidth.mobileMedium} {
+    margin-left: -${space[2] + space[2] / 3}px;
+    margin-right: -${space[2] + space[2] / 3}px;
+  }
+`;
+
+const bottomContainerStyles = css`
+  padding: ${space[2]}px;
+  ${minWidth.mobileLandscape} {
+    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 20px;
+    font-family: "Guardian Text Egyptian Web", Georgia, serif;
+  }
 `;
 
 interface ParsedGuPurposeList {
@@ -150,97 +248,113 @@ export class PrivacySettings extends Component<{}, State> {
 
   public render(): React.ReactNode {
     return (
-      <div css={containerStyles}>
-        <h1 css={headerStyles}>We need to talk about data...</h1>
-
-        <p>
-          ...and how we use yours specifically. Please review and manage your
-          privacy settings below.
-        </p>
-        <p>
-          As part of our reader funded strategy, we use cookie identifiers and
-          information about your interests such as how many times you visited
-          our website and which articles you've read to improve experiences and
-          show personalised advertising.
-        </p>
-        <p>
-          These technologies are provided by us and by our third-party partners.
-          To find out more, read our{" "}
-          <a href={privacyPolicyURL} target="_blank">
-            privacy policy
-          </a>{" "}
-          and{" "}
-          <a href={cookiePolicyURL} target="_blank">
-            cookie policy
-          </a>.
-        </p>
-
-        <form id="cmp-form">
-          <div css={topButtonContainerStyles}>
-            <button
-              type="button"
-              onClick={() => {
-                doScrolling("#cmp-options", 250);
-              }}
+      <div id={CONTAINER_ID} css={containerStyles}>
+        <img
+          src="/static/images/consent-graphic.png"
+          css={css`
+            width: 100%;
+          `}
+        />
+        <div css={content}>
+          <form id="cmp-form">
+            <h1>
+              Please review and manage your data and privacy settings below.
+            </h1>
+            <p>
+              When you visit this site, we'd like to use cookies and identifiers
+              to understand things like which pages you've visited and how long
+              you've spent with us. It helps us improve our service to you.{" "}
+            </p>
+            <p>
+              Our advertising partners would like to do the same so the adverts
+              are more relevant, and we make more money to invest in Guardian
+              journalism. To find out more, read our{" "}
+              <a href={privacyPolicyURL} target="_blank">
+                privacy policy
+              </a>{" "}
+              and{" "}
+              <a href={cookiePolicyURL} target="_blank">
+                cookie policy
+              </a>.
+            </p>
+            <div
+              id="test"
               css={css`
-                ${buttonStyles};
+                ${buttonContainerStyles};
+                ${topButtonContainerStyles};
               `}
             >
-              Options
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                this.enableAllAndClose();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Enable all and close
-            </button>
-          </div>
-          <div id="cmp-options">
-            <CmpSeparator />
-            {this.renderGuPurposeItems()}
-            {this.renderIabPurposeItems()}
-            <CmpSeparator />
-            {this.renderVendorItems()}
-            <CmpSeparator />
-            {this.renderFeatureItems()}
-            <CmpSeparator />
-          </div>
-          <p>
-            You can change the above settings for this browser at any time by
-            navigating to the Privacy Settings from the main page.
-          </p>
-          <div css={buttonContainerStyles}>
-            <button
-              type="button"
-              onClick={() => {
-                close();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                this.saveAndClose();
-              }}
-              css={css`
-                ${buttonStyles};
-              `}
-            >
-              Save and continue
-            </button>
-          </div>
-        </form>
+              <button
+                type="button"
+                onClick={scrollToPurposes}
+                css={css`
+                  ${buttonStyles};
+                  ${blueButtonStyles};
+                `}
+              >
+                Options
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  this.enableAllAndClose();
+                }}
+                css={css`
+                  ${buttonStyles};
+                  ${yellowButtonStyles};
+                `}
+              >
+                <span>Enable all and close</span>
+                <ArrowIcon />
+              </button>
+            </div>
+            <div css={purposesContainerStyles} id={PURPOSES_ID}>
+              <ul>{this.renderGuPurposeItems()}</ul>
+              <div>
+                <ul>{this.renderIabPurposeItems()}</ul>
+                <div
+                  css={css`
+                    ${buttonContainerStyles};
+                    ${bottomContainerStyles};
+                  `}
+                >
+                  <p>
+                    You can change the above settings for this browser at any
+                    time by accessing our{" "}
+                    <a href={privacyPolicyURL} target="_blank">
+                      privacy policy
+                    </a>.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      close();
+                    }}
+                    css={css`
+                      ${buttonStyles};
+                      ${blueButtonStyles};
+                    `}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      this.saveAndClose();
+                    }}
+                    css={css`
+                      ${buttonStyles};
+                      ${yellowButtonStyles};
+                    `}
+                  >
+                    <span>Save and continue</span>
+                    <ArrowIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
@@ -309,7 +423,7 @@ export class PrivacySettings extends Component<{}, State> {
         return (
           <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
             <p>{description}</p>
-            <p>{integDescription}</p>
+            {integDescription}
           </CmpItem>
         );
       }
@@ -341,48 +455,50 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderVendorItems(): React.ReactNode {
-    if (!this.iabVendorList || !this.iabVendorList.vendors) {
-      return "";
-    }
+  // TODO: Temporarily commented out, to be uncommented following designs
+  // private renderVendorItems(): React.ReactNode {
+  //   if (!this.iabVendorList || !this.iabVendorList.vendors) {
+  //     return "";
+  //   }
 
-    return (
-      <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
-        {this.iabVendorList.vendors.map(
-          (vendor: ParsedIabVendor, index: number): React.ReactNode => {
-            const { id, name, description } = vendor;
+  //   return (
+  //     <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
+  //       {this.iabVendorList.vendors.map(
+  //         (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+  //           const { id, name, description } = vendor;
 
-            return (
-              <CmpItem name={name} key={`vendor-${id}`}>
-                {description}
-              </CmpItem>
-            );
-          }
-        )}
-      </CmpCollapsible>
-    );
-  }
+  //           return (
+  //             <CmpItem name={name} key={`vendor-${id}`}>
+  //               {description}
+  //             </CmpItem>
+  //           );
+  //         }
+  //       )}
+  //     </CmpCollapsible>
+  //   );
+  // }
 
-  private renderFeatureItems(): React.ReactNode {
-    if (!this.iabVendorList || !this.iabVendorList.features) {
-      return "";
-    }
+  // TODO: Temporarily commented out, to be uncommented following designs
+  // private renderFeatureItems(): React.ReactNode {
+  //   if (!this.iabVendorList || !this.iabVendorList.features) {
+  //     return "";
+  //   }
 
-    return (
-      <CmpCollapsible title="Features" key={`featuresCollapsible`}>
-        {this.iabVendorList.features.map(
-          (feature: IabFeature, index: number): React.ReactNode => {
-            const { id, name, description } = feature;
-            return (
-              <CmpItem name={name} key={`feature-${id}`}>
-                <p>{description}</p>
-              </CmpItem>
-            );
-          }
-        )}
-      </CmpCollapsible>
-    );
-  }
+  //   return (
+  //     <CmpCollapsible title="Features" key={`featuresCollapsible`}>
+  //       {this.iabVendorList.features.map(
+  //         (feature: IabFeature, index: number): React.ReactNode => {
+  //           const { id, name, description } = feature;
+  //           return (
+  //             <CmpItem name={name} key={`feature-${id}`}>
+  //               <p>{description}</p>
+  //             </CmpItem>
+  //           );
+  //         }
+  //       )}
+  //     </CmpCollapsible>
+  //   );
+  // }
 
   private enableAllAndClose(): void {
     const guPurposes = Object.keys(this.state.guPurposes).reduce(
@@ -501,14 +617,28 @@ const parseIabVendorList = (
 const getGuIntegrationDescription = (
   integrations: GuIntegration[]
 ): React.ReactNode => {
-  return integrations.map(integration => {
-    const { name, policyUrl } = integration;
+  if (integrations.length) {
     return (
-      <a href={policyUrl} key={name} css={integStyles}>
-        {name}
-      </a>
+      <ul
+        css={css`
+          padding-bottom: 16px;
+        `}
+      >
+        {integrations.map(integration => {
+          const { name, policyUrl } = integration;
+          return (
+            <li key={name}>
+              <a href={policyUrl} key={name} css={integStyles}>
+                {name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     );
-  });
+  }
+
+  return "";
 };
 
 const getVendorDescription = (
@@ -586,35 +716,70 @@ const close = () => {
   window.parent.postMessage(cmpConfig.CMP_CLOSE_MSG, "*");
 };
 
-const doScrolling = (query: string, duration: number): void => {
-  const element: HTMLElement | null = document.querySelector(query);
-  if (!element) {
+const scrollToPurposes = (): void => {
+  const destination: HTMLElement | null = document.getElementById(PURPOSES_ID);
+  const container: HTMLElement | null = document.getElementById(CONTAINER_ID);
+
+  if (!destination || !container) {
     return;
   }
 
-  const elementY: number =
-    window.pageYOffset + element.getBoundingClientRect().top;
-  const startingY: number = window.pageYOffset;
-  const diff: number = elementY - startingY;
-  let start: number;
+  const duration: number = 750;
+  const start: number = window.pageYOffset;
+  const startTime: number =
+    "now" in window.performance ? performance.now() : new Date().getTime();
 
-  const animationStep: FrameRequestCallback = timestamp => {
-    if (!start) {
-      start = timestamp;
+  const scroll = (): void => {
+    const now: number =
+      "now" in window.performance ? performance.now() : new Date().getTime();
+    const time: number = Math.min(1, (now - startTime) / duration);
+    const easing: number =
+      time < 0.5
+        ? 4 * time * time * time
+        : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
+
+    window.scroll(
+      0,
+      Math.ceil(easing * (destinationOffsetToScroll - start) + start)
+    );
+
+    if (window.pageYOffset === destinationOffsetToScroll) {
+      // document.activeElement.blur();
+      return;
     }
-    // Elapsed milliseconds since start of scrolling.
-    const time: number = timestamp - start;
-    // Get percent of completion in range [0, 1].
-    const percent: number = Math.min(time / duration, 1);
 
-    window.scrollTo(0, startingY + diff * percent);
-
-    // Proceed with animation as long as we wanted it to.
-    if (time < duration) {
-      window.requestAnimationFrame(animationStep);
-    }
+    requestAnimationFrame(scroll);
   };
 
-  // Bootstrap our animation - it will get called right before next frame shall be rendered.
-  window.requestAnimationFrame(animationStep);
+  const documentHeight: number = Math.max(
+    document.body.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.clientHeight,
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight
+  );
+
+  const windowHeight: number =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.getElementsByTagName("body")[0].clientHeight;
+
+  const destinationOffset: number =
+    typeof destination === "number"
+      ? destination - container.offsetTop
+      : destination.offsetTop - container.offsetTop;
+
+  const destinationOffsetToScroll: number = Math.round(
+    documentHeight - destinationOffset < windowHeight
+      ? documentHeight - windowHeight
+      : destinationOffset
+  );
+
+  if ("requestAnimationFrame" in window === false) {
+    window.scroll(0, destinationOffsetToScroll);
+    // document.activeElement.blur();
+    return;
+  }
+
+  scroll();
 };
