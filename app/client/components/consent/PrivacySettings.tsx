@@ -117,24 +117,14 @@ const topButtonContainerStyles = css`
     margin-right: 0;
     padding: 0;
   }
-  ::before {
-    content: "";
-    position: absolute;
-    background: ${palette.brand.dark};
-    background: linear-gradient(
-      0deg,
-      rgba(4, 31, 74, 1) 0%,
-      rgba(4, 31, 74, 0.7) 50%,
-      rgba(4, 31, 74, 0.1) 100%
-    );
-    backdrop-filter: blur(8px);
-    opacity: 0.6;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
+  background: ${palette.brand.dark};
+  background: linear-gradient(
+    0deg,
+    rgba(4, 31, 74, 1) 0%,
+    rgba(4, 31, 74, 0.9) 25%,
+    rgba(4, 31, 74, 0.7) 50%,
+    rgba(4, 31, 74, 0.2) 100%
+  );
 `;
 
 const buttonStyles = css`
