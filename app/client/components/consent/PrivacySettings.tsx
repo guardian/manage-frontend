@@ -200,7 +200,7 @@ const integStyles = css`
 const purposesContainerStyles = css`
   margin-left: -${smallSpace}px;
   margin-right: -${smallSpace}px;
-  ${minWidth.mobileMedium} {
+  ${minWidth.mobileLandscape} {
     margin-left: -${mediumSpace}px;
     margin-right: -${mediumSpace}px;
   }
