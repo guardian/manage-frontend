@@ -30,6 +30,9 @@ const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 
+const smallSpace = space[2]; // 12px
+const mediumSpace = smallSpace + smallSpace / 3; // 16px
+
 const containerStyles = css`
   z-index: 0;
   margin-top: 73px;
@@ -47,11 +50,10 @@ const containerStyles = css`
 `;
 
 const content = css`
-  padding: ${space[2]}px ${space[2]}px 0 ${space[2]}px;
+  padding: ${smallSpace}px ${smallSpace}px 0 ${smallSpace}px;
 
   ${minWidth.mobileLandscape} {
-    padding: ${space[2]}px ${space[2] + space[2] / 3}px 0
-      ${space[2] + space[2] / 3}px;
+    padding: ${smallSpace}px ${mediumSpace}px 0 ${mediumSpace}px;
   }
 
   h1 {
@@ -75,11 +77,11 @@ const content = css`
   }
 
   ::after {
-    margin-left: ${-space[2]}px;
-    margin-right: ${-space[2]}px;
+    margin-left: ${-smallSpace}px;
+    margin-right: ${-smallSpace}px;
     ${minWidth.mobileLandscape} {
-      margin-left: ${-(space[2] + space[2] / 3)}px;
-      margin-right: ${-(space[2] + space[2] / 3)}px;
+      margin-left: ${-mediumSpace}px;
+      margin-right: ${-mediumSpace}px;
     }
     content: "";
     background-image: repeating-linear-gradient(
@@ -107,8 +109,8 @@ const buttonContainerStyles = css`
 `;
 
 const topButtonContainerStyles = css`
-  margin-left: ${-space[2]}px;
-  margin-right: ${-space[2]}px;
+  margin-left: ${-smallSpace}px;
+  margin-right: ${-smallSpace}px;
   margin-bottom: 24px;
   ${minWidth.mobileLarge} {
     margin-left: 0;
@@ -211,11 +213,11 @@ const integStyles = css`
 `;
 
 const purposesContainerStyles = css`
-  margin-left: -${space[2]}px;
-  margin-right: -${space[2]}px;
+  margin-left: -${smallSpace}px;
+  margin-right: -${smallSpace}px;
   ${minWidth.mobileMedium} {
-    margin-left: -${space[2] + space[2] / 3}px;
-    margin-right: -${space[2] + space[2] / 3}px;
+    margin-left: -${mediumSpace}px;
+    margin-right: -${mediumSpace}px;
   }
 `;
 
@@ -228,10 +230,10 @@ const bottomContainerStyles = css`
     rgba(4, 31, 74, 0.8) 90%,
     rgba(4, 31, 74, 0.1) 100%
   );
-  padding: ${space[2]}px;
+  padding: ${smallSpace}px;
   margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
-    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+    padding: ${smallSpace}px ${mediumSpace}px;
   }
   p {
     font-size: 15px;
