@@ -103,28 +103,23 @@ const content = css`
 `;
 
 const buttonContainerStyles = css`
+  border-top: 1px solid ${palette.brand.pastel};
   position: sticky;
   bottom: 0;
   padding: 12px;
+  background: rgba(4, 31, 74, 0.8);
 `;
 
 const topButtonContainerStyles = css`
   margin-left: ${-smallSpace}px;
   margin-right: ${-smallSpace}px;
-  margin-bottom: 24px;
   ${minWidth.mobileLarge} {
+    border-top: 0;
+    margin-bottom: 24px;
     margin-left: 0;
     margin-right: 0;
     padding: 0;
   }
-  background: ${palette.brand.dark};
-  background: linear-gradient(
-    0deg,
-    rgba(4, 31, 74, 1) 0%,
-    rgba(4, 31, 74, 0.9) 25%,
-    rgba(4, 31, 74, 0.7) 50%,
-    rgba(4, 31, 74, 0.2) 100%
-  );
 `;
 
 const buttonStyles = css`
@@ -212,18 +207,11 @@ const purposesContainerStyles = css`
 `;
 
 const bottomContainerStyles = css`
-  background-color: ${palette.brand.dark};
-  background: ${palette.brand.dark};
-  background: linear-gradient(
-    0deg,
-    rgba(4, 31, 74, 1) 0%,
-    rgba(4, 31, 74, 0.8) 90%,
-    rgba(4, 31, 74, 0.1) 100%
-  );
-  padding: ${smallSpace}px;
+  padding: ${smallSpace / 2}px ${smallSpace}px ${smallSpace}px ${smallSpace}px;
   margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
-    padding: ${smallSpace}px ${mediumSpace}px;
+    padding: ${smallSpace / 2}px ${mediumSpace}px ${smallSpace}px
+      ${mediumSpace}px;
   }
   p {
     font-size: 15px;
