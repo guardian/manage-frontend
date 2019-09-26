@@ -309,7 +309,6 @@ export class PrivacySettings extends Component<{}, State> {
               </a>.
             </p>
             <div
-              id="test"
               css={css`
                 ${buttonContainerStyles};
                 ${topButtonContainerStyles};
