@@ -16,7 +16,7 @@ const collapseItemButtonStyles = (collapsed: boolean) => css`
   > * {
     pointer-events: none;
   }
-  :before {
+  ::before {
     position: absolute;
     top: ${collapsed ? "7px" : "5px"};
     left: 6px;

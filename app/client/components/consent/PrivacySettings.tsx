@@ -47,10 +47,11 @@ const containerStyles = css`
 `;
 
 const content = css`
-  padding: ${space[2]}px;
+  padding: ${space[2]}px ${space[2]}px 0 ${space[2]}px;
 
   ${minWidth.mobileLandscape} {
-    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+    padding: ${space[2]}px ${space[2] + space[2] / 3}px 0
+      ${space[2] + space[2] / 3}px;
   }
 
   h1 {
@@ -72,25 +73,65 @@ const content = css`
   a:visited {
     color: ${palette.neutral[100]};
   }
+
+  ::after {
+    margin-left: ${-space[2]}px;
+    margin-right: ${-space[2]}px;
+    ${minWidth.mobileLandscape} {
+      margin-left: ${-(space[2] + space[2] / 3)}px;
+      margin-right: ${-(space[2] + space[2] / 3)}px;
+    }
+    content: "";
+    background-image: repeating-linear-gradient(
+      to bottom,
+      ${palette.brand.pastel},
+      ${palette.brand.pastel} 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    background-repeat: repeat-x;
+    background-position: bottom;
+    background-size: 1px 13px;
+    background-color: ${palette.brand.dark};
+    content: "";
+    clear: left;
+    display: block;
+    height: 13px;
+  }
 `;
 
 const buttonContainerStyles = css`
   position: sticky;
   bottom: 0;
   padding: 12px;
-  background-color: ${palette.brand.dark};
-  margin-bottom: 24px;
 `;
 
 const topButtonContainerStyles = css`
-  margin-left: -12px;
-  margin-right: -12px;
+  margin-left: ${-space[2]}px;
+  margin-right: ${-space[2]}px;
+  margin-bottom: 24px;
   ${minWidth.mobileLarge} {
-    position: initial;
-    position: initial;
     margin-left: 0;
     margin-right: 0;
     padding: 0;
+  }
+  ::before {
+    content: "";
+    position: absolute;
+    background: ${palette.brand.dark};
+    background: linear-gradient(
+      0deg,
+      rgba(4, 31, 74, 1) 0%,
+      rgba(4, 31, 74, 0.7) 50%,
+      rgba(4, 31, 74, 0.1) 100%
+    );
+    backdrop-filter: blur(8px);
+    opacity: 0.6;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
   }
 `;
 
@@ -179,7 +220,16 @@ const purposesContainerStyles = css`
 `;
 
 const bottomContainerStyles = css`
+  background-color: ${palette.brand.dark};
+  background: ${palette.brand.dark};
+  background: linear-gradient(
+    0deg,
+    rgba(4, 31, 74, 1) 0%,
+    rgba(4, 31, 74, 0.8) 90%,
+    rgba(4, 31, 74, 0.1) 100%
+  );
   padding: ${space[2]}px;
+  margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
     padding: ${space[2]}px ${space[2] + space[2] / 3}px;
   }
@@ -187,6 +237,7 @@ const bottomContainerStyles = css`
     font-size: 15px;
     line-height: 20px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
+    font-weight: 700;
   }
 `;
 
