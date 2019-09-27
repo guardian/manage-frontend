@@ -243,7 +243,7 @@ interface State {
 }
 
 export class PrivacySettings extends Component<{}, State> {
-  private guPurposeList?: ParsedGuPurposeList;
+  // private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -278,6 +278,10 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public render(): React.ReactNode {
+    const iabPurposesList = this.renderIabPurposeItems() as React.ReactNodeArray;
+    const firstIabPurposeList = iabPurposesList.slice(0, 3);
+    const secondIabPurposeList = iabPurposesList.slice(3);
+
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
         <img
@@ -339,7 +343,7 @@ export class PrivacySettings extends Component<{}, State> {
               </button>
             </div>
             <div css={purposesContainerStyles} id={PURPOSES_ID}>
-              <ul>{this.renderIabPurposeItems(0, 3)}</ul>
+              <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
               {/* 
                   renderIabPurposeItems, 
                   renderVendorItems and renderFeatureItems 
@@ -348,7 +352,7 @@ export class PrivacySettings extends Component<{}, State> {
                 */}
               <div>
                 <ul>
-                  {this.renderIabPurposeItems(3, 2)}
+                  {secondIabPurposeList && secondIabPurposeList}
                   {this.renderVendorItems()}
                   {this.renderFeatureItems()}
                 </ul>
@@ -404,7 +408,7 @@ export class PrivacySettings extends Component<{}, State> {
     iabVendorList: ParsedIabVendorList
   ): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
-    this.guPurposeList = guPurposeList;
+    // this.guPurposeList = guPurposeList;   // TODO: RESTORE ONCE PECR PURPOSES READY
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
@@ -436,49 +440,47 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderGuPurposeItems(): React.ReactNode {
-    if (!this.guPurposeList || !this.guPurposeList.purposes) {
-      return "";
-    }
+  // TODO: RESTORE ONCE PECR PURPOSES READY
+  // private renderGuPurposeItems(): React.ReactNode {
+  //   if (!this.guPurposeList || !this.guPurposeList.purposes) {
+  //     return "";
+  //   }
 
-    return this.guPurposeList.purposes.map(
-      (purpose: ParsedGuPurpose): React.ReactNode => {
-        const {
-          id,
-          name,
-          description,
-          integDescription,
-          alwaysEnabled
-        } = purpose;
+  //   return this.guPurposeList.purposes.map(
+  //     (purpose: ParsedGuPurpose): React.ReactNode => {
+  //       const {
+  //         id,
+  //         name,
+  //         description,
+  //         integDescription,
+  //         alwaysEnabled
+  //       } = purpose;
 
-        const optProps = alwaysEnabled
-          ? { value: this.state.guPurposes[id] }
-          : {
-              value: this.state.guPurposes[id],
-              updateItem: (updatedValue: boolean) => {
-                this.updateGuPurpose(id, updatedValue);
-              }
-            };
+  //       const optProps = alwaysEnabled
+  //         ? { value: this.state.guPurposes[id] }
+  //         : {
+  //             value: this.state.guPurposes[id],
+  //             updateItem: (updatedValue: boolean) => {
+  //               this.updateGuPurpose(id, updatedValue);
+  //             }
+  //           };
 
-        return (
-          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
-            <p>{description}</p>
-            {integDescription}
-          </CmpItem>
-        );
-      }
-    );
-  }
+  //       return (
+  //         <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
+  //           <p>{description}</p>
+  //           {integDescription}
+  //         </CmpItem>
+  //       );
+  //     }
+  //   );
+  // }
 
-  private renderIabPurposeItems(
-    startIndex: number,
-    length: number
-  ): React.ReactNode {
+  private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
     }
 
-    const purposeList = this.iabVendorList.purposes.map(
+    return this.iabVendorList.purposes.map(
       (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
 
@@ -496,8 +498,6 @@ export class PrivacySettings extends Component<{}, State> {
         );
       }
     );
-
-    return purposeList.slice(startIndex, startIndex + length);
   }
 
   private renderVendorItems(): React.ReactNode {
@@ -609,17 +609,18 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
-  private updateGuPurpose(purposeId: number, value: boolean): void {
-    this.setState((prevState, props) => ({
-      guPurposes: {
-        ...prevState.guPurposes,
-        [purposeId]: value
-      },
-      iabPurposes: {
-        ...prevState.iabPurposes
-      }
-    }));
-  }
+  // TODO: RESTORE ONCE PECR PURPOSES READY
+  // private updateGuPurpose(purposeId: number, value: boolean): void {
+  //   this.setState((prevState, props) => ({
+  //     guPurposes: {
+  //       ...prevState.guPurposes,
+  //       [purposeId]: value
+  //     },
+  //     iabPurposes: {
+  //       ...prevState.iabPurposes
+  //     }
+  //   }));
+  // }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
