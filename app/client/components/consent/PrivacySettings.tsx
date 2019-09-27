@@ -30,6 +30,9 @@ const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 
+const smallSpace = space[2]; // 12px
+const mediumSpace = smallSpace + smallSpace / 3; // 16px
+
 const containerStyles = css`
   z-index: 0;
   margin-top: 73px;
@@ -47,10 +50,10 @@ const containerStyles = css`
 `;
 
 const content = css`
-  padding: ${space[2]}px;
+  padding: ${smallSpace}px ${smallSpace}px 0 ${smallSpace}px;
 
   ${minWidth.mobileLandscape} {
-    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+    padding: ${smallSpace}px ${mediumSpace}px 0 ${mediumSpace}px;
   }
 
   h1 {
@@ -72,22 +75,47 @@ const content = css`
   a:visited {
     color: ${palette.neutral[100]};
   }
+
+  ::after {
+    margin-left: ${-smallSpace}px;
+    margin-right: ${-smallSpace}px;
+    ${minWidth.mobileLandscape} {
+      margin-left: ${-mediumSpace}px;
+      margin-right: ${-mediumSpace}px;
+    }
+    content: "";
+    background-image: repeating-linear-gradient(
+      to bottom,
+      ${palette.brand.pastel},
+      ${palette.brand.pastel} 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    background-repeat: repeat-x;
+    background-position: bottom;
+    background-size: 1px 13px;
+    background-color: ${palette.brand.dark};
+    content: "";
+    clear: left;
+    display: block;
+    height: 13px;
+  }
 `;
 
 const buttonContainerStyles = css`
+  border-top: 1px solid ${palette.brand.pastel};
   position: sticky;
   bottom: 0;
   padding: 12px;
-  background-color: ${palette.brand.dark};
-  margin-bottom: 24px;
+  background: rgba(4, 31, 74, 0.8);
 `;
 
 const topButtonContainerStyles = css`
-  margin-left: -12px;
-  margin-right: -12px;
+  margin-left: ${-smallSpace}px;
+  margin-right: ${-smallSpace}px;
   ${minWidth.mobileLarge} {
-    position: initial;
-    position: initial;
+    border-top: 0;
+    margin-bottom: 24px;
     margin-left: 0;
     margin-right: 0;
     padding: 0;
@@ -170,23 +198,26 @@ const integStyles = css`
 `;
 
 const purposesContainerStyles = css`
-  margin-left: -${space[2]}px;
-  margin-right: -${space[2]}px;
-  ${minWidth.mobileMedium} {
-    margin-left: -${space[2] + space[2] / 3}px;
-    margin-right: -${space[2] + space[2] / 3}px;
+  margin-left: -${smallSpace}px;
+  margin-right: -${smallSpace}px;
+  ${minWidth.mobileLandscape} {
+    margin-left: -${mediumSpace}px;
+    margin-right: -${mediumSpace}px;
   }
 `;
 
 const bottomContainerStyles = css`
-  padding: ${space[2]}px;
+  padding: ${smallSpace / 2}px ${smallSpace}px ${smallSpace}px ${smallSpace}px;
+  margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
-    padding: ${space[2]}px ${space[2] + space[2] / 3}px;
+    padding: ${smallSpace / 2}px ${mediumSpace}px ${smallSpace}px
+      ${mediumSpace}px;
   }
   p {
     font-size: 15px;
     line-height: 20px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
+    font-weight: 700;
   }
 `;
 
@@ -278,7 +309,6 @@ export class PrivacySettings extends Component<{}, State> {
               </a>.
             </p>
             <div
-              id="test"
               css={css`
                 ${buttonContainerStyles};
                 ${topButtonContainerStyles};

@@ -10,16 +10,20 @@ const headerCSS = css`
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 10;
+`;
+
+const logoContainer = css`
   padding: 6px ${space[2]}px 12px 0;
+  height: 100%;
+  width: 100%;
+  border-bottom: 1px solid ${palette.brand.pastel};
   ${minWidth.mobileLandscape} {
     width: 95%;
     max-width: 450px;
     padding-right: 0;
   }
-  border-bottom: 1px solid ${palette.brand.pastel};
   display: flex;
-  z-index: 10;
-
   ::before {
     content: "";
     display: block;
@@ -49,7 +53,9 @@ export class ConsentManagementPortal extends Component<{}, {}> {
     return (
       <div>
         <div css={headerCSS}>
-          <TheGuardianLogo css={logoStyles} />
+          <div css={logoContainer}>
+            <TheGuardianLogo css={logoStyles} />
+          </div>
         </div>
         <PrivacySettings />
       </div>
