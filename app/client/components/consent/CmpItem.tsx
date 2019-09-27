@@ -5,12 +5,12 @@ import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CmpCollapsible } from "./CmpCollapsible";
 
-const itemContainerStyles = css`
+const itemContainerStyles = (isNested: boolean) => css`
   margin-top: 6px;
-  border-top: 1px solid ${palette.brand.pastel};
-  padding: 10px 10px;
+  border-top: ${isNested ? "0" : `1px solid ${palette.brand.pastel}`};
+  padding: ${isNested ? "0" : "10px 10px"};
   ${minWidth.mobileMedium} {
-    padding: 10px 16px;
+    padding: ${isNested ? "0" : "10px 16px"};
   }
   position: relative;
 `;
@@ -19,6 +19,7 @@ interface Props {
   name: string;
   value?: ItemState;
   updateItem?: (updatedValue: boolean) => void;
+  isNested?: boolean;
 }
 
 export class CmpItem extends Component<Props, {}> {
@@ -27,10 +28,10 @@ export class CmpItem extends Component<Props, {}> {
   }
 
   public render(): React.ReactNode {
-    const { name, value, updateItem } = this.props;
+    const { name, value, updateItem, isNested } = this.props;
 
     return (
-      <li css={itemContainerStyles}>
+      <li css={itemContainerStyles(!!isNested)}>
         <CmpCollapsible title={name} value={value} updateItem={updateItem}>
           {this.props.children}
         </CmpCollapsible>

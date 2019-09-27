@@ -339,9 +339,19 @@ export class PrivacySettings extends Component<{}, State> {
               </button>
             </div>
             <div css={purposesContainerStyles} id={PURPOSES_ID}>
-              <ul>{this.renderGuPurposeItems()}</ul>
+              <ul>{this.renderIabPurposeItems(0, 3)}</ul>
+              {/* 
+                  renderIabPurposeItems, 
+                  renderVendorItems and renderFeatureItems 
+                  should be in single <ul> once renderGuPurposeItems 
+                  is restored.
+                */}
               <div>
-                <ul>{this.renderIabPurposeItems()}</ul>
+                <ul>
+                  {this.renderIabPurposeItems(3, 2)}
+                  {this.renderVendorItems()}
+                  {this.renderFeatureItems()}
+                </ul>
                 <div
                   css={css`
                     ${buttonContainerStyles};
@@ -442,7 +452,7 @@ export class PrivacySettings extends Component<{}, State> {
         } = purpose;
 
         const optProps = alwaysEnabled
-          ? {}
+          ? { value: this.state.guPurposes[id] }
           : {
               value: this.state.guPurposes[id],
               updateItem: (updatedValue: boolean) => {
@@ -460,12 +470,15 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderIabPurposeItems(): React.ReactNode {
+  private renderIabPurposeItems(
+    startIndex: number,
+    length: number
+  ): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
       return "";
     }
 
-    return this.iabVendorList.purposes.map(
+    const purposeList = this.iabVendorList.purposes.map(
       (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
 
@@ -483,52 +496,56 @@ export class PrivacySettings extends Component<{}, State> {
         );
       }
     );
+
+    return purposeList.slice(startIndex, startIndex + length);
   }
 
-  // TODO: Temporarily commented out, to be uncommented following designs
-  // private renderVendorItems(): React.ReactNode {
-  //   if (!this.iabVendorList || !this.iabVendorList.vendors) {
-  //     return "";
-  //   }
+  private renderVendorItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.vendors) {
+      return "";
+    }
 
-  //   return (
-  //     <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
-  //       {this.iabVendorList.vendors.map(
-  //         (vendor: ParsedIabVendor, index: number): React.ReactNode => {
-  //           const { id, name, description } = vendor;
+    return (
+      <CmpItem name="Vendors" key={`vendorsCollapsible`}>
+        <ul>
+          {this.iabVendorList.vendors.map(
+            (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+              const { id, name, description } = vendor;
 
-  //           return (
-  //             <CmpItem name={name} key={`vendor-${id}`}>
-  //               {description}
-  //             </CmpItem>
-  //           );
-  //         }
-  //       )}
-  //     </CmpCollapsible>
-  //   );
-  // }
+              return (
+                <CmpItem name={name} key={`vendor-${id}`} isNested={true}>
+                  {description}
+                </CmpItem>
+              );
+            }
+          )}
+        </ul>
+      </CmpItem>
+    );
+  }
 
-  // TODO: Temporarily commented out, to be uncommented following designs
-  // private renderFeatureItems(): React.ReactNode {
-  //   if (!this.iabVendorList || !this.iabVendorList.features) {
-  //     return "";
-  //   }
+  private renderFeatureItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.features) {
+      return "";
+    }
 
-  //   return (
-  //     <CmpCollapsible title="Features" key={`featuresCollapsible`}>
-  //       {this.iabVendorList.features.map(
-  //         (feature: IabFeature, index: number): React.ReactNode => {
-  //           const { id, name, description } = feature;
-  //           return (
-  //             <CmpItem name={name} key={`feature-${id}`}>
-  //               <p>{description}</p>
-  //             </CmpItem>
-  //           );
-  //         }
-  //       )}
-  //     </CmpCollapsible>
-  //   );
-  // }
+    return (
+      <CmpItem name="Features" key={`featuresCollapsible`}>
+        <ul>
+          {this.iabVendorList.features.map(
+            (feature: IabFeature, index: number): React.ReactNode => {
+              const { id, name, description } = feature;
+              return (
+                <CmpItem name={name} key={`feature-${id}`} isNested={true}>
+                  <p>{description}</p>
+                </CmpItem>
+              );
+            }
+          )}
+        </ul>
+      </CmpItem>
+    );
+  }
 
   private enableAllAndClose(): void {
     const guPurposes = Object.keys(this.state.guPurposes).reduce(

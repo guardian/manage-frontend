@@ -108,7 +108,7 @@ export class OnOffRadio extends Component<Props, {}> {
     const id = `radio-${this.myIdCounter}`;
     const onId = `${id}-on`;
     const offId = `${id}-off`;
-    const disabled: boolean = selectedValue === undefined || !onChangeHandler;
+    const disabled: boolean = !onChangeHandler;
 
     return (
       <div css={radioContainerStyles}>
@@ -121,7 +121,7 @@ export class OnOffRadio extends Component<Props, {}> {
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               this.updateValue(evt);
             }}
-            defaultChecked={disabled ? false : selectedValue === false}
+            defaultChecked={selectedValue === false}
             css={radioInputStyles}
             disabled={disabled}
           />
@@ -136,7 +136,7 @@ export class OnOffRadio extends Component<Props, {}> {
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               this.updateValue(evt);
             }}
-            defaultChecked={disabled ? true : selectedValue === true}
+            defaultChecked={selectedValue === true}
             css={radioInputStyles}
             disabled={disabled}
           />
