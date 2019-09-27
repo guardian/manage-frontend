@@ -4,13 +4,17 @@ import { palette } from "@guardian/src-foundations";
 import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CmpCollapsible } from "./CmpCollapsible";
+import { space } from "@guardian/src-foundations";
+
+const smallSpace = space[2]; // 12px
+const mediumSpace = smallSpace + smallSpace / 3; // 16px
 
 const itemContainerStyles = (isNested: boolean) => css`
   margin-top: 6px;
   border-top: ${isNested ? "0" : `1px solid ${palette.brand.pastel}`};
-  padding: ${isNested ? "0" : "10px 10px"};
-  ${minWidth.mobileMedium} {
-    padding: ${isNested ? "0" : "10px 16px"};
+  padding: ${isNested ? "0" : `10px ${smallSpace}px 6px ${smallSpace}px`};
+  ${minWidth.mobileLandscape} {
+    padding: ${isNested ? "0" : `10px ${mediumSpace}px 6px ${mediumSpace}px`};
   }
   position: relative;
 `;
