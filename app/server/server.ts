@@ -60,6 +60,7 @@ server.use(
       "Content-Security-Policy",
       `frame-ancestors ${frameAncestors}`
     );
+    res.setHeader("X-Frame-Options", `allow from ${frameAncestors}`);
     next();
   },
   routes.consent
