@@ -62,7 +62,7 @@ server.use(
     );
     res.setHeader(
       "X-Frame-Options",
-      `allow from https://code.dev-theguardian.com/`
+      `allow-from https://code.dev-theguardian.com/`
     );
     next();
   },
