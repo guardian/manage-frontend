@@ -60,7 +60,10 @@ server.use(
       "Content-Security-Policy",
       `frame-ancestors ${frameAncestors}`
     );
-    res.setHeader("X-Frame-Options", `allow from ${frameAncestors}`);
+    res.setHeader(
+      "X-Frame-Options",
+      `allow from https://code.dev-theguardian.com/`
+    );
     next();
   },
   routes.consent
