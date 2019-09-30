@@ -1,10 +1,10 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
 import { palette } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
 import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CmpCollapsible } from "./CmpCollapsible";
-import { space } from "@guardian/src-foundations";
 
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
