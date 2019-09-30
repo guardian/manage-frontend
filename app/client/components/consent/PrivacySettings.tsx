@@ -792,7 +792,6 @@ const scrollToPurposes = (): void => {
     );
 
     if (window.pageYOffset === destinationOffsetToScroll) {
-      // document.activeElement.blur();
       return;
     }
 
@@ -825,7 +824,6 @@ const scrollToPurposes = (): void => {
 
   if ("requestAnimationFrame" in window === false) {
     window.scroll(0, destinationOffsetToScroll);
-    // document.activeElement.blur();
     return;
   }
 
