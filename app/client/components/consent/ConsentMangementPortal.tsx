@@ -44,6 +44,12 @@ const logoStyles = css`
   }
 `;
 
+const iosFixStyles = css`
+  height: 1px;
+  min-height: 100vh;
+  overflow: scroll;
+`;
+
 export class ConsentManagementPortal extends Component<{}, {}> {
   constructor(props: {}) {
     super(props);
@@ -51,7 +57,7 @@ export class ConsentManagementPortal extends Component<{}, {}> {
 
   public render(): React.ReactNode {
     return (
-      <div>
+      <div css={iosFixStyles} id="scrollable">
         <div css={headerCSS}>
           <div css={logoContainer}>
             <TheGuardianLogo css={logoStyles} />

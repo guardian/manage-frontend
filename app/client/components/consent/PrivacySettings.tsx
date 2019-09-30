@@ -29,6 +29,7 @@ const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
+const SCROLLABLE_ID = "scrollable";
 
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
@@ -765,15 +766,24 @@ const close = () => {
 };
 
 const scrollToPurposes = (): void => {
-  const destination: HTMLElement | null = document.getElementById(PURPOSES_ID);
-  const container: HTMLElement | null = document.getElementById(CONTAINER_ID);
+  const purposeElem: HTMLElement | null = document.getElementById(PURPOSES_ID);
+  const scrollableElem: HTMLElement | null = document.getElementById(
+    SCROLLABLE_ID
+  );
+  const containerElem: HTMLElement | null = document.getElementById(
+    CONTAINER_ID
+  );
 
-  if (!destination || !container) {
+  if (!purposeElem || !scrollableElem || !containerElem) {
     return;
   }
 
+  const purposeElemOffsetTop = purposeElem.offsetTop;
+  const scrollableElemOffsetTop = scrollableElem.offsetTop;
+  const containerElemOffsetTop = containerElem.offsetTop;
+  const scrollLength =
+    purposeElemOffsetTop + scrollableElemOffsetTop - containerElemOffsetTop;
   const duration: number = 750;
-  const start: number = window.pageYOffset;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
 
@@ -786,44 +796,20 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
-    window.scroll(
-      0,
-      Math.ceil(easing * (destinationOffsetToScroll - start) + start)
+    scrollableElem.scrollTop = Math.ceil(
+      easing * (scrollLength - scrollableElemOffsetTop) +
+        scrollableElemOffsetTop
     );
 
-    if (window.pageYOffset === destinationOffsetToScroll) {
+    if (scrollableElem.scrollTop === scrollLength) {
       return;
     }
 
     requestAnimationFrame(scroll);
   };
 
-  const documentHeight: number = Math.max(
-    document.body.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.clientHeight,
-    document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight
-  );
-
-  const windowHeight: number =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.getElementsByTagName("body")[0].clientHeight;
-
-  const destinationOffset: number =
-    typeof destination === "number"
-      ? destination - container.offsetTop
-      : destination.offsetTop - container.offsetTop;
-
-  const destinationOffsetToScroll: number = Math.round(
-    documentHeight - destinationOffset < windowHeight
-      ? documentHeight - windowHeight
-      : destinationOffset
-  );
-
   if ("requestAnimationFrame" in window === false) {
-    window.scroll(0, destinationOffsetToScroll);
+    scrollableElem.scrollTop = scrollLength;
     return;
   }
 
