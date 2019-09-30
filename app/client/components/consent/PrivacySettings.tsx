@@ -796,6 +796,7 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
+    // tslint:disable-next-line: no-object-mutation
     scrollableElem.scrollTop = Math.ceil(
       easing * (scrollLength - scrollableElemOffsetTop) +
         scrollableElemOffsetTop
@@ -809,6 +810,7 @@ const scrollToPurposes = (): void => {
   };
 
   if ("requestAnimationFrame" in window === false) {
+    // tslint:disable-next-line: no-object-mutation
     scrollableElem.scrollTop = scrollLength;
     return;
   }
