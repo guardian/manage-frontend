@@ -658,7 +658,7 @@ const getGuIntegrationDescription = (
           const { name, policyUrl } = integration;
           return (
             <li key={name}>
-              <a href={policyUrl} key={name} css={integStyles}>
+              <a href={policyUrl} key={name} css={integStyles} target="_blank">
                 {name}
               </a>
             </li>
@@ -680,7 +680,9 @@ const getVendorDescription = (
   return (
     <>
       <p>
-        <a href={policyUrl}>{name}'s Privacy policy</a>
+        <a href={policyUrl} target="_blank">
+          {name}'s Privacy policy
+        </a>
       </p>
       <p>
         Consent purpose(s):{" "}
