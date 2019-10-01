@@ -787,7 +787,8 @@ const scrollToPurposes = (): void => {
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
   const containerElemOffsetTop = containerElem.offsetTop;
-  const initDistanceScrolled = scrollableElem.scrollTop;
+  // scrollTop can return subpixel on hidpi resolutions so round up to integer
+  const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
     purposeElemOffsetTop +
     scrollableElemOffsetTop -
