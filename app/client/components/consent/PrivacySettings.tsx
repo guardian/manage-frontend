@@ -29,6 +29,7 @@ const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
+const SCROLLABLE_ID = "scrollable";
 
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
@@ -243,7 +244,7 @@ interface State {
 }
 
 export class PrivacySettings extends Component<{}, State> {
-  private guPurposeList?: ParsedGuPurposeList;
+  // private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
 
   constructor(props: {}) {
@@ -278,6 +279,10 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   public render(): React.ReactNode {
+    const iabPurposesList = this.renderIabPurposeItems() as React.ReactNodeArray;
+    const firstIabPurposeList = iabPurposesList.slice(0, 3);
+    const secondIabPurposeList = iabPurposesList.slice(3);
+
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
         <img
@@ -339,9 +344,19 @@ export class PrivacySettings extends Component<{}, State> {
               </button>
             </div>
             <div css={purposesContainerStyles} id={PURPOSES_ID}>
-              <ul>{this.renderGuPurposeItems()}</ul>
+              <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
+              {/* 
+                  renderIabPurposeItems, 
+                  renderVendorItems and renderFeatureItems 
+                  should be in single <ul> once renderGuPurposeItems 
+                  is restored.
+                */}
               <div>
-                <ul>{this.renderIabPurposeItems()}</ul>
+                <ul>
+                  {secondIabPurposeList && secondIabPurposeList}
+                  {this.renderVendorItems()}
+                  {this.renderFeatureItems()}
+                </ul>
                 <div
                   css={css`
                     ${buttonContainerStyles};
@@ -394,7 +409,7 @@ export class PrivacySettings extends Component<{}, State> {
     iabVendorList: ParsedIabVendorList
   ): Promise<void> {
     // tslint:disable-next-line: no-object-mutation
-    this.guPurposeList = guPurposeList;
+    // this.guPurposeList = guPurposeList;   // TODO: RESTORE ONCE PECR PURPOSES READY
     // tslint:disable-next-line: no-object-mutation
     this.iabVendorList = iabVendorList;
 
@@ -426,39 +441,40 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  private renderGuPurposeItems(): React.ReactNode {
-    if (!this.guPurposeList || !this.guPurposeList.purposes) {
-      return "";
-    }
+  // TODO: RESTORE ONCE PECR PURPOSES READY
+  // private renderGuPurposeItems(): React.ReactNode {
+  //   if (!this.guPurposeList || !this.guPurposeList.purposes) {
+  //     return "";
+  //   }
 
-    return this.guPurposeList.purposes.map(
-      (purpose: ParsedGuPurpose): React.ReactNode => {
-        const {
-          id,
-          name,
-          description,
-          integDescription,
-          alwaysEnabled
-        } = purpose;
+  //   return this.guPurposeList.purposes.map(
+  //     (purpose: ParsedGuPurpose): React.ReactNode => {
+  //       const {
+  //         id,
+  //         name,
+  //         description,
+  //         integDescription,
+  //         alwaysEnabled
+  //       } = purpose;
 
-        const optProps = alwaysEnabled
-          ? {}
-          : {
-              value: this.state.guPurposes[id],
-              updateItem: (updatedValue: boolean) => {
-                this.updateGuPurpose(id, updatedValue);
-              }
-            };
+  //       const optProps = alwaysEnabled
+  //         ? { value: this.state.guPurposes[id] }
+  //         : {
+  //             value: this.state.guPurposes[id],
+  //             updateItem: (updatedValue: boolean) => {
+  //               this.updateGuPurpose(id, updatedValue);
+  //             }
+  //           };
 
-        return (
-          <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
-            <p>{description}</p>
-            {integDescription}
-          </CmpItem>
-        );
-      }
-    );
-  }
+  //       return (
+  //         <CmpItem name={name} {...optProps} key={`purpose-${id}`}>
+  //           <p>{description}</p>
+  //           {integDescription}
+  //         </CmpItem>
+  //       );
+  //     }
+  //   );
+  // }
 
   private renderIabPurposeItems(): React.ReactNode {
     if (!this.iabVendorList || !this.iabVendorList.purposes) {
@@ -485,50 +501,52 @@ export class PrivacySettings extends Component<{}, State> {
     );
   }
 
-  // TODO: Temporarily commented out, to be uncommented following designs
-  // private renderVendorItems(): React.ReactNode {
-  //   if (!this.iabVendorList || !this.iabVendorList.vendors) {
-  //     return "";
-  //   }
+  private renderVendorItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.vendors) {
+      return "";
+    }
 
-  //   return (
-  //     <CmpCollapsible title="Vendors" key={`vendorsCollapsible`}>
-  //       {this.iabVendorList.vendors.map(
-  //         (vendor: ParsedIabVendor, index: number): React.ReactNode => {
-  //           const { id, name, description } = vendor;
+    return (
+      <CmpItem name="Vendors" key={`vendorsCollapsible`}>
+        <ul>
+          {this.iabVendorList.vendors.map(
+            (vendor: ParsedIabVendor, index: number): React.ReactNode => {
+              const { id, name, description } = vendor;
 
-  //           return (
-  //             <CmpItem name={name} key={`vendor-${id}`}>
-  //               {description}
-  //             </CmpItem>
-  //           );
-  //         }
-  //       )}
-  //     </CmpCollapsible>
-  //   );
-  // }
+              return (
+                <CmpItem name={name} key={`vendor-${id}`} isNested={true}>
+                  {description}
+                </CmpItem>
+              );
+            }
+          )}
+        </ul>
+      </CmpItem>
+    );
+  }
 
-  // TODO: Temporarily commented out, to be uncommented following designs
-  // private renderFeatureItems(): React.ReactNode {
-  //   if (!this.iabVendorList || !this.iabVendorList.features) {
-  //     return "";
-  //   }
+  private renderFeatureItems(): React.ReactNode {
+    if (!this.iabVendorList || !this.iabVendorList.features) {
+      return "";
+    }
 
-  //   return (
-  //     <CmpCollapsible title="Features" key={`featuresCollapsible`}>
-  //       {this.iabVendorList.features.map(
-  //         (feature: IabFeature, index: number): React.ReactNode => {
-  //           const { id, name, description } = feature;
-  //           return (
-  //             <CmpItem name={name} key={`feature-${id}`}>
-  //               <p>{description}</p>
-  //             </CmpItem>
-  //           );
-  //         }
-  //       )}
-  //     </CmpCollapsible>
-  //   );
-  // }
+    return (
+      <CmpItem name="Features" key={`featuresCollapsible`}>
+        <ul>
+          {this.iabVendorList.features.map(
+            (feature: IabFeature, index: number): React.ReactNode => {
+              const { id, name, description } = feature;
+              return (
+                <CmpItem name={name} key={`feature-${id}`} isNested={true}>
+                  <p>{description}</p>
+                </CmpItem>
+              );
+            }
+          )}
+        </ul>
+      </CmpItem>
+    );
+  }
 
   private enableAllAndClose(): void {
     const guPurposes = Object.keys(this.state.guPurposes).reduce(
@@ -592,17 +610,18 @@ export class PrivacySettings extends Component<{}, State> {
     return true;
   }
 
-  private updateGuPurpose(purposeId: number, value: boolean): void {
-    this.setState((prevState, props) => ({
-      guPurposes: {
-        ...prevState.guPurposes,
-        [purposeId]: value
-      },
-      iabPurposes: {
-        ...prevState.iabPurposes
-      }
-    }));
-  }
+  // TODO: RESTORE ONCE PECR PURPOSES READY
+  // private updateGuPurpose(purposeId: number, value: boolean): void {
+  //   this.setState((prevState, props) => ({
+  //     guPurposes: {
+  //       ...prevState.guPurposes,
+  //       [purposeId]: value
+  //     },
+  //     iabPurposes: {
+  //       ...prevState.iabPurposes
+  //     }
+  //   }));
+  // }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
     this.setState((prevState, props) => ({
@@ -749,15 +768,24 @@ const close = () => {
 };
 
 const scrollToPurposes = (): void => {
-  const destination: HTMLElement | null = document.getElementById(PURPOSES_ID);
-  const container: HTMLElement | null = document.getElementById(CONTAINER_ID);
+  const purposeElem: HTMLElement | null = document.getElementById(PURPOSES_ID);
+  const scrollableElem: HTMLElement | null = document.getElementById(
+    SCROLLABLE_ID
+  );
+  const containerElem: HTMLElement | null = document.getElementById(
+    CONTAINER_ID
+  );
 
-  if (!destination || !container) {
+  if (!purposeElem || !scrollableElem || !containerElem) {
     return;
   }
 
+  const purposeElemOffsetTop = purposeElem.offsetTop;
+  const scrollableElemOffsetTop = scrollableElem.offsetTop;
+  const containerElemOffsetTop = containerElem.offsetTop;
+  const scrollLength =
+    purposeElemOffsetTop + scrollableElemOffsetTop - containerElemOffsetTop;
   const duration: number = 750;
-  const start: number = window.pageYOffset;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
 
@@ -770,46 +798,22 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
-    window.scroll(
-      0,
-      Math.ceil(easing * (destinationOffsetToScroll - start) + start)
+    // tslint:disable-next-line: no-object-mutation
+    scrollableElem.scrollTop = Math.ceil(
+      easing * (scrollLength - scrollableElemOffsetTop) +
+        scrollableElemOffsetTop
     );
 
-    if (window.pageYOffset === destinationOffsetToScroll) {
-      // document.activeElement.blur();
+    if (scrollableElem.scrollTop === scrollLength) {
       return;
     }
 
     requestAnimationFrame(scroll);
   };
 
-  const documentHeight: number = Math.max(
-    document.body.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.clientHeight,
-    document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight
-  );
-
-  const windowHeight: number =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.getElementsByTagName("body")[0].clientHeight;
-
-  const destinationOffset: number =
-    typeof destination === "number"
-      ? destination - container.offsetTop
-      : destination.offsetTop - container.offsetTop;
-
-  const destinationOffsetToScroll: number = Math.round(
-    documentHeight - destinationOffset < windowHeight
-      ? documentHeight - windowHeight
-      : destinationOffset
-  );
-
   if ("requestAnimationFrame" in window === false) {
-    window.scroll(0, destinationOffsetToScroll);
-    // document.activeElement.blur();
+    // tslint:disable-next-line: no-object-mutation
+    scrollableElem.scrollTop = scrollLength;
     return;
   }
 
