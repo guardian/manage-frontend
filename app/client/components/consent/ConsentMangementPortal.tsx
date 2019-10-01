@@ -50,7 +50,7 @@ const iosFixStyles = css`
   overflow: scroll;
 
   ${minWidth.mobileLandscape} {
-    overflow: auto;
+    overflow: initial;
   }
 `;
 
