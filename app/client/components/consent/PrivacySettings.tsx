@@ -798,8 +798,6 @@ const scrollToPurposes = (): void => {
   console.log("*** containerElemOffsetTop ***", containerElemOffsetTop);
 
   const scroll = (): void => {
-    console.log("*** scroll ***");
-
     const now: number =
       "now" in window.performance ? performance.now() : new Date().getTime();
     const time: number = Math.min(1, (now - startTime) / duration);
@@ -813,6 +811,8 @@ const scrollToPurposes = (): void => {
       easing * (scrollLength - scrollableElemOffsetTop) +
         scrollableElemOffsetTop
     );
+
+    console.log("*** scroll ***", scrollableElem.scrollTop, scrollLength);
 
     if (scrollableElem.scrollTop === scrollLength) {
       return;
