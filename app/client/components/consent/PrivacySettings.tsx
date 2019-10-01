@@ -1,3 +1,5 @@
+// tslint:disable: no-console
+
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
 import {
