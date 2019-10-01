@@ -824,12 +824,12 @@ const scrollToPurposes = (): void => {
     console.log("newScrollTop --->", newScrollTop);
     console.log(
       "actual scrollableElem.scrollTop --->",
-      scrollableElem.scrollTop
+      Math.ceil(scrollableElem.scrollTop)
     );
 
     if (
       scrollableElem.scrollTop === scrollLength + initDistanceScrolled ||
-      newScrollTop !== scrollableElem.scrollTop
+      newScrollTop - scrollableElem.scrollTop > 1
     ) {
       return;
     }
