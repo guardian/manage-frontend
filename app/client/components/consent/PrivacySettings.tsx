@@ -1,5 +1,3 @@
-// tslint:disable: no-console
-
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
 import {
@@ -770,8 +768,6 @@ const close = () => {
 };
 
 const scrollToPurposes = (): void => {
-  console.log("*** scrollToPurposes ***");
-
   const purposeElem: HTMLElement | null = document.getElementById(PURPOSES_ID);
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
@@ -798,11 +794,6 @@ const scrollToPurposes = (): void => {
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
 
-  console.log("*** purposeElemOffsetTop", purposeElemOffsetTop);
-  console.log("*** scrollableElemOffsetTop", scrollableElemOffsetTop);
-  console.log("*** containerElemOffsetTop", containerElemOffsetTop);
-  console.log("*** scrollLength", scrollLength);
-
   const scroll = (): void => {
     const now: number =
       "now" in window.performance ? performance.now() : new Date().getTime();
@@ -821,13 +812,8 @@ const scrollToPurposes = (): void => {
     // tslint:disable-next-line: no-object-mutation
     scrollableElem.scrollTop = newScrollTop;
 
-    console.log("***");
-    console.log("newScrollTop --->", newScrollTop);
-
     // scrollTop can return subpixel on hidpi resolutions so round up to integer
     const intScrollTop = Math.ceil(scrollableElem.scrollTop);
-
-    console.log("intScrollTop --->", intScrollTop);
 
     if (
       intScrollTop === scrollLength + initDistanceScrolled ||
