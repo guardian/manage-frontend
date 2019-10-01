@@ -822,14 +822,15 @@ const scrollToPurposes = (): void => {
 
     console.log("***");
     console.log("newScrollTop --->", newScrollTop);
-    console.log(
-      "actual scrollableElem.scrollTop --->",
-      Math.ceil(scrollableElem.scrollTop)
-    );
+
+    // scrollTop can return subpixel on hidpi resolutions so round up to integer
+    const intScrollTop = Math.ceil(scrollableElem.scrollTop);
+
+    console.log("intScrollTop --->", intScrollTop);
 
     if (
-      scrollableElem.scrollTop === scrollLength + initDistanceScrolled ||
-      newScrollTop - scrollableElem.scrollTop > 1
+      intScrollTop === scrollLength + initDistanceScrolled ||
+      newScrollTop !== intScrollTop
     ) {
       return;
     }
