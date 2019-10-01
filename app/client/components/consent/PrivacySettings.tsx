@@ -787,15 +787,20 @@ const scrollToPurposes = (): void => {
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
   const containerElemOffsetTop = containerElem.offsetTop;
+  const initDistanceScrolled = scrollableElem.scrollTop;
   const scrollLength =
-    purposeElemOffsetTop + scrollableElemOffsetTop - containerElemOffsetTop;
+    purposeElemOffsetTop +
+    scrollableElemOffsetTop -
+    containerElemOffsetTop -
+    initDistanceScrolled;
   const duration: number = 750;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
 
-  console.log("*** purposeElemOffsetTop ***", purposeElemOffsetTop);
-  console.log("*** scrollableElemOffsetTop ***", scrollableElemOffsetTop);
-  console.log("*** containerElemOffsetTop ***", containerElemOffsetTop);
+  console.log("*** purposeElemOffsetTop", purposeElemOffsetTop);
+  console.log("*** scrollableElemOffsetTop", scrollableElemOffsetTop);
+  console.log("*** containerElemOffsetTop", containerElemOffsetTop);
+  console.log("*** scrollLength", scrollLength);
 
   const scroll = (): void => {
     const now: number =
@@ -806,15 +811,26 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
+    const newScrollTop =
+      Math.ceil(
+        easing * (scrollLength - scrollableElemOffsetTop) +
+          scrollableElemOffsetTop
+      ) + initDistanceScrolled;
+
     // tslint:disable-next-line: no-object-mutation
-    scrollableElem.scrollTop = Math.ceil(
-      easing * (scrollLength - scrollableElemOffsetTop) +
-        scrollableElemOffsetTop
+    scrollableElem.scrollTop = newScrollTop;
+
+    console.log("***");
+    console.log("newScrollTop --->", newScrollTop);
+    console.log(
+      "actual scrollableElem.scrollTop --->",
+      scrollableElem.scrollTop
     );
 
-    console.log("*** scroll ***", scrollableElem.scrollTop, scrollLength);
-
-    if (scrollableElem.scrollTop === scrollLength) {
+    if (
+      scrollableElem.scrollTop === scrollLength + initDistanceScrolled ||
+      newScrollTop !== scrollableElem.scrollTop
+    ) {
       return;
     }
 
