@@ -768,6 +768,8 @@ const close = () => {
 };
 
 const scrollToPurposes = (): void => {
+  console.log("*** scrollToPurposes ***");
+
   const purposeElem: HTMLElement | null = document.getElementById(PURPOSES_ID);
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
@@ -789,7 +791,13 @@ const scrollToPurposes = (): void => {
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
 
+  console.log("*** purposeElemOffsetTop ***", purposeElemOffsetTop);
+  console.log("*** scrollableElemOffsetTop ***", scrollableElemOffsetTop);
+  console.log("*** containerElemOffsetTop ***", containerElemOffsetTop);
+
   const scroll = (): void => {
+    console.log("*** scroll ***");
+
     const now: number =
       "now" in window.performance ? performance.now() : new Date().getTime();
     const time: number = Math.min(1, (now - startTime) / duration);
