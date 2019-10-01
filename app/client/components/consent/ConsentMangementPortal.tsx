@@ -48,6 +48,10 @@ const iosFixStyles = css`
   height: 1px;
   min-height: 100vh;
   overflow: scroll;
+
+  ${minWidth.mobileLandscape} {
+    overflow: auto;
+  }
 `;
 
 export class ConsentManagementPortal extends Component<{}, {}> {
