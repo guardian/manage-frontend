@@ -783,8 +783,13 @@ const scrollToPurposes = (): void => {
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
   const containerElemOffsetTop = containerElem.offsetTop;
+  // scrollTop can return subpixel on hidpi resolutions so round up to integer
+  const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
-    purposeElemOffsetTop + scrollableElemOffsetTop - containerElemOffsetTop;
+    purposeElemOffsetTop +
+    scrollableElemOffsetTop -
+    containerElemOffsetTop -
+    initDistanceScrolled;
   const duration: number = 750;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
@@ -798,13 +803,22 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
-    // tslint:disable-next-line: no-object-mutation
-    scrollableElem.scrollTop = Math.ceil(
-      easing * (scrollLength - scrollableElemOffsetTop) +
-        scrollableElemOffsetTop
-    );
+    const newScrollTop =
+      Math.ceil(
+        easing * (scrollLength - scrollableElemOffsetTop) +
+          scrollableElemOffsetTop
+      ) + initDistanceScrolled;
 
-    if (scrollableElem.scrollTop === scrollLength) {
+    // tslint:disable-next-line: no-object-mutation
+    scrollableElem.scrollTop = newScrollTop;
+
+    // scrollTop can return subpixel on hidpi resolutions so round up to integer
+    const intScrollTop = Math.ceil(scrollableElem.scrollTop);
+
+    if (
+      intScrollTop === scrollLength + initDistanceScrolled ||
+      newScrollTop !== intScrollTop
+    ) {
       return;
     }
 
