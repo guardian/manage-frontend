@@ -1,3 +1,4 @@
+// tslint:disable: no-console
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
 import {
@@ -19,6 +20,7 @@ import {
   transitions
 } from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
+import * as Cookies from "js-cookie";
 import Raven from "raven-js";
 import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
@@ -31,6 +33,7 @@ const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 const HEADER_ID = "header";
 
+const consentLogsURL = `https://consent-logs.code.dev-guardianapis.com/report`;
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
@@ -641,7 +644,39 @@ export class PrivacySettings extends Component<{}, State> {
     consentData.setPurposesAllowed(allowedPurposes);
     consentData.setVendorsAllowed(allowedVendors);
 
-    cmpCookie.writeIabCookie(consentData.getConsentString());
+    const consentStr = consentData.getConsentString();
+
+    cmpCookie.writeIabCookie(consentStr);
+
+    // Consent-logs
+    const pAdvertising =
+      consentData.isPurposeAllowed(1) &&
+      consentData.isPurposeAllowed(2) &&
+      consentData.isPurposeAllowed(3) &&
+      consentData.isPurposeAllowed(4) &&
+      consentData.isPurposeAllowed(5);
+
+    const logInfo = {
+      version: "1",
+      iab: consentStr,
+      source: "www",
+      purposes: {
+        personalisedAdvertising: pAdvertising
+      },
+      browserId: Cookies.get("bwid"),
+      variant: "CMPTest1"
+    };
+
+    console.log(logInfo);
+
+    fetch(consentLogsURL, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(logInfo)
+    }).then(message => console.log(message));
 
     // Notify parent that consent has been saved
     window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
@@ -817,6 +852,7 @@ const scrollToPurposes = (): void => {
     return;
   }
 
+  const initialScrollPos = scrollableElem.scrollTop;
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
   const headerHeight = headerElem.offsetHeight;
@@ -841,22 +877,24 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
-    const newScrollTop =
+    console.log(
+      scrollableElem.scrollTop,
+      easing,
+      scrollLength,
+      scrollableElemOffsetTop,
       Math.ceil(
         easing * (scrollLength - scrollableElemOffsetTop) +
           scrollableElemOffsetTop
-      ) + initDistanceScrolled;
-
+      )
+    );
     // tslint:disable-next-line: no-object-mutation
-    scrollableElem.scrollTop = newScrollTop;
+    scrollableElem.scrollTop =
+      Math.ceil(
+        easing * (scrollLength - scrollableElemOffsetTop) +
+          scrollableElemOffsetTop
+      ) + initialScrollPos;
 
-    // scrollTop can return subpixel on hidpi resolutions so round up to integer
-    const intScrollTop = Math.ceil(scrollableElem.scrollTop);
-
-    if (
-      intScrollTop === scrollLength + initDistanceScrolled ||
-      newScrollTop !== intScrollTop
-    ) {
+    if (scrollableElem.scrollTop === scrollLength + initialScrollPos) {
       return;
     }
 
