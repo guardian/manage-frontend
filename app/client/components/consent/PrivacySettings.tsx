@@ -23,11 +23,11 @@ import { ConsentString } from "consent-string";
 import * as Cookies from "js-cookie";
 import Raven from "raven-js";
 import React, { Component } from "react";
+import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { CmpItem } from "./CmpItem";
-import { conf } from "./config";
 
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
