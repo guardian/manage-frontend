@@ -34,10 +34,11 @@ const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 const HEADER_ID = "header";
 
-const consentLogsURL =
-  conf.DOMAIN === "theguardian.com"
-    ? "https://consent-logs.guardianapis.com/"
-    : "https://consent-logs.code.dev-guardianapis.com/report";
+const isProd = conf.DOMAIN === "theguardian.com";
+
+const consentLogsURL = isProd
+  ? "https://consent-logs.guardianapis.com/"
+  : "https://consent-logs.code.dev-guardianapis.com/report";
 const consentLogsURL = `https://consent-logs.code.dev-guardianapis.com/report`;
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
@@ -313,7 +314,7 @@ export class PrivacySettings extends Component<{}, State> {
         window.parent.postMessage(cmpConfig.CMP_READY_MSG, "*");
       })
       .catch(error => {
-        Raven.captureException(`error fetching CMP Vendor List: ${error}`, {
+        Raven.captureException(`Error fetching CMP Vendor List: ${error}`, {
           tags: { feature: "CMP" }
         });
       });
@@ -661,6 +662,14 @@ export class PrivacySettings extends Component<{}, State> {
       consentData.isPurposeAllowed(4) &&
       consentData.isPurposeAllowed(5);
 
+    const browserID = Cookies.get("bwid") || "No bwid available";
+
+    if (isProd && !browserID) {
+      Raven.captureException(`Error getting browserID in PROD`, {
+        tags: { feature: "CMP" }
+      });
+    }
+
     const logInfo = {
       version: "1",
       iab: consentStr,
@@ -668,11 +677,9 @@ export class PrivacySettings extends Component<{}, State> {
       purposes: {
         personalisedAdvertising: pAdvertising
       },
-      browserId: Cookies.get("bwid") || "000000000000000000000000",
+      browserId: browserID,
       variant: "CMPTest1"
     };
-
-    console.log(logInfo);
 
     fetch(consentLogsURL, {
       method: "POST",
@@ -688,7 +695,7 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .catch(error => {
-        Raven.captureException(`error post to consent logs: ${error}`, {
+        Raven.captureException(`Error posting to consent logs: ${error}`, {
           tags: { feature: "CMP" }
         });
       });
