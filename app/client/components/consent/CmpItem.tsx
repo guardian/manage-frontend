@@ -24,6 +24,7 @@ interface Props {
   value?: ItemState;
   updateItem?: (updatedValue: boolean) => void;
   isNested?: boolean;
+  showError?: boolean;
 }
 
 export class CmpItem extends Component<Props, {}> {
@@ -32,11 +33,16 @@ export class CmpItem extends Component<Props, {}> {
   }
 
   public render(): React.ReactNode {
-    const { name, value, updateItem, isNested } = this.props;
+    const { name, value, updateItem, isNested, showError } = this.props;
 
     return (
       <li css={itemContainerStyles(!!isNested)}>
-        <CmpCollapsible title={name} value={value} updateItem={updateItem}>
+        <CmpCollapsible
+          title={name}
+          value={value}
+          updateItem={updateItem}
+          showError={showError}
+        >
           {this.props.children}
         </CmpCollapsible>
       </li>

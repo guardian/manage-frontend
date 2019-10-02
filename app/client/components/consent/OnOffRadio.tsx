@@ -17,6 +17,12 @@ const radioContainerStyles = css`
   justify-content: flex-start;
   flex-direction: row;
 `;
+
+const errorStyles = css`
+  box-shadow: 0 0 0 5px ${palette.news.bright};
+  z-index: 9;
+`;
+
 const radioInputStyles = css`
   color: ${palette.brand.pastel};
   @supports (appearance: none) {
@@ -94,6 +100,7 @@ const radioLabelTextStyles = (disabled: boolean) => css`
 interface Props {
   onChangeHandler?: (value: boolean) => void;
   selectedValue?: ItemState;
+  showError?: boolean;
 }
 export class OnOffRadio extends Component<Props, {}> {
   private myIdCounter: number;
@@ -104,7 +111,7 @@ export class OnOffRadio extends Component<Props, {}> {
   }
 
   public render(): React.ReactNode {
-    const { selectedValue, onChangeHandler } = this.props;
+    const { selectedValue, onChangeHandler, showError } = this.props;
     const id = `radio-${this.myIdCounter}`;
     const onId = `${id}-on`;
     const offId = `${id}-off`;
@@ -122,7 +129,10 @@ export class OnOffRadio extends Component<Props, {}> {
               this.updateValue(evt);
             }}
             defaultChecked={selectedValue === false}
-            css={radioInputStyles}
+            css={css`
+              ${radioInputStyles};
+              ${showError ? errorStyles : ""};
+            `}
             disabled={disabled}
           />
           <span css={radioLabelTextStyles(disabled)}>Off</span>
@@ -137,7 +147,10 @@ export class OnOffRadio extends Component<Props, {}> {
               this.updateValue(evt);
             }}
             defaultChecked={selectedValue === true}
-            css={radioInputStyles}
+            css={css`
+              ${radioInputStyles};
+              ${showError ? errorStyles : ""};
+            `}
             disabled={disabled}
           />
           <span css={radioLabelTextStyles(disabled)}>On</span>
@@ -149,7 +162,7 @@ export class OnOffRadio extends Component<Props, {}> {
   }
 
   public shouldComponentUpdate = (nextProps: Props) =>
-    this.props.selectedValue !== nextProps.selectedValue;
+    nextProps.selectedValue === null || this.props.showError;
 
   private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     const value: boolean = evt.currentTarget.value === "on";

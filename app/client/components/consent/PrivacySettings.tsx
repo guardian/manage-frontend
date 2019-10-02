@@ -281,6 +281,7 @@ interface ParsedIabVendor extends IabVendor {
 interface State {
   guPurposes: GuPurposeState;
   iabPurposes: IabPurposeState;
+  iabNullResponses: number[];
 }
 
 export class PrivacySettings extends Component<{}, State> {
@@ -290,7 +291,7 @@ export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.state = { guPurposes: {}, iabPurposes: {} };
+    this.state = { guPurposes: {}, iabPurposes: {}, iabNullResponses: [] };
   }
 
   public componentDidMount(): void {
@@ -530,15 +531,17 @@ export class PrivacySettings extends Component<{}, State> {
     return this.iabVendorList.purposes.map(
       (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
+        const { iabPurposes, iabNullResponses } = this.state;
 
         return (
           <CmpItem
             name={name}
-            value={this.state.iabPurposes[id]}
+            value={iabPurposes[id]}
             updateItem={(updatedValue: boolean) => {
               this.updateIabPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
+            showError={iabNullResponses.includes(id)}
           >
             <p>{description}</p>
           </CmpItem>
@@ -610,6 +613,7 @@ export class PrivacySettings extends Component<{}, State> {
 
   private saveAndClose(stateToSave?: State): void {
     if (this.saveSettings(stateToSave || this.state)) {
+      console.log("CLOSE!");
       close();
     }
   }
@@ -619,16 +623,26 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    const guNullCount: number = Object.keys(stateToSave.guPurposes).filter(
-      key => stateToSave.guPurposes[parseInt(key, 10)] === null
-    ).length;
+    // TODO: RESTORE ONCE PECR PURPOSES READY
+    // const guNullResponses: number = Object.keys(stateToSave.guPurposes)
+    //   .filter(key => stateToSave.guPurposes[parseInt(key, 10)] === null)
+    //   .map(key => parseInt(key, 10));
 
-    const iabNullCount: number = Object.keys(stateToSave.iabPurposes).filter(
-      key => stateToSave.iabPurposes[parseInt(key, 10)] === null
-    ).length;
+    const iabNullResponses: number[] = Object.keys(stateToSave.iabPurposes)
+      .filter(key => stateToSave.iabPurposes[parseInt(key, 10)] === null)
+      .map(key => parseInt(key, 10));
 
-    if (guNullCount + iabNullCount > 0) {
-      // TODO: Show validation error as no nulls are allowed.
+    if (iabNullResponses.length > 0) {
+      this.setState((prevState, props) => ({
+        guPurposes: {
+          ...prevState.guPurposes
+        },
+        iabPurposes: {
+          ...prevState.iabPurposes
+        },
+        iabNullResponses
+      }));
+
       return false;
     }
 
@@ -725,7 +739,10 @@ export class PrivacySettings extends Component<{}, State> {
       iabPurposes: {
         ...prevState.iabPurposes,
         [purposeId]: value
-      }
+      },
+      iabNullResponses: prevState.iabNullResponses.filter(
+        iabNullResponse => iabNullResponse !== purposeId
+      )
     }));
   }
 }

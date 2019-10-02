@@ -40,6 +40,7 @@ interface Props {
   title: string;
   value?: ItemState;
   updateItem?: (updatedValue: boolean) => void;
+  showError?: boolean;
 }
 
 interface State {
@@ -57,7 +58,8 @@ export class CmpCollapsible extends Component<Props, State> {
 
   public render(): React.ReactNode {
     const { collapsed } = this.state;
-    const { title, value, children, updateItem } = this.props;
+    const { title, value, children, updateItem, showError } = this.props;
+
     return (
       <>
         <div css={titleTabStyles}>
@@ -76,7 +78,11 @@ export class CmpCollapsible extends Component<Props, State> {
             </div>
           </div>
           {value !== undefined && (
-            <OnOffRadio selectedValue={value} onChangeHandler={updateItem} />
+            <OnOffRadio
+              selectedValue={value}
+              onChangeHandler={updateItem}
+              showError={showError}
+            />
           )}
         </div>
         <div css={panelStyles(collapsed)}>{children}</div>
