@@ -19,8 +19,10 @@ import {
   transitions
 } from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
+import * as Cookies from "js-cookie";
 import Raven from "raven-js";
 import React, { Component } from "react";
+import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
@@ -31,6 +33,11 @@ const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 const HEADER_ID = "header";
 
+const isProd = conf.DOMAIN === "theguardian.com";
+
+const consentLogsURL = isProd
+  ? "https://consent-logs.guardianapis.com/report"
+  : "https://consent-logs.code.dev-guardianapis.com/report";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
@@ -305,7 +312,7 @@ export class PrivacySettings extends Component<{}, State> {
         window.parent.postMessage(cmpConfig.CMP_READY_MSG, "*");
       })
       .catch(error => {
-        Raven.captureException(`error fetching CMP Vendor List: ${error}`, {
+        Raven.captureException(`Error fetching CMP Vendor List: ${error}`, {
           tags: { feature: "CMP" }
         });
       });
@@ -641,7 +648,55 @@ export class PrivacySettings extends Component<{}, State> {
     consentData.setPurposesAllowed(allowedPurposes);
     consentData.setVendorsAllowed(allowedVendors);
 
-    cmpCookie.writeIabCookie(consentData.getConsentString());
+    const consentStr = consentData.getConsentString();
+
+    cmpCookie.writeIabCookie(consentStr);
+
+    // Consent-logs
+    const pAdvertising =
+      consentData.isPurposeAllowed(1) &&
+      consentData.isPurposeAllowed(2) &&
+      consentData.isPurposeAllowed(3) &&
+      consentData.isPurposeAllowed(4) &&
+      consentData.isPurposeAllowed(5);
+
+    const browserID = Cookies.get("bwid") || "No bwid available";
+
+    if (isProd && !browserID) {
+      Raven.captureException(`Error getting browserID in PROD`, {
+        tags: { feature: "CMP" }
+      });
+    }
+
+    const logInfo = {
+      version: "1",
+      iab: consentStr,
+      source: "www",
+      purposes: {
+        personalisedAdvertising: pAdvertising
+      },
+      browserId: browserID,
+      variant: "CmpUiIab-variant"
+    };
+
+    fetch(consentLogsURL, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(logInfo)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`${response.status} | ${response.statusText}`);
+        }
+      })
+      .catch(error => {
+        Raven.captureException(`Error posting to consent logs: ${error}`, {
+          tags: { feature: "CMP" }
+        });
+      });
 
     // Notify parent that consent has been saved
     window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
