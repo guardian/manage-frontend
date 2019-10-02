@@ -45,23 +45,21 @@ server.use("/profile/", routes.profile);
 server.use("/api/", routes.api);
 server.use(routes.productsProvider("/api/"));
 
-// const isCode = conf.DOMAIN === "code.dev-theguardian.com";
-// const frameAncestors = isCode
-//   ? `https://*.${
-//       conf.DOMAIN
-//     } http://localhost:9000 http://localhost:3000 http://*.thegulocal.com`
-//   : `https://*.${conf.DOMAIN}`;
+const isCode = conf.DOMAIN === "code.dev-theguardian.com";
+const frameAncestors = isCode
+  ? `https://*.${
+      conf.DOMAIN
+    } http://localhost:9000 http://localhost:3000 http://*.thegulocal.com`
+  : `https://*.${conf.DOMAIN}`;
 
 server.use(
   "/consent/",
   (req, res, next) => {
     // This route can be loaded in an iframe from the domains listed below only
-    // res.setHeader(
-    //   "Content-Security-Policy",
-    //   `frame-ancestors ${frameAncestors}`
-    // );
-    res.removeHeader("Content-Security-Policy");
-    res.removeHeader("X-Frame-Options");
+    res.setHeader(
+      "Content-Security-Policy",
+      `frame-ancestors ${frameAncestors}`
+    );
     next();
   },
   routes.consent
