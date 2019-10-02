@@ -47,7 +47,7 @@ const logoStyles = css`
 const iosFixStyles = css`
   height: 1px;
   min-height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 export class ConsentManagementPortal extends Component<{}, {}> {
