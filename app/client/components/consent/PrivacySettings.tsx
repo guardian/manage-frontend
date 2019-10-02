@@ -27,12 +27,17 @@ import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
 import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { CmpItem } from "./CmpItem";
+import { conf } from "./config";
 
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 const HEADER_ID = "header";
 
+const consentLogsURL =
+  conf.DOMAIN === "theguardian.com"
+    ? "https://consent-logs.guardianapis.com/"
+    : "https://consent-logs.code.dev-guardianapis.com/report";
 const consentLogsURL = `https://consent-logs.code.dev-guardianapis.com/report`;
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
