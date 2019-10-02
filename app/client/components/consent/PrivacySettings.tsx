@@ -663,7 +663,7 @@ export class PrivacySettings extends Component<{}, State> {
       purposes: {
         personalisedAdvertising: pAdvertising
       },
-      browserId: Cookies.get("bwid"),
+      browserId: Cookies.get("bwid") || "000000000000000000000000",
       variant: "CMPTest1"
     };
 
@@ -676,7 +676,17 @@ export class PrivacySettings extends Component<{}, State> {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(logInfo)
-    }).then(message => console.log(message));
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`${response.status} | ${response.statusText}`);
+        }
+      })
+      .catch(error => {
+        Raven.captureException(`error post to consent logs: ${error}`, {
+          tags: { feature: "CMP" }
+        });
+      });
 
     // Notify parent that consent has been saved
     window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
