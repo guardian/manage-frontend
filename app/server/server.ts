@@ -56,10 +56,11 @@ server.use(
   "/consent/",
   (req, res, next) => {
     // This route can be loaded in an iframe from the domains listed below only
-    res.setHeader(
-      "Content-Security-Policy",
-      `frame-ancestors ${frameAncestors}`
-    );
+    // res.setHeader(
+    //   "Content-Security-Policy",
+    //   `frame-ancestors ${frameAncestors}`
+    // );
+    res.removeHeader("Content-Security-Policy");
     res.removeHeader("X-Frame-Options");
     next();
   },
