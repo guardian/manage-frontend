@@ -1,4 +1,3 @@
-// tslint:disable: no-console
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
 import {
@@ -37,9 +36,8 @@ const HEADER_ID = "header";
 const isProd = conf.DOMAIN === "theguardian.com";
 
 const consentLogsURL = isProd
-  ? "https://consent-logs.guardianapis.com/"
+  ? "https://consent-logs.guardianapis.com/report"
   : "https://consent-logs.code.dev-guardianapis.com/report";
-const consentLogsURL = `https://consent-logs.code.dev-guardianapis.com/report`;
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
@@ -678,7 +676,7 @@ export class PrivacySettings extends Component<{}, State> {
         personalisedAdvertising: pAdvertising
       },
       browserId: browserID,
-      variant: "CMPTest1"
+      variant: "CmpUiIab-variant"
     };
 
     fetch(consentLogsURL, {
@@ -874,7 +872,6 @@ const scrollToPurposes = (): void => {
     return;
   }
 
-  const initialScrollPos = scrollableElem.scrollTop;
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
   const headerHeight = headerElem.offsetHeight;
@@ -899,24 +896,22 @@ const scrollToPurposes = (): void => {
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
 
-    console.log(
-      scrollableElem.scrollTop,
-      easing,
-      scrollLength,
-      scrollableElemOffsetTop,
+    const newScrollTop =
       Math.ceil(
         easing * (scrollLength - scrollableElemOffsetTop) +
           scrollableElemOffsetTop
-      )
-    );
-    // tslint:disable-next-line: no-object-mutation
-    scrollableElem.scrollTop =
-      Math.ceil(
-        easing * (scrollLength - scrollableElemOffsetTop) +
-          scrollableElemOffsetTop
-      ) + initialScrollPos;
+      ) + initDistanceScrolled;
 
-    if (scrollableElem.scrollTop === scrollLength + initialScrollPos) {
+    // tslint:disable-next-line: no-object-mutation
+    scrollableElem.scrollTop = newScrollTop;
+
+    // scrollTop can return subpixel on hidpi resolutions so round up to integer
+    const intScrollTop = Math.ceil(scrollableElem.scrollTop);
+
+    if (
+      intScrollTop === scrollLength + initDistanceScrolled ||
+      newScrollTop !== intScrollTop
+    ) {
       return;
     }
 
