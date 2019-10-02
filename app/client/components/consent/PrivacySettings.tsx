@@ -23,23 +23,56 @@ import Raven from "raven-js";
 import React, { Component } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
+import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { CmpItem } from "./CmpItem";
 
-const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
-const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
+const HEADER_ID = "header";
 
+const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
+const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
+const headerBorderBottom = 1;
+
+const headerCSS = css`
+  background-color: ${palette.brand.main};
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+`;
+
+const logoContainer = css`
+  padding: 6px ${space[2]}px 12px 0;
+  height: 100%;
+  width: 100%;
+  border-bottom: ${headerBorderBottom}px solid ${palette.brand.pastel};
+  display: flex;
+  ::before {
+    content: "";
+    display: block;
+    flex: 1;
+    height: 100%;
+  }
+`;
+
+const logoStyles = css`
+  height: 55px;
+
+  ${minWidth.mobileLandscape} {
+    height: 90px;
+  }
+
+  path {
+    fill: ${palette.neutral[100]};
+  }
+`;
 
 const containerStyles = css`
   z-index: 0;
-  margin-top: 73px;
-  ${minWidth.mobileLandscape} {
-    margin-top: 108px;
-  }
   background-color: ${palette.brand.dark};
   color: ${palette.neutral[100]};
   width: 100%;
@@ -47,11 +80,11 @@ const containerStyles = css`
     width: 95%;
     max-width: 450px;
   }
-  border-right: 1px solid ${palette.brand.pastel};
 `;
 
 const content = css`
   padding: ${smallSpace}px ${smallSpace}px 0 ${smallSpace}px;
+  border-right: 1px solid ${palette.brand.pastel};
 
   ${minWidth.mobileLandscape} {
     padding: ${smallSpace}px ${mediumSpace}px 0 ${mediumSpace}px;
@@ -285,9 +318,15 @@ export class PrivacySettings extends Component<{}, State> {
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
+        <div css={headerCSS} id={HEADER_ID}>
+          <div css={logoContainer}>
+            <TheGuardianLogo css={logoStyles} />
+          </div>
+        </div>
         <img
           src="/static/images/consent-graphic.png"
           css={css`
+            border-right: 1px solid ${palette.brand.pastel};
             width: 100%;
           `}
         />
@@ -772,24 +811,23 @@ const scrollToPurposes = (): void => {
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
   );
-  const containerElem: HTMLElement | null = document.getElementById(
-    CONTAINER_ID
-  );
+  const headerElem: HTMLElement | null = document.getElementById(HEADER_ID);
 
-  if (!purposeElem || !scrollableElem || !containerElem) {
+  if (!purposeElem || !scrollableElem || !headerElem) {
     return;
   }
 
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
-  const containerElemOffsetTop = containerElem.offsetTop;
+  const headerHeight = headerElem.offsetHeight;
   // scrollTop can return subpixel on hidpi resolutions so round up to integer
   const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
     purposeElemOffsetTop +
     scrollableElemOffsetTop -
-    containerElemOffsetTop -
-    initDistanceScrolled;
+    headerHeight -
+    initDistanceScrolled +
+    headerBorderBottom;
   const duration: number = 750;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
