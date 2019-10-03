@@ -743,32 +743,20 @@ export class PrivacySettings extends Component<{}, State> {
   // }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
-    this.setState((prevState, props) => {
-      if (!prevState.iabNullResponses) {
-        return {
-          guPurposes: {
-            ...prevState.guPurposes
-          },
-          iabPurposes: {
-            ...prevState.iabPurposes,
-            [purposeId]: value
-          }
-        };
-      }
-
-      return {
-        guPurposes: {
-          ...prevState.guPurposes
-        },
-        iabPurposes: {
-          ...prevState.iabPurposes,
-          [purposeId]: value
-        },
-        iabNullResponses: prevState.iabNullResponses.filter(
-          iabNullResponse => iabNullResponse !== purposeId
-        )
-      };
-    });
+    this.setState((prevState, props) => ({
+      guPurposes: {
+        ...prevState.guPurposes
+      },
+      iabPurposes: {
+        ...prevState.iabPurposes,
+        [purposeId]: value
+      },
+      iabNullResponses: prevState.iabNullResponses
+        ? prevState.iabNullResponses.filter(
+            iabNullResponse => iabNullResponse !== purposeId
+          )
+        : []
+    }));
   }
 }
 
