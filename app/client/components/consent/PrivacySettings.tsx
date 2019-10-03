@@ -247,8 +247,6 @@ const purposesContainerStyles = css`
   }
 `;
 
-const validationErrorLineHeight = 20;
-
 const bottomContainerStyles = (showError: boolean) => css`
   padding: ${smallSpace / 2}px ${smallSpace}px ${smallSpace}px ${smallSpace}px;
   margin-bottom: 12px;
@@ -298,7 +296,7 @@ interface ParsedIabVendor extends IabVendor {
 interface State {
   guPurposes: GuPurposeState;
   iabPurposes: IabPurposeState;
-  iabNullResponses: number[];
+  iabNullResponses?: number[];
 }
 
 export class PrivacySettings extends Component<{}, State> {
@@ -308,7 +306,7 @@ export class PrivacySettings extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
 
-    this.state = { guPurposes: {}, iabPurposes: {}, iabNullResponses: [] };
+    this.state = { guPurposes: {}, iabPurposes: {} };
   }
 
   public componentDidMount(): void {
@@ -340,6 +338,7 @@ export class PrivacySettings extends Component<{}, State> {
     const iabPurposesList = this.renderIabPurposeItems() as React.ReactNodeArray;
     const firstIabPurposeList = iabPurposesList.slice(0, 3);
     const secondIabPurposeList = iabPurposesList.slice(3);
+    const { iabNullResponses } = this.state;
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
@@ -425,7 +424,7 @@ export class PrivacySettings extends Component<{}, State> {
                   css={css`
                     ${buttonContainerStyles};
                     ${bottomContainerStyles(
-                      !!this.state.iabNullResponses.length
+                      !!(iabNullResponses && iabNullResponses.length)
                     )};
                   `}
                 >
@@ -560,7 +559,7 @@ export class PrivacySettings extends Component<{}, State> {
               this.updateIabPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
-            showError={iabNullResponses.includes(id)}
+            showError={iabNullResponses && iabNullResponses.includes(id)}
           >
             <p>{description}</p>
           </CmpItem>
@@ -744,18 +743,32 @@ export class PrivacySettings extends Component<{}, State> {
   // }
 
   private updateIabPurpose(purposeId: number, value: boolean): void {
-    this.setState((prevState, props) => ({
-      guPurposes: {
-        ...prevState.guPurposes
-      },
-      iabPurposes: {
-        ...prevState.iabPurposes,
-        [purposeId]: value
-      },
-      iabNullResponses: prevState.iabNullResponses.filter(
-        iabNullResponse => iabNullResponse !== purposeId
-      )
-    }));
+    this.setState((prevState, props) => {
+      if (!prevState.iabNullResponses) {
+        return {
+          guPurposes: {
+            ...prevState.guPurposes
+          },
+          iabPurposes: {
+            ...prevState.iabPurposes,
+            [purposeId]: value
+          }
+        };
+      }
+
+      return {
+        guPurposes: {
+          ...prevState.guPurposes
+        },
+        iabPurposes: {
+          ...prevState.iabPurposes,
+          [purposeId]: value
+        },
+        iabNullResponses: prevState.iabNullResponses.filter(
+          iabNullResponse => iabNullResponse !== purposeId
+        )
+      };
+    });
   }
 }
 

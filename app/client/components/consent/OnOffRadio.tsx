@@ -162,7 +162,7 @@ export class OnOffRadio extends Component<Props, {}> {
   }
 
   public shouldComponentUpdate = (nextProps: Props) =>
-    nextProps.selectedValue === null || this.props.showError;
+    nextProps.selectedValue === null || !!this.props.showError;
 
   private updateValue(evt: React.ChangeEvent<HTMLInputElement>): void {
     const value: boolean = evt.currentTarget.value === "on";
