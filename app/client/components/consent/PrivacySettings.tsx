@@ -49,7 +49,7 @@ const headerCSS = css`
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 200;
 `;
 
 const logoContainer = css`
@@ -91,7 +91,6 @@ const containerStyles = css`
 
 const content = css`
   padding: ${smallSpace}px ${smallSpace}px 0 ${smallSpace}px;
-  border-right: 1px solid ${palette.brand.pastel};
 
   ${minWidth.mobileLandscape} {
     padding: ${smallSpace}px ${mediumSpace}px 0 ${mediumSpace}px;
@@ -149,6 +148,7 @@ const buttonContainerStyles = css`
   bottom: 0;
   padding: 12px;
   background: rgba(4, 31, 74, 0.8);
+  z-index: 100;
 `;
 
 const topButtonContainerStyles = css`
@@ -247,7 +247,7 @@ const purposesContainerStyles = css`
   }
 `;
 
-const bottomContainerStyles = css`
+const bottomButtonContainerStyles = css`
   padding: ${smallSpace / 2}px ${smallSpace}px ${smallSpace}px ${smallSpace}px;
   margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
@@ -259,6 +259,27 @@ const bottomContainerStyles = css`
     line-height: 20px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
     font-weight: 700;
+  }
+`;
+
+const validationErrorStyles = css`
+  display: block;
+  background-color: ${palette.news.bright};
+  padding: ${smallSpace / 2}px ${smallSpace}px;
+  ${minWidth.mobileLandscape} {
+    padding: ${mediumSpace / 2}px ${mediumSpace}px;
+  }
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  display: block;
+  p {
+    font-size: 15px;
+    line-height: 20px;
+    font-family: "Guardian Text Egyptian Web", Georgia, serif;
+    font-weight: 700;
+    margin: 0;
   }
 `;
 
@@ -281,6 +302,7 @@ interface ParsedIabVendor extends IabVendor {
 interface State {
   guPurposes: GuPurposeState;
   iabPurposes: IabPurposeState;
+  iabNullResponses?: number[];
 }
 
 export class PrivacySettings extends Component<{}, State> {
@@ -322,6 +344,7 @@ export class PrivacySettings extends Component<{}, State> {
     const iabPurposesList = this.renderIabPurposeItems() as React.ReactNodeArray;
     const firstIabPurposeList = iabPurposesList.slice(0, 3);
     const secondIabPurposeList = iabPurposesList.slice(3);
+    const { iabNullResponses } = this.state;
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
@@ -330,121 +353,135 @@ export class PrivacySettings extends Component<{}, State> {
             <TheGuardianLogo css={logoStyles} />
           </div>
         </div>
-        <img
-          src="/static/images/consent-graphic.png"
+
+        <div
           css={css`
-            border-right: 1px solid ${palette.brand.pastel};
-            width: 100%;
+            ${minWidth.mobileLandscape} {
+              border-right: 1px solid ${palette.brand.pastel};
+            }
           `}
-        />
-        <div css={content}>
-          <form id="cmp-form">
-            <h1>
-              Please review and manage your data and privacy settings below.
-            </h1>
-            <p>
-              When you visit this site, we'd like to use cookies and identifiers
-              to understand things like which pages you've visited and how long
-              you've spent with us. It helps us improve our service to you.{" "}
-            </p>
-            <p>
-              Our advertising partners would like to do the same so the adverts
-              are more relevant, and we make more money to invest in Guardian
-              journalism. To find out more, read our{" "}
-              <a href={privacyPolicyURL} target="_blank">
-                privacy policy
-              </a>{" "}
-              and{" "}
-              <a href={cookiePolicyURL} target="_blank">
-                cookie policy
-              </a>.
-            </p>
-            <div
-              css={css`
-                ${buttonContainerStyles};
-                ${topButtonContainerStyles};
-              `}
-            >
-              <button
-                type="button"
-                onClick={scrollToPurposes}
+        >
+          <img
+            src="/static/images/consent-graphic.png"
+            css={css`
+              width: 100%;
+            `}
+          />
+          <div css={content}>
+            <form id="cmp-form">
+              <h1>
+                Please review and manage your data and privacy settings below.
+              </h1>
+              <p>
+                When you visit this site, we'd like to use cookies and
+                identifiers to understand things like which pages you've visited
+                and how long you've spent with us. It helps us improve our
+                service to you.{" "}
+              </p>
+              <p>
+                Our advertising partners would like to do the same so the
+                adverts are more relevant, and we make more money to invest in
+                Guardian journalism. To find out more, read our{" "}
+                <a href={privacyPolicyURL} target="_blank">
+                  privacy policy
+                </a>{" "}
+                and{" "}
+                <a href={cookiePolicyURL} target="_blank">
+                  cookie policy
+                </a>.
+              </p>
+              <div
                 css={css`
-                  ${buttonStyles};
-                  ${blueButtonStyles};
+                  ${buttonContainerStyles};
+                  ${topButtonContainerStyles};
                 `}
               >
-                Options
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  this.enableAllAndClose();
-                }}
-                css={css`
-                  ${buttonStyles};
-                  ${yellowButtonStyles};
-                `}
-              >
-                <span>Enable all and close</span>
-                <ArrowIcon />
-              </button>
-            </div>
-            <div css={purposesContainerStyles} id={PURPOSES_ID}>
-              <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
-              {/* 
+                <button
+                  type="button"
+                  onClick={scrollToPurposes}
+                  css={css`
+                    ${buttonStyles};
+                    ${blueButtonStyles};
+                  `}
+                >
+                  Options
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    this.enableAllAndClose();
+                  }}
+                  css={css`
+                    ${buttonStyles};
+                    ${yellowButtonStyles};
+                  `}
+                >
+                  <span>Enable all and close</span>
+                  <ArrowIcon />
+                </button>
+              </div>
+              <div css={purposesContainerStyles} id={PURPOSES_ID}>
+                <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
+                {/* 
                   renderIabPurposeItems, 
                   renderVendorItems and renderFeatureItems 
                   should be in single <ul> once renderGuPurposeItems 
                   is restored.
                 */}
-              <div>
-                <ul>
-                  {secondIabPurposeList && secondIabPurposeList}
-                  {this.renderVendorItems()}
-                  {this.renderFeatureItems()}
-                </ul>
-                <div
-                  css={css`
-                    ${buttonContainerStyles};
-                    ${bottomContainerStyles};
-                  `}
-                >
-                  <p>
-                    You can change the above settings for this browser at any
-                    time by accessing our{" "}
-                    <a href={privacyPolicyURL} target="_blank">
-                      privacy policy
-                    </a>.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      close();
-                    }}
+                <div>
+                  <ul>
+                    {secondIabPurposeList && secondIabPurposeList}
+                    {this.renderVendorItems()}
+                    {this.renderFeatureItems()}
+                  </ul>
+                  <div
                     css={css`
-                      ${buttonStyles};
-                      ${blueButtonStyles};
+                      ${buttonContainerStyles};
+                      ${bottomButtonContainerStyles};
                     `}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      this.saveAndClose();
-                    }}
-                    css={css`
-                      ${buttonStyles};
-                      ${yellowButtonStyles};
-                    `}
-                  >
-                    <span>Save and continue</span>
-                    <ArrowIcon />
-                  </button>
+                    {!!(iabNullResponses && iabNullResponses.length) && (
+                      <div role="alert" css={validationErrorStyles}>
+                        <p>Please set all privacy options to continue.</p>
+                      </div>
+                    )}
+                    <p>
+                      You can change the above settings for this browser at any
+                      time by accessing our{" "}
+                      <a href={privacyPolicyURL} target="_blank">
+                        privacy policy
+                      </a>.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        close();
+                      }}
+                      css={css`
+                        ${buttonStyles};
+                        ${blueButtonStyles};
+                      `}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        this.saveAndClose();
+                      }}
+                      css={css`
+                        ${buttonStyles};
+                        ${yellowButtonStyles};
+                      `}
+                    >
+                      <span>Save and continue</span>
+                      <ArrowIcon />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     );
@@ -530,15 +567,17 @@ export class PrivacySettings extends Component<{}, State> {
     return this.iabVendorList.purposes.map(
       (purpose: IabPurpose): React.ReactNode => {
         const { id, name, description } = purpose;
+        const { iabPurposes, iabNullResponses } = this.state;
 
         return (
           <CmpItem
             name={name}
-            value={this.state.iabPurposes[id]}
+            value={iabPurposes[id]}
             updateItem={(updatedValue: boolean) => {
               this.updateIabPurpose(id, updatedValue);
             }}
             key={`purpose-${id}`}
+            showError={iabNullResponses && iabNullResponses.includes(id)}
           >
             <p>{description}</p>
           </CmpItem>
@@ -619,16 +658,20 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    const guNullCount: number = Object.keys(stateToSave.guPurposes).filter(
-      key => stateToSave.guPurposes[parseInt(key, 10)] === null
-    ).length;
+    // TODO: RESTORE ONCE PECR PURPOSES READY
+    // const guNullResponses: number = Object.keys(stateToSave.guPurposes)
+    //   .filter(key => stateToSave.guPurposes[parseInt(key, 10)] === null)
+    //   .map(key => parseInt(key, 10));
 
-    const iabNullCount: number = Object.keys(stateToSave.iabPurposes).filter(
-      key => stateToSave.iabPurposes[parseInt(key, 10)] === null
-    ).length;
+    const iabNullResponses: number[] = Object.keys(stateToSave.iabPurposes)
+      .filter(key => stateToSave.iabPurposes[parseInt(key, 10)] === null)
+      .map(key => parseInt(key, 10));
 
-    if (guNullCount + iabNullCount > 0) {
-      // TODO: Show validation error as no nulls are allowed.
+    if (iabNullResponses.length > 0) {
+      this.setState((prevState, props) => ({
+        iabNullResponses
+      }));
+
       return false;
     }
 
@@ -725,7 +768,12 @@ export class PrivacySettings extends Component<{}, State> {
       iabPurposes: {
         ...prevState.iabPurposes,
         [purposeId]: value
-      }
+      },
+      iabNullResponses: prevState.iabNullResponses
+        ? prevState.iabNullResponses.filter(
+            iabNullResponse => iabNullResponse !== purposeId
+          )
+        : []
     }));
   }
 }
