@@ -33,7 +33,18 @@ const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 const HEADER_ID = "header";
 
-const isProd = conf.DOMAIN === "theguardian.com";
+let domain: string;
+
+if (typeof window !== "undefined" && window.guardian) {
+  domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
+}
+
+// tslint:disable-next-line:no-console
+console.log("***", domain, conf.DOMAIN);
+
+const isProd = domain === "theguardian.com";
 
 const consentLogsURL = isProd
   ? "https://consent-logs.guardianapis.com/report"
@@ -398,7 +409,11 @@ export class PrivacySettings extends Component<{}, State> {
               >
                 <button
                   type="button"
-                  onClick={scrollToPurposes}
+                  onClick={evt => {
+                    evt.preventDefault();
+
+                    scrollToPurposes();
+                  }}
                   css={css`
                     ${buttonStyles};
                     ${blueButtonStyles};
@@ -408,7 +423,9 @@ export class PrivacySettings extends Component<{}, State> {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
+                  onClick={evt => {
+                    evt.preventDefault();
+
                     this.enableAllAndClose();
                   }}
                   css={css`
@@ -454,7 +471,9 @@ export class PrivacySettings extends Component<{}, State> {
                     </p>
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={evt => {
+                        evt.preventDefault();
+
                         close();
                       }}
                       css={css`
@@ -466,7 +485,9 @@ export class PrivacySettings extends Component<{}, State> {
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={evt => {
+                        evt.preventDefault();
+
                         this.saveAndClose();
                       }}
                       css={css`
@@ -634,20 +655,15 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    Raven.captureException(`TEST`, {
-      tags: { feature: "CMP" }
-    });
-    // const guPurposes = Object.keys(this.state.guPurposes).reduce(
-    //   (acc, key) => ({ ...acc, [key]: true }),
-    //   {}
-    // );
-
-    // const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
-    //   (acc, key) => ({ ...acc, [key]: true }),
-    //   {}
-    // );
-
-    // this.saveAndClose({ guPurposes, iabPurposes });
+    const guPurposes = Object.keys(this.state.guPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {}
+    );
+    this.saveAndClose({ guPurposes, iabPurposes });
   }
 
   private saveAndClose(stateToSave?: State): void {
