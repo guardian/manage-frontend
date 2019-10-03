@@ -49,7 +49,7 @@ const headerCSS = css`
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 200;
 `;
 
 const logoContainer = css`
