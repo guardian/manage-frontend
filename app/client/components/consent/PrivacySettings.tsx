@@ -247,18 +247,35 @@ const purposesContainerStyles = css`
   }
 `;
 
-const bottomContainerStyles = css`
+const validationErrorLineHeight = 20;
+
+const bottomContainerStyles = (showError: boolean) => css`
   padding: ${smallSpace / 2}px ${smallSpace}px ${smallSpace}px ${smallSpace}px;
   margin-bottom: 12px;
   ${minWidth.mobileLandscape} {
     padding: ${smallSpace / 2}px ${mediumSpace}px ${smallSpace}px
       ${mediumSpace}px;
   }
+  ::before,
   p {
     font-size: 15px;
     line-height: 20px;
     font-family: "Guardian Text Egyptian Web", Georgia, serif;
     font-weight: 700;
+  }
+  ::before {
+    content: "Please set all privacy options to continue.";
+    display: block;
+    background-color: ${palette.news.bright};
+    padding: ${smallSpace / 2}px ${smallSpace}px;
+    ${minWidth.mobileLandscape} {
+      padding: ${mediumSpace / 2}px ${mediumSpace}px;
+    }
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    display: ${showError ? "block" : "none"};
   }
 `;
 
@@ -407,7 +424,9 @@ export class PrivacySettings extends Component<{}, State> {
                 <div
                   css={css`
                     ${buttonContainerStyles};
-                    ${bottomContainerStyles};
+                    ${bottomContainerStyles(
+                      !!this.state.iabNullResponses.length
+                    )};
                   `}
                 >
                   <p>
