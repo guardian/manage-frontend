@@ -41,9 +41,6 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-// tslint:disable-next-line:no-console
-console.log("***", domain, conf.DOMAIN);
-
 const isProd = domain === "theguardian.com";
 
 const consentLogsURL = isProd
