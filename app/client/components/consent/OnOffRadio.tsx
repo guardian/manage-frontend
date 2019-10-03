@@ -116,6 +116,11 @@ export class OnOffRadio extends Component<Props, {}> {
     const onId = `${id}-on`;
     const offId = `${id}-off`;
     const disabled: boolean = !onChangeHandler;
+    const validationProps = showError
+      ? {
+          "aria-invalid": true
+        }
+      : {};
 
     return (
       <div css={radioContainerStyles}>
@@ -134,6 +139,7 @@ export class OnOffRadio extends Component<Props, {}> {
               ${showError ? errorStyles : ""};
             `}
             disabled={disabled}
+            {...validationProps}
           />
           <span css={radioLabelTextStyles(disabled)}>Off</span>
         </label>
@@ -152,6 +158,7 @@ export class OnOffRadio extends Component<Props, {}> {
               ${showError ? errorStyles : ""};
             `}
             disabled={disabled}
+            {...validationProps}
           />
           <span css={radioLabelTextStyles(disabled)}>On</span>
         </label>
