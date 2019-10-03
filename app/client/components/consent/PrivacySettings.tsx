@@ -634,17 +634,20 @@ export class PrivacySettings extends Component<{}, State> {
   }
 
   private enableAllAndClose(): void {
-    const guPurposes = Object.keys(this.state.guPurposes).reduce(
-      (acc, key) => ({ ...acc, [key]: true }),
-      {}
-    );
+    Raven.captureException(`TEST`, {
+      tags: { feature: "CMP" }
+    });
+    // const guPurposes = Object.keys(this.state.guPurposes).reduce(
+    //   (acc, key) => ({ ...acc, [key]: true }),
+    //   {}
+    // );
 
-    const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
-      (acc, key) => ({ ...acc, [key]: true }),
-      {}
-    );
+    // const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
+    //   (acc, key) => ({ ...acc, [key]: true }),
+    //   {}
+    // );
 
-    this.saveAndClose({ guPurposes, iabPurposes });
+    // this.saveAndClose({ guPurposes, iabPurposes });
   }
 
   private saveAndClose(stateToSave?: State): void {
