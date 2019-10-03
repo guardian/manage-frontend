@@ -747,9 +747,10 @@ export class PrivacySettings extends Component<{}, State> {
       body: JSON.stringify(logInfo)
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error(`${response.status} | ${response.statusText}`);
-        }
+        // if (!response.ok) {
+        // throw new Error(`${response.status} | ${response.statusText}`);
+        // }
+        throw new Error("TEST");
       })
       .catch(error => {
         Raven.captureException(`Error posting to consent logs: ${error}`, {
