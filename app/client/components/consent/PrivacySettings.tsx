@@ -613,7 +613,6 @@ export class PrivacySettings extends Component<{}, State> {
 
   private saveAndClose(stateToSave?: State): void {
     if (this.saveSettings(stateToSave || this.state)) {
-      console.log("CLOSE!");
       close();
     }
   }
@@ -634,12 +633,6 @@ export class PrivacySettings extends Component<{}, State> {
 
     if (iabNullResponses.length > 0) {
       this.setState((prevState, props) => ({
-        guPurposes: {
-          ...prevState.guPurposes
-        },
-        iabPurposes: {
-          ...prevState.iabPurposes
-        },
         iabNullResponses
       }));
 
