@@ -91,7 +91,6 @@ const containerStyles = css`
 
 const content = css`
   padding: ${smallSpace}px ${smallSpace}px 0 ${smallSpace}px;
-  border-right: 1px solid ${palette.brand.pastel};
 
   ${minWidth.mobileLandscape} {
     padding: ${smallSpace}px ${mediumSpace}px 0 ${mediumSpace}px;
@@ -354,126 +353,135 @@ export class PrivacySettings extends Component<{}, State> {
             <TheGuardianLogo css={logoStyles} />
           </div>
         </div>
-        <img
-          src="/static/images/consent-graphic.png"
+
+        <div
           css={css`
-            border-right: 1px solid ${palette.brand.pastel};
-            width: 100%;
+            ${minWidth.mobileLandscape} {
+              border-right: 1px solid ${palette.brand.pastel};
+            }
           `}
-        />
-        <div css={content}>
-          <form id="cmp-form">
-            <h1>
-              Please review and manage your data and privacy settings below.
-            </h1>
-            <p>
-              When you visit this site, we'd like to use cookies and identifiers
-              to understand things like which pages you've visited and how long
-              you've spent with us. It helps us improve our service to you.{" "}
-            </p>
-            <p>
-              Our advertising partners would like to do the same so the adverts
-              are more relevant, and we make more money to invest in Guardian
-              journalism. To find out more, read our{" "}
-              <a href={privacyPolicyURL} target="_blank">
-                privacy policy
-              </a>{" "}
-              and{" "}
-              <a href={cookiePolicyURL} target="_blank">
-                cookie policy
-              </a>.
-            </p>
-            <div
-              css={css`
-                ${buttonContainerStyles};
-                ${topButtonContainerStyles};
-              `}
-            >
-              <button
-                type="button"
-                onClick={scrollToPurposes}
+        >
+          <img
+            src="/static/images/consent-graphic.png"
+            css={css`
+              width: 100%;
+            `}
+          />
+          <div css={content}>
+            <form id="cmp-form">
+              <h1>
+                Please review and manage your data and privacy settings below.
+              </h1>
+              <p>
+                When you visit this site, we'd like to use cookies and
+                identifiers to understand things like which pages you've visited
+                and how long you've spent with us. It helps us improve our
+                service to you.{" "}
+              </p>
+              <p>
+                Our advertising partners would like to do the same so the
+                adverts are more relevant, and we make more money to invest in
+                Guardian journalism. To find out more, read our{" "}
+                <a href={privacyPolicyURL} target="_blank">
+                  privacy policy
+                </a>{" "}
+                and{" "}
+                <a href={cookiePolicyURL} target="_blank">
+                  cookie policy
+                </a>.
+              </p>
+              <div
                 css={css`
-                  ${buttonStyles};
-                  ${blueButtonStyles};
+                  ${buttonContainerStyles};
+                  ${topButtonContainerStyles};
                 `}
               >
-                Options
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  this.enableAllAndClose();
-                }}
-                css={css`
-                  ${buttonStyles};
-                  ${yellowButtonStyles};
-                `}
-              >
-                <span>Enable all and close</span>
-                <ArrowIcon />
-              </button>
-            </div>
-            <div css={purposesContainerStyles} id={PURPOSES_ID}>
-              <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
-              {/* 
+                <button
+                  type="button"
+                  onClick={scrollToPurposes}
+                  css={css`
+                    ${buttonStyles};
+                    ${blueButtonStyles};
+                  `}
+                >
+                  Options
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    this.enableAllAndClose();
+                  }}
+                  css={css`
+                    ${buttonStyles};
+                    ${yellowButtonStyles};
+                  `}
+                >
+                  <span>Enable all and close</span>
+                  <ArrowIcon />
+                </button>
+              </div>
+              <div css={purposesContainerStyles} id={PURPOSES_ID}>
+                <ul>{firstIabPurposeList && firstIabPurposeList}</ul>
+                {/* 
                   renderIabPurposeItems, 
                   renderVendorItems and renderFeatureItems 
                   should be in single <ul> once renderGuPurposeItems 
                   is restored.
                 */}
-              <div>
-                <ul>
-                  {secondIabPurposeList && secondIabPurposeList}
-                  {this.renderVendorItems()}
-                  {this.renderFeatureItems()}
-                </ul>
-                <div
-                  css={css`
-                    ${buttonContainerStyles};
-                    ${bottomButtonContainerStyles};
-                  `}
-                >
-                  {!!(iabNullResponses && iabNullResponses.length) && (
-                    <div role="alert" css={validationErrorStyles}>
-                      <p>Please set all privacy options to continue.</p>
-                    </div>
-                  )}
-                  <p>
-                    You can change the above settings for this browser at any
-                    time by accessing our{" "}
-                    <a href={privacyPolicyURL} target="_blank">
-                      privacy policy
-                    </a>.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      close();
-                    }}
+                <div>
+                  <ul>
+                    {secondIabPurposeList && secondIabPurposeList}
+                    {this.renderVendorItems()}
+                    {this.renderFeatureItems()}
+                  </ul>
+                  <div
                     css={css`
-                      ${buttonStyles};
-                      ${blueButtonStyles};
+                      ${buttonContainerStyles};
+                      ${bottomButtonContainerStyles};
                     `}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      this.saveAndClose();
-                    }}
-                    css={css`
-                      ${buttonStyles};
-                      ${yellowButtonStyles};
-                    `}
-                  >
-                    <span>Save and continue</span>
-                    <ArrowIcon />
-                  </button>
+                    {!!(iabNullResponses && iabNullResponses.length) && (
+                      <div role="alert" css={validationErrorStyles}>
+                        <p>Please set all privacy options to continue.</p>
+                      </div>
+                    )}
+                    <p>
+                      You can change the above settings for this browser at any
+                      time by accessing our{" "}
+                      <a href={privacyPolicyURL} target="_blank">
+                        privacy policy
+                      </a>.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        close();
+                      }}
+                      css={css`
+                        ${buttonStyles};
+                        ${blueButtonStyles};
+                      `}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        this.saveAndClose();
+                      }}
+                      css={css`
+                        ${buttonStyles};
+                        ${yellowButtonStyles};
+                      `}
+                    >
+                      <span>Save and continue</span>
+                      <ArrowIcon />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     );
