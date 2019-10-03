@@ -1,6 +1,6 @@
 import cookieParser from "cookie-parser";
 import { NextFunction, Request, Response, Router } from "express";
-import { RequestOptions } from "http";
+import { IncomingMessage, RequestOptions } from "http";
 import https from "https";
 import { IdapiConfig, idapiConfigPromise } from "../idapiConfig";
 
@@ -37,13 +37,23 @@ const handleError = (error: any, res: Response) => {
   res.status(500).send({ status: 500, message: "Internal service error" });
 };
 
+const mimicResponse = (
+  sourceResponse: IncomingMessage,
+  targetResponse: Response
+) => {
+  if (sourceResponse.statusCode) {
+    targetResponse.status(sourceResponse.statusCode);
+  }
+  targetResponse.set(sourceResponse.headers);
+};
+
 const makeIdapiRequest = (
   options: RequestOptions,
   res: Response,
   body?: Buffer
 ) => {
   const idapiRequest = https.request(options, idapiResponse => {
-    res.setHeader("Content-Type", "application/json"); // @TODO: Hardcoded MIME. Read response headers
+    mimicResponse(idapiResponse, res);
     idapiResponse.pipe(res);
   });
   idapiRequest.on("error", handleError);
