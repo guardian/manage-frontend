@@ -1,5 +1,6 @@
 import cookieParser from "cookie-parser";
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
+import { RequestOptions } from "http";
 import https from "https";
 import { IdapiConfig, idapiConfigPromise } from "../idapiConfig";
 
@@ -21,14 +22,14 @@ const securityCookieToHeader = (cookies: CookiesWithToken): SCGUHeader => ({
   [SECURITY_HEADER_NAME]: cookies[SECURITY_COOKIE_NAME]
 });
 
+const isValidConfig = (config: any): config is IdapiConfig =>
+  config.host && config.accessToken;
+
 // @TODO: FIXME: DO NOT PROD DEPLOY: Needs CSRF Check
 const isValid = (req: Request): boolean => {
   const token: boolean = !!req.cookies[SECURITY_COOKIE_NAME];
   return token;
 };
-
-const isValidConfig = (config: any): config is IdapiConfig =>
-  config.host && config.accessToken;
 
 const handleError = (error: any, res: Response) => {
   // @TODO: hook into sentry and remove console output
@@ -36,40 +37,88 @@ const handleError = (error: any, res: Response) => {
   res.status(500).send({ status: 500, message: "Internal service error" });
 };
 
-router.use(cookieParser());
-
-router.get("/user", async (req: Request, res: Response) => {
-  if (!isValid(req)) {
-    res.end(401);
-    return;
+const makeIdapiRequest = (
+  options: RequestOptions,
+  res: Response,
+  body?: Buffer
+) => {
+  const idapiRequest = https.request(options, idapiResponse => {
+    res.setHeader("Content-Type", "application/json"); // @TODO: Hardcoded MIME. Read response headers
+    idapiResponse.pipe(res);
+  });
+  idapiRequest.on("error", handleError);
+  if (body) {
+    idapiRequest.write(body);
   }
+  idapiRequest.end();
+};
 
+const getConfig = async (): Promise<IdapiConfig> => {
   const config = await idapiConfigPromise;
-
   if (!isValidConfig(config)) {
-    handleError("Error loading idapi configuration", res);
-    return;
+    throw new Error("Error loading a valid config");
   }
+  return config;
+};
 
+const getOptions = (
+  method: string,
+  cookies: CookiesWithToken,
+  config: IdapiConfig
+) => {
   const path = "/user/me";
   const hostname = config.host;
 
   const headers = {
     "X-GU-ID-Client-Access-Token": `Bearer ${config.accessToken}`,
-    ...securityCookieToHeader(req.cookies)
+    ...securityCookieToHeader(cookies),
+    "Content-Type": "application/json"
   };
 
   const options = {
     headers,
-    method: "GET",
+    method,
     hostname,
     path
   };
 
-  const idapiRequest = https.request(options, getRes => getRes.pipe(res));
+  return options;
+};
 
-  idapiRequest.on("error", handleError);
-  idapiRequest.end();
+router.use(cookieParser());
+
+router.use((req: Request, res: Response, next: NextFunction) => {
+  if (!isValid(req)) {
+    res.end(401);
+    return;
+  } else {
+    next();
+  }
+});
+
+router.get("/user", async (req: Request, res: Response) => {
+  let config;
+  try {
+    config = await getConfig();
+  } catch (e) {
+    handleError(e, res);
+    return;
+  }
+  const options = getOptions("GET", req.cookies, config);
+  makeIdapiRequest(options, res);
+});
+
+router.put("/user", async (req: Request, res: Response) => {
+  let config;
+  try {
+    config = await getConfig();
+  } catch (e) {
+    handleError(e, res);
+    return;
+  }
+  const options = getOptions("POST", req.cookies, config);
+  const { body } = req;
+  makeIdapiRequest(options, res, body);
 });
 
 export default router;
