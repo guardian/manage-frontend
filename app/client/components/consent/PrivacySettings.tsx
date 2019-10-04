@@ -406,8 +406,6 @@ export class PrivacySettings extends Component<{}, State> {
                 <button
                   type="button"
                   onClick={evt => {
-                    evt.preventDefault();
-
                     scrollToPurposes();
                   }}
                   css={css`
@@ -420,8 +418,6 @@ export class PrivacySettings extends Component<{}, State> {
                 <button
                   type="button"
                   onClick={evt => {
-                    evt.preventDefault();
-
                     this.enableAllAndClose();
                   }}
                   css={css`
@@ -468,8 +464,6 @@ export class PrivacySettings extends Component<{}, State> {
                     <button
                       type="button"
                       onClick={evt => {
-                        evt.preventDefault();
-
                         close();
                       }}
                       css={css`
@@ -482,8 +476,6 @@ export class PrivacySettings extends Component<{}, State> {
                     <button
                       type="button"
                       onClick={evt => {
-                        evt.preventDefault();
-
                         this.saveAndClose();
                       }}
                       css={css`
