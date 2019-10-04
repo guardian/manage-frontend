@@ -19,7 +19,6 @@ import {
   transitions
 } from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
-import * as Cookies from "js-cookie";
 import Raven from "raven-js";
 import React, { Component } from "react";
 import { conf } from "../../../server/config";
@@ -42,10 +41,6 @@ if (typeof window !== "undefined" && window.guardian) {
 }
 
 const isProd = domain === "theguardian.com";
-
-const consentLogsURL = isProd
-  ? "https://consent-logs.guardianapis.com/report"
-  : "https://consent-logs.code.dev-guardianapis.com/report";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
@@ -316,6 +311,7 @@ interface State {
 export class PrivacySettings extends Component<{}, State> {
   // private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
+  private rawVendorList?: IabVendorList;
 
   constructor(props: {}) {
     super(props);
@@ -333,13 +329,16 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
+        // tslint:disable-next-line: no-object-mutation
+        this.rawVendorList = remoteVendorList;
+
         return this.buildState(
           parseGuPurposeList(cmpConfig.GU_PURPOSE_LIST),
           parseIabVendorList(remoteVendorList)
         );
       })
       .then(() => {
-        window.parent.postMessage(cmpConfig.CMP_READY_MSG, "*");
+        window.parent.postMessage({ msgType: cmpConfig.CMP_READY_MSG }, "*");
       })
       .catch(error => {
         Raven.captureException(`Error fetching CMP Vendor List: ${error}`, {
@@ -691,75 +690,29 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    cmpCookie.writeGuCookie(stateToSave.guPurposes);
+    // TODO: RESTORE ONCE PECR PURPOSES READY
+    // cmpCookie.writeGuCookie(stateToSave.guPurposes);
 
     const allowedPurposes = Object.keys(stateToSave.iabPurposes)
       .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
       .map(purpose => parseInt(purpose, 10));
+
     const allowedVendors = this.iabVendorList.vendors.map(vendor => vendor.id);
 
-    const consentData = new ConsentString();
-    consentData.setGlobalVendorList(this.iabVendorList);
-    consentData.setCmpId(cmpConfig.IAB_CMP_ID);
-    consentData.setCmpVersion(cmpConfig.IAB_CMP_VERSION);
-    consentData.setConsentScreen(cmpConfig.IAB_CONSENT_SCREEN);
-    consentData.setConsentLanguage(cmpConfig.IAB_CONSENT_LANGUAGE);
-    consentData.setPurposesAllowed(allowedPurposes);
-    consentData.setVendorsAllowed(allowedVendors);
-
-    const consentStr = consentData.getConsentString();
-
-    cmpCookie.writeIabCookie(consentStr);
-
-    // Consent-logs
-    const pAdvertising =
-      consentData.isPurposeAllowed(1) &&
-      consentData.isPurposeAllowed(2) &&
-      consentData.isPurposeAllowed(3) &&
-      consentData.isPurposeAllowed(4) &&
-      consentData.isPurposeAllowed(5);
-
-    const browserID = Cookies.get("bwid") || "No bwid available";
-
-    if (isProd && !browserID) {
-      Raven.captureException(`Error getting browserID in PROD`, {
-        tags: { feature: "CMP" }
-      });
-    }
-
-    const logInfo = {
-      version: "1",
-      iab: consentStr,
-      source: "www",
-      purposes: {
-        personalisedAdvertising: pAdvertising
-      },
-      browserId: browserID,
-      variant: "CmpUiIab-variant"
-    };
-
-    fetch(consentLogsURL, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(logInfo)
-    })
-      .then(response => {
-        // if (!response.ok) {
-        // throw new Error(`${response.status} | ${response.statusText}`);
-        // }
-        throw new Error("TEST");
-      })
-      .catch(error => {
-        Raven.captureException(`Error posting to consent logs: ${error}`, {
-          tags: { feature: "CMP" }
-        });
-      });
-
     // Notify parent that consent has been saved
-    window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
+    window.parent.postMessage(
+      {
+        msgType: cmpConfig.CMP_SAVED_MSG,
+        msgData: {
+          isProd,
+          allowedPurposes,
+          allowedVendors,
+          iabVendorList: this.rawVendorList,
+          variant: "CmpUiIab-variant"
+        }
+      },
+      "*"
+    );
 
     return true;
   }
@@ -923,7 +876,7 @@ const getFeaturesDescriptions = (
 };
 
 const close = () => {
-  window.parent.postMessage(cmpConfig.CMP_CLOSE_MSG, "*");
+  window.parent.postMessage({ msgType: cmpConfig.CMP_CLOSE_MSG }, "*");
 };
 
 const scrollToPurposes = (): void => {
