@@ -31,10 +31,9 @@ const isValid = (req: Request): boolean => {
   return token;
 };
 
-const handleError = (error: any, res: Response) => {
-  // @TODO: hook into sentry and remove console output
-  process.stdout.write(error.toString() + "\n");
+const handleError = (error: any, res: Response, next: NextFunction) => {
   res.status(500).send({ status: 500, message: "Internal service error" });
+  next(error);
 };
 
 const mimicResponse = (
@@ -100,6 +99,7 @@ const crsfMiddleware = csrf({
 });
 
 router.use(cookieParser());
+
 router.use((req: Request, res: Response, next: NextFunction) => {
   if (!isValid(req)) {
     res.sendStatus(401);
@@ -109,42 +109,48 @@ router.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.get("/user", crsfMiddleware, async (req: Request, res: Response) => {
-  let config;
-  try {
-    config = await getConfig();
-  } catch (e) {
-    handleError(e, res);
-    return;
+router.get(
+  "/user",
+  crsfMiddleware,
+  async (req: Request, res: Response, next: NextFunction) => {
+    let config;
+    try {
+      config = await getConfig();
+    } catch (e) {
+      handleError(e, res, next);
+      return;
+    }
+    res.cookie("XSRF-TOKEN", req.csrfToken(), {
+      secure: true,
+      sameSite: "strict"
+    });
+    const options = getOptions("GET", req.cookies, config);
+    makeIdapiRequest(options, res);
   }
-  res.cookie("XSRF-TOKEN", req.csrfToken(), {
-    secure: true,
-    sameSite: "strict"
-  });
-  const options = getOptions("GET", req.cookies, config);
-  makeIdapiRequest(options, res);
-});
+);
 
-router.put("/user", crsfMiddleware, async (req: Request, res: Response) => {
-  let config;
-  try {
-    config = await getConfig();
-  } catch (e) {
-    handleError(e, res);
-    return;
+router.put(
+  "/user",
+  crsfMiddleware,
+  async (req: Request, res: Response, next: NextFunction) => {
+    let config;
+    try {
+      config = await getConfig();
+    } catch (e) {
+      handleError(e, res, next);
+      return;
+    }
+    const options = getOptions("POST", req.cookies, config);
+    const { body } = req;
+    makeIdapiRequest(options, res, body);
   }
-  const options = getOptions("POST", req.cookies, config);
-  const { body } = req;
-  makeIdapiRequest(options, res, body);
-});
+);
 
 router.use((err: any, _: Request, res: Response, next: NextFunction) => {
   if (err.code && err.code === "EBADCSRFTOKEN") {
-    // @TODO: Log To Sentry/Kibana?
     res.sendStatus(403);
-  } else {
-    next(err);
   }
+  next(err);
 });
 
 export default router;
