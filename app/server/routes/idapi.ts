@@ -95,7 +95,12 @@ const getOptions = (
 };
 
 const crsfMiddleware = csrf({
-  cookie: true
+  cookie: {
+    key: "_csrf",
+    sameSite: true,
+    secure: true,
+    httpOnly: true
+  }
 });
 
 router.use(cookieParser());
