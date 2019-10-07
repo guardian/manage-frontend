@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import csrf from "csurf";
 import { NextFunction, Request, Response, Router } from "express";
 import { IncomingMessage, RequestOptions } from "http";
 import https from "https";
@@ -25,7 +26,6 @@ const securityCookieToHeader = (cookies: CookiesWithToken): SCGUHeader => ({
 const isValidConfig = (config: any): config is IdapiConfig =>
   config.host && config.accessToken;
 
-// @TODO: FIXME: DO NOT PROD DEPLOY: Needs CSRF Check
 const isValid = (req: Request): boolean => {
   const token: boolean = !!req.cookies[SECURITY_COOKIE_NAME];
   return token;
@@ -95,18 +95,21 @@ const getOptions = (
   return options;
 };
 
-router.use(cookieParser());
+const crsfMiddleware = csrf({
+  cookie: true
+});
 
+router.use(cookieParser());
 router.use((req: Request, res: Response, next: NextFunction) => {
   if (!isValid(req)) {
-    res.end(401);
+    res.sendStatus(401);
     return;
   } else {
     next();
   }
 });
 
-router.get("/user", async (req: Request, res: Response) => {
+router.get("/user", crsfMiddleware, async (req: Request, res: Response) => {
   let config;
   try {
     config = await getConfig();
@@ -114,11 +117,15 @@ router.get("/user", async (req: Request, res: Response) => {
     handleError(e, res);
     return;
   }
+  res.cookie("XSRF-TOKEN", req.csrfToken(), {
+    secure: true,
+    sameSite: "strict"
+  });
   const options = getOptions("GET", req.cookies, config);
   makeIdapiRequest(options, res);
 });
 
-router.put("/user", async (req: Request, res: Response) => {
+router.put("/user", crsfMiddleware, async (req: Request, res: Response) => {
   let config;
   try {
     config = await getConfig();
@@ -129,6 +136,15 @@ router.put("/user", async (req: Request, res: Response) => {
   const options = getOptions("POST", req.cookies, config);
   const { body } = req;
   makeIdapiRequest(options, res, body);
+});
+
+router.use((err: any, _: Request, res: Response, next: NextFunction) => {
+  if (err.code && err.code === "EBADCSRFTOKEN") {
+    // @TODO: Log To Sentry/Kibana?
+    res.sendStatus(403);
+  } else {
+    next(err);
+  }
 });
 
 export default router;
