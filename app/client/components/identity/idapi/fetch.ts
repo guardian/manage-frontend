@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { IdentityLocations } from "../IdentityLocations";
 
 const handleResponseFailure = async (response: Response) => {
@@ -62,10 +63,10 @@ export const APIUseCredentials = (options: RequestInit): RequestInit => ({
 });
 
 export const APIUseXSRFHeader = (options: RequestInit): RequestInit => {
-  const token = document.cookie.replace(
-    /(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/,
-    "$1"
-  );
+  const token = Cookies.get("XSRF-TOKEN");
+  if (!token) {
+    return options;
+  }
   const headers = {
     ...options.headers,
     "csrf-token": token
