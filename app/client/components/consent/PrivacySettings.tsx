@@ -24,13 +24,11 @@ import React, { Component } from "react";
 import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
-import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { CmpItem } from "./CmpItem";
 
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
-const HEADER_ID = "header";
 
 let domain: string;
 
@@ -46,40 +44,6 @@ const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
 const headerBorderBottom = 1;
-
-const headerCSS = css`
-  background-color: ${palette.brand.main};
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 200;
-`;
-
-const logoContainer = css`
-  padding: 6px ${space[2]}px 12px 0;
-  height: 100%;
-  width: 100%;
-  border-bottom: ${headerBorderBottom}px solid ${palette.brand.pastel};
-  display: flex;
-  ::before {
-    content: "";
-    display: block;
-    flex: 1;
-    height: 100%;
-  }
-`;
-
-const logoStyles = css`
-  height: 55px;
-
-  ${minWidth.mobileLandscape} {
-    height: 90px;
-  }
-
-  path {
-    fill: ${palette.neutral[100]};
-  }
-`;
 
 const containerStyles = css`
   z-index: 0;
@@ -308,18 +272,30 @@ interface State {
   iabNullResponses?: number[];
 }
 
-export class PrivacySettings extends Component<{}, State> {
+interface Props {
+  updateHeaderWidth: (headerWidth: number) => void;
+}
+
+export class PrivacySettings extends Component<Props, State> {
   // private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
   private rawVendorList?: IabVendorList;
 
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
 
     this.state = { guPurposes: {}, iabPurposes: {} };
   }
 
   public componentDidMount(): void {
+    // Update header width to account for scrollbar on container
+    this.updateHeaderWidth();
+
+    window.addEventListener("resize", () => {
+      // Update header width to on resize
+      this.updateHeaderWidth();
+    });
+
     fetch(cmpConfig.IAB_VENDOR_LIST_URL)
       .then(response => {
         if (response.ok) {
@@ -355,12 +331,6 @@ export class PrivacySettings extends Component<{}, State> {
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
-        <div css={headerCSS} id={HEADER_ID}>
-          <div css={logoContainer}>
-            <TheGuardianLogo css={logoStyles} />
-          </div>
-        </div>
-
         <div
           css={css`
             ${minWidth.mobileLandscape} {
@@ -738,8 +708,16 @@ export class PrivacySettings extends Component<{}, State> {
         : []
     }));
   }
-}
 
+  private updateHeaderWidth(): void {
+    const containerElem = document.getElementById(CONTAINER_ID);
+
+    if (containerElem) {
+      const containerWidth = containerElem.offsetWidth;
+      this.props.updateHeaderWidth(containerWidth);
+    }
+  }
+}
 const parseGuPurposeList = (
   guPurposeList: GuPurposeList
 ): ParsedGuPurposeList => {
@@ -876,23 +854,21 @@ const scrollToPurposes = (): void => {
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
   );
-  const headerElem: HTMLElement | null = document.getElementById(HEADER_ID);
 
-  if (!purposeElem || !scrollableElem || !headerElem) {
+  if (!purposeElem || !scrollableElem) {
     return;
   }
 
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
-  const headerHeight = headerElem.offsetHeight;
   // scrollTop can return subpixel on hidpi resolutions so round up to integer
   const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
-    purposeElemOffsetTop +
+    purposeElemOffsetTop -
     scrollableElemOffsetTop -
-    headerHeight -
     initDistanceScrolled +
     headerBorderBottom;
+
   const duration: number = 750;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
@@ -905,12 +881,8 @@ const scrollToPurposes = (): void => {
       time < 0.5
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
-
     const newScrollTop =
-      Math.ceil(
-        easing * (scrollLength - scrollableElemOffsetTop) +
-          scrollableElemOffsetTop
-      ) + initDistanceScrolled;
+      Math.ceil(easing * scrollLength) + initDistanceScrolled;
 
     // tslint:disable-next-line: no-object-mutation
     scrollableElem.scrollTop = newScrollTop;
