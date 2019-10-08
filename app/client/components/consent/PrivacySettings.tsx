@@ -363,12 +363,13 @@ export class PrivacySettings extends Component<Props, State> {
                 adverts are more relevant, and we make more money to invest in
                 Guardian journalism. By using this site, you agree to our{" "}
                 <a href={privacyPolicyURL} target="_blank">
-                  privacy policy
+                  privacy
                 </a>{" "}
                 and{" "}
                 <a href={cookiePolicyURL} target="_blank">
-                  cookie policy
-                </a>
+                  cookie
+                </a>{" "}
+                policies
               </p>
               <div
                 css={css`
