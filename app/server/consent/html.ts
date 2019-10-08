@@ -36,7 +36,9 @@ const html: (
         }
         (function() {
             var firstScript = document.scripts[0];
-            [${scripts.map(script => JSON.stringify(script))}].forEach(url => {
+            [${scripts.map(script =>
+              JSON.stringify(script)
+            )}].forEach(function(url) {
                 if ('async' in firstScript) {
                     // modern browsers
                     var script = document.createElement('script');
