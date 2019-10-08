@@ -287,7 +287,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
-    productPage: "subscriptions"
+    productPage: "subscriptions",
+    alternateTierValue: "Digital Subscription"
   },
   contentSubscriptions: {
     friendlyName: "subscription",
