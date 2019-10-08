@@ -61,6 +61,7 @@ server.use(
       "Content-Security-Policy",
       `frame-ancestors ${frameAncestors}`
     );
+    res.removeHeader("X-Frame-Options");
     next();
   },
   routes.consent
