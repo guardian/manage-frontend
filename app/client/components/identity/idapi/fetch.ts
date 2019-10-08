@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { IdentityLocations } from "../IdentityLocations";
 
 const handleResponseFailure = async (response: Response) => {
@@ -18,6 +19,16 @@ const handleResponseSuccess = async (response: Response) => {
     throw new Error(`Error decoding JSON response: ${e}`);
   }
 };
+
+const getAPIOptionsForMethod = (method: string) => (
+  payload: any
+): RequestInit => ({
+  method,
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
 
 export const APIFetch = (baseUrl: string) => async (
   url: string,
@@ -42,25 +53,29 @@ export const APIFilePostOptions = (payload: File): RequestInit => {
   };
 };
 
-export const APIPostOptions = (payload: any): RequestInit => ({
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(payload)
-});
-
-export const APIPatchOptions = (payload: any): RequestInit => ({
-  method: "PATCH",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(payload)
-});
+export const APIPostOptions = getAPIOptionsForMethod("POST");
+export const APIPutOptions = getAPIOptionsForMethod("PUT");
+export const APIPatchOptions = getAPIOptionsForMethod("PATCH");
 
 export const APIUseCredentials = (options: RequestInit): RequestInit => ({
   ...options,
   credentials: "include"
 });
 
+export const APIUseXSRFHeader = (options: RequestInit): RequestInit => {
+  const token = Cookies.get("XSRF-TOKEN");
+  if (!token) {
+    return options;
+  }
+  const headers = {
+    ...options.headers,
+    "csrf-token": token
+  };
+  return {
+    ...options,
+    headers
+  };
+};
+
+export const localFetch = APIFetch("");
 export const identityFetch = APIFetch(IdentityLocations.IDAPI);

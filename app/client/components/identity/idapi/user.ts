@@ -1,5 +1,10 @@
 import { ErrorTypes, User, UserError } from "../models";
-import { APIPostOptions, APIUseCredentials, identityFetch } from "./fetch";
+import {
+  APIPutOptions,
+  APIUseCredentials,
+  APIUseXSRFHeader,
+  localFetch
+} from "./fetch";
 
 interface UserAPIResponse {
   user: {
@@ -85,19 +90,19 @@ const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
 };
 
 export const write = async (user: Partial<User>): Promise<void> => {
-  const url = "/user/me";
+  const url = "/idapi/user";
   const body = userToUserAPIRequest(user);
-  const options = APIUseCredentials(APIPostOptions(body));
+  const options = APIUseXSRFHeader(APIUseCredentials(APIPutOptions(body)));
   try {
-    await identityFetch(url, options);
+    await localFetch(url, options);
   } catch (e) {
     throw isErrorResponse(e) ? userAPIErrorToUserError(e) : e;
   }
 };
 
 export const read = async (): Promise<User> => {
-  const url = "/user/me";
-  const response: UserAPIResponse = await identityFetch(
+  const url = "/idapi/user";
+  const response: UserAPIResponse = await localFetch(
     url,
     APIUseCredentials({})
   );

@@ -43,6 +43,7 @@ server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffe
 server.use(routes.core);
 server.use("/profile/", routes.profile);
 server.use("/api/", routes.api);
+server.use("/idapi", routes.idapi);
 server.use(routes.productsProvider("/api/"));
 
 const isCode = conf.DOMAIN === "code.dev-theguardian.com";
@@ -60,6 +61,7 @@ server.use(
       "Content-Security-Policy",
       `frame-ancestors ${frameAncestors}`
     );
+    res.removeHeader("X-Frame-Options");
     next();
   },
   routes.consent

@@ -19,64 +19,30 @@ import {
   transitions
 } from "@guardian/src-foundations";
 import { ConsentString } from "consent-string";
-import * as Cookies from "js-cookie";
 import Raven from "raven-js";
 import React, { Component } from "react";
 import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
-import { TheGuardianLogo } from "../svgs/theGuardianLogo";
 import { CmpItem } from "./CmpItem";
 
 const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
-const HEADER_ID = "header";
 
-const isProd = conf.DOMAIN === "theguardian.com";
+let domain: string;
 
-const consentLogsURL = isProd
-  ? "https://consent-logs.guardianapis.com/report"
-  : "https://consent-logs.code.dev-guardianapis.com/report";
+if (typeof window !== "undefined" && window.guardian) {
+  domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
+}
+
+const isProd = domain === "theguardian.com";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
-const headerBorderBottom = 1;
-
-const headerCSS = css`
-  background-color: ${palette.brand.main};
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 200;
-`;
-
-const logoContainer = css`
-  padding: 6px ${space[2]}px 12px 0;
-  height: 100%;
-  width: 100%;
-  border-bottom: ${headerBorderBottom}px solid ${palette.brand.pastel};
-  display: flex;
-  ::before {
-    content: "";
-    display: block;
-    flex: 1;
-    height: 100%;
-  }
-`;
-
-const logoStyles = css`
-  height: 55px;
-
-  ${minWidth.mobileLandscape} {
-    height: 90px;
-  }
-
-  path {
-    fill: ${palette.neutral[100]};
-  }
-`;
 
 const containerStyles = css`
   z-index: 0;
@@ -86,6 +52,10 @@ const containerStyles = css`
   ${minWidth.mobileLandscape} {
     width: 95%;
     max-width: 450px;
+  }
+  margin-top: 73px;
+  ${minWidth.mobileLandscape} {
+    margin-top: 108px;
   }
 `;
 
@@ -305,17 +275,30 @@ interface State {
   iabNullResponses?: number[];
 }
 
-export class PrivacySettings extends Component<{}, State> {
+interface Props {
+  updateHeaderWidth: (headerWidth: number) => void;
+}
+
+export class PrivacySettings extends Component<Props, State> {
   // private guPurposeList?: ParsedGuPurposeList;
   private iabVendorList?: ParsedIabVendorList;
+  private rawVendorList?: IabVendorList;
 
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
 
     this.state = { guPurposes: {}, iabPurposes: {} };
   }
 
   public componentDidMount(): void {
+    // Update header width to account for scrollbar on container
+    this.updateHeaderWidth();
+
+    window.addEventListener("resize", () => {
+      // Update header width to on resize
+      this.updateHeaderWidth();
+    });
+
     fetch(cmpConfig.IAB_VENDOR_LIST_URL)
       .then(response => {
         if (response.ok) {
@@ -325,13 +308,16 @@ export class PrivacySettings extends Component<{}, State> {
         }
       })
       .then(remoteVendorList => {
+        // tslint:disable-next-line: no-object-mutation
+        this.rawVendorList = remoteVendorList;
+
         return this.buildState(
           parseGuPurposeList(cmpConfig.GU_PURPOSE_LIST),
           parseIabVendorList(remoteVendorList)
         );
       })
       .then(() => {
-        window.parent.postMessage(cmpConfig.CMP_READY_MSG, "*");
+        window.parent.postMessage({ msgType: cmpConfig.CMP_READY_MSG }, "*");
       })
       .catch(error => {
         Raven.captureException(`Error fetching CMP Vendor List: ${error}`, {
@@ -348,12 +334,6 @@ export class PrivacySettings extends Component<{}, State> {
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
-        <div css={headerCSS} id={HEADER_ID}>
-          <div css={logoContainer}>
-            <TheGuardianLogo css={logoStyles} />
-          </div>
-        </div>
-
         <div
           css={css`
             ${minWidth.mobileLandscape} {
@@ -379,16 +359,16 @@ export class PrivacySettings extends Component<{}, State> {
                 service to you.{" "}
               </p>
               <p>
-                Our advertising partners would like to do the same so the
+                Our advertising partners would like to do the same – so the
                 adverts are more relevant, and we make more money to invest in
-                Guardian journalism. To find out more, read our{" "}
+                Guardian journalism. By using this site, you agree to our{" "}
                 <a href={privacyPolicyURL} target="_blank">
                   privacy policy
                 </a>{" "}
                 and{" "}
                 <a href={cookiePolicyURL} target="_blank">
                   cookie policy
-                </a>.
+                </a>
               </p>
               <div
                 css={css`
@@ -398,7 +378,9 @@ export class PrivacySettings extends Component<{}, State> {
               >
                 <button
                   type="button"
-                  onClick={scrollToPurposes}
+                  onClick={() => {
+                    scrollToPurposes();
+                  }}
                   css={css`
                     ${buttonStyles};
                     ${blueButtonStyles};
@@ -638,12 +620,10 @@ export class PrivacySettings extends Component<{}, State> {
       (acc, key) => ({ ...acc, [key]: true }),
       {}
     );
-
     const iabPurposes = Object.keys(this.state.iabPurposes).reduce(
       (acc, key) => ({ ...acc, [key]: true }),
       {}
     );
-
     this.saveAndClose({ guPurposes, iabPurposes });
   }
 
@@ -675,74 +655,29 @@ export class PrivacySettings extends Component<{}, State> {
       return false;
     }
 
-    cmpCookie.writeGuCookie(stateToSave.guPurposes);
+    // TODO: RESTORE ONCE PECR PURPOSES READY
+    // cmpCookie.writeGuCookie(stateToSave.guPurposes);
 
     const allowedPurposes = Object.keys(stateToSave.iabPurposes)
       .filter(key => stateToSave.iabPurposes[parseInt(key, 10)])
       .map(purpose => parseInt(purpose, 10));
+
     const allowedVendors = this.iabVendorList.vendors.map(vendor => vendor.id);
 
-    const consentData = new ConsentString();
-    consentData.setGlobalVendorList(this.iabVendorList);
-    consentData.setCmpId(cmpConfig.IAB_CMP_ID);
-    consentData.setCmpVersion(cmpConfig.IAB_CMP_VERSION);
-    consentData.setConsentScreen(cmpConfig.IAB_CONSENT_SCREEN);
-    consentData.setConsentLanguage(cmpConfig.IAB_CONSENT_LANGUAGE);
-    consentData.setPurposesAllowed(allowedPurposes);
-    consentData.setVendorsAllowed(allowedVendors);
-
-    const consentStr = consentData.getConsentString();
-
-    cmpCookie.writeIabCookie(consentStr);
-
-    // Consent-logs
-    const pAdvertising =
-      consentData.isPurposeAllowed(1) &&
-      consentData.isPurposeAllowed(2) &&
-      consentData.isPurposeAllowed(3) &&
-      consentData.isPurposeAllowed(4) &&
-      consentData.isPurposeAllowed(5);
-
-    const browserID = Cookies.get("bwid") || "No bwid available";
-
-    if (isProd && !browserID) {
-      Raven.captureException(`Error getting browserID in PROD`, {
-        tags: { feature: "CMP" }
-      });
-    }
-
-    const logInfo = {
-      version: "1",
-      iab: consentStr,
-      source: "www",
-      purposes: {
-        personalisedAdvertising: pAdvertising
-      },
-      browserId: browserID,
-      variant: "CmpUiIab-variant"
-    };
-
-    fetch(consentLogsURL, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(logInfo)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`${response.status} | ${response.statusText}`);
-        }
-      })
-      .catch(error => {
-        Raven.captureException(`Error posting to consent logs: ${error}`, {
-          tags: { feature: "CMP" }
-        });
-      });
-
     // Notify parent that consent has been saved
-    window.parent.postMessage(cmpConfig.CMP_SAVED_MSG, "*");
+    window.parent.postMessage(
+      {
+        msgType: cmpConfig.CMP_SAVED_MSG,
+        msgData: {
+          isProd,
+          allowedPurposes,
+          allowedVendors,
+          iabVendorList: this.rawVendorList,
+          variant: "CmpUiIab-variant"
+        }
+      },
+      "*"
+    );
 
     return true;
   }
@@ -776,8 +711,16 @@ export class PrivacySettings extends Component<{}, State> {
         : []
     }));
   }
-}
 
+  private updateHeaderWidth(): void {
+    const containerElem = document.getElementById(CONTAINER_ID);
+
+    if (containerElem) {
+      const containerWidth = containerElem.offsetWidth;
+      this.props.updateHeaderWidth(containerWidth);
+    }
+  }
+}
 const parseGuPurposeList = (
   guPurposeList: GuPurposeList
 ): ParsedGuPurposeList => {
@@ -906,7 +849,7 @@ const getFeaturesDescriptions = (
 };
 
 const close = () => {
-  window.parent.postMessage(cmpConfig.CMP_CLOSE_MSG, "*");
+  window.parent.postMessage({ msgType: cmpConfig.CMP_CLOSE_MSG }, "*");
 };
 
 const scrollToPurposes = (): void => {
@@ -914,23 +857,26 @@ const scrollToPurposes = (): void => {
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
   );
-  const headerElem: HTMLElement | null = document.getElementById(HEADER_ID);
+  const containerElem: HTMLElement | null = document.getElementById(
+    CONTAINER_ID
+  );
 
-  if (!purposeElem || !scrollableElem || !headerElem) {
+  if (!purposeElem || !scrollableElem || !containerElem) {
     return;
   }
 
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
-  const headerHeight = headerElem.offsetHeight;
+  const containerElemOffsetTop = containerElem.offsetTop;
+
   // scrollTop can return subpixel on hidpi resolutions so round up to integer
   const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
-    purposeElemOffsetTop +
+    purposeElemOffsetTop -
     scrollableElemOffsetTop -
-    headerHeight -
-    initDistanceScrolled +
-    headerBorderBottom;
+    containerElemOffsetTop -
+    initDistanceScrolled;
+
   const duration: number = 750;
   const startTime: number =
     "now" in window.performance ? performance.now() : new Date().getTime();
@@ -943,12 +889,8 @@ const scrollToPurposes = (): void => {
       time < 0.5
         ? 4 * time * time * time
         : (time - 1) * (2 * time - 2) * (2 * time - 2) + 1; // easeInOutCubic
-
     const newScrollTop =
-      Math.ceil(
-        easing * (scrollLength - scrollableElemOffsetTop) +
-          scrollableElemOffsetTop
-      ) + initDistanceScrolled;
+      Math.ceil(easing * scrollLength) + initDistanceScrolled;
 
     // tslint:disable-next-line: no-object-mutation
     scrollableElem.scrollTop = newScrollTop;
