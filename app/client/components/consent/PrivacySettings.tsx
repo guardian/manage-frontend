@@ -386,16 +386,16 @@ export class PrivacySettings extends Component<{}, State> {
                 service to you.{" "}
               </p>
               <p>
-                Our advertising partners would like to do the same so the
+                Our advertising partners would like to do the same – so the
                 adverts are more relevant, and we make more money to invest in
-                Guardian journalism. To find out more, read our{" "}
+                Guardian journalism. By using this site, you agree to our{" "}
                 <a href={privacyPolicyURL} target="_blank">
                   privacy policy
                 </a>{" "}
                 and{" "}
                 <a href={cookiePolicyURL} target="_blank">
                   cookie policy
-                </a>.
+                </a>
               </p>
               <div
                 css={css`
