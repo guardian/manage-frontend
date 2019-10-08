@@ -886,11 +886,12 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.3.tgz#dfa0c92efe44a1d1a7974fb49ffeb40ef2da5a27"
   integrity sha512-zVgvPwGK7c1aVdUVc9Qv7SqepOGRDrqCw7KZPSZziWGxSlbII3gmvGLPzLX4d0n0BMbamBacUrN22zOMyFFEkQ==
 
-"@guardian/consent-management-platform@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-0.3.0.tgz#eee7ffe7f33df38beac9740f4767c581de0960eb"
-  integrity sha512-JLJ5lprvdwVscSYAtxm+LF5YwydmayoGGYDn5qILHmgLNXWOs+Br9kD/FmlsRogfsYMJ4RvUC/uPCMZiS4EANg==
+"@guardian/consent-management-platform@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-1.0.1.tgz#3faf970a78746323015f95c5cbbdb2daa015508c"
+  integrity sha512-Mgn4GbbNIY+ADRpDgXrAtCffemg3wfA0730dtCbM7D6Em5/2pcx3RQzYvUFMLeB4TAi9ALytIFzM4FRmRCt+Sw==
   dependencies:
+    consent-string "^1.5.1"
     js-cookie "^2.2.1"
 
 "@guardian/src-foundations@^0.2.0":
@@ -1141,9 +1142,9 @@
   integrity sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug==
 
 "@types/js-cookie@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.2.2.tgz#84e8848e14d44418726ceb52dd887c7bfe45d678"
-  integrity sha512-vkuGzldF9mNsWS9cmmMFfW1rufa7IdPUorS150gKoU/2fzLJ/0LXiMMtRqIBWz0sZ/VF2VxwB25WXEOo6akU6w==
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.2.3.tgz#30525e93231074d4a092d9f5608c25d5c7a72085"
+  integrity sha512-gfrTQ6xQhPch+Jew+GVUXa7W2Wssh6EbxXDV8xkLD+Pe3VMIuWUh25yH1wOKiWyrYi2zPrS8e6UEgZt7dZXwyQ==
 
 "@types/lodash@^4.14.136":
   version "4.14.137"
