@@ -43,7 +43,6 @@ const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
 const mediumSpace = smallSpace + smallSpace / 3; // 16px
-const headerBorderBottom = 1;
 
 const containerStyles = css`
   z-index: 0;
@@ -53,6 +52,10 @@ const containerStyles = css`
   ${minWidth.mobileLandscape} {
     width: 95%;
     max-width: 450px;
+  }
+  margin-top: 73px;
+  ${minWidth.mobileLandscape} {
+    margin-top: 108px;
   }
 `;
 
@@ -854,20 +857,25 @@ const scrollToPurposes = (): void => {
   const scrollableElem: HTMLElement | null = document.getElementById(
     SCROLLABLE_ID
   );
+  const containerElem: HTMLElement | null = document.getElementById(
+    CONTAINER_ID
+  );
 
-  if (!purposeElem || !scrollableElem) {
+  if (!purposeElem || !scrollableElem || !containerElem) {
     return;
   }
 
   const purposeElemOffsetTop = purposeElem.offsetTop;
   const scrollableElemOffsetTop = scrollableElem.offsetTop;
+  const containerElemOffsetTop = containerElem.offsetTop;
+
   // scrollTop can return subpixel on hidpi resolutions so round up to integer
   const initDistanceScrolled = Math.ceil(scrollableElem.scrollTop);
   const scrollLength =
     purposeElemOffsetTop -
     scrollableElemOffsetTop -
-    initDistanceScrolled +
-    headerBorderBottom;
+    containerElemOffsetTop -
+    initDistanceScrolled;
 
   const duration: number = 750;
   const startTime: number =

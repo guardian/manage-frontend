@@ -10,7 +10,7 @@ const SCROLLABLE_ID = "scrollable";
 
 const headerCSS = (headerWidth: number) => css`
   background-color: ${palette.brand.main};
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 200;
   width: 100%;
