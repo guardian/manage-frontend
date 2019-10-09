@@ -26,7 +26,7 @@ export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
-  | "digitalpack"
+  | "digital"
   | "guardianweekly"
   | "subscriptions";
 export type SfProduct = "Membership" | "Contribution";
@@ -74,6 +74,7 @@ export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
+  legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
   getOphanProductType?: (
     productDetail: ProductDetail
   ) => OphanProduct | undefined;
@@ -284,7 +285,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
   digipack: {
     friendlyName: "digital subscription",
     allProductsProductTypeFilterString: "Digipack",
-    urlPart: "digitalpack",
+    urlPart: "digital",
+    legacyUrlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
     productPage: "subscriptions",
