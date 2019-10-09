@@ -30,6 +30,7 @@ export interface User {
   consents: string[];
   username: string;
   validated: boolean;
+  title: string;
   firstName: string;
   secondName: string;
   address1: string;
@@ -37,6 +38,7 @@ export interface User {
   address3: string;
   address4: string;
   postcode: string;
+  country: string;
 }
 
 export interface UserError {

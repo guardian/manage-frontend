@@ -6,6 +6,25 @@ import {
   localFetch
 } from "./fetch";
 
+type UserPublicFields = Partial<
+  Pick<User, "aboutMe" | "interests" | "location" | "username">
+>;
+
+type UserPrivateFields = Partial<
+  Pick<
+    User,
+    | "title"
+    | "firstName"
+    | "secondName"
+    | "address1"
+    | "address2"
+    | "address3"
+    | "address4"
+    | "postcode"
+    | "country"
+  >
+>;
+
 interface UserAPIResponse {
   user: {
     id: string;
@@ -15,22 +34,9 @@ interface UserAPIResponse {
         consented: boolean;
       }
     ];
-    publicFields: {
-      aboutMe?: string;
-      interests?: string;
-      location?: string;
-      username?: string;
-    };
-    privateFields: {
-      firstName?: string;
-      secondName?: string;
-      address1?: string;
-      address2?: string;
-      address3?: string;
-      address4?: string;
-      postcode?: string;
-    };
-    primaryEmailAddress: string;
+    publicFields: UserPublicFields;
+    privateFields: UserPrivateFields;
+    primaryEmailAddress: User["email"];
     statusFields: {
       userEmailValidated: boolean;
     };
@@ -38,21 +44,8 @@ interface UserAPIResponse {
 }
 
 interface UserAPIRequest {
-  publicFields: {
-    aboutMe?: string;
-    username?: string;
-    interests?: string;
-    location?: string;
-  };
-  privateFields: {
-    firstName?: string;
-    secondName?: string;
-    address1?: string;
-    address2?: string;
-    address3?: string;
-    address4?: string;
-    postcode?: string;
-  };
+  publicFields: UserPublicFields;
+  privateFields: UserPrivateFields;
 }
 
 interface UserAPIErrorResponse {
@@ -76,13 +69,15 @@ const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
     username: user.username
   },
   privateFields: {
+    title: user.title,
     firstName: user.firstName,
     secondName: user.secondName,
     address1: user.address1,
     address2: user.address2,
     address3: user.address3,
     address4: user.address4,
-    postcode: user.postcode
+    postcode: user.postcode,
+    country: user.country
   }
 });
 
@@ -142,6 +137,7 @@ export const read = async (): Promise<User> => {
     aboutMe: user.publicFields.aboutMe || "",
     interests: user.publicFields.interests || "",
     username: user.publicFields.username || "",
+    title: user.privateFields.title || "",
     firstName: user.privateFields.firstName || "",
     secondName: user.privateFields.secondName || "",
     address1: user.privateFields.address1 || "",
@@ -149,6 +145,7 @@ export const read = async (): Promise<User> => {
     address3: user.privateFields.address3 || "",
     address4: user.privateFields.address4 || "",
     postcode: user.privateFields.postcode || "",
+    country: user.privateFields.country || "",
     consents,
     validated: user.statusFields.userEmailValidated
   };

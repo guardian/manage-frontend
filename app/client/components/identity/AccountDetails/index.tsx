@@ -76,6 +76,7 @@ const formField = (
 const BaseForm = (props: FormikProps<User>) => (
   <Form>
     <PageSection title="Personal Information">
+      {formField("title", "Title", "text", props)}
       {formField("firstName", "First name", "text", props)}
       {formField("secondName", "Last name", "text", props)}
     </PageSection>
@@ -85,6 +86,7 @@ const BaseForm = (props: FormikProps<User>) => (
       {formField("address3", "Town", "text", props)}
       {formField("address4", "County or State", "text", props)}
       {formField("postcode", "Postcode/Zipcode", "text", props)}
+      {formField("country", "Country", "text", props)}
     </PageSection>
     <Button
       disabled={props.isSubmitting}
