@@ -75,8 +75,17 @@ const formField = (
 
 const BaseForm = (props: FormikProps<User>) => (
   <Form>
-    {formField("firstName", "First name", "text", props)}
-    {formField("secondName", "Last name", "text", props)}
+    <PageSection title="Personal Information">
+      {formField("firstName", "First name", "text", props)}
+      {formField("secondName", "Last name", "text", props)}
+    </PageSection>
+    <PageSection title="Correspondence address">
+      {formField("address1", "Address line 1", "text", props)}
+      {formField("address2", "Address line 2", "text", props)}
+      {formField("address3", "Town", "text", props)}
+      {formField("address4", "County or State", "text", props)}
+      {formField("postcode", "Postcode/Zipcode", "text", props)}
+    </PageSection>
     <Button
       disabled={props.isSubmitting}
       text="Save changes"
@@ -146,14 +155,12 @@ export const AccountDetails = (props: { path?: string }) => {
       </PageContainer>
       {lineSection()}
       <PageContainer>
-        <PageSection title="Personal Information">
-          <FormikForm
-            user={user}
-            saveUser={saveUser}
-            onError={setError}
-            onSuccess={setUser}
-          />
-        </PageSection>
+        <FormikForm
+          user={user}
+          saveUser={saveUser}
+          onError={setError}
+          onSuccess={setUser}
+        />
       </PageContainer>
     </>
   );

@@ -24,6 +24,11 @@ interface UserAPIResponse {
     privateFields: {
       firstName?: string;
       secondName?: string;
+      address1?: string;
+      address2?: string;
+      address3?: string;
+      address4?: string;
+      postcode?: string;
     };
     primaryEmailAddress: string;
     statusFields: {
@@ -42,6 +47,11 @@ interface UserAPIRequest {
   privateFields: {
     firstName?: string;
     secondName?: string;
+    address1?: string;
+    address2?: string;
+    address3?: string;
+    address4?: string;
+    postcode?: string;
   };
 }
 
@@ -67,7 +77,12 @@ const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
   },
   privateFields: {
     firstName: user.firstName,
-    secondName: user.secondName
+    secondName: user.secondName,
+    address1: user.address1,
+    address2: user.address2,
+    address3: user.address3,
+    address4: user.address4,
+    postcode: user.postcode
   }
 });
 
@@ -129,6 +144,11 @@ export const read = async (): Promise<User> => {
     username: user.publicFields.username || "",
     firstName: user.privateFields.firstName || "",
     secondName: user.privateFields.secondName || "",
+    address1: user.privateFields.address1 || "",
+    address2: user.privateFields.address2 || "",
+    address3: user.privateFields.address3 || "",
+    address4: user.privateFields.address4 || "",
+    postcode: user.privateFields.postcode || "",
     consents,
     validated: user.statusFields.userEmailValidated
   };
