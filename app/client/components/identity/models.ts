@@ -30,6 +30,8 @@ export interface User {
   consents: string[];
   username: string;
   validated: boolean;
+  firstName: string;
+  secondName: string;
 }
 
 export interface UserError {

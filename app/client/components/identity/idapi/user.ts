@@ -21,6 +21,10 @@ interface UserAPIResponse {
       location?: string;
       username?: string;
     };
+    privateFields: {
+      firstName?: string;
+      secondName?: string;
+    };
     primaryEmailAddress: string;
     statusFields: {
       userEmailValidated: boolean;
@@ -34,6 +38,10 @@ interface UserAPIRequest {
     username?: string;
     interests?: string;
     location?: string;
+  };
+  privateFields: {
+    firstName?: string;
+    secondName?: string;
   };
 }
 
@@ -56,6 +64,10 @@ const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
     interests: user.interests,
     location: user.location,
     username: user.username
+  },
+  privateFields: {
+    firstName: user.firstName,
+    secondName: user.secondName
   }
 });
 
@@ -115,6 +127,8 @@ export const read = async (): Promise<User> => {
     aboutMe: user.publicFields.aboutMe || "",
     interests: user.publicFields.interests || "",
     username: user.publicFields.username || "",
+    firstName: user.privateFields.firstName || "",
+    secondName: user.privateFields.secondName || "",
     consents,
     validated: user.statusFields.userEmailValidated
   };
