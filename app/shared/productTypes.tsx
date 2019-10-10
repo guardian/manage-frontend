@@ -19,14 +19,14 @@ export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
-  | "digital pack subscription"
+  | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
 export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
-  | "digitalpack"
+  | "digital"
   | "guardianweekly"
   | "subscriptions";
 export type SfProduct = "Membership" | "Contribution";
@@ -74,6 +74,7 @@ export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
+  legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
   getOphanProductType?: (
     productDetail: ProductDetail
   ) => OphanProduct | undefined;
@@ -282,12 +283,14 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: "subscriptions"
   },
   digipack: {
-    friendlyName: "digital pack subscription",
+    friendlyName: "digital subscription",
     allProductsProductTypeFilterString: "Digipack",
-    urlPart: "digitalpack",
+    urlPart: "digital",
+    legacyUrlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
-    productPage: "subscriptions"
+    productPage: "subscriptions",
+    alternateTierValue: "Digital Subscription"
   },
   contentSubscriptions: {
     friendlyName: "subscription",
