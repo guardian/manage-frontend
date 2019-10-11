@@ -21,7 +21,7 @@ import {
 import { Users } from "../identity";
 import { Lines } from "../Lines";
 import { Titles, User } from "../models";
-import { ErrorTypes } from "../models";
+import { COUNTRIES, ErrorTypes } from "../models";
 import { PageSection } from "../PageSection";
 import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
@@ -32,9 +32,7 @@ interface AccountFormProps {
   onSuccess: (user: User) => void;
 }
 
-const titles = Object.values(Titles).map(
-  title => [title, title] as [string, string]
-);
+const titles = Object.values(Titles);
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
 
@@ -55,14 +53,14 @@ const getError = (
 const formSelectField = (
   name: string,
   label: string,
-  options: Array<[string, string]>,
+  options: string[],
   formikProps: FormikProps<User>
 ) => {
   const error = getError(name, formikProps);
   const errorCss = error ? formFieldErrorCss : {};
   const optionEls = options.map(o => (
-    <option key={o[0]} value={o[0]}>
-      {o[1]}
+    <option key={o} value={o}>
+      {o}
     </option>
   ));
   return (
@@ -124,7 +122,7 @@ const BaseForm = (props: FormikProps<User>) => (
       {formField("address3", "Town", "text", props)}
       {formField("address4", "County or State", "text", props)}
       {formField("postcode", "Postcode/Zipcode", "text", props)}
-      {formField("country", "Country", "text", props)}
+      {formSelectField("country", "Country", ["None", ...COUNTRIES], props)}
     </PageSection>
     <Button
       disabled={props.isSubmitting}
