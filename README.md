@@ -42,3 +42,8 @@ Frontend of `manage.theguardian.com`
 4.  You will need to have nginx running (`sudo nginx`), if it's not running already.
 5.  In `./app`, run `yarn watch`.
 6.  Then go to https://manage.thegulocal.com/
+
+
+### SSH
+You must ssh via the bastion, e.g. using [ssm-scala](https://github.com/guardian/ssm-scala):
+`ssm ssh --profile membership --bastion-tags contributions-store-bastion,support,PROD --tags manage-frontend,support,CODE -a -x --newest`
