@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { cmpConfig, cmpCookie } from "@guardian/consent-management-platform";
 import {
+  CmpMsgData,
   GuIntegration,
   GuPurpose,
   GuPurposeList,
@@ -21,7 +22,6 @@ import {
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";
-import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 import { ArrowIcon } from "../svgs/arrowIcon";
 import { CmpItem } from "./CmpItem";
@@ -30,15 +30,6 @@ const CONTAINER_ID = "container";
 const PURPOSES_ID = "purposes";
 const SCROLLABLE_ID = "scrollable";
 
-let domain: string;
-
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
-
-const isProd = domain === "theguardian.com";
 const privacyPolicyURL = "https://www.theguardian.com/info/privacy";
 const cookiePolicyURL = "https://www.theguardian.com/info/cookies";
 const smallSpace = space[2]; // 12px
@@ -635,7 +626,7 @@ export class PrivacySettings extends Component<Props, State> {
   }
 
   private saveSettings(stateToSave: State): boolean {
-    if (!this.iabVendorList) {
+    if (!this.iabVendorList || !this.rawVendorList) {
       return false;
     }
 
@@ -665,17 +656,17 @@ export class PrivacySettings extends Component<Props, State> {
 
     const allowedVendors = this.iabVendorList.vendors.map(vendor => vendor.id);
 
+    const msgData: CmpMsgData = {
+      allowedPurposes,
+      allowedVendors,
+      iabVendorList: this.rawVendorList
+    };
+
     // Notify parent that consent has been saved
     window.parent.postMessage(
       {
         msgType: cmpConfig.CMP_SAVED_MSG,
-        msgData: {
-          isProd,
-          allowedPurposes,
-          allowedVendors,
-          iabVendorList: this.rawVendorList,
-          variant: "CmpUiIab-variant"
-        }
+        msgData
       },
       "*"
     );
