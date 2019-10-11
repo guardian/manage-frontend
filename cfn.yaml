@@ -32,8 +32,8 @@ Parameters:
     Description: AMI ID
     Type: String
     Default: ami-88a6af62
-  OfficeCIDR:
-    Description: Office IP range
+  BastionSecurityGroup:
+    Description: Bastion's security group for SSH
     Type: String
 Conditions:
   CreateProdResources: !Equals [!Ref "Stage", "PROD"]
@@ -247,11 +247,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: !Ref OfficeCIDR
-        - IpProtocol: tcp
-          FromPort: 9233
-          ToPort: 9233
-          CidrIp: !Ref OfficeCIDR
+          CidrIp: !Ref BastionSecurityGroup
         - IpProtocol: tcp
           FromPort: 9233
           ToPort: 9233
