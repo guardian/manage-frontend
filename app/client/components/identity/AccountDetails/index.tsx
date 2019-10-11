@@ -20,7 +20,7 @@ import {
 } from "../GenericErrorMessage";
 import { Users } from "../identity";
 import { Lines } from "../Lines";
-import { User } from "../models";
+import { Titles, User } from "../models";
 import { ErrorTypes } from "../models";
 import { PageSection } from "../PageSection";
 import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
@@ -32,10 +32,8 @@ interface AccountFormProps {
   onSuccess: (user: User) => void;
 }
 
-const lineSection = () => (
-  <PageContainer>
-    <Lines n={1} />
-  </PageContainer>
+const titles = Object.values(Titles).map(
+  title => [title, title] as [string, string]
 );
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
@@ -54,15 +52,39 @@ const getError = (
   }
 };
 
+const formSelectField = (
+  name: string,
+  label: string,
+  options: Array<[string, string]>,
+  formikProps: FormikProps<User>
+) => {
+  const error = getError(name, formikProps);
+  const errorCss = error ? formFieldErrorCss : {};
+  const optionEls = options.map(o => (
+    <option key={o[0]} value={o[0]}>
+      {o[1]}
+    </option>
+  ));
+  return (
+    <label css={{ ...labelCss, ...errorCss }}>
+      {label}
+      <Field component="select" name={name}>
+        {optionEls}
+      </Field>
+      {error ? <p>{error}</p> : null}
+    </label>
+  );
+};
+
 const formField = (
   name: string,
   label: string,
-  inputType: "textarea" | "text",
+  inputType: string,
   formikProps: FormikProps<User>
 ) => {
   const error = getError(name, formikProps);
   const inputTypeProps =
-    inputType === "text" ? { type: "text" } : { component: "textarea" };
+    inputType === "textarea" ? { component: "textarea" } : { type: inputType };
   const errorCss = error ? formFieldErrorCss : {};
   return (
     <label css={{ ...labelCss, ...errorCss }}>
@@ -75,11 +97,27 @@ const formField = (
 
 const BaseForm = (props: FormikProps<User>) => (
   <Form>
+    <Lines n={1} />
+    <PageSection title="Email & Password">
+      {formField("email", "Email", "email", props)}
+      <label>
+        Password
+        <p>
+          <a>Change your password</a>
+        </p>
+      </label>
+    </PageSection>
+    <Lines n={1} />
+    <PageSection title="Phone">
+      {formField("phoneCountryCode", "Country code", "number", props)}
+      {formField("phoneLocalNumber", "Local number", "number", props)}
+    </PageSection>
     <PageSection title="Personal Information">
-      {formField("title", "Title", "text", props)}
+      {formSelectField("title", "Title", titles, props)}
       {formField("firstName", "First name", "text", props)}
       {formField("secondName", "Last name", "text", props)}
     </PageSection>
+    <Lines n={1} />
     <PageSection title="Correspondence address">
       {formField("address1", "Address line 1", "text", props)}
       {formField("address2", "Address line 2", "text", props)}
@@ -155,7 +193,6 @@ export const AccountDetails = (props: { path?: string }) => {
           These details will only be visible to you and the Guardian.
         </span>
       </PageContainer>
-      {lineSection()}
       <PageContainer>
         <FormikForm
           user={user}

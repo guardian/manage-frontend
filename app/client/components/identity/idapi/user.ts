@@ -23,7 +23,12 @@ type UserPrivateFields = Partial<
     | "postcode"
     | "country"
   >
->;
+> & {
+  telephoneNumber?: {
+    countryCode: string;
+    localNumber: string;
+  };
+};
 
 interface UserAPIResponse {
   user: {
@@ -46,6 +51,7 @@ interface UserAPIResponse {
 interface UserAPIRequest {
   publicFields: UserPublicFields;
   privateFields: UserPrivateFields;
+  primaryEmailAddress?: User["email"];
 }
 
 interface UserAPIErrorResponse {
@@ -61,25 +67,60 @@ export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
   return error.status && error.status === "error";
 };
 
-const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
-  publicFields: {
-    aboutMe: user.aboutMe,
-    interests: user.interests,
-    location: user.location,
-    username: user.username
-  },
-  privateFields: {
-    title: user.title,
-    firstName: user.firstName,
-    secondName: user.secondName,
-    address1: user.address1,
-    address2: user.address2,
-    address3: user.address3,
-    address4: user.address4,
-    postcode: user.postcode,
-    country: user.country
-  }
-});
+const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
+  const { phoneCountryCode: countryCode, phoneLocalNumber: localNumber } = user;
+  const telephoneNumber =
+    countryCode && localNumber ? { countryCode, localNumber } : undefined;
+
+  return {
+    publicFields: {
+      aboutMe: user.aboutMe,
+      interests: user.interests,
+      location: user.location,
+      username: user.username
+    },
+    privateFields: {
+      title: user.title,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      address1: user.address1,
+      address2: user.address2,
+      address3: user.address3,
+      address4: user.address4,
+      postcode: user.postcode,
+      country: user.country,
+      telephoneNumber
+    },
+    primaryEmailAddress: user.email
+  };
+};
+
+const toUser = (response: UserAPIResponse): User => {
+  const consents = getConsentedTo(response);
+  const { user } = response;
+  const { telephoneNumber } = user.privateFields;
+  return {
+    id: user.id,
+    email: user.primaryEmailAddress,
+    location: user.publicFields.location || "",
+    aboutMe: user.publicFields.aboutMe || "",
+    interests: user.publicFields.interests || "",
+    username: user.publicFields.username || "",
+    title: user.privateFields.title || "",
+    firstName: user.privateFields.firstName || "",
+    secondName: user.privateFields.secondName || "",
+    address1: user.privateFields.address1 || "",
+    address2: user.privateFields.address2 || "",
+    address3: user.privateFields.address3 || "",
+    address4: user.privateFields.address4 || "",
+    postcode: user.privateFields.postcode || "",
+    country: user.privateFields.country || "",
+    phoneCountryCode: telephoneNumber ? telephoneNumber.countryCode : "",
+    phoneLocalNumber: telephoneNumber ? telephoneNumber.localNumber : "",
+    consents,
+    validated: user.statusFields.userEmailValidated
+  };
+};
 
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
@@ -95,7 +136,7 @@ const getFieldNameFromContext = (context: string): string => {
   return context.split(".").pop() as string;
 };
 
-const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
+const toUserError = (response: UserAPIErrorResponse): UserError => {
   const error = response.errors.reduce(
     (a, e) => {
       return {
@@ -113,12 +154,12 @@ const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
 
 export const write = async (user: Partial<User>): Promise<void> => {
   const url = "/idapi/user";
-  const body = userToUserAPIRequest(user);
+  const body = toUserApiRequest(user);
   const options = APIUseXSRFHeader(APIUseCredentials(APIPutOptions(body)));
   try {
     await localFetch(url, options);
   } catch (e) {
-    throw isErrorResponse(e) ? userAPIErrorToUserError(e) : e;
+    throw isErrorResponse(e) ? toUserError(e) : e;
   }
 };
 
@@ -128,27 +169,7 @@ export const read = async (): Promise<User> => {
     url,
     APIUseCredentials({})
   );
-  const consents = getConsentedTo(response);
-  const { user } = response;
-  return {
-    id: user.id,
-    email: user.primaryEmailAddress,
-    location: user.publicFields.location || "",
-    aboutMe: user.publicFields.aboutMe || "",
-    interests: user.publicFields.interests || "",
-    username: user.publicFields.username || "",
-    title: user.privateFields.title || "",
-    firstName: user.privateFields.firstName || "",
-    secondName: user.privateFields.secondName || "",
-    address1: user.privateFields.address1 || "",
-    address2: user.privateFields.address2 || "",
-    address3: user.privateFields.address3 || "",
-    address4: user.privateFields.address4 || "",
-    postcode: user.privateFields.postcode || "",
-    country: user.privateFields.country || "",
-    consents,
-    validated: user.statusFields.userEmailValidated
-  };
+  return toUser(response);
 };
 
 const memoizedRead = (): (() => Promise<User>) => {

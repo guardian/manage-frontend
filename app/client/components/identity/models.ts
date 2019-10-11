@@ -21,6 +21,17 @@ export enum ConsentOptionType {
   OPT_OUT = "OPT_OUT"
 }
 
+export enum Titles {
+  MR = "Mr",
+  MRS = "Mrs",
+  MS = "Ms",
+  MX = "Mx",
+  MISS = "Miss",
+  DR = "Dr",
+  PROF = "Prof",
+  REV = "Rev"
+}
+
 export interface User {
   id: string;
   email: string;
@@ -39,6 +50,8 @@ export interface User {
   address4: string;
   postcode: string;
   country: string;
+  phoneCountryCode: string;
+  phoneLocalNumber: string;
 }
 
 export interface UserError {
