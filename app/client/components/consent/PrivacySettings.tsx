@@ -266,7 +266,7 @@ interface State {
 }
 
 interface Props {
-  updateHeaderWidth: (headerWidth: number) => void;
+  hideScrollBar: () => void;
 }
 
 export class PrivacySettings extends Component<Props, State> {
@@ -281,14 +281,6 @@ export class PrivacySettings extends Component<Props, State> {
   }
 
   public componentDidMount(): void {
-    // Update header width to account for scrollbar on container
-    this.updateHeaderWidth();
-
-    window.addEventListener("resize", () => {
-      // Update header width to on resize
-      this.updateHeaderWidth();
-    });
-
     fetch(cmpConfig.IAB_VENDOR_LIST_URL)
       .then(response => {
         if (response.ok) {
@@ -307,6 +299,14 @@ export class PrivacySettings extends Component<Props, State> {
         );
       })
       .then(() => {
+        // Update header width to account for scrollbar on container
+        this.hideScrollBar();
+
+        window.addEventListener("resize", () => {
+          // Update header width to on resize
+          this.hideScrollBar();
+        });
+
         window.parent.postMessage({ msgType: cmpConfig.CMP_READY_MSG }, "*");
       })
       .catch(error => {
@@ -703,13 +703,14 @@ export class PrivacySettings extends Component<Props, State> {
     }));
   }
 
-  private updateHeaderWidth(): void {
-    const containerElem = document.getElementById(CONTAINER_ID);
+  private hideScrollBar(): void {
+    this.props.hideScrollBar();
+    // const containerElem = document.getElementById(CONTAINER_ID);
 
-    if (containerElem) {
-      const containerWidth = containerElem.offsetWidth;
-      this.props.updateHeaderWidth(containerWidth);
-    }
+    // if (containerElem) {
+    //   const containerWidth = containerElem.offsetWidth;
+    //   this.props.updateHeaderWidth(containerWidth);
+    // }
   }
 }
 const parseGuPurposeList = (
