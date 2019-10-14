@@ -266,7 +266,7 @@ interface State {
 }
 
 interface Props {
-  updateHeaderWidth: (headerWidth: number) => void;
+  hideScrollBar: () => void;
 }
 
 export class PrivacySettings extends Component<Props, State> {
@@ -281,14 +281,6 @@ export class PrivacySettings extends Component<Props, State> {
   }
 
   public componentDidMount(): void {
-    // Update header width to account for scrollbar on container
-    this.updateHeaderWidth();
-
-    window.addEventListener("resize", () => {
-      // Update header width to on resize
-      this.updateHeaderWidth();
-    });
-
     fetch(cmpConfig.IAB_VENDOR_LIST_URL)
       .then(response => {
         if (response.ok) {
@@ -307,6 +299,16 @@ export class PrivacySettings extends Component<Props, State> {
         );
       })
       .then(() => {
+        const { hideScrollBar } = this.props;
+
+        // hide scrollbar and update header width
+        hideScrollBar();
+
+        window.addEventListener("resize", () => {
+          // hide scrollbar and update header width
+          hideScrollBar();
+        });
+
         window.parent.postMessage({ msgType: cmpConfig.CMP_READY_MSG }, "*");
       })
       .catch(error => {
@@ -701,15 +703,6 @@ export class PrivacySettings extends Component<Props, State> {
           )
         : []
     }));
-  }
-
-  private updateHeaderWidth(): void {
-    const containerElem = document.getElementById(CONTAINER_ID);
-
-    if (containerElem) {
-      const containerWidth = containerElem.offsetWidth;
-      this.props.updateHeaderWidth(containerWidth);
-    }
   }
 }
 const parseGuPurposeList = (

@@ -7,6 +7,7 @@ import { PrivacySettings } from "./PrivacySettings";
 
 const HEADER_ID = "header";
 const SCROLLABLE_ID = "scrollable";
+const CONTAINER_ID = "container";
 
 const headerCSS = (headerWidth: number) => css`
   background-color: ${palette.brand.main};
@@ -49,15 +50,17 @@ const logoStyles = css`
  * Force the height of the scrollable to 100vh
  * because it forces the parent iframe height on iOS
  */
-const scrollableStyles = css`
+const scrollableStyles = (scrollbarWidth: number) => css`
   height: 1px;
   min-height: 100vh;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  margin-right: ${-scrollbarWidth}px;
 `;
 
 interface State {
   headerWidth: number;
+  scrollbarWidth: number;
 }
 
 export class ConsentManagementPortal extends Component<{}, State> {
@@ -65,7 +68,8 @@ export class ConsentManagementPortal extends Component<{}, State> {
     super(props);
 
     this.state = {
-      headerWidth: 0
+      headerWidth: 0,
+      scrollbarWidth: 0
     };
   }
 
@@ -77,16 +81,47 @@ export class ConsentManagementPortal extends Component<{}, State> {
             <TheGuardianLogo css={logoStyles} />
           </div>
         </div>
-        <div css={scrollableStyles} id={SCROLLABLE_ID}>
+        <div
+          css={scrollableStyles(this.state.scrollbarWidth)}
+          id={SCROLLABLE_ID}
+        >
           <PrivacySettings
-            updateHeaderWidth={(headerWidth: number): void => {
-              this.setState({
-                headerWidth
-              });
+            hideScrollBar={(): void => {
+              const scrollableElem = document.getElementById(SCROLLABLE_ID);
+
+              if (!scrollableElem) {
+                return;
+              }
+
+              const scrollbarWidth =
+                scrollableElem.offsetWidth - scrollableElem.clientWidth;
+
+              this.setState(
+                {
+                  scrollbarWidth
+                },
+                () => {
+                  this.updateHeaderWidth();
+                }
+              );
             }}
           />
         </div>
       </>
     );
+  }
+
+  private updateHeaderWidth(): void {
+    const containerElem = document.getElementById(CONTAINER_ID);
+
+    if (!containerElem) {
+      return;
+    }
+
+    const headerWidth = containerElem.offsetWidth;
+
+    this.setState({
+      headerWidth
+    });
   }
 }

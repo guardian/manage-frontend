@@ -11,6 +11,7 @@ export const App = () => (
     <Global
       styles={css(`
       body {
+        overflow-x: hidden;
         background-color: ${palette.brand.main};
       }`)}
     />
