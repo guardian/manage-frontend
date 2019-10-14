@@ -299,11 +299,11 @@ export class PrivacySettings extends Component<Props, State> {
         );
       })
       .then(() => {
-        // Update header width to account for scrollbar on container
+        // hide scrollbar and update header width
         this.hideScrollBar();
 
         window.addEventListener("resize", () => {
-          // Update header width to on resize
+          // hide scrollbar and update header width
           this.hideScrollBar();
         });
 
