@@ -37,7 +37,7 @@ const run = (): void => {
 if (document.readyState !== 'loading') {
   run();
 } else {
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', (): void => {
     run();
   });
 }
