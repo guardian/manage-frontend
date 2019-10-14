@@ -115,12 +115,13 @@ const buttonContainerStyles = css`
 const topButtonContainerStyles = css`
   margin-left: ${-smallSpace}px;
   margin-right: ${-smallSpace}px;
+
   ${minWidth.mobileLarge} {
     border-top: 0;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     margin-left: 0;
     margin-right: 0;
-    padding: 0;
+    padding: 12px 0;
   }
 `;
 
