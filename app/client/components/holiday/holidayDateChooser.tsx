@@ -168,8 +168,7 @@ export class HolidayDateChooser extends React.Component<
                         >
                           <HolidayQuestionsModal
                             annualIssueLimit={
-                              holidayStopsResponse.productSpecifics
-                                .annualIssueLimit
+                              holidayStopsResponse.annualIssueLimit
                             }
                           />
                         </div>
@@ -190,14 +189,13 @@ export class HolidayDateChooser extends React.Component<
                         selectionInfo={this.getSelectionInfoElement(
                           renewalDateMoment,
                           combinedIssuesImpactedPerYear,
-                          holidayStopsResponse.productSpecifics.annualIssueLimit
+                          holidayStopsResponse.annualIssueLimit
                         )}
                         onSelect={this.onSelect(
                           renewalDateMoment,
                           productDetail.subscription.subscriptionId,
                           combinedIssuesImpactedPerYear,
-                          holidayStopsResponse.productSpecifics
-                            .annualIssueLimit,
+                          holidayStopsResponse.annualIssueLimit,
                           productDetail.isTestUser
                         )}
                         dateToAsterisk={renewalDateMoment}
@@ -219,8 +217,7 @@ export class HolidayDateChooser extends React.Component<
                         >
                           <HolidayQuestionsModal
                             annualIssueLimit={
-                              holidayStopsResponse.productSpecifics
-                                .annualIssueLimit
+                              holidayStopsResponse.annualIssueLimit
                             }
                           />
                         </div>
@@ -276,7 +273,6 @@ export class HolidayDateChooser extends React.Component<
       () =>
         createPotentialHolidayStopsFetcher(
           false,
-          this.props.productType.urlPart,
           subscriptionName,
           start,
           end,

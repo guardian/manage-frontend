@@ -4,7 +4,7 @@ import {
   ProductType,
   ProductTypes
 } from "../../shared/productTypes";
-import { getHolidayStopApiHandler } from "../holidayStopApiHandlers";
+import { holidayStopApiHandler } from "../holidayStopApiHandlers";
 import { membersDataApiHandler } from "../middleware/apiMiddleware";
 
 const routeProvider = (apiPathPrefix: string) => {
@@ -53,17 +53,13 @@ const routeProvider = (apiPathPrefix: string) => {
         res.redirect("/" + productType.productPage);
       });
     }
-    if (productType.holidayStopsApiProductNamePrefix) {
-      router.use(
-        `${apiPathPrefix}holidays/${
-          productType.urlPart
-        }/:subscriptionName?/:sfId?`,
-        getHolidayStopApiHandler(productType.holidayStopsApiProductNamePrefix)
-      );
-    }
   });
 
-  router.get(`${apiPathPrefix}holidays/`, getHolidayStopApiHandler());
+  router.use(
+    `${apiPathPrefix}holidays/:subscriptionName?/:sfId?`,
+    holidayStopApiHandler
+  );
+
   return router;
 };
 
