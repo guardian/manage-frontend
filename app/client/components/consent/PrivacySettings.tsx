@@ -299,12 +299,14 @@ export class PrivacySettings extends Component<Props, State> {
         );
       })
       .then(() => {
+        const { hideScrollBar } = this.props;
+
         // hide scrollbar and update header width
-        this.hideScrollBar();
+        hideScrollBar();
 
         window.addEventListener("resize", () => {
           // hide scrollbar and update header width
-          this.hideScrollBar();
+          hideScrollBar();
         });
 
         window.parent.postMessage({ msgType: cmpConfig.CMP_READY_MSG }, "*");
@@ -701,16 +703,6 @@ export class PrivacySettings extends Component<Props, State> {
           )
         : []
     }));
-  }
-
-  private hideScrollBar(): void {
-    this.props.hideScrollBar();
-    // const containerElem = document.getElementById(CONTAINER_ID);
-
-    // if (containerElem) {
-    //   const containerWidth = containerElem.offsetWidth;
-    //   this.props.updateHeaderWidth(containerWidth);
-    // }
   }
 }
 const parseGuPurposeList = (
