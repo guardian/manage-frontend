@@ -87,7 +87,6 @@ export class ConsentManagementPortal extends Component<{}, State> {
         >
           <PrivacySettings
             hideScrollBar={(): void => {
-              // if (document) {
               const scrollableElem = document.getElementById(SCROLLABLE_ID);
 
               if (!scrollableElem) {
@@ -105,7 +104,6 @@ export class ConsentManagementPortal extends Component<{}, State> {
                   this.updateHeaderWidth();
                 }
               );
-              // }
             }}
           />
         </div>
@@ -114,7 +112,6 @@ export class ConsentManagementPortal extends Component<{}, State> {
   }
 
   private updateHeaderWidth(): void {
-    // if (document) {
     const containerElem = document.getElementById(CONTAINER_ID);
 
     if (!containerElem) {
@@ -126,6 +123,5 @@ export class ConsentManagementPortal extends Component<{}, State> {
     this.setState({
       headerWidth
     });
-    // }
   }
 }
