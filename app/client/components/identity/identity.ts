@@ -26,6 +26,17 @@ const mapSubscriptions = (
     subscribed: option.subscribed ? true : subscriptions.includes(option.id)
   }));
 
+const diff = (a: User, b: User): Partial<User> => {
+  type UserKey = keyof User;
+  let fields: Partial<User> = {};
+  for (const key in b) {
+    if (a[key as UserKey] !== b[key as UserKey]) {
+      fields = { ...fields, [key as UserKey]: b[key as UserKey] };
+    }
+  }
+  return fields;
+};
+
 export const Users: UserCollection = {
   async getCurrentUser(): Promise<User> {
     return await UserAPI.memoRead();
@@ -34,14 +45,11 @@ export const Users: UserCollection = {
     return await UserAPI.write(user);
   },
   async saveChanges(original: User, changed: User): Promise<void> {
-    type UserKey = keyof User;
-    let fields: Partial<User> = {};
-    for (const key in changed) {
-      if (original[key as UserKey] !== changed[key as UserKey]) {
-        fields = { ...fields, [key as UserKey]: changed[key as UserKey] };
-      }
-    }
+    const fields: Partial<User> = diff(original, changed);
     return await UserAPI.write(fields);
+  },
+  getChangedFields(original: User, changed: User): Partial<User> {
+    return diff(original, changed);
   }
 };
 

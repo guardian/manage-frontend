@@ -41,7 +41,7 @@ interface UserAPIResponse {
     ];
     publicFields: UserPublicFields;
     privateFields: UserPrivateFields;
-    primaryEmailAddress: User["email"];
+    primaryEmailAddress: User["primaryEmailAddress"];
     statusFields: {
       userEmailValidated: boolean;
     };
@@ -51,7 +51,7 @@ interface UserAPIResponse {
 interface UserAPIRequest {
   publicFields: UserPublicFields;
   privateFields: UserPrivateFields;
-  primaryEmailAddress?: User["email"];
+  primaryEmailAddress?: User["primaryEmailAddress"];
 }
 
 interface UserAPIErrorResponse {
@@ -91,7 +91,7 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
       country: user.country,
       telephoneNumber
     },
-    primaryEmailAddress: user.email
+    primaryEmailAddress: user.primaryEmailAddress
   };
 };
 
@@ -101,7 +101,7 @@ const toUser = (response: UserAPIResponse): User => {
   const { telephoneNumber } = user.privateFields;
   return {
     id: user.id,
-    email: user.primaryEmailAddress,
+    primaryEmailAddress: user.primaryEmailAddress,
     location: user.publicFields.location || "",
     aboutMe: user.publicFields.aboutMe || "",
     interests: user.publicFields.interests || "",

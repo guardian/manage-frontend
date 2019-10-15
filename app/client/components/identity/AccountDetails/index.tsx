@@ -18,6 +18,7 @@ import {
   GenericErrorMessage,
   GenericErrorMessageRef
 } from "../GenericErrorMessage";
+import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
 import { Lines } from "../Lines";
 import { Titles, User } from "../models";
@@ -30,9 +31,15 @@ interface AccountFormProps {
   saveUser: (values: User) => Promise<void>;
   onError: (error: any) => void;
   onSuccess: (user: User) => void;
+  emailMessage: string | null;
 }
 
 const titles = Object.values(Titles);
+
+const deletePhoneNumber = async () => {
+  await PhoneNumber.remove();
+  // @TODO: State Change
+};
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
 
@@ -93,11 +100,20 @@ const formField = (
   );
 };
 
-const BaseForm = (props: FormikProps<User>) => (
+const EmailMessage = (email: string) => (
+  <p>
+    To verify your new email address <strong>{email}</strong> please check your
+    inbox - the confimation email is on its way. In the meantime you should keep
+    using your old credentials to sign in.
+  </p>
+);
+
+const BaseForm = (props: FormikProps<User> & AccountFormProps) => (
   <Form>
     <Lines n={1} />
     <PageSection title="Email & Password">
-      {formField("email", "Email", "email", props)}
+      {formField("primaryEmailAddress", "Email", "text", props)}
+      {!props.emailMessage || EmailMessage(props.emailMessage)}
       <label>
         Password
         <p>
@@ -109,7 +125,9 @@ const BaseForm = (props: FormikProps<User>) => (
     <PageSection title="Phone">
       {formField("phoneCountryCode", "Country code", "number", props)}
       {formField("phoneLocalNumber", "Local number", "number", props)}
+      <Button text="Delete Phone Number" onClick={deletePhoneNumber} />
     </PageSection>
+    <Lines n={1} />
     <PageSection title="Personal Information">
       {formSelectField("title", "Title", titles, props)}
       {formField("firstName", "First name", "text", props)}
@@ -135,6 +153,7 @@ const BaseForm = (props: FormikProps<User>) => (
 
 const FormikForm = withFormik({
   mapPropsToValues: (props: AccountFormProps) => props.user,
+  enableReinitialize: true,
   handleSubmit: async (values, formikBag) => {
     const { setSubmitting, setStatus } = formikBag;
     const { saveUser, onSuccess, onError } = formikBag.props;
@@ -169,6 +188,7 @@ export const AccountDetails = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
+  const [emailMessage, setEmailMessage] = useState();
 
   useEffect(() => {
     Users.getCurrentUser()
@@ -183,11 +203,20 @@ export const AccountDetails = (props: { path?: string }) => {
     return await Users.saveChanges(user, changedUser);
   };
 
+  const updateValues = (values: User) => {
+    const changedFields = Users.getChangedFields(user, values);
+    let vs = values;
+    if (changedFields.primaryEmailAddress) {
+      setEmailMessage(changedFields.primaryEmailAddress);
+      vs = { ...vs, primaryEmailAddress: user.primaryEmailAddress };
+    }
+    setUser(vs);
+  };
+
   const content = () => (
     <>
       <PageContainer>
         <span css={textSmall}>
-          {" "}
           These details will only be visible to you and the Guardian.
         </span>
       </PageContainer>
@@ -196,7 +225,8 @@ export const AccountDetails = (props: { path?: string }) => {
           user={user}
           saveUser={saveUser}
           onError={setError}
-          onSuccess={setUser}
+          onSuccess={updateValues}
+          emailMessage={emailMessage}
         />
       </PageContainer>
     </>

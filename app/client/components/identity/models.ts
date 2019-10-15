@@ -23,7 +23,7 @@ export enum ConsentOptionType {
 
 export interface User {
   id: string;
-  email: string;
+  primaryEmailAddress: string;
   location: string;
   aboutMe: string;
   interests: string;
@@ -57,6 +57,7 @@ export interface UserCollection {
   getCurrentUser: () => Promise<User>;
   save: (user: User) => Promise<void>;
   saveChanges: (original: User, changed: User) => Promise<void>;
+  getChangedFields: (original: User, changed: User) => Partial<User>;
 }
 
 export interface ConsentOption {
