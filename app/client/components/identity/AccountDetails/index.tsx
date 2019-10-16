@@ -22,7 +22,7 @@ import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
 import { Lines } from "../Lines";
 import { Titles, User } from "../models";
-import { COUNTRIES, ErrorTypes } from "../models";
+import { COUNTRIES, ErrorTypes, PHONE_CALLING_CODES } from "../models";
 import { PageSection } from "../PageSection";
 import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
@@ -135,7 +135,12 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
       </PageSection>
       <Lines n={1} />
       <PageSection title="Phone">
-        {formField("countryCode", "Country code", "number", props)}
+        {formSelectField(
+          "countryCode",
+          "Country code",
+          PHONE_CALLING_CODES,
+          props
+        )}
         {formField("localNumber", "Local number", "number", props)}
         {deletePhoneNumberButton}
       </PageSection>
@@ -152,7 +157,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {formField("address3", "Town", "text", props)}
         {formField("address4", "County or State", "text", props)}
         {formField("postcode", "Postcode/Zipcode", "text", props)}
-        {formSelectField("country", "Country", ["None", ...COUNTRIES], props)}
+        {formSelectField("country", "Country", COUNTRIES, props)}
       </PageSection>
       <Button
         disabled={props.isSubmitting}
