@@ -2,13 +2,13 @@ import express from "express";
 import fetch from "node-fetch";
 import url from "url";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
-import { HolidayStopsApiProductNamePrefix } from "../shared/productTypes";
 import { holidayStopApiConfigPromise } from "./holidayStopApiConfig";
 import { log } from "./log";
 
-export const getHolidayStopApiHandler = (
-  holidayStopsApiProductNamePrefix?: HolidayStopsApiProductNamePrefix
-) => (req: express.Request, res: express.Response) =>
+export const holidayStopApiHandler = (
+  req: express.Request,
+  res: express.Response
+) =>
   holidayStopApiConfigPromise
     .then(hsrConfig => {
       if (hsrConfig && res.locals.identity && res.locals.identity.userId) {
@@ -36,10 +36,7 @@ export const getHolidayStopApiHandler = (
             method: req.method,
             headers: {
               "x-api-key": hsrEnvConfig.apiKey,
-              "x-identity-id": res.locals.identity.userId,
-              ...(holidayStopsApiProductNamePrefix
-                ? { "x-product-name-prefix": holidayStopsApiProductNamePrefix }
-                : {})
+              "x-identity-id": res.locals.identity.userId
             },
             body: req.method !== "GET" ? req.body : undefined
           }

@@ -46,15 +46,12 @@ export interface HolidayStopRequest {
   subscriptionName: string;
 }
 
-export interface CommonProductSpecifics {
-  issueDayOfWeek: number;
-  annualIssueLimit: number;
-}
-
 export interface GetHolidayStopsResponse {
-  productSpecifics: CommonProductSpecifics & {
+  productSpecifics: {
     firstAvailableDate: Moment;
+    issueDayOfWeek: number;
   };
+  annualIssueLimit: number;
   existing: HolidayStopRequest[];
 }
 
@@ -64,9 +61,11 @@ export interface ReloadableGetHolidayStopsResponse
 }
 
 interface RawGetHolidayStopsResponse {
-  productSpecifics: CommonProductSpecifics & {
+  issueSpecifics: Array<{
+    issueDayOfWeek: number;
     firstAvailableDate: string;
-  };
+  }>;
+  annualIssueLimit: number;
   existing: RawHolidayStopRequest[];
 }
 
@@ -88,14 +87,13 @@ export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
 
 export const createPotentialHolidayStopsFetcher = (
   shouldEstimateCredit: boolean,
-  productTypeUrlPart: string,
   subscriptionName: string,
   start: Moment,
   end: Moment,
   isTestUser: boolean
 ) => () =>
   fetch(
-    `/api/holidays/${productTypeUrlPart}/${subscriptionName}/potential?startDate=${start.format(
+    `/api/holidays/${subscriptionName}/potential?startDate=${start.format(
       DATE_INPUT_FORMAT
     )}&endDate=${end.format(DATE_INPUT_FORMAT)}${
       shouldEstimateCredit ? "&estimateCredit=true" : ""
@@ -149,14 +147,14 @@ export const embellishExistingHolidayStops = async (response: Response) => {
   const raw = (await response.json()) as RawGetHolidayStopsResponse;
   return {
     ...raw,
-    productSpecifics: raw.productSpecifics
-      ? {
-          ...raw.productSpecifics,
-          firstAvailableDate: momentiseDateStr(
-            raw.productSpecifics.firstAvailableDate
-          )
-        }
-      : undefined,
+    productSpecifics: {
+      // taking the min here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
+      // it will need to re-visited for Home Delivery
+      firstAvailableDate: moment.min(
+        raw.issueSpecifics.map(_ => momentiseDateStr(_.firstAvailableDate))
+      ),
+      issueDayOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)[0] // TODO refactor to become issueDaysOfWeek in sep. PR
+    },
     existing: raw.existing
       .map(embellishRawHolidayStop)
       .sort((a, b) => a.dateRange.start.unix() - b.dateRange.start.unix())

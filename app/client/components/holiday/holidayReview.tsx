@@ -7,7 +7,6 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductType } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
@@ -45,10 +44,9 @@ import { SummaryTable } from "./summaryTable";
 const getPerformCreation = (
   selectedRange: DateRange,
   subscriptionName: string,
-  isTestUser: boolean,
-  productType: ProductType
+  isTestUser: boolean
 ) => () =>
-  fetch(`/api/holidays/${productType.urlPart}`, {
+  fetch(`/api/holidays`, {
     credentials: "include",
     method: "POST",
     mode: "same-origin",
@@ -104,7 +102,6 @@ export class HolidayReview extends React.Component<
                     <PotentialHolidayStopsAsyncLoader
                       fetch={createPotentialHolidayStopsFetcher(
                         true,
-                        this.props.productType.urlPart,
                         productDetail.subscription.subscriptionId,
                         dateChooserState.selectedRange.start,
                         dateChooserState.selectedRange.end,
@@ -157,9 +154,7 @@ export class HolidayReview extends React.Component<
               {creditExplainerSentence}
             </p>
             <HolidayQuestionsModal
-              annualIssueLimit={
-                holidayStopsResponse.productSpecifics.annualIssueLimit
-              }
+              annualIssueLimit={holidayStopsResponse.annualIssueLimit}
             />
             <div css={{ height: "25px" }} />
             <SummaryTable
@@ -174,8 +169,7 @@ export class HolidayReview extends React.Component<
                 fetch={getPerformCreation(
                   dateChooserState.selectedRange,
                   productDetail.subscription.subscriptionId,
-                  productDetail.isTestUser,
-                  this.props.productType
+                  productDetail.isTestUser
                 )}
                 render={getRenderCreationSuccess(this.props.navigate)}
                 errorRender={renderCreationError}

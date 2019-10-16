@@ -44,7 +44,6 @@ export type AllProductsProductTypeFilterString =
   | "Membership"
   | "Digipack"
   | "ContentSubscription";
-export type HolidayStopsApiProductNamePrefix = "Guardian Weekly";
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
@@ -96,7 +95,7 @@ export interface ProductType {
   showTrialRemainingIfApplicable?: true;
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
-  holidayStopsApiProductNamePrefix?: HolidayStopsApiProductNamePrefix;
+  shouldHaveHolidayStopsFlow?: true;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -133,7 +132,7 @@ export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
   !productType.mapGroupedToSpecific;
 
 export const shouldHaveHolidayStopsFlow = (productType: ProductType) =>
-  !!productType.holidayStopsApiProductNamePrefix;
+  productType.shouldHaveHolidayStopsFlow;
 
 export const createProductDetailFetcher = (
   productType: ProductType,
@@ -299,7 +298,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       productDetail.subscription.autoRenew
         ? undefined
         : "renew your one-off Guardian Weekly subscription",
-    holidayStopsApiProductNamePrefix: "Guardian Weekly",
+    shouldHaveHolidayStopsFlow: true,
     productPage: "subscriptions"
   },
   digipack: {

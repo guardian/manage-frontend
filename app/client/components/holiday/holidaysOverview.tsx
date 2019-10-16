@@ -5,7 +5,6 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductUrlPart } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -92,8 +91,7 @@ const renderHolidayStopsOverview = (
                   <div>
                     You can suspend up to{" "}
                     <strong>
-                      {holidayStopsResponse.productSpecifics.annualIssueLimit}{" "}
-                      issues
+                      {holidayStopsResponse.annualIssueLimit} issues
                     </strong>{" "}
                     per year of your subscription. <br />
                   </div>
@@ -118,9 +116,7 @@ const renderHolidayStopsOverview = (
                     </div>
                   </div>
                   <HolidayQuestionsModal
-                    annualIssueLimit={
-                      holidayStopsResponse.productSpecifics.annualIssueLimit
-                    }
+                    annualIssueLimit={holidayStopsResponse.annualIssueLimit}
                   />
                 </>
               }
@@ -135,8 +131,7 @@ const renderHolidayStopsOverview = (
                         You have suspended{" "}
                         <strong>
                           {combinedIssuesImpactedPerYear.issuesThisYear.length}/{
-                            holidayStopsResponse.productSpecifics
-                              .annualIssueLimit
+                            holidayStopsResponse.annualIssueLimit
                           }
                         </strong>{" "}
                         issues until{" "}
@@ -150,10 +145,7 @@ const renderHolidayStopsOverview = (
                               {
                                 combinedIssuesImpactedPerYear.issuesNextYear
                                   .length
-                              }/{
-                                holidayStopsResponse.productSpecifics
-                                  .annualIssueLimit
-                              }
+                              }/{holidayStopsResponse.annualIssueLimit}
                             </strong>{" "}
                             issues the following year
                           </span>
@@ -163,9 +155,7 @@ const renderHolidayStopsOverview = (
                   ) : (
                     <div>
                       You have{" "}
-                      <strong>
-                        {holidayStopsResponse.productSpecifics.annualIssueLimit}
-                      </strong>{" "}
+                      <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
                       issues available to suspend until{" "}
                       {renewalDateMoment.format(friendlyLongDateFormat)}.
                     </div>
@@ -239,11 +229,10 @@ const renderHolidayStopsOverview = (
 };
 
 const createGetHolidayStopsFetcher = (
-  productUrlPart: ProductUrlPart,
   subscriptionName: string,
   isTestUser: boolean
 ) => () =>
-  fetch(`/api/holidays/${productUrlPart}/${subscriptionName}`, {
+  fetch(`/api/holidays/${subscriptionName}`, {
     headers: {
       [MDA_TEST_USER_HEADER]: `${isTestUser}`
     }
@@ -266,7 +255,6 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
           {productDetail.subscription.start ? (
             <GetHolidayStopsAsyncLoader
               fetch={createGetHolidayStopsFetcher(
-                routeableStepProps.productType.urlPart,
                 productDetail.subscription.subscriptionId,
                 productDetail.isTestUser
               )}
