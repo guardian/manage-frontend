@@ -49,7 +49,7 @@ export interface HolidayStopRequest {
 export interface GetHolidayStopsResponse {
   productSpecifics: {
     firstAvailableDate: Moment;
-    issueDayOfWeek: number;
+    issueDaysOfWeek: number[];
   };
   annualIssueLimit: number;
   existing: HolidayStopRequest[];
@@ -153,7 +153,7 @@ export const embellishExistingHolidayStops = async (response: Response) => {
       firstAvailableDate: moment.min(
         raw.issueSpecifics.map(_ => momentiseDateStr(_.firstAvailableDate))
       ),
-      issueDayOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)[0] // TODO refactor to become issueDaysOfWeek in sep. PR
+      issueDaysOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)
     },
     existing: raw.existing
       .map(embellishRawHolidayStop)

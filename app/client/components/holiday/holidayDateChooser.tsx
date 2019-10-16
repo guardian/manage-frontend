@@ -1,5 +1,6 @@
 import { Link, navigate } from "@reach/router";
 import { FlexWrapProperty, FontWeightProperty } from "csstype";
+import { startCase } from "lodash";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import * as Raven from "raven-js";
@@ -200,9 +201,12 @@ export class HolidayDateChooser extends React.Component<
                           holidayStopsResponse.productSpecifics
                             .firstAvailableDate
                         }
-                        issueDayOfWeek={
-                          holidayStopsResponse.productSpecifics.issueDayOfWeek
+                        issueDaysOfWeek={
+                          holidayStopsResponse.productSpecifics.issueDaysOfWeek
                         }
+                        issueKeyword={startCase(
+                          this.props.productType.holidayStops.issueKeyword
+                        )}
                         existingDates={holidayStopsResponse.existing.map(
                           hsr => hsr.dateRange
                         )}
