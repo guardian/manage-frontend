@@ -18,7 +18,7 @@ import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
 interface ProfileFormSectionProps {
   user: User;
-  saveUser: (values: User) => Promise<void>;
+  saveUser: (values: User) => Promise<User>;
   onError: (error: any) => void;
   onSuccess: (user: User) => void;
 }

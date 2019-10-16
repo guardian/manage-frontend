@@ -38,13 +38,17 @@ const diff = (a: User, b: User): Partial<User> => {
 };
 
 export const Users: UserCollection = {
-  async getCurrentUser(): Promise<User> {
-    return await UserAPI.memoRead();
+  async getCurrentUser(fromCache: boolean = true): Promise<User> {
+    if (fromCache) {
+      return await UserAPI.memoRead();
+    } else {
+      return await UserAPI.read();
+    }
   },
-  async save(user: User): Promise<void> {
+  async save(user: User): Promise<User> {
     return await UserAPI.write(user);
   },
-  async saveChanges(original: User, changed: User): Promise<void> {
+  async saveChanges(original: User, changed: User): Promise<User> {
     const fields: Partial<User> = diff(original, changed);
     return await UserAPI.write(fields);
   },

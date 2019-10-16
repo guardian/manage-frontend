@@ -68,7 +68,7 @@ export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
 };
 
 const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
-  const { phoneCountryCode: countryCode, phoneLocalNumber: localNumber } = user;
+  const { countryCode: countryCode, localNumber: localNumber } = user;
   const telephoneNumber =
     countryCode && localNumber ? { countryCode, localNumber } : undefined;
 
@@ -115,8 +115,8 @@ const toUser = (response: UserAPIResponse): User => {
     address4: user.privateFields.address4 || "",
     postcode: user.privateFields.postcode || "",
     country: user.privateFields.country || "",
-    phoneCountryCode: telephoneNumber ? telephoneNumber.countryCode : "",
-    phoneLocalNumber: telephoneNumber ? telephoneNumber.localNumber : "",
+    countryCode: telephoneNumber ? telephoneNumber.countryCode : "",
+    localNumber: telephoneNumber ? telephoneNumber.localNumber : "",
     consents,
     validated: user.statusFields.userEmailValidated
   };
@@ -133,7 +133,8 @@ const getConsentedTo = (response: UserAPIResponse) => {
 };
 
 const getFieldNameFromContext = (context: string): string => {
-  return context.split(".").pop() as string;
+  const fieldname = context.split(".").pop() as string;
+  return fieldname === "telephoneNumber" ? "localNumber" : fieldname;
 };
 
 const toUserError = (response: UserAPIErrorResponse): UserError => {
@@ -152,12 +153,12 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
   };
 };
 
-export const write = async (user: Partial<User>): Promise<void> => {
+export const write = async (user: Partial<User>): Promise<User> => {
   const url = "/idapi/user";
   const body = toUserApiRequest(user);
   const options = APIUseXSRFHeader(APIUseCredentials(APIPutOptions(body)));
   try {
-    await localFetch(url, options);
+    return toUser(await localFetch(url, options));
   } catch (e) {
     throw isErrorResponse(e) ? toUserError(e) : e;
   }

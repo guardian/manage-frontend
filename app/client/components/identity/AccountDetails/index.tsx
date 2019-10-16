@@ -28,9 +28,9 @@ import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
 interface AccountFormProps {
   user: User;
-  saveUser: (values: User) => Promise<void>;
+  saveUser: (values: User) => Promise<User>;
   onError: (error: any) => void;
-  onSuccess: (user: User) => void;
+  onSuccess: (input: User, response: User) => void;
   emailMessage: string | null;
 }
 
@@ -38,7 +38,7 @@ const titles = Object.values(Titles);
 
 const deletePhoneNumber = async () => {
   await PhoneNumber.remove();
-  // @TODO: State Change
+  return await Users.getCurrentUser(false);
 };
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
@@ -108,59 +108,71 @@ const EmailMessage = (email: string) => (
   </p>
 );
 
-const BaseForm = (props: FormikProps<User> & AccountFormProps) => (
-  <Form>
-    <Lines n={1} />
-    <PageSection title="Email & Password">
-      {formField("primaryEmailAddress", "Email", "text", props)}
-      {!props.emailMessage || EmailMessage(props.emailMessage)}
-      <label>
-        Password
-        <p>
-          <a>Change your password</a>
-        </p>
-      </label>
-    </PageSection>
-    <Lines n={1} />
-    <PageSection title="Phone">
-      {formField("phoneCountryCode", "Country code", "number", props)}
-      {formField("phoneLocalNumber", "Local number", "number", props)}
-      <Button text="Delete Phone Number" onClick={deletePhoneNumber} />
-    </PageSection>
-    <Lines n={1} />
-    <PageSection title="Personal Information">
-      {formSelectField("title", "Title", titles, props)}
-      {formField("firstName", "First name", "text", props)}
-      {formField("secondName", "Last name", "text", props)}
-    </PageSection>
-    <Lines n={1} />
-    <PageSection title="Correspondence address">
-      {formField("address1", "Address line 1", "text", props)}
-      {formField("address2", "Address line 2", "text", props)}
-      {formField("address3", "Town", "text", props)}
-      {formField("address4", "County or State", "text", props)}
-      {formField("postcode", "Postcode/Zipcode", "text", props)}
-      {formSelectField("country", "Country", ["None", ...COUNTRIES], props)}
-    </PageSection>
+const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
+  const deletePhoneNumberButton = (
     <Button
-      disabled={props.isSubmitting}
-      text="Save changes"
+      text="Delete Phone Number"
       type="button"
-      onClick={() => props.submitForm()}
+      onClick={async () => {
+        const response = await deletePhoneNumber();
+        props.resetForm(response);
+      }}
     />
-  </Form>
-);
+  );
+  return (
+    <Form>
+      <Lines n={1} />
+      <PageSection title="Email & Password">
+        {formField("primaryEmailAddress", "Email", "text", props)}
+        {!props.emailMessage || EmailMessage(props.emailMessage)}
+        <label>
+          Password
+          <p>
+            <a>Change your password</a>
+          </p>
+        </label>
+      </PageSection>
+      <Lines n={1} />
+      <PageSection title="Phone">
+        {formField("countryCode", "Country code", "number", props)}
+        {formField("localNumber", "Local number", "number", props)}
+        {deletePhoneNumberButton}
+      </PageSection>
+      <Lines n={1} />
+      <PageSection title="Personal Information">
+        {formSelectField("title", "Title", titles, props)}
+        {formField("firstName", "First name", "text", props)}
+        {formField("secondName", "Last name", "text", props)}
+      </PageSection>
+      <Lines n={1} />
+      <PageSection title="Correspondence address">
+        {formField("address1", "Address line 1", "text", props)}
+        {formField("address2", "Address line 2", "text", props)}
+        {formField("address3", "Town", "text", props)}
+        {formField("address4", "County or State", "text", props)}
+        {formField("postcode", "Postcode/Zipcode", "text", props)}
+        {formSelectField("country", "Country", ["None", ...COUNTRIES], props)}
+      </PageSection>
+      <Button
+        disabled={props.isSubmitting}
+        text="Save changes"
+        type="button"
+        onClick={() => props.submitForm()}
+      />
+    </Form>
+  );
+};
 
 const FormikForm = withFormik({
   mapPropsToValues: (props: AccountFormProps) => props.user,
-  enableReinitialize: true,
   handleSubmit: async (values, formikBag) => {
-    const { setSubmitting, setStatus } = formikBag;
+    const { resetForm, setSubmitting, setStatus } = formikBag;
     const { saveUser, onSuccess, onError } = formikBag.props;
     setStatus(undefined);
     try {
-      await saveUser(values);
-      onSuccess(values);
+      const response = await saveUser(values);
+      resetForm(response);
+      onSuccess(values, response);
     } catch (e) {
       if (e.type && e.type === ErrorTypes.VALIDATION) {
         setStatus(e.error);
@@ -203,14 +215,12 @@ export const AccountDetails = (props: { path?: string }) => {
     return await Users.saveChanges(user, changedUser);
   };
 
-  const updateValues = (values: User) => {
-    const changedFields = Users.getChangedFields(user, values);
-    let vs = values;
+  const updateValues = (input: User, response: User) => {
+    const changedFields = Users.getChangedFields(response, input);
     if (changedFields.primaryEmailAddress) {
       setEmailMessage(changedFields.primaryEmailAddress);
-      vs = { ...vs, primaryEmailAddress: user.primaryEmailAddress };
     }
-    setUser(vs);
+    setUser(response);
   };
 
   const content = () => (

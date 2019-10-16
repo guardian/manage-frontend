@@ -39,8 +39,8 @@ export interface User {
   address4: string;
   postcode: string;
   country: string;
-  phoneCountryCode: string;
-  phoneLocalNumber: string;
+  countryCode: string;
+  localNumber: string;
 }
 
 export interface UserError {
@@ -54,9 +54,9 @@ export interface UserError {
 }
 
 export interface UserCollection {
-  getCurrentUser: () => Promise<User>;
-  save: (user: User) => Promise<void>;
-  saveChanges: (original: User, changed: User) => Promise<void>;
+  getCurrentUser: (fromCache?: boolean) => Promise<User>;
+  save: (user: User) => Promise<User>;
+  saveChanges: (original: User, changed: User) => Promise<User>;
   getChangedFields: (original: User, changed: User) => Partial<User>;
 }
 
