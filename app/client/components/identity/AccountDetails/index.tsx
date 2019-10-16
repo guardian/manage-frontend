@@ -74,6 +74,7 @@ const formSelectField = (
     <label css={{ ...labelCss, ...errorCss }}>
       {label}
       <Field component="select" name={name}>
+        <option value="" />
         {optionEls}
       </Field>
       {error ? <p>{error}</p> : null}
