@@ -8,9 +8,13 @@ import {
   ProductDetail
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
+import { sans } from "../../styles/fonts";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
+import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { Modal } from "../modal";
+import { InfoIcon } from "../svgs/infoIcon";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
   buttonBarCss,
@@ -77,6 +81,7 @@ const renderCreationError = () => (
 );
 export interface HolidayReviewState {
   isCreating: boolean;
+  isCheckboxConfirmed: boolean;
 }
 
 export class HolidayReview extends React.Component<
@@ -84,7 +89,8 @@ export class HolidayReview extends React.Component<
   HolidayReviewState
 > {
   public state: HolidayReviewState = {
-    isCreating: false
+    isCreating: false,
+    isCheckboxConfirmed: false
   };
   public render = () => (
     <HolidayStopsResponseContext.Consumer>
@@ -163,6 +169,49 @@ export class HolidayReview extends React.Component<
               alternateSuspendedColumnHeading="To be suspended"
               subscription={productDetail.subscription}
             />
+            {this.props.productType.holidayStops
+              .explicitConfirmationRequired && (
+              <>
+                <div css={{ marginTop: "20px", marginBottom: "10px" }}>
+                  <Checkbox
+                    checked={this.state.isCheckboxConfirmed}
+                    onChange={newValue =>
+                      this.setState({ isCheckboxConfirmed: newValue })
+                    }
+                    label={
+                      this.props.productType.holidayStops
+                        .explicitConfirmationRequired.checkboxLabel
+                    }
+                  />
+                </div>
+                <Modal
+                  instigator={
+                    <a
+                      css={{
+                        fontFamily: sans,
+                        fontSize: "14px",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        margin: "10px"
+                      }}
+                    >
+                      <InfoIcon />Tell me more
+                    </a>
+                  }
+                  title={
+                    this.props.productType.holidayStops
+                      .explicitConfirmationRequired.explainerModalTitle
+                  }
+                >
+                  <p>
+                    {
+                      this.props.productType.holidayStops
+                        .explicitConfirmationRequired.explainerModalBody
+                    }
+                  </p>
+                </Modal>
+              </>
+            )}
           </div>
           {this.state.isCreating ? (
             <div css={{ marginTop: "40px", textAlign: "right" }}>
@@ -216,6 +265,11 @@ export class HolidayReview extends React.Component<
                 </Link>
                 <Button
                   text="Confirm"
+                  disabled={
+                    !!this.props.productType.holidayStops
+                      .explicitConfirmationRequired &&
+                    !this.state.isCheckboxConfirmed
+                  }
                   onClick={() => this.setState({ isCreating: true })}
                   right
                   primary

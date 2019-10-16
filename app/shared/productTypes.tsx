@@ -79,6 +79,11 @@ export interface HolidayStopFlowProperties {
   issueKeyword: string;
   alternateNoticeString?: string;
   additionalHowAdvice?: string;
+  explicitConfirmationRequired?: {
+    checkboxLabel: string;
+    explainerModalTitle: string;
+    explainerModalBody: string;
+  };
 }
 
 export interface ProductType {
@@ -299,7 +304,13 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
       additionalHowAdvice:
-        "Please discard suspended vouchers before the voucher dates."
+        "Please discard suspended vouchers before the voucher dates.",
+      explicitConfirmationRequired: {
+        checkboxLabel: "I confirm that I will destroy suspended vouchers.",
+        explainerModalTitle: "Destroying your vouchers",
+        explainerModalBody:
+          "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
+      }
     },
     productPage: "subscriptions"
   },
