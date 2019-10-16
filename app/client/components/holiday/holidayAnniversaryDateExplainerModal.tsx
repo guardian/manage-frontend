@@ -4,6 +4,7 @@ import { Modal } from "../modal";
 
 export interface HolidayAnniversaryDateExplainerModalProps {
   dateElement: JSX.Element;
+  issueKeyword: string;
 }
 
 export const HolidayAnniversaryDateExplainerModal = (
@@ -24,8 +25,8 @@ export const HolidayAnniversaryDateExplainerModal = (
     title="What is this date?"
   >
     <p>
-      {props.dateElement} is the anniversary of your subscription. The number of
-      issues you can suspend per year is reset on this date.
+      {props.dateElement} is the anniversary of your subscription. The number of{" "}
+      {props.issueKeyword}s you can suspend per year is reset on this date.
     </p>
   </Modal>
 );

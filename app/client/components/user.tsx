@@ -7,6 +7,7 @@ import {
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
+  ProductTypeWithHolidayStopsFlow,
   ProductTypeWithProductPageProperties,
   shouldCreatePaymentUpdateFlow,
   shouldHaveHolidayStopsFlow
@@ -123,7 +124,7 @@ const User = () => (
 
       {Object.values(ProductTypes)
         .filter(shouldHaveHolidayStopsFlow)
-        .map((productType: ProductType) => (
+        .map((productType: ProductTypeWithHolidayStopsFlow) => (
           <HolidaysOverview
             key={productType.urlPart}
             path={"/suspend/" + productType.urlPart}

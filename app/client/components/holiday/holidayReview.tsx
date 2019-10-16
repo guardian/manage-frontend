@@ -11,11 +11,7 @@ import { maxWidth } from "../../styles/breakpoints";
 import { Button } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import {
-  RouteableStepProps,
-  visuallyNavigateToParent,
-  WizardStep
-} from "../wizardRouterAdapter";
+import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
   buttonBarCss,
   cancelLinkCss,
@@ -27,6 +23,7 @@ import {
   creditExplainerSentence,
   HolidayQuestionsModal
 } from "./holidayQuestionsModal";
+import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   convertRawPotentialHolidayStopDetail,
   CreateHolidayStopsAsyncLoader,
@@ -83,7 +80,7 @@ export interface HolidayReviewState {
 }
 
 export class HolidayReview extends React.Component<
-  RouteableStepProps,
+  HolidayStopsRouteableStepProps,
   HolidayReviewState
 > {
   public state: HolidayReviewState = {
@@ -151,10 +148,14 @@ export class HolidayReview extends React.Component<
             <h1>Review details before confirming</h1>
             <p>
               Check the details carefully and amend them if necessary.{" "}
-              {creditExplainerSentence}
+              {creditExplainerSentence(
+                this.props.productType.holidayStops.issueKeyword
+              )}{" "}
+              {this.props.productType.holidayStops.additionalHowAdvice}
             </p>
             <HolidayQuestionsModal
               annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+              holidayStopFlowProperties={this.props.productType.holidayStops}
             />
             <div css={{ height: "25px" }} />
             <SummaryTable

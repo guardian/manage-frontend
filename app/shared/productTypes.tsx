@@ -75,6 +75,12 @@ export interface ProductPageProperties {
   forceShowJoinDateOnly?: true;
 }
 
+export interface HolidayStopFlowProperties {
+  issueKeyword: string;
+  alternateNoticeString?: string;
+  additionalHowAdvice?: string;
+}
+
 export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
@@ -95,7 +101,7 @@ export interface ProductType {
   showTrialRemainingIfApplicable?: true;
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
-  shouldHaveHolidayStopsFlow?: true;
+  holidayStops?: HolidayStopFlowProperties;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -131,8 +137,12 @@ export interface WithProductType<ProductTypeVariant extends ProductType> {
 export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
   !productType.mapGroupedToSpecific;
 
-export const shouldHaveHolidayStopsFlow = (productType: ProductType) =>
-  productType.shouldHaveHolidayStopsFlow;
+export interface ProductTypeWithHolidayStopsFlow extends ProductType {
+  holidayStops: HolidayStopFlowProperties;
+}
+export const shouldHaveHolidayStopsFlow = (
+  productType: ProductType
+): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
 
 export const createProductDetailFetcher = (
   productType: ProductType,
@@ -285,6 +295,12 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    holidayStops: {
+      issueKeyword: "voucher",
+      alternateNoticeString: "one day's notice",
+      additionalHowAdvice:
+        "Please discard suspended vouchers before the voucher dates."
+    },
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -298,7 +314,9 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       productDetail.subscription.autoRenew
         ? undefined
         : "renew your one-off Guardian Weekly subscription",
-    shouldHaveHolidayStopsFlow: true,
+    holidayStops: {
+      issueKeyword: "issue"
+    },
     productPage: "subscriptions"
   },
   digipack: {

@@ -5,6 +5,10 @@ import {
   MembersDataApiResponseContext,
   ProductDetail
 } from "../../../shared/productResponse";
+import {
+  ProductTypeWithHolidayStopsFlow,
+  WithProductType
+} from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -31,6 +35,9 @@ import {
   momentiseDateStr
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
+
+export type HolidayStopsRouteableStepProps = RouteableStepProps &
+  WithProductType<ProductTypeWithHolidayStopsFlow>;
 
 export interface OverviewRowProps {
   heading: string;
@@ -63,7 +70,7 @@ const friendlyLongDateFormat = "D MMMM YYYY";
 
 const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
-  routeableStepProps: RouteableStepProps
+  props: HolidayStopsRouteableStepProps
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDateMoment = momentiseDateStr(
     productDetail.subscription.renewalDate
@@ -81,9 +88,9 @@ const renderHolidayStopsOverview = (
       value={{ ...holidayStopsResponse, reload }}
     >
       <MembersDataApiResponseContext.Provider value={productDetail}>
-        <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
+        <WizardStep routeableStepProps={props} hideBackButton>
           <div>
-            <h1>Suspend Guardian Weekly</h1>
+            <h1>Suspend {props.productType.friendlyName}</h1>
             <OverviewRow
               heading="How"
               content={
@@ -91,11 +98,29 @@ const renderHolidayStopsOverview = (
                   <div>
                     You can suspend up to{" "}
                     <strong>
-                      {holidayStopsResponse.annualIssueLimit} issues
+                      {holidayStopsResponse.annualIssueLimit}{" "}
+                      {props.productType.holidayStops.issueKeyword}s
                     </strong>{" "}
                     per year of your subscription. <br />
                   </div>
-                  <div>{creditExplainerSentence}</div>
+                  {props.productType.holidayStops.alternateNoticeString && (
+                    <div>
+                      Please provide{" "}
+                      <strong>
+                        {props.productType.holidayStops.alternateNoticeString}
+                      </strong>.
+                    </div>
+                  )}
+                  <div>
+                    {creditExplainerSentence(
+                      props.productType.holidayStops.issueKeyword
+                    )}
+                  </div>
+                  {props.productType.holidayStops.additionalHowAdvice && (
+                    <div>
+                      {props.productType.holidayStops.additionalHowAdvice}
+                    </div>
+                  )}
                   <div
                     css={{
                       fontFamily: sans,
@@ -111,12 +136,14 @@ const renderHolidayStopsOverview = (
                         {renewalDateMoment.format(friendlyLongDateFormat)}
                       </strong>{" "}
                       is the next anniversary of your subscription.
-                      <br />The number of issues you can suspend per year is
-                      reset on this date.
+                      <br />The number of{" "}
+                      {props.productType.holidayStops.issueKeyword}s you can
+                      suspend per year is reset on this date.
                     </div>
                   </div>
                   <HolidayQuestionsModal
                     annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+                    holidayStopFlowProperties={props.productType.holidayStops}
                   />
                 </>
               }
@@ -134,7 +161,7 @@ const renderHolidayStopsOverview = (
                             holidayStopsResponse.annualIssueLimit
                           }
                         </strong>{" "}
-                        issues until{" "}
+                        {props.productType.holidayStops.issueKeyword}s until{" "}
                         {renewalDateMoment.format(friendlyLongDateFormat)}
                         {combinedIssuesImpactedPerYear.issuesNextYear.length >
                           0 && (
@@ -147,7 +174,8 @@ const renderHolidayStopsOverview = (
                                   .length
                               }/{holidayStopsResponse.annualIssueLimit}
                             </strong>{" "}
-                            issues the following year
+                            {props.productType.holidayStops.issueKeyword}s the
+                            following year
                           </span>
                         )}.
                       </div>
@@ -156,7 +184,8 @@ const renderHolidayStopsOverview = (
                     <div>
                       You have{" "}
                       <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
-                      issues available to suspend until{" "}
+                      {props.productType.holidayStops.issueKeyword}s available
+                      to suspend until{" "}
                       {renewalDateMoment.format(friendlyLongDateFormat)}.
                     </div>
                   )}
@@ -173,9 +202,7 @@ const renderHolidayStopsOverview = (
                       text="Create suspension"
                       right
                       primary
-                      onClick={() =>
-                        (routeableStepProps.navigate || navigate)("create")
-                      }
+                      onClick={() => (props.navigate || navigate)("create")}
                     />
                   </div>
                 </>
@@ -206,18 +233,14 @@ const renderHolidayStopsOverview = (
               }}
             >
               <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
-                <ReturnToYourProductButton
-                  productType={routeableStepProps.productType}
-                />
+                <ReturnToYourProductButton productType={props.productType} />
               </div>
               <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
                 <Button
                   text="Create suspension"
                   right
                   primary
-                  onClick={() =>
-                    (routeableStepProps.navigate || navigate)("create")
-                  }
+                  onClick={() => (props.navigate || navigate)("create")}
                 />
               </div>
             </div>
@@ -238,7 +261,7 @@ const createGetHolidayStopsFetcher = (
     }
   });
 
-export const HolidaysOverview = (props: RouteableStepProps) => (
+export const HolidaysOverview = (props: HolidayStopsRouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
     headingPrefix="Manage suspensions of"
@@ -258,10 +281,7 @@ export const HolidaysOverview = (props: RouteableStepProps) => (
                 productDetail.subscription.subscriptionId,
                 productDetail.isTestUser
               )}
-              render={renderHolidayStopsOverview(
-                productDetail,
-                routeableStepProps
-              )}
+              render={renderHolidayStopsOverview(productDetail, props)}
               loadingMessage="Loading existing suspensions..."
               readerOnOK={embellishExistingHolidayStops}
             />
