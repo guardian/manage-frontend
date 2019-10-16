@@ -19,6 +19,8 @@ export type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
+  | "newspaper voucher subscription"
+  | "home delivery subscription"
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
@@ -26,6 +28,8 @@ export type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
+  | "voucher"
+  | "homedelivery"
   | "digital"
   | "guardianweekly"
   | "subscriptions";
@@ -34,6 +38,8 @@ export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
+  | "Voucher"
+  | "HomeDelivery"
   | "Contribution"
   | "Membership"
   | "Digipack"
@@ -256,16 +262,30 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     }
   },
   newspaper: {
+    // FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL
     friendlyName: "newspaper subscription",
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    productPage: "subscriptions"
+  },
+  homedelivery: {
+    friendlyName: "home delivery subscription",
+    allProductsProductTypeFilterString: "HomeDelivery",
+    urlPart: "homedelivery",
+    getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
-      productDetail.tier === "Newspaper Delivery"
-        ? "manage your holiday stops"
-        : undefined,
+    alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
+    productPage: "subscriptions"
+  },
+  voucher: {
+    friendlyName: "newspaper voucher subscription",
+    allProductsProductTypeFilterString: "Voucher",
+    urlPart: "voucher",
+    getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    includeGuardianInTitles: true,
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -307,8 +327,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
         return ProductTypes.digipack;
-      } else if (productDetail.tier.startsWith("Newspaper")) {
-        return ProductTypes.newspaper;
+      } else if (productDetail.tier === "Newspaper Delivery") {
+        return ProductTypes.homedelivery;
+      } else if (productDetail.tier === "Newspaper Voucher") {
+        return ProductTypes.voucher;
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
         return ProductTypes.guardianweekly;
       }
