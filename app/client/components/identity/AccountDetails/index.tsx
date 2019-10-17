@@ -38,7 +38,7 @@ const titles = Object.values(Titles);
 
 const deletePhoneNumber = async () => {
   await PhoneNumber.remove();
-  return await Users.getCurrentUser(false);
+  return await Users.getCurrentUser();
 };
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
@@ -61,15 +61,19 @@ const formSelectField = (
   name: string,
   label: string,
   options: string[],
-  formikProps: FormikProps<User>
+  formikProps: FormikProps<User>,
+  labelModifier?: (option: string) => string
 ) => {
   const error = getError(name, formikProps);
   const errorCss = error ? formFieldErrorCss : {};
-  const optionEls = options.map(o => (
-    <option key={o} value={o}>
-      {o}
-    </option>
-  ));
+  const optionEls = options.map(o => {
+    const optionLabel = labelModifier ? labelModifier(o) : o;
+    return (
+      <option key={o} value={o}>
+        {optionLabel}
+      </option>
+    );
+  });
   return (
     <label css={{ ...labelCss, ...errorCss }}>
       {label}
@@ -139,7 +143,8 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
           "countryCode",
           "Country code",
           PHONE_CALLING_CODES,
-          props
+          props,
+          (o: string) => `+${o}`
         )}
         {formField("localNumber", "Local number", "number", props)}
         {deletePhoneNumberButton}

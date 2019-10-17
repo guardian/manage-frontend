@@ -172,15 +172,3 @@ export const read = async (): Promise<User> => {
   );
   return toUser(response);
 };
-
-const memoizedRead = (): (() => Promise<User>) => {
-  let user: Promise<User> | undefined;
-  return (): Promise<User> => {
-    if (user === undefined) {
-      user = read();
-    }
-    return Promise.resolve(user);
-  };
-};
-
-export const memoRead = memoizedRead();

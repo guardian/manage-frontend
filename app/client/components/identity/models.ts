@@ -54,7 +54,7 @@ export interface UserError {
 }
 
 export interface UserCollection {
-  getCurrentUser: (fromCache?: boolean) => Promise<User>;
+  getCurrentUser: () => Promise<User>;
   save: (user: User) => Promise<User>;
   saveChanges: (original: User, changed: User) => Promise<User>;
   getChangedFields: (original: User, changed: User) => Partial<User>;
