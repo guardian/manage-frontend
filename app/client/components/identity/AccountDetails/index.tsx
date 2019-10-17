@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
+import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
@@ -181,6 +182,9 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {formField("address4", "County or State", "text", props)}
         {formField("postcode", "Postcode/Zipcode", "text", props)}
         {formSelectField("country", "Country", COUNTRIES, props)}
+      </PageSection>
+      {lines()}
+      <PageSection>
         <Button
           disabled={props.isSubmitting}
           text="Save changes"
@@ -269,6 +273,9 @@ export const AccountDetails = (props: { path?: string }) => {
           onSuccess={updateValues}
           emailMessage={emailMessage}
         />
+      </PageContainer>
+      <PageContainer>
+        <MembershipLinks />
       </PageContainer>
     </>
   );

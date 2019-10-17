@@ -5,7 +5,7 @@ import { sans } from "../../styles/fonts";
 import { MarginWrapper } from "./MarginWrapper";
 
 interface PageSectionProps {
-  title: string;
+  title?: string;
   description?: string | ReactNode;
   subtext?: string;
 }
@@ -71,7 +71,7 @@ export const PageSection: FC<PageSectionProps> = props => {
             }
           }}
         >
-          {getTitle(title)}
+          {title && getTitle(title)}
           {description && getDescription(description)}
           {subtext && getSubtext(subtext)}
         </div>

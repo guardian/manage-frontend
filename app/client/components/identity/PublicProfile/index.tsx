@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
+import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
@@ -97,6 +98,9 @@ export const PublicProfile = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <AvatarSection userId={user.id} />
+      </PageContainer>
+      <PageContainer>
+        <MembershipLinks />
       </PageContainer>
     </>
   );
