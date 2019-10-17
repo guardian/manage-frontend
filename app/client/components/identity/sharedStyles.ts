@@ -46,7 +46,6 @@ const textareaCss: CSSObject = {
 
 const selectCss = {
   font: "inherit",
-  width: "100%",
   display: "block",
   marginTop: "4px"
 };

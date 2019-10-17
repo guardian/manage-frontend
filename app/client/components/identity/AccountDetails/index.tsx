@@ -20,12 +20,13 @@ import {
 } from "../GenericErrorMessage";
 import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
+import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { MarginWrapper } from "../MarginWrapper";
 import { Titles, User } from "../models";
 import { COUNTRIES, ErrorTypes, PHONE_CALLING_CODES } from "../models";
 import { PageSection } from "../PageSection";
-import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
+import { aCss, formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
 
 interface AccountFormProps {
   user: User;
@@ -136,7 +137,9 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         <label>
           Password
           <p>
-            <a>Change your password</a>
+            <a css={aCss} href={IdentityLocations.CHANGE_PASSWORD}>
+              Change your password
+            </a>
           </p>
         </label>
       </PageSection>

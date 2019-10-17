@@ -20,6 +20,7 @@ const AVATAR_URL =
 const getIdentityLocations = (domain: string) => ({
   COMMUNITY_FAQS: url("www", domain, "/community-faqs"),
   CHANGE_EMAIL: url("profile", domain, "/account/edit"),
+  CHANGE_PASSWORD: url("profile", domain, "/password/change"),
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
   VERIFY_EMAIL: url("profile", domain, "/verify-email"),
   IDAPI: IDAPI_URL,
