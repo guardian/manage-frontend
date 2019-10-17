@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -6,7 +6,7 @@ import { MarginWrapper } from "./MarginWrapper";
 
 interface PageSectionProps {
   title: string;
-  description?: string;
+  description?: string | ReactNode;
   subtext?: string;
 }
 
@@ -16,7 +16,7 @@ const getTitle = (title: PageSectionProps["title"]) => (
       fontSize: "17px",
       lineHeight: "24px",
       fontWeight: "bold",
-      margin: "0"
+      margin: "0 0 6px 0"
     }}
   >
     {title}

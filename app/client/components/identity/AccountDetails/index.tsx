@@ -118,6 +118,15 @@ const EmailMessage = (email: string) => (
 );
 
 const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
+  const correpondenceDescription = (
+    <span>
+      If you wish to change the delivery address for your paper subscription
+      vouchers, home delivery, or Guardian Weekly please see{" "}
+      <a css={aCss} href={IdentityLocations.CONTACT_AND_DELIVERY_HELP}>
+        Help with updating your contact or delivery details.
+      </a>
+    </span>
+  );
   const deletePhoneNumberButton = (
     <Button
       text="Delete Phone Number"
@@ -162,7 +171,10 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {formField("secondName", "Last name", "text", props)}
       </PageSection>
       {lines()}
-      <PageSection title="Correspondence address">
+      <PageSection
+        title="Correspondence address"
+        description={correpondenceDescription}
+      >
         {formField("address1", "Address line 1", "text", props)}
         {formField("address2", "Address line 2", "text", props)}
         {formField("address3", "Town", "text", props)}

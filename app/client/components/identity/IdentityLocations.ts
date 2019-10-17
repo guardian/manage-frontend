@@ -19,6 +19,11 @@ const AVATAR_URL =
 
 const getIdentityLocations = (domain: string) => ({
   COMMUNITY_FAQS: url("www", domain, "/community-faqs"),
+  CONTACT_AND_DELIVERY_HELP: url(
+    "www",
+    "theguardian.com",
+    "/help/2017/dec/11/help-with-updating-your-contact-or-delivery-details"
+  ),
   CHANGE_EMAIL: url("profile", domain, "/account/edit"),
   CHANGE_PASSWORD: url("profile", domain, "/password/change"),
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
