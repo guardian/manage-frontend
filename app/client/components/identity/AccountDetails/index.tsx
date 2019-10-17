@@ -21,6 +21,7 @@ import {
 import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
 import { Lines } from "../Lines";
+import { MarginWrapper } from "../MarginWrapper";
 import { Titles, User } from "../models";
 import { COUNTRIES, ErrorTypes, PHONE_CALLING_CODES } from "../models";
 import { PageSection } from "../PageSection";
@@ -56,6 +57,8 @@ const getError = (
     return status[name as keyof FormikErrors<User>];
   }
 };
+
+const lines = () => <Lines n={1} margin={"32px auto 16px"} />;
 
 const formSelectField = (
   name: string,
@@ -126,7 +129,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
   );
   return (
     <Form>
-      <Lines n={1} />
+      {lines()}
       <PageSection title="Email & Password">
         {formField("primaryEmailAddress", "Email", "text", props)}
         {!props.emailMessage || EmailMessage(props.emailMessage)}
@@ -137,7 +140,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
           </p>
         </label>
       </PageSection>
-      <Lines n={1} />
+      {lines()}
       <PageSection title="Phone">
         {formSelectField(
           "countryCode",
@@ -149,13 +152,13 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {formField("localNumber", "Local number", "number", props)}
         {deletePhoneNumberButton}
       </PageSection>
-      <Lines n={1} />
+      {lines()}
       <PageSection title="Personal Information">
         {formSelectField("title", "Title", titles, props)}
         {formField("firstName", "First name", "text", props)}
         {formField("secondName", "Last name", "text", props)}
       </PageSection>
-      <Lines n={1} />
+      {lines()}
       <PageSection title="Correspondence address">
         {formField("address1", "Address line 1", "text", props)}
         {formField("address2", "Address line 2", "text", props)}
@@ -163,13 +166,13 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {formField("address4", "County or State", "text", props)}
         {formField("postcode", "Postcode/Zipcode", "text", props)}
         {formSelectField("country", "Country", COUNTRIES, props)}
+        <Button
+          disabled={props.isSubmitting}
+          text="Save changes"
+          type="button"
+          onClick={() => props.submitForm()}
+        />
       </PageSection>
-      <Button
-        disabled={props.isSubmitting}
-        text="Save changes"
-        type="button"
-        onClick={() => props.submitForm()}
-      />
     </Form>
   );
 };
@@ -237,9 +240,11 @@ export const AccountDetails = (props: { path?: string }) => {
   const content = () => (
     <>
       <PageContainer>
-        <span css={textSmall}>
-          These details will only be visible to you and the Guardian.
-        </span>
+        <MarginWrapper>
+          <span css={textSmall}>
+            These details will only be visible to you and the Guardian.
+          </span>
+        </MarginWrapper>
       </PageContainer>
       <PageContainer>
         <FormikForm

@@ -32,14 +32,23 @@ const inputCss: CSSObject = {
   lineHeight: "1.4",
   outline: "none",
   borderRadius: "0",
-  width: "100%"
+  width: "100%",
+  marginTop: "4px"
 };
 
 const textareaCss: CSSObject = {
   verticalAlign: "top",
   minHeight: "108px",
   overflow: "auto",
-  resize: "vertical"
+  resize: "vertical",
+  marginTop: "4px"
+};
+
+const selectCss = {
+  font: "inherit",
+  width: "100%",
+  display: "block",
+  marginTop: "4px"
 };
 
 export const labelCss: CSSObject = {
@@ -48,7 +57,8 @@ export const labelCss: CSSObject = {
   width: "100%",
   "& input:not([type='file']), & textarea": { ...inputCss, ...lightBorder },
   "& input[type='file']": inputCss,
-  "& textarea": textareaCss
+  "& textarea": textareaCss,
+  "& select": selectCss
 };
 
 export const errorMessageCss: CSSObject = {

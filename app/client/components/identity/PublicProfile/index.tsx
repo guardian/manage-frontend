@@ -10,6 +10,7 @@ import {
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
+import { MarginWrapper } from "../MarginWrapper";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
 import { aCss } from "../sharedStyles";
@@ -67,14 +68,16 @@ export const PublicProfile = (props: { path?: string }) => {
   const content = () => (
     <>
       <PageContainer>
-        <p css={{ fontSize: "14px" }}>
-          These details will be publicly visible to everyone who sees your
-          profile in the{" "}
-          <a css={aCss} href={IdentityLocations.COMMUNITY_FAQS}>
-            commenting
-          </a>{" "}
-          section.
-        </p>
+        <MarginWrapper>
+          <p css={{ fontSize: "14px" }}>
+            These details will be publicly visible to everyone who sees your
+            profile in the{" "}
+            <a css={aCss} href={IdentityLocations.COMMUNITY_FAQS}>
+              commenting
+            </a>{" "}
+            section.
+          </p>
+        </MarginWrapper>
       </PageContainer>
       <PageContainer>
         <Lines n={1} />
