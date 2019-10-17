@@ -8,6 +8,7 @@ import {
 } from "formik";
 import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
+import palette from "../../../colours";
 import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
@@ -45,6 +46,7 @@ const deletePhoneNumber = async () => {
 };
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
+const pageTopRef = React.createRef<HTMLDivElement>();
 
 const getError = (
   name: string,
@@ -111,7 +113,13 @@ const formField = (
 };
 
 const EmailMessage = (email: string) => (
-  <p>
+  <p
+    css={{
+      ...textSmall,
+      padding: "6px 14px",
+      backgroundColor: palette.neutral[7]
+    }}
+  >
     To verify your new email address <strong>{email}</strong> please check your
     inbox - the confimation email is on its way. In the meantime you should keep
     using your old credentials to sign in.
@@ -235,6 +243,15 @@ export const AccountDetails = (props: { path?: string }) => {
   const [error, setError] = useState();
   const [emailMessage, setEmailMessage] = useState();
 
+  useEffect(
+    () => {
+      if (error && errorRef.current) {
+        window.scrollTo(0, errorRef.current.offsetTop - 20);
+      }
+    },
+    [error]
+  );
+
   useEffect(() => {
     Users.getCurrentUser()
       .then((u: User) => {
@@ -254,10 +271,14 @@ export const AccountDetails = (props: { path?: string }) => {
       setEmailMessage(changedFields.primaryEmailAddress);
     }
     setUser(response);
+    if (pageTopRef.current) {
+      window.scrollTo(0, pageTopRef.current.offsetTop - 20);
+    }
   };
 
   const content = () => (
     <>
+      <div ref={pageTopRef} css={{ display: "none" }} />
       <PageContainer>
         <MarginWrapper>
           <span css={textSmall}>
