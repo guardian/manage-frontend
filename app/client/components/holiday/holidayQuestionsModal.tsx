@@ -55,10 +55,12 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
     </ul>
     <h3>You will need to contact us by phone or email if you...</h3>
     <ul>
-      <li>
-        You want to have your delivery redirected to a temporary address within
-        the same country.
-      </li>
+      {!props.holidayStopFlowProperties.hideDeliveryRedirectionHelpBullet && (
+        <li>
+          You want to have your delivery redirected to a temporary address
+          within the same country.
+        </li>
+      )}
       <li>
         You want to suspend more than {props.annualIssueLimit}{" "}
         {props.holidayStopFlowProperties.issueKeyword}s in one year.

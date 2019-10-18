@@ -79,6 +79,7 @@ export interface HolidayStopFlowProperties {
   issueKeyword: string;
   alternateNoticeString?: string;
   additionalHowAdvice?: string;
+  hideDeliveryRedirectionHelpBullet?: true;
   explicitConfirmationRequired?: {
     checkboxLabel: string;
     explainerModalTitle: string;
@@ -305,6 +306,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       alternateNoticeString: "one day's notice",
       additionalHowAdvice:
         "Please discard suspended vouchers before the voucher dates. Please note that historical suspensions may not appear here.",
+      hideDeliveryRedirectionHelpBullet: true,
       explicitConfirmationRequired: {
         checkboxLabel: "I confirm that I will destroy suspended vouchers.",
         explainerModalTitle: "Destroying your vouchers",
