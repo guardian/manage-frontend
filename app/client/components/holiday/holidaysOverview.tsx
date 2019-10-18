@@ -215,6 +215,7 @@ const renderHolidayStopsOverview = (
                   <SummaryTable
                     data={holidayStopsResponse.existing}
                     subscription={productDetail.subscription}
+                    issueKeyword={props.productType.holidayStops.issueKeyword}
                   />
                 ) : (
                   "You currently don't have any scheduled suspensions."

@@ -42,6 +42,9 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                       <SummaryTable
                         data={dateChooserState}
                         subscription={productDetail.subscription}
+                        issueKeyword={
+                          props.productType.holidayStops.issueKeyword
+                        }
                       />
                       <div
                         css={{ ...buttonBarCss, justifyContent: "flex-end" }}

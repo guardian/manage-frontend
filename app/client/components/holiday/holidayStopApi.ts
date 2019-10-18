@@ -39,9 +39,12 @@ export interface PotentialHolidayStopsResponse {
   potentials: RawPotentialHolidayStopDetail[];
 }
 
-export interface HolidayStopRequest {
+export interface MinimalHolidayStopRequest {
   publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
+}
+
+export interface HolidayStopRequest extends MinimalHolidayStopRequest {
   id: string;
   subscriptionName: string;
 }

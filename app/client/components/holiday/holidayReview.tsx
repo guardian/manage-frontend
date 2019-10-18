@@ -168,6 +168,7 @@ export class HolidayReview extends React.Component<
               data={dateChooserStateWithCredits}
               alternateSuspendedColumnHeading="To be suspended"
               subscription={productDetail.subscription}
+              issueKeyword={this.props.productType.holidayStops.issueKeyword}
             />
             {this.props.productType.holidayStops
               .explicitConfirmationRequired && (
