@@ -16,10 +16,12 @@ export interface CommonCreditProperties {
 
 export interface RawHolidayStopDetail extends CommonCreditProperties {
   publicationDate: string;
+  invoiceDate?: string;
 }
 
 export interface HolidayStopDetail extends CommonCreditProperties {
   publicationDate: Moment;
+  invoiceDate?: Moment;
 }
 
 export interface RawHolidayStopRequest {
@@ -33,6 +35,7 @@ export interface RawHolidayStopRequest {
 export interface RawPotentialHolidayStopDetail {
   publicationDate: string;
   credit?: number;
+  invoiceDate?: string;
 }
 
 export interface PotentialHolidayStopsResponse {
@@ -76,6 +79,7 @@ export const convertRawPotentialHolidayStopDetail = (
   raw: RawPotentialHolidayStopDetail
 ) => ({
   estimatedPrice: raw.credit,
+  invoiceDate: raw.invoiceDate ? momentiseDateStr(raw.invoiceDate) : undefined,
   publicationDate: momentiseDateStr(raw.publicationDate)
 });
 
@@ -141,7 +145,10 @@ const embellishRawHolidayStop = (
     publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
       raw => ({
         ...raw,
-        publicationDate: momentiseDateStr(raw.publicationDate)
+        publicationDate: momentiseDateStr(raw.publicationDate),
+        invoiceDate: raw.invoiceDate
+          ? momentiseDateStr(raw.invoiceDate)
+          : undefined
       })
     )
   } as HolidayStopRequest);
