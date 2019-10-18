@@ -13,8 +13,8 @@ import { Button } from "./buttons";
 
 const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
 
-const iconDayPseudoAfterCss = `
-::after {
+const iconDayPseudoAfterCss = (dayOfWeek: number) => `
+.DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${dayOfWeek})::after {
   content: "";
   position: absolute;
   width: 14px;
@@ -128,7 +128,7 @@ class HackedDateRangePicker extends DateRangePicker {
 
 export interface WrappedDateRangePickerProps extends Props {
   dateToAsterisk?: Moment;
-  dayOfWeekToIconify: number;
+  daysOfWeekToIconify: number[];
 }
 
 export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
@@ -208,9 +208,7 @@ export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
         .DateRangePicker__Date.DateRangePicker__Date--weekend {
           background-color: transparent;
         }
-        .DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${
-          props.dayOfWeekToIconify
-        })${iconDayPseudoAfterCss}
+        ${props.daysOfWeekToIconify.map(iconDayPseudoAfterCss).join("\n")}
         .DateRangePicker__MonthDates {
           border-collapse: collapse;
         }

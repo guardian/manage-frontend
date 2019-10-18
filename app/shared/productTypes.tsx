@@ -75,6 +75,17 @@ export interface ProductPageProperties {
   forceShowJoinDateOnly?: true;
 }
 
+export interface HolidayStopFlowProperties {
+  issueKeyword: string;
+  alternateNoticeString?: string;
+  additionalHowAdvice?: string;
+  explicitConfirmationRequired?: {
+    checkboxLabel: string;
+    explainerModalTitle: string;
+    explainerModalBody: string;
+  };
+}
+
 export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
@@ -95,7 +106,7 @@ export interface ProductType {
   showTrialRemainingIfApplicable?: true;
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
-  shouldHaveHolidayStopsFlow?: true;
+  holidayStops?: HolidayStopFlowProperties;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -131,8 +142,12 @@ export interface WithProductType<ProductTypeVariant extends ProductType> {
 export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
   !productType.mapGroupedToSpecific;
 
-export const shouldHaveHolidayStopsFlow = (productType: ProductType) =>
-  productType.shouldHaveHolidayStopsFlow;
+export interface ProductTypeWithHolidayStopsFlow extends ProductType {
+  holidayStops: HolidayStopFlowProperties;
+}
+export const shouldHaveHolidayStopsFlow = (
+  productType: ProductType
+): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
 
 export const createProductDetailFetcher = (
   productType: ProductType,
@@ -285,6 +300,18 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    holidayStops: {
+      issueKeyword: "voucher",
+      alternateNoticeString: "one day's notice",
+      additionalHowAdvice:
+        "Please discard suspended vouchers before the voucher dates. Please note that historical suspensions may not appear here.",
+      explicitConfirmationRequired: {
+        checkboxLabel: "I confirm that I will destroy suspended vouchers.",
+        explainerModalTitle: "Destroying your vouchers",
+        explainerModalBody:
+          "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
+      }
+    },
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -298,7 +325,9 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       productDetail.subscription.autoRenew
         ? undefined
         : "renew your one-off Guardian Weekly subscription",
-    shouldHaveHolidayStopsFlow: true,
+    holidayStops: {
+      issueKeyword: "issue"
+    },
     productPage: "subscriptions"
   },
   digipack: {

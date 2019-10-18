@@ -28,7 +28,7 @@ export interface LegendItemProps {
   extraCss?: string;
 }
 
-const legendItems: LegendItemProps[] = [
+const legendItems = (issueKeyword: string) => [
   {
     extraCss: `
   ::after {
@@ -42,7 +42,7 @@ const legendItems: LegendItemProps[] = [
     left: -14px;
   }
   `,
-    label: "Issue day"
+    label: `${issueKeyword} day`
   },
   stateDefinitions.existing
 ];
@@ -108,7 +108,8 @@ const LegendItem = (props: LegendItemProps) => (
 
 export interface DatePickerProps {
   firstAvailableDate: Moment;
-  issueDayOfWeek: number;
+  issueDaysOfWeek: number[];
+  issueKeyword: string;
   existingDates: DateRange[];
   selectedRange?: DateRange;
   selectionInfo?: React.ReactElement;
@@ -125,7 +126,7 @@ export const DatePicker = (props: DatePickerProps) => (
         marginBottom: "10px"
       }}
     >
-      {legendItems.map(itemProps => (
+      {legendItems(props.issueKeyword).map(itemProps => (
         <LegendItem key={itemProps.label} {...itemProps} />
       ))}
     </div>
@@ -157,7 +158,7 @@ export const DatePicker = (props: DatePickerProps) => (
             }))}
           defaultState="available"
           firstOfWeek={1}
-          dayOfWeekToIconify={props.issueDayOfWeek}
+          daysOfWeekToIconify={props.issueDaysOfWeek}
           dateToAsterisk={props.dateToAsterisk}
         />
       </div>

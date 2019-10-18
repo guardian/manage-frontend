@@ -5,24 +5,21 @@ import {
 } from "../../../shared/productResponse";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import {
-  RouteableStepProps,
-  visuallyNavigateToParent,
-  WizardStep
-} from "../wizardRouterAdapter";
+import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
   buttonBarCss,
   HolidayDateChooserStateContext,
   isSharedHolidayDateChooserState
 } from "./holidayDateChooser";
 import { creditExplainerSentence } from "./holidayQuestionsModal";
+import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   HolidayStopsResponseContext,
   isHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
-export const HolidayConfirmed = (props: RouteableStepProps) => (
+export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
   <HolidayStopsResponseContext.Consumer>
     {holidayStopsResponse =>
       isHolidayStopsResponse(holidayStopsResponse) ? (
@@ -35,7 +32,13 @@ export const HolidayConfirmed = (props: RouteableStepProps) => (
                   <WizardStep routeableStepProps={props} hideBackButton>
                     <div>
                       <h1>Your schedule has been set</h1>
-                      <p>{creditExplainerSentence}</p>
+                      <p>
+                        We will send an email to confirm the details.{" "}
+                        {creditExplainerSentence(
+                          props.productType.holidayStops.issueKeyword
+                        )}{" "}
+                        {props.productType.holidayStops.additionalHowAdvice}
+                      </p>
                       <SummaryTable
                         data={dateChooserState}
                         subscription={productDetail.subscription}

@@ -1,5 +1,6 @@
 import { Link, navigate } from "@reach/router";
 import { FlexWrapProperty, FontWeightProperty } from "csstype";
+import { startCase } from "lodash";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import * as Raven from "raven-js";
@@ -18,12 +19,13 @@ import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
-import { RouteableStepProps, WizardStep } from "../wizardRouterAdapter";
+import { WizardStep } from "../wizardRouterAdapter";
 import { HolidayAnniversaryDateExplainerModal } from "./holidayAnniversaryDateExplainerModal";
 import {
   creditExplainerSentence,
   HolidayQuestionsModal
 } from "./holidayQuestionsModal";
+import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   calculateIssuesImpactedPerYear,
   convertRawPotentialHolidayStopDetail,
@@ -68,10 +70,14 @@ const fixedButtonFooterCss = {
   }
 };
 
-const displayNumberOfIssuesAsText = (numberOfIssues: number) => {
+const displayNumberOfIssuesAsText = (
+  numberOfIssues: number,
+  issueKeyword: string
+) => {
   return (
     <strong>
-      {numberOfIssues}&nbsp;issue{numberOfIssues !== 1 ? "s" : ""}
+      {numberOfIssues}&nbsp;{issueKeyword}
+      {numberOfIssues !== 1 ? "s" : ""}
     </strong>
   );
 };
@@ -107,7 +113,7 @@ export function isSharedHolidayDateChooserState(
 }
 
 export class HolidayDateChooser extends React.Component<
-  RouteableStepProps,
+  HolidayStopsRouteableStepProps,
   HolidayDateChooserState
 > {
   public state: HolidayDateChooserState = {
@@ -146,10 +152,23 @@ export class HolidayDateChooser extends React.Component<
                             "dddd D MMMM"
                           )}
                         </strong>{" "}
-                        due to our printing and delivery schedule (notice
-                        period).
+                        due to{" "}
+                        {this.props.productType.holidayStops
+                          .alternateNoticeString ? (
+                          <strong>
+                            {
+                              this.props.productType.holidayStops
+                                .alternateNoticeString
+                            }{" "}
+                            period
+                          </strong>
+                        ) : (
+                          "our printing and delivery schedule (notice period)"
+                        )}.
                         <br />
-                        {creditExplainerSentence}
+                        {creditExplainerSentence(
+                          this.props.productType.holidayStops.issueKeyword
+                        )}
                       </p>
                       <div
                         css={{
@@ -170,6 +189,9 @@ export class HolidayDateChooser extends React.Component<
                             annualIssueLimit={
                               holidayStopsResponse.annualIssueLimit
                             }
+                            holidayStopFlowProperties={
+                              this.props.productType.holidayStops
+                            }
                           />
                         </div>
                       </div>
@@ -179,9 +201,12 @@ export class HolidayDateChooser extends React.Component<
                           holidayStopsResponse.productSpecifics
                             .firstAvailableDate
                         }
-                        issueDayOfWeek={
-                          holidayStopsResponse.productSpecifics.issueDayOfWeek
+                        issueDaysOfWeek={
+                          holidayStopsResponse.productSpecifics.issueDaysOfWeek
                         }
+                        issueKeyword={startCase(
+                          this.props.productType.holidayStops.issueKeyword
+                        )}
                         existingDates={holidayStopsResponse.existing.map(
                           hsr => hsr.dateRange
                         )}
@@ -218,6 +243,9 @@ export class HolidayDateChooser extends React.Component<
                           <HolidayQuestionsModal
                             annualIssueLimit={
                               holidayStopsResponse.annualIssueLimit
+                            }
+                            holidayStopFlowProperties={
+                              this.props.productType.holidayStops
                             }
                           />
                         </div>
@@ -326,8 +354,9 @@ export class HolidayDateChooser extends React.Component<
           })
           .catch(error => {
             this.setState({
-              validationErrorMessage:
-                "Failed to calculate issues impacted by selected dates. Please try again later..."
+              validationErrorMessage: `Failed to calculate ${
+                this.props.productType.holidayStops.issueKeyword
+              }s impacted by selected dates. Please try again later...`
             });
             trackEvent({
               eventCategory: "holidayDateChooser",
@@ -350,31 +379,38 @@ export class HolidayDateChooser extends React.Component<
       const dateElement = anniversaryDateToElement(renewalDateMoment);
       return (
         <>
-          Exceeded issue limit of {annualIssueLimit} before {dateElement}{" "}
-          <HolidayAnniversaryDateExplainerModal dateElement={dateElement} />
+          Exceeded {this.props.productType.holidayStops.issueKeyword} limit of{" "}
+          {annualIssueLimit} before {dateElement}{" "}
+          <HolidayAnniversaryDateExplainerModal
+            dateElement={dateElement}
+            issueKeyword={this.props.productType.holidayStops.issueKeyword}
+          />
           <br />
-          Please choose fewer issues...
+          Please choose fewer/different days...
         </>
       );
     } else if (numPotentialIssuesNextYear > issuesRemainingNextYear) {
       const firstDateElement = anniversaryDateToElement(renewalDateMoment);
       return (
         <>
-          Exceeded issue limit of {annualIssueLimit} between {firstDateElement}{" "}
-          and{" "}
+          Exceeded {this.props.productType.holidayStops.issueKeyword} limit of{" "}
+          {annualIssueLimit} between {firstDateElement} and{" "}
           {anniversaryDateToElement(renewalDateMoment.clone().add(1, "year"))}{" "}
           <HolidayAnniversaryDateExplainerModal
             dateElement={firstDateElement}
+            issueKeyword={this.props.productType.holidayStops.issueKeyword}
           />
           <br />
-          Please choose fewer issues...
+          Please choose fewer/different days...
         </>
       );
     } else if (
       numPotentialIssuesThisYear < 1 &&
       numPotentialIssuesNextYear < 1
     ) {
-      return "No issues occur during selected period";
+      return `No ${
+        this.props.productType.holidayStops.issueKeyword
+      }s occur during selected period`;
     }
     return null; // important don't remove
   };
@@ -427,7 +463,8 @@ export class HolidayDateChooser extends React.Component<
           >
             Suspending{" "}
             {displayNumberOfIssuesAsText(
-              (this.state.publicationsImpacted || []).length
+              (this.state.publicationsImpacted || []).length,
+              this.props.productType.holidayStops.issueKeyword
             )}
           </div>
           <div
@@ -442,21 +479,28 @@ export class HolidayDateChooser extends React.Component<
           >
             <hr css={{ [maxWidth.desktop]: { display: "none" } }} />
             Leaving you with{" "}
-            {displayNumberOfIssuesAsText(issuesRemainingThisYear)} available to
-            suspend before {anniversaryDateToElement(renewalDateMoment)}
+            {displayNumberOfIssuesAsText(
+              issuesRemainingThisYear,
+              this.props.productType.holidayStops.issueKeyword
+            )}{" "}
+            available to suspend before{" "}
+            {anniversaryDateToElement(renewalDateMoment)}
             {this.state.issuesImpactedPerYearBySelection &&
               this.state.issuesImpactedPerYearBySelection.issuesNextYear
                 .length > 0 && (
                 <>
                   {" "}
-                  and {displayNumberOfIssuesAsText(
-                    issuesRemainingNextYear
+                  and{" "}
+                  {displayNumberOfIssuesAsText(
+                    issuesRemainingNextYear,
+                    this.props.productType.holidayStops.issueKeyword
                   )}{" "}
                   available the following year
                 </>
               )}{" "}
             <HolidayAnniversaryDateExplainerModal
               dateElement={anniversaryDateToElement(renewalDateMoment)}
+              issueKeyword={this.props.productType.holidayStops.issueKeyword}
             />
           </div>
         </>
