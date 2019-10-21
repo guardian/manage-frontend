@@ -1,6 +1,8 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import {
+  getMainPlan,
+  isPaidSubscriptionPlan,
   MDA_TEST_USER_HEADER,
   MembersDataApiResponseContext,
   ProductDetail
@@ -22,6 +24,7 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
+import { CollatedCredits } from "./collatedCredits";
 import {
   creditExplainerSentence,
   HolidayQuestionsModal
@@ -29,6 +32,7 @@ import {
 import {
   calculateIssuesImpactedPerYear,
   embellishExistingHolidayStops,
+  friendlyLongDateFormat,
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopsResponseContext,
@@ -53,7 +57,7 @@ const OverviewRow = (props: OverviewRowProps) => (
       marginBottom: "20px"
     }}
   >
-    <div css={{ flex: "1 1 150px" }}>
+    <div css={{ flex: "1 1 180px" }}>
       <h3 css={{ marginTop: "0", paddingTop: "0" }}>{props.heading}</h3>
     </div>
     <div
@@ -65,8 +69,6 @@ const OverviewRow = (props: OverviewRowProps) => (
     </div>
   </div>
 );
-
-const friendlyLongDateFormat = "D MMMM YYYY";
 
 const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
@@ -82,6 +84,11 @@ const renderHolidayStopsOverview = (
     ),
     renewalDateMoment
   );
+
+  const mainPlan = getMainPlan(productDetail.subscription);
+  const currency = isPaidSubscriptionPlan(mainPlan)
+    ? mainPlan.currency
+    : undefined;
 
   return (
     <HolidayStopsResponseContext.Provider
@@ -202,6 +209,16 @@ const renderHolidayStopsOverview = (
                 </div>
               </>
             </OverviewRow>
+            {holidayStopsResponse.existing.length > 0 && (
+              <OverviewRow heading="Expected Credits">
+                <CollatedCredits
+                  publicationsImpacted={holidayStopsResponse.existing.flatMap(
+                    _ => _.publicationsImpacted
+                  )}
+                  currency={currency}
+                />
+              </OverviewRow>
+            )}
             <OverviewRow heading="Details">
               {holidayStopsResponse.existing.length > 0 ? (
                 <SummaryTable
