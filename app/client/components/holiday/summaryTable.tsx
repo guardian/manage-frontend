@@ -7,6 +7,7 @@ import {
   Subscription
 } from "../../../shared/productResponse";
 import palette from "../../colours";
+import { ExpanderButton } from "../../expanderButton";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import {
@@ -64,11 +65,14 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
   const dateRangeStr = formatDateRangeAsFriendly(props.dateRange);
 
   const detailPart = (
-    <>
-      <strong>
-        {props.publicationsImpacted.length} {props.issueKeyword}
-        {props.publicationsImpacted.length !== 1 ? "s" : ""}
-      </strong>
+    <ExpanderButton
+      buttonLabel={
+        <strong>
+          {props.publicationsImpacted.length} {props.issueKeyword}
+          {props.publicationsImpacted.length !== 1 ? "s" : ""}
+        </strong>
+      }
+    >
       {props.publicationsImpacted.map((detail, index) => (
         <div key={index}>
           -{" "}
@@ -78,7 +82,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
           {formattedCreditIfAvailable(detail, props.currency)}
         </div>
       ))}
-    </>
+    </ExpanderButton>
   );
 
   return props.asTD ? (
@@ -149,7 +153,9 @@ export const SummaryTable = (props: SummaryTableProps) => {
         <tbody>
           <tr>
             <th>Duration</th>
-            <th>{props.alternateSuspendedColumnHeading || "Suspended"}</th>
+            <th css={{ minWidth: "250px" }}>
+              {props.alternateSuspendedColumnHeading || "Suspended"}
+            </th>
           </tr>
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
             <SummaryTableRow
