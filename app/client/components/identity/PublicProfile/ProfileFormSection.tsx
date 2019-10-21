@@ -1,20 +1,14 @@
-import {
-  Field,
-  Form,
-  FormikErrors,
-  FormikProps,
-  FormikTouched,
-  withFormik
-} from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import Raven from "raven-js";
 import React from "react";
 import * as Yup from "yup";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { PageContainer } from "../../page";
+import { FormTextAreaField, FormTextField } from "../Form/FormField";
 import { ErrorTypes, User } from "../models";
 import { PageSection } from "../PageSection";
-import { formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
+import { textSmall } from "../sharedStyles";
 
 interface ProfileFormSectionProps {
   user: User;
@@ -34,42 +28,9 @@ const formValidationSchema = Yup.object().shape({
   interests: Yup.string().max(255, "Maximum length is 255")
 });
 
-const getError = (
-  name: string,
-  { errors, touched, status }: FormikProps<User>
-) => {
-  const isTouched = touched[name as keyof FormikTouched<User>];
-  const error = errors[name as keyof FormikErrors<User>];
-  if (error && isTouched) {
-    return error;
-  }
-  if (status && isTouched) {
-    return status[name as keyof FormikErrors<User>];
-  }
-};
-
-const formField = (
-  name: string,
-  label: string,
-  inputType: "textarea" | "text",
-  formikProps: FormikProps<User>
-) => {
-  const error = getError(name, formikProps);
-  const inputTypeProps =
-    inputType === "text" ? { type: "text" } : { component: "textarea" };
-  const errorCss = error ? formFieldErrorCss : {};
-  return (
-    <label css={{ ...labelCss, ...errorCss }}>
-      {label}
-      <Field {...inputTypeProps} name={name} />
-      {error ? <p>{error}</p> : null}
-    </label>
-  );
-};
-
 const usernameInput = (formikProps: FormikProps<User>) => (
   <>
-    {formField("username", "Username", "text", formikProps)}
+    <FormTextField name="username" label="Username" formikProps={formikProps} />
     <p css={textSmall}>
       You can only set your username once. It must be 6-20 characters, letters
       and/or numbers only and have no spaces. If you do not set your username,
@@ -88,9 +49,13 @@ const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
   <Form>
     <fieldset css={fieldSetCss} disabled={props.isSubmitting}>
       {!hasUsername(props.user) ? usernameInput(props) : null}
-      {formField("location", "Location", "text", props)}
-      {formField("aboutMe", "About Me", "textarea", props)}
-      {formField("interests", "Interests", "textarea", props)}
+      <FormTextField name="location" label="Label" formikProps={props} />
+      <FormTextAreaField name="aboutMe" label="About Me" formikProps={props} />
+      <FormTextAreaField
+        name="interests"
+        label="Interests"
+        formikProps={props}
+      />
       <Button
         disabled={props.isSubmitting}
         text="Save changes"

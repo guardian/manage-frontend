@@ -17,6 +17,11 @@ import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
 import { Spinner } from "../../spinner";
 import {
+  FormEmailField,
+  FormNumberField,
+  FormTextField
+} from "../Form/FormField";
+import {
   GenericErrorMessage,
   GenericErrorMessageRef
 } from "../GenericErrorMessage";
@@ -93,25 +98,6 @@ const formSelectField = (
   );
 };
 
-const formField = (
-  name: string,
-  label: string,
-  inputType: string,
-  formikProps: FormikProps<User>
-) => {
-  const error = getError(name, formikProps);
-  const inputTypeProps =
-    inputType === "textarea" ? { component: "textarea" } : { type: inputType };
-  const errorCss = error ? formFieldErrorCss : {};
-  return (
-    <label css={{ ...labelCss, ...errorCss }}>
-      {label}
-      <Field {...inputTypeProps} name={name} />
-      {error ? <p>{error}</p> : null}
-    </label>
-  );
-};
-
 const EmailMessage = (email: string) => (
   <p
     css={{
@@ -150,7 +136,11 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
     <Form>
       {lines()}
       <PageSection title="Email & Password">
-        {formField("primaryEmailAddress", "Email", "text", props)}
+        <FormEmailField
+          name="primaryEmailAddress"
+          label="Email"
+          formikProps={props}
+        />
         {!props.emailMessage || EmailMessage(props.emailMessage)}
         <label>
           Password
@@ -170,25 +160,53 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
           props,
           (o: string) => `+${o}`
         )}
-        {formField("localNumber", "Local number", "number", props)}
+        <FormNumberField
+          name="localNumber"
+          label="Local Number"
+          formikProps={props}
+        />
         {deletePhoneNumberButton}
       </PageSection>
       {lines()}
       <PageSection title="Personal Information">
         {formSelectField("title", "Title", titles, props)}
-        {formField("firstName", "First name", "text", props)}
-        {formField("secondName", "Last name", "text", props)}
+        <FormTextField
+          name="firstName"
+          label="First Name"
+          formikProps={props}
+        />
+        <FormTextField
+          name="secondName"
+          label="Last Name"
+          formikProps={props}
+        />
       </PageSection>
       {lines()}
       <PageSection
         title="Correspondence address"
         description={correpondenceDescription}
       >
-        {formField("address1", "Address line 1", "text", props)}
-        {formField("address2", "Address line 2", "text", props)}
-        {formField("address3", "Town", "text", props)}
-        {formField("address4", "County or State", "text", props)}
-        {formField("postcode", "Postcode/Zipcode", "text", props)}
+        <FormTextField
+          name="address1"
+          label="Address line 1"
+          formikProps={props}
+        />
+        <FormTextField
+          name="address2"
+          label="Address line 2"
+          formikProps={props}
+        />
+        <FormTextField name="address3" label="Town" formikProps={props} />
+        <FormTextField
+          name="address4"
+          label="County or State"
+          formikProps={props}
+        />
+        <FormTextField
+          name="postcode"
+          label="Postcode/Zipcode"
+          formikProps={props}
+        />
         {formSelectField("country", "Country", COUNTRIES, props)}
       </PageSection>
       {lines()}
