@@ -13,7 +13,11 @@ import {
   isSharedHolidayDateChooserState,
   SharedHolidayDateChooserState
 } from "./holidayDateChooser";
-import { HolidayStopDetail, HolidayStopRequest } from "./holidayStopApi";
+import {
+  HolidayStopDetail,
+  HolidayStopRequest,
+  MinimalHolidayStopRequest
+} from "./holidayStopApi";
 
 const cellCss = {
   padding: "8px 16px 8px 16px",
@@ -23,6 +27,7 @@ const cellCss = {
 export interface SummaryTableProps {
   data: HolidayStopRequest[] | SharedHolidayDateChooserState;
   subscription: Subscription;
+  issueKeyword: string;
   alternateSuspendedColumnHeading?: string;
 }
 
@@ -38,9 +43,8 @@ const formatDateRangeAsFriendly = (range: DateRange) =>
   " - " +
   range.end.format(friendlyDateFormatPrefix + friendlyDateFormatSuffix);
 
-interface SummaryTableRowProps {
-  dateRange: DateRange;
-  publicationsImpacted: HolidayStopDetail[];
+interface SummaryTableRowProps extends MinimalHolidayStopRequest {
+  issueKeyword: string;
   currency?: string;
   asTD?: true;
 }
@@ -62,10 +66,8 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
   const detailPart = (
     <>
       <strong>
-        {props.publicationsImpacted.length} issue{props.publicationsImpacted
-          .length !== 1
-          ? "s"
-          : ""}
+        {props.publicationsImpacted.length} {props.issueKeyword}
+        {props.publicationsImpacted.length !== 1 ? "s" : ""}
       </strong>
       {props.publicationsImpacted.map((detail, index) => (
         <div key={index}>
@@ -101,7 +103,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 };
 
 export const SummaryTable = (props: SummaryTableProps) => {
-  const holidayStopRequestsList: SummaryTableRowProps[] = isSharedHolidayDateChooserState(
+  const holidayStopRequestsList: MinimalHolidayStopRequest[] = isSharedHolidayDateChooserState(
     props.data
   )
     ? [
@@ -152,6 +154,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
             <SummaryTableRow
               asTD
+              issueKeyword={props.issueKeyword}
               key={index}
               currency={currency}
               {...holidayStopRequest}
@@ -169,6 +172,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
         {holidayStopRequestsList.map((holidayStopRequest, index) => (
           <SummaryTableRow
             key={index}
+            issueKeyword={props.issueKeyword}
             currency={currency}
             {...holidayStopRequest}
           />
