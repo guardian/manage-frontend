@@ -15,6 +15,12 @@ type FormInputProps<T> = Pick<
   Exclude<keyof FormFieldProps<T>, "children">
 >;
 
+type FormTextAreaProps<T> = FormInputProps<T>;
+type FormSelectProps<T> = FormInputProps<T> & {
+  options: string[];
+  labelModifier?: (option: string) => string;
+};
+
 const getError = <T extends unknown>(
   name: string,
   { errors, touched, status }: FormikProps<T>
@@ -43,6 +49,44 @@ export const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
   );
 };
 
+export const FormTextAreaField = <T extends unknown>(
+  props: FormTextAreaProps<T>
+) => (
+  <FormField
+    name={props.name}
+    label={props.label}
+    formikProps={props.formikProps}
+  >
+    <Field component="textarea" />
+  </FormField>
+);
+
+export const FormSelectField = <T extends unknown>(
+  props: FormSelectProps<T>
+) => {
+  const { options, labelModifier } = props;
+  const optionEls = options.map(o => {
+    const optionLabel = labelModifier ? labelModifier(o) : o;
+    return (
+      <option key={o} value={o}>
+        {optionLabel}
+      </option>
+    );
+  });
+  return (
+    <FormField
+      name={props.name}
+      label={props.label}
+      formikProps={props.formikProps}
+    >
+      <Field component="select" name={name}>
+        <option value="" />
+        {optionEls}
+      </Field>
+    </FormField>
+  );
+};
+
 const getInputFieldOfType = (type: string) => {
   return <T extends unknown>(props: FormInputProps<T>) => (
     <FormField
@@ -54,18 +98,6 @@ const getInputFieldOfType = (type: string) => {
     </FormField>
   );
 };
-
-export const FormTextAreaField = <T extends unknown>(
-  props: FormInputProps<T>
-) => (
-  <FormField
-    name={props.name}
-    label={props.label}
-    formikProps={props.formikProps}
-  >
-    <Field component="textarea" />
-  </FormField>
-);
 
 export const FormTextField = getInputFieldOfType("text");
 export const FormNumberField = getInputFieldOfType("number");

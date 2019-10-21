@@ -1,11 +1,4 @@
-import {
-  Field,
-  Form,
-  FormikErrors,
-  FormikProps,
-  FormikTouched,
-  withFormik
-} from "formik";
+import { Form, FormikProps, withFormik } from "formik";
 import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
 import palette from "../../../colours";
@@ -19,6 +12,7 @@ import { Spinner } from "../../spinner";
 import {
   FormEmailField,
   FormNumberField,
+  FormSelectField,
   FormTextField
 } from "../Form/FormField";
 import {
@@ -33,7 +27,7 @@ import { MarginWrapper } from "../MarginWrapper";
 import { Titles, User } from "../models";
 import { COUNTRIES, ErrorTypes, PHONE_CALLING_CODES } from "../models";
 import { PageSection } from "../PageSection";
-import { aCss, formFieldErrorCss, labelCss, textSmall } from "../sharedStyles";
+import { aCss, textSmall } from "../sharedStyles";
 
 interface AccountFormProps {
   user: User;
@@ -53,50 +47,7 @@ const deletePhoneNumber = async () => {
 const errorRef = React.createRef<GenericErrorMessageRef>();
 const pageTopRef = React.createRef<HTMLDivElement>();
 
-const getError = (
-  name: string,
-  { errors, touched, status }: FormikProps<User>
-) => {
-  const isTouched = touched[name as keyof FormikTouched<User>];
-  const error = errors[name as keyof FormikErrors<User>];
-  if (error && isTouched) {
-    return error;
-  }
-  if (status && isTouched) {
-    return status[name as keyof FormikErrors<User>];
-  }
-};
-
 const lines = () => <Lines n={1} margin={"32px auto 16px"} />;
-
-const formSelectField = (
-  name: string,
-  label: string,
-  options: string[],
-  formikProps: FormikProps<User>,
-  labelModifier?: (option: string) => string
-) => {
-  const error = getError(name, formikProps);
-  const errorCss = error ? formFieldErrorCss : {};
-  const optionEls = options.map(o => {
-    const optionLabel = labelModifier ? labelModifier(o) : o;
-    return (
-      <option key={o} value={o}>
-        {optionLabel}
-      </option>
-    );
-  });
-  return (
-    <label css={{ ...labelCss, ...errorCss }}>
-      {label}
-      <Field component="select" name={name}>
-        <option value="" />
-        {optionEls}
-      </Field>
-      {error ? <p>{error}</p> : null}
-    </label>
-  );
-};
 
 const EmailMessage = (email: string) => (
   <p
@@ -153,13 +104,13 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
       </PageSection>
       {lines()}
       <PageSection title="Phone">
-        {formSelectField(
-          "countryCode",
-          "Country code",
-          PHONE_CALLING_CODES,
-          props,
-          (o: string) => `+${o}`
-        )}
+        <FormSelectField
+          name="countryCode"
+          label="Country code"
+          options={PHONE_CALLING_CODES}
+          formikProps={props}
+          labelModifier={(o: string) => `+${o}`}
+        />
         <FormNumberField
           name="localNumber"
           label="Local Number"
@@ -169,7 +120,12 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
       </PageSection>
       {lines()}
       <PageSection title="Personal Information">
-        {formSelectField("title", "Title", titles, props)}
+        <FormSelectField
+          name="title"
+          label="Title"
+          options={titles}
+          formikProps={props}
+        />
         <FormTextField
           name="firstName"
           label="First Name"
@@ -207,7 +163,12 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
           label="Postcode/Zipcode"
           formikProps={props}
         />
-        {formSelectField("country", "Country", COUNTRIES, props)}
+        <FormSelectField
+          name="country"
+          label="Country"
+          options={COUNTRIES}
+          formikProps={props}
+        />
       </PageSection>
       {lines()}
       <PageSection>
