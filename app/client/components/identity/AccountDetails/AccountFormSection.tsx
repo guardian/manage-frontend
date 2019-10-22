@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { Form, FormikProps, FormikState, withFormik } from "formik";
 import React, { FC } from "react";
 import palette from "../../../colours";
 import { Button } from "../../buttons";
@@ -56,19 +56,23 @@ const EmailMessage = (email: string) => (
 );
 
 const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
-  const validationNotification = (
-    <p
-      css={{
-        color: palette.red.medium,
-        backgroundColor: "#ffe1e1",
-        padding: "20px 15px",
-        ...textSmall
-      }}
-    >
-      There were some problems submitting your form. Your information has not
-      been saved.
-    </p>
-  );
+  const validationNotification = (status: FormikState<User>) => {
+    const errors = Object.entries(status).map(s => <li key={s[0]}>{s[1]}</li>);
+    return (
+      <div
+        css={{
+          color: palette.red.medium,
+          backgroundColor: "#ffe1e1",
+          padding: "20px 15px",
+          ...textSmall
+        }}
+      >
+        There were some problems submitting your form. Your information has not
+        been saved. Please resolve the following:
+        <ul>{errors}</ul>
+      </div>
+    );
+  };
   const correpondenceDescription = (
     <span>
       If you wish to change the delivery address for your paper subscription
@@ -90,7 +94,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
   );
   return (
     <Form>
-      {!props.status || validationNotification}
+      {!props.status || validationNotification(props.status)}
       {lines()}
       <PageSection title="Email & Password">
         <FormEmailField
