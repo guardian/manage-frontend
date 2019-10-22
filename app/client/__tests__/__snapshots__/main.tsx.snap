@@ -48,9 +48,9 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "map": undefined,
-              "name": "1puykvp",
+              "name": "16fhqub",
               "next": undefined,
-              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#ffe500;::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
+              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#ffe500;}:hover{::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
             }
           }
           onClick={[Function]}

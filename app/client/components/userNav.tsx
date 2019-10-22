@@ -3,6 +3,7 @@ import React from "react";
 import { findDOMNode } from "react-dom";
 import { conf } from "../../server/config";
 import palette from "../colours";
+import { expanderButtonCss } from "../expanderButton";
 
 const userNavMenuCss = (showMenu: boolean) =>
   css({
@@ -49,43 +50,6 @@ const userNavBorderCss = css({
   display: "block",
   margin: "0 0 0 1.875rem"
 });
-
-const userNavButtonCss = (showMenu: boolean) =>
-  css({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    cursor: "pointer",
-    border: "0",
-    background: "none",
-    textAlign: "left",
-    fontFamily: "inherit",
-    fontSize: "16px",
-    padding: "10px 1px 10px 0",
-    position: "relative",
-    transform: "translateY(-1px)",
-    "::after": {
-      content: "''",
-      display: "block",
-      width: "5px",
-      height: "5px",
-      border: "1px solid currentColor",
-      borderLeft: "transparent",
-      borderTop: "transparent",
-      marginLeft: "5px",
-      transform: `translateY(${showMenu ? 0 : -2}px) rotate(45deg)`
-    },
-    ":hover, :focus": {
-      color: palette.yellow.medium,
-      "::after": {
-        transform: "translateY(0px) rotate(45deg)",
-        transitionProperty: "transform",
-        transitionDuration: "250ms",
-        transitionTimingFunction: "ease-in-out"
-      }
-    },
-    color: showMenu ? palette.yellow.medium : palette.white
-  });
 
 const signOutIcon = (
   <svg width="100%" height="100%" viewBox="0 0 20 22" fill="none">
@@ -169,8 +133,11 @@ export class UserNav extends React.Component {
   public render(): JSX.Element {
     return (
       <nav onKeyDown={this.handleKeyDown}>
+        {/* TODO refactor to full use ExpanderButton */}
         <button
-          css={userNavButtonCss(this.state.showMenu)}
+          css={expanderButtonCss(palette.white, palette.yellow.medium)(
+            this.state.showMenu
+          )}
           type="button"
           aria-expanded={this.state.showMenu}
           onClick={() => this.setState({ showMenu: !this.state.showMenu })}
@@ -184,7 +151,7 @@ export class UserNav extends React.Component {
             <React.Fragment key={item.title}>
               <li>
                 <a href={item.link} css={userNavItemCss}>
-                  {item.icon ? (
+                  {item.icon && (
                     <span
                       css={{
                         marginRight: "5px",
@@ -196,8 +163,6 @@ export class UserNav extends React.Component {
                     >
                       {item.icon}
                     </span>
-                  ) : (
-                    false
                   )}
                   <span>{item.title}</span>
                 </a>
