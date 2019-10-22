@@ -1,17 +1,8 @@
-import React, { FC } from "react";
-import {
-  COUNTRIES,
-  PHONE_CALLING_CODES,
-  ErrorTypes,
-  Titles,
-  User
-} from "../models";
 import { Form, FormikProps, withFormik } from "formik";
-import { trackEvent } from "../../analytics";
-import palette from "../../../colours";
 import Raven from "raven-js";
-import { aCss, textSmall } from "../sharedStyles";
-import { IdentityLocations } from "../IdentityLocations";
+import React, { FC } from "react";
+import palette from "../../../colours";
+import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import {
   FormEmailField,
@@ -21,8 +12,17 @@ import {
 } from "../Form/FormField";
 import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
-import { PageSection } from "../PageSection";
+import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
+import {
+  COUNTRIES,
+  ErrorTypes,
+  PHONE_CALLING_CODES,
+  Titles,
+  User
+} from "../models";
+import { PageSection } from "../PageSection";
+import { aCss, textSmall } from "../sharedStyles";
 
 interface AccountFormProps {
   user: User;
