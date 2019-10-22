@@ -1,8 +1,6 @@
 import { Form, FormikProps, withFormik } from "formik";
-import Raven from "raven-js";
 import React from "react";
 import * as Yup from "yup";
-import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { PageContainer } from "../../page";
 import { FormTextAreaField, FormTextField } from "../Form/FormField";
@@ -80,12 +78,6 @@ const EnhancedProfileForm = withFormik({
         setStatus(e.error);
       } else {
         onError(e);
-        Raven.captureException(e);
-        trackEvent({
-          eventCategory: "publicProfileError",
-          eventAction: "error",
-          eventLabel: e.toString()
-        });
       }
     }
     setSubmitting(false);

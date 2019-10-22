@@ -1,5 +1,7 @@
+import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
+import { trackEvent } from "../../analytics";
 import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
@@ -27,12 +29,23 @@ export const PublicProfile = (props: { path?: string }) => {
 
   const errorRef = React.createRef<GenericErrorMessageRef>();
 
+  const handleGeneralError = (e: any) => {
+    setError(true);
+    Raven.captureException(e);
+    trackEvent({
+      eventCategory: "publicProfileError",
+      eventAction: "error",
+      eventLabel: e.toString()
+    });
+  };
+
   useEffect(() => {
     Users.getCurrentUser()
       .then((u: User) => {
         setUser(u);
       })
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(handleGeneralError);
   }, []);
 
   const saveUser = async (values: User) => {
@@ -84,13 +97,10 @@ export const PublicProfile = (props: { path?: string }) => {
         <Lines n={1} />
       </PageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
-      <PageContainer>
-        {error ? <GenericErrorMessage ref={errorRef} /> : null}
-      </PageContainer>
       <ProfileFormSection
         user={user}
         saveUser={saveUser}
-        onError={setError}
+        onError={handleGeneralError}
         onSuccess={setUser}
       />
       <PageContainer>
@@ -120,6 +130,9 @@ export const PublicProfile = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
+      <PageContainer>
+        {error ? <GenericErrorMessage ref={errorRef} /> : null}
+      </PageContainer>
       {loading ? loader : content()}
     </>
   );

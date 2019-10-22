@@ -1,5 +1,7 @@
+import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
+import { trackEvent } from "../../analytics";
 import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import { PageContainer, PageHeaderContainer } from "../../page";
@@ -38,12 +40,23 @@ export const AccountDetails = (props: { path?: string }) => {
     [error]
   );
 
+  const handleGeneralError = (e: any) => {
+    setError(true);
+    Raven.captureException(e);
+    trackEvent({
+      eventCategory: "publicProfileError",
+      eventAction: "error",
+      eventLabel: e.toString()
+    });
+  };
+
   useEffect(() => {
     Users.getCurrentUser()
       .then((u: User) => {
         setUser(u);
       })
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(handleGeneralError);
   }, []);
 
   const saveUser = async (values: User) => {
@@ -76,7 +89,7 @@ export const AccountDetails = (props: { path?: string }) => {
         <AccountDetailsFormSection
           user={user}
           saveUser={saveUser}
-          onError={setError}
+          onError={handleGeneralError}
           onSuccess={updateValues}
           emailMessage={emailMessage}
         />
