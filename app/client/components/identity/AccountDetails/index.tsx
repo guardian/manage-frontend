@@ -64,15 +64,18 @@ export const AccountDetails = (props: { path?: string }) => {
     return await Users.saveChanges(user, changedUser);
   };
 
+  const scrollToTop = () => {
+    if (pageTopRef.current) {
+      window.scrollTo(0, pageTopRef.current.offsetTop - 20);
+    }
+  };
+
   const updateValues = (input: User, response: User) => {
     const changedFields = Users.getChangedFields(response, input);
     if (changedFields.primaryEmailAddress) {
       setEmailMessage(changedFields.primaryEmailAddress);
     }
     setUser(response);
-    if (pageTopRef.current) {
-      window.scrollTo(0, pageTopRef.current.offsetTop - 20);
-    }
   };
 
   const content = () => (
@@ -91,6 +94,7 @@ export const AccountDetails = (props: { path?: string }) => {
           saveUser={saveUser}
           onError={handleGeneralError}
           onSuccess={updateValues}
+          onDone={scrollToTop}
           emailMessage={emailMessage}
         />
       </PageContainer>

@@ -27,6 +27,7 @@ interface AccountFormProps {
   saveUser: (values: User) => Promise<User>;
   onError: (error: any) => void;
   onSuccess: (input: User, response: User) => void;
+  onDone: () => void;
   emailMessage: string | null;
 }
 
@@ -55,6 +56,19 @@ const EmailMessage = (email: string) => (
 );
 
 const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
+  const validationNotification = (
+    <p
+      css={{
+        color: palette.red.medium,
+        backgroundColor: "#ffe1e1",
+        padding: "20px 15px",
+        ...textSmall
+      }}
+    >
+      There were some problems submitting your form. Your information has not
+      been saved.
+    </p>
+  );
   const correpondenceDescription = (
     <span>
       If you wish to change the delivery address for your paper subscription
@@ -76,6 +90,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
   );
   return (
     <Form>
+      {!props.status || validationNotification}
       {lines()}
       <PageSection title="Email & Password">
         <FormEmailField
@@ -178,7 +193,7 @@ const FormikForm = withFormik({
   mapPropsToValues: (props: AccountFormProps) => props.user,
   handleSubmit: async (values, formikBag) => {
     const { resetForm, setSubmitting, setStatus } = formikBag;
-    const { saveUser, onSuccess, onError } = formikBag.props;
+    const { saveUser, onSuccess, onError, onDone } = formikBag.props;
     setStatus(undefined);
     try {
       const response = await saveUser(values);
@@ -191,6 +206,7 @@ const FormikForm = withFormik({
         onError(e);
       }
     }
+    onDone();
     setSubmitting(false);
   }
 })(BaseForm);
