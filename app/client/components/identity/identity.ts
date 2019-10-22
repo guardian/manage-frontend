@@ -29,12 +29,26 @@ const mapSubscriptions = (
 const diff = (a: User, b: User): Partial<User> => {
   type UserKey = keyof User;
   let fields: Partial<User> = {};
-  for (const key in b) {
-    if (a[key as UserKey] !== b[key as UserKey]) {
-      fields = { ...fields, [key as UserKey]: b[key as UserKey] };
+  Object.keys(b).forEach(key => {
+    const k: UserKey = key as UserKey;
+    if (a[k] !== b[k]) {
+      fields = { ...fields, [k]: b[k] };
     }
-  }
+  });
   return fields;
+};
+
+const diffWithCompositeFields = (a: User, b: User): Partial<User> => {
+  const fields = diff(a, b);
+  if (fields.localNumber || fields.countryCode) {
+    return {
+      ...fields,
+      localNumber: b.localNumber,
+      countryCode: b.countryCode
+    };
+  } else {
+    return fields;
+  }
 };
 
 export const Users: UserCollection = {
@@ -45,11 +59,11 @@ export const Users: UserCollection = {
     return await UserAPI.write(user);
   },
   async saveChanges(original: User, changed: User): Promise<User> {
-    const fields: Partial<User> = diff(original, changed);
+    const fields: Partial<User> = diffWithCompositeFields(original, changed);
     return await UserAPI.write(fields);
   },
   getChangedFields(original: User, changed: User): Partial<User> {
-    return diff(original, changed);
+    return diffWithCompositeFields(original, changed);
   }
 };
 
