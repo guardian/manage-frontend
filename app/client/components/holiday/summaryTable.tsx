@@ -10,6 +10,7 @@ import palette from "../../colours";
 import { ExpanderButton } from "../../expanderButton";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
+import { CollatedCredits } from "./collatedCredits";
 import {
   isSharedHolidayDateChooserState,
   SharedHolidayDateChooserState
@@ -46,6 +47,7 @@ const formatDateRangeAsFriendly = (range: DateRange) =>
 
 interface SummaryTableRowProps extends MinimalHolidayStopRequest {
   issueKeyword: string;
+  shouldShowExpectedCredit: boolean;
   currency?: string;
   asTD?: true;
 }
@@ -89,6 +91,11 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
     <tr>
       <td>{dateRangeStr}</td>
       <td>{detailPart}</td>
+      {props.shouldShowExpectedCredit && (
+        <td>
+          <CollatedCredits {...props} />
+        </td>
+      )}
     </tr>
   ) : (
     <div css={{ marginBottom: "20px" }}>
@@ -102,6 +109,12 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
         {dateRangeStr}
       </div>
       <div css={cellCss}>{detailPart}</div>
+      {props.shouldShowExpectedCredit && (
+        <div css={{ ...cellCss, borderTop: 0 }}>
+          <strong>Expected Credits</strong>
+          <CollatedCredits {...props} withBullet />
+        </div>
+      )}
     </div>
   );
 };
@@ -122,6 +135,8 @@ export const SummaryTable = (props: SummaryTableProps) => {
   const currency = isPaidSubscriptionPlan(mainPlan)
     ? mainPlan.currency
     : undefined;
+
+  const shouldShowExpectedCredit = isSharedHolidayDateChooserState(props.data);
 
   return (
     <div
@@ -156,10 +171,12 @@ export const SummaryTable = (props: SummaryTableProps) => {
             <th css={{ minWidth: "250px" }}>
               {props.alternateSuspendedColumnHeading || "Suspended"}
             </th>
+            {shouldShowExpectedCredit && <th>Expected Credits</th>}
           </tr>
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
             <SummaryTableRow
               asTD
+              shouldShowExpectedCredit={shouldShowExpectedCredit}
               issueKeyword={props.issueKeyword}
               key={index}
               currency={currency}
@@ -178,6 +195,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
         {holidayStopRequestsList.map((holidayStopRequest, index) => (
           <SummaryTableRow
             key={index}
+            shouldShowExpectedCredit={shouldShowExpectedCredit}
             issueKeyword={props.issueKeyword}
             currency={currency}
             {...holidayStopRequest}
