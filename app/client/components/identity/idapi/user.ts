@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import { ErrorTypes, User, UserError } from "../models";
 import {
   APIPutOptions,
@@ -63,6 +64,8 @@ interface UserAPIErrorResponse {
   }>;
 }
 
+const getOrEmpty = (object: any) => (path: string) => get(object, path, "");
+
 export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
   return error.status && error.status === "error";
 };
@@ -98,25 +101,25 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 const toUser = (response: UserAPIResponse): User => {
   const consents = getConsentedTo(response);
   const { user } = response;
-  const { telephoneNumber } = user.privateFields;
+  const getFromUser = getOrEmpty(user);
   return {
     id: user.id,
     primaryEmailAddress: user.primaryEmailAddress,
-    location: user.publicFields.location || "",
-    aboutMe: user.publicFields.aboutMe || "",
-    interests: user.publicFields.interests || "",
-    username: user.publicFields.username || "",
-    title: user.privateFields.title || "",
-    firstName: user.privateFields.firstName || "",
-    secondName: user.privateFields.secondName || "",
-    address1: user.privateFields.address1 || "",
-    address2: user.privateFields.address2 || "",
-    address3: user.privateFields.address3 || "",
-    address4: user.privateFields.address4 || "",
-    postcode: user.privateFields.postcode || "",
-    country: user.privateFields.country || "",
-    countryCode: telephoneNumber ? telephoneNumber.countryCode : "",
-    localNumber: telephoneNumber ? telephoneNumber.localNumber : "",
+    location: getFromUser("publicFields.location"),
+    aboutMe: getFromUser("publicFields.aboutMe"),
+    interests: getFromUser("publicFields.interests"),
+    username: getFromUser("publicFields.username"),
+    title: getFromUser("privateFields.title"),
+    firstName: getFromUser("privateFields.firstName"),
+    secondName: getFromUser("privateFields.secondName"),
+    address1: getFromUser("privateFields.address1"),
+    address2: getFromUser("privateFields.address2"),
+    address3: getFromUser("privateFields.address3"),
+    address4: getFromUser("privateFields.address4"),
+    postcode: getFromUser("privateFields.postcode"),
+    country: getFromUser("privateFields.country"),
+    countryCode: getFromUser("privateFields.telephoneNumber.countryCode"),
+    localNumber: getFromUser("privateFields.telephoneNumber.localNumber"),
     consents,
     validated: user.statusFields.userEmailValidated
   };
