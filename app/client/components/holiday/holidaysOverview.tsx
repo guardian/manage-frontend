@@ -225,6 +225,7 @@ const renderHolidayStopsOverview = (
                   data={holidayStopsResponse.existing}
                   subscription={productDetail.subscription}
                   issueKeyword={props.productType.holidayStops.issueKeyword}
+                  reloadParent={reload}
                 />
               ) : (
                 "You currently don't have any scheduled suspensions."

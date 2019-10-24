@@ -30,6 +30,7 @@ import {
   calculateIssuesImpactedPerYear,
   convertRawPotentialHolidayStopDetail,
   createPotentialHolidayStopsFetcher,
+  friendlyLongDateFormat,
   HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
@@ -83,11 +84,7 @@ const displayNumberOfIssuesAsText = (
 };
 
 const anniversaryDateToElement = (renewalDateMoment: Moment) => (
-  <>
-    {renewalDateMoment.format("D")}&nbsp;
-    {renewalDateMoment.format("MMMM")}&nbsp;
-    {renewalDateMoment.format("Y")}*
-  </>
+  <>{renewalDateMoment.format(friendlyLongDateFormat)}*</>
 );
 
 interface HolidayDateChooserState {
@@ -207,9 +204,9 @@ export class HolidayDateChooser extends React.Component<
                         issueKeyword={startCase(
                           this.props.productType.holidayStops.issueKeyword
                         )}
-                        existingDates={holidayStopsResponse.existing.map(
-                          hsr => hsr.dateRange
-                        )}
+                        existingDates={holidayStopsResponse.existing
+                          .filter(hsr => !hsr.withdrawnDate)
+                          .map(hsr => hsr.dateRange)}
                         selectedRange={this.state.selectedRange}
                         selectionInfo={this.getSelectionInfoElement(
                           renewalDateMoment,
