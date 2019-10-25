@@ -12,6 +12,7 @@ import React, { Component } from "react";
 let idCounter: number = 0;
 
 const radioContainerStyles = css`
+  flex-shrink: 0;
   cursor: default;
   display: flex;
   justify-content: flex-start;
