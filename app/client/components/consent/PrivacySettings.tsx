@@ -130,7 +130,7 @@ const buttonStyles = css`
   position: relative;
   text-decoration: none;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 40px;
   font-family: "Guardian Text Sans Web", Helvetica Neue, Helvetica, Arial,
     Lucida Grande, sans-serif;
   font-weight: 700;
@@ -391,7 +391,7 @@ export class PrivacySettings extends Component<Props, State> {
                     ${yellowButtonStyles};
                   `}
                 >
-                  <span>Enable all and close</span>
+                  Enable all and close
                   <ArrowIcon />
                 </button>
               </div>
