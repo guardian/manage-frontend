@@ -119,9 +119,11 @@ export const AccountDetails = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      <PageContainer>
-        {error ? <GenericErrorMessage ref={errorRef} /> : null}
-      </PageContainer>
+      {!error || (
+        <PageContainer>
+          <GenericErrorMessage ref={errorRef} />
+        </PageContainer>
+      )}
       {loading ? loader : content()}
     </>
   );
