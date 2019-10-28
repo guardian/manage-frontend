@@ -33,7 +33,7 @@ interface AccountFormProps {
 
 type AccountDetailsFormSectionProps = AccountFormProps;
 
-const lines = () => <Lines n={1} margin={"32px auto 16px"} />;
+const lines = () => <Lines n={1} margin="32px auto 16px" />;
 const titles = Object.values(Titles);
 
 const deletePhoneNumber = async () => {
