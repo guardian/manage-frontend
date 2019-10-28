@@ -147,6 +147,9 @@ export function isHolidayStopsResponse(
   );
 }
 
+export const isNotWithdrawn = (holidayStopRequest: HolidayStopRequest) =>
+  !holidayStopRequest.withdrawnDate;
+
 const embellishRawHolidayStop = (
   rawHolidayStopRequest: RawHolidayStopRequest
 ) =>

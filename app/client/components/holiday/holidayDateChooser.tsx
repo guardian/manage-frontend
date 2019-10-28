@@ -34,6 +34,7 @@ import {
   HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
+  isNotWithdrawn,
   IssuesImpactedPerYear,
   momentiseDateStr,
   PotentialHolidayStopsResponse
@@ -130,9 +131,9 @@ export class HolidayDateChooser extends React.Component<
                 );
 
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-                  holidayStopsResponse.existing.flatMap(
-                    existing => existing.publicationsImpacted
-                  ),
+                  holidayStopsResponse.existing
+                    .filter(isNotWithdrawn)
+                    .flatMap(existing => existing.publicationsImpacted),
                   renewalDateMoment
                 );
 
@@ -205,7 +206,7 @@ export class HolidayDateChooser extends React.Component<
                           this.props.productType.holidayStops.issueKeyword
                         )}
                         existingDates={holidayStopsResponse.existing
-                          .filter(hsr => !hsr.withdrawnDate)
+                          .filter(isNotWithdrawn)
                           .map(hsr => hsr.dateRange)}
                         selectedRange={this.state.selectedRange}
                         selectionInfo={this.getSelectionInfoElement(

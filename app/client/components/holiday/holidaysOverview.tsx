@@ -36,6 +36,7 @@ import {
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopsResponseContext,
+  isNotWithdrawn,
   momentiseDateStr
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
@@ -79,9 +80,9 @@ const renderHolidayStopsOverview = (
   );
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-    holidayStopsResponse.existing.flatMap(
-      existing => existing.publicationsImpacted
-    ),
+    holidayStopsResponse.existing
+      .filter(isNotWithdrawn)
+      .flatMap(existing => existing.publicationsImpacted),
     renewalDateMoment
   );
 
