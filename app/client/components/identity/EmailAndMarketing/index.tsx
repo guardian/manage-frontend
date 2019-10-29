@@ -61,7 +61,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           return;
         }
         const consentOptions = await ConsentOptions.getAll();
-        setEmail(user.email);
+        setEmail(user.primaryEmailAddress);
         dispatch(options(consentOptions));
       } catch (e) {
         dispatch(error(e));

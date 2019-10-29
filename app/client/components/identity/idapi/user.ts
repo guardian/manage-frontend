@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import { ErrorTypes, User, UserError } from "../models";
 import {
   APIPutOptions,
@@ -5,6 +6,30 @@ import {
   APIUseXSRFHeader,
   localFetch
 } from "./fetch";
+
+type UserPublicFields = Partial<
+  Pick<User, "aboutMe" | "interests" | "location" | "username">
+>;
+
+type UserPrivateFields = Partial<
+  Pick<
+    User,
+    | "title"
+    | "firstName"
+    | "secondName"
+    | "address1"
+    | "address2"
+    | "address3"
+    | "address4"
+    | "postcode"
+    | "country"
+  >
+> & {
+  telephoneNumber?: {
+    countryCode: string;
+    localNumber: string;
+  };
+};
 
 interface UserAPIResponse {
   user: {
@@ -15,13 +40,9 @@ interface UserAPIResponse {
         consented: boolean;
       }
     ];
-    publicFields: {
-      aboutMe?: string;
-      interests?: string;
-      location?: string;
-      username?: string;
-    };
-    primaryEmailAddress: string;
+    publicFields: UserPublicFields;
+    privateFields: UserPrivateFields;
+    primaryEmailAddress: User["primaryEmailAddress"];
     statusFields: {
       userEmailValidated: boolean;
     };
@@ -29,12 +50,9 @@ interface UserAPIResponse {
 }
 
 interface UserAPIRequest {
-  publicFields: {
-    aboutMe?: string;
-    username?: string;
-    interests?: string;
-    location?: string;
-  };
+  publicFields: UserPublicFields;
+  privateFields: UserPrivateFields;
+  primaryEmailAddress?: User["primaryEmailAddress"];
 }
 
 interface UserAPIErrorResponse {
@@ -46,18 +64,66 @@ interface UserAPIErrorResponse {
   }>;
 }
 
+const getOrEmpty = (object: any) => (path: string) => get(object, path, "");
+
 export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
   return error.status && error.status === "error";
 };
 
-const userToUserAPIRequest = (user: Partial<User>): UserAPIRequest => ({
-  publicFields: {
-    aboutMe: user.aboutMe,
-    interests: user.interests,
-    location: user.location,
-    username: user.username
-  }
-});
+const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
+  const { countryCode: countryCode, localNumber: localNumber } = user;
+  const telephoneNumber =
+    countryCode && localNumber ? { countryCode, localNumber } : undefined;
+
+  return {
+    publicFields: {
+      aboutMe: user.aboutMe,
+      interests: user.interests,
+      location: user.location,
+      username: user.username
+    },
+    privateFields: {
+      title: user.title,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      address1: user.address1,
+      address2: user.address2,
+      address3: user.address3,
+      address4: user.address4,
+      postcode: user.postcode,
+      country: user.country,
+      telephoneNumber
+    },
+    primaryEmailAddress: user.primaryEmailAddress
+  };
+};
+
+const toUser = (response: UserAPIResponse): User => {
+  const consents = getConsentedTo(response);
+  const { user } = response;
+  const getFromUser = getOrEmpty(user);
+  return {
+    id: user.id,
+    primaryEmailAddress: user.primaryEmailAddress,
+    location: getFromUser("publicFields.location"),
+    aboutMe: getFromUser("publicFields.aboutMe"),
+    interests: getFromUser("publicFields.interests"),
+    username: getFromUser("publicFields.username"),
+    title: getFromUser("privateFields.title"),
+    firstName: getFromUser("privateFields.firstName"),
+    secondName: getFromUser("privateFields.secondName"),
+    address1: getFromUser("privateFields.address1"),
+    address2: getFromUser("privateFields.address2"),
+    address3: getFromUser("privateFields.address3"),
+    address4: getFromUser("privateFields.address4"),
+    postcode: getFromUser("privateFields.postcode"),
+    country: getFromUser("privateFields.country"),
+    countryCode: getFromUser("privateFields.telephoneNumber.countryCode"),
+    localNumber: getFromUser("privateFields.telephoneNumber.localNumber"),
+    consents,
+    validated: user.statusFields.userEmailValidated
+  };
+};
 
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
@@ -70,10 +136,11 @@ const getConsentedTo = (response: UserAPIResponse) => {
 };
 
 const getFieldNameFromContext = (context: string): string => {
-  return context.split(".").pop() as string;
+  const fieldname = context.split(".").pop() as string;
+  return fieldname === "telephoneNumber" ? "localNumber" : fieldname;
 };
 
-const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
+const toUserError = (response: UserAPIErrorResponse): UserError => {
   const error = response.errors.reduce(
     (a, e) => {
       return {
@@ -89,14 +156,14 @@ const userAPIErrorToUserError = (response: UserAPIErrorResponse): UserError => {
   };
 };
 
-export const write = async (user: Partial<User>): Promise<void> => {
+export const write = async (user: Partial<User>): Promise<User> => {
   const url = "/idapi/user";
-  const body = userToUserAPIRequest(user);
+  const body = toUserApiRequest(user);
   const options = APIUseXSRFHeader(APIUseCredentials(APIPutOptions(body)));
   try {
-    await localFetch(url, options);
+    return toUser(await localFetch(url, options));
   } catch (e) {
-    throw isErrorResponse(e) ? userAPIErrorToUserError(e) : e;
+    throw isErrorResponse(e) ? toUserError(e) : e;
   }
 };
 
@@ -106,28 +173,5 @@ export const read = async (): Promise<User> => {
     url,
     APIUseCredentials({})
   );
-  const consents = getConsentedTo(response);
-  const { user } = response;
-  return {
-    id: user.id,
-    email: user.primaryEmailAddress,
-    location: user.publicFields.location || "",
-    aboutMe: user.publicFields.aboutMe || "",
-    interests: user.publicFields.interests || "",
-    username: user.publicFields.username || "",
-    consents,
-    validated: user.statusFields.userEmailValidated
-  };
+  return toUser(response);
 };
-
-const memoizedRead = (): (() => Promise<User>) => {
-  let user: Promise<User> | undefined;
-  return (): Promise<User> => {
-    if (user === undefined) {
-      user = read();
-    }
-    return Promise.resolve(user);
-  };
-};
-
-export const memoRead = memoizedRead();
