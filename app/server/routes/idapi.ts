@@ -12,7 +12,7 @@ const router = Router();
 
 interface CookiesWithToken {
   [SECURITY_COOKIE_NAME]: string;
-  [index: string]: string;
+  [key: string]: string;
 }
 
 interface SCGUHeader {

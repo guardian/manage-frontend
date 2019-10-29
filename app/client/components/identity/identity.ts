@@ -26,22 +26,44 @@ const mapSubscriptions = (
     subscribed: option.subscribed ? true : subscriptions.includes(option.id)
   }));
 
+const diff = (a: User, b: User): Partial<User> => {
+  type UserKey = keyof User;
+  let fields: Partial<User> = {};
+  Object.keys(b).forEach(key => {
+    const k: UserKey = key as UserKey;
+    if (a[k] !== b[k]) {
+      fields = { ...fields, [k]: b[k] };
+    }
+  });
+  return fields;
+};
+
+const diffWithCompositeFields = (a: User, b: User): Partial<User> => {
+  const fields = diff(a, b);
+  if (fields.localNumber || fields.countryCode) {
+    return {
+      ...fields,
+      localNumber: b.localNumber,
+      countryCode: b.countryCode
+    };
+  } else {
+    return fields;
+  }
+};
+
 export const Users: UserCollection = {
   async getCurrentUser(): Promise<User> {
-    return await UserAPI.memoRead();
+    return await UserAPI.read();
   },
-  async save(user: User): Promise<void> {
+  async save(user: User): Promise<User> {
     return await UserAPI.write(user);
   },
-  async saveChanges(original: User, changed: User): Promise<void> {
-    type UserKey = keyof User;
-    let fields: Partial<User> = {};
-    for (const key in changed) {
-      if (original[key as UserKey] !== changed[key as UserKey]) {
-        fields = { ...fields, [key as UserKey]: changed[key as UserKey] };
-      }
-    }
+  async saveChanges(original: User, changed: User): Promise<User> {
+    const fields: Partial<User> = diffWithCompositeFields(original, changed);
     return await UserAPI.write(fields);
+  },
+  getChangedFields(original: User, changed: User): Partial<User> {
+    return diffWithCompositeFields(original, changed);
   }
 };
 
@@ -53,7 +75,7 @@ export const ConsentOptions: ConsentOptionCollection = {
     ]);
     const [consents, user] = await Promise.all([
       ConsentsAPI.read(),
-      UserAPI.memoRead()
+      UserAPI.read()
     ]);
     return mapSubscriptions(
       [...subscriptions, ...user.consents],

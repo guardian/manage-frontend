@@ -31,6 +31,7 @@ import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { HolidaysOverview } from "./holiday/holidaysOverview";
+import { AccountDetails } from "./identity/AccountDetails";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Main } from "./main";
@@ -156,6 +157,8 @@ const User = () => (
       <EmailAndMarketing path="/email-prefs" />
 
       <PublicProfile path="/public-settings" />
+
+      <AccountDetails path="/account-details" />
 
       <NotFound default={true} />
     </Router>
