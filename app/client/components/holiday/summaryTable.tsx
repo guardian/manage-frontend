@@ -197,11 +197,11 @@ export const SummaryTable = (props: SummaryTableProps) => {
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
             <SummaryTableRow
               {...props}
-              asTD
-              isOperatingOnNewHolidayStop={isOperatingOnNewHolidayStop}
               key={index}
+              isOperatingOnNewHolidayStop={isOperatingOnNewHolidayStop}
               currency={currency}
               {...holidayStopRequest}
+              asTD
             />
           ))}
         </tbody>
@@ -215,9 +215,9 @@ export const SummaryTable = (props: SummaryTableProps) => {
       >
         {holidayStopRequestsList.map((holidayStopRequest, index) => (
           <SummaryTableRow
+            {...props}
             key={index}
             isOperatingOnNewHolidayStop={isOperatingOnNewHolidayStop}
-            issueKeyword={props.issueKeyword}
             currency={currency}
             {...holidayStopRequest}
           />
