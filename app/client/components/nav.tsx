@@ -87,7 +87,8 @@ export const navLinks: NavLinks = {
   },
   accountDetails: {
     title: "Account details",
-    link: "/account/edit"
+    link: "/account-settings",
+    local: true
   },
   membership: {
     title: "Membership",

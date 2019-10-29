@@ -158,7 +158,7 @@ const User = () => (
 
       <PublicProfile path="/public-settings" />
 
-      <AccountDetails path="/account-details" />
+      <AccountDetails path="/account-settings" />
 
       <NotFound default={true} />
     </Router>
