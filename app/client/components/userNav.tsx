@@ -101,7 +101,7 @@ export class UserNav extends React.Component {
     },
     {
       title: "Account details",
-      link: `${profileHostName}/account/edit`
+      link: `/account-settings`
     },
     {
       title: "Emails & marketing",

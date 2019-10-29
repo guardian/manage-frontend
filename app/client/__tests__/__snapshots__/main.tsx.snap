@@ -113,7 +113,7 @@ exports[`Main renders something 1`] = `
                   "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
                 }
               }
-              href="https://profile.thegulocal.com/account/edit"
+              href="/account-settings"
             >
               <span>
                 Account details
