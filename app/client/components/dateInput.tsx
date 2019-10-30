@@ -34,6 +34,7 @@ export interface DateInputProps {
   selectedDate?: Moment;
   defaultDate: Moment;
   labelText: string;
+  disabled?: boolean;
   // onChange: (newValue: DateInputState) => void; // TODO: UNCOMMENT WHEN INPUT ACTIVATED
 }
 
@@ -91,6 +92,7 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
           margin: 0
         }}
         aria-describedby="validation-message"
+        disabled={this.props.disabled}
       >
         <input
           css={dayMonthCss}

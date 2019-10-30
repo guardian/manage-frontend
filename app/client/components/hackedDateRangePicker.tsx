@@ -1,6 +1,7 @@
 import rawDateRangePickerCSS from "!!raw-loader!react-daterange-picker/dist/css/react-calendar.css";
 import { css, Global } from "@emotion/core";
 import { Moment } from "moment";
+import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, {
   PaginationArrowProps,
@@ -100,6 +101,22 @@ class HackedDateRangePicker extends DateRangePicker {
       // @ts-ignore
       super.isStartOrEndVisible = () => true;
     }
+
+    const lockedStartDate = (this.props as WrappedDateRangePickerProps)
+      .maybeLockedStartDate;
+    if (lockedStartDate) {
+      // overriding https://github.com/onefinestay/react-daterange-picker/blob/c73c9/src/DateRangePicker.jsx#L269-L288
+      // @ts-ignore
+      super.onSelectDate = (endDate: Moment) => {
+        // @ts-ignore
+        if (!this.isDateDisabled(endDate) && this.isDateSelectable(endDate)) {
+          // @ts-ignore
+          this.highlightRange(new DateRange(lockedStartDate, endDate));
+          // @ts-ignore
+          this.completeRangeSelection();
+        }
+      };
+    }
   }
 
   public componentDidMount(): void {
@@ -132,6 +149,7 @@ class HackedDateRangePicker extends DateRangePicker {
 export interface WrappedDateRangePickerProps extends Props {
   dateToAsterisk?: Moment;
   daysOfWeekToIconify: number[];
+  maybeLockedStartDate: Moment | null;
 }
 
 export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (

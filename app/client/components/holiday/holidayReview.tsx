@@ -9,7 +9,7 @@ import {
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
-import { Button } from "../buttons";
+import { Button, LinkButton } from "../buttons";
 import { CallCentreNumbers } from "../callCentreNumbers";
 import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -30,10 +30,11 @@ import {
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   convertRawPotentialHolidayStopDetail,
-  CreateHolidayStopsAsyncLoader,
-  CreateHolidayStopsResponse,
-  createPotentialHolidayStopsFetcher,
+  CreateOrAmendHolidayStopsAsyncLoader,
+  CreateOrAmendHolidayStopsResponse,
   DATE_INPUT_FORMAT,
+  getPotentialHolidayStopsFetcher,
+  HolidayStopRequest,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   PotentialHolidayStopsAsyncLoader,
@@ -42,45 +43,54 @@ import {
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
-const getPerformCreation = (
+const getPerformCreateOrAmendFetcher = (
   selectedRange: DateRange,
   subscriptionName: string,
-  isTestUser: boolean
+  isTestUser: boolean,
+  existingHolidayStopToAmend?: HolidayStopRequest
 ) => () =>
-  fetch(`/api/holidays`, {
-    credentials: "include",
-    method: "POST",
-    mode: "same-origin",
-    body: JSON.stringify({
-      start: selectedRange.start.format(DATE_INPUT_FORMAT),
-      end: selectedRange.end.format(DATE_INPUT_FORMAT),
-      subscriptionName
-    }),
-    headers: {
-      "Content-Type": "application/json",
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+  fetch(
+    `/api/holidays${
+      existingHolidayStopToAmend
+        ? `/${subscriptionName}/${existingHolidayStopToAmend.id}`
+        : ""
+    }`,
+    {
+      credentials: "include",
+      method: existingHolidayStopToAmend ? "PATCH" : "POST",
+      mode: "same-origin",
+      body: JSON.stringify({
+        start: selectedRange.start.format(DATE_INPUT_FORMAT),
+        end: selectedRange.end.format(DATE_INPUT_FORMAT),
+        subscriptionName
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        [MDA_TEST_USER_HEADER]: `${isTestUser}`
+      }
     }
-  });
+  );
 
-const getRenderCreationSuccess = (nav: NavigateFn) => (
-  response: CreateHolidayStopsResponse
+const getRenderCreateOrAmendSuccess = (nav: NavigateFn) => (
+  response: CreateOrAmendHolidayStopsResponse
 ) => {
   nav("confirmed", { replace: true });
   return null;
 };
 
-const renderCreationError = () => (
+const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
   <div css={{ textAlign: "left", marginTop: "10px" }}>
-    <h2>Sorry, the holiday suspension creation failed.</h2>
+    <h2>Sorry, {modificationKeyword} your holiday suspension failed.</h2>
     <p>
       To try again please go back and re-enter your dates. Alternatively, please
       call to speak to one of our customer service specialists.
     </p>
     <CallCentreNumbers prefixText="To contact us" />
+    <LinkButton to=".." text="Back" left />
   </div>
 );
 export interface HolidayReviewState {
-  isCreating: boolean;
+  isExecuting: boolean;
   isCheckboxConfirmed: boolean;
 }
 
@@ -89,7 +99,7 @@ export class HolidayReview extends React.Component<
   HolidayReviewState
 > {
   public state: HolidayReviewState = {
-    isCreating: false,
+    isExecuting: false,
     isCheckboxConfirmed: false
   };
   public render = () => (
@@ -103,7 +113,7 @@ export class HolidayReview extends React.Component<
                   isSharedHolidayDateChooserState(dateChooserState) &&
                   hasProduct(productDetail) ? (
                     <PotentialHolidayStopsAsyncLoader
-                      fetch={createPotentialHolidayStopsFetcher(
+                      fetch={getPotentialHolidayStopsFetcher(
                         true,
                         productDetail.subscription.subscriptionId,
                         dateChooserState.selectedRange.start,
@@ -214,17 +224,26 @@ export class HolidayReview extends React.Component<
               </>
             )}
           </div>
-          {this.state.isCreating ? (
+          {this.state.isExecuting ? (
             <div css={{ marginTop: "40px", textAlign: "right" }}>
-              <CreateHolidayStopsAsyncLoader
-                fetch={getPerformCreation(
+              <CreateOrAmendHolidayStopsAsyncLoader
+                fetch={getPerformCreateOrAmendFetcher(
                   dateChooserState.selectedRange,
                   productDetail.subscription.subscriptionId,
-                  productDetail.isTestUser
+                  productDetail.isTestUser,
+                  holidayStopsResponse.existingHolidayStopToAmend
                 )}
-                render={getRenderCreationSuccess(this.props.navigate)}
-                errorRender={renderCreationError}
-                loadingMessage="Creating your suspension..."
+                render={getRenderCreateOrAmendSuccess(this.props.navigate)}
+                errorRender={getRenderCreateOrAmendError(
+                  holidayStopsResponse.existingHolidayStopToAmend
+                    ? "amending"
+                    : "creating"
+                )}
+                loadingMessage={`${
+                  holidayStopsResponse.existingHolidayStopToAmend
+                    ? "Amending"
+                    : "Creating"
+                } your suspension...`}
                 spinnerScale={0.7}
                 inline
               />
@@ -271,7 +290,7 @@ export class HolidayReview extends React.Component<
                       .explicitConfirmationRequired &&
                     !this.state.isCheckboxConfirmed
                   }
-                  onClick={() => this.setState({ isCreating: true })}
+                  onClick={() => this.setState({ isExecuting: true })}
                   right
                   primary
                 />
