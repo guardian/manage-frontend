@@ -213,9 +213,9 @@ const renderHolidayStopsOverview = (
             {holidayStopsResponse.existing.length > 0 && (
               <OverviewRow heading="Expected Credits">
                 <CollatedCredits
-                  publicationsImpacted={holidayStopsResponse.existing.flatMap(
-                    _ => _.publicationsImpacted
-                  )}
+                  publicationsImpacted={holidayStopsResponse.existing
+                    .filter(isNotWithdrawn)
+                    .flatMap(_ => _.publicationsImpacted)}
                   currency={currency}
                 />
               </OverviewRow>
