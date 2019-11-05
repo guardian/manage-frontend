@@ -45,7 +45,7 @@ export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
         <div>
           <b>+1 917-900-4663</b> (outside USA)
         </div>
-        <div>9:15am - 6pm Monday - Friday (EST)</div>
+        <div>9am - 5pm on weekdays (EST/EDT)</div>
       </div>
     </Accordion>
   </div>
