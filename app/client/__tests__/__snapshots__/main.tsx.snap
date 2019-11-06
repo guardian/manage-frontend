@@ -40,9 +40,7 @@ exports[`Main renders something 1`] = `
         }
       }
     >
-      <nav
-        onKeyDown={[Function]}
-      >
+      <nav>
         <button
           aria-expanded={false}
           css={
