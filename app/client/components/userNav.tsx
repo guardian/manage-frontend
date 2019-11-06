@@ -81,7 +81,7 @@ export interface UserNavItem {
   border?: boolean;
 }
 
-const UserNav = () => {
+export const UserNav = () => {
   const [showMenu, setShowMenu] = useState(false);
   const wrapperRef = useRef<HTMLElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -201,5 +201,3 @@ const UserNav = () => {
     </nav>
   );
 };
-
-export default UserNav;
