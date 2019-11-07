@@ -1,6 +1,5 @@
 import { css } from "@emotion/core";
-import React from "react";
-import { findDOMNode } from "react-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
 import palette from "../colours";
 import { expanderButtonCss } from "../expanderButton";
@@ -69,13 +68,10 @@ const signOutIcon = (
   </svg>
 );
 
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
-
+const domain: string =
+  typeof window !== "undefined" && window.guardian
+    ? window.guardian.domain
+    : conf.DOMAIN;
 const profileHostName = `https://profile.${domain}`;
 
 export interface UserNavItem {
@@ -85,12 +81,19 @@ export interface UserNavItem {
   border?: boolean;
 }
 
-export class UserNav extends React.Component {
-  public state = {
-    showMenu: false
-  };
+export const UserNav = () => {
+  const [showMenu, setShowMenu] = useState(false);
+  const wrapperRef = useRef<HTMLElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  public userNavItems: UserNavItem[] = [
+  useEffect(() => {
+    addListeners();
+    return () => {
+      removeListeners();
+    };
+  });
+
+  const userNavItems: UserNavItem[] = [
     {
       title: "Comments & replies",
       link: "/profile/user" // note this hits a redirect/proxy endpoint
@@ -128,74 +131,73 @@ export class UserNav extends React.Component {
     }
   ];
 
-  private buttonElement = React.createRef<HTMLButtonElement>();
-
-  public render(): JSX.Element {
-    return (
-      <nav onKeyDown={this.handleKeyDown}>
-        {/* TODO refactor to full use ExpanderButton */}
-        <button
-          css={expanderButtonCss(palette.white, palette.yellow.medium)(
-            this.state.showMenu
-          )}
-          type="button"
-          aria-expanded={this.state.showMenu}
-          onClick={() => this.setState({ showMenu: !this.state.showMenu })}
-          ref={this.buttonElement}
-        >
-          My account
-        </button>
-
-        <ul role="tablist" css={userNavMenuCss(this.state.showMenu)}>
-          {this.userNavItems.map((item: UserNavItem) => (
-            <React.Fragment key={item.title}>
-              <li>
-                <a href={item.link} css={userNavItemCss}>
-                  {item.icon && (
-                    <span
-                      css={{
-                        marginRight: "5px",
-                        display: "block",
-                        height: "0.8em",
-                        width: "0.8em",
-                        " svg": { display: "block" }
-                      }}
-                    >
-                      {item.icon}
-                    </span>
-                  )}
-                  <span>{item.title}</span>
-                </a>
-              </li>
-              {item.border ? <hr css={userNavBorderCss} /> : false}
-            </React.Fragment>
-          ))}
-        </ul>
-      </nav>
-    );
-  }
-
-  public componentDidMount(): void {
-    document.addEventListener("click", this.handleDissmissiveClick, false);
-  }
-
-  public componentWillUnmount(): void {
-    document.removeEventListener("click", this.handleDissmissiveClick, false);
-  }
-
-  private handleDissmissiveClick = (event: any) => {
-    const thisInDOM = findDOMNode(this);
-    if (thisInDOM && event.target && !thisInDOM.contains(event.target)) {
-      this.setState({ showMenu: false });
-    }
-  };
-
-  private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.keyCode === 27 && this.state.showMenu) {
-      this.setState({ showMenu: false });
-      if (this.buttonElement.current) {
-        this.buttonElement.current.focus();
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.code === "Escape" && showMenu) {
+      setShowMenu(false);
+      if (buttonRef.current) {
+        buttonRef.current.focus();
       }
     }
   };
-}
+
+  const handleDismissiveClick = (event: any) => {
+    if (
+      wrapperRef.current &&
+      event.target &&
+      !wrapperRef.current.contains(event.target)
+    ) {
+      setShowMenu(false);
+    }
+  };
+
+  const addListeners = () => {
+    document.addEventListener("keydown", handleKeyDown, false);
+    document.addEventListener("click", handleDismissiveClick, false);
+  };
+
+  const removeListeners = () => {
+    document.removeEventListener("keydown", handleKeyDown, false);
+    document.removeEventListener("click", handleDismissiveClick, false);
+  };
+
+  return (
+    <nav ref={wrapperRef}>
+      {/* TODO refactor to full use ExpanderButton */}
+      <button
+        css={expanderButtonCss(palette.white, palette.yellow.medium)(showMenu)}
+        type="button"
+        aria-expanded={showMenu}
+        onClick={() => setShowMenu(!showMenu)}
+        ref={buttonRef}
+      >
+        My account
+      </button>
+
+      <ul role="tablist" css={userNavMenuCss(showMenu)}>
+        {userNavItems.map((item: UserNavItem) => (
+          <React.Fragment key={item.title}>
+            <li>
+              <a href={item.link} css={userNavItemCss}>
+                {item.icon && (
+                  <span
+                    css={{
+                      marginRight: "5px",
+                      display: "block",
+                      height: "0.8em",
+                      width: "0.8em",
+                      " svg": { display: "block" }
+                    }}
+                  >
+                    {item.icon}
+                  </span>
+                )}
+                <span>{item.title}</span>
+              </a>
+            </li>
+            {item.border ? <hr css={userNavBorderCss} /> : false}
+          </React.Fragment>
+        ))}
+      </ul>
+    </nav>
+  );
+};
