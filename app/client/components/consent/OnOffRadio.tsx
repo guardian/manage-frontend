@@ -1,12 +1,7 @@
 import { css } from "@emotion/core";
 import { ItemState } from "@guardian/consent-management-platform/lib/types";
-import {
-  focusHalo,
-  palette,
-  size,
-  space,
-  transitions
-} from "@guardian/src-foundations";
+import { palette, size, space, transitions } from "@guardian/src-foundations";
+import { focusHalo } from "@guardian/src-foundations/accessibility";
 import React, { Component } from "react";
 
 let idCounter: number = 0;

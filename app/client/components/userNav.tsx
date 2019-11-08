@@ -1,53 +1,67 @@
 import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
+// import { space } from "@guardian/src-foundations/space";
 import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { expanderButtonCss } from "../expanderButton";
+import { minWidth } from "../styles/breakpoints";
 
 const userNavMenuCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
-    background: palette.white,
+    background: palette.brand.main,
+    borderTop: `1px solid ${palette.brand.pastel}`,
     position: "absolute",
     top: "3.05rem",
+    left: 0,
+    // width: `calc(100% - ${space["6"]}px)`,
+    width: "calc(100% - 30px)",
+    maxWidth: "350px",
     zIndex: 1071,
     listStyle: "none",
     lineHeight: "1.375rem",
     boxShadow: "0 0 0 0.0625rem rgba(0,0,0,0.1)",
-    borderRadius: "0.1875rem",
     margin: 0,
-    padding: "0.375rem 0",
+    padding: 0,
     overflow: "hidden",
     " li": {
       padding: 0,
       margin: 0
+    },
+    [minWidth.desktop]: {
+      " .hide--gte-desktop": {
+        display: "none"
+      }
     }
   });
 
 const userNavItemCss = css({
-  padding: "7px 20px 15px 30px",
+  padding: "9px 30px 8px",
   textDecoration: "none",
-  color: "currentColor",
+  color: palette.neutral["100"],
   whiteSpace: "nowrap",
   position: "relative",
   marginTop: "-1px",
   display: "flex",
   alignItems: "center",
   ":hover, :focus": {
-    backgroundColor: palette.neutral["6"],
+    backgroundColor: palette.brand.dark,
     textDecoration: "none"
   },
   ":focus": {
     outline: 0
+  },
+  ":after": {
+    content: "''",
+    display: "block",
+    zIndex: 1,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: "calc(100% - 30px)",
+    height: "1px",
+    backgroundColor: `${palette.brand.pastel}`
   }
-});
-
-const userNavBorderCss = css({
-  height: "0.0625rem",
-  background: palette.neutral["6"],
-  border: 0,
-  display: "block",
-  margin: "0 0 0 1.875rem"
 });
 
 const signOutIcon = (
@@ -57,7 +71,7 @@ const signOutIcon = (
         fillRule="evenodd"
         clipRule="evenodd"
         d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
-        fill="#333"
+        fill="#fff"
       />
     </g>
     <defs>
@@ -79,6 +93,7 @@ export interface UserNavItem {
   link: string;
   icon?: JSX.Element;
   border?: boolean;
+  hideAtDesktop?: boolean;
 }
 
 export const UserNav = () => {
@@ -95,34 +110,38 @@ export const UserNav = () => {
 
   const userNavItems: UserNavItem[] = [
     {
-      title: "Comments & replies",
-      link: "/profile/user" // note this hits a redirect/proxy endpoint
-    },
-    {
       title: "Public profile",
-      link: `/public-settings`
+      link: `/public-settings`,
+      hideAtDesktop: true
     },
     {
       title: "Account details",
-      link: `/account-settings`
+      link: `/account-settings`,
+      hideAtDesktop: true
     },
     {
       title: "Emails & marketing",
       link: `/email-prefs`,
-      border: true
+      hideAtDesktop: true
     },
     {
       title: "Membership",
-      link: "/membership"
+      link: "/membership",
+      hideAtDesktop: true
     },
     {
       title: "Contributions",
-      link: "/contributions"
+      link: "/contributions",
+      hideAtDesktop: true
     },
     {
       title: "Subscriptions",
       link: "/subscriptions",
-      border: true
+      hideAtDesktop: true
+    },
+    {
+      title: "Comments & replies",
+      link: "/profile/user" // note this hits a redirect/proxy endpoint
     },
     {
       title: "Sign out",
@@ -161,10 +180,20 @@ export const UserNav = () => {
   };
 
   return (
-    <nav ref={wrapperRef}>
+    <nav
+      ref={wrapperRef}
+      css={{
+        marginRight: "auto",
+        [minWidth.desktop]: {
+          marginRight: "30px"
+        }
+      }}
+    >
       {/* TODO refactor to full use ExpanderButton */}
       <button
-        css={expanderButtonCss(palette.white, palette.yellow.medium)(showMenu)}
+        css={expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
+          showMenu
+        )}
         type="button"
         aria-expanded={showMenu}
         onClick={() => setShowMenu(!showMenu)}
@@ -176,7 +205,9 @@ export const UserNav = () => {
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
         {userNavItems.map((item: UserNavItem) => (
           <React.Fragment key={item.title}>
-            <li>
+            <li
+              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
+            >
               <a href={item.link} css={userNavItemCss}>
                 {item.icon && (
                   <span
@@ -191,10 +222,15 @@ export const UserNav = () => {
                     {item.icon}
                   </span>
                 )}
-                <span>{item.title}</span>
+                <span
+                  css={{
+                    lineHeight: "33px"
+                  }}
+                >
+                  {item.title}
+                </span>
               </a>
             </li>
-            {item.border ? <hr css={userNavBorderCss} /> : false}
           </React.Fragment>
         ))}
       </ul>
