@@ -266,6 +266,7 @@ interface State {
 }
 
 interface Props {
+  abTestVariant: string;
   hideScrollBar: () => void;
 }
 
@@ -660,7 +661,8 @@ export class PrivacySettings extends Component<Props, State> {
     const msgData: CmpMsgData = {
       allowedPurposes,
       allowedVendors,
-      iabVendorList: this.rawVendorList
+      iabVendorList: this.rawVendorList,
+      abTestVariant: this.props.abTestVariant
     };
 
     // Notify parent that consent has been saved
