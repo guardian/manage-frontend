@@ -17,6 +17,7 @@ export interface Globals extends CommonGlobals {
   };
   abTest?: AbTest;
   identityDetails: IdentityDetails;
+  abTestVariant?: string;
 }
 
 declare global {

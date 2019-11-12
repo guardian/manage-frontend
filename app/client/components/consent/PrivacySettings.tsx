@@ -266,6 +266,7 @@ interface State {
 }
 
 interface Props {
+  abTestVariant: string;
   hideScrollBar: () => void;
 }
 
@@ -323,6 +324,8 @@ export class PrivacySettings extends Component<Props, State> {
     const firstIabPurposeList = iabPurposesList.slice(0, 3);
     const secondIabPurposeList = iabPurposesList.slice(3);
     const { iabNullResponses } = this.state;
+    const { abTestVariant } = this.props;
+    const showCancel = abTestVariant !== "CmpUiNonDismissable-variant";
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
@@ -427,18 +430,20 @@ export class PrivacySettings extends Component<Props, State> {
                         privacy policy
                       </a>.
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        close();
-                      }}
-                      css={css`
-                        ${buttonStyles};
-                        ${blueButtonStyles};
-                      `}
-                    >
-                      Cancel
-                    </button>
+                    {showCancel && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          close();
+                        }}
+                        css={css`
+                          ${buttonStyles};
+                          ${blueButtonStyles};
+                        `}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
@@ -660,7 +665,8 @@ export class PrivacySettings extends Component<Props, State> {
     const msgData: CmpMsgData = {
       allowedPurposes,
       allowedVendors,
-      iabVendorList: this.rawVendorList
+      iabVendorList: this.rawVendorList,
+      abTestVariant: this.props.abTestVariant
     };
 
     // Notify parent that consent has been saved

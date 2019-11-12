@@ -5,16 +5,18 @@ import React from "react";
 import resetCSS from /* preval */ "../../styles/reset-css";
 import { ConsentManagementPortal } from "./ConsentMangementPortal";
 
-export const App = () => (
-  <>
-    <Global styles={css(`${resetCSS}`)} />
-    <Global
-      styles={css(`
-      body {
-        overflow-x: hidden;
-        background-color: ${palette.brand.main};
-      }`)}
-    />
-    <ConsentManagementPortal />
-  </>
-);
+export const App = (props: { abTestVariant: string }) => {
+  return (
+    <>
+      <Global styles={css(`${resetCSS}`)} />
+      <Global
+        styles={css(`
+        body {
+          overflow-x: hidden;
+          background-color: ${palette.brand.main};
+        }`)}
+      />
+      <ConsentManagementPortal abTestVariant={props.abTestVariant} />
+    </>
+  );
+};
