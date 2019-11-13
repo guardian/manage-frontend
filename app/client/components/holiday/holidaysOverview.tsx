@@ -36,6 +36,7 @@ import {
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopsResponseContext,
+  isNotWithdrawn,
   momentiseDateStr
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
@@ -79,9 +80,9 @@ const renderHolidayStopsOverview = (
   );
 
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-    holidayStopsResponse.existing.flatMap(
-      existing => existing.publicationsImpacted
-    ),
+    holidayStopsResponse.existing
+      .filter(isNotWithdrawn)
+      .flatMap(existing => existing.publicationsImpacted),
     renewalDateMoment
   );
 
@@ -212,9 +213,9 @@ const renderHolidayStopsOverview = (
             {holidayStopsResponse.existing.length > 0 && (
               <OverviewRow heading="Expected Credits">
                 <CollatedCredits
-                  publicationsImpacted={holidayStopsResponse.existing.flatMap(
-                    _ => _.publicationsImpacted
-                  )}
+                  publicationsImpacted={holidayStopsResponse.existing
+                    .filter(isNotWithdrawn)
+                    .flatMap(_ => _.publicationsImpacted)}
                   currency={currency}
                 />
               </OverviewRow>
@@ -225,6 +226,7 @@ const renderHolidayStopsOverview = (
                   data={holidayStopsResponse.existing}
                   subscription={productDetail.subscription}
                   issueKeyword={props.productType.holidayStops.issueKeyword}
+                  reloadParent={reload}
                 />
               ) : (
                 "You currently don't have any scheduled suspensions."
