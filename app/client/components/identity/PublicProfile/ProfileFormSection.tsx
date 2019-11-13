@@ -47,7 +47,7 @@ const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
   <Form>
     <fieldset css={fieldSetCss} disabled={props.isSubmitting}>
       {!hasUsername(props.user) ? usernameInput(props) : null}
-      <FormTextField name="location" label="Label" formikProps={props} />
+      <FormTextField name="location" label="Location" formikProps={props} />
       <FormTextAreaField name="aboutMe" label="About Me" formikProps={props} />
       <FormTextAreaField
         name="interests"
