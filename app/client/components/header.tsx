@@ -1,6 +1,7 @@
-import { palette } from "@guardian/src-foundations";
+import { breakpoints, palette } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
+import { gridBase } from "../styles/grid";
 import { Roundel } from "./svgs/roundel";
 import { UserNav } from "./userNav";
 
@@ -10,43 +11,40 @@ const Header = () => (
       backgroundColor: palette.brand.main,
       padding: "0.15625rem 0 0",
       minHeight: "50px",
-      maxHeight: "50px",
       overflow: "visible",
       position: "relative",
       borderBottom: `solid 1px ${palette.brand.pastel}`,
-      zIndex: 1070
+      zIndex: 1070,
+      [minWidth.desktop]: {
+        minHeight: "82px"
+      }
     }}
   >
     <div
       css={{
-        paddingLeft: "1.25rem",
-        paddingRight: "1.25rem",
-        maxWidth: "calc(940px + 2.5rem)",
-        margin: "auto",
-        display: "flex",
-        justifyContent: "flex-end",
+        ...gridBase,
+        maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
         alignItems: "center",
-        height: "100%"
+        margin: "auto"
       }}
     >
-      <span
+      <h1
         css={{
-          display: "none",
+          fontSize: "1.75rem",
+          fontWeight: "bold",
           color: "white",
-          marginRight: "auto",
+          display: "none",
           [minWidth.desktop]: {
-            display: "block"
+            display: "block",
+            gridColumnStart: 1,
+            gridColumnEnd: "span 8"
           }
         }}
       >
-        Hi there
-      </span>
+        My account
+      </h1>
       <UserNav />
-      <Roundel
-        size={39}
-        fillMain={palette.neutral["100"]}
-        fillG={palette.brand.main}
-      />
+      <Roundel fillMain={palette.neutral["100"]} fillG={palette.brand.main} />
     </div>
   </header>
 );

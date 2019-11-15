@@ -4,7 +4,11 @@ import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
-import { PageContainer, PageHeaderContainer } from "../../page";
+import {
+  PageContainer,
+  PageHeaderContainer,
+  PageNavAndContentContainer
+} from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -13,7 +17,6 @@ import {
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
-import { MarginWrapper } from "../MarginWrapper";
 import { User } from "../models";
 import { PageSection } from "../PageSection";
 import { aCss } from "../sharedStyles";
@@ -82,16 +85,14 @@ export const PublicProfile = (props: { path?: string }) => {
   const content = () => (
     <>
       <PageContainer>
-        <MarginWrapper>
-          <p css={{ fontSize: "14px" }}>
-            These details will be publicly visible to everyone who sees your
-            profile in the{" "}
-            <a css={aCss} href={IdentityLocations.COMMUNITY_FAQS}>
-              commenting
-            </a>{" "}
-            section.
-          </p>
-        </MarginWrapper>
+        <p css={{ fontSize: "14px" }}>
+          These details will be publicly visible to everyone who sees your
+          profile in the{" "}
+          <a css={aCss} href={IdentityLocations.COMMUNITY_FAQS}>
+            commenting
+          </a>{" "}
+          section.
+        </p>
       </PageContainer>
       <PageContainer>
         <Lines n={1} />
@@ -130,10 +131,12 @@ export const PublicProfile = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      <PageContainer>
-        {error ? <GenericErrorMessage ref={errorRef} /> : null}
-      </PageContainer>
-      {loading ? loader : content()}
+      <PageNavAndContentContainer selectedNavItem={navLinks.publicProfile}>
+        <PageContainer>
+          {error ? <GenericErrorMessage ref={errorRef} /> : null}
+        </PageContainer>
+        {loading ? loader : content()}
+      </PageNavAndContentContainer>
     </>
   );
 };

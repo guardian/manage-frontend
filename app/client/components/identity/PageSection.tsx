@@ -2,7 +2,6 @@ import React, { FC, ReactNode } from "react";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
-import { MarginWrapper } from "./MarginWrapper";
 
 interface PageSectionProps {
   title?: string;
@@ -53,39 +52,37 @@ const getSubtext = (subtext: PageSectionProps["subtext"]) => (
 export const PageSection: FC<PageSectionProps> = props => {
   const { children, description, title, subtext } = props;
   return (
-    <MarginWrapper>
+    <div
+      css={{
+        [minWidth.desktop]: {
+          display: "flex"
+        }
+      }}
+    >
       <div
         css={{
           [minWidth.desktop]: {
-            display: "flex"
+            paddingRight: "100px",
+            boxSizing: "content-box",
+            flexBasis: "220px",
+            minWidth: "220px"
           }
         }}
       >
-        <div
-          css={{
-            [minWidth.desktop]: {
-              paddingRight: "100px",
-              boxSizing: "content-box",
-              flexBasis: "220px",
-              minWidth: "220px"
-            }
-          }}
-        >
-          {title && getTitle(title)}
-          {description && getDescription(description)}
-          {subtext && getSubtext(subtext)}
-        </div>
-        <div
-          css={{
-            [minWidth.desktop]: {
-              maxWidth: "460px",
-              flexGrow: 1
-            }
-          }}
-        >
-          {children}
-        </div>
+        {title && getTitle(title)}
+        {description && getDescription(description)}
+        {subtext && getSubtext(subtext)}
       </div>
-    </MarginWrapper>
+      <div
+        css={{
+          [minWidth.desktop]: {
+            maxWidth: "460px",
+            flexGrow: 1
+          }
+        }}
+      >
+        {children}
+      </div>
+    </div>
   );
 };

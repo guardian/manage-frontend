@@ -20,8 +20,10 @@ const linkCss = {
 export const MembershipFAQs = (props: RouteableProps) => (
   <>
     <PageHeaderContainer selectedNavItem={navLinks.membership}>
-      <h1>Frequently asked questions</h1>
-      <p>Common questions about Guardian Members</p>
+      <div>
+        <h1>Frequently asked questions</h1>
+        <p>Common questions about Guardian Members</p>
+      </div>
     </PageHeaderContainer>
 
     <PageContainerSection>
@@ -78,10 +80,11 @@ export const MembershipFAQs = (props: RouteableProps) => (
               access to our crosswords. You can download the app by visiting{" "}
               <a css={linkCss} href="https://theguardian.com/guardianapp">
                 theguardian.com/guardianapp
-              </a>, and then you simply need to sign in with your Guardian
-              Members login details. If you encounter any difficulties accessing
-              the premium tier, please ensure you have the latest version of the
-              app downloaded. Once in the app you can choose between the UK, US,
+              </a>
+              , and then you simply need to sign in with your Guardian Members
+              login details. If you encounter any difficulties accessing the
+              premium tier, please ensure you have the latest version of the app
+              downloaded. Once in the app you can choose between the UK, US,
               Australia or International edition.
             </p>
             <p>
@@ -114,7 +117,8 @@ export const MembershipFAQs = (props: RouteableProps) => (
             forgotten or need to retrieve your password you can{" "}
             <a css={linkCss} href="https://profile.theguardian.com/reset">
               reset it here
-            </a>.
+            </a>
+            .
           </div>
         </div>
         <div title="What happens if I don't want to receive membership emails?">
@@ -176,7 +180,8 @@ export const MembershipFAQs = (props: RouteableProps) => (
               href="http://www.theguardian.com/help/privacy-policy"
             >
               privacy policy
-            </a>.
+            </a>
+            .
           </div>
         </div>
         <div title="What happens if I want to change my membership tier?">
@@ -199,7 +204,8 @@ export const MembershipFAQs = (props: RouteableProps) => (
               href="https://membership.theguardian.com/tier/cancel"
             >
               following the instructions on this page
-            </a>. Your membership will run until the end of your current payment
+            </a>
+            . Your membership will run until the end of your current payment
             term and then renew on an ongoing basis unless you choose to cancel.
           </div>
         </div>
@@ -211,7 +217,8 @@ export const MembershipFAQs = (props: RouteableProps) => (
               href="https://www.theguardian.com/info/2014/sep/09/guardian-membership-terms-and-conditions"
             >
               terms and conditions here
-            </a>.
+            </a>
+            .
           </div>
         </div>
         <div title="What is Guardian Live?">
@@ -255,7 +262,8 @@ export const MembershipFAQs = (props: RouteableProps) => (
               href="https://www.theguardian.com/guardian-masterclasses/faqs"
             >
               frequently asked questions are available here
-            </a>.
+            </a>
+            .
           </div>
         </div>
       </Accordion>

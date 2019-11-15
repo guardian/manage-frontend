@@ -1,7 +1,8 @@
 import React from "react";
+import { minWidth } from "../../styles/breakpoints";
 
 export interface RoundelProps {
-  size: number;
+  size?: number;
   fillMain?: string;
   fillG?: string;
 }
@@ -9,7 +10,9 @@ export interface RoundelProps {
 export const Roundel = (props: RoundelProps) => (
   <a
     css={{
-      alignSelf: "flex-start"
+      gridColumnStart: -2,
+      gridColumnEnd: "span 1",
+      marginLeft: "auto"
     }}
     href="https://www.theguardian.com"
     title="The Guardian - Back to home"
@@ -18,8 +21,14 @@ export const Roundel = (props: RoundelProps) => (
       viewBox="0 0 56 56"
       xmlns="http://www.w3.org/2000/svg"
       css={{
-        width: `${props.size}px`,
-        height: `${props.size}px`
+        width: `${props.size || 39}px`,
+        height: `${props.size || 39}px`,
+        ...(!props.size && {
+          [minWidth.wide]: {
+            width: "51px",
+            height: "51px"
+          }
+        })
       }}
     >
       <path

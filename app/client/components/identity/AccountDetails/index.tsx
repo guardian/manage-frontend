@@ -4,14 +4,17 @@ import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
-import { PageContainer, PageHeaderContainer } from "../../page";
+import {
+  PageContainer,
+  PageHeaderContainer,
+  PageNavAndContentContainer
+} from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
   GenericErrorMessageRef
 } from "../GenericErrorMessage";
 import { Users } from "../identity";
-import { MarginWrapper } from "../MarginWrapper";
 import { User } from "../models";
 import { textSmall } from "../sharedStyles";
 import { AccountDetailsFormSection } from "./AccountFormSection";
@@ -82,11 +85,9 @@ export const AccountDetails = (props: { path?: string }) => {
     <>
       <div ref={pageTopRef} css={{ display: "none" }} />
       <PageContainer>
-        <MarginWrapper>
-          <span css={textSmall}>
-            These details will only be visible to you and the Guardian.
-          </span>
-        </MarginWrapper>
+        <span css={textSmall}>
+          These details will only be visible to you and the Guardian.
+        </span>
       </PageContainer>
       <PageContainer>
         <AccountDetailsFormSection
@@ -119,12 +120,14 @@ export const AccountDetails = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      {!error || (
-        <PageContainer>
-          <GenericErrorMessage ref={errorRef} />
-        </PageContainer>
-      )}
-      {loading ? loader : content()}
+      <PageNavAndContentContainer selectedNavItem={navLinks.accountDetails}>
+        {!error || (
+          <PageContainer>
+            <GenericErrorMessage ref={errorRef} />
+          </PageContainer>
+        )}
+        {loading ? loader : content()}
+      </PageNavAndContentContainer>
     </>
   );
 };

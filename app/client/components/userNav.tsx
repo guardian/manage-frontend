@@ -1,6 +1,5 @@
 import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
-// import { space } from "@guardian/src-foundations/space";
 import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
 import { expanderButtonCss } from "../expanderButton";
@@ -23,14 +22,34 @@ const userNavMenuCss = (showMenu: boolean) =>
     boxShadow: "0 0 0 0.0625rem rgba(0,0,0,0.1)",
     margin: 0,
     padding: 0,
-    overflow: "hidden",
     " li": {
       padding: 0,
       margin: 0
     },
     [minWidth.desktop]: {
+      width: "auto",
+      maxWidth: "none",
+      left: "auto",
+      right: "-16px",
+      top: "auto",
+      borderTop: "none",
+      background: palette.neutral["100"],
+      "li:not(:last-child)": {
+        borderBottom: `1px solid ${palette.neutral["86"]}`
+      },
       " .hide--gte-desktop": {
         display: "none"
+      },
+      ":before": {
+        content: "''",
+        width: 0,
+        height: 0,
+        position: "absolute",
+        top: "-8px",
+        right: "12px",
+        borderLeft: "8px solid transparent",
+        borderRight: "8px solid transparent",
+        borderBottom: `8px solid ${palette.neutral["100"]}`
       }
     }
   });
@@ -61,6 +80,19 @@ const userNavItemCss = css({
     width: "calc(100% - 30px)",
     height: "1px",
     backgroundColor: `${palette.brand.pastel}`
+  },
+  [minWidth.desktop]: {
+    padding: "18px 14px",
+    color: palette.neutral["20"],
+    ".icon--fill": {
+      fill: palette.neutral["20"]
+    },
+    ":after": {
+      content: "none"
+    },
+    ":hover, :focus": {
+      backgroundColor: palette.neutral["97"]
+    }
   }
 });
 
@@ -72,6 +104,7 @@ const signOutIcon = (
         clipRule="evenodd"
         d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
         fill="#fff"
+        className="icon--fill"
       />
     </g>
     <defs>
@@ -183,9 +216,12 @@ export const UserNav = () => {
     <nav
       ref={wrapperRef}
       css={{
-        marginRight: "auto",
+        whiteSpace: "nowrap",
         [minWidth.desktop]: {
-          marginRight: "30px"
+          position: "relative",
+          gridColumnStart: "-4",
+          gridColumnEnd: "span 2",
+          marginLeft: "auto"
         }
       }}
     >
@@ -224,7 +260,10 @@ export const UserNav = () => {
                 )}
                 <span
                   css={{
-                    lineHeight: "33px"
+                    lineHeight: "33px",
+                    [minWidth.desktop]: {
+                      lineHeight: "normal"
+                    }
                   }}
                 >
                   {item.title}
