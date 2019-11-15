@@ -8,11 +8,12 @@ import { sans } from "../styles/fonts";
 
 const navCss = css({
   width: "100%",
-  position: "relative",
   margin: 0,
   padding: 0,
   borderBottom: 0,
-  listStyleType: "none"
+  listStyleType: "none",
+  position: "sticky",
+  top: "1rem"
 });
 
 const navLinkCss = (isSelected: boolean | undefined) =>
@@ -23,7 +24,6 @@ const navLinkCss = (isSelected: boolean | undefined) =>
     fontFamily: sans,
     display: "block",
     boxSizing: "border-box",
-    minHeight: "36px",
     padding: "4px 0 0 5px",
     letterSpacing: "-0.02rem",
     textAlign: "left",

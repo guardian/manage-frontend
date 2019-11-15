@@ -17,10 +17,19 @@ export const PageNavAndContentContainer: React.SFC<
     css={{
       ...gridBase,
       maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
-      margin: "0 auto"
+      margin: "0 auto",
+      paddingBottom: "1rem",
+      [minWidth.desktop]: {
+        ...(gridBase[minWidth.desktop] as object),
+        paddingBottom: "9rem"
+      },
+      [minWidth.wide]: {
+        ...(gridBase[minWidth.wide] as object),
+        paddingBottom: "12rem"
+      }
     }}
   >
-    <div
+    <nav
       css={{
         gridColumnStart: 1,
         marginTop: "calc(-1 * (1.25rem + 36px))",
@@ -38,30 +47,30 @@ export const PageNavAndContentContainer: React.SFC<
       }}
     >
       <Nav {...props} />
-    </div>
-    <div
+    </nav>
+    <section
       css={{
         gridColumnStart: 1,
         gridColumnEnd: "span 4 ",
 
         [minWidth.tablet]: {
           gridColumnStart: 1,
-          gridColumnEnd: "span 12"
+          gridColumnEnd: "span 11"
         },
 
         [minWidth.desktop]: {
           gridColumnStart: 5,
-          gridColumnEnd: "span 8"
+          gridColumnEnd: "span 7"
         },
 
         [minWidth.wide]: {
           gridColumnStart: 6,
-          gridColumnEnd: "span 10"
+          gridColumnEnd: "span 9"
         }
       }}
     >
       {props.children}
-    </div>
+    </section>
   </div>
 );
 
@@ -83,13 +92,7 @@ export const PageContainer: React.SFC<{ noVerticalMargin?: true }> = ({
 export const PageContainerSection: React.SFC<{}> = ({ children }) => (
   <div
     css={{
-      maxWidth: "calc(45rem + 1.25rem)",
-      margin: "1.8125rem auto 0",
-      padding: "0 1.25rem",
-
-      [minWidth.tablet]: {
-        maxWidth: "calc(45rem + 2.5rem)"
-      }
+      margin: "1.8125rem auto 0"
     }}
   >
     {children}
@@ -122,9 +125,6 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
         maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
         margin: "auto",
         color: palette.neutral["100"],
-        [minWidth.desktop]: {
-          position: "relative"
-        },
         "& h1": {
           fontSize: "1.5rem",
           lineHeight: "2rem",
