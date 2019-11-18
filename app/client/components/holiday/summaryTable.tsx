@@ -10,7 +10,9 @@ import palette from "../../colours";
 import { ExpanderButton } from "../../expanderButton";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
+import { ReFetch } from "../asyncLoader";
 import { CollatedCredits } from "./collatedCredits";
+import { ExistingHolidayStopActions } from "./existingHolidayStopActions";
 import {
   isSharedHolidayDateChooserState,
   SharedHolidayDateChooserState
@@ -31,13 +33,14 @@ export interface SummaryTableProps {
   subscription: Subscription;
   issueKeyword: string;
   alternateSuspendedColumnHeading?: string;
+  reloadParent?: ReFetch;
 }
 
-const friendlyDateFormatPrefix = "D MMMM";
+const friendlyDateFormatPrefix = "D\xa0MMMM"; // non-breaking space
 
-const friendlyDateFormatSuffix = " YYYY";
+const friendlyDateFormatSuffix = "\xa0YYYY"; // non-breaking space
 
-const formatDateRangeAsFriendly = (range: DateRange) =>
+export const formatDateRangeAsFriendly = (range: DateRange) =>
   range.start.format(
     friendlyDateFormatPrefix +
       (range.start.year() !== range.end.year() ? friendlyDateFormatSuffix : "")
@@ -47,7 +50,8 @@ const formatDateRangeAsFriendly = (range: DateRange) =>
 
 interface SummaryTableRowProps extends MinimalHolidayStopRequest {
   issueKeyword: string;
-  shouldShowExpectedCredit: boolean;
+  isOperatingOnNewHolidayStop: boolean;
+  reloadParent?: ReFetch;
   currency?: string;
   asTD?: true;
 }
@@ -87,34 +91,45 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
     </ExpanderButton>
   );
 
+  const withdrawnRelatedCSS = props.withdrawnDate
+    ? { textDecoration: "line-through" }
+    : {};
+
   return props.asTD ? (
     <tr>
-      <td>{dateRangeStr}</td>
-      <td>{detailPart}</td>
-      {props.shouldShowExpectedCredit && (
-        <td>
+      <td css={withdrawnRelatedCSS}>{dateRangeStr}</td>
+      <td css={withdrawnRelatedCSS}>{detailPart}</td>
+      <td>
+        {props.isOperatingOnNewHolidayStop ? (
           <CollatedCredits {...props} />
-        </td>
-      )}
+        ) : (
+          <ExistingHolidayStopActions {...props} />
+        )}
+      </td>
     </tr>
   ) : (
-    <div css={{ marginBottom: "20px" }}>
+    <div css={{ marginBottom: "20px", ...withdrawnRelatedCSS }}>
       <div
         css={{
           ...cellCss,
+          ...withdrawnRelatedCSS,
           backgroundColor: palette.neutral["7"],
           borderBottom: 0
         }}
       >
         {dateRangeStr}
       </div>
-      <div css={cellCss}>{detailPart}</div>
-      {props.shouldShowExpectedCredit && (
-        <div css={{ ...cellCss, borderTop: 0 }}>
-          <strong>Expected Credits</strong>
-          <CollatedCredits {...props} withBullet />
-        </div>
-      )}
+      <div css={{ ...cellCss, ...withdrawnRelatedCSS }}>{detailPart}</div>
+      <div css={{ ...cellCss, borderTop: 0 }}>
+        {props.isOperatingOnNewHolidayStop ? (
+          <>
+            <strong>Expected Credits</strong>
+            <CollatedCredits {...props} withBullet />
+          </>
+        ) : (
+          <ExistingHolidayStopActions {...props} />
+        )}
+      </div>
     </div>
   );
 };
@@ -136,7 +151,9 @@ export const SummaryTable = (props: SummaryTableProps) => {
     ? mainPlan.currency
     : undefined;
 
-  const shouldShowExpectedCredit = isSharedHolidayDateChooserState(props.data);
+  const isOperatingOnNewHolidayStop = isSharedHolidayDateChooserState(
+    props.data
+  );
 
   return (
     <div
@@ -171,16 +188,20 @@ export const SummaryTable = (props: SummaryTableProps) => {
             <th css={{ minWidth: "250px" }}>
               {props.alternateSuspendedColumnHeading || "Suspended"}
             </th>
-            {shouldShowExpectedCredit && <th>Expected Credits</th>}
+            {isOperatingOnNewHolidayStop ? (
+              <th>Expected Credits</th>
+            ) : (
+              <th>Actions</th>
+            )}
           </tr>
           {holidayStopRequestsList.map((holidayStopRequest, index) => (
             <SummaryTableRow
-              asTD
-              shouldShowExpectedCredit={shouldShowExpectedCredit}
-              issueKeyword={props.issueKeyword}
+              {...props}
               key={index}
+              isOperatingOnNewHolidayStop={isOperatingOnNewHolidayStop}
               currency={currency}
               {...holidayStopRequest}
+              asTD
             />
           ))}
         </tbody>
@@ -194,9 +215,9 @@ export const SummaryTable = (props: SummaryTableProps) => {
       >
         {holidayStopRequestsList.map((holidayStopRequest, index) => (
           <SummaryTableRow
+            {...props}
             key={index}
-            shouldShowExpectedCredit={shouldShowExpectedCredit}
-            issueKeyword={props.issueKeyword}
+            isOperatingOnNewHolidayStop={isOperatingOnNewHolidayStop}
             currency={currency}
             {...holidayStopRequest}
           />

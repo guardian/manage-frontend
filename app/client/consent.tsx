@@ -16,7 +16,10 @@ if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
 const onPolyfilled = (): void => {
   const element = document.getElementById("app");
 
-  ReactDOM.hydrate(<App />, element);
+  ReactDOM.hydrate(
+    <App abTestVariant={window.guardian.abTestVariant || ""} />,
+    element
+  );
 };
 
 const run = (): void => {
@@ -34,10 +37,13 @@ const run = (): void => {
   }
 };
 
-if (document.readyState !== 'loading') {
+if (document.readyState !== "loading") {
   run();
 } else {
-  document.addEventListener('DOMContentLoaded', (): void => {
-    run();
-  });
+  document.addEventListener(
+    "DOMContentLoaded",
+    (): void => {
+      run();
+    }
+  );
 }

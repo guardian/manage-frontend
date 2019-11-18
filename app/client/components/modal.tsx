@@ -2,10 +2,15 @@ import React from "react";
 import palette from "../colours";
 import { Button } from "./buttons";
 
+export type HideFunction = () => void;
+
 export interface ModalProps {
   instigator: React.ReactNode;
   title: string;
   children: any;
+  additionalButton?: (hideFunction: HideFunction) => React.ReactElement;
+  alternateOkText?: string;
+  extraOnHideFunctionality?: () => void;
 }
 
 export interface ModalState {
@@ -16,6 +21,12 @@ export class Modal extends React.Component<ModalProps, ModalState> {
   public state = {
     isDisplayed: false
   };
+
+  public componentDidMount(): void {
+    if (this.props.instigator == null) {
+      this.setState({ isDisplayed: true });
+    }
+  }
 
   public render = () => (
     <>
@@ -74,7 +85,13 @@ export class Modal extends React.Component<ModalProps, ModalState> {
             <h2 css={{ fontWeight: 900, marginTop: 0 }}>{this.props.title}</h2>
             {this.props.children}
             <div css={{ textAlign: "right" }}>
-              <Button text="Ok" onClick={this.hide} fontWeight="bold" />
+              {this.props.additionalButton &&
+                this.props.additionalButton(this.hide)}
+              <Button
+                text={this.props.alternateOkText || "Ok"}
+                onClick={this.hide}
+                fontWeight="bold"
+              />
             </div>
           </div>
         </div>
@@ -82,5 +99,10 @@ export class Modal extends React.Component<ModalProps, ModalState> {
     </>
   );
 
-  private hide = () => this.setState({ isDisplayed: false });
+  private hide: HideFunction = () => {
+    this.setState({ isDisplayed: false });
+    if (this.props.extraOnHideFunctionality) {
+      this.props.extraOnHideFunctionality();
+    }
+  };
 }

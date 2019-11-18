@@ -6,7 +6,7 @@ import AsyncLoader, { ReFetch } from "../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
 
-export const friendlyLongDateFormat = "D MMMM YYYY";
+export const friendlyLongDateFormat = "D\xa0MMMM\xa0YYYY"; // non-breaking space
 
 export const momentiseDateStr = (dateStr: string) =>
   moment(dateStr, DATE_INPUT_FORMAT);
@@ -26,12 +26,19 @@ export interface HolidayStopDetail extends CommonCreditProperties {
   invoiceDate?: Moment;
 }
 
+export interface MutabilityFlags {
+  isFullyMutable: boolean;
+  isEndDateEditable: boolean;
+}
+
 export interface RawHolidayStopRequest {
   start: string;
   end: string;
   id: string;
   subscriptionName: string;
   publicationsImpacted: RawHolidayStopDetail[];
+  mutabilityFlags: MutabilityFlags;
+  withdrawnTime?: string;
 }
 
 export interface RawPotentialHolidayStopDetail {
@@ -45,13 +52,18 @@ export interface PotentialHolidayStopsResponse {
 }
 
 export interface MinimalHolidayStopRequest {
+  id?: string;
+  subscriptionName?: string;
   publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
+  mutabilityFlags?: MutabilityFlags;
+  withdrawnDate?: Moment;
 }
 
 export interface HolidayStopRequest extends MinimalHolidayStopRequest {
   id: string;
   subscriptionName: string;
+  mutabilityFlags: MutabilityFlags;
 }
 
 export interface GetHolidayStopsResponse {
@@ -135,11 +147,17 @@ export function isHolidayStopsResponse(
   );
 }
 
+export const isNotWithdrawn = (holidayStopRequest: HolidayStopRequest) =>
+  !holidayStopRequest.withdrawnDate;
+
 const embellishRawHolidayStop = (
   rawHolidayStopRequest: RawHolidayStopRequest
 ) =>
   ({
     ...rawHolidayStopRequest,
+    withdrawnDate: rawHolidayStopRequest.withdrawnTime
+      ? momentiseDateStr(rawHolidayStopRequest.withdrawnTime)
+      : undefined,
     dateRange: new DateRange(
       momentiseDateStr(rawHolidayStopRequest.start),
       momentiseDateStr(rawHolidayStopRequest.end)

@@ -58,13 +58,17 @@ const scrollableStyles = (scrollbarWidth: number) => css`
   margin-right: ${-scrollbarWidth}px;
 `;
 
+interface Props {
+  abTestVariant: string;
+}
+
 interface State {
   headerWidth: number;
   scrollbarWidth: number;
 }
 
-export class ConsentManagementPortal extends Component<{}, State> {
-  constructor(props: {}) {
+export class ConsentManagementPortal extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -105,6 +109,7 @@ export class ConsentManagementPortal extends Component<{}, State> {
                 }
               );
             }}
+            abTestVariant={this.props.abTestVariant}
           />
         </div>
       </>
