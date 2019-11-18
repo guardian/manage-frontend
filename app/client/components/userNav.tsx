@@ -13,7 +13,6 @@ const userNavMenuCss = (showMenu: boolean) =>
     position: "absolute",
     top: "3.05rem",
     left: 0,
-    // width: `calc(100% - ${space["6"]}px)`,
     width: "calc(100% - 30px)",
     maxWidth: "350px",
     zIndex: 1071,
