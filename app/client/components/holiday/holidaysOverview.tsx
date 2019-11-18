@@ -326,6 +326,11 @@ export class HolidaysOverview extends React.Component<
       hideHeading
       supportRefererSuffix="holiday_stop_flow"
       loadingMessagePrefix="Retrieving details of your"
+      cancelledExplainer={`This ${
+        this.props.productType.friendlyName
+      } is cancelled, so unfortunately you can no longer create holiday 
+      suspensions for this subscription. Any existing holiday suspensions should 
+      have been dealt with at the point of cancellation with customer services.`}
       singleProductDetailRenderer={(
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail

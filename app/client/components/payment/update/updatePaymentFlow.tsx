@@ -281,6 +281,9 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
     headingPrefix="Update payment for"
     supportRefererSuffix="payment_flow"
     loadingMessagePrefix="Retrieving current payment details for your"
+    cancelledExplainer={`This ${
+      props.productType.friendlyName
+    } is cancelled, so unfortunately you cannot update the payment details.`}
     singleProductDetailRenderer={(
       routeableStepProps: RouteableStepProps,
       productDetail: ProductDetail

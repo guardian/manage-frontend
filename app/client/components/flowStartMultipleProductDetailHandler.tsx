@@ -20,12 +20,17 @@ import {
   hasProductPageProperties
 } from "../../shared/productTypes";
 import palette from "../colours";
+import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
+import { CallCentreNumbers } from "./callCentreNumbers";
 import { NoProduct } from "./noProduct";
 import { PageContainer } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
-import { RouteableStepProps } from "./wizardRouterAdapter";
+import {
+  ReturnToYourProductButton,
+  RouteableStepProps
+} from "./wizardRouterAdapter";
 
 const PaymentTypeRenderer = (subscription: Subscription) => {
   if (subscription.card) {
@@ -74,26 +79,33 @@ const getProductDetailSelector = (
   selectProductDetail: (productDetail: ProductDetail) => void,
   supportRefererSuffix: string
 ) => (data: MembersDataApiResponse[]) => {
-  const activeList = data
-    .filter(hasProduct)
-    .filter(_ => !_.subscription.cancelledAt)
-    .sort(sortByJoinDate);
-  if (activeList.length > 0) {
-    const first = activeList[0];
-    if (activeList.length === 1 && hasProduct(first)) {
-      return props.singleProductDetailRenderer(props, first);
+  const sortedList = data.filter(hasProduct).sort(sortByJoinDate);
+  if (sortedList.length > 0) {
+    const first = sortedList[0];
+    if (sortedList.length === 1 && hasProduct(first)) {
+      return first.subscription.cancelledAt ? (
+        <PageContainer>
+          <h4>{props.cancelledExplainer}</h4>
+          <CallCentreNumbers prefixText="To contact us" />
+          <div css={{ marginTop: "30px" }}>
+            <ReturnToYourProductButton productType={props.productType} />
+          </div>
+        </PageContainer>
+      ) : (
+        props.singleProductDetailRenderer(props, first)
+      );
     }
-    if (activeList.length > 1) {
+    if (sortedList.length > 1) {
       return (
         <>
           <PageContainer>
             <p>
-              You have <strong>{toWords(activeList.length)}</strong> concurrent{" "}
+              You have <strong>{toWords(sortedList.length)}</strong> concurrent{" "}
               {props.productType.friendlyName}s, please select the one you would
               like to proceed with:
             </p>
           </PageContainer>
-          {activeList.map((productDetail, listIndex) => (
+          {sortedList.map((productDetail, listIndex) => (
             <div
               key={productDetail.subscription.subscriptionId}
               css={{
@@ -107,6 +119,20 @@ const getProductDetailSelector = (
                   <i>({getMainPlan(productDetail.subscription).name})</i>
                 )}
                 <div css={flexCSS("flex")}>
+                  {productDetail.subscription.cancelledAt && (
+                    <span
+                      css={{
+                        fontFamily: sans,
+                        background: palette.neutral["5"],
+                        marginRight: "10px",
+                        borderRadius: "5px",
+                        padding: "2px 5px 0 6px",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      CANCELLED
+                    </span>
+                  )}
                   {hasProductPageProperties(props.productType) &&
                     props.productType.productPage.tierRowLabel && (
                       <span>
@@ -185,6 +211,7 @@ export interface FlowStartMultipleProductDetailHandlerProps
   hideHeading?: true;
   supportRefererSuffix: string;
   loadingMessagePrefix: string;
+  cancelledExplainer: string;
   singleProductDetailRenderer: (
     routeableStepProps: RouteableStepProps,
     productDetail: ProductDetail
