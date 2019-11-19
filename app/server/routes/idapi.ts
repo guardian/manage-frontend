@@ -82,7 +82,7 @@ const getOptions = (
     "X-GU-ID-Client-Access-Token": `Bearer ${config.accessToken}`,
     ...securityCookieToHeader(cookies),
     "Content-Type": "application/json",
-    Referer: "manage-frontend"
+    "Referer": "manage-frontend"
   };
 
   const options = {
