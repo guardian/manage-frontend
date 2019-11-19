@@ -86,7 +86,7 @@ const getProductDetailSelector = (
       return first.subscription.cancelledAt ? (
         <PageContainer>
           <h4>{props.cancelledExplainer}</h4>
-          <CallCentreNumbers prefixText="To contact us" />
+          <CallCentreNumbers />
           <div css={{ marginTop: "30px" }}>
             <ReturnToYourProductButton productType={props.productType} />
           </div>

@@ -328,9 +328,10 @@ export class HolidaysOverview extends React.Component<
       loadingMessagePrefix="Retrieving details of your"
       cancelledExplainer={`This ${
         this.props.productType.friendlyName
-      } is cancelled, so unfortunately you can no longer create holiday 
-      suspensions for this subscription. Any existing holiday suspensions should 
-      have been dealt with at the point of cancellation with customer services.`}
+      } has been cancelled. Any scheduled holiday suspensions have been removed. 
+      Please contact us if you would like to re-start this ${
+        this.props.productType.friendlyName
+      }, make any amendments or need further help.`}
       singleProductDetailRenderer={(
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail

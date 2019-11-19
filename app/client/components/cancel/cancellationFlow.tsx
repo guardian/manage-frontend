@@ -142,7 +142,9 @@ export const CancellationFlow = (
     loadingMessagePrefix="Checking the status of your"
     cancelledExplainer={`This ${
       props.productType.friendlyName
-    } is already cancelled.`}
+    } has been cancelled. Please contact us if you would like to re-start this ${
+      props.productType.friendlyName
+    }, make any amendments or need further help.`}
     singleProductDetailRenderer={reasonsRenderer(props)}
   />
 );
