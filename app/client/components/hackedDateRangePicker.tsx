@@ -1,6 +1,7 @@
 import rawDateRangePickerCSS from "!!raw-loader!react-daterange-picker/dist/css/react-calendar.css";
 import { css, Global } from "@emotion/core";
 import { Moment } from "moment";
+import { DateRange } from "moment-range";
 import React from "react";
 import DateRangePicker, {
   PaginationArrowProps,
@@ -97,8 +98,26 @@ class HackedDateRangePicker extends DateRangePicker {
     super(props);
     if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
       // this prevents jumping to the selection when in 'infinite mode' (i.e. loads of vertically stacked cals)
-      // @ts-ignore
+      // @ts-ignore - required because this function is internal and typescript doesn't know about it
       super.isStartOrEndVisible = () => true;
+    }
+
+    // this casting is required because this class extends 'DateRangePicker' from a library so the 'props' type is fixed
+    // however, the 'maybeLockedStartDate' prop IS being passed in, so with a cast we can retrieve it without compilation error
+    const lockedStartDate = (this.props as WrappedDateRangePickerProps)
+      .maybeLockedStartDate;
+    if (lockedStartDate) {
+      // overriding https://github.com/onefinestay/react-daterange-picker/blob/c73c9/src/DateRangePicker.jsx#L269-L288
+      // @ts-ignore - required because these functions are internal and typescript doesn't know about them
+      super.onSelectDate = (endDate: Moment) => {
+        // @ts-ignore
+        if (!this.isDateDisabled(endDate) && this.isDateSelectable(endDate)) {
+          // @ts-ignore
+          this.highlightRange(new DateRange(lockedStartDate, endDate));
+          // @ts-ignore
+          this.completeRangeSelection();
+        }
+      };
     }
   }
 
@@ -132,6 +151,7 @@ class HackedDateRangePicker extends DateRangePicker {
 export interface WrappedDateRangePickerProps extends Props {
   dateToAsterisk?: Moment;
   daysOfWeekToIconify: number[];
+  maybeLockedStartDate: Moment | null;
 }
 
 export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (

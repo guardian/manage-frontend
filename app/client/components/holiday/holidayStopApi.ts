@@ -78,6 +78,7 @@ export interface GetHolidayStopsResponse {
 export interface ReloadableGetHolidayStopsResponse
   extends GetHolidayStopsResponse {
   reload: ReFetch;
+  existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
 interface RawGetHolidayStopsResponse {
@@ -106,7 +107,7 @@ export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
   PotentialHolidayStopsResponse
 > {}
 
-export const createPotentialHolidayStopsFetcher = (
+export const getPotentialHolidayStopsFetcher = (
   shouldEstimateCredit: boolean,
   subscriptionName: string,
   start: Moment,
@@ -126,13 +127,13 @@ export const createPotentialHolidayStopsFetcher = (
     }
   );
 
-export interface CreateHolidayStopsResponse {
+export interface CreateOrAmendHolidayStopsResponse {
   success: string;
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export class CreateHolidayStopsAsyncLoader extends AsyncLoader<
-  CreateHolidayStopsResponse
+export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<
+  CreateOrAmendHolidayStopsResponse
 > {}
 
 export const HolidayStopsResponseContext: React.Context<

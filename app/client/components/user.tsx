@@ -149,6 +149,24 @@ const User = () => (
                 />
               </HolidayReview>
             </HolidayDateChooser>
+            <HolidayDateChooser
+              path="amend"
+              productType={productType}
+              currentStep={1}
+              requiresExistingHolidayStopToAmendInContext
+            >
+              <HolidayReview
+                path="review"
+                productType={productType}
+                currentStep={2}
+              >
+                <HolidayConfirmed
+                  path="confirmed"
+                  productType={productType}
+                  currentStep={3}
+                />
+              </HolidayReview>
+            </HolidayDateChooser>
           </HolidaysOverview>
         ))}
 

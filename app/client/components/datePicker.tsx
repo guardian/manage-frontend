@@ -18,7 +18,12 @@ const stateDefinitions = {
   existing: {
     selectable: false,
     color: palette.labs.main,
-    label: "Existing suspension"
+    label: "Existing suspensions"
+  },
+  amend: {
+    selectable: true,
+    color: palette.orange.light,
+    label: "Suspension you're amending"
   }
 };
 
@@ -28,7 +33,11 @@ export interface LegendItemProps {
   extraCss?: string;
 }
 
-const legendItems = (issueKeyword: string) => [
+const legendItems = (
+  issueKeyword: string,
+  includeExisting: boolean,
+  includeAmend: boolean
+) => [
   {
     extraCss: `
   ::after {
@@ -44,7 +53,8 @@ const legendItems = (issueKeyword: string) => [
   `,
     label: `${issueKeyword} day`
   },
-  stateDefinitions.existing
+  ...(includeExisting ? [stateDefinitions.existing] : []),
+  ...(includeAmend ? [stateDefinitions.amend] : [])
 ];
 
 const adjustDateRangeToOvercomeHalfDateStates = (range: DateRange) =>
@@ -79,7 +89,13 @@ const mergeAdjacentDateRanges = (
 const daysInYear = (firstDate: Moment) => (firstDate.isLeapYear() ? 366 : 365);
 
 const LegendItem = (props: LegendItemProps) => (
-  <>
+  <div
+    css={{
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "10px"
+    }}
+  >
     <div
       css={[
         {
@@ -103,7 +119,7 @@ const LegendItem = (props: LegendItemProps) => (
     >
       {props.label}
     </span>
-  </>
+  </div>
 );
 
 export interface DatePickerProps {
@@ -111,7 +127,9 @@ export interface DatePickerProps {
   issueDaysOfWeek: number[];
   issueKeyword: string;
   existingDates: DateRange[];
+  amendableDateRange?: DateRange;
   selectedRange?: DateRange;
+  maybeLockedStartDate: Moment | null;
   selectionInfo?: React.ReactElement;
   onSelect: (range: OnSelectCallbackParam) => void;
   dateToAsterisk?: Moment;
@@ -123,12 +141,14 @@ export const DatePicker = (props: DatePickerProps) => (
       css={{
         display: "flex",
         alignItems: "center",
-        marginBottom: "10px"
+        flexWrap: "wrap"
       }}
     >
-      {legendItems(props.issueKeyword).map(itemProps => (
-        <LegendItem key={itemProps.label} {...itemProps} />
-      ))}
+      {legendItems(
+        props.issueKeyword,
+        props.existingDates.length > 0,
+        !!props.amendableDateRange
+      ).map(itemProps => <LegendItem key={itemProps.label} {...itemProps} />)}
     </div>
     <div
       css={{
@@ -146,16 +166,29 @@ export const DatePicker = (props: DatePickerProps) => (
             .add(daysInYear(props.firstAvailableDate.clone()), "days")
             .toDate()}
           value={props.selectedRange}
+          maybeLockedStartDate={props.maybeLockedStartDate}
           onSelect={props.onSelect}
           singleDateRange={true}
           showLegend={false}
           stateDefinitions={stateDefinitions}
-          dateStates={props.existingDates
-            .reduce(mergeAdjacentDateRanges, [])
-            .map(range => ({
-              state: "existing",
-              range: adjustDateRangeToOvercomeHalfDateStates(range)
-            }))}
+          dateStates={[
+            ...props.existingDates
+              .reduce(mergeAdjacentDateRanges, []) // TODO check if they need to be merged across different types of 'date state'
+              .map(range => ({
+                state: "existing",
+                range: adjustDateRangeToOvercomeHalfDateStates(range)
+              })),
+            ...(props.amendableDateRange
+              ? [
+                  {
+                    state: "amend",
+                    range: adjustDateRangeToOvercomeHalfDateStates(
+                      props.amendableDateRange
+                    )
+                  }
+                ]
+              : [])
+          ].sort((a, b) => a.range.start.unix() - b.range.start.unix())}
           defaultState="available"
           firstOfWeek={1}
           daysOfWeekToIconify={props.issueDaysOfWeek}
@@ -206,6 +239,7 @@ export const DatePicker = (props: DatePickerProps) => (
               selectedDate={props.selectedRange && props.selectedRange.start}
               defaultDate={props.firstAvailableDate}
               labelText="From"
+              disabled={!!props.maybeLockedStartDate}
             />
           </div>
           <span

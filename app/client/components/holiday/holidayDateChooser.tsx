@@ -19,7 +19,7 @@ import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
-import { WizardStep } from "../wizardRouterAdapter";
+import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import { HolidayAnniversaryDateExplainerModal } from "./holidayAnniversaryDateExplainerModal";
 import {
   creditExplainerSentence,
@@ -29,15 +29,16 @@ import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   calculateIssuesImpactedPerYear,
   convertRawPotentialHolidayStopDetail,
-  createPotentialHolidayStopsFetcher,
   friendlyLongDateFormat,
+  getPotentialHolidayStopsFetcher,
   HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   isNotWithdrawn,
   IssuesImpactedPerYear,
   momentiseDateStr,
-  PotentialHolidayStopsResponse
+  PotentialHolidayStopsResponse,
+  ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
@@ -88,12 +89,17 @@ const anniversaryDateToElement = (renewalDateMoment: Moment) => (
   <>{renewalDateMoment.format(friendlyLongDateFormat)}*</>
 );
 
-interface HolidayDateChooserState {
-  selectedRange?: DateRange;
-  publicationsImpacted?: HolidayStopDetail[];
-  issuesImpactedPerYearBySelection?: IssuesImpactedPerYear | null;
-  validationErrorMessage: React.ReactNode | null;
-}
+const extractMaybeLockedStartDate = (
+  holidayStopsResponse: ReloadableGetHolidayStopsResponse
+) =>
+  !!holidayStopsResponse.existingHolidayStopToAmend &&
+  holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags &&
+  !holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags
+    .isFullyMutable &&
+  holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags
+    .isEndDateEditable
+    ? holidayStopsResponse.existingHolidayStopToAmend.dateRange.start
+    : null;
 
 export interface SharedHolidayDateChooserState {
   selectedRange: DateRange;
@@ -110,13 +116,50 @@ export function isSharedHolidayDateChooserState(
   return !!state && state.selectedRange && state.publicationsImpacted;
 }
 
+interface HolidayDateChooserProps extends HolidayStopsRouteableStepProps {
+  requiresExistingHolidayStopToAmendInContext?: true;
+}
+
+interface HolidayDateChooserState {
+  selectedRange?: DateRange;
+  publicationsImpacted?: HolidayStopDetail[];
+  issuesImpactedPerYearBySelection?: IssuesImpactedPerYear | null;
+  validationErrorMessage: React.ReactNode | null;
+}
+
 export class HolidayDateChooser extends React.Component<
-  HolidayStopsRouteableStepProps,
+  HolidayDateChooserProps,
   HolidayDateChooserState
 > {
+  // https://stackoverflow.com/questions/53575461/react-typescript-context-in-react-component-class
+  public static contextType = HolidayStopsResponseContext;
+  public context!: React.ContextType<typeof HolidayStopsResponseContext>;
+
   public state: HolidayDateChooserState = {
     issuesImpactedPerYearBySelection: null,
     validationErrorMessage: null
+  };
+
+  public componentDidMount = () => {
+    const holidayStopsResponse = this.context;
+    if (
+      isHolidayStopsResponse(holidayStopsResponse) &&
+      holidayStopsResponse.existingHolidayStopToAmend
+    ) {
+      const maybeLockedStartDate = extractMaybeLockedStartDate(
+        holidayStopsResponse
+      );
+
+      this.setState({
+        selectedRange:
+          holidayStopsResponse.existingHolidayStopToAmend.dateRange,
+        validationErrorMessage: `Please select your new ${
+          maybeLockedStartDate
+            ? "end date (the start date is locked because it is within notice period) "
+            : "dates"
+        }...`
+      });
+    }
   };
 
   public render = () => (
@@ -126,6 +169,10 @@ export class HolidayDateChooser extends React.Component<
           <MembersDataApiResponseContext.Consumer>
             {productDetail => {
               if (hasProduct(productDetail)) {
+                const existingHolidayStopToAmendId =
+                  holidayStopsResponse.existingHolidayStopToAmend &&
+                  holidayStopsResponse.existingHolidayStopToAmend.id;
+
                 const renewalDateMoment = momentiseDateStr(
                   productDetail.subscription.renewalDate
                 );
@@ -133,7 +180,14 @@ export class HolidayDateChooser extends React.Component<
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
                   holidayStopsResponse.existing
                     .filter(isNotWithdrawn)
-                    .flatMap(existing => existing.publicationsImpacted),
+                    .filter(
+                      holidayStopRequest =>
+                        holidayStopRequest.id !== existingHolidayStopToAmendId
+                    )
+                    .flatMap(
+                      holidayStopRequest =>
+                        holidayStopRequest.publicationsImpacted
+                    ),
                   renewalDateMoment
                 );
 
@@ -142,6 +196,10 @@ export class HolidayDateChooser extends React.Component<
                     value={this.state || {}}
                   >
                     <WizardStep routeableStepProps={this.props} hideBackButton>
+                      {this.props.requiresExistingHolidayStopToAmendInContext &&
+                        !holidayStopsResponse.existingHolidayStopToAmend &&
+                        visuallyNavigateToParent(this.props)}
+
                       <h1>Choose the dates you will be away</h1>
                       <p>
                         The first available date is{" "}
@@ -207,8 +265,21 @@ export class HolidayDateChooser extends React.Component<
                         )}
                         existingDates={holidayStopsResponse.existing
                           .filter(isNotWithdrawn)
+                          .filter(
+                            holidayStopRequest =>
+                              holidayStopRequest.id !==
+                              existingHolidayStopToAmendId
+                          )
                           .map(hsr => hsr.dateRange)}
+                        amendableDateRange={
+                          holidayStopsResponse.existingHolidayStopToAmend &&
+                          holidayStopsResponse.existingHolidayStopToAmend
+                            .dateRange
+                        }
                         selectedRange={this.state.selectedRange}
+                        maybeLockedStartDate={extractMaybeLockedStartDate(
+                          holidayStopsResponse
+                        )}
                         selectionInfo={this.getSelectionInfoElement(
                           renewalDateMoment,
                           combinedIssuesImpactedPerYear,
@@ -297,7 +368,7 @@ export class HolidayDateChooser extends React.Component<
         validationErrorMessage: null
       },
       () =>
-        createPotentialHolidayStopsFetcher(
+        getPotentialHolidayStopsFetcher(
           false,
           subscriptionName,
           start,
