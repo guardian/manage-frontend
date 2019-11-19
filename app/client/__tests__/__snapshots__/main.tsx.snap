@@ -1014,9 +1014,9 @@ exports[`Main renders something 1`] = `
                       css={
                         Object {
                           "map": undefined,
-                          "name": "efdsqi",
+                          "name": "x5i4w7",
                           "next": undefined,
-                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                         }
                       }
                       onMouseUp={[Function]}
@@ -1040,9 +1040,9 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "efdsqi",
+                        "name": "x5i4w7",
                         "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                       }
                     }
                     onMouseUp={[Function]}
