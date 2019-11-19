@@ -123,135 +123,155 @@ const renderHolidayStopsOverview = (
         <WizardStep routeableStepProps={props} hideBackButton>
           <div>
             <h1>Suspend {props.productType.friendlyName}</h1>
-            <OverviewRow heading="How">
-              <>
-                <div>
-                  You can suspend up to{" "}
-                  <strong>
-                    {holidayStopsResponse.annualIssueLimit}{" "}
-                    {props.productType.holidayStops.issueKeyword}s
-                  </strong>{" "}
-                  per year of your subscription. <br />
-                </div>
-                {props.productType.holidayStops.alternateNoticeString && (
+            {productDetail.subscription.autoRenew ? (
+              <OverviewRow heading="How">
+                <>
                   <div>
-                    Please provide{" "}
+                    You can suspend up to{" "}
                     <strong>
-                      {props.productType.holidayStops.alternateNoticeString}
-                    </strong>.
-                  </div>
-                )}
-                <div>
-                  {creditExplainerSentence(
-                    props.productType.holidayStops.issueKeyword
-                  )}
-                </div>
-                {props.productType.holidayStops.additionalHowAdvice && (
-                  <div>
-                    {props.productType.holidayStops.additionalHowAdvice}
-                  </div>
-                )}
-                <div
-                  css={{
-                    fontFamily: sans,
-                    fontSize: "14px",
-                    margin: "10px",
-                    display: "flex",
-                    alignItems: "top"
-                  }}
-                >
-                  <InfoIcon />
-                  <div>
-                    <strong>
-                      {renewalDateMoment.format(friendlyLongDateFormat)}
+                      {holidayStopsResponse.annualIssueLimit}{" "}
+                      {props.productType.holidayStops.issueKeyword}s
                     </strong>{" "}
-                    is the next anniversary of your subscription.
-                    <br />The number of{" "}
-                    {props.productType.holidayStops.issueKeyword}s you can
-                    suspend per year is reset on this date.
+                    per year of your subscription. <br />
                   </div>
-                </div>
-                <HolidayQuestionsModal
-                  annualIssueLimit={holidayStopsResponse.annualIssueLimit}
-                  holidayStopFlowProperties={props.productType.holidayStops}
-                />
-              </>
-            </OverviewRow>
-            <OverviewRow heading="Summary">
-              <>
-                {holidayStopsResponse.existing.length > 0 ? (
-                  <>
+                  {props.productType.holidayStops.alternateNoticeString && (
                     <div>
-                      You have suspended{" "}
+                      Please provide{" "}
                       <strong>
-                        {combinedIssuesImpactedPerYear.issuesThisYear.length}/{
-                          holidayStopsResponse.annualIssueLimit
-                        }
+                        {props.productType.holidayStops.alternateNoticeString}
+                      </strong>.
+                    </div>
+                  )}
+                  <div>
+                    {creditExplainerSentence(
+                      props.productType.holidayStops.issueKeyword
+                    )}
+                  </div>
+                  {props.productType.holidayStops.additionalHowAdvice && (
+                    <div>
+                      {props.productType.holidayStops.additionalHowAdvice}
+                    </div>
+                  )}
+                  <div
+                    css={{
+                      fontFamily: sans,
+                      fontSize: "14px",
+                      margin: "10px",
+                      display: "flex",
+                      alignItems: "top"
+                    }}
+                  >
+                    <InfoIcon />
+                    <div>
+                      <strong>
+                        {renewalDateMoment.format(friendlyLongDateFormat)}
                       </strong>{" "}
-                      {props.productType.holidayStops.issueKeyword}s until{" "}
-                      {renewalDateMoment.format(friendlyLongDateFormat)}
-                      {combinedIssuesImpactedPerYear.issuesNextYear.length >
-                        0 && (
-                        <span>
-                          {" "}
-                          and{" "}
+                      is the next anniversary of your subscription.
+                      <br />The number of{" "}
+                      {props.productType.holidayStops.issueKeyword}s you can
+                      suspend per year is reset on this date.
+                    </div>
+                  </div>
+                  <HolidayQuestionsModal
+                    annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+                    holidayStopFlowProperties={props.productType.holidayStops}
+                  />
+                </>
+              </OverviewRow>
+            ) : (
+              <h4>
+                This subscription does not automatically renew, so unfortunately
+                you{" "}
+                {holidayStopsResponse.existing.length > 0
+                  ? "can no longer"
+                  : "cannot"}{" "}
+                create a holiday suspension for this subscription.
+              </h4>
+            )}
+            {(productDetail.subscription.autoRenew ||
+              holidayStopsResponse.existing.length > 0) && (
+              <>
+                <OverviewRow heading="Summary">
+                  <>
+                    {holidayStopsResponse.existing.length > 0 ? (
+                      <>
+                        <div>
+                          You have suspended{" "}
                           <strong>
                             {
-                              combinedIssuesImpactedPerYear.issuesNextYear
+                              combinedIssuesImpactedPerYear.issuesThisYear
                                 .length
                             }/{holidayStopsResponse.annualIssueLimit}
                           </strong>{" "}
-                          {props.productType.holidayStops.issueKeyword}s the
-                          following year
-                        </span>
-                      )}.
+                          {props.productType.holidayStops.issueKeyword}s until{" "}
+                          {renewalDateMoment.format(friendlyLongDateFormat)}
+                          {combinedIssuesImpactedPerYear.issuesNextYear.length >
+                            0 && (
+                            <span>
+                              {" "}
+                              and{" "}
+                              <strong>
+                                {
+                                  combinedIssuesImpactedPerYear.issuesNextYear
+                                    .length
+                                }/{holidayStopsResponse.annualIssueLimit}
+                              </strong>{" "}
+                              {props.productType.holidayStops.issueKeyword}s the
+                              following year
+                            </span>
+                          )}.
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        You have{" "}
+                        <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
+                        {props.productType.holidayStops.issueKeyword}s available
+                        to suspend until{" "}
+                        {renewalDateMoment.format(friendlyLongDateFormat)}.
+                      </div>
+                    )}
+                    <div
+                      css={{
+                        textAlign: "right",
+                        marginTop: "10px",
+                        [minWidth.phablet]: {
+                          display: "none"
+                        }
+                      }}
+                    >
+                      {productDetail.subscription.autoRenew &&
+                        createSuspensionButton}
                     </div>
                   </>
-                ) : (
-                  <div>
-                    You have{" "}
-                    <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
-                    {props.productType.holidayStops.issueKeyword}s available to
-                    suspend until{" "}
-                    {renewalDateMoment.format(friendlyLongDateFormat)}.
-                  </div>
+                </OverviewRow>
+                {holidayStopsResponse.existing.length > 0 && (
+                  <OverviewRow heading="Expected Credits">
+                    <CollatedCredits
+                      publicationsImpacted={holidayStopsResponse.existing
+                        .filter(isNotWithdrawn)
+                        .flatMap(_ => _.publicationsImpacted)}
+                      currency={currency}
+                    />
+                  </OverviewRow>
                 )}
-                <div
-                  css={{
-                    textAlign: "right",
-                    marginTop: "10px",
-                    [minWidth.phablet]: {
-                      display: "none"
-                    }
-                  }}
-                >
-                  {createSuspensionButton}
-                </div>
+                <OverviewRow heading="Details">
+                  {holidayStopsResponse.existing.length > 0 ? (
+                    <SummaryTable
+                      data={holidayStopsResponse.existing}
+                      subscription={productDetail.subscription}
+                      issueKeyword={props.productType.holidayStops.issueKeyword}
+                      reloadParent={reload}
+                      setExistingHolidayStopToAmend={
+                        setExistingHolidayStopToAmend
+                      }
+                    />
+                  ) : (
+                    "You currently don't have any scheduled suspensions."
+                  )}
+                </OverviewRow>
               </>
-            </OverviewRow>
-            {holidayStopsResponse.existing.length > 0 && (
-              <OverviewRow heading="Expected Credits">
-                <CollatedCredits
-                  publicationsImpacted={holidayStopsResponse.existing
-                    .filter(isNotWithdrawn)
-                    .flatMap(_ => _.publicationsImpacted)}
-                  currency={currency}
-                />
-              </OverviewRow>
             )}
-            <OverviewRow heading="Details">
-              {holidayStopsResponse.existing.length > 0 ? (
-                <SummaryTable
-                  data={holidayStopsResponse.existing}
-                  subscription={productDetail.subscription}
-                  issueKeyword={props.productType.holidayStops.issueKeyword}
-                  reloadParent={reload}
-                  setExistingHolidayStopToAmend={setExistingHolidayStopToAmend}
-                />
-              ) : (
-                "You currently don't have any scheduled suspensions."
-              )}
-            </OverviewRow>
             <div
               css={{
                 display: "flex",
@@ -267,7 +287,7 @@ const renderHolidayStopsOverview = (
                 <ReturnToYourProductButton productType={props.productType} />
               </div>
               <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
-                {createSuspensionButton}
+                {productDetail.subscription.autoRenew && createSuspensionButton}
               </div>
             </div>
           </div>
