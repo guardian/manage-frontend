@@ -1,5 +1,6 @@
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
+import { gridColumns, gridItemPlacement } from "../../styles/grid";
 
 export interface RoundelProps {
   size?: number;
@@ -10,9 +11,21 @@ export interface RoundelProps {
 export const Roundel = (props: RoundelProps) => (
   <a
     css={{
-      gridColumnStart: -2,
-      gridColumnEnd: "span 1",
-      marginLeft: "auto"
+      ...gridItemPlacement(-2, 1),
+      display: "inline-block",
+      margin: "auto 0 auto auto",
+      height: `${props.size || 39}px`,
+      textAlign: "right",
+      [minWidth.tablet]: {
+        ...gridItemPlacement(-2, 1, gridColumns.tabletAndDesktop)
+      },
+      [minWidth.desktop]: {
+        width: `${props.size || 51}px`,
+        height: `${props.size || 51}px`
+      },
+      [minWidth.wide]: {
+        ...gridItemPlacement(-2, 1, gridColumns.wide)
+      }
     }}
     href="https://www.theguardian.com"
     title="The Guardian - Back to home"
@@ -23,12 +36,10 @@ export const Roundel = (props: RoundelProps) => (
       css={{
         width: `${props.size || 39}px`,
         height: `${props.size || 39}px`,
-        ...(!props.size && {
-          [minWidth.wide]: {
-            width: "51px",
-            height: "51px"
-          }
-        })
+        [minWidth.desktop]: {
+          width: `${props.size || 51}px`,
+          height: `${props.size || 51}px`
+        }
       }}
     >
       <path

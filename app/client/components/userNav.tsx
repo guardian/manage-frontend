@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
 import { expanderButtonCss } from "../expanderButton";
 import { minWidth } from "../styles/breakpoints";
+import { gridColumns, gridItemPlacement } from "../styles/grid";
 
 const userNavMenuCss = (showMenu: boolean) =>
   css({
@@ -11,7 +12,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     background: palette.brand.main,
     borderTop: `1px solid ${palette.brand.pastel}`,
     position: "absolute",
-    top: "3.05rem",
+    top: "2.25rem",
     left: 0,
     width: "calc(100% - 30px)",
     maxWidth: "350px",
@@ -29,8 +30,9 @@ const userNavMenuCss = (showMenu: boolean) =>
       width: "auto",
       maxWidth: "none",
       left: "auto",
-      right: "-16px",
-      top: "auto",
+      right: "16px",
+      marginRight: "-32px",
+      bottom: "auto",
       borderTop: "none",
       background: palette.neutral["100"],
       "li:not(:last-child)": {
@@ -231,21 +233,35 @@ export const UserNav = () => {
     <nav
       ref={wrapperRef}
       css={{
+        ...gridItemPlacement(1, 2),
         whiteSpace: "nowrap",
+        maxHeight: "26px",
+        margin: "auto 0",
         [minWidth.desktop]: {
           position: "relative",
           left: "0.5rem",
-          gridColumnStart: "-4",
-          gridColumnEnd: "span 2",
+          ...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
           marginLeft: "auto"
+        },
+        [minWidth.wide]: {
+          ...gridItemPlacement(-4, 2, gridColumns.wide)
+        },
+        " button": {
+          [minWidth.tablet]: {
+            marginLeft: "auto"
+          },
+          paddingTop: 0,
+          paddingBottom: 0
         }
       }}
     >
       {/* TODO refactor to full use ExpanderButton */}
       <button
-        css={expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
-          showMenu
-        )}
+        css={{
+          ...expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
+            showMenu
+          )
+        }}
         type="button"
         aria-expanded={showMenu}
         onClick={() => setShowMenu(!showMenu)}

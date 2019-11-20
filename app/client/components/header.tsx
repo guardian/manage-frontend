@@ -1,7 +1,7 @@
 import { breakpoints, palette } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
-import { gridBase } from "../styles/grid";
+import { gridBase, gridItemPlacement } from "../styles/grid";
 import { Roundel } from "./svgs/roundel";
 import { UserNav } from "./userNav";
 
@@ -36,8 +36,7 @@ const Header = () => (
           display: "none",
           [minWidth.desktop]: {
             display: "block",
-            gridColumnStart: 1,
-            gridColumnEnd: "span 8"
+            ...gridItemPlacement(1, 8)
           }
         }}
       >

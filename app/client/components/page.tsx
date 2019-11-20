@@ -3,7 +3,7 @@ import { palette } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
-import { gridBase } from "../styles/grid";
+import { gridBase, gridItemPlacement } from "../styles/grid";
 import { Nav, NavProps } from "./nav";
 
 export interface PageNavAndContentContainerProps extends NavProps {
@@ -31,13 +31,12 @@ export const PageNavAndContentContainer: React.SFC<
   >
     <nav
       css={{
-        gridColumnStart: 1,
         marginTop: "calc(-1 * (1.25rem + 36px))",
         display: "none",
 
         [minWidth.desktop]: {
+          ...gridItemPlacement(1, 4),
           display: "block",
-          gridColumnEnd: "span 4",
           paddingRight: "1.25rem"
         },
 
@@ -50,22 +49,18 @@ export const PageNavAndContentContainer: React.SFC<
     </nav>
     <section
       css={{
-        gridColumnStart: 1,
-        gridColumnEnd: "span 4 ",
+        ...gridItemPlacement(1, 4),
 
         [minWidth.tablet]: {
-          gridColumnStart: 1,
-          gridColumnEnd: "span 11"
+          ...gridItemPlacement(1, 11)
         },
 
         [minWidth.desktop]: {
-          gridColumnStart: 5,
-          gridColumnEnd: "span 7"
+          ...gridItemPlacement(5, 7)
         },
 
         [minWidth.wide]: {
-          gridColumnStart: 6,
-          gridColumnEnd: "span 9"
+          ...gridItemPlacement(6, 9)
         }
       }}
     >
@@ -135,22 +130,19 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
           margin: 0,
           padding: "0 6px 8px",
           border: `1px solid ${palette.brand.pastel}`,
-          gridColumnStart: 1,
-          gridColumnEnd: "span 3",
+          ...gridItemPlacement(1, 3),
           [minWidth.tablet]: {
-            gridColumnEnd: "span 10"
+            ...gridItemPlacement(1, 10)
           },
           [minWidth.desktop]: {
             fontSize: "2.625rem",
             lineHeight: "2rem",
             maxHeight: "56px",
             padding: "8px 8px 20px",
-            gridColumnStart: 5,
-            gridColumnEnd: "span 8"
+            ...gridItemPlacement(5, 8)
           },
           [minWidth.wide]: {
-            gridColumnStart: 6,
-            gridColumnEnd: "span 10"
+            ...gridItemPlacement(6, 10)
           }
         }
       }}

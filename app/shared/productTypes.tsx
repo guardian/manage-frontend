@@ -195,7 +195,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       title: "Membership",
       navLink: navLinks.membership,
       noProductInTabCopy:
-        "To manage your existing contribution or subscription, please select from the tabs above.",
+        "But I'm sure I do! Perhaps you have a subscription or support us via a contribution instead?",
       tierRowLabel: "Membership tier",
       tierChangeable: true,
       forceShowJoinDateOnly: true
@@ -232,7 +232,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       title: "Contributions",
       navLink: navLinks.contributions,
       noProductInTabCopy:
-        "To manage your existing membership or subscription, please select from the tabs above."
+        "But I'm sure I do! Perhaps you have a membership or subscription instead?"
     },
     cancellation: {
       linkOnProductPage: true,
@@ -350,7 +350,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
       noProductInTabCopy:
-        "To manage your existing membership or contribution, please select from the tabs above.",
+        "But I'm sure I do! Perhaps you have a membership or support us via a contribution instead?",
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },
