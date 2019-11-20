@@ -34,6 +34,7 @@ export interface SummaryTableProps {
   issueKeyword: string;
   alternateSuspendedColumnHeading?: string;
   reloadParent?: ReFetch;
+  setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
 const friendlyDateFormatPrefix = "D\xa0MMMM"; // non-breaking space
@@ -191,7 +192,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
             {isOperatingOnNewHolidayStop ? (
               <th>Expected Credits</th>
             ) : (
-              <th>Actions</th>
+              <th css={{ minWidth: "205px" }}>Actions</th>
             )}
           </tr>
           {holidayStopRequestsList.map((holidayStopRequest, index) => (

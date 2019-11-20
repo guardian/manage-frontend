@@ -116,6 +116,7 @@ const buttonCss = ({
       outline: "none"
     },
     minHeight: height || "36px",
+    height: height || "36px", // this is required in addition to 'min-height' because IE - see https://github.com/philipwalton/flexbugs/issues/231
     fontWeight,
     display: hide ? "none" : "inline-flex",
     background: backgroundColour,

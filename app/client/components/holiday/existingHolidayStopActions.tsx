@@ -1,9 +1,10 @@
 import React from "react";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
-import { Button } from "../buttons";
+import { Button, LinkButton } from "../buttons";
 import { HideFunction, Modal } from "../modal";
 import {
   friendlyLongDateFormat,
+  HolidayStopRequest,
   MinimalHolidayStopRequest
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
@@ -11,6 +12,7 @@ import { formatDateRangeAsFriendly } from "./summaryTable";
 export interface ExistingHolidayStopActionsProps
   extends MinimalHolidayStopRequest {
   reloadParent?: ReFetch;
+  setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
 export interface ExistingHolidayStopActionsState {
@@ -43,8 +45,20 @@ export class ExistingHolidayStopActions extends React.Component<
     if (
       this.props.reloadParent &&
       this.props.mutabilityFlags &&
-      this.props.mutabilityFlags.isFullyMutable
+      (this.props.mutabilityFlags.isFullyMutable ||
+        this.props.mutabilityFlags.isEndDateEditable)
     ) {
+      const shouldShowAmendButton = this.props.mutabilityFlags
+        .isEndDateEditable;
+      const shouldShowDeleteButton = this.props.mutabilityFlags.isFullyMutable;
+
+      const shouldBeOnlyAmendEndDate =
+        this.props.mutabilityFlags.isEndDateEditable &&
+        !this.props.mutabilityFlags.isFullyMutable;
+
+      const setExistingHolidayStopToAmend = this.props
+        .setExistingHolidayStopToAmend;
+
       const reloadParent: ReFetch = this.props.reloadParent;
 
       const yesButton = (hideFunction: HideFunction) => (
@@ -89,15 +103,34 @@ export class ExistingHolidayStopActions extends React.Component<
           )}
         />
       ) : (
-        <Modal
-          title="Are you sure?"
-          alternateOkText="No"
-          additionalButton={yesButton}
-          instigator={<Button text="Delete" />}
-        >
-          Are you sure you want to delete your{" "}
-          <strong>{friendlyDateRange}</strong> suspension?
-        </Modal>
+        <>
+          {shouldShowAmendButton &&
+            setExistingHolidayStopToAmend && (
+              <div
+                css={{ display: "inline-block", margin: "10px", marginLeft: 0 }}
+              >
+                <LinkButton
+                  text={`Amend${shouldBeOnlyAmendEndDate ? " end date" : ""}`}
+                  to="amend"
+                  onClick={() =>
+                    setExistingHolidayStopToAmend(this
+                      .props as HolidayStopRequest)
+                  }
+                />
+              </div>
+            )}
+          {shouldShowDeleteButton && (
+            <Modal
+              title="Are you sure?"
+              alternateOkText="No"
+              additionalButton={yesButton}
+              instigator={<Button text="Delete" hollow />}
+            >
+              Are you sure you want to delete your{" "}
+              <strong>{friendlyDateRange}</strong> suspension?
+            </Modal>
+          )}
+        </>
       );
     }
 
