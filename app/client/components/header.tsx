@@ -9,11 +9,10 @@ const Header = () => (
   <header
     css={{
       backgroundColor: palette.brand.main,
-      padding: "0.15625rem 0 0",
       minHeight: "50px",
       overflow: "visible",
       position: "relative",
-      borderBottom: `solid 1px ${palette.brand.pastel}`,
+      boxShadow: `0 2px 1px -1px ${palette.brand.pastel}`,
       zIndex: 1070,
       [minWidth.desktop]: {
         minHeight: "82px"
@@ -23,6 +22,7 @@ const Header = () => (
     <div
       css={{
         ...gridBase,
+        height: "100%",
         maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
         alignItems: "center",
         margin: "auto"

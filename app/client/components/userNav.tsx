@@ -12,7 +12,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     background: palette.brand.main,
     borderTop: `1px solid ${palette.brand.pastel}`,
     position: "absolute",
-    top: "2.25rem",
+    top: "50px",
     left: 0,
     width: "calc(100% - 30px)",
     maxWidth: "350px",
@@ -29,6 +29,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     [minWidth.desktop]: {
       width: "auto",
       maxWidth: "none",
+      top: "36px",
       left: "auto",
       right: "16px",
       marginRight: "-32px",
