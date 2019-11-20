@@ -34,17 +34,23 @@ exports[`Main renders something 1`] = `
         Object {
           "@media (min-width: 1300px)": Object {
             "gridTemplateColumns": "repeat(16, minmax(0, 1fr))",
+            "msGridColumns": "(minmax(0, 1fr))[16]",
           },
           "@media (min-width: 740px)": Object {
             "gridTemplateColumns": "repeat(12, minmax(0, 1fr))",
+            "msGridColumns": "(minmax(0, 1fr))[12]",
+          },
+          "@supports (display: grid)": Object {
+            "display": "grid",
           },
           "alignItems": "center",
           "columnGap": "1.25rem",
-          "display": "grid",
+          "display": "-ms-grid",
           "gridAutoColumns": "max-content",
           "gridTemplateColumns": "repeat(4, minmax(0, 1fr))",
           "margin": "auto",
           "maxWidth": "calc(1300px + 2.5rem)",
+          "msGridColumns": "(minmax(0, 1fr))[4]",
           "paddingLeft": "1.25rem",
           "paddingRight": "1.25rem",
         }
@@ -56,7 +62,10 @@ exports[`Main renders something 1`] = `
             "@media (min-width: 980px)": Object {
               "display": "block",
               "gridColumnEnd": "span 8",
-              "gridColumnStart": 1,
+              "gridColumnStart": "1",
+              "msGridColumn": "1",
+              "msGridColumnSpan": "8",
+              "msGridRow": "1",
             },
             "color": "white",
             "display": "none",
@@ -70,13 +79,37 @@ exports[`Main renders something 1`] = `
       <nav
         css={
           Object {
+            " button": Object {
+              "@media (min-width: 740px)": Object {
+                "marginLeft": "auto",
+              },
+              "paddingBottom": 0,
+              "paddingTop": 0,
+            },
+            "@media (min-width: 1300px)": Object {
+              "gridColumnEnd": "span 2",
+              "gridColumnStart": "-4",
+              "msGridColumn": "14",
+              "msGridColumnSpan": "2",
+              "msGridRow": "1",
+            },
             "@media (min-width: 980px)": Object {
               "gridColumnEnd": "span 2",
               "gridColumnStart": "-4",
               "left": "0.5rem",
               "marginLeft": "auto",
+              "msGridColumn": "10",
+              "msGridColumnSpan": "2",
+              "msGridRow": "1",
               "position": "relative",
             },
+            "gridColumnEnd": "span 2",
+            "gridColumnStart": "1",
+            "margin": "auto 0",
+            "maxHeight": "26px",
+            "msGridColumn": "1",
+            "msGridColumnSpan": "2",
+            "msGridRow": "1",
             "whiteSpace": "nowrap",
           }
         }
@@ -119,9 +152,9 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "map": undefined,
-              "name": "10rcm1j",
+              "name": "18cbr0k",
               "next": undefined,
-              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:3.05rem;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;max-width:none;left:auto;right:-16px;top:auto;border-top:none;background:#ffffff;li:not(:last-child){border-bottom:1px solid #dcdcdc;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #ffffff;}}",
+              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:2.25rem;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;max-width:none;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#ffffff;li:not(:last-child){border-bottom:1px solid #dcdcdc;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #ffffff;}}",
             }
           }
           role="tablist"
@@ -393,9 +426,33 @@ exports[`Main renders something 1`] = `
       <a
         css={
           Object {
+            "@media (min-width: 1300px)": Object {
+              "gridColumnEnd": "span 1",
+              "gridColumnStart": "-2",
+              "msGridColumn": "16",
+              "msGridColumnSpan": "1",
+              "msGridRow": "1",
+            },
+            "@media (min-width: 740px)": Object {
+              "gridColumnEnd": "span 1",
+              "gridColumnStart": "-2",
+              "msGridColumn": "12",
+              "msGridColumnSpan": "1",
+              "msGridRow": "1",
+            },
+            "@media (min-width: 980px)": Object {
+              "height": "51px",
+              "width": "51px",
+            },
+            "display": "inline-block",
             "gridColumnEnd": "span 1",
-            "gridColumnStart": -2,
-            "marginLeft": "auto",
+            "gridColumnStart": "-2",
+            "height": "39px",
+            "margin": "auto 0 auto auto",
+            "msGridColumn": "4",
+            "msGridColumnSpan": "1",
+            "msGridRow": "1",
+            "textAlign": "right",
           }
         }
         href="https://www.theguardian.com"
@@ -404,7 +461,7 @@ exports[`Main renders something 1`] = `
         <svg
           css={
             Object {
-              "@media (min-width: 1300px)": Object {
+              "@media (min-width: 980px)": Object {
                 "height": "51px",
                 "width": "51px",
               },
