@@ -20,10 +20,9 @@ exports[`Main renders something 1`] = `
           "minHeight": "82px",
         },
         "backgroundColor": "#052962",
-        "borderBottom": "solid 1px #506991",
+        "boxShadow": "0 2px 1px -1px #506991",
         "minHeight": "50px",
         "overflow": "visible",
-        "padding": "0.15625rem 0 0",
         "position": "relative",
         "zIndex": 1070,
       }
@@ -48,6 +47,7 @@ exports[`Main renders something 1`] = `
           "display": "-ms-grid",
           "gridAutoColumns": "max-content",
           "gridTemplateColumns": "repeat(4, minmax(0, 1fr))",
+          "height": "100%",
           "margin": "auto",
           "maxWidth": "calc(1300px + 2.5rem)",
           "msGridColumns": "(minmax(0, 1fr))[4]",
@@ -152,9 +152,9 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "map": undefined,
-              "name": "18cbr0k",
+              "name": "1qb6oo7",
               "next": undefined,
-              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:2.25rem;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;max-width:none;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#ffffff;li:not(:last-child){border-bottom:1px solid #dcdcdc;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #ffffff;}}",
+              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:50px;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;max-width:none;top:36px;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#ffffff;li:not(:last-child){border-bottom:1px solid #dcdcdc;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #ffffff;}}",
             }
           }
           role="tablist"
