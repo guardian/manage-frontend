@@ -1,3 +1,4 @@
+import { Link } from "@reach/router";
 import React from "react";
 import {
   CancellationReason,
@@ -14,7 +15,6 @@ import {
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import { formatDate, ProductDetail, Subscription } from "./productResponse";
-import { Link } from "@reach/router";
 
 export type ProductFriendlyName =
   | "membership"
@@ -199,7 +199,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
         <>
           {"But I'm sure I do! Perhaps you have a "}
           <Link to={navLinks.subscriptions.link}>subscription</Link>
-          {"or support us via a"}{" "}
+          {" or support us via a"}{" "}
           <Link to={navLinks.contributions.link}>contribution</Link>{" "}
           {" instead?"}
         </>
@@ -243,7 +243,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
         <>
           {"But I'm sure I do! Perhaps you have a "}
           <Link to={navLinks.membership.link}>membership</Link>
-          {"or "} <Link to={navLinks.subscriptions.link}>subscription</Link>{" "}
+          {" or "} <Link to={navLinks.subscriptions.link}>subscription</Link>{" "}
           {" instead?"}
         </>
       )
@@ -367,7 +367,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
         <>
           {"But I'm sure I do! Perhaps you have a "}
           <Link to={navLinks.membership.link}>membership</Link>
-          {"or "} <Link to={navLinks.contributions.link}>contribution</Link>{" "}
+          {" or "} <Link to={navLinks.contributions.link}>contribution</Link>{" "}
           {" instead?"}
         </>
       ),
