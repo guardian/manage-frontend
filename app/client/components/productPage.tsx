@@ -393,30 +393,31 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
-            {shouldHaveHolidayStopsFlow(productType) && (
-              <ProductDetailRow
-                label="Holiday stop"
-                data={
-                  <div>
-                    <div
-                      css={{
-                        display: "inline-block",
-                        margin: "10px",
-                        marginLeft: 0
-                      }}
-                    >
-                      Going on holiday?
+            {shouldHaveHolidayStopsFlow(productType) &&
+              productDetail.subscription.autoRenew && (
+                <ProductDetailRow
+                  label="Holiday stop"
+                  data={
+                    <div>
+                      <div
+                        css={{
+                          display: "inline-block",
+                          margin: "10px",
+                          marginLeft: 0
+                        }}
+                      >
+                        Going on holiday?
+                      </div>
+                      <LinkButton
+                        text="Manage your suspensions"
+                        to={"/suspend/" + productType.urlPart}
+                        state={productDetail}
+                        right
+                      />
                     </div>
-                    <LinkButton
-                      text="Manage your suspensions"
-                      to={"/suspend/" + productType.urlPart}
-                      state={productDetail}
-                      right
-                    />
-                  </div>
-                }
-              />
-            )}
+                  }
+                />
+              )}
           </PageContainer>
         </>
       )}
