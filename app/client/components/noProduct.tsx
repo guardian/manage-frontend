@@ -1,11 +1,9 @@
-import { Link } from "@reach/router";
 import React from "react";
 import {
   hasProductPageProperties,
   ProductType,
   WithProductType
 } from "../../shared/productTypes";
-import { navLinks } from "./nav";
 import { PageContainer } from "./page";
 import { ResubscribeThrasher } from "./resubscribeThrasher";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
@@ -31,12 +29,8 @@ export const NoProduct = (props: NoProductProps) => (
     >
       <PageContainer>
         <p>
-          {
-            "Alternatively, please consider supporting our journalism via a new "
-          }
-          {<Link to={navLinks.contributions.link}>contribution</Link>}
-          {" or "}
-          {<Link to={navLinks.subscriptions.link}>subscription</Link>}.
+          Alternatively, please consider supporting our journalism via a new
+          contribution or subscription.
         </p>
         <SupportTheGuardianButton
           supportReferer={`${props.productType.urlPart}_${

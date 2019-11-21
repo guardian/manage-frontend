@@ -14,6 +14,7 @@ import {
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import { formatDate, ProductDetail, Subscription } from "./productResponse";
+import { Link } from "@reach/router";
 
 export type ProductFriendlyName =
   | "membership"
@@ -68,7 +69,7 @@ export interface CancellationFlowProperties {
 export interface ProductPageProperties {
   title: ProductTitle;
   navLink: NavItem;
-  noProductInTabCopy: string;
+  noProductInTabCopy: JSX.Element | string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriptionId?: true;
@@ -194,8 +195,15 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Membership",
       navLink: navLinks.membership,
-      noProductInTabCopy:
-        "But I'm sure I do! Perhaps you have a subscription or support us via a contribution instead?",
+      noProductInTabCopy: (
+        <>
+          {"But I'm sure I do! Perhaps you have a "}
+          <Link to={navLinks.subscriptions.link}>subscription</Link>
+          {"or support us via a"}{" "}
+          <Link to={navLinks.contributions.link}>contribution</Link>{" "}
+          {" instead?"}
+        </>
+      ),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
       forceShowJoinDateOnly: true
@@ -231,8 +239,14 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
-      noProductInTabCopy:
-        "But I'm sure I do! Perhaps you have a membership or subscription instead?"
+      noProductInTabCopy: (
+        <>
+          {"But I'm sure I do! Perhaps you have a "}
+          <Link to={navLinks.membership.link}>membership</Link>
+          {"or "} <Link to={navLinks.subscriptions.link}>subscription</Link>{" "}
+          {" instead?"}
+        </>
+      )
     },
     cancellation: {
       linkOnProductPage: true,
@@ -349,8 +363,14 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
-      noProductInTabCopy:
-        "But I'm sure I do! Perhaps you have a membership or support us via a contribution instead?",
+      noProductInTabCopy: (
+        <>
+          {"But I'm sure I do! Perhaps you have a "}
+          <Link to={navLinks.membership.link}>membership</Link>
+          {"or "} <Link to={navLinks.contributions.link}>contribution</Link>{" "}
+          {" instead?"}
+        </>
+      ),
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },
