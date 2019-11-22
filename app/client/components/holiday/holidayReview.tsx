@@ -60,8 +60,8 @@ const getPerformCreateOrAmendFetcher = (
       method: existingHolidayStopToAmend ? "PATCH" : "POST",
       mode: "same-origin",
       body: JSON.stringify({
-        start: selectedRange.start.format(DATE_INPUT_FORMAT),
-        end: selectedRange.end.format(DATE_INPUT_FORMAT),
+        startDate: selectedRange.start.format(DATE_INPUT_FORMAT),
+        endDate: selectedRange.end.format(DATE_INPUT_FORMAT),
         subscriptionName
       }),
       headers: {

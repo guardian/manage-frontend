@@ -32,8 +32,8 @@ export interface MutabilityFlags {
 }
 
 export interface RawHolidayStopRequest {
-  start: string;
-  end: string;
+  startDate: string;
+  endDate: string;
   id: string;
   subscriptionName: string;
   publicationsImpacted: RawHolidayStopDetail[];
@@ -110,14 +110,14 @@ export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
 export const getPotentialHolidayStopsFetcher = (
   shouldEstimateCredit: boolean,
   subscriptionName: string,
-  start: Moment,
-  end: Moment,
+  startDate: Moment,
+  endDate: Moment,
   isTestUser: boolean
 ) => () =>
   fetch(
-    `/api/holidays/${subscriptionName}/potential?startDate=${start.format(
+    `/api/holidays/${subscriptionName}/potential?startDate=${startDate.format(
       DATE_INPUT_FORMAT
-    )}&endDate=${end.format(DATE_INPUT_FORMAT)}${
+    )}&endDate=${endDate.format(DATE_INPUT_FORMAT)}${
       shouldEstimateCredit ? "&estimateCredit=true" : ""
     }`,
     {
@@ -160,8 +160,8 @@ const embellishRawHolidayStop = (
       ? momentiseDateStr(rawHolidayStopRequest.withdrawnTime)
       : undefined,
     dateRange: new DateRange(
-      momentiseDateStr(rawHolidayStopRequest.start),
-      momentiseDateStr(rawHolidayStopRequest.end)
+      momentiseDateStr(rawHolidayStopRequest.startDate),
+      momentiseDateStr(rawHolidayStopRequest.endDate)
     ),
     publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
       raw => ({
