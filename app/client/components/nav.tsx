@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
@@ -68,7 +68,7 @@ const navItemCss = (isSelected: boolean | undefined) => ({
     minWidth: "155.5px" // gross hack to make IE11 work
   },
   [minWidth.desktop]: {
-    paddingLeft: "8px",
+    paddingLeft: `${space[2]}px`,
     backgroundColor: isSelected ? palette.yellow.main : palette.neutral["46"]
   }
 });

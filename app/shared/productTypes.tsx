@@ -177,6 +177,31 @@ const domainSpecificSubsManageURL = `https://subscribe.${
     : "theguardian.com"
 }/manage`;
 
+const getNoProductInTabCopy = (links: NavItem[]) => {
+  return (
+    <>
+      {"But I'm sure I do! "}
+      {links.map((link, index) => {
+        return (
+          <>
+            {index === 0
+              ? ` Perhaps you ${
+                  link.title === "contribution"
+                    ? "support us via a "
+                    : "have a "
+                }`
+              : ` or ${
+                  link.title === "contribution" ? "support us via a " : ""
+                }`}
+            <Link to={link.link}>{link.title}</Link>
+          </>
+        );
+      })}
+      {"."}
+    </>
+  );
+};
+
 export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
     friendlyName: "membership",
@@ -195,15 +220,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Membership",
       navLink: navLinks.membership,
-      noProductInTabCopy: (
-        <>
-          {"But I'm sure I do! Perhaps you have a "}
-          <Link to={navLinks.subscriptions.link}>subscription</Link>
-          {" or support us via a"}{" "}
-          <Link to={navLinks.contributions.link}>contribution</Link>{" "}
-          {" instead?"}
-        </>
-      ),
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.subscriptions, title: "subscription" },
+        { ...navLinks.contributions, title: "contribution" }
+      ]),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
       forceShowJoinDateOnly: true
@@ -239,14 +259,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
-      noProductInTabCopy: (
-        <>
-          {"But I'm sure I do! Perhaps you have a "}
-          <Link to={navLinks.membership.link}>membership</Link>
-          {" or "} <Link to={navLinks.subscriptions.link}>subscription</Link>{" "}
-          {" instead?"}
-        </>
-      )
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.membership, title: "membership" },
+        { ...navLinks.subscriptions, title: "subscription" }
+      ])
     },
     cancellation: {
       linkOnProductPage: true,
@@ -363,14 +379,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
-      noProductInTabCopy: (
-        <>
-          {"But I'm sure I do! Perhaps you have a "}
-          <Link to={navLinks.membership.link}>membership</Link>
-          {" or "} <Link to={navLinks.contributions.link}>contribution</Link>{" "}
-          {" instead?"}
-        </>
-      ),
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.membership, title: "membership" },
+        { ...navLinks.contributions, title: "contribution" }
+      ]),
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },

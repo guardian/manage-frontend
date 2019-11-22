@@ -1,5 +1,5 @@
 import { breakpoints } from "@guardian/src-foundations";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
@@ -31,7 +31,7 @@ export const PageNavAndContentContainer: React.SFC<
   >
     <nav
       css={{
-        marginTop: "calc(-1 * (1.25rem + 36px))",
+        marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
         display: "none",
 
         [minWidth.desktop]: {
@@ -128,7 +128,7 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
         },
         "> h1, > div": {
           margin: 0,
-          padding: "0 6px 8px",
+          padding: `0 6px ${space[2]}px`,
           border: `1px solid ${palette.brand.pastel}`,
           ...gridItemPlacement(1, 3),
           [minWidth.tablet]: {
@@ -138,7 +138,7 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
             fontSize: "2.625rem",
             lineHeight: "2rem",
             maxHeight: "56px",
-            padding: "8px 8px 20px",
+            padding: `${space[2]}px ${space[2]}px ${space[5]}px`,
             ...gridItemPlacement(5, 8)
           },
           [minWidth.wide]: {

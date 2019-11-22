@@ -894,10 +894,10 @@
     consent-string "^1.5.1"
     js-cookie "^2.2.1"
 
-"@guardian/src-foundations@^0.5.6":
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.5.6.tgz#139e7d78fe1f2133cad2ba6a5095e0cd4c5a9985"
-  integrity sha512-rSPUzNXUANPbWeIzG9djpKDuIll/YN6SJriW344kj22mFk3xmRCQaxyMFvkrUkaTdyR1piDg51dG7afqCwEA4w==
+"@guardian/src-foundations@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.7.0.tgz#f0cc6127f010ae856674c3dd1f8b971c63c08bac"
+  integrity sha512-9BXJ9mitAjeImCVdRlcgUXABnU+GKhY/TQC8nNnA+x03qMC7tMGGoeI/gjb6ws6m/pgnsuWEwY+1qw/guN6cpw==
 
 "@jest/types@^24.8.0":
   version "24.8.0"
