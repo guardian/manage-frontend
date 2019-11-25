@@ -170,40 +170,42 @@ const getPaymentPart = (
     return (
       <>
         {productDetail.subscription.nextPaymentDate &&
+          productDetail.subscription.autoRenew &&
           !productDetail.alertText && (
             <ProductDetailRow
               label={"Next payment date"}
               data={formatDate(productDetail.subscription.nextPaymentDate)}
             />
           )}
-        {}
-        <ProductDetailRow
-          label={`Next ${mainPlanInterval} payment`}
-          data={
-            <>
-              <UpdatableAmount
-                mainPlan={mainPlan}
-                nextPaymentPrice={productDetail.subscription.nextPaymentPrice}
-                subscriptionId={productDetail.subscription.subscriptionId}
-                productType={productType}
-              />
-              {futurePlan &&
-                futurePlan.amount !== mainPlan.amount && (
-                  <div css={{ fontStyle: "italic" }}>
-                    {futurePlan.currency}{" "}
-                    {(futurePlan.amount / 100.0).toFixed(2)}{" "}
-                    {futurePlan.currencyISO}{" "}
-                    {futurePlan.interval !== mainPlan.interval && (
-                      <strong>
-                        {augmentInterval(futurePlan.interval) + " "}
-                      </strong>
-                    )}
-                    starting {formatDate(futurePlan.start)}
-                  </div>
-                )}
-            </>
-          }
-        />
+        {productDetail.subscription.autoRenew && (
+          <ProductDetailRow
+            label={`Next ${mainPlanInterval} payment`}
+            data={
+              <>
+                <UpdatableAmount
+                  mainPlan={mainPlan}
+                  nextPaymentPrice={productDetail.subscription.nextPaymentPrice}
+                  subscriptionId={productDetail.subscription.subscriptionId}
+                  productType={productType}
+                />
+                {futurePlan &&
+                  futurePlan.amount !== mainPlan.amount && (
+                    <div css={{ fontStyle: "italic" }}>
+                      {futurePlan.currency}{" "}
+                      {(futurePlan.amount / 100.0).toFixed(2)}{" "}
+                      {futurePlan.currencyISO}{" "}
+                      {futurePlan.interval !== mainPlan.interval && (
+                        <strong>
+                          {augmentInterval(futurePlan.interval) + " "}
+                        </strong>
+                      )}
+                      starting {formatDate(futurePlan.start)}
+                    </div>
+                  )}
+              </>
+            }
+          />
+        )}
         {getPaymentMethodRow(productDetail, "/payment/" + productType.urlPart)}
       </>
     );
