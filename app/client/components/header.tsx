@@ -2,7 +2,7 @@ import { breakpoints, palette } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
-import { Roundel } from "./svgs/roundel";
+import { GridRoundel } from "./svgs/gridRoundel";
 import { UserNav } from "./userNav";
 
 const Header = () => (
@@ -43,7 +43,10 @@ const Header = () => (
         My account
       </h1>
       <UserNav />
-      <Roundel fillMain={palette.neutral["100"]} fillG={palette.brand.main} />
+      <GridRoundel
+        fillMain={palette.neutral["100"]}
+        fillG={palette.brand.main}
+      />
     </div>
   </header>
 );
