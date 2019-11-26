@@ -230,7 +230,10 @@ const getProductDetailRenderer = (
     <div
       key={productDetail.subscription.subscriptionId}
       css={{
-        borderTop: `1px solid ${palette.neutral["86"]}`,
+        borderTop:
+          productDetailListLength > 1
+            ? `1px solid ${palette.neutral["86"]}`
+            : undefined,
         padding: "5px 0 20px"
       }}
     >
