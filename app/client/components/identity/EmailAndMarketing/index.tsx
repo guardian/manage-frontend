@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
 import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
-import { PageContainer, PageHeaderContainer } from "../../page";
+import {
+  PageContainer,
+  PageHeaderContainer,
+  PageNavAndContentContainer
+} from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -11,7 +15,6 @@ import {
 import { ConsentOptions, Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
-import { MarginWrapper } from "../MarginWrapper";
 import { Actions, useConsentOptions } from "../useConsentOptions";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
@@ -100,17 +103,13 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <MarginWrapper>
-          <Lines n={4} />
-        </MarginWrapper>
+        <Lines n={4} />
       </PageContainer>
       <PageContainer>
         <ConsentSection consents={consents} clickHandler={toggleSubscription} />
       </PageContainer>
       <PageContainer>
-        <MarginWrapper>
-          <Lines n={1} />
-        </MarginWrapper>
+        <Lines n={1} />
       </PageContainer>
       <PageContainer>
         <EmailSettingsSection
@@ -120,17 +119,13 @@ export const EmailAndMarketing = (props: { path?: string }) => {
         />
       </PageContainer>
       <PageContainer>
-        <MarginWrapper>
-          <Lines n={4} />
-        </MarginWrapper>
+        <Lines n={4} />
       </PageContainer>
       <PageContainer>
         <OptOutSection consents={consents} clickHandler={toggleSubscription} />
       </PageContainer>
       <PageContainer>
-        <MarginWrapper>
-          <MembershipLinks />
-        </MarginWrapper>
+        <MembershipLinks />
       </PageContainer>
     </>
   );
@@ -156,8 +151,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      {state.error ? errorMessage : null}
-      {loading ? (!state.error ? loader : null) : content}
+      <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
+        {state.error ? errorMessage : null}
+        {loading ? (!state.error ? loader : null) : content}
+      </PageNavAndContentContainer>
     </>
   );
 };

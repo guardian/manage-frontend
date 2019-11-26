@@ -29,8 +29,8 @@ export const NoProduct = (props: NoProductProps) => (
     >
       <PageContainer>
         <p>
-          Please support our journalism by making either a contribution or a
-          subscription.
+          Alternatively, please consider supporting our journalism via a new
+          contribution or subscription.
         </p>
         <SupportTheGuardianButton
           supportReferer={`${props.productType.urlPart}_${

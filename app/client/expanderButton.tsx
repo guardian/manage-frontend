@@ -26,7 +26,7 @@ export const expanderButtonCss = (
       border: "1px solid currentColor",
       borderLeft: "transparent",
       borderTop: "transparent",
-      marginLeft: "5px",
+      marginLeft: "8px",
       transform: `translateY(${isExpanded ? 0 : -2}px) rotate(${
         isExpanded ? "225deg" : "45deg"
       })`

@@ -1,3 +1,4 @@
+import { Link } from "@reach/router";
 import React from "react";
 import {
   CancellationReason,
@@ -68,7 +69,7 @@ export interface CancellationFlowProperties {
 export interface ProductPageProperties {
   title: ProductTitle;
   navLink: NavItem;
-  noProductInTabCopy: string;
+  noProductInTabCopy: JSX.Element | string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriptionId?: true;
@@ -176,6 +177,31 @@ const domainSpecificSubsManageURL = `https://subscribe.${
     : "theguardian.com"
 }/manage`;
 
+const getNoProductInTabCopy = (links: NavItem[]) => {
+  return (
+    <>
+      {"But I'm sure I do! "}
+      {links.map((link, index) => {
+        return (
+          <>
+            {index === 0
+              ? ` Perhaps you ${
+                  link.title === "contribution"
+                    ? "support us via a "
+                    : "have a "
+                }`
+              : ` or ${
+                  link.title === "contribution" ? "support us via a " : ""
+                }`}
+            <Link to={link.link}>{link.title}</Link>
+          </>
+        );
+      })}
+      {"."}
+    </>
+  );
+};
+
 export const ProductTypes: { [productKey: string]: ProductType } = {
   membership: {
     friendlyName: "membership",
@@ -194,8 +220,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Membership",
       navLink: navLinks.membership,
-      noProductInTabCopy:
-        "To manage your existing contribution or subscription, please select from the tabs above.",
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.subscriptions, title: "subscription" },
+        { ...navLinks.contributions, title: "contribution" }
+      ]),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
       forceShowJoinDateOnly: true
@@ -231,8 +259,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Contributions",
       navLink: navLinks.contributions,
-      noProductInTabCopy:
-        "To manage your existing membership or subscription, please select from the tabs above."
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.membership, title: "membership" },
+        { ...navLinks.subscriptions, title: "subscription" }
+      ])
     },
     cancellation: {
       linkOnProductPage: true,
@@ -349,8 +379,10 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     productPage: {
       title: "Subscriptions",
       navLink: navLinks.subscriptions,
-      noProductInTabCopy:
-        "To manage your existing membership or contribution, please select from the tabs above.",
+      noProductInTabCopy: getNoProductInTabCopy([
+        { ...navLinks.membership, title: "membership" },
+        { ...navLinks.contributions, title: "contribution" }
+      ]),
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },

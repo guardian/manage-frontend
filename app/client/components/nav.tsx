@@ -1,40 +1,29 @@
 import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
-import { serif } from "../styles/fonts";
-
-const borderStyle = `1px solid ${palette.neutral["5"]}`;
+import { sans } from "../styles/fonts";
 
 const navCss = css({
   width: "100%",
-  position: "relative",
   margin: 0,
   padding: 0,
   borderBottom: 0,
   listStyleType: "none",
-  zIndex: 2,
-  tableLayout: "fixed",
-  gridTemplateColumns: "repeat(auto-fit, minmax(40%, 1fr))",
-  display: "grid",
-  borderRight: borderStyle,
-
-  [minWidth.desktop]: {
-    gridTemplateColumns: "repeat(auto-fit, minmax(7.5rem, 1fr))"
-  }
+  position: "sticky",
+  top: "1rem"
 });
 
 const navLinkCss = (isSelected: boolean | undefined) =>
   css({
-    fontSize: "1rem",
-    fontWeight: 500,
+    fontSize: "1.25rem",
+    fontWeight: isSelected ? "bold" : "normal",
     lineHeight: "1.25rem",
-    fontFamily: serif,
+    fontFamily: sans,
     display: "block",
     boxSizing: "border-box",
-    minHeight: "36px",
     padding: "4px 0 0 5px",
     letterSpacing: "-0.02rem",
     textAlign: "left",
@@ -42,25 +31,45 @@ const navLinkCss = (isSelected: boolean | undefined) =>
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    background: isSelected ? palette.white : undefined,
-    color: "inherit",
+    background: palette.neutral["100"],
+    color: palette.brand.main,
 
     [minWidth.desktop]: {
-      boxShadow: isSelected ? "0 1px 0 white" : undefined
+      boxShadow: isSelected ? "0 1px 0 white" : undefined,
+      minHeight: 0,
+      padding: "18px 0 18px 22px",
+      position: "relative",
+      " :after": {
+        content: "''",
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        height: "1px",
+        width: "calc(100% - 22px)",
+        backgroundColor: palette.neutral["86"]
+      },
+
+      ":hover": {
+        backgroundColor: isSelected
+          ? palette.neutral["100"]
+          : palette.neutral["97"]
+      }
     }
   });
 
 const navItemCss = (isSelected: boolean | undefined) => ({
   margin: 0,
   background: `0.0625rem solid ${
-    isSelected ? palette.white : palette.neutral["5"]
+    isSelected ? palette.neutral["100"] : palette.neutral["86"]
   }`,
-  borderLeft: borderStyle,
-  borderTop: borderStyle,
-  display: "table-cell",
+  display: "block",
   width: "100%",
   [minWidth.tablet]: {
     minWidth: "155.5px" // gross hack to make IE11 work
+  },
+  [minWidth.desktop]: {
+    paddingLeft: `${space[2]}px`,
+    backgroundColor: isSelected ? palette.yellow.main : palette.neutral["46"]
   }
 });
 

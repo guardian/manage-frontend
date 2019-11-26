@@ -12,13 +12,8 @@ import {
   IabVendor,
   IabVendorList
 } from "@guardian/consent-management-platform/lib/types";
-import {
-  focusHalo,
-  palette,
-  size,
-  space,
-  transitions
-} from "@guardian/src-foundations";
+import { palette, size, space, transitions } from "@guardian/src-foundations";
+import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { ConsentString } from "consent-string";
 import Raven from "raven-js";
 import React, { Component } from "react";

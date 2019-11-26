@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import { startCase } from "lodash";
 import { toWords } from "number-to-words";
@@ -19,23 +20,25 @@ import {
   sortByJoinDate
 } from "../../shared/productResponse";
 import {
+  createProductDetailFetcher,
+  ProductTypeWithProductPageProperties
+} from "../../shared/productTypes";
+import {
   ProductPageProperties,
   ProductType,
   shouldHaveHolidayStopsFlow
 } from "../../shared/productTypes";
-import {
-  createProductDetailFetcher,
-  ProductTypeWithProductPageProperties
-} from "../../shared/productTypes";
-import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
-import { headline } from "../styles/fonts";
 import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
 import { InlineContactUs } from "./inlineContactUs";
 import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
-import { PageContainer, PageHeaderContainer } from "./page";
+import {
+  PageContainer,
+  PageHeaderContainer,
+  PageNavAndContentContainer
+} from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
@@ -230,7 +233,7 @@ const getProductDetailRenderer = (
       key={productDetail.subscription.subscriptionId}
       css={{
         background: shouldShowShadedBackground
-          ? palette.neutral["7"]
+          ? palette.neutral["97"]
           : undefined,
         padding: "5px 0 20px"
       }}
@@ -257,8 +260,8 @@ const getProductDetailRenderer = (
           {productDetail.alertText && (
             <div
               css={{
-                backgroundColor: palette.red.dark,
-                color: palette.white,
+                backgroundColor: palette.news.dark,
+                color: palette.neutral["100"],
                 padding: "10px 15px 15px",
                 margin: `30px ${productDetailListLength > 1 ? "15px" : "0"}`
               }}
@@ -366,8 +369,8 @@ const getProductDetailRenderer = (
                 <Link
                   css={{
                     textDecoration: "underline",
-                    color: palette.neutral["1"],
-                    ":visited": { color: palette.neutral["1"] }
+                    color: palette.neutral["7"],
+                    ":visited": { color: palette.neutral["7"] }
                   }}
                   to={"/cancel/" + productType.urlPart}
                   state={productDetail}
@@ -467,28 +470,22 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
     <PageHeaderContainer
       selectedNavItem={props.productType.productPage.navLink}
     >
-      <h1
-        css={{
-          fontSize: "2rem",
-          lineHeight: "2.25rem",
-          fontFamily: headline,
-          marginBottom: "30px",
-          marginTop: "0"
-        }}
-      >
-        {props.productType.productPage.title}
-      </h1>
+      <h1>{props.productType.productPage.title}</h1>
     </PageHeaderContainer>
-    <MembersDatApiAsyncLoader
-      fetch={createProductDetailFetcher(props.productType)}
-      render={getProductRenderer(props.productType)}
-      readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-      loadingMessage={`Loading your ${
-        props.productType.friendlyName
-      } details...`}
-    />
-    <PageContainer>
-      <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
-    </PageContainer>
+    <PageNavAndContentContainer
+      selectedNavItem={props.productType.productPage.navLink}
+    >
+      <MembersDatApiAsyncLoader
+        fetch={createProductDetailFetcher(props.productType)}
+        render={getProductRenderer(props.productType)}
+        readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
+        loadingMessage={`Loading your ${
+          props.productType.friendlyName
+        } details...`}
+      />
+      <PageContainer>
+        <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
+      </PageContainer>
+    </PageNavAndContentContainer>
   </>
 );

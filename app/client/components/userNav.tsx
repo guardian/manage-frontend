@@ -1,72 +1,104 @@
 import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { expanderButtonCss } from "../expanderButton";
+import { minWidth } from "../styles/breakpoints";
+import { gridColumns, gridItemPlacement } from "../styles/grid";
+import { ProfileIcon } from "./svgs/profileIcon";
+import { SignoutIcon } from "./svgs/signoutIcon";
 
 const userNavMenuCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
-    background: palette.white,
+    background: palette.brand.main,
+    borderTop: `1px solid ${palette.brand.pastel}`,
     position: "absolute",
-    top: "3.05rem",
+    top: "50px",
+    left: 0,
+    width: "calc(100% - 30px)",
+    maxWidth: "350px",
     zIndex: 1071,
     listStyle: "none",
     lineHeight: "1.375rem",
     boxShadow: "0 0 0 0.0625rem rgba(0,0,0,0.1)",
-    borderRadius: "0.1875rem",
     margin: 0,
-    padding: "0.375rem 0",
-    overflow: "hidden",
+    padding: 0,
     " li": {
       padding: 0,
       margin: 0
+    },
+    [minWidth.desktop]: {
+      width: "auto",
+      maxWidth: "none",
+      top: `${space[9]}px`,
+      left: "auto",
+      right: "16px",
+      marginRight: "-32px",
+      bottom: "auto",
+      borderTop: "none",
+      background: palette.neutral["100"],
+      "li:not(:last-child)": {
+        borderBottom: `1px solid ${palette.neutral["86"]}`
+      },
+      " .hide--gte-desktop": {
+        display: "none"
+      },
+      ":before": {
+        content: "''",
+        width: 0,
+        height: 0,
+        position: "absolute",
+        top: `-${space[2]}px`,
+        right: `${space[3]}px`,
+        borderLeft: `${space[2]}px solid transparent`,
+        borderRight: `${space[2]}px solid transparent`,
+        borderBottom: `${space[2]}px solid ${palette.neutral["100"]}`
+      }
     }
   });
 
 const userNavItemCss = css({
-  padding: "7px 20px 15px 30px",
+  padding: `9px 30px ${space[2]}px`,
   textDecoration: "none",
-  color: "currentColor",
+  color: palette.neutral["100"],
   whiteSpace: "nowrap",
   position: "relative",
   marginTop: "-1px",
   display: "flex",
   alignItems: "center",
   ":hover, :focus": {
-    backgroundColor: palette.neutral["6"],
+    backgroundColor: palette.brand.dark,
     textDecoration: "none"
   },
   ":focus": {
     outline: 0
+  },
+  ":after": {
+    content: "''",
+    display: "block",
+    zIndex: 1,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: "calc(100% - 30px)",
+    height: "1px",
+    backgroundColor: `${palette.brand.pastel}`
+  },
+  [minWidth.desktop]: {
+    padding: "18px 14px",
+    color: palette.neutral["20"],
+    ".icon--fill": {
+      fill: palette.neutral["20"]
+    },
+    ":after": {
+      content: "none"
+    },
+    ":hover, :focus": {
+      backgroundColor: palette.neutral["97"]
+    }
   }
 });
-
-const userNavBorderCss = css({
-  height: "0.0625rem",
-  background: palette.neutral["6"],
-  border: 0,
-  display: "block",
-  margin: "0 0 0 1.875rem"
-});
-
-const signOutIcon = (
-  <svg width="100%" height="100%" viewBox="0 0 20 22" fill="none">
-    <g clipPath="url(#a)">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
-        fill="#333"
-      />
-    </g>
-    <defs>
-      <clipPath id="a">
-        <path fill="#fff" d="M0 0h20v22H0z" />
-      </clipPath>
-    </defs>
-  </svg>
-);
 
 const domain: string =
   typeof window !== "undefined" && window.guardian
@@ -79,6 +111,7 @@ export interface UserNavItem {
   link: string;
   icon?: JSX.Element;
   border?: boolean;
+  hideAtDesktop?: boolean;
 }
 
 export const UserNav = () => {
@@ -95,39 +128,43 @@ export const UserNav = () => {
 
   const userNavItems: UserNavItem[] = [
     {
-      title: "Comments & replies",
-      link: "/profile/user" // note this hits a redirect/proxy endpoint
-    },
-    {
       title: "Public profile",
-      link: `/public-settings`
+      link: `/public-settings`,
+      hideAtDesktop: true
     },
     {
       title: "Account details",
-      link: `/account-settings`
+      link: `/account-settings`,
+      hideAtDesktop: true
     },
     {
       title: "Emails & marketing",
       link: `/email-prefs`,
-      border: true
+      hideAtDesktop: true
     },
     {
       title: "Membership",
-      link: "/membership"
+      link: "/membership",
+      hideAtDesktop: true
     },
     {
       title: "Contributions",
-      link: "/contributions"
+      link: "/contributions",
+      hideAtDesktop: true
     },
     {
       title: "Subscriptions",
       link: "/subscriptions",
-      border: true
+      hideAtDesktop: true
+    },
+    {
+      title: "Comments & replies",
+      link: "/profile/user" // note this hits a redirect/proxy endpoint
     },
     {
       title: "Sign out",
       link: `${profileHostName}/signout`,
-      icon: signOutIcon
+      icon: <SignoutIcon />
     }
   ];
 
@@ -161,22 +198,52 @@ export const UserNav = () => {
   };
 
   return (
-    <nav ref={wrapperRef}>
+    <nav
+      ref={wrapperRef}
+      css={{
+        ...gridItemPlacement(1, 2),
+        whiteSpace: "nowrap",
+        maxHeight: "26px",
+        margin: "auto 0",
+        [minWidth.desktop]: {
+          position: "relative",
+          left: "0.5rem",
+          ...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
+          marginLeft: "auto"
+        },
+        [minWidth.wide]: {
+          ...gridItemPlacement(-4, 2, gridColumns.wide)
+        },
+        " button": {
+          [minWidth.tablet]: {
+            marginLeft: "auto"
+          },
+          paddingTop: 0,
+          paddingBottom: 0
+        }
+      }}
+    >
       {/* TODO refactor to full use ExpanderButton */}
       <button
-        css={expanderButtonCss(palette.white, palette.yellow.medium)(showMenu)}
+        css={{
+          ...expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
+            showMenu
+          )
+        }}
         type="button"
         aria-expanded={showMenu}
         onClick={() => setShowMenu(!showMenu)}
         ref={buttonRef}
       >
-        My account
+        {<ProfileIcon />}My account
       </button>
 
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
         {userNavItems.map((item: UserNavItem) => (
           <React.Fragment key={item.title}>
-            <li>
+            <li
+              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
+            >
               <a href={item.link} css={userNavItemCss}>
                 {item.icon && (
                   <span
@@ -191,10 +258,18 @@ export const UserNav = () => {
                     {item.icon}
                   </span>
                 )}
-                <span>{item.title}</span>
+                <span
+                  css={{
+                    lineHeight: "33px",
+                    [minWidth.desktop]: {
+                      lineHeight: "normal"
+                    }
+                  }}
+                >
+                  {item.title}
+                </span>
               </a>
             </li>
-            {item.border ? <hr css={userNavBorderCss} /> : false}
           </React.Fragment>
         ))}
       </ul>

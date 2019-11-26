@@ -6,6 +6,9 @@ coverage/
 .idea/
 *.iml
 
+*.swp
+*.swo
+
 *.code-workspace
  
 

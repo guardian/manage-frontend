@@ -16,11 +16,13 @@ exports[`Main renders something 1`] = `
   <header
     css={
       Object {
+        "@media (min-width: 980px)": Object {
+          "minHeight": "82px",
+        },
         "backgroundColor": "#052962",
-        "maxHeight": "48px",
-        "minHeight": "48px",
+        "boxShadow": "0 2px 1px -1px #506991",
+        "minHeight": "50px",
         "overflow": "visible",
-        "padding": "0.15625rem 0 0",
         "position": "relative",
         "zIndex": 1070,
       }
@@ -29,57 +31,324 @@ exports[`Main renders something 1`] = `
     <div
       css={
         Object {
+          "@media (min-width: 1300px)": Object {
+            "gridTemplateColumns": "repeat(16, minmax(0, 1fr))",
+            "msGridColumns": "(minmax(0, 1fr))[16]",
+          },
+          "@media (min-width: 740px)": Object {
+            "gridTemplateColumns": "repeat(12, minmax(0, 1fr))",
+            "msGridColumns": "(minmax(0, 1fr))[12]",
+          },
+          "@supports (display: grid)": Object {
+            "display": "grid",
+          },
           "alignItems": "center",
-          "display": "flex",
+          "columnGap": "1.25rem",
+          "display": "-ms-grid",
+          "gridAutoColumns": "max-content",
+          "gridTemplateColumns": "repeat(4, minmax(0, 1fr))",
           "height": "100%",
-          "justifyContent": "space-between",
           "margin": "auto",
-          "maxWidth": "calc(940px + 2.5rem)",
+          "maxWidth": "calc(1300px + 2.5rem)",
+          "msGridColumns": "(minmax(0, 1fr))[4]",
           "paddingLeft": "1.25rem",
           "paddingRight": "1.25rem",
         }
       }
     >
-      <nav>
+      <h1
+        css={
+          Object {
+            "@media (min-width: 980px)": Object {
+              "display": "block",
+              "gridColumnEnd": "span 8",
+              "gridColumnStart": "1",
+              "msGridColumn": "1",
+              "msGridColumnSpan": "8",
+              "msGridRow": "1",
+            },
+            "color": "white",
+            "display": "none",
+            "fontSize": "1.75rem",
+            "fontWeight": "bold",
+          }
+        }
+      >
+        My account
+      </h1>
+      <nav
+        css={
+          Object {
+            " button": Object {
+              "@media (min-width: 740px)": Object {
+                "marginLeft": "auto",
+              },
+              "paddingBottom": 0,
+              "paddingTop": 0,
+            },
+            "@media (min-width: 1300px)": Object {
+              "gridColumnEnd": "span 2",
+              "gridColumnStart": "-4",
+              "msGridColumn": "14",
+              "msGridColumnSpan": "2",
+              "msGridRow": "1",
+            },
+            "@media (min-width: 980px)": Object {
+              "gridColumnEnd": "span 2",
+              "gridColumnStart": "-4",
+              "left": "0.5rem",
+              "marginLeft": "auto",
+              "msGridColumn": "10",
+              "msGridColumnSpan": "2",
+              "msGridRow": "1",
+              "position": "relative",
+            },
+            "gridColumnEnd": "span 2",
+            "gridColumnStart": "1",
+            "margin": "auto 0",
+            "maxHeight": "26px",
+            "msGridColumn": "1",
+            "msGridColumnSpan": "2",
+            "msGridRow": "1",
+            "whiteSpace": "nowrap",
+          }
+        }
+      >
         <button
           aria-expanded={false}
           css={
             Object {
               "map": undefined,
-              "name": "16fhqub",
+              "name": "1ne05um",
               "next": undefined,
-              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:5px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#ffe500;}:hover{::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#ffffff;",
+              "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:8px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#FFFFFF;}:hover{::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#FFFFFF;",
             }
           }
           onClick={[Function]}
           type="button"
         >
+          <svg
+            css={
+              Object {
+                "display": "inline-block",
+                "fill": "#FFFFFF",
+                "height": "26px",
+                "marginRight": "0.5rem",
+                "width": "26px",
+              }
+            }
+            viewBox="0 0 14 14"
+          >
+            <path
+              d="M7 0C3.1 0 0 3.1 0 7c0 2 .9 3.9 2.4 5.2C3.6 13.4 5.3 14 7 14s3.4-.6 4.7-1.8C13.2 10.9 14 9 14 7c0-3.9-3.1-7-7-7zm0 1.8c1.3 0 2.1.8 2.1 2.1S8 6.3 7 6.3c-.8 0-2-1.1-2-2.4 0-1.4.7-2.1 2-2.1zm0 11.6c-1.7 0-3.3-.7-4.5-1.8l.8-3.2.5-.5c1-.4 2.1-.5 3.1-.5 1.1 0 2.1.2 3.1.5l.5.5.9 3.2c-1.1 1.2-2.7 1.8-4.4 1.8z"
+            />
+            <path
+              d="M9.6 4.2c.1-.1.1-.1 0 0zm.1 0s0-.1 0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0zm.1 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0zm.1-.1c0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 0 0 .1 0 0 0 .1 0 .1 0 0zm0 0c0 .1 0 .1 0 0 0 .1 0 0 0 0zm0 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 0 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 0 0 0 0s.1 0 0 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0zm.1 0zm.1 0c-.1 0-.1 0 0 0zm0 0zm0 0zm.1 0s-.1 0 0 0c-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0zm-.1 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0zm.2 0c-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1 0 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0zm0 0s0-.1 0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm.1 0c-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0zm0-.1z"
+            />
+          </svg>
           My account
         </button>
         <ul
           css={
             Object {
               "map": undefined,
-              "name": "1dp5ejy",
+              "name": "1imotst",
               "next": undefined,
-              "styles": "display:none;background:#ffffff;position:absolute;top:3.05rem;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);border-radius:0.1875rem;margin:0;padding:0.375rem 0;overflow:hidden; li{padding:0;margin:0;}",
+              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:50px;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;max-width:none;top:36px;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#FFFFFF;li:not(:last-child){border-bottom:1px solid #DCDCDC;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #FFFFFF;}}",
             }
           }
           role="tablist"
         >
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/public-settings"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Public profile
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/account-settings"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Account details
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/email-prefs"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Emails & marketing
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/membership"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Membership
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/contributions"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Contributions
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
+              href="/subscriptions"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Subscriptions
+              </span>
+            </a>
+          </li>
           <li>
             <a
               css={
                 Object {
                   "map": undefined,
-                  "name": "1cruahm",
+                  "name": "1c2of0y",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
                 }
               }
               href="/profile/user"
             >
-              <span>
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
                 Comments & replies
               </span>
             </a>
@@ -89,131 +358,9 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "1cruahm",
+                  "name": "1c2of0y",
                   "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/public-settings"
-            >
-              <span>
-                Public profile
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/account-settings"
-            >
-              <span>
-                Account details
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/email-prefs"
-            >
-              <span>
-                Emails & marketing
-              </span>
-            </a>
-          </li>
-          <hr
-            css={
-              Object {
-                "map": undefined,
-                "name": "uomzng",
-                "next": undefined,
-                "styles": "height:0.0625rem;background:#ececec;border:0;display:block;margin:0 0 0 1.875rem;",
-              }
-            }
-          />
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/membership"
-            >
-              <span>
-                Membership
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/contributions"
-            >
-              <span>
-                Contributions
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
-                }
-              }
-              href="/subscriptions"
-            >
-              <span>
-                Subscriptions
-              </span>
-            </a>
-          </li>
-          <hr
-            css={
-              Object {
-                "map": undefined,
-                "name": "uomzng",
-                "next": undefined,
-                "styles": "height:0.0625rem;background:#ececec;border:0;display:block;margin:0 0 0 1.875rem;",
-              }
-            }
-          />
-          <li>
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1cruahm",
-                  "next": undefined,
-                  "styles": "padding:7px 20px 15px 30px;text-decoration:none;color:currentColor;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#ececec;text-decoration:none;}:focus{outline:0;}",
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
                 }
               }
               href="https://profile.thegulocal.com/signout"
@@ -241,9 +388,10 @@ exports[`Main renders something 1`] = `
                     clipPath="url(#a)"
                   >
                     <path
+                      className="icon--fill"
                       clipRule="evenodd"
                       d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
-                      fill="#333"
+                      fill="#fff"
                       fillRule="evenodd"
                     />
                   </g>
@@ -259,42 +407,89 @@ exports[`Main renders something 1`] = `
                   </defs>
                 </svg>
               </span>
-              <span>
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
                 Sign out
               </span>
             </a>
           </li>
         </ul>
       </nav>
-      <a
+      <div
         css={
           Object {
-            "alignSelf": "flex-start",
+            "@media (min-width: 1300px)": Object {
+              "gridColumnEnd": "span 1",
+              "gridColumnStart": "-2",
+              "msGridColumn": "16",
+              "msGridColumnSpan": "1",
+              "msGridRow": "1",
+            },
+            "@media (min-width: 740px)": Object {
+              "gridColumnEnd": "span 1",
+              "gridColumnStart": "-2",
+              "msGridColumn": "12",
+              "msGridColumnSpan": "1",
+              "msGridRow": "1",
+            },
+            "display": "inline-block",
+            "gridColumnEnd": "span 1",
+            "gridColumnStart": "-2",
+            "msGridColumn": "4",
+            "msGridColumnSpan": "1",
+            "msGridRow": "1",
           }
         }
-        href="https://www.theguardian.com"
-        title="The Guardian - Back to home"
       >
-        <svg
+        <a
           css={
             Object {
-              "height": "42px",
-              "width": "42px",
+              "@media (min-width: 980px)": Object {
+                "height": "51px",
+                "width": "51px",
+              },
+              "display": "block",
+              "height": "39px",
+              "margin": "auto 0 auto auto",
+              "textAlign": "right",
             }
           }
-          viewBox="0 0 56 56"
-          xmlns="http://www.w3.org/2000/svg"
+          href="https://www.theguardian.com"
+          title="The Guardian - Back to home"
         >
-          <path
-            d="M28 0a28 28 0 1 0 28 28A28 28 0 0 0 28 0"
-            fill="#ffffff"
-          />
-          <path
-            d="M33 6.92c3.63.58 8.24 3.06 9.89 4.83v8h-1L33 7.82zm-3.34.5h-.09c-6.35 0-9.8 8.8-9.8 20.66 0 11.87 3.45 20.66 9.8 20.66h.09v.91c-9.56.65-22.42-6.63-22.09-21.58C7.23 13.14 20.09 5.86 29.66 6.51zm16.16 22.53l-3 1.3v13.44A24.26 24.26 0 0 1 33 49.52V31l-3.3-1.09V29h16.12z"
-            fill="#052962"
-          />
-        </svg>
-      </a>
+          <svg
+            css={
+              Object {
+                "@media (min-width: 980px)": Object {
+                  "height": "51px",
+                  "width": "51px",
+                },
+                "height": "39px",
+                "width": "39px",
+              }
+            }
+            viewBox="0 0 56 56"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M28 0a28 28 0 1 0 28 28A28 28 0 0 0 28 0"
+              fill="#FFFFFF"
+            />
+            <path
+              d="M33 6.92c3.63.58 8.24 3.06 9.89 4.83v8h-1L33 7.82zm-3.34.5h-.09c-6.35 0-9.8 8.8-9.8 20.66 0 11.87 3.45 20.66 9.8 20.66h.09v.91c-9.56.65-22.42-6.63-22.09-21.58C7.23 13.14 20.09 5.86 29.66 6.51zm16.16 22.53l-3 1.3v13.44A24.26 24.26 0 0 1 33 49.52V31l-3.3-1.09V29h16.12z"
+              fill="#052962"
+            />
+          </svg>
+        </a>
+      </div>
     </div>
   </header>
   <div
