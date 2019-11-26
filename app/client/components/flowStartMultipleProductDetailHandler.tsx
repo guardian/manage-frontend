@@ -20,6 +20,7 @@ import {
   hasProductPageProperties
 } from "../../shared/productTypes";
 import palette from "../colours";
+import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 import { CallCentreNumbers } from "./callCentreNumbers";
@@ -247,7 +248,15 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
 
   public render(): React.ReactNode {
     return (
-      <div>
+      <div
+        css={{
+          padding: "0 0.625rem",
+
+          [minWidth.tablet]: {
+            padding: "0 1.25rem"
+          }
+        }}
+      >
         {!this.props.hideHeading && (
           <PageContainer>
             <h1 css={{ fontSize: "24px" }}>
