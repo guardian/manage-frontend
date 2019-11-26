@@ -8,6 +8,7 @@ import { Nav, NavProps } from "./nav";
 
 export interface PageNavAndContentContainerProps extends NavProps {
   children: React.ReactNode;
+  withoutNav?: true;
 }
 
 export const PageNavAndContentContainer: React.SFC<
@@ -29,38 +30,40 @@ export const PageNavAndContentContainer: React.SFC<
       }
     }}
   >
-    <nav
-      css={{
-        marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
-        display: "none",
+    {!props.withoutNav && (
+      <nav
+        css={{
+          marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
+          display: "none",
 
-        [minWidth.desktop]: {
-          ...gridItemPlacement(1, 4),
-          display: "block",
-          paddingRight: "1.25rem"
-        },
+          [minWidth.desktop]: {
+            ...gridItemPlacement(1, 4),
+            display: "block",
+            paddingRight: "1.25rem"
+          },
 
-        [minWidth.wide]: {
-          paddingRight: "0"
-        }
-      }}
-    >
-      <Nav {...props} />
-    </nav>
+          [minWidth.wide]: {
+            paddingRight: "0"
+          }
+        }}
+      >
+        <Nav {...props} />
+      </nav>
+    )}
     <section
       css={{
         ...gridItemPlacement(1, 4),
 
         [minWidth.tablet]: {
-          ...gridItemPlacement(1, 11)
+          ...gridItemPlacement(1, 12)
         },
 
         [minWidth.desktop]: {
-          ...gridItemPlacement(5, 7)
+          ...gridItemPlacement(5, 8)
         },
 
         [minWidth.wide]: {
-          ...gridItemPlacement(6, 9)
+          ...gridItemPlacement(6, 10)
         }
       }}
     >
@@ -69,17 +72,18 @@ export const PageNavAndContentContainer: React.SFC<
   </div>
 );
 
-// Standard width, centered container
-export const PageContainer: React.SFC<{ noVerticalMargin?: true }> = ({
-  children,
-  noVerticalMargin
-}) => (
+export interface PageContainerProps {
+  noVerticalMargin?: true;
+  children: React.ReactNode;
+}
+export const PageContainer = (props: PageContainerProps) => (
   <div
     css={{
-      margin: (noVerticalMargin ? "0" : "1.8125rem") + " auto 0"
+      margin: `${props.noVerticalMargin ? "0" : "1.8125rem"} auto 0`,
+      maxWidth: "980px"
     }}
   >
-    {children}
+    {props.children}
   </div>
 );
 
