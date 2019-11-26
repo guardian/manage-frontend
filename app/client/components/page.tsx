@@ -75,13 +75,12 @@ export const PageNavAndContentContainer: React.SFC<
 export interface PageContainerProps {
   noVerticalMargin?: true;
   children: React.ReactNode;
-  withMaxWidth?: true;
 }
 export const PageContainer = (props: PageContainerProps) => (
   <div
     css={{
       margin: `${props.noVerticalMargin ? "0" : "1.8125rem"} auto 0`,
-      maxWidth: props.withMaxWidth ? "980px" : undefined
+      maxWidth: "980px"
     }}
   >
     {props.children}
