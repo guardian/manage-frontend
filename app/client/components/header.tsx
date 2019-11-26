@@ -1,4 +1,5 @@
 import { breakpoints, palette } from "@guardian/src-foundations";
+import { Link } from "@reach/router";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
@@ -32,7 +33,7 @@ const Header = () => (
         css={{
           fontSize: "1.75rem",
           fontWeight: "bold",
-          color: "white",
+          color: palette.neutral["100"],
           display: "none",
           [minWidth.desktop]: {
             display: "block",
@@ -40,7 +41,16 @@ const Header = () => (
           }
         }}
       >
-        My account
+        <Link
+          to={"/"}
+          css={{
+            textDecoration: "none",
+            color: palette.neutral["100"],
+            ":visited": { color: "inherit" }
+          }}
+        >
+          My account
+        </Link>
       </h1>
       <UserNav />
       <GridRoundel
