@@ -247,20 +247,16 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
 
   public render(): React.ReactNode {
     return (
-      <div>
+      <PageContainer withMaxWidth>
         {!this.props.hideHeading && (
-          <PageContainer>
-            <h1 css={{ fontSize: "24px" }}>
-              {this.props.headingPrefix + " your "}
-              {this.props.productType.includeGuardianInTitles
-                ? "Guardian "
-                : ""}
-              {this.props.productType.friendlyName}
-            </h1>
-          </PageContainer>
+          <h1 css={{ fontSize: "24px" }}>
+            {this.props.headingPrefix + " your "}
+            {this.props.productType.includeGuardianInTitles ? "Guardian " : ""}
+            {this.props.productType.friendlyName}
+          </h1>
         )}
         {this.renderInner()}
-      </div>
+      </PageContainer>
     );
   }
 

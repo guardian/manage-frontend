@@ -129,7 +129,7 @@ if (typeof window !== "undefined" && window.guardian) {
 }
 
 export interface NavProps {
-  selectedNavItem: NavItem;
+  selectedNavItem?: NavItem;
 }
 
 export const Nav = (props: NavProps) => (
