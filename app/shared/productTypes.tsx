@@ -109,6 +109,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
+  showDeliveryAddress?: true;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -313,6 +314,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   homedelivery: {
@@ -323,6 +325,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   voucher: {
@@ -344,6 +347,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
           "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
       }
     },
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -360,6 +364,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   digipack: {

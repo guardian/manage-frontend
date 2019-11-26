@@ -26,11 +26,16 @@ export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
 export const annotateMdaResponseWithTestUserFromHeaders = async (
   response: Response
 ) =>
-  ((await response.json()) as MembersDataApiResponse[]).map(data =>
-    Object.assign({}, data, {
-      isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true"
-    })
-  );
+  ((await response.json()) as MembersDataApiResponse[]).map(data => ({
+    ...data,
+    isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true",
+    subscription: hasProduct(data)
+      ? {
+          ...data.subscription,
+          deliveryAddress: "dfgsdg"
+        }
+      : undefined
+  }));
 
 export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
   productDetail.alertText
@@ -114,6 +119,7 @@ export interface Subscription {
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
+  deliveryAddress?: string;
 }
 
 export interface WithSubscription {
