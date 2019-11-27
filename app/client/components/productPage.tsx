@@ -225,16 +225,15 @@ const getProductDetailRenderer = (
   const alternateManagementCtaLabel =
     productType.alternateManagementCtaLabel &&
     productType.alternateManagementCtaLabel(productDetail);
-  const shouldShowShadedBackground =
-    productDetailListLength > 1 && (listIndex + 1) % 2 !== 0;
   const mainPlan = getMainPlan(productDetail.subscription);
   return (
     <div
       key={productDetail.subscription.subscriptionId}
       css={{
-        background: shouldShowShadedBackground
-          ? palette.neutral["97"]
-          : undefined,
+        borderTop:
+          productDetailListLength > 1
+            ? `1px solid ${palette.neutral["86"]}`
+            : undefined,
         padding: "5px 0 20px"
       }}
     >

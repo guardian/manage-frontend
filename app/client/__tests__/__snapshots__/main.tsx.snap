@@ -67,14 +67,29 @@ exports[`Main renders something 1`] = `
               "msGridColumnSpan": "8",
               "msGridRow": "1",
             },
-            "color": "white",
+            "color": "#FFFFFF",
             "display": "none",
             "fontSize": "1.75rem",
             "fontWeight": "bold",
           }
         }
       >
-        My account
+        <a
+          aria-current="page"
+          css={
+            Object {
+              ":visited": Object {
+                "color": "inherit",
+              },
+              "color": "#FFFFFF",
+              "textDecoration": "none",
+            }
+          }
+          href="/"
+          onClick={[Function]}
+        >
+          My account
+        </a>
       </h1>
       <nav
         css={
