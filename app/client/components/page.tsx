@@ -2,7 +2,7 @@ import { breakpoints } from "@guardian/src-foundations";
 import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
-import { headline } from "../styles/fonts";
+import { titlepiece } from "../styles/fonts";
 import { gridBase, gridItemPlacement } from "../styles/grid";
 import { Nav, NavProps } from "./nav";
 
@@ -127,7 +127,7 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
         "& h1": {
           fontSize: "1.5rem",
           lineHeight: "2rem",
-          fontFamily: headline,
+          fontFamily: titlepiece,
           fontWeight: "bold"
         },
         "> h1, > div": {

@@ -330,6 +330,7 @@ export const fonts = `
 export const sans = `"Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif`;
 export const serif = `"GuardianTextEgyptian", Georgia, serif`;
 export const headline = `GH Guardian Headline, ${serif}`;
+export const titlepiece = "GT Guardian Titlepiece, Georgia, serif";
 
 export const validationWarningCSS = {
   color: palette.red.medium,

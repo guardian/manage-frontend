@@ -30,6 +30,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     },
     [minWidth.desktop]: {
       width: "auto",
+      minWidth: "220px",
       maxWidth: "none",
       top: `${space[9]}px`,
       left: "auto",
