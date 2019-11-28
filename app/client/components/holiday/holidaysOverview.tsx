@@ -116,7 +116,7 @@ const renderHolidayStopsOverview = (
       value={{
         ...holidayStopsResponse,
         reload: reloadWhichAlsoClearsAnyExistingHolidayStopToAmend,
-        existingHolidayStopToAmend
+        existingHolidayStopToAmend: existingHolidayStopToAmend || undefined
       }}
     >
       <MembersDataApiResponseContext.Provider value={productDetail}>

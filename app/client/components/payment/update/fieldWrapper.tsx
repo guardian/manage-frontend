@@ -63,7 +63,7 @@ export class FieldWrapper extends React.Component<
         <div
           css={{
             border: `1px solid ${
-              this.state.error && this.state.error.message
+              this.state.error?.message
                 ? palette.red.medium
                 : palette.neutral["5"]
             }`,
@@ -87,7 +87,7 @@ export class FieldWrapper extends React.Component<
         >
           {hydratedChildren}
         </div>
-        {this.state.error && this.state.error.message ? (
+        {this.state.error?.message && (
           <span
             css={{
               color: palette.red.medium,
@@ -97,7 +97,7 @@ export class FieldWrapper extends React.Component<
           >
             {this.state.error.message}
           </span>
-        ) : null}
+        )}
       </div>
     );
   }
@@ -108,15 +108,9 @@ export class FieldWrapper extends React.Component<
     if (otherOnChange) {
       otherOnChange(field);
     }
-    if (field.error && field.error.message) {
-      this.setState({
-        error: field.error
-      });
-    } else {
-      this.setState({
-        error: {}
-      });
-    }
+    this.setState({
+      error: field.error?.message ? field.error : {}
+    });
   };
 
   private toggleFocus = () => {
