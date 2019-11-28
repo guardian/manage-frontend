@@ -180,14 +180,15 @@ export class HolidayDateChooser extends React.Component<
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
                   holidayStopsResponse.existing
                     .filter(isNotWithdrawn)
-                    .filter(
-                      holidayStopRequest =>
-                        holidayStopRequest.id !== existingHolidayStopToAmendId
-                    )
-                    .flatMap(
-                      holidayStopRequest =>
-                        holidayStopRequest.publicationsImpacted
-                    ),
+                    .filter(_ => _.id !== existingHolidayStopToAmendId)
+                    .flatMap(_ => _.publicationsImpacted),
+                  renewalDateMoment
+                );
+
+                const allIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
+                  holidayStopsResponse.existing
+                    .filter(isNotWithdrawn)
+                    .flatMap(_ => _.publicationsImpacted),
                   renewalDateMoment
                 );
 
@@ -289,6 +290,7 @@ export class HolidayDateChooser extends React.Component<
                           renewalDateMoment,
                           productDetail.subscription.subscriptionId,
                           combinedIssuesImpactedPerYear,
+                          allIssuesImpactedPerYear,
                           holidayStopsResponse.annualIssueLimit,
                           productDetail.isTestUser
                         )}
@@ -358,6 +360,7 @@ export class HolidayDateChooser extends React.Component<
     renewalDateMoment: Moment,
     subscriptionName: string,
     combinedIssuesImpactedPerYear: IssuesImpactedPerYear,
+    allIssuesImpactedPerYear: IssuesImpactedPerYear,
     annualIssueLimit: number,
     isTestUser: boolean
   ) => ({ start, end }: OnSelectCallbackParam) =>
@@ -400,12 +403,16 @@ export class HolidayDateChooser extends React.Component<
             );
 
             const issuesRemainingThisYear =
-              annualIssueLimit -
-              combinedIssuesImpactedPerYear.issuesThisYear.length;
+              Math.max(
+                annualIssueLimit,
+                allIssuesImpactedPerYear.issuesThisYear.length
+              ) - combinedIssuesImpactedPerYear.issuesThisYear.length;
 
             const issuesRemainingNextYear =
-              annualIssueLimit -
-              combinedIssuesImpactedPerYear.issuesNextYear.length;
+              Math.max(
+                annualIssueLimit,
+                allIssuesImpactedPerYear.issuesNextYear.length
+              ) - combinedIssuesImpactedPerYear.issuesNextYear.length;
 
             const validationErrorMessage: React.ReactNode = this.validateIssuesSelected(
               renewalDateMoment,
@@ -489,19 +496,23 @@ export class HolidayDateChooser extends React.Component<
     combinedIssuesImpactedPerYear: IssuesImpactedPerYear,
     annualIssueLimit: number
   ) => {
-    const issuesRemainingThisYear =
+    const issuesRemainingThisYear = Math.max(
+      0,
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issuesThisYear.length -
-      (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issuesThisYear.length
-        : 0);
+        combinedIssuesImpactedPerYear.issuesThisYear.length -
+        (this.state.issuesImpactedPerYearBySelection
+          ? this.state.issuesImpactedPerYearBySelection.issuesThisYear.length
+          : 0)
+    );
 
-    const issuesRemainingNextYear =
+    const issuesRemainingNextYear = Math.max(
+      0,
       annualIssueLimit -
-      combinedIssuesImpactedPerYear.issuesNextYear.length -
-      (this.state.issuesImpactedPerYearBySelection
-        ? this.state.issuesImpactedPerYearBySelection.issuesNextYear.length
-        : 0);
+        combinedIssuesImpactedPerYear.issuesNextYear.length -
+        (this.state.issuesImpactedPerYearBySelection
+          ? this.state.issuesImpactedPerYearBySelection.issuesNextYear.length
+          : 0)
+    );
 
     if (this.state.validationErrorMessage) {
       return (
