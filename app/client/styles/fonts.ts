@@ -108,6 +108,15 @@ export const fonts = `
 	font-weight: 900;
 	font-style: italic;
     }
+
+@font-face {
+	font-family: "GT Guardian Titlepiece";
+	src: url("/static/fonts/GTGuardianTitlepiece-Bold.woff2") format("woff2"),
+		     url("/static/fonts/GTGuardianTitlepiece-Bold.woff") format("woff"),
+		     url("/static/fonts/GTGuardianTitlepiece-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+	}
 	
 		@font-face {
 			font-family: 'Guardian Text Sans Web';
