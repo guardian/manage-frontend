@@ -79,14 +79,11 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   const errorRef = React.createRef<GenericErrorMessageRef>();
 
-  useEffect(
-    () => {
-      if (state.error && errorRef.current) {
-        window.scrollTo(0, errorRef.current.offsetTop - 20);
-      }
-    },
-    [state.error]
-  );
+  useEffect(() => {
+    if (state.error && errorRef.current) {
+      window.scrollTo(0, errorRef.current.offsetTop - 20);
+    }
+  }, [state.error]);
 
   const errorMessage = (
     <PageContainer>
@@ -148,7 +145,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
             marginTop: "0"
           }}
         >
-          Edit your profile
+          Emails &amp; marketing
         </h1>
       </PageHeaderContainer>
       <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
