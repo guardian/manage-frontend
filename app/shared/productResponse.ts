@@ -30,10 +30,18 @@ export const annotateMdaResponseWithTestUserFromHeaders = async (
     ...data,
     isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true",
     subscription: hasProduct(data)
-      ? {
+      ? ({
           ...data.subscription,
-          deliveryAddress: "dfgsdg"
-        }
+          deliveryAddress: {
+            addressLine1: "The Guardian, Kings Place",
+            addressLine2: "90 York Way",
+            town: "London",
+            county_state: "",
+            postcode_zipcode: "N1 9GU",
+            country: "United Kingdom"
+          },
+          contactId: "ABDEF12345"
+        } as Subscription)
       : undefined
   }));
 
@@ -101,6 +109,15 @@ export function isPaidSubscriptionPlan(
   return !!subscriptionPlan && subscriptionPlan.hasOwnProperty("amount");
 }
 
+export interface DeliveryAddress {
+  addressLine1: string;
+  addressLine2?: string;
+  town?: string;
+  county_state?: string;
+  postcode_zipcode: string;
+  country: string;
+}
+
 export interface Subscription {
   subscriptionId: string;
   start?: string;
@@ -119,7 +136,8 @@ export interface Subscription {
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
-  deliveryAddress?: string;
+  deliveryAddress?: DeliveryAddress;
+  contactId?: string;
 }
 
 export interface WithSubscription {

@@ -129,6 +129,9 @@ export const hasProductPageProperties = (
   productType.productPage !== undefined &&
   typeof productType.productPage === "object";
 
+export const hasDeliveryFlow = (productType: ProductType) =>
+  productType.showDeliveryAddress;
+
 export interface ProductTypeWithProductPageRedirect extends ProductType {
   productPage: ProductUrlPart;
 }
@@ -155,8 +158,8 @@ export const shouldHaveHolidayStopsFlow = (
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
-) => async () =>
-  await fetch(
+) => () => {
+  const result = fetch(
     "/api/me/mma" +
       (subscriptionName
         ? `/${subscriptionName}`
@@ -171,6 +174,8 @@ export const createProductDetailFetcher = (
       }
     }
   );
+  return result;
+};
 
 const domainSpecificSubsManageURL = `https://subscribe.${
   typeof window !== "undefined" && window.guardian && window.guardian.domain
@@ -203,7 +208,17 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
   );
 };
 
-export const ProductTypes: { [productKey: string]: ProductType } = {
+export type ProductTypeKeys =
+  | "membership"
+  | "contributions"
+  | "newspaper"
+  | "homedelivery"
+  | "voucher"
+  | "guardianweekly"
+  | "digipack"
+  | "contentSubscriptions";
+
+export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
     friendlyName: "membership",
     allProductsProductTypeFilterString: "Membership",

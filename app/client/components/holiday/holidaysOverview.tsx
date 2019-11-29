@@ -116,7 +116,7 @@ const renderHolidayStopsOverview = (
       value={{
         ...holidayStopsResponse,
         reload: reloadWhichAlsoClearsAnyExistingHolidayStopToAmend,
-        existingHolidayStopToAmend
+        existingHolidayStopToAmend: existingHolidayStopToAmend || undefined
       }}
     >
       <MembersDataApiResponseContext.Provider value={productDetail}>
@@ -139,7 +139,8 @@ const renderHolidayStopsOverview = (
                       Please provide{" "}
                       <strong>
                         {props.productType.holidayStops.alternateNoticeString}
-                      </strong>.
+                      </strong>
+                      .
                     </div>
                   )}
                   <div>
@@ -167,7 +168,8 @@ const renderHolidayStopsOverview = (
                         {renewalDateMoment.format(friendlyLongDateFormat)}
                       </strong>{" "}
                       is the next anniversary of your subscription.
-                      <br />The number of{" "}
+                      <br />
+                      The number of{" "}
                       {props.productType.holidayStops.issueKeyword}s you can
                       suspend per year is reset on this date.
                     </div>
@@ -201,7 +203,8 @@ const renderHolidayStopsOverview = (
                             {
                               combinedIssuesImpactedPerYear.issuesThisYear
                                 .length
-                            }/{holidayStopsResponse.annualIssueLimit}
+                            }
+                            /{holidayStopsResponse.annualIssueLimit}
                           </strong>{" "}
                           {props.productType.holidayStops.issueKeyword}s until{" "}
                           {renewalDateMoment.format(friendlyLongDateFormat)}
@@ -214,12 +217,14 @@ const renderHolidayStopsOverview = (
                                 {
                                   combinedIssuesImpactedPerYear.issuesNextYear
                                     .length
-                                }/{holidayStopsResponse.annualIssueLimit}
+                                }
+                                /{holidayStopsResponse.annualIssueLimit}
                               </strong>{" "}
                               {props.productType.holidayStops.issueKeyword}s the
                               following year
                             </span>
-                          )}.
+                          )}
+                          .
                         </div>
                       </>
                     ) : (

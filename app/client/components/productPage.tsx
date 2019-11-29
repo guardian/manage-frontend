@@ -31,6 +31,7 @@ import {
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
+import { DeliveryAddressDisplay } from "./delivery/address/deliveryAddressDisplay";
 import { InlineContactUs } from "./inlineContactUs";
 import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
@@ -48,6 +49,7 @@ import { RouteableProductProps } from "./wizardRouterAdapter";
 interface ProductRowProps {
   label: string;
   data: string | React.ReactNode;
+  alignItemsAtTop?: true;
 }
 
 export const wrappingContainerCSS = css({
@@ -59,13 +61,16 @@ export const wrappingContainerCSS = css({
 });
 
 const ProductDetailRow = (props: ProductRowProps) => {
+  const alignAtTopObj = props.alignItemsAtTop
+    ? { alignItems: "flex-start" }
+    : {};
   return (
     <div
       css={{
         textAlign: "left",
         marginBottom: "25px",
         alignItems: "center",
-
+        ...alignAtTopObj,
         [minWidth.phablet]: {
           display: "flex"
         }
@@ -217,7 +222,7 @@ const getPaymentPart = (
 const getProductDetailRenderer = (
   originalProductType: ProductType,
   productPageProperties: ProductPageProperties,
-  productDetailListLength: number
+  productDetailList: ProductDetail[]
 ) => (productDetail: ProductDetail, listIndex: number) => {
   const productType = originalProductType.mapGroupedToSpecific
     ? originalProductType.mapGroupedToSpecific(productDetail)
@@ -231,7 +236,7 @@ const getProductDetailRenderer = (
       key={productDetail.subscription.subscriptionId}
       css={{
         borderTop:
-          productDetailListLength > 1
+          productDetailList.length > 1
             ? `1px solid ${palette.neutral["86"]}`
             : undefined,
         padding: "5px 0 20px"
@@ -241,7 +246,7 @@ const getProductDetailRenderer = (
         getCancellationSummary(productType)(productDetail.subscription)
       ) : (
         <>
-          {productDetailListLength > 1 && (
+          {productDetailList.length > 1 && (
             <PageContainer noVerticalMargin>
               {productType.productPage === productPageProperties ? (
                 <h2>
@@ -262,7 +267,7 @@ const getProductDetailRenderer = (
                 backgroundColor: palette.news.dark,
                 color: palette.neutral["100"],
                 padding: "10px 15px 15px",
-                margin: `30px ${productDetailListLength > 1 ? "15px" : "0"}`
+                margin: `30px ${productDetailList.length > 1 ? "15px" : "0"}`
               }}
             >
               <PageContainer noVerticalMargin>
@@ -304,7 +309,7 @@ const getProductDetailRenderer = (
               />
             )}
             {productPageProperties.tierRowLabel &&
-              (productDetailListLength === 1 ||
+              (productDetailList.length === 1 ||
                 productPageProperties.tierChangeable) && (
                 <ProductDetailRow
                   label={productPageProperties.tierRowLabel}
@@ -379,7 +384,7 @@ const getProductDetailRenderer = (
               )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
-              (productDetailListLength > 1 ? (
+              (productDetailList.length > 1 ? (
                 <div css={{ fontWeight: "bold" }}>
                   To {alternateManagementCtaLabel}, please <InlineContactUs />
                 </div>
@@ -419,6 +424,20 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
+            {productType.showDeliveryAddress &&
+              productDetail.subscription.deliveryAddress && (
+                <ProductDetailRow
+                  label="Delivery address"
+                  alignItemsAtTop
+                  data={
+                    <DeliveryAddressDisplay
+                      {...productDetail.subscription.deliveryAddress}
+                      allProductDetails={productDetailList}
+                      productUrlPart={productType.urlPart}
+                    />
+                  }
+                />
+              )}
           </PageContainer>
         </>
       )}
@@ -445,7 +464,7 @@ const getProductRenderer = (
           getProductDetailRenderer(
             productType,
             productType.productPage,
-            productDetailList.length
+            productDetailList
           )
         )
       ) : (
