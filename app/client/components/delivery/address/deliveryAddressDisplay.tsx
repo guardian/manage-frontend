@@ -25,8 +25,8 @@ export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => (
     <span>{props.addressLine1}</span>
     {props.addressLine2 && <span>{props.addressLine2}</span>}
     {props.town && <span>{props.town}</span>}
-    {props.county_state && <span>{props.county_state}</span>}
-    <span>{props.postcode_zipcode}</span>
+    {props.region && <span>{props.region}</span>}
+    <span>{props.postcode}</span>
     <span>{props.country}</span>
     <LinkButton
       text={"Edit address"}

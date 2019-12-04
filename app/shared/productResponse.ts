@@ -36,8 +36,8 @@ export const annotateMdaResponseWithTestUserFromHeaders = async (
             addressLine1: "The Guardian, Kings Place",
             addressLine2: "90 York Way",
             town: "London",
-            county_state: "",
-            postcode_zipcode: "N1 9GU",
+            region: "",
+            postcode: "N1 9GU",
             country: "United Kingdom"
           },
           contactId: "ABDEF12345"
@@ -113,8 +113,8 @@ export interface DeliveryAddress {
   addressLine1: string;
   addressLine2?: string;
   town?: string;
-  county_state?: string;
-  postcode_zipcode: string;
+  region?: string;
+  postcode: string;
   country: string;
 }
 
