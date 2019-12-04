@@ -34,14 +34,11 @@ export const AccountDetails = (props: { path?: string }) => {
   const [error, setError] = useState();
   const [emailMessage, setEmailMessage] = useState();
 
-  useEffect(
-    () => {
-      if (error && errorRef.current) {
-        window.scrollTo(0, errorRef.current.offsetTop - 20);
-      }
-    },
-    [error]
-  );
+  useEffect(() => {
+    if (error && errorRef.current) {
+      window.scrollTo(0, errorRef.current.offsetTop - 20);
+    }
+  }, [error]);
 
   const handleGeneralError = (e: any) => {
     setError(true);
@@ -117,7 +114,7 @@ export const AccountDetails = (props: { path?: string }) => {
             marginTop: "0"
           }}
         >
-          Edit your profile
+          Account details
         </h1>
       </PageHeaderContainer>
       <PageNavAndContentContainer selectedNavItem={navLinks.accountDetails}>

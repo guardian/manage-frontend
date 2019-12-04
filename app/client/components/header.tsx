@@ -6,59 +6,61 @@ import { gridBase, gridItemPlacement } from "../styles/grid";
 import { GridRoundel } from "./svgs/gridRoundel";
 import { UserNav } from "./userNav";
 
-const Header = () => (
-  <header
-    css={{
-      backgroundColor: palette.brand.main,
-      minHeight: "50px",
-      overflow: "visible",
-      position: "relative",
-      boxShadow: `0 2px 1px -1px ${palette.brand.pastel}`,
-      zIndex: 1070,
-      [minWidth.desktop]: {
-        minHeight: "82px"
-      }
-    }}
-  >
-    <div
+const Header = () => {
+  return (
+    <header
       css={{
-        ...gridBase,
-        height: "100%",
-        maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
-        alignItems: "center",
-        margin: "auto"
+        backgroundColor: palette.brand.main,
+        minHeight: "50px",
+        overflow: "visible",
+        position: "relative",
+        boxShadow: `0 2px 1px -1px ${palette.brand.pastel}`,
+        zIndex: 1070,
+        [minWidth.desktop]: {
+          minHeight: "82px"
+        }
       }}
     >
-      <h1
+      <div
         css={{
-          fontSize: "1.75rem",
-          fontWeight: "bold",
-          color: palette.neutral["100"],
-          display: "none",
-          [minWidth.desktop]: {
-            display: "block",
-            ...gridItemPlacement(1, 8)
-          }
+          ...gridBase,
+          height: "100%",
+          maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
+          alignItems: "center",
+          margin: "auto"
         }}
       >
-        <Link
-          to={"/"}
+        <h1
           css={{
-            textDecoration: "none",
+            fontSize: "1.75rem",
+            fontWeight: "bold",
             color: palette.neutral["100"],
-            ":visited": { color: "inherit" }
+            display: "none",
+            [minWidth.desktop]: {
+              display: "block",
+              ...gridItemPlacement(1, 8)
+            }
           }}
         >
-          My account
-        </Link>
-      </h1>
-      <UserNav />
-      <GridRoundel
-        fillMain={palette.neutral["100"]}
-        fillG={palette.brand.main}
-      />
-    </div>
-  </header>
-);
+          <Link
+            to={"/"}
+            css={{
+              textDecoration: "none",
+              color: palette.neutral["100"],
+              ":visited": { color: "inherit" }
+            }}
+          >
+            My account
+          </Link>
+        </h1>
+        <UserNav />
+        <GridRoundel
+          fillMain={palette.neutral["100"]}
+          fillG={palette.brand.main}
+        />
+      </div>
+    </header>
+  );
+};
 
 export default Header;

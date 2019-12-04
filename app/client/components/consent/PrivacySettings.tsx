@@ -319,8 +319,6 @@ export class PrivacySettings extends Component<Props, State> {
     const firstIabPurposeList = iabPurposesList.slice(0, 3);
     const secondIabPurposeList = iabPurposesList.slice(3);
     const { iabNullResponses } = this.state;
-    const { abTestVariant } = this.props;
-    const showCancel = abTestVariant !== "CmpUiNonDismissable-variant";
 
     return (
       <div id={CONTAINER_ID} css={containerStyles}>
@@ -423,22 +421,21 @@ export class PrivacySettings extends Component<Props, State> {
                       time by accessing our{" "}
                       <a href={privacyPolicyURL} target="_blank">
                         privacy policy
-                      </a>.
+                      </a>
+                      .
                     </p>
-                    {showCancel && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          close();
-                        }}
-                        css={css`
-                          ${buttonStyles};
-                          ${blueButtonStyles};
-                        `}
-                      >
-                        Cancel
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        close();
+                      }}
+                      css={css`
+                        ${buttonStyles};
+                        ${blueButtonStyles};
+                      `}
+                    >
+                      Cancel
+                    </button>
                     <button
                       type="button"
                       onClick={() => {

@@ -2,7 +2,7 @@ import { breakpoints } from "@guardian/src-foundations";
 import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
-import { headline } from "../styles/fonts";
+import { titlepiece } from "../styles/fonts";
 import { gridBase, gridItemPlacement } from "../styles/grid";
 import { Nav, NavProps } from "./nav";
 
@@ -11,9 +11,9 @@ export interface PageNavAndContentContainerProps extends NavProps {
   withoutNav?: true;
 }
 
-export const PageNavAndContentContainer: React.SFC<
-  PageNavAndContentContainerProps
-> = (props: PageNavAndContentContainerProps) => (
+export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
+  props: PageNavAndContentContainerProps
+) => (
   <div
     css={{
       ...gridBase,
@@ -104,54 +104,56 @@ export interface PageHeaderContainerProps extends NavProps {
 
 export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
   props: PageHeaderContainerProps
-) => (
-  <div
-    css={{
-      borderBottom: `1px solid ${palette.neutral["86"]}`,
-      marginLeft: "auto",
-      marginRight: "auto",
-      paddingTop: "2rem",
-      background: "#0A1F47",
-      [minWidth.desktop]: {
-        paddingTop: "7rem",
-        maxHeight: "calc(7em + 57px)"
-      }
-    }}
-  >
+) => {
+  return (
     <div
       css={{
-        ...gridBase,
-        maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
-        margin: "auto",
-        color: palette.neutral["100"],
-        "& h1": {
-          fontSize: "1.5rem",
-          lineHeight: "2rem",
-          fontFamily: headline,
-          fontWeight: "bold"
-        },
-        "> h1, > div": {
-          margin: 0,
-          padding: `0 6px ${space[2]}px`,
-          border: `1px solid ${palette.brand.pastel}`,
-          ...gridItemPlacement(1, 3),
-          [minWidth.tablet]: {
-            ...gridItemPlacement(1, 10)
-          },
-          [minWidth.desktop]: {
-            fontSize: "2.625rem",
-            lineHeight: "2rem",
-            maxHeight: "56px",
-            padding: `${space[2]}px ${space[2]}px ${space[5]}px`,
-            ...gridItemPlacement(5, 8)
-          },
-          [minWidth.wide]: {
-            ...gridItemPlacement(6, 10)
-          }
+        borderBottom: `1px solid ${palette.neutral["86"]}`,
+        marginLeft: "auto",
+        marginRight: "auto",
+        paddingTop: "2rem",
+        background: "#0A1F47",
+        [minWidth.desktop]: {
+          paddingTop: "7rem",
+          maxHeight: "calc(7em + 57px)"
         }
       }}
     >
-      {props.children}
+      <div
+        css={{
+          ...gridBase,
+          maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
+          margin: "auto",
+          color: palette.neutral["100"],
+          "& h1": {
+            fontFamily: titlepiece,
+            fontWeight: 700,
+            fontSize: "1.5rem",
+            lineHeight: "2rem"
+          },
+          "> h1, > div": {
+            margin: 0,
+            padding: `0 6px ${space[2]}px`,
+            border: `1px solid ${palette.brand.pastel}`,
+            ...gridItemPlacement(1, 3),
+            [minWidth.tablet]: {
+              ...gridItemPlacement(1, 10)
+            },
+            [minWidth.desktop]: {
+              fontSize: "2.625rem",
+              lineHeight: "2rem",
+              maxHeight: "56px",
+              padding: `${space[2]}px ${space[2]}px ${space[5]}px`,
+              ...gridItemPlacement(5, 8)
+            },
+            [minWidth.wide]: {
+              ...gridItemPlacement(6, 10)
+            }
+          }
+        }}
+      >
+        {props.children}
+      </div>
     </div>
-  </div>
-);
+  );
+};

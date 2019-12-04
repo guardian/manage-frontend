@@ -30,6 +30,7 @@ const userNavMenuCss = (showMenu: boolean) =>
     },
     [minWidth.desktop]: {
       width: "auto",
+      minWidth: "220px",
       maxWidth: "none",
       top: `${space[9]}px`,
       left: "auto",
@@ -226,9 +227,10 @@ export const UserNav = () => {
       {/* TODO refactor to full use ExpanderButton */}
       <button
         css={{
-          ...expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
-            showMenu
-          )
+          ...expanderButtonCss(
+            palette.neutral["100"],
+            palette.neutral["100"]
+          )(showMenu)
         }}
         type="button"
         aria-expanded={showMenu}
