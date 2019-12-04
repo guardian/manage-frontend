@@ -2,7 +2,7 @@ import { NavigateFn } from "@reach/router";
 import Raven from "raven-js";
 import React from "react";
 import {
-  MembersDataApiResponseContext,
+  MembersDataApiItemContext,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
@@ -149,7 +149,7 @@ class PaymentUpdaterStep extends React.Component<
 
   public render(): React.ReactNode {
     return (
-      <MembersDataApiResponseContext.Provider value={this.props.productDetail}>
+      <MembersDataApiItemContext.Provider value={this.props.productDetail}>
         <NewPaymentMethodContext.Provider
           value={this.state.newPaymentMethodDetail || {}}
         >
@@ -204,7 +204,7 @@ class PaymentUpdaterStep extends React.Component<
             </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>
-      </MembersDataApiResponseContext.Provider>
+      </MembersDataApiItemContext.Provider>
     );
   }
 

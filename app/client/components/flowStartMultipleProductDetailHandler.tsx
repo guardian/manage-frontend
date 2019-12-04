@@ -3,13 +3,12 @@ import { toWords } from "number-to-words";
 import React from "react";
 import {
   alertTextWithoutCTA,
-  annotateMdaResponseWithTestUserFromHeaders,
   augmentInterval,
   formatDate,
   getMainPlan,
-  hasProduct,
   isPaidSubscriptionPlan,
-  MembersDataApiResponse,
+  isProduct,
+  MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail,
   sortByJoinDate,
@@ -79,11 +78,11 @@ const getProductDetailSelector = (
   props: FlowStartMultipleProductDetailHandlerProps,
   selectProductDetail: (productDetail: ProductDetail) => void,
   supportRefererSuffix: string
-) => (data: MembersDataApiResponse[]) => {
-  const sortedList = data.filter(hasProduct).sort(sortByJoinDate);
+) => (data: MembersDataApiItem[]) => {
+  const sortedList = data.filter(isProduct).sort(sortByJoinDate);
   if (sortedList.length > 0) {
     const first = sortedList[0];
-    if (sortedList.length === 1 && hasProduct(first)) {
+    if (sortedList.length === 1 && isProduct(first)) {
       return first.subscription.cancelledAt ? (
         <PageContainer>
           <h4>{props.cancelledExplainer}</h4>
@@ -240,7 +239,7 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
   public componentDidMount(): void {
     this.setState({
       selectedProductDetail:
-        this.props.location && hasProduct(this.props.location.state)
+        this.props.location && isProduct(this.props.location.state)
           ? this.props.location.state
           : null
     });
@@ -286,7 +285,6 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
               this.props.productType
             ) /*TODO reload on 'back' to page*/
           }
-          readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
           render={this.preWiredProductDetailSelector}
           loadingMessage={
             this.props.loadingMessagePrefix +

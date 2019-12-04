@@ -25,12 +25,23 @@ export const handleAwsRelatedError = (message: string, detail?: any) => {
 
 export const s3ConfigPromise = <ConfigInterface>(
   configPathPart: string,
-  ...fields: string[]
+  ...fieldNamesToValidate: string[]
+) =>
+  s3FilePromise<ConfigInterface>(
+    "gu-reader-revenue-private",
+    `manage-frontend/${conf.STAGE}/${configPathPart}-${conf.STAGE}.json`,
+    ...fieldNamesToValidate
+  );
+
+export const s3FilePromise = <ConfigInterface>(
+  bucket: string,
+  fileKey: string,
+  ...fieldNamesToValidate: string[]
 ) =>
   (async () => {
     const configPath: GetObjectRequest = {
-      Bucket: "gu-reader-revenue-private",
-      Key: `manage-frontend/${conf.STAGE}/${configPathPart}-${conf.STAGE}.json`
+      Bucket: bucket,
+      Key: fileKey
     };
 
     const s3PromiseResult = await S3.getObject(configPath).promise();
@@ -38,24 +49,24 @@ export const s3ConfigPromise = <ConfigInterface>(
     if (s3PromiseResult.Body) {
       try {
         const parsed = JSON.parse(s3PromiseResult.Body.toString());
-        if (
-          fields.filter(field => parsed.hasOwnProperty(field)).length ===
-          fields.length
-        ) {
+        const missingProperties = fieldNamesToValidate.filter(
+          field => !parsed.hasOwnProperty(field)
+        );
+        if (missingProperties.length === 0) {
           return parsed as ConfigInterface;
         }
         handleAwsRelatedError(
-          `${configPathPart} config missing ${fields
-            .map(field => `'${field}'`)
-            .join(" and/or ")} properties`
+          `${fileKey} missing ${missingProperties.map(
+            field => `'${field}'`
+          )} properties in '${bucket}'`
         );
       } catch (err) {
-        handleAwsRelatedError(`could not parse ${configPathPart} config`, err);
+        handleAwsRelatedError(`could not parse ${fileKey} in '${bucket}'`, err);
       }
     }
 
     handleAwsRelatedError(
-      `error fetching ${configPathPart} config from S3`,
+      `S3 error fetching ${fileKey} in '${bucket}'`,
       s3PromiseResult
     );
   })();
