@@ -12,13 +12,13 @@ import {
 
 export type BodyHandler = (res: Response, body: string) => void;
 
-const straightThroughBodyHandler: BodyHandler = (res, jsonString) =>
-  res.send(jsonString);
+export const straightThroughBodyHandler: BodyHandler = (res, body) =>
+  res.send(body);
 
 export const proxyApiHandler = (
   basePath: string,
   ...headersToForward: string[]
-) => (bodyHandler: BodyHandler = straightThroughBodyHandler) => (
+) => (bodyHandler: BodyHandler) => (
   path: string,
   forwardQueryArgs?: boolean,
   ...pathParamNamesToReplace: string[]
@@ -69,14 +69,18 @@ export const proxyApiHandler = (
     })
     .then(body => bodyHandler(res, body))
     .catch(e => {
-      log.info(e);
+      log.error(e);
       res.status(500).send("Something broke!");
     });
 };
 
-export const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL)();
+export const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL)(
+  straightThroughBodyHandler
+);
 export const customMembersDataApiHandler = proxyApiHandler(
   "https://members-data-api." + conf.DOMAIN,
   MDA_TEST_USER_HEADER
 );
-export const membersDataApiHandler = customMembersDataApiHandler();
+export const membersDataApiHandler = customMembersDataApiHandler(
+  straightThroughBodyHandler
+);

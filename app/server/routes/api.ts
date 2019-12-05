@@ -8,7 +8,8 @@ import {
   customMembersDataApiHandler,
   membersDataApiHandler,
   proxyApiHandler,
-  sfCasesApiHandler
+  sfCasesApiHandler,
+  straightThroughBodyHandler
 } from "../middleware/apiMiddleware";
 import { withIdentity } from "../middleware/identityMiddleware";
 import { stripeSetupIntentHandler } from "../stripeSetupIntentsHandler";
@@ -66,10 +67,9 @@ router.post(
 
 router.post(
   "/validate/payment/dd",
-  proxyApiHandler("https://payment." + conf.API_DOMAIN)()(
-    "direct-debit/check-account",
-    true
-  )
+  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
+    straightThroughBodyHandler
+  )("direct-debit/check-account", true)
 );
 
 router.post("/case", sfCasesApiHandler("case"));
