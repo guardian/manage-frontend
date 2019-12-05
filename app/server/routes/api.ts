@@ -1,9 +1,13 @@
 import { Router } from "express";
+import Raven from "raven";
 import {
+  isProduct,
   MDA_TEST_USER_HEADER,
   MembersDataApiItem
 } from "../../shared/productResponse";
 import { conf } from "../config";
+import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
+import { log } from "../log";
 import {
   customMembersDataApiHandler,
   membersDataApiHandler,
@@ -29,12 +33,27 @@ router.get(
   "/me/mma/:subscriptionName?",
   customMembersDataApiHandler((response, body) => {
     const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === "true";
-    response.json(
-      (JSON.parse(body) as MembersDataApiItem[]).map(mdaItem => ({
-        ...mdaItem,
-        isTestUser
-      }))
-    );
+    const augmentedWithTestUser = (JSON.parse(
+      body
+    ) as MembersDataApiItem[]).map(mdaItem => ({
+      ...mdaItem,
+      isTestUser
+    }));
+    Promise.all(
+      augmentedWithTestUser
+        .filter(isProduct)
+        .map(augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday)
+    )
+      .then(_ => {
+        response.json(_);
+      })
+      .catch(error => {
+        const errorMessage =
+          "Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
+        log.error(errorMessage, error);
+        Raven.captureMessage(errorMessage);
+        response.json(augmentedWithTestUser); // fallback to sending sending the response augmented with just isTestUser
+      });
   })("user-attributes/me/mma/:subscriptionName", true, "subscriptionName")
 );
 

@@ -109,6 +109,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
+  fulfilmentDateCalculatorProductFilenamePart?: string;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -360,7 +361,8 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
-    productPage: "subscriptions"
+    productPage: "subscriptions",
+    fulfilmentDateCalculatorProductFilenamePart: "WEEKLY"
   },
   digipack: {
     friendlyName: "digital subscription",

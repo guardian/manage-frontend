@@ -105,6 +105,8 @@ export interface Subscription {
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
+  // THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
+  deliveryAddressChangeEffectiveDate?: string;
 }
 
 export interface WithSubscription {
