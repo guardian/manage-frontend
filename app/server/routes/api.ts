@@ -70,4 +70,18 @@ router.patch(
   sfCasesApiHandler("case/:caseId", false, "caseId")
 );
 
+router.post("/delivery/address/update", (req, res) => {
+  // tslint:disable-next-line:no-console
+  console.log(`body json = ${JSON.stringify(req.body, null, " ")}`);
+  if (!req.body.addressLine1) {
+    return res.status(400).send({
+      message: "Address line 1 is required"
+    });
+  }
+  return res.status(201).send({
+    ok: "true",
+    message: "Delivery address updated"
+  });
+});
+
 export default router;

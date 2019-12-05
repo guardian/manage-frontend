@@ -1,4 +1,5 @@
 import { css, SerializedStyles } from "@emotion/core";
+import Raven from "raven-js";
 import React, { useState } from "react";
 import {
   annotateMdaResponseWithTestUserFromHeaders,
@@ -87,23 +88,25 @@ const renderAllProductDetails = (
   );
 };
 
-/*
 interface FormStates {
   INIT: string;
   PENDING: string;
   VALIDATION_ERROR: string;
   VALIDATION_SUCCESS: string;
+  SUCCESS: string;
+  POST_ERROR: string;
 }
 const formStates: FormStates = {
-  INIT: 'pending',
-  PENDING: 'pending',
-  VALIDATION_ERROR: 'validationError',
-  VALIDATION_SUCCESS: 'validationSuccess',
+  INIT: "pending",
+  PENDING: "pending",
+  VALIDATION_ERROR: "validationError",
+  VALIDATION_SUCCESS: "validationSuccess",
+  SUCCESS: "success",
+  POST_ERROR: "postError"
 };
-*/
 
 const Form = () => {
-  // const [formState, setFormState] = useState(formStates.INIT);
+  const [formState, setFormState] = useState(formStates.INIT);
   const [addressLine1, setAddressLine1] = useState("");
   const [addressLine2, setAddressLine2] = useState("");
   const [town, setTown] = useState("");
@@ -111,8 +114,55 @@ const Form = () => {
   const [postcode, setPostcode] = useState("");
   const [country, setCountry] = useState("");
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = {
+      addressLine1,
+      addressLine2,
+      town,
+      region,
+      postcode,
+      country
+    };
+
+    fetch("/api/delivery/address/update", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        const locationHeaderValue = response.headers.get("Location");
+        if (response.status === 401 && locationHeaderValue) {
+          window.location.replace(locationHeaderValue);
+          return;
+        } else {
+          throw new Error(
+            `Failed to load/post delivery/address/update : ${response.status} ${
+              response.statusText
+            } : ${response.text()}`
+          );
+        }
+      })
+      .then((responseJson: object) => setFormState(formStates.SUCCESS))
+      .catch(error => {
+        Raven.captureException(error);
+        setFormState(formStates.POST_ERROR);
+      });
+  };
+
   return (
     <form action="#" onSubmit={handleFormSubmit}>
+      {formState === formStates.POST_ERROR && (
+        <span>Uh oh, something went wrong</span>
+      )}
+      {formState === formStates.SUCCESS && (
+        <span>Form submitted successfully</span>
+      )}
       <fieldset
         css={{
           border: `1px solid ${palette.neutral["86"]}`,
@@ -221,30 +271,6 @@ const Form = () => {
     </form>
   );
 };
-
-const handleFormSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  const formData = new FormData(e.target as HTMLFormElement);
-  // tslint:disable-next-line:no-console
-  console.log(`formData = ${JSON.stringify(formData, null, " ")}`);
-};
-
-/*
-const postData = async (url:string = '', data:object = {}) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    referrer: 'no-referrer',
-    body: JSON.stringify(data)
-  });
-  return await response.json();
-}
-*/
 
 interface SelectProps {
   label: string;
