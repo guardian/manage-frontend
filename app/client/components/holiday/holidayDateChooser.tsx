@@ -7,8 +7,8 @@ import * as Raven from "raven-js";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
-  hasProduct,
-  MembersDataApiResponseContext
+  isProduct,
+  MembersDataApiItemContext
 } from "../../../shared/productResponse";
 import palette from "../../colours";
 import { maxWidth, minWidth, queries } from "../../styles/breakpoints";
@@ -166,9 +166,9 @@ export class HolidayDateChooser extends React.Component<
     <HolidayStopsResponseContext.Consumer>
       {holidayStopsResponse =>
         isHolidayStopsResponse(holidayStopsResponse) ? (
-          <MembersDataApiResponseContext.Consumer>
+          <MembersDataApiItemContext.Consumer>
             {productDetail => {
-              if (hasProduct(productDetail)) {
+              if (isProduct(productDetail)) {
                 const existingHolidayStopToAmendId =
                   holidayStopsResponse.existingHolidayStopToAmend &&
                   holidayStopsResponse.existingHolidayStopToAmend.id;
@@ -349,7 +349,7 @@ export class HolidayDateChooser extends React.Component<
                 );
               }
             }}
-          </MembersDataApiResponseContext.Consumer>
+          </MembersDataApiItemContext.Consumer>
         ) : (
           <GenericErrorScreen loggingMessage="No holiday stop response" />
         )

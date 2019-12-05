@@ -7,14 +7,13 @@ import Raven from "raven-js";
 import React from "react";
 import {
   alertTextWithoutCTA,
-  annotateMdaResponseWithTestUserFromHeaders,
   augmentInterval,
   formatDate,
   getFuturePlanIfVisible,
   getMainPlan,
-  hasProduct,
   isPaidSubscriptionPlan,
-  MembersDataApiResponse,
+  isProduct,
+  MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail,
   sortByJoinDate
@@ -428,8 +427,8 @@ const getProductDetailRenderer = (
 
 const getProductRenderer = (
   productType: ProductTypeWithProductPageProperties
-) => (apiResponse: MembersDataApiResponse[]) => {
-  const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
+) => (apiResponse: MembersDataApiItem[]) => {
+  const productDetailList = apiResponse.filter(isProduct).sort(sortByJoinDate);
   return (
     <>
       {productDetailList.length > 1 && (
@@ -477,7 +476,6 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
       <MembersDatApiAsyncLoader
         fetch={createProductDetailFetcher(props.productType)}
         render={getProductRenderer(props.productType)}
-        readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
         loadingMessage={`Loading your ${
           props.productType.friendlyName
         } details...`}

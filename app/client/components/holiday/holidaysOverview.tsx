@@ -4,7 +4,7 @@ import {
   getMainPlan,
   isPaidSubscriptionPlan,
   MDA_TEST_USER_HEADER,
-  MembersDataApiResponseContext,
+  MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
 import {
@@ -119,7 +119,7 @@ const renderHolidayStopsOverview = (
         existingHolidayStopToAmend: existingHolidayStopToAmend || undefined
       }}
     >
-      <MembersDataApiResponseContext.Provider value={productDetail}>
+      <MembersDataApiItemContext.Provider value={productDetail}>
         <WizardStep routeableStepProps={props} hideBackButton>
           <div>
             <h1>Suspend {props.productType.friendlyName}</h1>
@@ -292,7 +292,7 @@ const renderHolidayStopsOverview = (
             </div>
           </div>
         </WizardStep>
-      </MembersDataApiResponseContext.Provider>
+      </MembersDataApiItemContext.Provider>
     </HolidayStopsResponseContext.Provider>
   );
 };
@@ -336,7 +336,7 @@ export class HolidaysOverview extends React.Component<
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail
       ) => (
-        <MembersDataApiResponseContext.Provider value={productDetail}>
+        <MembersDataApiItemContext.Provider value={productDetail}>
           <NavigateFnContext.Provider value={{ navigate: this.props.navigate }}>
             {" "}
             {productDetail.subscription.start ? (
@@ -358,7 +358,7 @@ export class HolidaysOverview extends React.Component<
               <GenericErrorScreen loggingMessage="Subscription had no start date" />
             )}
           </NavigateFnContext.Provider>
-        </MembersDataApiResponseContext.Provider>
+        </MembersDataApiItemContext.Provider>
       )}
     />
   );

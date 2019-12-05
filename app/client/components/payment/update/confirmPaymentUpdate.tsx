@@ -4,9 +4,9 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../../../shared/identity";
-import { hasProduct } from "../../../../shared/productResponse";
+import { isProduct } from "../../../../shared/productResponse";
 import {
-  MembersDataApiResponseContext,
+  MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
@@ -159,11 +159,11 @@ class ExecutePaymentUpdate extends React.Component<
 export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
   <NewPaymentMethodContext.Consumer>
     {newPaymentMethodDetail => (
-      <MembersDataApiResponseContext.Consumer>
+      <MembersDataApiItemContext.Consumer>
         {productDetail =>
           props.navigate &&
           isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          hasProduct(productDetail) ? (
+          isProduct(productDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
               extraFooterComponents={
@@ -190,7 +190,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
             visuallyNavigateToParent(props)
           )
         }
-      </MembersDataApiResponseContext.Consumer>
+      </MembersDataApiItemContext.Consumer>
     )}
   </NewPaymentMethodContext.Consumer>
 );

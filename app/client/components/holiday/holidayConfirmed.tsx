@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  hasProduct,
-  MembersDataApiResponseContext
+  isProduct,
+  MembersDataApiItemContext
 } from "../../../shared/productResponse";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
@@ -23,12 +23,12 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
   <HolidayStopsResponseContext.Consumer>
     {holidayStopsResponse =>
       isHolidayStopsResponse(holidayStopsResponse) ? (
-        <MembersDataApiResponseContext.Consumer>
+        <MembersDataApiItemContext.Consumer>
           {productDetail => (
             <HolidayDateChooserStateContext.Consumer>
               {dateChooserState =>
                 isSharedHolidayDateChooserState(dateChooserState) &&
-                hasProduct(productDetail) ? (
+                isProduct(productDetail) ? (
                   <WizardStep routeableStepProps={props} hideBackButton>
                     <div>
                       <h1>Your schedule has been set</h1>
@@ -78,7 +78,7 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
               }
             </HolidayDateChooserStateContext.Consumer>
           )}
-        </MembersDataApiResponseContext.Consumer>
+        </MembersDataApiItemContext.Consumer>
       ) : (
         <GenericErrorScreen loggingMessage="No holiday stop response" />
       )

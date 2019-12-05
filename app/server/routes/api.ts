@@ -1,9 +1,15 @@
 import { Router } from "express";
+import {
+  MDA_TEST_USER_HEADER,
+  MembersDataApiItem
+} from "../../shared/productResponse";
 import { conf } from "../config";
 import {
+  customMembersDataApiHandler,
   membersDataApiHandler,
   proxyApiHandler,
-  sfCasesApiHandler
+  sfCasesApiHandler,
+  straightThroughBodyHandler
 } from "../middleware/apiMiddleware";
 import { withIdentity } from "../middleware/identityMiddleware";
 import { stripeSetupIntentHandler } from "../stripeSetupIntentsHandler";
@@ -21,11 +27,15 @@ router.get(
 
 router.get(
   "/me/mma/:subscriptionName?",
-  membersDataApiHandler(
-    "user-attributes/me/mma/:subscriptionName",
-    true,
-    "subscriptionName"
-  )
+  customMembersDataApiHandler((response, body) => {
+    const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === "true";
+    response.json(
+      (JSON.parse(body) as MembersDataApiItem[]).map(mdaItem => ({
+        ...mdaItem,
+        isTestUser
+      }))
+    );
+  })("user-attributes/me/mma/:subscriptionName", true, "subscriptionName")
 );
 
 router.post(
@@ -58,9 +68,8 @@ router.post(
 router.post(
   "/validate/payment/dd",
   proxyApiHandler("https://payment." + conf.API_DOMAIN)(
-    "direct-debit/check-account",
-    true
-  )
+    straightThroughBodyHandler
+  )("direct-debit/check-account", true)
 );
 
 router.post("/case", sfCasesApiHandler("case"));

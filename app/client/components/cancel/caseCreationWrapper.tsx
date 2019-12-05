@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductDetail } from "../../../shared/productResponse";
-import { MembersDataApiResponse } from "../../../shared/productResponse";
+import { MembersDataApiItem } from "../../../shared/productResponse";
 import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
@@ -44,7 +44,7 @@ class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 export interface CaseCreationWrapperProps {
   children: any;
   sfProduct: string;
-  membersDataApiResponse: MembersDataApiResponse;
+  membersDataApiItem: MembersDataApiItem;
 }
 
 export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
@@ -54,7 +54,7 @@ export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
         fetch={getCreateCaseFunc(
           reason,
           props.sfProduct,
-          props.membersDataApiResponse as ProductDetail
+          props.membersDataApiItem as ProductDetail
         )}
         render={renderWithCaseIdContextProvider(props.children)}
         errorRender={renderWithCaseIdContextProvider(props.children)}

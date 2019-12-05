@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import React from "react";
 import {
-  MembersDataApiResponseContext,
+  MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
 import {
@@ -108,7 +108,7 @@ const reasonsRenderer = (
     );
   }
   return (
-    <MembersDataApiResponseContext.Provider value={productDetail}>
+    <MembersDataApiItemContext.Provider value={productDetail}>
       <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
         {
           routeableStepPropsWithCancellationFlow.productType.cancellation
@@ -123,7 +123,7 @@ const reasonsRenderer = (
           />
         </PageContainerSection>
       </WizardStep>
-    </MembersDataApiResponseContext.Provider>
+    </MembersDataApiItemContext.Provider>
   );
 };
 

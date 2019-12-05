@@ -3,9 +3,9 @@ import {
   augmentInterval,
   formatDate,
   getMainPlan,
-  hasProduct,
   isPaidSubscriptionPlan,
-  MembersDataApiResponseContext,
+  isProduct,
+  MembersDataApiItemContext,
   ProductDetail,
   Subscription,
   WithSubscription
@@ -125,12 +125,12 @@ const WithSubscriptionRenderer = (
   );
 
 export const PaymentUpdated = (props: RouteableStepProps) => (
-  <MembersDataApiResponseContext.Consumer>
+  <MembersDataApiItemContext.Consumer>
     {previousProductDetail => (
       <NewPaymentMethodContext.Consumer>
         {newPaymentMethodDetail =>
           isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          hasProduct(previousProductDetail) ? (
+          isProduct(previousProductDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
               extraFooterComponents={[
@@ -161,5 +161,5 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
         }
       </NewPaymentMethodContext.Consumer>
     )}
-  </MembersDataApiResponseContext.Consumer>
+  </MembersDataApiItemContext.Consumer>
 );

@@ -1,6 +1,6 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
-import { MembersDataApiResponseContext } from "../../../../shared/productResponse";
+import { MembersDataApiItemContext } from "../../../../shared/productResponse";
 import {
   ProductTypeWithCancellationFlow,
   WithProductType
@@ -250,13 +250,13 @@ const ConfirmCancellationAndReturnRow = (
 );
 
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
-  <MembersDataApiResponseContext.Consumer>
-    {membersDataApiResponse => (
+  <MembersDataApiItemContext.Consumer>
+    {membersDataApiItem => (
       <CancellationReasonContext.Provider
         value={props.path as CancellationReasonId}
       >
         <CaseCreationWrapper
-          membersDataApiResponse={membersDataApiResponse}
+          membersDataApiItem={membersDataApiItem}
           sfProduct={props.productType.cancellation.sfProduct}
         >
           <WizardStep routeableStepProps={props} hideBackButton>
@@ -308,5 +308,5 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
         </CaseCreationWrapper>
       </CancellationReasonContext.Provider>
     )}
-  </MembersDataApiResponseContext.Consumer>
+  </MembersDataApiItemContext.Consumer>
 );
