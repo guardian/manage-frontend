@@ -1,7 +1,9 @@
+import Raven from "raven-js";
 import { ProductDetail } from "../shared/productResponse";
 import { ProductTypes } from "../shared/productTypes";
 import { s3FilePromise } from "./awsIntegration";
 import { conf } from "./config";
+import { log } from "./log";
 
 interface RawFulfilmentDateCalculatorDates {
   today: string;
@@ -44,7 +46,9 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
     maybeFulfilmentDateCalculatorProductFilenamePart &&
     !maybeDeliveryAddressChangeEffectiveDate
   ) {
-    // TODO add warning if product type should have that value but its not there
+    const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${maybeProductType}, but wasn't.`;
+    log.error(errorMessage);
+    Raven.captureMessage(errorMessage);
   }
   return maybeDeliveryAddressChangeEffectiveDate
     ? {
