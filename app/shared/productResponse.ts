@@ -3,15 +3,15 @@ import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { CardProps } from "../client/components/payment/cardDisplay";
 
-export type MembersDataApiResponse = ProductDetail | {};
+export type MembersDataApiItem = ProductDetail | {};
 
 export class MembersDatApiAsyncLoader extends AsyncLoader<
-  MembersDataApiResponse[]
+  MembersDataApiItem[]
 > {}
 
-export const MembersDataApiResponseContext: React.Context<
-  MembersDataApiResponse
-> = React.createContext({});
+export const MembersDataApiItemContext: React.Context<MembersDataApiItem> = React.createContext(
+  {}
+);
 
 export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toLocaleDateString("en-GB", {
@@ -23,28 +23,6 @@ export const formatDate = (shortForm: string) => {
 
 export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
 
-export const annotateMdaResponseWithTestUserFromHeaders = async (
-  response: Response
-) =>
-  ((await response.json()) as MembersDataApiResponse[]).map(data => ({
-    ...data,
-    isTestUser: response.headers.get(MDA_TEST_USER_HEADER) === "true",
-    subscription: hasProduct(data)
-      ? ({
-          ...data.subscription,
-          deliveryAddress: {
-            addressLine1: "The Guardian, Kings Place",
-            addressLine2: "90 York Way",
-            town: "London",
-            region: "",
-            postcode: "N1 9GU",
-            country: "United Kingdom"
-          },
-          contactId: "ABDEF12345"
-        } as Subscription)
-      : undefined
-  }));
-
 export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
   productDetail.alertText
     ? productDetail.alertText.replace(/Please check .*/g, "")
@@ -54,7 +32,7 @@ export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
 
 export interface ProductDetail extends WithSubscription {
-  isTestUser: boolean; // THIS IS NOT PART OF THE RESPONSE (but inferred from a header)
+  isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
   isPaidTier: boolean;
   regNumber?: string;
   tier: string;
@@ -62,8 +40,8 @@ export interface ProductDetail extends WithSubscription {
   alertText?: string;
 }
 
-export function hasProduct(
-  data: MembersDataApiResponse | undefined
+export function isProduct(
+  data: MembersDataApiItem | undefined
 ): data is ProductDetail {
   return !!data && data.hasOwnProperty("tier");
 }
@@ -138,6 +116,8 @@ export interface Subscription {
   trialLength: number;
   deliveryAddress?: DeliveryAddress;
   contactId?: string;
+  // THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
+  deliveryAddressChangeEffectiveDate?: string;
 }
 
 export interface WithSubscription {

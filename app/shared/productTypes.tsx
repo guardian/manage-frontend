@@ -110,6 +110,7 @@ export interface ProductType {
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
   showDeliveryAddress?: true;
+  fulfilmentDateCalculatorProductFilenamePart?: string;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -380,7 +381,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       issueKeyword: "issue"
     },
     showDeliveryAddress: true,
-    productPage: "subscriptions"
+    productPage: "subscriptions",
+    fulfilmentDateCalculatorProductFilenamePart: "WEEKLY"
   },
   digipack: {
     friendlyName: "digital subscription",

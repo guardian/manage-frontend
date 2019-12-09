@@ -3,9 +3,9 @@ import {
   augmentInterval,
   formatDate,
   getMainPlan,
-  hasProduct,
   isPaidSubscriptionPlan,
-  MembersDataApiResponseContext,
+  isProduct,
+  MembersDataApiItemContext,
   ProductDetail,
   Subscription,
   WithSubscription
@@ -63,14 +63,13 @@ const ConfirmedNewPaymentDetailsRenderer = ({
           <div>{newPaymentMethodDetail.paymentFailureRecoveryMessage}</div>
         ) : (
           <>
-            {subscription.nextPaymentPrice &&
-              subscription.nextPaymentDate && (
-                <div>
-                  <b>Next Payment:</b> {mainPlan.currency}
-                  {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
-                  {formatDate(subscription.nextPaymentDate)}
-                </div>
-              )}
+            {subscription.nextPaymentPrice && subscription.nextPaymentDate && (
+              <div>
+                <b>Next Payment:</b> {mainPlan.currency}
+                {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
+                {formatDate(subscription.nextPaymentDate)}
+              </div>
+            )}
             <div>
               <b>Payment Frequency:</b> {augmentInterval(mainPlan.interval)}
             </div>
@@ -125,12 +124,12 @@ const WithSubscriptionRenderer = (
   );
 
 export const PaymentUpdated = (props: RouteableStepProps) => (
-  <MembersDataApiResponseContext.Consumer>
+  <MembersDataApiItemContext.Consumer>
     {previousProductDetail => (
       <NewPaymentMethodContext.Consumer>
         {newPaymentMethodDetail =>
           isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          hasProduct(previousProductDetail) ? (
+          isProduct(previousProductDetail) ? (
             <WizardStep
               routeableStepProps={labelPaymentStepProps(props)}
               extraFooterComponents={[
@@ -161,5 +160,5 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
         }
       </NewPaymentMethodContext.Consumer>
     )}
-  </MembersDataApiResponseContext.Consumer>
+  </MembersDataApiItemContext.Consumer>
 );

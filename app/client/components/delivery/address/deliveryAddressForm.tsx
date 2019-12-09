@@ -1,10 +1,8 @@
 import { css, SerializedStyles } from "@emotion/core";
-import Raven from "raven-js";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
-  annotateMdaResponseWithTestUserFromHeaders,
-  hasProduct,
-  MembersDataApiResponse,
+  isProduct,
+  MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -12,9 +10,10 @@ import {
   createProductDetailFetcher,
   ProductTypes
 } from "../../../../shared/productTypes";
+import AsyncLoader from "../../asyncLoader";
 import { COUNTRIES } from "../../identity/models";
 import { PageContainer } from "../../page";
-import { RouteableStepProps } from "../../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
 import { Button } from "@guardian/src-button";
 import { palette } from "@guardian/src-foundations";
@@ -22,13 +21,17 @@ import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { textSans } from "@guardian/src-foundations/typography";
 // @ts-ignore
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
-import { Link } from "@reach/router";
+import { Link, NavigateFn } from "@reach/router";
+import { DeliveryAddress } from "../../../../shared/productResponse";
+import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { EditIcon } from "../../svgs/editIcon";
+import { updateAddressFetcher } from "./deliveryAddressApi";
 
 type setStateFunc = (value: string) => void;
 
 type ContactIdState = "singular" | "duplicates" | "unique";
+
 interface ContactIdStates {
   [key: string]: ContactIdState;
 }
@@ -44,48 +47,13 @@ const getContactIdsState = (
 ): ContactIdState => {
   const allContactIds = allProductDetail
     .filter(product => product.subscription.contactId)
-    .map(product => JSON.stringify(product.subscription.contactId));
+    .map(product => product.subscription.contactId);
   if (allContactIds.length === 1) {
     return CONTACT_ID_STATES.singular;
   } else if ([...new Set(allContactIds)].length === allContactIds.length) {
     return CONTACT_ID_STATES.unique;
   }
   return CONTACT_ID_STATES.duplicates;
-};
-
-const renderAllProductDetails = (
-  allProductDetail: MembersDataApiResponse[]
-) => {
-  const contactIdsState = getContactIdsState(
-    allProductDetail.filter(hasProduct)
-  );
-  return (
-    <PageContainer>
-      <h1>Manage delivery address</h1>
-      {contactIdsState === CONTACT_ID_STATES.singular && (
-        <div>
-          <Form />
-        </div>
-      )}
-      {contactIdsState === CONTACT_ID_STATES.unique && (
-        <span>there are unique contact ID's</span>
-      )}
-      {contactIdsState === CONTACT_ID_STATES.duplicates && (
-        <div>
-          <p
-            css={{
-              borderTop: `1px solid ${palette.neutral["86"]}`,
-              padding: "14px 0"
-            }}
-          >
-            Please note that changing your address here will update the delivery
-            address for all of your subscriptions.
-          </p>
-          <Form />
-        </div>
-      )}
-    </PageContainer>
-  );
 };
 
 interface FormStates {
@@ -96,8 +64,8 @@ interface FormStates {
   SUCCESS: string;
   POST_ERROR: string;
 }
-const formStates: FormStates = {
-  INIT: "pending",
+export const formStates: FormStates = {
+  INIT: "init",
   PENDING: "pending",
   VALIDATION_ERROR: "validationError",
   VALIDATION_SUCCESS: "validationSuccess",
@@ -105,7 +73,20 @@ const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const Form = () => {
+const renderDeliveryAddressForm = (navigate: NavigateFn | undefined) => (
+  allProductDetail: MembersDataApiItem[]
+) => (
+  <FormContainer
+    contactIdsState={getContactIdsState(allProductDetail.filter(isProduct))}
+    navigate={navigate}
+  />
+);
+
+interface FormContainerProps {
+  contactIdsState: string;
+  navigate: NavigateFn | undefined;
+}
+const FormContainer = (props: FormContainerProps) => {
   const [formState, setFormState] = useState(formStates.INIT);
   const [addressLine1, setAddressLine1] = useState("");
   const [addressLine2, setAddressLine2] = useState("");
@@ -114,18 +95,128 @@ const Form = () => {
   const [postcode, setPostcode] = useState("");
   const [country, setCountry] = useState("");
 
+  const form = (
+    <Form
+      formState={formState}
+      setFormState={setFormState}
+      addressLine1={addressLine1}
+      setAddressLine1={setAddressLine1}
+      addressLine2={addressLine2}
+      setAddressLine2={setAddressLine2}
+      town={town}
+      setTown={setTown}
+      region={region}
+      setRegion={setRegion}
+      postcode={postcode}
+      setPostcode={setPostcode}
+      country={country}
+      setCountry={setCountry}
+    />
+  );
+
+  return (
+    <PageContainer>
+      <h1>Manage delivery address</h1>
+      <h2>{formState}</h2>
+      {props.contactIdsState === CONTACT_ID_STATES.singular && (
+        <div>
+          {(formState === formStates.INIT ||
+            formState === formStates.PENDING ||
+            formState === formStates.VALIDATION_ERROR) &&
+            form}
+        </div>
+      )}
+      {props.contactIdsState === CONTACT_ID_STATES.unique && (
+        <span>there are unique contact ID's</span>
+      )}
+      {props.contactIdsState === CONTACT_ID_STATES.duplicates && (
+        <div>
+          <p
+            css={{
+              borderTop: `1px solid ${palette.neutral["86"]}`,
+              padding: "14px 0"
+            }}
+          >
+            Please note that changing your address here will update the delivery
+            address for all of your subscriptions.
+          </p>
+          {(formState === formStates.INIT ||
+            formState === formStates.PENDING ||
+            formState === formStates.VALIDATION_ERROR) &&
+            form}
+        </div>
+      )}
+      {formState === formStates.VALIDATION_SUCCESS && (
+        <AsyncLoader
+          render={renderConfirmation(props.navigate)}
+          fetch={updateAddressFetcher({
+            addressLine1,
+            addressLine2,
+            town,
+            region,
+            postcode,
+            country
+          })}
+          loadingMessage={"Updating delivery address..."}
+        />
+      )}
+    </PageContainer>
+  );
+};
+
+const renderConfirmation = (navigate: NavigateFn | undefined) => (
+  apiResponse: any
+) => {
+  if (navigate) {
+    navigate("confirmed", { replace: true });
+  }
+  return (
+    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
+  );
+};
+
+const isFormValid = (formData: DeliveryAddress) => {
+  return true;
+};
+
+interface FormProps {
+  formState: string;
+  setFormState: Dispatch<SetStateAction<string>>;
+  addressLine1: string;
+  setAddressLine1: Dispatch<SetStateAction<string>>;
+  addressLine2: string;
+  setAddressLine2: Dispatch<SetStateAction<string>>;
+  town: string;
+  setTown: Dispatch<SetStateAction<string>>;
+  region: string;
+  setRegion: Dispatch<SetStateAction<string>>;
+  postcode: string;
+  setPostcode: Dispatch<SetStateAction<string>>;
+  country: string;
+  setCountry: Dispatch<SetStateAction<string>>;
+}
+
+const Form = (props: FormProps) => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = {
-      addressLine1,
-      addressLine2,
-      town,
-      region,
-      postcode,
-      country
+    props.setFormState(formStates.PENDING);
+
+    const formData: DeliveryAddress = {
+      addressLine1: props.addressLine1,
+      addressLine2: props.addressLine2,
+      town: props.town,
+      region: props.region,
+      postcode: props.postcode,
+      country: props.country
     };
 
+    props.setFormState(
+      isFormValid(formData)
+        ? formStates.VALIDATION_SUCCESS
+        : formStates.VALIDATION_ERROR
+    );
+    /*
     fetch("/api/delivery/address/update", {
       method: "POST",
       body: JSON.stringify(formData),
@@ -148,19 +239,23 @@ const Form = () => {
           );
         }
       })
-      .then((responseJson: object) => setFormState(formStates.SUCCESS))
+      .then((responseJson: object) => {
+        navigate && navigate("confirmed");
+        props.setFormState(formStates.SUCCESS);
+      })
       .catch(error => {
-        Raven.captureException(error);
-        setFormState(formStates.POST_ERROR);
+        // Raven.captureException(error);
+        props.setFormState(formStates.POST_ERROR);
       });
+    */
   };
 
   return (
     <form action="#" onSubmit={handleFormSubmit}>
-      {formState === formStates.POST_ERROR && (
+      {props.formState === formStates.POST_ERROR && (
         <span>Uh oh, something went wrong</span>
       )}
-      {formState === formStates.SUCCESS && (
+      {props.formState === formStates.SUCCESS && (
         <span>Form submitted successfully</span>
       )}
       <fieldset
@@ -168,7 +263,7 @@ const Form = () => {
           border: `1px solid ${palette.neutral["86"]}`,
           padding: "48px 14px 14px",
           position: "relative",
-          "label + label": {
+          label: {
             marginTop: "10px"
           }
         }}
@@ -206,28 +301,33 @@ const Form = () => {
         <Input
           label={"Address line 1"}
           width={30}
-          value={addressLine1}
-          changeSetState={setAddressLine1}
+          value={props.addressLine1}
+          changeSetState={props.setAddressLine1}
         />
         <Input
           label="Address line 2"
           width={30}
-          value={addressLine2}
-          changeSetState={setAddressLine2}
+          value={props.addressLine2}
+          changeSetState={props.setAddressLine2}
           optional={true}
         />
-        <Input label="Town" width={30} value={town} changeSetState={setTown} />
+        <Input
+          label="Town"
+          width={30}
+          value={props.town}
+          changeSetState={props.setTown}
+        />
         <Input
           label="County or State"
           width={30}
-          value={region}
-          changeSetState={setRegion}
+          value={props.region}
+          changeSetState={props.setRegion}
         />
         <Input
           label="Postcode/Zipcode"
           width={10}
-          value={postcode}
-          changeSetState={setPostcode}
+          value={props.postcode}
+          changeSetState={props.setPostcode}
         />
         <Select
           label={"Country"}
@@ -236,8 +336,8 @@ const Form = () => {
           additionalcss={css`
             margin-top: 14px;
           `}
-          value={country}
-          changeSetState={setCountry}
+          value={props.country}
+          changeSetState={props.setCountry}
         />
         <div
           css={{
@@ -368,14 +468,18 @@ const Input = (props: InputProps) => (
   </label>
 );
 
-export const DeliveryAddressForm = (props: RouteableStepProps) =>
-  props.location && props.location.state ? (
-    renderAllProductDetails(props.location.state)
-  ) : (
-    <MembersDatApiAsyncLoader
-      render={renderAllProductDetails}
-      fetch={createProductDetailFetcher(ProductTypes.contentSubscriptions)}
-      readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-      loadingMessage={"Loading your delivery address..."}
-    />
-  );
+export const DeliveryAddressForm = (props: RouteableStepProps) => (
+  <WizardStep routeableStepProps={props} hideBackButton>
+    {props.location &&
+    props.location.state &&
+    Array.isArray(props.location.state) ? (
+      renderDeliveryAddressForm(props.navigate)(props.location.state)
+    ) : (
+      <MembersDatApiAsyncLoader
+        render={renderDeliveryAddressForm(props.navigate)}
+        fetch={createProductDetailFetcher(ProductTypes.contentSubscriptions)}
+        loadingMessage={"Loading delivery address form..."}
+      />
+    )}
+  </WizardStep>
+);

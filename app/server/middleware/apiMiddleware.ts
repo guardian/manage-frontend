@@ -10,12 +10,15 @@ import {
   getCookiesOrEmptyString
 } from "./identityMiddleware";
 
-export type JsonHandler = (res: Response, jsonString: string) => void;
+export type BodyHandler = (res: Response, body: string) => void;
 
-export const apiHandler = (jsonHandler: JsonHandler) => (
+export const straightThroughBodyHandler: BodyHandler = (res, body) =>
+  res.send(body);
+
+export const proxyApiHandler = (
   basePath: string,
   ...headersToForward: string[]
-) => (
+) => (bodyHandler: BodyHandler) => (
   path: string,
   forwardQueryArgs?: boolean,
   ...pathParamNamesToReplace: string[]
@@ -64,18 +67,20 @@ export const apiHandler = (jsonHandler: JsonHandler) => (
       }
       return intermediateResponse.text();
     })
-    .then(_ => jsonHandler(res, _))
+    .then(body => bodyHandler(res, body))
     .catch(e => {
-      log.info(e);
+      log.error(e);
       res.status(500).send("Something broke!");
     });
 };
 
-export const proxyApiHandler = apiHandler((res, jsonString) =>
-  res.send(jsonString)
+export const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL)(
+  straightThroughBodyHandler
 );
-export const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL);
-export const membersDataApiHandler = proxyApiHandler(
+export const customMembersDataApiHandler = proxyApiHandler(
   "https://members-data-api." + conf.DOMAIN,
   MDA_TEST_USER_HEADER
+);
+export const membersDataApiHandler = customMembersDataApiHandler(
+  straightThroughBodyHandler
 );

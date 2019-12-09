@@ -2,9 +2,9 @@ import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
 import React from "react";
 import {
-  hasProduct,
+  isProduct,
   MDA_TEST_USER_HEADER,
-  MembersDataApiResponseContext,
+  MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
@@ -106,12 +106,12 @@ export class HolidayReview extends React.Component<
     <HolidayStopsResponseContext.Consumer>
       {holidayStopsResponse =>
         isHolidayStopsResponse(holidayStopsResponse) ? (
-          <MembersDataApiResponseContext.Consumer>
+          <MembersDataApiItemContext.Consumer>
             {productDetail => (
               <HolidayDateChooserStateContext.Consumer>
                 {dateChooserState =>
                   isSharedHolidayDateChooserState(dateChooserState) &&
-                  hasProduct(productDetail) ? (
+                  isProduct(productDetail) ? (
                     <PotentialHolidayStopsAsyncLoader
                       fetch={getPotentialHolidayStopsFetcher(
                         true,
@@ -133,7 +133,7 @@ export class HolidayReview extends React.Component<
                 }
               </HolidayDateChooserStateContext.Consumer>
             )}
-          </MembersDataApiResponseContext.Consumer>
+          </MembersDataApiItemContext.Consumer>
         ) : (
           <GenericErrorScreen loggingMessage="No holiday stop response" />
         )
@@ -206,7 +206,8 @@ export class HolidayReview extends React.Component<
                         margin: "10px"
                       }}
                     >
-                      <InfoIcon />Tell me more
+                      <InfoIcon />
+                      Tell me more
                     </a>
                   }
                   title={

@@ -179,12 +179,10 @@ const User = () => (
           <DeliveryAddressForm
             key={productType.urlPart}
             path={`/delivery/${productType.urlPart}/address`}
-            currentStep={1}
             productType={productType}
           >
             <DeliveryAddressEditConfirmed
               path="confirmed"
-              currentStep={1}
               productType={productType}
             />
           </DeliveryAddressForm>

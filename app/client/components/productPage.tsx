@@ -7,14 +7,13 @@ import Raven from "raven-js";
 import React from "react";
 import {
   alertTextWithoutCTA,
-  annotateMdaResponseWithTestUserFromHeaders,
   augmentInterval,
   formatDate,
   getFuturePlanIfVisible,
   getMainPlan,
-  hasProduct,
   isPaidSubscriptionPlan,
-  MembersDataApiResponse,
+  isProduct,
+  MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail,
   sortByJoinDate
@@ -193,20 +192,19 @@ const getPaymentPart = (
                   subscriptionId={productDetail.subscription.subscriptionId}
                   productType={productType}
                 />
-                {futurePlan &&
-                  futurePlan.amount !== mainPlan.amount && (
-                    <div css={{ fontStyle: "italic" }}>
-                      {futurePlan.currency}{" "}
-                      {(futurePlan.amount / 100.0).toFixed(2)}{" "}
-                      {futurePlan.currencyISO}{" "}
-                      {futurePlan.interval !== mainPlan.interval && (
-                        <strong>
-                          {augmentInterval(futurePlan.interval) + " "}
-                        </strong>
-                      )}
-                      starting {formatDate(futurePlan.start)}
-                    </div>
-                  )}
+                {futurePlan && futurePlan.amount !== mainPlan.amount && (
+                  <div css={{ fontStyle: "italic" }}>
+                    {futurePlan.currency}{" "}
+                    {(futurePlan.amount / 100.0).toFixed(2)}{" "}
+                    {futurePlan.currencyISO}{" "}
+                    {futurePlan.interval !== mainPlan.interval && (
+                      <strong>
+                        {augmentInterval(futurePlan.interval) + " "}
+                      </strong>
+                    )}
+                    starting {formatDate(futurePlan.start)}
+                  </div>
+                )}
               </>
             }
           />
@@ -447,8 +445,8 @@ const getProductDetailRenderer = (
 
 const getProductRenderer = (
   productType: ProductTypeWithProductPageProperties
-) => (apiResponse: MembersDataApiResponse[]) => {
-  const productDetailList = apiResponse.filter(hasProduct).sort(sortByJoinDate);
+) => (apiResponse: MembersDataApiItem[]) => {
+  const productDetailList = apiResponse.filter(isProduct).sort(sortByJoinDate);
   return (
     <>
       {productDetailList.length > 1 && (
@@ -496,10 +494,7 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
       <MembersDatApiAsyncLoader
         fetch={createProductDetailFetcher(props.productType)}
         render={getProductRenderer(props.productType)}
-        readerOnOK={annotateMdaResponseWithTestUserFromHeaders}
-        loadingMessage={`Loading your ${
-          props.productType.friendlyName
-        } details...`}
+        loadingMessage={`Loading your ${props.productType.friendlyName} details...`}
       />
       <PageContainer>
         <MembershipLinks /> {/*TODO need to have contributions FAQ*/}

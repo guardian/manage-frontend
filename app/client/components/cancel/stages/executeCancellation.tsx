@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  hasProduct,
-  MembersDataApiResponseContext,
+  isProduct,
+  MembersDataApiItemContext,
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
@@ -94,9 +94,9 @@ export const ExecuteCancellation = (
       {reason => (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
-            <MembersDataApiResponseContext.Consumer>
+            <MembersDataApiItemContext.Consumer>
               {productDetail =>
-                hasProduct(productDetail) ? (
+                isProduct(productDetail) ? (
                   <PerformCancelAsyncLoader
                     fetch={getCancelFunc(
                       productDetail.subscription.subscriptionId,
@@ -116,7 +116,7 @@ export const ExecuteCancellation = (
                   <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
                 )
               }
-            </MembersDataApiResponseContext.Consumer>
+            </MembersDataApiItemContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>
       )}
