@@ -61,6 +61,7 @@ export interface SubscriptionPlan {
   name: string | null;
   start?: string;
   shouldBeVisible: boolean;
+  daysOfWeek?: string[];
 }
 
 export interface CurrencyAndIntervalDetail {
