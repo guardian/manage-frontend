@@ -380,23 +380,6 @@ const getProductDetailRenderer = (
                   {"Cancel this " + productType.friendlyName}
                 </Link>
               )}
-            {productType.alternateManagementUrl &&
-              alternateManagementCtaLabel &&
-              (productDetailList.length > 1 ? (
-                <div css={{ fontWeight: "bold" }}>
-                  To {alternateManagementCtaLabel}, please <InlineContactUs />
-                </div>
-              ) : (
-                <a href={productType.alternateManagementUrl}>
-                  <Button
-                    text={
-                      alternateManagementCtaLabel.substr(0, 1).toUpperCase() +
-                      alternateManagementCtaLabel.substr(1)
-                    }
-                    right
-                  />
-                </a>
-              ))}
             {shouldHaveHolidayStopsFlow(productType) &&
               productDetail.subscription.autoRenew && (
                 <ProductDetailRow
@@ -430,12 +413,30 @@ const getProductDetailRenderer = (
                   data={
                     <DeliveryAddressDisplay
                       {...productDetail.subscription.deliveryAddress}
+                      withEditButton={true}
                       allProductDetails={productDetailList}
                       productUrlPart={productType.urlPart}
                     />
                   }
                 />
               )}
+            {productType.alternateManagementUrl &&
+              alternateManagementCtaLabel &&
+              (productDetailList.length > 1 ? (
+                <div css={{ fontWeight: "bold" }}>
+                  To {alternateManagementCtaLabel}, please <InlineContactUs />
+                </div>
+              ) : (
+                <a href={productType.alternateManagementUrl}>
+                  <Button
+                    text={
+                      alternateManagementCtaLabel.substr(0, 1).toUpperCase() +
+                      alternateManagementCtaLabel.substr(1)
+                    }
+                    right
+                  />
+                </a>
+              ))}
           </PageContainer>
         </>
       )}

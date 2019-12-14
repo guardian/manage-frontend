@@ -7,8 +7,9 @@ import { ProductUrlPart } from "../../../../shared/productTypes";
 import { LinkButton } from "../../buttons";
 
 interface DeliveryAddressDisplayProps extends DeliveryAddress {
-  allProductDetails: ProductDetail[];
-  productUrlPart: ProductUrlPart;
+  withEditButton: boolean;
+  allProductDetails?: ProductDetail[];
+  productUrlPart?: ProductUrlPart;
 }
 
 export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => (
@@ -28,11 +29,13 @@ export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => (
     {props.region && <span>{props.region}</span>}
     <span>{props.postcode}</span>
     <span>{props.country}</span>
-    <LinkButton
-      text={"Edit address"}
-      to={`/delivery/${props.productUrlPart}/address`}
-      state={props.allProductDetails}
-      right
-    />
+    {props.withEditButton && (
+      <LinkButton
+        text={"Edit address"}
+        to={`/delivery/${props.productUrlPart}/address`}
+        state={props.allProductDetails}
+        right
+      />
+    )}
   </div>
 );

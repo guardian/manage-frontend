@@ -5,9 +5,12 @@ export interface PostDeliveryAddressUpdateResponse {
   message: string;
 }
 
-export const updateAddressFetcher = (formData: DeliveryAddress) => () =>
-  fetch("/api/delivery/address/update", {
-    method: "POST",
+export const updateAddressFetcher = (
+  formData: DeliveryAddress,
+  contactId: string
+) => () =>
+  fetch(`/api/delivery/address/update/${contactId}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
