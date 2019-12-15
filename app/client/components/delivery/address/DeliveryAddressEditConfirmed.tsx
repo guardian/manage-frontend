@@ -124,6 +124,8 @@ const SuccessMessage = (props: SuccessMessageProps) => (
       box-sizing: border-box;
       padding: 14px 14px 14px 50px;
       margin-bottom: 50px;
+      ${textSans.medium()};
+      font-weight: bold;
     `}
   >
     <i

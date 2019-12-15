@@ -26,7 +26,6 @@ import { DeliveryAddress } from "../../../../shared/productResponse";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { momentiseDateStr } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
-import { EditIcon } from "../../svgs/editIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
 import { renderConfirmation } from "./DeliveryAddressEditConfirmed";
@@ -129,7 +128,17 @@ const FormContainer = (props: FormContainerProps) => {
   const [region, setRegion] = useState("");
   const [postcode, setPostcode] = useState("");
   const [country, setCountry] = useState("");
-  const [subscriptionsNames, setSubscriptionsNames] = useState([]);
+
+  const subscriptionsNames = Object.values(
+    props.contactIdToArrayOfProductDetail
+  )
+    .flat()
+    .map(productDetail => {
+      const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+        productDetail
+      ).friendlyName;
+      return `${friendlyProductName}`;
+    });
 
   const defaultFormProps = {
     formStatus,
@@ -205,10 +214,11 @@ const FormContainer = (props: FormContainerProps) => {
                   {Object.values(props.contactIdToArrayOfProductDetail).flat()
                     .length > 1 && (
                     <p
-                      css={{
-                        borderTop: `1px solid ${palette.neutral["86"]}`,
-                        padding: "14px 0"
-                      }}
+                      css={css`
+                        border-top: 1px solid ${palette.neutral["86"]};
+                        padding: 14px 0;
+                        ${textSans.medium()};
+                      `}
                     >
                       Please note that changing your address here will update
                       the delivery address for all of your subscriptions.
@@ -227,12 +237,6 @@ const FormContainer = (props: FormContainerProps) => {
                             }
                             contactIdDictOfProductDetails={
                               props.contactIdToArrayOfProductDetail
-                            }
-                            subscriptionsNames={subscriptionsNames}
-                            setSubscriptionsNames={
-                              setSubscriptionsNames as Dispatch<
-                                SetStateAction<string[]>
-                              >
                             }
                           />
                         </>
@@ -263,8 +267,6 @@ const FormContainer = (props: FormContainerProps) => {
 export interface SubscriptionsAffectedListProps {
   contactIdDictOfProductDetails: ContactIdToArrayOfProductDetail;
   title?: string;
-  subscriptionsNames?: string[];
-  setSubscriptionsNames?: Dispatch<SetStateAction<string[]>>;
 }
 export const SubscriptionsAffectedList = (
   props: SubscriptionsAffectedListProps
@@ -309,10 +311,6 @@ export const SubscriptionsAffectedList = (
             const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
               productDetail
             ).friendlyName;
-            props.setSubscriptionsNames?.([
-              ...(props.subscriptionsNames || [""]),
-              `${friendlyProductName}`
-            ]);
             return (
               <li
                 key={productDetail.subscription.subscriptionId}
@@ -421,20 +419,6 @@ const Form = (props: FormProps) => {
           `}
         >
           Delivery address{" "}
-          <span
-            css={{
-              display: "inline-block",
-              verticalAlign: "text-top",
-              marginLeft: "8px",
-              width: "19px",
-              height: "19px",
-              svg: {
-                display: "block"
-              }
-            }}
-          >
-            {<EditIcon />}
-          </span>
         </legend>
         <Input
           label={"Address line 1"}

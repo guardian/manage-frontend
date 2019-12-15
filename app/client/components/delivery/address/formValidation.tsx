@@ -26,19 +26,21 @@ export const isFormValid = (
     message: "Please enter a city"
   };
 
-  const postcodeEnteredCheck = formData.postcode.length > 0;
+  const postcodeEnteredCheck =
+    formData.postcode.length > 0 && formData.postcode.length < 20;
 
-  const m25Check =
+  const withinM25Check =
     subscriptionsNames.includes("home delivery subscription") &&
     postcodeEnteredCheck &&
     !isPostcodeOptional("GB") &&
-    !isHomeDeliveryInM25(formData.postcode);
+    isHomeDeliveryInM25(formData.postcode);
 
   const postcode = {
-    isValid: postcodeEnteredCheck && m25Check,
-    message: m25Check
-      ? "This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further."
-      : "Please enter a postcode"
+    isValid: postcodeEnteredCheck && withinM25Check,
+    message:
+      !withinM25Check && postcodeEnteredCheck
+        ? "This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further."
+        : "Please enter a postcode"
   };
 
   const country = {
