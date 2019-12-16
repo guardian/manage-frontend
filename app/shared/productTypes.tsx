@@ -190,7 +190,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
       {"But I'm sure I do! "}
       {links.map((link, index) => {
         return (
-          <>
+          <span key={`noProduct-${index}`}>
             {index === 0
               ? ` Perhaps you ${
                   link.title === "contribution"
@@ -201,7 +201,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
                   link.title === "contribution" ? "support us via a " : ""
                 }`}
             <Link to={link.link}>{link.title}</Link>
-          </>
+          </span>
         );
       })}
       {"."}

@@ -54,7 +54,7 @@ function hasContactId(
   return !!productDetail.subscription.contactId;
 }
 
-const getValidDeliveryAddressChangeEffectiveDates = (
+export const getValidDeliveryAddressChangeEffectiveDates = (
   allProductDetail: ProductDetail[]
 ) =>
   allProductDetail.filter(hasContactId).reduce(
@@ -87,14 +87,26 @@ export const formStates: FormStates = {
 
 const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
   allProductDetail: MembersDataApiItem[]
-) => (
-  <FormContainer
-    contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
+) => {
+  // tslint:disable-next-line: no-console
+  console.log(`getValidDeliveryAddressChangeEffectiveDates(
+    allProductDetail.filter(isProduct)
+  ) = ${JSON.stringify(
+    getValidDeliveryAddressChangeEffectiveDates(
       allProductDetail.filter(isProduct)
-    )}
-    routeableStepProps={routeableStepProps}
-  />
-);
+    ),
+    null,
+    " "
+  )}`);
+  return (
+    <FormContainer
+      contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
+        allProductDetail.filter(isProduct)
+      )}
+      routeableStepProps={routeableStepProps}
+    />
+  );
+};
 const clearState = (
   setFormStatus: Dispatch<SetStateAction<string>>,
   setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
