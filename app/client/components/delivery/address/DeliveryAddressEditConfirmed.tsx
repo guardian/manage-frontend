@@ -23,6 +23,8 @@ import {
 
 export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
   if (navigate) {
+    // tslint:disable-next-line: no-console
+    console.log("navigate to the confirmed page");
     navigate("confirmed", { replace: true });
   }
   return (
