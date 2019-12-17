@@ -87,26 +87,14 @@ export const formStates: FormStates = {
 
 const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
   allProductDetail: MembersDataApiItem[]
-) => {
-  // tslint:disable-next-line: no-console
-  console.log(`getValidDeliveryAddressChangeEffectiveDates(
-    allProductDetail.filter(isProduct)
-  ) = ${JSON.stringify(
-    getValidDeliveryAddressChangeEffectiveDates(
+) => (
+  <FormContainer
+    contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
       allProductDetail.filter(isProduct)
-    ),
-    null,
-    " "
-  )}`);
-  return (
-    <FormContainer
-      contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
-        allProductDetail.filter(isProduct)
-      )}
-      routeableStepProps={routeableStepProps}
-    />
-  );
-};
+    )}
+    routeableStepProps={routeableStepProps}
+  />
+);
 const clearState = (
   setFormStatus: Dispatch<SetStateAction<string>>,
   setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
