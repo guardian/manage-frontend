@@ -107,17 +107,4 @@ router.put(
   )
 );
 
-// router.post("/delivery/address/update", (req, res) => {
-//   const parsedBody = JSON.parse(req.body);
-//   if (!parsedBody.addressLine1) {
-//     return res.status(400).send({
-//       message: "Address line 1 is required"
-//     });
-//   }
-//   return res.status(201).send({
-//     ok: "true",
-//     message: "Delivery address updated"
-//   });
-// });
-
 export default router;

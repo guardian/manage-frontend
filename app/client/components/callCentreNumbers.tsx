@@ -18,7 +18,6 @@ const callCenterStyles = css({
 const ukPhoneCommonPart = "330 333 6790";
 export const ukPhoneNumber = `+44 (0) ${ukPhoneCommonPart}`;
 export const ukPhoneNumberWithoutPrefix = `0${ukPhoneCommonPart}`;
-export const ukPhoneNumberWithoutPrefix = "0330 333 6790";
 
 export const ukOpeningTimes =
   "8am - 8pm on weekdays, 8am-6pm at weekends (GMT/BST)";

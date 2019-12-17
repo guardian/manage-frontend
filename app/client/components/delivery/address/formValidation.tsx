@@ -24,7 +24,7 @@ export const isFormValid = (
   };
   const town = {
     isValid: !!(formData.town && formData.town.length > 0),
-    message: "Please enter a city"
+    message: "Please enter a town/city"
   };
 
   const postcodeEnteredCheck =

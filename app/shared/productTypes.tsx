@@ -159,8 +159,8 @@ export const shouldHaveHolidayStopsFlow = (
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
-) => () => {
-  const result = fetch(
+) => () =>
+  fetch(
     "/api/me/mma" +
       (subscriptionName
         ? `/${subscriptionName}`
@@ -175,8 +175,6 @@ export const createProductDetailFetcher = (
       }
     }
   );
-  return result;
-};
 
 const domainSpecificSubsManageURL = `https://subscribe.${
   typeof window !== "undefined" && window.guardian && window.guardian.domain
