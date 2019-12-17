@@ -47,7 +47,7 @@ export const DeliveryAddressEditConfirmed = (props: RouteableStepProps) => {
         <PageContainer>
           <h1>Delivery address</h1>
           <SuccessMessage
-            message={"We have successfuly updated your delivery address."}
+            message={"We have successfully updated your delivery address."}
           />
           <AddressDisplayContainer title={"New address details"}>
             <>
