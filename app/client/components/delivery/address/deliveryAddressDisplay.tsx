@@ -7,7 +7,7 @@ import { ProductUrlPart } from "../../../../shared/productTypes";
 import { LinkButton } from "../../buttons";
 
 interface DeliveryAddressDisplayProps extends DeliveryAddress {
-  withEditButton: boolean;
+  withEditButton?: true;
   allProductDetails?: ProductDetail[];
   productUrlPart?: ProductUrlPart;
 }
