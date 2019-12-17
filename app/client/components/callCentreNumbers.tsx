@@ -15,6 +15,12 @@ const callCenterStyles = css({
   fontWeight: "normal"
 });
 
+export const ukPhoneNumber = "+ 44 (0) 330 333 6790";
+export const ukPhoneNumberWithoutPrefix = "0330 333 6790";
+
+export const ukOpeningTimes =
+  "8am - 8pm on weekdays, 8am-6pm at weekends (GMT/BST)";
+
 export interface CallCentreNumbersProps {
   prefixText?: string;
 }
@@ -25,9 +31,9 @@ export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
     <Accordion>
       <div title="United Kingdom, Europe and rest of world">
         <div>
-          <b>+ 44 (0) 330 333 6790</b>
+          <b>{ukPhoneNumber}</b>
         </div>
-        <div>8am - 8pm on weekdays, 8am-6pm at weekends (GMT/BST)</div>
+        <div>{ukOpeningTimes}</div>
       </div>
       <div title="Australia, New Zealand, and Asia Pacific">
         <div>

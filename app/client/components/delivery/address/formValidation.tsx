@@ -1,4 +1,5 @@
 import { DeliveryAddress } from "../../../../shared/productResponse";
+import { ukPhoneNumberWithoutPrefix } from "../../callCentreNumbers";
 
 interface ErrorState {
   isValid: boolean;
@@ -39,7 +40,7 @@ export const isFormValid = (
     isValid: postcodeEnteredCheck && withinM25Check,
     message:
       !withinM25Check && postcodeEnteredCheck
-        ? "This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further."
+        ? `This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
         : "Please enter a postcode"
   };
 
