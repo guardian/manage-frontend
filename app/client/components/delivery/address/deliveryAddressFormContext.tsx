@@ -2,9 +2,14 @@ import { createContext } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { ContactIdToArrayOfProductDetail } from "./deliveryAddressForm";
 
-export const StateResetContext = createContext<() => void>(() => true);
+interface NewDeliveryAddressContextInterface {
+  newDeliveryAddress?: DeliveryAddress;
+  addressStateReset?: () => void;
+}
 
-export const DeliveryAddressContext = createContext<DeliveryAddress | {}>({});
+export const NewDeliveryAddressContext = createContext<
+  NewDeliveryAddressContextInterface
+>({});
 
 export const SubscriptionsAffectedContext = createContext<
   ContactIdToArrayOfProductDetail | {}

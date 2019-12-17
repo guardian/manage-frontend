@@ -30,8 +30,7 @@ import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
 import { renderConfirmation } from "./DeliveryAddressEditConfirmed";
 import {
-  DeliveryAddressContext,
-  StateResetContext,
+  NewDeliveryAddressContext,
   SubscriptionsAffectedContext
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
@@ -169,107 +168,106 @@ const FormContainer = (props: FormContainerProps) => {
   };
 
   return (
-    <StateResetContext.Provider
-      value={clearState(
-        setFormStatus,
-        setFormErrors,
-        setAddressLine1,
-        setAddressLine2,
-        setTown,
-        setRegion,
-        setPostcode,
-        setCountry
-      )}
+    <NewDeliveryAddressContext.Provider
+      value={{
+        newDeliveryAddress: evolvingAddressObject,
+        addressStateReset: clearState(
+          setFormStatus,
+          setFormErrors,
+          setAddressLine1,
+          setAddressLine2,
+          setTown,
+          setRegion,
+          setPostcode,
+          setCountry
+        )
+      }}
     >
-      <DeliveryAddressContext.Provider value={evolvingAddressObject}>
-        <SubscriptionsAffectedContext.Provider
-          value={props.contactIdToArrayOfProductDetail}
+      <SubscriptionsAffectedContext.Provider
+        value={props.contactIdToArrayOfProductDetail}
+      >
+        <WizardStep
+          routeableStepProps={props.routeableStepProps}
+          hideBackButton
         >
-          <WizardStep
-            routeableStepProps={props.routeableStepProps}
-            hideBackButton
+          <div
+            css={css`
+              padding-left: 1.25rem;
+              padding-right: 1.25rem;
+            `}
           >
-            <div
-              css={css`
-                padding-left: 1.25rem;
-                padding-right: 1.25rem;
-              `}
-            >
-              <PageContainer>
-                <h1>Manage delivery address</h1>
-                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                  0 && (
-                  <div>
-                    <p>
-                      No addresses available for update. If this doesn't seem
-                      right please contact us
+            <PageContainer>
+              <h1>Manage delivery address</h1>
+              {Object.keys(props.contactIdToArrayOfProductDetail).length ===
+                0 && (
+                <div>
+                  <p>
+                    No addresses available for update. If this doesn't seem
+                    right please contact us
+                  </p>
+                  <CallCentreNumbers />
+                </div>
+              )}
+              {Object.keys(props.contactIdToArrayOfProductDetail).length >
+                1 && (
+                <div>
+                  <p>You will need to contact us to update your addresses</p>
+                  <CallCentreNumbers />
+                </div>
+              )}
+              {Object.keys(props.contactIdToArrayOfProductDetail).length ===
+                1 && (
+                <div>
+                  {Object.values(props.contactIdToArrayOfProductDetail).flat()
+                    .length > 1 && (
+                    <p
+                      css={css`
+                        border-top: 1px solid ${palette.neutral["86"]};
+                        padding: 14px 0;
+                        ${textSans.medium()};
+                      `}
+                    >
+                      Please note that changing your address here will update
+                      the delivery address for all of your subscriptions.
                     </p>
-                    <CallCentreNumbers />
-                  </div>
-                )}
-                {Object.keys(props.contactIdToArrayOfProductDetail).length >
-                  1 && (
-                  <div>
-                    <p>You will need to contact us to update your addresses</p>
-                    <CallCentreNumbers />
-                  </div>
-                )}
-                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                  1 && (
-                  <div>
-                    {Object.values(props.contactIdToArrayOfProductDetail).flat()
-                      .length > 1 && (
-                      <p
-                        css={css`
-                          border-top: 1px solid ${palette.neutral["86"]};
-                          padding: 14px 0;
-                          ${textSans.medium()};
-                        `}
-                      >
-                        Please note that changing your address here will update
-                        the delivery address for all of your subscriptions.
-                      </p>
-                    )}
-                    {(formStatus === formStates.INIT ||
-                      formStatus === formStates.PENDING ||
-                      formStatus === formStates.VALIDATION_ERROR) && (
-                      <Form
-                        {...defaultFormProps}
-                        warning={
-                          <>
-                            <SubscriptionsAffectedList
-                              title={
-                                "This address change will affect the following subscriptions:"
-                              }
-                              contactIdDictOfProductDetails={
-                                props.contactIdToArrayOfProductDetail
-                              }
-                            />
-                          </>
-                        }
-                      />
-                    )}
-                  </div>
-                )}
-                {formStatus === formStates.VALIDATION_SUCCESS && (
-                  <AsyncLoader
-                    render={renderConfirmation(
-                      props.routeableStepProps.navigate
-                    )}
-                    fetch={updateAddressFetcher(
-                      evolvingAddressObject,
-                      Object.keys(props.contactIdToArrayOfProductDetail)[0]
-                    )}
-                    readerOnOK={(resp: Response) => resp.text()}
-                    loadingMessage={"Updating delivery address..."}
-                  />
-                )}
-              </PageContainer>
-            </div>
-          </WizardStep>
-        </SubscriptionsAffectedContext.Provider>
-      </DeliveryAddressContext.Provider>
-    </StateResetContext.Provider>
+                  )}
+                  {(formStatus === formStates.INIT ||
+                    formStatus === formStates.PENDING ||
+                    formStatus === formStates.VALIDATION_ERROR) && (
+                    <Form
+                      {...defaultFormProps}
+                      warning={
+                        <>
+                          <SubscriptionsAffectedList
+                            title={
+                              "This address change will affect the following subscriptions:"
+                            }
+                            contactIdDictOfProductDetails={
+                              props.contactIdToArrayOfProductDetail
+                            }
+                          />
+                        </>
+                      }
+                    />
+                  )}
+                </div>
+              )}
+              {formStatus === formStates.VALIDATION_SUCCESS && (
+                <AsyncLoader
+                  render={renderConfirmation(props.routeableStepProps.navigate)}
+                  fetch={updateAddressFetcher(
+                    evolvingAddressObject,
+                    Object.keys(props.contactIdToArrayOfProductDetail)[0]
+                  )}
+                  readerOnOK={(resp: Response) => resp.text()}
+                  loadingMessage={"Updating delivery address..."}
+                />
+              )}
+            </PageContainer>
+          </div>
+        </WizardStep>
+      </SubscriptionsAffectedContext.Provider>
+    </NewDeliveryAddressContext.Provider>
   );
 };
 

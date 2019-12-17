@@ -15,16 +15,13 @@ import {
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import { SubscriptionsAffectedList } from "./deliveryAddressForm";
 import {
-  DeliveryAddressContext,
   isAddress,
-  StateResetContext,
+  NewDeliveryAddressContext,
   SubscriptionsAffectedContext
 } from "./deliveryAddressFormContext";
 
 export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
   if (navigate) {
-    // tslint:disable-next-line: no-console
-    console.log("navigate to the confirmed page");
     navigate("confirmed", { replace: true });
   }
   return (
@@ -33,17 +30,16 @@ export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
 };
 
 export const DeliveryAddressEditConfirmed = (props: RouteableStepProps) => {
-  const address = useContext(DeliveryAddressContext);
+  const addressContext = useContext(NewDeliveryAddressContext);
   const subscriptionsAffectedContext = useContext(SubscriptionsAffectedContext);
-  const stateReset = useContext(StateResetContext);
   useEffect(() => {
     return () => {
-      stateReset();
+      addressContext.addressStateReset?.();
     };
   }, []);
   return (
     <WizardStep routeableStepProps={props} hideBackButton>
-      {isAddress(address) ? (
+      {isAddress(addressContext.newDeliveryAddress) ? (
         <PageContainer>
           <h1>Delivery address</h1>
           <SuccessMessage
@@ -52,7 +48,9 @@ export const DeliveryAddressEditConfirmed = (props: RouteableStepProps) => {
           <AddressDisplayContainer title={"New address details"}>
             <>
               <section>
-                <DeliveryAddressDisplay {...address} withEditButton={false} />
+                <DeliveryAddressDisplay
+                  {...addressContext.newDeliveryAddress}
+                />
                 <LinkButton to=".." text="Edit address" left />
               </section>
               <section>
