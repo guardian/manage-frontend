@@ -161,9 +161,15 @@ Resources:
         - PolicyName: ReadPrivateCredentials
           PolicyDocument:
             Statement:
-            - Effect: Allow
-              Action: s3:GetObject
-              Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
+        - PolicyName: ReadFulfilmentDateCalculatorOutput
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub arn:aws:s3:::fulfilment-date-calculator-*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
