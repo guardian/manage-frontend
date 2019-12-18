@@ -36,9 +36,8 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
         new Date(earliestAcc) > new Date(deliveryAddressChangeEffectiveDateStr)
       ) {
         return deliveryAddressChangeEffectiveDateStr || "";
-      } else {
-        return earliestAcc;
       }
+      return earliestAcc;
     }, "")
   );
 };
