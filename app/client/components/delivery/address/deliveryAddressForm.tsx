@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { upperFirst } from "lodash";
 import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import {
   isProduct,
@@ -315,9 +316,11 @@ export const SubscriptionsAffectedList = (
         {Object.values(props.contactIdDictOfProductDetails)
           .flat()
           .map(productDetail => {
-            const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-              productDetail
-            ).friendlyName;
+            const friendlyProductName = upperFirst(
+              ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+                productDetail
+              ).friendlyName
+            );
             return (
               <li
                 key={productDetail.subscription.subscriptionId}
