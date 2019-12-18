@@ -184,7 +184,6 @@ const domainSpecificSubsManageURL = `https://subscribe.${
 const getNoProductInTabCopy = (links: NavItem[]) => {
   return (
     <>
-      {"But I'm sure I do! "}
       {links.map((link, index) => {
         return (
           <>
