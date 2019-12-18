@@ -110,7 +110,10 @@ export interface ProductType {
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
   showDeliveryAddress?: true;
-  fulfilmentDateCalculatorProductFilenamePart?: string;
+  fulfilmentDateCalculator?: {
+    productFilenamePart: string;
+    explicitSingleDayOfWeek?: string;
+  };
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -340,7 +343,10 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
     showDeliveryAddress: true,
-    productPage: "subscriptions"
+    productPage: "subscriptions",
+    fulfilmentDateCalculator: {
+      productFilenamePart: "Newspaper - Home Delivery"
+    }
   },
   voucher: {
     friendlyName: "newspaper voucher subscription",
@@ -380,7 +386,10 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     showDeliveryAddress: true,
     productPage: "subscriptions",
-    fulfilmentDateCalculatorProductFilenamePart: "WEEKLY"
+    fulfilmentDateCalculator: {
+      productFilenamePart: "Guardian Weekly",
+      explicitSingleDayOfWeek: "Friday"
+    }
   },
   digipack: {
     friendlyName: "digital subscription",

@@ -62,8 +62,8 @@ Resources:
     Properties:
       VPCZoneIdentifier: !Ref PrivateVpcSubnets
       LaunchConfigurationName: !Ref LaunchConfig
-      MinSize: !FindInMap [ StageVariables, !Ref Stage, MinInstances ]
-      MaxSize: !FindInMap [ StageVariables, !Ref Stage, MaxInstances ]
+      MinSize: !FindInMap [StageVariables, !Ref Stage, MinInstances]
+      MaxSize: !FindInMap [StageVariables, !Ref Stage, MaxInstances]
       TargetGroupARNs:
         - !Ref TargetGroup
       HealthCheckType: ELB
@@ -84,7 +84,7 @@ Resources:
       ImageId: !Ref AMI
       SecurityGroups:
         - !Ref InstanceSecurityGroup
-      InstanceType: !FindInMap [ StageVariables, !Ref Stage, InstanceType ]
+      InstanceType: !FindInMap [StageVariables, !Ref Stage, InstanceType]
       IamInstanceProfile: !Ref InstanceProfile
       AssociatePublicIpAddress: false
       UserData:
@@ -129,16 +129,18 @@ Resources:
             systemctl start manage-frontend
             /opt/cloudwatch-logs/configure-logs application ${Stack} ${Stage} ${App} /var/log/manage-frontend.log
 
-          - DomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, DomainEnvVariable ]
-            ApiDomainEnvVariable: !FindInMap [ StageVariables, !Ref Stage, ApiDomainEnvVariable ]
-            SFCasesUrl: !FindInMap [ StageVariables, !Ref Stage, SFCasesUrl ]
+          - DomainEnvVariable:
+              !FindInMap [StageVariables, !Ref Stage, DomainEnvVariable]
+            ApiDomainEnvVariable:
+              !FindInMap [StageVariables, !Ref Stage, ApiDomainEnvVariable]
+            SFCasesUrl: !FindInMap [StageVariables, !Ref Stage, SFCasesUrl]
 
   AppRole:
     Type: AWS::IAM::Role
     Properties:
       Path: "/"
       ManagedPolicyArns:
-      - !Sub arn:aws:iam::${AWS::AccountId}:policy/guardian-ec2-role-for-ssm
+        - !Sub arn:aws:iam::${AWS::AccountId}:policy/guardian-ec2-role-for-ssm
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -154,16 +156,22 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                - logs:CreateLogGroup
-                - logs:CreateLogStream
-                - logs:PutLogEvents
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
                 Resource: !GetAtt ManageFrontendLogGroup.Arn
         - PolicyName: ReadPrivateCredentials
           PolicyDocument:
             Statement:
-            - Effect: Allow
-              Action: s3:GetObject
-              Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
+        - PolicyName: ReadFulfilmentDateCalculatorOutput
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub arn:aws:s3:::fulfilment-date-calculator-*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -191,13 +199,14 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
-      - Type: forward
-        TargetGroupArn:
-          Ref: TargetGroup
+        - Type: forward
+          TargetGroupArn:
+            Ref: TargetGroup
       LoadBalancerArn:
         Ref: ElasticLoadBalancer
       Certificates:
-        - CertificateArn: !FindInMap [ StageVariables, !Ref Stage, CertificateARN ]
+        - CertificateArn:
+            !FindInMap [StageVariables, !Ref Stage, CertificateARN]
       Port: 443
       Protocol: HTTPS
 
@@ -217,10 +226,10 @@ Resources:
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
       TargetGroupAttributes:
-      - Key: deregistration_delay.timeout_seconds
-        Value: 45 # only connection drains for 45 seconds (rather than default of 300)
+        - Key: deregistration_delay.timeout_seconds
+          Value: 45 # only connection drains for 45 seconds (rather than default of 300)
     DependsOn:
-    - ElasticLoadBalancer
+      - ElasticLoadBalancer
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -269,7 +278,7 @@ Resources:
     Condition: CreateProdResources
     Properties:
       AlarmActions:
-      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
       AlarmName: !Sub No healthy instances for manage-frontend in ${Stage}
       MetricName: HealthyHostCount
       Namespace: AWS/ApplicationELB
@@ -292,7 +301,7 @@ Resources:
     Condition: CreateProdResources
     Properties:
       AlarmActions:
-      - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
       AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
       MetricName: HTTPCode_Target_5XX_Count
       Namespace: AWS/ApplicationELB
@@ -308,5 +317,5 @@ Resources:
       Statistic: Sum
       TreatMissingData: notBreaching
     DependsOn:
-    - TargetGroup
-    - ElasticLoadBalancer
+      - TargetGroup
+      - ElasticLoadBalancer

@@ -1,31 +1,46 @@
-import { ProductDetail } from "../shared/productResponse";
+import Raven from "raven-js";
+import { getMainPlan, ProductDetail } from "../shared/productResponse";
 import { ProductTypes } from "../shared/productTypes";
 import { s3FilePromise } from "./awsIntegration";
 import { conf } from "./config";
+import { log } from "./log";
 
 interface RawFulfilmentDateCalculatorDates {
-  today: string;
-  acquisitionsStartDate: string;
-  deliveryAddressChangeEffectiveDate: string;
-  holidayStopFirstAvailableDate: string;
-  finalFulfilmentFileGenerationDate: string;
-  nextAffectablePublicationDateOnFrontCover: string;
+  [dayOfWeek: string]: {
+    deliveryAddressChangeEffectiveDate?: string;
+    // there are a number of other fields, but we don't need them
+  };
 }
 
-const getFulfilmentRelatedDatesPromise = (filenameProductPart: string) =>
-  s3FilePromise<RawFulfilmentDateCalculatorDates>(
+const getDeliveryAddressChangeEffectiveDateForToday = async (
+  filenameProductPart: string,
+  daysOfWeek: string[]
+) => {
+  const datesByDayOfWeek = await s3FilePromise<
+    RawFulfilmentDateCalculatorDates
+  >(
     `fulfilment-date-calculator-${conf.STAGE.toLowerCase()}`,
     `${filenameProductPart}/${new Date()
       .toISOString()
       .substr(0, 10)}_${filenameProductPart}.json`,
-    "deliveryAddressChangeEffectiveDate"
+    ...daysOfWeek
   );
-
-const getDeliveryAddressChangeEffectiveDateForToday = async (
-  filenameProductPart: string
-) =>
-  (await getFulfilmentRelatedDatesPromise(filenameProductPart))
-    ?.deliveryAddressChangeEffectiveDate;
+  return (
+    datesByDayOfWeek &&
+    daysOfWeek.reduce((earliestAcc, dayOfWeek) => {
+      const deliveryAddressChangeEffectiveDateStr =
+        datesByDayOfWeek[dayOfWeek].deliveryAddressChangeEffectiveDate;
+      if (
+        !earliestAcc ||
+        !deliveryAddressChangeEffectiveDateStr ||
+        new Date(earliestAcc) > new Date(deliveryAddressChangeEffectiveDateStr)
+      ) {
+        return deliveryAddressChangeEffectiveDateStr || "";
+      }
+      return earliestAcc;
+    }, "")
+  );
+};
 
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday = async (
   productDetail: ProductDetail
@@ -34,17 +49,26 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
     productDetail
   );
   const maybeFulfilmentDateCalculatorProductFilenamePart =
-    maybeProductType?.fulfilmentDateCalculatorProductFilenamePart;
+    maybeProductType?.fulfilmentDateCalculator?.productFilenamePart;
+  const maybeExplicitSingleDayOfWeek =
+    maybeProductType?.fulfilmentDateCalculator?.explicitSingleDayOfWeek;
+  const maybeDaysOfWeek = maybeExplicitSingleDayOfWeek
+    ? [maybeExplicitSingleDayOfWeek]
+    : getMainPlan(productDetail.subscription).daysOfWeek;
   const maybeDeliveryAddressChangeEffectiveDate =
     maybeFulfilmentDateCalculatorProductFilenamePart &&
+    maybeDaysOfWeek &&
     (await getDeliveryAddressChangeEffectiveDateForToday(
-      maybeFulfilmentDateCalculatorProductFilenamePart
+      maybeFulfilmentDateCalculatorProductFilenamePart,
+      maybeDaysOfWeek
     ));
   if (
     maybeFulfilmentDateCalculatorProductFilenamePart &&
-    !maybeDeliveryAddressChangeEffectiveDate
+    !(maybeDeliveryAddressChangeEffectiveDate && maybeDaysOfWeek)
   ) {
-    // TODO add warning if product type should have that value but its not there
+    const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${maybeProductType?.friendlyName}, but wasn't.`;
+    log.error(errorMessage);
+    Raven.captureMessage(errorMessage);
   }
   return maybeDeliveryAddressChangeEffectiveDate
     ? {
