@@ -1002,10 +1002,40 @@
     consent-string "^1.5.1"
     js-cookie "^2.2.1"
 
+"@guardian/src-button@^0.4.0":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-button/-/src-button-0.4.1.tgz#00c4f37afb9a7e3ace46b2208cc072f7f2530b0f"
+  integrity sha512-OiRe4X169qTwu6CkoYCDbMH22jvd01RigheW+qNh2s2RSA4y/ZwifAITf/eI4+qLMUCEd8AfPaIoxc2GBA6WPw==
+
 "@guardian/src-foundations@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.8.0.tgz#c8d422324522540c502070845318dad183a336bc"
   integrity sha512-n0E8BV5wpdZomH6vXesh2gfHbrlTlIUTcGfLuur+xN3WJ//nangJsI1jckf9X6y+XnUiQeFUclrQEgNYFPPIrw==
+
+"@guardian/src-inline-error@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-inline-error/-/src-inline-error-0.3.0.tgz#ac986373f52cf91c4c139c136f1927c8dbcb2264"
+  integrity sha512-dM8jr+9fXa+AmAbmDi4fXX5ZDLoSkWJfwe20Q8Ao5oJJeQid4/BQau17CBtjXNGiyJBbVwAE0deDGH2YiU3zVA==
+  dependencies:
+    "@guardian/src-svgs" "^0.0.5"
+
+"@guardian/src-svgs@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@guardian/src-svgs/-/src-svgs-0.0.2.tgz#f994fcf740716b589f0347c76994e7b43fdea5d6"
+  integrity sha512-TXq1K+orTdd7KQq1uSnByLplueRJzs6C7+l9k5/vFga2hBhh9R48YtDOaBmDrrvwTZtBFHk/bMPL93cRMC/Bpw==
+
+"@guardian/src-svgs@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@guardian/src-svgs/-/src-svgs-0.0.5.tgz#3cee5277a804ab936420bfec8a7be9d8f1f2e8c3"
+  integrity sha512-BayNRc93lWlcabYlH7W6gdxjPnXj01in2TvN5QG2lhmhph3Y+JowkqMyLSrbWx7eZD53WXSgJ1zVtLWPYS4e+g==
+
+"@guardian/src-text-input@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-text-input/-/src-text-input-0.4.1.tgz#c5e5faa995567cbe3f5418f12bd11c7fb336320f"
+  integrity sha512-9HW7L97W+UATGdyZqgM587j3boe8I6sxuuq9ViwzbyQ7kCRgkdys8GubKBJ8CnNE24Hr+WSc+QRCpBuq+sPrMw==
+  dependencies:
+    "@guardian/src-inline-error" "^0.3.0"
+    "@guardian/src-svgs" "^0.0.2"
 
 "@jest/types@^24.8.0":
   version "24.8.0"

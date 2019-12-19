@@ -11,9 +11,9 @@ export interface PageNavAndContentContainerProps extends NavProps {
   withoutNav?: true;
 }
 
-export const PageNavAndContentContainer: React.SFC<
-  PageNavAndContentContainerProps
-> = (props: PageNavAndContentContainerProps) => (
+export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
+  props: PageNavAndContentContainerProps
+) => (
   <div
     css={{
       ...gridBase,

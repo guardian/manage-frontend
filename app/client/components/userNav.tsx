@@ -227,9 +227,10 @@ export const UserNav = () => {
       {/* TODO refactor to full use ExpanderButton */}
       <button
         css={{
-          ...expanderButtonCss(palette.neutral["100"], palette.neutral["100"])(
-            showMenu
-          )
+          ...expanderButtonCss(
+            palette.neutral["100"],
+            palette.neutral["100"]
+          )(showMenu)
         }}
         type="button"
         aria-expanded={showMenu}

@@ -98,4 +98,13 @@ router.patch(
   sfCasesApiHandler("case/:caseId", false, "caseId")
 );
 
+router.put(
+  "/delivery/address/update/:contactId",
+  membersDataApiHandler(
+    "/user-attributes/me/delivery-address/:contactId",
+    false,
+    "contactId"
+  )
+);
+
 export default router;

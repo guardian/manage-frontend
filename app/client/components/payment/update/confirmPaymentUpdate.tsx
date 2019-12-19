@@ -62,9 +62,7 @@ class ExecutePaymentUpdate extends React.Component<
         fetch={this.executePaymentUpdate}
         render={this.renderUpdateResponse}
         errorRender={this.PaymentUpdateFailed}
-        loadingMessage={`Updating ${
-          this.props.newPaymentMethodDetail.friendlyName
-        } details...`}
+        loadingMessage={`Updating ${this.props.newPaymentMethodDetail.friendlyName} details...`}
         spinnerScale={0.7}
         inline
       />
@@ -80,9 +78,7 @@ class ExecutePaymentUpdate extends React.Component<
 
   private executePaymentUpdate: () => Promise<Response> = async () =>
     await fetch(
-      `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${
-        this.props.productDetail.subscription.subscriptionId
-      }`,
+      `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${this.props.productDetail.subscription.subscriptionId}`,
       {
         credentials: "include",
         method: "POST",
@@ -105,9 +101,7 @@ class ExecutePaymentUpdate extends React.Component<
     ) {
       trackEvent({
         eventCategory: "payment",
-        eventAction: `${this.props.newPaymentMethodDetail.name}_${
-          this.paymentMethodChangeType
-        }_success`,
+        eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_success`,
         product: {
           productType: this.props.productType,
           productDetail: this.props.productDetail
@@ -124,9 +118,7 @@ class ExecutePaymentUpdate extends React.Component<
   private PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: `${this.props.newPaymentMethodDetail.name}_${
-        this.paymentMethodChangeType
-      }_failed`,
+      eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_failed`,
       product: {
         productType: this.props.productType,
         productDetail: this.props.productDetail

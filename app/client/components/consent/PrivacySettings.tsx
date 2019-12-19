@@ -421,7 +421,8 @@ export class PrivacySettings extends Component<Props, State> {
                       time by accessing our{" "}
                       <a href={privacyPolicyURL} target="_blank">
                         privacy policy
-                      </a>.
+                      </a>
+                      .
                     </p>
                     <button
                       type="button"

@@ -206,7 +206,8 @@ export class HolidayReview extends React.Component<
                         margin: "10px"
                       }}
                     >
-                      <InfoIcon />Tell me more
+                      <InfoIcon />
+                      Tell me more
                     </a>
                   }
                   title={
