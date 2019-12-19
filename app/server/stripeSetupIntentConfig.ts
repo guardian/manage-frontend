@@ -6,6 +6,6 @@ export interface StripePublicToSecretKeyMapping {
 
 export const stripeSetupIntentConfigPromise: Promise<
   StripePublicToSecretKeyMapping | undefined
-> = s3ConfigPromise<StripePublicToSecretKeyMapping>(
+> = s3ConfigPromise<StripePublicToSecretKeyMapping>()(
   "stripe-public-to-private-key-mapping"
 );

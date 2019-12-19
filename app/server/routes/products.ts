@@ -6,6 +6,7 @@ import {
 } from "../../shared/productTypes";
 import { holidayStopApiHandler } from "../holidayStopApiHandlers";
 import { membersDataApiHandler } from "../middleware/apiMiddleware";
+import { deliveryRecordsApiHandler } from "../deliveryRecordsApiHandlers";
 
 const routeProvider = (apiPathPrefix: string) => {
   const router = Router();
@@ -58,6 +59,11 @@ const routeProvider = (apiPathPrefix: string) => {
   router.use(
     `${apiPathPrefix}holidays/:subscriptionName?/:sfId?`,
     holidayStopApiHandler
+  );
+
+  router.use(
+    `${apiPathPrefix}delivery-records/:subscriptionName`,
+    deliveryRecordsApiHandler
   );
 
   return router;

@@ -8,7 +8,7 @@ export interface IdapiConfig {
 
 export const idapiConfigPromise: Promise<
   IdapiConfig | undefined
-> = s3ConfigPromise<IdapiConfig>("idapi", "host", "accessToken");
+> = s3ConfigPromise<IdapiConfig>("host", "accessToken")("idapi");
 
 idapiConfigPromise.then(idapiConfig => {
   if (idapiConfig) {
