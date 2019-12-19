@@ -140,11 +140,7 @@ export const CancellationFlow = (
     headingPrefix="Cancel"
     supportRefererSuffix="cancellation_flow"
     loadingMessagePrefix="Checking the status of your"
-    cancelledExplainer={`This ${
-      props.productType.friendlyName
-    } has been cancelled. Please contact us if you would like to re-start this ${
-      props.productType.friendlyName
-    }, make any amendments or need further help.`}
+    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
     singleProductDetailRenderer={reasonsRenderer(props)}
   />
 );

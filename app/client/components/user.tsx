@@ -3,6 +3,7 @@ import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
   hasCancellationFlow,
+  hasDeliveryFlow,
   hasProductPageRedirect,
   ProductType,
   ProductTypes,
@@ -27,6 +28,8 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
+import { DeliveryAddressEditConfirmed } from "./delivery/address/DeliveryAddressEditConfirmed";
+import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
@@ -168,6 +171,21 @@ const User = () => (
               </HolidayReview>
             </HolidayDateChooser>
           </HolidaysOverview>
+        ))}
+
+      {Object.values(ProductTypes)
+        .filter(hasDeliveryFlow)
+        .map((productType: ProductType) => (
+          <DeliveryAddressForm
+            key={productType.urlPart}
+            path={`/delivery/${productType.urlPart}/address`}
+            productType={productType}
+          >
+            <DeliveryAddressEditConfirmed
+              path="confirmed"
+              productType={productType}
+            />
+          </DeliveryAddressForm>
         ))}
 
       <MembershipFAQs path="/help" />

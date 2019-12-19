@@ -109,6 +109,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
+  showDeliveryAddress?: true;
   fulfilmentDateCalculator?: {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
@@ -131,6 +132,9 @@ export const hasProductPageProperties = (
 ): productType is ProductTypeWithProductPageProperties =>
   productType.productPage !== undefined &&
   typeof productType.productPage === "object";
+
+export const hasDeliveryFlow = (productType: ProductType) =>
+  productType.showDeliveryAddress;
 
 export interface ProductTypeWithProductPageRedirect extends ProductType {
   productPage: ProductUrlPart;
@@ -158,8 +162,8 @@ export const shouldHaveHolidayStopsFlow = (
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
-) => async () =>
-  await fetch(
+) => () =>
+  fetch(
     "/api/me/mma" +
       (subscriptionName
         ? `/${subscriptionName}`
@@ -186,7 +190,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
     <>
       {links.map((link, index) => {
         return (
-          <>
+          <span key={`noProduct-${index}`}>
             {index === 0
               ? ` Perhaps you ${
                   link.title === "contribution"
@@ -197,7 +201,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
                   link.title === "contribution" ? "support us via a " : ""
                 }`}
             <Link to={link.link}>{link.title}</Link>
-          </>
+          </span>
         );
       })}
       {"."}
@@ -205,7 +209,17 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
   );
 };
 
-export const ProductTypes: { [productKey: string]: ProductType } = {
+export type ProductTypeKeys =
+  | "membership"
+  | "contributions"
+  | "newspaper"
+  | "homedelivery"
+  | "voucher"
+  | "guardianweekly"
+  | "digipack"
+  | "contentSubscriptions";
+
+export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
     friendlyName: "membership",
     allProductsProductTypeFilterString: "Membership",
@@ -316,6 +330,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   homedelivery: {
@@ -326,6 +341,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
+    showDeliveryAddress: true,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Newspaper - Home Delivery"
@@ -350,6 +366,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
           "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
       }
     },
+    showDeliveryAddress: true,
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -366,6 +383,7 @@ export const ProductTypes: { [productKey: string]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
+    showDeliveryAddress: true,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",

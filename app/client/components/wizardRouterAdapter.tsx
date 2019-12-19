@@ -15,7 +15,7 @@ export type RouteableProductProps = RouteableProps &
   WithProductType<ProductType>;
 
 export interface RouteableStepProps extends RouteableProductProps {
-  currentStep: number;
+  currentStep?: number;
   stepLabels?: string[];
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }

@@ -221,7 +221,8 @@ export class HolidayDateChooser extends React.Component<
                           </strong>
                         ) : (
                           "our printing and delivery schedule (notice period)"
-                        )}.
+                        )}
+                        .
                         <br />
                         {creditExplainerSentence(
                           this.props.productType.holidayStops.issueKeyword
@@ -235,7 +236,8 @@ export class HolidayDateChooser extends React.Component<
                         }}
                       >
                         <div css={{ margin: "10px" }}>
-                          <InfoIcon />You can schedule one suspension at a time.
+                          <InfoIcon />
+                          You can schedule one suspension at a time.
                         </div>
                         <div
                           css={{
@@ -430,9 +432,7 @@ export class HolidayDateChooser extends React.Component<
           })
           .catch(error => {
             this.setState({
-              validationErrorMessage: `Failed to calculate ${
-                this.props.productType.holidayStops.issueKeyword
-              }s impacted by selected dates. Please try again later...`
+              validationErrorMessage: `Failed to calculate ${this.props.productType.holidayStops.issueKeyword}s impacted by selected dates. Please try again later...`
             });
             trackEvent({
               eventCategory: "holidayDateChooser",
@@ -484,9 +484,7 @@ export class HolidayDateChooser extends React.Component<
       numPotentialIssuesThisYear < 1 &&
       numPotentialIssuesNextYear < 1
     ) {
-      return `No ${
-        this.props.productType.holidayStops.issueKeyword
-      }s occur during selected period`;
+      return `No ${this.props.productType.holidayStops.issueKeyword}s occur during selected period`;
     }
     return null; // important don't remove
   };
