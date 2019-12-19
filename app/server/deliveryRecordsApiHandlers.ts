@@ -5,37 +5,27 @@ import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import { apiConfigPromise } from "./apiConfig";
 import { log } from "./log";
 
-export const holidayStopApiHandler = (
+export const deliveryRecordsApiHandler = (
   req: express.Request,
   res: express.Response
 ) =>
-  apiConfigPromise("holiday-stop-api")
-    .then(hsrConfig => {
-      if (hsrConfig && res.locals.identity && res.locals.identity.userId) {
+  apiConfigPromise("delivery-records-api")
+    .then(drConfig => {
+      if (drConfig && res.locals.identity && res.locals.identity.userId) {
         const testUserHeader = req.header(MDA_TEST_USER_HEADER);
-        const hsrEnvConfig =
-          testUserHeader === "true" ? hsrConfig.testMode : hsrConfig.normalMode;
-        const isPotentialCall = req.params.sfId === "potential";
-        const basePathPart = isPotentialCall ? "potential" : "hsr";
-        const maybeActualExistingSfId = isPotentialCall
-          ? undefined
-          : req.params.sfId;
+        const drEnvConfig =
+          testUserHeader === "true" ? drConfig.testMode : drConfig.normalMode;
         fetch(
           url.format({
             protocol: "https",
-            host: hsrEnvConfig.host,
-            pathname:
-              req.params && req.params.subscriptionName
-                ? `/${basePathPart}/${
-                    req.params.subscriptionName
-                  }/${maybeActualExistingSfId || ""}`
-                : "/hsr",
+            host: drEnvConfig.host,
+            pathname: `/delivery-records/${req.params.subscriptionName}`,
             query: req.query
           }),
           {
             method: req.method,
             headers: {
-              "x-api-key": hsrEnvConfig.apiKey,
+              "x-api-key": drEnvConfig.apiKey,
               "x-identity-id": res.locals.identity.userId
             },
             body: req.method !== "GET" ? req.body : undefined
@@ -51,7 +41,7 @@ export const holidayStopApiHandler = (
             res.status(500).send();
           });
       } else {
-        throw new Error("could not get holiday-stop-api config");
+        throw new Error("could not get delivery-records-api config");
       }
     })
     .catch(e => {

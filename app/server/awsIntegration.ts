@@ -24,9 +24,8 @@ export const handleAwsRelatedError = (message: string, detail?: any) => {
 };
 
 export const s3ConfigPromise = <ConfigInterface>(
-  configPathPart: string,
   ...fieldNamesToValidate: string[]
-) =>
+) => (configPathPart: string) =>
   s3FilePromise<ConfigInterface>(
     "gu-reader-revenue-private",
     `manage-frontend/${conf.STAGE}/${configPathPart}-${conf.STAGE}.json`,
