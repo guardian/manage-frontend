@@ -109,7 +109,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
-  showDeliveryAddress?: true;
+  showDeliveryAddress?: (productDetail: ProductDetail) => boolean;
   fulfilmentDateCalculator?: {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
@@ -208,6 +208,9 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
     </>
   );
 };
+
+const showDeliveryAddressAS = (productDetail: ProductDetail) =>
+  productDetail.subscription.readerType !== "Gift";
 
 export type ProductTypeKeys =
   | "membership"
@@ -330,7 +333,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
-    showDeliveryAddress: true,
+    showDeliveryAddress: showDeliveryAddressAS,
     productPage: "subscriptions"
   },
   homedelivery: {
@@ -341,7 +344,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
-    showDeliveryAddress: true,
+    showDeliveryAddress: showDeliveryAddressAS,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Newspaper - Home Delivery"
@@ -366,7 +369,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
           "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
       }
     },
-    showDeliveryAddress: true,
+    showDeliveryAddress: showDeliveryAddressAS,
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -383,7 +386,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
-    showDeliveryAddress: true,
+    showDeliveryAddress: showDeliveryAddressAS,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",

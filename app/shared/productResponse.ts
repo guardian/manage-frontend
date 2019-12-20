@@ -97,6 +97,8 @@ export interface DeliveryAddress {
   country: string;
 }
 
+export type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
+
 export interface Subscription {
   subscriptionId: string;
   start?: string;
@@ -115,6 +117,7 @@ export interface Subscription {
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
   trialLength: number;
+  readerType?: ReaderType;
   deliveryAddress?: DeliveryAddress;
   contactId?: string;
   // THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
