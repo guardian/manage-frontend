@@ -209,7 +209,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
   );
 };
 
-const showDeliveryAddressAS = (productDetail: ProductDetail) =>
+const showDeliveryAddressCheck = (productDetail: ProductDetail) =>
   productDetail.subscription.readerType !== "Gift";
 
 export type ProductTypeKeys =
@@ -333,7 +333,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
-    showDeliveryAddress: showDeliveryAddressAS,
+    showDeliveryAddress: showDeliveryAddressCheck,
     productPage: "subscriptions"
   },
   homedelivery: {
@@ -344,7 +344,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
-    showDeliveryAddress: showDeliveryAddressAS,
+    showDeliveryAddress: showDeliveryAddressCheck,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Newspaper - Home Delivery"
@@ -369,7 +369,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
           "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
       }
     },
-    showDeliveryAddress: showDeliveryAddressAS,
+    showDeliveryAddress: showDeliveryAddressCheck,
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -386,7 +386,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
-    showDeliveryAddress: showDeliveryAddressAS,
+    showDeliveryAddress: showDeliveryAddressCheck,
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",
