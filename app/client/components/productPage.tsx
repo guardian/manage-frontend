@@ -406,6 +406,7 @@ const getProductDetailRenderer = (
                 />
               )}
             {productType.showDeliveryAddress &&
+              productType.showDeliveryAddress(productDetail) &&
               productDetail.subscription.deliveryAddress && (
                 <ProductDetailRow
                   label="Delivery address"
