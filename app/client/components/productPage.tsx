@@ -413,7 +413,8 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
-            {productType.showDeliveryAddress?.(productDetail) &&
+            {productType.showDeliveryAddress &&
+              productType.showDeliveryAddress(productDetail) &&
               productDetail.subscription.deliveryAddress && (
                 <ProductDetailRow
                   label="Delivery address"
