@@ -229,14 +229,6 @@ const getProductDetailRenderer = (
     productType.alternateManagementCtaLabel &&
     productType.alternateManagementCtaLabel(productDetail);
   const mainPlan = getMainPlan(productDetail.subscription);
-  // tslint:disable-next-line: no-console
-  console.log(
-    `JSON.stringify(productDetail, null, " ") = ${JSON.stringify(
-      productDetail,
-      null,
-      " "
-    )}`
-  );
   return (
     <div
       key={productDetail.subscription.subscriptionId}
