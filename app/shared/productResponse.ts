@@ -3,6 +3,8 @@ import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { CardProps } from "../client/components/payment/cardDisplay";
 
+export type DeliveryRecordsApiItem = DeliveryRecordsDetail | {};
+
 export type MembersDataApiItem = ProductDetail | {};
 
 export class MembersDatApiAsyncLoader extends AsyncLoader<
@@ -30,6 +32,13 @@ export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
 
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
+
+export interface DeliveryRecordsDetail {
+  date: string;
+  instructions: string;
+  address: string;
+  hasHolidayStop: boolean;
+}
 
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)

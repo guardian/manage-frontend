@@ -4,6 +4,7 @@ import React from "react";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
+  hasDeliveryRecordsFlow,
   hasProductPageRedirect,
   ProductType,
   ProductTypes,
@@ -30,6 +31,7 @@ import {
 } from "./consent/consentsBanner";
 import { DeliveryAddressEditConfirmed } from "./delivery/address/DeliveryAddressEditConfirmed";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
+import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
@@ -186,6 +188,16 @@ const User = () => (
               productType={productType}
             />
           </DeliveryAddressForm>
+        ))}
+
+      {Object.values(ProductTypes)
+        .filter(hasDeliveryRecordsFlow)
+        .map((productType: ProductType) => (
+          <DeliveryRecords
+            key={productType.urlPart}
+            path={`/delivery/${productType.urlPart}/records`}
+            productType={productType}
+          />
         ))}
 
       <MembershipFAQs path="/help" />
