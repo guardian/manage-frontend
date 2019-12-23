@@ -54,6 +54,8 @@ function hasContactId(
   return !!productDetail.subscription.contactId;
 }
 
+const babelFlatMapFunction = (x: any) => x;
+
 export const getValidDeliveryAddressChangeEffectiveDates = (
   allProductDetail: ProductDetail[]
 ) =>
@@ -134,7 +136,7 @@ const FormContainer = (props: FormContainerProps) => {
   const subscriptionsNames = Object.values(
     props.contactIdToArrayOfProductDetail
   )
-    .flat()
+    .flatMap(babelFlatMapFunction)
     .map(productDetail => {
       const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
         productDetail
@@ -221,8 +223,9 @@ const FormContainer = (props: FormContainerProps) => {
               {Object.keys(props.contactIdToArrayOfProductDetail).length ===
                 1 && (
                 <div>
-                  {Object.values(props.contactIdToArrayOfProductDetail).flat()
-                    .length > 1 && (
+                  {Object.values(props.contactIdToArrayOfProductDetail).flatMap(
+                    babelFlatMapFunction
+                  ).length > 1 && (
                     <p
                       css={css`
                         border-top: 1px solid ${palette.neutral["86"]};
@@ -316,7 +319,7 @@ export const SubscriptionsAffectedList = (
         `}
       >
         {Object.values(props.contactIdDictOfProductDetails)
-          .flat()
+          .flatMap(babelFlatMapFunction)
           .map(productDetail => {
             const friendlyProductName = upperFirst(
               ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
