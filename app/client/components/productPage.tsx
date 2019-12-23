@@ -420,6 +420,14 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
+            {productType.delivery?.showRecords && (
+              <LinkButton
+                text="View delivery records"
+                to={`/delivery/${productType.urlPart}/records`}
+                state={productDetail}
+                right
+              />
+            )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
               (productDetailList.length > 1 ? (

@@ -13,7 +13,6 @@ export interface DeliveryRecordsResponse {
   results: DeliveryRecordsApiItem[];
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
   DeliveryRecordsResponse
 > {}

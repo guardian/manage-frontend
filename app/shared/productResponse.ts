@@ -34,9 +34,9 @@ export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
 
 export interface DeliveryRecordsDetail {
-  date: string;
-  instructions: string;
-  address: string;
+  deliveryDate: string;
+  deliveryInstruction: string;
+  deliveryAddress: string;
   hasHolidayStop: boolean;
 }
 
