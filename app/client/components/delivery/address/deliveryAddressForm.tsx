@@ -90,7 +90,9 @@ const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
 ) => (
   <FormContainer
     contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
-      allProductDetail.filter(isProduct)
+      allProductDetail
+        .filter(isProduct)
+        .filter(product => product.subscription.readerType !== "Gift")
     )}
     routeableStepProps={routeableStepProps}
   />
