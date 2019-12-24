@@ -1,7 +1,9 @@
 import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
+import moment, { Moment } from "moment";
 import React from "react";
+import { DeliveryAddress } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
@@ -39,6 +41,7 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
         <table
           css={css`
             width: 100%;
+            margin-top: 30px;
           `}
         >
           <thead
@@ -64,10 +67,21 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
               td {
                 width: 100%;
                 display: block;
+                border-bottom: 1px solid #dcdcdc;
+                padding: 6px 8px 20px;
+                vertical-align: top;
                 ${minWidth.tablet} {
                   width: auto;
                   display: table-cell;
                   text-align: left;
+                  border-bottom: 0;
+                  padding: 0;
+                }
+              }
+              td:first-child {
+                background-color: #f6f6f6;
+                ${minWidth.tablet} {
+                  background-color: unset;
                 }
               }
               td:nth-child(n + 2) {
@@ -97,13 +111,36 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
               td:nth-child(n + 2)[data-title-block] {
                 text-align: left;
               }
+              td:first-of-type {
+                border-top: 2px solid #dcdcdc;
+                ${minWidth.tablet} {
+                  border: none;
+                }
+              }
+              tr + tr td:first-child {
+                margin-top: 30px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                }
+              }
             `}
           >
             {data.results.map((deliveryRecord, listIndex) => (
-              <tr>
-                <td>Dispatched</td>
-                <td data-title="Date">21/05/2019</td>
-                <td data-title="Delivery postcode">SW1 234</td>
+              <tr key={`delivery-record--${listIndex}`}>
+                <td>
+                  <RecordStatus isDispatched={true} />
+                </td>
+                <td data-title="Date">
+                  {moment(deliveryRecord.deliveryDate).format("DD/MM/YYYY")}
+                </td>
+                <td data-title="Delivery postcode">
+                  <RecordAddress
+                    addressLine1={deliveryRecord.addressLine1}
+                    addressLine2={deliveryRecord.addressLine2}
+                    town={deliveryRecord.addressTown}
+                    postcode={deliveryRecord.addressPostcode}
+                  />
+                </td>
                 <td data-title-block="Delivery instructions">
                   placeholder copy
                 </td>
@@ -115,6 +152,38 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
     </>
   );
 };
+
+const RecordAddress = (props: DeliveryAddress) => (
+  <div>
+    <span>{props.postcode}</span>
+    <span
+      css={css`
+        display: block;
+        text-align: left;
+        font-style: italic;
+        font-weight: bold;
+        font-size: 15px;
+        color: #767676;
+      `}
+    >
+      read more
+    </span>
+  </div>
+);
+
+interface RecordStatusProps {
+  isDispatched: boolean;
+}
+const RecordStatus = (props: RecordStatusProps) => (
+  <span
+    css={css`
+      font-weight: bold;
+      color: ${props.isDispatched ? "green" : "red"};
+    `}
+  >
+    {props.isDispatched ? "Dispatched" : "Undelivered"}
+  </span>
+);
 
 export const DeliveryRecords = (props: RouteableStepProps) =>
   props.location &&

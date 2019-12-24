@@ -37,6 +37,12 @@ export interface DeliveryRecordsDetail {
   deliveryDate: string;
   deliveryInstruction: string;
   deliveryAddress: string;
+  addressLine1: string;
+  addressLine2?: string;
+  addressLine3?: string;
+  addressTown: string;
+  addressCountry: string;
+  addressPostcode: string;
   hasHolidayStop: boolean;
 }
 
