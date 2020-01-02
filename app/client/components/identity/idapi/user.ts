@@ -9,7 +9,7 @@ import {
 
 type UserPublicFields = Partial<
   Pick<User, "aboutMe" | "interests" | "location" | "username">
->;
+> & { displayName?: string };
 
 type UserPrivateFields = Partial<
   Pick<
@@ -80,7 +80,10 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
       aboutMe: user.aboutMe,
       interests: user.interests,
       location: user.location,
-      username: user.username
+      username: user.username,
+      // Currently displayname and username must be set to the same value, but this is not enforced on IDAPI
+      // and clients are expected to implement this logic for the time being.
+      displayName: user.username
     },
     privateFields: {
       title: user.title,
@@ -141,15 +144,12 @@ const getFieldNameFromContext = (context: string): string => {
 };
 
 const toUserError = (response: UserAPIErrorResponse): UserError => {
-  const error = response.errors.reduce(
-    (a, e) => {
-      return {
-        ...a,
-        [getFieldNameFromContext(e.context)]: e.description
-      };
-    },
-    {} as UserError["error"]
-  );
+  const error = response.errors.reduce((a, e) => {
+    return {
+      ...a,
+      [getFieldNameFromContext(e.context)]: e.description
+    };
+  }, {} as UserError["error"]);
   return {
     type: ErrorTypes.VALIDATION,
     error
