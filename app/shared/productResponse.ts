@@ -3,7 +3,7 @@ import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { CardProps } from "../client/components/payment/cardDisplay";
 
-export type DeliveryRecordsApiItem = DeliveryRecordsDetail | {};
+export type DeliveryRecordsApiItem = DeliveryRecordsDetail;
 
 export type MembersDataApiItem = ProductDetail | {};
 
@@ -44,6 +44,7 @@ export interface DeliveryRecordsDetail {
   addressCountry: string;
   addressPostcode: string;
   hasHolidayStop: boolean;
+  isChangedAddress?: boolean;
 }
 
 export interface ProductDetail extends WithSubscription {
