@@ -21,6 +21,7 @@ import {
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 
+const pageTopRef = React.createRef<HTMLTableElement>();
 const isOdd = (n: number) => Math.abs(n % 2) === 1;
 
 const tbodyCSS = css`
@@ -219,9 +220,16 @@ interface RecordsTableProps {
 const RecordsTable = (props: RecordsTableProps) => {
   const totalPages = Math.ceil(props.data.length / props.resultsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
+  const scrollToTop = () => {
+    if (pageTopRef.current) {
+      // window.scrollTo(0, pageTopRef.current.offsetTop - 20);
+      window.scrollTo(0, 0);
+    }
+  };
   return (
     <>
       <table
+        ref={pageTopRef}
         css={css`
           width: 100%;
           margin-top: 30px;
@@ -329,16 +337,18 @@ const RecordsTable = (props: RecordsTableProps) => {
           totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          changeCallBack={scrollToTop}
         />
       )}
     </>
   );
 };
-
+type PaginationChangeCallBack = () => void;
 interface PaginationNavProps {
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  changeCallBack: PaginationChangeCallBack;
 }
 const PaginationNav = (props: PaginationNavProps) => {
   const pagesArr = [];
@@ -355,6 +365,7 @@ const PaginationNav = (props: PaginationNavProps) => {
         `}
         onClick={() => {
           props.setCurrentPage(i);
+          props.changeCallBack();
         }}
       >
         {i === props.currentPage && (
