@@ -4,8 +4,6 @@ import {
   ProductType,
   ProductTypes
 } from "../../shared/productTypes";
-import { deliveryRecordsApiHandler } from "../deliveryRecordsApiHandlers";
-import { holidayStopApiHandler } from "../holidayStopApiHandlers";
 import { membersDataApiHandler } from "../middleware/apiMiddleware";
 
 const routeProvider = (apiPathPrefix: string) => {
@@ -55,16 +53,6 @@ const routeProvider = (apiPathPrefix: string) => {
       });
     }
   });
-
-  router.use(
-    `${apiPathPrefix}holidays/:subscriptionName?/:sfId?`,
-    holidayStopApiHandler
-  );
-
-  router.use(
-    `${apiPathPrefix}delivery-records/:subscriptionName`,
-    deliveryRecordsApiHandler
-  );
 
   return router;
 };

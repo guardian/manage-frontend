@@ -2,7 +2,6 @@ export interface Config {
   readonly STAGE: string;
   readonly DOMAIN: string;
   readonly API_DOMAIN: string;
-  readonly SF_CASES_URL: string;
   readonly ENVIRONMENT: Environments;
   readonly BUILD: string;
   readonly CLIENT_DSN: string | null;
@@ -30,9 +29,6 @@ export const conf: Config = {
   STAGE: getConfig("STAGE") || "DEV",
   DOMAIN: getConfig("DOMAIN") || "thegulocal.com",
   API_DOMAIN: getConfig("API_DOMAIN") || "code.dev-guardianapis.com",
-  SF_CASES_URL:
-    getConfig("SF_CASES_URL") ||
-    "https://nfni6mv1oj.execute-api.eu-west-1.amazonaws.com/DEV",
   BUILD: getConfig("BUILD") || "DEV",
   ENVIRONMENT:
     getConfig("NODE_ENV") === "production"

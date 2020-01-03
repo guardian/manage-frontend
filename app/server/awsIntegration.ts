@@ -4,7 +4,7 @@ import Raven from "raven";
 import { conf } from "./config";
 import { log } from "./log";
 
-const REGION = "eu-west-1";
+export const AWS_REGION = "eu-west-1";
 
 const PROFILE = "membership";
 
@@ -13,10 +13,16 @@ const CREDENTIAL_PROVIDER = new AWS.CredentialProviderChain([
   ...AWS.CredentialProviderChain.defaultProviders
 ]);
 
-export const S3 = new AWS.S3({
-  region: REGION,
+const standardAwsConfig = {
+  region: AWS_REGION,
   credentialProvider: CREDENTIAL_PROVIDER
-});
+};
+
+const S3 = new AWS.S3(standardAwsConfig);
+
+export const APIGateway = new AWS.APIGateway(standardAwsConfig);
+
+export const CloudFormation = new AWS.CloudFormation(standardAwsConfig);
 
 export const handleAwsRelatedError = (message: string, detail?: any) => {
   log.error(message, detail);
