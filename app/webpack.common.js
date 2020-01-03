@@ -137,5 +137,6 @@ const client = merge(common, {
 });
 module.exports = {
   client: client,
-  server: server
+  server: server,
+  babelCommon: babelCommon
 };
