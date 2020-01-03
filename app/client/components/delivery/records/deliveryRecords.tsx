@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
+import { WindowLocation } from "@reach/router";
 import moment from "moment";
 import React, { useState } from "react";
 import {
@@ -98,82 +99,82 @@ const trCSS = (rowNum: number, isFullWidth: boolean, hasBorder: boolean) => css`
 const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse
 ) => {
-  data.results.push({
-    deliveryDate: "2019-12-05",
-    deliveryInstruction: "Description",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-12-04",
-    deliveryInstruction: "Description",
-    hasHolidayStop: true
-  });
-  data.results.push({
-    deliveryDate: "2019-12-03",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
-    addressLine1: "Different Address",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E2 3WB",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-12-02",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
-    addressLine1: "Different Address",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E2 3WB",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-12-01",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-    addressLine1: "Main St",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E1 2QA",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-11-30",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-    addressLine1: "Main St",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E1 2QA",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-11-29",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-    addressLine1: "Main St",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E1 2QA",
-    hasHolidayStop: false
-  });
-  data.results.push({
-    deliveryDate: "2019-11-28",
-    deliveryInstruction: "Description",
-    deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-    addressLine1: "Main St",
-    addressLine2: "Line 2",
-    addressTown: "London",
-    addressCountry: "UK",
-    addressPostcode: "E1 2QA",
-    hasHolidayStop: false
-  });
+  // data.results.push({
+  //   deliveryDate: "2019-12-05",
+  //   deliveryInstruction: "Description",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-12-04",
+  //   deliveryInstruction: "Description",
+  //   hasHolidayStop: true
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-12-03",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Different Address",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E2 3WB",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-12-02",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Different Address",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E2 3WB",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-12-01",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Main St",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E1 2QA",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-11-30",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Main St",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E1 2QA",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-11-29",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Main St",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E1 2QA",
+  //   hasHolidayStop: false
+  // });
+  // data.results.push({
+  //   deliveryDate: "2019-11-28",
+  //   deliveryInstruction: "Description",
+  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
+  //   addressLine1: "Main St",
+  //   addressLine2: "Line 2",
+  //   addressTown: "London",
+  //   addressCountry: "UK",
+  //   addressPostcode: "E1 2QA",
+  //   hasHolidayStop: false
+  // });
 
   const filteredData = data;
   let currentAddress: string = "";
@@ -490,7 +491,13 @@ const RecordStatus = (props: RecordStatusProps) => (
   </span>
 );
 
-export const DeliveryRecords = (props: RouteableStepProps) =>
+interface DeliveryRecordsWindowLocation extends WindowLocation {
+  state: DeliveryRecordsResponse;
+}
+interface DeliveryRecordsProps extends RouteableStepProps {
+  location?: DeliveryRecordsWindowLocation;
+}
+export const DeliveryRecords = (props: DeliveryRecordsProps) =>
   props.location &&
   props.location.state &&
   Array.isArray(props.location.state) ? (
