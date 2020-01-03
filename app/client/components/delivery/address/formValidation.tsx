@@ -1,4 +1,5 @@
 import { DeliveryAddress } from "../../../../shared/productResponse";
+import { ProductTypes } from "../../../../shared/productTypes";
 import { ukPhoneNumberWithoutPrefix } from "../../callCentreNumbers";
 
 interface ErrorState {
@@ -30,16 +31,19 @@ export const isFormValid = (
   const postcodeEnteredCheck =
     formData.postcode.length > 0 && formData.postcode.length < 20;
 
-  const withinM25Check =
-    subscriptionsNames.includes("home delivery subscription") &&
+  const enteredPostcodeIsInM25 =
     postcodeEnteredCheck &&
     !isPostcodeOptional("GB") &&
-    isHomeDeliveryInM25(formData.postcode);
+    isPostcodeInM25(formData.postcode);
+
+  const enteredPostcodeIsInValidArea =
+    !subscriptionsNames.includes(ProductTypes.homedelivery.friendlyName) ||
+    enteredPostcodeIsInM25;
 
   const postcode = {
-    isValid: postcodeEnteredCheck && withinM25Check,
+    isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
     message:
-      !withinM25Check && postcodeEnteredCheck
+      !enteredPostcodeIsInValidArea && postcodeEnteredCheck
         ? `This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
         : "Please enter a postcode"
   };
@@ -74,7 +78,7 @@ const postcodeHasPrefix = (
 
   return actualPrefix === expectedPrefix;
 };
-const isHomeDeliveryInM25 = (postcode: string) =>
+const isPostcodeInM25 = (postcode: string) =>
   M25_POSTCODE_PREFIXES.filter(prefix => postcodeHasPrefix(postcode, prefix))
     .length > 0;
 
