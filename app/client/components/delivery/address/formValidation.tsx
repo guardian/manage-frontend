@@ -30,16 +30,18 @@ export const isFormValid = (
   const postcodeEnteredCheck =
     formData.postcode.length > 0 && formData.postcode.length < 20;
 
-  const withinM25Check =
-    subscriptionsNames.includes("home delivery subscription") &&
-    postcodeEnteredCheck &&
-    !isPostcodeOptional("GB") &&
-    isHomeDeliveryInM25(formData.postcode);
+  const withinM25Check = () => {
+    return !subscriptionsNames.includes("home delivery subscription")
+      ? true
+      : postcodeEnteredCheck &&
+          !isPostcodeOptional("GB") &&
+          isHomeDeliveryInM25(formData.postcode);
+  };
 
   const postcode = {
-    isValid: postcodeEnteredCheck && withinM25Check,
+    isValid: postcodeEnteredCheck && withinM25Check(),
     message:
-      !withinM25Check && postcodeEnteredCheck
+      !withinM25Check() && postcodeEnteredCheck
         ? `This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
         : "Please enter a postcode"
   };
