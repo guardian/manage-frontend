@@ -21,6 +21,8 @@ import {
   DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
+import { PaginationNav } from "./deliveryRecordsPaginationNav";
+import { mockRecords } from "./mockDeliveryRecords";
 
 const pageTopRef = React.createRef<HTMLTableElement>();
 const isOdd = (n: number) => Math.abs(n % 2) === 1;
@@ -99,94 +101,31 @@ const trCSS = (rowNum: number, isFullWidth: boolean, hasBorder: boolean) => css`
 const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse
 ) => {
-  // data.results.push({
-  //   deliveryDate: "2019-12-05",
-  //   deliveryInstruction: "Description",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-12-04",
-  //   deliveryInstruction: "Description",
-  //   hasHolidayStop: true
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-12-03",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Different Address",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E2 3WB",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-12-02",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Different Address",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E2 3WB",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-12-01",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Main St",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E1 2QA",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-11-30",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Main St",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E1 2QA",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-11-29",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Main St",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E1 2QA",
-  //   hasHolidayStop: false
-  // });
-  // data.results.push({
-  //   deliveryDate: "2019-11-28",
-  //   deliveryInstruction: "Description",
-  //   deliveryAddress: "Main St, Line 2, London, UK, E1 2QA",
-  //   addressLine1: "Main St",
-  //   addressLine2: "Line 2",
-  //   addressTown: "London",
-  //   addressCountry: "UK",
-  //   addressPostcode: "E1 2QA",
-  //   hasHolidayStop: false
-  // });
+  // tslint:disable-next-line
+  for (let i = 0; i < mockRecords.length; i++) {
+    data.results.push(mockRecords[i]);
+  }
+
+  const getRecordAddressAsString = (recordDetail: DeliveryRecordsDetail) =>
+    ` ${recordDetail.addressLine1}
+      ${recordDetail.addressLine2}
+      ${recordDetail.addressLine3}
+      ${recordDetail.addressTown}
+      ${recordDetail.addressCountry}
+      ${recordDetail.addressPostcode}
+    `;
 
   const filteredData = data;
   let currentAddress: string = "";
   for (let i = filteredData.results.length - 1; i >= 0; --i) {
     if (
       currentAddress &&
-      filteredData.results[i].deliveryAddress !== currentAddress
+      getRecordAddressAsString(filteredData.results[i]) !== currentAddress
     ) {
       // tslint:disable-next-line: no-object-mutation
       filteredData.results[i].isChangedAddress = true;
     }
-    currentAddress = filteredData.results[i].deliveryAddress;
+    currentAddress = getRecordAddressAsString(filteredData.results[i]);
   }
 
   return (
@@ -222,10 +161,7 @@ const RecordsTable = (props: RecordsTableProps) => {
   const totalPages = Math.ceil(props.data.length / props.resultsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
   const scrollToTop = () => {
-    if (pageTopRef.current) {
-      // window.scrollTo(0, pageTopRef.current.offsetTop - 20);
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
   };
   return (
     <>
@@ -344,65 +280,6 @@ const RecordsTable = (props: RecordsTableProps) => {
     </>
   );
 };
-type PaginationChangeCallBack = () => void;
-interface PaginationNavProps {
-  totalPages: number;
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  changeCallBack: PaginationChangeCallBack;
-}
-const PaginationNav = (props: PaginationNavProps) => {
-  const pagesArr = [];
-  for (let i = 0; i < props.totalPages; i++) {
-    pagesArr.push(
-      <li
-        css={css`
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          background-color: #dcdcdc;
-          border-radius: 50%;
-          position: relative;
-        `}
-        onClick={() => {
-          props.setCurrentPage(i);
-          props.changeCallBack();
-        }}
-      >
-        {i === props.currentPage && (
-          <div
-            css={css`
-              position: absolute;
-              top: 4px;
-              left: 4px;
-              width: calc(100% - 8px);
-              height: calc(100% - 8px);
-              background-color: #666;
-              border-radius: 50%;
-            `}
-          />
-        )}
-      </li>
-    );
-  }
-
-  return (
-    <ul
-      css={css`
-        list-style: none;
-        padding: 0;
-        margin: 30px 0;
-        width: 100%;
-        text-align: center;
-        li + li {
-          margin-left: 8px;
-        }
-      `}
-    >
-      {pagesArr}
-    </ul>
-  );
-};
 
 const RecordAddress = (props: DeliveryAddress) => {
   const [showAddress, setShowAddress] = useState(false);
@@ -497,16 +374,18 @@ interface DeliveryRecordsWindowLocation extends WindowLocation {
 interface DeliveryRecordsProps extends RouteableStepProps {
   location?: DeliveryRecordsWindowLocation;
 }
-export const DeliveryRecords = (props: DeliveryRecordsProps) =>
-  props.location &&
-  props.location.state &&
-  Array.isArray(props.location.state) ? (
+export const DeliveryRecords = (props: DeliveryRecordsProps) => {
+  return props.location &&
+    props.location.state &&
+    Array.isArray(props.location.state) ? (
     renderDeliveryRecords(props)(props.location.state)
   ) : (
     <DeliveryRecordsApiAsyncLoader
       render={renderDeliveryRecords(props)}
-      // ABC123-subscriptionID
+      // "subscriptionId": "A-S00052650"
+      // props.location?.state.subscription.subscriptionId
       fetch={createDeliveryRecordsFetcher("A-S00052650")}
       loadingMessage={"Loading delivery records..."}
     />
   );
+};

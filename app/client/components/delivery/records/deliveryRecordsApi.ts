@@ -1,5 +1,8 @@
 import moment, { Moment } from "moment";
-import { DeliveryRecordsApiItem } from "../../../../shared/productResponse";
+import {
+  DeliveryRecordsApiItem,
+  Subscription
+} from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
@@ -11,6 +14,7 @@ export const momentiseDateStr = (dateStr: string) =>
 
 export interface DeliveryRecordsResponse {
   results: DeliveryRecordsApiItem[];
+  subscription: Subscription;
 }
 
 export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
