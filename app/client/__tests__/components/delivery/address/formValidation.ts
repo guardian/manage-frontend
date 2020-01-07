@@ -23,15 +23,7 @@ describe("update delivery address form validation", () => {
   };
   const guardianWeeklySubscription = ["Guardian Weekly subscription"];
   const homeDeliverySubscription = ["home delivery subscription"];
-
-  //   | "membership"
-  //   | "recurring contribution"
-  //   | "newspaper subscription"
-  //   | "newspaper voucher subscription"
-  //   | "home delivery subscription"
-  //   | "digital subscription"
-  //   | "Guardian Weekly subscription"
-  //   | "subscription"
+  const voucherSubscription = ["newspaper voucher subscription"];
 
   test(`isFormValid returns 'isValid' true given valid UK address. Subscriptions: ${guardianWeeklySubscription}`, () => {
     expect(
@@ -51,9 +43,27 @@ describe("update delivery address form validation", () => {
     ).toBeTruthy();
   });
 
-  test(`isFormValid returns 'isValid' false given valid UK address outside M25 with home delivery subscription. Subscriptions: ${guardianWeeklySubscription}`, () => {
+  test(`isFormValid returns 'isValid' true given valid UK address inside M25 with home delivery subscription. Subscriptions: ${homeDeliverySubscription}`, () => {
+    expect(
+      isFormValid(londonAddress, homeDeliverySubscription).isValid
+    ).toBeTruthy();
+  });
+
+  test(`isFormValid returns 'isValid' false given valid UK address outside M25 with home delivery subscription. Subscriptions: ${homeDeliverySubscription}`, () => {
     expect(
       isFormValid(outsideLondonAddress, homeDeliverySubscription).isValid
+    ).toBeFalsy();
+  });
+
+  test(`isFormValid returns 'isValid' true given valid UK address with voucher subscription. Subscriptions: ${voucherSubscription}`, () => {
+    expect(
+      isFormValid(outsideLondonAddress, voucherSubscription).isValid
+    ).toBeTruthy();
+  });
+
+  test(`isFormValid returns 'isValid' false given valid outside UK address with voucher subscription. Subscriptions: ${voucherSubscription}`, () => {
+    expect(
+      isFormValid(outsideUKAddress, voucherSubscription).isValid
     ).toBeFalsy();
   });
 });
