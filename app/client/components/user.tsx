@@ -29,7 +29,7 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
-import { DeliveryAddressEditConfirmed } from "./delivery/address/DeliveryAddressEditConfirmed";
+import { DeliveryAddressEditConfirmed } from "./delivery/address/deliveryAddressEditConfirmed";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
 import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";

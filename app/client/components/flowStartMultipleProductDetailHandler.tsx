@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { toWords } from "number-to-words";
-import React from "react";
+import React, { ReactElement } from "react";
 import {
   alertTextWithoutCTA,
   augmentInterval,
@@ -23,14 +23,44 @@ import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 import { CallCentreNumbers } from "./callCentreNumbers";
+import { navLinks, NavItem } from "./nav";
 import { NoProduct } from "./noProduct";
-import { PageContainer } from "./page";
+import {
+  PageContainer,
+  PageHeaderContainer,
+  PageNavAndContentContainer
+} from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import {
   ReturnToYourProductButton,
   RouteableStepProps
 } from "./wizardRouterAdapter";
+
+type NewLayoutWrapperFunc = (
+  children: ReactElement | undefined
+) => ReactElement;
+interface ConditionalNewLayoutWrapperProps {
+  condition: boolean | undefined;
+  wrapper: NewLayoutWrapperFunc;
+  children?: ReactElement | undefined;
+}
+const ConditionalNewLayoutWrapper = ({
+  condition,
+  wrapper,
+  children
+}: ConditionalNewLayoutWrapperProps) =>
+  condition ? wrapper(children) : children;
+
+const flexCSS = (display: "inline-flex" | "flex") =>
+  css({
+    display,
+    alignItems: "center",
+    flexWrap: "wrap",
+    "span, div": {
+      marginRight: "10px"
+    }
+  });
 
 const PaymentTypeRenderer = (subscription: Subscription) => {
   if (subscription.card) {
@@ -42,16 +72,6 @@ const PaymentTypeRenderer = (subscription: Subscription) => {
   }
   return null;
 };
-
-const flexCSS = (display: "inline-flex" | "flex") =>
-  css({
-    display,
-    alignItems: "center",
-    flexWrap: "wrap",
-    "span, div": {
-      marginRight: "10px"
-    }
-  });
 
 const getPaymentPart = (productDetail: ProductDetail) => {
   const mainPlan = getMainPlan(productDetail.subscription);
@@ -97,102 +117,122 @@ const getProductDetailSelector = (
     }
     if (sortedList.length > 1) {
       return (
-        <>
-          <PageContainer>
-            <p>
-              You have <strong>{toWords(sortedList.length)}</strong> concurrent{" "}
-              {props.productType.friendlyName}s, please select the one you would
-              like to proceed with:
-            </p>
-          </PageContainer>
-          {sortedList.map((productDetail, listIndex) => (
-            <div
-              key={productDetail.subscription.subscriptionId}
-              css={{
-                padding: "10px",
-                background:
-                  (listIndex + 1) % 2 !== 0 ? palette.neutral["7"] : undefined
-              }}
-            >
-              <PageContainer noVerticalMargin>
-                {getMainPlan(productDetail.subscription).name && (
-                  <i>({getMainPlan(productDetail.subscription).name})</i>
-                )}
-                <div css={flexCSS("flex")}>
-                  {productDetail.subscription.cancelledAt && (
-                    <span
-                      css={{
-                        fontFamily: sans,
-                        background: palette.neutral["5"],
-                        marginRight: "10px",
-                        borderRadius: "5px",
-                        padding: "2px 5px 0 6px",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      CANCELLED
-                    </span>
+        <ConditionalNewLayoutWrapper
+          condition={props.withNewLayout !== undefined}
+          wrapper={(children: ReactElement) => (
+            <>
+              <PageHeaderContainer
+                selectedNavItem={props.withNewLayout?.selectedNavItem}
+              >
+                <h1>{props.withNewLayout?.pageTitle}</h1>
+              </PageHeaderContainer>
+              <PageNavAndContentContainer
+                selectedNavItem={props.withNewLayout?.selectedNavItem}
+              >
+                {children}
+              </PageNavAndContentContainer>
+            </>
+          )}
+        >
+          <>
+            <PageContainer>
+              <p>
+                You have <strong>{toWords(sortedList.length)}</strong>{" "}
+                concurrent {props.productType.friendlyName}s, please select the
+                one you would like to proceed with:
+              </p>
+            </PageContainer>
+            {sortedList.map((productDetail, listIndex) => (
+              <div
+                key={productDetail.subscription.subscriptionId}
+                css={{
+                  padding: "10px",
+                  background:
+                    (listIndex + 1) % 2 !== 0 ? palette.neutral["7"] : undefined
+                }}
+              >
+                <PageContainer noVerticalMargin>
+                  {getMainPlan(productDetail.subscription).name && (
+                    <i>({getMainPlan(productDetail.subscription).name})</i>
                   )}
-                  {hasProductPageProperties(props.productType) &&
-                    props.productType.productPage.tierRowLabel && (
-                      <span>
-                        <strong>Tier: </strong> {productDetail.tier}{" "}
+                  <div css={flexCSS("flex")}>
+                    {productDetail.subscription.cancelledAt && (
+                      <span
+                        css={{
+                          fontFamily: sans,
+                          background: palette.neutral["5"],
+                          marginRight: "10px",
+                          borderRadius: "5px",
+                          padding: "2px 5px 0 6px",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        CANCELLED
                       </span>
                     )}
-                  {((hasProductPageProperties(props.productType) &&
-                    props.productType.productPage.forceShowJoinDateOnly) ||
-                    !productDetail.subscription.start) && (
-                    <span>
-                      <strong>Join Date:</strong>{" "}
-                      {formatDate(productDetail.joinDate)}{" "}
-                    </span>
+                    {hasProductPageProperties(props.productType) &&
+                      props.productType.productPage.tierRowLabel && (
+                        <span>
+                          <strong>Tier: </strong> {productDetail.tier}{" "}
+                        </span>
+                      )}
+                    {((hasProductPageProperties(props.productType) &&
+                      props.productType.productPage.forceShowJoinDateOnly) ||
+                      !productDetail.subscription.start) && (
+                      <span>
+                        <strong>Join Date:</strong>{" "}
+                        {formatDate(productDetail.joinDate)}{" "}
+                      </span>
+                    )}
+                    {productDetail.subscription.start &&
+                      !(
+                        hasProductPageProperties(props.productType) &&
+                        props.productType.productPage.forceShowJoinDateOnly
+                      ) && (
+                        <span>
+                          <strong>Start Date:</strong>{" "}
+                          {formatDate(productDetail.subscription.start)}{" "}
+                        </span>
+                      )}
+                    <div css={flexCSS("inline-flex")}>
+                      <strong>Payment:</strong>
+                      {getPaymentPart(productDetail)}
+                    </div>
+                    {productDetail.subscription.nextPaymentDate &&
+                      !productDetail.alertText && (
+                        <span>
+                          <strong>Next payment date:</strong>{" "}
+                          {formatDate(
+                            productDetail.subscription.nextPaymentDate
+                          )}
+                        </span>
+                      )}
+                  </div>
+                  {productDetail.alertText && (
+                    <div css={{ color: palette.red.dark }}>
+                      <strong>{alertTextWithoutCTA(productDetail)}</strong>
+                    </div>
                   )}
-                  {productDetail.subscription.start &&
-                    !(
-                      hasProductPageProperties(props.productType) &&
-                      props.productType.productPage.forceShowJoinDateOnly
-                    ) && (
-                      <span>
-                        <strong>Start Date:</strong>{" "}
-                        {formatDate(productDetail.subscription.start)}{" "}
-                      </span>
-                    )}
-                  <div css={flexCSS("inline-flex")}>
-                    <strong>Payment:</strong>
-                    {getPaymentPart(productDetail)}
+                  <div css={{ marginTop: "10px" }}>
+                    <Button
+                      text={
+                        props.headingPrefix +
+                        " this " +
+                        (props.productType.includeGuardianInTitles
+                          ? "Guardian "
+                          : "") +
+                        props.productType.friendlyName
+                      }
+                      onClick={() => selectProductDetail(productDetail)}
+                      right
+                      primary
+                    />
                   </div>
-                  {productDetail.subscription.nextPaymentDate &&
-                    !productDetail.alertText && (
-                      <span>
-                        <strong>Next payment date:</strong>{" "}
-                        {formatDate(productDetail.subscription.nextPaymentDate)}
-                      </span>
-                    )}
-                </div>
-                {productDetail.alertText && (
-                  <div css={{ color: palette.red.dark }}>
-                    <strong>{alertTextWithoutCTA(productDetail)}</strong>
-                  </div>
-                )}
-                <div css={{ marginTop: "10px" }}>
-                  <Button
-                    text={
-                      props.headingPrefix +
-                      " this " +
-                      (props.productType.includeGuardianInTitles
-                        ? "Guardian "
-                        : "") +
-                      props.productType.friendlyName
-                    }
-                    onClick={() => selectProductDetail(productDetail)}
-                    right
-                    primary
-                  />
-                </div>
-              </PageContainer>
-            </div>
-          ))}
-        </>
+                </PageContainer>
+              </div>
+            ))}
+          </>
+        </ConditionalNewLayoutWrapper>
       );
     }
   }
@@ -205,10 +245,15 @@ const getProductDetailSelector = (
   );
 };
 
+interface NewLayoutOptions {
+  pageTitle: string;
+  selectedNavItem: NavItem;
+}
 export interface FlowStartMultipleProductDetailHandlerProps
   extends RouteableStepProps {
   headingPrefix: string;
   hideHeading?: true;
+  withNewLayout?: NewLayoutOptions;
   supportRefererSuffix: string;
   loadingMessagePrefix: string;
   cancelledExplainer: string;
@@ -248,13 +293,15 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
   public render(): React.ReactNode {
     return (
       <div
-        css={{
-          padding: "0 0.625rem",
+        css={
+          !this.props.withNewLayout && {
+            padding: "0 0.625rem",
 
-          [minWidth.tablet]: {
-            padding: "0 1.25rem"
+            [minWidth.tablet]: {
+              padding: "0 1.25rem"
+            }
           }
-        }}
+        }
       >
         {!this.props.hideHeading && (
           <PageContainer>

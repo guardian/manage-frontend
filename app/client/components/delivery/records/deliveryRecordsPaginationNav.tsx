@@ -1,9 +1,11 @@
 import { css } from "@emotion/core";
+import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import { minWidth } from "../../../styles/breakpoints";
 
 type PaginationChangeCallBack = () => void;
 interface PaginationNavProps {
+  resultsPerPage: number;
+  totalNumberOfResults: number;
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
@@ -16,18 +18,20 @@ export const PaginationNav = (props: PaginationNavProps) => {
       <li
         key={`deliveryRecordsNavItem-${i}`}
         css={css`
+          ${textSans.medium()};
           text-align: center;
           display: inline-block;
           position: relative;
-          width: 13px;
-          height: 20px;
-          line-height: 17px;
+          width: 22px;
+          height: 22px;
+          line-height: 22px;
           border-bottom: 1px solid #767676;
+          padding: 0 0 1px 1px;
           cursor: pointer;
           ${i === props.currentPage &&
             `
               cursor: default;
-              width: 20px;
+              width: 22px;
               border-radius: 50%;
               background-color: #007ABC;
               color: #ffffff;
@@ -58,22 +62,35 @@ export const PaginationNav = (props: PaginationNavProps) => {
   }
 
   return (
-    <ul
-      css={css`
-        text-align: center;
-        list-style: none;
-        padding: 0;
-        margin: 30px 0;
-        width: 100%;
-        li + li {
-          margin-left: 8px;
-        }
-        ${minWidth.tablet} {
-          text-align: left;
-        }
-      `}
-    >
-      {pagesArr}
-    </ul>
+    <>
+      <ul
+        css={css`
+          text-align: center;
+          list-style: none;
+          padding: 0;
+          margin: 30px 0;
+          width: 100%;
+          li + li {
+            margin-left: 8px;
+          }
+        `}
+      >
+        {pagesArr}
+      </ul>
+      <span
+        css={css`
+          ${textSans.medium()};
+          color: #767676;
+          display: block;
+          width: 100%;
+          margin-top: 21px;
+          text-align: center;
+        `}
+      >{`Displaying ${props.currentPage * props.resultsPerPage +
+        1} - ${props.currentPage * props.resultsPerPage +
+        props.resultsPerPage} of ${
+        props.totalNumberOfResults
+      } deliveries`}</span>
+    </>
   );
 };
