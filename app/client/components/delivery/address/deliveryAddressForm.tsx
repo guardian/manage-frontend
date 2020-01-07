@@ -496,6 +496,9 @@ const Form = (props: FormProps) => {
             margin-top: 14px;
           `}
           value={props.country}
+          optional={props.subscriptionsNames.includes(
+            ProductTypes.voucher.friendlyName
+          )}
           changeSetState={props.setCountry}
           inErrorState={
             !!(

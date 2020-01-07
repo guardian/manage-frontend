@@ -176,7 +176,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         <FormSelectField
           name="country"
           label="Country"
-          options={COUNTRIES}
+          options={COUNTRIES.flatMap(country => country.name)}
           formikProps={props}
         />
       </PageSection>
@@ -215,8 +215,6 @@ const FormikForm = withFormik({
   }
 })(BaseForm);
 
-export const AccountDetailsFormSection: FC<
-  AccountDetailsFormSectionProps
-> = props => {
+export const AccountDetailsFormSection: FC<AccountDetailsFormSectionProps> = props => {
   return <FormikForm {...props} />;
 };

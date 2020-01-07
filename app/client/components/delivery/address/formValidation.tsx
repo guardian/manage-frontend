@@ -48,9 +48,16 @@ export const isFormValid = (
         : "Please enter a postcode"
   };
 
+  const userHasVoucerSubscription = subscriptionsNames.includes(
+    ProductTypes.voucher.friendlyName
+  );
+
   const country = {
-    isValid: formData.country.length > 0,
-    message: "Please select a country"
+    isValid: userHasVoucerSubscription ? formData.country === "GB" : true,
+    message:
+      userHasVoucerSubscription && formData.country.length > 0
+        ? "Voucher subscriptions must be delivered in the UK"
+        : "Please select a country"
   };
 
   return {
