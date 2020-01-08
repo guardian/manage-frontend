@@ -53,7 +53,12 @@ const tbodyCSS = css`
   }
 `;
 
-const trCSS = (rowNum: number, isFullWidth: boolean, hasBorder: boolean) => css`
+const trCSS = (
+  rowNum: number,
+  isFullWidth: boolean,
+  hasBorder: boolean,
+  hideAtMobile?: boolean
+) => css`
   ${minWidth.tablet} {
     background: ${isOdd(rowNum) ? "#f6f6f6" : "none"};
   }
@@ -143,6 +148,7 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     <RecordStatus
                       isDispatched={!!deliveryRecord.deliveryAddress}
                       isHolidayStop={!!deliveryRecord.hasHolidayStop}
+                      isChangedAddress={!!deliveryRecord.isChangedAddress}
                     />
                   </td>
                   <td data-title="Date">
@@ -173,6 +179,7 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     css={css`
                       ${minWidth.tablet} {
                         width: 220px;
+                        max-width: 25ch;
                       }
                     `}
                   >
@@ -180,17 +187,9 @@ export const RecordsTable = (props: RecordsTableProps) => {
                   </td>
                 </tr>
                 {deliveryRecord.isChangedAddress && (
-                  <tr css={trCSS(listIndex, true, true)}>
+                  <tr css={trCSS(listIndex, true, true, true)}>
                     <td colSpan={4}>
-                      <InfoIconDark fillColor={"#052962"} />
-                      <span
-                        css={css`
-                          display: inline-block;
-                          margin-bottom: 2px;
-                        `}
-                      >
-                        Delivery address changed
-                      </span>
+                      <InfoMessage message={"Delivery address changed"} />
                     </td>
                   </tr>
                 )}
@@ -211,3 +210,29 @@ export const RecordsTable = (props: RecordsTableProps) => {
     </>
   );
 };
+
+interface InfoMessageProps {
+  message: string;
+}
+export const InfoMessage = (props: InfoMessageProps) => (
+  <>
+    <div
+      css={css`
+        display: inline-block;
+        height: 22px;
+        vertical-align: top;
+        margin: 0 calc(0.5rem + 4px) 0 4px;
+      `}
+    >
+      <InfoIconDark fillColor={"#052962"} size={22} />
+    </div>
+    <span
+      css={css`
+        display: inline-block;
+        margin-bottom: 2px;
+      `}
+    >
+      {props.message}
+    </span>
+  </>
+);
