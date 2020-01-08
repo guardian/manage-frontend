@@ -56,7 +56,7 @@ export const isFormValid = (
     isValid: userHasVoucerSubscription ? formData.country === "GB" : true,
     message:
       userHasVoucerSubscription && formData.country.length > 0
-        ? "Voucher subscriptions must be delivered in the UK"
+        ? `Voucher subscriptions must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
         : "Please select a country"
   };
 
