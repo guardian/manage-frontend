@@ -53,12 +53,7 @@ const tbodyCSS = css`
   }
 `;
 
-const trCSS = (
-  rowNum: number,
-  isFullWidth: boolean,
-  hasBorder: boolean,
-  hideAtMobile?: boolean
-) => css`
+const trCSS = (rowNum: number, isFullWidth: boolean) => css`
   ${minWidth.tablet} {
     background: ${isOdd(rowNum) ? "#f6f6f6" : "none"};
   }
@@ -66,7 +61,7 @@ const trCSS = (
     ${isFullWidth && `${minWidth.tablet} {padding-top: 0;}`}
     border-bottom: 1px solid #dcdcdc;
     ${minWidth.tablet} {
-      border-bottom: ${hasBorder ? "1px solid #dcdcdc" : "0"};
+      border-bottom: 1px solid #dcdcdc;
     }
   }
   td:first-child {
@@ -80,7 +75,7 @@ const trCSS = (
     }
   }
   td:last-child {
-    margin-bottom: ${hasBorder ? "30px" : "0"};
+    margin-bottom: 30px;
     ${minWidth.tablet} {
       margin-bottom: 0;
     }
@@ -137,29 +132,34 @@ export const RecordsTable = (props: RecordsTableProps) => {
             )
             .map((deliveryRecord: DeliveryRecordsApiItem, listIndex) => (
               <React.Fragment key={`delivery-record--${listIndex}`}>
-                <tr
-                  css={trCSS(
-                    listIndex,
-                    false,
-                    !deliveryRecord.isChangedAddress
-                  )}
-                >
-                  <td>
+                <tr css={trCSS(listIndex, false)}>
+                  <td
+                    css={css`
+                      order: 1;
+                    `}
+                  >
                     <RecordStatus
                       isDispatched={!!deliveryRecord.deliveryAddress}
                       isHolidayStop={!!deliveryRecord.hasHolidayStop}
                       isChangedAddress={!!deliveryRecord.isChangedAddress}
                     />
                   </td>
-                  <td data-title="Date">
+                  <td
+                    data-title="Date"
+                    css={css`
+                      ${minWidth.tablet} {
+                        padding-bottom: 50px;
+                        order: 2;
+                      }
+                    `}
+                  >
+                    {/* TODO: add say 50 px padding-bottom to all td's but the status column so that the message doesn't overlap the other columns */}
                     {moment(deliveryRecord.deliveryDate).format("DD/MM/YYYY")}
                   </td>
                   <td
                     data-title="Delivery postcode"
                     css={css`
-                      ${minWidth.tablet} {
-                        width: 220px;
-                      }
+                      order: 3;
                     `}
                   >
                     {deliveryRecord.deliveryAddress ? (
@@ -177,22 +177,17 @@ export const RecordsTable = (props: RecordsTableProps) => {
                   <td
                     data-title-block="Delivery instructions"
                     css={css`
+                      order: 4;
                       ${minWidth.tablet} {
                         width: 220px;
                         max-width: 25ch;
+                        padding-bottom: 50px;
                       }
                     `}
                   >
                     {deliveryRecord.deliveryAddress ? "placeholder copy" : "-"}
                   </td>
                 </tr>
-                {deliveryRecord.isChangedAddress && (
-                  <tr css={trCSS(listIndex, true, true, true)}>
-                    <td colSpan={4}>
-                      <InfoMessage message={"Delivery address changed"} />
-                    </td>
-                  </tr>
-                )}
               </React.Fragment>
             ))}
         </tbody>

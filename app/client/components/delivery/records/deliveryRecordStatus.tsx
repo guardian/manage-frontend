@@ -47,7 +47,8 @@ export const RecordStatus = (props: RecordStatusProps) => (
         css={css`
           margin-top: 8px;
           ${minWidth.tablet} {
-            display: none;
+            position: sticky;
+            top: 100%;
           }
         `}
       >
