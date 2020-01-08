@@ -23,7 +23,7 @@ import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { Button } from "./buttons";
 import { CallCentreNumbers } from "./callCentreNumbers";
-import { navLinks, NavItem } from "./nav";
+import { NavItem } from "./nav";
 import { NoProduct } from "./noProduct";
 import {
   PageContainer,
@@ -37,13 +37,11 @@ import {
   RouteableStepProps
 } from "./wizardRouterAdapter";
 
-type NewLayoutWrapperFunc = (
-  children: ReactElement | undefined
-) => ReactElement;
+type NewLayoutWrapperFunc = (children: ReactElement | null) => ReactElement;
 interface ConditionalNewLayoutWrapperProps {
   condition: boolean | undefined;
   wrapper: NewLayoutWrapperFunc;
-  children?: ReactElement | undefined;
+  children: ReactElement | null;
 }
 const ConditionalNewLayoutWrapper = ({
   condition,
@@ -119,7 +117,7 @@ const getProductDetailSelector = (
       return (
         <ConditionalNewLayoutWrapper
           condition={props.withNewLayout !== undefined}
-          wrapper={(children: ReactElement) => (
+          wrapper={(children: ReactElement | null) => (
             <>
               <PageHeaderContainer
                 selectedNavItem={props.withNewLayout?.selectedNavItem}
