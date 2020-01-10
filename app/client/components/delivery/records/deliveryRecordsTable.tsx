@@ -234,7 +234,6 @@ export const RecordsTable = (props: RecordsTableProps) => {
         <PaginationNav
           resultsPerPage={props.resultsPerPage}
           totalNumberOfResults={props.data.length}
-          totalPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           changeCallBack={scrollToTop}

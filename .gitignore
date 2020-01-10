@@ -21,6 +21,6 @@ logs/
 app/dist/
 tmp_client_bundle/
 
-app/.DS_Store
+.DS_Store
 .scannerwork/
 app/test-report.xml

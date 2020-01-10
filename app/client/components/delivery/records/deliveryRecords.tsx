@@ -6,6 +6,7 @@ import {
   DeliveryRecordsDetail,
   ProductDetail
 } from "../../../../shared/productResponse";
+import { mockRecords } from "../../../__tests__/components/delivery/records/mockDeliveryRecords";
 import { maxWidth } from "../../../styles/breakpoints";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
@@ -17,7 +18,6 @@ import {
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import { RecordsTable } from "./deliveryRecordsTable";
-import { mockRecords } from "./mockDeliveryRecords";
 
 const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse

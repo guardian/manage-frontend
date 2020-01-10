@@ -1,8 +1,11 @@
-import { mount } from "enzyme";
+import Enzyme, { mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import { RecordStatus } from "../../../../components/delivery/records/deliveryRecordStatus";
 
-describe("RecordStatus", () => {
+Enzyme.configure({ adapter: new Adapter() });
+
+describe("DeliveryRecordStatus", () => {
   it("renders dispatched status", () => {
     const wrapper = mount(
       <RecordStatus
@@ -12,7 +15,12 @@ describe("RecordStatus", () => {
         deliveryProblem={null}
       />
     );
-    expect(wrapper.find("span").text()).toEqual("Dispatched yo");
+    expect(
+      wrapper
+        .find("span")
+        .at(0)
+        .text()
+    ).toEqual("Dispatched");
   });
   it("renders holiday stop status", () => {
     const wrapper = mount(
@@ -23,7 +31,12 @@ describe("RecordStatus", () => {
         deliveryProblem={null}
       />
     );
-    expect(wrapper.find("span").text()).toEqual("Holiday Stop");
+    expect(
+      wrapper
+        .find("span")
+        .at(0)
+        .text()
+    ).toEqual("Holiday Stop");
   });
 
   it("renders delivery problem status", () => {
@@ -35,6 +48,11 @@ describe("RecordStatus", () => {
         deliveryProblem={"uh oh!"}
       />
     );
-    expect(wrapper.find("span").text()).toEqual("Delivery problem");
+    expect(
+      wrapper
+        .find("span")
+        .at(0)
+        .text()
+    ).toEqual("Delivery problem");
   });
 });

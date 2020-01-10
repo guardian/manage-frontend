@@ -217,6 +217,9 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
   );
 };
 
+const showDeliveryAddressCheck = (productDetail: ProductDetail) =>
+  productDetail.subscription.readerType !== "Gift";
+
 export type ProductTypeKeys =
   | "membership"
   | "contributions"
@@ -339,7 +342,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     delivery: {
-      showAddress: true,
+      showAddress: !!showDeliveryAddressCheck,
       showRecords: true
     },
     productPage: "subscriptions"
@@ -353,7 +356,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
     delivery: {
-      showAddress: true,
+      showAddress: !!showDeliveryAddressCheck,
       showRecords: true
     },
     productPage: "subscriptions",
@@ -381,7 +384,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       }
     },
     delivery: {
-      showAddress: true,
+      showAddress: !!showDeliveryAddressCheck,
       showRecords: true
     },
     productPage: "subscriptions"
@@ -401,7 +404,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       issueKeyword: "issue"
     },
     delivery: {
-      showAddress: true,
+      showAddress: !!showDeliveryAddressCheck,
       showRecords: true
     },
     productPage: "subscriptions",
