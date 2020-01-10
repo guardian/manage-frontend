@@ -213,16 +213,22 @@ export const RecordsTable = (props: RecordsTableProps) => {
                   >
                     <td />
                     <td colSpan={3}>
-                      <DeliveryRecordMessage
-                        isError={!!deliveryRecord.problemCaseId}
-                        message={
-                          (deliveryRecord.problemCaseId &&
+                      {!!deliveryRecord.problemCaseId && (
+                        <DeliveryRecordMessage
+                          isError
+                          message={
+                            deliveryRecord.problemCaseId &&
                             props.deliveryProblemMap[
                               deliveryRecord.problemCaseId
-                            ]?.problemType) ||
-                          "Delivery address changed"
-                        }
-                      />
+                            ]?.problemType
+                          }
+                        />
+                      )}
+                      {deliveryRecord.isChangedAddress && (
+                        <DeliveryRecordMessage
+                          message={"Delivery address changed"}
+                        />
+                      )}
                     </td>
                   </tr>
                 )}

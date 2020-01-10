@@ -33,18 +33,6 @@ export const RecordStatus = (props: RecordStatusProps) => (
       {props.isHolidayStop && "Holiday Stop"}
       {props.deliveryProblem && "Delivery problem"}
     </span>
-    {props.isChangedAddress && (
-      <div
-        css={css`
-          margin-top: ${space[2]}px;
-          ${minWidth.tablet} {
-            display: none;
-          }
-        `}
-      >
-        <DeliveryRecordMessage message={"Delivery address changed"} />
-      </div>
-    )}
     {props.deliveryProblem && (
       <div
         css={css`
@@ -55,6 +43,18 @@ export const RecordStatus = (props: RecordStatusProps) => (
         `}
       >
         <DeliveryRecordMessage message={props.deliveryProblem} isError />
+      </div>
+    )}
+    {props.isChangedAddress && (
+      <div
+        css={css`
+          margin-top: ${space[2]}px;
+          ${minWidth.tablet} {
+            display: none;
+          }
+        `}
+      >
+        <DeliveryRecordMessage message={"Delivery address changed"} />
       </div>
     )}
   </>

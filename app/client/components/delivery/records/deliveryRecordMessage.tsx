@@ -12,8 +12,8 @@ export const DeliveryRecordMessage = (props: DeliveryRecordMessageProps) => (
   <>
     <span
       css={css`
-        display: inline-block;
-        margin-bottom: 2px;
+        display: block;
+        margin: 8px 0 2px;
         color: ${props.isError ? palette.news.main : palette.brand.dark};
       `}
     >

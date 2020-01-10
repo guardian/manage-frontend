@@ -421,11 +421,16 @@ const getProductDetailRenderer = (
                 />
               )}
             {productType.delivery?.showRecords && (
-              <LinkButton
-                text="View delivery records"
-                to={`/delivery/${productType.urlPart}/records`}
-                state={productDetail}
-                right
+              <ProductDetailRow
+                label="Delivery records"
+                data={
+                  <LinkButton
+                    text="View delivery records"
+                    to={`/delivery/${productType.urlPart}/records`}
+                    state={productDetail}
+                    right
+                  />
+                }
               />
             )}
             {productType.alternateManagementUrl &&

@@ -6,7 +6,6 @@ import {
   DeliveryRecordsDetail,
   ProductDetail
 } from "../../../../shared/productResponse";
-import { mockRecords } from "../../../__tests__/components/delivery/records/mockDeliveryRecords";
 import { maxWidth } from "../../../styles/breakpoints";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
@@ -22,15 +21,6 @@ import { RecordsTable } from "./deliveryRecordsTable";
 const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse
 ) => {
-  // tslint:disable-next-line
-  data.deliveryProblemMap["err-123"] = {
-    problemType: "problem type explained"
-  };
-  // tslint:disable-next-line
-  for (let i = 0; i < mockRecords.length; i++) {
-    data.results.push(mockRecords[i]);
-  }
-
   const getRecordAddressAsString = (recordDetail: DeliveryRecordsDetail) =>
     ` ${recordDetail.addressLine1}
       ${recordDetail.addressLine2}
