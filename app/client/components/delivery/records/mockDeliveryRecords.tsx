@@ -2,16 +2,28 @@ export const mockRecords = [
   {
     deliveryDate: "2019-12-05",
     deliveryInstruction: "Description",
-    hasHolidayStop: false
+    deliveryAddress: "Different Address 2, Line 2, London, UK, E1 2QA",
+    addressLine1: "Different Address 2",
+    addressLine2: "Line 2",
+    addressTown: "London",
+    addressCountry: "UK",
+    addressPostcode: "E2 3WB",
+    hasHolidayStop: false,
+    problemCaseId: "err-123"
   },
   {
     deliveryDate: "2019-12-04",
     deliveryInstruction: "Description",
+    deliveryAddress: "Different Address 2, Line 2, London, UK, E1 2QA",
+    addressLine1: "Different Address 2",
+    addressLine2: "Line 2",
+    addressTown: "London",
+    addressCountry: "UK",
+    addressPostcode: "E2 3WB",
     hasHolidayStop: true
   },
   {
     deliveryDate: "2019-12-03",
-    deliveryInstruction: "Description",
     deliveryAddress: "Different Address, Line 2, London, UK, E1 2QA",
     addressLine1: "Different Address",
     addressLine2: "Line 2",

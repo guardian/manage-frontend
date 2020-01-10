@@ -1,14 +1,14 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../../../styles/breakpoints";
-import { ErrorIcon } from "../../svgs/errorIcon";
-import { InfoMessage } from "./deliveryRecordsTable";
+import { DeliveryRecordMessage } from "./deliveryRecordMessage";
 
 interface RecordStatusProps {
   isDispatched: boolean;
   isHolidayStop: boolean;
   isChangedAddress: boolean;
+  deliveryProblem: string | null;
 }
 
 export const RecordStatus = (props: RecordStatusProps) => (
@@ -17,42 +17,44 @@ export const RecordStatus = (props: RecordStatusProps) => (
       css={css`
         display: block;
         font-weight: bold;
-        color: ${props.isDispatched
+        color: ${props.isDispatched &&
+        !props.deliveryProblem &&
+        !props.isHolidayStop
           ? palette.success.main
-          : props.isHolidayStop
+          : props.isHolidayStop && !props.deliveryProblem
           ? palette.brand.dark
           : palette.news.main};
       `}
     >
-      {props.isDispatched ? (
-        "Dispatched"
-      ) : props.isHolidayStop ? (
-        "Holiday Stop"
-      ) : (
-        <>
-          <ErrorIcon />
-          <span
-            css={css`
-              display: inline-block;
-              margin-bottom: 2px;
-            `}
-          >
-            Delivery problem
-          </span>
-        </>
-      )}
+      {props.isDispatched &&
+        !props.deliveryProblem &&
+        !props.isHolidayStop &&
+        "Dispatched"}
+      {props.isHolidayStop && "Holiday Stop"}
+      {props.deliveryProblem && "Delivery problem"}
     </span>
     {props.isChangedAddress && (
       <div
         css={css`
-          margin-top: 8px;
+          margin-top: ${space[2]}px;
           ${minWidth.tablet} {
-            position: sticky;
-            top: 100%;
+            display: none;
           }
         `}
       >
-        <InfoMessage message={"Delivery address changed"} />
+        <DeliveryRecordMessage message={"Delivery address changed"} />
+      </div>
+    )}
+    {props.deliveryProblem && (
+      <div
+        css={css`
+          margin-top: ${space[2]}px;
+          ${minWidth.tablet} {
+            display: none;
+          }
+        `}
+      >
+        <DeliveryRecordMessage message={props.deliveryProblem} isError />
       </div>
     )}
   </>

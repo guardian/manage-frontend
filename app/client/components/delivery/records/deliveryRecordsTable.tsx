@@ -1,12 +1,14 @@
 import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useState } from "react";
 import { DeliveryRecordsDetail } from "../../../../shared/productResponse";
 import { DeliveryRecordsApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
-import { InfoIconDark } from "../../svgs/infoIconDark";
+import { DeliveryRecordMessage } from "./deliveryRecordMessage";
 import { RecordAddress } from "./deliveryRecordsAddress";
+import { DeliveryProblemMap } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import { RecordStatus } from "./deliveryRecordStatus";
 
@@ -15,75 +17,59 @@ const tbodyCSS = css`
   td {
     width: 100%;
     display: block;
-    padding: 6px 8px 20px;
+    padding: ${space[2]}px ${space[2]}px ${space[5]}px;
     vertical-align: top;
     ${minWidth.tablet} {
       width: auto;
       display: table-cell;
       text-align: left;
-      padding: 6px 10px;
+      padding: ${space[2]}px 10px;
     }
   }
-  td:nth-child(n + 2) {
+  td[data-title] {
     text-align: right;
     ${minWidth.tablet} {
       text-align: left;
     }
   }
-  td:nth-child(n + 2):before {
-    font-weight: bold;
-  }
-  td:nth-child(n + 2)[data-title]:before {
+  td[data-title]:before {
     content: attr(data-title);
+    font-weight: bold;
     float: left;
     ${minWidth.tablet} {
       display: none;
     }
   }
-  td:nth-child(n + 2)[data-title-block]:before {
+  td[data-title-block]:before {
     content: attr(data-title-block);
-    text-align: left;
+    font-weight: bold;
     display: block;
     ${minWidth.tablet} {
       display: none;
     }
   }
-  td:nth-child(n + 2)[data-title-block] {
-    text-align: left;
-  }
 `;
 
-const trCSS = (rowNum: number, isFullWidth: boolean) => css`
+const trCSS = (rowNum: number, hasAdditionalMessages: boolean) => css`
+  display: flex;
+  flex-direction: column;
   ${minWidth.tablet} {
-    background: ${isOdd(rowNum) ? "#f6f6f6" : "none"};
+    display: table-row;
+    background: ${isOdd(rowNum) ? palette.neutral[97] : "none"};
   }
   td {
-    ${isFullWidth && `${minWidth.tablet} {padding-top: 0;}`}
-    border-bottom: 1px solid #dcdcdc;
+    border-bottom: 1px solid ${palette.neutral[86]};
     ${minWidth.tablet} {
-      border-bottom: 1px solid #dcdcdc;
-    }
-  }
-  td:first-child {
-    background-color: ${isFullWidth ? "unset" : "#f6f6f6"};
-    border-top: ${isFullWidth ? "0" : "2px solid #dcdcdc"};
-    margin-top: ${isFullWidth ? "0" : "30"};
-    ${minWidth.tablet} {
-      background-color: unset;
-      border-top: none;
-      margin-top: 0;
-    }
-  }
-  td:last-child {
-    margin-bottom: 30px;
-    ${minWidth.tablet} {
-      margin-bottom: 0;
+      border-bottom: ${hasAdditionalMessages
+        ? "none"
+        : `1px solid ${palette.neutral[86]}`};
     }
   }
 `;
 
 interface RecordsTableProps {
   data: DeliveryRecordsDetail[];
+  deliveryProblemMap: DeliveryProblemMap;
   resultsPerPage: number;
 }
 
@@ -98,7 +84,7 @@ export const RecordsTable = (props: RecordsTableProps) => {
       <table
         css={css`
           width: 100%;
-          margin-top: 30px;
+          margin-top: ${space[9]}px;
           ${textSans.medium()};
           border-collapse: collapse;
         `}
@@ -112,14 +98,14 @@ export const RecordsTable = (props: RecordsTableProps) => {
             th {
               text-align: left;
               ${minWidth.tablet} {
-                padding: 0 10px 6px;
+                padding: 0 10px ${space[2]}px;
               }
             }
           `}
         >
           <tr>
-            <th>Status</th>
             <th>Date</th>
+            <th>Status</th>
             <th>Delivery postcode</th>
             <th>Delivery instructions</th>
           </tr>
@@ -132,29 +118,45 @@ export const RecordsTable = (props: RecordsTableProps) => {
             )
             .map((deliveryRecord: DeliveryRecordsApiItem, listIndex) => (
               <React.Fragment key={`delivery-record--${listIndex}`}>
-                <tr css={trCSS(listIndex, false)}>
+                <tr
+                  css={trCSS(
+                    listIndex,
+                    !!deliveryRecord.isChangedAddress ||
+                      !!deliveryRecord.problemCaseId
+                  )}
+                >
+                  <td
+                    data-title="Date"
+                    css={css`
+                      order: 2;
+                    `}
+                  >
+                    {moment(deliveryRecord.deliveryDate).format("DD/MM/YYYY")}
+                  </td>
                   <td
                     css={css`
                       order: 1;
+                      background-color: ${palette.neutral[97]};
+                      border-top: 2px solid ${palette.neutral[86]};
+                      margin-top: ${space[5]}px;
+                      ${minWidth.tablet} {
+                        background-color: unset;
+                        border-top: none;
+                        margin-top: 0;
+                      }
                     `}
                   >
                     <RecordStatus
                       isDispatched={!!deliveryRecord.deliveryAddress}
                       isHolidayStop={!!deliveryRecord.hasHolidayStop}
                       isChangedAddress={!!deliveryRecord.isChangedAddress}
-                    />
-                  </td>
-                  <td
-                    data-title="Date"
-                    css={css`
-                      ${minWidth.tablet} {
-                        padding-bottom: 50px;
-                        order: 2;
+                      deliveryProblem={
+                        (deliveryRecord.problemCaseId &&
+                          props.deliveryProblemMap[deliveryRecord.problemCaseId]
+                            ?.problemType) ||
+                        null
                       }
-                    `}
-                  >
-                    {/* TODO: add say 50 px padding-bottom to all td's but the status column so that the message doesn't overlap the other columns */}
-                    {moment(deliveryRecord.deliveryDate).format("DD/MM/YYYY")}
+                    />
                   </td>
                   <td
                     data-title="Delivery postcode"
@@ -162,7 +164,8 @@ export const RecordsTable = (props: RecordsTableProps) => {
                       order: 3;
                     `}
                   >
-                    {deliveryRecord.deliveryAddress ? (
+                    {deliveryRecord.addressLine1 &&
+                    !deliveryRecord.hasHolidayStop ? (
                       <RecordAddress
                         addressLine1={deliveryRecord.addressLine1}
                         addressLine2={deliveryRecord.addressLine2}
@@ -178,16 +181,51 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     data-title-block="Delivery instructions"
                     css={css`
                       order: 4;
+                      margin-bottom: ${space[5]}px;
                       ${minWidth.tablet} {
-                        width: 220px;
                         max-width: 25ch;
-                        padding-bottom: 50px;
+                        margin-bottom: 0;
                       }
                     `}
                   >
-                    {deliveryRecord.deliveryAddress ? "placeholder copy" : "-"}
+                    {deliveryRecord.deliveryInstruction &&
+                    !deliveryRecord.hasHolidayStop
+                      ? deliveryRecord.deliveryInstruction
+                      : "-"}
                   </td>
                 </tr>
+                {(deliveryRecord.isChangedAddress ||
+                  deliveryRecord.problemCaseId) && (
+                  <tr
+                    css={css`
+                      display: none;
+                      ${minWidth.tablet} {
+                        display: table-row;
+                        background: ${isOdd(listIndex)
+                          ? palette.neutral[97]
+                          : "none"};
+                      }
+                      td {
+                        padding-top: 0;
+                        border-bottom: 1px solid ${palette.neutral[86]};
+                      }
+                    `}
+                  >
+                    <td />
+                    <td colSpan={3}>
+                      <DeliveryRecordMessage
+                        isError={!!deliveryRecord.problemCaseId}
+                        message={
+                          (deliveryRecord.problemCaseId &&
+                            props.deliveryProblemMap[
+                              deliveryRecord.problemCaseId
+                            ]?.problemType) ||
+                          "Delivery address changed"
+                        }
+                      />
+                    </td>
+                  </tr>
+                )}
               </React.Fragment>
             ))}
         </tbody>
@@ -205,29 +243,3 @@ export const RecordsTable = (props: RecordsTableProps) => {
     </>
   );
 };
-
-interface InfoMessageProps {
-  message: string;
-}
-export const InfoMessage = (props: InfoMessageProps) => (
-  <>
-    <div
-      css={css`
-        display: inline-block;
-        height: 22px;
-        vertical-align: top;
-        margin: 0 calc(0.5rem + 4px) 0 4px;
-      `}
-    >
-      <InfoIconDark fillColor={"#052962"} size={22} />
-    </div>
-    <span
-      css={css`
-        display: inline-block;
-        margin-bottom: 2px;
-      `}
-    >
-      {props.message}
-    </span>
-  </>
-);

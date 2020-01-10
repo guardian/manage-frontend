@@ -35,7 +35,6 @@ export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
 
 export interface DeliveryRecordsDetail {
   deliveryDate: string;
-  deliveryInstruction: string;
   deliveryAddress: string;
   addressLine1: string;
   addressLine2?: string;
@@ -44,7 +43,9 @@ export interface DeliveryRecordsDetail {
   addressCountry: string;
   addressPostcode: string;
   hasHolidayStop: boolean;
+  deliveryInstruction?: string;
   isChangedAddress?: boolean;
+  problemCaseId?: string;
 }
 
 export interface ProductDetail extends WithSubscription {

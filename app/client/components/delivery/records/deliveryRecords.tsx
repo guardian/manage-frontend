@@ -23,6 +23,10 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse
 ) => {
   // tslint:disable-next-line
+  data.deliveryProblemMap["err-123"] = {
+    problemType: "problem type explained"
+  };
+  // tslint:disable-next-line
   for (let i = 0; i < mockRecords.length; i++) {
     data.results.push(mockRecords[i]);
   }
@@ -39,11 +43,14 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
   const filteredData = data;
   let currentAddress: string = "";
   for (let i = filteredData.results.length - 1; i >= 0; --i) {
+    if (filteredData.results[i].hasHolidayStop) {
+      continue;
+    }
     if (
       currentAddress &&
       getRecordAddressAsString(filteredData.results[i]) !== currentAddress
     ) {
-      // tslint:disable-next-line: no-object-mutation
+      // tslint:disable-next-line: no-object-mutation -- maybe this should live in the API?
       filteredData.results[i].isChangedAddress = true;
     }
     currentAddress = getRecordAddressAsString(filteredData.results[i]);
@@ -68,7 +75,11 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
         >
           {props.productType.friendlyName}
         </h2>
-        <RecordsTable data={filteredData.results} resultsPerPage={7} />
+        <RecordsTable
+          data={filteredData.results}
+          deliveryProblemMap={filteredData.deliveryProblemMap}
+          resultsPerPage={7}
+        />
       </PageNavAndContentContainer>
     </>
   );

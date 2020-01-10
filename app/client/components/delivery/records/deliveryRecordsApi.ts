@@ -12,8 +12,16 @@ export const friendlyLongDateFormat = "D\xa0MMMM\xa0YYYY"; // non-breaking space
 export const momentiseDateStr = (dateStr: string) =>
   moment(dateStr, DATE_INPUT_FORMAT);
 
+interface DeliveryProblem {
+  problemType: string;
+}
+export interface DeliveryProblemMap {
+  [problemCaseId: string]: DeliveryProblem;
+}
+
 export interface DeliveryRecordsResponse {
   results: DeliveryRecordsApiItem[];
+  deliveryProblemMap: DeliveryProblemMap;
   subscription: Subscription;
 }
 

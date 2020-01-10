@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
 import React, { useState } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
@@ -7,7 +8,13 @@ export const RecordAddress = (props: DeliveryAddress) => {
   const [showAddress, setShowAddress] = useState(false);
 
   return (
-    <div>
+    <div
+      css={css`
+        ${minWidth.tablet} {
+          min-width: 20ch;
+        }
+      `}
+    >
       <div
         css={css`
           ${minWidth.tablet} {
@@ -41,7 +48,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
           font-style: italic;
           font-weight: 500;
           font-size: 15px;
-          color: #767676;
+          color: ${palette.neutral[46]};
           cursor: pointer;
         `}
         onClick={() => {
