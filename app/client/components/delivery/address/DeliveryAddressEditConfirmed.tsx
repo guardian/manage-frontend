@@ -86,7 +86,7 @@ const AddressDisplayContainer = (props: AddressDisplayContainerProps) => (
       }
       section + section {
         padding-top: 14px;
-        border-top: 1px solid ${palette.neutral[86]};
+        border-top: 1px solid ${palette.neutral["86"]};
       }
     `}
   >
