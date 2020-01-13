@@ -1,11 +1,11 @@
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
+import palette from "../colours";
+import { minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
 import { NavItem, navLinks } from "./nav";
-import palette from "../colours";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
-import { minWidth } from "../styles/breakpoints";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
