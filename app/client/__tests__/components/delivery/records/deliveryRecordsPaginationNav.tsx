@@ -63,4 +63,20 @@ describe("PaginationNav", () => {
       "Displaying 8 - 14 of 90 deliveries"
     );
   });
+
+  it("renders the correct summary for a non divisional number of results", () => {
+    const wrapper = mount(
+      <PaginationNav
+        resultsPerPage={7}
+        totalNumberOfResults={10}
+        currentPage={1}
+        setCurrentPage={num => true}
+        changeCallBack={() => true}
+      />
+    );
+
+    expect(wrapper.find("span").text()).toEqual(
+      "Displaying 8 - 10 of 10 deliveries"
+    );
+  });
 });

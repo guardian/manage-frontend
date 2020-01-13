@@ -90,10 +90,10 @@ export const PaginationNav = (props: PaginationNavProps) => {
           text-align: center;
         `}
       >{`Displaying ${props.currentPage * props.resultsPerPage +
-        1} - ${props.currentPage * props.resultsPerPage +
-        props.resultsPerPage} of ${
+        1} - ${Math.min(
+        props.currentPage * props.resultsPerPage + props.resultsPerPage,
         props.totalNumberOfResults
-      } deliveries`}</span>
+      )} of ${props.totalNumberOfResults} deliveries`}</span>
     </>
   );
 };
