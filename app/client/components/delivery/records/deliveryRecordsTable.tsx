@@ -84,7 +84,6 @@ export const RecordsTable = (props: RecordsTableProps) => {
       <table
         css={css`
           width: 100%;
-          margin-top: ${space[9]}px;
           ${textSans.medium()};
           border-collapse: collapse;
         `}
@@ -138,11 +137,9 @@ export const RecordsTable = (props: RecordsTableProps) => {
                       order: 1;
                       background-color: ${palette.neutral[97]};
                       border-top: 2px solid ${palette.neutral[86]};
-                      margin-top: ${space[5]}px;
                       ${minWidth.tablet} {
                         background-color: unset;
                         border-top: none;
-                        margin-top: 0;
                       }
                     `}
                   >

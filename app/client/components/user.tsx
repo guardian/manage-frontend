@@ -29,7 +29,7 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
-import { DeliveryAddressEditConfirmed } from "./delivery/address/deliveryAddressEditConfirmed";
+import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
 import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -183,7 +183,7 @@ const User = () => (
             path={`/delivery/${productType.urlPart}/address`}
             productType={productType}
           >
-            <DeliveryAddressEditConfirmed
+            <DeliveryAddressEditConfirmation
               path="confirmed"
               productType={productType}
             />

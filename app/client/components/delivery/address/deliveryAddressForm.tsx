@@ -29,7 +29,7 @@ import { momentiseDateStr } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
-import { renderConfirmation } from "./deliveryAddressEditConfirmed";
+import { renderConfirmation } from "./deliveryAddressEditConfirmation";
 import {
   NewDeliveryAddressContext,
   SubscriptionsAffectedContext

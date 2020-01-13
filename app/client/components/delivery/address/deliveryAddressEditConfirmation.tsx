@@ -29,7 +29,7 @@ export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
   );
 };
 
-export const DeliveryAddressEditConfirmed = (props: RouteableStepProps) => {
+export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
   const subscriptionsAffectedContext = useContext(SubscriptionsAffectedContext);
   useEffect(() => {
