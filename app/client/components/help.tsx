@@ -1,6 +1,10 @@
+import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
+import { headline } from "../styles/fonts";
+import { NavItem, navLinks } from "./nav";
 import palette from "../colours";
+import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { minWidth } from "../styles/breakpoints";
 
 let domain: string;
@@ -10,59 +14,47 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-export interface MembershipNavItem {
-  title: string;
-  link: string;
-}
-
 export interface MembershipNavLinks {
-  membershipFAQ: MembershipNavItem;
-  reportTechnicalIssue: MembershipNavItem;
-  resetPassword: MembershipNavItem;
-  deleteAccount: MembershipNavItem;
-  signOut: MembershipNavItem;
+  reportTechnicalIssue: NavItem;
 }
 
-export const membershipNavLinks: MembershipNavLinks = {
-  membershipFAQ: {
-    title: "Membership FAQ",
-    link: "/help"
-  },
+const membershipNavLinks: MembershipNavLinks = {
   reportTechnicalIssue: {
     title: "Report technical issue",
     link: `https://www.${domain}/info/tech-feedback`
-  },
-  resetPassword: {
-    title: "Reset password",
-    link: `https://profile.${domain}/reset`
-  },
-  deleteAccount: {
-    title: "Delete account",
-    link: `https://profile.${domain}/delete`
-  },
-  signOut: {
-    title: "Sign out",
-    link: `https://profile.${domain}/signout`
   }
 };
 
-export const MembershipLinks = () => (
-  <div>
-    <ul
-      css={{
-        fontSize: "0.875rem",
-        marginTop: "3rem",
-        marginLeft: "1.5625rem",
-        padding: 0,
+export const Help = (props: RouteComponentProps) => (
+  <>
+    <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
+      <h1
+        css={{
+          fontSize: "32px",
+          lineHeight: "36px",
+          fontFamily: headline,
+          marginBottom: "30px",
+          marginTop: "0"
+        }}
+      >
+        Help
+      </h1>
+    </PageHeaderContainer>
+    <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
+      <ul
+        css={{
+          fontSize: "0.875rem",
+          marginTop: "3rem",
+          marginLeft: "1.5625rem",
+          padding: 0,
 
-        [minWidth.desktop]: {
-          fontSize: "1rem",
-          textAlign: "center"
-        }
-      }}
-    >
-      {Object.values(membershipNavLinks).map(
-        (membershipNavItem: MembershipNavItem) => (
+          [minWidth.desktop]: {
+            fontSize: "1rem",
+            textAlign: "center"
+          }
+        }}
+      >
+        {Object.values(membershipNavLinks).map((membershipNavItem: NavItem) => (
           <li
             css={{
               display: "block",
@@ -97,8 +89,8 @@ export const MembershipLinks = () => (
               {membershipNavItem.title}
             </a>
           </li>
-        )
-      )}
-    </ul>
-  </div>
+        ))}
+      </ul>
+    </PageNavAndContentContainer>
+  </>
 );

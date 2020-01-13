@@ -86,6 +86,7 @@ export interface NavLinks {
   subscriptions: NavItem;
   contributions: NavItem;
   emailPrefs: NavItem;
+  help: NavItem;
 }
 
 export const navLinks: NavLinks = {
@@ -117,6 +118,11 @@ export const navLinks: NavLinks = {
   emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs",
+    local: true
+  },
+  help: {
+    title: "Help",
+    link: "/help",
     local: true
   }
 };

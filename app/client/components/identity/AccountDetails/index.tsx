@@ -2,7 +2,6 @@ import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
-import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import {
   PageContainer,
@@ -95,9 +94,6 @@ export const AccountDetails = (props: { path?: string }) => {
           onDone={scrollToTop}
           emailMessage={emailMessage}
         />
-      </PageContainer>
-      <PageContainer>
-        <MembershipLinks />
       </PageContainer>
     </>
   );
