@@ -477,7 +477,7 @@ const Form = (props: FormProps) => {
         />
         <Input
           label="Postcode/Zipcode"
-          width={10}
+          width={11}
           value={props.postcode}
           changeSetState={props.setPostcode}
           inErrorState={
