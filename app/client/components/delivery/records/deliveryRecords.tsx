@@ -78,7 +78,7 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
 export const DeliveryRecords = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
-    headingPrefix={"View delivery records"}
+    headingPrefix={"View delivery history"}
     hideHeading
     withNewLayout={{
       pageTitle: "Delivery history",
@@ -86,7 +86,7 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
     }}
     supportRefererSuffix="delivery_records_flow"
     loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of it's delivery records.
+    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of it's delivery history.
     Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
     singleProductDetailRenderer={(
       routeableStepProps: RouteableStepProps,
@@ -97,7 +97,7 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
         fetch={createDeliveryRecordsFetcher(
           productDetail.subscription.subscriptionId
         )}
-        loadingMessage={"Loading delivery records..."}
+        loadingMessage={"Loading delivery history..."}
       />
     )}
   />
