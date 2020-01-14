@@ -79,7 +79,9 @@ export const RecordsTable = (props: RecordsTableProps) => {
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
-  return (
+  return !props.data.length ? (
+    <p>There aren't any delivery records to show you yet</p>
+  ) : (
     <>
       <table
         css={css`
