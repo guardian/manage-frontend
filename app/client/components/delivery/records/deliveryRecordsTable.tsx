@@ -12,61 +12,6 @@ import { DeliveryProblemMap } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import { RecordStatus } from "./deliveryRecordStatus";
 
-const isOdd = (n: number) => Math.abs(n % 2) === 1;
-const tbodyCSS = css`
-  td {
-    width: 100%;
-    display: block;
-    padding: ${space[2]}px ${space[2]}px ${space[5]}px;
-    vertical-align: top;
-    ${minWidth.tablet} {
-      width: auto;
-      display: table-cell;
-      text-align: left;
-      padding: ${space[2]}px 10px;
-    }
-  }
-  td[data-title] {
-    text-align: right;
-    ${minWidth.tablet} {
-      text-align: left;
-    }
-  }
-  td[data-title]:before {
-    content: attr(data-title);
-    font-weight: bold;
-    float: left;
-    ${minWidth.tablet} {
-      display: none;
-    }
-  }
-  td[data-title-block]:before {
-    content: attr(data-title-block);
-    font-weight: bold;
-    display: block;
-    ${minWidth.tablet} {
-      display: none;
-    }
-  }
-`;
-
-const trCSS = (rowNum: number, hasAdditionalMessages: boolean) => css`
-  display: flex;
-  flex-direction: column;
-  ${minWidth.tablet} {
-    display: table-row;
-    background: ${isOdd(rowNum) ? palette.neutral[97] : "none"};
-  }
-  td {
-    border-bottom: 1px solid ${palette.neutral[86]};
-    ${minWidth.tablet} {
-      border-bottom: ${hasAdditionalMessages
-        ? "none"
-        : `1px solid ${palette.neutral[86]}`};
-    }
-  }
-`;
-
 interface RecordsTableProps {
   data: DeliveryRecordsDetail[];
   deliveryProblemMap: DeliveryProblemMap;
@@ -79,6 +24,61 @@ export const RecordsTable = (props: RecordsTableProps) => {
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
+  const isOdd = (n: number) => Math.abs(n % 2) === 1;
+  const tbodyCSS = css`
+    td {
+      width: 100%;
+      display: block;
+      padding: ${space[2]}px ${space[2]}px ${space[5]}px;
+      vertical-align: top;
+      ${minWidth.tablet} {
+        width: auto;
+        display: table-cell;
+        text-align: left;
+        padding: ${space[2]}px 10px;
+      }
+    }
+    td[data-title] {
+      text-align: right;
+      ${minWidth.tablet} {
+        text-align: left;
+      }
+    }
+    td[data-title]:before {
+      content: attr(data-title);
+      font-weight: bold;
+      float: left;
+      ${minWidth.tablet} {
+        display: none;
+      }
+    }
+    td[data-title-block]:before {
+      content: attr(data-title-block);
+      font-weight: bold;
+      display: block;
+      ${minWidth.tablet} {
+        display: none;
+      }
+    }
+  `;
+
+  const trCSS = (rowNum: number, hasAdditionalMessages: boolean) => css`
+    display: flex;
+    flex-direction: column;
+    ${minWidth.tablet} {
+      display: table-row;
+      background: ${isOdd(rowNum) ? palette.neutral[97] : "none"};
+    }
+    td {
+      border-bottom: 1px solid ${palette.neutral[86]};
+      ${minWidth.tablet} {
+        border-bottom: ${hasAdditionalMessages
+          ? "none"
+          : `1px solid ${palette.neutral[86]}`};
+      }
+    }
+  `;
+
   return !props.data.length ? (
     <p>There aren't any delivery records to show you yet</p>
   ) : (
@@ -146,7 +146,7 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     `}
                   >
                     <RecordStatus
-                      isDispatched={!!deliveryRecord.deliveryAddress}
+                      isDispatched={!!deliveryRecord.addressLine1}
                       isHolidayStop={!!deliveryRecord.hasHolidayStop}
                       isChangedAddress={!!deliveryRecord.isChangedAddress}
                       deliveryProblem={

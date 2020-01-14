@@ -422,10 +422,10 @@ const getProductDetailRenderer = (
               )}
             {productType.delivery?.showRecords && (
               <ProductDetailRow
-                label="Delivery records"
+                label="Delivery history"
                 data={
                   <LinkButton
-                    text="View delivery records"
+                    text="View delivery history"
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right

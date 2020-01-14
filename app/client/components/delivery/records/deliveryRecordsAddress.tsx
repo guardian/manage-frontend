@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
+import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
@@ -45,9 +46,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
         css={css`
           display: block;
           text-align: left;
-          font-style: italic;
-          font-weight: 500;
-          font-size: 15px;
+          ${textSans.small({ italic: true })};
           color: ${palette.neutral[46]};
           cursor: pointer;
         `}
