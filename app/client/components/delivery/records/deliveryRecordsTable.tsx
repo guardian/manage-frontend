@@ -115,7 +115,9 @@ export const RecordsTable = (props: RecordsTableProps) => {
           {props.data
             .filter(
               (element, index) =>
-                index >= currentPage * 7 && index < currentPage * 7 + 7
+                index >= currentPage * props.resultsPerPage &&
+                index <
+                  currentPage * props.resultsPerPage + props.resultsPerPage
             )
             .map((deliveryRecord: DeliveryRecordsApiItem, listIndex) => (
               <React.Fragment key={`delivery-record--${listIndex}`}>
