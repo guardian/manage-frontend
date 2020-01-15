@@ -1,6 +1,7 @@
 import Raven from "raven-js";
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
+import { DeliveryRecordsDetail } from "../client/components/delivery/records/deliveryRecordsApi";
 import { CardProps } from "../client/components/payment/cardDisplay";
 
 export type DeliveryRecordsApiItem = DeliveryRecordsDetail;
@@ -32,21 +33,6 @@ export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
 
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
-
-export interface DeliveryRecordsDetail {
-  deliveryDate: string;
-  deliveryAddress: string;
-  addressLine1: string;
-  addressLine2?: string;
-  addressLine3?: string;
-  addressTown: string;
-  addressCountry: string;
-  addressPostcode: string;
-  hasHolidayStop: boolean;
-  deliveryInstruction?: string;
-  isChangedAddress?: boolean;
-  problemCaseId?: string;
-}
 
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)

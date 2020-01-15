@@ -37,17 +37,12 @@ import {
   RouteableStepProps
 } from "./wizardRouterAdapter";
 
-type NewLayoutWrapperFunc = (children: ReactElement | null) => ReactElement;
-interface ConditionalNewLayoutWrapperProps {
+interface WithLeftNavProps {
   condition: boolean | undefined;
-  wrapper: NewLayoutWrapperFunc;
+  wrapper: (children: ReactElement | null) => ReactElement;
   children: ReactElement | null;
 }
-const ConditionalNewLayoutWrapper = ({
-  condition,
-  wrapper,
-  children
-}: ConditionalNewLayoutWrapperProps) =>
+const WithLeftNav = ({ condition, wrapper, children }: WithLeftNavProps) =>
   condition ? wrapper(children) : children;
 
 const flexCSS = (display: "inline-flex" | "flex") =>
@@ -115,7 +110,7 @@ const getProductDetailSelector = (
     }
     if (sortedList.length > 1) {
       return (
-        <ConditionalNewLayoutWrapper
+        <WithLeftNav
           condition={props.withNewLayout !== undefined}
           wrapper={(children: ReactElement | null) => (
             <>
@@ -230,7 +225,7 @@ const getProductDetailSelector = (
               </div>
             ))}
           </>
-        </ConditionalNewLayoutWrapper>
+        </WithLeftNav>
       );
     }
   }

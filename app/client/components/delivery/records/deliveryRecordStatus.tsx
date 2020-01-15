@@ -11,19 +11,30 @@ interface RecordStatusProps {
   deliveryProblem: string | null;
 }
 
+const getStatusColor = (
+  isDispatched: boolean,
+  hasDeliveryProblem: boolean,
+  isHolidayStop: boolean
+) => {
+  if (isDispatched && !hasDeliveryProblem && !isHolidayStop) {
+    return palette.success.main;
+  } else if (isHolidayStop && !hasDeliveryProblem) {
+    return palette.brand.dark;
+  }
+  return palette.news.main;
+};
+
 export const RecordStatus = (props: RecordStatusProps) => (
   <>
     <span
       css={css`
         display: block;
         font-weight: bold;
-        color: ${props.isDispatched &&
-        !props.deliveryProblem &&
-        !props.isHolidayStop
-          ? palette.success.main
-          : props.isHolidayStop && !props.deliveryProblem
-          ? palette.brand.dark
-          : palette.news.main};
+        color: ${getStatusColor(
+          props.isDispatched,
+          !!props.deliveryProblem,
+          props.isHolidayStop
+        )};
       `}
     >
       {props.isDispatched &&

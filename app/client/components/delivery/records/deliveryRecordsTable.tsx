@@ -3,12 +3,14 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useState } from "react";
-import { DeliveryRecordsDetail } from "../../../../shared/productResponse";
 import { DeliveryRecordsApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { DeliveryRecordMessage } from "./deliveryRecordMessage";
 import { RecordAddress } from "./deliveryRecordsAddress";
-import { DeliveryProblemMap } from "./deliveryRecordsApi";
+import {
+  DeliveryProblemMap,
+  DeliveryRecordsDetail
+} from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import { RecordStatus } from "./deliveryRecordStatus";
 

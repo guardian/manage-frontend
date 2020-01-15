@@ -2,10 +2,7 @@ import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import React from "react";
-import {
-  DeliveryRecordsDetail,
-  ProductDetail
-} from "../../../../shared/productResponse";
+import { ProductDetail } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
@@ -14,6 +11,7 @@ import { RouteableStepProps } from "../../wizardRouterAdapter";
 import {
   createDeliveryRecordsFetcher,
   DeliveryRecordsApiAsyncLoader,
+  DeliveryRecordsDetail,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import { RecordsTable } from "./deliveryRecordsTable";
@@ -86,7 +84,7 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
     }}
     supportRefererSuffix="delivery_records_flow"
     loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of it's delivery history.
+    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
     Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
     singleProductDetailRenderer={(
       routeableStepProps: RouteableStepProps,

@@ -8,6 +8,7 @@ import { contributionsCancellationFlowStart } from "../client/components/cancel/
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
+import { DeliveryDetails } from "../client/components/delivery/records/deliveryRecordsApi";
 import { NavItem, navLinks } from "../client/components/nav";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -86,11 +87,6 @@ export interface HolidayStopFlowProperties {
     explainerModalTitle: string;
     explainerModalBody: string;
   };
-}
-
-export interface DeliveryDetails {
-  showAddress?: true;
-  showRecords?: true;
 }
 
 export interface ProductType {
