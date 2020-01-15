@@ -86,7 +86,7 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
     }}
     supportRefererSuffix="delivery_records_flow"
     loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of it's delivery history.
+    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
     Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
     singleProductDetailRenderer={(
       routeableStepProps: RouteableStepProps,
