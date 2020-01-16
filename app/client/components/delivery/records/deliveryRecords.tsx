@@ -78,7 +78,7 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
     {...props}
     headingPrefix={"View delivery history"}
     hideHeading
-    withNewLayout={{
+    hasLeftNav={{
       pageTitle: "Delivery history",
       selectedNavItem: navLinks.subscriptions
     }}

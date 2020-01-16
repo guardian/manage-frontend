@@ -111,16 +111,16 @@ const getProductDetailSelector = (
     if (sortedList.length > 1) {
       return (
         <WithLeftNav
-          condition={props.withNewLayout !== undefined}
+          condition={props.hasLeftNav !== undefined}
           wrapper={(children: ReactElement | null) => (
             <>
               <PageHeaderContainer
-                selectedNavItem={props.withNewLayout?.selectedNavItem}
+                selectedNavItem={props.hasLeftNav?.selectedNavItem}
               >
-                <h1>{props.withNewLayout?.pageTitle}</h1>
+                <h1>{props.hasLeftNav?.pageTitle}</h1>
               </PageHeaderContainer>
               <PageNavAndContentContainer
-                selectedNavItem={props.withNewLayout?.selectedNavItem}
+                selectedNavItem={props.hasLeftNav?.selectedNavItem}
               >
                 {children}
               </PageNavAndContentContainer>
@@ -238,7 +238,7 @@ const getProductDetailSelector = (
   );
 };
 
-interface NewLayoutOptions {
+interface WithLeftNavLayoutOptions {
   pageTitle: string;
   selectedNavItem: NavItem;
 }
@@ -246,7 +246,7 @@ export interface FlowStartMultipleProductDetailHandlerProps
   extends RouteableStepProps {
   headingPrefix: string;
   hideHeading?: true;
-  withNewLayout?: NewLayoutOptions;
+  hasLeftNav?: WithLeftNavLayoutOptions;
   supportRefererSuffix: string;
   loadingMessagePrefix: string;
   cancelledExplainer: string;
@@ -287,7 +287,7 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
     return (
       <div
         css={
-          !this.props.withNewLayout && {
+          !this.props.hasLeftNav && {
             padding: "0 0.625rem",
 
             [minWidth.tablet]: {
