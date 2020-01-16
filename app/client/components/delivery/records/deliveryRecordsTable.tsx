@@ -5,6 +5,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import { DeliveryRecordsApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
+import { DeliveryRecordInstructions } from "./deliveryRecordInsructions";
 import { DeliveryRecordMessage } from "./deliveryRecordMessage";
 import { RecordAddress } from "./deliveryRecordsAddress";
 import {
@@ -81,6 +82,12 @@ export const RecordsTable = (props: RecordsTableProps) => {
     }
   `;
 
+  const isRecordInCurrentPage = (
+    index: number,
+    currentPageStartIndex: number,
+    currentPageEndIndex: number
+  ) => index >= currentPageStartIndex && index <= currentPageEndIndex;
+
   return !props.data.length ? (
     <p>There aren't any delivery records to show you yet</p>
   ) : (
@@ -115,11 +122,12 @@ export const RecordsTable = (props: RecordsTableProps) => {
         </thead>
         <tbody css={tbodyCSS}>
           {props.data
-            .filter(
-              (element, index) =>
-                index >= currentPage * props.resultsPerPage &&
-                index <
-                  currentPage * props.resultsPerPage + props.resultsPerPage
+            .filter((element, index) =>
+              isRecordInCurrentPage(
+                index,
+                currentPage * props.resultsPerPage,
+                currentPage * props.resultsPerPage + props.resultsPerPage - 1
+              )
             )
             .map((deliveryRecord: DeliveryRecordsApiItem, listIndex) => (
               <React.Fragment key={`delivery-record--${listIndex}`}>
@@ -196,9 +204,13 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     `}
                   >
                     {deliveryRecord.deliveryInstruction &&
-                    !deliveryRecord.hasHolidayStop
-                      ? deliveryRecord.deliveryInstruction
-                      : "-"}
+                    !deliveryRecord.hasHolidayStop ? (
+                      <DeliveryRecordInstructions
+                        message={deliveryRecord.deliveryInstruction}
+                      />
+                    ) : (
+                      "-"
+                    )}
                   </td>
                 </tr>
                 {(deliveryRecord.isChangedAddress ||

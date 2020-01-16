@@ -11,58 +11,9 @@ interface PaginationNavProps {
   changeCallBack: PaginationChangeCallBack;
 }
 export const PaginationNav = (props: PaginationNavProps) => {
-  const pagesArr = [];
   const totalNumberOfPages = Math.ceil(
     props.totalNumberOfResults / props.resultsPerPage
   );
-  for (let i = 0; i < totalNumberOfPages; i++) {
-    pagesArr.push(
-      <li
-        key={`deliveryRecordsNavItem-${i}`}
-        css={css`
-          ${textSans.medium()};
-          text-align: center;
-          display: inline-block;
-          position: relative;
-          height: 22px;
-          line-height: 22px;
-          border-bottom: 1px solid #767676;
-          padding: 0 0 1px 0;
-          cursor: pointer;
-          ${i === props.currentPage &&
-            `
-              cursor: default;
-              width: 28px;
-              height: 28px;
-              line-height: 28px;
-              border-radius: 50%;
-              background-color: #007ABC;
-              color: #ffffff;
-            `}
-        `}
-        onClick={() => {
-          props.setCurrentPage(i);
-          props.changeCallBack();
-        }}
-      >
-        {i + 1}
-        {i === props.currentPage && (
-          <div
-            css={css`
-              position: absolute;
-              top: 4px;
-              left: 4px;
-              width: calc(100% - 8px);
-              height: calc(100% - 8px);
-              background-color: #666;
-              border-radius: 50%;
-              display: none;
-            `}
-          />
-        )}
-      </li>
-    );
-  }
 
   return (
     <>
@@ -78,7 +29,54 @@ export const PaginationNav = (props: PaginationNavProps) => {
           }
         `}
       >
-        {pagesArr}
+        {Array(totalNumberOfPages)
+          .fill(null)
+          .map((pagesArrEl, pagesArrIndex) => (
+            <li
+              key={`deliveryRecordsNavItem-${pagesArrIndex}`}
+              css={css`
+                ${textSans.medium()};
+                text-align: center;
+                display: inline-block;
+                position: relative;
+                height: 22px;
+                line-height: 22px;
+                border-bottom: 1px solid #767676;
+                padding: 0 0 1px 0;
+                cursor: pointer;
+                ${pagesArrIndex === props.currentPage &&
+                  `
+              cursor: default;
+              width: 28px;
+              height: 28px;
+              line-height: 28px;
+              border-radius: 50%;
+              background-color: #007ABC;
+              color: #ffffff;
+            `}
+              `}
+              onClick={() => {
+                props.setCurrentPage(pagesArrIndex);
+                props.changeCallBack();
+              }}
+            >
+              {pagesArrIndex + 1}
+              {pagesArrIndex === props.currentPage && (
+                <div
+                  css={css`
+                    position: absolute;
+                    top: 4px;
+                    left: 4px;
+                    width: calc(100% - 8px);
+                    height: calc(100% - 8px);
+                    background-color: #666;
+                    border-radius: 50%;
+                    display: none;
+                  `}
+                />
+              )}
+            </li>
+          ))}
       </ul>
       <span
         css={css`

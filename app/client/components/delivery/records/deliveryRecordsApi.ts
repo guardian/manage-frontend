@@ -1,4 +1,3 @@
-import { Moment } from "moment";
 import {
   DeliveryRecordsApiItem,
   Subscription
@@ -43,13 +42,5 @@ export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
   DeliveryRecordsResponse
 > {}
 
-export const createDeliveryRecordsFetcher = (
-  subscriptionId: string,
-  startDate?: Moment,
-  endDate?: Moment
-) => () =>
-  fetch(
-    `/api/delivery-records/${subscriptionId}${
-      startDate && endDate ? `/?startDate=${startDate}&endDate=${endDate}` : ""
-    }`
-  );
+export const createDeliveryRecordsFetcher = (subscriptionId: string) => () =>
+  fetch(`/api/delivery-records/${subscriptionId}`);
