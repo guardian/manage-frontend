@@ -1,6 +1,10 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import {
+  friendlyLongDateFormat,
+  momentiseDateStr
+} from "../../../shared/dates";
+import {
   getMainPlan,
   isPaidSubscriptionPlan,
   MDA_TEST_USER_HEADER,
@@ -32,13 +36,11 @@ import {
 import {
   calculateIssuesImpactedPerYear,
   embellishExistingHolidayStops,
-  friendlyLongDateFormat,
   GetHolidayStopsAsyncLoader,
   GetHolidayStopsResponse,
   HolidayStopRequest,
   HolidayStopsResponseContext,
-  isNotWithdrawn,
-  momentiseDateStr
+  isNotWithdrawn
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 

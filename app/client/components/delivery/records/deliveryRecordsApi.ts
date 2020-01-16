@@ -1,16 +1,9 @@
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import {
   DeliveryRecordsApiItem,
   Subscription
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
-
-export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
-
-export const friendlyLongDateFormat = "D\xa0MMMM\xa0YYYY"; // non-breaking space
-
-export const momentiseDateStr = (dateStr: string) =>
-  moment(dateStr, DATE_INPUT_FORMAT);
 
 export interface DeliveryDetails {
   showAddress?: true;
@@ -35,6 +28,7 @@ export interface DeliveryRecordsDetail {
   addressPostcode: string;
   hasHolidayStop: boolean;
   deliveryInstruction?: string;
+  isChangedDeliveryInstruction?: boolean;
   isChangedAddress?: boolean;
   problemCaseId?: string;
 }

@@ -8,6 +8,7 @@ interface RecordStatusProps {
   isDispatched: boolean;
   isHolidayStop: boolean;
   isChangedAddress: boolean;
+  isChangedDeliveryInstruction: boolean;
   deliveryProblem: string | null;
 }
 
@@ -22,6 +23,22 @@ const getStatusColor = (
     return palette.brand.dark;
   }
   return palette.news.main;
+};
+
+export const getRecordMessageString = (
+  isChangedAddress: boolean,
+  isChangedDeliveryInstruction: boolean
+): string => {
+  let message = `${isChangedAddress ? "Delivery address" : ""}`;
+  if (isChangedAddress && !isChangedDeliveryInstruction) {
+    message = `${message} changed`;
+  }
+  if (isChangedDeliveryInstruction) {
+    message = `${message} ${
+      isChangedAddress ? " and d" : "D"
+    }elivery instructions changed`;
+  }
+  return message;
 };
 
 export const RecordStatus = (props: RecordStatusProps) => (
@@ -56,7 +73,7 @@ export const RecordStatus = (props: RecordStatusProps) => (
         <DeliveryRecordMessage message={props.deliveryProblem} isError />
       </div>
     )}
-    {props.isChangedAddress && (
+    {(props.isChangedAddress || props.isChangedDeliveryInstruction) && (
       <div
         css={css`
           margin-top: ${space[2]}px;
@@ -65,7 +82,12 @@ export const RecordStatus = (props: RecordStatusProps) => (
           }
         `}
       >
-        <DeliveryRecordMessage message={"Delivery address changed"} />
+        <DeliveryRecordMessage
+          message={getRecordMessageString(
+            props.isChangedAddress,
+            props.isChangedDeliveryInstruction
+          )}
+        />
       </div>
     )}
   </>

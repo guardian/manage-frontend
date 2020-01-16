@@ -11,67 +11,39 @@ import { RouteableStepProps } from "../../wizardRouterAdapter";
 import {
   createDeliveryRecordsFetcher,
   DeliveryRecordsApiAsyncLoader,
-  DeliveryRecordsDetail,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import { RecordsTable } from "./deliveryRecordsTable";
 
 const renderDeliveryRecords = (props: RouteableStepProps) => (
   data: DeliveryRecordsResponse
-) => {
-  const getRecordAddressAsString = (recordDetail: DeliveryRecordsDetail) =>
-    ` ${recordDetail.addressLine1}
-      ${recordDetail.addressLine2}
-      ${recordDetail.addressLine3}
-      ${recordDetail.addressTown}
-      ${recordDetail.addressCountry}
-      ${recordDetail.addressPostcode}
-    `;
-
-  const filteredData = data;
-  let currentAddress: string = "";
-  for (let i = filteredData.results.length - 1; i >= 0; --i) {
-    if (filteredData.results[i].hasHolidayStop) {
-      continue;
-    }
-    if (
-      currentAddress &&
-      getRecordAddressAsString(filteredData.results[i]) !== currentAddress
-    ) {
-      // tslint:disable-next-line: no-object-mutation -- maybe this should live in the API?
-      filteredData.results[i].isChangedAddress = true;
-    }
-    currentAddress = getRecordAddressAsString(filteredData.results[i]);
-  }
-
-  return (
-    <>
-      <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-        <h1>Delivery history</h1>
-      </PageHeaderContainer>
-      <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
-        <h2
-          css={css`
-            border-top: 1px solid ${palette.neutral["86"]};
-            ${headline.small()};
-            font-weight: bold;
-            ${maxWidth.tablet} {
-              font-size: 1.25rem;
-              line-height: 1.6;
-            }
-          `}
-        >
-          {props.productType.friendlyName}
-        </h2>
-        <RecordsTable
-          data={filteredData.results}
-          deliveryProblemMap={filteredData.deliveryProblemMap}
-          resultsPerPage={7}
-        />
-      </PageNavAndContentContainer>
-    </>
-  );
-};
+) => (
+  <>
+    <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
+      <h1>Delivery history</h1>
+    </PageHeaderContainer>
+    <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+      <h2
+        css={css`
+          border-top: 1px solid ${palette.neutral["86"]};
+          ${headline.small()};
+          font-weight: bold;
+          ${maxWidth.tablet} {
+            font-size: 1.25rem;
+            line-height: 1.6;
+          }
+        `}
+      >
+        {props.productType.friendlyName}
+      </h2>
+      <RecordsTable
+        data={data.results}
+        deliveryProblemMap={data.deliveryProblemMap}
+        resultsPerPage={7}
+      />
+    </PageNavAndContentContainer>
+  </>
+);
 
 export const DeliveryRecords = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler

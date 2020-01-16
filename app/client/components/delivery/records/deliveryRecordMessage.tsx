@@ -15,24 +15,35 @@ export const DeliveryRecordMessage = (props: DeliveryRecordMessageProps) => {
       <span
         css={css`
           display: block;
+          position: relative;
           margin: ${space[2]}px 0 2px;
+          padding-left: 38px;
           color: ${props.isError ? palette.news.main : palette.brand.dark};
         `}
       >
-        {props.isError ? (
-          <ErrorIcon />
-        ) : (
-          <i
-            css={css`
-              display: inline-block;
-              height: ${infoIconSize}px;
-              vertical-align: top;
-              margin: 0 calc(0.5rem + ${space[1]}px) 0 ${space[1]}px;
-            `}
-          >
-            <InfoIconDark fillColor={palette.brand.main} size={infoIconSize} />
-          </i>
-        )}
+        <span
+          css={css`
+            position: absolute;
+            top: 0;
+            left: 0;
+          `}
+        >
+          {props.isError ? (
+            <ErrorIcon />
+          ) : (
+            <i
+              css={css`
+                height: ${infoIconSize}px;
+                margin-left: ${space[1]}px;
+              `}
+            >
+              <InfoIconDark
+                fillColor={palette.brand.main}
+                size={infoIconSize}
+              />
+            </i>
+          )}
+        </span>
         {props.message}
       </span>
     </>

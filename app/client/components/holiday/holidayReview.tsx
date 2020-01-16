@@ -1,6 +1,7 @@
 import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
 import React from "react";
+import { DATE_INPUT_FORMAT } from "../../../shared/dates";
 import {
   isProduct,
   MDA_TEST_USER_HEADER,
@@ -32,7 +33,6 @@ import {
   convertRawPotentialHolidayStopDetail,
   CreateOrAmendHolidayStopsAsyncLoader,
   CreateOrAmendHolidayStopsResponse,
-  DATE_INPUT_FORMAT,
   getPotentialHolidayStopsFetcher,
   HolidayStopRequest,
   HolidayStopsResponseContext,

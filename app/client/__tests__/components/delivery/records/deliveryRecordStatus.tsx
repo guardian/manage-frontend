@@ -12,6 +12,7 @@ describe("DeliveryRecordStatus", () => {
         isDispatched={true}
         isHolidayStop={false}
         isChangedAddress={false}
+        isChangedDeliveryInstruction={false}
         deliveryProblem={null}
       />
     );
@@ -28,6 +29,7 @@ describe("DeliveryRecordStatus", () => {
         isDispatched={false}
         isHolidayStop={true}
         isChangedAddress={false}
+        isChangedDeliveryInstruction={false}
         deliveryProblem={null}
       />
     );
@@ -45,6 +47,7 @@ describe("DeliveryRecordStatus", () => {
         isDispatched={false}
         isHolidayStop={false}
         isChangedAddress={false}
+        isChangedDeliveryInstruction={false}
         deliveryProblem={"uh oh!"}
       />
     );

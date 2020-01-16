@@ -12,7 +12,7 @@ import {
   DeliveryRecordsDetail
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
-import { RecordStatus } from "./deliveryRecordStatus";
+import { getRecordMessageString, RecordStatus } from "./deliveryRecordStatus";
 
 interface RecordsTableProps {
   data: DeliveryRecordsDetail[];
@@ -127,7 +127,8 @@ export const RecordsTable = (props: RecordsTableProps) => {
                   css={trCSS(
                     listIndex,
                     !!deliveryRecord.isChangedAddress ||
-                      !!deliveryRecord.problemCaseId
+                      !!deliveryRecord.problemCaseId ||
+                      !!deliveryRecord.isChangedDeliveryInstruction
                   )}
                 >
                   <td
@@ -153,6 +154,9 @@ export const RecordsTable = (props: RecordsTableProps) => {
                       isDispatched={!!deliveryRecord.addressLine1}
                       isHolidayStop={!!deliveryRecord.hasHolidayStop}
                       isChangedAddress={!!deliveryRecord.isChangedAddress}
+                      isChangedDeliveryInstruction={
+                        !!deliveryRecord.isChangedDeliveryInstruction
+                      }
                       deliveryProblem={
                         (deliveryRecord.problemCaseId &&
                           props.deliveryProblemMap[deliveryRecord.problemCaseId]
@@ -198,7 +202,8 @@ export const RecordsTable = (props: RecordsTableProps) => {
                   </td>
                 </tr>
                 {(deliveryRecord.isChangedAddress ||
-                  deliveryRecord.problemCaseId) && (
+                  deliveryRecord.problemCaseId ||
+                  deliveryRecord.isChangedDeliveryInstruction) && (
                   <tr
                     css={css`
                       display: none;
@@ -227,9 +232,13 @@ export const RecordsTable = (props: RecordsTableProps) => {
                           }
                         />
                       )}
-                      {deliveryRecord.isChangedAddress && (
+                      {(deliveryRecord.isChangedAddress ||
+                        deliveryRecord.isChangedDeliveryInstruction) && (
                         <DeliveryRecordMessage
-                          message={"Delivery address changed"}
+                          message={getRecordMessageString(
+                            !!deliveryRecord.isChangedAddress,
+                            !!deliveryRecord.isChangedDeliveryInstruction
+                          )}
                         />
                       )}
                     </td>
