@@ -8,6 +8,7 @@ import { minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
+import { HelpSectionIcon } from "./svgs/helpSectionIcon";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -79,11 +80,17 @@ export const Help = (props: RouteComponentProps) => (
                 css={css`
                   ${textSans.medium()};
                   color: #333333;
+                  position: relative;
                   margin: 0;
                   padding: 18px 0 18px 60px;
                   border-bottom: 1px solid #dcdcdc;
                 `}
               >
+                <i css={css`
+                  position: absolute;
+                  top: 11px;
+                  left: 11px;
+                  `}><HelpSectionIcon subsection={"delivery"} /></i>
                 {faqSectionTitle}
               </h2>
               <ul
