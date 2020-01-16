@@ -338,8 +338,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     delivery: {
-      showAddress: !!showDeliveryAddressCheck,
-      showRecords: true
+      showAddress: !!showDeliveryAddressCheck
     },
     productPage: "subscriptions"
   },
@@ -380,8 +379,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       }
     },
     delivery: {
-      showAddress: !!showDeliveryAddressCheck,
-      showRecords: true
+      showAddress: !!showDeliveryAddressCheck
     },
     productPage: "subscriptions"
   },
