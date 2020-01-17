@@ -29,7 +29,7 @@ export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
   );
 };
 
-export const DeliveryAddressEditConfirmed = (props: RouteableStepProps) => {
+export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
   const subscriptionsAffectedContext = useContext(SubscriptionsAffectedContext);
   useEffect(() => {
@@ -86,7 +86,7 @@ const AddressDisplayContainer = (props: AddressDisplayContainerProps) => (
       }
       section + section {
         padding-top: 14px;
-        border-top: 1px solid ${palette.neutral[86]};
+        border-top: 1px solid ${palette.neutral["86"]};
       }
     `}
   >

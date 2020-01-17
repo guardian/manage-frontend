@@ -1,9 +1,9 @@
 import React from "react";
+import { friendlyLongDateFormat } from "../../../shared/dates";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 import { Button, LinkButton } from "../buttons";
 import { HideFunction, Modal } from "../modal";
 import {
-  friendlyLongDateFormat,
   HolidayStopRequest,
   MinimalHolidayStopRequest
 } from "./holidayStopApi";
@@ -104,21 +104,21 @@ export class ExistingHolidayStopActions extends React.Component<
         />
       ) : (
         <>
-          {shouldShowAmendButton &&
-            setExistingHolidayStopToAmend && (
-              <div
-                css={{ display: "inline-block", margin: "10px", marginLeft: 0 }}
-              >
-                <LinkButton
-                  text={`Amend${shouldBeOnlyAmendEndDate ? " end date" : ""}`}
-                  to="amend"
-                  onClick={() =>
-                    setExistingHolidayStopToAmend(this
-                      .props as HolidayStopRequest)
-                  }
-                />
-              </div>
-            )}
+          {shouldShowAmendButton && setExistingHolidayStopToAmend && (
+            <div
+              css={{ display: "inline-block", margin: "10px", marginLeft: 0 }}
+            >
+              <LinkButton
+                text={`Amend${shouldBeOnlyAmendEndDate ? " end date" : ""}`}
+                to="amend"
+                onClick={() =>
+                  setExistingHolidayStopToAmend(
+                    this.props as HolidayStopRequest
+                  )
+                }
+              />
+            </div>
+          )}
           {shouldShowDeleteButton && (
             <Modal
               title="Are you sure?"

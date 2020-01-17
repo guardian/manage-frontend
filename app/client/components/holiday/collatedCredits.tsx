@@ -1,5 +1,6 @@
 import React from "react";
-import { friendlyLongDateFormat, HolidayStopDetail } from "./holidayStopApi";
+import { friendlyLongDateFormat } from "../../../shared/dates";
+import { HolidayStopDetail } from "./holidayStopApi";
 
 interface CollatedCreditByInvoiceDate {
   [invoiceDateString: string]: number;
