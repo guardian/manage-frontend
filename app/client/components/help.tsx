@@ -1,11 +1,12 @@
 import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
-import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { headline } from "../styles/fonts";
+import { LinkButton } from "./buttons";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
@@ -32,13 +33,31 @@ interface FaqLink {
   title: string;
   link: string;
 }
-type FaqSection = "Section 1" | "Section 2" | "Section 3" | "Section 4";
+type FaqSection = "Delivery" | "Billing" | "Print subscriptions" | "Account";
 type FaqList = {
   [key in FaqSection]: FaqLink[];
 };
 
 const faqs: FaqList = {
-  "Section 1": [
+  Delivery: [
+    { title: "a question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" }
+  ],
+  Billing: [
+    { title: "a question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" }
+  ],
+  "Print subscriptions": [
+    { title: "a question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" },
+    { title: "another question here", link: "thecorrespondingurl.com" }
+  ],
+  Account: [
     { title: "a question here", link: "thecorrespondingurl.com" },
     { title: "another question here", link: "thecorrespondingurl.com" },
     { title: "another question here", link: "thecorrespondingurl.com" },
@@ -64,7 +83,9 @@ export const Help = (props: RouteComponentProps) => (
     <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
       <div
         css={css`
-          margin-top: 50px;
+          display: flex;
+          flex-wrap: wrap;
+          margin: 50px -10px -10px -10px;
         `}
       >
         {Object.keys(faqs).map((faqSectionTitle, sectionIndex) => {
@@ -74,6 +95,10 @@ export const Help = (props: RouteComponentProps) => (
               key={`section-${sectionIndex}`}
               css={css`
                 border: 1px solid #dcdcdc;
+                flex: 1 1 370px;
+                margin: 10px;
+                display: flex;
+                flex-direction: column;
               `}
             >
               <h2
@@ -84,13 +109,18 @@ export const Help = (props: RouteComponentProps) => (
                   margin: 0;
                   padding: 18px 0 18px 60px;
                   border-bottom: 1px solid #dcdcdc;
+                  width: 100%;
                 `}
               >
-                <i css={css`
-                  position: absolute;
-                  top: 11px;
-                  left: 11px;
-                  `}><HelpSectionIcon subsection={"delivery"} /></i>
+                <i
+                  css={css`
+                    position: absolute;
+                    top: 11px;
+                    left: 11px;
+                  `}
+                >
+                  <HelpSectionIcon subsection={"delivery"} />
+                </i>
                 {faqSectionTitle}
               </h2>
               <ul
@@ -104,16 +134,51 @@ export const Help = (props: RouteComponentProps) => (
                   <li
                     key={`${faqSectionTitle}Question-${questionIndex}`}
                     css={css`
-                      padding: 12px 0;
+                      padding: 12px 20px 12px 0;
                       border-bottom: 1px solid #dcdcdc;
+                      position: relative;
                     `}
                   >
-                    <a href={faqLink.link} target="_blank">
+                    <a
+                      href={faqLink.link}
+                      target="_blank"
+                      css={css`
+                        display: inline-block;
+                        width: 100%;
+                      `}
+                    >
                       {faqLink.title}
                     </a>
+                    <span
+                      css={css`
+                        display: block;
+                        width: 7px;
+                        height: 7px;
+                        border-top: 2px solid #121212;
+                        border-right: 2px solid #121212;
+                        rotate: 45deg;
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 7px;
+                      `}
+                    />
                   </li>
                 ))}
               </ul>
+              <div
+                css={css`
+                  margin: auto 11px 20px 11px;
+                `}
+              >
+                <LinkButton
+                  to={"https://www.theguardian.com/uk"}
+                  text={"See all Delivery questions"}
+                  colour={"#C1D8FC"}
+                  textColour={palette.brand.main}
+                  right
+                />
+              </div>
             </div>
           );
         })}
@@ -152,9 +217,9 @@ export const Help = (props: RouteComponentProps) => (
               >
                 <a
                   css={{
-                    color: palette.neutral["1"],
+                    color: "green",
                     textDecoration: "none",
-                    borderBottom: `0.0625rem solid ${palette.neutral["5"]}`,
+                    borderBottom: `0.0625rem solid red`,
                     transition: "border-color .15s ease-out",
 
                     ":hover": {
