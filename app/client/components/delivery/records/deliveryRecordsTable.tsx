@@ -178,6 +178,12 @@ export const RecordsTable = (props: RecordsTableProps) => {
                     data-title="Delivery postcode"
                     css={css`
                       order: 3;
+                      margin-bottom: ${props.showDeliveryInstructions
+                        ? "0"
+                        : space[5]}px;
+                      ${minWidth.tablet} {
+                        margin-bottom: 0;
+                      }
                     `}
                   >
                     {deliveryRecord.addressLine1 &&
