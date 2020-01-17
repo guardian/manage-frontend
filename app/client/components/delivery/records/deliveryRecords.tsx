@@ -39,6 +39,9 @@ const renderDeliveryRecords = (props: RouteableStepProps) => (
       <RecordsTable
         data={data.results}
         deliveryProblemMap={data.deliveryProblemMap}
+        showDeliveryInstructions={
+          props.productType.delivery?.showDeliveryInstructions
+        }
         resultsPerPage={7}
       />
     </PageNavAndContentContainer>

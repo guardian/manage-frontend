@@ -18,6 +18,7 @@ import { getRecordMessageString, RecordStatus } from "./deliveryRecordStatus";
 interface RecordsTableProps {
   data: DeliveryRecordsDetail[];
   deliveryProblemMap: DeliveryProblemMap;
+  showDeliveryInstructions?: true;
   resultsPerPage: number;
 }
 
@@ -117,7 +118,7 @@ export const RecordsTable = (props: RecordsTableProps) => {
             <th>Date</th>
             <th>Status</th>
             <th>Delivery postcode</th>
-            <th>Delivery instructions</th>
+            {props.showDeliveryInstructions && <th>Delivery instructions</th>}
           </tr>
         </thead>
         <tbody css={tbodyCSS}>
@@ -192,26 +193,28 @@ export const RecordsTable = (props: RecordsTableProps) => {
                       "-"
                     )}
                   </td>
-                  <td
-                    data-title-block="Delivery instructions"
-                    css={css`
-                      order: 4;
-                      margin-bottom: ${space[5]}px;
-                      ${minWidth.tablet} {
-                        max-width: 25ch;
-                        margin-bottom: 0;
-                      }
-                    `}
-                  >
-                    {deliveryRecord.deliveryInstruction &&
-                    !deliveryRecord.hasHolidayStop ? (
-                      <DeliveryRecordInstructions
-                        message={deliveryRecord.deliveryInstruction}
-                      />
-                    ) : (
-                      "-"
-                    )}
-                  </td>
+                  {props.showDeliveryInstructions && (
+                    <td
+                      data-title-block="Delivery instructions"
+                      css={css`
+                        order: 4;
+                        margin-bottom: ${space[5]}px;
+                        ${minWidth.tablet} {
+                          max-width: 25ch;
+                          margin-bottom: 0;
+                        }
+                      `}
+                    >
+                      {deliveryRecord.deliveryInstruction &&
+                      !deliveryRecord.hasHolidayStop ? (
+                        <DeliveryRecordInstructions
+                          message={deliveryRecord.deliveryInstruction}
+                        />
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                  )}
                 </tr>
                 {(deliveryRecord.isChangedAddress ||
                   deliveryRecord.problemCaseId ||

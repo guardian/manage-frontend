@@ -352,7 +352,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
     delivery: {
       showAddress: !!showDeliveryAddressCheck,
-      showRecords: true
+      showRecords: true,
+      showDeliveryInstructions: true
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {

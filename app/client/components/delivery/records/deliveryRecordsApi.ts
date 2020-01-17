@@ -7,6 +7,7 @@ import AsyncLoader from "../../asyncLoader";
 export interface DeliveryDetails {
   showAddress?: true;
   showRecords?: true;
+  showDeliveryInstructions?: true;
 }
 
 interface DeliveryProblem {
