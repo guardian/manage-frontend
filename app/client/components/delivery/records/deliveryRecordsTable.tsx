@@ -5,7 +5,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import { DeliveryRecordsApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
-import { DeliveryRecordInstructions } from "./deliveryRecordInsructions";
+import { DeliveryRecordInstructions } from "./deliveryRecordInstructions";
 import { DeliveryRecordMessage } from "./deliveryRecordMessage";
 import { RecordAddress } from "./deliveryRecordsAddress";
 import {

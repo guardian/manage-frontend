@@ -12,7 +12,6 @@ export const DeliveryRecordInstructions = (
 ) => {
   const [showFullinstructions, setShowFullinstructions] = useState(false);
   const maxMessageLength = 33;
-  // tslint:disable-next-line: no-object-mutation
   return (
     <div>
       <p
