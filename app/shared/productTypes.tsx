@@ -8,6 +8,7 @@ import { contributionsCancellationFlowStart } from "../client/components/cancel/
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
+import { DeliveryDetails } from "../client/components/delivery/records/deliveryRecordsApi";
 import { NavItem, navLinks } from "../client/components/nav";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -109,7 +110,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
-  showDeliveryAddress?: (productDetail: ProductDetail) => boolean;
+  delivery?: DeliveryDetails;
   fulfilmentDateCalculator?: {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
@@ -134,7 +135,10 @@ export const hasProductPageProperties = (
   typeof productType.productPage === "object";
 
 export const hasDeliveryFlow = (productType: ProductType) =>
-  productType.showDeliveryAddress;
+  productType.delivery?.showAddress;
+
+export const hasDeliveryRecordsFlow = (productType: ProductType) =>
+  productType.delivery?.showRecords;
 
 export interface ProductTypeWithProductPageRedirect extends ProductType {
   productPage: ProductUrlPart;
@@ -333,7 +337,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
-    showDeliveryAddress: showDeliveryAddressCheck,
+    delivery: {
+      showAddress: !!showDeliveryAddressCheck
+    },
     productPage: "subscriptions"
   },
   homedelivery: {
@@ -344,7 +350,11 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     includeGuardianInTitles: true,
     alternateManagementUrl: domainSpecificSubsManageURL,
     alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
-    showDeliveryAddress: showDeliveryAddressCheck,
+    delivery: {
+      showAddress: !!showDeliveryAddressCheck,
+      showRecords: true,
+      showDeliveryInstructions: true
+    },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Newspaper - Home Delivery"
@@ -369,7 +379,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
           "We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period."
       }
     },
-    showDeliveryAddress: showDeliveryAddressCheck,
+    delivery: {
+      showAddress: !!showDeliveryAddressCheck
+    },
     productPage: "subscriptions"
   },
   guardianweekly: {
@@ -386,7 +398,10 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     holidayStops: {
       issueKeyword: "issue"
     },
-    showDeliveryAddress: showDeliveryAddressCheck,
+    delivery: {
+      showAddress: !!showDeliveryAddressCheck,
+      showRecords: true
+    },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",

@@ -7,6 +7,10 @@ import * as Raven from "raven-js";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
+  friendlyLongDateFormat,
+  momentiseDateStr
+} from "../../../shared/dates";
+import {
   isProduct,
   MembersDataApiItemContext
 } from "../../../shared/productResponse";
@@ -29,14 +33,12 @@ import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   calculateIssuesImpactedPerYear,
   convertRawPotentialHolidayStopDetail,
-  friendlyLongDateFormat,
   getPotentialHolidayStopsFetcher,
   HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
   isNotWithdrawn,
   IssuesImpactedPerYear,
-  momentiseDateStr,
   PotentialHolidayStopsResponse,
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";

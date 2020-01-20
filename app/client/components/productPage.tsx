@@ -404,8 +404,7 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
-            {productType.showDeliveryAddress &&
-              productType.showDeliveryAddress(productDetail) &&
+            {productType.delivery?.showAddress &&
               productDetail.subscription.deliveryAddress && (
                 <ProductDetailRow
                   label="Delivery address"
@@ -420,6 +419,19 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
+            {productType.delivery?.showRecords && (
+              <ProductDetailRow
+                label="Delivery history"
+                data={
+                  <LinkButton
+                    text="View delivery history"
+                    to={`/delivery/${productType.urlPart}/records`}
+                    state={productDetail}
+                    right
+                  />
+                }
+              />
+            )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
               (productDetailList.length > 1 ? (

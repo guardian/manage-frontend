@@ -23,13 +23,13 @@ import { textSans } from "@guardian/src-foundations/typography";
 // @ts-ignore
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link } from "@reach/router";
+import { momentiseDateStr } from "../../../../shared/dates";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { momentiseDateStr } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
-import { renderConfirmation } from "./DeliveryAddressEditConfirmed";
+import { renderConfirmation } from "./deliveryAddressEditConfirmation";
 import {
   NewDeliveryAddressContext,
   SubscriptionsAffectedContext

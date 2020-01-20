@@ -1,15 +1,9 @@
 import moment, { Moment } from "moment";
 import { DateRange } from "moment-range";
 import React from "react";
+import { DATE_INPUT_FORMAT, momentiseDateStr } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
-
-export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
-
-export const friendlyLongDateFormat = "D\xa0MMMM\xa0YYYY"; // non-breaking space
-
-export const momentiseDateStr = (dateStr: string) =>
-  moment(dateStr, DATE_INPUT_FORMAT);
 
 export interface CommonCreditProperties {
   estimatedPrice?: number;
