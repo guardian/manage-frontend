@@ -1,7 +1,7 @@
 # Setup Nginx with valid TLS certificate in DEV
 
 1. Old nginx configuration files were in `/usr/local/etc/nginx/sites-enabled`, however the new
-   onese end up in `/usr/local/etc/nginx/servers`, so backup and remove `site-enabled`
+   ones end up in `/usr/local/etc/nginx/servers`, so backup and remove `sites-enabled`
 1. Install [dev-nginx](https://github.com/guardian/dev-nginx)
    ```bash
    brew tap "guardian/devtools"
