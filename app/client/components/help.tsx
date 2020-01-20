@@ -1,12 +1,12 @@
 import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
+import Color from "color";
 import React from "react";
 import { conf } from "../../server/config";
-import { minWidth } from "../styles/breakpoints";
-import { headline } from "../styles/fonts";
 import { LinkButton } from "./buttons";
+import { CallCentreNumbers } from "./callCentreNumbers";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
@@ -18,69 +18,147 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-export interface MembershipNavLinks {
-  reportTechnicalIssue: NavItem;
-}
-
-const membershipNavLinks: MembershipNavLinks = {
-  reportTechnicalIssue: {
-    title: "Report technical issue",
-    link: `https://www.${domain}/info/tech-feedback`
-  }
+const reportTechnicalIssue: NavItem = {
+  title: "Report technical issue",
+  link: `https://www.${domain}/info/tech-feedback`
 };
 
 interface FaqLink {
   title: string;
   link: string;
 }
-type FaqSection = "Delivery" | "Billing" | "Print subscriptions" | "Account";
-type FaqList = {
-  [key in FaqSection]: FaqLink[];
-};
 
-const faqs: FaqList = {
-  Delivery: [
-    { title: "a question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" }
-  ],
-  Billing: [
-    { title: "a question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" }
-  ],
-  "Print subscriptions": [
-    { title: "a question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" }
-  ],
-  Account: [
-    { title: "a question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" },
-    { title: "another question here", link: "thecorrespondingurl.com" }
-  ]
+type FaqSectionNames =
+  | "Delivery"
+  | "Billing and Payments"
+  | "Print subscriptions"
+  | "Account";
+
+interface SectionFaq {
+  links: FaqLink[];
+  seeAll: FaqLink;
+}
+
+type Faqs = {
+  [key in FaqSectionNames]: SectionFaq;
+};
+const faqs: Faqs = {
+  Delivery: {
+    links: [
+      {
+        title: "Can my delivery be suspended while I'm on holiday?",
+        link:
+          "https://www.theguardian.com/help/2017/dec/11/help-if-you-are-going-on-holiday"
+      },
+      {
+        title: "Can my delivery be redirected?",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
+      },
+      {
+        title: "How do I change my delivery address?",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
+      },
+      {
+        title: "My delivery is late or missing",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
+      }
+    ],
+    seeAll: {
+      title: "See All Delivery FAQs",
+      link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
+    }
+  },
+  "Billing and Payments": {
+    links: [
+      {
+        title: "How do I update my payment details?",
+        link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
+      },
+      {
+        title: "Where can I view my payment plan?",
+        link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
+      },
+      {
+        title: "What payment methods do you accept?",
+        link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
+      },
+      {
+        title: "How do I cancel my subscription?",
+        link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
+      }
+    ],
+    seeAll: {
+      title: "See All Billing and Payments FAQs",
+      link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
+    }
+  },
+  "Print subscriptions": {
+    links: [
+      {
+        title: "My newspaper is missing a section",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
+      },
+      {
+        title: "Where can I use my vouchers?",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-vouchers"
+      },
+      {
+        title: "I've haven't received my vouchers",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-vouchers"
+      },
+      {
+        title: "I've lost my vouchers",
+        link: "https://www.theguardian.com/help/2017/dec/11/help-with-vouchers"
+      }
+    ],
+    seeAll: {
+      title: "See All Print Subscription FAQs",
+      link:
+        "https://www.theguardian.com/subscriber-direct/subscription-frequently-asked-questions"
+    }
+  },
+  Account: {
+    links: [
+      {
+        title: "How do I change my password?",
+        link: "https://profile.theguardian.com/reset"
+      },
+      {
+        title: "How can I change my email address?",
+        link: "https://manage.theguardian.com/account-settings"
+      },
+      {
+        title: "Why am I still seeing banners/ads?",
+        link: "https://www.theguardian.com/help/identity-faq"
+      },
+      {
+        title: "How do I change my username?",
+        link: "https://www.theguardian.com/help/identity-faq"
+      }
+    ],
+    seeAll: {
+      title: "See All Account FAQs",
+      link: "https://www.theguardian.com/help/identity-faq"
+    }
+  }
 };
 
 export const Help = (props: RouteComponentProps) => (
   <>
     <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
       <h1
-        css={{
-          fontSize: "32px",
-          lineHeight: "36px",
-          fontFamily: headline,
-          marginBottom: "30px",
-          marginTop: "0"
-        }}
+        css={css`
+          ${headline.large()};
+          font-size: "32px",
+          lineheight: "36px",
+          margin-bottom: "30px",
+          margin-top: "0"
+          `}
       >
         Help centre
       </h1>
     </PageHeaderContainer>
-    <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
+    <PageNavAndContentContainer selectedNavItem={navLinks.help}>
       <div
         css={css`
           display: flex;
@@ -89,12 +167,15 @@ export const Help = (props: RouteComponentProps) => (
         `}
       >
         {Object.keys(faqs).map((faqSectionTitle, sectionIndex) => {
-          const faqSection: FaqLink[] = faqs[faqSectionTitle as FaqSection];
+          const faqSectionLinks =
+            faqs[faqSectionTitle as FaqSectionNames].links;
+          const seeAllNavItem: NavItem =
+            faqs[faqSectionTitle as FaqSectionNames].seeAll;
           return (
             <div
               key={`section-${sectionIndex}`}
               css={css`
-                border: 1px solid #dcdcdc;
+                border: 1px solid ${palette.neutral["86"]};
                 flex: 1 1 370px;
                 margin: 10px;
                 display: flex;
@@ -103,12 +184,12 @@ export const Help = (props: RouteComponentProps) => (
             >
               <h2
                 css={css`
-                  ${textSans.medium()};
+                  ${textSans.medium({ fontWeight: "bold" })};
                   color: #333333;
                   position: relative;
                   margin: 0;
                   padding: 18px 0 18px 60px;
-                  border-bottom: 1px solid #dcdcdc;
+                  border-bottom: 1px solid ${palette.neutral["86"]};
                   width: 100%;
                 `}
               >
@@ -130,12 +211,12 @@ export const Help = (props: RouteComponentProps) => (
                   padding: 0 12px;
                 `}
               >
-                {faqSection.map((faqLink, questionIndex) => (
+                {faqSectionLinks.map((faqLink, questionIndex) => (
                   <li
                     key={`${faqSectionTitle}Question-${questionIndex}`}
                     css={css`
                       padding: 12px 20px 12px 0;
-                      border-bottom: 1px solid #dcdcdc;
+                      border-bottom: 1px solid ${palette.neutral["86"]};
                       position: relative;
                     `}
                   >
@@ -145,6 +226,11 @@ export const Help = (props: RouteComponentProps) => (
                       css={css`
                         display: inline-block;
                         width: 100%;
+                        ${textSans.medium()};
+                        color: ${palette.neutral["7"]};
+                        :visited {
+                          color: ${palette.neutral["7"]};
+                        }
                       `}
                     >
                       {faqLink.title}
@@ -154,8 +240,8 @@ export const Help = (props: RouteComponentProps) => (
                         display: block;
                         width: 7px;
                         height: 7px;
-                        border-top: 2px solid #121212;
-                        border-right: 2px solid #121212;
+                        border-top: 2px solid ${palette.neutral["7"]};
+                        border-right: 2px solid ${palette.neutral["7"]};
                         rotate: 45deg;
                         position: absolute;
                         top: 50%;
@@ -171,70 +257,50 @@ export const Help = (props: RouteComponentProps) => (
                   margin: auto 11px 20px 11px;
                 `}
               >
-                <LinkButton
-                  to={"https://www.theguardian.com/uk"}
-                  text={"See all Delivery questions"}
-                  colour={"#C1D8FC"}
-                  textColour={palette.brand.main}
-                  right
-                />
+                <a
+                  href={seeAllNavItem.link}
+                  target={"_blank"}
+                  css={css`
+                    display: inline-block;
+                    ${textSans.small({ fontWeight: "bold" })};
+                    line-height: 36px;
+                    min-height: 36px;
+                    height: 36px;
+                    border-radius: 18px;
+                    padding: 0 16px;
+                    color: ${palette.brand.main};
+                    background-color: ${palette.brand.faded};
+                    :hover {
+                      background-color: ${Color(palette.brand.faded, "hex")
+                        .darken(0.1)
+                        .string()};
+                    }
+                    :visited {
+                      color: ${palette.brand.main};
+                    }
+                  `}
+                >
+                  {seeAllNavItem.title}
+                </a>
               </div>
             </div>
           );
         })}
-        <ul
-          css={{
-            fontSize: "0.875rem",
-            marginTop: "3rem",
-            marginLeft: "1.5625rem",
-            padding: 0,
-
-            [minWidth.desktop]: {
-              fontSize: "1rem",
-              textAlign: "center"
-            }
-          }}
-        >
-          {Object.values(membershipNavLinks).map(
-            (membershipNavItem: NavItem) => (
-              <li
-                css={{
-                  display: "block",
-                  marginBottom: "0.1875rem",
-
-                  [minWidth.desktop]: {
-                    display: "inline",
-                    margin: 0,
-
-                    ":not(:first-of-type)::before": {
-                      display: "inline-block",
-                      content: "'·'",
-                      margin: "0 0.5625rem"
-                    }
-                  }
-                }}
-                key={membershipNavItem.title}
-              >
-                <a
-                  css={{
-                    color: "green",
-                    textDecoration: "none",
-                    borderBottom: `0.0625rem solid red`,
-                    transition: "border-color .15s ease-out",
-
-                    ":hover": {
-                      borderColor: "#6e99b3"
-                    }
-                  }}
-                  href={membershipNavItem.link}
-                >
-                  {membershipNavItem.title}
-                </a>
-              </li>
-            )
-          )}
-        </ul>
       </div>
+      <h2
+        css={css`
+          ${headline.small({ fontWeight: "bold" })};
+        `}
+      >
+        Can’t find what you’re looking for?
+      </h2>
+      <CallCentreNumbers />
+      <LinkButton
+        to={reportTechnicalIssue.link}
+        text={reportTechnicalIssue.title}
+        colour={palette.brand.main}
+        textColour={palette.neutral[100]}
+      />
     </PageNavAndContentContainer>
   </>
 );
