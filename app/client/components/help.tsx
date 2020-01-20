@@ -295,6 +295,13 @@ export const Help = (props: RouteComponentProps) => (
         Can’t find what you’re looking for?
       </h2>
       <CallCentreNumbers />
+      <h2
+        css={css`
+          ${headline.small({ fontWeight: "bold" })};
+        `}
+      >
+        Having technical issues?
+      </h2>
       <LinkButton
         to={reportTechnicalIssue.link}
         text={reportTechnicalIssue.title}
