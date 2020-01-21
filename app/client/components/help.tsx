@@ -6,7 +6,7 @@ import Color from "color";
 import React from "react";
 import { conf } from "../../server/config";
 import { LinkButton } from "./buttons";
-import { CallCentreNumbers } from "./callCentreNumbers";
+import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
@@ -242,10 +242,9 @@ export const Help = (props: RouteComponentProps) => (
                         height: 7px;
                         border-top: 2px solid ${palette.neutral["7"]};
                         border-right: 2px solid ${palette.neutral["7"]};
-                        rotate: 45deg;
                         position: absolute;
                         top: 50%;
-                        transform: translateY(-50%);
+                        transform: translateY(-50%) rotate(45deg);
                         right: 7px;
                       `}
                     />
@@ -294,19 +293,21 @@ export const Help = (props: RouteComponentProps) => (
       >
         Can’t find what you’re looking for?
       </h2>
-      <CallCentreNumbers />
+      <CallCentreEmailAndNumbers />
+      {/* <CallCentreNumbers /> */}
       <h2
         css={css`
           ${headline.small({ fontWeight: "bold" })};
         `}
       >
-        Having technical issues?
+        Having a technical issue?
       </h2>
       <LinkButton
         to={reportTechnicalIssue.link}
         text={reportTechnicalIssue.title}
         colour={palette.brand.main}
         textColour={palette.neutral[100]}
+        right
       />
     </PageNavAndContentContainer>
   </>
