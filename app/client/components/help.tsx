@@ -28,7 +28,7 @@ interface FaqLink {
   link: string;
 }
 
-type FaqSectionNames =
+export type FaqSectionNames =
   | "Delivery"
   | "Billing and Payments"
   | "Print subscriptions"
@@ -200,7 +200,7 @@ export const Help = (props: RouteComponentProps) => (
                     left: 11px;
                   `}
                 >
-                  <HelpSectionIcon subsection={"delivery"} />
+                  <HelpSectionIcon subsection={faqSectionTitle as FaqSectionNames} />
                 </i>
                 {faqSectionTitle}
               </h2>
@@ -294,7 +294,6 @@ export const Help = (props: RouteComponentProps) => (
         Can’t find what you’re looking for?
       </h2>
       <CallCentreEmailAndNumbers />
-      {/* <CallCentreNumbers /> */}
       <h2
         css={css`
           ${headline.small({ fontWeight: "bold" })};

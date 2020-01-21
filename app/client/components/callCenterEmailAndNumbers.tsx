@@ -1,48 +1,72 @@
-import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
-import { CallCentreNumbersProps } from "./callCentreNumbers";
+import {css} from '@emotion/core';
+import {palette} from '@guardian/src-foundations';
+import {textSans} from '@guardian/src-foundations/typography';
+import React, {useState} from 'react';
+import {CallCentreNumbersProps} from './callCentreNumbers';
 
 const contactUsStyles = {
-  margin: "0 0 10px",
-  paddingRight: "5px"
+  margin: '0 0 10px',
+  paddingRight: '5px',
 };
 
 const callCenterStyles = css({
-  marginBottom: "10px",
-  display: "flex",
-  flexWrap: "wrap",
-  textAlign: "left",
-  fontWeight: "normal"
+  marginBottom: '10px',
+  display: 'flex',
+  flexWrap: 'wrap',
+  textAlign: 'left',
+  fontWeight: 'normal',
 });
 
 export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
-  const sectionTitleCss = `
+  const [accordianStatus, setAccordianStatus] = useState([
+    {
+      isOpen: false,
+    },
+    {
+      isOpen: true,
+    },
+    {
+      isOpen: false,
+    },
+  ]);
+
+  const sectionTitleCss = (sectionNum: number) => `
     ${textSans.medium()};
     margin: 0;
     padding: 12px 17px 12px 12px;
     position: relative;
+    ${sectionNum > 0 &&
+      `
+      :before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 1px;
+        background-color: ${palette.neutral['86']}
+      }
+    `}
     :after {
       content: "";
       display: block;
       width: 7px;
       height: 7px;
-      border-top: 2px solid ${palette.neutral["7"]};
-      border-right: 2px solid ${palette.neutral["7"]};
+      border-top: 2px solid ${palette.neutral['7']};
+      border-right: 2px solid ${palette.neutral['7']};
       position: absolute;
       top: 50%;
-      transform: translateY(-50%) rotate(135deg);
+      transform: translateY(-50%) ${
+        accordianStatus[sectionNum].isOpen ? 'rotate(-45deg)' : 'rotate(135deg)'
+      };
       transition: transform 0.4s;
       right: 17px;
     }
-    [data-open]:after {
-      transform: translateY(-50%) rotate(-45deg);
-    }
   `;
   const innerSectionCss = (isOpen: boolean) => `
-    display: ${isOpen ? "block" : "none"};
-    background-color: ${palette.neutral["97"]};
+    display: ${isOpen ? 'block' : 'none'};
+    background-color: ${palette.neutral['97']};
     padding: 12px;
   `;
 
@@ -57,29 +81,16 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
 
   const innerSectionTitleCss = (isTopTitle: boolean) => `
     ${textSans.medium()};
-    margin: ${isTopTitle ? "6px 0 4px" : "20px 0 4px"};
+    margin: ${isTopTitle ? '6px 0 4px' : '20px 0 4px'};
   `;
-
-  // acordian state
-  const [accordianStatus, setAccordianStatus] = useState([
-    {
-      isOpen: false
-    },
-    {
-      isOpen: true
-    },
-    {
-      isOpen: false
-    }
-  ]);
 
   const handleSectionClick = (sectionNum: number) => () => {
     setAccordianStatus(
       accordianStatus.map((section, sectionIndex) =>
         sectionIndex === sectionNum
-          ? { isOpen: !section.isOpen }
-          : { isOpen: false }
-      )
+          ? {isOpen: !section.isOpen}
+          : {isOpen: false},
+      ),
     );
   };
   return (
@@ -88,49 +99,42 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
       <div
         css={css`
           width: 100%;
-          border: 1px solid ${palette.neutral["86"]};
-        `}
-      >
+          border: 1px solid ${palette.neutral['86']};
+        `}>
         <div css={css`subsectionCss`}>
           <h2
             css={css`
-              ${sectionTitleCss}
+              ${sectionTitleCss(0)}
             `}
-            onClick={handleSectionClick(0)}
-          >
+            onClick={handleSectionClick(0)}>
             United Kingdom, Europe and rest of world
           </h2>
           <div
             css={css`
               ${innerSectionCss(accordianStatus[0].isOpen)}
-            `}
-          >
+            `}>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Email:
             </h4>
             <span
               css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
+                ${textSans.medium({fontWeight: 'bold'})};
+              `}>
               customer.help@theguardian.com
             </span>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Phone:
             </h4>
             <p
               css={css`
                 ${innerSectionPCss}
-              `}
-            >
+              `}>
               <span>+44 (0) 330 333 6790</span>
               8am - 8pm on weekdays, 8am - 6pm at weekends (GMP/BST)
             </p>
@@ -139,43 +143,37 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
         <div css={css`subsectionCss`}>
           <h2
             css={css`
-              ${sectionTitleCss}
+              ${sectionTitleCss(1)}
             `}
-            onClick={handleSectionClick(1)}
-          >
+            onClick={handleSectionClick(1)}>
             Australia, New Zealand, and Asia Pacific
           </h2>
           <div
             css={css`
               ${innerSectionCss(accordianStatus[1].isOpen)}
-            `}
-          >
+            `}>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Email:
             </h4>
             <span
               css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
+                ${textSans.medium({fontWeight: 'bold'})};
+              `}>
               customer.help@theguardian.com
             </span>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Phone:
             </h4>
             <p
               css={css`
                 ${innerSectionPCss}
-              `}
-            >
+              `}>
               <span>1800 773 766 (within Australia)</span>
               <span>+61 2​ 8​076 8599 (outside Australia)</span>
               9am - 5pm Monday - Friday (AEDT)
@@ -185,43 +183,37 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
         <div css={css`subsectionCss`}>
           <h2
             css={css`
-              ${sectionTitleCss}
+              ${sectionTitleCss(2)}
             `}
-            onClick={handleSectionClick(2)}
-          >
+            onClick={handleSectionClick(2)}>
             Canada and USA
           </h2>
           <div
             css={css`
               ${innerSectionCss(accordianStatus[2].isOpen)}
-            `}
-          >
+            `}>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Email:
             </h4>
             <span
               css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
+                ${textSans.medium({fontWeight: 'bold'})};
+              `}>
               customer.help@theguardian.com
             </span>
             <h4
               css={css`
                 ${innerSectionTitleCss(true)}
-              `}
-            >
+              `}>
               Phone:
             </h4>
             <p
               css={css`
                 ${innerSectionPCss}
-              `}
-            >
+              `}>
               <span>1-844-632-2010 (toll free USA)</span>
               <span>+1 917-900-4663 (outside USA)</span>
               9am - 5pm on weekdays (EST/EDT)
