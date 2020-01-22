@@ -10,6 +10,7 @@ import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
+import { minWidth } from "../styles/breakpoints";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -200,7 +201,9 @@ export const Help = (props: RouteComponentProps) => (
                     left: 11px;
                   `}
                 >
-                  <HelpSectionIcon subsection={faqSectionTitle as FaqSectionNames} />
+                  <HelpSectionIcon
+                    subsection={faqSectionTitle as FaqSectionNames}
+                  />
                 </i>
                 {faqSectionTitle}
               </h2>
@@ -288,6 +291,11 @@ export const Help = (props: RouteComponentProps) => (
       </div>
       <h2
         css={css`
+          border-top: 1px solid ${palette.neutral["86"]};
+          margin-top: 30px;
+          ${minWidth.tablet} {
+            margin-top: 40px;
+          }
           ${headline.small({ fontWeight: "bold" })};
         `}
       >
@@ -296,6 +304,7 @@ export const Help = (props: RouteComponentProps) => (
       <CallCentreEmailAndNumbers />
       <h2
         css={css`
+          border-top: 1px solid ${palette.neutral["86"]};
           ${headline.small({ fontWeight: "bold" })};
         `}
       >
