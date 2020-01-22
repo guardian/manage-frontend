@@ -121,7 +121,7 @@ const faqs: Faqs = {
   Account: {
     links: [
       {
-        title: "How do I change my password?",
+        title: "How do I reset my password?",
         link: "https://profile.theguardian.com/reset"
       },
       {
