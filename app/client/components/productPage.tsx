@@ -32,7 +32,6 @@ import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
 import { DeliveryAddressDisplay } from "./delivery/address/deliveryAddressDisplay";
 import { InlineContactUs } from "./inlineContactUs";
-import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
 import {
   PageContainer,
@@ -510,9 +509,6 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
         render={getProductRenderer(props.productType)}
         loadingMessage={`Loading your ${props.productType.friendlyName} details...`}
       />
-      <PageContainer>
-        <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
-      </PageContainer>
     </PageNavAndContentContainer>
   </>
 );

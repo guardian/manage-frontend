@@ -2,7 +2,6 @@ import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
-import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import {
   PageContainer,
@@ -56,14 +55,11 @@ export const PublicProfile = (props: { path?: string }) => {
     return await Users.saveChanges(user, changedUser);
   };
 
-  useEffect(
-    () => {
-      if (error && errorRef.current) {
-        window.scrollTo(0, errorRef.current.offsetTop - 20);
-      }
-    },
-    [error]
-  );
+  useEffect(() => {
+    if (error && errorRef.current) {
+      window.scrollTo(0, errorRef.current.offsetTop - 20);
+    }
+  }, [error]);
 
   const loader = (
     <PageContainer>
@@ -109,9 +105,6 @@ export const PublicProfile = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <AvatarSection userId={user.id} />
-      </PageContainer>
-      <PageContainer>
-        <MembershipLinks />
       </PageContainer>
     </>
   );

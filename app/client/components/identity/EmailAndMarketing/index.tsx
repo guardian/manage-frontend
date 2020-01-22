@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { headline } from "../../../styles/fonts";
-import { MembershipLinks } from "../../membershipLinks";
 import { navLinks } from "../../nav";
 import {
   PageContainer,
@@ -120,9 +119,6 @@ export const EmailAndMarketing = (props: { path?: string }) => {
       </PageContainer>
       <PageContainer>
         <OptOutSection consents={consents} clickHandler={toggleSubscription} />
-      </PageContainer>
-      <PageContainer>
-        <MembershipLinks />
       </PageContainer>
     </>
   );

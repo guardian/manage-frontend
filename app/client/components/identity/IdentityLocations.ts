@@ -25,12 +25,13 @@ const getIdentityLocations = (domain: string) => ({
     "/help/2017/dec/11/help-with-updating-your-contact-or-delivery-details"
   ),
   CHANGE_EMAIL: url("profile", domain, "/account/edit"),
-  CHANGE_PASSWORD: url("profile", domain, "/password/change"),
+  RESET_PASSWORD: url("profile", domain, "/reset"),
   MANAGE_JOB_ALERTS: url("jobs", domain, "/your-jobs/?ActiveSection=JbeList"),
   VERIFY_EMAIL: url("profile", domain, "/verify-email"),
   IDAPI: IDAPI_URL,
   AVATAR: AVATAR_URL,
-  AVATAR_USER_IMAGES: url("avatar", IMAGE_DOMAIN, "/user")
+  AVATAR_USER_IMAGES: url("avatar", IMAGE_DOMAIN, "/user"),
+  DELETE_ACCOUNT: url("profile", domain, "/delete")
 });
 
 export const IdentityLocations = getIdentityLocations(DOMAIN);
