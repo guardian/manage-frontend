@@ -5,12 +5,12 @@ import { RouteComponentProps } from "@reach/router";
 import Color from "color";
 import React from "react";
 import { conf } from "../../server/config";
+import { minWidth } from "../styles/breakpoints";
 import { LinkButton } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
-import { minWidth } from "../styles/breakpoints";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
