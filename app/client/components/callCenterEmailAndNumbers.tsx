@@ -35,19 +35,6 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
     margin: 0;
     padding: 12px 17px 12px 12px;
     position: relative;
-    ${sectionNum > 0 &&
-      `
-      :before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 12px;
-        width: calc(100% - 24px);
-        height: 1px;
-        background-color: ${palette.neutral["86"]}
-      }
-    `}
     :after {
       content: "";
       display: block;
@@ -63,6 +50,19 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
       transition: transform 0.4s;
       right: 17px;
     }
+    ${sectionNum > 0 &&
+      `
+      :before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 1px;
+        background-color: ${palette.neutral["86"]}
+      }
+    `}
   `;
   const innerSectionCss = (isOpen: boolean) => `
     display: ${isOpen ? "block" : "none"};
