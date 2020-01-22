@@ -305,6 +305,10 @@ export const Help = (props: RouteComponentProps) => (
       <h2
         css={css`
           border-top: 1px solid ${palette.neutral["86"]};
+          margin-top: 30px;
+          ${minWidth.tablet} {
+            margin-top: 40px;
+          }
           ${headline.small({ fontWeight: "bold" })};
         `}
       >
