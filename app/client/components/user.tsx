@@ -4,6 +4,7 @@ import React from "react";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
+  hasDeliveryRecordsFlow,
   hasProductPageRedirect,
   ProductType,
   ProductTypes,
@@ -28,8 +29,10 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
-import { DeliveryAddressEditConfirmed } from "./delivery/address/DeliveryAddressEditConfirmed";
+import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
+import { DeliveryRecords } from "./delivery/records/deliveryRecords";
+import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
@@ -38,7 +41,6 @@ import { AccountDetails } from "./identity/AccountDetails";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Main } from "./main";
-import { MembershipFAQs } from "./membershipFAQs";
 import { NotFound } from "./notFound";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
@@ -181,20 +183,30 @@ const User = () => (
             path={`/delivery/${productType.urlPart}/address`}
             productType={productType}
           >
-            <DeliveryAddressEditConfirmed
+            <DeliveryAddressEditConfirmation
               path="confirmed"
               productType={productType}
             />
           </DeliveryAddressForm>
         ))}
 
-      <MembershipFAQs path="/help" />
+      {Object.values(ProductTypes)
+        .filter(hasDeliveryRecordsFlow)
+        .map((productType: ProductType) => (
+          <DeliveryRecords
+            key={productType.urlPart}
+            path={`/delivery/${productType.urlPart}/records`}
+            productType={productType}
+          />
+        ))}
 
       <EmailAndMarketing path="/email-prefs" />
 
       <PublicProfile path="/public-settings" />
 
       <AccountDetails path="/account-settings" />
+
+      <Help path="/help" />
 
       <NotFound default={true} />
     </Router>

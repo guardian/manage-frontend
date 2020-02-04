@@ -32,7 +32,6 @@ import { Button, LinkButton } from "./buttons";
 import { getCancellationSummary } from "./cancel/cancellationSummary";
 import { DeliveryAddressDisplay } from "./delivery/address/deliveryAddressDisplay";
 import { InlineContactUs } from "./inlineContactUs";
-import { MembershipLinks } from "./membershipLinks";
 import { NoProduct } from "./noProduct";
 import {
   PageContainer,
@@ -405,8 +404,7 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
-            {productType.showDeliveryAddress &&
-              productType.showDeliveryAddress(productDetail) &&
+            {productType.delivery?.showAddress &&
               productDetail.subscription.deliveryAddress && (
                 <ProductDetailRow
                   label="Delivery address"
@@ -421,6 +419,19 @@ const getProductDetailRenderer = (
                   }
                 />
               )}
+            {productType.delivery?.showRecords && (
+              <ProductDetailRow
+                label="Delivery history"
+                data={
+                  <LinkButton
+                    text="View delivery history"
+                    to={`/delivery/${productType.urlPart}/records`}
+                    state={productDetail}
+                    right
+                  />
+                }
+              />
+            )}
             {productType.alternateManagementUrl &&
               alternateManagementCtaLabel &&
               (productDetailList.length > 1 ? (
@@ -498,9 +509,6 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
         render={getProductRenderer(props.productType)}
         loadingMessage={`Loading your ${props.productType.friendlyName} details...`}
       />
-      <PageContainer>
-        <MembershipLinks /> {/*TODO need to have contributions FAQ*/}
-      </PageContainer>
     </PageNavAndContentContainer>
   </>
 );

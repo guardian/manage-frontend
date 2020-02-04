@@ -7,9 +7,14 @@ import { ErrorIcon } from "../../svgs/errorIcon";
 
 type setStateFunc = (value: string) => void;
 
+interface SelectOption {
+  name: string;
+  value: string;
+}
+
 interface SelectProps {
   label: string;
-  options: string[];
+  options: SelectOption[];
   width: number;
   value: string;
   optional?: boolean;
@@ -82,8 +87,8 @@ export const Select = (props: SelectProps) => (
         &nbsp;
       </option>
       {props.options.map((option, index) => (
-        <option value={option} key={`country-${index}`}>
-          {option}
+        <option value={option.value} key={`country-${index}`}>
+          {option.name}
         </option>
       ))}
     </select>

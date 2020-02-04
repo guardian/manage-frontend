@@ -1,7 +1,10 @@
 import Raven from "raven-js";
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
+import { DeliveryRecordsDetail } from "../client/components/delivery/records/deliveryRecordsApi";
 import { CardProps } from "../client/components/payment/cardDisplay";
+
+export type DeliveryRecordsApiItem = DeliveryRecordsDetail;
 
 export type MembersDataApiItem = ProductDetail | {};
 

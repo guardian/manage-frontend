@@ -23,13 +23,13 @@ import { textSans } from "@guardian/src-foundations/typography";
 // @ts-ignore
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link } from "@reach/router";
+import { momentiseDateStr } from "../../../../shared/dates";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { momentiseDateStr } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
-import { renderConfirmation } from "./DeliveryAddressEditConfirmed";
+import { renderConfirmation } from "./deliveryAddressEditConfirmation";
 import {
   NewDeliveryAddressContext,
   SubscriptionsAffectedContext
@@ -477,7 +477,7 @@ const Form = (props: FormProps) => {
         />
         <Input
           label="Postcode/Zipcode"
-          width={10}
+          width={11}
           value={props.postcode}
           changeSetState={props.setPostcode}
           inErrorState={
@@ -496,6 +496,9 @@ const Form = (props: FormProps) => {
             margin-top: 14px;
           `}
           value={props.country}
+          optional={props.subscriptionsNames.includes(
+            ProductTypes.voucher.friendlyName
+          )}
           changeSetState={props.setCountry}
           inErrorState={
             !!(

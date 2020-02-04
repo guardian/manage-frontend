@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import { Form, FormikProps, FormikState, withFormik } from "formik";
 import React, { FC } from "react";
 import palette from "../../../colours";
@@ -105,11 +106,22 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         {!props.emailMessage || EmailMessage(props.emailMessage)}
         <label>
           Password
-          <p>
-            <a css={aCss} href={IdentityLocations.CHANGE_PASSWORD}>
-              Change your password
-            </a>
-          </p>
+          <ul
+            css={css`
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              li + li {
+                margin-top: 4px;
+              }
+            `}
+          >
+            <li>
+              <a css={aCss} href={IdentityLocations.RESET_PASSWORD}>
+                Reset your password
+              </a>
+            </li>
+          </ul>
         </label>
       </PageSection>
       {lines()}
@@ -176,9 +188,15 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
         <FormSelectField
           name="country"
           label="Country"
-          options={COUNTRIES}
+          options={COUNTRIES.flatMap(country => country.name)}
           formikProps={props}
         />
+      </PageSection>
+      {lines()}
+      <PageSection title="Delete account">
+        <a css={aCss} href={IdentityLocations.DELETE_ACCOUNT}>
+          Delete your account
+        </a>
       </PageSection>
       {lines()}
       <PageSection>
@@ -215,8 +233,6 @@ const FormikForm = withFormik({
   }
 })(BaseForm);
 
-export const AccountDetailsFormSection: FC<
-  AccountDetailsFormSectionProps
-> = props => {
+export const AccountDetailsFormSection: FC<AccountDetailsFormSectionProps> = props => {
   return <FormikForm {...props} />;
 };
