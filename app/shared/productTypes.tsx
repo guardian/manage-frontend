@@ -349,10 +349,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     holidayStops: {
-      issueKeyword: "paper" // TODO confirm this is the correct word to use, maybe could be 'issue', 'publication' etc
+      issueKeyword: "paper"
     },
-    alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
     delivery: {
       showAddress: !!showDeliveryAddressCheck,
       showRecords: true,
