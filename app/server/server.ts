@@ -46,27 +46,6 @@ server.use("/api/", routes.api);
 server.use("/idapi", routes.idapi);
 server.use(routes.productsProvider("/api/"));
 
-const isCode = conf.DOMAIN === "code.dev-theguardian.com";
-const frameAncestors = isCode
-  ? `https://*.${
-      conf.DOMAIN
-    } http://localhost:9000 http://localhost:3000 http://*.thegulocal.com`
-  : `https://*.${conf.DOMAIN}`;
-
-server.use(
-  "/consent/",
-  (req, res, next) => {
-    // This route can be loaded in an iframe from the domains listed below only
-    res.setHeader(
-      "Content-Security-Policy",
-      `frame-ancestors ${frameAncestors}`
-    );
-    res.removeHeader("X-Frame-Options");
-    next();
-  },
-  routes.consent
-);
-
 // ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
 server.use(routes.frontend);
 
