@@ -348,8 +348,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
-    alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: () => "manage your holiday stops", // TODO this can be removed once HD holiday stops are supported by the new approach (like GW & Voucher)
+    holidayStops: {
+      issueKeyword: "paper"
+    },
     delivery: {
       showAddress: !!showDeliveryAddressCheck,
       showRecords: true,
