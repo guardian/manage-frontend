@@ -266,6 +266,7 @@ const renderHolidayStopsOverview = (
                   {holidayStopsResponse.existing.length > 0 ? (
                     <SummaryTable
                       data={holidayStopsResponse.existing}
+                      isTestUser={productDetail.isTestUser}
                       subscription={productDetail.subscription}
                       issueKeyword={props.productType.holidayStops.issueKeyword}
                       reloadParent={reload}
