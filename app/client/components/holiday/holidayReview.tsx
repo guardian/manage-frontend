@@ -177,6 +177,7 @@ export class HolidayReview extends React.Component<
             <SummaryTable
               data={dateChooserStateWithCredits}
               alternateSuspendedColumnHeading="To be suspended"
+              isTestUser={productDetail.isTestUser}
               subscription={productDetail.subscription}
               issueKeyword={this.props.productType.holidayStops.issueKeyword}
             />
