@@ -376,7 +376,6 @@ export class HolidayDateChooser extends React.Component<
       },
       () =>
         getPotentialHolidayStopsFetcher(
-          false,
           subscriptionName,
           start,
           end,
