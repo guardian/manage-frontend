@@ -114,7 +114,6 @@ export class HolidayReview extends React.Component<
                   isProduct(productDetail) ? (
                     <PotentialHolidayStopsAsyncLoader
                       fetch={getPotentialHolidayStopsFetcher(
-                        true,
                         productDetail.subscription.subscriptionId,
                         dateChooserState.selectedRange.start,
                         dateChooserState.selectedRange.end,

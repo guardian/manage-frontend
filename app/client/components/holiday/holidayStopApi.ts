@@ -102,7 +102,6 @@ export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
 > {}
 
 export const getPotentialHolidayStopsFetcher = (
-  shouldEstimateCredit: boolean,
   subscriptionName: string,
   startDate: Moment,
   endDate: Moment,
@@ -111,9 +110,7 @@ export const getPotentialHolidayStopsFetcher = (
   fetch(
     `/api/holidays/${subscriptionName}/potential?startDate=${startDate.format(
       DATE_INPUT_FORMAT
-    )}&endDate=${endDate.format(DATE_INPUT_FORMAT)}${
-      shouldEstimateCredit ? "&estimateCredit=true" : ""
-    }`,
+    )}&endDate=${endDate.format(DATE_INPUT_FORMAT)}`,
     {
       headers: {
         [MDA_TEST_USER_HEADER]: `${isTestUser}`
