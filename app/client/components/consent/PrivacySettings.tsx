@@ -164,11 +164,11 @@ const buttonStyles = css`
 `;
 
 const yellowButtonStyles = css`
-  background-color: ${palette.yellow.main};
+  background-color: ${palette.brandYellow.main};
   color: ${palette.neutral[7]};
 
   &:hover :not(:disabled) {
-    background-color: ${palette.yellow.dark};
+    background-color: ${palette.brandYellow.dark};
   }
 `;
 

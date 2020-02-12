@@ -38,6 +38,7 @@ interface RootComponentProps extends CommonProps {
   thisStageChildren: any;
   path: string;
   children: null;
+  fullWidth?: true;
 }
 
 const estimateTotal = (currentStep: number, child: any) => {
@@ -74,7 +75,7 @@ export const ReturnToYourProductButton = (
 
 const RootComponent = (props: RootComponentProps) => (
   <>
-    <PageContainer>
+    <PageContainer fullWidth={props.fullWidth}>
       {!!props.routeableStepProps.currentStep &&
         (props.routeableStepProps.stepLabels ? (
           <ProgressBreadcrumb
@@ -115,6 +116,7 @@ const ThisStageContent = (props: WizardStepProps) => (
 export interface WizardStepProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   children: any;
+  fullWidth?: true;
 }
 
 export const WizardStep = (props: WizardStepProps) => (

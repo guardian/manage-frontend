@@ -353,7 +353,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     delivery: {
       showAddress: !!showDeliveryAddressCheck,
       showRecords: true,
-      showDeliveryInstructions: true
+      showDeliveryInstructions: true,
+      numberOfProblemRecordsToShow: 14,
+      contactUserOnExistingProblemReport: true
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
@@ -400,7 +402,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: !!showDeliveryAddressCheck,
-      showRecords: true
+      showRecords: true,
+      numberOfProblemRecordsToShow: 4,
+      contactUserOnExistingProblemReport: false
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {

@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import { breakpoints } from "@guardian/src-foundations";
 import { palette, space } from "@guardian/src-foundations";
 import React from "react";
@@ -75,13 +76,18 @@ export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerPro
 export interface PageContainerProps {
   noVerticalMargin?: true;
   children: React.ReactNode;
+  fullWidth?: true;
 }
 export const PageContainer = (props: PageContainerProps) => (
   <div
-    css={{
-      margin: `${props.noVerticalMargin ? "0" : "1.8125rem"} auto 0`,
-      maxWidth: "980px"
-    }}
+    css={css`
+      ${!props.fullWidth
+        ? `
+        margin: ${props.noVerticalMargin ? "0" : "1.8125rem"} auto 0;
+        max-width: 980px;
+      `
+        : ""}
+    `}
   >
     {props.children}
   </div>

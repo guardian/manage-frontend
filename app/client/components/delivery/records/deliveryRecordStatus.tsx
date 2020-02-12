@@ -1,8 +1,10 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { palette } from "@guardian/src-foundations";
 import React from "react";
-import { minWidth } from "../../../styles/breakpoints";
-import { DeliveryRecordMessage } from "./deliveryRecordMessage";
+import { ErrorIcon } from "../../svgs/errorIcon";
+import { HolidayStopIcon } from "../../svgs/holidayStopIcon";
+import { InfoIconDark } from "../../svgs/infoIconDark";
+import { TickInCircle } from "../../svgs/tickInCircle";
 
 interface RecordStatusProps {
   isDispatched: boolean;
@@ -11,84 +13,102 @@ interface RecordStatusProps {
   isChangedDeliveryInstruction: boolean;
   deliveryProblem: string | null;
 }
-
-const getStatusColor = (
-  isDispatched: boolean,
-  hasDeliveryProblem: boolean,
-  isHolidayStop: boolean
-) => {
-  if (isDispatched && !hasDeliveryProblem && !isHolidayStop) {
-    return palette.success.main;
-  } else if (isHolidayStop && !hasDeliveryProblem) {
-    return palette.brand.dark;
+export const RecordStatus = (props: RecordStatusProps) => {
+  let changesMessage = `${props.isChangedAddress ? "Delivery address" : ""}`;
+  if (props.isChangedAddress && !props.isChangedDeliveryInstruction) {
+    changesMessage = `${changesMessage} changed`;
   }
-  return palette.news.main;
-};
-
-export const getRecordMessageString = (
-  isChangedAddress: boolean,
-  isChangedDeliveryInstruction: boolean
-): string => {
-  let message = `${isChangedAddress ? "Delivery address" : ""}`;
-  if (isChangedAddress && !isChangedDeliveryInstruction) {
-    message = `${message} changed`;
-  }
-  if (isChangedDeliveryInstruction) {
-    message = `${message} ${
-      isChangedAddress ? " and d" : "D"
+  if (props.isChangedDeliveryInstruction) {
+    changesMessage = `${changesMessage} ${
+      props.isChangedAddress ? " and d" : "D"
     }elivery instructions changed`;
   }
-  return message;
+  return (
+    <>
+      {props.deliveryProblem && (
+        <span
+          css={css`
+            display: block;
+            font-weight: bold;
+            padding-left: 30px;
+            position: relative;
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+            `}
+          >
+            <ErrorIcon />
+          </i>
+          Problem reported ({props.deliveryProblem})
+        </span>
+      )}
+      {!props.deliveryProblem && props.isDispatched && (
+        <span
+          css={css`
+            display: block;
+            font-weight: bold;
+            padding-left: 30px;
+            position: relative;
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+            `}
+          >
+            <TickInCircle />
+          </i>
+          Dispatched
+        </span>
+      )}
+      {!props.deliveryProblem && props.isHolidayStop && (
+        <span
+          css={css`
+            display: block;
+            font-weight: bold;
+            padding-left: 30px;
+            position: relative;
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+            `}
+          >
+            <HolidayStopIcon />
+          </i>
+          Holiday stop
+        </span>
+      )}
+      {!props.isHolidayStop && changesMessage && (
+        <span
+          css={css`
+            display: block;
+            font-weight: bold;
+            padding-left: 30px;
+            position: relative;
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+            `}
+          >
+            <InfoIconDark fillColor={palette.brand.bright} size={22} />
+          </i>
+          {changesMessage}
+        </span>
+      )}
+    </>
+  );
 };
-
-export const RecordStatus = (props: RecordStatusProps) => (
-  <>
-    <span
-      css={css`
-        display: block;
-        font-weight: bold;
-        color: ${getStatusColor(
-          props.isDispatched,
-          !!props.deliveryProblem,
-          props.isHolidayStop
-        )};
-      `}
-    >
-      {props.isDispatched &&
-        !props.deliveryProblem &&
-        !props.isHolidayStop &&
-        "Dispatched"}
-      {props.isHolidayStop && "Holiday Stop"}
-      {props.deliveryProblem && "Delivery problem"}
-    </span>
-    {props.deliveryProblem && (
-      <div
-        css={css`
-          margin-top: ${space[2]}px;
-          ${minWidth.tablet} {
-            display: none;
-          }
-        `}
-      >
-        <DeliveryRecordMessage message={props.deliveryProblem} isError />
-      </div>
-    )}
-    {(props.isChangedAddress || props.isChangedDeliveryInstruction) && (
-      <div
-        css={css`
-          margin-top: ${space[2]}px;
-          ${minWidth.tablet} {
-            display: none;
-          }
-        `}
-      >
-        <DeliveryRecordMessage
-          message={getRecordMessageString(
-            props.isChangedAddress,
-            props.isChangedDeliveryInstruction
-          )}
-        />
-      </div>
-    )}
-  </>
-);

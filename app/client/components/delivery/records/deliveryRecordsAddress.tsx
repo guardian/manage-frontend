@@ -47,7 +47,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
           display: block;
           text-align: left;
           ${textSans.small({ italic: true })};
-          color: ${palette.neutral[46]};
+          color: ${palette.brand.bright};
           cursor: pointer;
         `}
         onClick={() => {

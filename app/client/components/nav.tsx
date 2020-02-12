@@ -69,7 +69,9 @@ const navItemCss = (isSelected: boolean | undefined) => ({
   },
   [minWidth.desktop]: {
     paddingLeft: `${space[2]}px`,
-    backgroundColor: isSelected ? palette.yellow.main : palette.neutral["46"]
+    backgroundColor: isSelected
+      ? palette.brandYellow.main
+      : palette.neutral["46"]
   }
 });
 
