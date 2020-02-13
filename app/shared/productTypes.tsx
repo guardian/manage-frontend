@@ -8,14 +8,19 @@ import { contributionsCancellationFlowStart } from "../client/components/cancel/
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
-import { DeliveryDetails } from "../client/components/delivery/records/deliveryRecordsApi";
 import { NavItem, navLinks } from "../client/components/nav";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
-import { formatDate, ProductDetail, Subscription } from "./productResponse";
+import {
+  formatDate,
+  isGift,
+  ProductDetail,
+  Subscription,
+  SubscriptionWithDeliveryAddress
+} from "./productResponse";
 
 export type ProductFriendlyName =
   | "membership"
@@ -89,6 +94,14 @@ export interface HolidayStopFlowProperties {
   };
 }
 
+export interface DeliveryProperties {
+  showAddress?: (
+    subscription: Subscription
+  ) => subscription is SubscriptionWithDeliveryAddress;
+  showRecords?: true;
+  showDeliveryInstructions?: true;
+}
+
 export interface ProductType {
   friendlyName: ProductFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
@@ -110,7 +123,7 @@ export interface ProductType {
   mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
-  delivery?: DeliveryDetails;
+  delivery?: DeliveryProperties;
   fulfilmentDateCalculator?: {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
@@ -213,8 +226,10 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
   );
 };
 
-const showDeliveryAddressCheck = (productDetail: ProductDetail) =>
-  productDetail.subscription.readerType !== "Gift";
+const showDeliveryAddressCheck = (
+  subscription: Subscription
+): subscription is SubscriptionWithDeliveryAddress =>
+  !isGift(subscription) && !!subscription.deliveryAddress;
 
 export type ProductTypeKeys =
   | "membership"
@@ -338,7 +353,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     delivery: {
-      showAddress: !!showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck
     },
     productPage: "subscriptions"
   },
@@ -352,7 +367,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       issueKeyword: "paper"
     },
     delivery: {
-      showAddress: !!showDeliveryAddressCheck,
+      showAddress: showDeliveryAddressCheck,
       showRecords: true,
       showDeliveryInstructions: true
     },
@@ -381,7 +396,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       }
     },
     delivery: {
-      showAddress: !!showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck
     },
     productPage: "subscriptions"
   },
@@ -400,7 +415,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       issueKeyword: "issue"
     },
     delivery: {
-      showAddress: !!showDeliveryAddressCheck,
+      showAddress: showDeliveryAddressCheck,
       showRecords: true
     },
     productPage: "subscriptions",

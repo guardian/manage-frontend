@@ -11,6 +11,7 @@ import {
   formatDate,
   getFuturePlanIfVisible,
   getMainPlan,
+  isGift,
   isPaidSubscriptionPlan,
   isProduct,
   MembersDataApiItem,
@@ -227,10 +228,11 @@ const getProductDetailRenderer = (
   const alternateManagementCtaLabel =
     productType.alternateManagementCtaLabel &&
     productType.alternateManagementCtaLabel(productDetail);
-  const mainPlan = getMainPlan(productDetail.subscription);
+  const subscription = productDetail.subscription;
+  const mainPlan = getMainPlan(subscription);
   return (
     <div
-      key={productDetail.subscription.subscriptionId}
+      key={subscription.subscriptionId}
       css={{
         borderTop:
           productDetailList.length > 1
@@ -239,8 +241,8 @@ const getProductDetailRenderer = (
         padding: "5px 0 20px"
       }}
     >
-      {productDetail.subscription.cancelledAt ? (
-        getCancellationSummary(productType)(productDetail.subscription)
+      {subscription.cancelledAt ? (
+        getCancellationSummary(productType)(subscription)
       ) : (
         <>
           {productDetailList.length > 1 && (
@@ -254,6 +256,7 @@ const getProductDetailRenderer = (
                 <h2>
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                  {isGift(subscription) && " [GIFT]"}
                 </h2>
               )}
             </PageContainer>
@@ -302,7 +305,7 @@ const getProductDetailRenderer = (
             {productPageProperties.showSubscriptionId && (
               <ProductDetailRow
                 label={"Subscription ID"}
-                data={productDetail.subscription.subscriptionId}
+                data={subscription.subscriptionId}
               />
             )}
             {productPageProperties.tierRowLabel &&
@@ -332,35 +335,32 @@ const getProductDetailRenderer = (
                       ) : (
                         productType.alternateTierValue || productDetail.tier
                       )}
-                      {getMainPlan(productDetail.subscription).name && (
-                        <i>
-                          &nbsp;({getMainPlan(productDetail.subscription).name})
-                        </i>
-                      )}
+                      {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                      {isGift(subscription) && " [GIFT]"}
                     </>
                   }
                 />
               )}
             {(productPageProperties.forceShowJoinDateOnly ||
-              !productDetail.subscription.start) && (
+              !subscription.start) && (
               <ProductDetailRow
                 label={"Join date"}
                 data={formatDate(productDetail.joinDate)}
               />
             )}
-            {productDetail.subscription.start &&
+            {subscription.start &&
               !productPageProperties.forceShowJoinDateOnly && (
                 <ProductDetailRow
                   label={"Start date"}
-                  data={formatDate(productDetail.subscription.start)}
+                  data={formatDate(subscription.start)}
                 />
               )}
             {productType.showTrialRemainingIfApplicable &&
-              productDetail.subscription.trialLength > 0 && (
+              subscription.trialLength > 0 && (
                 <ProductDetailRow
                   label={"Trial remaining"}
-                  data={`${productDetail.subscription.trialLength} day${
-                    productDetail.subscription.trialLength !== 1 ? "s" : ""
+                  data={`${subscription.trialLength} day${
+                    subscription.trialLength !== 1 ? "s" : ""
                   }`}
                 />
               )}
@@ -379,46 +379,44 @@ const getProductDetailRenderer = (
                   {"Cancel this " + productType.friendlyName}
                 </Link>
               )}
-            {shouldHaveHolidayStopsFlow(productType) &&
-              productDetail.subscription.autoRenew && (
-                <ProductDetailRow
-                  label="Holiday stop"
-                  data={
-                    <div>
-                      <div
-                        css={{
-                          display: "inline-block",
-                          margin: "10px",
-                          marginLeft: 0
-                        }}
-                      >
-                        Going on holiday?
-                      </div>
-                      <LinkButton
-                        text="Manage your suspensions"
-                        to={"/suspend/" + productType.urlPart}
-                        state={productDetail}
-                        right
-                      />
+            {shouldHaveHolidayStopsFlow(productType) && subscription.autoRenew && (
+              <ProductDetailRow
+                label="Holiday stop"
+                data={
+                  <div>
+                    <div
+                      css={{
+                        display: "inline-block",
+                        margin: "10px",
+                        marginLeft: 0
+                      }}
+                    >
+                      Going on holiday?
                     </div>
-                  }
-                />
-              )}
-            {productType.delivery?.showAddress &&
-              productDetail.subscription.deliveryAddress && (
-                <ProductDetailRow
-                  label="Delivery address"
-                  alignItemsAtTop
-                  data={
-                    <DeliveryAddressDisplay
-                      {...productDetail.subscription.deliveryAddress}
-                      withEditButton={true}
-                      allProductDetails={productDetailList}
-                      productUrlPart={productType.urlPart}
+                    <LinkButton
+                      text="Manage your suspensions"
+                      to={"/suspend/" + productType.urlPart}
+                      state={productDetail}
+                      right
                     />
-                  }
-                />
-              )}
+                  </div>
+                }
+              />
+            )}
+            {productType.delivery?.showAddress?.(subscription) && (
+              <ProductDetailRow
+                label="Delivery address"
+                alignItemsAtTop
+                data={
+                  <DeliveryAddressDisplay
+                    {...subscription.deliveryAddress}
+                    withEditButton={true}
+                    allProductDetails={productDetailList}
+                    productUrlPart={productType.urlPart}
+                  />
+                }
+              />
+            )}
             {productType.delivery?.showRecords && (
               <ProductDetailRow
                 label="Delivery history"
