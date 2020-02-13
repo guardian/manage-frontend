@@ -159,6 +159,11 @@ export const UserNav = () => {
       hideAtDesktop: true
     },
     {
+      title: "Help",
+      link: "/help",
+      hideAtDesktop: true
+    },
+    {
       title: "Comments & replies",
       link: "/profile/user" // note this hits a redirect/proxy endpoint
     },
