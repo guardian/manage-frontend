@@ -127,6 +127,10 @@ export interface Subscription {
   deliveryAddressChangeEffectiveDate?: string;
 }
 
+export interface SubscriptionWithDeliveryAddress extends Subscription {
+  deliveryAddress: DeliveryAddress;
+}
+
 export interface WithSubscription {
   subscription: Subscription;
 }
