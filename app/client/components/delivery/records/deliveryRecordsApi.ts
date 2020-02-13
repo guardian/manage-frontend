@@ -62,16 +62,16 @@ export interface DeliveryRecordsResponse {
 
 export interface DeliveryRecordsPostObj {
   id: string;
-  creditAmount: number;
-  invoiceDate: string;
+  creditAmount: number | undefined;
+  invoiceDate: string | null | undefined;
 }
 
 export interface DeliveryRecordsPostPayload {
-  productName: string;
+  productName?: string;
   description?: string;
-  problemType: string;
+  problemType?: string;
   repeatDeliveryProblem?: boolean;
-  deliveryRecords: DeliveryRecordsPostObj[];
+  deliveryRecords?: DeliveryRecordsPostObj[] | null;
   newContactPhoneNumbers?: ContactPhoneNumbers;
 }
 
@@ -84,7 +84,8 @@ export const createDeliveryRecordsFetcher = (subscriptionId: string) => () =>
 
 export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
-  payload: DeliveryRecordsPostPayload
+  payload: DeliveryRecordsPostPayload,
+  isTestUser: boolean
 ) => () =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
     credentials: "include",

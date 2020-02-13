@@ -43,6 +43,7 @@ export interface RawPotentialHolidayStopDetail {
 
 export interface PotentialHolidayStopsResponse {
   potentials: RawPotentialHolidayStopDetail[];
+  nextInvoiceDateAfterToday: string;
 }
 
 export interface MinimalHolidayStopRequest {
