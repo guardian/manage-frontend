@@ -5,14 +5,6 @@ import {
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 
-export interface DeliveryDetails {
-  showAddress?: true;
-  showRecords?: true;
-  showDeliveryInstructions?: true;
-  numberOfProblemRecordsToShow?: number;
-  contactUserOnExistingProblemReport?: boolean;
-}
-
 interface DeliveryProblem {
   problemType: string;
 }

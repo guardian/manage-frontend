@@ -1,5 +1,6 @@
 import React from "react";
 import { friendlyLongDateFormat } from "../../../shared/dates";
+import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 import { Button, LinkButton } from "../buttons";
 import { HideFunction, Modal } from "../modal";
@@ -11,6 +12,7 @@ import { formatDateRangeAsFriendly } from "./summaryTable";
 
 export interface ExistingHolidayStopActionsProps
   extends MinimalHolidayStopRequest {
+  isTestUser: boolean;
   reloadParent?: ReFetch;
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
@@ -139,6 +141,9 @@ export class ExistingHolidayStopActions extends React.Component<
 
   private withdrawHolidayStopFetch = () =>
     fetch(`/api/holidays/${this.props.subscriptionName}/${this.props.id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${this.props.isTestUser}`
+      }
     });
 }

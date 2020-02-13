@@ -114,7 +114,6 @@ export class HolidayReview extends React.Component<
                   isProduct(productDetail) ? (
                     <PotentialHolidayStopsAsyncLoader
                       fetch={getPotentialHolidayStopsFetcher(
-                        true,
                         productDetail.subscription.subscriptionId,
                         dateChooserState.selectedRange.start,
                         dateChooserState.selectedRange.end,
@@ -177,6 +176,7 @@ export class HolidayReview extends React.Component<
             <SummaryTable
               data={dateChooserStateWithCredits}
               alternateSuspendedColumnHeading="To be suspended"
+              isTestUser={productDetail.isTestUser}
               subscription={productDetail.subscription}
               issueKeyword={this.props.productType.holidayStops.issueKeyword}
             />

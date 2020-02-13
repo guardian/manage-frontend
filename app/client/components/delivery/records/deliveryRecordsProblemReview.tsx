@@ -399,7 +399,6 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
   return (
     <PotentialHolidayStopsAsyncLoader
       fetch={getPotentialHolidayStopsFetcher(
-        true,
         deliveryIssue?.subscriptionId,
         moment(problemStartDate),
         moment(problemEndDate),

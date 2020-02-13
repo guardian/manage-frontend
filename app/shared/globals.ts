@@ -3,8 +3,6 @@ import { AbTest, OphanComponentEvent } from "./ophanTypes";
 export interface CommonGlobals {
   domain: string;
   dsn: string | null;
-  polyfilled?: boolean;
-  onPolyfilled?: () => void;
 }
 
 export interface Globals extends CommonGlobals {
@@ -17,7 +15,6 @@ export interface Globals extends CommonGlobals {
   };
   abTest?: AbTest;
   identityDetails: IdentityDetails;
-  abTestVariant?: string;
 }
 
 declare global {

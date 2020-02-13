@@ -41,6 +41,7 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                       </p>
                       <SummaryTable
                         data={dateChooserState}
+                        isTestUser={productDetail.isTestUser}
                         subscription={productDetail.subscription}
                         issueKeyword={
                           props.productType.holidayStops.issueKeyword

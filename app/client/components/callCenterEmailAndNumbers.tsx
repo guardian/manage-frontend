@@ -143,7 +143,13 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
                 ${innerSectionPCss}
               `}
             >
-              <span>+44 (0) 330 333 6790</span>
+              <span
+                css={css`
+                  ${innerSectionBlockSpanCss}
+                `}
+              >
+                +44 (0) 330 333 6790
+              </span>
               8am - 8pm on weekdays, 8am - 6pm at weekends (GMP/BST)
             </p>
           </div>

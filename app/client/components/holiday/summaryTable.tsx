@@ -30,6 +30,7 @@ const cellCss = {
 
 export interface SummaryTableProps {
   data: HolidayStopRequest[] | SharedHolidayDateChooserState;
+  isTestUser: boolean;
   subscription: Subscription;
   issueKeyword: string;
   alternateSuspendedColumnHeading?: string;
@@ -51,6 +52,7 @@ export const formatDateRangeAsFriendly = (range: DateRange) =>
 
 interface SummaryTableRowProps extends MinimalHolidayStopRequest {
   issueKeyword: string;
+  isTestUser: boolean;
   isOperatingOnNewHolidayStop: boolean;
   reloadParent?: ReFetch;
   currency?: string;
