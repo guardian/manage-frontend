@@ -16,6 +16,7 @@ import {
 import { OphanProduct } from "./ophanTypes";
 import {
   formatDate,
+  isGift,
   ProductDetail,
   Subscription,
   SubscriptionWithDeliveryAddress
@@ -228,7 +229,7 @@ const getNoProductInTabCopy = (links: NavItem[]) => {
 const showDeliveryAddressCheck = (
   subscription: Subscription
 ): subscription is SubscriptionWithDeliveryAddress =>
-  subscription.readerType !== "Gift" && !!subscription.deliveryAddress;
+  !isGift(subscription) && !!subscription.deliveryAddress;
 
 export type ProductTypeKeys =
   | "membership"

@@ -135,6 +135,9 @@ export interface WithSubscription {
   subscription: Subscription;
 }
 
+export const isGift = (subscription: Subscription) =>
+  subscription.readerType === "Gift";
+
 export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
   subscription: Subscription
 ) => {

@@ -11,6 +11,7 @@ import {
   formatDate,
   getFuturePlanIfVisible,
   getMainPlan,
+  isGift,
   isPaidSubscriptionPlan,
   isProduct,
   MembersDataApiItem,
@@ -255,6 +256,7 @@ const getProductDetailRenderer = (
                 <h2>
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                  {isGift(subscription) && " [GIFT]"}
                 </h2>
               )}
             </PageContainer>
@@ -334,6 +336,7 @@ const getProductDetailRenderer = (
                         productType.alternateTierValue || productDetail.tier
                       )}
                       {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                      {isGift(subscription) && " [GIFT]"}
                     </>
                   }
                 />
