@@ -31,7 +31,7 @@ interface FaqLink {
 
 export type FaqSectionNames =
   | "Delivery"
-  | "Billing and Payments"
+  | "Billing and payments"
   | "Print subscriptions"
   | "Account";
 
@@ -65,11 +65,11 @@ const faqs: Faqs = {
       }
     ],
     seeAll: {
-      title: "See All Delivery FAQs",
+      title: "See all delivery FAQs",
       link: "https://www.theguardian.com/help/2017/dec/11/help-with-delivery"
     }
   },
-  "Billing and Payments": {
+  "Billing and payments": {
     links: [
       {
         title: "How do I update my payment details?",
@@ -89,7 +89,7 @@ const faqs: Faqs = {
       }
     ],
     seeAll: {
-      title: "See All Billing and Payments FAQs",
+      title: "See all billing FAQs",
       link: "https://www.theguardian.com/help/2019/dec/13/payment-faqs"
     }
   },
@@ -113,7 +113,7 @@ const faqs: Faqs = {
       }
     ],
     seeAll: {
-      title: "See All Print Subscription FAQs",
+      title: "See all print FAQs",
       link:
         "https://www.theguardian.com/subscriber-direct/subscription-frequently-asked-questions"
     }
@@ -138,7 +138,7 @@ const faqs: Faqs = {
       }
     ],
     seeAll: {
-      title: "See All Account FAQs",
+      title: "See all account FAQs",
       link: "https://www.theguardian.com/help/identity-faq"
     }
   }
