@@ -113,7 +113,7 @@ const faqs: Faqs = {
       }
     ],
     seeAll: {
-      title: "See all print subscription FAQs",
+      title: "See all print FAQs",
       link:
         "https://www.theguardian.com/subscriber-direct/subscription-frequently-asked-questions"
     }
