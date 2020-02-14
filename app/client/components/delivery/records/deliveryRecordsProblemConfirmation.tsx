@@ -26,7 +26,10 @@ import {
   DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
-import { DeliveryRecordsProblemPostPayloadContext } from "./deliveryRecordsProblemContext";
+import {
+  DeliveryRecordsProblemPostPayloadContext,
+  DeliveryRecordCreditContext
+} from "./deliveryRecordsProblemContext";
 
 const renderDeliveryRecordsConfirmation = (
   props: RouteableStepProps,
@@ -61,6 +64,7 @@ const DeliveryRecordsProblemConfirmationFC = (
   const deliveryIssuePostPayload = useContext(
     DeliveryRecordsProblemPostPayloadContext
   );
+  const deliveryProblemCredit = useContext(DeliveryRecordCreditContext);
   const filterData = (productPartName: ProductUrlPart) => {
     return props.data.results.filter(
       (record, index) =>
@@ -147,6 +151,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
+                  min-width: 12ch;
                 `}
               >
                 {"reference id here"}
@@ -193,6 +198,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
+                  min-width: 12ch;
                 `}
               >
                 {moment().format("DD MMM YYYY")}
@@ -239,6 +245,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
+                  min-width: 12ch;
                 `}
               >
                 {deliveryIssuePostPayload?.productName}
@@ -261,7 +268,22 @@ const DeliveryRecordsProblemConfirmationFC = (
                   ${ddCss}
                 `}
               >
-                {"55555555555"}
+                {Object.entries(props.data.contactPhoneNumbers)
+                  .filter(
+                    phoneNumber =>
+                      phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
+                  )
+                  .map((phoneNumber, index) => (
+                    <span
+                      key={`phoneNo-${index}`}
+                      css={css`
+                        display: block;
+                        margin-bottom: ${space[3]};
+                      `}
+                    >
+                      {phoneNumber[1]}
+                    </span>
+                  ))}
               </dd>
             </div>
             <div
@@ -319,22 +341,27 @@ const DeliveryRecordsProblemConfirmationFC = (
               position: relative;
               display: block;
               margin: ${space[5]}px;
-              padding: 0 ${space[5]}px 0 ${space[5] + space[2]}px;
+              padding: ${deliveryProblemCredit?.showCredit
+                ? `0 ${space[5]}px 0 ${space[5] + space[2]}px`
+                : `${space[3]}px ${space[3]}px ${space[3]}px ${(space[3] * 2) + 17}px`};
+              background-color: ${deliveryProblemCredit?.showCredit ? "transparent" : palette.neutral[97]};
               ${textSans.small()};
             `}
           >
             <i
               css={css`
                 position: absolute;
-                top: 4px;
-                left: 0;
+                top: ${deliveryProblemCredit?.showCredit ? "4" : space[3]}px;
+                left: ${deliveryProblemCredit?.showCredit ? 0 : `${space[3]}px`};
               `}
             >
               <InfoIconDark fillColor={palette.brand.bright} />
             </i>
-            We apologies for any inconvenience caused. We will do our best to
-            improve our service.
+            {deliveryProblemCredit?.showCredit
+              ? "We apologies for any inconvenience caused. We will do our best to improve our service."
+              : "Your case will be marked as a high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
           </span>
+          {deliveryProblemCredit?.showCredit}
         </section>
       </PageNavAndContentContainer>
     </WizardStep>

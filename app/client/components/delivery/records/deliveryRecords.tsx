@@ -147,6 +147,9 @@ const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     );
   };
 
+  const capatalize = (input: string) =>
+    input.charAt(0).toUpperCase() + input.slice(1);
+
   const isRecordInCurrentPage = (
     index: number,
     currentPageStartIndex: number,
@@ -163,7 +166,10 @@ const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       value={{
         subscriptionId: props.subscriptionId,
         subscriptionCurrency: props.subscriptionCurrency,
-        productName: props.routeableStepProps.productType.friendlyName,
+        productName: capatalize(
+          props.routeableStepProps.productType.shortenedFriendlyName ||
+            props.routeableStepProps.productType.friendlyName
+        ),
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)

@@ -24,9 +24,16 @@ interface DeliveryRecordsProblemContextInterface {
   contactPhoneNumbers?: ContactPhoneNumbers;
 }
 
+export interface DeliveryProblemCreditInterface {
+  showCredit?: boolean;
+  creditDate?: string | null;
+}
+
 export const DeliveryRecordsProblemContext = createContext<DeliveryRecordsProblemContextInterface | null>(
   null
 );
+
+export const DeliveryRecordCreditContext = createContext<DeliveryProblemCreditInterface | null>(null);
 
 export const DeliveryRecordsProblemPostPayloadContext = createContext<DeliveryRecordsPostPayload | null>(
   null

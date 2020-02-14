@@ -24,7 +24,8 @@ import {
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordsProblemContext,
-  DeliveryRecordsProblemPostPayloadContext
+  DeliveryRecordsProblemPostPayloadContext,
+  DeliveryRecordCreditContext
 } from "./deliveryRecordsProblemContext";
 import { deliveryProblemsRadioArr } from "./deliveryRecordsProblemForm";
 import { UserPhoneNumber } from "./userPhoneNumber";
@@ -91,6 +92,9 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
           ...(phoneNumbers && { newContactPhoneNumbers: phoneNumbers })
         }}
       >
+        <DeliveryRecordCreditContext.Provider
+          value={{showCredit: deliveryIssue.showProblemCredit, creditDate}}
+        >
         <WizardStep routeableStepProps={props} hideBackButton fullWidth>
           <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
             <h1>Delivery history</h1>
@@ -389,6 +393,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
             </div>
           </PageNavAndContentContainer>
         </WizardStep>
+        </DeliveryRecordCreditContext.Provider>
       </DeliveryRecordsProblemPostPayloadContext.Provider>
     );
   };

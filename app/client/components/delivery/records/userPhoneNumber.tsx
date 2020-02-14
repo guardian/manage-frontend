@@ -78,7 +78,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                       display: inline-block;
                     `}
                   >
-                    {phoneNumber[0]}
+                    {`${phoneNumber[0]} number`}
                   </dt>
                   <dd
                     css={css`
@@ -106,11 +106,13 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
             }}
           >
             {currentPhoneNumbers?.length ? (
-              currentPhoneNumbers.map(phoneNumber => (
+              currentPhoneNumbers.map((phoneNumber, index) => (
                 <TextInput
-                  label={phoneNumber[0]}
+                  key={`phonenumberinput-${index}`}
+                  label={`${phoneNumber[0]} number`}
                   supporting="Enter your phone number"
                   width={30}
+                  value={phoneNumber[1]}
                   onChange={handleInputChange(phoneNumber[0])}
                 />
               ))
@@ -140,7 +142,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               setShowPhoneInput(true);
             }}
           >
-            Update phone number
+            Update phone number asd
           </Button>
         )}
       </>

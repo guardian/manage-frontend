@@ -31,6 +31,15 @@ export type ProductFriendlyName =
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
+export type ProductShortenedFriendlyName =
+  | "membership"
+  | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
+  | "newspaper"
+  | "newspaper voucher"
+  | "home delivery"
+  | "digital"
+  | "Guardian Weekly"
+  | "subscription";
 export type ProductUrlPart =
   | "membership"
   | "contributions"
@@ -106,6 +115,7 @@ export interface DeliveryProperties {
 
 export interface ProductType {
   friendlyName: ProductFriendlyName;
+  shortenedFriendlyName?: ProductShortenedFriendlyName;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
   legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
@@ -361,6 +371,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   homedelivery: {
     friendlyName: "home delivery subscription",
+    shortenedFriendlyName: "home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
@@ -406,6 +417,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   guardianweekly: {
     friendlyName: "Guardian Weekly subscription",
+    shortenedFriendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
