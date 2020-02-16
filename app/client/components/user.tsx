@@ -206,7 +206,7 @@ const User = () => (
               productType={productType}
             >
               <DeliveryRecordsProblemConfirmation
-                path="confirmation"
+                path="confirmed"
                 productType={productType}
               />
             </DeliveryRecordsProblemReview>

@@ -6,6 +6,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import React, { FormEvent, useState } from "react";
 import { ContactPhoneNumbers } from "./deliveryRecordsApi";
+import { minWidth } from "../../../styles/breakpoints";
 
 interface UserPhoneNumberProps {
   existingPhoneNumber?: ContactPhoneNumbers;
@@ -44,8 +45,12 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     <div
       css={css`
         background-color: ${palette.neutral["97"]};
-        padding: ${space[5]}px;
-        margin: ${space[5]}px;
+        padding: ${space[3]}px;
+        margin: ${space[3]}px;
+        ${minWidth.tablet} {
+          padding: ${space[5]}px;
+          margin: ${space[5]}px;
+        }
       `}
     >
       <>
@@ -112,6 +117,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                   label={`${phoneNumber[0]} number`}
                   supporting="Enter your phone number"
                   width={30}
+                  css={css`max-width: 100%;`}
                   value={phoneNumber[1]}
                   onChange={handleInputChange(phoneNumber[0])}
                 />
@@ -121,6 +127,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                 label="Phone number"
                 supporting="Enter your phone number"
                 width={30}
+                css={css`max-width: 100%;`}
                 onChange={handleInputChange("Phone")}
               />
             )}
@@ -142,7 +149,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               setShowPhoneInput(true);
             }}
           >
-            Update phone number asd
+            Update phone number
           </Button>
         )}
       </>

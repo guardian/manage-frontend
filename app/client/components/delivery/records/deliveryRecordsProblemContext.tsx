@@ -26,6 +26,7 @@ interface DeliveryRecordsProblemContextInterface {
 
 export interface DeliveryProblemCreditInterface {
   showCredit?: boolean;
+  creditAmount?:string;
   creditDate?: string | null;
 }
 

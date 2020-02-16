@@ -38,7 +38,7 @@ describe("DeliveryRecordStatus", () => {
         .find("span")
         .at(0)
         .text()
-    ).toEqual("Holiday Stop");
+    ).toEqual("Holiday stop");
   });
 
   it("renders delivery problem status", () => {
@@ -56,6 +56,6 @@ describe("DeliveryRecordStatus", () => {
         .find("span")
         .at(0)
         .text()
-    ).toEqual("Delivery problem");
+    ).toEqual("Problem reported (uh oh!)");
   });
 });

@@ -29,18 +29,20 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         display: inline-block;
         vertical-align: top;
         ${
-          ignoreMinWidthAtNonMobile ? "margin-right: 16px;" : "min-width: 15ch;"
+          ignoreMinWidthAtNonMobile ? "margin-right: 16px;" : "min-width: 10ch;"
+        }
+        ${minWidth.tablet} {
+          ${
+            ignoreMinWidthAtNonMobile ? "margin-right: 16px;" : "min-width: 15ch;"
+          } 
         }
     `;
 
   const ddCss = (withMobileBlockContent?: boolean) => `
         ${textSans.medium()};
-        display: ${withMobileBlockContent ? "block" : "inline-block"};
+        display: inline-block;
         margin-left: 0;
         vertical-align: top;
-        ${minWidth.tablet} {
-        display: inline-block;
-        }
     `;
 
   const recordRowCss = `
@@ -51,15 +53,20 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
       css={css`
         border: 1px solid ${palette.neutral["86"]};
         margin: 0;
-        padding: ${space[5]}px;
+        padding: ${space[3]}px;
         ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
-          "padding-left: 70px;"}
+          `padding-left: ${(space[3] * 2) + 40 }px;`}
         width: 100%;
         ${props.listIndex > 0 && "border-top: none;"}
         position: relative;
         opacity: ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_1
           ? "0.5"
           : "1"};
+        ${minWidth.tablet} {
+          padding: ${space[5]}px;
+          ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
+            `padding-left: ${(space[5] * 2) + 40 }px;`}
+        }
       `}
     >
       {props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
@@ -69,8 +76,11 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             top: 0;
             left: 0;
             height: 100%;
-            padding: 0 18px;
+            padding: 0 ${space[3]}px;
             border-right: 1px solid ${palette.neutral["86"]};
+            ${minWidth.tablet} {
+              padding: 0 18px;
+            }
           `}
         >
           <CheckboxGroup

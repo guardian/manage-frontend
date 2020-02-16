@@ -11,24 +11,24 @@ import {
   ProductDetail
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
-import { ProductUrlPart } from "../../../../shared/productTypes";
-import { maxWidth } from "../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import { PageStatus } from "./deliveryRecords";
 import {
-  createDeliveryRecordsFetcher,
-  // createDeliveryRecordsProblemPost,
+  createDeliveryRecordsProblemPost,
   DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import {
-  DeliveryRecordsProblemPostPayloadContext,
-  DeliveryRecordCreditContext
+  DeliveryRecordCreditContext,
+  DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 
 const renderDeliveryRecordsConfirmation = (
@@ -65,19 +65,27 @@ const DeliveryRecordsProblemConfirmationFC = (
     DeliveryRecordsProblemPostPayloadContext
   );
   const deliveryProblemCredit = useContext(DeliveryRecordCreditContext);
-  const filterData = (productPartName: ProductUrlPart) => {
-    return props.data.results.filter(
-      (record, index) =>
-        deliveryIssuePostPayload?.deliveryRecords?.findIndex(
-          affectedRecord => affectedRecord.id === record.id
-        ) !== -1
-    );
-  };
+  const filteredData = props.data.results.filter(
+    (record, index) =>
+      deliveryIssuePostPayload?.deliveryRecords?.findIndex(
+        affectedRecord => affectedRecord.id === record.id
+      ) !== -1
+  );
+  const affectedRecordExampleId = deliveryIssuePostPayload?.deliveryRecords?.find(
+    record => record.id
+  )?.id;
+  const problemCaseId = filteredData.find(
+    record => record.problemCaseId && record.id === affectedRecordExampleId
+  )?.problemCaseId;
+
   const dtCss: string = `
     font-weight: 500; 
     display: inline-block;
     vertical-align: top;
-    min-width: 16ch;
+    min-width: 12ch;
+    ${minWidth.tablet} {
+      min-width: 16ch;
+    }
   `;
   const ddCss: string = `
     margin: 0;
@@ -114,31 +122,40 @@ const DeliveryRecordsProblemConfirmationFC = (
         <section
           css={css`
             border: 1px solid ${palette.neutral["86"]};
+            margin-bottom: ${space[9]}px;
           `}
         >
           <h2
             css={css`
               margin: 0;
-              padding: 14px ${space[5]}px;
+              padding: 14px ${space[3]}px;
               background-color: ${palette.neutral["97"]};
               border-bottom: 1px solid ${palette.neutral["86"]};
               ${textSans.medium({ fontWeight: "bold" })};
+              ${minWidth.tablet} {
+                padding: 14px ${space[5]}px;
+              }
             `}
           >
             Reported delivery problems
           </h2>
           <dl
             css={css`
-              padding: 0 ${space[5]}px;
+              padding: 0 ${space[3]}px;
               ${textSans.medium()};
               display: flex;
               flex-wrap: wrap;
               justify-content: space-between;
+              ${minWidth.tablet} {
+                padding: 0 ${space[5]}px;
+              }
             `}
           >
             <div
               css={css`
-                flex-grow: 1;
+                ${minWidth.tablet} {
+                  min-width: 50%;
+                }
               `}
             >
               <dt
@@ -151,15 +168,21 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
-                  min-width: 12ch;
+                  ${minWidth.tablet} {
+                    min-width: 12ch;
+                  }
                 `}
               >
-                {"reference id here"}
+                {problemCaseId || "-"}
               </dd>
             </div>
             <div
               css={css`
                 flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                }
               `}
             >
               <dt
@@ -174,18 +197,43 @@ const DeliveryRecordsProblemConfirmationFC = (
                   ${ddCss}
                 `}
               >
-                Reported
+                <span
+                  css={css`
+                    display: block;
+                    font-weight: bold;
+                    padding-left: 30px;
+                    position: relative;
+                  `}
+                >
+                  <i
+                    css={css`
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                    `}
+                  >
+                    <ErrorIcon fill={palette.brandYellow[300]} />
+                  </i>
+                  Reported
+                </span>
               </dd>
             </div>
             <div
               css={css`
                 flex-basis: 100%;
                 height: 0;
+                ${minWidth.tablet} {
+                  margin-top: ${space[5]}px;
+                }
               `}
             />
             <div
               css={css`
-                flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                  min-width: 50%;
+                }
               `}
             >
               <dt
@@ -198,7 +246,9 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
-                  min-width: 12ch;
+                  ${minWidth.tablet} {
+                    min-width: 12ch;
+                  }
                 `}
               >
                 {moment().format("DD MMM YYYY")}
@@ -207,6 +257,10 @@ const DeliveryRecordsProblemConfirmationFC = (
             <div
               css={css`
                 flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                }
               `}
             >
               <dt
@@ -228,11 +282,18 @@ const DeliveryRecordsProblemConfirmationFC = (
               css={css`
                 flex-basis: 100%;
                 height: 0;
+                ${minWidth.tablet} {
+                  margin-top: ${space[5]}px;
+                }
               `}
             />
             <div
               css={css`
-                flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                  min-width: 50%;
+                }
               `}
             >
               <dt
@@ -245,7 +306,9 @@ const DeliveryRecordsProblemConfirmationFC = (
               <dd
                 css={css`
                   ${ddCss}
-                  min-width: 12ch;
+                  ${minWidth.tablet} {
+                    min-width: 12ch;
+                  }
                 `}
               >
                 {deliveryIssuePostPayload?.productName}
@@ -254,6 +317,10 @@ const DeliveryRecordsProblemConfirmationFC = (
             <div
               css={css`
                 flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                }
               `}
             >
               <dt
@@ -290,11 +357,18 @@ const DeliveryRecordsProblemConfirmationFC = (
               css={css`
                 flex-basis: 100%;
                 height: 0;
+                ${minWidth.tablet} {
+                  margin-top: ${space[5]}px;
+                }
               `}
             />
             <div
               css={css`
                 flex-grow: 1;
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  margin-top: 0;
+                }
               `}
             >
               <dt
@@ -315,23 +389,26 @@ const DeliveryRecordsProblemConfirmationFC = (
           </dl>
           <div
             css={css`
-              padding: 0 ${space[5]}px;
+              padding: 0 ${space[3]}px;
               margin-bottom: ${space[5]}px;
+              ${minWidth.tablet} {
+                padding: 0 ${space[5]}px;
+              }
             `}
           >
             {props.data.results.length ? (
-              filterData(
-                props.routeableStepProps.productType.urlPart
-              ).map((deliveryRecord: DeliveryRecordApiItem, listIndex) => (
-                <DeliveryRecordCard
-                  key={deliveryRecord.id}
-                  deliveryRecord={deliveryRecord}
-                  listIndex={listIndex}
-                  pageStatus={PageStatus.REPORT_ISSUE_CONFIRMATION}
-                  deliveryProblemMap={props.data.deliveryProblemMap}
-                  recordCurrency={props.subscriptionCurrency}
-                />
-              ))
+              filteredData.map(
+                (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
+                  <DeliveryRecordCard
+                    key={deliveryRecord.id}
+                    deliveryRecord={deliveryRecord}
+                    listIndex={listIndex}
+                    pageStatus={PageStatus.REPORT_ISSUE_CONFIRMATION}
+                    deliveryProblemMap={props.data.deliveryProblemMap}
+                    recordCurrency={props.subscriptionCurrency}
+                  />
+                )
+              )
             ) : (
               <p>There aren't any delivery records to show you yet</p>
             )}
@@ -340,19 +417,27 @@ const DeliveryRecordsProblemConfirmationFC = (
             css={css`
               position: relative;
               display: block;
-              margin: ${space[5]}px;
+              margin: ${space[3]}px;
               padding: ${deliveryProblemCredit?.showCredit
                 ? `0 ${space[5]}px 0 ${space[5] + space[2]}px`
-                : `${space[3]}px ${space[3]}px ${space[3]}px ${(space[3] * 2) + 17}px`};
-              background-color: ${deliveryProblemCredit?.showCredit ? "transparent" : palette.neutral[97]};
+                : `${space[3]}px ${space[3]}px ${space[3]}px ${space[3] * 2 +
+                    17}px`};
+              background-color: ${deliveryProblemCredit?.showCredit
+                ? "transparent"
+                : palette.neutral[97]};
               ${textSans.small()};
+              ${minWidth.tablet} {
+                margin: ${space[5]}px;
+              }
             `}
           >
             <i
               css={css`
                 position: absolute;
-                top: ${deliveryProblemCredit?.showCredit ? "4" : space[3]}px;
-                left: ${deliveryProblemCredit?.showCredit ? 0 : `${space[3]}px`};
+                top: ${deliveryProblemCredit?.showCredit ? "2" : space[3]}px;
+                left: ${deliveryProblemCredit?.showCredit
+                  ? 0
+                  : `${space[3]}px`};
               `}
             >
               <InfoIconDark fillColor={palette.brand.bright} />
@@ -361,8 +446,68 @@ const DeliveryRecordsProblemConfirmationFC = (
               ? "We apologies for any inconvenience caused. We will do our best to improve our service."
               : "Your case will be marked as a high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
           </span>
-          {deliveryProblemCredit?.showCredit}
+          {deliveryProblemCredit?.showCredit && (
+            <dl
+              css={css`
+                ${textSans.medium()};
+                padding: ${space[5]}px;
+                margin: ${space[5]}px;
+                background-color: ${palette.neutral["97"]};
+              `}
+            >
+              <div
+                css={css`
+                  display: inline-block;
+                `}
+              >
+                <dt
+                  css={css`
+                    display: inline-block;
+                    font-weight: bold;
+                  `}
+                >
+                  Credit amount:
+                </dt>
+                <dd
+                  css={css`
+                    display: inline-block;
+                    min-width: 9ch;
+                  `}
+                >
+                  {deliveryProblemCredit.creditAmount}
+                </dd>
+              </div>
+              <div
+                css={css`
+                  display: inline-block;
+                `}
+              >
+                <dt
+                  css={css`
+                    display: inline-block;
+                    font-weight: bold;
+                  `}
+                >
+                  Credit date:
+                </dt>
+                <dd
+                  css={css`
+                    display: inline-block;
+                  `}
+                >
+                  {deliveryProblemCredit.creditDate}
+                </dd>
+              </div>
+            </dl>
+          )}
         </section>
+        <LinkButton
+          to={navLinks.subscriptions.link}
+          text={"Go back to subscriptions"}
+          colour={palette.brand.main}
+          textColour={palette.neutral[100]}
+          right
+        />
       </PageNavAndContentContainer>
     </WizardStep>
   );
@@ -374,13 +519,7 @@ export const DeliveryRecordsProblemConfirmation = (
   const deliveryIssuePostPayload = useContext(
     DeliveryRecordsProblemPostPayloadContext
   );
-  console.log(
-    `deliveryIssuePostPayload = ${JSON.stringify(
-      deliveryIssuePostPayload,
-      null,
-      " "
-    )}`
-  );
+
   return (
     deliveryIssuePostPayload && (
       <FlowStartMultipleProductDetailHandler
@@ -401,14 +540,11 @@ export const DeliveryRecordsProblemConfirmation = (
         ) => (
           <DeliveryRecordsApiAsyncLoader
             render={renderDeliveryRecordsConfirmation(props, productDetail)}
-            fetch={createDeliveryRecordsFetcher(
-              productDetail.subscription.subscriptionId
+            fetch={createDeliveryRecordsProblemPost(
+              productDetail.subscription.subscriptionId,
+              deliveryIssuePostPayload,
+              productDetail.isTestUser
             )}
-            // fetch={createDeliveryRecordsProblemPost(
-            //   productDetail.subscription.subscriptionId,
-            //   deliveryIssuePostPayload,
-            //   productDetail.isTestUser
-            // )}
             loadingMessage={"Reporting problem..."}
           />
         )}

@@ -6,6 +6,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import React, { FormEvent, useEffect, useState } from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
+import { minWidth } from "../../../styles/breakpoints";
 
 interface DeliveryRecordProblemFormProps {
   showNextStepButton: boolean;
@@ -103,7 +104,7 @@ export const DeliveryRecordProblemForm = (
         }}
         css={css`
           border: 1px solid ${palette.neutral["86"]};
-          margin: 0 0 20px;
+          margin: 0 0 ${space[5]}px;
           padding: 0;
         `}
       >
@@ -112,11 +113,14 @@ export const DeliveryRecordProblemForm = (
             display: block;
             width: 100%;
             margin: 0;
-            padding: 14px;
+            padding: ${space[3]}px;
             float: left;
             background-color: ${palette.neutral["97"]};
             border-bottom: 1px solid ${palette.neutral["86"]};
             ${textSans.medium({ fontWeight: "bold" })};
+            ${minWidth.tablet} {
+              padding: ${space[3]}px ${space[5]}px;
+            }
           `}
         >
           Step 1. What type of problem are you experiencing?
@@ -131,9 +135,12 @@ export const DeliveryRecordProblemForm = (
           <ul
             css={css`
               list-style: none;
-              padding: 14px;
-              margin: 6px 0 0;
+              padding: ${space[3]}px;
+              margin: 0;
               clear: left;
+              ${minWidth.tablet} {
+                padding: ${space[5]}px;
+              }
             `}
           >
             {deliveryProblemsRadioArr.map(
@@ -142,7 +149,6 @@ export const DeliveryRecordProblemForm = (
                   key={`deliveryProblemRadio-${index}`}
                   css={css`
                     ${textSans.medium()};
-                    margin: 4px 9px;
                   `}
                 >
                   <Radio
@@ -160,9 +166,10 @@ export const DeliveryRecordProblemForm = (
                     <div
                       css={css`
                         display: inline-block;
-                        width: 100%;
-                        max-width: 460px;
                         margin-left: 32px;
+                        ${minWidth.tablet} {
+                          display: block;
+                        }
                       `}
                     >
                       <>
@@ -220,9 +227,12 @@ export const DeliveryRecordProblemForm = (
                                 ? palette.news.main
                                 : palette.neutral["60"]};
                             width: 100%;
-                            max-width: 460px;
+                            max-width: 230px;
                             padding: 12px;
                             ${textSans.medium()};
+                            ${minWidth.tablet} {
+                              max-width: 460px;
+                            }
                           `}
                         />
                       </>

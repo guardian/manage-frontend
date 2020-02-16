@@ -78,7 +78,7 @@ const renderDeliveryRecords = (
   );
 };
 
-const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
+export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(
     PageStatus.READ_ONLY
   );
@@ -411,7 +411,8 @@ const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   );
 };
 
-export const DeliveryRecords = (props: RouteableStepProps) => (
+export const DeliveryRecords = (props: RouteableStepProps) => {
+  return (
   <FlowStartMultipleProductDetailHandler
     {...props}
     headingPrefix={"View delivery history"}
@@ -437,4 +438,4 @@ export const DeliveryRecords = (props: RouteableStepProps) => (
       />
     )}
   />
-);
+)};
