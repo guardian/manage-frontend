@@ -28,21 +28,18 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         font-weight: 500;
         display: inline-block;
         vertical-align: top;
-        ${
-          ignoreMinWidthAtNonMobile ? "margin-right: 16px;" : "min-width: 10ch;"
-        }
+        min-width: 10ch;
         ${minWidth.tablet} {
-          ${
-            ignoreMinWidthAtNonMobile ? "margin-right: 16px;" : "min-width: 15ch;"
-          } 
+          margin-right: 16px;
+          ${ignoreMinWidthAtNonMobile ? "min-width: 9ch;" : "min-width: 12ch;"} 
         }
     `;
 
   const ddCss = (withMobileBlockContent?: boolean) => `
         ${textSans.medium()};
         display: inline-block;
-        margin-left: 0;
         vertical-align: top;
+        margin-left: 0;
     `;
 
   const recordRowCss = `
@@ -55,7 +52,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         margin: 0;
         padding: ${space[3]}px;
         ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
-          `padding-left: ${(space[3] * 2) + 40 }px;`}
+          `padding-left: ${space[3] * 2 + 40}px;`}
         width: 100%;
         ${props.listIndex > 0 && "border-top: none;"}
         position: relative;
@@ -65,7 +62,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         ${minWidth.tablet} {
           padding: ${space[5]}px;
           ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
-            `padding-left: ${(space[5] * 2) + 40 }px;`}
+            `padding-left: ${space[5] * 2 + 40}px;`}
         }
       `}
     >
@@ -97,6 +94,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
               css={css`
                 margin-right: 0;
               `}
+              // checked={props.selectAllRecords}
               onChange={(event: FormEvent<HTMLInputElement>) => {
                 const inputEl = event.target as HTMLInputElement;
                 if (inputEl.checked) {
@@ -184,7 +182,13 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         </dt>
         <dd
           css={css`
-            ${ddCss(true)}
+            ${ddCss()}
+            width: calc(100% - 10ch);
+            margin-left: -30px;
+            ${minWidth.tablet} {
+              margin-left: 0;
+              width: auto;
+            }
           `}
         >
           <RecordStatus
@@ -242,7 +246,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
           >
             <dt
               css={css`
-                ${dtCss()}
+                ${dtCss(true)}
               `}
             >
               Credit:
@@ -250,19 +254,24 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             <dd
               css={css`
                 ${ddCss()}
+                width: calc(100% - 10ch);
+                ${minWidth.tablet} {
+                  width: auto;
+                }
               `}
             >
               {`${props.recordCurrency}${Math.abs(
                 props.deliveryRecord.credit.amount
               )}`}
               {props.deliveryRecord.credit.invoiceDate && (
-                <span
+                <p
                   css={css`
                     color: ${palette.neutral["60"]};
+                    margin: 0;
                   `}
                 >{`off of ${moment(
                   props.deliveryRecord.credit.invoiceDate
-                ).format("DD MMM YYYY")} bill`}</span>
+                ).format("DD MMM YYYY")} bill`}</p>
               )}
             </dd>
           </div>

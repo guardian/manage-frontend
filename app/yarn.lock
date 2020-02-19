@@ -1070,15 +1070,15 @@
     "@guardian/src-inline-error" "^0.7.0"
     "@guardian/src-svgs" "^0.1.0"
 
-"@guardian/src-svgs@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@guardian/src-svgs/-/src-svgs-0.0.5.tgz#3cee5277a804ab936420bfec8a7be9d8f1f2e8c3"
-  integrity sha512-BayNRc93lWlcabYlH7W6gdxjPnXj01in2TvN5QG2lhmhph3Y+JowkqMyLSrbWx7eZD53WXSgJ1zVtLWPYS4e+g==
-
 "@guardian/src-svgs@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-svgs/-/src-svgs-0.1.0.tgz#18eb61504ab8535dbd235f1d33447059f881f404"
   integrity sha512-/UMniofoZKfSSRYYWleFAEXO9fLwnfocgG3m0Jb5Vj9pk9OQ4kg3rzXg1jq43E8mfLvGKKPyaalwbMuzeYfDkA==
+
+"@guardian/src-svgs@^0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-svgs/-/src-svgs-0.13.0.tgz#97d893a6e33feb255666fef6779ffe18a7c4e2f5"
+  integrity sha512-cDIGNOaatYVDk+eWCv2cAdBlXZ2ECDxOcc897GowJYCHmy+HifL0AvzHlHRLKYRQXzVcaPfoXDOjVonA4ViHqw==
 
 "@guardian/src-text-input@^0.8.0":
   version "0.8.0"

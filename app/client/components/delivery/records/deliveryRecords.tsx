@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
+import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
@@ -15,7 +16,9 @@ import { getMainPlan } from "../../../../shared/productResponse";
 import {
   ProductTypeKeys,
   ProductTypes,
-  ProductUrlPart
+  ProductTypeWithDeliveryRecordsProperties,
+  ProductUrlPart,
+  WithProductType
 } from "../../../../shared/productTypes";
 import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
@@ -46,9 +49,12 @@ export enum PageStatus {
   REPORT_ISSUE_CONFIRMATION
 }
 
+export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
+  WithProductType<ProductTypeWithDeliveryRecordsProperties>;
+
 interface DeliveryRecordsFCProps {
   data: DeliveryRecordsResponse;
-  routeableStepProps: RouteableStepProps;
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
   subscriptionId: string;
   subscriptionCurrency: string;
   isTestUser: boolean;
@@ -60,7 +66,7 @@ interface Step1FormValidationDetails {
 }
 
 const renderDeliveryRecords = (
-  props: RouteableStepProps,
+  props: DeliveryRecordsRouteableStepProps,
   productDetail: ProductDetail
 ) => (data: DeliveryRecordsResponse) => {
   const mainPlan = getMainPlan(
@@ -98,7 +104,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [step2FormValidationDetails, setStep2FormValidationDetails] = useState<
     Step1FormValidationDetails
   >({ isValid: true });
-
   const [deliveryProblem, setDeliveryProblem] = useState<
     DeliveryRecordsProblemType
   >();
@@ -130,7 +135,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
   const filterData = (productPartName: ProductUrlPart) => {
     const NumOfRecordsToShow =
-      ProductTypes[productPartName as ProductTypeKeys].delivery
+      ProductTypes[productPartName as ProductTypeKeys].delivery?.records
         ?.numberOfProblemRecordsToShow || props.data.results.length;
 
     if (pageStatus !== PageStatus.READ_ONLY) {
@@ -170,6 +175,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           props.routeableStepProps.productType.shortenedFriendlyName ||
             props.routeableStepProps.productType.friendlyName
         ),
+        apiProductName:
+          props.routeableStepProps.productType.fulfilmentDateCalculator
+            ?.productFilenamePart,
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)
@@ -179,10 +187,11 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         showProblemCredit:
           !ProductTypes[
             props.routeableStepProps.productType.urlPart as ProductTypeKeys
-          ].delivery?.contactUserOnExistingProblemReport &&
+          ].delivery?.records?.contactUserOnExistingProblemReport &&
           !hasExistingDeliveryProblem,
         repeatDeliveryProblem: hasExistingDeliveryProblem,
-        contactPhoneNumbers: props.data.contactPhoneNumbers
+        contactPhoneNumbers: props.data.contactPhoneNumbers,
+        resetDeliveryRecordsPage
       }}
     >
       <WizardStep
@@ -191,7 +200,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         fullWidth
       >
         <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-          <h1>Delivery history</h1>
+          <h1>Delivery problem</h1>
         </PageHeaderContainer>
         <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
           {props.data.results.find(record => !record.problemCaseId) && (
@@ -224,11 +233,11 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 </p>
                 {pageStatus === PageStatus.READ_ONLY && (
                   <LinkButton
-                    colour={palette.brand.faded}
-                    textColour={palette.brand.main}
+                    colour={palette.brand.main}
                     to={""}
                     text={"Report a problem"}
                     onClick={() => {
+                      setSelectedProblemRecords([]);
                       setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
                     }}
                   />
@@ -243,6 +252,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     onFormSubmit={step1FormSubmitListener}
                     inValidationState={step1formValidationState}
                     updateValidationStatusCallback={step1FormUpdateCallback}
+                    problemTypes={
+                      props.routeableStepProps.productType.delivery.records
+                        .availableProblemTypes
+                    }
                   />
                 )}
               </div>
@@ -262,7 +275,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               border-left: 1px solid ${palette.neutral["86"]};
               border-right: 1px solid ${palette.neutral["86"]};
               margin: 0;
-              padding: 14px;
+              padding: 14px 14px 0;
               ${textSans.medium({ fontWeight: "bold" })};
             `
                 : ""}
@@ -278,8 +291,26 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           >
             {pageStatus === PageStatus.REPORT_ISSUE_STEP_2
               ? "Step 2. Select the date you have experienced the issue above"
-              : props.routeableStepProps.productType.friendlyName}
+              : "Delivery History"}
           </h2>
+          {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
+            <div
+              css={css`
+                display: block;
+                background-color: ${palette.neutral["97"]};
+                border-left: 1px solid ${palette.neutral["86"]};
+                border-right: 1px solid ${palette.neutral["86"]};
+                padding: 0 14px;
+              `}
+            >
+              <CheckboxGroup name="selectalldeliveryrecords">
+                <Checkbox
+                  value="selectalldeliveryrecords"
+                  label="Select all below"
+                />
+              </CheckboxGroup>
+            </div>
+          )}
           {props.data.results.length ? (
             filterData(
               props.routeableStepProps.productType.urlPart
@@ -411,31 +442,32 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   );
 };
 
-export const DeliveryRecords = (props: RouteableStepProps) => {
+export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
   return (
-  <FlowStartMultipleProductDetailHandler
-    {...props}
-    headingPrefix={"View delivery history"}
-    hideHeading
-    hasLeftNav={{
-      pageTitle: "Delivery history",
-      selectedNavItem: navLinks.subscriptions
-    }}
-    supportRefererSuffix="delivery_records_flow"
-    loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
+    <FlowStartMultipleProductDetailHandler
+      {...props}
+      headingPrefix={"View delivery history"}
+      hideHeading
+      hasLeftNav={{
+        pageTitle: "Delivery history",
+        selectedNavItem: navLinks.subscriptions
+      }}
+      supportRefererSuffix="delivery_records_flow"
+      loadingMessagePrefix="Retrieving details of your"
+      cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
     Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-    singleProductDetailRenderer={(
-      routeableStepProps: RouteableStepProps,
-      productDetail: ProductDetail
-    ) => (
-      <DeliveryRecordsApiAsyncLoader
-        render={renderDeliveryRecords(props, productDetail)}
-        fetch={createDeliveryRecordsFetcher(
-          productDetail.subscription.subscriptionId
-        )}
-        loadingMessage={"Loading delivery history..."}
-      />
-    )}
-  />
-)};
+      singleProductDetailRenderer={(
+        routeableStepProps: RouteableStepProps,
+        productDetail: ProductDetail
+      ) => (
+        <DeliveryRecordsApiAsyncLoader
+          render={renderDeliveryRecords(props, productDetail)}
+          fetch={createDeliveryRecordsFetcher(
+            productDetail.subscription.subscriptionId
+          )}
+          loadingMessage={"Loading delivery history..."}
+        />
+      )}
+    />
+  );
+};

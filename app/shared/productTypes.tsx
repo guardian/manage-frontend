@@ -103,14 +103,30 @@ export interface HolidayStopFlowProperties {
   };
 }
 
+export interface DeliveryProblemType {
+  label: string;
+  messageIsMandatory: boolean;
+}
+
+export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
+  { label: "Damaged Paper", messageIsMandatory: false }, // TODO: await confirmation of whether common
+  { label: "Delivered Despite Holiday", messageIsMandatory: false },
+  { label: "No Delivery", messageIsMandatory: false },
+  { label: "Other", messageIsMandatory: true }
+];
+
+interface DeliveryRecordsProperties {
+  showDeliveryInstructions?: true;
+  numberOfProblemRecordsToShow: number;
+  contactUserOnExistingProblemReport: boolean;
+  availableProblemTypes: DeliveryProblemType[];
+}
+
 export interface DeliveryProperties {
   showAddress?: (
     subscription: Subscription
   ) => subscription is SubscriptionWithDeliveryAddress;
-  showRecords?: true;
-  showDeliveryInstructions?: true;
-  numberOfProblemRecordsToShow?: number;
-  contactUserOnExistingProblemReport?: boolean;
+  records?: DeliveryRecordsProperties;
 }
 
 export interface ProductType {
@@ -162,8 +178,16 @@ export const hasProductPageProperties = (
 export const hasDeliveryFlow = (productType: ProductType) =>
   productType.delivery?.showAddress;
 
-export const hasDeliveryRecordsFlow = (productType: ProductType) =>
-  productType.delivery?.showRecords;
+export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
+  delivery: {
+    records: DeliveryRecordsProperties;
+  };
+}
+
+export const hasDeliveryRecordsFlow = (
+  productType: ProductType
+): productType is ProductTypeWithDeliveryRecordsProperties =>
+  !!productType.delivery?.records;
 
 export interface ProductTypeWithProductPageRedirect extends ProductType {
   productPage: ProductUrlPart;
@@ -381,10 +405,15 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
-      showRecords: true,
-      showDeliveryInstructions: true,
-      numberOfProblemRecordsToShow: 14,
-      contactUserOnExistingProblemReport: true
+      records: {
+        showDeliveryInstructions: true,
+        numberOfProblemRecordsToShow: 14,
+        contactUserOnExistingProblemReport: true,
+        availableProblemTypes: [
+          { label: "Instructions Not Followed", messageIsMandatory: false },
+          ...commonDeliveryProblemTypes
+        ]
+      }
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
@@ -432,9 +461,11 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
-      showRecords: true,
-      numberOfProblemRecordsToShow: 4,
-      contactUserOnExistingProblemReport: false
+      records: {
+        numberOfProblemRecordsToShow: 4,
+        contactUserOnExistingProblemReport: false,
+        availableProblemTypes: commonDeliveryProblemTypes
+      }
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {

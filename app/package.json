@@ -133,7 +133,7 @@
     "@guardian/src-checkbox": "^0.4.0",
     "@guardian/src-foundations": "^0.12.4",
     "@guardian/src-radio": "^0.7.0",
-    "@guardian/src-svgs": "^0.0.5",
+    "@guardian/src-svgs": "^0.13.0",
     "@guardian/src-text-input": "^0.8.0",
     "@reach/router": "^1.2.1",
     "aws-sdk": "^2.383.0",

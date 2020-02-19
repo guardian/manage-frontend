@@ -15,6 +15,7 @@ interface DeliveryRecordsProblemContextInterface {
   subscriptionId: string;
   subscriptionCurrency: string;
   productName: string;
+  apiProductName?: string;
   problemType?: DeliveryRecordsProblemType;
   affectedRecords: DeliveryRecordApiItem[];
   deliveryProblemMap: DeliveryProblemMap;
@@ -22,11 +23,12 @@ interface DeliveryRecordsProblemContextInterface {
   showProblemCredit?: boolean;
   repeatDeliveryProblem?: boolean;
   contactPhoneNumbers?: ContactPhoneNumbers;
+  resetDeliveryRecordsPage: () => void;
 }
 
 export interface DeliveryProblemCreditInterface {
   showCredit?: boolean;
-  creditAmount?:string;
+  creditAmount?: string;
   creditDate?: string | null;
 }
 
@@ -34,7 +36,9 @@ export const DeliveryRecordsProblemContext = createContext<DeliveryRecordsProble
   null
 );
 
-export const DeliveryRecordCreditContext = createContext<DeliveryProblemCreditInterface | null>(null);
+export const DeliveryRecordCreditContext = createContext<DeliveryProblemCreditInterface | null>(
+  null
+);
 
 export const DeliveryRecordsProblemPostPayloadContext = createContext<DeliveryRecordsPostPayload | null>(
   null

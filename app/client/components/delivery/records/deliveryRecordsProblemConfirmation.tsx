@@ -71,12 +71,12 @@ const DeliveryRecordsProblemConfirmationFC = (
         affectedRecord => affectedRecord.id === record.id
       ) !== -1
   );
-  const affectedRecordExampleId = deliveryIssuePostPayload?.deliveryRecords?.find(
-    record => record.id
-  )?.id;
-  const problemCaseId = filteredData.find(
-    record => record.problemCaseId && record.id === affectedRecordExampleId
-  )?.problemCaseId;
+
+  const problemCaseId = filteredData.find(record => record.problemCaseId)
+    ?.problemCaseId;
+  const problemReferenceId = problemCaseId
+    ? props.data.deliveryProblemMap[problemCaseId]?.ref
+    : "-";
 
   const dtCss: string = `
     font-weight: 500; 
@@ -173,7 +173,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                   }
                 `}
               >
-                {problemCaseId || "-"}
+                {problemReferenceId}
               </dd>
             </div>
             <div
@@ -542,8 +542,7 @@ export const DeliveryRecordsProblemConfirmation = (
             render={renderDeliveryRecordsConfirmation(props, productDetail)}
             fetch={createDeliveryRecordsProblemPost(
               productDetail.subscription.subscriptionId,
-              deliveryIssuePostPayload,
-              productDetail.isTestUser
+              deliveryIssuePostPayload
             )}
             loadingMessage={"Reporting problem..."}
           />

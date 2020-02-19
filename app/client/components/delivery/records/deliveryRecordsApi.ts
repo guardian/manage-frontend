@@ -1,12 +1,13 @@
 import {
   DeliveryRecordApiItem,
-  MDA_TEST_USER_HEADER,
   Subscription
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 
 interface DeliveryProblem {
   problemType: string;
+  id: string;
+  ref: string;
 }
 export interface DeliveryProblemMap {
   [problemCaseId: string]: DeliveryProblem;
@@ -76,16 +77,13 @@ export const createDeliveryRecordsFetcher = (subscriptionId: string) => () =>
 
 export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
-  payload: DeliveryRecordsPostPayload,
-  isTestUser: boolean
+  payload: DeliveryRecordsPostPayload
 ) => () =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
     credentials: "include",
     method: "POST",
-    mode: "same-origin",
     body: JSON.stringify(payload),
     headers: {
-      "Content-Type": "application/json",
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+      "Content-Type": "application/json"
     }
   });

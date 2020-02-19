@@ -5,8 +5,9 @@ import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import React, { FormEvent, useEffect, useState } from "react";
-import { ErrorIcon } from "../../svgs/errorIcon";
+import { DeliveryProblemType } from "../../../../shared/productTypes";
 import { minWidth } from "../../../styles/breakpoints";
+import { ErrorIcon } from "../../svgs/errorIcon";
 
 interface DeliveryRecordProblemFormProps {
   showNextStepButton: boolean;
@@ -14,6 +15,7 @@ interface DeliveryRecordProblemFormProps {
   onFormSubmit?: (selectedValue?: string, selectedMessage?: string) => void;
   inValidationState: boolean;
   updateValidationStatusCallback: (isValid: boolean, message?: string) => void;
+  problemTypes: DeliveryProblemType[];
 }
 
 interface SelectedDeliveryProblem {
@@ -21,23 +23,10 @@ interface SelectedDeliveryProblem {
   message?: string;
 }
 
-interface ProblemRadioOption {
-  label: string;
-  messageIsMandatory: boolean;
-}
-
 interface ValidateDetails {
   isValid: boolean;
   message?: string;
 }
-
-export const deliveryProblemsRadioArr: ProblemRadioOption[] = [
-  { label: "Damaged Paper", messageIsMandatory: false },
-  { label: "Delivered Despite Holiday", messageIsMandatory: false },
-  { label: "Instructions Not Followed", messageIsMandatory: false },
-  { label: "No Delivery", messageIsMandatory: false },
-  { label: "Other", messageIsMandatory: true }
-];
 
 export const DeliveryRecordProblemForm = (
   props: DeliveryRecordProblemFormProps
@@ -46,6 +35,9 @@ export const DeliveryRecordProblemForm = (
     selectedDeliveryProblem,
     setSelectedDeliveryProblem
   ] = useState<SelectedDeliveryProblem | null>(null);
+  const [hasFormBeenSubmitted, setHasFormBeenSubmitted] = useState<boolean>(
+    false
+  );
   useEffect(() => {
     const validateDetails: ValidateDetails = validateForm();
     props.updateValidationStatusCallback(
@@ -60,10 +52,10 @@ export const DeliveryRecordProblemForm = (
         message: "Please select an option"
       };
     } else {
-      const deliveryProblem = deliveryProblemsRadioArr.find(
+      const deliveryProblem = props.problemTypes.find(
         issue =>
           issue.label ===
-          deliveryProblemsRadioArr[Number(selectedDeliveryProblem?.value)].label
+          props.problemTypes[Number(selectedDeliveryProblem?.value)].label
       );
       const isValid =
         deliveryProblem?.messageIsMandatory && !selectedDeliveryProblem?.message
@@ -85,6 +77,7 @@ export const DeliveryRecordProblemForm = (
           selectedDeliveryProblem?.value,
           selectedDeliveryProblem?.message
         );
+        setHasFormBeenSubmitted(true);
       }}
     >
       <fieldset
@@ -100,6 +93,12 @@ export const DeliveryRecordProblemForm = (
               ...selectedDeliveryProblem,
               message: target.value
             });
+          }
+          if (hasFormBeenSubmitted) {
+            props.onFormSubmit?.(
+              selectedDeliveryProblem?.value,
+              selectedDeliveryProblem?.message
+            );
           }
         }}
         css={css`
@@ -143,104 +142,102 @@ export const DeliveryRecordProblemForm = (
               }
             `}
           >
-            {deliveryProblemsRadioArr.map(
-              (deliveryProblemRadioOption, index) => (
-                <li
-                  key={`deliveryProblemRadio-${index}`}
+            {props.problemTypes.map((deliveryProblemRadioOption, index) => (
+              <li
+                key={`deliveryProblemRadio-${index}`}
+                css={css`
+                  ${textSans.medium()};
+                `}
+              >
+                <Radio
+                  value={`${index}`}
+                  label={deliveryProblemRadioOption.label}
+                  checked={selectedDeliveryProblem?.value === `${index}`}
                   css={css`
-                    ${textSans.medium()};
+                    vertical-align: top;
+                    :checked + div label:first-of-type {
+                      font-weight: bold;
+                    }
                   `}
-                >
-                  <Radio
-                    value={`${index}`}
-                    label={deliveryProblemRadioOption.label}
-                    checked={selectedDeliveryProblem?.value === `${index}`}
+                />
+                {selectedDeliveryProblem?.value === `${index}` && (
+                  <div
                     css={css`
-                      vertical-align: top;
-                      :checked + div label:first-of-type {
-                        font-weight: bold;
+                      display: inline-block;
+                      margin-left: 32px;
+                      ${minWidth.tablet} {
+                        display: block;
                       }
                     `}
-                  />
-                  {selectedDeliveryProblem?.value === `${index}` && (
-                    <div
-                      css={css`
-                        display: inline-block;
-                        margin-left: 32px;
-                        ${minWidth.tablet} {
+                  >
+                    <>
+                      <label
+                        htmlFor="issue1Message"
+                        css={css`
                           display: block;
-                        }
-                      `}
-                    >
-                      <>
-                        <label
-                          htmlFor="issue1Message"
+                        `}
+                      >
+                        Please specify
+                        <span
                           css={css`
-                            display: block;
+                            font-style: italic;
+                            ${textSans.small()};
+                            color: ${palette.neutral["60"]};
                           `}
                         >
-                          Please specify
-                          <span
-                            css={css`
-                              font-style: italic;
-                              ${textSans.small()};
-                              color: ${palette.neutral["60"]};
-                            `}
-                          >
-                            {!deliveryProblemRadioOption.messageIsMandatory &&
-                              ` (Optional)`}
-                          </span>
-                          {props.inValidationState &&
-                            deliveryProblemRadioOption.messageIsMandatory &&
-                            !selectedDeliveryProblem.message && (
-                              <span
+                          {!deliveryProblemRadioOption.messageIsMandatory &&
+                            ` (Optional)`}
+                        </span>
+                        {props.inValidationState &&
+                          deliveryProblemRadioOption.messageIsMandatory &&
+                          !selectedDeliveryProblem.message && (
+                            <span
+                              css={css`
+                                display: block;
+                                color: ${palette.news.main};
+                              `}
+                            >
+                              <i
                                 css={css`
-                                  display: block;
-                                  color: ${palette.news.main};
+                                  margin-right: 4px;
                                 `}
                               >
-                                <i
-                                  css={css`
-                                    margin-right: 4px;
-                                  `}
-                                >
-                                  <ErrorIcon />
-                                </i>
-                                This detail is required
-                              </span>
-                            )}
-                        </label>
-                        <textarea
-                          id="issue1Message"
-                          name="message"
-                          rows={2}
-                          css={css`
-                            border: ${props.inValidationState &&
-                              deliveryProblemRadioOption.messageIsMandatory &&
-                              !selectedDeliveryProblem.message
-                                ? "4"
-                                : "2"}px
-                              solid
-                              ${props.inValidationState &&
-                              deliveryProblemRadioOption.messageIsMandatory &&
-                              !selectedDeliveryProblem.message
-                                ? palette.news.main
-                                : palette.neutral["60"]};
-                            width: 100%;
-                            max-width: 230px;
-                            padding: 12px;
-                            ${textSans.medium()};
-                            ${minWidth.tablet} {
-                              max-width: 460px;
-                            }
-                          `}
-                        />
-                      </>
-                    </div>
-                  )}
-                </li>
-              )
-            )}
+                                <ErrorIcon />
+                              </i>
+                              This detail is required
+                            </span>
+                          )}
+                      </label>
+                      <textarea
+                        id="issue1Message"
+                        name="message"
+                        rows={2}
+                        css={css`
+                          border: ${props.inValidationState &&
+                            deliveryProblemRadioOption.messageIsMandatory &&
+                            !selectedDeliveryProblem.message
+                              ? "4"
+                              : "2"}px
+                            solid
+                            ${props.inValidationState &&
+                            deliveryProblemRadioOption.messageIsMandatory &&
+                            !selectedDeliveryProblem.message
+                              ? palette.news.main
+                              : palette.neutral["60"]};
+                          width: 100%;
+                          max-width: 230px;
+                          padding: 12px;
+                          ${textSans.medium()};
+                          ${minWidth.tablet} {
+                            max-width: 460px;
+                          }
+                        `}
+                      />
+                    </>
+                  </div>
+                )}
+              </li>
+            ))}
           </ul>
         </RadioGroup>
       </fieldset>

@@ -9,6 +9,7 @@ import {
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
+  ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow,
   ProductTypeWithProductPageProperties,
   shouldCreatePaymentUpdateFlow,
@@ -195,7 +196,7 @@ const User = () => (
 
       {Object.values(ProductTypes)
         .filter(hasDeliveryRecordsFlow)
-        .map((productType: ProductType) => (
+        .map((productType: ProductTypeWithDeliveryRecordsProperties) => (
           <DeliveryRecords
             key={productType.urlPart}
             path={`/delivery/${productType.urlPart}/records`}

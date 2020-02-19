@@ -5,8 +5,8 @@ import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import React, { FormEvent, useState } from "react";
-import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 import { minWidth } from "../../../styles/breakpoints";
+import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 
 interface UserPhoneNumberProps {
   existingPhoneNumber?: ContactPhoneNumbers;
@@ -117,7 +117,9 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                   label={`${phoneNumber[0]} number`}
                   supporting="Enter your phone number"
                   width={30}
-                  css={css`max-width: 100%;`}
+                  css={css`
+                    max-width: 100%;
+                  `}
                   value={phoneNumber[1]}
                   onChange={handleInputChange(phoneNumber[0])}
                 />
@@ -127,7 +129,9 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                 label="Phone number"
                 supporting="Enter your phone number"
                 width={30}
-                css={css`max-width: 100%;`}
+                css={css`
+                  max-width: 100%;
+                `}
                 onChange={handleInputChange("Phone")}
               />
             )}

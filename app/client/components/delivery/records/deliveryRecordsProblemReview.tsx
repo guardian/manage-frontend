@@ -17,35 +17,38 @@ import {
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import { WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
-import { PageStatus } from "./deliveryRecords";
 import {
-  ContactPhoneNumbers,
-  DeliveryRecordsPostObj
-} from "./deliveryRecordsApi";
+  DeliveryRecordsRouteableStepProps,
+  PageStatus
+} from "./deliveryRecords";
+import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
   DeliveryRecordsProblemContext,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
-import { deliveryProblemsRadioArr } from "./deliveryRecordsProblemForm";
 import { UserPhoneNumber } from "./userPhoneNumber";
 
-export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
-  const deliveryIssue = useContext(DeliveryRecordsProblemContext);
+export const DeliveryRecordsProblemReview = (
+  props: DeliveryRecordsRouteableStepProps
+) => {
+  const deliveryProblemContext = useContext(DeliveryRecordsProblemContext);
   const [phoneNumbers, setPhoneNumbers] = useState<
     ContactPhoneNumbers | undefined
-  >(deliveryIssue?.contactPhoneNumbers);
+  >(deliveryProblemContext?.contactPhoneNumbers);
   const [creditDate, setCreditDate] = useState<string | null>();
   const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
     false
   );
 
   const problemStartDate =
-    deliveryIssue?.affectedRecords[deliveryIssue.affectedRecords.length - 1]
-      .deliveryDate;
-  const problemEndDate = deliveryIssue?.affectedRecords[0].deliveryDate;
+    deliveryProblemContext?.affectedRecords[
+      deliveryProblemContext.affectedRecords.length - 1
+    ].deliveryDate;
+  const problemEndDate =
+    deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
   const dtCss: string = `
     font-weight: 500;
@@ -65,7 +68,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
   const renderReviewDetails = (
     potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
   ) => {
-    if (!deliveryIssue) {
+    if (!deliveryProblemContext) {
       return <span>Something strange is going on</span>;
     }
     const totalCreditAmount = potentialHolidayStopsResponseWithCredits
@@ -85,28 +88,38 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
     return (
       <DeliveryRecordsProblemPostPayloadContext.Provider
         value={{
-          productName: deliveryIssue?.productName,
-          description: deliveryIssue?.problemType?.message,
-          problemType: deliveryIssue?.problemType?.category,
-          repeatDeliveryProblem: deliveryIssue?.repeatDeliveryProblem,
-          deliveryRecords: deliveryIssue?.affectedRecords.map(record => {
-            const matchingHolidayStop = potentialHolidayStopsResponseWithCredits.potentials.find(
-              x => x.publicationDate === record.deliveryDate
-            );
-            return {
-              id: record.id,
-              creditAmount: matchingHolidayStop?.credit,
-              invoiceDate: creditDate
-            };
-          }),
-          ...(phoneNumbers && { newContactPhoneNumbers: phoneNumbers })
+          productName: deliveryProblemContext?.apiProductName,
+          description: deliveryProblemContext?.problemType?.message,
+          problemType:
+            props.productType.delivery.records.availableProblemTypes[
+              Number(deliveryProblemContext?.problemType?.category)
+            ].label,
+          repeatDeliveryProblem: deliveryProblemContext?.repeatDeliveryProblem,
+          deliveryRecords: deliveryProblemContext?.affectedRecords.map(
+            record => {
+              const matchingHolidayStop = potentialHolidayStopsResponseWithCredits.potentials.find(
+                x => x.publicationDate === record.deliveryDate
+              );
+              return {
+                id: record.id,
+                creditAmount: matchingHolidayStop?.credit,
+                invoiceDate: creditDate
+              };
+            }
+          ),
+          ...((phoneNumbers?.Phone ||
+            phoneNumbers?.HomePhone ||
+            phoneNumbers?.MobilePhone ||
+            phoneNumbers?.OtherPhone) && {
+            newContactPhoneNumbers: phoneNumbers
+          })
         }}
       >
         <DeliveryRecordCreditContext.Provider
           value={{
-            showCredit: deliveryIssue.showProblemCredit,
+            showCredit: deliveryProblemContext.showProblemCredit,
             creditAmount: `${
-              deliveryIssue?.subscriptionCurrency
+              deliveryProblemContext?.subscriptionCurrency
             }${totalCreditAmount.toFixed(2)}`,
             creditDate: creditDate && moment(creditDate).format("DD MMM YYYY")
           }}
@@ -144,7 +157,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                 >
                   Reported delivery problems
                 </h2>
-                {deliveryIssue && (
+                {deliveryProblemContext && (
                   <dl
                     css={css`
                       padding: 0 ${space[3]}px;
@@ -174,7 +187,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                           ${ddCss}
                         `}
                       >
-                        {deliveryIssue.subscriptionId}
+                        {deliveryProblemContext.subscriptionId}
                       </dd>
                     </div>
                     <div
@@ -198,7 +211,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                           ${ddCss}
                         `}
                       >
-                        {deliveryIssue.productName}
+                        {deliveryProblemContext.productName}
                       </dd>
                     </div>
                     <div
@@ -232,18 +245,21 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                             margin: 0;
                           `}
                         >
-                          {deliveryIssue.problemType &&
-                            deliveryProblemsRadioArr[
-                              Number(deliveryIssue.problemType.category)
+                          {deliveryProblemContext.problemType &&
+                            props.productType.delivery.records
+                              .availableProblemTypes[
+                              Number(
+                                deliveryProblemContext.problemType.category
+                              )
                             ].label}
                         </h4>
-                        {deliveryIssue.problemType?.message && (
+                        {deliveryProblemContext.problemType?.message && (
                           <p
                             css={css`
                               margin: 0;
                             `}
                           >
-                            {deliveryIssue.problemType?.message}
+                            {deliveryProblemContext.problemType?.message}
                           </p>
                         )}
                       </dd>
@@ -279,13 +295,14 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                             margin: 0;
                           `}
                         >
-                          {deliveryIssue.affectedRecords?.length}
+                          {deliveryProblemContext.affectedRecords?.length}
                         </h4>
                       </dd>
                     </div>
                   </dl>
                 )}
-                {deliveryIssue && deliveryIssue.affectedRecords?.length ? (
+                {deliveryProblemContext &&
+                deliveryProblemContext.affectedRecords?.length ? (
                   <div
                     css={css`
                       padding: 0 ${space[3]}px;
@@ -296,14 +313,16 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                       }
                     `}
                   >
-                    {deliveryIssue.affectedRecords.map(
+                    {deliveryProblemContext.affectedRecords.map(
                       (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
                         <DeliveryRecordCard
                           key={deliveryRecord.id}
                           deliveryRecord={deliveryRecord}
                           listIndex={listIndex}
                           pageStatus={PageStatus.READ_ONLY}
-                          deliveryProblemMap={deliveryIssue.deliveryProblemMap}
+                          deliveryProblemMap={
+                            deliveryProblemContext.deliveryProblemMap
+                          }
                         />
                       )
                     )}
@@ -311,7 +330,8 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                 ) : (
                   <p>There aren't any delivery records to show you yet</p>
                 )}
-                {deliveryIssue && deliveryIssue.showProblemCredit ? (
+                {deliveryProblemContext &&
+                deliveryProblemContext.showProblemCredit ? (
                   <dl
                     css={css`
                       ${textSans.medium()};
@@ -351,7 +371,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                           }
                         `}
                       >
-                        {deliveryIssue?.subscriptionCurrency}
+                        {deliveryProblemContext?.subscriptionCurrency}
                         {totalCreditAmount.toFixed(2)}
                       </dd>
                     </div>
@@ -452,6 +472,7 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
                   `}
                   onClick={() => {
                     if (props.navigate) {
+                      deliveryProblemContext.resetDeliveryRecordsPage();
                       props.navigate("..");
                     }
                   }}
@@ -489,16 +510,16 @@ export const DeliveryRecordsProblemReview = (props: RouteableStepProps) => {
     );
   };
 
-  if (!deliveryIssue) {
+  if (!deliveryProblemContext) {
     return <span>Whoops, somethings gone wrong</span>;
   }
   return (
     <PotentialHolidayStopsAsyncLoader
       fetch={getPotentialHolidayStopsFetcher(
-        deliveryIssue?.subscriptionId,
+        deliveryProblemContext?.subscriptionId,
         moment(problemStartDate),
         moment(problemEndDate),
-        deliveryIssue.isTestUser
+        deliveryProblemContext.isTestUser
       )}
       render={renderReviewDetails}
       loadingMessage="Fetching details..."

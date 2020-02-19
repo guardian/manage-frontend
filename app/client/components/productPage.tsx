@@ -21,6 +21,7 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  hasDeliveryRecordsFlow,
   ProductTypeWithProductPageProperties
 } from "../../shared/productTypes";
 import {
@@ -417,9 +418,9 @@ const getProductDetailRenderer = (
                 }
               />
             )}
-            {productType.delivery?.showRecords && (
+            {hasDeliveryRecordsFlow(productType) && (
               <ProductDetailRow
-                label="Delivery history"
+                label="Delivery problem"
                 data={
                   <LinkButton
                     text="View delivery history"
