@@ -18,6 +18,7 @@ interface DeliveryRecordCardProps {
   pageStatus: PageStatus;
   deliveryProblemMap: DeliveryProblemMap;
   recordCurrency?: string;
+  isChecked?: boolean;
   addRecordToDeliveryProblem?: (id: string) => void;
   removeRecordFromDeliveryProblem?: (id: string) => void;
 }
@@ -90,6 +91,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
           >
             <Checkbox
               value={props.deliveryRecord.id}
+              checked={props.isChecked}
               label=""
               css={css`
                 margin-right: 0;

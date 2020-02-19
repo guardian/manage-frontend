@@ -166,6 +166,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       deliveryRecord => deliveryRecord.problemCaseId
     ) > -1;
 
+  const filteredData = filterData(props.routeableStepProps.productType.urlPart);
+
   return (
     <DeliveryRecordsProblemContext.Provider
       value={{
@@ -307,14 +309,28 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 <Checkbox
                   value="selectalldeliveryrecords"
                   label="Select all below"
+                  checked={
+                    selectedProblemRecords.length ===
+                    Math.min(filteredData.length, 14)
+                  }
+                  onChange={() => {
+                    if (
+                      selectedProblemRecords.length <
+                      Math.min(filteredData.length, 14)
+                    ) {
+                      setSelectedProblemRecords(
+                        filteredData.flatMap(record => [record.id])
+                      );
+                    } else {
+                      setSelectedProblemRecords([]);
+                    }
+                  }}
                 />
               </CheckboxGroup>
             </div>
           )}
-          {props.data.results.length ? (
-            filterData(
-              props.routeableStepProps.productType.urlPart
-            ).map((deliveryRecord: DeliveryRecordApiItem, listIndex) => (
+          {filteredData.map(
+            (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
               <DeliveryRecordCard
                 key={deliveryRecord.id}
                 deliveryRecord={deliveryRecord}
@@ -326,10 +342,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   removeRecordFromDeliveryProblem
                 }
                 recordCurrency={props.subscriptionCurrency}
+                isChecked={selectedProblemRecords.includes(deliveryRecord.id)}
               />
-            ))
-          ) : (
-            <p>There aren't any delivery records to show you yet</p>
+            )
           )}
           {totalPages > 1 && pageStatus === PageStatus.READ_ONLY && (
             <PaginationNav
