@@ -21,6 +21,12 @@ export interface ContactPhoneNumbers {
   OtherPhone?: string;
 }
 
+export type ContactPhoneNumbersType =
+  | "Phone"
+  | "HomePhone"
+  | "MobilePhone"
+  | "OtherPhone";
+
 export interface DeliveryCredit {
   amount: number;
   invoiceDate: string | null;

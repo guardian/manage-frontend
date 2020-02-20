@@ -228,7 +228,7 @@ export const DeliveryRecordsProblemReview = (
                           ${dtCss}
                         `}
                       >
-                        Type of Issue:
+                        Type of problem:
                       </dt>
                       <dd
                         css={css`
@@ -436,6 +436,13 @@ export const DeliveryRecordsProblemReview = (
                     {phoneNumbers && (
                       <UserPhoneNumber
                         existingPhoneNumber={phoneNumbers}
+                        // existingPhoneNumber={{
+                        //   id: "123",
+                        //   Phone: "1234",
+                        //   HomePhone: "2345",
+                        //   MobilePhone: "3456",
+                        //   OtherPhone: "4567"
+                        // }}
                         callback={(newNumber: ContactPhoneNumbers) => {
                           setPhoneNumbers(newNumber);
                         }}

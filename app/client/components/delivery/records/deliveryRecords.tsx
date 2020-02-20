@@ -202,7 +202,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         fullWidth
       >
         <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-          <h1>Delivery problem</h1>
+          <h1>Delivery history</h1>
         </PageHeaderContainer>
         <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
           {props.data.results.find(record => !record.problemCaseId) && (
@@ -292,8 +292,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             `}
           >
             {pageStatus === PageStatus.REPORT_ISSUE_STEP_2
-              ? "Step 2. Select the date you have experienced the issue above"
-              : "Delivery History"}
+              ? "Step 2. Select the date you have experienced the problem above"
+              : "Deliveries"}
           </h2>
           {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
             <div
@@ -447,7 +447,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   setPageStatus(PageStatus.READ_ONLY);
                 }}
               >
-                Go back
+                Cancel
               </Button>
             </div>
           )}

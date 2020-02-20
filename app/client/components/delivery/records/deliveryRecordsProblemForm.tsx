@@ -49,7 +49,7 @@ export const DeliveryRecordProblemForm = (
     if (!selectedDeliveryProblem) {
       return {
         isValid: false,
-        message: "Please select an option"
+        message: "Please select the type of problem"
       };
     } else {
       const deliveryProblem = props.problemTypes.find(
@@ -151,10 +151,14 @@ export const DeliveryRecordProblemForm = (
               >
                 <Radio
                   value={`${index}`}
-                  label={deliveryProblemRadioOption.label}
+                  label={
+                    deliveryProblemRadioOption.label.charAt(0).toUpperCase() +
+                    deliveryProblemRadioOption.label.slice(1).toLowerCase()
+                  }
                   checked={selectedDeliveryProblem?.value === `${index}`}
                   css={css`
                     vertical-align: top;
+                    text-transform: lowercase;
                     :checked + div label:first-of-type {
                       font-weight: bold;
                     }
@@ -265,7 +269,7 @@ export const DeliveryRecordProblemForm = (
       )}
       {props.showNextStepButton && (
         <>
-          <Button type="submit">Continue</Button>
+          <Button type="submit">Continue to Step 2</Button>
           <Button
             css={css`
               ${textSans.medium()};
@@ -282,7 +286,7 @@ export const DeliveryRecordProblemForm = (
               props.onResetDeliveryRecordsPage?.();
             }}
           >
-            Go back
+            Cancel
           </Button>
         </>
       )}

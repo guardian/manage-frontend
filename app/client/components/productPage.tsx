@@ -420,10 +420,10 @@ const getProductDetailRenderer = (
             )}
             {hasDeliveryRecordsFlow(productType) && (
               <ProductDetailRow
-                label="Delivery problem"
+                label="Delivery history"
                 data={
                   <LinkButton
-                    text="View delivery history"
+                    text="Report problem"
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right

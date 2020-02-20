@@ -96,7 +96,6 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
               css={css`
                 margin-right: 0;
               `}
-              // checked={props.selectAllRecords}
               onChange={(event: FormEvent<HTMLInputElement>) => {
                 const inputEl = event.target as HTMLInputElement;
                 if (inputEl.checked) {
@@ -149,7 +148,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             ${dtCss(true)}
           `}
         >
-          Delivered to:
+          Address:
         </dt>
         <dd
           css={css`
@@ -226,31 +225,6 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                 ${dtCss()}
               `}
             >
-              Reference:
-            </dt>
-            <dd
-              css={css`
-                ${ddCss()}
-              `}
-            >
-              {props.deliveryRecord.problemCaseId}
-            </dd>
-          </div>
-          <div
-            css={css`
-              ${recordRowCss}
-              margin-top: 10px;
-              ${minWidth.tablet} {
-                display: inline-block;
-                width: 50%;
-              }
-            `}
-          >
-            <dt
-              css={css`
-                ${dtCss(true)}
-              `}
-            >
               Credit:
             </dt>
             <dd
@@ -264,12 +238,15 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             >
               {`${props.recordCurrency}${Math.abs(
                 props.deliveryRecord.credit.amount
-              )}`}
+              )} `}
               {props.deliveryRecord.credit.invoiceDate && (
                 <p
                   css={css`
                     color: ${palette.neutral["60"]};
                     margin: 0;
+                    ${minWidth.tablet} {
+                      display: inline-block;
+                    }
                   `}
                 >{`off of ${moment(
                   props.deliveryRecord.credit.invoiceDate

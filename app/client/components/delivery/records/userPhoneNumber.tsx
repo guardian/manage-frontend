@@ -6,7 +6,10 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import React, { FormEvent, useState } from "react";
 import { minWidth } from "../../../styles/breakpoints";
-import { ContactPhoneNumbers } from "./deliveryRecordsApi";
+import {
+  ContactPhoneNumbers,
+  ContactPhoneNumbersType
+} from "./deliveryRecordsApi";
 
 interface UserPhoneNumberProps {
   existingPhoneNumber?: ContactPhoneNumbers;
@@ -21,7 +24,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
   const currentPhoneNumbers =
     props.existingPhoneNumber &&
     Object.entries(props.existingPhoneNumber).filter(
-      phoneNumber => phoneNumber[0] !== "Id" && phoneNumber[1]
+      phoneNumber => phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
     );
 
   const handleInputChange = (whichPhoneNumber: string) => (
@@ -31,6 +34,15 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
       setNewPhoneNumber({
         ...newPhoneNumber,
         [whichPhoneNumber]: evt.target.value
+      });
+    }
+  };
+
+  const cancelPhoneNumberInput = (phoneType: ContactPhoneNumbersType) => () => {
+    if (newPhoneNumber?.[phoneType]) {
+      setNewPhoneNumber({
+        ...newPhoneNumber,
+        Phone: props.existingPhoneNumber?.[phoneType]
       });
     }
   };
@@ -81,6 +93,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                   <dt
                     css={css`
                       display: inline-block;
+                      min-width: 16ch;
                     `}
                   >
                     {`${phoneNumber[0]} number`}
@@ -91,13 +104,34 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                       display: inline-block;
                     `}
                   >
-                    {phoneNumber[1]}
+                    {`${phoneNumber[1]} `}
+                    <span
+                      css={css`
+                        ${textSans.medium()};
+                        text-decoration: underline;
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        padding-left: ${space[3]};
+                      `}
+                      onClick={() => {
+                        // const phoneNumberType = phoneNumber[0] as ContactPhoneNumbersType;
+                        // if (newPhoneNumber?.[phoneNumberType]) {
+                        //   setNewPhoneNumber({
+                        //     ...newPhoneNumber,
+                        //     Phone: props.existingPhoneNumber?.[phoneNumberType]
+                        //   });
+                        // }
+                        setShowPhoneInput(true);
+                      }}
+                    >
+                      Update
+                    </span>
                   </dd>
                 </div>
               ))}
           </dl>
         )}
-        {showPhoneInput ? (
+        {showPhoneInput && (
           <form
             css={css`
               display: block;
@@ -112,49 +146,88 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
           >
             {currentPhoneNumbers?.length ? (
               currentPhoneNumbers.map((phoneNumber, index) => (
+                <>
+                  <TextInput
+                    key={`phonenumberinput-${index}`}
+                    label={`${phoneNumber[0]} number`}
+                    supporting="Enter your phone number"
+                    width={30}
+                    css={css`
+                      max-width: 100%;
+                    `}
+                    value={
+                      newPhoneNumber?.[
+                        phoneNumber[0] as ContactPhoneNumbersType
+                      ] || ""
+                    }
+                    onChange={handleInputChange(phoneNumber[0])}
+                  />
+                  <span
+                    css={css`
+                      ${textSans.medium()};
+                      text-decoration: underline;
+                      cursor: pointer;
+                      color: ${palette.brand[500]};
+                      margin-left: ${space[3]};
+                    `}
+                    onClick={cancelPhoneNumberInput(
+                      phoneNumber[0] as ContactPhoneNumbersType
+                    )}
+                  >
+                    Cancel
+                  </span>
+                </>
+              ))
+            ) : (
+              <>
                 <TextInput
-                  key={`phonenumberinput-${index}`}
-                  label={`${phoneNumber[0]} number`}
+                  label="Phone number"
                   supporting="Enter your phone number"
                   width={30}
                   css={css`
                     max-width: 100%;
                   `}
-                  value={phoneNumber[1]}
-                  onChange={handleInputChange(phoneNumber[0])}
+                  value={newPhoneNumber?.Phone || ""}
+                  onChange={handleInputChange("Phone")}
                 />
-              ))
-            ) : (
-              <TextInput
-                label="Phone number"
-                supporting="Enter your phone number"
-                width={30}
-                css={css`
-                  max-width: 100%;
-                `}
-                onChange={handleInputChange("Phone")}
-              />
+                <span
+                  css={css`
+                    ${textSans.medium()};
+                    text-decoration: underline;
+                    cursor: pointer;
+                    color: ${palette.brand[500]};
+                    padding-left: ${space[3]};
+                  `}
+                  onClick={() => {
+                    if (newPhoneNumber?.Phone) {
+                      setNewPhoneNumber({
+                        ...newPhoneNumber,
+                        Phone: props.existingPhoneNumber?.Phone
+                      });
+                    }
+                  }}
+                >
+                  Cancel
+                </span>
+                <Button
+                  priority="secondary"
+                  onClick={() => {
+                    setShowPhoneInput(true);
+                  }}
+                >
+                  Add phone number
+                </Button>
+              </>
             )}
-            <Button
-              priority="secondary"
-              type="submit"
+            <p
               css={css`
-                display: block;
-                margin-top: ${space[5]}px;
+                ${textSans.medium()};
+                margin-top: ${space[3]}px;
               `}
             >
-              Update phone number
-            </Button>
+              Your contact number will be updated once you submit your report.
+            </p>
           </form>
-        ) : (
-          <Button
-            priority="secondary"
-            onClick={() => {
-              setShowPhoneInput(true);
-            }}
-          >
-            Update phone number
-          </Button>
         )}
       </>
     </div>

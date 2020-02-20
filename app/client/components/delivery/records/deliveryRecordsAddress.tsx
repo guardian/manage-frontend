@@ -54,7 +54,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
           setShowAddress(!showAddress);
         }}
       >
-        Read {showAddress ? "less" : "more"}
+        Show {showAddress ? "less" : "more"}
       </span>
     </div>
   );
