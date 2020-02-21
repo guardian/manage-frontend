@@ -6,26 +6,39 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import React, { FormEvent, useState } from "react";
 import { minWidth } from "../../../styles/breakpoints";
+import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   ContactPhoneNumbers,
   ContactPhoneNumbersType
 } from "./deliveryRecordsApi";
 
 interface UserPhoneNumberProps {
-  existingPhoneNumber?: ContactPhoneNumbers;
+  existingPhoneNumbers: ContactPhoneNumbers;
   callback: (phoneNumber: ContactPhoneNumbers) => void;
 }
+
+type EditPhoneNumber = { [phoneType in ContactPhoneNumbersType]: boolean };
 
 export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
   const [showPhoneInput, setShowPhoneInput] = useState(false);
   const [newPhoneNumber, setNewPhoneNumber] = useState<
     ContactPhoneNumbers | undefined
-  >(props.existingPhoneNumber);
+  >(props.existingPhoneNumbers);
   const currentPhoneNumbers =
-    props.existingPhoneNumber &&
-    Object.entries(props.existingPhoneNumber).filter(
+    props.existingPhoneNumbers &&
+    Object.entries(props.existingPhoneNumbers).filter(
       phoneNumber => phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
     );
+
+  const initNumbersEditState = {};
+  Object.keys(props.existingPhoneNumbers).map(phoneType =>
+    Object.defineProperty(initNumbersEditState, phoneType, { value: false })
+  );
+
+  const [
+    isPhoneInEditState,
+    setPhoneEditState
+  ] = useState<EditPhoneNumber | null>(initNumbersEditState as EditPhoneNumber);
 
   const handleInputChange = (whichPhoneNumber: string) => (
     evt: React.ChangeEvent<HTMLInputElement>
@@ -38,13 +51,24 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     }
   };
 
-  const cancelPhoneNumberInput = (phoneType: ContactPhoneNumbersType) => () => {
+  const putNumberInEditState = (phoneType: ContactPhoneNumbersType) => () => {
+    setPhoneEditState({
+      ...isPhoneInEditState,
+      [phoneType]: true
+    } as EditPhoneNumber);
+  };
+
+  const cancelNumberUpdate = (phoneType: ContactPhoneNumbersType) => () => {
     if (newPhoneNumber?.[phoneType]) {
       setNewPhoneNumber({
         ...newPhoneNumber,
-        Phone: props.existingPhoneNumber?.[phoneType]
+        Phone: props.existingPhoneNumbers?.[phoneType]
       });
     }
+    setPhoneEditState({
+      ...isPhoneInEditState,
+      [phoneType]: false
+    } as EditPhoneNumber);
   };
 
   let titleCopy = currentPhoneNumbers?.length
@@ -75,63 +99,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
         >
           {titleCopy}
         </span>
-        {!!currentPhoneNumbers?.length && !showPhoneInput && (
-          <dl
-            css={css`
-              ${textSans.medium({ fontWeight: "bold" })};
-              margin: ${space[5]} 0;
-            `}
-          >
-            {currentPhoneNumbers &&
-              currentPhoneNumbers.map((phoneNumber, index) => (
-                <div
-                  key={`phonenumberentry-${index}`}
-                  css={css`
-                    display: block;
-                  `}
-                >
-                  <dt
-                    css={css`
-                      display: inline-block;
-                      min-width: 16ch;
-                    `}
-                  >
-                    {`${phoneNumber[0]} number`}
-                  </dt>
-                  <dd
-                    css={css`
-                      margin: 0 0 0 ${space[6]}px;
-                      display: inline-block;
-                    `}
-                  >
-                    {`${phoneNumber[1]} `}
-                    <span
-                      css={css`
-                        ${textSans.medium()};
-                        text-decoration: underline;
-                        cursor: pointer;
-                        color: ${palette.brand[500]};
-                        padding-left: ${space[3]};
-                      `}
-                      onClick={() => {
-                        // const phoneNumberType = phoneNumber[0] as ContactPhoneNumbersType;
-                        // if (newPhoneNumber?.[phoneNumberType]) {
-                        //   setNewPhoneNumber({
-                        //     ...newPhoneNumber,
-                        //     Phone: props.existingPhoneNumber?.[phoneNumberType]
-                        //   });
-                        // }
-                        setShowPhoneInput(true);
-                      }}
-                    >
-                      Update
-                    </span>
-                  </dd>
-                </div>
-              ))}
-          </dl>
-        )}
-        {showPhoneInput && (
+        {currentPhoneNumbers?.length ? (
           <form
             css={css`
               display: block;
@@ -144,41 +112,91 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               }
             }}
           >
-            {currentPhoneNumbers?.length ? (
-              currentPhoneNumbers.map((phoneNumber, index) => (
-                <>
-                  <TextInput
-                    key={`phonenumberinput-${index}`}
-                    label={`${phoneNumber[0]} number`}
-                    supporting="Enter your phone number"
-                    width={30}
+            {currentPhoneNumbers.map((phoneNumber, index) => (
+              <React.Fragment key={`phone-number-${index}`}>
+                {isPhoneInEditState?.[
+                  phoneNumber[0] as ContactPhoneNumbersType
+                ] ? (
+                  <div
                     css={css`
-                      max-width: 100%;
+                      ${index > 0 && `margin-top: ${space[3]}px;`}
                     `}
-                    value={
-                      newPhoneNumber?.[
-                        phoneNumber[0] as ContactPhoneNumbersType
-                      ] || ""
-                    }
-                    onChange={handleInputChange(phoneNumber[0])}
-                  />
-                  <span
-                    css={css`
-                      ${textSans.medium()};
-                      text-decoration: underline;
-                      cursor: pointer;
-                      color: ${palette.brand[500]};
-                      margin-left: ${space[3]};
-                    `}
-                    onClick={cancelPhoneNumberInput(
-                      phoneNumber[0] as ContactPhoneNumbersType
-                    )}
                   >
-                    Cancel
-                  </span>
-                </>
-              ))
-            ) : (
+                    <TextInput
+                      key={`phonenumberinput-${index}`}
+                      pattern="[0-9]{1,11}"
+                      label={phoneNumber[0]}
+                      supporting="Enter your phone number"
+                      width={30}
+                      css={css`
+                        max-width: 100%;
+                      `}
+                      value={
+                        newPhoneNumber?.[
+                          phoneNumber[0] as ContactPhoneNumbersType
+                        ] || ""
+                      }
+                      onChange={handleInputChange(phoneNumber[0])}
+                    />
+                    <span
+                      css={css`
+                        ${textSans.medium()};
+                        text-decoration: underline;
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        margin-left: ${space[3]}px;
+                      `}
+                      onClick={cancelNumberUpdate(
+                        phoneNumber[0] as ContactPhoneNumbersType
+                      )}
+                    >
+                      Cancel
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    css={css`
+                      display: block;
+                      ${textSans.medium()};
+                      ${index > 0 && `margin-top:${space[3]}px;`}
+                    `}
+                  >
+                    <span
+                      css={css`
+                        display: inline-block;
+                        min-width: 15ch;
+                      `}
+                    >
+                      {phoneNumber[0]}:
+                    </span>
+                    <span
+                      css={css`
+                        color: ${palette.neutral[46]};
+                      `}
+                    >
+                      {phoneNumber[1]}
+                    </span>
+                    <span
+                      css={css`
+                        text-decoration: underline;
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        margin-left: ${space[3]}px;
+                      `}
+                      onClick={putNumberInEditState(
+                        phoneNumber[0] as ContactPhoneNumbersType
+                      )}
+                    >
+                      Update
+                    </span>
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </form>
+        ) : (
+          <>
+            {showPhoneInput ? (
               <>
                 <TextInput
                   label="Phone number"
@@ -196,39 +214,57 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     text-decoration: underline;
                     cursor: pointer;
                     color: ${palette.brand[500]};
-                    padding-left: ${space[3]};
+                    margin-left: ${space[3]};
                   `}
                   onClick={() => {
                     if (newPhoneNumber?.Phone) {
                       setNewPhoneNumber({
                         ...newPhoneNumber,
-                        Phone: props.existingPhoneNumber?.Phone
+                        Phone: props.existingPhoneNumbers?.Phone
                       });
                     }
                   }}
                 >
                   Cancel
                 </span>
-                <Button
-                  priority="secondary"
-                  onClick={() => {
-                    setShowPhoneInput(true);
-                  }}
-                >
-                  Add phone number
-                </Button>
               </>
+            ) : (
+              <Button
+                priority="secondary"
+                onClick={() => {
+                  setShowPhoneInput(true);
+                }}
+              >
+                Add phone number
+              </Button>
             )}
-            <p
-              css={css`
-                ${textSans.medium()};
-                margin-top: ${space[3]}px;
-              `}
-            >
-              Your contact number will be updated once you submit your report.
-            </p>
-          </form>
+          </>
         )}
+        {showPhoneInput ||
+          (isPhoneInEditState &&
+            Object.values(isPhoneInEditState).some(
+              numberInEditState => numberInEditState
+            ) && (
+              <span
+                css={css`
+                  position: relative;
+                  display: block;
+                  padding: 0 ${space[5]}px 0 ${space[5] + space[1]}px;
+                  ${textSans.small()};
+                `}
+              >
+                <i
+                  css={css`
+                    position: absolute;
+                    top: 2px;
+                    left: 0;
+                  `}
+                >
+                  <InfoIconDark fillColor={palette.brand.bright} />
+                </i>
+                Your number will be updated when you submit your report.
+              </span>
+            ))}
       </>
     </div>
   );

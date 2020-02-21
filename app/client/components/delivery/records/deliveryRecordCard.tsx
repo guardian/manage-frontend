@@ -188,7 +188,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             margin-left: -30px;
             ${minWidth.tablet} {
               margin-left: 0;
-              width: auto;
+              width: calc(100% - (12ch + 16px));
             }
           `}
         >
@@ -232,7 +232,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                 ${ddCss()}
                 width: calc(100% - 10ch);
                 ${minWidth.tablet} {
-                  width: auto;
+                  width: calc(100% - (12ch + 16px));
                 }
               `}
             >

@@ -8,19 +8,21 @@ import React, { useContext } from "react";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
-  ProductDetail
+  Subscription
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
-import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
-import { PageStatus } from "./deliveryRecords";
+import {
+  DeliveryRecordsRouteableStepProps,
+  PageStatus
+} from "./deliveryRecords";
 import {
   createDeliveryRecordsProblemPost,
   DeliveryRecordsApiAsyncLoader,
@@ -28,24 +30,22 @@ import {
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
+  DeliveryRecordsProblemContext,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 
 const renderDeliveryRecordsConfirmation = (
-  props: RouteableStepProps,
-  productDetail: ProductDetail
+  props: DeliveryRecordsRouteableStepProps,
+  subscription: Subscription
 ) => (data: DeliveryRecordsResponse) => {
-  const mainPlan = getMainPlan(
-    productDetail.subscription
-  ) as PaidSubscriptionPlan;
+  const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
   return (
     <DeliveryRecordsProblemConfirmationFC
       data={data}
       routeableStepProps={props}
-      subscriptionId={productDetail.subscription.subscriptionId}
+      subscriptionId={subscription.subscriptionId}
       subscriptionCurrency={mainPlan.currency}
-      isTestUser={productDetail.isTestUser}
     />
   );
 };
@@ -55,7 +55,6 @@ interface DeliveryRecordsProblemConfirmationFCProps {
   routeableStepProps: RouteableStepProps;
   subscriptionId: string;
   subscriptionCurrency: string;
-  isTestUser: boolean;
 }
 
 const DeliveryRecordsProblemConfirmationFC = (
@@ -311,7 +310,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                   }
                 `}
               >
-                {deliveryIssuePostPayload?.productName}
+                {props.routeableStepProps.productType.shortenedFriendlyName}
               </dd>
             </div>
             <div
@@ -335,22 +334,23 @@ const DeliveryRecordsProblemConfirmationFC = (
                   ${ddCss}
                 `}
               >
-                {Object.entries(props.data.contactPhoneNumbers)
-                  .filter(
-                    phoneNumber =>
-                      phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
-                  )
-                  .map((phoneNumber, index) => (
-                    <span
-                      key={`phoneNo-${index}`}
-                      css={css`
-                        display: block;
-                        margin-bottom: ${space[3]};
-                      `}
-                    >
-                      {phoneNumber[1]}
-                    </span>
-                  ))}
+                {"-" ||
+                  Object.entries(props.data.contactPhoneNumbers)
+                    .filter(
+                      phoneNumber =>
+                        phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
+                    )
+                    .map((phoneNumber, index) => (
+                      <span
+                        key={`phoneNo-${index}`}
+                        css={css`
+                          display: block;
+                          margin-bottom: ${space[3]};
+                        `}
+                      >
+                        {phoneNumber[1]}
+                      </span>
+                    ))}
               </dd>
             </div>
             <div
@@ -514,40 +514,26 @@ const DeliveryRecordsProblemConfirmationFC = (
 };
 
 export const DeliveryRecordsProblemConfirmation = (
-  props: RouteableStepProps
+  props: DeliveryRecordsRouteableStepProps
 ) => {
   const deliveryIssuePostPayload = useContext(
     DeliveryRecordsProblemPostPayloadContext
   );
+  const deliveryRecordsProblemContext = useContext(
+    DeliveryRecordsProblemContext
+  );
 
   return (
-    deliveryIssuePostPayload && (
-      <FlowStartMultipleProductDetailHandler
-        {...props}
-        headingPrefix={"Delivery report confirmation"}
-        hideHeading
-        hasLeftNav={{
-          pageTitle: "Delivery report confirmation",
-          selectedNavItem: navLinks.subscriptions
-        }}
-        supportRefererSuffix="delivery_records_flow"
-        loadingMessagePrefix="Retrieving details of your"
-        cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
-    Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-        singleProductDetailRenderer={(
-          routeableStepProps: RouteableStepProps,
-          productDetail: ProductDetail
-        ) => (
-          <DeliveryRecordsApiAsyncLoader
-            render={renderDeliveryRecordsConfirmation(props, productDetail)}
-            fetch={createDeliveryRecordsProblemPost(
-              productDetail.subscription.subscriptionId,
-              deliveryIssuePostPayload
-            )}
-            loadingMessage={"Reporting problem..."}
-          />
-        )}
-      />
-    )
+    <DeliveryRecordsApiAsyncLoader
+      render={renderDeliveryRecordsConfirmation(
+        props,
+        deliveryRecordsProblemContext.subscription
+      )}
+      fetch={createDeliveryRecordsProblemPost(
+        deliveryRecordsProblemContext.subscription.subscriptionId,
+        deliveryIssuePostPayload
+      )}
+      loadingMessage={"Reporting problem..."}
+    />
   );
 };

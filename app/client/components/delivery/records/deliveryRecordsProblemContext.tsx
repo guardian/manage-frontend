@@ -1,5 +1,8 @@
 import { createContext } from "react";
-import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
+import {
+  DeliveryRecordApiItem,
+  Subscription
+} from "../../../../shared/productResponse";
 import {
   ContactPhoneNumbers,
   DeliveryProblemMap,
@@ -12,7 +15,7 @@ export interface DeliveryRecordsProblemType {
 }
 
 interface DeliveryRecordsProblemContextInterface {
-  subscriptionId: string;
+  subscription: Subscription;
   subscriptionCurrency: string;
   productName: string;
   apiProductName?: string;
@@ -32,14 +35,14 @@ export interface DeliveryProblemCreditInterface {
   creditDate?: string | null;
 }
 
-export const DeliveryRecordsProblemContext = createContext<DeliveryRecordsProblemContextInterface | null>(
-  null
-);
+export const DeliveryRecordsProblemContext = createContext<
+  DeliveryRecordsProblemContextInterface
+>({} as DeliveryRecordsProblemContextInterface);
 
 export const DeliveryRecordCreditContext = createContext<DeliveryProblemCreditInterface | null>(
   null
 );
 
-export const DeliveryRecordsProblemPostPayloadContext = createContext<DeliveryRecordsPostPayload | null>(
-  null
-);
+export const DeliveryRecordsProblemPostPayloadContext = createContext<
+  DeliveryRecordsPostPayload
+>({});

@@ -10,7 +10,8 @@ import React, { useState } from "react";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
+  Subscription
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
@@ -55,7 +56,7 @@ export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
 interface DeliveryRecordsFCProps {
   data: DeliveryRecordsResponse;
   routeableStepProps: DeliveryRecordsRouteableStepProps;
-  subscriptionId: string;
+  subscription: Subscription;
   subscriptionCurrency: string;
   isTestUser: boolean;
 }
@@ -77,7 +78,7 @@ const renderDeliveryRecords = (
     <DeliveryRecordsFC
       data={data}
       routeableStepProps={props}
-      subscriptionId={productDetail.subscription.subscriptionId}
+      subscription={productDetail.subscription}
       subscriptionCurrency={mainPlan.currency}
       isTestUser={productDetail.isTestUser}
     />
@@ -171,7 +172,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   return (
     <DeliveryRecordsProblemContext.Provider
       value={{
-        subscriptionId: props.subscriptionId,
+        subscription: props.subscription,
         subscriptionCurrency: props.subscriptionCurrency,
         productName: capatalize(
           props.routeableStepProps.productType.shortenedFriendlyName ||

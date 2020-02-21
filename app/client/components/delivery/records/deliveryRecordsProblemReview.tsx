@@ -187,7 +187,7 @@ export const DeliveryRecordsProblemReview = (
                           ${ddCss}
                         `}
                       >
-                        {deliveryProblemContext.subscriptionId}
+                        {deliveryProblemContext.subscription.subscriptionId}
                       </dd>
                     </div>
                     <div
@@ -435,14 +435,14 @@ export const DeliveryRecordsProblemReview = (
                     </span>
                     {phoneNumbers && (
                       <UserPhoneNumber
-                        existingPhoneNumber={phoneNumbers}
-                        // existingPhoneNumber={{
-                        //   id: "123",
-                        //   Phone: "1234",
-                        //   HomePhone: "2345",
-                        //   MobilePhone: "3456",
-                        //   OtherPhone: "4567"
-                        // }}
+                        // existingPhoneNumber={phoneNumbers}
+                        existingPhoneNumbers={{
+                          id: "123",
+                          Phone: "1234",
+                          HomePhone: "2345",
+                          MobilePhone: "3456",
+                          OtherPhone: "4567"
+                        }}
                         callback={(newNumber: ContactPhoneNumbers) => {
                           setPhoneNumbers(newNumber);
                         }}
@@ -459,7 +459,7 @@ export const DeliveryRecordsProblemReview = (
                 <Button
                   onClick={() => {
                     if (props.navigate) {
-                      props.navigate("confirmed", { replace: true });
+                      props.navigate("confirmed");
                     }
                   }}
                 >
@@ -523,7 +523,7 @@ export const DeliveryRecordsProblemReview = (
   return (
     <PotentialHolidayStopsAsyncLoader
       fetch={getPotentialHolidayStopsFetcher(
-        deliveryProblemContext?.subscriptionId,
+        deliveryProblemContext?.subscription.subscriptionId,
         moment(problemStartDate),
         moment(problemEndDate),
         deliveryProblemContext.isTestUser
