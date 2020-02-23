@@ -92,6 +92,7 @@ const getProductDetailSelector = (
   selectProductDetail: (productDetail: ProductDetail) => void,
   supportRefererSuffix: string
 ) => (data: MembersDataApiItem[]) => {
+  console.log(`data = ${JSON.stringify(data, null, 2)}`);
   const sortedList = data.filter(isProduct).sort(sortByJoinDate);
   if (sortedList.length > 0) {
     const first = sortedList[0];

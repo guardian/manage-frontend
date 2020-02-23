@@ -10,8 +10,7 @@ import React, { useState } from "react";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
-  ProductDetail,
-  Subscription
+  ProductDetail
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
@@ -40,6 +39,7 @@ import {
   DeliveryRecordsProblemType
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
+import { trackEvent } from "../../analytics";
 
 export enum PageStatus {
   READ_ONLY,
@@ -56,9 +56,8 @@ export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
 interface DeliveryRecordsFCProps {
   data: DeliveryRecordsResponse;
   routeableStepProps: DeliveryRecordsRouteableStepProps;
-  subscription: Subscription;
+  productDetail: ProductDetail;
   subscriptionCurrency: string;
-  isTestUser: boolean;
 }
 
 interface Step1FormValidationDetails {
@@ -78,9 +77,8 @@ const renderDeliveryRecords = (
     <DeliveryRecordsFC
       data={data}
       routeableStepProps={props}
-      subscription={productDetail.subscription}
+      productDetail={productDetail}
       subscriptionCurrency={mainPlan.currency}
-      isTestUser={productDetail.isTestUser}
     />
   );
 };
@@ -119,6 +117,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     setDeliveryProblem({ category: selectedValue, message: selectedMessage });
     setStep1formValidationState(true);
     if (step1FormValidationDetails.isValid) {
+      trackEvent({
+        eventCategory: "delivery-problem",
+        eventAction: "continue_to_step_2_button_click",
+        product: {
+          productType: props.routeableStepProps.productType,
+          productDetail: props.productDetail
+        },
+        eventLabel: props.routeableStepProps.productType.urlPart
+      });
       setPageStatus(PageStatus.REPORT_ISSUE_STEP_2);
     }
   };
@@ -172,7 +179,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   return (
     <DeliveryRecordsProblemContext.Provider
       value={{
-        subscription: props.subscription,
+        subscription: props.productDetail.subscription,
         subscriptionCurrency: props.subscriptionCurrency,
         productName: capatalize(
           props.routeableStepProps.productType.shortenedFriendlyName ||
@@ -186,7 +193,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           selectedProblemRecords.includes(record.id)
         ),
         deliveryProblemMap: props.data.deliveryProblemMap,
-        isTestUser: props.isTestUser,
+        isTestUser: props.productDetail.isTestUser,
         showProblemCredit:
           !ProductTypes[
             props.routeableStepProps.productType.urlPart as ProductTypeKeys
@@ -234,12 +241,22 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   of problem, you will be credited or contacted by our customer
                   service team.
                 </p>
+                <p>Is your problem urgent? Contact us.</p>
                 {pageStatus === PageStatus.READ_ONLY && (
                   <LinkButton
                     colour={palette.brand.main}
                     to={""}
                     text={"Report a problem"}
                     onClick={() => {
+                      trackEvent({
+                        eventCategory: "delivery-problem",
+                        eventAction: "report_delivery_problem_button_click",
+                        product: {
+                          productType: props.routeableStepProps.productType,
+                          productDetail: props.productDetail
+                        },
+                        eventLabel: props.routeableStepProps.productType.urlPart
+                      });
                       setSelectedProblemRecords([]);
                       setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
                     }}
@@ -293,7 +310,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             `}
           >
             {pageStatus === PageStatus.REPORT_ISSUE_STEP_2
-              ? "Step 2. Select the date you have experienced the problem above"
+              ? "Step 2. Select the date you have experienced the problem"
               : "Deliveries"}
           </h2>
           {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
@@ -425,6 +442,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   });
                   setStep2formValidationState(!isStep2Valid);
                   if (step1FormValidationDetails.isValid && isStep2Valid) {
+                    trackEvent({
+                      eventCategory: "delivery-problem",
+                      eventAction: "review_report_button_click",
+                      product: {
+                        productType: props.routeableStepProps.productType,
+                        productDetail: props.productDetail
+                      },
+                      eventLabel: props.routeableStepProps.productType.urlPart
+                    });
                     setPageStatus(PageStatus.CONTINUE_TO_REVIEW);
                     (props.routeableStepProps.navigate || navigate)("review");
                   }
@@ -450,6 +476,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               >
                 Cancel
               </Button>
+              <p>
+                Is your delivery problem urgent? Or want to report a problem
+                older than the above? Contact us
+              </p>
             </div>
           )}
         </PageNavAndContentContainer>

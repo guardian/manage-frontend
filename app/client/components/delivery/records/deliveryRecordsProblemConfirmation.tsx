@@ -114,10 +114,7 @@ const DeliveryRecordsProblemConfirmationFC = (
         >
           Delivery report confirmation
         </h2>
-        <p>
-          Your delivery problem report has been successfully submitted. We will
-          send a confirmation email to you shortly.
-        </p>
+        <p>Your delivery problem report has been successfully submitted.</p>
         <section
           css={css`
             border: 1px solid ${palette.neutral["86"]};
@@ -444,7 +441,7 @@ const DeliveryRecordsProblemConfirmationFC = (
             </i>
             {deliveryProblemCredit?.showCredit
               ? "We apologies for any inconvenience caused. We will do our best to improve our service."
-              : "Your case will be marked as a high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
+              : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
           </span>
           {deliveryProblemCredit?.showCredit && (
             <dl

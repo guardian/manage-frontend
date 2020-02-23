@@ -429,9 +429,9 @@ export const DeliveryRecordsProblemReview = (
                       >
                         <InfoIconDark fillColor={palette.brand.bright} />
                       </i>
-                      Your case will be marked as a high priority. Our customer
-                      service team will try their best to contact you within 48
-                      hours to resolve the issue.
+                      Once you submit your report, your case will be marked as
+                      high priority. Our customer service team will try their
+                      best to contact you within 48 hours to resolve the issue.
                     </span>
                     {phoneNumbers && (
                       <UserPhoneNumber
@@ -529,7 +529,7 @@ export const DeliveryRecordsProblemReview = (
         deliveryProblemContext.isTestUser
       )}
       render={renderReviewDetails}
-      loadingMessage="Fetching details..."
+      loadingMessage="Generating your report"
     />
   );
 };
