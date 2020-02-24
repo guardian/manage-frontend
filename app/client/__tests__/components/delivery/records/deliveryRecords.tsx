@@ -6,6 +6,7 @@ import {
   ProductTypes
 } from "../../../../../shared/productTypes";
 import { DeliveryRecords } from "../../../../components/delivery/records/deliveryRecords";
+// import { FlowStartMultipleProductDetailHandler } from "../../../../components/flowStartMultipleProductDetailHandler";
 
 Enzyme.configure({ adapter: new Adapter() });
 declare global {
@@ -62,13 +63,77 @@ const responseData = {
   }
 };
 
+const apiMeMmaResponse = [
+  {
+    joinDate: "2019-11-26",
+    tier: "Guardian Weekly - Domestic",
+    isPaidTier: true,
+    optIn: true,
+    subscription: {
+      readerType: "Direct",
+      nextPaymentDate: "2020-03-06",
+      contactId: "0033E00001BSPTaQAP",
+      cancelledAt: false,
+      currentPlans: [
+        {
+          shouldBeVisible: true,
+          amount: 3750,
+          currencyISO: "GBP",
+          chargedThrough: "2020-03-06",
+          name: null,
+          start: "2019-12-06",
+          end: "2020-11-26",
+          currency: "£",
+          interval: "quarter"
+        }
+      ],
+      start: "2019-12-06",
+      subscriberId: "A-S00052650",
+      renewalDate: "2020-11-26",
+      safeToUpdatePaymentMethod: false,
+      trialLength: -80,
+      futurePlans: [],
+      deliveryAddress: {
+        addressLine1: "Kings place, 90 York way",
+        addressLine2: "Kings cross",
+        town: "London",
+        postcode: "N1 9GU",
+        country: "GB"
+      },
+      lastPaymentDate: "2019-12-06",
+      paymentMethod: "Card",
+      autoRenew: true,
+      end: "2020-03-06",
+      subscriptionId: "A-S00052650",
+      nextPaymentPrice: 3750,
+      plan: {
+        name: "Guardian Weekly - Domestic",
+        amount: 3750,
+        currency: "£",
+        currencyISO: "GBP",
+        interval: "quarter"
+      },
+      card: {
+        last4: "4242",
+        type: "Visa",
+        stripePublicKeyForUpdate: "pk_test_AAAAaaaaa00000AAAA000000",
+        email: "bob@bob.com"
+      },
+      deliveryAddressChangeEffectiveDate: "2020-03-06"
+    },
+    isTestUser: false
+  }
+];
+
 describe("DeliveryRecords", () => {
+
+  // /api/me/mma
+  // /api/delivery-records/A-S00052650
+
   beforeEach(() => {
-    //////////////////////////////
-    global.fetch = jest.fn().mockImplementationOnce(() => {
-      console.log(
-        "************************** fetch called **************************"
-      );
+    // tslint:disable-next-line: no-object-mutation
+    global.fetch = jest.fn().mockImplementation(url => {
+      console.log(`url = ${url}`);
       return new Promise((resolve, reject) => {
         resolve({
           ok: true,
@@ -77,12 +142,11 @@ describe("DeliveryRecords", () => {
             get: (prop: string) => "pass"
           },
           json: () => {
-            return responseData;
+            return url.contains("/api/me/mma") ? apiMeMmaResponse : responseData;
           }
         });
       });
     });
-    //////////////////////////////
   });
 
   it("renders without crashing", done => {
@@ -93,17 +157,27 @@ describe("DeliveryRecords", () => {
           productType={ProductTypes.guardianweekly}
         />
       );
+
+      console.log(`debug 1 : ${wrapper.debug()}`);
+
       process.nextTick(() => {
+        
+        // wrapper.find(FlowStartMultipleProductDetailHandler).instance().setState({ selectedProductDetail: apiMeMmaResponse[0]})
+        
         wrapper.update();
-        // console.log(`debug : ${wrapper.debug()}`);
+
+        console.log(`debug 2 : ${wrapper.debug()}`);
+
         expect(1 + 2).toEqual(3);
+        done();
+
         // expect(
         //   wrapper
         //     .find("h1")
         //     .at(0)
         //     .text()
         // ).toEqual("Delivery history");
-        done();
+        // done();
       });
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");

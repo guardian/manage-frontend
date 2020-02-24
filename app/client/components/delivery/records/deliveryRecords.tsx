@@ -21,6 +21,7 @@ import {
   WithProductType
 } from "../../../../shared/productTypes";
 import { maxWidth } from "../../../styles/breakpoints";
+import { trackEvent } from "../../analytics";
 import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
@@ -39,7 +40,6 @@ import {
   DeliveryRecordsProblemType
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
-import { trackEvent } from "../../analytics";
 
 export enum PageStatus {
   READ_ONLY,

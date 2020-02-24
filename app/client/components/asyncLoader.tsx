@@ -53,7 +53,6 @@ export default class AsyncLoader<
         return this.handleError(`${resp.status} (${resp.statusText})`);
       })
       .then(data => {
-        console.log(`async loader data = ${JSON.stringify(data, null, " ")}`);
         if (
           !(
             this.props.shouldPreventRender &&
