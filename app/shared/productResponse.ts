@@ -98,6 +98,7 @@ export interface DeliveryAddress {
   region?: string;
   postcode: string;
   country: string;
+  addressChangeInformation?: string;
 }
 
 export type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
