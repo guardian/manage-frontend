@@ -18,7 +18,7 @@ interface DeliveryRecordProblemFormProps {
   problemTypes: DeliveryProblemType[];
 }
 
-interface SelectedDeliveryProblem {
+export interface SelectedDeliveryProblem {
   value: string;
   message?: string;
 }
@@ -264,7 +264,7 @@ export const DeliveryRecordProblemForm = (
           >
             <ErrorIcon />
           </i>
-          Please make a selection
+          Please select the type of problem
         </span>
       )}
       {props.showNextStepButton && (

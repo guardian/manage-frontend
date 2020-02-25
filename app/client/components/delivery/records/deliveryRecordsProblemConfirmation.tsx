@@ -1,16 +1,17 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import moment from "moment";
 import React, { useContext } from "react";
+import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
   Subscription
 } from "../../../../shared/productResponse";
-import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
@@ -115,6 +116,43 @@ const DeliveryRecordsProblemConfirmationFC = (
           Delivery report confirmation
         </h2>
         <p>Your delivery problem report has been successfully submitted.</p>
+        <span
+          css={css`
+            position: relative;
+            display: block;
+            margin: ${space[3]}px 0;
+            padding: ${space[3]}px ${space[3]}px ${space[3]}px
+              ${space[3] * 2 + 17}px;
+            background-color: ${palette.neutral[97]};
+            ${textSans.small()};
+            ${minWidth.tablet} {
+              margin: ${space[5]}px 0;
+            }
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: ${space[3]}px;
+              left: ${space[3]}px;
+            `}
+          >
+            <InfoIconDark fillColor={palette.brand.bright} />
+          </i>
+          {
+            "Before you go, please take a moment to check your current delivery address is update to date. "
+          }
+          <Link
+            css={{
+              textDecoration: "underline",
+              color: palette.brand[500],
+              ":visited": { color: palette.brand[500] }
+            }}
+            to={navLinks.subscriptions.link}
+          >
+            {"View address"}
+          </Link>
+        </span>
         <section
           css={css`
             border: 1px solid ${palette.neutral["86"]};
@@ -440,7 +478,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               <InfoIconDark fillColor={palette.brand.bright} />
             </i>
             {deliveryProblemCredit?.showCredit
-              ? "We apologies for any inconvenience caused. We will do our best to improve our service."
+              ? "Thank you for reporting your delivery problem. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service."
               : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
           </span>
           {deliveryProblemCredit?.showCredit && (

@@ -23,6 +23,7 @@ import {
 import { maxWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { LinkButton } from "../../buttons";
+import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
@@ -106,6 +107,14 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [deliveryProblem, setDeliveryProblem] = useState<
     DeliveryRecordsProblemType
   >();
+  const [
+    showTopCallCentreNumbers,
+    setTopCallCentreNumbersVisibility
+  ] = useState<boolean>(false);
+  const [
+    showBottomCallCentreNumbers,
+    setBottomCallCentreNumbersVisibility
+  ] = useState<boolean>(false);
   const step1FormUpdateCallback = (isValid: boolean, message?: string) => {
     setStep1formValidationState(false);
     setStep1FormValidationDetails({ isValid, message });
@@ -241,7 +250,25 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   of problem, you will be credited or contacted by our customer
                   service team.
                 </p>
-                <p>Is your problem urgent? Contact us.</p>
+                <p>
+                  Is your problem urgent?{" "}
+                  <span
+                    css={css`
+                      cursor: pointer;
+                      color: ${palette.brand[500]};
+                      text-decoration: underline;
+                    `}
+                    onClick={() =>
+                      setTopCallCentreNumbersVisibility(
+                        !showTopCallCentreNumbers
+                      )
+                    }
+                  >
+                    Contact us
+                  </span>
+                  .
+                </p>
+                {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
                 {pageStatus === PageStatus.READ_ONLY && (
                   <LinkButton
                     colour={palette.brand.main}
@@ -476,10 +503,30 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               >
                 Cancel
               </Button>
-              <p>
+              <p
+                css={css`
+                  margin-top: ${space[6]}px;
+                `}
+              >
                 Is your delivery problem urgent? Or want to report a problem
-                older than the above? Contact us
+                older than the above?{" "}
+                <span
+                  css={css`
+                    cursor: pointer;
+                    color: ${palette.brand[500]};
+                    text-decoration: underline;
+                  `}
+                  onClick={() =>
+                    setBottomCallCentreNumbersVisibility(
+                      !showBottomCallCentreNumbers
+                    )
+                  }
+                >
+                  Contact us
+                </span>
+                .
               </p>
+              {showBottomCallCentreNumbers && <CallCentreEmailAndNumbers />}
             </div>
           )}
         </PageNavAndContentContainer>

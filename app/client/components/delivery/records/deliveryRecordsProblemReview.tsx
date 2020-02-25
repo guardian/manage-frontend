@@ -5,7 +5,7 @@ import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import moment from "moment";
-import React, { MouseEvent, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -155,7 +155,7 @@ export const DeliveryRecordsProblemReview = (
                     }
                   `}
                 >
-                  Reported delivery problems
+                  Step 3. Please review your report details
                 </h2>
                 {deliveryProblemContext && (
                   <dl
@@ -502,8 +502,8 @@ export const DeliveryRecordsProblemReview = (
                     text-decoration: underline;
                     cursor: pointer;
                   `}
-                  onClick={(event: MouseEvent<HTMLElement>) =>
-                    setShowCallCenterNumbers(true)
+                  onClick={() =>
+                    setShowCallCenterNumbers(!showCallCenterNumbers)
                   }
                 >
                   Contact us
