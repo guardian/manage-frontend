@@ -435,14 +435,7 @@ export const DeliveryRecordsProblemReview = (
                     </span>
                     {phoneNumbers && (
                       <UserPhoneNumber
-                        // existingPhoneNumber={phoneNumbers}
-                        existingPhoneNumbers={{
-                          id: "123",
-                          Phone: "1234",
-                          HomePhone: "2345",
-                          MobilePhone: "3456",
-                          OtherPhone: "4567"
-                        }}
+                        existingPhoneNumbers={phoneNumbers}
                         callback={(newNumber: ContactPhoneNumbers) => {
                           setPhoneNumbers(newNumber);
                         }}
