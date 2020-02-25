@@ -309,18 +309,15 @@ describe("DeliveryRecords", () => {
         .find(DeliveryRecordsFC)
         .find(DeliveryRecordProblemForm);
 
-      problemForm
-        .find("button")
-        .at(0)
-        .simulate("click");
+      const continueToStep2Btn = problemForm.find("button").at(0);
+      continueToStep2Btn.simulate("submit");
 
-      // expect(
-      //   wrapper.find("form")
-      //     .find("span")
-      //     .text()
-      // ).toEqual("Please make a selection");
-      console.log(problemForm.debug());
-      expect(1 + 2).toEqual(2)
+      expect(
+        wrapper
+          .find("form")
+          .find("span")
+          .text()
+      ).toEqual("Please make a selection");
 
       done();
     } else {
