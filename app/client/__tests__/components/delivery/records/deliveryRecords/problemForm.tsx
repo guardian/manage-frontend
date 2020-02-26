@@ -7,7 +7,7 @@ import { DeliveryRecordProblemForm } from "../../../../../components/delivery/re
 Enzyme.configure({ adapter: new Adapter() });
 
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [
-  { label: "Damaged paper", messageIsMandatory: false },
+  { label: "Damaged paper", messageIsMandatory: true },
   { label: "Delivered despite holiday", messageIsMandatory: false },
   { label: "No delivery", messageIsMandatory: false },
   { label: "Other", messageIsMandatory: true }

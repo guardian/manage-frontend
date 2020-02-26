@@ -131,7 +131,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             ${ddCss()}
           `}
         >
-          {moment(props.deliveryRecord.deliveryDate).format("DD MMM YYYY")}
+          {moment(props.deliveryRecord.deliveryDate).format("D MMM YYYY")}
         </dd>
       </div>
       <div
@@ -214,10 +214,6 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             css={css`
               ${recordRowCss}
               margin-top: 10px;
-              ${minWidth.tablet} {
-                display: inline-block;
-                width: 50%;
-              }
             `}
           >
             <dt
@@ -248,9 +244,9 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                       display: inline-block;
                     }
                   `}
-                >{`off of ${moment(
+                >{`off your ${moment(
                   props.deliveryRecord.credit.invoiceDate
-                ).format("DD MMM YYYY")} bill`}</p>
+                ).format("D MMM YYYY")} payment`}</p>
               )}
             </dd>
           </div>

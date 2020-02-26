@@ -318,7 +318,7 @@ describe("DeliveryRecords", () => {
           .find("form")
           .find("span")
           .text()
-      ).toEqual("Please make a selection");
+      ).toEqual("Please select the type of problem");
 
       done();
     } else {

@@ -109,7 +109,7 @@ export interface DeliveryProblemType {
 }
 
 export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
-  { label: "Damaged Paper", messageIsMandatory: false }, // TODO: await confirmation of whether common
+  { label: "Damaged Paper", messageIsMandatory: true },
   { label: "Delivered Despite Holiday", messageIsMandatory: false },
   { label: "No Delivery", messageIsMandatory: false },
   { label: "Other", messageIsMandatory: true }
@@ -410,7 +410,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         numberOfProblemRecordsToShow: 14,
         contactUserOnExistingProblemReport: true,
         availableProblemTypes: [
-          { label: "Instructions Not Followed", messageIsMandatory: false },
+          { label: "Instructions Not Followed", messageIsMandatory: true },
           ...commonDeliveryProblemTypes
         ]
       }

@@ -204,10 +204,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         deliveryProblemMap: props.data.deliveryProblemMap,
         isTestUser: props.productDetail.isTestUser,
         showProblemCredit:
-          !ProductTypes[
-            props.routeableStepProps.productType.urlPart as ProductTypeKeys
-          ].delivery?.records?.contactUserOnExistingProblemReport &&
-          !hasExistingDeliveryProblem,
+          !props.productDetail.subscription.cancelledAt &&
+          !(
+            hasExistingDeliveryProblem &&
+            props.routeableStepProps.productType.delivery?.records
+              ?.contactUserOnExistingProblemReport
+          ),
         repeatDeliveryProblem: hasExistingDeliveryProblem,
         contactPhoneNumbers: props.data.contactPhoneNumbers,
         resetDeliveryRecordsPage
@@ -340,6 +342,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               ? "Step 2. Select the date you have experienced the problem"
               : "Deliveries"}
           </h2>
+          {!filteredData.length && (
+            <p>
+              You haven't had a delivery for this subscription yet. In the
+              future, details of your delivery will appear here.
+            </p>
+          )}
           {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
             <div
               css={css`
@@ -549,6 +557,7 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       loadingMessagePrefix="Retrieving details of your"
       cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
     Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
+      allowCancelledSubscription
       singleProductDetailRenderer={(
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail

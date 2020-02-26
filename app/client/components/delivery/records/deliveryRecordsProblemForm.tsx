@@ -35,9 +35,6 @@ export const DeliveryRecordProblemForm = (
     selectedDeliveryProblem,
     setSelectedDeliveryProblem
   ] = useState<SelectedDeliveryProblem | null>(null);
-  const [hasFormBeenSubmitted, setHasFormBeenSubmitted] = useState<boolean>(
-    false
-  );
   useEffect(() => {
     const validateDetails: ValidateDetails = validateForm();
     props.updateValidationStatusCallback(
@@ -77,7 +74,6 @@ export const DeliveryRecordProblemForm = (
           selectedDeliveryProblem?.value,
           selectedDeliveryProblem?.message
         );
-        setHasFormBeenSubmitted(true);
       }}
     >
       <fieldset
@@ -93,12 +89,6 @@ export const DeliveryRecordProblemForm = (
               ...selectedDeliveryProblem,
               message: target.value
             });
-          }
-          if (hasFormBeenSubmitted) {
-            props.onFormSubmit?.(
-              selectedDeliveryProblem?.value,
-              selectedDeliveryProblem?.message
-            );
           }
         }}
         css={css`

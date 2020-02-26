@@ -243,7 +243,7 @@ const getProductDetailRenderer = (
       }}
     >
       {subscription.cancelledAt ? (
-        getCancellationSummary(productType)(subscription)
+        getCancellationSummary(productType)(productDetail)
       ) : (
         <>
           {productDetailList.length > 1 && (

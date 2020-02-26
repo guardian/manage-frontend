@@ -61,8 +61,8 @@ export interface DeliveryRecordsResponse {
 
 export interface DeliveryRecordsPostObj {
   id: string;
-  creditAmount: number | undefined;
-  invoiceDate: string | null | undefined;
+  creditAmount?: number;
+  invoiceDate?: string | null;
 }
 
 export interface DeliveryRecordsPostPayload {

@@ -123,7 +123,9 @@ const DeliveryRecordsProblemConfirmationFC = (
             margin: ${space[3]}px 0;
             padding: ${space[3]}px ${space[3]}px ${space[3]}px
               ${space[3] * 2 + 17}px;
-            background-color: ${palette.neutral[97]};
+            background-color: ${deliveryProblemCredit?.showCredit
+              ? "transparent"
+              : palette.neutral[97]};
             ${textSans.small()};
             ${minWidth.tablet} {
               margin: ${space[5]}px 0;
@@ -133,25 +135,15 @@ const DeliveryRecordsProblemConfirmationFC = (
           <i
             css={css`
               position: absolute;
-              top: ${space[3]}px;
-              left: ${space[3]}px;
+              top: ${deliveryProblemCredit?.showCredit ? "2" : space[3]}px;
+              left: ${deliveryProblemCredit?.showCredit ? 0 : `${space[3]}px`};
             `}
           >
             <InfoIconDark fillColor={palette.brand.bright} />
           </i>
-          {
-            "Before you go, please take a moment to check your current delivery address is update to date. "
-          }
-          <Link
-            css={{
-              textDecoration: "underline",
-              color: palette.brand[500],
-              ":visited": { color: palette.brand[500] }
-            }}
-            to={navLinks.subscriptions.link}
-          >
-            {"View address"}
-          </Link>
+          {deliveryProblemCredit?.showCredit
+            ? "Thank you for reporting your delivery problem. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service."
+            : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
         </span>
         <section
           css={css`
@@ -285,7 +277,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                   }
                 `}
               >
-                {moment().format("DD MMM YYYY")}
+                {moment().format("D MMM YYYY")}
               </dd>
             </div>
             <div
@@ -457,9 +449,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                 ? `0 ${space[5]}px 0 ${space[5] + space[2]}px`
                 : `${space[3]}px ${space[3]}px ${space[3]}px ${space[3] * 2 +
                     17}px`};
-              background-color: ${deliveryProblemCredit?.showCredit
-                ? "transparent"
-                : palette.neutral[97]};
+              background-color: ${palette.neutral[97]};
               ${textSans.small()};
               ${minWidth.tablet} {
                 margin: ${space[5]}px;
@@ -469,17 +459,25 @@ const DeliveryRecordsProblemConfirmationFC = (
             <i
               css={css`
                 position: absolute;
-                top: ${deliveryProblemCredit?.showCredit ? "2" : space[3]}px;
-                left: ${deliveryProblemCredit?.showCredit
-                  ? 0
-                  : `${space[3]}px`};
+                top: ${space[3]}px;
+                left: ${space[3]}px;
               `}
             >
               <InfoIconDark fillColor={palette.brand.bright} />
             </i>
-            {deliveryProblemCredit?.showCredit
-              ? "Thank you for reporting your delivery problem. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service."
-              : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
+            {
+              "Before you go, please take a moment to check your current delivery address is update to date. "
+            }
+            <Link
+              css={{
+                textDecoration: "underline",
+                color: palette.brand[500],
+                ":visited": { color: palette.brand[500] }
+              }}
+              to={navLinks.subscriptions.link}
+            >
+              {"View address"}
+            </Link>
           </span>
           {deliveryProblemCredit?.showCredit && (
             <dl

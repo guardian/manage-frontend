@@ -71,9 +71,11 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     } as EditPhoneNumber);
   };
 
+  // We will use this to get in touch with you about your subscription.
+
   let titleCopy = currentPhoneNumbers?.length
     ? "Do we have the right number to contact you?"
-    : "It looks like we don't have a phone number to contact you on";
+    : "It looks like we don't have a phone number to contact you on.";
   if (showPhoneInput) {
     titleCopy = "Please provide your current phone number.";
   }
@@ -90,15 +92,14 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
       `}
     >
       <>
-        <span
+        <p
           css={css`
-            display: block;
             ${textSans.medium()};
             margin-bottom: ${space[5]}px;
           `}
         >
-          {titleCopy}
-        </span>
+          {`${titleCopy} We will use this to get in touch with you if we need to about your subscription.`}
+        </p>
         {currentPhoneNumbers?.length ? (
           <form
             css={css`
@@ -204,6 +205,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                   width={30}
                   css={css`
                     max-width: 100%;
+                    margin-bottom: ${space[5]}px;
                   `}
                   value={newPhoneNumber?.Phone || ""}
                   onChange={handleInputChange("Phone")}
@@ -214,7 +216,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     text-decoration: underline;
                     cursor: pointer;
                     color: ${palette.brand[500]};
-                    margin-left: ${space[3]};
+                    margin-left: ${space[3]}px;
                   `}
                   onClick={() => {
                     if (newPhoneNumber?.Phone) {
@@ -240,31 +242,31 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
             )}
           </>
         )}
-        {showPhoneInput ||
+        {(showPhoneInput ||
           (isPhoneInEditState &&
             Object.values(isPhoneInEditState).some(
               numberInEditState => numberInEditState
-            ) && (
-              <span
-                css={css`
-                  position: relative;
-                  display: block;
-                  padding: 0 ${space[5]}px 0 ${space[5] + space[1]}px;
-                  ${textSans.small()};
-                `}
-              >
-                <i
-                  css={css`
-                    position: absolute;
-                    top: 2px;
-                    left: 0;
-                  `}
-                >
-                  <InfoIconDark fillColor={palette.brand.bright} />
-                </i>
-                Your number will be updated when you submit your report.
-              </span>
-            ))}
+            ))) && (
+          <span
+            css={css`
+              position: relative;
+              display: block;
+              padding: 0 ${space[5]}px 0 ${space[5] + space[1]}px;
+              ${textSans.small()};
+            `}
+          >
+            <i
+              css={css`
+                position: absolute;
+                top: 2px;
+                left: 0;
+              `}
+            >
+              <InfoIconDark fillColor={palette.brand.bright} />
+            </i>
+            Your number will be updated when you submit your report.
+          </span>
+        )}
       </>
     </div>
   );
