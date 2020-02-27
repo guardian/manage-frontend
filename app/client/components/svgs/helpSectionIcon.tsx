@@ -33,7 +33,7 @@ export const HelpSectionIcon = (props: HelpSectionIconProps) => (
         <circle cx="26.5" cy="26.5" r="1.5" fill="white" />
       </g>
     )}
-    {props.subsection === "Billing and Payments" && (
+    {props.subsection === "Billing and payments" && (
       <g>
         <path
           fillRule="evenodd"
