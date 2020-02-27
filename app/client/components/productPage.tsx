@@ -43,9 +43,9 @@ import {
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
+import { GiftIcon } from "./svgs/giftIcon";
 import { UpdatableAmount } from "./updatableAmount";
 import { RouteableProductProps } from "./wizardRouterAdapter";
-import { GiftIcon } from "./svgs/giftIcon";
 
 interface ProductRowProps {
   label: string;

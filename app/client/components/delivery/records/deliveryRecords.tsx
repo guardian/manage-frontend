@@ -9,9 +9,9 @@ import { navigate } from "@reach/router";
 import React, { useState } from "react";
 import {
   DeliveryRecordApiItem,
+  isGift,
   PaidSubscriptionPlan,
-  ProductDetail,
-  isGift
+  ProductDetail
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
