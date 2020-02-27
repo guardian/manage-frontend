@@ -45,6 +45,7 @@ import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
 import { UpdatableAmount } from "./updatableAmount";
 import { RouteableProductProps } from "./wizardRouterAdapter";
+import { GiftIcon } from "./svgs/giftIcon";
 
 interface ProductRowProps {
   label: string;
@@ -254,10 +255,25 @@ const getProductDetailRenderer = (
                   {listIndex + 1}
                 </h2>
               ) : (
-                <h2>
+                <h2
+                  css={css`
+                    position: relative;
+                  `}
+                >
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-                  {isGift(subscription) && " [GIFT]"}
+                  {isGift(subscription) && (
+                    <i
+                      css={css`
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                      `}
+                    >
+                      <GiftIcon />
+                    </i>
+                  )}
                 </h2>
               )}
             </PageContainer>

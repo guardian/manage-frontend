@@ -4,11 +4,12 @@ import { palette } from "@guardian/src-foundations";
 import { textSans, titlepiece } from "@guardian/src-foundations/typography";
 import React from "react";
 import { minWidth } from "../../../styles/breakpoints";
+import { GiftIcon } from "../../svgs/giftIcon";
 
 interface ProductDetailsTableProps {
   productName: string;
   subscriptionId: string;
-  isGift: true;
+  isGift: boolean;
 }
 
 export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
@@ -65,6 +66,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
           margin: 0;
           background-color: ${palette.brand[400]};
           color: white;
+          position: relative;
           ${minWidth.tablet} {
             font-size: 20px;
             padding: ${space[3]}px ${space[5]}px;
@@ -73,14 +75,16 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
       >
         Subscription details
         {props.isGift && (
-          <span
+          <i
             css={css`
-              display: inline-block;
-              margin-left: ${space[3]}px;
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
             `}
           >
-            [GIFT]
-          </span>
+            <GiftIcon />
+          </i>
         )}
       </h2>
       <dl css={dlCss}>

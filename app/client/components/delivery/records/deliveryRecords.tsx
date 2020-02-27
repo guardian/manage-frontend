@@ -10,7 +10,8 @@ import React, { useState } from "react";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
+  isGift
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
@@ -235,7 +236,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   props.routeableStepProps.productType.friendlyName
               )}
               subscriptionId={props.productDetail.subscription.subscriptionId}
-              isGift
+              isGift={isGift(props.productDetail.subscription)}
             />
           </div>
           {props.data.results.find(record => !record.problemCaseId) && (
