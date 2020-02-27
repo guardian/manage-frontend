@@ -41,12 +41,12 @@ import {
   DeliveryRecordsProblemType
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
+import { ProductDetailsTable } from "./productDetailsTable";
 
 export enum PageStatus {
   READ_ONLY,
   REPORT_ISSUE_STEP_1,
   REPORT_ISSUE_STEP_2,
-  STEP_2_VALIDATION_ERRORS,
   CONTINUE_TO_REVIEW,
   REPORT_ISSUE_CONFIRMATION
 }
@@ -224,6 +224,20 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           <h1>Delivery history</h1>
         </PageHeaderContainer>
         <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <div
+            css={css`
+              margin: ${space[6]}px 0 ${space[12]}px;
+            `}
+          >
+            <ProductDetailsTable
+              productName={capatalize(
+                props.routeableStepProps.productType.shortenedFriendlyName ||
+                  props.routeableStepProps.productType.friendlyName
+              )}
+              subscriptionId={props.productDetail.subscription.subscriptionId}
+              isGift
+            />
+          </div>
           {props.data.results.find(record => !record.problemCaseId) && (
             <>
               <h2
@@ -473,7 +487,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   const isStep2Valid = !!selectedProblemRecords.length;
                   setStep2FormValidationDetails({
                     isValid: isStep2Valid,
-                    message: "Please select an affected delivery record"
+                    message:
+                      "Step 2: Please select an affected delivery record."
                   });
                   setStep2formValidationState(!isStep2Valid);
                   if (step1FormValidationDetails.isValid && isStep2Valid) {

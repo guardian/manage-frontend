@@ -61,7 +61,7 @@ export const DeliveryRecordProblemForm = (
       return {
         isValid,
         ...(!isValid && {
-          message: "The message is mandatory for other option"
+          message: "Step 1: Please complete the required field."
         })
       };
     }
