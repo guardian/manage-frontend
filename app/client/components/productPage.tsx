@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import { startCase } from "lodash";
 import { toWords } from "number-to-words";
@@ -255,23 +255,17 @@ const getProductDetailRenderer = (
                   {listIndex + 1}
                 </h2>
               ) : (
-                <h2
-                  css={css`
-                    position: relative;
-                  `}
-                >
+                <h2>
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
                   {isGift(subscription) && (
                     <i
                       css={css`
-                        position: absolute;
-                        right: 0;
-                        top: 50%;
-                        transform: translateY(-50%);
+                        line-height: 100%;
+                        margin-left: ${space[3]}px;
                       `}
                     >
-                      <GiftIcon />
+                      <GiftIcon alignArrowToThisSide={"right"} />
                     </i>
                   )}
                 </h2>

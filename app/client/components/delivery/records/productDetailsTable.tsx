@@ -83,7 +83,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
               transform: translateY(-50%);
             `}
           >
-            <GiftIcon />
+            <GiftIcon alignArrowToThisSide={"left"} />
           </i>
         )}
       </h2>

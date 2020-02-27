@@ -2,16 +2,27 @@ import { css } from "@emotion/core";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 
-export const GiftIcon = () => (
-  <div
+type giftArrowAlign = "left" | "right";
+
+interface GiftIconProps {
+  alignArrowToThisSide: giftArrowAlign;
+}
+
+export const GiftIcon = (props: GiftIconProps) => (
+  <i
     css={css`
-      padding: 0 20px 0 30px;
+      padding: ${props.alignArrowToThisSide === "left"
+        ? "0 20px 0 30px"
+        : "0 20px"};
       background-color: #eacca0;
-      position: relative;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%);
+      display: inline-block;
+      clip-path: ${props.alignArrowToThisSide === "left"
+        ? "polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%)"
+        : "polygon(calc(100% - 10px) 0, 0 0, 10px 50%, 0 100%, calc(100% - 10px) 100%, 100% 50%)"};
       height: 28px;
     `}
   >
+    {/* "polygon(calc(100% - 10px) 0, 0 0, 0 100%, calc(100% - 10px) 100%, 100% 50%)" */}
     <svg
       width="15"
       height="19"
@@ -38,14 +49,15 @@ export const GiftIcon = () => (
         ${textSans.small()};
         font-size: 17px;
         font-weight: bold;
+        font-style: normal;
         color: #333;
         display: inline-block;
         vertical-align: top;
-        line-height: 28px;
-        margin-left: 5px;
+        line-height: 26px;
+        margin: 2px 0 0 5px;
       `}
     >
       Gift
     </span>
-  </div>
+  </i>
 );
