@@ -123,9 +123,7 @@ const DeliveryRecordsProblemConfirmationFC = (
             margin: ${space[3]}px 0;
             padding: ${space[3]}px ${space[3]}px ${space[3]}px
               ${space[3] * 2 + 17}px;
-            background-color: ${deliveryProblemCredit?.showCredit
-              ? "transparent"
-              : palette.neutral[97]};
+            background-color: ${palette.neutral[97]};
             ${textSans.small()};
             ${minWidth.tablet} {
               margin: ${space[5]}px 0;
@@ -135,8 +133,8 @@ const DeliveryRecordsProblemConfirmationFC = (
           <i
             css={css`
               position: absolute;
-              top: ${deliveryProblemCredit?.showCredit ? "2" : space[3]}px;
-              left: ${deliveryProblemCredit?.showCredit ? 0 : `${space[3]}px`};
+              top: ${space[3]}px;
+              left: ${space[3]}px;
             `}
           >
             <InfoIconDark fillColor={palette.brand.bright} />
@@ -445,10 +443,8 @@ const DeliveryRecordsProblemConfirmationFC = (
               position: relative;
               display: block;
               margin: ${space[3]}px;
-              padding: ${deliveryProblemCredit?.showCredit
-                ? `0 ${space[5]}px 0 ${space[5] + space[2]}px`
-                : `${space[3]}px ${space[3]}px ${space[3]}px ${space[3] * 2 +
-                    17}px`};
+              padding: ${space[3]}px ${space[3]}px ${space[3]}px
+                ${space[3] * 2 + 17}px;
               background-color: ${palette.neutral[97]};
               ${textSans.small()};
               ${minWidth.tablet} {
