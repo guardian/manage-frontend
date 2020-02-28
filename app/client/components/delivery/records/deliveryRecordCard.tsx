@@ -26,7 +26,7 @@ interface DeliveryRecordCardProps {
 export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
   const dtCss = (ignoreMinWidthAtNonMobile?: boolean) => `
         ${textSans.medium()};
-        font-weight: 500;
+        font-weight: bold;
         display: inline-block;
         vertical-align: top;
         min-width: 10ch;
@@ -188,7 +188,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             margin-left: -30px;
             ${minWidth.tablet} {
               margin-left: 0;
-              width: calc(100% - (12ch + 16px));
+              width: calc(100% - (13ch + 16px));
             }
           `}
         >
@@ -228,7 +228,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                 ${ddCss()}
                 width: calc(100% - 10ch);
                 ${minWidth.tablet} {
-                  width: calc(100% - (12ch + 16px));
+                  width: calc(100% - (13ch + 16px));
                 }
               `}
             >

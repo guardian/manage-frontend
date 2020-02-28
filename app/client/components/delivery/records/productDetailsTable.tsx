@@ -33,7 +33,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
       }
     }
     & dt {
-      font-weight: 500;
+      font-weight: bold;
       display: inline-block;
       vertical-align: top;
       width: 12ch;

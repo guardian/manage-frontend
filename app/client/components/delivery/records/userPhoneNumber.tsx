@@ -71,8 +71,6 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     } as EditPhoneNumber);
   };
 
-  // We will use this to get in touch with you about your subscription.
-
   let titleCopy = currentPhoneNumbers?.length
     ? "Do we have the right number to contact you?"
     : "It looks like we don't have a phone number to contact you on.";
@@ -98,7 +96,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
             margin-bottom: ${space[5]}px;
           `}
         >
-          {`${titleCopy} We will use this to get in touch with you if we need to about your subscription.`}
+          {`${titleCopy} We will use this to get in touch with you about your subscription.`}
         </p>
         {currentPhoneNumbers?.length ? (
           <form
@@ -225,6 +223,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                         Phone: props.existingPhoneNumbers?.Phone
                       });
                     }
+                    setShowPhoneInput(false);
                   }}
                 >
                   Cancel

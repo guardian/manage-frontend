@@ -79,7 +79,7 @@ const DeliveryRecordsProblemConfirmationFC = (
     : "-";
 
   const dtCss: string = `
-    font-weight: 500; 
+    font-weight: bold; 
     display: inline-block;
     vertical-align: top;
     min-width: 12ch;
