@@ -206,6 +206,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         isTestUser: props.productDetail.isTestUser,
         showProblemCredit:
           !props.productDetail.subscription.cancelledAt &&
+          props.productDetail.subscription.autoRenew &&
           !(
             hasExistingDeliveryProblem &&
             props.routeableStepProps.productType.delivery?.records
