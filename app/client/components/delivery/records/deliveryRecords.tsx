@@ -6,6 +6,7 @@ import { space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
+import moment from "moment";
 import React, { useState } from "react";
 import {
   DeliveryRecordApiItem,
@@ -43,7 +44,6 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
-import moment from "moment";
 
 export enum PageStatus {
   READ_ONLY,
