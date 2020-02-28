@@ -240,7 +240,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {props.data.results.find(record => !record.problemCaseId) && (
+          {props.data.results.find(record => !record.problemCaseId) && window && window.identityDetails.userId==="15849095" (
             <>
               <h2
                 css={css`
