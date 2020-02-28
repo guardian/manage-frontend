@@ -43,6 +43,7 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
+import moment from "moment";
 
 export enum PageStatus {
   READ_ONLY,
@@ -180,9 +181,16 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   ) => index >= currentPageStartIndex && index <= currentPageEndIndex;
 
   const hasExistingDeliveryProblem =
-    props.data.results.findIndex(
-      deliveryRecord => deliveryRecord.problemCaseId
-    ) > -1;
+    props.data.results.findIndex(deliveryRecord => {
+      const recordDateEpoch = moment(deliveryRecord.deliveryDate).unix();
+      const fourteenDaysAgoEpoch = moment()
+        .startOf("day")
+        .subtract(14, "days")
+        .unix();
+      return (
+        deliveryRecord.problemCaseId && recordDateEpoch > fourteenDaysAgoEpoch
+      );
+    }) > -1;
 
   const filteredData = filterData(props.routeableStepProps.productType.urlPart);
 
