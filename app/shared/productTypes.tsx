@@ -110,7 +110,6 @@ export interface DeliveryProblemType {
 
 export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
   { label: "Damaged Paper", messageIsMandatory: true },
-  { label: "Delivered Despite Holiday", messageIsMandatory: false },
   { label: "No Delivery", messageIsMandatory: false },
   { label: "Other", messageIsMandatory: true }
 ];
