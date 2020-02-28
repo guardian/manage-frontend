@@ -335,7 +335,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                   }
                 `}
               >
-                {props.routeableStepProps.productType.shortenedFriendlyName}
+                {props.routeableStepProps.productType.shortFriendlyName}
               </dd>
             </div>
             <div

@@ -192,7 +192,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         subscription: props.productDetail.subscription,
         subscriptionCurrency: props.subscriptionCurrency,
         productName: capatalize(
-          props.routeableStepProps.productType.shortenedFriendlyName ||
+          props.routeableStepProps.productType.shortFriendlyName ||
             props.routeableStepProps.productType.friendlyName
         ),
         apiProductName:
@@ -232,7 +232,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           >
             <ProductDetailsTable
               productName={capatalize(
-                props.routeableStepProps.productType.shortenedFriendlyName ||
+                props.routeableStepProps.productType.shortFriendlyName ||
                   props.routeableStepProps.productType.friendlyName
               )}
               subscriptionId={props.productDetail.subscription.subscriptionId}
