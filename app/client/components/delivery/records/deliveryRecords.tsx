@@ -214,6 +214,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         isTestUser: props.productDetail.isTestUser,
         showProblemCredit:
           !props.productDetail.subscription.cancelledAt &&
+          props.productDetail.subscription.autoRenew &&
           !(
             hasExistingDeliveryProblem &&
             props.routeableStepProps.productType.delivery?.records
@@ -247,7 +248,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {props.data.results.find(record => !record.problemCaseId) && (
+          {props.data.results.find(record => !record.problemCaseId) && window && window.identityDetails.userId==="15849095" (
             <>
               <h2
                 css={css`
