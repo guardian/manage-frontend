@@ -208,7 +208,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     props.data.results
   );
 
-  const filteredData = filterData(props.routeableStepProps.productType.urlPart);
+  const productType = props.routeableStepProps.productType;
+
+  const filteredData = filterData(productType.urlPart);
 
   return (
     <DeliveryRecordsProblemContext.Provider
@@ -216,12 +218,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         subscription: props.productDetail.subscription,
         subscriptionCurrency: props.subscriptionCurrency,
         productName: capatalize(
-          props.routeableStepProps.productType.shortFriendlyName ||
-            props.routeableStepProps.productType.friendlyName
+          productType.shortFriendlyName || productType.friendlyName
         ),
         apiProductName:
-          props.routeableStepProps.productType.fulfilmentDateCalculator
-            ?.productFilenamePart,
+          productType.fulfilmentDateCalculator?.productFilenamePart,
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)
@@ -233,8 +233,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           props.productDetail.subscription.autoRenew &&
           !(
             hasExistingDeliveryProblem &&
-            props.routeableStepProps.productType.delivery?.records
-              ?.contactUserOnExistingProblemReport
+            productType.delivery?.records?.contactUserOnExistingProblemReport
           ),
         repeatDeliveryProblem: hasExistingDeliveryProblem,
         contactPhoneNumbers: props.data.contactPhoneNumbers,
@@ -257,16 +256,14 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           >
             <ProductDetailsTable
               productName={capatalize(
-                props.routeableStepProps.productType.shortFriendlyName ||
-                  props.routeableStepProps.productType.friendlyName
+                productType.shortFriendlyName || productType.friendlyName
               )}
               subscriptionId={props.productDetail.subscription.subscriptionId}
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {props.data.results.find(record => !record.problemCaseId) &&
-            window &&
-            window.guardian.identityDetails.userId === "15849095" && (
+          {productType.delivery.records.canReportProblem &&
+            props.data.results.find(record => !record.problemCaseId) && (
               <>
                 <h2
                   css={css`
@@ -324,11 +321,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                           eventCategory: "delivery-problem",
                           eventAction: "report_delivery_problem_button_click",
                           product: {
-                            productType: props.routeableStepProps.productType,
+                            productType,
                             productDetail: props.productDetail
                           },
-                          eventLabel:
-                            props.routeableStepProps.productType.urlPart
+                          eventLabel: productType.urlPart
                         });
                         setSelectedProblemRecords([]);
                         setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
@@ -346,8 +342,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       inValidationState={step1formValidationState}
                       updateValidationStatusCallback={step1FormUpdateCallback}
                       problemTypes={
-                        props.routeableStepProps.productType.delivery.records
-                          .availableProblemTypes
+                        productType.delivery.records.availableProblemTypes
                       }
                     />
                   )}
@@ -526,10 +521,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       eventCategory: "delivery-problem",
                       eventAction: "review_report_button_click",
                       product: {
-                        productType: props.routeableStepProps.productType,
+                        productType,
                         productDetail: props.productDetail
                       },
-                      eventLabel: props.routeableStepProps.productType.urlPart
+                      eventLabel: productType.urlPart
                     });
                     setPageStatus(PageStatus.CONTINUE_TO_REVIEW);
                     (props.routeableStepProps.navigate || navigate)("review");
