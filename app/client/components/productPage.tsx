@@ -433,7 +433,11 @@ const getProductDetailRenderer = (
                 label="Delivery history"
                 data={
                   <LinkButton
-                    text="Report problem"
+                    text={
+                      window && window.identityDetails?.userId === "15849095"
+                        ? "Report problem"
+                        : "View delivery history"
+                    }
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right
