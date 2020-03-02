@@ -73,7 +73,7 @@ const getCaseUpdatingCancellationSummary = (
   caseId: string,
   productType: ProductTypeWithCancellationFlow
 ) => (productDetails: ProductDetail[]) => {
-  const productDetail = productDetails[0];
+  const productDetail = productDetails[0] || { subscription: {} };
   return (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(
