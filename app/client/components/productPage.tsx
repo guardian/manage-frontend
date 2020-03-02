@@ -61,6 +61,17 @@ export const wrappingContainerCSS = css({
   }
 });
 
+const giftFlag = (
+  <i
+    css={css`
+      line-height: 100%;
+      margin-left: ${space[3]}px;
+    `}
+  >
+    <GiftIcon alignArrowToThisSide={"right"} />
+  </i>
+);
+
 const ProductDetailRow = (props: ProductRowProps) => {
   const alignAtTopObj = props.alignItemsAtTop
     ? { alignItems: "flex-start" }
@@ -258,16 +269,7 @@ const getProductDetailRenderer = (
                 <h2>
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-                  {isGift(subscription) && (
-                    <i
-                      css={css`
-                        line-height: 100%;
-                        margin-left: ${space[3]}px;
-                      `}
-                    >
-                      <GiftIcon alignArrowToThisSide={"right"} />
-                    </i>
-                  )}
+                  {isGift(subscription) && giftFlag}
                 </h2>
               )}
             </PageContainer>
@@ -347,7 +349,7 @@ const getProductDetailRenderer = (
                         productType.alternateTierValue || productDetail.tier
                       )}
                       {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-                      {isGift(subscription) && " [GIFT]"}
+                      {isGift(subscription) && giftFlag}
                     </>
                   }
                 />
@@ -434,7 +436,8 @@ const getProductDetailRenderer = (
                 data={
                   <LinkButton
                     text={
-                      window && window.identityDetails?.userId === "15849095"
+                      window &&
+                      window.guardian.identityDetails.userId === "15849095"
                         ? "Report problem"
                         : "View delivery history"
                     }

@@ -266,7 +266,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           </div>
           {props.data.results.find(record => !record.problemCaseId) &&
             window &&
-            window.identityDetails?.userId === "15849095" && (
+            window.guardian.identityDetails.userId === "15849095" && (
               <>
                 <h2
                   css={css`
