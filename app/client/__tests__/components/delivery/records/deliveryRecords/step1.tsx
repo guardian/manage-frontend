@@ -1,4 +1,3 @@
-import { Radio } from "@guardian/src-radio";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
@@ -135,12 +134,7 @@ const apiMeMmaResponse = [
   }
 ];
 
-const guardianWeeklyProblemArr = [
-  "Damaged paper",
-  "Delivered despite holiday",
-  "No delivery",
-  "Other"
-];
+const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 
 const promisifyNextNTicks = (n: number) =>
   new Promise(resolve => nextNTicks(n, resolve));
@@ -174,6 +168,8 @@ describe("DeliveryRecords", () => {
         });
       });
     });
+    // tslint:disable-next-line: no-object-mutation
+    global.window.identityDetails = { userId: "15849095" };
   });
 
   it("renders without crashing", async done => {
@@ -319,62 +315,6 @@ describe("DeliveryRecords", () => {
           .find("span")
           .text()
       ).toEqual("Please select the type of problem");
-
-      done();
-    } else {
-      throw new Error("Guardian weekly missing DeliveryRecordsProperties");
-    }
-  });
-
-  it.skip("clicking on 'Continue to Step 2' after selecting 'Other' but not entering any text shows validation error", async done => {
-    if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
-      const wrapper = mount(
-        <DeliveryRecords
-          path="fakepath"
-          productType={ProductTypes.guardianweekly}
-        />
-      );
-
-      await promisifyNextNTicks(2);
-
-      wrapper.update();
-
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(LinkButton)
-        .at(0)
-        .simulate("click");
-
-      const problemForm = wrapper
-        .find(DeliveryRecordsFC)
-        .find(DeliveryRecordProblemForm);
-
-      problemForm
-        .find("li")
-        .at(guardianWeeklyProblemArr.length - 1)
-        .find(Radio)
-        .simulate("change", { target: { checked: true } });
-      // .simulate("click")
-      // .prop('onChange')({currentTarget: { checked: false }})
-
-      problemForm.simulate("submit", { preventDefault: () => jest.fn() });
-
-      // console.log(`wrapper.debug() = ${wrapper.debug()}`);
-
-      const continueToStep2Btn = problemForm.find("button").at(0);
-      continueToStep2Btn.simulate("submit", {});
-
-      wrapper.update();
-
-      expect(
-        problemForm
-          .find("li")
-          .at(guardianWeeklyProblemArr.length - 1)
-          .find(Radio)
-          .find("span")
-          .at(1)
-          .text()
-      ).toEqual("This detail is required");
 
       done();
     } else {

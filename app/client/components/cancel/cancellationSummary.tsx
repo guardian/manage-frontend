@@ -22,14 +22,12 @@ const actuallyCancelled = (
     <>
       <PageContainer>
         <h3>Your {productType.friendlyName} is cancelled.</h3>
-        {productType.cancellation ? (
+        {productType.cancellation && (
           <p>
             {productType.cancellation.summaryMainPara(
               productDetail.subscription
             )}
           </p>
-        ) : (
-          undefined
         )}
       </PageContainer>
       <ResubscribeThrasher

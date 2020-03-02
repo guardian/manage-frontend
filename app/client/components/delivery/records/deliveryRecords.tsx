@@ -34,6 +34,7 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   createDeliveryRecordsFetcher,
+  DeliveryRecordDetail,
   DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
@@ -44,6 +45,15 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
+
+interface IdentityDetails {
+  userId: string;
+}
+declare global {
+  interface Window {
+    identityDetails?: IdentityDetails;
+  }
+}
 
 export enum PageStatus {
   READ_ONLY,
@@ -85,6 +95,20 @@ const renderDeliveryRecords = (
     />
   );
 };
+
+export const checkForExistingDeliveryProblem = (
+  records: DeliveryRecordDetail[]
+) =>
+  records.findIndex(deliveryRecord => {
+    const recordDateEpoch = moment(deliveryRecord.deliveryDate).unix();
+    const fourteenDaysAgoEpoch = moment()
+      .startOf("day")
+      .subtract(14, "days")
+      .unix();
+    return (
+      deliveryRecord.problemCaseId && recordDateEpoch > fourteenDaysAgoEpoch
+    );
+  }) > -1;
 
 export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(
@@ -180,17 +204,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     currentPageEndIndex: number
   ) => index >= currentPageStartIndex && index <= currentPageEndIndex;
 
-  const hasExistingDeliveryProblem =
-    props.data.results.findIndex(deliveryRecord => {
-      const recordDateEpoch = moment(deliveryRecord.deliveryDate).unix();
-      const fourteenDaysAgoEpoch = moment()
-        .startOf("day")
-        .subtract(14, "days")
-        .unix();
-      return (
-        deliveryRecord.problemCaseId && recordDateEpoch > fourteenDaysAgoEpoch
-      );
-    }) > -1;
+  const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
+    props.data.results
+  );
 
   const filteredData = filterData(props.routeableStepProps.productType.urlPart);
 
@@ -248,92 +264,96 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {props.data.results.find(record => !record.problemCaseId) && window && window.identityDetails.userId==="15849095" (
-            <>
-              <h2
-                css={css`
-                  border-top: 1px solid ${palette.neutral["86"]};
-                  ${headline.small()};
-                  font-weight: bold;
-                  ${maxWidth.tablet} {
-                    font-size: 1.25rem;
-                    line-height: 1.6;
-                  }
-                `}
-              >
-                Report delivery problems
-              </h2>
-              <div
-                css={css`
-                  margin-bottom: ${pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
-                    ? space[12]
-                    : space[5]}px;
-                `}
-              >
-                <p>
-                  Have you been experiencing problems with your delivery? Report
-                  it and we will take care of it for you. Depending on the type
-                  of problem, you will be credited or contacted by our customer
-                  service team.
-                </p>
-                <p>
-                  Is your problem urgent?{" "}
-                  <span
-                    css={css`
-                      cursor: pointer;
-                      color: ${palette.brand[500]};
-                      text-decoration: underline;
-                    `}
-                    onClick={() =>
-                      setTopCallCentreNumbersVisibility(
-                        !showTopCallCentreNumbers
-                      )
+          {props.data.results.find(record => !record.problemCaseId) &&
+            window &&
+            window.identityDetails?.userId === "15849095" && (
+              <>
+                <h2
+                  css={css`
+                    border-top: 1px solid ${palette.neutral["86"]};
+                    ${headline.small()};
+                    font-weight: bold;
+                    ${maxWidth.tablet} {
+                      font-size: 1.25rem;
+                      line-height: 1.6;
                     }
-                  >
-                    Contact us
-                  </span>
-                  .
-                </p>
-                {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-                {pageStatus === PageStatus.READ_ONLY && (
-                  <LinkButton
-                    colour={palette.brand.main}
-                    to={""}
-                    text={"Report a problem"}
-                    onClick={() => {
-                      trackEvent({
-                        eventCategory: "delivery-problem",
-                        eventAction: "report_delivery_problem_button_click",
-                        product: {
-                          productType: props.routeableStepProps.productType,
-                          productDetail: props.productDetail
-                        },
-                        eventLabel: props.routeableStepProps.productType.urlPart
-                      });
-                      setSelectedProblemRecords([]);
-                      setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
-                    }}
-                  />
-                )}
-                {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
-                  pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
-                  <DeliveryRecordProblemForm
-                    showNextStepButton={
-                      pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
-                    }
-                    onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
-                    onFormSubmit={step1FormSubmitListener}
-                    inValidationState={step1formValidationState}
-                    updateValidationStatusCallback={step1FormUpdateCallback}
-                    problemTypes={
-                      props.routeableStepProps.productType.delivery.records
-                        .availableProblemTypes
-                    }
-                  />
-                )}
-              </div>
-            </>
-          )}
+                  `}
+                >
+                  Report delivery problems
+                </h2>
+                <div
+                  css={css`
+                    margin-bottom: ${pageStatus !==
+                    PageStatus.REPORT_ISSUE_STEP_2
+                      ? space[12]
+                      : space[5]}px;
+                  `}
+                >
+                  <p>
+                    Have you been experiencing problems with your delivery?
+                    Report it and we will take care of it for you. Depending on
+                    the type of problem, you will be credited or contacted by
+                    our customer service team.
+                  </p>
+                  <p>
+                    Is your problem urgent?{" "}
+                    <span
+                      css={css`
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        text-decoration: underline;
+                      `}
+                      onClick={() =>
+                        setTopCallCentreNumbersVisibility(
+                          !showTopCallCentreNumbers
+                        )
+                      }
+                    >
+                      Contact us
+                    </span>
+                    .
+                  </p>
+                  {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+                  {pageStatus === PageStatus.READ_ONLY && (
+                    <LinkButton
+                      colour={palette.brand.main}
+                      to={""}
+                      text={"Report a problem"}
+                      onClick={() => {
+                        trackEvent({
+                          eventCategory: "delivery-problem",
+                          eventAction: "report_delivery_problem_button_click",
+                          product: {
+                            productType: props.routeableStepProps.productType,
+                            productDetail: props.productDetail
+                          },
+                          eventLabel:
+                            props.routeableStepProps.productType.urlPart
+                        });
+                        setSelectedProblemRecords([]);
+                        setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                      }}
+                    />
+                  )}
+                  {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
+                    pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
+                    <DeliveryRecordProblemForm
+                      showNextStepButton={
+                        pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
+                      }
+                      onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
+                      onFormSubmit={step1FormSubmitListener}
+                      inValidationState={step1formValidationState}
+                      updateValidationStatusCallback={step1FormUpdateCallback}
+                      problemTypes={
+                        props.routeableStepProps.productType.delivery.records
+                          .availableProblemTypes
+                      }
+                    />
+                  )}
+                </div>
+              </>
+            )}
           <h2
             css={css`
               border-top: 1px solid ${palette.neutral["86"]};

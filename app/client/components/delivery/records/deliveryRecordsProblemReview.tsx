@@ -9,6 +9,7 @@ import React, { useContext, useState } from "react";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
+import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
   getPotentialHolidayStopsFetcher,
   PotentialHolidayStopsAsyncLoader,
@@ -48,7 +49,13 @@ export const DeliveryRecordsProblemReview = (
     potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
   ) => {
     if (!deliveryProblemContext) {
-      return <span>Something strange is going on</span>;
+      return (
+        <GenericErrorScreen
+          loggingMessage={
+            "Got to the review stage of delivery record problem reporting but the context object 'DeliveryRecordsProblemContext' does not seem to exist"
+          }
+        />
+      );
     }
     const totalCreditAmount = potentialHolidayStopsResponseWithCredits
       .potentials.length
@@ -75,7 +82,13 @@ export const DeliveryRecordsProblemReview = (
   };
 
   if (!deliveryProblemContext) {
-    return <span>Whoops, somethings gone wrong</span>;
+    return (
+      <GenericErrorScreen
+        loggingMessage={
+          "Got to the review stage of delivery record problem reporting but the context object 'DeliveryRecordsProblemContext' does not seem to exist"
+        }
+      />
+    );
   }
 
   return deliveryProblemContext.showProblemCredit ? (
@@ -485,13 +498,6 @@ const DeliveryRecordsProblemReviewFC = (
                   {phoneNumbers && (
                     <UserPhoneNumber
                       existingPhoneNumbers={phoneNumbers}
-                      // existingPhoneNumbers={{
-                      //   id: "abc",
-                      //   Phone:"55555555555",
-                      //   HomePhone: "55555555555",
-                      //   MobilePhone: "55555555555",
-                      //   OtherPhone: "55555555555"
-                      // }}
                       callback={(newNumber: ContactPhoneNumbers) => {
                         setPhoneNumbers(newNumber);
                       }}
