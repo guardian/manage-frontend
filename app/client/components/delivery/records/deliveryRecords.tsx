@@ -106,7 +106,7 @@ export const checkForExistingDeliveryProblem = (
       .subtract(14, "days")
       .unix();
     return (
-      deliveryRecord.problemCaseId && recordDateEpoch > fourteenDaysAgoEpoch
+      deliveryRecord.problemCaseId && recordDateEpoch >= fourteenDaysAgoEpoch
     );
   }) > -1;
 
