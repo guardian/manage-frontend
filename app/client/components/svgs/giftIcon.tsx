@@ -13,12 +13,12 @@ export const GiftIcon = (props: GiftIconProps) => (
     css={css`
       padding: ${props.alignArrowToThisSide === "left"
         ? "0 20px 0 30px"
-        : "0 20px"};
+        : "0 30px 0 15px"};
       background-color: #eacca0;
       display: inline-block;
       clip-path: ${props.alignArrowToThisSide === "left"
         ? "polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%)"
-        : "polygon(calc(100% - 10px) 0, 0 0, 10px 50%, 0 100%, calc(100% - 10px) 100%, 100% 50%)"};
+        : "polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%)"};
       height: 28px;
     `}
   >
