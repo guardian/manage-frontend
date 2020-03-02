@@ -24,7 +24,7 @@ import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
-class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail> {}
+class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
 const getCancelFunc = (
   subscriptionName: string,
@@ -73,7 +73,7 @@ const getCaseUpdatingCancellationSummary = (
   caseId: string,
   productType: ProductTypeWithCancellationFlow
 ) => (productDetails: ProductDetail[]) => {
-const productDetail = productDetails[0];
+  const productDetail = productDetails[0];
   return (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(
