@@ -56,7 +56,7 @@ export const DeliveryRecordsProblemReview = (
           potentialHolidayStopsResponseWithCredits.potentials
             .flatMap<number>(x => [x.credit as number])
             .reduce((accumulator, currentValue) =>
-              Math.abs(accumulator + currentValue)
+              accumulator + Math.abs(currentValue)
             )
         )
       : 0;
