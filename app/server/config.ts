@@ -32,7 +32,7 @@ export const conf: Config = {
   API_DOMAIN: getConfig("API_DOMAIN") || "code.dev-guardianapis.com",
   SF_CASES_URL:
     getConfig("SF_CASES_URL") ||
-    "https://zroqpkn357.execute-api.eu-west-1.amazonaws.com/DEV",
+    "https://nfni6mv1oj.execute-api.eu-west-1.amazonaws.com/DEV",
   BUILD: getConfig("BUILD") || "DEV",
   ENVIRONMENT:
     getConfig("NODE_ENV") === "production"

@@ -1,3 +1,4 @@
+import { space } from "@guardian/src-foundations";
 import { minWidth } from "./breakpoints";
 
 export const gridColumns = {
@@ -7,8 +8,8 @@ export const gridColumns = {
 };
 
 export const gridBase = {
-  paddingLeft: "1.25rem",
-  paddingRight: "1.25rem",
+  paddingLeft: `${space[3]}px`,
+  paddingRight: `${space[3]}px`,
   display: "-ms-grid",
   "@supports (display: grid)": {
     display: "grid"
@@ -17,8 +18,10 @@ export const gridBase = {
   gridTemplateColumns: `repeat(${gridColumns.default}, minmax(0, 1fr))`,
 
   gridAutoColumns: "max-content",
-  columnGap: "1.25rem",
+  columnGap: `${space[5]}px`,
   [minWidth.tablet]: {
+    paddingLeft: `${space[5]}px`,
+    paddingRight: `${space[5]}px`,
     msGridColumns: `(minmax(0, 1fr))[${gridColumns.tabletAndDesktop}]`,
     gridTemplateColumns: `repeat(${
       gridColumns.tabletAndDesktop

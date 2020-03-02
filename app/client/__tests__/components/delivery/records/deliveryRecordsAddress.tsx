@@ -28,7 +28,7 @@ describe("RecordsAddress", () => {
         .find("span")
         .at(1)
         .text()
-    ).toEqual("Read more");
+    ).toEqual("Show more");
 
     expect(wrapper.find("ul")).toHaveLength(0);
   });

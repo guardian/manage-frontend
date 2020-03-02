@@ -2,8 +2,8 @@ import React from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
-  Subscription,
-  WithSubscription
+  ProductDetail,
+  Subscription
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
@@ -24,7 +24,7 @@ import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 
-class PerformCancelAsyncLoader extends AsyncLoader<WithSubscription | {}> {}
+class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
 const getCancelFunc = (
   subscriptionName: string,
@@ -60,10 +60,10 @@ const getCaseUpdateWithCancelOutcomeFunc = (
 
 const getCancellationSummaryWithReturnButton = (
   productType: ProductTypeWithCancellationFlow,
-  subscription: Subscription
+  productDetail: ProductDetail
 ) => (
   <div>
-    {getCancellationSummary(productType)(subscription)}
+    {getCancellationSummary(productType)(productDetail)}
     <div css={{ height: "20px" }} />
     <ReturnToYourProductButton productType={productType} />
   </div>
@@ -72,14 +72,16 @@ const getCancellationSummaryWithReturnButton = (
 const getCaseUpdatingCancellationSummary = (
   caseId: string,
   productType: ProductTypeWithCancellationFlow
-) => (withSubscription: WithSubscription | {}) => {
-  const subscription =
-    (withSubscription as WithSubscription).subscription || {};
+) => (productDetails: ProductDetail[]) => {
+  const productDetail = productDetails[0];
   return (
     <CaseUpdateAsyncLoader
-      fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, subscription)}
+      fetch={getCaseUpdateWithCancelOutcomeFunc(
+        caseId,
+        productDetail.subscription
+      )}
       render={() =>
-        getCancellationSummaryWithReturnButton(productType, subscription)
+        getCancellationSummaryWithReturnButton(productType, productDetail)
       }
       loadingMessage="Finalising your cancellation..."
     />

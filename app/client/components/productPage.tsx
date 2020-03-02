@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import { startCase } from "lodash";
 import { toWords } from "number-to-words";
@@ -21,6 +21,7 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  hasDeliveryRecordsFlow,
   ProductTypeWithProductPageProperties
 } from "../../shared/productTypes";
 import {
@@ -42,6 +43,7 @@ import {
 import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import { PayPalDisplay } from "./payment/paypalDisplay";
+import { GiftIcon } from "./svgs/giftIcon";
 import { UpdatableAmount } from "./updatableAmount";
 import { RouteableProductProps } from "./wizardRouterAdapter";
 
@@ -242,7 +244,7 @@ const getProductDetailRenderer = (
       }}
     >
       {subscription.cancelledAt ? (
-        getCancellationSummary(productType)(subscription)
+        getCancellationSummary(productType)(productDetail)
       ) : (
         <>
           {productDetailList.length > 1 && (
@@ -256,7 +258,16 @@ const getProductDetailRenderer = (
                 <h2>
                   {productType.alternateTierValue || productDetail.tier}
                   {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-                  {isGift(subscription) && " [GIFT]"}
+                  {isGift(subscription) && (
+                    <i
+                      css={css`
+                        line-height: 100%;
+                        margin-left: ${space[3]}px;
+                      `}
+                    >
+                      <GiftIcon alignArrowToThisSide={"right"} />
+                    </i>
+                  )}
                 </h2>
               )}
             </PageContainer>
@@ -417,12 +428,16 @@ const getProductDetailRenderer = (
                 }
               />
             )}
-            {productType.delivery?.showRecords && (
+            {hasDeliveryRecordsFlow(productType) && (
               <ProductDetailRow
                 label="Delivery history"
                 data={
                   <LinkButton
-                    text="View delivery history"
+                    text={
+                      window && window.identityDetails?.userId === "15849095"
+                        ? "Report problem"
+                        : "View delivery history"
+                    }
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right
