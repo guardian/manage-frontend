@@ -72,7 +72,8 @@ const getCancellationSummaryWithReturnButton = (
 const getCaseUpdatingCancellationSummary = (
   caseId: string,
   productType: ProductTypeWithCancellationFlow
-) => (productDetail: ProductDetail) => {
+) => (productDetails: ProductDetail[]) => {
+const productDetail = productDetails[0];
   return (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(
