@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { upperFirst } from "lodash";
 import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import {
+  DeliveryAddress,
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
@@ -24,15 +25,14 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link } from "@reach/router";
 import { momentiseDateStr } from "../../../../shared/dates";
-import { DeliveryAddress } from "../../../../shared/productResponse";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { navLinks } from "../../nav";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "./deliveryAddressApi";
 import { renderConfirmation } from "./deliveryAddressEditConfirmation";
 import {
-  NewDeliveryAddressContext,
-  SubscriptionsAffectedContext
+  AddressChangedInformationContext,
+  NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
@@ -172,6 +172,24 @@ const FormContainer = (props: FormContainerProps) => {
     country
   };
 
+  const addressChangeInformation = Object.values(
+    props.contactIdToArrayOfProductDetail
+  )
+    .flatMap(babelFlatMapFunction)
+    .map(productDetail => {
+      const friendlyProductName = upperFirst(
+        ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(productDetail)
+          .friendlyName
+      );
+      const effectiveDatePart = productDetail.subscription
+        .deliveryAddressChangeEffectiveDate
+        ? ` as of front cover dated ${momentiseDateStr(
+            productDetail.subscription.deliveryAddressChangeEffectiveDate
+          ).format("dddd Do MMMM YYYY")}`
+        : "";
+      return `${friendlyProductName} (${productDetail.subscription.subscriptionId}) ${effectiveDatePart}`;
+    });
+
   return (
     <NewDeliveryAddressContext.Provider
       value={{
@@ -188,8 +206,8 @@ const FormContainer = (props: FormContainerProps) => {
         )
       }}
     >
-      <SubscriptionsAffectedContext.Provider
-        value={props.contactIdToArrayOfProductDetail}
+      <AddressChangedInformationContext.Provider
+        value={addressChangeInformation}
       >
         <WizardStep
           routeableStepProps={props.routeableStepProps}
@@ -248,9 +266,7 @@ const FormContainer = (props: FormContainerProps) => {
                             title={
                               "This address change will affect the following subscriptions:"
                             }
-                            contactIdDictOfProductDetails={
-                              props.contactIdToArrayOfProductDetail
-                            }
+                            addressChangeInformation={addressChangeInformation}
                           />
                         </>
                       }
@@ -262,7 +278,12 @@ const FormContainer = (props: FormContainerProps) => {
                 <AsyncLoader
                   render={renderConfirmation(props.routeableStepProps.navigate)}
                   fetch={updateAddressFetcher(
-                    evolvingAddressObject,
+                    {
+                      ...evolvingAddressObject,
+                      addressChangeInformation: addressChangeInformation.join(
+                        "\n"
+                      )
+                    },
                     Object.keys(props.contactIdToArrayOfProductDetail)[0]
                   )}
                   readerOnOK={(resp: Response) => resp.text()}
@@ -272,13 +293,13 @@ const FormContainer = (props: FormContainerProps) => {
             </PageContainer>
           </div>
         </WizardStep>
-      </SubscriptionsAffectedContext.Provider>
+      </AddressChangedInformationContext.Provider>
     </NewDeliveryAddressContext.Provider>
   );
 };
 
 export interface SubscriptionsAffectedListProps {
-  contactIdDictOfProductDetails: ContactIdToArrayOfProductDetail;
+  addressChangeInformation: string[];
   title?: string;
 }
 export const SubscriptionsAffectedList = (
@@ -318,32 +339,16 @@ export const SubscriptionsAffectedList = (
           ${props.title ? "margin-left: 22px;" : ""}
         `}
       >
-        {Object.values(props.contactIdDictOfProductDetails)
-          .flatMap(babelFlatMapFunction)
-          .map(productDetail => {
-            const friendlyProductName = upperFirst(
-              ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-                productDetail
-              ).friendlyName
-            );
-            return (
-              <li
-                key={productDetail.subscription.subscriptionId}
-                css={css`
-                  display: block;
-                `}
-              >
-                {friendlyProductName} (
-                {productDetail.subscription.subscriptionId})
-                {productDetail.subscription.deliveryAddressChangeEffectiveDate
-                  ? ` as of front cover dated ${momentiseDateStr(
-                      productDetail.subscription
-                        .deliveryAddressChangeEffectiveDate
-                    ).format("dddd Do MMMM YYYY")}`
-                  : ""}
-              </li>
-            );
-          })}
+        {props.addressChangeInformation.map((row, index) => (
+          <li
+            key={`info${index}`}
+            css={css`
+              display: block;
+            `}
+          >
+            {row}
+          </li>
+        ))}
       </ul>
     </>
   );
@@ -441,10 +446,8 @@ const Form = (props: FormProps) => {
           value={props.addressLine1}
           changeSetState={props.setAddressLine1}
           inErrorState={
-            !!(
-              props.formStatus === formStates.VALIDATION_ERROR &&
-              !props.formErrors.addressLine1?.isValid
-            )
+            props.formStatus === formStates.VALIDATION_ERROR &&
+            !props.formErrors.addressLine1?.isValid
           }
           errorMessage={props.formErrors.addressLine1?.message}
         />
@@ -461,10 +464,8 @@ const Form = (props: FormProps) => {
           value={props.town}
           changeSetState={props.setTown}
           inErrorState={
-            !!(
-              props.formStatus === formStates.VALIDATION_ERROR &&
-              !props.formErrors.town?.isValid
-            )
+            props.formStatus === formStates.VALIDATION_ERROR &&
+            !props.formErrors.town?.isValid
           }
           errorMessage={props.formErrors.town?.message}
         />
@@ -481,10 +482,8 @@ const Form = (props: FormProps) => {
           value={props.postcode}
           changeSetState={props.setPostcode}
           inErrorState={
-            !!(
-              props.formStatus === formStates.VALIDATION_ERROR &&
-              !props.formErrors.postcode?.isValid
-            )
+            props.formStatus === formStates.VALIDATION_ERROR &&
+            !props.formErrors.postcode?.isValid
           }
           errorMessage={props.formErrors.postcode?.message}
         />
@@ -501,10 +500,8 @@ const Form = (props: FormProps) => {
           )}
           changeSetState={props.setCountry}
           inErrorState={
-            !!(
-              props.formStatus === formStates.VALIDATION_ERROR &&
-              !props.formErrors.country?.isValid
-            )
+            props.formStatus === formStates.VALIDATION_ERROR &&
+            !props.formErrors.country?.isValid
           }
           errorMessage={props.formErrors.country?.message}
         />
