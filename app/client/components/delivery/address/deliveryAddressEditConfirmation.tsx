@@ -15,9 +15,9 @@ import {
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import { SubscriptionsAffectedList } from "./deliveryAddressForm";
 import {
+  AddressChangedInformationContext,
   isAddress,
-  NewDeliveryAddressContext,
-  SubscriptionsAffectedContext
+  NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 
 export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
@@ -31,7 +31,7 @@ export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
 
 export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
-  const subscriptionsAffectedContext = useContext(SubscriptionsAffectedContext);
+  const addressChangeInformation = useContext(AddressChangedInformationContext);
   useEffect(() => {
     return () => {
       addressContext.addressStateReset?.();
@@ -56,7 +56,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
               <section>
                 <SubscriptionsAffectedList
                   title={"Applied to"}
-                  contactIdDictOfProductDetails={subscriptionsAffectedContext}
+                  addressChangeInformation={addressChangeInformation}
                 />
               </section>
             </>
