@@ -168,12 +168,6 @@ describe("DeliveryRecords", () => {
         });
       });
     });
-    // tslint:disable-next-line: no-object-mutation
-    global.window.guardian = {
-      domain: "test",
-      dsn: null,
-      identityDetails: { userId: "15849095" }
-    };
   });
 
   it("renders without crashing", async done => {
