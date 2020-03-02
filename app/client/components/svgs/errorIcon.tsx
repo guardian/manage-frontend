@@ -1,22 +1,16 @@
-import { palette } from "@guardian/src-foundations";
 import React from "react";
 
-export const ErrorIcon = () => (
-  <svg
-    viewBox="0 0 30 30"
-    css={{
-      display: "inline-block",
-      width: "30px",
-      height: "30px",
-      marginRight: "0.5rem",
-      verticalAlign: "bottom",
-      fill: palette.error.main
-    }}
-  >
+interface ErrorIconProps {
+  fill?:string;
+}
+
+export const ErrorIcon = (props: ErrorIconProps) => (
+  <svg width="21" height="17" viewBox="0 0 21 17" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
-      d="M14.41 5L4 22.057l.668.943h20.664l.668-.943L15.59 5h-1.18zm-.063 12.178h1.306l.621-6.917-.856-.728h-.835l-.857.728.62 6.917zM15 18.452c.7 0 1.274.573 1.274 1.274 0 .7-.573 1.274-1.274 1.274-.7 0-1.274-.573-1.274-1.274 0-.7.573-1.274 1.274-1.274z"
+      d="M9.9375 0L0 16.1095L0.6375 17H20.3625L21 16.1095L11.0625 0H9.9375ZM9.87661 11.5012H11.1234L11.7162 4.96907L10.8986 4.28147H10.1015L9.28386 4.96907L9.87661 11.5012ZM10.5 12.7045C11.1689 12.7045 11.7162 13.246 11.7162 13.9078C11.7162 14.5696 11.1689 15.1111 10.5 15.1111C9.83114 15.1111 9.28386 14.5696 9.28386 13.9078C9.28386 13.246 9.83114 12.7045 10.5 12.7045Z"
+      fill={props.fill || "#C70000"}
     />
   </svg>
 );

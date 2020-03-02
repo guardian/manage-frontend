@@ -94,16 +94,34 @@ export interface HolidayStopFlowProperties {
   };
 }
 
+export interface DeliveryProblemType {
+  label: string;
+  messageIsMandatory: boolean;
+}
+
+export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
+  { label: "Damaged Paper", messageIsMandatory: true },
+  { label: "No Delivery", messageIsMandatory: false },
+  { label: "Other", messageIsMandatory: true }
+];
+
+interface DeliveryRecordsProperties {
+  showDeliveryInstructions?: true;
+  numberOfProblemRecordsToShow: number;
+  contactUserOnExistingProblemReport: boolean;
+  availableProblemTypes: DeliveryProblemType[];
+}
+
 export interface DeliveryProperties {
   showAddress?: (
     subscription: Subscription
   ) => subscription is SubscriptionWithDeliveryAddress;
-  showRecords?: true;
-  showDeliveryInstructions?: true;
+  records?: DeliveryRecordsProperties;
 }
 
 export interface ProductType {
   friendlyName: ProductFriendlyName;
+  shortFriendlyName?: string;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
   legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
@@ -150,8 +168,16 @@ export const hasProductPageProperties = (
 export const hasDeliveryFlow = (productType: ProductType) =>
   productType.delivery?.showAddress;
 
-export const hasDeliveryRecordsFlow = (productType: ProductType) =>
-  productType.delivery?.showRecords;
+export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
+  delivery: {
+    records: DeliveryRecordsProperties;
+  };
+}
+
+export const hasDeliveryRecordsFlow = (
+  productType: ProductType
+): productType is ProductTypeWithDeliveryRecordsProperties =>
+  !!productType.delivery?.records;
 
 export interface ProductTypeWithProductPageRedirect extends ProductType {
   productPage: ProductUrlPart;
@@ -359,6 +385,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   homedelivery: {
     friendlyName: "home delivery subscription",
+    shortFriendlyName: "home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
@@ -368,8 +395,15 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
-      showRecords: true,
-      showDeliveryInstructions: true
+      records: {
+        showDeliveryInstructions: true,
+        numberOfProblemRecordsToShow: 14,
+        contactUserOnExistingProblemReport: true,
+        availableProblemTypes: [
+          { label: "Instructions Not Followed", messageIsMandatory: true },
+          ...commonDeliveryProblemTypes
+        ]
+      }
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
@@ -402,6 +436,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   guardianweekly: {
     friendlyName: "Guardian Weekly subscription",
+    shortFriendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
@@ -416,7 +451,11 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
-      showRecords: true
+      records: {
+        numberOfProblemRecordsToShow: 4,
+        contactUserOnExistingProblemReport: false,
+        availableProblemTypes: commonDeliveryProblemTypes
+      }
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {

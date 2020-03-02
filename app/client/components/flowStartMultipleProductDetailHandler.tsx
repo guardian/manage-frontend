@@ -96,7 +96,8 @@ const getProductDetailSelector = (
   if (sortedList.length > 0) {
     const first = sortedList[0];
     if (sortedList.length === 1 && isProduct(first)) {
-      return first.subscription.cancelledAt ? (
+      return first.subscription.cancelledAt &&
+        !props.allowCancelledSubscription ? (
         <PageContainer>
           <h4>{props.cancelledExplainer}</h4>
           <CallCentreNumbers />
@@ -254,6 +255,7 @@ export interface FlowStartMultipleProductDetailHandlerProps
     routeableStepProps: RouteableStepProps,
     productDetail: ProductDetail
   ) => React.ReactNode;
+  allowCancelledSubscription?: true;
 }
 
 export interface FlowStartMultipleProductDetailHandlerState {

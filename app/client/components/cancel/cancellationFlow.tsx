@@ -100,9 +100,7 @@ const reasonsRenderer = (
   if (productDetail.subscription.cancelledAt) {
     return (
       <div>
-        {getCancellationSummary(routeableStepProps.productType)(
-          productDetail.subscription
-        )}
+        {getCancellationSummary(routeableStepProps.productType)(productDetail)}
         <ReturnToYourProductButton {...routeableStepProps} />
       </div>
     );

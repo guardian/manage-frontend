@@ -9,6 +9,7 @@ import {
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
+  ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow,
   ProductTypeWithProductPageProperties,
   shouldCreatePaymentUpdateFlow,
@@ -32,6 +33,9 @@ import {
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
 import { DeliveryRecords } from "./delivery/records/deliveryRecords";
+import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
+import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
+
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -192,12 +196,22 @@ const User = () => (
 
       {Object.values(ProductTypes)
         .filter(hasDeliveryRecordsFlow)
-        .map((productType: ProductType) => (
+        .map((productType: ProductTypeWithDeliveryRecordsProperties) => (
           <DeliveryRecords
             key={productType.urlPart}
             path={`/delivery/${productType.urlPart}/records`}
             productType={productType}
-          />
+          >
+            <DeliveryRecordsProblemReview
+              path="review"
+              productType={productType}
+            >
+              <DeliveryRecordsProblemConfirmation
+                path="confirmed"
+                productType={productType}
+              />
+            </DeliveryRecordsProblemReview>
+          </DeliveryRecords>
         ))}
 
       <EmailAndMarketing path="/email-prefs" />

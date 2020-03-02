@@ -38,12 +38,14 @@ exports[`Main renders something 1`] = `
           "@media (min-width: 740px)": Object {
             "gridTemplateColumns": "repeat(12, minmax(0, 1fr))",
             "msGridColumns": "(minmax(0, 1fr))[12]",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
           },
           "@supports (display: grid)": Object {
             "display": "grid",
           },
           "alignItems": "center",
-          "columnGap": "1.25rem",
+          "columnGap": "20px",
           "display": "-ms-grid",
           "gridAutoColumns": "max-content",
           "gridTemplateColumns": "repeat(4, minmax(0, 1fr))",
@@ -51,8 +53,8 @@ exports[`Main renders something 1`] = `
           "margin": "auto",
           "maxWidth": "calc(1300px + 2.5rem)",
           "msGridColumns": "(minmax(0, 1fr))[4]",
-          "paddingLeft": "1.25rem",
-          "paddingRight": "1.25rem",
+          "paddingLeft": "12px",
+          "paddingRight": "12px",
         }
       }
     >
