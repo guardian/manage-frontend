@@ -436,7 +436,8 @@ const getProductDetailRenderer = (
                 data={
                   <LinkButton
                     text={
-                      window && window.identityDetails?.userId === "15849095"
+                      window &&
+                      window.guardian.identityDetails.userId === "15849095"
                         ? "Report problem"
                         : "View delivery history"
                     }
