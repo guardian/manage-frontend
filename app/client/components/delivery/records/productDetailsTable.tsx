@@ -46,10 +46,6 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
       display: inline-block;
       vertical-align: top;
       margin: 0;
-      width: calc(100% - 12ch);
-      ${minWidth.tablet} {
-        width: auto;
-      }
     }
   `;
   return (

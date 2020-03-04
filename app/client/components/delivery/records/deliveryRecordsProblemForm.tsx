@@ -4,6 +4,7 @@ import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
+import { capitalize } from "lodash";
 import React, { FormEvent, useEffect, useState } from "react";
 import { DeliveryProblemType } from "../../../../shared/productTypes";
 import { minWidth } from "../../../styles/breakpoints";
@@ -15,6 +16,7 @@ interface DeliveryRecordProblemFormProps {
   onFormSubmit?: (selectedValue?: string, selectedMessage?: string) => void;
   inValidationState: boolean;
   updateValidationStatusCallback: (isValid: boolean, message?: string) => void;
+  updateRadioSelectionCallback: (value: string) => void;
   problemTypes: DeliveryProblemType[];
 }
 
@@ -50,9 +52,7 @@ export const DeliveryRecordProblemForm = (
       };
     } else {
       const deliveryProblem = props.problemTypes.find(
-        issue =>
-          issue.label ===
-          props.problemTypes[Number(selectedDeliveryProblem?.value)].label
+        issue => issue.label === selectedDeliveryProblem?.value
       );
       const isValid =
         deliveryProblem?.messageIsMandatory && !selectedDeliveryProblem?.message
@@ -84,6 +84,7 @@ export const DeliveryRecordProblemForm = (
               value: target.value
             };
             setSelectedDeliveryProblem(deliveryProblemObj);
+            props.updateRadioSelectionCallback(target.value);
           } else if (target.type === "textarea" && selectedDeliveryProblem) {
             setSelectedDeliveryProblem({
               ...selectedDeliveryProblem,
@@ -140,12 +141,12 @@ export const DeliveryRecordProblemForm = (
                 `}
               >
                 <Radio
-                  value={`${index}`}
-                  label={
-                    deliveryProblemRadioOption.label.charAt(0).toUpperCase() +
-                    deliveryProblemRadioOption.label.slice(1).toLowerCase()
+                  value={deliveryProblemRadioOption.label}
+                  label={capitalize(deliveryProblemRadioOption.label)}
+                  checked={
+                    selectedDeliveryProblem?.value ===
+                    deliveryProblemRadioOption.label
                   }
-                  checked={selectedDeliveryProblem?.value === `${index}`}
                   css={css`
                     vertical-align: top;
                     text-transform: lowercase;
@@ -154,12 +155,15 @@ export const DeliveryRecordProblemForm = (
                     }
                   `}
                 />
-                {selectedDeliveryProblem?.value === `${index}` && (
+                {selectedDeliveryProblem?.value ===
+                  deliveryProblemRadioOption.label && (
                   <div
                     css={css`
                       display: inline-block;
                       margin-left: 32px;
+                      width: calc(100% - 32px);
                       ${minWidth.tablet} {
+                        width: auto;
                         display: block;
                       }
                     `}
@@ -219,7 +223,6 @@ export const DeliveryRecordProblemForm = (
                               ? palette.news.main
                               : palette.neutral["60"]};
                           width: 100%;
-                          max-width: 230px;
                           padding: 12px;
                           ${textSans.medium()};
                           ${minWidth.tablet} {

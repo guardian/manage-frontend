@@ -1,11 +1,11 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
+import { capitalize } from "lodash";
 import moment from "moment";
 import React, { useState } from "react";
 import {
@@ -16,6 +16,8 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
+  DeliveryProblemType,
+  holidaySuspensionDeliveryProblem,
   ProductTypeKeys,
   ProductTypes,
   ProductTypeWithDeliveryRecordsProperties,
@@ -24,7 +26,6 @@ import {
 } from "../../../../shared/productTypes";
 import { maxWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
-import { LinkButton } from "../../buttons";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
@@ -110,6 +111,9 @@ export const checkForExistingDeliveryProblem = (
     );
   }) > -1;
 
+const checkForRecentHolidayStop = (records: DeliveryRecordDetail[]) =>
+  records.findIndex(record => record.hasHolidayStop) > -1;
+
 export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(
     PageStatus.READ_ONLY
@@ -137,10 +141,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     showTopCallCentreNumbers,
     setTopCallCentreNumbersVisibility
   ] = useState<boolean>(false);
+  const [choosenDeliveryProblem, setChoosenDeliveryProblem] = useState<
+    string
+  >();
   const [
     showBottomCallCentreNumbers,
     setBottomCallCentreNumbersVisibility
   ] = useState<boolean>(false);
+  const step1FormRadioOptionCallback = (value: string) =>
+    setChoosenDeliveryProblem(value);
   const step1FormUpdateCallback = (isValid: boolean, message?: string) => {
     setStep1formValidationState(false);
     setStep1FormValidationDetails({ isValid, message });
@@ -183,7 +192,21 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
     if (pageStatus !== PageStatus.READ_ONLY) {
       return props.data.results
-        .filter(record => !record.problemCaseId)
+        .filter(record => {
+          if (
+            choosenDeliveryProblem === holidaySuspensionDeliveryProblem.label
+          ) {
+            return (
+              record.hasHolidayStop &&
+              !record.problemCaseId &&
+              moment(record.deliveryDate).isSameOrBefore(moment(), "day")
+            );
+          }
+          return (
+            !record.problemCaseId &&
+            moment(record.deliveryDate).isSameOrBefore(moment(), "day")
+          );
+        })
         .slice(0, NumOfRecordsToShow - 1);
     }
     return props.data.results.filter((element, index) =>
@@ -194,9 +217,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       )
     );
   };
-
-  const capatalize = (input: string) =>
-    input.charAt(0).toUpperCase() + input.slice(1);
 
   const isRecordInCurrentPage = (
     index: number,
@@ -212,12 +232,19 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
   const filteredData = filterData(productType.urlPart);
 
+  const hasRecentHolidayStop = checkForRecentHolidayStop(filteredData);
+
+  const problemTypes: DeliveryProblemType[] = [
+    ...productType.delivery.records.availableProblemTypes,
+    ...(hasRecentHolidayStop ? [holidaySuspensionDeliveryProblem] : [])
+  ].sort((a, b) => a.label.localeCompare(b.label));
+
   return (
     <DeliveryRecordsProblemContext.Provider
       value={{
         subscription: props.productDetail.subscription,
         subscriptionCurrency: props.subscriptionCurrency,
-        productName: capatalize(
+        productName: capitalize(
           productType.shortFriendlyName || productType.friendlyName
         ),
         apiProductName:
@@ -229,6 +256,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         deliveryProblemMap: props.data.deliveryProblemMap,
         isTestUser: props.productDetail.isTestUser,
         showProblemCredit:
+          !(
+            choosenDeliveryProblem === holidaySuspensionDeliveryProblem.label
+          ) &&
           !props.productDetail.subscription.cancelledAt &&
           props.productDetail.subscription.autoRenew &&
           !(
@@ -255,7 +285,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             `}
           >
             <ProductDetailsTable
-              productName={capatalize(
+              productName={capitalize(
                 productType.shortFriendlyName || productType.friendlyName
               )}
               subscriptionId={props.productDetail.subscription.subscriptionId}
@@ -284,15 +314,24 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     PageStatus.REPORT_ISSUE_STEP_2
                       ? space[12]
                       : space[5]}px;
+                    ${textSans.medium()};
                   `}
                 >
-                  <p>
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                    `}
+                  >
                     Have you been experiencing problems with your delivery?
                     Report it and we will take care of it for you. Depending on
                     the type of problem, you will be credited or contacted by
                     our customer service team.
                   </p>
-                  <p>
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                    `}
+                  >
                     Is your problem urgent?{" "}
                     <span
                       css={css`
@@ -312,10 +351,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   </p>
                   {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
                   {pageStatus === PageStatus.READ_ONLY && (
-                    <LinkButton
-                      colour={palette.brand.main}
-                      to={""}
-                      text={"Report a problem"}
+                    <Button
                       onClick={() => {
                         trackEvent({
                           eventCategory: "delivery-problem",
@@ -329,7 +365,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         setSelectedProblemRecords([]);
                         setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
                       }}
-                    />
+                    >
+                      Report a problem
+                    </Button>
                   )}
                   {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
                     pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
@@ -341,9 +379,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       onFormSubmit={step1FormSubmitListener}
                       inValidationState={step1formValidationState}
                       updateValidationStatusCallback={step1FormUpdateCallback}
-                      problemTypes={
-                        productType.delivery.records.availableProblemTypes
+                      updateRadioSelectionCallback={
+                        step1FormRadioOptionCallback
                       }
+                      problemTypes={problemTypes}
                     />
                   )}
                 </div>
@@ -354,7 +393,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               border-top: 1px solid ${palette.neutral["86"]};
               ${headline.small()};
               font-weight: bold;
-              opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1
+              opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1 &&
+              filteredData.length > 0
                 ? "0.5"
                 : "1"};
               ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
@@ -363,7 +403,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               border-left: 1px solid ${palette.neutral["86"]};
               border-right: 1px solid ${palette.neutral["86"]};
               margin: 0;
-              padding: 14px 14px 0;
+              padding: 14px 14px 14px;
               ${textSans.medium({ fontWeight: "bold" })};
             `
                 : ""}
@@ -381,46 +421,49 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               ? "Step 2. Select the date you have experienced the problem"
               : "Deliveries"}
           </h2>
-          {!filteredData.length && (
-            <p>
-              You haven't had a delivery for this subscription yet. In the
-              future, details of your delivery will appear here.
-            </p>
-          )}
-          {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
-            <div
-              css={css`
-                display: block;
-                background-color: ${palette.neutral["97"]};
-                border-left: 1px solid ${palette.neutral["86"]};
-                border-right: 1px solid ${palette.neutral["86"]};
-                padding: 0 14px;
-              `}
-            >
-              <CheckboxGroup name="selectalldeliveryrecords">
-                <Checkbox
-                  value="selectalldeliveryrecords"
-                  label="Select all below"
-                  checked={
-                    selectedProblemRecords.length ===
-                    Math.min(filteredData.length, 14)
-                  }
-                  onChange={() => {
-                    if (
-                      selectedProblemRecords.length <
-                      Math.min(filteredData.length, 14)
-                    ) {
-                      setSelectedProblemRecords(
-                        filteredData.flatMap(record => [record.id])
-                      );
-                    } else {
-                      setSelectedProblemRecords([]);
+          {filteredData.length === 0 &&
+            (props.data.results.length === 0 ? (
+              <p
+                css={css`
+                  ${textSans.medium()};
+                `}
+              >
+                You haven't had a delivery for this subscription yet. In the
+                future, details of your deliveries will appear here.
+              </p>
+            ) : (
+              <>
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  You currently have no deliveries that you can report a problem
+                  on based on the problem type that you have selected.
+                </p>
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  If you are still having problems please{" "}
+                  <span
+                    css={css`
+                      cursor: pointer;
+                      color: ${palette.brand[500]};
+                      text-decoration: underline;
+                    `}
+                    onClick={() =>
+                      setBottomCallCentreNumbersVisibility(
+                        !showBottomCallCentreNumbers
+                      )
                     }
-                  }}
-                />
-              </CheckboxGroup>
-            </div>
-          )}
+                  >
+                    Contact us
+                  </span>
+                </p>
+              </>
+            ))}
           {filteredData.map(
             (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
               <DeliveryRecordCard
@@ -553,6 +596,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               </Button>
               <p
                 css={css`
+                  ${textSans.medium()};
+                  color: ${palette.neutral[46]};
                   margin-top: ${space[6]}px;
                 `}
               >

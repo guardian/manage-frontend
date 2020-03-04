@@ -18,7 +18,11 @@ import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  RouteableStepProps,
+  visuallyNavigateToParent,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   DeliveryRecordsRouteableStepProps,
@@ -115,7 +119,13 @@ const DeliveryRecordsProblemConfirmationFC = (
         >
           Delivery report confirmation
         </h2>
-        <p>Your delivery problem report has been successfully submitted.</p>
+        <p
+          css={css`
+            ${textSans.medium()};
+          `}
+        >
+          Your delivery problem report has been successfully submitted.
+        </p>
         <span
           css={css`
             position: relative;
@@ -462,7 +472,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               <InfoIconDark fillColor={palette.brand.bright} />
             </i>
             {
-              "Before you go, please take a moment to check your current delivery address is update to date. "
+              "Before you go, please take a moment to check your current delivery address is up to date. "
             }
             <Link
               css={{
@@ -551,6 +561,13 @@ export const DeliveryRecordsProblemConfirmation = (
   const deliveryRecordsProblemContext = useContext(
     DeliveryRecordsProblemContext
   );
+
+  if (
+    !deliveryRecordsProblemContext.affectedRecords.length ||
+    !deliveryIssuePostPayload.deliveryRecords?.length
+  ) {
+    return visuallyNavigateToParent(props);
+  }
 
   return (
     <DeliveryRecordsApiAsyncLoader

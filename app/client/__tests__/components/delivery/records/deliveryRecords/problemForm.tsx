@@ -1,6 +1,8 @@
+import { Button } from "@guardian/src-button";
+import { Radio } from "@guardian/src-radio";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import React, { Dispatch, useState } from "react";
+import React from "react";
 import { DeliveryProblemType } from "../../../../../../shared/productTypes";
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
 
@@ -13,19 +15,10 @@ const guardianWeeklyProblemArr: DeliveryProblemType[] = [
   { label: "Other", messageIsMandatory: true }
 ];
 
-describe.skip("DeliveryRecordsProblemForm", () => {
-  it("asdfasf", async done => {
+describe("DeliveryRecordsProblemForm", () => {
+  it("renders the correct problem options", async done => {
     const onFormSubmitSpy = jest.fn();
     const updateValidationStatusCallback = jest.fn();
-
-    jest.spyOn(React, "useState").mockReturnValueOnce(
-      useState({
-        value: `${guardianWeeklyProblemArr.length - 1}`,
-        message: "asdfsdf"
-      }) as [unknown, Dispatch<unknown>]
-    );
-
-    // .mockReturnValueOnce(React.useState<Dispatch<SetStateAction<{value: string, message: string}>>>({ value: 0, message: "asdfsdf" }));
 
     const wrapper = mount(
       <DeliveryRecordProblemForm
@@ -33,16 +26,51 @@ describe.skip("DeliveryRecordsProblemForm", () => {
         onFormSubmit={onFormSubmitSpy}
         inValidationState={true}
         updateValidationStatusCallback={updateValidationStatusCallback}
+        updateRadioSelectionCallback={jest.fn()}
         problemTypes={guardianWeeklyProblemArr}
       />
     );
 
+    for (let a = 0; a < guardianWeeklyProblemArr.length; a++) {
+      expect(
+        wrapper
+          .find(Radio)
+          .at(a)
+          .text()
+      ).toEqual(guardianWeeklyProblemArr[a].label);
+    }
+
+    done();
+  });
+
+  it("shows vlidation warning if form is submitted without selecting option", async done => {
+    const onFormSubmitSpy = jest.fn();
+    const updateValidationStatusCallback = jest.fn();
+
+    const wrapper = mount(
+      <DeliveryRecordProblemForm
+        showNextStepButton={true}
+        onFormSubmit={onFormSubmitSpy}
+        inValidationState={true}
+        updateValidationStatusCallback={updateValidationStatusCallback}
+        updateRadioSelectionCallback={jest.fn()}
+        problemTypes={guardianWeeklyProblemArr}
+      />
+    );
+
+    wrapper
+      .find(Button)
+      .at(0)
+      .simulate("click");
+
+    wrapper.update();
+
     expect(
       wrapper
         .find("span")
-        .at(1)
+        .at(0)
         .text()
-    ).toEqual("asdfsdf");
+    ).toEqual("Please select the type of problem");
 
     done();
   });

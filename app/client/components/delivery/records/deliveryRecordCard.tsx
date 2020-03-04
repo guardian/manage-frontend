@@ -124,7 +124,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             ${dtCss()}
           `}
         >
-          Issue Date:
+          Issue date:
         </dt>
         <dd
           css={css`
@@ -184,10 +184,8 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         <dd
           css={css`
             ${ddCss()}
-            width: calc(100% - 10ch);
-            margin-left: -30px;
+            width: calc(100% - 11ch);
             ${minWidth.tablet} {
-              margin-left: 0;
               width: calc(100% - (13ch + 16px));
             }
           `}
@@ -199,6 +197,10 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             isChangedDeliveryInstruction={
               !!props.deliveryRecord.isChangedDeliveryInstruction
             }
+            isFutureRecord={moment(props.deliveryRecord.deliveryDate).isAfter(
+              moment(),
+              "day"
+            )}
             deliveryProblem={
               (props.deliveryRecord.problemCaseId &&
                 props.deliveryProblemMap[props.deliveryRecord.problemCaseId]
@@ -226,7 +228,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             <dd
               css={css`
                 ${ddCss()}
-                width: calc(100% - 10ch);
+                width: calc(100% - 11ch);
                 ${minWidth.tablet} {
                   width: calc(100% - (13ch + 16px));
                 }

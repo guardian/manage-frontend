@@ -48,6 +48,8 @@ export const RecordAddress = (props: DeliveryAddress) => {
           text-align: left;
           ${textSans.small({ italic: true })};
           color: ${palette.brand.bright};
+          font-style: normal;
+          text-decoration: underline;
           cursor: pointer;
         `}
         onClick={() => {
@@ -55,6 +57,18 @@ export const RecordAddress = (props: DeliveryAddress) => {
         }}
       >
         Show {showAddress ? "less" : "more"}
+        <i
+          css={css`
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-left: 6px;
+            margin-bottom: ${showAddress ? -1 : 2}px;
+            border-top: 1px solid ${palette.brand.bright};
+            border-right: 1px solid ${palette.brand.bright};
+            rotate: ${showAddress ? -45 : 135}deg;
+          `}
+        />
       </span>
     </div>
   );
