@@ -577,6 +577,7 @@ export const DeliveryRecordsProblemConfirmation = (
       )}
       fetch={createDeliveryRecordsProblemPost(
         deliveryRecordsProblemContext.subscription.subscriptionId,
+        deliveryRecordsProblemContext.isTestUser,
         deliveryIssuePostPayload
       )}
       loadingMessage={"Reporting problem..."}
