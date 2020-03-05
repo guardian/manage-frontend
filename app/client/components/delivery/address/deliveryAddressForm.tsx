@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { upperFirst } from "lodash";
+import { capitalize } from "lodash";
 import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import {
   DeliveryAddress,
@@ -177,7 +177,7 @@ const FormContainer = (props: FormContainerProps) => {
   )
     .flatMap(babelFlatMapFunction)
     .map(productDetail => {
-      const friendlyProductName = upperFirst(
+      const friendlyProductName = capitalize(
         ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(productDetail)
           .friendlyName
       );

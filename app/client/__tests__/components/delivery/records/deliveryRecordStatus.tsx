@@ -13,6 +13,7 @@ describe("DeliveryRecordStatus", () => {
         isHolidayStop={false}
         isChangedAddress={false}
         isChangedDeliveryInstruction={false}
+        isFutureRecord={false}
         deliveryProblem={null}
       />
     );
@@ -30,6 +31,7 @@ describe("DeliveryRecordStatus", () => {
         isHolidayStop={true}
         isChangedAddress={false}
         isChangedDeliveryInstruction={false}
+        isFutureRecord={false}
         deliveryProblem={null}
       />
     );
@@ -48,6 +50,7 @@ describe("DeliveryRecordStatus", () => {
         isHolidayStop={false}
         isChangedAddress={false}
         isChangedDeliveryInstruction={false}
+        isFutureRecord={false}
         deliveryProblem={"uh oh!"}
       />
     );
@@ -56,6 +59,6 @@ describe("DeliveryRecordStatus", () => {
         .find("span")
         .at(0)
         .text()
-    ).toEqual("Problem reported (uh oh!)");
+    ).toEqual("Problem reported (Uh oh!)");
   });
 });

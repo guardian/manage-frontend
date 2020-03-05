@@ -7,7 +7,7 @@ import { headline } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useState } from "react";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
-import { minWidth } from "../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
@@ -19,7 +19,10 @@ import {
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import { WizardStep } from "../../wizardRouterAdapter";
+import {
+  visuallyNavigateToParent,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   DeliveryRecordsRouteableStepProps,
@@ -38,6 +41,10 @@ export const DeliveryRecordsProblemReview = (
 ) => {
   const deliveryProblemContext = useContext(DeliveryRecordsProblemContext);
 
+  if (!deliveryProblemContext?.affectedRecords.length) {
+    return visuallyNavigateToParent(props);
+  }
+
   const problemStartDate =
     deliveryProblemContext?.affectedRecords[
       deliveryProblemContext.affectedRecords.length - 1
@@ -48,22 +55,14 @@ export const DeliveryRecordsProblemReview = (
   const renderReviewDetails = (
     potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
   ) => {
-    if (!deliveryProblemContext) {
-      return (
-        <GenericErrorScreen
-          loggingMessage={
-            "Got to the review stage of delivery record problem reporting but the context object 'DeliveryRecordsProblemContext' does not seem to exist"
-          }
-        />
-      );
-    }
     const totalCreditAmount = potentialHolidayStopsResponseWithCredits
       .potentials.length
       ? Math.abs(
           potentialHolidayStopsResponseWithCredits.potentials
             .flatMap<number>(x => [x.credit as number])
-            .reduce((accumulator, currentValue) =>
-              accumulator + Math.abs(currentValue)
+            .reduce(
+              (accumulator, currentValue) =>
+                accumulator + Math.abs(currentValue)
             )
         )
       : 0;
@@ -146,10 +145,7 @@ const DeliveryRecordsProblemReviewFC = (
       value={{
         productName: deliveryProblemContext?.apiProductName,
         description: deliveryProblemContext?.problemType?.message,
-        problemType:
-          props.productType.delivery.records.availableProblemTypes[
-            Number(deliveryProblemContext?.problemType?.category)
-          ].label,
+        problemType: deliveryProblemContext?.problemType?.category,
         repeatDeliveryProblem: deliveryProblemContext?.repeatDeliveryProblem,
         deliveryRecords:
           props.showCredit && props.holidayStopRecords
@@ -195,7 +191,12 @@ const DeliveryRecordsProblemReviewFC = (
           <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
             <h2
               css={css`
+                border-top: 1px solid ${palette.neutral["86"]};
                 ${headline.small({ fontWeight: "bold" })};
+                ${maxWidth.tablet} {
+                  font-size: 1.25rem;
+                  line-height: 1.6;
+                }
               `}
             >
               Delivery report review
@@ -264,6 +265,9 @@ const DeliveryRecordsProblemReviewFC = (
                     <dt
                       css={css`
                         ${dtCss}
+                        ${minWidth.tablet} {
+                          min-width: 10ch;
+                        }
                       `}
                     >
                       Product:
@@ -308,10 +312,7 @@ const DeliveryRecordsProblemReviewFC = (
                         `}
                       >
                         {deliveryProblemContext.problemType &&
-                          props.productType.delivery.records
-                            .availableProblemTypes[
-                            Number(deliveryProblemContext.problemType.category)
-                          ].label}
+                          deliveryProblemContext.problemType.category}
                       </h4>
                       {deliveryProblemContext.problemType?.message && (
                         <p
@@ -426,6 +427,7 @@ const DeliveryRecordsProblemReviewFC = (
                       css={css`
                         display: inline-block;
                         margin-left: 0;
+                        font-weight: bold;
                         ${minWidth.tablet} {
                           margin-left: ${space[9]}px;
                           min-width: 9ch;

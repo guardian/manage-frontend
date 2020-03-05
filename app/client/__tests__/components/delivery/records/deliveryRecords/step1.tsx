@@ -1,3 +1,4 @@
+import { Button } from "@guardian/src-button";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
@@ -5,7 +6,6 @@ import {
   hasDeliveryRecordsFlow,
   ProductTypes
 } from "../../../../../../shared/productTypes";
-import { LinkButton } from "../../../../../components/buttons";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
 import {
   DeliveryRecords,
@@ -211,7 +211,7 @@ describe("DeliveryRecords", () => {
       expect(
         wrapper
           .find(DeliveryRecordsFC)
-          .find(LinkButton)
+          .find(Button)
           .at(0)
           .text()
       ).toEqual("Report a problem");
@@ -239,7 +239,7 @@ describe("DeliveryRecords", () => {
 
       wrapper
         .find(DeliveryRecordsFC)
-        .find(LinkButton)
+        .find(Button)
         .at(0)
         .simulate("click");
 
@@ -296,7 +296,7 @@ describe("DeliveryRecords", () => {
 
       wrapper
         .find(DeliveryRecordsFC)
-        .find(LinkButton)
+        .find(Button)
         .at(0)
         .simulate("click");
 

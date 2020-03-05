@@ -98,11 +98,16 @@ export interface DeliveryProblemType {
   label: string;
   messageIsMandatory: boolean;
 }
+export const holidaySuspensionDeliveryProblem: DeliveryProblemType = {
+  label: "Delivered despite suspension",
+  messageIsMandatory: false
+};
 
 export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
   { label: "Damaged Paper", messageIsMandatory: true },
   { label: "No Delivery", messageIsMandatory: false },
   { label: "Other", messageIsMandatory: true }
+  // {...holidaySuspensionDeliveryProblem}
 ];
 
 interface DeliveryRecordsProperties {

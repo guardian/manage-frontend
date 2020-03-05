@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
+import { capitalize } from "lodash";
 import React from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { HolidayStopIcon } from "../../svgs/holidayStopIcon";
@@ -11,6 +12,7 @@ interface RecordStatusProps {
   isHolidayStop: boolean;
   isChangedAddress: boolean;
   isChangedDeliveryInstruction: boolean;
+  isFutureRecord: boolean;
   deliveryProblem: string | null;
 }
 export const RecordStatus = (props: RecordStatusProps) => {
@@ -32,6 +34,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -43,7 +46,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
           >
             <ErrorIcon />
           </i>
-          Problem reported ({props.deliveryProblem})
+          Problem reported ({capitalize(props.deliveryProblem)})
         </span>
       )}
       {!props.deliveryProblem && props.isDispatched && (
@@ -53,6 +56,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -64,7 +68,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
           >
             <TickInCircle />
           </i>
-          Dispatched
+          {props.isFutureRecord ? "Scheduled" : "Dispatched"}
         </span>
       )}
       {!props.deliveryProblem && props.isHolidayStop && (
@@ -74,6 +78,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -95,6 +100,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
