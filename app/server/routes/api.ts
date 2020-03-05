@@ -5,7 +5,7 @@ import {
   MDA_TEST_USER_HEADER,
   MembersDataApiItem
 } from "../../shared/productResponse";
-import { apiGatewayHandler } from "../apiGatewayHandler";
+import { getAuthorisedExpressCallbackForApiGateway } from "../apiGatewayDiscovery";
 import { conf } from "../config";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
@@ -93,7 +93,7 @@ router.post(
 
 router.use(
   "/case/:caseId?",
-  apiGatewayHandler(
+  getAuthorisedExpressCallbackForApiGateway(
     "cancellation-sf-cases-api",
     pathParams => `/case/${pathParams.caseId || ""}`
   )
@@ -101,7 +101,7 @@ router.use(
 
 router.use(
   "/holidays/:subscriptionName?/:sfId?",
-  apiGatewayHandler("holiday-stop-api", pathParams => {
+  getAuthorisedExpressCallbackForApiGateway("holiday-stop-api", pathParams => {
     const isPotentialCall = pathParams.sfId === "potential";
     const basePathPart = isPotentialCall ? "potential" : "hsr";
     const maybeActualExistingSfId = isPotentialCall
@@ -117,7 +117,7 @@ router.use(
 
 router.use(
   "/delivery-records/:subscriptionName",
-  apiGatewayHandler(
+  getAuthorisedExpressCallbackForApiGateway(
     "delivery-records-api",
     pathParams => `/delivery-records/${pathParams.subscriptionName}`
   )

@@ -82,6 +82,9 @@ const getApiKeyPromise = (
 
 const getHostAndApiKeyForStack = (apiName: ApiName, stage: string) => {
   const stackName = `membership-${stage}-${apiName}`;
+
+  log.info(`loading host and api key for ${stackName}`);
+
   return CloudFormation.listStackResources({
     StackName: stackName
     // no resources in question have anywhere near enough resources per-stack to require pagination with 'NextToken'
@@ -101,7 +104,7 @@ const getHostAndApiKeyForStack = (apiName: ApiName, stage: string) => {
 
 export type PathnameTransformer = (pathParams: any) => string;
 
-export const apiGatewayHandler = (
+export const getAuthorisedExpressCallbackForApiGateway = (
   apiName: ApiName,
   pathnameTransformer: PathnameTransformer
 ) => {
@@ -130,6 +133,7 @@ export const apiGatewayHandler = (
       log.error(`Missing identity ID on the request object`);
       res.status(500).send();
     } else {
+      log.info(`proxying (${apiName}) : ${req.path}`);
       fetch(
         url.format({
           protocol: "https",
@@ -152,7 +156,7 @@ export const apiGatewayHandler = (
         })
         .then(responseBodyJSON => res.json(responseBodyJSON))
         .catch(e => {
-          log.error(e);
+          log.error(`error proxying (${apiName})`, e);
           res.status(500).send();
         });
     }
