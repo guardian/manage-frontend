@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { capitalize } from "lodash";
 import React from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
@@ -34,6 +34,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -55,6 +56,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -76,6 +78,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
@@ -97,6 +100,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             font-weight: bold;
             padding-left: 30px;
             position: relative;
+            margin-bottom: ${space[2]}px;
           `}
         >
           <i
