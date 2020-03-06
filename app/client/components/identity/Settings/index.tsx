@@ -16,7 +16,7 @@ import {
 import { Users } from "../identity";
 import { User } from "../models";
 import { textSmall } from "../sharedStyles";
-import { AccountDetailsFormSection } from "./AccountFormSection";
+import { SettingsFormSection } from "./SettingsFormSection";
 
 const errorRef = React.createRef<GenericErrorMessageRef>();
 const pageTopRef = React.createRef<HTMLDivElement>();
@@ -27,7 +27,7 @@ const loader = (
   </PageContainer>
 );
 
-export const AccountDetails = (props: { path?: string }) => {
+export const Settings = (props: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -86,7 +86,7 @@ export const AccountDetails = (props: { path?: string }) => {
         </span>
       </PageContainer>
       <PageContainer>
-        <AccountDetailsFormSection
+        <SettingsFormSection
           user={user}
           saveUser={saveUser}
           onError={handleGeneralError}
@@ -100,7 +100,7 @@ export const AccountDetails = (props: { path?: string }) => {
 
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.accountDetails}>
+      <PageHeaderContainer selectedNavItem={navLinks.settings}>
         <h1
           css={{
             fontSize: "32px",
@@ -110,10 +110,10 @@ export const AccountDetails = (props: { path?: string }) => {
             marginTop: "0"
           }}
         >
-          Account details
+          Settings
         </h1>
       </PageHeaderContainer>
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountDetails}>
+      <PageNavAndContentContainer selectedNavItem={navLinks.settings}>
         {!error || (
           <PageContainer>
             <GenericErrorMessage ref={errorRef} />

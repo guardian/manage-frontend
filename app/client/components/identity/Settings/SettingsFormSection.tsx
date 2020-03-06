@@ -23,7 +23,7 @@ import {
 import { PageSection } from "../PageSection";
 import { aCss, textSmall } from "../sharedStyles";
 
-interface AccountFormProps {
+interface SettingsFormProps {
   user: User;
   saveUser: (values: User) => Promise<User>;
   onError: (error: any) => void;
@@ -32,7 +32,7 @@ interface AccountFormProps {
   emailMessage: string | null;
 }
 
-type AccountDetailsFormSectionProps = AccountFormProps;
+type SettingsFormSectionProps = SettingsFormProps;
 
 const lines = () => <Lines n={1} margin="32px auto 16px" />;
 const titles = Object.values(Titles);
@@ -56,7 +56,7 @@ const EmailMessage = (email: string) => (
   </p>
 );
 
-const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
+const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
   const validationNotification = (status: FormikState<User>) => {
     const errors = Object.entries(status).map(s => <li key={s[0]}>{s[1]}</li>);
     return (
@@ -212,7 +212,7 @@ const BaseForm = (props: FormikProps<User> & AccountFormProps) => {
 };
 
 const FormikForm = withFormik({
-  mapPropsToValues: (props: AccountFormProps) => props.user,
+  mapPropsToValues: (props: SettingsFormProps) => props.user,
   handleSubmit: async (values, formikBag) => {
     const { resetForm, setSubmitting, setStatus } = formikBag;
     const { saveUser, onSuccess, onError, onDone } = formikBag.props;
@@ -233,6 +233,6 @@ const FormikForm = withFormik({
   }
 })(BaseForm);
 
-export const AccountDetailsFormSection: FC<AccountDetailsFormSectionProps> = props => {
+export const SettingsFormSection: FC<SettingsFormSectionProps> = props => {
   return <FormikForm {...props} />;
 };

@@ -129,12 +129,17 @@ export const UserNav = () => {
 
   const userNavItems: UserNavItem[] = [
     {
+      title: "Account overview",
+      link: "/account-overview",
+      hideAtDesktop: true
+    },
+    {
       title: "Public profile",
       link: `/public-settings`,
       hideAtDesktop: true
     },
     {
-      title: "Account details",
+      title: "Settings",
       link: `/account-settings`,
       hideAtDesktop: true
     },
@@ -242,7 +247,31 @@ export const UserNav = () => {
         onClick={() => setShowMenu(!showMenu)}
         ref={buttonRef}
       >
-        {<ProfileIcon />}My account
+        {
+          <i
+            css={css`
+              display: inline-block;
+              width: 26px;
+              height: 26px;
+              margin-right: 0.5rem;
+              border-radius: 50%;
+              background-color: white;
+              position: relative;
+            `}
+          >
+            <ProfileIcon
+              css={css`
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 65%;
+                height: auto;
+              `}
+            />
+          </i>
+        }
+        My account
       </button>
 
       <ul role="tablist" css={userNavMenuCss(showMenu)}>

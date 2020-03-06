@@ -5,6 +5,11 @@ import React from "react";
 import { conf } from "../../server/config";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
+import { AccountOverviewIcon } from "./svgs/accountOverviewIcon";
+import { EmailPrefsIcon } from "./svgs/emailPrefIcon";
+import { HelpIcon } from "./svgs/helpIcon";
+import { ProfileIcon } from "./svgs/profileIcon";
+import { SettingsIcon } from "./svgs/settingsIcon";
 
 const navCss = css({
   width: "100%",
@@ -79,11 +84,13 @@ export interface NavItem {
   title: string;
   link: string;
   local?: boolean;
+  icon?: JSX.Element;
 }
 
 export interface NavLinks {
-  publicProfile: NavItem;
-  accountDetails: NavItem;
+  accountOverview: NavItem;
+  profile: NavItem;
+  settings: NavItem;
   membership: NavItem;
   subscriptions: NavItem;
   contributions: NavItem;
@@ -92,15 +99,17 @@ export interface NavLinks {
 }
 
 export const navLinks: NavLinks = {
-  publicProfile: {
-    title: "Public profile",
-    link: "/public-settings",
-    local: true
+  accountOverview: {
+    title: "Account overview",
+    link: "/account-overview",
+    local: true,
+    icon: <AccountOverviewIcon />
   },
-  accountDetails: {
-    title: "Account details",
-    link: "/account-settings",
-    local: true
+  profile: {
+    title: "Profile",
+    link: "/public-settings",
+    local: true,
+    icon: <ProfileIcon />
   },
   membership: {
     title: "Membership",
@@ -120,12 +129,20 @@ export const navLinks: NavLinks = {
   emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs",
-    local: true
+    local: true,
+    icon: <EmailPrefsIcon />
+  },
+  settings: {
+    title: "Settings",
+    link: "/account-settings",
+    local: true,
+    icon: <SettingsIcon />
   },
   help: {
     title: "Help",
     link: "/help",
-    local: true
+    local: true,
+    icon: <HelpIcon />
   }
 };
 
@@ -152,6 +169,16 @@ export const Nav = (props: NavProps) => (
             css={navLinkCss(props.selectedNavItem === navItem)}
             to={navItem.link}
           >
+            {navItem.icon && (
+              <i
+                css={css`
+                  width: 20px;
+                  margin-right: ${space[5]}px;
+                `}
+              >
+                {navItem.icon}
+              </i>
+            )}
             {navItem.title}
           </Link>
         ) : (

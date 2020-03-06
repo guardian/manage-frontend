@@ -111,7 +111,7 @@ export const PublicProfile = (props: { path?: string }) => {
 
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.publicProfile}>
+      <PageHeaderContainer selectedNavItem={navLinks.profile}>
         <h1
           css={{
             fontSize: "32px",
@@ -124,7 +124,7 @@ export const PublicProfile = (props: { path?: string }) => {
           Edit your profile
         </h1>
       </PageHeaderContainer>
-      <PageNavAndContentContainer selectedNavItem={navLinks.publicProfile}>
+      <PageNavAndContentContainer selectedNavItem={navLinks.profile}>
         <PageContainer>
           {error ? <GenericErrorMessage ref={errorRef} /> : null}
         </PageContainer>

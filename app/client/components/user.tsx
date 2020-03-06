@@ -36,14 +36,15 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
+import { AccountOverview } from "./accountoverview/AccountOverview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { HolidaysOverview } from "./holiday/holidaysOverview";
-import { AccountDetails } from "./identity/AccountDetails";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
+import { Settings } from "./identity/Settings";
 import { Main } from "./main";
 import { NotFound } from "./notFound";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
@@ -59,6 +60,8 @@ const User = () => (
 
     <Router>
       <RedirectOnMeResponse path="/" />
+
+      <AccountOverview path="/account-overview" />
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)
@@ -218,7 +221,7 @@ const User = () => (
 
       <PublicProfile path="/public-settings" />
 
-      <AccountDetails path="/account-settings" />
+      <Settings path="/account-settings" />
 
       <Help path="/help" />
 
