@@ -228,6 +228,17 @@ export const createProductDetailFetcher = (
     }
   );
 
+export const createAllProductsDetailFetcher = () => () =>
+  fetch("/api/me/mma", {
+    credentials: "include",
+    mode: "same-origin",
+    headers: {
+      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+      )
+    }
+  });
+
 const domainSpecificSubsManageURL = `https://subscribe.${
   typeof window !== "undefined" && window.guardian && window.guardian.domain
     ? window.guardian.domain

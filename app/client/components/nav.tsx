@@ -172,7 +172,12 @@ export const Nav = (props: NavProps) => (
             {navItem.icon && (
               <i
                 css={css`
-                  width: 20px;
+                  display: inline-block;
+                  vertical-align: top;
+                  width: auto;
+                  height: 100%;
+                  max-width: 20px;
+                  max-height: 20px;
                   margin-right: ${space[5]}px;
                 `}
               >
