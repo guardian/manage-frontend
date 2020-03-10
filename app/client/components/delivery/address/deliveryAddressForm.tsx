@@ -546,10 +546,10 @@ const Form = (props: FormProps) => {
   );
 };
 
-export const DeliveryAddressForm = (props: RouteableStepProps) =>
-  props.location &&
-  props.location.state &&
-  Array.isArray(props.location.state) ? (
+export const DeliveryAddressForm = (props: RouteableStepProps) => {
+  return props.location &&
+    props.location.state &&
+    Array.isArray(props.location.state) ? (
     renderDeliveryAddressForm(props)(props.location.state)
   ) : (
     <MembersDatApiAsyncLoader
@@ -558,3 +558,4 @@ export const DeliveryAddressForm = (props: RouteableStepProps) =>
       loadingMessage={"Loading delivery address form..."}
     />
   );
+};

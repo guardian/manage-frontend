@@ -40,6 +40,7 @@ export interface ProductDetail extends WithSubscription {
   regNumber?: string;
   tier: string;
   joinDate: string;
+  mmaCategory: string;
   alertText?: string;
 }
 

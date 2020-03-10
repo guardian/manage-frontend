@@ -347,7 +347,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     >
                       Contact us
                     </span>
-                    .
                   </p>
                   {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
                   {pageStatus === PageStatus.READ_ONLY && (
@@ -617,7 +616,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 >
                   Contact us
                 </span>
-                .
               </p>
               {showBottomCallCentreNumbers && <CallCentreEmailAndNumbers />}
             </div>

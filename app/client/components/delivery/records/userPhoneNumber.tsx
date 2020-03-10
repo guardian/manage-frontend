@@ -125,7 +125,6 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                       key={`phonenumberinput-${index}`}
                       pattern="[0-9]{1,11}"
                       label={phoneNumber[0]}
-                      supporting="Enter your phone number"
                       width={30}
                       css={css`
                         max-width: 100%;
@@ -199,7 +198,6 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               <>
                 <TextInput
                   label="Phone number"
-                  supporting="Enter your phone number"
                   width={30}
                   css={css`
                     max-width: 100%;

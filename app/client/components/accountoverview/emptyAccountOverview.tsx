@@ -3,9 +3,9 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
-import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { Users } from "../identity/identity";
+import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { InfoIconDark } from "../svgs/infoIconDark";
 
 export const EmptyAccountOverview = () => {
@@ -68,6 +68,7 @@ export const EmptyAccountOverview = () => {
             margin: 0;
             padding: 0;
             display: inline-block;
+            overflow-wrap: anywhere;
           `}
         >
           {userEmailAddress}
@@ -82,12 +83,10 @@ export const EmptyAccountOverview = () => {
         Please consider supporting our journalism via a new subscription or
         contribution.
       </p>
-      <LinkButton
-        to={"http://google.com"}
-        text={"Support the Guardian"}
-        colour={palette.brand.main}
-        textColour={palette.neutral[100]}
-        right
+      <SupportTheGuardianButton
+        supportReferer={"account_overview_no_product"}
+        fontWeight="bold"
+        height="42px"
       />
       <div
         css={css`

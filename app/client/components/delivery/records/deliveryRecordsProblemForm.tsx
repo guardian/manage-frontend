@@ -173,6 +173,7 @@ export const DeliveryRecordProblemForm = (
                         htmlFor="issue1Message"
                         css={css`
                           display: block;
+                          color: ${palette.neutral[46]};
                         `}
                       >
                         Please specify
@@ -180,7 +181,6 @@ export const DeliveryRecordProblemForm = (
                           css={css`
                             font-style: italic;
                             ${textSans.small()};
-                            color: ${palette.neutral["60"]};
                           `}
                         >
                           {!deliveryProblemRadioOption.messageIsMandatory &&
