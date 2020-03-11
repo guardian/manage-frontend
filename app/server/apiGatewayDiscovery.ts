@@ -80,7 +80,15 @@ const getApiKeyPromise = (
   );
 };
 
-const getHostAndApiKeyForStack = (apiName: ApiName, stage: string) => {
+interface HostAndApiKey {
+  host?: string;
+  apiKey?: string;
+}
+
+function getHostAndApiKeyForStack(
+  apiName: ApiName,
+  stage: string
+): Promise<HostAndApiKey> {
   const stackName = `membership-${stage}-${apiName}`;
 
   log.info(`loading host and api key for ${stackName}`);
@@ -99,8 +107,11 @@ const getHostAndApiKeyForStack = (apiName: ApiName, stage: string) => {
         result.StackResourceSummaries
       )
     }))
-    .catch(log.error);
-};
+    .catch(err => {
+      log.error(err);
+      return {};
+    });
+}
 
 export type PathnameTransformer = (pathParams: any) => string;
 
@@ -119,9 +130,9 @@ export const getAuthorisedExpressCallbackForApiGateway = (
 
   return async (req: express.Request, res: express.Response) => {
     const isTestUser = req.header(MDA_TEST_USER_HEADER) === "true";
-    const { host, apiKey } = (await (isTestUser
+    const { host, apiKey } = await (isTestUser
       ? testModeConfigPromise
-      : normalModeConfigPromise)) as any;
+      : normalModeConfigPromise);
     const stage = isTestUser ? testUserApiStage : normalUserApiStage;
     if (!apiKey) {
       log.error(`Missing API Key for ${stage} ${apiName}`);
