@@ -30,9 +30,8 @@ const usernameInput = (formikProps: FormikProps<User>) => (
   <>
     <FormTextField name="username" label="Username" formikProps={formikProps} />
     <p css={textSmall}>
-      You can only set your username once. It must be 6-20 characters, letters
-      and/or numbers only and have no spaces. If you do not set your username,
-      then your full name will be used.
+      You need to set a username before you can comment. You can only set your
+      username once. It must be 6-20 characters, letters and/or numbers.
     </p>
   </>
 );
