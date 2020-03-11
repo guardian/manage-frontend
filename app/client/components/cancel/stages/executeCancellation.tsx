@@ -2,8 +2,7 @@ import React from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
-  ProductDetail,
-  Subscription
+  ProductDetail
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
@@ -44,11 +43,12 @@ const getCancelFunc = (
 
 const getCaseUpdateWithCancelOutcomeFunc = (
   caseId: string,
-  subscription: Subscription
+  productDetail: ProductDetail
 ) => async () =>
   await getUpdateCasePromise(
+    productDetail.isTestUser,
     caseId,
-    isCancelled(subscription)
+    isCancelled(productDetail.subscription)
       ? {
           Journey__c: "SV - Cancellation - MB",
           Subject: "Online Cancellation Completed"
@@ -76,10 +76,7 @@ const getCaseUpdatingCancellationSummary = (
   const productDetail = productDetails[0] || { subscription: {} };
   return (
     <CaseUpdateAsyncLoader
-      fetch={getCaseUpdateWithCancelOutcomeFunc(
-        caseId,
-        productDetail.subscription
-      )}
+      fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}
       render={() =>
         getCancellationSummaryWithReturnButton(productType, productDetail)
       }

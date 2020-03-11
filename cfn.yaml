@@ -47,7 +47,6 @@ Mappings:
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/2c2a72a2-a0d6-4ffa-b8a1-8a7916000515
       ApiDomainEnvVariable: code.dev-guardianapis.com
       DomainEnvVariable: code.dev-theguardian.com
-      SFCasesUrl: https://gm3ysthjh6.execute-api.eu-west-1.amazonaws.com/CODE
     PROD:
       MaxInstances: 6
       MinInstances: 3
@@ -55,7 +54,6 @@ Mappings:
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       ApiDomainEnvVariable: guardianapis.com
       DomainEnvVariable: theguardian.com
-      SFCasesUrl: https://lmjfwuvr5l.execute-api.eu-west-1.amazonaws.com/PROD
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -118,7 +116,6 @@ Resources:
             Environment=STAGE=${Stage}
             Environment=DOMAIN=${DomainEnvVariable}
             Environment=API_DOMAIN=${ApiDomainEnvVariable}
-            Environment=SF_CASES_URL=${SFCasesUrl}
             Environment=CLIENT_DSN=${ClientRavenDSN}
             Environment=SERVER_DSN=${ServerRavenDSN}
             [Install]
@@ -133,7 +130,6 @@ Resources:
               !FindInMap [StageVariables, !Ref Stage, DomainEnvVariable]
             ApiDomainEnvVariable:
               !FindInMap [StageVariables, !Ref Stage, ApiDomainEnvVariable]
-            SFCasesUrl: !FindInMap [StageVariables, !Ref Stage, SFCasesUrl]
 
   AppRole:
     Type: AWS::IAM::Role
@@ -171,7 +167,22 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: s3:GetObject
-                Resource: !Sub arn:aws:s3:::fulfilment-date-calculator-*
+                Resource: arn:aws:s3:::fulfilment-date-calculator-*
+        - PolicyName: DiscoverApiGatewayLambdas
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: cloudformation:ListStackResources
+                Resource:
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-DEV-*
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-CODE-*
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-${Stage}-* # avoids PROD resources being available to lower environments
+        - PolicyName: DiscoverApiGatewayApiKeys
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: apigateway:GET
+                Resource: !Sub arn:aws:apigateway:${AWS::Region}::/apikeys/*
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile

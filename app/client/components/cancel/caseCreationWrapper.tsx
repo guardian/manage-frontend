@@ -1,6 +1,8 @@
 import React from "react";
-import { ProductDetail } from "../../../shared/productResponse";
-import { MembersDataApiItem } from "../../../shared/productResponse";
+import {
+  MDA_TEST_USER_HEADER,
+  ProductDetail
+} from "../../../shared/productResponse";
 import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
@@ -13,7 +15,7 @@ export interface CaseCreationResponse {
 const getCreateCaseFunc = (
   reason: OptionalCancellationReasonId,
   sfProduct: string,
-  membershipData: ProductDetail
+  productDetail: ProductDetail
 ) => async () =>
   await fetch("/api/case", {
     credentials: "include",
@@ -22,10 +24,13 @@ const getCreateCaseFunc = (
     body: JSON.stringify({
       reason,
       product: sfProduct,
-      subscriptionName: membershipData.subscription.subscriptionId,
+      subscriptionName: productDetail.subscription.subscriptionId,
       gaData: "" + JSON.stringify(window.gaData)
     }),
-    headers: { "Content-Type": "application/json" }
+    headers: {
+      "Content-Type": "application/json",
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    }
   });
 
 const renderWithCaseIdContextProvider = (children: any) => (
@@ -44,18 +49,14 @@ class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 export interface CaseCreationWrapperProps {
   children: any;
   sfProduct: string;
-  membersDataApiItem: MembersDataApiItem;
+  productDetail: ProductDetail;
 }
 
 export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
   <CancellationReasonContext.Consumer>
     {reason => (
       <CaseCreationAsyncLoader
-        fetch={getCreateCaseFunc(
-          reason,
-          props.sfProduct,
-          props.membersDataApiItem as ProductDetail
-        )}
+        fetch={getCreateCaseFunc(reason, props.sfProduct, props.productDetail)}
         render={renderWithCaseIdContextProvider(props.children)}
         errorRender={renderWithCaseIdContextProvider(props.children)}
         loadingMessage="Capturing your cancellation reason..."

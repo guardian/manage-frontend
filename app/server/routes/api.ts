@@ -5,6 +5,7 @@ import {
   MDA_TEST_USER_HEADER,
   MembersDataApiItem
 } from "../../shared/productResponse";
+import { getAuthorisedExpressCallbackForApiGateway } from "../apiGatewayDiscovery";
 import { conf } from "../config";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
@@ -12,7 +13,6 @@ import {
   customMembersDataApiHandler,
   membersDataApiHandler,
   proxyApiHandler,
-  sfCasesApiHandler,
   straightThroughBodyHandler
 } from "../middleware/apiMiddleware";
 import { withIdentity } from "../middleware/identityMiddleware";
@@ -91,11 +91,36 @@ router.post(
   )("direct-debit/check-account", true)
 );
 
-router.post("/case", sfCasesApiHandler("case"));
+router.use(
+  "/case/:caseId?",
+  getAuthorisedExpressCallbackForApiGateway(
+    "cancellation-sf-cases-api",
+    pathParams => `/case/${pathParams.caseId || ""}`
+  )
+);
 
-router.patch(
-  "/case/:caseId",
-  sfCasesApiHandler("case/:caseId", false, "caseId")
+router.use(
+  "/holidays/:subscriptionName?/:sfId?",
+  getAuthorisedExpressCallbackForApiGateway("holiday-stop-api", pathParams => {
+    const isPotentialCall = pathParams.sfId === "potential";
+    const basePathPart = isPotentialCall ? "potential" : "hsr";
+    const maybeActualExistingSfId = isPotentialCall
+      ? undefined
+      : pathParams.sfId;
+    return pathParams && pathParams.subscriptionName
+      ? `/${basePathPart}/${
+          pathParams.subscriptionName
+        }/${maybeActualExistingSfId || ""}`
+      : "/hsr";
+  })
+);
+
+router.use(
+  "/delivery-records/:subscriptionName",
+  getAuthorisedExpressCallbackForApiGateway(
+    "delivery-records-api",
+    pathParams => `/delivery-records/${pathParams.subscriptionName}`
+  )
 );
 
 router.put(
