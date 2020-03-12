@@ -3,9 +3,8 @@ import {
   StackResourceSummary
 } from "aws-sdk/clients/cloudformation";
 import express from "express";
-import fetch from "node-fetch";
-import url from "url";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
+import { proxyApiHandler, straightThroughBodyHandler } from "./apiProxy";
 import { APIGateway, AWS_REGION, CloudFormation } from "./awsIntegration";
 import { conf } from "./config";
 import { log } from "./log";
@@ -20,7 +19,7 @@ const apiNames = [
   "delivery-records-api",
   "holiday-stop-api"
 ] as const;
-export type ApiName = typeof apiNames[number];
+type ApiName = typeof apiNames[number];
 
 const byResourceType = (resourceTypeFilter: string) => (
   resource: StackResourceSummary
@@ -108,17 +107,12 @@ function getHostAndApiKeyForStack(
       )
     }))
     .catch(err => {
-      log.error(err);
+      log.error(`ERROR loading host and api key for ${stackName}`, err);
       return {};
     });
 }
 
-export type PathnameTransformer = (pathParams: any) => string;
-
-export const getAuthorisedExpressCallbackForApiGateway = (
-  apiName: ApiName,
-  pathnameTransformer: PathnameTransformer
-) => {
+const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
   const normalModeConfigPromise = getHostAndApiKeyForStack(
     apiName,
     normalUserApiStage
@@ -128,7 +122,11 @@ export const getAuthorisedExpressCallbackForApiGateway = (
     testUserApiStage
   );
 
-  return async (req: express.Request, res: express.Response) => {
+  return (
+    path: string,
+    loggingCode: string,
+    ...pathParamNamesToReplace: string[]
+  ) => async (req: express.Request, res: express.Response) => {
     const isTestUser = req.header(MDA_TEST_USER_HEADER) === "true";
     const { host, apiKey } = await (isTestUser
       ? testModeConfigPromise
@@ -144,32 +142,26 @@ export const getAuthorisedExpressCallbackForApiGateway = (
       log.error(`Missing identity ID on the request object`);
       res.status(500).send();
     } else {
-      log.info(`proxying (${apiName}) : ${req.path}`);
-      fetch(
-        url.format({
-          protocol: "https",
-          host,
-          pathname: pathnameTransformer(req.params),
-          query: req.query
-        }),
-        {
-          method: req.method,
-          headers: {
-            "x-api-key": apiKey,
-            "x-identity-id": res.locals.identity.userId
-          },
-          body: req.method !== "GET" ? req.body : undefined
-        }
-      )
-        .then(intermediateResponse => {
-          res.status(intermediateResponse.status);
-          return intermediateResponse.json();
-        })
-        .then(responseBodyJSON => res.json(responseBodyJSON))
-        .catch(e => {
-          log.error(`error proxying (${apiName})`, e);
-          res.status(500).send();
-        });
+      const forwardQueryArgs = true;
+      return proxyApiHandler(`https://${host}`, {
+        "x-api-key": apiKey,
+        "x-identity-id": res.locals.identity && res.locals.identity.userId
+      })(straightThroughBodyHandler)(
+        path,
+        loggingCode,
+        forwardQueryArgs,
+        ...pathParamNamesToReplace
+      )(req, res);
     }
   };
 };
+
+export const cancellationSfCasesAPI = getAuthorisedExpressCallbackForApiGateway(
+  "cancellation-sf-cases-api"
+);
+export const holidayStopAPI = getAuthorisedExpressCallbackForApiGateway(
+  "holiday-stop-api"
+);
+export const deliveryRecordsAPI = getAuthorisedExpressCallbackForApiGateway(
+  "delivery-records-api"
+);
