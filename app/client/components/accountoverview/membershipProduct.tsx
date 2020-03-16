@@ -168,7 +168,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
           `}
         >
           <ul css={keyValuePairCss}>
-            <li css={keyCss}>Membershiup tier</li>
+            <li css={keyCss}>Membership tier</li>
             <li css={valueCss}>{props.productDetail.tier}</li>
           </ul>
           {props.productDetail.subscription.start && (
@@ -272,7 +272,10 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                         display: block;
                       `}
                     >
-                      {`${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
+                      {`${mainPlan.currency}${(
+                        props.productDetail.subscription.nextPaymentPrice /
+                        100.0
+                      ).toFixed(2)}`}
                     </span>
                     <span
                       css={css`
