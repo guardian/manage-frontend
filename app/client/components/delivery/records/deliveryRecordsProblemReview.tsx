@@ -74,7 +74,9 @@ export const DeliveryRecordsProblemReview = (
         creditDate={
           potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
         }
-        holidayStopRecords={potentialHolidayStopsResponseWithCredits.potentials}
+        relatedPublications={
+          potentialHolidayStopsResponseWithCredits.potentials
+        }
         totalCreditAmount={totalCreditAmount}
       />
     );
@@ -111,7 +113,7 @@ interface DeliveryRecordsProblemReviewFCProps
   showCredit?: true;
   creditDate?: string;
   totalCreditAmount?: number;
-  holidayStopRecords?: RawPotentialHolidayStopDetail[];
+  relatedPublications?: RawPotentialHolidayStopDetail[];
 }
 
 const DeliveryRecordsProblemReviewFC = (
@@ -148,15 +150,17 @@ const DeliveryRecordsProblemReviewFC = (
         problemType: deliveryProblemContext?.problemType?.category,
         repeatDeliveryProblem: deliveryProblemContext?.repeatDeliveryProblem,
         deliveryRecords:
-          props.showCredit && props.holidayStopRecords
+          props.showCredit && props.relatedPublications
             ? deliveryProblemContext?.affectedRecords.map(record => {
-                const matchingHolidayStop = props.holidayStopRecords?.find(
+                const matchingPublication = props.relatedPublications?.find(
                   x => x.publicationDate === record.deliveryDate
                 );
                 return {
                   id: record.id,
-                  creditAmount: matchingHolidayStop?.credit,
-                  invoiceDate: props.creditDate
+                  creditAmount: matchingPublication?.credit,
+                  invoiceDate: matchingPublication
+                    ? props.creditDate
+                    : undefined
                 };
               })
             : deliveryProblemContext?.affectedRecords.map(record => {
