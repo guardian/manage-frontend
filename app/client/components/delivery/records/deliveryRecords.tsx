@@ -248,7 +248,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           productType.shortFriendlyName || productType.friendlyName
         ),
         apiProductName:
-          productType.fulfilmentDateCalculator?.productFilenamePart,
+          productType.delivery.records.productNameForProblemReport,
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)
