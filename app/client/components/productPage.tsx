@@ -435,11 +435,7 @@ const getProductDetailRenderer = (
                 label="Delivery history"
                 data={
                   <LinkButton
-                    text={
-                      productType.delivery.records.canReportProblem
-                        ? "Report problem"
-                        : "View delivery history"
-                    }
+                    text="Report problem"
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right

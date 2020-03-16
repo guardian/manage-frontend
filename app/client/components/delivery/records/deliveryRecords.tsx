@@ -292,102 +292,98 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {productType.delivery.records.canReportProblem &&
-            props.data.results.find(record => !record.problemCaseId) && (
-              <>
-                <h2
+          {props.data.results.find(record => !record.problemCaseId) && (
+            <>
+              <h2
+                css={css`
+                  border-top: 1px solid ${palette.neutral["86"]};
+                  ${headline.small()};
+                  font-weight: bold;
+                  ${maxWidth.tablet} {
+                    font-size: 1.25rem;
+                    line-height: 1.6;
+                  }
+                `}
+              >
+                Report delivery problems
+              </h2>
+              <div
+                css={css`
+                  margin-bottom: ${pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
+                    ? space[12]
+                    : space[5]}px;
+                  ${textSans.medium()};
+                `}
+              >
+                <p
                   css={css`
-                    border-top: 1px solid ${palette.neutral["86"]};
-                    ${headline.small()};
-                    font-weight: bold;
-                    ${maxWidth.tablet} {
-                      font-size: 1.25rem;
-                      line-height: 1.6;
-                    }
-                  `}
-                >
-                  Report delivery problems
-                </h2>
-                <div
-                  css={css`
-                    margin-bottom: ${pageStatus !==
-                    PageStatus.REPORT_ISSUE_STEP_2
-                      ? space[12]
-                      : space[5]}px;
                     ${textSans.medium()};
                   `}
                 >
-                  <p
+                  Have you been experiencing problems with your delivery? Report
+                  it and we will take care of it for you. Depending on the type
+                  of problem, you will be credited or contacted by our customer
+                  service team.
+                </p>
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  Is your problem urgent?{" "}
+                  <span
                     css={css`
-                      ${textSans.medium()};
+                      cursor: pointer;
+                      color: ${palette.brand[500]};
+                      text-decoration: underline;
                     `}
+                    onClick={() =>
+                      setTopCallCentreNumbersVisibility(
+                        !showTopCallCentreNumbers
+                      )
+                    }
                   >
-                    Have you been experiencing problems with your delivery?
-                    Report it and we will take care of it for you. Depending on
-                    the type of problem, you will be credited or contacted by
-                    our customer service team.
-                  </p>
-                  <p
-                    css={css`
-                      ${textSans.medium()};
-                    `}
+                    Contact us
+                  </span>
+                  .
+                </p>
+                {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+                {pageStatus === PageStatus.READ_ONLY && (
+                  <Button
+                    onClick={() => {
+                      trackEvent({
+                        eventCategory: "delivery-problem",
+                        eventAction: "report_delivery_problem_button_click",
+                        product: {
+                          productType,
+                          productDetail: props.productDetail
+                        },
+                        eventLabel: productType.urlPart
+                      });
+                      setSelectedProblemRecords([]);
+                      setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                    }}
                   >
-                    Is your problem urgent?{" "}
-                    <span
-                      css={css`
-                        cursor: pointer;
-                        color: ${palette.brand[500]};
-                        text-decoration: underline;
-                      `}
-                      onClick={() =>
-                        setTopCallCentreNumbersVisibility(
-                          !showTopCallCentreNumbers
-                        )
-                      }
-                    >
-                      Contact us
-                    </span>
-                    .
-                  </p>
-                  {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-                  {pageStatus === PageStatus.READ_ONLY && (
-                    <Button
-                      onClick={() => {
-                        trackEvent({
-                          eventCategory: "delivery-problem",
-                          eventAction: "report_delivery_problem_button_click",
-                          product: {
-                            productType,
-                            productDetail: props.productDetail
-                          },
-                          eventLabel: productType.urlPart
-                        });
-                        setSelectedProblemRecords([]);
-                        setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
-                      }}
-                    >
-                      Report a problem
-                    </Button>
-                  )}
-                  {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
-                    pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
-                    <DeliveryRecordProblemForm
-                      showNextStepButton={
-                        pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
-                      }
-                      onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
-                      onFormSubmit={step1FormSubmitListener}
-                      inValidationState={step1formValidationState}
-                      updateValidationStatusCallback={step1FormUpdateCallback}
-                      updateRadioSelectionCallback={
-                        step1FormRadioOptionCallback
-                      }
-                      problemTypes={problemTypes}
-                    />
-                  )}
-                </div>
-              </>
-            )}
+                    Report a problem
+                  </Button>
+                )}
+                {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
+                  pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
+                  <DeliveryRecordProblemForm
+                    showNextStepButton={
+                      pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
+                    }
+                    onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
+                    onFormSubmit={step1FormSubmitListener}
+                    inValidationState={step1formValidationState}
+                    updateValidationStatusCallback={step1FormUpdateCallback}
+                    updateRadioSelectionCallback={step1FormRadioOptionCallback}
+                    problemTypes={problemTypes}
+                  />
+                )}
+              </div>
+            </>
+          )}
           <h2
             css={css`
               border-top: 1px solid ${palette.neutral["86"]};
