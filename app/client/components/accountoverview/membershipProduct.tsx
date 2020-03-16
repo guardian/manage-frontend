@@ -19,11 +19,11 @@ import { PaypalLogo } from "../payment/paypalLogo";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 
-interface SubscriptionProductProps {
+interface MembershipProductProps {
   productDetail: ProductDetail;
 }
 
-export const SubscriptionProduct = (props: SubscriptionProductProps) => {
+export const MembershipProduct = (props: MembershipProductProps) => {
   const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
     props.productDetail
   );
@@ -132,8 +132,8 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             margin: 0;
           `}
         >
-          Your subscription has been cancelled. You are able to access your
-          subscription until{" "}
+          Your membership has been cancelled. You will receive the benefit of
+          your membership until{" "}
           <span
             css={css`
               font-weight: bold;
@@ -168,10 +168,8 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
           `}
         >
           <ul css={keyValuePairCss}>
-            <li css={keyCss}>Subscription ID</li>
-            <li css={valueCss}>
-              {props.productDetail.subscription.subscriptionId}
-            </li>
+            <li css={keyCss}>Membershiup tier</li>
+            <li css={valueCss}>{props.productDetail.tier}</li>
           </ul>
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
@@ -206,7 +204,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             ) : (
               <LinkButton
                 to={"adsf"}
-                text={"Manage subscription"}
+                text={"Cancel membership"}
                 colour={palette.brand[800]}
                 textColour={palette.brand[400]}
                 fontWeight={"bold"}
@@ -274,10 +272,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                         display: block;
                       `}
                     >
-                      {`${mainPlan.currency}${(
-                        props.productDetail.subscription.nextPaymentPrice /
-                        100.0
-                      ).toFixed(2)}`}
+                      {`${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
                     </span>
                     <span
                       css={css`

@@ -1,6 +1,9 @@
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import palette from "../../colours";
+import { minWidth } from "../../styles/breakpoints";
 import { DirectDebitLogo } from "./directDebitLogo";
 import { Inlineable } from "./inlineable";
 
@@ -28,6 +31,54 @@ export interface DirectDebitDisplayProps
     Inlineable {
   showAccountName?: true;
 }
+
+export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
+  <div
+    css={{
+      display: mandate.inline ? "inline-flex" : "flex",
+      alignItems: "top"
+    }}
+  >
+    <i
+      css={css`
+        margin-top: 2px;
+      `}
+    >
+      <DirectDebitLogo justLogo />
+    </i>
+    <div
+      css={css`
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+      `}
+    >
+      <span
+        css={css`
+          display: block;
+          ${minWidth.tablet} {
+            display: inline-block;
+            vertical-align: top;
+          }
+        `}
+      >
+        {mandate.accountName}
+      </span>
+      <span
+        css={css`
+          display: block;
+          ${minWidth.tablet} {
+            display: inline-block;
+            vertical-align: top;
+            margin-left: ${space[2]}px;
+          }
+        `}
+      >
+        {mandate.accountNumber}
+      </span>
+    </div>
+  </div>
+);
 
 export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
   <div

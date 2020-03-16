@@ -5,7 +5,6 @@ import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
   getMainPlan,
-  isGift,
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
@@ -17,13 +16,12 @@ import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
 import { ErrorIcon } from "../svgs/errorIcon";
-import { GiftIcon } from "../svgs/giftIcon";
 
-interface SubscriptionProductProps {
+interface ContributionProductProps {
   productDetail: ProductDetail;
 }
 
-export const SubscriptionProduct = (props: SubscriptionProductProps) => {
+export const ContributionProduct = (props: ContributionProductProps) => {
   const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
     props.productDetail
   );
@@ -32,6 +30,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
+  // const futurePlan = getFuturePlanIfVisible(props.productDetail.subscription);
 
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
@@ -89,7 +88,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
       >
         {productName}
         {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-        {hasCancellationPending ? (
+        {hasCancellationPending && (
           <i
             css={css`
               position: absolute;
@@ -109,41 +108,8 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
               Cancelled
             </span>
           </i>
-        ) : (
-          isGift(props.productDetail.subscription) && (
-            <i
-              css={css`
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-              `}
-            >
-              <GiftIcon alignArrowToThisSide={"left"} />
-            </i>
-          )
         )}
       </h2>
-      {hasCancellationPending && props.productDetail.subscription.end && (
-        <p
-          css={css`
-            ${textSans.medium()};
-            padding: 20px 20px 0;
-            margin: 0;
-          `}
-        >
-          Your subscription has been cancelled. You are able to access your
-          subscription until{" "}
-          <span
-            css={css`
-              font-weight: bold;
-            `}
-          >
-            {formatDateStr(props.productDetail.subscription.end)}
-          </span>
-          .
-        </p>
-      )}
       <div
         css={css`
           padding: ${space[5]}px ${space[3]}px;
@@ -167,12 +133,6 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             }
           `}
         >
-          <ul css={keyValuePairCss}>
-            <li css={keyCss}>Subscription ID</li>
-            <li css={valueCss}>
-              {props.productDetail.subscription.subscriptionId}
-            </li>
-          </ul>
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
@@ -194,24 +154,13 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
               margin-top: auto;
             `}
           >
-            {hasCancellationPending ? (
-              <LinkButton
-                to={"adsf"}
-                text={"Subscribe again"}
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight={"bold"}
-                right
-              />
-            ) : (
-              <LinkButton
-                to={"adsf"}
-                text={"Manage subscription"}
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight={"bold"}
-              />
-            )}
+            <LinkButton
+              to={"adsf"}
+              text={"Manage contribution"}
+              colour={palette.brand[800]}
+              textColour={palette.brand[400]}
+              fontWeight={"bold"}
+            />
           </div>
         </div>
 

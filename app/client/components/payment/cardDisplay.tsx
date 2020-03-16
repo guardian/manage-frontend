@@ -31,9 +31,10 @@ const cardTypeToSVG = (cardType: string) => {
           borderRadius: "6px",
           marginRight: "9px",
           backgroundImage,
-          width: "54px",
-          height: "35px",
-          backgroundPosition: "0 0"
+          width: "31px",
+          height: "20px",
+          backgroundPosition: "0 0",
+          backgroundSize: "cover"
         }}
       />
     );
@@ -49,6 +50,6 @@ export const CardDisplay = (props: CardDisplayProps) => (
       margin: props.margin || "10px"
     }}
   >
-    {cardTypeToSVG(props.type)}•••• •••• •••• {props.last4}
+    {cardTypeToSVG(props.type)} Ending {props.last4}
   </div>
 );

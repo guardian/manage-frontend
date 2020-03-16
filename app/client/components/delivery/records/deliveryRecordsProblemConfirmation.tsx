@@ -1,17 +1,18 @@
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import moment from "moment";
 import React, { useContext } from "react";
-import { getMainPlan } from "../../../../shared/productResponse";
+import { formatDateStr } from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
   Subscription
 } from "../../../../shared/productResponse";
+import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
@@ -285,7 +286,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                   }
                 `}
               >
-                {moment().format("D MMM YYYY")}
+                {formatDateStr(moment().toString())}
               </dd>
             </div>
             <div

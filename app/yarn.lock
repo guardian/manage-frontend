@@ -1050,10 +1050,10 @@
   dependencies:
     "@guardian/src-inline-error" "^0.7.0"
 
-"@guardian/src-foundations@^0.12.4":
-  version "0.12.4"
-  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.12.4.tgz#a4c6ec8dbf86279702d78e048e2bd4eea1624c7d"
-  integrity sha512-6V/3TWL4wMxfzUHOj5MJQMQA7oRBxWlRav5m9dYGw13JAg59DFOpcfM8LWWFwWWlJ8e2nbnDHS9/sOPzGrJduw==
+"@guardian/src-foundations@^0.14.2":
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-0.14.2.tgz#b1789edbb28099f5834ce8319401142a84500d59"
+  integrity sha512-e+yrYM2WRRb5C4BkJuGstTbaPTn7WS+TdKT2LoxwYBlXWSM3qrHOOFHCTc97uuEgT5E39GqzA/6oScrwmSr9BA==
 
 "@guardian/src-inline-error@^0.13.0":
   version "0.13.0"
