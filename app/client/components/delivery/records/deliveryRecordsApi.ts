@@ -1,5 +1,6 @@
 import {
   DeliveryRecordApiItem,
+  MDA_TEST_USER_HEADER,
   Subscription
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
@@ -78,11 +79,19 @@ export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
   DeliveryRecordsResponse
 > {}
 
-export const createDeliveryRecordsFetcher = (subscriptionId: string) => () =>
-  fetch(`/api/delivery-records/${subscriptionId}`);
+export const createDeliveryRecordsFetcher = (
+  subscriptionId: string,
+  isTestUser: boolean
+) => () =>
+  fetch(`/api/delivery-records/${subscriptionId}`, {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  });
 
 export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
+  isTestUser: boolean,
   payload: DeliveryRecordsPostPayload
 ) => () =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
@@ -90,6 +99,7 @@ export const createDeliveryRecordsProblemPost = (
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
     }
   });

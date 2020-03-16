@@ -74,9 +74,6 @@ export const proxyApiHandler = (
     });
 };
 
-export const sfCasesApiHandler = proxyApiHandler(conf.SF_CASES_URL)(
-  straightThroughBodyHandler
-);
 export const customMembersDataApiHandler = proxyApiHandler(
   "https://members-data-api." + conf.DOMAIN,
   MDA_TEST_USER_HEADER

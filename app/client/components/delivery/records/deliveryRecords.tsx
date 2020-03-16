@@ -648,7 +648,8 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
         <DeliveryRecordsApiAsyncLoader
           render={renderDeliveryRecords(props, productDetail)}
           fetch={createDeliveryRecordsFetcher(
-            productDetail.subscription.subscriptionId
+            productDetail.subscription.subscriptionId,
+            productDetail.isTestUser
           )}
           loadingMessage={"Loading delivery history..."}
         />

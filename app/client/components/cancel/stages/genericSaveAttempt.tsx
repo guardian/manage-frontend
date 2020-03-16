@@ -1,6 +1,9 @@
 import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
-import { MembersDataApiItemContext } from "../../../../shared/productResponse";
+import {
+  isProduct,
+  MembersDataApiItemContext
+} from "../../../../shared/productResponse";
 import {
   ProductTypeWithCancellationFlow,
   WithProductType
@@ -11,6 +14,7 @@ import { sans } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
+import { GenericErrorScreen } from "../../genericErrorScreen";
 import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
 import {
@@ -39,6 +43,7 @@ interface FeedbackFormProps
   reason: CancellationReason;
   characterLimit: number;
   caseId: string;
+  isTestUser: boolean;
 }
 
 interface FeedbackFormState {
@@ -46,8 +51,12 @@ interface FeedbackFormState {
   hasHitSubmit: boolean;
 }
 
-const getPatchUpdateCaseFunc = (feedback: string, caseId: string) => async () =>
-  await getUpdateCasePromise(caseId, {
+const getPatchUpdateCaseFunc = (
+  isTestUser: boolean,
+  caseId: string,
+  feedback: string
+) => async () =>
+  await getUpdateCasePromise(isTestUser, caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query",
     Status: "Open"
@@ -87,8 +96,9 @@ class FeedbackFormAndContactUs extends React.Component<
           <CaseUpdateAsyncLoader
             loadingMessage="Storing your feedback..."
             fetch={getPatchUpdateCaseFunc(
-              this.state.feedback,
-              this.props.caseId
+              this.props.isTestUser,
+              this.props.caseId,
+              this.state.feedback
             )}
             render={this.getFeedbackThankYouRenderer(this.props.reason)}
           />
@@ -103,11 +113,9 @@ class FeedbackFormAndContactUs extends React.Component<
     return (
       <div>
         {!this.props.reason.hideContactUs &&
-        !this.props.productType.cancellation.swapFeedbackAndContactUs ? (
-          <ContactUs {...this.props.reason} />
-        ) : (
-          undefined
-        )}
+          !this.props.productType.cancellation.swapFeedbackAndContactUs && (
+            <ContactUs {...this.props.reason} />
+          )}
         <p>
           {this.props.reason.alternateFeedbackIntro ||
             "Alternatively provide feedback in the box below"}
@@ -146,21 +154,20 @@ class FeedbackFormAndContactUs extends React.Component<
             onClick={() => {
               if (this.state.feedback.length > 0) {
                 getPatchUpdateCaseFunc(
-                  this.state.feedback,
-                  this.props.caseId
+                  this.props.isTestUser,
+                  this.props.caseId,
+                  this.state.feedback
                 )();
                 gaTrackFeedback("submitted silently");
               }
             }}
           />
           {!this.props.reason.hideContactUs &&
-          this.props.productType.cancellation.swapFeedbackAndContactUs ? (
-            <div css={{ marginTop: "20px" }}>
-              <ContactUs {...this.props.reason} />
-            </div>
-          ) : (
-            undefined
-          )}
+            this.props.productType.cancellation.swapFeedbackAndContactUs && (
+              <div css={{ marginTop: "20px" }}>
+                <ContactUs {...this.props.reason} />
+              </div>
+            )}
         </div>
       </div>
     );
@@ -251,62 +258,67 @@ const ConfirmCancellationAndReturnRow = (
 
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
   <MembersDataApiItemContext.Consumer>
-    {membersDataApiItem => (
-      <CancellationReasonContext.Provider
-        value={props.path as CancellationReasonId}
-      >
-        <CaseCreationWrapper
-          membersDataApiItem={membersDataApiItem}
-          sfProduct={props.productType.cancellation.sfProduct}
+    {productDetail =>
+      isProduct(productDetail) ? (
+        <CancellationReasonContext.Provider
+          value={props.path as CancellationReasonId}
         >
-          <WizardStep routeableStepProps={props} hideBackButton>
-            <PageContainerSection>
-              <h3 id="save_title">
-                {props.productType.cancellation.saveTitlePrefix || ""}
-                {props.reason.saveTitle}
-              </h3>
-              <GoogleOptimiseAwaitFlagWrapper
-                experimentFlagName={props.reason.experimentTriggerFlag}
-              >
-                {{
-                  flagIsSet: props.reason.experimentSaveBody,
-                  flagIsNotSet: <p id="save_body">{props.reason.saveBody}</p>
-                }}
-              </GoogleOptimiseAwaitFlagWrapper>
+          <CaseCreationWrapper
+            productDetail={productDetail}
+            sfProduct={props.productType.cancellation.sfProduct}
+          >
+            <WizardStep routeableStepProps={props} hideBackButton>
+              <PageContainerSection>
+                <h3 id="save_title">
+                  {props.productType.cancellation.saveTitlePrefix || ""}
+                  {props.reason.saveTitle}
+                </h3>
+                <GoogleOptimiseAwaitFlagWrapper
+                  experimentFlagName={props.reason.experimentTriggerFlag}
+                >
+                  {{
+                    flagIsSet: props.reason.experimentSaveBody,
+                    flagIsNotSet: <p id="save_body">{props.reason.saveBody}</p>
+                  }}
+                </GoogleOptimiseAwaitFlagWrapper>
 
-              <CancellationCaseIdContext.Consumer>
-                {caseId =>
-                  caseId && !props.reason.skipFeedback ? (
-                    <FeedbackFormAndContactUs
-                      characterLimit={2500}
-                      caseId={caseId}
-                      reason={props.reason}
-                      productType={props.productType}
-                    />
-                  ) : (
-                    <div
-                      css={{
-                        display: "flex",
-                        flexDirection:
-                          props.productType.cancellation
-                            .swapFeedbackAndContactUs && caseId
-                            ? "column-reverse"
-                            : "column"
-                      }}
-                    >
-                      <ContactUs {...props.reason} />
-                      <ConfirmCancellationAndReturnRow
-                        reasonId={props.reason.reasonId}
+                <CancellationCaseIdContext.Consumer>
+                  {caseId =>
+                    caseId && !props.reason.skipFeedback ? (
+                      <FeedbackFormAndContactUs
+                        characterLimit={2500}
+                        caseId={caseId}
+                        reason={props.reason}
                         productType={props.productType}
+                        isTestUser={productDetail.isTestUser}
                       />
-                    </div>
-                  )
-                }
-              </CancellationCaseIdContext.Consumer>
-            </PageContainerSection>
-          </WizardStep>
-        </CaseCreationWrapper>
-      </CancellationReasonContext.Provider>
-    )}
+                    ) : (
+                      <div
+                        css={{
+                          display: "flex",
+                          flexDirection:
+                            props.productType.cancellation
+                              .swapFeedbackAndContactUs && caseId
+                              ? "column-reverse"
+                              : "column"
+                        }}
+                      >
+                        <ContactUs {...props.reason} />
+                        <ConfirmCancellationAndReturnRow
+                          reasonId={props.reason.reasonId}
+                          productType={props.productType}
+                        />
+                      </div>
+                    )
+                  }
+                </CancellationCaseIdContext.Consumer>
+              </PageContainerSection>
+            </WizardStep>
+          </CaseCreationWrapper>
+        </CancellationReasonContext.Provider>
+      ) : (
+        <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+      )
+    }
   </MembersDataApiItemContext.Consumer>
 );
