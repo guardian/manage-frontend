@@ -6,7 +6,8 @@ import Color from "color";
 import React from "react";
 import { conf } from "../../server/config";
 import { minWidth } from "../styles/breakpoints";
-import { LinkButton } from "./buttons";
+import { trackEvent } from "./analytics";
+import { Button } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NavItem, navLinks } from "./nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
@@ -314,13 +315,25 @@ export const Help = (props: RouteComponentProps) => (
       >
         Having a technical issue?
       </h2>
-      <LinkButton
-        to={reportTechnicalIssue.link}
-        text={reportTechnicalIssue.title}
-        colour={palette.brand.main}
-        textColour={palette.neutral[100]}
-        right
-      />
+      <a
+        href={reportTechnicalIssue.link}
+        onClick={() => {
+          trackEvent({
+            eventCategory: "href",
+            eventAction: "click",
+            eventLabel: "report_technical_issue"
+          });
+        }}
+      >
+        <Button
+          text={reportTechnicalIssue.title}
+          fontWeight="bold"
+          colour={palette.brand.main}
+          textColour={palette.neutral[100]}
+          height="36px"
+          right
+        />
+      </a>
     </PageNavAndContentContainer>
   </>
 );
