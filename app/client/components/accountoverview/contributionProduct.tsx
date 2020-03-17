@@ -8,7 +8,7 @@ import {
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductTypes } from "../../../shared/productTypes";
+// import { ProductTypes } from "../../../shared/productTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
@@ -22,11 +22,11 @@ interface ContributionProductProps {
 }
 
 export const ContributionProduct = (props: ContributionProductProps) => {
-  const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-    props.productDetail
-  );
-  const productName =
-    productType?.alternateTierValue || props.productDetail.tier;
+  // const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+  //   props.productDetail
+  // );
+  // const productName =
+  //   productType?.alternateTierValue || props.productDetail.tier;
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -86,7 +86,8 @@ export const ContributionProduct = (props: ContributionProductProps) => {
           }
         `}
       >
-        {productName}
+        {props.productDetail.subscription.autoRenew ? "Recurring" : "Single"}
+        {" contribution"}
         {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
         {hasCancellationPending && (
           <i
@@ -138,6 +139,17 @@ export const ContributionProduct = (props: ContributionProductProps) => {
               <li css={keyCss}>Start date</li>
               <li css={valueCss}>
                 {formatDateStr(props.productDetail.subscription.start)}
+              </li>
+            </ul>
+          )}
+          {props.productDetail.subscription.start && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Payment amount</li>
+              <li css={valueCss}>
+                {`${
+                  mainPlan.currency
+                }${/*props.productDetail.subscription.currentPlans. / */
+                (3000 / 100.0).toFixed(2)}`}
               </li>
             </ul>
           )}
