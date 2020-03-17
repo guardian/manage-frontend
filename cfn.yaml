@@ -312,7 +312,7 @@ Resources:
     Condition: CreateProdResources
     Properties:
       AlarmActions:
-        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev-mk-test
       AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Threshold: 3
