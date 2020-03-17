@@ -55,17 +55,11 @@ export const DeliveryRecordsProblemReview = (
   const renderReviewDetails = (
     potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
   ) => {
-    const totalCreditAmount = potentialHolidayStopsResponseWithCredits
-      .potentials.length
-      ? Math.abs(
-          potentialHolidayStopsResponseWithCredits.potentials
-            .flatMap<number>(x => [x.credit as number])
-            .reduce(
-              (accumulator, currentValue) =>
-                accumulator + Math.abs(currentValue)
-            )
-        )
-      : 0;
+    const totalCreditAmount: number =
+      potentialHolidayStopsResponseWithCredits.potentials.length &&
+      potentialHolidayStopsResponseWithCredits.potentials
+        .flatMap(x => [Math.abs(x.credit || 0)])
+        .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     return (
       <DeliveryRecordsProblemReviewFC
