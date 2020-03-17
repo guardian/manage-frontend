@@ -17,8 +17,7 @@ interface SelectProps {
   options: SelectOption[];
   width: number;
   value: string;
-  optional?: boolean;
-  additionalcss?: SerializedStyles;
+  additionalCSS?: SerializedStyles;
   changeSetState?: setStateFunc;
   inErrorState?: boolean;
   errorMessage?: string;
@@ -29,23 +28,11 @@ export const Select = (props: SelectProps) => (
     css={css`
       display: block;
       color: ${palette.neutral["7"]};
-      ${textSans.medium()} ${props.additionalcss};
+      ${textSans.medium()} ${props.additionalCSS};
       font-weight: bold;
     `}
   >
     {props.label}
-    {props.optional && (
-      <span
-        css={css`
-          font-style: italic;
-          font-weight: normal;
-          color: ${palette.neutral["46"]};
-        `}
-      >
-        {" "}
-        optional
-      </span>
-    )}
     {props.inErrorState && (
       <span
         css={css`

@@ -491,13 +491,10 @@ const Form = (props: FormProps) => {
           label={"Country"}
           options={COUNTRIES}
           width={30}
-          additionalcss={css`
+          additionalCSS={css`
             margin-top: 14px;
           `}
           value={props.country}
-          optional={props.subscriptionsNames.includes(
-            ProductTypes.voucher.friendlyName
-          )}
           changeSetState={props.setCountry}
           inErrorState={
             props.formStatus === formStates.VALIDATION_ERROR &&
