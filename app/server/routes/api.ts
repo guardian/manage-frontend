@@ -1,4 +1,4 @@
-import { Router, Response } from "express";
+import { Response, Router } from "express";
 import Raven from "raven";
 import {
   isProduct,
