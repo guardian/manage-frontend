@@ -16,10 +16,10 @@ export interface DeliveryProblemMap {
 
 export interface ContactPhoneNumbers {
   id: string;
-  Phone?: string;
-  HomePhone?: string;
-  MobilePhone?: string;
-  OtherPhone?: string;
+  Phone?: string | null;
+  HomePhone?: string | null;
+  MobilePhone?: string | null;
+  OtherPhone?: string | null;
 }
 
 export type ContactPhoneNumbersType =

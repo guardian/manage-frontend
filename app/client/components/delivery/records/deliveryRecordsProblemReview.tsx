@@ -120,7 +120,7 @@ const DeliveryRecordsProblemReviewFC = (
   props: DeliveryRecordsProblemReviewFCProps
 ) => {
   const deliveryProblemContext = useContext(DeliveryRecordsProblemContext);
-  const [phoneNumbers, setPhoneNumbers] = useState<
+  const [newPhoneNumbers, setPhoneNumbers] = useState<
     ContactPhoneNumbers | undefined
   >(deliveryProblemContext?.contactPhoneNumbers);
   const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
@@ -166,11 +166,11 @@ const DeliveryRecordsProblemReviewFC = (
             : deliveryProblemContext?.affectedRecords.map(record => {
                 return { id: record.id };
               }),
-        ...((phoneNumbers?.Phone ||
-          phoneNumbers?.HomePhone ||
-          phoneNumbers?.MobilePhone ||
-          phoneNumbers?.OtherPhone) && {
-          newContactPhoneNumbers: phoneNumbers
+        ...((newPhoneNumbers?.Phone ||
+          newPhoneNumbers?.HomePhone ||
+          newPhoneNumbers?.MobilePhone ||
+          newPhoneNumbers?.OtherPhone) && {
+          newContactPhoneNumbers: newPhoneNumbers
         })
       }}
     >
@@ -503,11 +503,13 @@ const DeliveryRecordsProblemReviewFC = (
                     high priority. Our customer service team will try their best
                     to contact you within 48 hours to resolve the issue.
                   </span>
-                  {phoneNumbers && (
+                  {newPhoneNumbers && (
                     <UserPhoneNumber
-                      existingPhoneNumbers={phoneNumbers}
-                      callback={(newNumber: ContactPhoneNumbers) => {
-                        setPhoneNumbers(newNumber);
+                      existingPhoneNumbers={
+                        deliveryProblemContext?.contactPhoneNumbers
+                      }
+                      callback={(newNumbers: ContactPhoneNumbers) => {
+                        setPhoneNumbers(newNumbers);
                       }}
                     />
                   )}
