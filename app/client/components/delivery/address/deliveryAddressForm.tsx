@@ -54,7 +54,10 @@ function hasContactId(
   return !!productDetail.subscription.contactId;
 }
 
-const babelFlatMapFunction = (x: any) => x;
+// babel doesn't support 'flatten', but this function can be used with flatMap
+function flattenEquivalent<T>(x: T): T {
+  return x;
+}
 
 export const getValidDeliveryAddressChangeEffectiveDates = (
   allProductDetail: ProductDetail[]
@@ -136,7 +139,7 @@ const FormContainer = (props: FormContainerProps) => {
   const subscriptionsNames = Object.values(
     props.contactIdToArrayOfProductDetail
   )
-    .flatMap(babelFlatMapFunction)
+    .flatMap(flattenEquivalent)
     .map(productDetail => {
       const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
         productDetail
@@ -175,12 +178,16 @@ const FormContainer = (props: FormContainerProps) => {
   const addressChangeInformation = Object.values(
     props.contactIdToArrayOfProductDetail
   )
-    .flatMap(babelFlatMapFunction)
-    .map(productDetail => {
-      const friendlyProductName = capitalize(
-        ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(productDetail)
-          .friendlyName
-      );
+    .flatMap<ProductDetail>(flattenEquivalent)
+    .map(productDetail => ({
+      productDetail,
+      productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+        productDetail
+      )
+    }))
+    .filter(_ => _.productType && _.productType.delivery?.showAddress)
+    .map(({ productDetail, productType }) => {
+      const friendlyProductName = capitalize(productType?.friendlyName);
       const effectiveDatePart = productDetail.subscription
         .deliveryAddressChangeEffectiveDate
         ? ` as of front cover dated ${momentiseDateStr(
@@ -242,7 +249,7 @@ const FormContainer = (props: FormContainerProps) => {
                 1 && (
                 <div>
                   {Object.values(props.contactIdToArrayOfProductDetail).flatMap(
-                    babelFlatMapFunction
+                    flattenEquivalent
                   ).length > 1 && (
                     <p
                       css={css`
