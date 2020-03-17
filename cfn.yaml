@@ -307,49 +307,49 @@ Resources:
       - TargetGroup
       - ElasticLoadBalancer
 
-    High5XXRateAlarm:
-      Type: AWS::CloudWatch::Alarm
-      Condition: CreateProdResources
-      Properties:
-        AlarmActions:
-          - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
-        AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
-        ComparisonOperator: GreaterThanOrEqualToThreshold
-        Threshold: 3
-        EvaluationPeriods: 2
-        TreatMissingData: notBreaching
-        Metrics:
-          - Id: total5xx
-            Expression: backend5XX + elb5XX
-            Label: "Count of Backend AND ELB 5XX"
-          - Id: backend5XX
-            MetricStat:
-              Metric:
-                Namespace: AWS/ApplicationELB
-                MetricName: HTTPCode_Backend_5XX
-                Dimensions:
-                  - Name: LoadBalancerName
-                    Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
-                  - Name: TargetGroup
-                    Value: !GetAtt TargetGroup.TargetGroupFullName
-              Period: 60
-              Stat: Sum
-              Unit: Count
-            ReturnData: false
-          - Id: elb5XX
-            MetricStat:
-              Metric:
-                Namespace: AWS/ApplicationELB
-                MetricName: HTTPCode_ELB_5XX
-                Dimensions:
-                  - Name: LoadBalancerName
-                    Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
-                  - Name: TargetGroup
-                    Value: !GetAtt TargetGroup.TargetGroupFullName
-              Period: 60 
-              Stat: Sum
-              Unit: Count
-            ReturnData: false
-      DependsOn:
-        - TargetGroup
-        - ElasticLoadBalancer
+  High5XXRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: CreateProdResources
+    Properties:
+      AlarmActions:
+        - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
+      AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Threshold: 3
+      EvaluationPeriods: 2
+      TreatMissingData: notBreaching
+      Metrics:
+        - Id: total5xx
+          Expression: backend5XX + elb5XX
+          Label: "Count of Backend AND ELB 5XX"
+        - Id: backend5XX
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApplicationELB
+              MetricName: HTTPCode_Backend_5XX
+              Dimensions:
+                - Name: LoadBalancerName
+                  Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+                - Name: TargetGroup
+                  Value: !GetAtt TargetGroup.TargetGroupFullName
+            Period: 60
+            Stat: Sum
+            Unit: Count
+          ReturnData: false
+        - Id: elb5XX
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApplicationELB
+              MetricName: HTTPCode_ELB_5XX
+              Dimensions:
+                - Name: LoadBalancerName
+                  Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+                - Name: TargetGroup
+                  Value: !GetAtt TargetGroup.TargetGroupFullName
+            Period: 60 
+            Stat: Sum
+            Unit: Count
+          ReturnData: false
+    DependsOn:
+      - TargetGroup
+      - ElasticLoadBalancer
