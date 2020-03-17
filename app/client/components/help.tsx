@@ -327,10 +327,10 @@ export const Help = (props: RouteComponentProps) => (
       >
         <Button
           text={reportTechnicalIssue.title}
-          fontWeight={"bold"}
+          fontWeight="bold"
           colour={palette.brand.main}
           textColour={palette.neutral[100]}
-          height={"36px"}
+          height="36px"
           right
         />
       </a>
