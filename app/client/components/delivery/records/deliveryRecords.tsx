@@ -18,10 +18,7 @@ import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryProblemType,
   holidaySuspensionDeliveryProblem,
-  ProductTypeKeys,
-  ProductTypes,
   ProductTypeWithDeliveryRecordsProperties,
-  ProductUrlPart,
   WithProductType
 } from "../../../../shared/productTypes";
 import { maxWidth } from "../../../styles/breakpoints";
@@ -185,29 +182,23 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const scrollToTop = () => window.scrollTo(0, 0);
   const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.READ_ONLY);
 
-  const filterData = (productPartName: ProductUrlPart) => {
-    const NumOfRecordsToShow =
-      ProductTypes[productPartName as ProductTypeKeys].delivery?.records
-        ?.numberOfProblemRecordsToShow || props.data.results.length;
+  const productType = props.routeableStepProps.productType;
 
+  const filterData = () => {
     if (pageStatus !== PageStatus.READ_ONLY) {
+      const numOfReportableRecords =
+        productType.delivery.records.numberOfProblemRecordsToShow;
+
+      const today = moment();
+
+      const isNotHolidayProblem =
+        choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
+
       return props.data.results
-        .filter(record => {
-          if (
-            choosenDeliveryProblem === holidaySuspensionDeliveryProblem.label
-          ) {
-            return (
-              record.hasHolidayStop &&
-              !record.problemCaseId &&
-              moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-            );
-          }
-          return (
-            !record.problemCaseId &&
-            moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-          );
-        })
-        .slice(0, NumOfRecordsToShow - 1);
+        .filter(_ => moment(_.deliveryDate).isSameOrBefore(today, "day"))
+        .slice(0, numOfReportableRecords)
+        .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
+        .filter(_ => !_.problemCaseId);
     }
     return props.data.results.filter((element, index) =>
       isRecordInCurrentPage(
@@ -228,9 +219,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     props.data.results
   );
 
-  const productType = props.routeableStepProps.productType;
-
-  const filteredData = filterData(productType.urlPart);
+  const filteredData = filterData();
 
   const hasRecentHolidayStop = checkForRecentHolidayStop(filteredData);
 
