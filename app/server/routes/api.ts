@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Response } from "express";
 import Raven from "raven";
 import {
   isProduct,
@@ -23,6 +23,10 @@ const router = Router();
 router.use(withIdentity(401));
 
 router.get("/me", membersDataApiHandler("user-attributes/me"));
+
+router.get("/test-5xx", (_, res: Response) => {
+  res.status(500).send({ status: 500, message: "Internal service error" });
+});
 
 router.get(
   "/existing-payment-options",

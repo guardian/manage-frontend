@@ -309,7 +309,7 @@ Resources:
 
   High5XXRateAlarm:
     Type: AWS::CloudWatch::Alarm
-    Condition: CreateProdResources
+    # Condition: CreateProdResources
     Properties:
       AlarmActions:
         - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev-mk-test
@@ -346,7 +346,7 @@ Resources:
                   Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
                 - Name: TargetGroup
                   Value: !GetAtt TargetGroup.TargetGroupFullName
-            Period: 60 
+            Period: 60
             Stat: Sum
             Unit: Count
           ReturnData: false
