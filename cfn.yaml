@@ -340,12 +340,10 @@ Resources:
           MetricStat:
             Metric:
               Namespace: AWS/ApplicationELB
-              MetricName: HTTPCode_ELB_5XX
+              MetricName: HTTPCode_ELB_5XX_Count
               Dimensions:
                 - Name: LoadBalancer
                   Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
-                - Name: TargetGroup
-                  Value: !GetAtt TargetGroup.TargetGroupFullName
             Period: 60
             Stat: Sum
             Unit: Count
