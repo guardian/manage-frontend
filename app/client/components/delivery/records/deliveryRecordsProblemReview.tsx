@@ -231,8 +231,10 @@ const DeliveryRecordsProblemReviewFC = (
                     ${textSans.medium()};
                     display: flex;
                     flex-wrap: wrap;
+                    flex-direction: column;
                     justify-content: space-between;
                     ${minWidth.tablet} {
+                      flex-direction: initial;
                       padding: 0 ${space[5]}px;
                     }
                   `}
