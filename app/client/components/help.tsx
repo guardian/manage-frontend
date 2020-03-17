@@ -320,8 +320,8 @@ export const Help = (props: RouteComponentProps) => (
         onClick={() => {
           trackEvent({
             eventCategory: "href",
-            eventAction: "help_section",
-            eventLabel: "report_technical_issue_click"
+            eventAction: "click",
+            eventLabel: "report_technical_issue"
           });
         }}
       >
