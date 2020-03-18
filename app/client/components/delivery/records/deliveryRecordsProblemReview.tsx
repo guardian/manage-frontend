@@ -495,7 +495,7 @@ const DeliveryRecordsProblemReviewFC = (
                     </i>
                     Once you submit your report, your case will be marked as
                     high priority. Our customer service team will try their best
-                    to contact you within 48 hours to resolve the issue.
+                    to contact you as soon as possible to resolve the issue.
                   </span>
                   {newPhoneNumbers && (
                     <UserPhoneNumber

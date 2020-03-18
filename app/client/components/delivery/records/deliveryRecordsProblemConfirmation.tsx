@@ -150,7 +150,7 @@ const DeliveryRecordsProblemConfirmationFC = (
           </i>
           {deliveryProblemCredit?.showCredit
             ? "Thank you for reporting your delivery problem. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service."
-            : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
+            : "Your case is high priority. Our customer service team will try their best to contact you as soon as possible to resolve the issue."}
         </span>
         <section
           css={css`
