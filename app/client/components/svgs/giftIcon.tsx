@@ -38,8 +38,8 @@ export const GiftIcon = (props: GiftIconProps) => (
         fill="#333333"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M13.3172 4.13232L15.0003 5.93995V16.7856L13.3172 18.5933H8.60876V12.3958H15V10.3299H8.60876V4.13232H13.3172ZM6.78267 10.3299L6.78267 4.13232H2.07462L0.391602 5.93995V10.3299H6.78267ZM6.78267 12.3958H0.391602V16.7856L2.04657 18.5933H6.78267L6.78267 12.3958Z"
         fill="#333333"
       />
