@@ -205,8 +205,9 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
               />
             ) : (
               <LinkButton
-                to={"adsf"}
+                to={"/manage/subscriptions"}
                 text={"Manage subscription"}
+                state={props.productDetail}
                 colour={palette.brand[800]}
                 textColour={palette.brand[400]}
                 fontWeight={"bold"}

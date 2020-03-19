@@ -37,6 +37,7 @@ import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryR
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
 import { AccountOverview } from "./accountoverview/accountOverview";
+import { ManageProduct } from "./accountoverview/manageProduct";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -62,6 +63,18 @@ const User = () => (
       <RedirectOnMeResponse path="/" />
 
       <AccountOverview path="/account-overview" />
+
+      {Object.values(ProductTypes)
+        .filter(hasProductPageProperties)
+        .map((productType: ProductTypeWithProductPageProperties) => {
+          return (
+            <ManageProduct
+              key={productType.urlPart}
+              path={"/manage/" + productType.urlPart}
+              productType={productType}
+            />
+          );
+        })}
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)

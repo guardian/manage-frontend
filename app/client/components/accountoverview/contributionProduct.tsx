@@ -25,12 +25,15 @@ export const ContributionProduct = (props: ContributionProductProps) => {
   // const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
   //   props.productDetail
   // );
+
+  // console.log(`productType = ${JSON.stringify(productType, null, 2)}`);
+  // console.log(`props.productDetail = ${JSON.stringify(props.productDetail, null, 2)}`);
+
   // const productName =
   //   productType?.alternateTierValue || props.productDetail.tier;
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
-  // const futurePlan = getFuturePlanIfVisible(props.productDetail.subscription);
 
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
@@ -134,22 +137,19 @@ export const ContributionProduct = (props: ContributionProductProps) => {
             }
           `}
         >
-          {props.productDetail.subscription.start && (
+          {mainPlan.amount && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>Start date</li>
+              <li css={keyCss}>Payment amount</li>
               <li css={valueCss}>
-                {formatDateStr(props.productDetail.subscription.start)}
+                {`${mainPlan.currency}${(mainPlan.amount / 100.0).toFixed(2)}`}
               </li>
             </ul>
           )}
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>Payment amount</li>
+              <li css={keyCss}>Start date</li>
               <li css={valueCss}>
-                {`${
-                  mainPlan.currency
-                }${/*props.productDetail.subscription.currentPlans. / */
-                (3000 / 100.0).toFixed(2)}`}
+                {formatDateStr(props.productDetail.subscription.start)}
               </li>
             </ul>
           )}
@@ -167,8 +167,9 @@ export const ContributionProduct = (props: ContributionProductProps) => {
             `}
           >
             <LinkButton
-              to={"adsf"}
+              to={"/manage/contributions"}
               text={"Manage contribution"}
+              state={props.productDetail}
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
               fontWeight={"bold"}
