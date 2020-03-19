@@ -236,7 +236,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             >
               {`${props.recordCurrency}${Math.abs(
                 props.deliveryRecord.credit.amount
-              )} `}
+              ).toFixed(2)} `}
               {props.deliveryRecord.credit.invoiceDate && (
                 <p
                   css={css`

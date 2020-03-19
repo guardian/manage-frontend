@@ -66,7 +66,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
             margin-bottom: ${showAddress ? -1 : 2}px;
             border-top: 1px solid ${palette.brand.bright};
             border-right: 1px solid ${palette.brand.bright};
-            rotate: ${showAddress ? -45 : 135}deg;
+            transform: rotate(${showAddress ? -45 : 135}deg);
           `}
         />
       </span>

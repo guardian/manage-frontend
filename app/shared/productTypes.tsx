@@ -111,8 +111,8 @@ export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
 ];
 
 interface DeliveryRecordsProperties {
+  productNameForProblemReport: string;
   showDeliveryInstructions?: true;
-  canReportProblem: boolean;
   numberOfProblemRecordsToShow: number;
   contactUserOnExistingProblemReport: boolean;
   availableProblemTypes: DeliveryProblemType[];
@@ -402,8 +402,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     delivery: {
       showAddress: showDeliveryAddressCheck,
       records: {
+        productNameForProblemReport: "Home Delivery",
         showDeliveryInstructions: true,
-        canReportProblem: false,
         numberOfProblemRecordsToShow: 14,
         contactUserOnExistingProblemReport: true,
         availableProblemTypes: [
@@ -459,7 +459,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     delivery: {
       showAddress: showDeliveryAddressCheck,
       records: {
-        canReportProblem: true,
+        productNameForProblemReport: "Guardian Weekly",
         numberOfProblemRecordsToShow: 4,
         contactUserOnExistingProblemReport: false,
         availableProblemTypes: commonDeliveryProblemTypes

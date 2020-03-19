@@ -4,7 +4,7 @@ import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { minWidth } from "../../../styles/breakpoints";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -13,7 +13,7 @@ import {
 } from "./deliveryRecordsApi";
 
 interface UserPhoneNumberProps {
-  existingPhoneNumbers: ContactPhoneNumbers;
+  existingPhoneNumbers?: ContactPhoneNumbers;
   callback: (phoneNumber: ContactPhoneNumbers) => void;
 }
 
@@ -24,14 +24,20 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
   const [newPhoneNumber, setNewPhoneNumber] = useState<
     ContactPhoneNumbers | undefined
   >(props.existingPhoneNumbers);
+
+  function isValidEntry(
+    existingNumberEntry: [string, any]
+  ): existingNumberEntry is [ContactPhoneNumbersType, string] {
+    const [phoneType, phoneNumber] = existingNumberEntry;
+    return phoneType.toLowerCase() !== "id" && phoneNumber;
+  }
+
   const currentPhoneNumbers =
     props.existingPhoneNumbers &&
-    Object.entries(props.existingPhoneNumbers).filter(
-      phoneNumber => phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
-    );
+    Object.entries(props.existingPhoneNumbers).filter(isValidEntry);
 
   const initNumbersEditState = {};
-  Object.keys(props.existingPhoneNumbers).map(phoneType =>
+  Object.keys(props.existingPhoneNumbers || {}).map(phoneType =>
     Object.defineProperty(initNumbersEditState, phoneType, { value: false })
   );
 
@@ -44,10 +50,12 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     evt: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (newPhoneNumber) {
-      setNewPhoneNumber({
+      const newState = {
         ...newPhoneNumber,
         [whichPhoneNumber]: evt.target.value
-      });
+      };
+      setNewPhoneNumber(newState);
+      props.callback(newState);
     }
   };
 
@@ -59,11 +67,13 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
   };
 
   const cancelNumberUpdate = (phoneType: ContactPhoneNumbersType) => () => {
-    if (newPhoneNumber?.[phoneType]) {
-      setNewPhoneNumber({
+    if (newPhoneNumber) {
+      const newState = {
         ...newPhoneNumber,
-        Phone: props.existingPhoneNumbers?.[phoneType]
-      });
+        [phoneType]: null
+      };
+      setNewPhoneNumber(newState);
+      props.callback(newState);
     }
     setPhoneEditState({
       ...isPhoneInEditState,
@@ -104,18 +114,10 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               display: block;
               margin-bottom: ${space[5]}px;
             `}
-            onSubmit={(event: FormEvent<HTMLFormElement>) => {
-              event.preventDefault();
-              if (newPhoneNumber) {
-                props.callback(newPhoneNumber);
-              }
-            }}
           >
-            {currentPhoneNumbers.map((phoneNumber, index) => (
+            {currentPhoneNumbers.map(([phoneType, phoneNumber], index) => (
               <React.Fragment key={`phone-number-${index}`}>
-                {isPhoneInEditState?.[
-                  phoneNumber[0] as ContactPhoneNumbersType
-                ] ? (
+                {isPhoneInEditState?.[phoneType] ? (
                   <div
                     css={css`
                       ${index > 0 && `margin-top: ${space[3]}px;`}
@@ -124,18 +126,14 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     <TextInput
                       key={`phonenumberinput-${index}`}
                       pattern="[0-9]{1,11}"
-                      label={phoneNumber[0]}
+                      label={phoneType}
                       supporting="Enter your phone number"
                       width={30}
                       css={css`
                         max-width: 100%;
                       `}
-                      value={
-                        newPhoneNumber?.[
-                          phoneNumber[0] as ContactPhoneNumbersType
-                        ] || ""
-                      }
-                      onChange={handleInputChange(phoneNumber[0])}
+                      value={newPhoneNumber?.[phoneType] || ""}
+                      onChange={handleInputChange(phoneType)}
                     />
                     <span
                       css={css`
@@ -145,9 +143,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                         color: ${palette.brand[500]};
                         margin-left: ${space[3]}px;
                       `}
-                      onClick={cancelNumberUpdate(
-                        phoneNumber[0] as ContactPhoneNumbersType
-                      )}
+                      onClick={cancelNumberUpdate(phoneType)}
                     >
                       Cancel
                     </span>
@@ -166,14 +162,14 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                         min-width: 15ch;
                       `}
                     >
-                      {phoneNumber[0]}:
+                      {phoneType}:
                     </span>
                     <span
                       css={css`
                         color: ${palette.neutral[46]};
                       `}
                     >
-                      {phoneNumber[1]}
+                      {phoneNumber}
                     </span>
                     <span
                       css={css`
@@ -182,9 +178,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                         color: ${palette.brand[500]};
                         margin-left: ${space[3]}px;
                       `}
-                      onClick={putNumberInEditState(
-                        phoneNumber[0] as ContactPhoneNumbersType
-                      )}
+                      onClick={putNumberInEditState(phoneType)}
                     >
                       Update
                     </span>

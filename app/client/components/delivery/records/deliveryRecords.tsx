@@ -18,10 +18,7 @@ import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryProblemType,
   holidaySuspensionDeliveryProblem,
-  ProductTypeKeys,
-  ProductTypes,
   ProductTypeWithDeliveryRecordsProperties,
-  ProductUrlPart,
   WithProductType
 } from "../../../../shared/productTypes";
 import { maxWidth } from "../../../styles/breakpoints";
@@ -185,29 +182,23 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const scrollToTop = () => window.scrollTo(0, 0);
   const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.READ_ONLY);
 
-  const filterData = (productPartName: ProductUrlPart) => {
-    const NumOfRecordsToShow =
-      ProductTypes[productPartName as ProductTypeKeys].delivery?.records
-        ?.numberOfProblemRecordsToShow || props.data.results.length;
+  const productType = props.routeableStepProps.productType;
 
+  const filterData = () => {
     if (pageStatus !== PageStatus.READ_ONLY) {
+      const numOfReportableRecords =
+        productType.delivery.records.numberOfProblemRecordsToShow;
+
+      const today = moment();
+
+      const isNotHolidayProblem =
+        choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
+
       return props.data.results
-        .filter(record => {
-          if (
-            choosenDeliveryProblem === holidaySuspensionDeliveryProblem.label
-          ) {
-            return (
-              record.hasHolidayStop &&
-              !record.problemCaseId &&
-              moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-            );
-          }
-          return (
-            !record.problemCaseId &&
-            moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-          );
-        })
-        .slice(0, NumOfRecordsToShow - 1);
+        .filter(_ => moment(_.deliveryDate).isSameOrBefore(today, "day"))
+        .slice(0, numOfReportableRecords)
+        .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
+        .filter(_ => !_.problemCaseId);
     }
     return props.data.results.filter((element, index) =>
       isRecordInCurrentPage(
@@ -228,9 +219,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     props.data.results
   );
 
-  const productType = props.routeableStepProps.productType;
-
-  const filteredData = filterData(productType.urlPart);
+  const filteredData = filterData();
 
   const hasRecentHolidayStop = checkForRecentHolidayStop(filteredData);
 
@@ -248,7 +237,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           productType.shortFriendlyName || productType.friendlyName
         ),
         apiProductName:
-          productType.fulfilmentDateCalculator?.productFilenamePart,
+          productType.delivery.records.productNameForProblemReport,
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)
@@ -292,102 +281,98 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {productType.delivery.records.canReportProblem &&
-            props.data.results.find(record => !record.problemCaseId) && (
-              <>
-                <h2
+          {props.data.results.find(record => !record.problemCaseId) && (
+            <>
+              <h2
+                css={css`
+                  border-top: 1px solid ${palette.neutral["86"]};
+                  ${headline.small()};
+                  font-weight: bold;
+                  ${maxWidth.tablet} {
+                    font-size: 1.25rem;
+                    line-height: 1.6;
+                  }
+                `}
+              >
+                Report delivery problems
+              </h2>
+              <div
+                css={css`
+                  margin-bottom: ${pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
+                    ? space[12]
+                    : space[5]}px;
+                  ${textSans.medium()};
+                `}
+              >
+                <p
                   css={css`
-                    border-top: 1px solid ${palette.neutral["86"]};
-                    ${headline.small()};
-                    font-weight: bold;
-                    ${maxWidth.tablet} {
-                      font-size: 1.25rem;
-                      line-height: 1.6;
-                    }
-                  `}
-                >
-                  Report delivery problems
-                </h2>
-                <div
-                  css={css`
-                    margin-bottom: ${pageStatus !==
-                    PageStatus.REPORT_ISSUE_STEP_2
-                      ? space[12]
-                      : space[5]}px;
                     ${textSans.medium()};
                   `}
                 >
-                  <p
+                  Have you been experiencing problems with your delivery? Report
+                  it and we will take care of it for you. Depending on the type
+                  of problem, you will be credited or contacted by our customer
+                  service team.
+                </p>
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  Is your problem urgent?{" "}
+                  <span
                     css={css`
-                      ${textSans.medium()};
+                      cursor: pointer;
+                      color: ${palette.brand[500]};
+                      text-decoration: underline;
                     `}
+                    onClick={() =>
+                      setTopCallCentreNumbersVisibility(
+                        !showTopCallCentreNumbers
+                      )
+                    }
                   >
-                    Have you been experiencing problems with your delivery?
-                    Report it and we will take care of it for you. Depending on
-                    the type of problem, you will be credited or contacted by
-                    our customer service team.
-                  </p>
-                  <p
-                    css={css`
-                      ${textSans.medium()};
-                    `}
+                    Contact us
+                  </span>
+                  .
+                </p>
+                {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+                {pageStatus === PageStatus.READ_ONLY && (
+                  <Button
+                    onClick={() => {
+                      trackEvent({
+                        eventCategory: "delivery-problem",
+                        eventAction: "report_delivery_problem_button_click",
+                        product: {
+                          productType,
+                          productDetail: props.productDetail
+                        },
+                        eventLabel: productType.urlPart
+                      });
+                      setSelectedProblemRecords([]);
+                      setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                    }}
                   >
-                    Is your problem urgent?{" "}
-                    <span
-                      css={css`
-                        cursor: pointer;
-                        color: ${palette.brand[500]};
-                        text-decoration: underline;
-                      `}
-                      onClick={() =>
-                        setTopCallCentreNumbersVisibility(
-                          !showTopCallCentreNumbers
-                        )
-                      }
-                    >
-                      Contact us
-                    </span>
-                    .
-                  </p>
-                  {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-                  {pageStatus === PageStatus.READ_ONLY && (
-                    <Button
-                      onClick={() => {
-                        trackEvent({
-                          eventCategory: "delivery-problem",
-                          eventAction: "report_delivery_problem_button_click",
-                          product: {
-                            productType,
-                            productDetail: props.productDetail
-                          },
-                          eventLabel: productType.urlPart
-                        });
-                        setSelectedProblemRecords([]);
-                        setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
-                      }}
-                    >
-                      Report a problem
-                    </Button>
-                  )}
-                  {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
-                    pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
-                    <DeliveryRecordProblemForm
-                      showNextStepButton={
-                        pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
-                      }
-                      onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
-                      onFormSubmit={step1FormSubmitListener}
-                      inValidationState={step1formValidationState}
-                      updateValidationStatusCallback={step1FormUpdateCallback}
-                      updateRadioSelectionCallback={
-                        step1FormRadioOptionCallback
-                      }
-                      problemTypes={problemTypes}
-                    />
-                  )}
-                </div>
-              </>
-            )}
+                    Report a problem
+                  </Button>
+                )}
+                {(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
+                  pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
+                  <DeliveryRecordProblemForm
+                    showNextStepButton={
+                      pageStatus !== PageStatus.REPORT_ISSUE_STEP_2
+                    }
+                    onResetDeliveryRecordsPage={resetDeliveryRecordsPage}
+                    onFormSubmit={step1FormSubmitListener}
+                    inValidationState={step1formValidationState}
+                    updateValidationStatusCallback={step1FormUpdateCallback}
+                    updateRadioSelectionCallback={step1FormRadioOptionCallback}
+                    problemTypes={problemTypes}
+                  />
+                )}
+              </div>
+            </>
+          )}
           <h2
             css={css`
               border-top: 1px solid ${palette.neutral["86"]};
