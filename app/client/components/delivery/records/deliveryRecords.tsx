@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
+import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
@@ -21,13 +21,14 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   WithProductType
 } from "../../../../shared/productTypes";
-import { maxWidth } from "../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ErrorIcon } from "../../svgs/errorIcon";
+import { InfoIconDark } from "../../svgs/infoIconDark";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
@@ -58,7 +59,8 @@ export enum PageStatus {
   REPORT_ISSUE_STEP_1,
   REPORT_ISSUE_STEP_2,
   CONTINUE_TO_REVIEW,
-  REPORT_ISSUE_CONFIRMATION
+  REPORT_ISSUE_CONFIRMATION,
+  CANNOT_REPORT_PROBLEM
 }
 
 export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
@@ -184,8 +186,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
   const productType = props.routeableStepProps.productType;
 
-  const filterData = () => {
-    if (pageStatus !== PageStatus.READ_ONLY) {
+  const filterData = (overridePageStatusCheck?: boolean) => {
+    if (
+      (pageStatus !== PageStatus.READ_ONLY &&
+        pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM) ||
+      overridePageStatusCheck
+    ) {
       const numOfReportableRecords =
         productType.delivery.records.numberOfProblemRecordsToShow;
 
@@ -337,9 +343,41 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   .
                 </p>
                 {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-                {pageStatus === PageStatus.READ_ONLY && (
+                {pageStatus === PageStatus.CANNOT_REPORT_PROBLEM && (
+                  <span
+                    css={css`
+                      position: relative;
+                      display: block;
+                      margin: ${space[3]}px 0;
+                      padding: ${space[3]}px ${space[3]}px ${space[3]}px
+                        ${space[3] * 2 + 17}px;
+                      background-color: ${palette.neutral[97]};
+                      ${textSans.small()};
+                      ${minWidth.tablet} {
+                        margin: ${space[5]}px 0;
+                      }
+                    `}
+                  >
+                    <i
+                      css={css`
+                        position: absolute;
+                        top: ${space[3]}px;
+                        left: ${space[3]}px;
+                      `}
+                    >
+                      <InfoIconDark fillColor={palette.brand.bright} />
+                    </i>
+                    You don't have any available delivery history to report.
+                    Your deliveries may be too far in the past or have already
+                    been reported.
+                  </span>
+                )}
+                {(pageStatus === PageStatus.READ_ONLY ||
+                  pageStatus === PageStatus.CANNOT_REPORT_PROBLEM) && (
                   <Button
                     onClick={() => {
+                      const filteredDataAtPresent = filterData(true);
+                      const canReportProblem = filteredDataAtPresent.length > 0;
                       trackEvent({
                         eventCategory: "delivery-problem",
                         eventAction: "report_delivery_problem_button_click",
@@ -349,8 +387,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         },
                         eventLabel: productType.urlPart
                       });
-                      setSelectedProblemRecords([]);
-                      setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                      if (canReportProblem) {
+                        setSelectedProblemRecords([]);
+                        setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                      } else {
+                        setPageStatus(PageStatus.CANNOT_REPORT_PROBLEM);
+                      }
                     }}
                   >
                     Report a problem
@@ -407,6 +449,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               : "Deliveries"}
           </h2>
           {filteredData.length === 0 &&
+            pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM &&
             (props.data.results.length === 0 ? (
               <p
                 css={css`
@@ -466,15 +509,17 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               />
             )
           )}
-          {totalPages > 1 && pageStatus === PageStatus.READ_ONLY && (
-            <PaginationNav
-              resultsPerPage={resultsPerPage}
-              totalNumberOfResults={props.data.results.length}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              changeCallBack={scrollToTop}
-            />
-          )}
+          {totalPages > 1 &&
+            (pageStatus === PageStatus.READ_ONLY ||
+              pageStatus === PageStatus.CANNOT_REPORT_PROBLEM) && (
+              <PaginationNav
+                resultsPerPage={resultsPerPage}
+                totalNumberOfResults={props.data.results.length}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                changeCallBack={scrollToTop}
+              />
+            )}
           {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
             <div
               css={css`
