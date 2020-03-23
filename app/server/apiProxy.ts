@@ -36,14 +36,14 @@ export const proxyApiHandler = (
   path: string,
   mainLoggingCode: string,
   forwardQueryArgs?: boolean, // TODO could we eliminate this and always forward query params
-  ...pathParamNamesToReplace: string[]
+  ...urlParamNamesToReplace: string[]
 ) => (req: Request, res: Response) => {
-  const parameterisedPath = pathParamNamesToReplace
+  const parameterisedPath = urlParamNamesToReplace
     .reduce(
-      (evolvingPath: string, pathParamName: string) =>
+      (evolvingPath: string, urlParamName: string) =>
         evolvingPath.replace(
-          ":" + pathParamName,
-          req.params[pathParamName] || ""
+          ":" + urlParamName,
+          req.params[urlParamName] || ""
         ),
       path
     )

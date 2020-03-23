@@ -125,7 +125,7 @@ const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
   return (
     path: string,
     loggingCode: string,
-    ...pathParamNamesToReplace: string[]
+    ...urlParamNamesToReplace: string[]
   ) => async (req: express.Request, res: express.Response) => {
     const isTestUser = req.header(MDA_TEST_USER_HEADER) === "true";
     const { host, apiKey } = await (isTestUser
@@ -150,7 +150,7 @@ const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
         path,
         loggingCode,
         forwardQueryArgs,
-        ...pathParamNamesToReplace
+        ...urlParamNamesToReplace
       )(req, res);
     }
   };
