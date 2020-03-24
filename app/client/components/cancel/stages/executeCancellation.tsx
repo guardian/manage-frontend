@@ -47,6 +47,7 @@ const getCaseUpdateWithCancelOutcomeFunc = (
 ) => async () =>
   await getUpdateCasePromise(
     productDetail.isTestUser,
+    isCancelled(productDetail.subscription) ? "_CANCELLED" : "_ERROR",
     caseId,
     isCancelled(productDetail.subscription)
       ? {

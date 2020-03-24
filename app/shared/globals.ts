@@ -22,3 +22,5 @@ declare global {
     guardian: Globals;
   }
 }
+
+export const LOGGING_CODE_SUFFIX_HEADER = "x-logging-code-suffix";

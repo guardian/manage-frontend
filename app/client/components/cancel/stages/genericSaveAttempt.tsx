@@ -56,7 +56,7 @@ const getPatchUpdateCaseFunc = (
   caseId: string,
   feedback: string
 ) => async () =>
-  await getUpdateCasePromise(isTestUser, caseId, {
+  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query",
     Status: "Open"
