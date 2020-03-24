@@ -24,6 +24,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 // @ts-ignore
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link } from "@reach/router";
+import moment from "moment";
 import { momentiseDateStr } from "../../../../shared/dates";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { navLinks } from "../../nav";
@@ -287,9 +288,13 @@ const FormContainer = (props: FormContainerProps) => {
                   fetch={updateAddressFetcher(
                     {
                       ...evolvingAddressObject,
-                      addressChangeInformation: addressChangeInformation.join(
-                        "\n"
-                      )
+                      addressChangeInformation: [
+                        ...addressChangeInformation,
+                        "",
+                        `(as displayed on confirmation page at ${moment().format(
+                          "H:mm:ss zz [on] Do MMMM YYYY"
+                        )})`
+                      ].join("\n")
                     },
                     Object.keys(props.contactIdToArrayOfProductDetail)[0]
                   )}
