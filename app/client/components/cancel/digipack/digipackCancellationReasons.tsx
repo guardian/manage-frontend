@@ -1,164 +1,132 @@
-import { Link } from "@reach/router";
 import React from "react";
 import palette from "../../../colours";
-import {
-  standardFeedbackIntro,
-  standardSaveBody
-} from "../cancellationConstants";
+import { standardAlternateFeedbackIntro } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
+
+const inOrderToImproveSubs =
+  "In order to improve our subscription and supporter model, we’d love to know more about why you are thinking of cancelling.";
 
 export const digipackCancellationReasons: CancellationReason[] = [
   {
-    reasonId: "mma_article",
-    linkLabel: "As a result of a specific article I read",
-    saveTitle: "As a result of a specific article you read",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
     reasonId: "mma_editorial",
-    linkLabel: "I disagree with some editorial decisions",
-    saveTitle: "You disagree with some of The Guardian’s editorial decisions",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_values",
-    linkLabel: "I don’t feel that The Guardian values my support",
-    saveTitle: "You don’t feel that The Guardian values your support",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_support_another_way",
-    linkLabel: "I support in another way, e.g. with a subscription",
-    saveTitle:
-      "You support The Guardian in another way, e.g. with a subscription",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    linkLabel: "I am unhappy with Guardian journalism",
+    saveBody:
+      "In order to improve our journalism, we’d love to know more about why you are thinking of cancelling.",
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_financial_circumstances",
-    linkLabel: "I can no longer afford it",
-    saveTitle: "You can no longer afford your current contribution",
+    linkLabel: "A change in my financial circumstances",
     saveBody: (
       <>
-        We understand that financial circumstances change, and your current
-        contribution might not suit you right now. To change your contribution
-        amount yourself, please go to{" "}
-        <Link
+        We understand that financial circumstances can change from time to time.
+        <br />
+        Making a smaller contribution to the Guardian can be an inexpensive way
+        of keeping journalism open for everyone to read and enjoy. Once you’ve
+        completed your cancellation below, we hope you’ll consider a small
+        one&nbsp;off or recurring contribution in the future.
+      </>
+    ),
+    skipFeedback: true
+  },
+  {
+    reasonId: "mma_support_another_way",
+    linkLabel:
+      "I am going to support The Guardian in another way, eg. by subscribing",
+    saveBody: (
+      <>
+        Thank you for your ongoing support.
+        <br />
+        <br />
+        Once you’ve completed your cancellation below, you can set up a new
+        product via our online checkouts.
+      </>
+    ),
+    skipFeedback: true
+  },
+  {
+    reasonId: "mma_health",
+    linkLabel: "Ill-health",
+    saveBody: (
+      <>
+        Thank you for your ongoing support.
+        <br />
+        <br />
+        Your subscription has ensured that our quality journalism remains open
+        for everyone to read and enjoy.
+        <br />
+        Please confirm your cancellation below.
+      </>
+    ),
+    skipFeedback: true
+  },
+  {
+    reasonId: "mma_break_from_news",
+    linkLabel: "I am taking a break from news",
+    saveBody: (
+      <>
+        Thank you for your ongoing support.
+        <br />
+        <br />
+        Your subscription has ensured that our quality journalism remains open
+        for everyone to read and enjoy. You can{" "}
+        <a
           css={{
             textDecoration: "underline",
             color: palette.blue.dark,
             ":visited": { color: palette.blue.dark }
           }}
-          to="/contributions"
+          href="/email-prefs"
         >
-          manage your account
-        </Link>
+          update your email preferences here
+        </a>{" "}
+        if you’d like to reduce communication from us.
       </>
     ),
-    skipFeedback: true
+    alternateFeedbackIntro:
+      "Alternatively we’d love to know more about what we could do better to help provide inspiring and trustworthy news."
+  },
+  {
+    reasonId: "mma_values",
+    linkLabel: "I don’t feel that The Guardian values my support",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
+  },
+  {
+    reasonId: "mma_benefits",
+    linkLabel: "None of the subscription benefits are of interest to me",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
+  },
+  {
+    reasonId: "mma_time",
+    linkLabel: "I don't have time to use my subscription",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
+  },
+  {
+    reasonId: "mma_better_offer",
+    linkLabel: "I've found a better offer with another publisher",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
   },
   {
     reasonId: "mma_value_for_money",
-    linkLabel: "I wasn’t getting value for money",
-    saveTitle: "You don’t feel your contribution offers you adequate value",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    linkLabel: "I wasn't getting value for money",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
   },
   {
-    reasonId: "mma_payment_issue",
-    linkLabel: "A payment issue",
-    saveTitle: "You have experienced an issue with your payment",
-    saveBody: (
-      <>
-        <p>
-          You can review your payment method and update your details in the{" "}
-          <Link
-            css={{
-              textDecoration: "underline",
-              color: palette.blue.dark,
-              ":visited": { color: palette.blue.dark }
-            }}
-            to={"/contributions"}
-          >
-            manage your account
-          </Link>{" "}
-          section, without the need to cancel your contribution.
-        </p>
-        <p>{standardSaveBody}</p>
-      </>
-    ),
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_direct_debit",
-    linkLabel: "I want to change to Direct Debit",
-    saveTitle: "You would prefer to contribute using Direct Debit",
-    saveBody:
-      "Unfortunately it's not yet possible to switch to paying by Direct Debit online. We’re working on it. To make this change, please contact our customer services team, who will be happy to help you.",
-    skipFeedback: true
-  },
-  {
-    reasonId: "mma_one_off",
-    linkLabel: "I would rather make a single contribution",
-    saveTitle: "You would prefer to make a single contribution",
-    saveBody: (
-      <>
-        <p>
-          After cancelling your monthly or annual contribution, we will show you
-          how to make a single contribution quickly and easily.
-        </p>
-        <p>{standardSaveBody}</p>
-      </>
-    ),
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_wants_annual_contribution",
-    linkLabel: "I would rather make an annual contribution",
-    saveTitle: "You would prefer to make an annual contribution",
-    saveBody: (
-      <>
-        <p>
-          After cancelling your monthly contribution, we will show you how to
-          set up an annual contribution quickly and easily.
-        </p>
-        <p>{standardSaveBody}</p>
-      </>
-    ),
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_wants_monthly_contribution",
-    linkLabel: "I would rather make a monthly contribution",
-    saveTitle: "You would prefer to make a monthly contribution",
-    saveBody: (
-      <>
-        <p>
-          After cancelling your annual contribution, we will show you how to set
-          up an monthly contribution quickly and easily.
-        </p>
-        <p>{standardSaveBody}</p>
-      </>
-    ),
-    alternateFeedbackIntro: standardFeedbackIntro
-  },
-  {
-    reasonId: "mma_health",
-    linkLabel: "Ill-health",
-    saveTitle:
-      "You would like to cancel your contribution due to health reasons",
-    saveBody:
-      "Your contributions have ensured that our quality journalism remains open for everyone to read and enjoy. Please confirm your cancellation below.",
-    skipFeedback: true
+    reasonId: "mma_issue",
+    linkLabel: "I’ve been experiencing technical or service problems",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
   },
   {
     reasonId: "mma_other",
     linkLabel: "None of the above",
-    saveTitle: "",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    saveTitle: "Other",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
   }
 ];

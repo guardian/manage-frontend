@@ -1,16 +1,7 @@
 import React from "react";
-import { conf } from "../../../../server/config";
 import palette from "../../../colours";
 import { CancellationReason } from "../cancellationReason";
 import { SwitchToContributionPlaceholder } from "./switchToContributionPlaceholder";
-
-// Webpack doesn't like browser globals
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
 
 export const membershipCancellationReasons: CancellationReason[] = [
   {
@@ -75,7 +66,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     reasonId: "mma_support_another_way",
     linkLabel:
       "I am going to support The Guardian in another way, eg. by subscribing",
-    saveTitle: "Thank you for your your ongoing support.",
+    saveTitle: "Thank you for your ongoing support.",
     saveBody: "Please first confirm your membership cancellation below.",
     alternateCallUsPrefix:
       "If you’re not sure what’s best for you or would like help, please contact us",
@@ -100,17 +91,18 @@ export const membershipCancellationReasons: CancellationReason[] = [
       "We understand that sometimes the news cycle can feel a little overwhelming.",
     saveBody: (
       <>
-        You can
+        You can{" "}
         <a
           css={{
             textDecoration: "underline",
             color: palette.blue.dark,
             ":visited": { color: palette.blue.dark }
           }}
-          href={`https://profile.${domain}/consents`}
+          href="/email-prefs"
         >
-          {` click here to manage your communication preferences.`}
+          click here to manage your communication preferences
         </a>
+        .
         <br />
         <br />
         <span>

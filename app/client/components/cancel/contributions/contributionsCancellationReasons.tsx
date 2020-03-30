@@ -2,7 +2,7 @@ import { Link } from "@reach/router";
 import React from "react";
 import palette from "../../../colours";
 import {
-  standardFeedbackIntro,
+  standardAlternateFeedbackIntro,
   standardSaveBody
 } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
@@ -13,21 +13,21 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     linkLabel: "As a result of a specific article I read",
     saveTitle: "As a result of a specific article you read",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I disagree with some editorial decisions",
     saveTitle: "You disagree with some of The Guardian’s editorial decisions",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveTitle: "You don’t feel that The Guardian values your support",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_support_another_way",
@@ -35,7 +35,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     saveTitle:
       "You support The Guardian in another way, e.g. with a subscription",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -65,7 +65,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     linkLabel: "I wasn’t getting value for money",
     saveTitle: "You don’t feel your contribution offers you adequate value",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_payment_issue",
@@ -90,7 +90,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_direct_debit",
@@ -113,7 +113,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_annual_contribution",
@@ -128,7 +128,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -143,7 +143,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_health",
@@ -159,6 +159,6 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     linkLabel: "None of the above",
     saveTitle: "",
     saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   }
 ];

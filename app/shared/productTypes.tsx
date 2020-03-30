@@ -1,5 +1,6 @@
 import { Link } from "@reach/router";
 import React from "react";
+import palette from "../client/colours";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -496,30 +497,31 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
           <>
             You will continue to receive the benefits of your digital
             subscription until <b>{formatDate(subscription.end)}</b>. You will
-            not be charged again.
+            not be charged again. If you think you’re owed a refund, please
+            contact us at{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="mailto:customer.help@theguardian.com"
+            >
+              customer.help@theguardian.com
+            </a>
+            .
           </>
         ) : (
           "Your cancellation is effective immediately."
         ),
       summaryReasonSpecificPara: () => undefined,
       onlyShowSupportSectionIfAlternateText: false,
-      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) => {
-        switch (reasonId) {
-          case "mma_financial_circumstances":
-          case "mma_value_for_money":
-          case "mma_one_off":
-            return "Make a single contribution";
-          case "mma_wants_annual_contribution":
-            return "Make an annual contribution";
-          case "mma_wants_monthly_contribution":
-            return "Make a monthly contribution";
-          default:
-            return undefined;
-        }
-      },
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       alternateSupportButtonUrlSuffix: (
         reasonId: OptionalCancellationReasonId
-      ) => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       swapFeedbackAndContactUs: true
     }
   },
