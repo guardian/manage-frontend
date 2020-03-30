@@ -14,7 +14,7 @@ export interface CaseCreationResponse {
 
 const getCreateCaseFunc = (
   reason: OptionalCancellationReasonId,
-  sfProduct: string,
+  sfCaseProduct: string,
   productDetail: ProductDetail
 ) => async () =>
   await fetch("/api/case", {
@@ -23,7 +23,7 @@ const getCreateCaseFunc = (
     mode: "same-origin",
     body: JSON.stringify({
       reason,
-      product: sfProduct,
+      product: sfCaseProduct,
       subscriptionName: productDetail.subscription.subscriptionId,
       gaData: "" + JSON.stringify(window.gaData)
     }),
@@ -48,7 +48,7 @@ class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 
 export interface CaseCreationWrapperProps {
   children: any;
-  sfProduct: string;
+  sfCaseProduct: string;
   productDetail: ProductDetail;
 }
 
@@ -56,7 +56,11 @@ export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
   <CancellationReasonContext.Consumer>
     {reason => (
       <CaseCreationAsyncLoader
-        fetch={getCreateCaseFunc(reason, props.sfProduct, props.productDetail)}
+        fetch={getCreateCaseFunc(
+          reason,
+          props.sfCaseProduct,
+          props.productDetail
+        )}
         render={renderWithCaseIdContextProvider(props.children)}
         errorRender={renderWithCaseIdContextProvider(props.children)}
         loadingMessage="Capturing your cancellation reason..."

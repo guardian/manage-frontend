@@ -7,7 +7,7 @@ import {
 } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
 
-export const contributionsCancellationReasons: CancellationReason[] = [
+export const digipackCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_article",
     linkLabel: "As a result of a specific article I read",

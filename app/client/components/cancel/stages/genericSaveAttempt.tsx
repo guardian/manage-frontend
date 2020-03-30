@@ -264,7 +264,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
         >
           <CaseCreationWrapper
             productDetail={productDetail}
-            sfProduct={props.productType.cancellation.sfProduct}
+            sfCaseProduct={props.productType.cancellation.sfCaseProduct}
           >
             <WizardStep routeableStepProps={props} hideBackButton>
               <PageContainerSection>
