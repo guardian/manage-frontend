@@ -81,11 +81,8 @@ const getRenderCreateOrAmendSuccess = (nav: NavigateFn) => (
 const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
   <div css={{ textAlign: "left", marginTop: "10px" }}>
     <h2>Sorry, {modificationKeyword} your holiday suspension failed.</h2>
-    <p>
-      To try again please go back and re-enter your dates. Alternatively, please
-      call to speak to one of our customer service specialists.
-    </p>
-    <CallCentreNumbers prefixText="To contact us" />
+    <p>To try again please go back and re-enter your dates.</p>
+    <CallCentreNumbers prefixText="Alternatively, to contact us" />
     <LinkButton to=".." text="Back" left />
   </div>
 );
