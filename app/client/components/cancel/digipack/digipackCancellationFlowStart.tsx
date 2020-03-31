@@ -1,11 +1,11 @@
 import React from "react";
 import { PageContainerSection } from "../../page";
 
-export const contributionsCancellationFlowStart = (
+export const digipackCancellationFlowStart = (
   <PageContainerSection>
     <h3>
-      We’re sorry to hear you’re thinking of cancelling your recurring
-      contribution.
+      We’re sorry to hear you’re thinking of cancelling your digital
+      subscription.
     </h3>
     <p>
       Your support means The Guardian can remain editorially independent, free

@@ -204,7 +204,7 @@ class FeedbackFormAndContactUs extends React.Component<
         </p>
         <span>
           {reason.alternateFeedbackThankYouBody ||
-            "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible."}
+            "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
         </span>
       </div>
     );
@@ -264,13 +264,13 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
         >
           <CaseCreationWrapper
             productDetail={productDetail}
-            sfProduct={props.productType.cancellation.sfProduct}
+            sfCaseProduct={props.productType.cancellation.sfCaseProduct}
           >
             <WizardStep routeableStepProps={props} hideBackButton>
               <PageContainerSection>
                 <h3 id="save_title">
                   {props.productType.cancellation.saveTitlePrefix || ""}
-                  {props.reason.saveTitle}
+                  {props.reason.saveTitle || props.reason.linkLabel}
                 </h3>
                 <GoogleOptimiseAwaitFlagWrapper
                   experimentFlagName={props.reason.experimentTriggerFlag}

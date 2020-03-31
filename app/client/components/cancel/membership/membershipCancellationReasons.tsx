@@ -1,16 +1,7 @@
 import React from "react";
-import { conf } from "../../../../server/config";
 import palette from "../../../colours";
 import { CancellationReason } from "../cancellationReason";
 import { SwitchToContributionPlaceholder } from "./switchToContributionPlaceholder";
-
-// Webpack doesn't like browser globals
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
 
 export const membershipCancellationReasons: CancellationReason[] = [
   {
@@ -39,21 +30,36 @@ export const membershipCancellationReasons: CancellationReason[] = [
         <SwitchToContributionPlaceholder />
       </>
     ),
-    experimentTriggerFlag: "showSwitchToContributionPlaceholder",
-    alternateFeedbackThankYouBody:
-      "One of our customer service specialists will be in touch shortly."
+    experimentTriggerFlag: "showSwitchToContributionPlaceholder"
+    // alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_payment_issue",
     linkLabel: "I didn't expect The Guardian to take another payment",
     saveTitle: "We are sorry that you have been charged again",
-    saveBody:
-      "We’d like to know more details to help resolve the issue. One of our customer service specialists will be more than happy to assist.",
-    alternateFeedbackIntro:
-      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
-    alternateFeedbackThankYouTitle: "Thank you.",
-    alternateFeedbackThankYouBody:
-      "One of our customer service specialists will be in touch shortly."
+    saveBody: (
+      <>
+        Please leave feedback in the box below. Alternatively you can contact us
+        directly to discuss resolving the issue, by emailing{" "}
+        <a
+          css={{
+            textDecoration: "underline",
+            color: palette.blue.dark,
+            ":visited": { color: palette.blue.dark }
+          }}
+          href="mailto:customer.help@theguardian.com"
+        >
+          customer.help@theguardian.com
+        </a>
+        .
+      </>
+    ),
+    // TODO restore commented after Coronavirus
+    // saveBody: "We’d like to know more details to help resolve the issue. One of our customer service specialists will be more than happy to assist.",
+    // alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
+    alternateFeedbackIntro: ""
+    // alternateFeedbackThankYouTitle: "Thank you.",
+    // alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_editorial",
@@ -61,7 +67,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "In order to improve our journalism, we’d love to know more about why you are thinking of cancelling",
     saveBody:
-      "If there’s anything we can do differently please take a moment to call our customer services team we would be happy to hear from you."
+      "If there’s anything we can do differently please take a moment to contact our customer services team we would be happy to hear from you."
   },
   {
     reasonId: "mma_benefits",
@@ -75,14 +81,14 @@ export const membershipCancellationReasons: CancellationReason[] = [
     reasonId: "mma_support_another_way",
     linkLabel:
       "I am going to support The Guardian in another way, eg. by subscribing",
-    saveTitle: "Thank you for your your ongoing support.",
-    saveBody: "Please first confirm your membership cancellation below.",
+    saveTitle: "Thank you for your ongoing support.",
+    saveBody: "Please confirm your membership cancellation below.",
     alternateCallUsPrefix:
-      "If you’re not sure what’s best for you or would like help, please contact us",
+      "If you’re not sure what’s best for you or would like help, to contact us",
     alternateFeedbackIntro:
-      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
-    alternateFeedbackThankYouBody:
-      "One of our customer service specialists will be in touch shortly."
+      "Alternatively if you'd like to give us feedback, please enter in the box the below."
+    // "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
+    // alternateFeedbackThankYouBody:  "One of our customer service specialists will be in touch shortly."
   },
   {
     reasonId: "mma_health",
@@ -100,17 +106,18 @@ export const membershipCancellationReasons: CancellationReason[] = [
       "We understand that sometimes the news cycle can feel a little overwhelming.",
     saveBody: (
       <>
-        You can
+        You can{" "}
         <a
           css={{
             textDecoration: "underline",
             color: palette.blue.dark,
             ":visited": { color: palette.blue.dark }
           }}
-          href={`https://profile.${domain}/consents`}
+          href="/email-prefs"
         >
-          {` click here to manage your communication preferences.`}
+          click here to manage your communication preferences
         </a>
+        .
         <br />
         <br />
         <span>
@@ -118,9 +125,8 @@ export const membershipCancellationReasons: CancellationReason[] = [
           customer services team would be happy to set this up for you.
         </span>
       </>
-    ),
-    alternateFeedbackIntro:
-      "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
+    )
+    // alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
   },
   {
     reasonId: "mma_values",

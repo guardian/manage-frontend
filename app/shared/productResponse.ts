@@ -110,6 +110,7 @@ export interface Subscription {
   renewalDate: string;
   cancelledAt: boolean;
   nextPaymentDate: string | null;
+  lastPaymentDate: string | null;
   nextPaymentPrice: number | null;
   paymentMethod?: string;
   stripePublicKeyForCardAddition?: string;

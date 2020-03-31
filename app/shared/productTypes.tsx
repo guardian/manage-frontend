@@ -1,11 +1,14 @@
 import { Link } from "@reach/router";
 import React from "react";
+import palette from "../client/colours";
 import {
   CancellationReason,
   OptionalCancellationReasonId
 } from "../client/components/cancel/cancellationReason";
 import { contributionsCancellationFlowStart } from "../client/components/cancel/contributions/contributionsCancellationFlowStart";
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
+import { digipackCancellationFlowStart } from "../client/components/cancel/digipack/digipackCancellationFlowStart";
+import { digipackCancellationReasons } from "../client/components/cancel/digipack/digipackCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
 import { NavItem, navLinks } from "../client/components/nav";
@@ -40,7 +43,10 @@ export type ProductUrlPart =
   | "digital"
   | "guardianweekly"
   | "subscriptions";
-export type SfProduct = "Membership" | "Contribution";
+export type SfCaseProduct =
+  | "Membership"
+  | "Recurring - Contributions"
+  | "Digital Pack Subscriptions";
 export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
@@ -54,7 +60,7 @@ export type AllProductsProductTypeFilterString =
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
-  sfProduct: SfProduct;
+  sfCaseProduct: SfCaseProduct;
   linkOnProductPage?: true;
   startPageBody: JSX.Element;
   saveTitlePrefix?: string;
@@ -302,7 +308,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     includeGuardianInTitles: true,
     cancellation: {
       reasons: membershipCancellationReasons,
-      sfProduct: "Membership",
+      sfCaseProduct: "Membership",
       startPageBody: membershipCancellationFlowStart,
       summaryMainPara: (subscription: Subscription) =>
         subscription.end ? (
@@ -338,7 +344,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     cancellation: {
       linkOnProductPage: true,
       reasons: contributionsCancellationReasons,
-      sfProduct: "Contribution",
+      sfCaseProduct: "Recurring - Contributions",
       startPageBody: contributionsCancellationFlowStart,
       saveTitlePrefix: "Reason: ",
       summaryMainPara: () => "Thank you for your valuable support.",
@@ -479,7 +485,45 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
     productPage: "subscriptions",
-    alternateTierValue: "Digital Subscription"
+    alternateTierValue: "Digital Subscription",
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: digipackCancellationReasons,
+      sfCaseProduct: "Digital Pack Subscriptions",
+      startPageBody: digipackCancellationFlowStart,
+      saveTitlePrefix: "Reason: ",
+      summaryMainPara: (subscription: Subscription) =>
+        subscription.end ? (
+          <>
+            You will continue to receive the benefits of your digital
+            subscription until <b>{formatDate(subscription.end)}</b>. You will
+            not be charged again. If you think you’re owed a refund, please
+            contact us at{" "}
+            <a
+              css={{
+                textDecoration: "underline",
+                color: palette.blue.dark,
+                ":visited": { color: palette.blue.dark }
+              }}
+              href="mailto:customer.help@theguardian.com"
+            >
+              customer.help@theguardian.com
+            </a>
+            .
+          </>
+        ) : (
+          "Your cancellation is effective immediately."
+        ),
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      swapFeedbackAndContactUs: true
+    }
   },
   contentSubscriptions: {
     friendlyName: "subscription",

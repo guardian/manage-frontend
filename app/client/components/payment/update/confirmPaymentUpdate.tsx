@@ -139,10 +139,8 @@ class ExecutePaymentUpdate extends React.Component<
         <p>
           To try again please go back and re-enter your new{" "}
           {this.props.newPaymentMethodDetail.friendlyName} details.
-          Alternatively, please call to speak to one of our customer service
-          specialists.
         </p>
-        <CallCentreNumbers prefixText="To contact us" />
+        <CallCentreNumbers prefixText="Alternatively, to contact us" />
       </div>
     );
   };
