@@ -128,6 +128,7 @@ export interface DeliveryProperties {
   showAddress?: (
     subscription: Subscription
   ) => subscription is SubscriptionWithDeliveryAddress;
+  enableDeliveryInstructionsUpdate?: boolean;
   records?: DeliveryRecordsProperties;
 }
 
@@ -391,7 +392,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     delivery: {
-      showAddress: showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true
     },
     productPage: "subscriptions"
   },
@@ -407,6 +409,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true,
       records: {
         productNameForProblemReport: "Home Delivery",
         showDeliveryInstructions: true,
@@ -443,7 +446,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       }
     },
     delivery: {
-      showAddress: showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true
     },
     productPage: "subscriptions"
   },
@@ -464,6 +468,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: false,
       records: {
         productNameForProblemReport: "Guardian Weekly",
         numberOfProblemRecordsToShow: 4,

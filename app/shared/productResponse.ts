@@ -98,6 +98,7 @@ export interface DeliveryAddress {
   region?: string;
   postcode: string;
   country: string;
+  instructions?: string;
   addressChangeInformation?: string;
 }
 

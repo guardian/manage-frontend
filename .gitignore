@@ -10,7 +10,7 @@ coverage/
 *.swo
 
 *.code-workspace
- 
+/app/.vscode/ 
 
 logs/
 /app/node_modules/

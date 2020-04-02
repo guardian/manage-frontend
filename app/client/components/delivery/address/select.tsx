@@ -47,12 +47,14 @@ export const Select = (props: SelectProps) => (
     <select
       name="country"
       id="delivery-address-country"
+      defaultValue={props.value}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>): void =>
         props.changeSetState && props.changeSetState(`${e.target.value}`)
       }
       css={css`
           display: block;
-          width: ${props.width}ch;
+          width: 100%;
+          max-width: ${props.width}ch;
           ${textSans.medium()}
           color: ${palette.neutral["7"]};
           box-sizing: border-box;

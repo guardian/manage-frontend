@@ -1,6 +1,14 @@
 import { css } from "@emotion/core";
+import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
+import { space } from "@guardian/src-foundations";
 import { capitalize } from "lodash";
-import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState
+} from "react";
 import {
   DeliveryAddress,
   isProduct,
@@ -11,32 +19,39 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  ProductFriendlyName,
   ProductTypes
 } from "../../../../shared/productTypes";
-import AsyncLoader from "../../asyncLoader";
 import { COUNTRIES } from "../../identity/models";
-import { PageContainer } from "../../page";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
 import { Button } from "@guardian/src-button";
 import { palette } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 // @ts-ignore
 import { SvgArrowRightStraight } from "@guardian/src-svgs";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import moment from "moment";
-import { momentiseDateStr } from "../../../../shared/dates";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
+import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
+import {
+  ProductDescriptionListKeyValue,
+  ProductDescriptionListTable
+} from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import { updateAddressFetcher } from "./deliveryAddressApi";
-import { renderConfirmation } from "./deliveryAddressEditConfirmation";
 import {
   AddressChangedInformationContext,
-  NewDeliveryAddressContext
+  ContactIdContext,
+  NewDeliveryAddressContext,
+  ProductName
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
+import { ProgressIndicator } from "./progressIndicator";
 import { Select } from "./select";
 
 export interface ContactIdToArrayOfProductDetail {
@@ -91,18 +106,26 @@ export const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
-  allProductDetail: MembersDataApiItem[]
-) => (
-  <FormContainer
-    contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
-      allProductDetail
-        .filter(isProduct)
-        .filter(product => product.subscription.readerType !== "Gift")
-    )}
-    routeableStepProps={routeableStepProps}
-  />
-);
+const renderDeliveryAddressForm = (
+  routeableStepProps: RouteableStepProps,
+  productName: ProductFriendlyName,
+  enableDeilveryInstructions: boolean,
+  existingDeliveryAddress?: DeliveryAddress
+) => (allProductDetails: MembersDataApiItem[]) => {
+  return (
+    <FormContainer
+      contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
+        allProductDetails
+          .filter(isProduct)
+          .filter(product => product.subscription.readerType !== "Gift")
+      )}
+      routeableStepProps={routeableStepProps}
+      productName={productName}
+      existingDeliveryAddress={existingDeliveryAddress}
+      enableDeilveryInstructions={enableDeilveryInstructions}
+    />
+  );
+};
 const clearState = (
   setFormStatus: Dispatch<SetStateAction<string>>,
   setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
@@ -111,7 +134,9 @@ const clearState = (
   setTown: Dispatch<SetStateAction<string>>,
   setRegion: Dispatch<SetStateAction<string>>,
   setPostcode: Dispatch<SetStateAction<string>>,
-  setCountry: Dispatch<SetStateAction<string>>
+  setCountry: Dispatch<SetStateAction<string>>,
+  setInstructions: Dispatch<SetStateAction<string>>,
+  setAcknowledgementState: Dispatch<SetStateAction<boolean>>
 ) => () => {
   setFormStatus(formStates.INIT);
   setFormErrors({ isValid: false });
@@ -121,21 +146,53 @@ const clearState = (
   setRegion("");
   setPostcode("");
   setCountry("");
+  setInstructions("");
+  setAcknowledgementState(false);
 };
 
 interface FormContainerProps {
   contactIdToArrayOfProductDetail: ContactIdToArrayOfProductDetail;
   routeableStepProps: RouteableStepProps;
+  productName: ProductFriendlyName;
+  existingDeliveryAddress?: DeliveryAddress;
+  enableDeilveryInstructions: boolean;
 }
 const FormContainer = (props: FormContainerProps) => {
   const [formStatus, setFormStatus] = useState(formStates.INIT);
   const [formErrors, setFormErrors] = useState({ isValid: false });
-  const [addressLine1, setAddressLine1] = useState("");
-  const [addressLine2, setAddressLine2] = useState("");
-  const [town, setTown] = useState("");
-  const [region, setRegion] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [country, setCountry] = useState("");
+  const [addressLine1, setAddressLine1] = useState(
+    props.existingDeliveryAddress?.addressLine1 || ""
+  );
+  const [addressLine2, setAddressLine2] = useState(
+    props.existingDeliveryAddress?.addressLine2 || ""
+  );
+  const [town, setTown] = useState(props.existingDeliveryAddress?.town || "");
+  const [region, setRegion] = useState(
+    props.existingDeliveryAddress?.region || ""
+  );
+  const [postcode, setPostcode] = useState(
+    props.existingDeliveryAddress?.postcode || ""
+  );
+  const [country, setCountry] = useState(
+    props.existingDeliveryAddress?.country || ""
+  );
+  const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
+    false
+  );
+  const [instructions, setInstructions] = useState(
+    props.existingDeliveryAddress?.instructions || ""
+  );
+
+  const subHeadingCss = `
+    border-top: 1px solid ${palette.neutral["86"]};
+    ${headline.small()};
+    font-weight: bold;
+    margin-top: 50px;
+    ${maxWidth.tablet} {
+      font-size: 1.25rem;
+      line-height: 1.6;
+    };
+  `;
 
   const subscriptionsNames = Object.values(
     props.contactIdToArrayOfProductDetail
@@ -165,7 +222,11 @@ const FormContainer = (props: FormContainerProps) => {
     setPostcode,
     country,
     setCountry,
-    subscriptionsNames
+    instructions,
+    setInstructions,
+    subscriptionsNames,
+    acknowledgementChecked,
+    setAcknowledgementState
   };
   const evolvingAddressObject = {
     addressLine1,
@@ -173,10 +234,11 @@ const FormContainer = (props: FormContainerProps) => {
     town,
     region,
     postcode,
-    country
+    country,
+    instructions
   };
 
-  const addressChangeInformation = Object.values(
+  const addressChangeAffectedInfo: ProductDescriptionListKeyValue[] = Object.values(
     props.contactIdToArrayOfProductDetail
   )
     .flatMap<ProductDetail>(flattenEquivalent)
@@ -188,181 +250,166 @@ const FormContainer = (props: FormContainerProps) => {
     }))
     .filter(_ => _.productType && _.productType.delivery?.showAddress)
     .map(({ productDetail, productType }) => {
-      const friendlyProductName = capitalize(productType?.friendlyName);
+      const friendlyProductName = capitalize(
+        productType?.shortFriendlyName || productType?.friendlyName
+      )
+        .replace("subscription", "")
+        .trim();
       const effectiveDatePart = productDetail.subscription
         .deliveryAddressChangeEffectiveDate
-        ? ` as of front cover dated ${momentiseDateStr(
+        ? moment(
             productDetail.subscription.deliveryAddressChangeEffectiveDate
-          ).format("dddd Do MMMM YYYY")}`
-        : "";
-      return `${friendlyProductName} (${productDetail.subscription.subscriptionId}) ${effectiveDatePart}`;
-    });
+          ).format("D MMM YYYY")
+        : "-";
+      return [
+        {
+          title: friendlyProductName,
+          value: productDetail.subscription.subscriptionId
+        },
+        { title: "Front cover date", value: `${effectiveDatePart}` }
+      ];
+    })
+    .flat();
 
   return (
-    <NewDeliveryAddressContext.Provider
-      value={{
-        newDeliveryAddress: evolvingAddressObject,
-        addressStateReset: clearState(
-          setFormStatus,
-          setFormErrors,
-          setAddressLine1,
-          setAddressLine2,
-          setTown,
-          setRegion,
-          setPostcode,
-          setCountry
-        )
-      }}
-    >
-      <AddressChangedInformationContext.Provider
-        value={addressChangeInformation}
+    <ProductName.Provider value={props.productName}>
+      <NewDeliveryAddressContext.Provider
+        value={{
+          newDeliveryAddress: evolvingAddressObject,
+          addressStateReset: clearState(
+            setFormStatus,
+            setFormErrors,
+            setAddressLine1,
+            setAddressLine2,
+            setTown,
+            setRegion,
+            setPostcode,
+            setCountry,
+            setInstructions,
+            setAcknowledgementState
+          )
+        }}
       >
-        <WizardStep
-          routeableStepProps={props.routeableStepProps}
-          hideBackButton
+        <AddressChangedInformationContext.Provider
+          value={addressChangeAffectedInfo}
         >
-          <div
-            css={css`
-              padding-left: 1.25rem;
-              padding-right: 1.25rem;
-            `}
+          <ContactIdContext.Provider
+            value={Object.keys(props.contactIdToArrayOfProductDetail)[0]}
           >
-            <PageContainer>
-              <h1>Manage delivery address</h1>
-              {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                0 && (
-                <div>
-                  <p>
-                    No addresses available for update. If this doesn't seem
-                    right please contact us
-                  </p>
-                  <CallCentreNumbers />
-                </div>
-              )}
-              {Object.keys(props.contactIdToArrayOfProductDetail).length >
-                1 && (
-                <div>
-                  <p>You will need to contact us to update your addresses</p>
-                  <CallCentreNumbers />
-                </div>
-              )}
-              {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                1 && (
-                <div>
-                  {Object.values(props.contactIdToArrayOfProductDetail).flatMap(
-                    flattenEquivalent
-                  ).length > 1 && (
-                    <p
-                      css={css`
-                        border-top: 1px solid ${palette.neutral["86"]};
-                        padding: 14px 0;
-                        ${textSans.medium()};
-                      `}
-                    >
-                      Please note that changing your address here will update
-                      the delivery address for all of your subscriptions.
-                    </p>
-                  )}
-                  {(formStatus === formStates.INIT ||
-                    formStatus === formStates.PENDING ||
-                    formStatus === formStates.VALIDATION_ERROR) && (
-                    <Form
-                      {...defaultFormProps}
-                      warning={
-                        <>
-                          <SubscriptionsAffectedList
-                            title={
-                              "This address change will affect the following subscriptions:"
-                            }
-                            addressChangeInformation={addressChangeInformation}
-                          />
-                        </>
+            <WizardStep
+              routeableStepProps={props.routeableStepProps}
+              hideBackButton
+              fullWidth
+            >
+              <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
+                <h1
+                  css={css`
+                    ::first-letter {
+                      text-transform: capitalize;
+                    }
+                  `}
+                >
+                  <span
+                    css={css`
+                      display: none;
+                      ${minWidth.tablet} {
+                        display: inline;
                       }
-                    />
-                  )}
-                </div>
-              )}
-              {formStatus === formStates.VALIDATION_SUCCESS && (
-                <AsyncLoader
-                  render={renderConfirmation(props.routeableStepProps.navigate)}
-                  fetch={updateAddressFetcher(
-                    {
-                      ...evolvingAddressObject,
-                      addressChangeInformation: [
-                        ...addressChangeInformation,
-                        "",
-                        `(as displayed on confirmation page at ${moment().format(
-                          "H:mm:ss zz [on] Do MMMM YYYY"
-                        )})`
-                      ].join("\n")
-                    },
-                    Object.keys(props.contactIdToArrayOfProductDetail)[0]
-                  )}
-                  readerOnOK={(resp: Response) => resp.text()}
-                  loadingMessage={"Updating delivery address..."}
+                    `}
+                  >
+                    Update{" "}
+                  </span>
+                  delivery details
+                </h1>
+              </PageHeaderContainer>
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.subscriptions}
+              >
+                <ProgressIndicator
+                  steps={[
+                    { title: "Update", isCurrentStep: true },
+                    { title: "Review" },
+                    { title: "Confirmation" }
+                  ]}
+                  additionalCSS={css`
+                    margin-top: ${space[5]}px;
+                  `}
                 />
-              )}
-            </PageContainer>
-          </div>
-        </WizardStep>
-      </AddressChangedInformationContext.Provider>
-    </NewDeliveryAddressContext.Provider>
-  );
-};
-
-export interface SubscriptionsAffectedListProps {
-  addressChangeInformation: string[];
-  title?: string;
-}
-export const SubscriptionsAffectedList = (
-  props: SubscriptionsAffectedListProps
-) => {
-  return (
-    <>
-      {props.title && (
-        <p
-          css={css`
-            ${textSans.medium()};
-            margin-bottom: 12px;
-          `}
-        >
-          <i
-            css={css`
-              display: inline-block;
-              vertical-align: sub;
-              width: 17px;
-              height: 17px;
-              margin-right: 5px;
-            `}
-          >
-            <InfoIconDark />
-          </i>
-          {props.title}
-        </p>
-      )}
-      <ul
-        css={css`
-          margin: 0;
-          padding: 0;
-          list-style: none;
-          display: block;
-          ${textSans.medium()};
-          font-weight: bold;
-          ${props.title ? "margin-left: 22px;" : ""}
-        `}
-      >
-        {props.addressChangeInformation.map((row, index) => (
-          <li
-            key={`info${index}`}
-            css={css`
-              display: block;
-            `}
-          >
-            {row}
-          </li>
-        ))}
-      </ul>
-    </>
+                <h2
+                  css={css`
+                    ${subHeadingCss}
+                  `}
+                >
+                  Update address details
+                </h2>
+                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
+                  0 && (
+                  <div>
+                    <p>
+                      No addresses available for update. If this doesn't seem
+                      right please contact us
+                    </p>
+                    <CallCentreNumbers />
+                  </div>
+                )}
+                {Object.keys(props.contactIdToArrayOfProductDetail).length >
+                  1 && (
+                  <div>
+                    <p>You will need to contact us to update your addresses</p>
+                    <CallCentreNumbers />
+                  </div>
+                )}
+                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
+                  1 && (
+                  <div>
+                    {Object.values(
+                      props.contactIdToArrayOfProductDetail
+                    ).flatMap(flattenEquivalent).length > 1 && (
+                      <p
+                        css={css`
+                          ${textSans.medium()};
+                          background-color: ${palette.neutral[97]};
+                          padding: ${space[5]}px ${space[5]}px ${space[5]}px
+                            49px;
+                          margin-bottom: 12px;
+                          position: relative;
+                        `}
+                      >
+                        <i
+                          css={css`
+                            width: 17px;
+                            height: 17px;
+                            position: absolute;
+                            top: ${space[5]}px;
+                            left: ${space[5]}px;
+                          `}
+                        >
+                          <InfoIconDark fillColor={palette.brand[500]} />
+                        </i>
+                        Please note that changing your address here will update
+                        the delivery address for all of your subscriptions.
+                      </p>
+                    )}
+                    {(formStatus === formStates.INIT ||
+                      formStatus === formStates.PENDING ||
+                      formStatus === formStates.VALIDATION_ERROR) && (
+                      <Form
+                        {...defaultFormProps}
+                        routeableStepProps={props.routeableStepProps}
+                        warning={addressChangeAffectedInfo}
+                        enableDeilveryInstructions={
+                          props.enableDeilveryInstructions
+                        }
+                      />
+                    )}
+                  </div>
+                )}
+              </PageNavAndContentContainer>
+            </WizardStep>
+          </ContactIdContext.Provider>
+        </AddressChangedInformationContext.Provider>
+      </NewDeliveryAddressContext.Provider>
+    </ProductName.Provider>
   );
 };
 
@@ -383,12 +430,23 @@ interface FormProps {
   setPostcode: Dispatch<SetStateAction<string>>;
   country: string;
   setCountry: Dispatch<SetStateAction<string>>;
-  warning?: ReactNode;
+  instructions: string;
+  setInstructions: Dispatch<SetStateAction<string>>;
+  acknowledgementChecked: boolean;
+  setAcknowledgementState: Dispatch<SetStateAction<boolean>>;
+  warning?: ProductDescriptionListKeyValue[];
   subscriptionsNames: string[];
+  routeableStepProps: RouteableStepProps;
+  enableDeilveryInstructions: boolean;
 }
 
 const Form = (props: FormProps) => {
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const [
+    showTopCallCentreNumbers,
+    setTopCallCentreNumbersVisibility
+  ] = useState<boolean>(false);
+
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     props.setFormStatus(formStates.PENDING);
@@ -411,133 +469,211 @@ const Form = (props: FormProps) => {
       country: isFormValidResponse.country
     } as FormValidationResponse);
 
-    props.setFormStatus(
-      isFormValidResponse.isValid
-        ? formStates.VALIDATION_SUCCESS
-        : formStates.VALIDATION_ERROR
-    );
+    if (isFormValidResponse.isValid && props.acknowledgementChecked) {
+      // formStates.VALIDATION_SUCCESS`);
+      (props.routeableStepProps.navigate || navigate)("review");
+    } else {
+      props.setFormStatus(formStates.VALIDATION_ERROR);
+    }
   };
 
   return (
-    <form action="#" onSubmit={handleFormSubmit}>
-      {props.formStatus === formStates.POST_ERROR && (
-        <span>Uh oh, something went wrong</span>
-      )}
-      {props.formStatus === formStates.SUCCESS && (
-        <span>Form submitted successfully</span>
-      )}
-      <fieldset
-        css={{
-          border: `1px solid ${palette.neutral["86"]}`,
-          padding: "48px 14px 14px",
-          position: "relative",
-          label: {
-            marginTop: "10px"
-          }
-        }}
-      >
-        <legend
-          css={css`
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 0 14px;
-            ${textSans.medium()};
-            font-weight: bold;
-            line-height: 48px;
-            background-color: ${palette.neutral["97"]};
-            border-bottom: 1px solid ${palette.neutral["86"]};
-          `}
-        >
-          Delivery address{" "}
-        </legend>
-        <Input
-          label={"Address line 1"}
-          width={30}
-          value={props.addressLine1}
-          changeSetState={props.setAddressLine1}
-          inErrorState={
-            props.formStatus === formStates.VALIDATION_ERROR &&
-            !props.formErrors.addressLine1?.isValid
-          }
-          errorMessage={props.formErrors.addressLine1?.message}
-        />
-        <Input
-          label="Address line 2"
-          width={30}
-          value={props.addressLine2}
-          changeSetState={props.setAddressLine2}
-          optional={true}
-        />
-        <Input
-          label="Town or City"
-          width={30}
-          value={props.town}
-          changeSetState={props.setTown}
-          inErrorState={
-            props.formStatus === formStates.VALIDATION_ERROR &&
-            !props.formErrors.town?.isValid
-          }
-          errorMessage={props.formErrors.town?.message}
-        />
-        <Input
-          label="County or State"
-          width={30}
-          value={props.region}
-          optional={true}
-          changeSetState={props.setRegion}
-        />
-        <Input
-          label="Postcode/Zipcode"
-          width={11}
-          value={props.postcode}
-          changeSetState={props.setPostcode}
-          inErrorState={
-            props.formStatus === formStates.VALIDATION_ERROR &&
-            !props.formErrors.postcode?.isValid
-          }
-          errorMessage={props.formErrors.postcode?.message}
-        />
-        <Select
-          label={"Country"}
-          options={COUNTRIES}
-          width={30}
-          additionalCSS={css`
-            margin-top: 14px;
-          `}
-          value={props.country}
-          changeSetState={props.setCountry}
-          inErrorState={
-            props.formStatus === formStates.VALIDATION_ERROR &&
-            !props.formErrors.country?.isValid
-          }
-          errorMessage={props.formErrors.country?.message}
-        />
-        {props.warning && (
-          <div
-            css={css`
-              margin-top: 24px;
-            `}
-          >
-            {props.warning}
-          </div>
+    <>
+      <form action="#" onSubmit={handleFormSubmit}>
+        {props.formStatus === formStates.POST_ERROR && (
+          <span>Uh oh, something went wrong</span>
         )}
-        <div
+        {props.formStatus === formStates.SUCCESS && (
+          <span>Form submitted successfully</span>
+        )}
+        <fieldset
           css={{
-            marginTop: "14px",
-            "*": {
-              display: "inline-block"
+            border: `1px solid ${palette.neutral["86"]}`,
+            padding: "48px 14px 14px",
+            position: "relative",
+            marginBottom: `${space[5]}px`,
+            label: {
+              marginTop: "10px"
             }
           }}
         >
-          <Button
-            type="submit"
-            iconSide="right"
-            icon={<SvgArrowRightStraight />}
+          <legend
+            css={css`
+              width: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              padding: 0 14px;
+              ${textSans.medium()};
+              font-weight: bold;
+              line-height: 48px;
+              background-color: ${palette.neutral["97"]};
+              border-bottom: 1px solid ${palette.neutral["86"]};
+            `}
           >
-            Submit
-          </Button>
+            Delivery address and instructions
+          </legend>
+          <Input
+            label={"Address line 1"}
+            width={30}
+            value={props.addressLine1}
+            changeSetState={props.setAddressLine1}
+            inErrorState={
+              props.formStatus === formStates.VALIDATION_ERROR &&
+              !props.formErrors.addressLine1?.isValid
+            }
+            errorMessage={props.formErrors.addressLine1?.message}
+          />
+          <Input
+            label="Address line 2"
+            width={30}
+            value={props.addressLine2}
+            changeSetState={props.setAddressLine2}
+            optional={true}
+          />
+          <Input
+            label="Town or City"
+            width={30}
+            value={props.town}
+            changeSetState={props.setTown}
+            inErrorState={
+              props.formStatus === formStates.VALIDATION_ERROR &&
+              !props.formErrors.town?.isValid
+            }
+            errorMessage={props.formErrors.town?.message}
+          />
+          <Input
+            label="County or State"
+            width={30}
+            value={props.region}
+            optional={true}
+            changeSetState={props.setRegion}
+          />
+          <Input
+            label="Postcode/Zipcode"
+            width={11}
+            value={props.postcode}
+            changeSetState={props.setPostcode}
+            inErrorState={
+              props.formStatus === formStates.VALIDATION_ERROR &&
+              !props.formErrors.postcode?.isValid
+            }
+            errorMessage={props.formErrors.postcode?.message}
+          />
+          <Select
+            label={"Country"}
+            options={COUNTRIES}
+            width={30}
+            additionalCSS={css`
+              margin-top: 14px;
+            `}
+            value={props.country}
+            changeSetState={props.setCountry}
+            inErrorState={
+              props.formStatus === formStates.VALIDATION_ERROR &&
+              !props.formErrors.country?.isValid
+            }
+            errorMessage={props.formErrors.country?.message}
+          />
+          {props.enableDeilveryInstructions && (
+            <label
+              css={css`
+                display: block;
+                color: ${palette.neutral["7"]};
+                ${textSans.medium()};
+                font-weight: bold;
+              `}
+            >
+              Instructions
+              <div>
+                <textarea
+                  id="delivery-instructions"
+                  name="instructions"
+                  rows={2}
+                  maxLength={500}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                    props.setInstructions(e.target.value)
+                  }
+                  css={css`
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-top: 4px;
+                    border: 2px solid ${palette.neutral["60"]};
+                    width: 100%;
+                    max-width: 30ch;
+                    padding: 12px;
+                    ${textSans.medium()};
+                  `}
+                />
+                <p
+                  css={css`
+                    display: block;
+                    vertical-align: top;
+                    ${textSans.medium()};
+                    border: 4px solid ${palette.brand[500]};
+                    padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
+                    margin: ${space[3]}px 0;
+                    position: relative;
+                    ${minWidth.tablet} {
+                      display: inline-block;
+                      margin: 2px 0 ${space[3]}px ${space[3]}px;
+                      width: calc(100% - (30ch + ${space[3]}px));
+                    }
+                  `}
+                >
+                  <i
+                    css={css`
+                      width: 17px;
+                      height: 17px;
+                      position: absolute;
+                      top: ${space[5]}px;
+                      left: ${space[5]}px;
+                    `}
+                  >
+                    <InfoIconDark fillColor={palette.brand[500]} />
+                  </i>
+                  Delivery instructions are only applicable for newspaper
+                  deliveries. They do not apply to Guardian Weekly.
+                </p>
+              </div>
+            </label>
+          )}
+        </fieldset>
+        <CheckboxGroup
+          name="instructions-checkbox"
+          error={
+            props.formStatus === formStates.VALIDATION_ERROR &&
+            !props.acknowledgementChecked
+              ? "Please indicate that you understand which subscriptions this change will affect."
+              : undefined
+          }
+        >
+          <Checkbox
+            value="acknowledged"
+            label="I understand that this address change will affect the following subscriptions"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              props.setAcknowledgementState(e.target.checked);
+            }}
+          />
+        </CheckboxGroup>
+        {props.warning && (
+          <ProductDescriptionListTable
+            content={props.warning}
+            seperateEachRow
+          />
+        )}
+        <div
+          css={css`
+            margin-top: ${space[5]}px;
+            * {
+              display: inline-block;
+            }
+            ${minWidth.tablet} {
+              margin-top: ${space[6]}px;
+            }
+          `}
+        >
+          <Button type="submit">Review details</Button>
           <Link
             to={navLinks.subscriptions.link}
             css={css`
@@ -547,23 +683,91 @@ const Form = (props: FormProps) => {
               color: ${palette.brand.main};
             `}
           >
-            Go back
+            Cancel
           </Link>
         </div>
-      </fieldset>
-    </form>
+      </form>
+      <p
+        css={css`
+          ${textSans.medium()};
+          margin-top: ${space[12]}px;
+          color: ${palette.neutral[46]};
+        `}
+      >
+        If you need seperate delivery addresses for each of your subscriptions,
+        please{" "}
+        <span
+          css={css`
+            cursor: pointer;
+            color: ${palette.brand[500]};
+            text-decoration: underline;
+          `}
+          onClick={() =>
+            setTopCallCentreNumbersVisibility(!showTopCallCentreNumbers)
+          }
+        >
+          contact us
+        </span>
+        .
+      </p>
+      {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+    </>
   );
 };
 
-export const DeliveryAddressForm = (props: RouteableStepProps) =>
-  props.location &&
-  props.location.state &&
-  Array.isArray(props.location.state) ? (
-    renderDeliveryAddressForm(props)(props.location.state)
-  ) : (
-    <MembersDatApiAsyncLoader
-      render={renderDeliveryAddressForm(props)}
-      fetch={createProductDetailFetcher(ProductTypes.contentSubscriptions)}
-      loadingMessage={"Loading delivery address form..."}
+export const DeliveryAddressForm = (props: RouteableStepProps) => {
+  if (props.location?.state?.productDetail?.subscription.deliveryAddress) {
+    const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+      props.location?.state?.productDetail
+    );
+    const enableDeliveryInstructions = !!productType?.delivery
+      ?.enableDeliveryInstructionsUpdate;
+    const friendlyProductName = productType?.friendlyName || "subscription";
+    return renderDeliveryAddressForm(
+      props,
+      friendlyProductName,
+      enableDeliveryInstructions,
+      props.location?.state?.productDetail.subscription.deliveryAddress
+    )(props.location.state.allProductDetails);
+  }
+  return (
+    <FlowStartMultipleProductDetailHandler
+      {...props}
+      headingPrefix={"View delivery address"}
+      hideHeading
+      hasLeftNav={{
+        pageTitle: "",
+        selectedNavItem: navLinks.subscriptions
+      }}
+      supportRefererSuffix="delivery_address_flow"
+      loadingMessagePrefix="Retrieving details of your"
+      cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
+    Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
+      singleProductDetailRenderer={(
+        routeableStepProps: RouteableStepProps,
+        productDetail: ProductDetail
+      ) => {
+        const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+          productDetail
+        );
+        const friendlyProductName = productType?.friendlyName || "subscription";
+        const enableDeliveryInstructions = !!productType?.delivery
+          ?.enableDeliveryInstructionsUpdate;
+        return (
+          <MembersDatApiAsyncLoader
+            render={renderDeliveryAddressForm(
+              props,
+              friendlyProductName,
+              enableDeliveryInstructions,
+              productDetail.subscription.deliveryAddress
+            )}
+            fetch={createProductDetailFetcher(
+              ProductTypes.contentSubscriptions
+            )}
+            loadingMessage={"Loading delivery history..."}
+          />
+        );
+      }}
     />
   );
+};
