@@ -29,6 +29,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
   );
   const productName =
     productType?.alternateTierValue || props.productDetail.tier;
+
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -204,14 +205,16 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                 right
               />
             ) : (
-              <LinkButton
-                to={"/manage/subscriptions"}
-                text={"Manage subscription"}
-                state={props.productDetail}
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight={"bold"}
-              />
+              <>
+                <LinkButton
+                  to={"/manage/subscription"}
+                  text={"Manage subscription"}
+                  state={props.productDetail}
+                  colour={palette.brand[800]}
+                  textColour={palette.brand[400]}
+                  fontWeight={"bold"}
+                />
+              </>
             )}
           </div>
         </div>
@@ -266,34 +269,37 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             </>
           ) : (
             <>
-              {props.productDetail.subscription.nextPaymentPrice && (
-                <ul css={keyValuePairCss}>
-                  <li css={keyCss}>Next payment</li>
-                  <li css={valueCss}>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
-                      {`${mainPlan.currency}${(
-                        props.productDetail.subscription.nextPaymentPrice /
-                        100.0
-                      ).toFixed(2)}`}
-                    </span>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
-                      {props.productDetail.subscription.nextPaymentDate
-                        ? formatDateStr(
-                            props.productDetail.subscription.nextPaymentDate
-                          )
-                        : "-"}
-                    </span>
-                  </li>
-                </ul>
-              )}
+              {props.productDetail.subscription.nextPaymentDate &&
+                props.productDetail.subscription.nextPaymentPrice &&
+                props.productDetail.subscription.autoRenew &&
+                !props.productDetail.alertText && (
+                  <ul css={keyValuePairCss}>
+                    <li css={keyCss}>Next payment</li>
+                    <li css={valueCss}>
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {`${mainPlan.currency}${(
+                          props.productDetail.subscription.nextPaymentPrice /
+                          100.0
+                        ).toFixed(2)}`}
+                      </span>
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {props.productDetail.subscription.nextPaymentDate
+                          ? formatDateStr(
+                              props.productDetail.subscription.nextPaymentDate
+                            )
+                          : "-"}
+                      </span>
+                    </li>
+                  </ul>
+                )}
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment method</li>
                 <li css={valueCss}>
@@ -317,19 +323,22 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                   )}
                 </li>
               </ul>
-              <div
-                css={css`
-                  margin-top: auto;
-                `}
-              >
-                <LinkButton
-                  to={"adsf"}
-                  text={"Manage payment method"}
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
-                  fontWeight={"bold"}
-                />
-              </div>
+              {productType && (
+                <div
+                  css={css`
+                    margin-top: auto;
+                  `}
+                >
+                  <LinkButton
+                    to={`/payment/${productType.urlPart}`}
+                    state={props.productDetail}
+                    text={"Manage payment method"}
+                    colour={palette.brand[800]}
+                    textColour={palette.brand[400]}
+                    fontWeight={"bold"}
+                  />
+                </div>
+              )}
             </>
           )}
         </div>

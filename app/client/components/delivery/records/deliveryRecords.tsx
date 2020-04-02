@@ -275,9 +275,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         hideBackButton
         fullWidth
       >
-        <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-          <h1>Delivery history</h1>
-        </PageHeaderContainer>
+        <PageHeaderContainer
+          selectedNavItem={navLinks.subscriptions}
+          title="Delivery history"
+        />
         <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
           <div
             css={css`

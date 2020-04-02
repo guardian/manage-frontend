@@ -1,8 +1,13 @@
 import React from "react";
 import { Inlineable } from "./inlineable";
 
+interface CardExpiryDetails {
+  month: number;
+  year: number;
+}
 export interface CardProps {
   last4: string;
+  expiry?: CardExpiryDetails;
   type: string;
   stripePublicKeyForUpdate?: string;
 }

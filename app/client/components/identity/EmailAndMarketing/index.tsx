@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { headline } from "../../../styles/fonts";
 import { navLinks } from "../../nav";
 import {
   PageContainer,
@@ -131,19 +130,10 @@ export const EmailAndMarketing = (props: { path?: string }) => {
 
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
-        <h1
-          css={{
-            fontSize: "32px",
-            lineHeight: "36px",
-            fontFamily: headline,
-            marginBottom: "30px",
-            marginTop: "0"
-          }}
-        >
-          Emails &amp; marketing
-        </h1>
-      </PageHeaderContainer>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.emailPrefs}
+        title="Emails &amp;` marketing"
+      />
       <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
         {state.error ? errorMessage : null}
         {loading ? (!state.error ? loader : null) : content}

@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
@@ -47,7 +48,7 @@ const applyIconStyleIfApplicable = (
     };
   }
   return {
-    padding: "1px 15px 0 15px",
+    padding: `1px ${space[5]}px 0 ${space[5]}px`,
     svg: {
       display: "none"
     }

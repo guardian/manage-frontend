@@ -146,19 +146,10 @@ const faqs: Faqs = {
 
 export const Help = (props: RouteComponentProps) => (
   <>
-    <PageHeaderContainer selectedNavItem={navLinks.emailPrefs}>
-      <h1
-        css={css`
-          ${headline.large()};
-          font-size: "32px",
-          lineheight: "36px",
-          margin-bottom: "30px",
-          margin-top: "0"
-          `}
-      >
-        Help centre
-      </h1>
-    </PageHeaderContainer>
+    <PageHeaderContainer
+      selectedNavItem={navLinks.emailPrefs}
+      title="Help centre"
+    />
     <PageNavAndContentContainer selectedNavItem={navLinks.help}>
       <div
         css={css`

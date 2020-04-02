@@ -42,10 +42,6 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     return <EmptyAccountOverview />;
   }
 
-  // console.log(`apiResponse = ${JSON.stringify(apiResponse, null, 2)}`);
-  // console.log(`productDetailList = ${JSON.stringify(productDetailList, null, 2)}`);
-  // console.log(`membershipData = ${JSON.stringify(membershipData, null, 2)}`);
-
   return (
     <>
       {!!subscriptionData.length && (
@@ -141,19 +137,10 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
 export const AccountOverview = (props: RouteComponentProps) => {
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.accountOverview}>
-        <h1
-          css={css`
-            ${headline.large()};
-            font-size: "32px",
-            lineheight: "36px",
-            margin-bottom: "30px",
-            margin-top: "0"
-            `}
-        >
-          Account overview
-        </h1>
-      </PageHeaderContainer>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.accountOverview}
+        title="Account overview"
+      />
       <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <MembersDatApiAsyncLoader
           fetch={createAllProductsDetailFetcher()}

@@ -8,7 +8,7 @@ import {
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
-// import { ProductTypes } from "../../../shared/productTypes";
+import { ProductTypes } from "../../../shared/productTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
@@ -22,15 +22,10 @@ interface ContributionProductProps {
 }
 
 export const ContributionProduct = (props: ContributionProductProps) => {
-  // const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-  //   props.productDetail
-  // );
+  const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+    props.productDetail
+  );
 
-  // console.log(`productType = ${JSON.stringify(productType, null, 2)}`);
-  // console.log(`props.productDetail = ${JSON.stringify(props.productDetail, null, 2)}`);
-
-  // const productName =
-  //   productType?.alternateTierValue || props.productDetail.tier;
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -167,7 +162,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
             `}
           >
             <LinkButton
-              to={"/manage/contributions"}
+              to={"/manage/contribution"}
               text={"Manage contribution"}
               state={props.productDetail}
               colour={palette.brand[800]}
@@ -278,19 +273,22 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                   )}
                 </li>
               </ul>
-              <div
-                css={css`
-                  margin-top: auto;
-                `}
-              >
-                <LinkButton
-                  to={"adsf"}
-                  text={"Manage payment method"}
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
-                  fontWeight={"bold"}
-                />
-              </div>
+              {productType && (
+                <div
+                  css={css`
+                    margin-top: auto;
+                  `}
+                >
+                  <LinkButton
+                    to={`/payment/${productType.urlPart}`}
+                    state={props.productDetail}
+                    text={"Manage payment method"}
+                    colour={palette.brand[800]}
+                    textColour={palette.brand[400]}
+                    fontWeight={"bold"}
+                  />
+                </div>
+              )}
             </>
           )}
         </div>

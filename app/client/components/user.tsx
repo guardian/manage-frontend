@@ -37,7 +37,9 @@ import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryR
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
 import { AccountOverview } from "./accountoverview/accountOverview";
-import { ManageProduct } from "./accountoverview/manageProduct";
+import { ManageContribution } from "./accountoverview/manageContribution";
+import { ManageMembership } from "./accountoverview/manageMembership";
+import { ManageSubscription } from "./accountoverview/manageSubscription";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -64,17 +66,47 @@ const User = () => (
 
       <AccountOverview path="/account-overview" />
 
-      {Object.values(ProductTypes)
-        .filter(hasProductPageProperties)
-        .map((productType: ProductTypeWithProductPageProperties) => {
+      {Object.values(ProductTypes).map((productType: ProductType) => {
+        if (
+          productType.productPage === "subscriptions" ||
+          (typeof productType.productPage === "object" &&
+            productType.productPage?.title === "Subscriptions")
+        ) {
           return (
-            <ManageProduct
+            <ManageSubscription
               key={productType.urlPart}
-              path={"/manage/" + productType.urlPart}
+              path={"/manage/subscription"}
               productType={productType}
             />
           );
-        })}
+        }
+        if (
+          productType.productPage === "contributions" ||
+          (typeof productType.productPage === "object" &&
+            productType.productPage?.title === "Contributions")
+        ) {
+          return (
+            <ManageContribution
+              key={productType.urlPart}
+              path={"/manage/contribution"}
+              productType={productType}
+            />
+          );
+        }
+        if (
+          productType.productPage === "membership" ||
+          (typeof productType.productPage === "object" &&
+            productType.productPage?.title === "Membership")
+        ) {
+          return (
+            <ManageMembership
+              key={productType.urlPart}
+              path={"/manage/membership"}
+              productType={productType}
+            />
+          );
+        }
+      })}
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)

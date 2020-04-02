@@ -513,9 +513,8 @@ export const ProductPage = (props: RouteableProductPropsWithProductPage) => (
   <>
     <PageHeaderContainer
       selectedNavItem={props.productType.productPage.navLink}
-    >
-      <h1>{props.productType.productPage.title}</h1>
-    </PageHeaderContainer>
+      title={props.productType.productPage.title}
+    />
     <PageNavAndContentContainer
       selectedNavItem={props.productType.productPage.navLink}
     >

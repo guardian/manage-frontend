@@ -27,7 +27,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
   const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
     props.productDetail
   );
-  const productName =
+  const membershipTier =
     productType?.alternateTierValue || props.productDetail.tier;
   const mainPlan = getMainPlan(
     props.productDetail.subscription
@@ -87,7 +87,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
           }
         `}
       >
-        {productName}
+        Guardian membership
         {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
         {hasCancellationPending ? (
           <i
@@ -169,7 +169,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
         >
           <ul css={keyValuePairCss}>
             <li css={keyCss}>Membership tier</li>
-            <li css={valueCss}>{props.productDetail.tier}</li>
+            <li css={valueCss}>{membershipTier}</li>
           </ul>
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
@@ -203,8 +203,9 @@ export const MembershipProduct = (props: MembershipProductProps) => {
               />
             ) : (
               <LinkButton
-                to={"adsf"}
-                text={"Cancel membership"}
+                to={"/manage/membership"}
+                text={"Manage membership"}
+                state={props.productDetail}
                 colour={palette.brand[800]}
                 textColour={palette.brand[400]}
                 fontWeight={"bold"}
@@ -314,19 +315,22 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                   )}
                 </li>
               </ul>
-              <div
-                css={css`
-                  margin-top: auto;
-                `}
-              >
-                <LinkButton
-                  to={"adsf"}
-                  text={"Manage payment method"}
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
-                  fontWeight={"bold"}
-                />
-              </div>
+              {productType && (
+                <div
+                  css={css`
+                    margin-top: auto;
+                  `}
+                >
+                  <LinkButton
+                    to={`/payment/${productType.urlPart}`}
+                    state={props.productDetail}
+                    text={"Manage payment method"}
+                    colour={palette.brand[800]}
+                    textColour={palette.brand[400]}
+                    fontWeight={"bold"}
+                  />
+                </div>
+              )}
             </>
           )}
         </div>

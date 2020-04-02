@@ -1,6 +1,5 @@
 import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
-import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { navLinks } from "../../nav";
 import {
@@ -100,19 +99,10 @@ export const Settings = (props: { path?: string }) => {
 
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.settings}>
-        <h1
-          css={{
-            fontSize: "32px",
-            lineHeight: "36px",
-            fontFamily: headline,
-            marginBottom: "30px",
-            marginTop: "0"
-          }}
-        >
-          Settings
-        </h1>
-      </PageHeaderContainer>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.settings}
+        title="Settings"
+      />
       <PageNavAndContentContainer selectedNavItem={navLinks.settings}>
         {!error || (
           <PageContainer>

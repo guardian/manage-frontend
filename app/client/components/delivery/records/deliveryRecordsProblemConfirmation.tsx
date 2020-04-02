@@ -103,9 +103,10 @@ const DeliveryRecordsProblemConfirmationFC = (
       hideBackButton
       fullWidth
     >
-      <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-        <h1>Delivery history</h1>
-      </PageHeaderContainer>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.subscriptions}
+        title="Delivery history"
+      />
       <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
         <h2
           css={css`
