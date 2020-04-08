@@ -764,7 +764,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
             fetch={createProductDetailFetcher(
               ProductTypes.contentSubscriptions
             )}
-            loadingMessage={"Loading delivery history..."}
+            loadingMessage={"Loading delivery details..."}
           />
         );
       }}
