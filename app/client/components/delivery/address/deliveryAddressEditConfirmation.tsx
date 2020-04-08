@@ -286,7 +286,10 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
               : ""
         };
       })
-      .map(element => `${element.name} (${element.subId}) ${element.date}`),
+      .map(
+        element =>
+          `${element.name} subscription (${element.subId}) ${element.date}`
+      ),
     "",
     `(as displayed on confirmation page at ${moment().format(
       "H:mm:ss zz [on] Do MMMM YYYY"
