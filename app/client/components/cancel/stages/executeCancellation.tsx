@@ -62,7 +62,7 @@ const getCaseUpdateWithCancelOutcomeFunc = (
 const getCancellationSummaryWithReturnButton = (
   productType: ProductTypeWithCancellationFlow,
   productDetail: ProductDetail
-) => (
+) => () => (
   <div>
     {getCancellationSummary(productType)(productDetail)}
     <div css={{ height: "20px" }} />
@@ -71,18 +71,23 @@ const getCancellationSummaryWithReturnButton = (
 );
 
 const getCaseUpdatingCancellationSummary = (
-  caseId: string,
+  caseId: string | "",
   productType: ProductTypeWithCancellationFlow
 ) => (productDetails: ProductDetail[]) => {
   const productDetail = productDetails[0] || { subscription: {} };
-  return (
+  const render = getCancellationSummaryWithReturnButton(
+    productType,
+    productDetail
+  );
+  return caseId ? (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}
-      render={() =>
-        getCancellationSummaryWithReturnButton(productType, productDetail)
-      }
+      render={render}
+      errorRender={render} // ignore errors because bad UX for user, and we will hear about it other ways
       loadingMessage="Finalising your cancellation..."
     />
+  ) : (
+    render()
   );
 };
 
