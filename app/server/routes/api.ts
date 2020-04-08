@@ -128,6 +128,14 @@ router.get(
   )
 );
 router.get(
+  "/holidays/:subscriptionName/cancel",
+  holidayStopAPI(
+    "hsr/:subscriptionName/cancel",
+    "HOLIDAY_STOP_CANCELLATION_PREVIEW",
+    "subscriptionName"
+  )
+);
+router.get(
   "/holidays/:subscriptionName",
   holidayStopAPI(
     "hsr/:subscriptionName",

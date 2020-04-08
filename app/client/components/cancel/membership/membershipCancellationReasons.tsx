@@ -1,7 +1,6 @@
 import React from "react";
-import palette from "../../../colours";
+import { hrefStyle } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
-import { SwitchToContributionPlaceholder } from "./switchToContributionPlaceholder";
 
 export const membershipCancellationReasons: CancellationReason[] = [
   {
@@ -10,27 +9,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "We understand that financial circumstances can change from time to time",
     saveBody:
-      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you.",
-    experimentSaveBody: (
-      <>
-        <div css={{ marginTop: "10px" }}>
-          Making a smaller one time or recurring contribution to the Guardian
-          can be an inexpensive way of keeping journalism open for everyone to
-          read and enjoy.{" "}
-          <span
-            css={{
-              backgroundColor: palette.yellow.medium,
-              color: palette.neutral["1"]
-            }}
-          >
-            For as little as £2 you can continue to support the Guardian - and
-            it only takes a minute.
-          </span>
-        </div>
-        <SwitchToContributionPlaceholder />
-      </>
-    ),
-    experimentTriggerFlag: "showSwitchToContributionPlaceholder"
+      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you."
     // alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
   },
   {
@@ -41,14 +20,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
       <>
         Please leave feedback in the box below. Alternatively you can contact us
         directly to discuss resolving the issue, by emailing{" "}
-        <a
-          css={{
-            textDecoration: "underline",
-            color: palette.blue.dark,
-            ":visited": { color: palette.blue.dark }
-          }}
-          href="mailto:customer.help@theguardian.com"
-        >
+        <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
           customer.help@theguardian.com
         </a>
         .
@@ -107,14 +79,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveBody: (
       <>
         You can{" "}
-        <a
-          css={{
-            textDecoration: "underline",
-            color: palette.blue.dark,
-            ":visited": { color: palette.blue.dark }
-          }}
-          href="/email-prefs"
-        >
+        <a css={hrefStyle} href="/email-prefs">
           click here to manage your communication preferences
         </a>
         .
