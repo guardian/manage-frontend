@@ -20,7 +20,8 @@ import {
 import {
   createProductDetailFetcher,
   ProductFriendlyName,
-  ProductTypes
+  ProductTypes,
+  ProductTypeWithMapGroupedToSpecific
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
@@ -753,6 +754,9 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
   return (
     <FlowStartMultipleProductDetailHandler
       {...props}
+      overrideProductTypeForFetch={
+        ProductTypes.contentSubscriptions as ProductTypeWithMapGroupedToSpecific
+      }
       headingPrefix={"View delivery address"}
       hideHeading
       hasLeftNav={{

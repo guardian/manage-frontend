@@ -16,7 +16,8 @@ import {
 } from "../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  hasProductPageProperties
+  hasProductPageProperties,
+  ProductTypeWithMapGroupedToSpecific
 } from "../../shared/productTypes";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
@@ -92,7 +93,16 @@ const getProductDetailSelector = (
   selectProductDetail: (productDetail: ProductDetail) => void,
   supportRefererSuffix: string
 ) => (data: MembersDataApiItem[]) => {
-  const sortedList = data.filter(isProduct).sort(sortByJoinDate);
+  const sortedList = data
+    .filter(isProduct)
+    .filter(
+      productDetail =>
+        !props.overrideProductTypeForFetch ||
+        props.overrideProductTypeForFetch.mapGroupedToSpecific(
+          productDetail
+        ) === props.productType
+    )
+    .sort(sortByJoinDate);
   if (sortedList.length > 0) {
     const first = sortedList[0];
     if (sortedList.length === 1 && isProduct(first)) {
@@ -256,6 +266,7 @@ export interface FlowStartMultipleProductDetailHandlerProps
     productDetail: ProductDetail
   ) => React.ReactNode;
   allowCancelledSubscription?: true;
+  overrideProductTypeForFetch?: ProductTypeWithMapGroupedToSpecific;
 }
 
 export interface FlowStartMultipleProductDetailHandlerState {
@@ -324,7 +335,7 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
         <MembersDatApiAsyncLoader
           fetch={
             createProductDetailFetcher(
-              this.props.productType
+              this.props.overrideProductTypeForFetch || this.props.productType
             ) /*TODO reload on 'back' to page*/
           }
           render={this.preWiredProductDetailSelector}
