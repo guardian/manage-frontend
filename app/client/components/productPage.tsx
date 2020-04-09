@@ -418,7 +418,11 @@ const getProductDetailRenderer = (
             )}
             {productType.delivery?.showAddress?.(subscription) && (
               <ProductDetailRow
-                label="Delivery address and instructions"
+                label={`Delivery address${
+                  !productType?.delivery?.enableDeliveryInstructionsUpdate
+                    ? " and instructions"
+                    : ""
+                }`}
                 alignItemsAtTop
                 data={
                   <DeliveryAddressDisplay
