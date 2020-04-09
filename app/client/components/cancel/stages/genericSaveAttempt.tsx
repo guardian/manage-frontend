@@ -15,7 +15,6 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
 import {
   MultiRouteableProps,
@@ -26,12 +25,14 @@ import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
+import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import {
   CancellationReason,
   CancellationReasonId
 } from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
@@ -255,69 +256,92 @@ const ConfirmCancellationAndReturnRow = (
   </div>
 );
 
-export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => (
-  <MembersDataApiItemContext.Consumer>
-    {productDetail =>
-      isProduct(productDetail) ? (
-        <CancellationReasonContext.Provider
-          value={props.path as CancellationReasonId}
-        >
-          <CaseCreationWrapper
-            productDetail={productDetail}
-            sfCaseProduct={props.productType.cancellation.sfCaseProduct}
-          >
-            <WizardStep routeableStepProps={props} hideBackButton>
-              <PageContainerSection>
-                <h3 id="save_title">
-                  {props.productType.cancellation.saveTitlePrefix || ""}
-                  {props.reason.saveTitle || props.reason.linkLabel}
-                </h3>
-                <GoogleOptimiseAwaitFlagWrapper
-                  experimentFlagName={props.reason.experimentTriggerFlag}
-                >
-                  {{
-                    flagIsSet: props.reason.experimentSaveBody,
-                    flagIsNotSet: <p id="save_body">{props.reason.saveBody}</p>
-                  }}
-                </GoogleOptimiseAwaitFlagWrapper>
+export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
+  const flowWrapper =
+    props.productType.cancellation.flowWrapper ||
+    (() => (restOfFlow: RestOfCancellationFlow) => restOfFlow);
 
-                <CancellationCaseIdContext.Consumer>
-                  {caseId =>
-                    caseId && !props.reason.skipFeedback ? (
-                      <FeedbackFormAndContactUs
-                        characterLimit={2500}
-                        caseId={caseId}
-                        reason={props.reason}
-                        productType={props.productType}
-                        isTestUser={productDetail.isTestUser}
-                      />
-                    ) : (
-                      <div
-                        css={{
-                          display: "flex",
-                          flexDirection:
-                            props.productType.cancellation
-                              .swapFeedbackAndContactUs && caseId
-                              ? "column-reverse"
-                              : "column"
-                        }}
-                      >
-                        <ContactUs {...props.reason} />
-                        <ConfirmCancellationAndReturnRow
-                          reasonId={props.reason.reasonId}
-                          productType={props.productType}
-                        />
-                      </div>
-                    )
-                  }
-                </CancellationCaseIdContext.Consumer>
-              </PageContainerSection>
-            </WizardStep>
-          </CaseCreationWrapper>
-        </CancellationReasonContext.Provider>
-      ) : (
-        <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
-      )
-    }
-  </MembersDataApiItemContext.Consumer>
-);
+  return (
+    <MembersDataApiItemContext.Consumer>
+      {productDetail =>
+        isProduct(productDetail) ? (
+          flowWrapper(productDetail)(
+            <CancellationReasonContext.Provider
+              value={props.path as CancellationReasonId}
+            >
+              <CaseCreationWrapper
+                productDetail={productDetail}
+                sfCaseProduct={props.productType.cancellation.sfCaseProduct}
+              >
+                <WizardStep routeableStepProps={props} hideBackButton>
+                  <PageContainerSection>
+                    <h3 id="save_title">
+                      {props.productType.cancellation.hideReasonTitlePrefix
+                        ? ""
+                        : "Reason: "}
+                      {props.reason.saveTitle || props.reason.linkLabel}
+                    </h3>
+
+                    <CancellationFlowEscalationCheck {...props}>
+                      {escalationCauses => (
+                        <>
+                          {escalationCauses.length > 0 && (
+                            <p>
+                              Once you submit your cancellation request our
+                              customer service team will try their best to
+                              contact you as soon as possible to confirm the
+                              cancellation and refund any credit you are owed.
+                            </p>
+                          )}
+                          <p id="save_body">
+                            {escalationCauses.length > 0 &&
+                            props.reason.escalationSaveBody !== undefined
+                              ? props.reason.escalationSaveBody
+                              : props.reason.saveBody}
+                          </p>
+                        </>
+                      )}
+                    </CancellationFlowEscalationCheck>
+
+                    <CancellationCaseIdContext.Consumer>
+                      {caseId =>
+                        caseId && !props.reason.skipFeedback ? (
+                          <FeedbackFormAndContactUs
+                            characterLimit={2500}
+                            caseId={caseId}
+                            reason={props.reason}
+                            productType={props.productType}
+                            isTestUser={productDetail.isTestUser}
+                          />
+                        ) : (
+                          <div
+                            css={{
+                              display: "flex",
+                              flexDirection:
+                                props.productType.cancellation
+                                  .swapFeedbackAndContactUs && caseId
+                                  ? "column-reverse"
+                                  : "column"
+                            }}
+                          >
+                            <ContactUs {...props.reason} />
+                            <ConfirmCancellationAndReturnRow
+                              reasonId={props.reason.reasonId}
+                              productType={props.productType}
+                            />
+                          </div>
+                        )
+                      }
+                    </CancellationCaseIdContext.Consumer>
+                  </PageContainerSection>
+                </WizardStep>
+              </CaseCreationWrapper>
+            </CancellationReasonContext.Provider>
+          )
+        ) : (
+          <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+        )
+      }
+    </MembersDataApiItemContext.Consumer>
+  );
+};

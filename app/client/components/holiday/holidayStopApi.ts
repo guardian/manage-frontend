@@ -46,6 +46,12 @@ export interface PotentialHolidayStopsResponse {
   nextInvoiceDateAfterToday: string;
 }
 
+export type OutstandingHolidayStop = object; // refine type if needed
+
+export interface OutstandingHolidayStopsResponse {
+  publicationsToRefund: OutstandingHolidayStop[];
+}
+
 export interface MinimalHolidayStopRequest {
   id?: string;
   subscriptionName?: string;

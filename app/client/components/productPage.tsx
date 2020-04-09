@@ -378,20 +378,6 @@ const getProductDetailRenderer = (
                 />
               )}
             {getPaymentPart(productDetail, productType)}
-            {productType.cancellation &&
-              productType.cancellation.linkOnProductPage && (
-                <Link
-                  css={{
-                    textDecoration: "underline",
-                    color: palette.neutral["7"],
-                    ":visited": { color: palette.neutral["7"] }
-                  }}
-                  to={"/cancel/" + productType.urlPart}
-                  state={productDetail}
-                >
-                  {"Cancel this " + productType.friendlyName}
-                </Link>
-              )}
             {shouldHaveHolidayStopsFlow(productType) && subscription.autoRenew && (
               <ProductDetailRow
                 label="Holiday stop"
@@ -460,6 +446,20 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
+            {productType.cancellation &&
+              productType.cancellation.linkOnProductPage && (
+                <Link
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.neutral["7"],
+                    ":visited": { color: palette.neutral["7"] }
+                  }}
+                  to={"/cancel/" + productType.urlPart}
+                  state={productDetail}
+                >
+                  {"Cancel this " + productType.friendlyName}
+                </Link>
+              )}
           </PageContainer>
         </>
       )}

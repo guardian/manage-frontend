@@ -1,13 +1,14 @@
 import { css } from "@emotion/core";
 import React from "react";
 import {
+  friendlyLongDateFormat,
+  momentiseDateStr
+} from "../../../shared/dates";
+import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import {
-  ProductTypeWithCancellationFlow,
-  WithProductType
-} from "../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
@@ -19,116 +20,177 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
+import {
+  cancellationEffectiveEndOfLastInvoicePeriod,
+  cancellationEffectiveToday,
+  CancellationPolicyContext
+} from "./cancellationContexts";
 import { getCancellationSummary } from "./cancellationSummary";
 
-interface ReasonPickerProps
-  extends WithProductType<ProductTypeWithCancellationFlow> {
-  options: MultiRouteableProps[];
+export interface RouteableStepPropsWithCancellationFlow
+  extends RouteableStepProps {
+  productType: ProductTypeWithCancellationFlow;
+}
+
+interface ReasonPickerProps extends RouteableStepPropsWithCancellationFlow {
+  productDetail: ProductDetail;
 }
 
 interface ReasonPickerState {
   reasonPath: string;
+  cancellationPolicy?: string;
 }
 
 class ReasonPicker extends React.Component<
   ReasonPickerProps,
   ReasonPickerState
 > {
-  public state = {
+  public state: ReasonPickerState = {
     reasonPath: ""
   };
 
   public render(): React.ReactNode {
-    return (
-      <>
-        <h4>Please select a reason</h4>
-        <form css={css({ marginBottom: "30px" })}>
-          {this.props.options.map((reason: MultiRouteableProps) => (
-            <RadioButton
-              key={reason.path}
-              value={reason.path}
-              label={reason.linkLabel}
-              checked={reason.path === this.state.reasonPath}
-              groupName="reasons"
-              onChange={this.getClickHandler(reason.path)}
-            />
-          ))}
-        </form>
+    const chargedThroughDate: string | null = this.props.productDetail
+      .subscription.chargedThroughDate;
 
-        <div
-          css={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row-reverse",
-            [maxWidth.mobileLandscape]: {
-              flexDirection: "column"
-            }
-          }}
+    const shouldOfferEffectiveDateOptions =
+      !!chargedThroughDate &&
+      this.props.productType.cancellation.startPageOfferEffectiveDateOptions;
+
+    const chargedThroughDateStr =
+      chargedThroughDate &&
+      momentiseDateStr(chargedThroughDate).format(friendlyLongDateFormat);
+
+    // we extract the options from the children rather than direct from the ProductType to guarantee the routes are setup correctly
+    const options = this.props.children.props.children.map(
+      (child: { props: MultiRouteableProps }) => child.props
+    );
+
+    return (
+      <MembersDataApiItemContext.Provider value={this.props.productDetail}>
+        <CancellationPolicyContext.Provider
+          value={this.state.cancellationPolicy}
         >
-          <div
-            css={{
-              textAlign: "right",
-              marginBottom: "10px"
-            }}
-          >
-            <LinkButton
-              text="Continue"
-              to={this.state.reasonPath}
-              disabled={!this.state.reasonPath}
-              right
-            />
-          </div>
-          <div>
-            <ReturnToYourProductButton productType={this.props.productType} />
-          </div>
-        </div>
-      </>
+          <WizardStep routeableStepProps={this.props} hideBackButton>
+            {this.props.productType.cancellation.startPageBody(
+              this.props.productDetail.subscription
+            )}
+            <PageContainerSection>
+              <h4>Please select a reason</h4>
+              <form css={css({ marginBottom: "30px" })}>
+                {options.map((reason: MultiRouteableProps) => (
+                  <RadioButton
+                    key={reason.path}
+                    value={reason.path}
+                    label={reason.linkLabel}
+                    checked={reason.path === this.state.reasonPath}
+                    groupName="reasons"
+                    onChange={() => this.setState({ reasonPath: reason.path })}
+                  />
+                ))}
+              </form>
+
+              {shouldOfferEffectiveDateOptions && (
+                <>
+                  <h4>
+                    When would you like your cancellation to become effective?
+                  </h4>
+                  <form css={css({ marginBottom: "30px" })}>
+                    <RadioButton
+                      value="Today"
+                      label="Today"
+                      checked={
+                        this.state.cancellationPolicy ===
+                        cancellationEffectiveToday
+                      }
+                      groupName="cancellationPolicy"
+                      onChange={() =>
+                        this.setState({
+                          cancellationPolicy: cancellationEffectiveToday
+                        })
+                      }
+                    />
+                    <RadioButton
+                      value="EndOfLastInvoicePeriod"
+                      label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
+                      checked={
+                        this.state.cancellationPolicy ===
+                        cancellationEffectiveEndOfLastInvoicePeriod
+                      }
+                      groupName="cancellationPolicy"
+                      onChange={() =>
+                        this.setState({
+                          cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
+                        })
+                      }
+                    />
+                  </form>
+                </>
+              )}
+
+              <div
+                css={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row-reverse",
+                  [maxWidth.mobileLandscape]: {
+                    flexDirection: "column"
+                  }
+                }}
+              >
+                <div
+                  css={{
+                    textAlign: "right",
+                    marginBottom: "10px"
+                  }}
+                >
+                  <LinkButton
+                    text="Continue"
+                    to={this.state.reasonPath}
+                    disabled={
+                      !this.state.reasonPath ||
+                      (shouldOfferEffectiveDateOptions &&
+                        !this.state.cancellationPolicy)
+                    }
+                    right
+                  />
+                </div>
+                <div>
+                  <ReturnToYourProductButton
+                    productType={this.props.productType}
+                  />
+                </div>
+              </div>
+            </PageContainerSection>
+          </WizardStep>
+        </CancellationPolicyContext.Provider>
+      </MembersDataApiItemContext.Provider>
     );
   }
-
-  private getClickHandler = (reasonPath: string) => () => {
-    this.setState({ reasonPath });
-  };
 }
-
-const extractRouteableProps = (child: { props: MultiRouteableProps }) =>
-  child.props;
 
 const reasonsRenderer = (
   routeableStepPropsWithCancellationFlow: RouteableStepPropsWithCancellationFlow
-) => (routeableStepProps: RouteableStepProps, productDetail: ProductDetail) => {
+) => (_: RouteableStepProps, productDetail: ProductDetail) => {
   if (productDetail.subscription.cancelledAt) {
     return (
       <div>
-        {getCancellationSummary(routeableStepProps.productType)(productDetail)}
-        <ReturnToYourProductButton {...routeableStepProps} />
+        {getCancellationSummary(
+          routeableStepPropsWithCancellationFlow.productType
+        )(productDetail)}
+        <ReturnToYourProductButton
+          {...routeableStepPropsWithCancellationFlow}
+        />
       </div>
     );
   }
   return (
-    <MembersDataApiItemContext.Provider value={productDetail}>
-      <WizardStep routeableStepProps={routeableStepProps} hideBackButton>
-        {
-          routeableStepPropsWithCancellationFlow.productType.cancellation
-            .startPageBody
-        }
-        <PageContainerSection>
-          <ReasonPicker
-            productType={routeableStepPropsWithCancellationFlow.productType}
-            options={routeableStepProps.children.props.children.map(
-              extractRouteableProps
-            )}
-          />
-        </PageContainerSection>
-      </WizardStep>
-    </MembersDataApiItemContext.Provider>
+    <ReasonPicker
+      {...routeableStepPropsWithCancellationFlow}
+      productDetail={productDetail}
+    />
   );
 };
-
-export interface RouteableStepPropsWithCancellationFlow
-  extends RouteableStepProps {
-  productType: ProductTypeWithCancellationFlow;
-}
 
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
