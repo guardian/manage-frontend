@@ -197,6 +197,9 @@ export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
     records: DeliveryRecordsProperties;
   };
 }
+export interface ProductTypeWithMapGroupedToSpecific extends ProductType {
+  mapGroupedToSpecific: (productDetail: ProductDetail) => ProductType;
+}
 
 export const hasDeliveryRecordsFlow = (
   productType: ProductType
