@@ -34,6 +34,7 @@ import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
@@ -46,16 +47,15 @@ import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   AddressChangedInformationContext,
   ContactIdContext,
+  convertToDescriptionListData,
   NewDeliveryAddressContext,
   ProductName,
-  SubscriptionEffectiveData,
-  convertToDescriptionListData
+  SubscriptionEffectiveData
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
 import { ProgressIndicator } from "./progressIndicator";
 import { Select } from "./select";
-import { flattenEquivalent } from "../../../utils";
 
 export interface ContactIdToArrayOfProductDetail {
   [contactId: string]: ProductDetail[];
@@ -441,6 +441,11 @@ const Form = (props: FormProps) => {
     setTopCallCentreNumbersVisibility
   ] = useState<boolean>(false);
 
+  const [
+    instructionsRemainingCharacters,
+    setInstructionsRemainingCharacters
+  ] = useState<number>(250 - props.instructions.length);
+
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -581,26 +586,45 @@ const Form = (props: FormProps) => {
             >
               Instructions
               <div>
-                <textarea
-                  id="delivery-instructions"
-                  name="instructions"
-                  rows={2}
-                  maxLength={240}
-                  value={props.instructions}
-                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                    props.setInstructions(e.target.value)
-                  }
+                <div
                   css={css`
                     display: inline-block;
                     vertical-align: top;
                     margin-top: 4px;
-                    border: 2px solid ${palette.neutral["60"]};
                     width: 100%;
                     max-width: 30ch;
-                    padding: 12px;
-                    ${textSans.medium()};
                   `}
-                />
+                >
+                  <textarea
+                    id="delivery-instructions"
+                    name="instructions"
+                    rows={2}
+                    maxLength={250}
+                    value={props.instructions}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                      props.setInstructions(e.target.value);
+                      setInstructionsRemainingCharacters(
+                        250 - e.target.value.length
+                      );
+                    }}
+                    css={css`
+                      width: 100%;
+                      border: 2px solid ${palette.neutral["60"]};
+                      padding: 12px;
+                      ${textSans.medium()};
+                    `}
+                  />
+                  <span
+                    css={css`
+                      display: block;
+                      text-align: right;
+                      ${textSans.small()};
+                      color: ${palette.neutral[46]};
+                    `}
+                  >
+                    {instructionsRemainingCharacters} characters remaining
+                  </span>
+                </div>
                 <p
                   css={css`
                     display: block;
@@ -613,7 +637,7 @@ const Form = (props: FormProps) => {
                     ${minWidth.tablet} {
                       display: inline-block;
                       margin: 2px 0 ${space[3]}px ${space[3]}px;
-                      width: calc(100% - (30ch + ${space[3]}px));
+                      width: calc(100% - (30ch + ${space[3]}px + 2px));
                     }
                   `}
                 >

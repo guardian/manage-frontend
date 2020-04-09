@@ -18,8 +18,8 @@ import {
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
-  NewDeliveryAddressContext,
-  convertToDescriptionListData
+  convertToDescriptionListData,
+  NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 import { ProgressIndicator } from "./progressIndicator";
 
