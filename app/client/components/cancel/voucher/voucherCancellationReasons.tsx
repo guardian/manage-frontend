@@ -6,7 +6,7 @@ import {
 } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
 
-export const digipackCancellationReasons: CancellationReason[] = [
+export const voucherCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_editorial",
     linkLabel: "I am unhappy with Guardian journalism",
@@ -27,6 +27,7 @@ export const digipackCancellationReasons: CancellationReason[] = [
         one&nbsp;off or recurring contribution in the future.
       </>
     ),
+    escalationSaveBody: "",
     skipFeedback: true
   },
   {
@@ -42,6 +43,7 @@ export const digipackCancellationReasons: CancellationReason[] = [
         product via our online checkouts.
       </>
     ),
+    escalationSaveBody: "",
     skipFeedback: true
   },
   {
@@ -58,6 +60,7 @@ export const digipackCancellationReasons: CancellationReason[] = [
         Please confirm your cancellation below.
       </>
     ),
+    escalationSaveBody: "",
     skipFeedback: true
   },
   {
@@ -74,20 +77,18 @@ export const digipackCancellationReasons: CancellationReason[] = [
           update your email preferences here
         </a>{" "}
         if you’d like to reduce communication from us.
+        <br />
+        <br />
+        Alternatively we’d love to know more about what we could do better to
+        help provide inspiring and trustworthy news.
       </>
     ),
-    alternateFeedbackIntro:
-      "Alternatively we’d love to know more about what we could do better to help provide inspiring and trustworthy news."
+    escalationSaveBody:
+      "We’d love to know more about what we could do better to help provide inspiring and trustworthy news."
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
-    saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
-  },
-  {
-    reasonId: "mma_benefits",
-    linkLabel: "None of the subscription benefits are of interest to me",
     saveBody: "",
     alternateFeedbackIntro: inOrderToImproveSubs
   },
@@ -110,8 +111,20 @@ export const digipackCancellationReasons: CancellationReason[] = [
     alternateFeedbackIntro: inOrderToImproveSubs
   },
   {
-    reasonId: "mma_issue",
-    linkLabel: "I’ve been experiencing technical or service problems",
+    reasonId: "mma_covid",
+    linkLabel: "My subscription use is disrupted due to COVID-19",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
+  },
+  {
+    reasonId: "mma_delivery_issue",
+    linkLabel: "I’ve had repeated delivery issues",
+    saveBody: "",
+    alternateFeedbackIntro: inOrderToImproveSubs
+  },
+  {
+    reasonId: "mma_redemption_issue",
+    linkLabel: "I’ve had problems redeeming my vouchers",
     saveBody: "",
     alternateFeedbackIntro: inOrderToImproveSubs
   },

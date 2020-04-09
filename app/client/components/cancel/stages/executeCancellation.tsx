@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
@@ -6,6 +6,7 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  ProductType,
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
@@ -19,6 +20,7 @@ import {
   CancellationReasonContext
 } from "../cancellationContexts";
 import { RouteableStepPropsWithCancellationFlow } from "../cancellationFlow";
+import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
@@ -44,8 +46,8 @@ const getCancelFunc = (
 const getCaseUpdateWithCancelOutcomeFunc = (
   caseId: string,
   productDetail: ProductDetail
-) => async () =>
-  await getUpdateCasePromise(
+) => () =>
+  getUpdateCasePromise(
     productDetail.isTestUser,
     isCancelled(productDetail.subscription) ? "_CANCELLED" : "_ERROR",
     caseId,
@@ -59,12 +61,26 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
+const getCaseUpdateFuncForEscalation = (
+  caseId: string,
+  escalationCauses: string[],
+  isTestUser: boolean
+) => () =>
+  getUpdateCasePromise(isTestUser, "_ESCALATED", caseId, {
+    Journey__c: "SV - Cancellation - MB",
+    Subject: `Online Cancellation MANUAL INTERVENTION REQUIRED - ${escalationCauses.join(
+      " & "
+    )}`,
+    Status: "New",
+    Priority: "High"
+  });
+
 const getCancellationSummaryWithReturnButton = (
-  productType: ProductTypeWithCancellationFlow,
-  productDetail: ProductDetail
+  productType: ProductType,
+  body: ReactNode
 ) => () => (
   <div>
-    {getCancellationSummary(productType)(productDetail)}
+    {body}
     <div css={{ height: "20px" }} />
     <ReturnToYourProductButton productType={productType} />
   </div>
@@ -77,19 +93,27 @@ const getCaseUpdatingCancellationSummary = (
   const productDetail = productDetails[0] || { subscription: {} };
   const render = getCancellationSummaryWithReturnButton(
     productType,
-    productDetail
+    getCancellationSummary(productType)(productDetail)
   );
   return caseId ? (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}
       render={render}
-      errorRender={render} // ignore errors because bad UX for user, and we will hear about it other ways
       loadingMessage="Finalising your cancellation..."
     />
   ) : (
     render()
   );
 };
+
+// TODO consider returning case number from API and displaying
+const escalatedConfirmationBody = (
+  <p>
+    Your cancellation request has been successfully submitted. Our customer
+    service team will try their best to contact you as soon as possible to
+    confirm the cancellation and refund any credit you are owed.
+  </p>
+);
 
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
@@ -102,21 +126,40 @@ export const ExecuteCancellation = (
             <MembersDataApiItemContext.Consumer>
               {productDetail =>
                 isProduct(productDetail) ? (
-                  <PerformCancelAsyncLoader
-                    fetch={getCancelFunc(
-                      productDetail.subscription.subscriptionId,
-                      reason,
-                      createProductDetailFetcher(
-                        props.productType,
-                        productDetail.subscription.subscriptionId
+                  <CancellationFlowEscalationCheck {...props}>
+                    {escalationCauses =>
+                      escalationCauses.length > 0 ? (
+                        <CaseUpdateAsyncLoader
+                          fetch={getCaseUpdateFuncForEscalation(
+                            caseId,
+                            escalationCauses,
+                            productDetail.isTestUser
+                          )}
+                          render={getCancellationSummaryWithReturnButton(
+                            props.productType,
+                            escalatedConfirmationBody
+                          )}
+                          loadingMessage="Requesting your cancellation..."
+                        />
+                      ) : (
+                        <PerformCancelAsyncLoader
+                          fetch={getCancelFunc(
+                            productDetail.subscription.subscriptionId,
+                            reason,
+                            createProductDetailFetcher(
+                              props.productType,
+                              productDetail.subscription.subscriptionId
+                            )
+                          )}
+                          render={getCaseUpdatingCancellationSummary(
+                            caseId,
+                            props.productType
+                          )}
+                          loadingMessage="Performing your cancellation..."
+                        />
                       )
-                    )}
-                    render={getCaseUpdatingCancellationSummary(
-                      caseId,
-                      props.productType
-                    )}
-                    loadingMessage="Performing your cancellation..."
-                  />
+                    }
+                  </CancellationFlowEscalationCheck>
                 ) : (
                   <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
                 )

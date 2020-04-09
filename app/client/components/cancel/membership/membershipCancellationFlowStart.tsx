@@ -3,8 +3,8 @@ import React from "react";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
-import { GoogleOptimiseAwaitFlagWrapper } from "../../GoogleOptimiseAwaitFlagWrapper";
 import { PageContainerSection } from "../../page";
+import { hrefStyle } from "../cancellationConstants";
 
 const cssBullet = (flexBasis: string = "50%") =>
   css({
@@ -33,11 +33,7 @@ const benefitsCss = css({
 
 const clickHereToFindOutMoreAboutOurNewFeatures = (
   <a
-    css={{
-      textDecoration: "underline",
-      color: palette.blue.dark,
-      ":visited": { color: palette.blue.dark }
-    }}
+    css={hrefStyle}
     href="https://www.theguardian.com/help/insideguardian/2018/may/15/introducing-live-and-discover-to-the-premium-tier-of-the-guardian-app"
     onClick={() => {
       trackEvent({
@@ -50,7 +46,7 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
   </a>
 );
 
-export const membershipCancellationFlowStart = (
+export const membershipCancellationFlowStart = () => (
   <>
     <div
       css={{
@@ -68,63 +64,19 @@ export const membershipCancellationFlowStart = (
       >
         If you cancel your Membership you will miss out on:
       </h4>
-      <GoogleOptimiseAwaitFlagWrapper experimentFlagName="alternateMembershipBenefits">
-        {{
-          flagIsSet: (
-            <ul css={benefitsCss}>
-              <li css={cssBullet("100%")}>
-                Exclusive emails from our membership editor
-              </li>
-              <li
-                css={{
-                  ...cssBullet("100%"),
-                  paddingTop: "5px"
-                }}
-              >
-                Free access to the ad-free premium tier of the Guardian app, now
-                featuring ‘Live’ & ‘Discover’ - two new ways to experience the
-                Guardian, set to the pace of your day.
-                <ul>
-                  <li css={{ display: "list-item" }}>
-                    Live: Access to every breaking news story and update, in
-                    real time
-                  </li>
-                  <li>
-                    Discover: Explore great stories you may have missed, when
-                    you have more time
-                  </li>
-                </ul>
-              </li>
-              <div
-                css={{
-                  textAlign: "center",
-                  width: "100%",
-                  margin: "10px"
-                }}
-              >
-                {clickHereToFindOutMoreAboutOurNewFeatures}
-              </div>
-            </ul>
-          ),
-          flagIsNotSet: (
-            <ul css={benefitsCss}>
-              <li css={cssBullet()}>Access to events tickets</li>
-              <li css={cssBullet()}>
-                Exclusive emails from our membership editor
-              </li>
-              <li
-                css={{
-                  ...cssBullet("100%"),
-                  paddingTop: "5px"
-                }}
-              >
-                Free access to the premium tier of the Guardian app -{" "}
-                {clickHereToFindOutMoreAboutOurNewFeatures}
-              </li>
-            </ul>
-          )
-        }}
-      </GoogleOptimiseAwaitFlagWrapper>
+      <ul css={benefitsCss}>
+        <li css={cssBullet()}>Access to events tickets</li>
+        <li css={cssBullet()}>Exclusive emails from our membership editor</li>
+        <li
+          css={{
+            ...cssBullet("100%"),
+            paddingTop: "5px"
+          }}
+        >
+          Free access to the premium tier of the Guardian app -{" "}
+          {clickHereToFindOutMoreAboutOurNewFeatures}
+        </li>
+      </ul>
     </div>
     <PageContainerSection>
       <p
