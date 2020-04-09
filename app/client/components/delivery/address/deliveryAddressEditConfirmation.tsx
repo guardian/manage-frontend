@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
@@ -22,6 +21,7 @@ import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
   ContactIdContext,
+  convertToDescriptionListData,
   isAddress,
   NewDeliveryAddressContext,
   ProductName
@@ -213,7 +213,9 @@ const ConfirmationFC = (props: RouteableStepProps) => {
               subscriptions
             </p>
             <ProductDescriptionListTable
-              content={addressChangedInformationContext}
+              content={convertToDescriptionListData(
+                addressChangedInformationContext
+              )}
               seperateEachRow
             />
             <LinkButton
@@ -267,29 +269,19 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     AddressChangedInformationContext
   );
 
-  const addressChangeEmailCopy = [
-    ...addressChangedInformationContext
-      // tslint:disable-next-line: no-bitwise
-      .filter((_, i) => !(i & 1))
-      .map((element, index) => {
-        const originalAffectedDate =
-          addressChangedInformationContext[index * 2 + 1].value;
-        return {
-          name: element.title,
-          subId: element.value,
-          date:
-            originalAffectedDate && originalAffectedDate !== "-"
-              ? `as of front cover dated ${moment(
-                  `${originalAffectedDate}`,
-                  "D MMM YYYY"
-                ).format("dddd Do MMMM YYYY")}`
-              : ""
-        };
-      })
-      .map(
-        element =>
-          `${element.name} subscription (${element.subId}) ${element.date}`
-      ),
+  const addressChangeInformationCopy = [
+    ...addressChangedInformationContext.map(
+      element =>
+        `${element.friendlyProductName} subscription (${
+          element.subscriptionId
+        })${
+          element.effectiveDate
+            ? ` as of front cover dated ${element.effectiveDate.format(
+                "dddd Do MMMM YYYY"
+              )}`
+            : ""
+        }`
+    ),
     "",
     `(as displayed on confirmation page at ${moment().format(
       "H:mm:ss zz [on] Do MMMM YYYY"
@@ -302,7 +294,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
       fetch={updateAddressFetcher(
         {
           ...addressContext.newDeliveryAddress,
-          addressChangeInformation: addressChangeEmailCopy
+          addressChangeInformation: addressChangeInformationCopy
         },
         contactIdContext
       )}
@@ -310,7 +302,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
       loadingMessage={"Updating delivery address details..."}
     />
   ) : (
-    <GenericErrorScreen loggingMessage="delivery address confirmation page - no new delivery address context" />
+    visuallyNavigateToParent(props)
   );
 };
 

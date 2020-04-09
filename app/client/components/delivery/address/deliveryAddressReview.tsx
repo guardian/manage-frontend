@@ -18,7 +18,8 @@ import {
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
-  NewDeliveryAddressContext
+  NewDeliveryAddressContext,
+  convertToDescriptionListData
 } from "./deliveryAddressFormContext";
 import { ProgressIndicator } from "./progressIndicator";
 
@@ -226,7 +227,9 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
             subscriptions
           </p>
           <ProductDescriptionListTable
-            content={addressChangedInformationContext}
+            content={convertToDescriptionListData(
+              addressChangedInformationContext
+            )}
             seperateEachRow
           />
           <div

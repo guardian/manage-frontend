@@ -47,12 +47,15 @@ import {
   AddressChangedInformationContext,
   ContactIdContext,
   NewDeliveryAddressContext,
-  ProductName
+  ProductName,
+  SubscriptionEffectiveData,
+  convertToDescriptionListData
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
 import { ProgressIndicator } from "./progressIndicator";
 import { Select } from "./select";
+import { flattenEquivalent } from "../../../utils";
 
 export interface ContactIdToArrayOfProductDetail {
   [contactId: string]: ProductDetail[];
@@ -68,11 +71,6 @@ function hasContactId(
   productDetail: ProductDetail
 ): productDetail is ProductDetailWithContactId {
   return !!productDetail.subscription.contactId;
-}
-
-// babel doesn't support 'flatten', but this function can be used with flatMap
-function flattenEquivalent<T>(x: T): T {
-  return x;
 }
 
 export const getValidDeliveryAddressChangeEffectiveDates = (
@@ -238,7 +236,7 @@ const FormContainer = (props: FormContainerProps) => {
     instructions
   };
 
-  const addressChangeAffectedInfo: ProductDescriptionListKeyValue[] = Object.values(
+  const addressChangeAffectedInfo: SubscriptionEffectiveData[] = Object.values(
     props.contactIdToArrayOfProductDetail
   )
     .flatMap<ProductDetail>(flattenEquivalent)
@@ -255,21 +253,16 @@ const FormContainer = (props: FormContainerProps) => {
       )
         .replace("subscription", "")
         .trim();
-      const effectiveDatePart = productDetail.subscription
+      const effectiveDate = productDetail.subscription
         .deliveryAddressChangeEffectiveDate
-        ? moment(
-            productDetail.subscription.deliveryAddressChangeEffectiveDate
-          ).format("D MMM YYYY")
-        : "-";
-      return [
-        {
-          title: friendlyProductName,
-          value: productDetail.subscription.subscriptionId
-        },
-        { title: "Front cover date", value: `${effectiveDatePart}` }
-      ];
-    })
-    .flat();
+        ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
+        : undefined;
+      return {
+        friendlyProductName,
+        subscriptionId: productDetail.subscription.subscriptionId,
+        effectiveDate
+      };
+    });
 
   return (
     <ProductName.Provider value={props.productName}>
@@ -396,7 +389,9 @@ const FormContainer = (props: FormContainerProps) => {
                       <Form
                         {...defaultFormProps}
                         routeableStepProps={props.routeableStepProps}
-                        warning={addressChangeAffectedInfo}
+                        warning={convertToDescriptionListData(
+                          addressChangeAffectedInfo
+                        )}
                         enableDeilveryInstructions={
                           props.enableDeilveryInstructions
                         }
@@ -590,7 +585,8 @@ const Form = (props: FormProps) => {
                   id="delivery-instructions"
                   name="instructions"
                   rows={2}
-                  maxLength={500}
+                  maxLength={240}
+                  value={props.instructions}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                     props.setInstructions(e.target.value)
                   }
