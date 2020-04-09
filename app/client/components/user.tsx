@@ -36,6 +36,7 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
+import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -187,10 +188,12 @@ const User = () => (
             path={`/delivery/${productType.urlPart}/address`}
             productType={productType}
           >
-            <DeliveryAddressEditConfirmation
-              path="confirmed"
-              productType={productType}
-            />
+            <DeliveryAddressReview path="review" productType={productType}>
+              <DeliveryAddressEditConfirmation
+                path="confirmed"
+                productType={productType}
+              />
+            </DeliveryAddressReview>
           </DeliveryAddressForm>
         ))}
 

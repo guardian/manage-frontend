@@ -404,7 +404,11 @@ const getProductDetailRenderer = (
             )}
             {productType.delivery?.showAddress?.(subscription) && (
               <ProductDetailRow
-                label="Delivery address"
+                label={`Delivery address${
+                  !productType?.delivery?.enableDeliveryInstructionsUpdate
+                    ? " and instructions"
+                    : ""
+                }`}
                 alignItemsAtTop
                 data={
                   <DeliveryAddressDisplay
@@ -412,6 +416,7 @@ const getProductDetailRenderer = (
                     withEditButton={true}
                     allProductDetails={productDetailList}
                     productUrlPart={productType.urlPart}
+                    productDetail={productDetail}
                   />
                 }
               />

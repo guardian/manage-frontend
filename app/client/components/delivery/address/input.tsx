@@ -62,7 +62,8 @@ export const Input = (props: InputProps) => (
       }
       css={css`
           display: block;
-          width: ${props.width}ch;
+          width: 100%;
+          max-width: ${props.width}ch;
           height: 44px;
           ${textSans.medium()}
           color: ${palette.neutral["7"]};
