@@ -1,7 +1,7 @@
 import React from "react";
 import { PageContainerSection } from "../../page";
 
-export const digipackCancellationFlowStart = (
+export const digipackCancellationFlowStart = () => (
   <PageContainerSection>
     <h3>
       We’re sorry to hear you’re thinking of cancelling your digital

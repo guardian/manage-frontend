@@ -1,7 +1,7 @@
 import { Link } from "@reach/router";
 import React from "react";
-import palette from "../../../colours";
 import {
+  hrefStyle,
   standardAlternateFeedbackIntro,
   standardSaveBody
 } from "../cancellationConstants";
@@ -46,14 +46,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         We understand that financial circumstances change, and your current
         contribution might not suit you right now. To change your contribution
         amount yourself, please go to{" "}
-        <Link
-          css={{
-            textDecoration: "underline",
-            color: palette.blue.dark,
-            ":visited": { color: palette.blue.dark }
-          }}
-          to="/contributions"
-        >
+        <Link css={hrefStyle} to="/contributions">
           manage your account
         </Link>
       </>
@@ -75,14 +68,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
       <>
         <p>
           You can review your payment method and update your details in the{" "}
-          <Link
-            css={{
-              textDecoration: "underline",
-              color: palette.blue.dark,
-              ":visited": { color: palette.blue.dark }
-            }}
-            to={"/contributions"}
-          >
+          <Link css={hrefStyle} to={"/contributions"}>
             manage your account
           </Link>{" "}
           section, without the need to cancel your contribution.
