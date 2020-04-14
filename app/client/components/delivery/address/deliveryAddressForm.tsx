@@ -612,6 +612,7 @@ const Form = (props: FormProps) => {
                       width: 100%;
                       border: 2px solid ${palette.neutral["60"]};
                       padding: 12px;
+                      resize: vertical;
                       ${textSans.medium()};
                     `}
                   />
