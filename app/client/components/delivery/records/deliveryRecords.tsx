@@ -287,6 +287,31 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
+          <span
+            css={css`
+              position: relative;
+              display: block;
+              margin: ${space[3]}px 0;
+              padding: 0 0 ${space[12]}px ${space[3] + 17}px;
+              ${textSans.small()};
+              ${minWidth.tablet} {
+                margin: ${space[5]}px 0;
+              }
+            `}
+          >
+            <i
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+              `}
+            >
+              <InfoIconDark fillColor={palette.brand.bright} />
+            </i>
+            Your Home Delivery may be affected by reasons out of our control
+            such as a natural disaster or technical issues. Please check
+            affected areas before reporting a delivery problem.
+          </span>
           {props.data.results.find(record => !record.problemCaseId) && (
             <>
               <h2
