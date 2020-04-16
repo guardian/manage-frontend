@@ -31,7 +31,7 @@ export const voucherCancellationFlowStart = (subscription: Subscription) => {
         <a
           css={hrefStyle}
           href="/suspend/voucher"
-          onClick={trackCancellationClickEvent("holiday_suspension")}
+          onClick={trackCancellationClickEvent("voucher_holiday_suspension")}
         >
           online
         </a>

@@ -1,6 +1,5 @@
 import { Link } from "@reach/router";
 import React, { ReactNode } from "react";
-import { hrefStyle } from "../client/components/cancel/cancellationConstants";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -9,6 +8,8 @@ import { contributionsCancellationFlowStart } from "../client/components/cancel/
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
 import { digipackCancellationFlowStart } from "../client/components/cancel/digipack/digipackCancellationFlowStart";
 import { digipackCancellationReasons } from "../client/components/cancel/digipack/digipackCancellationReasons";
+import { gwCancellationFlowStart } from "../client/components/cancel/gw/gwCancellationFlowStart";
+import { gwCancellationReasons } from "../client/components/cancel/gw/gwCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
 import {
@@ -24,7 +25,6 @@ import {
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import {
-  formatDate,
   isGift,
   ProductDetail,
   Subscription,
@@ -53,6 +53,7 @@ export type SfCaseProduct =
   | "Membership"
   | "Recurring - Contributions"
   | "Voucher Subscriptions"
+  | "Guardian Weekly"
   | "Digital Pack Subscriptions";
 export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
@@ -75,7 +76,7 @@ export interface CancellationFlowProperties {
   startPageBody: (subscription: Subscription) => JSX.Element;
   startPageOfferEffectiveDateOptions?: true;
   hideReasonTitlePrefix?: true;
-  summaryMainPara: (subscription: Subscription) => JSX.Element | string; // TODO should probably have a good default and make this optional
+  alternateSummaryMainPara?: string;
   summaryReasonSpecificPara: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
@@ -326,16 +327,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       sfCaseProduct: "Membership",
       startPageBody: membershipCancellationFlowStart,
       hideReasonTitlePrefix: true,
-      summaryMainPara: (subscription: Subscription) =>
-        subscription.end ? (
-          <>
-            You will continue to receive the benefits of your membership until{" "}
-            <b>{formatDate(subscription.end)}</b>. You will not be charged
-            again.
-          </>
-        ) : (
-          "Your cancellation is effective immediately."
-        ),
       summaryReasonSpecificPara: () => undefined,
       onlyShowSupportSectionIfAlternateText: false,
       alternateSupportButtonText: () => undefined,
@@ -362,7 +353,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       reasons: contributionsCancellationReasons,
       sfCaseProduct: "Recurring - Contributions",
       startPageBody: contributionsCancellationFlowStart,
-      summaryMainPara: () => "Thank you for your valuable support.",
+      alternateSummaryMainPara: "Thank you for your valuable support.",
       summaryReasonSpecificPara: (reasonId: OptionalCancellationReasonId) => {
         switch (reasonId) {
           case "mma_financial_circumstances":
@@ -470,21 +461,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       flowWrapper: physicalSubsCancellationFlowWrapper,
       startPageBody: voucherCancellationFlowStart,
       startPageOfferEffectiveDateOptions: true,
-      summaryMainPara: (subscription: Subscription) =>
-        subscription.end ? (
-          <>
-            You will continue to receive the benefits of your voucher
-            subscription until <b>{formatDate(subscription.end)}</b>. You will
-            not be charged again. If you think you’re owed a refund, please
-            contact us at{" "}
-            <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
-              customer.help@theguardian.com
-            </a>
-            .
-          </>
-        ) : (
-          "Your cancellation is effective immediately."
-        ),
       summaryReasonSpecificPara: () => undefined,
       onlyShowSupportSectionIfAlternateText: false,
       alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
@@ -522,6 +498,23 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         availableProblemTypes: commonDeliveryProblemTypes
       }
     },
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: gwCancellationReasons,
+      sfCaseProduct: "Guardian Weekly",
+      flowWrapper: physicalSubsCancellationFlowWrapper,
+      startPageBody: gwCancellationFlowStart,
+      startPageOfferEffectiveDateOptions: true,
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      swapFeedbackAndContactUs: true
+    },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",
@@ -541,21 +534,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       reasons: digipackCancellationReasons,
       sfCaseProduct: "Digital Pack Subscriptions",
       startPageBody: digipackCancellationFlowStart,
-      summaryMainPara: (subscription: Subscription) =>
-        subscription.end ? (
-          <>
-            You will continue to receive the benefits of your digital
-            subscription until <b>{formatDate(subscription.end)}</b>. You will
-            not be charged again. If you think you’re owed a refund, please
-            contact us at{" "}
-            <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
-              customer.help@theguardian.com
-            </a>
-            .
-          </>
-        ) : (
-          "Your cancellation is effective immediately."
-        ),
       summaryReasonSpecificPara: () => undefined,
       onlyShowSupportSectionIfAlternateText: false,
       alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
