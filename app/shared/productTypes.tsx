@@ -71,7 +71,8 @@ export interface CancellationFlowProperties {
   sfCaseProduct: SfCaseProduct;
   linkOnProductPage?: true;
   flowWrapper?: (
-    productDetail: ProductDetail
+    productDetail: ProductDetail,
+    productType: ProductType
   ) => (restOfFlow: RestOfCancellationFlow) => ReactNode;
   startPageBody: (subscription: Subscription) => JSX.Element;
   startPageOfferEffectiveDateOptions?: true;
