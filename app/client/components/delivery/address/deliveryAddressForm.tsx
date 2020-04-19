@@ -44,6 +44,7 @@ import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   AddressChangedInformationContext,
@@ -55,7 +56,6 @@ import {
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
-import { ProgressIndicator } from "./progressIndicator";
 import { Select } from "./select";
 
 export interface ContactIdToArrayOfProductDetail {
@@ -494,7 +494,7 @@ const Form = (props: FormProps) => {
             position: "relative",
             marginBottom: `${space[5]}px`,
             label: {
-              marginTop: "10px"
+              marginTop: `${space[3]}px`
             }
           }}
         >

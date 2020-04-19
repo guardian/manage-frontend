@@ -18,6 +18,8 @@ import {
 } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProductDescriptionListTable } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   visuallyNavigateToParent,
@@ -31,9 +33,11 @@ import {
 import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
+  DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
+import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import { UserPhoneNumber } from "./userPhoneNumber";
 
 export const DeliveryRecordsProblemReview = (
@@ -120,6 +124,7 @@ const DeliveryRecordsProblemReviewFC = (
   const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
     false
   );
+  const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
 
   const dtCss: string = `
     font-weight: bold;
@@ -187,6 +192,16 @@ const DeliveryRecordsProblemReviewFC = (
             <h1>Delivery history</h1>
           </PageHeaderContainer>
           <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            <ProgressIndicator
+              steps={[
+                { title: "Update" },
+                { title: "Review", isCurrentStep: true },
+                { title: "Confirmation" }
+              ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
+            />
             <h2
               css={css`
                 border-top: 1px solid ${palette.neutral["86"]};
@@ -391,6 +406,36 @@ const DeliveryRecordsProblemReviewFC = (
               ) : (
                 <p>There aren't any delivery records to show you yet</p>
               )}
+              {deliveryAddressContext.address && (
+                <ReadOnlyAddressDisplay
+                  address={deliveryAddressContext.address}
+                  instructions={deliveryAddressContext.address.instructions}
+                />
+              )}
+              {deliveryAddressContext.productsAffected &&
+                deliveryAddressContext.productsAffected?.length > 0 && (
+                  <div
+                    css={css`
+                      padding: ${space[3]}px;
+                      ${minWidth.tablet} {
+                        padding: ${space[5]}px;
+                      }
+                    `}
+                  >
+                    <p
+                      css={css`
+                        ${textSans.medium()}
+                      `}
+                    >
+                      Your change of address will affect the following print
+                      subscriptions:
+                    </p>
+                    <ProductDescriptionListTable
+                      content={deliveryAddressContext.productsAffected}
+                      seperateEachRow
+                    />
+                  </div>
+                )}
               {deliveryProblemContext &&
               deliveryProblemContext.showProblemCredit &&
               props.totalCreditAmount ? (

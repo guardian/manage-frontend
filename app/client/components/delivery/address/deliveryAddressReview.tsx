@@ -9,6 +9,7 @@ import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   RouteableStepProps,
@@ -21,7 +22,6 @@ import {
   convertToDescriptionListData,
   NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
-import { ProgressIndicator } from "./progressIndicator";
 
 export const DeliveryAddressReview = (props: RouteableStepProps) => (
   <DeliveryAddressReviewFC {...props} />

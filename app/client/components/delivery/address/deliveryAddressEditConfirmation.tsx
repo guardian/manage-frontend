@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/core";
 import { LinkButton } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
@@ -10,6 +10,7 @@ import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { TickInCircle } from "../../svgs/tickInCircle";
 import {
   RouteableStepProps,
@@ -26,7 +27,6 @@ import {
   NewDeliveryAddressContext,
   ProductName
 } from "./deliveryAddressFormContext";
-import { ProgressIndicator } from "./progressIndicator";
 
 const renderConfirmation = (props: RouteableStepProps) => () => (
   <ConfirmationFC {...props} />
@@ -308,8 +308,9 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
 
 interface SuccessMessageProps {
   message: string;
+  additionalCss?: SerializedStyles;
 }
-const SuccessMessage = (props: SuccessMessageProps) => (
+export const SuccessMessage = (props: SuccessMessageProps) => (
   <div
     css={css`
       position: relative;
@@ -321,6 +322,7 @@ const SuccessMessage = (props: SuccessMessageProps) => (
       margin-bottom: 50px;
       ${textSans.medium()};
       font-weight: bold;
+      ${props.additionalCss}
     `}
   >
     <i

@@ -1,8 +1,10 @@
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 import {
+  DeliveryAddress,
   DeliveryRecordApiItem,
   Subscription
 } from "../../../../shared/productResponse";
+import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
 import {
   ContactPhoneNumbers,
   DeliveryProblemMap,
@@ -38,6 +40,19 @@ export interface DeliveryProblemCreditInterface {
 export const DeliveryRecordsProblemContext = createContext<
   DeliveryRecordsProblemContextInterface
 >({} as DeliveryRecordsProblemContextInterface);
+
+interface DeliveryRecordsAddressContextInterface {
+  address?: DeliveryAddress;
+  setAddress?: Dispatch<SetStateAction<DeliveryAddress | undefined>>;
+  productsAffected?: ProductDescriptionListKeyValue[];
+  setProductsAffected?: Dispatch<
+    SetStateAction<ProductDescriptionListKeyValue[]>
+  >;
+}
+
+export const DeliveryRecordsAddressContext = createContext<
+  DeliveryRecordsAddressContextInterface
+>({});
 
 export const DeliveryRecordCreditContext = createContext<DeliveryProblemCreditInterface | null>(
   null
