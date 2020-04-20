@@ -30,11 +30,11 @@ import {
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
-import { getValidDeliveryAddressChangeEffectiveDates } from "../address/deliveryAddressForm";
 import {
-  convertToDescriptionListData,
-  SubscriptionEffectiveData
-} from "../address/deliveryAddressFormContext";
+  addressChangeAffectedInfo,
+  getValidDeliveryAddressChangeEffectiveDates
+} from "../address/deliveryAddressForm";
+import { convertToDescriptionListData } from "../address/deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "../address/formValidation";
 import { Input } from "../address/input";
 import { Select } from "../address/select";
@@ -119,39 +119,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
         .filter(product => product.subscription.readerType !== "Gift")
     );
 
-    const addressChangeAffectedInfo: SubscriptionEffectiveData[] = Object.values(
+    const addressChangeAffectedInfoArray = addressChangeAffectedInfo(
       contactIdToArrayOfProductDetail
-    )
-      .flatMap<ProductDetail>(flattenEquivalent)
-      .map(productDetail => ({
-        productDetail,
-        productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-          productDetail
-        )
-      }))
-      .filter(_ => _.productType && _.productType.delivery?.showAddress)
-      .map(({ productDetail, productType }) => {
-        const friendlyProductName = capitalize(
-          productType?.shortFriendlyName || productType?.friendlyName
-        )
-          .replace("subscription", "")
-          .trim();
-        const effectiveDate = productDetail.subscription
-          .deliveryAddressChangeEffectiveDate
-          ? moment(
-              productDetail.subscription.deliveryAddressChangeEffectiveDate
-            )
-          : undefined;
-        return {
-          friendlyProductName,
-          subscriptionId: productDetail.subscription.subscriptionId,
-          effectiveDate
-        };
-      });
+    );
 
     setAddressChangeInformation(
       [
-        ...addressChangeAffectedInfo.map(
+        ...addressChangeAffectedInfoArray.map(
           element =>
             `${element.friendlyProductName} subscription (${
               element.subscriptionId
@@ -171,7 +145,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     );
 
     const productsAffected: ProductDescriptionListKeyValue[] = convertToDescriptionListData(
-      addressChangeAffectedInfo
+      addressChangeAffectedInfoArray
     );
 
     const subscriptionNames = Object.values(contactIdToArrayOfProductDetail)
