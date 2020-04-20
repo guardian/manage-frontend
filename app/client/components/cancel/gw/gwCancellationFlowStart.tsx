@@ -21,12 +21,12 @@ export const gwCancellationFlowStart = () => (
       Your support means The Guardian can remain editorially independent, free
       from the influence of billionaire owners and politicians. This enables us
       to give a voice to the voiceless, challenge the powerful and hold them to
-      account. Our readers’ support helps us to keep our journalism free of a
-      paywall, so it’s open and accessible to all.
+      account. The support from our readers helps us to keep our journalism free
+      of a paywall, so it’s open and accessible to all.
     </p>
 
     <p>
-      If you’re looking to take a break- it’s possible to take a suspension from
+      If you’re looking to take a break, it’s possible to take a suspension from
       your subscription. You can suspend up to 6 issues per year. This pauses
       delivery and you will receive the money for any suspended issues off your
       next bill.{" "}

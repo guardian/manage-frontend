@@ -16,7 +16,7 @@ import {
 } from "./cancellationContexts";
 
 type CombinedOutstandingCreditsResponse = [
-  OutstandingHolidayStopsResponse | undefined,
+  OutstandingHolidayStopsResponse,
   DeliveryRecordsResponse | undefined
 ];
 
@@ -81,7 +81,7 @@ const getContextualRestOfFlowRenderer = (
 ]: CombinedOutstandingCreditsResponse) => (
   <CancellationOutstandingCreditsContext.Provider
     value={{
-      holidayStops: outstandingHolidayStops?.publicationsToRefund,
+      holidayStops: outstandingHolidayStops.publicationsToRefund,
       deliveryCredits: outstandingDeliveryProblemCredits?.results
     }}
   >
