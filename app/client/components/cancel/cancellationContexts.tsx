@@ -1,4 +1,5 @@
 import React from "react";
+import { DeliveryRecordDetail } from "../delivery/records/deliveryRecordsApi";
 import { OutstandingHolidayStop } from "../holiday/holidayStopApi";
 import { OptionalCancellationReasonId } from "./cancellationReason";
 
@@ -21,7 +22,8 @@ export const CancellationPolicyContext: React.Context<OptionalCancellationPolicy
 export type OptionalOutstandingCredits =
   | undefined
   | {
-      holidayStops: OutstandingHolidayStop[];
+      holidayStops?: OutstandingHolidayStop[];
+      deliveryCredits?: DeliveryRecordDetail[];
     };
 export const CancellationOutstandingCreditsContext: React.Context<OptionalOutstandingCredits> = React.createContext(
   undefined as OptionalOutstandingCredits

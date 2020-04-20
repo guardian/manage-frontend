@@ -10,7 +10,7 @@ export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 export type ReFetch = () => void;
 
 export interface AsyncLoaderProps<T> extends LoadingProps {
-  readonly fetch: () => Promise<Response>;
+  readonly fetch: () => Promise<Response | Response[]>;
   readonly readerOnOK?: ReaderOnOK<T>; // json reader by default
   readonly shouldPreventRender?: (data: T) => boolean;
   readonly render: (data: T, reFetch: ReFetch) => React.ReactNode;
@@ -42,16 +42,11 @@ export default class AsyncLoader<
   public componentDidMount(): void {
     this.props
       .fetch()
-      .then(resp => {
-        const locationHeader = resp.headers.get("Location");
-        if (resp.status === 401 && locationHeader && window !== undefined) {
-          window.location.replace(locationHeader);
-          return Promise.resolve(null);
-        } else if (resp.ok) {
-          return this.readerOnOK(resp);
-        }
-        return this.handleError(`${resp.status} (${resp.statusText})`);
-      })
+      .then(resp =>
+        Array.isArray(resp)
+          ? Promise.all(resp.map(this.processResponse))
+          : this.processResponse(resp)
+      )
       .then(data => {
         if (
           !(
@@ -94,6 +89,23 @@ export default class AsyncLoader<
     }
     return <GenericErrorScreen loggingMessage={false} />;
   }
+
+  private processResponse = (
+    resp: Response,
+    index?: number,
+    allResponses?: Response[]
+  ) => {
+    const locationHeader = resp.headers.get("Location");
+    const allResponsesAreOK =
+      (allResponses || [resp]).filter(_ => !_.ok).length === 0;
+    if (resp.status === 401 && locationHeader && window !== undefined) {
+      window.location.replace(locationHeader);
+      return Promise.resolve(null);
+    } else if (allResponsesAreOK) {
+      return this.readerOnOK(resp);
+    }
+    throw new Error(`${resp.status} (${resp.statusText})`);
+  };
 
   private handleError(error: Error | ErrorEvent | string): void {
     if (

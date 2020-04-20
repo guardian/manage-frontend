@@ -15,9 +15,13 @@ export interface VoucherCancellationFlowEscalationCheckProps
 const generateEscalationCausesList = (_: {
   isEffectiveToday: boolean;
   hasOutstandingHolidayStops: boolean;
+  hasOutstandingDeliveryProblemCredits: boolean;
 }) => [
   ...(_.isEffectiveToday ? ["Requested Effective Today"] : []),
-  ...(_.hasOutstandingHolidayStops ? ["Outstanding Holiday Stop Credits"] : [])
+  ...(_.hasOutstandingHolidayStops ? ["Outstanding Holiday Stop Credits"] : []),
+  ...(_.hasOutstandingDeliveryProblemCredits
+    ? ["Outstanding Delivery Problem Credits"]
+    : [])
 ];
 
 export const CancellationFlowEscalationCheck = (
@@ -36,7 +40,12 @@ export const CancellationFlowEscalationCheck = (
                   cancellationPolicy === cancellationEffectiveToday,
                 hasOutstandingHolidayStops:
                   !!outstandingCredits &&
-                  outstandingCredits.holidayStops.length > 0
+                  !!outstandingCredits.holidayStops &&
+                  outstandingCredits.holidayStops.length > 0,
+                hasOutstandingDeliveryProblemCredits:
+                  !!outstandingCredits &&
+                  !!outstandingCredits.deliveryCredits &&
+                  outstandingCredits.deliveryCredits.length > 0
               })
             )
           }
