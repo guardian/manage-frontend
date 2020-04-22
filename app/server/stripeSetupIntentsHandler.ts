@@ -6,12 +6,36 @@ import {
   StripeSetupIntent
 } from "../shared/stripeSetupIntent";
 import { log } from "./log";
-import { stripeSetupIntentConfigPromise } from "./stripeSetupIntentConfig";
+import {
+  recaptchaConfigPromise,
+  stripeSetupIntentConfigPromise
+} from "./stripeSetupIntentConfig";
 
-export const stripeSetupIntentHandler = (
+export const stripeSetupIntentHandler = async (
   request: express.Request,
   response: express.Response
-) =>
+) => {
+  const recaptchaOneTimeToken = request.body.toString();
+  const recaptchaSecret = (await recaptchaConfigPromise)?.secretKey;
+  const recaptchaResult = await (
+    await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `secret=${recaptchaSecret}&response=${recaptchaOneTimeToken}`
+    })
+  ).json();
+
+  if (!recaptchaResult?.success) {
+    log.error("failed server-side reCaptcha verification", {
+      loggingCode: "RECAPTURE_FAILURE",
+      recaptchaResult
+    });
+    response.status(400).send("reCaptcha missing/failed");
+    return;
+  }
+
   stripeSetupIntentConfigPromise
     .then(stripePublicToSecretKeyMapping => {
       if (!stripePublicToSecretKeyMapping) {
@@ -32,7 +56,7 @@ export const stripeSetupIntentHandler = (
       }
 
       const httpMethod = request.method;
-      const outgoingURL = "https://api.stripe.com/v1/setup_intents";
+      const outgoingURL = "https://api.stripe.com/v1/setup_intents"; // using URL rather than stripe library due to missing type defs
       const requestBody = "usage=off_session";
 
       // tslint:disable-next-line:no-object-mutation
@@ -46,17 +70,14 @@ export const stripeSetupIntentHandler = (
         outgoingURL
       };
 
-      fetch(
-        outgoingURL, // using URL rather than stripe library due to missing type defs
-        {
-          method: httpMethod,
-          headers: {
-            Authorization: `Bearer ${stripeSecretKey}`,
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: requestBody
-        }
-      )
+      fetch(outgoingURL, {
+        method: httpMethod,
+        headers: {
+          Authorization: `Bearer ${stripeSecretKey}`,
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: requestBody
+      })
         .then(stripeResponse => {
           // tslint:disable-next-line:no-object-mutation
           response.locals.loggingDetail.status = stripeResponse.status;
@@ -87,6 +108,7 @@ export const stripeSetupIntentHandler = (
         .catch(handleTerminalError(response));
     })
     .catch(handleTerminalError(response));
+};
 
 const handleTerminalError = (response: express.Response) => (error: Error) => {
   Raven.captureException(error);

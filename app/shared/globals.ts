@@ -15,6 +15,7 @@ export interface Globals extends CommonGlobals {
   };
   abTest?: AbTest;
   identityDetails: IdentityDetails;
+  recaptchaPublicKey?: string;
 }
 
 declare global {

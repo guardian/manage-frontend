@@ -171,6 +171,14 @@ router.get(
     "subscriptionName"
   )
 );
+router.get(
+  "/delivery-records/:subscriptionName/cancel",
+  deliveryRecordsAPI(
+    "delivery-records/:subscriptionName/cancel",
+    "DELIVERY_RECORDS_CANCELLATION_PREVIEW",
+    "subscriptionName"
+  )
+);
 router.post(
   "/delivery-records/:subscriptionName",
   deliveryRecordsAPI(
