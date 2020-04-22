@@ -13,6 +13,7 @@ export interface CancellationReason {
 }
 
 export type CancellationReasonId =
+  | "mma_autorenew"
   | "mma_covid"
   | "mma_delivery_issue"
   | "mma_redemption_issue"

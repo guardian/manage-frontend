@@ -13,10 +13,11 @@ import {
 
 const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
 
-interface WindowWithStripe extends Window {
+declare let window: Window & {
   Stripe: any;
-}
-declare let window: WindowWithStripe;
+  grecaptcha: any;
+  v2ReCaptchaOnLoadCallback: () => void;
+};
 
 export interface CardInputFormProps {
   stripeApiKey: string;
@@ -28,6 +29,7 @@ export interface CardInputFormProps {
 
 export interface CardInputFormState extends StripeSetupIntentDetails {
   stripe?: stripe.Stripe;
+  didCompleteRecaptcha?: true;
 }
 
 export class CardInputForm extends React.Component<
@@ -47,41 +49,22 @@ export class CardInputForm extends React.Component<
       document.head.appendChild(script);
     }
 
-    fetch("/api/payment/card", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        [STRIPE_PUBLIC_KEY_HEADER]: this.props.stripeApiKey
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-
-      const locationHeaderValue = response.headers.get("Location");
-      if (response.status === 401 && locationHeaderValue) {
-        window.location.replace(locationHeaderValue);
-        return;
-      } else {
-        throw new Error(
-          `Failed to load SetupIntent : ${response.status} ${
-            response.statusText
-            } : ${response.text()}`
-        );
-      }
-    })
-    .then((setupIntent: StripeSetupIntent) =>
-      this.setState({ stripeSetupIntent: setupIntent })
-    )
-    .catch(error => {
-      Raven.captureException(error);
-      this.setState({ stripeSetupIntentError: error });
-    });
+    if (window.grecaptcha) {
+      this.renderReCaptcha();
+    } else {
+      const script = document.createElement("script");
+      script.setAttribute(
+        "src",
+        "https://www.google.com/recaptcha/api.js?onload=v2ReCaptchaOnLoadCallback&render=explicit"
+      );
+      // tslint:disable-next-line:no-object-mutation
+      window.v2ReCaptchaOnLoadCallback = this.renderReCaptcha;
+      document.head.appendChild(script);
+    }
   }
 
   public render(): JSX.Element {
-    return (
+    return this.state.didCompleteRecaptcha ? (
       <StripeProvider stripe={this.state.stripe || null}>
         <Elements
           fonts={[
@@ -96,8 +79,63 @@ export class CardInputForm extends React.Component<
           <InjectedStripeCardInputForm {...this.props} {...this.state} />
         </Elements>
       </StripeProvider>
+    ) : (
+      <div css={{ marginBottom: "30px" }}>
+        <p>
+          Before entering new card details please confirm you're not a robot
+          below to help us prevent card fraud. By proceeding, you agree to let
+          Google perform a security check to confirm you are a human. Please
+          refer to their Terms and Privacy policies.
+        </p>
+        <div id="recaptcha" />
+      </div>
     );
   }
+
+  private renderReCaptcha = () =>
+    window.grecaptcha.render("recaptcha", {
+      sitekey: window.guardian?.recaptchaPublicKey,
+      callback: (recaptchaToken: string) =>
+        // 1sec delay is so the user see's the green tick for a short period before proceeding
+        setTimeout(() => this.loadSetupIntent(recaptchaToken), 1000)
+    });
+
+  private loadSetupIntent = (recaptchaToken: string) => {
+    this.setState({ didCompleteRecaptcha: true });
+
+    fetch("/api/payment/card", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        [STRIPE_PUBLIC_KEY_HEADER]: this.props.stripeApiKey
+      },
+      body: recaptchaToken
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        const locationHeaderValue = response.headers.get("Location");
+        if (response.status === 401 && locationHeaderValue) {
+          window.location.replace(locationHeaderValue);
+          return;
+        } else {
+          throw new Error(
+            `Failed to load SetupIntent : ${response.status} ${
+              response.statusText
+            } : ${response.text()}`
+          );
+        }
+      })
+      .then((setupIntent: StripeSetupIntent) =>
+        this.setState({ stripeSetupIntent: setupIntent })
+      )
+      .catch(error => {
+        Raven.captureException(error);
+        this.setState({ stripeSetupIntentError: error });
+      });
+  };
 
   private updateStripeStateFromWindow = () =>
     this.setState({ stripe: window.Stripe(this.props.stripeApiKey) });
