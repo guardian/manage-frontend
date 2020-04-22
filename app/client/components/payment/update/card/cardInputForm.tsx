@@ -19,6 +19,12 @@ declare let window: Window & {
   v2ReCaptchaOnLoadCallback: () => void;
 };
 
+const hrefStyle = {
+  textDecoration: "underline",
+  color: "inherit",
+  ":visited": { color: "inherit" }
+};
+
 export interface CardInputFormProps {
   stripeApiKey: string;
   userEmail?: string;
@@ -83,9 +89,25 @@ export class CardInputForm extends React.Component<
       <div css={{ marginBottom: "30px" }}>
         <p>
           Before entering new card details please confirm you're not a robot
-          below to help us prevent card fraud. By proceeding, you agree to let
-          Google perform a security check to confirm you are a human. Please
-          refer to their Terms and Privacy policies.
+          below to help us prevent card fraud. By ticking this box, you agree to
+          let Google perform a security check to confirm you are a human. Please
+          refer to their{" "}
+          <a
+            href="https://policies.google.com/terms"
+            target="_blank"
+            css={hrefStyle}
+          >
+            Terms
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            css={hrefStyle}
+          >
+            Privacy
+          </a>{" "}
+          policies.
         </p>
         <div id="recaptcha" />
       </div>
