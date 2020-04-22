@@ -265,7 +265,10 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
     <MembersDataApiItemContext.Consumer>
       {productDetail =>
         isProduct(productDetail) ? (
-          flowWrapper(productDetail)(
+          flowWrapper(
+            productDetail,
+            props.productType
+          )(
             <CancellationReasonContext.Provider
               value={props.path as CancellationReasonId}
             >
