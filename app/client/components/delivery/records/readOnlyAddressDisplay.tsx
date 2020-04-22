@@ -62,27 +62,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
           `}
         >
           <DeliveryAddressDisplay {...props.address} />
-        </dd>
-      </div>
-      <div
-        css={css`
-          display: table-row;
-        `}
-      >
-        <dt
-          css={css`
-            ${dtCss()}
-          `}
-        >
-          Instructions:
-        </dt>
-        <dd
-          css={css`
-            ${ddCss}
-          `}
-        >
-          {props.instructions}
-          {props.showEditButton && (
+          {!props.instructions && props.showEditButton && (
             <Button
               onClick={() => props.editButtonCallback?.()}
               css={css`
@@ -102,6 +82,46 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
           )}
         </dd>
       </div>
+      {props.instructions && (
+        <div
+          css={css`
+            display: table-row;
+          `}
+        >
+          <dt
+            css={css`
+              ${dtCss()}
+            `}
+          >
+            Instructions:
+          </dt>
+          <dd
+            css={css`
+              ${ddCss}
+            `}
+          >
+            {props.instructions}
+            {props.showEditButton && (
+              <Button
+                onClick={() => props.editButtonCallback?.()}
+                css={css`
+                  display: block;
+                  margin-top: ${space[5]}px;
+                  color: ${palette.brand.main};
+                  background-color: ${palette.brand.faded};
+                  :hover {
+                    background-color: ${Color(palette.brand.faded, "hex")
+                      .darken(0.1)
+                      .string()};
+                  }
+                `}
+              >
+                Update
+              </Button>
+            )}
+          </dd>
+        </div>
+      )}
     </dl>
   );
 };

@@ -4,9 +4,15 @@ import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
-import { capitalize } from "lodash";
 import moment from "moment";
-import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState
+} from "react";
 import {
   DeliveryAddress,
   isProduct,
@@ -43,6 +49,8 @@ import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
+  enableDeliveryInstructions: boolean;
+  setAddressValidationState: Dispatch<SetStateAction<boolean>>;
 }
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
@@ -78,8 +86,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     boolean
   >(false);
 
-  const enableDeilveryInstructions = true;
-
   const [addressChangeInformation, setAddressChangeInformation] = useState<
     string
   >();
@@ -104,6 +110,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     } as FormValidationResponse);
 
     if (isFormValidResponse.isValid && acknowledgementChecked) {
+      props.setAddressValidationState(true);
       setStatus(Status.CONFIRMATION);
     } else {
       setStatus(Status.VALIDATION_ERROR);
@@ -212,7 +219,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 status === Status.VALIDATION_ERROR &&
                 !formErrors.addressLine1?.isValid
               }
-              errorMessage={"address line 1 error message"}
+              errorMessage={formErrors.addressLine1?.message}
             />
             <Input
               label="Address line 2"
@@ -239,7 +246,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               inErrorState={
                 status === Status.VALIDATION_ERROR && !formErrors.town?.isValid
               }
-              errorMessage={"address town error state messge"}
+              errorMessage={formErrors.town?.message}
             />
             <Input
               label="County or State"
@@ -267,7 +274,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 status === Status.VALIDATION_ERROR &&
                 !formErrors.postcode?.isValid
               }
-              errorMessage={"address postcode error message"}
+              errorMessage={formErrors.postcode?.message}
             />
             <Select
               label={"Country"}
@@ -287,9 +294,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 status === Status.VALIDATION_ERROR &&
                 !formErrors.country?.isValid
               }
-              errorMessage={"address "}
+              errorMessage={formErrors.country?.message}
             />
-            {enableDeilveryInstructions && (
+            {props.enableDeliveryInstructions && (
               <label
                 css={css`
                   display: block;
@@ -378,6 +385,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             )}
           </fieldset>
           <CheckboxGroup
+            css={css`
+              margin-top: ${space[5]}px;
+            `}
             name="instructions-checkbox"
             error={
               status === Status.VALIDATION_ERROR && !acknowledgementChecked
@@ -418,10 +428,14 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 }
               `}
             >
-              Submit
+              Save address
             </Button>
             <Button
               onClick={() => {
+                deliveryAddressContext.setAddress?.(
+                  props.productDetail.subscription.deliveryAddress
+                );
+                props.setAddressValidationState(true);
                 setStatus(Status.READ_ONLY);
               }}
               css={css`
@@ -433,7 +447,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 }
               `}
             >
-              Cancel
+              Discard changes
             </Button>
           </div>
         </form>
@@ -480,37 +494,35 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     );
   };
 
-  const renderConfirmation = () => {
-    const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-      props.productDetail
-    );
-    const friendlyProductName = capitalize(
-      productType?.shortFriendlyName || productType?.friendlyName
-    );
-    return (
-      <>
-        <div
-          css={css`
-            padding: ${space[3]}px;
-            ${minWidth.tablet} {
-              padding: ${space[5]}px;
-            }
+  const renderConfirmation = () => (
+    <>
+      <div
+        css={css`
+          padding: ${space[3]}px;
+          ${minWidth.tablet} {
+            padding: ${space[5]}px;
+          }
+        `}
+      >
+        <SuccessMessage
+          additionalCss={css`
+            margin-bottom: 0;
           `}
-        >
-          <SuccessMessage
-            additionalCss={css`
-              margin-bottom: 0;
-            `}
-            message={`We have successfully updated your delivery details for your ${friendlyProductName}. You will shortly receive a confirmation email.`}
-          />
-        </div>
-        <ReadOnlyAddressDisplay
-          address={newAddress}
-          instructions={deliveryAddressContext.address?.instructions}
+          message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
+            deliveryAddressContext.productsAffected.length > 1 &&
+            "s"}. You will shortly receive a confirmation email.`}
         />
-      </>
-    );
-  };
+      </div>
+      <ReadOnlyAddressDisplay
+        address={newAddress}
+        instructions={
+          (props.enableDeliveryInstructions &&
+            deliveryAddressContext.address?.instructions) ||
+          undefined
+        }
+      />
+    </>
+  );
 
   if (
     status === Status.EDIT ||
@@ -555,9 +567,16 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   return (
     <ReadOnlyAddressDisplay
       showEditButton
-      editButtonCallback={() => setStatus(Status.EDIT)}
+      editButtonCallback={() => {
+        props.setAddressValidationState(false);
+        setStatus(Status.EDIT);
+      }}
       address={newAddress}
-      instructions={deliveryAddressContext.address?.instructions}
+      instructions={
+        (props.enableDeliveryInstructions &&
+          deliveryAddressContext.address?.instructions) ||
+        undefined
+      }
     />
   );
 };

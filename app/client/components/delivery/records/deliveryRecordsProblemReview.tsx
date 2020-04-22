@@ -18,7 +18,6 @@ import {
 } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
-import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -33,11 +32,9 @@ import {
 import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
-  DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
-import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import { UserPhoneNumber } from "./userPhoneNumber";
 
 export const DeliveryRecordsProblemReview = (
@@ -124,7 +121,6 @@ const DeliveryRecordsProblemReviewFC = (
   const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
     false
   );
-  const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
 
   const dtCss: string = `
     font-weight: bold;
@@ -231,7 +227,7 @@ const DeliveryRecordsProblemReviewFC = (
                   }
                 `}
               >
-                Step 3. Please review your report details
+                Step 4. Please review your report details
               </h2>
               {deliveryProblemContext && (
                 <dl
@@ -406,36 +402,6 @@ const DeliveryRecordsProblemReviewFC = (
               ) : (
                 <p>There aren't any delivery records to show you yet</p>
               )}
-              {deliveryAddressContext.address && (
-                <ReadOnlyAddressDisplay
-                  address={deliveryAddressContext.address}
-                  instructions={deliveryAddressContext.address.instructions}
-                />
-              )}
-              {deliveryAddressContext.productsAffected &&
-                deliveryAddressContext.productsAffected?.length > 0 && (
-                  <div
-                    css={css`
-                      padding: ${space[3]}px;
-                      ${minWidth.tablet} {
-                        padding: ${space[5]}px;
-                      }
-                    `}
-                  >
-                    <p
-                      css={css`
-                        ${textSans.medium()}
-                      `}
-                    >
-                      Your change of address will affect the following print
-                      subscriptions:
-                    </p>
-                    <ProductDescriptionListTable
-                      content={deliveryAddressContext.productsAffected}
-                      seperateEachRow
-                    />
-                  </div>
-                )}
               {deliveryProblemContext &&
               deliveryProblemContext.showProblemCredit &&
               props.totalCreditAmount ? (

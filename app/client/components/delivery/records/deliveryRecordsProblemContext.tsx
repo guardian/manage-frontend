@@ -48,6 +48,7 @@ interface DeliveryRecordsAddressContextInterface {
   setProductsAffected?: Dispatch<
     SetStateAction<ProductDescriptionListKeyValue[]>
   >;
+  enableDeliveryInstructions?: boolean;
 }
 
 export const DeliveryRecordsAddressContext = createContext<

@@ -1,13 +1,13 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
+import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -138,6 +138,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [step2FormValidationDetails, setStep2FormValidationDetails] = useState<
     Step1FormValidationDetails
   >({ isValid: true });
+  const [step3formValidationState, setStep3formValidationState] = useState<
+    boolean
+  >(false);
+  const [step3FormValidationDetails, setStep3FormValidationDetails] = useState<
+    Step1FormValidationDetails
+  >({ isValid: true });
+  const [addressInValidState, setAddressValidationState] = useState<boolean>(
+    true
+  );
   const [deliveryProblem, setDeliveryProblem] = useState<
     DeliveryRecordsProblemType
   >();
@@ -158,6 +167,17 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [productsAffected, setProductsAffected] = useState<
     ProductDescriptionListKeyValue[]
   >([]);
+  useEffect(() => {
+    if (addressInValidState) {
+      setStep3FormValidationDetails({
+        isValid: addressInValidState
+      });
+      setStep3formValidationState(!addressInValidState);
+    }
+  }, [addressInValidState]);
+  const productType = props.routeableStepProps.productType;
+  const enableDeliveryInstructions = !!productType?.delivery
+    ?.enableDeliveryInstructionsUpdate;
   const step1FormRadioOptionCallback = (value: string) =>
     setChoosenDeliveryProblem(value);
   const step1FormUpdateCallback = (isValid: boolean, message?: string) => {
@@ -194,8 +214,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const totalPages = Math.ceil(props.data.results.length / resultsPerPage);
   const scrollToTop = () => window.scrollTo(0, 0);
   const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.READ_ONLY);
-
-  const productType = props.routeableStepProps.productType;
 
   const filterData = (overridePageStatusCheck?: boolean) => {
     if (
@@ -281,7 +299,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           address,
           setAddress,
           productsAffected,
-          setProductsAffected
+          setProductsAffected,
+          enableDeliveryInstructions
         }}
       >
         <WizardStep
@@ -576,10 +595,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       }
                     `}
                   >
-                    Step 3. Check your current delivery address and instruction
+                    Step 3. Check your current delivery address
+                    {enableDeliveryInstructions && " and instructions"}
                   </h1>
                   {props.productDetail.subscription.deliveryAddress && (
-                    <DeliveryAddressStep productDetail={props.productDetail} />
+                    <DeliveryAddressStep
+                      productDetail={props.productDetail}
+                      enableDeliveryInstructions={enableDeliveryInstructions}
+                      setAddressValidationState={setAddressValidationState}
+                    />
                   )}
                 </section>
                 <div
@@ -587,11 +611,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     margin-top: ${space[6]}px;
                   `}
                 >
-                  {(step1formValidationState || step2formValidationState) &&
+                  {(step1formValidationState ||
+                    step2formValidationState ||
+                    step3formValidationState) &&
                     ((!step1FormValidationDetails.isValid &&
                       step1FormValidationDetails.message) ||
                       (!step2FormValidationDetails.isValid &&
-                        step2FormValidationDetails.message)) && (
+                        step2FormValidationDetails.message) ||
+                      (!step3FormValidationDetails.isValid &&
+                        step3FormValidationDetails.message)) && (
                       <dl
                         css={css`
                           position: relative;
@@ -615,7 +643,11 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                             font-weight: bold;
                           `}
                         >
-                          Some information is missing
+                          {!step3FormValidationDetails.isValid &&
+                          step1FormValidationDetails.isValid &&
+                          step2FormValidationDetails.isValid
+                            ? "Unfinished changes"
+                            : "Some information is missing"}
                         </dt>
                         <dd
                           css={css`
@@ -637,6 +669,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                               step2FormValidationDetails.message && (
                                 <li>{step2FormValidationDetails.message}</li>
                               )}
+                            {!step3FormValidationDetails.isValid &&
+                              step3FormValidationDetails.message && (
+                                <li>{step3FormValidationDetails.message}</li>
+                              )}
                           </ul>
                         </dd>
                       </dl>
@@ -651,7 +687,18 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                           "Step 2: Please select an affected delivery record."
                       });
                       setStep2formValidationState(!isStep2Valid);
-                      if (step1FormValidationDetails.isValid && isStep2Valid) {
+                      const isStep3Valid = addressInValidState;
+                      setStep3FormValidationDetails({
+                        isValid: isStep3Valid,
+                        message:
+                          "Step 3: Please save or discard your delivery address changes."
+                      });
+                      setStep3formValidationState(!isStep3Valid);
+                      if (
+                        step1FormValidationDetails.isValid &&
+                        isStep2Valid &&
+                        isStep3Valid
+                      ) {
                         trackEvent({
                           eventCategory: "delivery-problem",
                           eventAction: "review_report_button_click",

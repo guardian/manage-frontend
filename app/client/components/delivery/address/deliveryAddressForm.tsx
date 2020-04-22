@@ -266,34 +266,6 @@ const FormContainer = (props: FormContainerProps) => {
     instructions
   };
 
-  // const addressChangeAffectedInfo: SubscriptionEffectiveData[] = Object.values(
-  //   props.contactIdToArrayOfProductDetail
-  // )
-  //   .flatMap<ProductDetail>(flattenEquivalent)
-  //   .map(productDetail => ({
-  //     productDetail,
-  //     productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-  //       productDetail
-  //     )
-  //   }))
-  //   .filter(_ => _.productType && _.productType.delivery?.showAddress)
-  //   .map(({ productDetail, productType }) => {
-  //     const friendlyProductName = capitalize(
-  //       productType?.shortFriendlyName || productType?.friendlyName
-  //     )
-  //       .replace("subscription", "")
-  //       .trim();
-  //     const effectiveDate = productDetail.subscription
-  //       .deliveryAddressChangeEffectiveDate
-  //       ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
-  //       : undefined;
-  //     return {
-  //       friendlyProductName,
-  //       subscriptionId: productDetail.subscription.subscriptionId,
-  //       effectiveDate
-  //     };
-  //   });
-
   return (
     <ProductName.Provider value={props.productName}>
       <NewDeliveryAddressContext.Provider
