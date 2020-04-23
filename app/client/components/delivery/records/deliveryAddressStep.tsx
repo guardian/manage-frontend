@@ -278,12 +278,20 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             />
             <Select
               label={"Country"}
-              options={COUNTRIES}
+              options={COUNTRIES.map(country => {
+                return {
+                  name: country.name,
+                  value: country.name
+                };
+              })}
               width={30}
               additionalCSS={css`
                 margin-top: 14px;
               `}
-              value={newAddress.country}
+              value={
+                COUNTRIES.find(country => newAddress.country === country.iso)
+                  ?.name || newAddress.country
+              }
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,

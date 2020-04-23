@@ -7,6 +7,7 @@ import {
 } from "../../../../shared/productResponse";
 import { ProductUrlPart } from "../../../../shared/productTypes";
 import { LinkButton } from "../../buttons";
+import { COUNTRIES } from "../../identity/models";
 
 interface DeliveryAddressDisplayProps extends DeliveryAddress {
   allProductDetails?: ProductDetail[];
@@ -38,7 +39,10 @@ export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => {
       {props.town && <span>{props.town}</span>}
       {props.region && <span>{props.region}</span>}
       <span>{props.postcode}</span>
-      <span>{props.country}</span>
+      <span>
+        {COUNTRIES.find(country => props.country === country.iso)?.name ||
+          props.country}
+      </span>
       {props.withEditButton && (
         <LinkButton
           text={"Update delivery details"}
