@@ -1,17 +1,14 @@
 module.exports = {
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  testResultsProcessor: "jest-teamcity-reporter",
-  snapshotSerializers: ["jest-emotion"],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testResultsProcessor: 'jest-teamcity-reporter',
+  snapshotSerializers: ['jest-emotion'],
   globals: {
-    "ts-jest": {
-      babelConfig: require("./webpack.common").babelCommon
-    }
+    'ts-jest': {
+      babelConfig: require('./webpack.common').babelCommon,
+    },
   },
-  moduleNameMapper: {
-    "^@guardian/src-foundations/(.*)$": "@guardian/src-foundations/$1/cjs"
-  }
 };
