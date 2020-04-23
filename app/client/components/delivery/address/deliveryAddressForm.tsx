@@ -199,8 +199,14 @@ const FormContainer = (props: FormContainerProps) => {
   const [postcode, setPostcode] = useState(
     props.existingDeliveryAddress?.postcode || ""
   );
+
   const [country, setCountry] = useState(
-    props.existingDeliveryAddress?.country || ""
+    props.existingDeliveryAddress?.country
+      ? COUNTRIES.find(
+          countryObj =>
+            props.existingDeliveryAddress?.country === countryObj.iso
+        )?.name || props.existingDeliveryAddress?.country
+      : ""
   );
   const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
     false
