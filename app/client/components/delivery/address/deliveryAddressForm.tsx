@@ -30,8 +30,6 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { Button } from "@guardian/src-button";
 import { palette } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-// @ts-ignore
-import { SvgArrowRightStraight } from "@guardian/src-svgs";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
@@ -563,7 +561,12 @@ const Form = (props: FormProps) => {
           />
           <Select
             label={"Country"}
-            options={COUNTRIES}
+            options={COUNTRIES.map(country => {
+              return {
+                name: country.name,
+                value: country.name
+              };
+            })}
             width={30}
             additionalCSS={css`
               margin-top: 14px;
