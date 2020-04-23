@@ -1,11 +1,19 @@
+import { SerializedStyles } from "@emotion/core";
 import React from "react";
 
 interface ErrorIconProps {
-  fill?:string;
+  fill?: string;
+  additionalCss?: SerializedStyles;
 }
 
 export const ErrorIcon = (props: ErrorIconProps) => (
-  <svg width="21" height="17" viewBox="0 0 21 17" fill="none">
+  <svg
+    width="21"
+    height="17"
+    viewBox="0 0 21 17"
+    fill="none"
+    css={props.additionalCss}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import {
   DeliveryAddress,
@@ -21,14 +23,15 @@ export interface DeliveryAddressState {
 export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => {
   return (
     <div
-      css={{
-        "& span": {
-          display: "block",
-          ":last-of-type": {
-            marginBottom: "1rem"
+      css={css`
+        span {
+          display: block;
+          & :last-of-type {
+            margin-bottom: 1rem;
           }
         }
-      }}
+        ${textSans.medium()}
+      `}
     >
       <span>{props.addressLine1}</span>
       {props.addressLine2 && <span>{props.addressLine2}</span>}
