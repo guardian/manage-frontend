@@ -2,8 +2,8 @@ import { css, SerializedStyles } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import { minWidth } from "../../../styles/breakpoints";
-import { TickInCircle } from "../../svgs/tickInCircle";
+import { minWidth } from "../styles/breakpoints";
+import { TickInCircle } from "./svgs/tickInCircle";
 
 interface Step {
   title: string;

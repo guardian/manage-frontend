@@ -18,6 +18,7 @@ import {
 } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   visuallyNavigateToParent,
@@ -187,6 +188,16 @@ const DeliveryRecordsProblemReviewFC = (
             <h1>Delivery history</h1>
           </PageHeaderContainer>
           <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            <ProgressIndicator
+              steps={[
+                { title: "Update" },
+                { title: "Review", isCurrentStep: true },
+                { title: "Confirmation" }
+              ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
+            />
             <h2
               css={css`
                 border-top: 1px solid ${palette.neutral["86"]};
@@ -216,7 +227,7 @@ const DeliveryRecordsProblemReviewFC = (
                   }
                 `}
               >
-                Step 3. Please review your report details
+                Step 4. Please review your report details
               </h2>
               {deliveryProblemContext && (
                 <dl

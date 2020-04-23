@@ -42,6 +42,7 @@ import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   AddressChangedInformationContext,
@@ -53,7 +54,6 @@ import {
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
-import { ProgressIndicator } from "./progressIndicator";
 import { Select } from "./select";
 
 export interface ContactIdToArrayOfProductDetail {
@@ -85,6 +85,35 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
     }),
     {} as ContactIdToArrayOfProductDetail
   );
+
+export const addressChangeAffectedInfo = (
+  contactIdToArrayOfProductDetail: ContactIdToArrayOfProductDetail
+): SubscriptionEffectiveData[] =>
+  Object.values(contactIdToArrayOfProductDetail)
+    .flatMap<ProductDetail>(flattenEquivalent)
+    .map(productDetail => ({
+      productDetail,
+      productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+        productDetail
+      )
+    }))
+    .filter(_ => _.productType && _.productType.delivery?.showAddress)
+    .map(({ productDetail, productType }) => {
+      const friendlyProductName = capitalize(
+        productType?.shortFriendlyName || productType?.friendlyName
+      )
+        .replace("subscription", "")
+        .trim();
+      const effectiveDate = productDetail.subscription
+        .deliveryAddressChangeEffectiveDate
+        ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
+        : undefined;
+      return {
+        friendlyProductName,
+        subscriptionId: productDetail.subscription.subscriptionId,
+        effectiveDate
+      };
+    });
 
 interface FormStates {
   INIT: string;
@@ -235,34 +264,6 @@ const FormContainer = (props: FormContainerProps) => {
     instructions
   };
 
-  const addressChangeAffectedInfo: SubscriptionEffectiveData[] = Object.values(
-    props.contactIdToArrayOfProductDetail
-  )
-    .flatMap<ProductDetail>(flattenEquivalent)
-    .map(productDetail => ({
-      productDetail,
-      productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-        productDetail
-      )
-    }))
-    .filter(_ => _.productType && _.productType.delivery?.showAddress)
-    .map(({ productDetail, productType }) => {
-      const friendlyProductName = capitalize(
-        productType?.shortFriendlyName || productType?.friendlyName
-      )
-        .replace("subscription", "")
-        .trim();
-      const effectiveDate = productDetail.subscription
-        .deliveryAddressChangeEffectiveDate
-        ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
-        : undefined;
-      return {
-        friendlyProductName,
-        subscriptionId: productDetail.subscription.subscriptionId,
-        effectiveDate
-      };
-    });
-
   return (
     <ProductName.Provider value={props.productName}>
       <NewDeliveryAddressContext.Provider
@@ -283,7 +284,9 @@ const FormContainer = (props: FormContainerProps) => {
         }}
       >
         <AddressChangedInformationContext.Provider
-          value={addressChangeAffectedInfo}
+          value={addressChangeAffectedInfo(
+            props.contactIdToArrayOfProductDetail
+          )}
         >
           <ContactIdContext.Provider
             value={Object.keys(props.contactIdToArrayOfProductDetail)[0]}
@@ -389,7 +392,9 @@ const FormContainer = (props: FormContainerProps) => {
                         {...defaultFormProps}
                         routeableStepProps={props.routeableStepProps}
                         warning={convertToDescriptionListData(
-                          addressChangeAffectedInfo
+                          addressChangeAffectedInfo(
+                            props.contactIdToArrayOfProductDetail
+                          )
                         )}
                         enableDeilveryInstructions={
                           props.enableDeilveryInstructions
@@ -492,7 +497,7 @@ const Form = (props: FormProps) => {
             position: "relative",
             marginBottom: `${space[5]}px`,
             label: {
-              marginTop: "10px"
+              marginTop: `${space[3]}px`
             }
           }}
         >
