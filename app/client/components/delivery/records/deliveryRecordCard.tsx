@@ -17,6 +17,7 @@ interface DeliveryRecordCardProps {
   listIndex: number;
   pageStatus: PageStatus;
   deliveryProblemMap: DeliveryProblemMap;
+  productName?: string;
   recordCurrency?: string;
   isChecked?: boolean;
   addRecordToDeliveryProblem?: (id: string) => void;
@@ -194,6 +195,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             isDispatched={!!props.deliveryRecord.addressLine1}
             isHolidayStop={!!props.deliveryRecord.hasHolidayStop}
             bulkSuspensionReason={props.deliveryRecord.bulkSuspensionReason}
+            productName={props.productName}
             isChangedAddress={!!props.deliveryRecord.isChangedAddress}
             isChangedDeliveryInstruction={
               !!props.deliveryRecord.isChangedDeliveryInstruction
