@@ -193,6 +193,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
           <RecordStatus
             isDispatched={!!props.deliveryRecord.addressLine1}
             isHolidayStop={!!props.deliveryRecord.hasHolidayStop}
+            bulkSuspensionReason={props.deliveryRecord.bulkSuspensionReason}
             isChangedAddress={!!props.deliveryRecord.isChangedAddress}
             isChangedDeliveryInstruction={
               !!props.deliveryRecord.isChangedDeliveryInstruction

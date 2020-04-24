@@ -5,11 +5,13 @@ import React from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { HolidayStopIcon } from "../../svgs/holidayStopIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
+import { SuspensionIcon } from "../../svgs/suspensionIcon";
 import { TickInCircle } from "../../svgs/tickInCircle";
 
 interface RecordStatusProps {
   isDispatched: boolean;
   isHolidayStop: boolean;
+  bulkSuspensionReason?: string;
   isChangedAddress: boolean;
   isChangedDeliveryInstruction: boolean;
   isFutureRecord: boolean;
@@ -88,9 +90,15 @@ export const RecordStatus = (props: RecordStatusProps) => {
               left: 0;
             `}
           >
-            <HolidayStopIcon />
+            {props.bulkSuspensionReason ? (
+              <SuspensionIcon />
+            ) : (
+              <HolidayStopIcon />
+            )}
           </i>
-          Holiday stop
+          {props.bulkSuspensionReason
+            ? `Imposed suspension (${props.bulkSuspensionReason})`
+            : "Holiday stop"}
         </span>
       )}
       {!props.isHolidayStop && changesMessage && (
