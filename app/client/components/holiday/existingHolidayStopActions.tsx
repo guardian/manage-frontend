@@ -44,6 +44,19 @@ export class ExistingHolidayStopActions extends React.Component<
       );
     }
 
+    if (this.props.bulkSuspensionReason) {
+      return (
+        <span css={{ maxWidth: "225px" }}>
+          Imposed suspension ({this.props.bulkSuspensionReason})
+          <br />
+          <small>
+            This does not count towards your annual limit, but you will still
+            receive credit.
+          </small>
+        </span>
+      );
+    }
+
     if (
       this.props.reloadParent &&
       this.props.mutabilityFlags &&

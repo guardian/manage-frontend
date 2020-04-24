@@ -187,8 +187,8 @@ export const SummaryTable = (props: SummaryTableProps) => {
       >
         <tbody>
           <tr>
-            <th>Duration</th>
-            <th css={{ minWidth: "250px" }}>
+            <th css={{ minWidth: "225px" }}>Duration</th>
+            <th css={{ minWidth: "225px" }}>
               {props.alternateSuspendedColumnHeading || "Suspended"}
             </th>
             {isOperatingOnNewHolidayStop ? (
