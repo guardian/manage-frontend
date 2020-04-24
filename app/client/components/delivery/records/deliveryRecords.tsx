@@ -333,9 +333,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               `}
             >
               <ProductDetailsTable
-                productName={capitalize(
-                  productType.shortFriendlyName || productType.friendlyName
-                )}
+                productName={capitalize(productType.friendlyName)}
                 subscriptionId={props.productDetail.subscription.subscriptionId}
                 isGift={isGift(props.productDetail.subscription)}
               />
@@ -562,6 +560,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   }
                   recordCurrency={props.subscriptionCurrency}
                   isChecked={selectedProblemRecords.includes(deliveryRecord.id)}
+                  productName={capitalize(
+                    productType.shortFriendlyName || productType.friendlyName
+                  )}
                 />
               )
             )}

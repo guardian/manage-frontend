@@ -44,6 +44,7 @@ export interface DeliveryRecordDetail {
   addressCountry: string;
   addressPostcode: string;
   hasHolidayStop: boolean;
+  bulkSuspensionReason?: string;
   id: string;
   deliveryInstruction?: string;
   isChangedDeliveryInstruction?: boolean;
