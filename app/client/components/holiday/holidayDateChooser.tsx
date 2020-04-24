@@ -37,6 +37,7 @@ import {
   HolidayStopDetail,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
+  isNotBulkSuspension,
   isNotWithdrawn,
   IssuesImpactedPerYear,
   PotentialHolidayStopsResponse,
@@ -182,6 +183,7 @@ export class HolidayDateChooser extends React.Component<
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
                   holidayStopsResponse.existing
                     .filter(isNotWithdrawn)
+                    .filter(isNotBulkSuspension)
                     .filter(_ => _.id !== existingHolidayStopToAmendId)
                     .flatMap(_ => _.publicationsImpacted),
                   renewalDateMoment
@@ -190,6 +192,7 @@ export class HolidayDateChooser extends React.Component<
                 const allIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
                   holidayStopsResponse.existing
                     .filter(isNotWithdrawn)
+                    .filter(isNotBulkSuspension)
                     .flatMap(_ => _.publicationsImpacted),
                   renewalDateMoment
                 );
