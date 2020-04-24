@@ -64,7 +64,9 @@ const server = merge(common, {
     __dirname: false,
     __filename: false
   },
-  externals: nodeExternals(),
+  externals: nodeExternals({
+    whitelist: [/^@guardian\/src-foundations/]
+  }),
   module: {
     rules: [
       {
