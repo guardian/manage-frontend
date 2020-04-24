@@ -76,7 +76,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
             {props.isFutureRecord ? "Scheduled" : "Dispatched"}
           </span>
         )}
-      {!props.deliveryProblem && props.isHolidayStop && (
+      {props.isHolidayStop && (
         <>
           <span
             css={css`
