@@ -300,13 +300,15 @@ export class FlowStartMultipleProductDetailHandler extends React.Component<
     return (
       <div
         css={
-          !this.props.hasLeftNav && {
-            padding: "0 0.625rem",
+          !this.props.hasLeftNav
+            ? {
+                padding: "0 0.625rem",
 
-            [minWidth.tablet]: {
-              padding: "0 1.25rem"
-            }
-          }
+                [minWidth.tablet]: {
+                  padding: "0 1.25rem"
+                }
+              }
+            : undefined
         }
       >
         {!this.props.hideHeading && (
