@@ -107,8 +107,8 @@ export const RecordStatus = (props: RecordStatusProps) => {
           {props.bulkSuspensionReason && props.productName && (
             <p>
               Unfortunately due to {props.bulkSuspensionReason}, we are unable
-              to deliver to your {props.productName}. You will be credited for
-              this issue off your next payment.
+              to deliver your {props.productName}. You will be credited for this
+              issue off the subsequent payment.
             </p>
           )}
         </>
