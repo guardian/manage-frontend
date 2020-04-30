@@ -406,6 +406,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             <Checkbox
               value="acknowledged"
               label="I understand that this address change will affect the following subscriptions"
+              checked={acknowledgementChecked}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setAcknowledgementState(e.target.checked);
               }}
