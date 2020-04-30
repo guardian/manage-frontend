@@ -115,7 +115,7 @@ const client = merge(common, {
             [
               "@babel/env",
               {
-                useBuiltIns: "usage"
+                useBuiltIns: "entry"
               }
             ],
             ...babelCommon.presets

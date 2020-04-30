@@ -14,9 +14,6 @@ import { Button } from "./buttons";
 
 const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
 
-// this forces Babel to polyfill Number.isInteger (which is used in onefinestay/react-daterange-picker")
-Number.isInteger(1);
-
 const iconDayPseudoAfterCss = (dayOfWeek: number) => `
 .DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${dayOfWeek})::after {
   content: "";
