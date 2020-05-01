@@ -687,6 +687,7 @@ const Form = (props: FormProps) => {
           <Checkbox
             value="acknowledged"
             label="I understand that this address change will affect the following subscriptions"
+            checked={props.acknowledgementChecked}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               props.setAcknowledgementState(e.target.checked);
             }}
