@@ -4,6 +4,7 @@ import parse from "url-parse";
 import { OphanProduct } from "../../shared/ophanTypes";
 import { ProductDetail } from "../../shared/productResponse";
 import { ProductType } from "../../shared/productTypes";
+import { isInAccountOverviewTest } from "../accountOverviewRelease";
 
 declare global {
   interface Window {
@@ -23,6 +24,10 @@ export interface Event {
   eventLabel?: string;
   eventValue?: number;
 }
+
+const MMA_AB_TEST_DIMENSION_VALUE = isInAccountOverviewTest()
+  ? "IN-ACCOUNT-OVERVIEW_TEST"
+  : "NOT-IN-ACCOUNT-OVERVIEW_TEST";
 
 export const trackEvent = (
   { eventCategory, eventAction, product, eventLabel, eventValue }: Event,
@@ -53,7 +58,8 @@ export const trackEvent = (
           labels: [
             eventCategory.toUpperCase(),
             eventAction.toUpperCase(),
-            ...(eventLabel ? [eventLabel.toUpperCase()] : [])
+            ...(eventLabel ? [eventLabel.toUpperCase()] : []),
+            MMA_AB_TEST_DIMENSION_VALUE
           ]
         },
         action: "VIEW",
@@ -107,6 +113,7 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
       if (this.INTCMP) {
         window.ga("set", "dimension12", this.INTCMP);
       }
+      window.ga("set", "dimension29", MMA_AB_TEST_DIMENSION_VALUE);
 
       new MutationObserver(applyAnyOptimiseExperiments).observe(document.body, {
         attributes: false,
@@ -146,7 +153,8 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
               window.ga("send", "pageview", {
                 location: location.href,
                 page: location.pathname + location.search,
-                dimension12: this.INTCMP
+                dimension12: this.INTCMP,
+                dimension29: MMA_AB_TEST_DIMENSION_VALUE
               });
               // TODO add ophan pageViewId as a GA dimension
               applyAnyOptimiseExperiments();

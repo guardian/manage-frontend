@@ -5,6 +5,7 @@ import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
 } from "../shared/stripeSetupIntent";
+import { isInAccountOverviewTest } from "./accountOverviewRelease";
 import { log } from "./log";
 import {
   recaptchaConfigPromise,
@@ -30,6 +31,7 @@ export const stripeSetupIntentHandler = async (
   if (!recaptchaResult?.success) {
     log.error("failed server-side reCaptcha verification", {
       loggingCode: "RECAPTURE_FAILURE",
+      isInAccountOverviewTest: isInAccountOverviewTest(response),
       recaptchaResult
     });
     response.status(400).send("reCaptcha missing/failed");
@@ -62,6 +64,7 @@ export const stripeSetupIntentHandler = async (
       // tslint:disable-next-line:no-object-mutation
       response.locals.loggingDetail = {
         loggingCode: "STRIPE_SETUP_INTENT",
+        isInAccountOverviewTest: isInAccountOverviewTest(response),
         stripePublicKey, // this will indicate 'test mode' vs 'live'
         httpMethod,
         identityID: response.locals.identity && response.locals.identity.userId,
