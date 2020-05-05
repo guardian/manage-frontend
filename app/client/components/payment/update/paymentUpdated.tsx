@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import {
   augmentInterval,
@@ -19,8 +21,10 @@ import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
+import { navLinks } from "../../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
 import {
-  ReturnToYourProductButton,
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
@@ -119,7 +123,16 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      <ReturnToYourProductButton productType={productType} />
+      {/* <ReturnToYourProductButton productType={productType} /> */}
+      <LinkButton
+        to={`/manage/${productType.urlPart}`}
+        text={"Return to your account"}
+        state={previousProductDetail}
+        colour={palette.neutral[100]}
+        textColour={palette.neutral[0]}
+        hollow
+        left
+      />
     </>
   );
 
@@ -140,19 +153,38 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
                 <SpreadTheWordFooter key="share" />
               ]}
               hideBackButton
+              fullWidth
             >
-              <WithSubscriptionAsyncLoader
-                fetch={createProductDetailFetcher(
-                  props.productType,
-                  previousProductDetail.subscription.subscriptionId
-                )}
-                render={WithSubscriptionRenderer(
-                  props.productType,
-                  newPaymentMethodDetail,
-                  previousProductDetail
-                )}
-                loadingMessage="Looks good so far. Just checking everything is done..."
+              <PageHeaderContainer
+                selectedNavItem={navLinks.accountOverview}
+                title="Manage payment method"
               />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
+              >
+                <ProgressIndicator
+                  steps={[
+                    { title: "" },
+                    { title: "" },
+                    { title: "", isCurrentStep: true }
+                  ]}
+                  additionalCSS={css`
+                    margin: ${space[5]}px 0 ${space[12]}px;
+                  `}
+                />
+                <WithSubscriptionAsyncLoader
+                  fetch={createProductDetailFetcher(
+                    props.productType,
+                    previousProductDetail.subscription.subscriptionId
+                  )}
+                  render={WithSubscriptionRenderer(
+                    props.productType,
+                    newPaymentMethodDetail,
+                    previousProductDetail
+                  )}
+                  loadingMessage="Looks good so far. Just checking everything is done..."
+                />
+              </PageNavAndContentContainer>
             </WizardStep>
           ) : (
             visuallyNavigateToParent(props)

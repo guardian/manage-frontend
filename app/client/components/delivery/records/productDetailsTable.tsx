@@ -22,6 +22,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
     }
     & div {
       display: inline-block;
+      width: 100%;
       ${minWidth.tablet} {
         width: 50%;
       }

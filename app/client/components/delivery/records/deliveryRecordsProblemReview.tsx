@@ -19,6 +19,7 @@ import {
 } from "../../holiday/holidayStopApi";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   visuallyNavigateToParent,
@@ -56,17 +57,11 @@ export const DeliveryRecordsProblemReview = (
   const renderReviewDetails = (
     potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
   ) => {
-    const totalCreditAmount = potentialHolidayStopsResponseWithCredits
-      .potentials.length
-      ? Math.abs(
-          potentialHolidayStopsResponseWithCredits.potentials
-            .flatMap<number>(x => [x.credit as number])
-            .reduce(
-              (accumulator, currentValue) =>
-                accumulator + Math.abs(currentValue)
-            )
-        )
-      : 0;
+    const totalCreditAmount: number =
+      potentialHolidayStopsResponseWithCredits.potentials.length &&
+      potentialHolidayStopsResponseWithCredits.potentials
+        .flatMap(x => [Math.abs(x.credit || 0)])
+        .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     return (
       <DeliveryRecordsProblemReviewFC
@@ -75,7 +70,9 @@ export const DeliveryRecordsProblemReview = (
         creditDate={
           potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
         }
-        holidayStopRecords={potentialHolidayStopsResponseWithCredits.potentials}
+        relatedPublications={
+          potentialHolidayStopsResponseWithCredits.potentials
+        }
         totalCreditAmount={totalCreditAmount}
       />
     );
@@ -112,14 +109,14 @@ interface DeliveryRecordsProblemReviewFCProps
   showCredit?: true;
   creditDate?: string;
   totalCreditAmount?: number;
-  holidayStopRecords?: RawPotentialHolidayStopDetail[];
+  relatedPublications?: RawPotentialHolidayStopDetail[];
 }
 
 const DeliveryRecordsProblemReviewFC = (
   props: DeliveryRecordsProblemReviewFCProps
 ) => {
   const deliveryProblemContext = useContext(DeliveryRecordsProblemContext);
-  const [phoneNumbers, setPhoneNumbers] = useState<
+  const [newPhoneNumbers, setPhoneNumbers] = useState<
     ContactPhoneNumbers | undefined
   >(deliveryProblemContext?.contactPhoneNumbers);
   const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
@@ -149,25 +146,27 @@ const DeliveryRecordsProblemReviewFC = (
         problemType: deliveryProblemContext?.problemType?.category,
         repeatDeliveryProblem: deliveryProblemContext?.repeatDeliveryProblem,
         deliveryRecords:
-          props.showCredit && props.holidayStopRecords
+          props.showCredit && props.relatedPublications
             ? deliveryProblemContext?.affectedRecords.map(record => {
-                const matchingHolidayStop = props.holidayStopRecords?.find(
+                const matchingPublication = props.relatedPublications?.find(
                   x => x.publicationDate === record.deliveryDate
                 );
                 return {
                   id: record.id,
-                  creditAmount: matchingHolidayStop?.credit,
-                  invoiceDate: props.creditDate
+                  creditAmount: matchingPublication?.credit,
+                  invoiceDate: matchingPublication
+                    ? props.creditDate
+                    : undefined
                 };
               })
             : deliveryProblemContext?.affectedRecords.map(record => {
                 return { id: record.id };
               }),
-        ...((phoneNumbers?.Phone ||
-          phoneNumbers?.HomePhone ||
-          phoneNumbers?.MobilePhone ||
-          phoneNumbers?.OtherPhone) && {
-          newContactPhoneNumbers: phoneNumbers
+        ...((newPhoneNumbers?.Phone ||
+          newPhoneNumbers?.HomePhone ||
+          newPhoneNumbers?.MobilePhone ||
+          newPhoneNumbers?.OtherPhone) && {
+          newContactPhoneNumbers: newPhoneNumbers
         })
       }}
     >
@@ -188,8 +187,28 @@ const DeliveryRecordsProblemReviewFC = (
           <PageHeaderContainer
             selectedNavItem={navLinks.subscriptions}
             title="Delivery history"
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Delivery history",
+                currentPage: true
+              }
+            ]}
           />
           <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            <ProgressIndicator
+              steps={[
+                { title: "Update" },
+                { title: "Review", isCurrentStep: true },
+                { title: "Confirmation" }
+              ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
+            />
             <h2
               css={css`
                 border-top: 1px solid ${palette.neutral["86"]};
@@ -219,7 +238,7 @@ const DeliveryRecordsProblemReviewFC = (
                   }
                 `}
               >
-                Step 3. Please review your report details
+                Step 4. Please review your report details
               </h2>
               {deliveryProblemContext && (
                 <dl
@@ -228,8 +247,10 @@ const DeliveryRecordsProblemReviewFC = (
                     ${textSans.medium()};
                     display: flex;
                     flex-wrap: wrap;
+                    flex-direction: column;
                     justify-content: space-between;
                     ${minWidth.tablet} {
+                      flex-direction: initial;
                       padding: 0 ${space[5]}px;
                     }
                   `}
@@ -495,13 +516,15 @@ const DeliveryRecordsProblemReviewFC = (
                     </i>
                     Once you submit your report, your case will be marked as
                     high priority. Our customer service team will try their best
-                    to contact you within 48 hours to resolve the issue.
+                    to contact you as soon as possible to resolve the issue.
                   </span>
-                  {phoneNumbers && (
+                  {newPhoneNumbers && (
                     <UserPhoneNumber
-                      existingPhoneNumbers={phoneNumbers}
-                      callback={(newNumber: ContactPhoneNumbers) => {
-                        setPhoneNumbers(newNumber);
+                      existingPhoneNumbers={
+                        deliveryProblemContext?.contactPhoneNumbers
+                      }
+                      callback={(newNumbers: ContactPhoneNumbers) => {
+                        setPhoneNumbers(newNumbers);
                       }}
                     />
                   )}

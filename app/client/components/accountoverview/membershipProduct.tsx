@@ -29,6 +29,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
   );
   const membershipTier =
     productType?.alternateTierValue || props.productDetail.tier;
+
   const mainPlan = getMainPlan(
     props.productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -322,7 +323,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                   `}
                 >
                   <LinkButton
-                    to={`/payment/${productType.urlPart}`}
+                    to={"/payment/membership"}
                     state={props.productDetail}
                     text={"Manage payment method"}
                     colour={palette.brand[800]}

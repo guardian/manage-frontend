@@ -1,13 +1,23 @@
 import { Link } from "@reach/router";
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   CancellationReason,
   OptionalCancellationReasonId
 } from "../client/components/cancel/cancellationReason";
 import { contributionsCancellationFlowStart } from "../client/components/cancel/contributions/contributionsCancellationFlowStart";
 import { contributionsCancellationReasons } from "../client/components/cancel/contributions/contributionsCancellationReasons";
+import { digipackCancellationFlowStart } from "../client/components/cancel/digipack/digipackCancellationFlowStart";
+import { digipackCancellationReasons } from "../client/components/cancel/digipack/digipackCancellationReasons";
+import { gwCancellationFlowStart } from "../client/components/cancel/gw/gwCancellationFlowStart";
+import { gwCancellationReasons } from "../client/components/cancel/gw/gwCancellationReasons";
 import { membershipCancellationFlowStart } from "../client/components/cancel/membership/membershipCancellationFlowStart";
 import { membershipCancellationReasons } from "../client/components/cancel/membership/membershipCancellationReasons";
+import {
+  physicalSubsCancellationFlowWrapper,
+  RestOfCancellationFlow
+} from "../client/components/cancel/physicalSubsCancellationFlowWrapper";
+import { voucherCancellationFlowStart } from "../client/components/cancel/voucher/voucherCancellationFlowStart";
+import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
 import { NavItem, navLinks } from "../client/components/nav";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -15,7 +25,6 @@ import {
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import {
-  formatDate,
   isGift,
   ProductDetail,
   Subscription,
@@ -40,7 +49,12 @@ export type ProductUrlPart =
   | "digital"
   | "guardianweekly"
   | "subscriptions";
-export type SfProduct = "Membership" | "Contribution";
+export type SfCaseProduct =
+  | "Membership"
+  | "Recurring - Contributions"
+  | "Voucher Subscriptions"
+  | "Guardian Weekly"
+  | "Digital Pack Subscriptions";
 export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 export type AllProductsProductTypeFilterString =
   | "Weekly"
@@ -54,11 +68,16 @@ export type AllProductsProductTypeFilterString =
 
 export interface CancellationFlowProperties {
   reasons: CancellationReason[];
-  sfProduct: SfProduct;
+  sfCaseProduct: SfCaseProduct;
   linkOnProductPage?: true;
-  startPageBody: JSX.Element;
-  saveTitlePrefix?: string;
-  summaryMainPara: (subscription: Subscription) => JSX.Element | string;
+  flowWrapper?: (
+    productDetail: ProductDetail,
+    productType: ProductType
+  ) => (restOfFlow: RestOfCancellationFlow) => ReactNode;
+  startPageBody: (subscription: Subscription) => JSX.Element;
+  startPageOfferEffectiveDateOptions?: true;
+  hideReasonTitlePrefix?: true;
+  alternateSummaryMainPara?: string;
   summaryReasonSpecificPara: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
@@ -111,8 +130,8 @@ export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
 ];
 
 interface DeliveryRecordsProperties {
+  productNameForProblemReport: string;
   showDeliveryInstructions?: true;
-  canReportProblem: boolean;
   numberOfProblemRecordsToShow: number;
   contactUserOnExistingProblemReport: boolean;
   availableProblemTypes: DeliveryProblemType[];
@@ -122,6 +141,7 @@ export interface DeliveryProperties {
   showAddress?: (
     subscription: Subscription
   ) => subscription is SubscriptionWithDeliveryAddress;
+  enableDeliveryInstructionsUpdate?: boolean;
   records?: DeliveryRecordsProperties;
 }
 
@@ -178,6 +198,9 @@ export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
   delivery: {
     records: DeliveryRecordsProperties;
   };
+}
+export interface ProductTypeWithMapGroupedToSpecific extends ProductType {
+  mapGroupedToSpecific: (productDetail: ProductDetail) => ProductType;
 }
 
 export const hasDeliveryRecordsFlow = (
@@ -313,18 +336,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     includeGuardianInTitles: true,
     cancellation: {
       reasons: membershipCancellationReasons,
-      sfProduct: "Membership",
+      sfCaseProduct: "Membership",
       startPageBody: membershipCancellationFlowStart,
-      summaryMainPara: (subscription: Subscription) =>
-        subscription.end ? (
-          <>
-            You will continue to receive the benefits of your membership until{" "}
-            <b>{formatDate(subscription.end)}</b>. You will not be charged
-            again.
-          </>
-        ) : (
-          "Your cancellation is effective immediately."
-        ),
+      hideReasonTitlePrefix: true,
       summaryReasonSpecificPara: () => undefined,
       onlyShowSupportSectionIfAlternateText: false,
       alternateSupportButtonText: () => undefined,
@@ -349,10 +363,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     cancellation: {
       linkOnProductPage: true,
       reasons: contributionsCancellationReasons,
-      sfProduct: "Contribution",
+      sfCaseProduct: "Recurring - Contributions",
       startPageBody: contributionsCancellationFlowStart,
-      saveTitlePrefix: "Reason: ",
-      summaryMainPara: () => "Thank you for your valuable support.",
+      alternateSummaryMainPara: "Thank you for your valuable support.",
       summaryReasonSpecificPara: (reasonId: OptionalCancellationReasonId) => {
         switch (reasonId) {
           case "mma_financial_circumstances":
@@ -396,7 +409,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     includeGuardianInTitles: true,
     delivery: {
-      showAddress: showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true
     },
     productPage: "subscriptions"
   },
@@ -412,9 +426,10 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true,
       records: {
+        productNameForProblemReport: "Home Delivery",
         showDeliveryInstructions: true,
-        canReportProblem: false,
         numberOfProblemRecordsToShow: 14,
         contactUserOnExistingProblemReport: true,
         availableProblemTypes: [
@@ -448,7 +463,25 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       }
     },
     delivery: {
-      showAddress: showDeliveryAddressCheck
+      showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: true
+    },
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: voucherCancellationReasons,
+      sfCaseProduct: "Voucher Subscriptions",
+      flowWrapper: physicalSubsCancellationFlowWrapper,
+      startPageBody: voucherCancellationFlowStart,
+      startPageOfferEffectiveDateOptions: true,
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      swapFeedbackAndContactUs: true
     },
     productPage: "subscriptions"
   },
@@ -469,12 +502,30 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     delivery: {
       showAddress: showDeliveryAddressCheck,
+      enableDeliveryInstructionsUpdate: false,
       records: {
-        canReportProblem: true,
+        productNameForProblemReport: "Guardian Weekly",
         numberOfProblemRecordsToShow: 4,
         contactUserOnExistingProblemReport: false,
         availableProblemTypes: commonDeliveryProblemTypes
       }
+    },
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: gwCancellationReasons,
+      sfCaseProduct: "Guardian Weekly",
+      flowWrapper: physicalSubsCancellationFlowWrapper,
+      startPageBody: gwCancellationFlowStart,
+      startPageOfferEffectiveDateOptions: true,
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      swapFeedbackAndContactUs: true
     },
     productPage: "subscriptions",
     fulfilmentDateCalculator: {
@@ -489,8 +540,23 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     legacyUrlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
-    productPage: "subscriptions",
-    alternateTierValue: "Digital Subscription"
+    alternateTierValue: "Digital Subscription",
+    cancellation: {
+      linkOnProductPage: true,
+      reasons: digipackCancellationReasons,
+      sfCaseProduct: "Digital Pack Subscriptions",
+      startPageBody: digipackCancellationFlowStart,
+      summaryReasonSpecificPara: () => undefined,
+      onlyShowSupportSectionIfAlternateText: false,
+      alternateSupportButtonText: (reasonId: OptionalCancellationReasonId) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      alternateSupportButtonUrlSuffix: (
+        reasonId: OptionalCancellationReasonId
+      ) =>
+        reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
+      swapFeedbackAndContactUs: true
+    },
+    productPage: "subscriptions"
   },
   contentSubscriptions: {
     friendlyName: "subscription",

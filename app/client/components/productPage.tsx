@@ -378,20 +378,6 @@ const getProductDetailRenderer = (
                 />
               )}
             {getPaymentPart(productDetail, productType)}
-            {productType.cancellation &&
-              productType.cancellation.linkOnProductPage && (
-                <Link
-                  css={{
-                    textDecoration: "underline",
-                    color: palette.neutral["7"],
-                    ":visited": { color: palette.neutral["7"] }
-                  }}
-                  to={"/cancel/" + productType.urlPart}
-                  state={productDetail}
-                >
-                  {"Cancel this " + productType.friendlyName}
-                </Link>
-              )}
             {shouldHaveHolidayStopsFlow(productType) && subscription.autoRenew && (
               <ProductDetailRow
                 label="Holiday stop"
@@ -418,7 +404,11 @@ const getProductDetailRenderer = (
             )}
             {productType.delivery?.showAddress?.(subscription) && (
               <ProductDetailRow
-                label="Delivery address"
+                label={`Delivery address${
+                  !productType?.delivery?.enableDeliveryInstructionsUpdate
+                    ? " and instructions"
+                    : ""
+                }`}
                 alignItemsAtTop
                 data={
                   <DeliveryAddressDisplay
@@ -426,6 +416,7 @@ const getProductDetailRenderer = (
                     withEditButton={true}
                     allProductDetails={productDetailList}
                     productUrlPart={productType.urlPart}
+                    productDetail={productDetail}
                   />
                 }
               />
@@ -435,11 +426,7 @@ const getProductDetailRenderer = (
                 label="Delivery history"
                 data={
                   <LinkButton
-                    text={
-                      productType.delivery.records.canReportProblem
-                        ? "Report problem"
-                        : "View delivery history"
-                    }
+                    text="Report problem"
                     to={`/delivery/${productType.urlPart}/records`}
                     state={productDetail}
                     right
@@ -464,6 +451,20 @@ const getProductDetailRenderer = (
                   />
                 </a>
               ))}
+            {productType.cancellation &&
+              productType.cancellation.linkOnProductPage && (
+                <Link
+                  css={{
+                    textDecoration: "underline",
+                    color: palette.neutral["7"],
+                    ":visited": { color: palette.neutral["7"] }
+                  }}
+                  to={"/cancel/" + productType.urlPart}
+                  state={productDetail}
+                >
+                  {"Cancel this " + productType.friendlyName}
+                </Link>
+              )}
           </PageContainer>
         </>
       )}

@@ -15,6 +15,7 @@ export interface Globals extends CommonGlobals {
   };
   abTest?: AbTest;
   identityDetails: IdentityDetails;
+  recaptchaPublicKey?: string;
 }
 
 declare global {
@@ -22,3 +23,5 @@ declare global {
     guardian: Globals;
   }
 }
+
+export const LOGGING_CODE_SUFFIX_HEADER = "x-logging-code-suffix";

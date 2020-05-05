@@ -40,6 +40,7 @@ import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageContribution } from "./accountoverview/manageContribution";
 import { ManageMembership } from "./accountoverview/manageMembership";
 import { ManageSubscription } from "./accountoverview/manageSubscription";
+import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -134,7 +135,6 @@ const User = () => (
             key={productType.urlPart}
             path={"/cancel/" + productType.urlPart}
             productType={productType}
-            currentStep={1}
           >
             {productType.cancellation.reasons.map(
               (reason: CancellationReason) => (
@@ -144,12 +144,10 @@ const User = () => (
                   reason={reason}
                   key={reason.reasonId}
                   linkLabel={reason.linkLabel}
-                  currentStep={2}
                 >
                   <ExecuteCancellation
                     path="confirmed"
                     productType={productType}
-                    currentStep={3}
                   />
                 </GenericSaveAttempt>
               )
@@ -164,18 +162,9 @@ const User = () => (
             key={productType.urlPart}
             path={"/payment/" + productType.urlPart}
             productType={productType}
-            currentStep={1}
           >
-            <ConfirmPaymentUpdate
-              path="confirm"
-              productType={productType}
-              currentStep={2}
-            >
-              <PaymentUpdated
-                path="updated"
-                productType={productType}
-                currentStep={3}
-              />
+            <ConfirmPaymentUpdate path="confirm" productType={productType}>
+              <PaymentUpdated path="updated" productType={productType} />
             </ConfirmPaymentUpdate>
           </PaymentUpdateFlow>
         ))}
@@ -235,10 +224,12 @@ const User = () => (
             path={`/delivery/${productType.urlPart}/address`}
             productType={productType}
           >
-            <DeliveryAddressEditConfirmation
-              path="confirmed"
-              productType={productType}
-            />
+            <DeliveryAddressReview path="review" productType={productType}>
+              <DeliveryAddressEditConfirmation
+                path="confirmed"
+                productType={productType}
+              />
+            </DeliveryAddressReview>
           </DeliveryAddressForm>
         ))}
 

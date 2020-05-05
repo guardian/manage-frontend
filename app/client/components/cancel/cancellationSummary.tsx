@@ -2,7 +2,11 @@ import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
-import { ProductDetail, Subscription } from "../../../shared/productResponse";
+import {
+  formatDate,
+  ProductDetail,
+  Subscription
+} from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
   ProductType
@@ -11,6 +15,7 @@ import { GenericErrorScreen } from "../genericErrorScreen";
 import { PageContainer } from "../page";
 import { ResubscribeThrasher } from "../resubscribeThrasher";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
+import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 
 const actuallyCancelled = (
@@ -18,15 +23,31 @@ const actuallyCancelled = (
   productDetail: ProductDetail
 ) => {
   const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
+  const subscription = productDetail.subscription;
   return (
     <>
       <PageContainer>
         <h3>Your {productType.friendlyName} is cancelled.</h3>
         {productType.cancellation && (
           <p>
-            {productType.cancellation.summaryMainPara(
-              productDetail.subscription
-            )}
+            {productType.cancellation?.alternateSummaryMainPara ||
+              (subscription.end ? (
+                <>
+                  You will continue to receive the benefits of your{" "}
+                  {productType.friendlyName} until{" "}
+                  <b>{formatDate(subscription.end)}</b>. You will not be charged
+                  again. If you think you’re owed a refund, please contact us at{" "}
+                  <a
+                    css={hrefStyle}
+                    href="mailto:customer.help@theguardian.com"
+                  >
+                    customer.help@theguardian.com
+                  </a>
+                  .
+                </>
+              ) : (
+                "Your cancellation is effective immediately."
+              ))}
           </p>
         )}
       </PageContainer>

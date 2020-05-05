@@ -1,14 +1,15 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
+import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  DeliveryAddress,
   DeliveryRecordApiItem,
   isGift,
   PaidSubscriptionPlan,
@@ -18,20 +19,21 @@ import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryProblemType,
   holidaySuspensionDeliveryProblem,
-  ProductTypeKeys,
-  ProductTypes,
   ProductTypeWithDeliveryRecordsProperties,
-  ProductUrlPart,
   WithProductType
 } from "../../../../shared/productTypes";
-import { maxWidth } from "../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { ErrorIcon } from "../../svgs/errorIcon";
+import { InfoIconDark } from "../../svgs/infoIconDark";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import { DeliveryAddressStep } from "./deliveryAddressStep";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   createDeliveryRecordsFetcher,
@@ -41,6 +43,7 @@ import {
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import {
+  DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
   DeliveryRecordsProblemType
 } from "./deliveryRecordsProblemContext";
@@ -61,7 +64,8 @@ export enum PageStatus {
   REPORT_ISSUE_STEP_1,
   REPORT_ISSUE_STEP_2,
   CONTINUE_TO_REVIEW,
-  REPORT_ISSUE_CONFIRMATION
+  REPORT_ISSUE_CONFIRMATION,
+  CANNOT_REPORT_PROBLEM
 }
 
 export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
@@ -134,6 +138,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [step2FormValidationDetails, setStep2FormValidationDetails] = useState<
     Step1FormValidationDetails
   >({ isValid: true });
+  const [step3formValidationState, setStep3formValidationState] = useState<
+    boolean
+  >(false);
+  const [step3FormValidationDetails, setStep3FormValidationDetails] = useState<
+    Step1FormValidationDetails
+  >({ isValid: true });
+  const [addressInValidState, setAddressValidationState] = useState<boolean>(
+    true
+  );
   const [deliveryProblem, setDeliveryProblem] = useState<
     DeliveryRecordsProblemType
   >();
@@ -148,6 +161,23 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     showBottomCallCentreNumbers,
     setBottomCallCentreNumbersVisibility
   ] = useState<boolean>(false);
+  const [address, setAddress] = useState<DeliveryAddress | undefined>(
+    props.productDetail.subscription.deliveryAddress
+  );
+  const [productsAffected, setProductsAffected] = useState<
+    ProductDescriptionListKeyValue[]
+  >([]);
+  useEffect(() => {
+    if (addressInValidState) {
+      setStep3FormValidationDetails({
+        isValid: addressInValidState
+      });
+      setStep3formValidationState(!addressInValidState);
+    }
+  }, [addressInValidState]);
+  const productType = props.routeableStepProps.productType;
+  const enableDeliveryInstructions = !!productType?.delivery
+    ?.enableDeliveryInstructionsUpdate;
   const step1FormRadioOptionCallback = (value: string) =>
     setChoosenDeliveryProblem(value);
   const step1FormUpdateCallback = (isValid: boolean, message?: string) => {
@@ -185,29 +215,25 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const scrollToTop = () => window.scrollTo(0, 0);
   const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.READ_ONLY);
 
-  const filterData = (productPartName: ProductUrlPart) => {
-    const NumOfRecordsToShow =
-      ProductTypes[productPartName as ProductTypeKeys].delivery?.records
-        ?.numberOfProblemRecordsToShow || props.data.results.length;
+  const filterData = (overridePageStatusCheck?: boolean) => {
+    if (
+      (pageStatus !== PageStatus.READ_ONLY &&
+        pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM) ||
+      overridePageStatusCheck
+    ) {
+      const numOfReportableRecords =
+        productType.delivery.records.numberOfProblemRecordsToShow;
 
-    if (pageStatus !== PageStatus.READ_ONLY) {
+      const today = moment();
+
+      const isNotHolidayProblem =
+        choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
+
       return props.data.results
-        .filter(record => {
-          if (
-            choosenDeliveryProblem === holidaySuspensionDeliveryProblem.label
-          ) {
-            return (
-              record.hasHolidayStop &&
-              !record.problemCaseId &&
-              moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-            );
-          }
-          return (
-            !record.problemCaseId &&
-            moment(record.deliveryDate).isSameOrBefore(moment(), "day")
-          );
-        })
-        .slice(0, NumOfRecordsToShow - 1);
+        .filter(_ => moment(_.deliveryDate).isSameOrBefore(today, "day"))
+        .slice(0, numOfReportableRecords)
+        .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
+        .filter(_ => !_.problemCaseId);
     }
     return props.data.results.filter((element, index) =>
       isRecordInCurrentPage(
@@ -224,13 +250,13 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     currentPageEndIndex: number
   ) => index >= currentPageStartIndex && index <= currentPageEndIndex;
 
-  const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
-    props.data.results
-  );
+  // const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
+  //   props.data.results
+  // );
 
-  const productType = props.routeableStepProps.productType;
+  const hasExistingDeliveryProblem = false; // TODO re-instate commented code when call-centre has capacity to investigate
 
-  const filteredData = filterData(productType.urlPart);
+  const filteredData = filterData();
 
   const hasRecentHolidayStop = checkForRecentHolidayStop(filteredData);
 
@@ -248,7 +274,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           productType.shortFriendlyName || productType.friendlyName
         ),
         apiProductName:
-          productType.fulfilmentDateCalculator?.productFilenamePart,
+          productType.delivery.records.productNameForProblemReport,
         problemType: deliveryProblem,
         affectedRecords: props.data.results.filter(record =>
           selectedProblemRecords.includes(record.id)
@@ -270,37 +296,65 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         resetDeliveryRecordsPage
       }}
     >
-      <WizardStep
-        routeableStepProps={props.routeableStepProps}
-        hideBackButton
-        fullWidth
+      <DeliveryRecordsAddressContext.Provider
+        value={{
+          address,
+          setAddress,
+          productsAffected,
+          setProductsAffected,
+          enableDeliveryInstructions
+        }}
       >
-        <PageHeaderContainer
-          selectedNavItem={navLinks.subscriptions}
-          title="Delivery history"
-        />
-        <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
-          <div
-            css={css`
-              margin: ${space[6]}px 0 ${space[12]}px;
-            `}
-          >
-            <ProductDetailsTable
-              productName={capitalize(
-                productType.shortFriendlyName || productType.friendlyName
+        <WizardStep
+          routeableStepProps={props.routeableStepProps}
+          hideBackButton
+          fullWidth
+        >
+          <PageHeaderContainer
+            selectedNavItem={navLinks.subscriptions}
+            title="Delivery history"
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Delivery history",
+                currentPage: true
+              }
+            ]}
+          />
+          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            {pageStatus !== PageStatus.READ_ONLY &&
+              pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (
+                <ProgressIndicator
+                  steps={[
+                    { title: "Update", isCurrentStep: true },
+                    { title: "Review" },
+                    { title: "Confirmation" }
+                  ]}
+                  additionalCSS={css`
+                    margin: ${space[5]}px 0 ${space[12]}px;
+                  `}
+                />
               )}
-              subscriptionId={props.productDetail.subscription.subscriptionId}
-              isGift={isGift(props.productDetail.subscription)}
-            />
-          </div>
-          {productType.delivery.records.canReportProblem &&
-            props.data.results.find(record => !record.problemCaseId) && (
+            <div
+              css={css`
+                margin: ${space[6]}px 0 ${space[12]}px;
+              `}
+            >
+              <ProductDetailsTable
+                productName={capitalize(productType.friendlyName)}
+                subscriptionId={props.productDetail.subscription.subscriptionId}
+                isGift={isGift(props.productDetail.subscription)}
+              />
+            </div>
+            {props.data.results.find(record => !record.problemCaseId) && (
               <>
                 <h2
                   css={css`
                     border-top: 1px solid ${palette.neutral["86"]};
-                    ${headline.small()};
-                    font-weight: bold;
+                    ${headline.small({ fontWeight: "bold" })};
                     ${maxWidth.tablet} {
                       font-size: 1.25rem;
                       line-height: 1.6;
@@ -350,9 +404,42 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     </span>
                   </p>
                   {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-                  {pageStatus === PageStatus.READ_ONLY && (
+                  {pageStatus === PageStatus.CANNOT_REPORT_PROBLEM && (
+                    <span
+                      css={css`
+                        position: relative;
+                        display: block;
+                        margin: ${space[3]}px 0;
+                        padding: ${space[3]}px ${space[3]}px ${space[3]}px
+                          ${space[3] * 2 + 17}px;
+                        background-color: ${palette.neutral[97]};
+                        ${textSans.small()};
+                        ${minWidth.tablet} {
+                          margin: ${space[5]}px 0;
+                        }
+                      `}
+                    >
+                      <i
+                        css={css`
+                          position: absolute;
+                          top: ${space[3]}px;
+                          left: ${space[3]}px;
+                        `}
+                      >
+                        <InfoIconDark fillColor={palette.brand.bright} />
+                      </i>
+                      You don't have any available delivery history to report.
+                      Your deliveries may be too far in the past or have already
+                      been reported.
+                    </span>
+                  )}
+                  {(pageStatus === PageStatus.READ_ONLY ||
+                    pageStatus === PageStatus.CANNOT_REPORT_PROBLEM) && (
                     <Button
                       onClick={() => {
+                        const filteredDataAtPresent = filterData(true);
+                        const canReportProblem =
+                          filteredDataAtPresent.length > 0;
                         trackEvent({
                           eventCategory: "delivery-problem",
                           eventAction: "report_delivery_problem_button_click",
@@ -362,8 +449,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                           },
                           eventLabel: productType.urlPart
                         });
-                        setSelectedProblemRecords([]);
-                        setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                        if (canReportProblem) {
+                          setSelectedProblemRecords([]);
+                          setPageStatus(PageStatus.REPORT_ISSUE_STEP_1);
+                        } else {
+                          setPageStatus(PageStatus.CANNOT_REPORT_PROBLEM);
+                        }
                       }}
                     >
                       Report a problem
@@ -388,17 +479,17 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 </div>
               </>
             )}
-          <h2
-            css={css`
-              border-top: 1px solid ${palette.neutral["86"]};
-              ${headline.small()};
-              font-weight: bold;
-              opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1 &&
-              filteredData.length > 0
-                ? "0.5"
-                : "1"};
-              ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
-                ? `
+            <h2
+              css={css`
+                border-top: 1px solid ${palette.neutral["86"]};
+                ${headline.small()};
+                font-weight: bold;
+                opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1 &&
+                filteredData.length > 0
+                  ? "0.5"
+                  : "1"};
+                ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+                  ? `
               background-color: ${palette.neutral["97"]};
               border-left: 1px solid ${palette.neutral["86"]};
               border-right: 1px solid ${palette.neutral["86"]};
@@ -406,223 +497,289 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               padding: 14px 14px 14px;
               ${textSans.medium({ fontWeight: "bold" })};
             `
-                : ""}
-              ${maxWidth.tablet} {
-                ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
-                  ? ``
-                  : `
+                  : ""}
+                ${maxWidth.tablet} {
+                  ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+                    ? ``
+                    : `
               font-size: 1.25rem;
               line-height: 1.6;
               `}
-              }
-            `}
-          >
-            {pageStatus === PageStatus.REPORT_ISSUE_STEP_2
-              ? "Step 2. Select the date you have experienced the problem"
-              : "Deliveries"}
-          </h2>
-          {filteredData.length === 0 &&
-            (props.data.results.length === 0 ? (
-              <p
-                css={css`
-                  ${textSans.medium()};
-                `}
-              >
-                You haven't had a delivery for this subscription yet. In the
-                future, details of your deliveries will appear here.
-              </p>
-            ) : (
-              <>
-                <p
-                  css={css`
-                    ${textSans.medium()};
-                  `}
-                >
-                  You currently have no deliveries that you can report a problem
-                  on based on the problem type that you have selected.
-                </p>
-                <p
-                  css={css`
-                    ${textSans.medium()};
-                  `}
-                >
-                  If you are still having problems please{" "}
-                  <span
-                    css={css`
-                      cursor: pointer;
-                      color: ${palette.brand[500]};
-                      text-decoration: underline;
-                    `}
-                    onClick={() =>
-                      setBottomCallCentreNumbersVisibility(
-                        !showBottomCallCentreNumbers
-                      )
-                    }
-                  >
-                    Contact us
-                  </span>
-                </p>
-              </>
-            ))}
-          {filteredData.map(
-            (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
-              <DeliveryRecordCard
-                key={deliveryRecord.id}
-                deliveryRecord={deliveryRecord}
-                listIndex={listIndex}
-                pageStatus={pageStatus}
-                deliveryProblemMap={props.data.deliveryProblemMap}
-                addRecordToDeliveryProblem={addRecordToDeliveryProblem}
-                removeRecordFromDeliveryProblem={
-                  removeRecordFromDeliveryProblem
                 }
-                recordCurrency={props.subscriptionCurrency}
-                isChecked={selectedProblemRecords.includes(deliveryRecord.id)}
-              />
-            )
-          )}
-          {totalPages > 1 && pageStatus === PageStatus.READ_ONLY && (
-            <PaginationNav
-              resultsPerPage={resultsPerPage}
-              totalNumberOfResults={props.data.results.length}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              changeCallBack={scrollToTop}
-            />
-          )}
-          {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
-            <div
-              css={css`
-                margin-top: ${space[6]}px;
               `}
             >
-              {(step1formValidationState || step2formValidationState) &&
-                ((!step1FormValidationDetails.isValid &&
-                  step1FormValidationDetails.message) ||
-                  (!step2FormValidationDetails.isValid &&
-                    step2FormValidationDetails.message)) && (
-                  <dl
+              {pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+                ? "Step 2. Select the date you have experienced the problem"
+                : "Deliveries"}
+            </h2>
+            {filteredData.length === 0 &&
+              pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM &&
+              (props.data.results.length === 0 ? (
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  You haven't had a delivery for this subscription yet. In the
+                  future, details of your deliveries will appear here.
+                </p>
+              ) : (
+                <>
+                  <p
                     css={css`
-                      position: relative;
-                      padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
                       ${textSans.medium()};
-                      border: 4px solid ${palette.news.main};
                     `}
                   >
-                    <i
+                    You currently have no deliveries that you can report a
+                    problem on based on the problem type that you have selected.
+                  </p>
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                    `}
+                  >
+                    If you are still having problems please{" "}
+                    <span
                       css={css`
-                        position: absolute;
-                        top: ${space[5]}px;
-                        left: ${space[5]}px;
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        text-decoration: underline;
                       `}
+                      onClick={() =>
+                        setBottomCallCentreNumbersVisibility(
+                          !showBottomCallCentreNumbers
+                        )
+                      }
                     >
-                      <ErrorIcon />
-                    </i>
-                    <dt
-                      css={css`
-                        font-weight: bold;
-                      `}
-                    >
-                      Some information is missing
-                    </dt>
-                    <dd
-                      css={css`
-                        margin: 0;
-                      `}
-                    >
-                      <ul
+                      Contact us
+                    </span>
+                  </p>
+                </>
+              ))}
+            {filteredData.map(
+              (deliveryRecord: DeliveryRecordApiItem, listIndex) => (
+                <DeliveryRecordCard
+                  key={deliveryRecord.id}
+                  deliveryRecord={deliveryRecord}
+                  listIndex={listIndex}
+                  pageStatus={pageStatus}
+                  deliveryProblemMap={props.data.deliveryProblemMap}
+                  addRecordToDeliveryProblem={addRecordToDeliveryProblem}
+                  removeRecordFromDeliveryProblem={
+                    removeRecordFromDeliveryProblem
+                  }
+                  recordCurrency={props.subscriptionCurrency}
+                  isChecked={selectedProblemRecords.includes(deliveryRecord.id)}
+                  productName={capitalize(
+                    productType.shortFriendlyName || productType.friendlyName
+                  )}
+                />
+              )
+            )}
+            {totalPages > 1 &&
+              (pageStatus === PageStatus.READ_ONLY ||
+                pageStatus === PageStatus.CANNOT_REPORT_PROBLEM) && (
+                <PaginationNav
+                  resultsPerPage={resultsPerPage}
+                  totalNumberOfResults={props.data.results.length}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  changeCallBack={scrollToTop}
+                />
+              )}
+            {pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
+              <>
+                <section
+                  css={css`
+                    border: 1px solid ${palette.neutral["86"]};
+                    margin: ${space[5]}px 0 ${space[5]}px;
+                    padding: 0;
+                  `}
+                >
+                  <h1
+                    css={css`
+                      margin: 0;
+                      padding: ${space[3]}px;
+                      background-color: ${palette.neutral["97"]};
+                      border-bottom: 1px solid ${palette.neutral["86"]};
+                      ${textSans.medium({ fontWeight: "bold" })};
+                      ${minWidth.tablet} {
+                        padding: ${space[3]}px ${space[5]}px;
+                      }
+                    `}
+                  >
+                    Step 3. Check your current delivery address
+                    {enableDeliveryInstructions && " and instructions"}
+                  </h1>
+                  {props.productDetail.subscription.deliveryAddress && (
+                    <DeliveryAddressStep
+                      productDetail={props.productDetail}
+                      enableDeliveryInstructions={enableDeliveryInstructions}
+                      setAddressValidationState={setAddressValidationState}
+                    />
+                  )}
+                </section>
+                <div
+                  css={css`
+                    margin-top: ${space[6]}px;
+                  `}
+                >
+                  {(step1formValidationState ||
+                    step2formValidationState ||
+                    step3formValidationState) &&
+                    ((!step1FormValidationDetails.isValid &&
+                      step1FormValidationDetails.message) ||
+                      (!step2FormValidationDetails.isValid &&
+                        step2FormValidationDetails.message) ||
+                      (!step3FormValidationDetails.isValid &&
+                        step3FormValidationDetails.message)) && (
+                      <dl
                         css={css`
-                          list-style: none;
-                          margin: 0;
-                          padding: 0;
+                          position: relative;
+                          padding: ${space[5]}px ${space[5]}px ${space[5]}px
+                            50px;
+                          ${textSans.medium()};
+                          border: 4px solid ${palette.news.main};
                         `}
                       >
-                        {!step1FormValidationDetails.isValid &&
-                          step1FormValidationDetails.message && (
-                            <li>{step1FormValidationDetails.message}</li>
-                          )}
-                        {!step2FormValidationDetails.isValid &&
-                          step2FormValidationDetails.message && (
-                            <li>{step2FormValidationDetails.message}</li>
-                          )}
-                      </ul>
-                    </dd>
-                  </dl>
-                )}
-              <Button
-                onClick={() => {
-                  setStep1formValidationState(true);
-                  const isStep2Valid = !!selectedProblemRecords.length;
-                  setStep2FormValidationDetails({
-                    isValid: isStep2Valid,
-                    message:
-                      "Step 2: Please select an affected delivery record."
-                  });
-                  setStep2formValidationState(!isStep2Valid);
-                  if (step1FormValidationDetails.isValid && isStep2Valid) {
-                    trackEvent({
-                      eventCategory: "delivery-problem",
-                      eventAction: "review_report_button_click",
-                      product: {
-                        productType,
-                        productDetail: props.productDetail
-                      },
-                      eventLabel: productType.urlPart
-                    });
-                    setPageStatus(PageStatus.CONTINUE_TO_REVIEW);
-                    (props.routeableStepProps.navigate || navigate)("review");
-                  }
-                }}
-              >
-                Review your report
-              </Button>
-              <Button
-                css={css`
-                  ${textSans.medium()};
-                  background-color: transparent;
-                  font-weight: bold;
-                  margin-left: 22px;
-                  padding: 0;
-                  color: ${palette.brand.main};
-                  :hover {
-                    background-color: transparent;
-                  }
-                `}
-                onClick={() => {
-                  setPageStatus(PageStatus.READ_ONLY);
-                }}
-              >
-                Cancel
-              </Button>
-              <p
-                css={css`
-                  ${textSans.medium()};
-                  color: ${palette.neutral[46]};
-                  margin-top: ${space[6]}px;
-                `}
-              >
-                Is your delivery problem urgent? Or want to report a problem
-                older than the above?{" "}
-                <span
-                  css={css`
-                    cursor: pointer;
-                    color: ${palette.brand[500]};
-                    text-decoration: underline;
-                  `}
-                  onClick={() =>
-                    setBottomCallCentreNumbersVisibility(
-                      !showBottomCallCentreNumbers
-                    )
-                  }
-                >
-                  Contact us
-                </span>
-              </p>
-              {showBottomCallCentreNumbers && <CallCentreEmailAndNumbers />}
-            </div>
-          )}
-        </PageNavAndContentContainer>
-      </WizardStep>
+                        <i
+                          css={css`
+                            position: absolute;
+                            top: ${space[5]}px;
+                            left: ${space[5]}px;
+                          `}
+                        >
+                          <ErrorIcon />
+                        </i>
+                        <dt
+                          css={css`
+                            font-weight: bold;
+                          `}
+                        >
+                          {!step3FormValidationDetails.isValid &&
+                          step1FormValidationDetails.isValid &&
+                          step2FormValidationDetails.isValid
+                            ? "Unfinished changes"
+                            : "Some information is missing"}
+                        </dt>
+                        <dd
+                          css={css`
+                            margin: 0;
+                          `}
+                        >
+                          <ul
+                            css={css`
+                              list-style: none;
+                              margin: 0;
+                              padding: 0;
+                            `}
+                          >
+                            {!step1FormValidationDetails.isValid &&
+                              step1FormValidationDetails.message && (
+                                <li>{step1FormValidationDetails.message}</li>
+                              )}
+                            {!step2FormValidationDetails.isValid &&
+                              step2FormValidationDetails.message && (
+                                <li>{step2FormValidationDetails.message}</li>
+                              )}
+                            {!step3FormValidationDetails.isValid &&
+                              step3FormValidationDetails.message && (
+                                <li>{step3FormValidationDetails.message}</li>
+                              )}
+                          </ul>
+                        </dd>
+                      </dl>
+                    )}
+                  <Button
+                    onClick={() => {
+                      setStep1formValidationState(true);
+                      const isStep2Valid = !!selectedProblemRecords.length;
+                      setStep2FormValidationDetails({
+                        isValid: isStep2Valid,
+                        message:
+                          "Step 2: Please select an affected delivery record."
+                      });
+                      setStep2formValidationState(!isStep2Valid);
+                      const isStep3Valid = addressInValidState;
+                      setStep3FormValidationDetails({
+                        isValid: isStep3Valid,
+                        message:
+                          "Step 3: Please save or discard your delivery address changes."
+                      });
+                      setStep3formValidationState(!isStep3Valid);
+                      if (
+                        step1FormValidationDetails.isValid &&
+                        isStep2Valid &&
+                        isStep3Valid
+                      ) {
+                        trackEvent({
+                          eventCategory: "delivery-problem",
+                          eventAction: "review_report_button_click",
+                          product: {
+                            productType,
+                            productDetail: props.productDetail
+                          },
+                          eventLabel: productType.urlPart
+                        });
+                        setPageStatus(PageStatus.CONTINUE_TO_REVIEW);
+                        (props.routeableStepProps.navigate || navigate)(
+                          "review"
+                        );
+                      }
+                    }}
+                  >
+                    Review your report
+                  </Button>
+                  <Button
+                    css={css`
+                      ${textSans.medium()};
+                      background-color: transparent;
+                      font-weight: bold;
+                      margin-left: 22px;
+                      padding: 0;
+                      color: ${palette.brand.main};
+                      :hover {
+                        background-color: transparent;
+                      }
+                    `}
+                    onClick={() => {
+                      setPageStatus(PageStatus.READ_ONLY);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                      color: ${palette.neutral[46]};
+                      margin-top: ${space[6]}px;
+                    `}
+                  >
+                    Is your delivery problem urgent? Or want to report a problem
+                    older than the above?{" "}
+                    <span
+                      css={css`
+                        cursor: pointer;
+                        color: ${palette.brand[500]};
+                        text-decoration: underline;
+                      `}
+                      onClick={() =>
+                        setBottomCallCentreNumbersVisibility(
+                          !showBottomCallCentreNumbers
+                        )
+                      }
+                    >
+                      Contact us
+                    </span>
+                    .
+                  </p>
+                  {showBottomCallCentreNumbers && <CallCentreEmailAndNumbers />}
+                </div>
+              </>
+            )}
+          </PageNavAndContentContainer>
+        </WizardStep>
+      </DeliveryRecordsAddressContext.Provider>
     </DeliveryRecordsProblemContext.Provider>
   );
 };

@@ -273,7 +273,7 @@ describe("DeliveryRecords", () => {
           .find("button")
           .at(0)
           .text()
-      ).toEqual("Continue to Step 2");
+      ).toEqual("Continue to Step 2 & 3");
 
       done();
     } else {
@@ -281,7 +281,7 @@ describe("DeliveryRecords", () => {
     }
   });
 
-  it("clicking on 'Continue to Step 2' button WITHOUT selecting problem shows validation error", async done => {
+  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
     if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords

@@ -1,4 +1,6 @@
-import React from "react";
+import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
+import React, { ReactNode } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
@@ -6,19 +8,22 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
+  ProductType,
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
+import { LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import {
-  ReturnToYourProductButton,
-  WizardStep
-} from "../../wizardRouterAdapter";
+import { navLinks } from "../../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
+import { WizardStep } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
 } from "../cancellationContexts";
 import { RouteableStepPropsWithCancellationFlow } from "../cancellationFlow";
+import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
@@ -44,9 +49,10 @@ const getCancelFunc = (
 const getCaseUpdateWithCancelOutcomeFunc = (
   caseId: string,
   productDetail: ProductDetail
-) => async () =>
-  await getUpdateCasePromise(
+) => () =>
+  getUpdateCasePromise(
     productDetail.isTestUser,
+    isCancelled(productDetail.subscription) ? "_CANCELLED" : "_ERROR",
     caseId,
     isCancelled(productDetail.subscription)
       ? {
@@ -58,63 +64,141 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
+const getCaseUpdateFuncForEscalation = (
+  caseId: string,
+  escalationCauses: string[],
+  isTestUser: boolean
+) => () =>
+  getUpdateCasePromise(isTestUser, "_ESCALATED", caseId, {
+    Journey__c: "SV - Cancellation - MB",
+    Subject: `Online Cancellation MANUAL INTERVENTION REQUIRED - ${escalationCauses.join(
+      " & "
+    )}`,
+    Status: "New",
+    Priority: "High"
+  });
+
 const getCancellationSummaryWithReturnButton = (
-  productType: ProductTypeWithCancellationFlow,
-  productDetail: ProductDetail
-) => (
+  productType: ProductType,
+  productDetail: ProductDetail,
+  body: ReactNode
+) => () => (
   <div>
-    {getCancellationSummary(productType)(productDetail)}
+    {body}
     <div css={{ height: "20px" }} />
-    <ReturnToYourProductButton productType={productType} />
+    {/* <ReturnToYourProductButton productType={productType} /> */}
+    <LinkButton
+      to={`/manage/${productType.urlPart}`}
+      text={"Return to your account"}
+      state={productDetail}
+      colour={palette.neutral[100]}
+      textColour={palette.neutral[0]}
+      hollow
+      left
+    />
   </div>
 );
 
 const getCaseUpdatingCancellationSummary = (
-  caseId: string,
+  caseId: string | "",
   productType: ProductTypeWithCancellationFlow
 ) => (productDetails: ProductDetail[]) => {
   const productDetail = productDetails[0] || { subscription: {} };
-  return (
+  const render = getCancellationSummaryWithReturnButton(
+    productType,
+    productDetail,
+    getCancellationSummary(productType)(productDetail)
+  );
+  return caseId ? (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}
-      render={() =>
-        getCancellationSummaryWithReturnButton(productType, productDetail)
-      }
+      render={render}
       loadingMessage="Finalising your cancellation..."
     />
+  ) : (
+    render()
   );
 };
+
+// TODO consider returning case number from API and displaying
+const escalatedConfirmationBody = (
+  <p>
+    Your cancellation request has been successfully submitted. Our customer
+    service team will try their best to contact you as soon as possible to
+    confirm the cancellation and refund any credit you are owed.
+  </p>
+);
 
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <WizardStep routeableStepProps={props} hideBackButton>
+  <WizardStep routeableStepProps={props} hideBackButton fullWidth>
     <CancellationReasonContext.Consumer>
       {reason => (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
             <MembersDataApiItemContext.Consumer>
-              {productDetail =>
-                isProduct(productDetail) ? (
-                  <PerformCancelAsyncLoader
-                    fetch={getCancelFunc(
-                      productDetail.subscription.subscriptionId,
-                      reason,
-                      createProductDetailFetcher(
-                        props.productType,
-                        productDetail.subscription.subscriptionId
-                      )
-                    )}
-                    render={getCaseUpdatingCancellationSummary(
-                      caseId,
-                      props.productType
-                    )}
-                    loadingMessage="Performing your cancellation..."
+              {productDetail => (
+                <>
+                  <PageHeaderContainer
+                    selectedNavItem={navLinks.accountOverview}
+                    title={`Cancel ${props.productType.friendlyName}`}
                   />
-                ) : (
-                  <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
-                )
-              }
+                  <PageNavAndContentContainer
+                    selectedNavItem={navLinks.accountOverview}
+                  >
+                    <ProgressIndicator
+                      steps={[
+                        { title: "" },
+                        { title: "" },
+                        { title: "", isCurrentStep: true }
+                      ]}
+                      additionalCSS={css`
+                        margin: ${space[5]}px 0 ${space[12]}px;
+                      `}
+                    />
+                    {isProduct(productDetail) ? (
+                      <CancellationFlowEscalationCheck {...props}>
+                        {escalationCauses =>
+                          escalationCauses.length > 0 ? (
+                            <CaseUpdateAsyncLoader
+                              fetch={getCaseUpdateFuncForEscalation(
+                                caseId,
+                                escalationCauses,
+                                productDetail.isTestUser
+                              )}
+                              render={getCancellationSummaryWithReturnButton(
+                                props.productType,
+                                productDetail,
+                                escalatedConfirmationBody
+                              )}
+                              loadingMessage="Requesting your cancellation..."
+                            />
+                          ) : (
+                            <PerformCancelAsyncLoader
+                              fetch={getCancelFunc(
+                                productDetail.subscription.subscriptionId,
+                                reason,
+                                createProductDetailFetcher(
+                                  props.productType,
+                                  productDetail.subscription.subscriptionId
+                                )
+                              )}
+                              render={getCaseUpdatingCancellationSummary(
+                                caseId,
+                                props.productType
+                              )}
+                              loadingMessage="Performing your cancellation..."
+                            />
+                          )
+                        }
+                      </CancellationFlowEscalationCheck>
+                    ) : (
+                      <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+                    )}
+                  </PageNavAndContentContainer>
+                </>
+              )}
             </MembersDataApiItemContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>

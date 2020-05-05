@@ -1,67 +1,273 @@
-import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
-import { NavigateFn } from "@reach/router";
-import React, { ReactElement, useContext, useEffect } from "react";
-import { LinkButton } from "../../buttons";
-import { GenericErrorScreen } from "../../genericErrorScreen";
-import { PageContainer } from "../../page";
+import { css, SerializedStyles } from "@emotion/core";
+import { LinkButton } from "@guardian/src-button";
+import { palette, space } from "@guardian/src-foundations";
+import { headline, textSans } from "@guardian/src-foundations/typography";
+import moment from "moment";
+import React, { useContext, useEffect, useState } from "react";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import AsyncLoader from "../../asyncLoader";
+import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
+import { navLinks } from "../../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProductDescriptionListTable } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { TickInCircle } from "../../svgs/tickInCircle";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
+import { updateAddressFetcher } from "./deliveryAddressApi";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
-import { SubscriptionsAffectedList } from "./deliveryAddressForm";
 import {
   AddressChangedInformationContext,
+  ContactIdContext,
+  convertToDescriptionListData,
   isAddress,
-  NewDeliveryAddressContext
+  NewDeliveryAddressContext,
+  ProductName
 } from "./deliveryAddressFormContext";
 
-export const renderConfirmation = (navigate: NavigateFn | undefined) => () => {
-  if (navigate) {
-    navigate("confirmed", { replace: true });
-  }
-  return (
-    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-  );
-};
+const renderConfirmation = (props: RouteableStepProps) => () => (
+  <ConfirmationFC {...props} />
+);
 
-export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
+const ConfirmationFC = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
-  const addressChangeInformation = useContext(AddressChangedInformationContext);
+  const addressChangedInformationContext = useContext(
+    AddressChangedInformationContext
+  );
+  const productName = useContext(ProductName);
+
+  const [
+    showTopCallCentreNumbers,
+    setTopCallCentreNumbersVisibility
+  ] = useState<boolean>(false);
+
   useEffect(() => {
     return () => {
       addressContext.addressStateReset?.();
     };
   }, []);
+
+  const subHeadingCss = `
+    border-top: 1px solid ${palette.neutral["86"]};
+    ${headline.small()};
+    font-weight: bold;
+    margin-top: 50px;
+    ${maxWidth.tablet} {
+      font-size: 1.25rem;
+      line-height: 1.6;
+    };
+  `;
+
+  const dtCss: string = `
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+    min-width: 12ch;
+  `;
+  const ddCss: string = `
+    margin: 0;
+    display: inline-block;
+    vertical-align: top;
+    min-width: 12ch;
+  `;
+
   return (
-    <WizardStep routeableStepProps={props} hideBackButton>
+    <WizardStep routeableStepProps={props} hideBackButton fullWidth>
       {isAddress(addressContext.newDeliveryAddress) ? (
-        <PageContainer>
-          <h1>Delivery address</h1>
-          <SuccessMessage
-            message={"We have successfully updated your delivery address."}
+        <>
+          <PageHeaderContainer
+            selectedNavItem={navLinks.subscriptions}
+            title={
+              <span
+                css={css`
+                  ::first-letter {
+                    text-transform: capitalize;
+                  }
+                `}
+              >
+                <span
+                  css={css`
+                    display: none;
+                    ${minWidth.tablet} {
+                      display: inline;
+                    }
+                  `}
+                >
+                  Update{" "}
+                </span>
+                delivery details
+              </span>
+            }
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Edit delivery address",
+                currentPage: true
+              }
+            ]}
           />
-          <AddressDisplayContainer title={"New address details"}>
-            <>
-              <section>
-                <DeliveryAddressDisplay
-                  {...addressContext.newDeliveryAddress}
-                />
-                <LinkButton to=".." text="Edit address" left />
-              </section>
-              <section>
-                <SubscriptionsAffectedList
-                  title={"Applied to"}
-                  addressChangeInformation={addressChangeInformation}
-                />
-              </section>
-            </>
-          </AddressDisplayContainer>
-        </PageContainer>
+          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            <ProgressIndicator
+              steps={[
+                { title: "Update" },
+                { title: "Review" },
+                { title: "Confirmation", isCurrentStep: true }
+              ]}
+              additionalCSS={css`
+                margin-top: ${space[5]}px;
+              `}
+            />
+            <h2
+              css={css`
+                ${subHeadingCss}
+              `}
+            >
+              Confirmation
+            </h2>
+            <SuccessMessage
+              message={`We have successfully updated your delivery details for your ${productName}. You will shortly receive a confirmation email.`}
+            />
+            <section
+              css={css`
+                border: 1px solid ${palette.neutral["86"]};
+                margin-top: ${space[5]}px;
+              `}
+            >
+              <h2
+                css={css`
+                  margin: 0;
+                  padding: ${space[3]}px;
+                  background-color: ${palette.neutral["97"]};
+                  border-bottom: 1px solid ${palette.neutral["86"]};
+                  ${textSans.medium({ fontWeight: "bold" })};
+                  ${minWidth.tablet} {
+                    padding: ${space[3]}px ${space[5]}px;
+                  }
+                `}
+              >
+                Delivery address and instructions
+              </h2>
+              <dl
+                css={css`
+                  padding: 0 ${space[3]}px;
+                  ${textSans.medium()};
+                  display: flex;
+                  flex-wrap: wrap;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  ${minWidth.tablet} {
+                    padding: 0 ${space[5]}px;
+                  }
+                `}
+              >
+                <div
+                  css={css`
+                    flex-grow: 1;
+                  `}
+                >
+                  <dt
+                    css={css`
+                      ${dtCss}
+                    `}
+                  >
+                    Address
+                  </dt>
+                  <dd
+                    css={css`
+                      ${ddCss}
+                    `}
+                  >
+                    {addressContext.newDeliveryAddress && (
+                      <DeliveryAddressDisplay
+                        {...addressContext.newDeliveryAddress}
+                      />
+                    )}
+                  </dd>
+                </div>
+                <div
+                  css={css`
+                    flex-grow: 1;
+                    margin-top: 16px;
+                    ${minWidth.tablet} {
+                      margin-top: 0;
+                    }
+                  `}
+                >
+                  <dt
+                    css={css`
+                      ${dtCss}
+                    `}
+                  >
+                    Instructions
+                  </dt>
+                  <dd
+                    css={css`
+                      ${ddCss}
+                    `}
+                  >
+                    {addressContext.newDeliveryAddress?.instructions || "-"}
+                  </dd>
+                </div>
+              </dl>
+            </section>
+            <p
+              css={css`
+                ${textSans.medium()};
+                margin-top: ${space[9]}px;
+              `}
+            >
+              I understand that this address change will affect the following
+              subscriptions
+            </p>
+            <ProductDescriptionListTable
+              content={convertToDescriptionListData(
+                addressChangedInformationContext
+              )}
+              seperateEachRow
+            />
+            <LinkButton
+              css={css`
+                margin-top: ${space[3]}px;
+                ${minWidth.tablet} {
+                  margin-top: ${space[5]}px;
+                }
+              `}
+              href={navLinks.subscriptions.link}
+            >
+              Go back to Subscriptions
+            </LinkButton>
+            <p
+              css={css`
+                ${textSans.medium()};
+                margin-top: ${space[12]}px;
+                color: ${palette.neutral[46]};
+              `}
+            >
+              If you need seperate delivery addresses for each of your
+              subscriptions, please{" "}
+              <span
+                css={css`
+                  cursor: pointer;
+                  color: ${palette.brand[500]};
+                  text-decoration: underline;
+                `}
+                onClick={() =>
+                  setTopCallCentreNumbersVisibility(!showTopCallCentreNumbers)
+                }
+              >
+                contact us
+              </span>
+              .
+            </p>
+            {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+          </PageNavAndContentContainer>
+        </>
       ) : (
         visuallyNavigateToParent(props)
       )}
@@ -69,52 +275,55 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
   );
 };
 
-interface AddressDisplayContainerProps {
-  title: string;
-  children: ReactElement<any> | null;
-}
-const AddressDisplayContainer = (props: AddressDisplayContainerProps) => (
-  <section
-    css={css`
-      border: 1px solid ${palette.neutral["86"]};
-      padding: 48px 0 14px;
-      position: relative;
-      section {
-        margin: 14px 0;
-        padding: 0 14px;
-        position: relative;
-      }
-      section + section {
-        padding-top: 14px;
-        border-top: 1px solid ${palette.neutral["86"]};
-      }
-    `}
-  >
-    <h1
-      css={css`
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 0;
-        padding: 0 14px;
-        ${textSans.medium()};
-        font-weight: bold;
-        line-height: 48px;
-        background-color: ${palette.neutral["97"]};
-        border-bottom: 1px solid ${palette.neutral["86"]};
-      `}
-    >
-      New address details
-    </h1>
-    <>{props.children}</>
-  </section>
-);
+export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
+  const addressContext = useContext(NewDeliveryAddressContext);
+  const contactIdContext = useContext(ContactIdContext);
+  const addressChangedInformationContext = useContext(
+    AddressChangedInformationContext
+  );
+
+  const addressChangeInformationCopy = [
+    ...addressChangedInformationContext.map(
+      element =>
+        `${element.friendlyProductName} subscription (${
+          element.subscriptionId
+        })${
+          element.effectiveDate
+            ? ` as of front cover dated ${element.effectiveDate.format(
+                "dddd Do MMMM YYYY"
+              )}`
+            : ""
+        }`
+    ),
+    "",
+    `(as displayed on confirmation page at ${moment().format(
+      "H:mm:ss zz [on] Do MMMM YYYY"
+    )})`
+  ].join("\n");
+
+  return addressContext.newDeliveryAddress ? (
+    <AsyncLoader
+      render={renderConfirmation(props)}
+      fetch={updateAddressFetcher(
+        {
+          ...addressContext.newDeliveryAddress,
+          addressChangeInformation: addressChangeInformationCopy
+        },
+        contactIdContext
+      )}
+      readerOnOK={(resp: Response) => resp.text()}
+      loadingMessage={"Updating delivery address details..."}
+    />
+  ) : (
+    visuallyNavigateToParent(props)
+  );
+};
 
 interface SuccessMessageProps {
   message: string;
+  additionalCss?: SerializedStyles;
 }
-const SuccessMessage = (props: SuccessMessageProps) => (
+export const SuccessMessage = (props: SuccessMessageProps) => (
   <div
     css={css`
       position: relative;
@@ -126,6 +335,7 @@ const SuccessMessage = (props: SuccessMessageProps) => (
       margin-bottom: 50px;
       ${textSans.medium()};
       font-weight: bold;
+      ${props.additionalCss}
     `}
   >
     <i

@@ -1,3 +1,7 @@
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
+import { palette } from "@guardian/src-foundations";
+import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import Raven from "raven-js";
 import React from "react";
@@ -6,17 +10,16 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import palette from "../../../colours";
-import { minWidth } from "../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
+import { navLinks } from "../../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
-import {
-  ReturnToYourProductButton,
-  RouteableStepProps,
-  WizardStep
-} from "../../wizardRouterAdapter";
+import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
@@ -63,8 +66,8 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
       minWidth: "125px",
       backgroundColor:
         props.value === props.paymentMethod
-          ? palette.neutral["4"]
-          : palette.neutral["5"],
+          ? palette.neutral[60]
+          : palette.neutral[86],
       margin: "10px",
       padding: "20px",
       textAlign: "center",
@@ -148,6 +151,17 @@ class PaymentUpdaterStep extends React.Component<
   };
 
   public render(): React.ReactNode {
+    const subHeadingCss = `
+      border-top: 1px solid ${palette.neutral["86"]};
+      ${headline.small()};
+      font-weight: bold;
+      margin-top: 50px;
+      ${maxWidth.tablet} {
+        font-size: 1.25rem;
+        line-height: 1.6;
+      };
+    `;
+
     return (
       <MembersDataApiItemContext.Provider value={this.props.productDetail}>
         <NewPaymentMethodContext.Provider
@@ -162,45 +176,81 @@ class PaymentUpdaterStep extends React.Component<
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
               hideBackButton
+              fullWidth
             >
-              <div
-                css={{
-                  [minWidth.phablet]: {
-                    display: "flex",
-                    flexDirection: this.props.productDetail.alertText
-                      ? "row-reverse"
-                      : "row"
-                  }
-                }}
+              <PageHeaderContainer
+                selectedNavItem={navLinks.accountOverview}
+                title="Manage payment method"
+              />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
               >
-                {this.props.productDetail.alertText ? (
-                  <div>
-                    <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                    <span>{this.props.productDetail.alertText}</span>
+                <ProgressIndicator
+                  steps={[
+                    { title: "", isCurrentStep: true },
+                    { title: "" },
+                    { title: "" }
+                  ]}
+                  additionalCSS={css`
+                    margin: ${space[5]}px 0 ${space[12]}px;
+                  `}
+                />
+                <h2
+                  css={css`
+                    ${subHeadingCss}
+                  `}
+                >
+                  Update payment for your{" "}
+                  {this.props.routeableStepProps.productType.friendlyName}
+                </h2>
+                <div
+                  css={{
+                    [minWidth.phablet]: {
+                      display: "flex",
+                      flexDirection: this.props.productDetail.alertText
+                        ? "row-reverse"
+                        : "row"
+                    }
+                  }}
+                >
+                  {this.props.productDetail.alertText ? (
+                    <div>
+                      <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
+                      <span>{this.props.productDetail.alertText}</span>
+                    </div>
+                  ) : (
+                    undefined
+                  )}
+                  <div css={{ minWidth: "260px" }}>
+                    <h3>Current Payment Details</h3>
+                    <CurrentPaymentDetails
+                      {...this.props.productDetail.subscription}
+                    />
                   </div>
-                ) : (
-                  undefined
-                )}
-                <div css={{ minWidth: "260px" }}>
-                  <h3>Current Payment Details</h3>
-                  <CurrentPaymentDetails
-                    {...this.props.productDetail.subscription}
-                  />
                 </div>
-              </div>
-              <PaymentMethodBar
-                updatePaymentMethod={this.updatePaymentMethod}
-                value={this.state.selectedPaymentMethod}
-              />
-              <h3>New Payment Details</h3>
-              {this.getInputForm(
-                this.props.productDetail.subscription,
-                this.props.productDetail.isTestUser
-              )}
-              <div css={{ height: "10px" }} />
-              <ReturnToYourProductButton
-                productType={this.props.routeableStepProps.productType}
-              />
+                <PaymentMethodBar
+                  updatePaymentMethod={this.updatePaymentMethod}
+                  value={this.state.selectedPaymentMethod}
+                />
+                <h3>New Payment Details</h3>
+                {this.getInputForm(
+                  this.props.productDetail.subscription,
+                  this.props.productDetail.isTestUser
+                )}
+                <div css={{ height: "10px" }} />
+                {/* <ReturnToYourProductButton
+                  productType={this.props.routeableStepProps.productType}
+                /> */}
+                <LinkButton
+                  to={`/manage/${this.props.routeableStepProps.productType.urlPart}`}
+                  text={"Return to your account"}
+                  state={this.props.productDetail}
+                  colour={palette.neutral[100]}
+                  textColour={palette.neutral[0]}
+                  hollow
+                  left
+                />
+              </PageNavAndContentContainer>
             </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>
@@ -279,6 +329,11 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...labelPaymentStepProps(props)}
     headingPrefix="Update payment for"
+    hideHeading
+    hasLeftNav={{
+      pageTitle: "Manage contribution",
+      selectedNavItem: navLinks.accountOverview
+    }}
     supportRefererSuffix="payment_flow"
     loadingMessagePrefix="Retrieving current payment details for your"
     cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}

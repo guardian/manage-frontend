@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import Raven from "raven-js";
 import React from "react";
 import {
@@ -13,6 +15,9 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
+import { navLinks } from "../../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
@@ -139,10 +144,8 @@ class ExecutePaymentUpdate extends React.Component<
         <p>
           To try again please go back and re-enter your new{" "}
           {this.props.newPaymentMethodDetail.friendlyName} details.
-          Alternatively, please call to speak to one of our customer service
-          specialists.
         </p>
-        <CallCentreNumbers prefixText="To contact us" />
+        <CallCentreNumbers prefixText="Alternatively, to contact us" />
       </div>
     );
   };
@@ -161,22 +164,42 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               extraFooterComponents={
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
+              hideBackButton
+              fullWidth
             >
-              <h3>Please confirm your change from...</h3>
-              <CurrentPaymentDetails {...productDetail.subscription} />
-              <h3>...to...</h3>
-              {newPaymentMethodDetail.render()}
-              <div css={{ margin: "20px 0", textAlign: "right" }}>
-                {newPaymentMethodDetail.confirmButtonWrapper(
-                  <div css={{ marginTop: "20px", textAlign: "right" }}>
-                    <ExecutePaymentUpdate
-                      {...props}
-                      productDetail={productDetail}
-                      newPaymentMethodDetail={newPaymentMethodDetail}
-                    />
-                  </div>
-                )}
-              </div>
+              <PageHeaderContainer
+                selectedNavItem={navLinks.accountOverview}
+                title="Manage payment method"
+              />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
+              >
+                <ProgressIndicator
+                  steps={[
+                    { title: "" },
+                    { title: "", isCurrentStep: true },
+                    { title: "" }
+                  ]}
+                  additionalCSS={css`
+                    margin: ${space[5]}px 0 ${space[12]}px;
+                  `}
+                />
+                <h3>Please confirm your change from...</h3>
+                <CurrentPaymentDetails {...productDetail.subscription} />
+                <h3>...to...</h3>
+                {newPaymentMethodDetail.render()}
+                <div css={{ margin: "20px 0", textAlign: "right" }}>
+                  {newPaymentMethodDetail.confirmButtonWrapper(
+                    <div css={{ marginTop: "20px", textAlign: "right" }}>
+                      <ExecutePaymentUpdate
+                        {...props}
+                        productDetail={productDetail}
+                        newPaymentMethodDetail={newPaymentMethodDetail}
+                      />
+                    </div>
+                  )}
+                </div>
+              </PageNavAndContentContainer>
             </WizardStep>
           ) : (
             visuallyNavigateToParent(props)

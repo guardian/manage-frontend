@@ -10,6 +10,8 @@ import { TickInCircle } from "../../svgs/tickInCircle";
 interface RecordStatusProps {
   isDispatched: boolean;
   isHolidayStop: boolean;
+  bulkSuspensionReason?: string;
+  productName?: string;
   isChangedAddress: boolean;
   isChangedDeliveryInstruction: boolean;
   isFutureRecord: boolean;
@@ -49,49 +51,67 @@ export const RecordStatus = (props: RecordStatusProps) => {
           Problem reported ({capitalize(props.deliveryProblem)})
         </span>
       )}
-      {!props.deliveryProblem && props.isDispatched && (
-        <span
-          css={css`
-            display: block;
-            font-weight: bold;
-            padding-left: 30px;
-            position: relative;
-            margin-bottom: ${space[2]}px;
-          `}
-        >
-          <i
+      {!props.deliveryProblem &&
+        props.isDispatched &&
+        !props.isHolidayStop &&
+        !props.bulkSuspensionReason && (
+          <span
             css={css`
-              position: absolute;
-              top: 0;
-              left: 0;
+              display: block;
+              font-weight: bold;
+              padding-left: 30px;
+              position: relative;
+              margin-bottom: ${space[2]}px;
             `}
           >
-            <TickInCircle />
-          </i>
-          {props.isFutureRecord ? "Scheduled" : "Dispatched"}
-        </span>
-      )}
-      {!props.deliveryProblem && props.isHolidayStop && (
-        <span
-          css={css`
-            display: block;
-            font-weight: bold;
-            padding-left: 30px;
-            position: relative;
-            margin-bottom: ${space[2]}px;
-          `}
-        >
-          <i
+            <i
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+              `}
+            >
+              <TickInCircle />
+            </i>
+            {props.isFutureRecord ? "Scheduled" : "Dispatched"}
+          </span>
+        )}
+      {props.isHolidayStop && (
+        <>
+          <span
             css={css`
-              position: absolute;
-              top: 0;
-              left: 0;
+              display: block;
+              font-weight: bold;
+              padding-left: 30px;
+              position: relative;
+              margin-bottom: ${space[2]}px;
             `}
           >
-            <HolidayStopIcon />
-          </i>
-          Holiday stop
-        </span>
+            <i
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+              `}
+            >
+              {props.bulkSuspensionReason ? (
+                <ErrorIcon downgradeToWarning />
+              ) : (
+                <HolidayStopIcon />
+              )}
+            </i>
+            {props.bulkSuspensionReason
+              ? `Imposed suspension (${props.bulkSuspensionReason})`
+              : "Holiday stop"}
+          </span>
+          {props.bulkSuspensionReason && props.productName && (
+            <p>
+              Unfortunately due to {props.bulkSuspensionReason}, we are unable
+              to deliver your {props.productName}. You will be credited for this
+              issue off the subsequent payment.
+            </p>
+          )}
+        </>
       )}
       {!props.isHolidayStop && changesMessage && (
         <span

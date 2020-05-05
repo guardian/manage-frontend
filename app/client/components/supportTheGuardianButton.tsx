@@ -11,6 +11,8 @@ export interface SupportTheGuardianButtonProps {
   fontWeight?: "bold";
   height?: string;
   notPrimary?: true;
+  textColour?: string;
+  colour?: string;
 }
 
 const hasWindow = typeof window !== "undefined" && window.guardian;
@@ -65,6 +67,8 @@ export const SupportTheGuardianButton = (
       fontWeight={props.fontWeight}
       height={props.height}
       primary={props.notPrimary ? undefined : true}
+      textColour={props.textColour}
+      colour={props.colour}
       right
     />
   </a>

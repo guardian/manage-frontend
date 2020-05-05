@@ -3,10 +3,8 @@ import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
-import { Link } from "@reach/router";
 import moment from "moment";
 import React, { useContext } from "react";
-import { formatDateStr } from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
@@ -17,7 +15,8 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
-import { ErrorIcon } from "../../svgs/errorIcon";
+import { ProductDescriptionListTable } from "../../productDescriptionListTable";
+import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   RouteableStepProps,
@@ -36,9 +35,11 @@ import {
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
+  DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
+import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 
 const renderDeliveryRecordsConfirmation = (
   props: DeliveryRecordsRouteableStepProps,
@@ -70,6 +71,7 @@ const DeliveryRecordsProblemConfirmationFC = (
     DeliveryRecordsProblemPostPayloadContext
   );
   const deliveryProblemCredit = useContext(DeliveryRecordCreditContext);
+  const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
   const filteredData = props.data.results.filter(
     (record, index) =>
       deliveryIssuePostPayload?.deliveryRecords?.findIndex(
@@ -83,8 +85,8 @@ const DeliveryRecordsProblemConfirmationFC = (
     ? props.data.deliveryProblemMap[problemCaseId]?.ref
     : "-";
 
-  const dtCss: string = `
-    font-weight: bold; 
+  const dtCss = css`
+    font-weight: bold;
     display: inline-block;
     vertical-align: top;
     min-width: 12ch;
@@ -92,7 +94,7 @@ const DeliveryRecordsProblemConfirmationFC = (
       min-width: 16ch;
     }
   `;
-  const ddCss: string = `
+  const ddCss = css`
     margin: 0;
     display: inline-block;
     vertical-align: top;
@@ -106,8 +108,28 @@ const DeliveryRecordsProblemConfirmationFC = (
       <PageHeaderContainer
         selectedNavItem={navLinks.subscriptions}
         title="Delivery history"
+        breadcrumbs={[
+          {
+            title: navLinks.accountOverview.title,
+            link: navLinks.accountOverview.link
+          },
+          {
+            title: "Delivery history",
+            currentPage: true
+          }
+        ]}
       />
       <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+        <ProgressIndicator
+          steps={[
+            { title: "Update" },
+            { title: "Review" },
+            { title: "Confirmation", isCurrentStep: true }
+          ]}
+          additionalCSS={css`
+            margin: ${space[5]}px 0 ${space[12]}px;
+          `}
+        />
         <h2
           css={css`
             border-top: 1px solid ${palette.neutral["86"]};
@@ -152,13 +174,29 @@ const DeliveryRecordsProblemConfirmationFC = (
             <InfoIconDark fillColor={palette.brand.bright} />
           </i>
           {deliveryProblemCredit?.showCredit
-            ? "Thank you for reporting your delivery problem. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service."
-            : "Your case is high priority. Our customer service team will try their best to contact you within 48 hours to resolve the issue."}
+            ? `Thank you for reporting your delivery problem${
+                deliveryAddressContext.address &&
+                deliveryAddressContext.productsAffected &&
+                deliveryAddressContext.productsAffected?.length > 0
+                  ? " and updating your delivery details"
+                  : ""
+              }. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service.`
+            : `Your case is high priority. Our customer service team will try their best to contact you as soon as possible to resolve the issue.${
+                deliveryAddressContext.address &&
+                deliveryAddressContext.productsAffected &&
+                deliveryAddressContext.productsAffected?.length > 0
+                  ? " Thank you for updating your delivery details."
+                  : ""
+              }`}
         </span>
         <section
           css={css`
             border: 1px solid ${palette.neutral["86"]};
-            margin-bottom: ${space[9]}px;
+            margin-bottom: ${deliveryAddressContext.address &&
+            deliveryAddressContext.productsAffected &&
+            deliveryAddressContext.productsAffected?.length > 0
+              ? space[5]
+              : space[9]}px;
           `}
         >
           <h2
@@ -181,245 +219,62 @@ const DeliveryRecordsProblemConfirmationFC = (
               ${textSans.medium()};
               display: flex;
               flex-wrap: wrap;
+              flex-direction: column;
               justify-content: space-between;
               ${minWidth.tablet} {
+                flex-direction: initial;
                 padding: 0 ${space[5]}px;
+              }
+              div {
+                margin-top: 16px;
+                ${minWidth.tablet} {
+                  min-width: 50%;
+                }
               }
             `}
           >
-            <div
-              css={css`
-                ${minWidth.tablet} {
-                  min-width: 50%;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Reference:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                  ${minWidth.tablet} {
-                    min-width: 12ch;
-                  }
-                `}
-              >
-                {problemReferenceId}
-              </dd>
+            <div>
+              <dt css={dtCss}>Reference:</dt>
+              <dd css={ddCss}>{problemReferenceId}</dd>
             </div>
-            <div
-              css={css`
-                flex-grow: 1;
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Status:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                `}
-              >
-                <span
-                  css={css`
-                    display: block;
-                    font-weight: bold;
-                    padding-left: 30px;
-                    position: relative;
-                  `}
-                >
-                  <i
-                    css={css`
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                    `}
-                  >
-                    <ErrorIcon fill={palette.brandYellow[300]} />
-                  </i>
-                  Reported
-                </span>
-              </dd>
+            <div>
+              <dt css={dtCss}>Date reported:</dt>
+              <dd css={ddCss}>{moment().format("D MMM YYYY")}</dd>
             </div>
-            <div
-              css={css`
-                flex-basis: 100%;
-                height: 0;
-                ${minWidth.tablet} {
-                  margin-top: ${space[5]}px;
-                }
-              `}
-            />
-            <div
-              css={css`
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                  min-width: 50%;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Date reported:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                  ${minWidth.tablet} {
-                    min-width: 12ch;
-                  }
-                `}
-              >
-                {formatDateStr(moment().toString())}
-              </dd>
+            <div>
+              <dt css={dtCss}>Subscription ID:</dt>
+              <dd css={ddCss}>{props.subscriptionId}</dd>
             </div>
-            <div
-              css={css`
-                flex-grow: 1;
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Subscription ID:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                `}
-              >
-                {props.subscriptionId}
-              </dd>
-            </div>
-            <div
-              css={css`
-                flex-basis: 100%;
-                height: 0;
-                ${minWidth.tablet} {
-                  margin-top: ${space[5]}px;
-                }
-              `}
-            />
-            <div
-              css={css`
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                  min-width: 50%;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Product:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                  ${minWidth.tablet} {
-                    min-width: 12ch;
-                  }
-                `}
-              >
+            <div>
+              <dt css={dtCss}>Product:</dt>
+              <dd css={ddCss}>
                 {props.routeableStepProps.productType.shortFriendlyName}
               </dd>
             </div>
-            <div
-              css={css`
-                flex-grow: 1;
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Contact number:
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                `}
-              >
-                {"-" ||
-                  Object.entries(props.data.contactPhoneNumbers)
-                    .filter(
-                      phoneNumber =>
-                        phoneNumber[0].toLowerCase() !== "id" && phoneNumber[1]
-                    )
-                    .map((phoneNumber, index) => (
-                      <span
-                        key={`phoneNo-${index}`}
-                        css={css`
-                          display: block;
-                          margin-bottom: ${space[3]};
-                        `}
-                      >
-                        {phoneNumber[1]}
-                      </span>
-                    ))}
+            <div>
+              <dt css={dtCss}>Contact number:</dt>
+              <dd css={ddCss}>
+                {Object.entries(props.data.contactPhoneNumbers)
+                  .filter(
+                    ([phoneType, phoneNumber]) =>
+                      phoneType.toLowerCase() !== "id" && phoneNumber
+                  )
+                  .map(([_, phoneNumber], index) => (
+                    <span
+                      key={`phoneNo-${index}`}
+                      css={css`
+                        display: block;
+                        margin-bottom: ${space[3]};
+                      `}
+                    >
+                      {phoneNumber}
+                    </span>
+                  )) || "-"}
               </dd>
             </div>
-            <div
-              css={css`
-                flex-basis: 100%;
-                height: 0;
-                ${minWidth.tablet} {
-                  margin-top: ${space[5]}px;
-                }
-              `}
-            />
-            <div
-              css={css`
-                flex-grow: 1;
-                margin-top: 16px;
-                ${minWidth.tablet} {
-                  margin-top: 0;
-                }
-              `}
-            >
-              <dt
-                css={css`
-                  ${dtCss}
-                `}
-              >
-                Selected Issue(s):
-              </dt>
-              <dd
-                css={css`
-                  ${ddCss}
-                `}
-              >
+            <div>
+              <dt css={dtCss}>Selected Issue(s):</dt>
+              <dd css={ddCss}>
                 {deliveryIssuePostPayload?.deliveryRecords?.length}
               </dd>
             </div>
@@ -450,43 +305,6 @@ const DeliveryRecordsProblemConfirmationFC = (
               <p>There aren't any delivery records to show you yet</p>
             )}
           </div>
-          <span
-            css={css`
-              position: relative;
-              display: block;
-              margin: ${space[3]}px;
-              padding: ${space[3]}px ${space[3]}px ${space[3]}px
-                ${space[3] * 2 + 17}px;
-              background-color: ${palette.neutral[97]};
-              ${textSans.small()};
-              ${minWidth.tablet} {
-                margin: ${space[5]}px;
-              }
-            `}
-          >
-            <i
-              css={css`
-                position: absolute;
-                top: ${space[3]}px;
-                left: ${space[3]}px;
-              `}
-            >
-              <InfoIconDark fillColor={palette.brand.bright} />
-            </i>
-            {
-              "Before you go, please take a moment to check your current delivery address is up to date. "
-            }
-            <Link
-              css={{
-                textDecoration: "underline",
-                color: palette.brand[500],
-                ":visited": { color: palette.brand[500] }
-              }}
-              to={navLinks.subscriptions.link}
-            >
-              {"View address"}
-            </Link>
-          </span>
           {deliveryProblemCredit?.showCredit && (
             <dl
               css={css`
@@ -542,6 +360,60 @@ const DeliveryRecordsProblemConfirmationFC = (
             </dl>
           )}
         </section>
+        {deliveryAddressContext.address &&
+          deliveryAddressContext.productsAffected &&
+          deliveryAddressContext.productsAffected?.length > 0 && (
+            <section
+              css={css`
+                border: 1px solid ${palette.neutral["86"]};
+                margin-bottom: ${space[9]}px;
+              `}
+            >
+              <h2
+                css={css`
+                  margin: 0;
+                  padding: 14px ${space[3]}px;
+                  background-color: ${palette.neutral["97"]};
+                  border-bottom: 1px solid ${palette.neutral["86"]};
+                  ${textSans.medium({ fontWeight: "bold" })};
+                  ${minWidth.tablet} {
+                    padding: 14px ${space[5]}px;
+                  }
+                `}
+              >
+                Delivery address changes
+              </h2>
+              <ReadOnlyAddressDisplay
+                address={deliveryAddressContext.address}
+                instructions={
+                  (deliveryAddressContext.enableDeliveryInstructions &&
+                    deliveryAddressContext.address.instructions) ||
+                  undefined
+                }
+              />
+              <div
+                css={css`
+                  padding: 0 ${space[3]}px;
+                  margin-top: ${space[5]}px;
+                  ${minWidth.tablet} {
+                    padding: 0 ${space[5]}px;
+                  }
+                `}
+              >
+                <p
+                  css={css`
+                    ${textSans.medium()}
+                  `}
+                >
+                  Your change of address affects the following subscriptions:
+                </p>
+                <ProductDescriptionListTable
+                  content={deliveryAddressContext.productsAffected}
+                  seperateEachRow
+                />
+              </div>
+            </section>
+          )}
         <LinkButton
           to={navLinks.subscriptions.link}
           text={"Go back to subscriptions"}

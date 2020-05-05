@@ -33,6 +33,7 @@ export interface RawHolidayStopRequest {
   publicationsImpacted: RawHolidayStopDetail[];
   mutabilityFlags: MutabilityFlags;
   withdrawnTime?: string;
+  bulkSuspensionReason?: string;
 }
 
 export interface RawPotentialHolidayStopDetail {
@@ -46,6 +47,12 @@ export interface PotentialHolidayStopsResponse {
   nextInvoiceDateAfterToday: string;
 }
 
+export type OutstandingHolidayStop = object; // refine type if needed
+
+export interface OutstandingHolidayStopsResponse {
+  publicationsToRefund: OutstandingHolidayStop[];
+}
+
 export interface MinimalHolidayStopRequest {
   id?: string;
   subscriptionName?: string;
@@ -53,6 +60,7 @@ export interface MinimalHolidayStopRequest {
   dateRange: DateRange;
   mutabilityFlags?: MutabilityFlags;
   withdrawnDate?: Moment;
+  bulkSuspensionReason?: string;
 }
 
 export interface HolidayStopRequest extends MinimalHolidayStopRequest {
@@ -142,6 +150,9 @@ export function isHolidayStopsResponse(
 
 export const isNotWithdrawn = (holidayStopRequest: HolidayStopRequest) =>
   !holidayStopRequest.withdrawnDate;
+
+export const isNotBulkSuspension = (holidayStopRequest: HolidayStopRequest) =>
+  !holidayStopRequest.bulkSuspensionReason;
 
 const embellishRawHolidayStop = (
   rawHolidayStopRequest: RawHolidayStopRequest

@@ -1,43 +1,41 @@
 import { Link } from "@reach/router";
 import React from "react";
-import palette from "../../../colours";
+import {
+  hrefStyle,
+  standardAlternateFeedbackIntro,
+  standardSaveBody
+} from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
-
-const standardContributionsSaveBody =
-  "It would be really helpful for us to understand a bit more about your reason for cancelling.";
-
-const standardContributionsFeedbackIntro =
-  "Please submit your comments in the box below. Thank you.";
 
 export const contributionsCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_article",
     linkLabel: "As a result of a specific article I read",
     saveTitle: "As a result of a specific article you read",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I disagree with some editorial decisions",
     saveTitle: "You disagree with some of The Guardian’s editorial decisions",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveTitle: "You don’t feel that The Guardian values your support",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_support_another_way",
     linkLabel: "I support in another way, e.g. with a subscription",
     saveTitle:
       "You support The Guardian in another way, e.g. with a subscription",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -48,14 +46,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         We understand that financial circumstances change, and your current
         contribution might not suit you right now. To change your contribution
         amount yourself, please go to{" "}
-        <Link
-          css={{
-            textDecoration: "underline",
-            color: palette.blue.dark,
-            ":visited": { color: palette.blue.dark }
-          }}
-          to="/contributions"
-        >
+        <Link css={hrefStyle} to="/contributions">
           manage your account
         </Link>
       </>
@@ -66,8 +57,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_value_for_money",
     linkLabel: "I wasn’t getting value for money",
     saveTitle: "You don’t feel your contribution offers you adequate value",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_payment_issue",
@@ -77,22 +68,15 @@ export const contributionsCancellationReasons: CancellationReason[] = [
       <>
         <p>
           You can review your payment method and update your details in the{" "}
-          <Link
-            css={{
-              textDecoration: "underline",
-              color: palette.blue.dark,
-              ":visited": { color: palette.blue.dark }
-            }}
-            to={"/contributions"}
-          >
+          <Link css={hrefStyle} to={"/contributions"}>
             manage your account
           </Link>{" "}
           section, without the need to cancel your contribution.
         </p>
-        <p>{standardContributionsSaveBody}</p>
+        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_direct_debit",
@@ -112,10 +96,10 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your monthly or annual contribution, we will show you
           how to make a single contribution quickly and easily.
         </p>
-        <p>{standardContributionsSaveBody}</p>
+        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_annual_contribution",
@@ -127,10 +111,10 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your monthly contribution, we will show you how to
           set up an annual contribution quickly and easily.
         </p>
-        <p>{standardContributionsSaveBody}</p>
+        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -142,10 +126,10 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your annual contribution, we will show you how to set
           up an monthly contribution quickly and easily.
         </p>
-        <p>{standardContributionsSaveBody}</p>
+        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   },
   {
     reasonId: "mma_health",
@@ -160,7 +144,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_other",
     linkLabel: "None of the above",
     saveTitle: "",
-    saveBody: standardContributionsSaveBody,
-    alternateFeedbackIntro: standardContributionsFeedbackIntro
+    saveBody: standardSaveBody,
+    alternateFeedbackIntro: standardAlternateFeedbackIntro
   }
 ];

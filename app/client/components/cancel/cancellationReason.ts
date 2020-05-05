@@ -1,10 +1,9 @@
 export interface CancellationReason {
   reasonId: CancellationReasonId;
   linkLabel: string;
-  saveTitle: string;
+  saveTitle?: string;
   saveBody: string | JSX.Element;
-  experimentSaveBody?: JSX.Element;
-  experimentTriggerFlag?: string;
+  escalationSaveBody?: string | JSX.Element;
   alternateCallUsPrefix?: string;
   alternateFeedbackIntro?: string;
   alternateFeedbackThankYouTitle?: string;
@@ -14,6 +13,13 @@ export interface CancellationReason {
 }
 
 export type CancellationReasonId =
+  | "mma_autorenew"
+  | "mma_covid"
+  | "mma_delivery_issue"
+  | "mma_redemption_issue"
+  | "mma_time"
+  | "mma_better_offer"
+  | "mma_issue"
   | "mma_financial_circumstances"
   | "mma_payment_issue"
   | "mma_article"

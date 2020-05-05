@@ -24,12 +24,11 @@ export const GenericErrorScreen = ({
     <PageContainer>
       <h2>Oops!</h2>
       <p>
-        Sorry, it seems as if our system has made an error.
+        Sorry, it seems as if our system has encountered an error.
         <br />
-        Please try again in 5 minutes. Alternatively, please call to speak to
-        one of our customer service specialists.
+        Please try again in a few minutes.
       </p>
-      <CallCentreNumbers prefixText="To contact us" />
+      <CallCentreNumbers prefixText="Alternatively, to contact us" />
     </PageContainer>
   );
 };

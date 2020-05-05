@@ -99,6 +99,7 @@ export interface DeliveryAddress {
   region?: string;
   postcode: string;
   country: string;
+  instructions?: string;
   addressChangeInformation?: string;
 }
 
@@ -111,6 +112,8 @@ export interface Subscription {
   renewalDate: string;
   cancelledAt: boolean;
   nextPaymentDate: string | null;
+  lastPaymentDate: string | null;
+  chargedThroughDate: string | null;
   nextPaymentPrice: number | null;
   paymentMethod?: string;
   stripePublicKeyForCardAddition?: string;

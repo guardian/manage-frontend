@@ -1,10 +1,12 @@
 import { Request, Response, Router } from "express";
+import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../../client/components/user";
 import { conf, Environments } from "../config";
 import html from "../html";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
+import { recaptchaConfigPromise } from "../stripeSetupIntentConfig";
 
 const router = Router();
 
@@ -16,7 +18,26 @@ if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
   log.error("NO SENTRY IN CLIENT PROD!");
 }
 
-router.use(withIdentity(), (req: Request, res: Response) => {
+const getRecaptchaPublicKey = async () => {
+  try {
+    const recaptchaConfig = await recaptchaConfigPromise;
+    const recaptchaPublicKey = recaptchaConfig?.publicKey;
+
+    if (!recaptchaPublicKey) {
+      throw new Error(`recaptcha public key is '${recaptchaPublicKey}'`);
+    }
+
+    return recaptchaPublicKey;
+  } catch (err) {
+    log.error(
+      "could not provide recaptcha public key to client, client-side errors will ensue",
+      err
+    );
+    Raven.captureException(err);
+  }
+};
+
+router.use(withIdentity(), async (req: Request, res: Response) => {
   /**
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
@@ -33,7 +54,8 @@ router.use(withIdentity(), (req: Request, res: Response) => {
       globals: {
         domain: conf.DOMAIN,
         dsn: clientDSN,
-        identityDetails: res.locals.identity
+        identityDetails: res.locals.identity,
+        recaptchaPublicKey: await getRecaptchaPublicKey()
       }
     })
   );

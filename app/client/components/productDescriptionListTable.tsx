@@ -4,7 +4,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React, { ReactElement } from "react";
 import { minWidth } from "../styles/breakpoints";
 
-interface ProductDescriptionListKeyValue {
+export interface ProductDescriptionListKeyValue {
   title: string;
   value?: string | number | ReactElement | HTMLElement;
 }
@@ -12,6 +12,7 @@ interface ProductDescriptionListKeyValue {
 interface ProductDescriptionListTable {
   borderColour?: string;
   alternateRowBgColors?: true;
+  seperateEachRow?: true;
   content: ProductDescriptionListKeyValue[];
 }
 
@@ -21,20 +22,58 @@ export const ProductDescriptionListTable = (
   const dlCss: string = `
     ${textSans.medium()};
     border: 1px solid ${props.borderColour || palette.neutral[20]};
-    ${props.alternateRowBgColors &&
-      `
-      div:nth-child(even) dt,
-      div:nth-child(even) dd {
-        background-color: ${palette.neutral[97]};
-        border-top: 1px solid ${props.borderColour || palette.neutral[20]};
-      }
-    `}
     ${minWidth.tablet} {
       display: table;
     }
   `;
 
-  const newDlRow: string = `
+  const newDlRow = (
+    rowIndex: number,
+    isFirstRow: boolean,
+    isLastRow: boolean
+  ) => `
+    ${
+      (props.alternateRowBgColors || props.seperateEachRow) &&
+      rowIndex % 2 === 0
+        ? `
+        ${
+          props.alternateRowBgColors
+            ? `background-color: ${palette.neutral[97]};`
+            : ""
+        }
+      ${
+        !isFirstRow
+          ? `
+        dt:first-of-type, 
+        dd:first-of-type {
+          border-top: 1px solid ${palette.neutral[20]};
+        }
+        ${minWidth.tablet} {
+          dt, dd {
+            border-top: 1px solid ${palette.neutral[20]};
+          }
+        }
+      `
+          : ""
+      }
+      ${
+        !isLastRow
+          ? `
+        dt:last-of-type, 
+        dd:last-of-type {
+          border-bottom: 1px solid ${palette.neutral[20]};
+        }
+        ${minWidth.tablet} {
+          dt, dd {
+            border-bottom: 1px solid ${palette.neutral[20]};
+          }
+        }
+      `
+          : ""
+      }
+    `
+        : ""
+    }
     ${minWidth.tablet} {
       display: table-row;
     }
@@ -79,8 +118,6 @@ export const ProductDescriptionListTable = (
     vertical-align: top;
     width: calc(100% - (15ch + 4px));
     margin: 0;
-    
-    ${isLastRow && isFirstOption ? "border-color: red;" : ""}
 
     padding: ${isFirstOption ? `${space[3]}px` : `${space[3] * 0.5}px`} ${
     space[3]
@@ -111,7 +148,11 @@ export const ProductDescriptionListTable = (
       {rowPairs.map((tableRow, rowIndex) => (
         <div
           css={css`
-            ${newDlRow}
+            ${newDlRow(
+              rowIndex,
+              rowIndex === 0,
+              rowIndex === rowPairs.length - 1
+            )}
           `}
           key={`productdlrow-${rowIndex}`}
         >

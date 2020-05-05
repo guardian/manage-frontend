@@ -280,7 +280,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                   `}
                 >
                   <LinkButton
-                    to={`/payment/${productType.urlPart}`}
+                    to={"/payment/contribution"}
                     state={props.productDetail}
                     text={"Manage payment method"}
                     colour={palette.brand[800]}

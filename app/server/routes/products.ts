@@ -4,7 +4,7 @@ import {
   ProductType,
   ProductTypes
 } from "../../shared/productTypes";
-import { membersDataApiHandler } from "../middleware/apiMiddleware";
+import { membersDataApiHandler } from "../apiProxy";
 
 const routeProvider = (apiPathPrefix: string) => {
   const router = Router();
@@ -42,6 +42,7 @@ const routeProvider = (apiPathPrefix: string) => {
           "user-attributes/me/" +
             productType.updateAmountMdaEndpoint +
             "/:subscriptionName",
+          "MDA_UPDATE_CONTRIBUTIONS_AMOUNT",
           false,
           "subscriptionName"
         )

@@ -262,7 +262,7 @@ export const DeliveryRecordProblemForm = (
       )}
       {props.showNextStepButton && (
         <>
-          <Button type="submit">Continue to Step 2</Button>
+          <Button type="submit">Continue to Step 2 &amp; 3</Button>
           <Button
             css={css`
               ${textSans.medium()};

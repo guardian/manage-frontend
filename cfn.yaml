@@ -39,6 +39,12 @@ Conditions:
   CreateProdResources: !Equals [!Ref "Stage", "PROD"]
   CreateCodeResources: !Equals [!Ref "Stage", "CODE"]
 Mappings:
+  Constants:
+    Alarm:
+      Process: Follow the process in https://docs.google.com/document/d/1_3El3cly9d7u_jPgTcRjLxmdG2e919zCLvmcFCLOYAk/edit
+      Urgent: URGENT 9-5 -
+    MetricFilters:
+      MetricNamespace: manage-frontend
   StageVariables:
     CODE:
       MaxInstances: 2
@@ -313,20 +319,50 @@ Resources:
     Properties:
       AlarmActions:
         - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
-      AlarmName: !Sub High 5XX rate for manage-frontend in ${Stage}
-      MetricName: HTTPCode_Target_5XX_Count
-      Namespace: AWS/ApplicationELB
-      Dimensions:
-        - Name: LoadBalancer
-          Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
-        - Name: TargetGroup
-          Value: !GetAtt TargetGroup.TargetGroupFullName
+      AlarmName: !Join
+        - " "
+        - - !FindInMap [Constants, Alarm, Urgent]
+          - !Ref "Stage"
+          - !FindInMap [Constants, MetricFilters, MetricNamespace]
+          - "High 5XX rate"
+      AlarmDescription: !Join
+        - " "
+        - - Impact - we're serving errors to too many people
+          - !FindInMap [Constants, Alarm, Process]
       ComparisonOperator: GreaterThanOrEqualToThreshold
       Threshold: 3
-      Period: 60
       EvaluationPeriods: 2
-      Statistic: Sum
       TreatMissingData: notBreaching
+      Metrics:
+        - Id: total5xx
+          Expression: backend5XX + elb5XX
+          Label: "Count of Backend AND ELB 5XX"
+        - Id: backend5XX
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApplicationELB
+              MetricName: HTTPCode_Target_5XX_Count
+              Dimensions:
+                - Name: LoadBalancer
+                  Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+                - Name: TargetGroup
+                  Value: !GetAtt TargetGroup.TargetGroupFullName
+            Period: 60
+            Stat: Sum
+            Unit: Count
+          ReturnData: false
+        - Id: elb5XX
+          MetricStat:
+            Metric:
+              Namespace: AWS/ApplicationELB
+              MetricName: HTTPCode_ELB_5XX_Count
+              Dimensions:
+                - Name: LoadBalancer
+                  Value: !GetAtt ElasticLoadBalancer.LoadBalancerFullName
+            Period: 60
+            Stat: Sum
+            Unit: Count
+          ReturnData: false
     DependsOn:
       - TargetGroup
       - ElasticLoadBalancer

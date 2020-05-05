@@ -60,10 +60,15 @@ export const Input = (props: InputProps) => {
         <span
           css={css`
             display: block;
+            font-weight: normal;
             color: ${palette.error.main};
           `}
         >
-          <ErrorIcon />
+          <ErrorIcon
+            additionalCss={css`
+              margin-right: 4px;
+            `}
+          />
           {props.errorMessage}
         </span>
       )}

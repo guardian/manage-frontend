@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React from "react";
@@ -9,7 +10,6 @@ import {
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductTypes } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
@@ -52,13 +52,8 @@ export const ManageMembership = (props: RouteableStepProps) => {
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail
       ) => {
-        const productType =
-          ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-            productDetail
-          ) || props.productType;
-
         const membershipTier =
-          productType?.alternateTierValue || productDetail.tier;
+          props.productType.alternateTierValue || productDetail.tier;
 
         const mainPlan = getMainPlan(
           productDetail.subscription
@@ -106,16 +101,13 @@ export const ManageMembership = (props: RouteableStepProps) => {
                   }
                 ]}
               />
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Change tier"
-                to={`/account-overview`}
-                state={productDetail}
-              />
               <a
-                href="/account-overview"
+                href={`https://membership.${window.guardian.domain}/tier/change`}
+              >
+                <Button priority="secondary">Change tier</Button>
+              </a>
+              <a
+                href={`/cancel/${props.productType.urlPart}`}
                 css={css`
                 display: inline-block;
                 margin-left: ${space["5"]}px;
@@ -203,7 +195,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
                 textColour={palette.brand[400]}
                 fontWeight="bold"
                 text="Update payment method"
-                to={`/payment/${productType.urlPart}`}
+                to={`/payment/${props.productType.urlPart}`}
                 state={productDetail}
               />
               <p
@@ -217,7 +209,12 @@ export const ManageMembership = (props: RouteableStepProps) => {
                 continue to support The Guardian via a contribution or
                 subscription.
               </p>
-              <SupportTheGuardianButton supportReferer={productType.urlPart} />
+              <SupportTheGuardianButton
+                supportReferer={props.productType.urlPart}
+                textColour={palette.neutral[100]}
+                colour={palette.brand[400]}
+                notPrimary
+              />
             </PageNavAndContentContainer>
           </>
         );

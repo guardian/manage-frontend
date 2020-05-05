@@ -87,6 +87,9 @@ export const EmptyAccountOverview = () => {
         supportReferer={"account_overview_no_product"}
         fontWeight="bold"
         height="42px"
+        textColour={palette.neutral[100]}
+        colour={palette.brand[400]}
+        notPrimary
       />
       <div
         css={css`

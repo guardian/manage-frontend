@@ -3,7 +3,7 @@ import { breakpoints } from "@guardian/src-foundations";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React from "react";
+import React, { ReactElement } from "react";
 import { minWidth } from "../styles/breakpoints";
 // import { titlepiece } from "../styles/fonts";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
@@ -113,7 +113,7 @@ interface Breadcrumbs {
 }
 export interface PageHeaderContainerProps extends NavProps {
   breadcrumbs?: Breadcrumbs[];
-  title: string;
+  title: string | ReactElement;
 }
 
 export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (

@@ -4,6 +4,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
+import { COUNTRIES } from "../../identity/models";
 
 export const RecordAddress = (props: DeliveryAddress) => {
   const [showAddress, setShowAddress] = useState(false);
@@ -38,7 +39,12 @@ export const RecordAddress = (props: DeliveryAddress) => {
             {props.addressLine2 && <li>{props.addressLine2}</li>}
             {props.town && <li>{props.town}</li>}
             {props.region && <li>{props.region}</li>}
-            {props.country && <li>{props.country}</li>}
+            {props.country && (
+              <li>
+                {COUNTRIES.find(country => props.country === country.iso)
+                  ?.name || props.country}
+              </li>
+            )}
           </ul>
         )}
       </div>

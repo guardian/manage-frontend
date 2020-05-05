@@ -102,6 +102,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
             supportReferer="footer_support_subscribe"
             alternateButtonText="Support The Guardian"
             fontWeight="bold"
+            textColour={palette.neutral[100]}
+            colour={palette.brand[400]}
+            notPrimary
           />
         </>
       )}

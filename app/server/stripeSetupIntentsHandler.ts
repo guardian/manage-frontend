@@ -6,12 +6,36 @@ import {
   StripeSetupIntent
 } from "../shared/stripeSetupIntent";
 import { log } from "./log";
-import { stripeSetupIntentConfigPromise } from "./stripeSetupIntentConfig";
+import {
+  recaptchaConfigPromise,
+  stripeSetupIntentConfigPromise
+} from "./stripeSetupIntentConfig";
 
-export const stripeSetupIntentHandler = (
+export const stripeSetupIntentHandler = async (
   request: express.Request,
   response: express.Response
-) =>
+) => {
+  const recaptchaOneTimeToken = request.body.toString();
+  const recaptchaSecret = (await recaptchaConfigPromise)?.secretKey;
+  const recaptchaResult = await (
+    await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `secret=${recaptchaSecret}&response=${recaptchaOneTimeToken}`
+    })
+  ).json();
+
+  if (!recaptchaResult?.success) {
+    log.error("failed server-side reCaptcha verification", {
+      loggingCode: "RECAPTURE_FAILURE",
+      recaptchaResult
+    });
+    response.status(400).send("reCaptcha missing/failed");
+    return;
+  }
+
   stripeSetupIntentConfigPromise
     .then(stripePublicToSecretKeyMapping => {
       if (!stripePublicToSecretKeyMapping) {
@@ -31,18 +55,35 @@ export const stripeSetupIntentHandler = (
         );
       }
 
-      fetch(
-        "https://api.stripe.com/v1/setup_intents", // using URL rather than stripe library due to missing type defs
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${stripeSecretKey}`,
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: "usage=off_session"
-        }
-      )
+      const httpMethod = request.method;
+      const outgoingURL = "https://api.stripe.com/v1/setup_intents"; // using URL rather than stripe library due to missing type defs
+      const requestBody = "usage=off_session";
+
+      // tslint:disable-next-line:no-object-mutation
+      response.locals.loggingDetail = {
+        loggingCode: "STRIPE_SETUP_INTENT",
+        stripePublicKey, // this will indicate 'test mode' vs 'live'
+        httpMethod,
+        identityID: response.locals.identity && response.locals.identity.userId,
+        incomingURL: request.originalUrl,
+        requestBody,
+        outgoingURL
+      };
+
+      fetch(outgoingURL, {
+        method: httpMethod,
+        headers: {
+          Authorization: `Bearer ${stripeSecretKey}`,
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: requestBody
+      })
         .then(stripeResponse => {
+          // tslint:disable-next-line:no-object-mutation
+          response.locals.loggingDetail.status = stripeResponse.status;
+          // tslint:disable-next-line:no-object-mutation
+          response.locals.loggingDetail.isOK = stripeResponse.ok;
+
           if (stripeResponse.ok) {
             return stripeResponse.json();
           } else {
@@ -53,18 +94,27 @@ export const stripeSetupIntentHandler = (
             );
           }
         })
-        .then((setupIntent: StripeSetupIntent) =>
+        .then((setupIntent: StripeSetupIntent) => {
+          const suitableLog = response.locals.loggingDetail.isOK
+            ? log.info
+            : log.warning;
+          suitableLog("fetching", response.locals.loggingDetail);
+
           response.json({
             id: setupIntent.id,
             client_secret: setupIntent.client_secret
-          })
-        )
+          });
+        })
         .catch(handleTerminalError(response));
     })
     .catch(handleTerminalError(response));
+};
 
 const handleTerminalError = (response: express.Response) => (error: Error) => {
   Raven.captureException(error);
-  log.error(`Failed to create SetupIntent`, error);
+  log.error("Failed to create SetupIntent", {
+    ...response.locals.loggingDetail,
+    exception: error || "undefined"
+  });
   response.status(500).send();
 };
