@@ -7,7 +7,7 @@ import { X_GU_ID_FORWARDED_SCOPE } from "../shared/identity";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import { isInAccountOverviewTest } from "./accountOverviewRelease";
 import { conf } from "./config";
-import { log } from "./log";
+import { log, putMetric } from "./log";
 import {
   augmentRedirectURL,
   getCookiesOrEmptyString
@@ -120,6 +120,7 @@ export const proxyApiHandler = (
         ...res.locals.loggingDetail,
         responseBody: safeJsonParse(body)
       });
+      putMetric(res.locals.loggingDetail);
       bodyHandler(res, body);
     })
     .catch(error => {
@@ -128,6 +129,7 @@ export const proxyApiHandler = (
         exception: error || "undefined"
       });
       Raven.captureException(error);
+      putMetric(res.locals.loggingDetail);
       res.status(500).send("Something broke!");
     });
 };
