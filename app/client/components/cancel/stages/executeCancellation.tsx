@@ -143,15 +143,25 @@ export const ExecuteCancellation = (
                   <PageHeaderContainer
                     selectedNavItem={navLinks.accountOverview}
                     title={`Cancel ${props.productType.friendlyName}`}
+                    breadcrumbs={[
+                      {
+                        title: navLinks.accountOverview.title,
+                        link: navLinks.accountOverview.link
+                      },
+                      {
+                        title: "Cancel membership",
+                        currentPage: true
+                      }
+                    ]}
                   />
                   <PageNavAndContentContainer
                     selectedNavItem={navLinks.accountOverview}
                   >
                     <ProgressIndicator
                       steps={[
-                        { title: "" },
-                        { title: "" },
-                        { title: "", isCurrentStep: true }
+                        { title: "Reason" },
+                        { title: "Review" },
+                        { title: "Confirmation", isCurrentStep: true }
                       ]}
                       additionalCSS={css`
                         margin: ${space[5]}px 0 ${space[12]}px;

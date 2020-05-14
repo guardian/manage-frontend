@@ -185,7 +185,7 @@ const DeliveryRecordsProblemReviewFC = (
       >
         <WizardStep routeableStepProps={props} hideBackButton fullWidth>
           <PageHeaderContainer
-            selectedNavItem={navLinks.subscriptions}
+            selectedNavItem={navLinks.accountOverview}
             title="Delivery history"
             breadcrumbs={[
               {
@@ -198,7 +198,9 @@ const DeliveryRecordsProblemReviewFC = (
               }
             ]}
           />
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
             <ProgressIndicator
               steps={[
                 { title: "Update" },

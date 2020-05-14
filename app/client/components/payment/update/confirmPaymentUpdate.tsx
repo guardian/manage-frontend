@@ -170,15 +170,25 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
               <PageHeaderContainer
                 selectedNavItem={navLinks.accountOverview}
                 title="Manage payment method"
+                breadcrumbs={[
+                  {
+                    title: navLinks.accountOverview.title,
+                    link: navLinks.accountOverview.link
+                  },
+                  {
+                    title: "Manage payment method",
+                    currentPage: true
+                  }
+                ]}
               />
               <PageNavAndContentContainer
                 selectedNavItem={navLinks.accountOverview}
               >
                 <ProgressIndicator
                   steps={[
-                    { title: "" },
-                    { title: "", isCurrentStep: true },
-                    { title: "" }
+                    { title: "New details" },
+                    { title: "Review", isCurrentStep: true },
+                    { title: "Confirmation" }
                   ]}
                   additionalCSS={css`
                     margin: ${space[5]}px 0 ${space[12]}px;

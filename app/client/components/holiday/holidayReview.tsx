@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
 import React from "react";
@@ -15,6 +17,9 @@ import { CallCentreNumbers } from "../callCentreNumbers";
 import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Modal } from "../modal";
+import { navLinks } from "../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { ProgressIndicator } from "../progressIndicator";
 import { InfoIcon } from "../svgs/infoIcon";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
@@ -155,146 +160,174 @@ export class HolidayReview extends React.Component<
       <HolidayDateChooserStateContext.Provider
         value={dateChooserStateWithCredits}
       >
-        <WizardStep routeableStepProps={this.props} hideBackButton>
-          <div>
-            <h1>Review details before confirming</h1>
-            <p>
-              Check the details carefully and amend them if necessary.{" "}
-              {creditExplainerSentence(
-                this.props.productType.holidayStops.issueKeyword
-              )}{" "}
-              {this.props.productType.holidayStops.additionalHowAdvice}
-            </p>
-            <HolidayQuestionsModal
-              annualIssueLimit={holidayStopsResponse.annualIssueLimit}
-              holidayStopFlowProperties={this.props.productType.holidayStops}
+        <WizardStep routeableStepProps={this.props} hideBackButton fullWidth>
+          <PageHeaderContainer
+            selectedNavItem={navLinks.accountOverview}
+            title="Manage suspensions"
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Manage suspensions",
+                currentPage: true
+              }
+            ]}
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
+            <ProgressIndicator
+              steps={[
+                { title: "" },
+                { title: "", isCurrentStep: true },
+                { title: "" }
+              ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
             />
-            <div css={{ height: "25px" }} />
-            <SummaryTable
-              data={dateChooserStateWithCredits}
-              alternateSuspendedColumnHeading="To be suspended"
-              isTestUser={productDetail.isTestUser}
-              subscription={productDetail.subscription}
-              issueKeyword={this.props.productType.holidayStops.issueKeyword}
-            />
-            {this.props.productType.holidayStops
-              .explicitConfirmationRequired && (
-              <>
-                <div css={{ marginTop: "20px", marginBottom: "10px" }}>
-                  <Checkbox
-                    checked={this.state.isCheckboxConfirmed}
-                    onChange={newValue =>
-                      this.setState({ isCheckboxConfirmed: newValue })
-                    }
-                    label={
-                      this.props.productType.holidayStops
-                        .explicitConfirmationRequired.checkboxLabel
-                    }
-                  />
-                </div>
-                <Modal
-                  instigator={
-                    <a
-                      css={{
-                        fontFamily: sans,
-                        fontSize: "14px",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                        margin: "10px"
-                      }}
-                    >
-                      <InfoIcon />
-                      Tell me more
-                    </a>
-                  }
-                  title={
-                    this.props.productType.holidayStops
-                      .explicitConfirmationRequired.explainerModalTitle
-                  }
-                >
-                  <p>
-                    {
-                      this.props.productType.holidayStops
-                        .explicitConfirmationRequired.explainerModalBody
-                    }
-                  </p>
-                </Modal>
-              </>
-            )}
-          </div>
-          {this.state.isExecuting ? (
-            <div css={{ marginTop: "40px", textAlign: "right" }}>
-              <CreateOrAmendHolidayStopsAsyncLoader
-                fetch={getPerformCreateOrAmendFetcher(
-                  dateChooserState.selectedRange,
-                  productDetail.subscription.subscriptionId,
-                  productDetail.isTestUser,
-                  holidayStopsResponse.existingHolidayStopToAmend
-                )}
-                render={getRenderCreateOrAmendSuccess(this.props.navigate)}
-                errorRender={getRenderCreateOrAmendError(
-                  holidayStopsResponse.existingHolidayStopToAmend
-                    ? "amending"
-                    : "creating"
-                )}
-                loadingMessage={`${
-                  holidayStopsResponse.existingHolidayStopToAmend
-                    ? "Amending"
-                    : "Creating"
-                } your suspension...`}
-                spinnerScale={0.7}
-                inline
+            <div>
+              <h1>Review details before confirming</h1>
+              <p>
+                Check the details carefully and amend them if necessary.{" "}
+                {creditExplainerSentence(
+                  this.props.productType.holidayStops.issueKeyword
+                )}{" "}
+                {this.props.productType.holidayStops.additionalHowAdvice}
+              </p>
+              <HolidayQuestionsModal
+                annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+                holidayStopFlowProperties={this.props.productType.holidayStops}
               />
+              <div css={{ height: "25px" }} />
+              <SummaryTable
+                data={dateChooserStateWithCredits}
+                alternateSuspendedColumnHeading="To be suspended"
+                isTestUser={productDetail.isTestUser}
+                subscription={productDetail.subscription}
+                issueKeyword={this.props.productType.holidayStops.issueKeyword}
+              />
+              {this.props.productType.holidayStops
+                .explicitConfirmationRequired && (
+                <>
+                  <div css={{ marginTop: "20px", marginBottom: "10px" }}>
+                    <Checkbox
+                      checked={this.state.isCheckboxConfirmed}
+                      onChange={newValue =>
+                        this.setState({ isCheckboxConfirmed: newValue })
+                      }
+                      label={
+                        this.props.productType.holidayStops
+                          .explicitConfirmationRequired.checkboxLabel
+                      }
+                    />
+                  </div>
+                  <Modal
+                    instigator={
+                      <a
+                        css={{
+                          fontFamily: sans,
+                          fontSize: "14px",
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          margin: "10px"
+                        }}
+                      >
+                        <InfoIcon />
+                        Tell me more
+                      </a>
+                    }
+                    title={
+                      this.props.productType.holidayStops
+                        .explicitConfirmationRequired.explainerModalTitle
+                    }
+                  >
+                    <p>
+                      {
+                        this.props.productType.holidayStops
+                          .explicitConfirmationRequired.explainerModalBody
+                      }
+                    </p>
+                  </Modal>
+                </>
+              )}
             </div>
-          ) : (
-            <div
-              css={{
-                ...buttonBarCss,
-                justifyContent: "space-between",
-                marginTop: "20px",
-                [maxWidth.mobileMedium]: {
-                  flexDirection: "column",
-                  marginTop: 0
-                }
-              }}
-            >
-              <div
-                css={{
-                  marginTop: "20px",
-                  alignSelf: "flex-start"
-                }}
-              >
-                <Button
-                  text="Amend"
-                  onClick={() => (this.props.navigate || navigate)("..")}
-                  left
-                  hollow
+            {this.state.isExecuting ? (
+              <div css={{ marginTop: "40px", textAlign: "right" }}>
+                <CreateOrAmendHolidayStopsAsyncLoader
+                  fetch={getPerformCreateOrAmendFetcher(
+                    dateChooserState.selectedRange,
+                    productDetail.subscription.subscriptionId,
+                    productDetail.isTestUser,
+                    holidayStopsResponse.existingHolidayStopToAmend
+                  )}
+                  render={getRenderCreateOrAmendSuccess(this.props.navigate)}
+                  errorRender={getRenderCreateOrAmendError(
+                    holidayStopsResponse.existingHolidayStopToAmend
+                      ? "amending"
+                      : "creating"
+                  )}
+                  loadingMessage={`${
+                    holidayStopsResponse.existingHolidayStopToAmend
+                      ? "Amending"
+                      : "Creating"
+                  } your suspension...`}
+                  spinnerScale={0.7}
+                  inline
                 />
               </div>
+            ) : (
               <div
                 css={{
                   ...buttonBarCss,
+                  justifyContent: "space-between",
                   marginTop: "20px",
-                  alignSelf: "flex-end"
+                  [maxWidth.mobileMedium]: {
+                    flexDirection: "column",
+                    marginTop: 0
+                  }
                 }}
               >
-                <Link css={cancelLinkCss} to="../.." replace={true}>
-                  Cancel
-                </Link>
-                <Button
-                  text="Confirm"
-                  disabled={
-                    !!this.props.productType.holidayStops
-                      .explicitConfirmationRequired &&
-                    !this.state.isCheckboxConfirmed
-                  }
-                  onClick={() => this.setState({ isExecuting: true })}
-                  right
-                  primary
-                />
+                <div
+                  css={{
+                    marginTop: "20px",
+                    alignSelf: "flex-start"
+                  }}
+                >
+                  <Button
+                    text="Amend"
+                    onClick={() => (this.props.navigate || navigate)("..")}
+                    left
+                    hollow
+                  />
+                </div>
+                <div
+                  css={{
+                    ...buttonBarCss,
+                    marginTop: "20px",
+                    alignSelf: "flex-end"
+                  }}
+                >
+                  <Link css={cancelLinkCss} to="../.." replace={true}>
+                    Cancel
+                  </Link>
+                  <Button
+                    text="Confirm"
+                    disabled={
+                      !!this.props.productType.holidayStops
+                        .explicitConfirmationRequired &&
+                      !this.state.isCheckboxConfirmed
+                    }
+                    onClick={() => this.setState({ isExecuting: true })}
+                    right
+                    primary
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </PageNavAndContentContainer>
         </WizardStep>
       </HolidayDateChooserStateContext.Provider>
     ) : (

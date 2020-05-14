@@ -69,7 +69,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
   return (
     <WizardStep routeableStepProps={props} hideBackButton fullWidth>
       <PageHeaderContainer
-        selectedNavItem={navLinks.subscriptions}
+        selectedNavItem={navLinks.accountOverview}
         title={
           <span
             css={css`
@@ -102,7 +102,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <ProgressIndicator
           steps={[
             { title: "Update" },

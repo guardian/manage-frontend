@@ -106,7 +106,7 @@ const DeliveryRecordsProblemConfirmationFC = (
       fullWidth
     >
       <PageHeaderContainer
-        selectedNavItem={navLinks.subscriptions}
+        selectedNavItem={navLinks.accountOverview}
         title="Delivery history"
         breadcrumbs={[
           {
@@ -119,7 +119,7 @@ const DeliveryRecordsProblemConfirmationFC = (
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <ProgressIndicator
           steps={[
             { title: "Update" },

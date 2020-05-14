@@ -162,7 +162,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
             `}
           >
             <LinkButton
-              to={"/manage/contribution"}
+              to={`/manage/${props.productDetail.mmaCategory}`}
               text={"Manage contribution"}
               state={props.productDetail}
               colour={palette.brand[800]}
@@ -203,13 +203,6 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                         display: block;
                       `}
                     >
-                      {`${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
-                    </span>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
                       {props.productDetail.subscription.nextPaymentDate
                         ? formatDateStr(
                             props.productDetail.subscription.nextPaymentDate
@@ -231,16 +224,6 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                         display: block;
                       `}
                     >
-                      {`${mainPlan.currency}${(
-                        props.productDetail.subscription.nextPaymentPrice /
-                        100.0
-                      ).toFixed(2)}`}
-                    </span>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
                       {props.productDetail.subscription.nextPaymentDate
                         ? formatDateStr(
                             props.productDetail.subscription.nextPaymentDate
@@ -255,6 +238,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                 <li css={valueCss}>
                   {props.productDetail.subscription.card && (
                     <CardDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       margin="0"
                       {...props.productDetail.subscription.card}
                     />
@@ -264,6 +248,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                   )}
                   {props.productDetail.subscription.mandate && (
                     <DirectDebitDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       {...props.productDetail.subscription.mandate}
                     />
                   )}
@@ -280,7 +265,7 @@ export const ContributionProduct = (props: ContributionProductProps) => {
                   `}
                 >
                   <LinkButton
-                    to={"/payment/contribution"}
+                    to={`/payment/${props.productDetail.mmaCategory}`}
                     state={props.productDetail}
                     text={"Manage payment method"}
                     colour={palette.brand[800]}

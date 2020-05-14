@@ -21,6 +21,8 @@ import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { navLinks } from "../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
@@ -124,8 +126,24 @@ const renderHolidayStopsOverview = (
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
-        <WizardStep routeableStepProps={props} hideBackButton>
-          <div>
+        <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+          <PageHeaderContainer
+            selectedNavItem={navLinks.accountOverview}
+            title="Manage suspensions"
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Manage suspensions",
+                currentPage: true
+              }
+            ]}
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
             <h1>Suspend {props.productType.friendlyName}</h1>
             {productDetail.subscription.autoRenew ? (
               <OverviewRow heading="How">
@@ -300,7 +318,7 @@ const renderHolidayStopsOverview = (
                 {productDetail.subscription.autoRenew && createSuspensionButton}
               </div>
             </div>
-          </div>
+          </PageNavAndContentContainer>
         </WizardStep>
       </MembersDataApiItemContext.Provider>
     </HolidayStopsResponseContext.Provider>
@@ -334,6 +352,10 @@ export class HolidaysOverview extends React.Component<
       {...this.props}
       headingPrefix="Manage suspensions of"
       hideHeading
+      hasLeftNav={{
+        pageTitle: "Manage suspensions",
+        selectedNavItem: navLinks.accountOverview
+      }}
       supportRefererSuffix="holiday_stop_flow"
       loadingMessagePrefix="Retrieving details of your"
       cancelledExplainer={`This ${this.props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 

@@ -337,7 +337,7 @@ const FormContainer = (props: FormContainerProps) => {
                 }
               />
               <PageNavAndContentContainer
-                selectedNavItem={navLinks.subscriptions}
+                selectedNavItem={navLinks.accountOverview}
               >
                 <ProgressIndicator
                   steps={[
@@ -725,7 +725,7 @@ const Form = (props: FormProps) => {
         >
           <Button type="submit">Review details</Button>
           <Link
-            to={navLinks.subscriptions.link}
+            to={navLinks.accountOverview.link}
             css={css`
               ${textSans.medium()};
               font-weight: bold;
@@ -790,7 +790,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
       hideHeading
       hasLeftNav={{
         pageTitle: "",
-        selectedNavItem: navLinks.subscriptions
+        selectedNavItem: navLinks.accountOverview
       }}
       supportRefererSuffix="delivery_address_flow"
       loadingMessagePrefix="Retrieving details of your"

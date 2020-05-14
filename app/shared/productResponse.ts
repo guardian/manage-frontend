@@ -74,6 +74,7 @@ export interface CurrencyAndIntervalDetail {
   interval: string;
 }
 
+// 6 weeks interval referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response)
 export const augmentInterval = (interval: string) =>
   interval === "6 weeks" ? "One-off" : `${interval}ly`;
 

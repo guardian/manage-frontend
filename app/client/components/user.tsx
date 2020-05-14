@@ -76,7 +76,7 @@ const User = () => (
           return (
             <ManageSubscription
               key={productType.urlPart}
-              path={"/manage/subscription"}
+              path={"/manage/subscriptions"}
               productType={productType}
             />
           );
@@ -89,7 +89,7 @@ const User = () => (
           return (
             <ManageContribution
               key={productType.urlPart}
-              path={"/manage/contribution"}
+              path={"/manage/contributions"}
               productType={productType}
             />
           );
@@ -176,41 +176,19 @@ const User = () => (
             key={productType.urlPart}
             path={"/suspend/" + productType.urlPart}
             productType={productType}
-            currentStep={0}
           >
-            <HolidayDateChooser
-              path="create"
-              productType={productType}
-              currentStep={1}
-            >
-              <HolidayReview
-                path="review"
-                productType={productType}
-                currentStep={2}
-              >
-                <HolidayConfirmed
-                  path="confirmed"
-                  productType={productType}
-                  currentStep={3}
-                />
+            <HolidayDateChooser path="create" productType={productType}>
+              <HolidayReview path="review" productType={productType}>
+                <HolidayConfirmed path="confirmed" productType={productType} />
               </HolidayReview>
             </HolidayDateChooser>
             <HolidayDateChooser
               path="amend"
               productType={productType}
-              currentStep={1}
               requiresExistingHolidayStopToAmendInContext
             >
-              <HolidayReview
-                path="review"
-                productType={productType}
-                currentStep={2}
-              >
-                <HolidayConfirmed
-                  path="confirmed"
-                  productType={productType}
-                  currentStep={3}
-                />
+              <HolidayReview path="review" productType={productType}>
+                <HolidayConfirmed path="confirmed" productType={productType} />
               </HolidayReview>
             </HolidayDateChooser>
           </HolidaysOverview>

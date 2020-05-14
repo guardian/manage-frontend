@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
 import React from "react";
 import { Inlineable } from "./inlineable";
 
@@ -14,6 +16,7 @@ export interface CardProps {
 
 export interface CardDisplayProps extends CardProps, Inlineable {
   margin?: string;
+  inErrorState?: boolean;
 }
 
 const cardTypeToSVG = (cardType: string) => {
@@ -56,6 +59,13 @@ export const CardDisplay = (props: CardDisplayProps) => (
       margin: props.margin || "10px"
     }}
   >
-    {cardTypeToSVG(props.type)} Ending {props.last4}
+    {cardTypeToSVG(props.type)}{" "}
+    <span
+      css={css`
+        color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
+      `}
+    >
+      Ending {props.last4}
+    </span>
   </div>
 );

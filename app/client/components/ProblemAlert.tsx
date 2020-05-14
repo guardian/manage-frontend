@@ -64,5 +64,3 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
     )}
   </div>
 );
-
-// `/payment/${productType.urlPart}`

@@ -9,10 +9,15 @@ import {
   MembersDatApiAsyncLoader,
   sortByJoinDate
 } from "../../../shared/productResponse";
-import { createAllProductsDetailFetcher } from "../../../shared/productTypes";
+import {
+  createAllProductsDetailFetcher,
+  ProductTypes
+} from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
+import { isCancelled } from "../cancel/cancellationSummary";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { ProblemAlert } from "../ProblemAlert";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ContributionProduct } from "./contributionProduct";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
@@ -42,8 +47,30 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     return <EmptyAccountOverview />;
   }
 
+  const firstPaymentFailureProductDetail = productDetailList.find(
+    productDetail => productDetail.alertText
+  );
+
   return (
     <>
+      {firstPaymentFailureProductDetail?.alertText && (
+        <ProblemAlert
+          title="A payment needs your attention"
+          message={firstPaymentFailureProductDetail.alertText}
+          button={{
+            title: "Update payment method",
+            link: `/payment/${
+              ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+                firstPaymentFailureProductDetail
+              ).urlPart
+            }`,
+            state: firstPaymentFailureProductDetail
+          }}
+          additionalcss={css`
+            margin-top: 30px;
+          `}
+        />
+      )}
       {!!subscriptionData.length && (
         <>
           <h2
@@ -80,7 +107,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
               }
             `}
           >
-            My memberships
+            My membership
           </h2>
           {membershipData.map((productDetail, index) => (
             <MembershipProduct
@@ -88,24 +115,31 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
               key={`membership-${index}`}
             />
           ))}
-          <p
-            css={css`
+          {membershipData.some(productDetail =>
+            isCancelled(productDetail.subscription)
+          ) && (
+            <>
+              <p
+                css={css`
             ${textSans.medium()}
             margin-top: ${space[6]}px;
           `}
-          >
-            We no longer have a membership programme but you can still continue
-            to support The Guardian via a contribution or subscription.
-          </p>
-          <SupportTheGuardianButton
-            urlSuffix="subscribe"
-            supportReferer="footer_support_subscribe"
-            alternateButtonText="Support The Guardian"
-            fontWeight="bold"
-            textColour={palette.neutral[100]}
-            colour={palette.brand[400]}
-            notPrimary
-          />
+              >
+                We no longer have a membership programme but you can still
+                continue to support The Guardian via a contribution or
+                subscription.
+              </p>
+              <SupportTheGuardianButton
+                urlSuffix="subscribe"
+                supportReferer="footer_support_subscribe"
+                alternateButtonText="Support The Guardian"
+                fontWeight="bold"
+                textColour={palette.neutral[100]}
+                colour={palette.brand[400]}
+                notPrimary
+              />
+            </>
+          )}
         </>
       )}
       {!!contributorData.length && (

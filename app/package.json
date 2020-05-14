@@ -133,6 +133,7 @@
     "@guardian/src-button": "^0.18.1",
     "@guardian/src-checkbox": "^0.18.1",
     "@guardian/src-foundations": "^0.18.1",
+    "@guardian/src-inline-error": "^1.0.0",
     "@guardian/src-radio": "^0.18.1",
     "@guardian/src-svgs": "^0.18.1",
     "@guardian/src-text-input": "^0.18.1",

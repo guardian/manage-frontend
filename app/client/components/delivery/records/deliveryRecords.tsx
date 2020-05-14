@@ -311,7 +311,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           fullWidth
         >
           <PageHeaderContainer
-            selectedNavItem={navLinks.subscriptions}
+            selectedNavItem={navLinks.accountOverview}
             title="Delivery history"
             breadcrumbs={[
               {
@@ -324,7 +324,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               }
             ]}
           />
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
             {pageStatus !== PageStatus.READ_ONLY &&
               pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (
                 <ProgressIndicator
@@ -792,7 +794,7 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       hideHeading
       hasLeftNav={{
         pageTitle: "Delivery history",
-        selectedNavItem: navLinks.subscriptions
+        selectedNavItem: navLinks.accountOverview
       }}
       supportRefererSuffix="delivery_records_flow"
       loadingMessagePrefix="Retrieving details of your"

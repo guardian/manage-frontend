@@ -89,7 +89,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
         `}
       >
         {productName}
-        {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+        {mainPlan.name && ` - ${mainPlan.name}`}
         {hasCancellationPending ? (
           <i
             css={css`
@@ -207,7 +207,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             ) : (
               <>
                 <LinkButton
-                  to={"/manage/subscription"}
+                  to={`/manage/${props.productDetail.mmaCategory}`}
                   text={"Manage subscription"}
                   state={props.productDetail}
                   colour={palette.brand[800]}
@@ -305,6 +305,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                 <li css={valueCss}>
                   {props.productDetail.subscription.card && (
                     <CardDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       margin="0"
                       {...props.productDetail.subscription.card}
                     />
@@ -314,6 +315,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                   )}
                   {props.productDetail.subscription.mandate && (
                     <DirectDebitDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       {...props.productDetail.subscription.mandate}
                     />
                   )}
@@ -330,6 +332,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                   `}
                 >
                   <LinkButton
+                    // to={`/payment/${props.productDetail.mmaCategory}`}
                     to={`/payment/${productType.urlPart}`}
                     state={props.productDetail}
                     text={"Manage payment method"}

@@ -1,3 +1,5 @@
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import React from "react";
 import {
   isProduct,
@@ -5,6 +7,9 @@ import {
 } from "../../../shared/productResponse";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { navLinks } from "../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { ProgressIndicator } from "../progressIndicator";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
   buttonBarCss,
@@ -29,8 +34,38 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
               {dateChooserState =>
                 isSharedHolidayDateChooserState(dateChooserState) &&
                 isProduct(productDetail) ? (
-                  <WizardStep routeableStepProps={props} hideBackButton>
-                    <div>
+                  <WizardStep
+                    routeableStepProps={props}
+                    hideBackButton
+                    fullWidth
+                  >
+                    <PageHeaderContainer
+                      selectedNavItem={navLinks.accountOverview}
+                      title="Manage suspensions"
+                      breadcrumbs={[
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Manage suspensions",
+                          currentPage: true
+                        }
+                      ]}
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
+                    >
+                      <ProgressIndicator
+                        steps={[
+                          { title: "" },
+                          { title: "" },
+                          { title: "", isCurrentStep: true }
+                        ]}
+                        additionalCSS={css`
+                          margin: ${space[5]}px 0 ${space[12]}px;
+                        `}
+                      />
                       <h1>Your schedule has been set</h1>
                       <p>
                         We will send an email to confirm the details.{" "}
@@ -71,7 +106,7 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                           />
                         </div>
                       </div>
-                    </div>
+                    </PageNavAndContentContainer>
                   </WizardStep>
                 ) : (
                   visuallyNavigateToParent(props)

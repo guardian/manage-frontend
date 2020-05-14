@@ -79,7 +79,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
       {isAddress(addressContext.newDeliveryAddress) ? (
         <>
           <PageHeaderContainer
-            selectedNavItem={navLinks.subscriptions}
+            selectedNavItem={navLinks.accountOverview}
             title={
               <span
                 css={css`
@@ -112,7 +112,9 @@ const ConfirmationFC = (props: RouteableStepProps) => {
               }
             ]}
           />
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
             <ProgressIndicator
               steps={[
                 { title: "Update" },

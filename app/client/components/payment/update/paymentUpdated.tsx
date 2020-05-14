@@ -100,10 +100,7 @@ const WithSubscriptionRenderer = (
         newPaymentMethodDetail={newPaymentMethodDetail}
         previousProductDetail={previousProductDetail}
       />
-      <h2>
-        Thank you. You are helping to support independent investigative
-        journalism.
-      </h2>
+      <h2>Thank you. You are helping to support independent journalism.</h2>
       <div>
         <LinkButton
           to={"/" + productType.urlPart}
@@ -125,7 +122,11 @@ const WithSubscriptionRenderer = (
       />
       {/* <ReturnToYourProductButton productType={productType} /> */}
       <LinkButton
-        to={`/manage/${productType.urlPart}`}
+        to={`/manage/${
+          typeof productType.productPage === "object"
+            ? productType.productPage.title.toLowerCase()
+            : productType.productPage
+        }`}
         text={"Return to your account"}
         state={previousProductDetail}
         colour={palette.neutral[100]}
@@ -164,9 +165,9 @@ export const PaymentUpdated = (props: RouteableStepProps) => (
               >
                 <ProgressIndicator
                   steps={[
-                    { title: "" },
-                    { title: "" },
-                    { title: "", isCurrentStep: true }
+                    { title: "New details" },
+                    { title: "Review" },
+                    { title: "Confirmation", isCurrentStep: true }
                   ]}
                   additionalCSS={css`
                     margin: ${space[5]}px 0 ${space[12]}px;

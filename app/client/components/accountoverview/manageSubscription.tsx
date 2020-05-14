@@ -41,7 +41,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
       hideHeading
       hasLeftNav={{
         pageTitle: "Delivery history",
-        selectedNavItem: navLinks.subscriptions
+        selectedNavItem: navLinks.accountOverview
       }}
       supportRefererSuffix="delivery_records_flow"
       loadingMessagePrefix="Retrieving details of your"

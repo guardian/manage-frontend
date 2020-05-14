@@ -59,18 +59,14 @@ export const validateValue = (
     currencyAndIntervalDetail
   );
   if (newValue < minAmount) {
-    return `Please enter an amount of ${
-      currencyAndIntervalDetail.currency
-    }${minAmount} or more a ${currencyAndIntervalDetail.interval}`;
+    return `Please enter an amount of ${currencyAndIntervalDetail.currency}${minAmount} or more a ${currencyAndIntervalDetail.interval}`;
   }
   const maxAmount = calculateMinOrMaxAmount(
     MinOrMax.maximum,
     currencyAndIntervalDetail
   );
   if (newValue > maxAmount) {
-    return `Thank you but we cannot accept contributions over ${
-      currencyAndIntervalDetail.currency
-    }${maxAmount} a ${currencyAndIntervalDetail.interval}`;
+    return `Thank you but we cannot accept contributions over ${currencyAndIntervalDetail.currency}${maxAmount} a ${currencyAndIntervalDetail.interval}`;
   }
   if (newValue > 10 * currentAmount) {
     return `Your current contribution is ${

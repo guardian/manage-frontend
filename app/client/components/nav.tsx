@@ -157,44 +157,54 @@ export interface NavProps {
   selectedNavItem?: NavItem;
 }
 
+const accountOverviewActiveFilter = (navItem: NavItem) =>
+  navItem.title !== "Membership" &&
+  navItem.title !== "Subscriptions" &&
+  navItem.title !== "Contributions";
+
+// const accountOverviewInactiveFilter = (navItem: NavItem) =>
+//   navItem.title !== "Account overview";
+
 export const Nav = (props: NavProps) => (
   <ul role="tablist" css={navCss}>
-    {Object.values(navLinks).map((navItem: NavItem) => (
-      <li
-        css={navItemCss(props.selectedNavItem === navItem)}
-        key={navItem.title}
-      >
-        {navItem.local ? (
-          <Link
-            css={navLinkCss(props.selectedNavItem === navItem)}
-            to={navItem.link}
-          >
-            {navItem.icon && (
-              <i
-                css={css`
-                  display: inline-block;
-                  vertical-align: top;
-                  width: auto;
-                  height: 100%;
-                  max-width: 20px;
-                  max-height: 20px;
-                  margin-right: ${space[5]}px;
-                `}
-              >
-                {navItem.icon}
-              </i>
-            )}
-            {navItem.title}
-          </Link>
-        ) : (
-          <a
-            css={navLinkCss(props.selectedNavItem === navItem)}
-            href={`https://profile.${domain}${navItem.link}`}
-          >
-            {navItem.title}
-          </a>
-        )}
-      </li>
-    ))}
+    {Object.values(navLinks)
+      .filter(accountOverviewActiveFilter)
+      .map((navItem: NavItem) => (
+        <li
+          css={navItemCss(props.selectedNavItem === navItem)}
+          key={navItem.title}
+        >
+          {navItem.local ? (
+            <Link
+              css={navLinkCss(props.selectedNavItem === navItem)}
+              to={navItem.link}
+            >
+              {navItem.icon && (
+                <i
+                  css={css`
+                    display: inline-block;
+                    vertical-align: top;
+                    width: auto;
+                    height: 100%;
+                    max-width: 20px;
+                    max-height: 20px;
+                    margin-right: ${space[5]}px;
+                  `}
+                >
+                  {navItem.icon}
+                </i>
+              )}
+              {navItem.title}
+            </Link>
+          ) : (
+            <a
+              css={navLinkCss(props.selectedNavItem === navItem)}
+              href={`https://profile.${domain}${navItem.link}`}
+            >
+              {navItem.title}
+            </a>
+          )}
+        </li>
+      ))}
   </ul>
 );

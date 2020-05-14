@@ -204,7 +204,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
               />
             ) : (
               <LinkButton
-                to={"/manage/membership"}
+                to={`/manage/${props.productDetail.mmaCategory}`}
                 text={"Manage membership"}
                 state={props.productDetail}
                 colour={palette.brand[800]}
@@ -298,6 +298,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                 <li css={valueCss}>
                   {props.productDetail.subscription.card && (
                     <CardDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       margin="0"
                       {...props.productDetail.subscription.card}
                     />
@@ -307,6 +308,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                   )}
                   {props.productDetail.subscription.mandate && (
                     <DirectDebitDisplay
+                      inErrorState={!!props.productDetail.alertText}
                       {...props.productDetail.subscription.mandate}
                     />
                   )}
@@ -323,7 +325,7 @@ export const MembershipProduct = (props: MembershipProductProps) => {
                   `}
                 >
                   <LinkButton
-                    to={"/payment/membership"}
+                    to={`/payment/${props.productDetail.mmaCategory}`}
                     state={props.productDetail}
                     text={"Manage payment method"}
                     colour={palette.brand[800]}

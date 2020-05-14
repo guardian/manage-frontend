@@ -1,8 +1,7 @@
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
-import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { DirectDebitLogo } from "./directDebitLogo";
 import { Inlineable } from "./inlineable";
@@ -30,6 +29,7 @@ export interface DirectDebitDisplayProps
   extends DirectDebitDetails,
     Inlineable {
   showAccountName?: true;
+  inErrorState?: boolean;
 }
 
 export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
@@ -56,6 +56,9 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
       <span
         css={css`
           display: block;
+          color: ${mandate.inErrorState
+            ? palette.news[400]
+            : palette.neutral[7]};
           ${minWidth.tablet} {
             display: inline-block;
             vertical-align: top;
@@ -67,6 +70,9 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
       <span
         css={css`
           display: block;
+          color: ${mandate.inErrorState
+            ? palette.news[400]
+            : palette.neutral[7]};
           ${minWidth.tablet} {
             display: inline-block;
             vertical-align: top;
@@ -87,7 +93,7 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
       alignItems: "top"
     }}
   >
-    <DirectDebitLogo fill={palette.neutral["1"]} />
+    <DirectDebitLogo fill={palette.neutral[7]} />
     <div
       css={{
         display: "flex",

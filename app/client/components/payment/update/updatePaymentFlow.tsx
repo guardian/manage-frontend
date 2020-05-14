@@ -10,7 +10,7 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
@@ -181,15 +181,25 @@ class PaymentUpdaterStep extends React.Component<
               <PageHeaderContainer
                 selectedNavItem={navLinks.accountOverview}
                 title="Manage payment method"
+                breadcrumbs={[
+                  {
+                    title: navLinks.accountOverview.title,
+                    link: navLinks.accountOverview.link
+                  },
+                  {
+                    title: "Manage payment method",
+                    currentPage: true
+                  }
+                ]}
               />
               <PageNavAndContentContainer
                 selectedNavItem={navLinks.accountOverview}
               >
                 <ProgressIndicator
                   steps={[
-                    { title: "", isCurrentStep: true },
-                    { title: "" },
-                    { title: "" }
+                    { title: "New details", isCurrentStep: true },
+                    { title: "Review" },
+                    { title: "Confirmation" }
                   ]}
                   additionalCSS={css`
                     margin: ${space[5]}px 0 ${space[12]}px;
@@ -203,30 +213,17 @@ class PaymentUpdaterStep extends React.Component<
                   Update payment for your{" "}
                   {this.props.routeableStepProps.productType.friendlyName}
                 </h2>
-                <div
-                  css={{
-                    [minWidth.phablet]: {
-                      display: "flex",
-                      flexDirection: this.props.productDetail.alertText
-                        ? "row-reverse"
-                        : "row"
-                    }
-                  }}
-                >
-                  {this.props.productDetail.alertText ? (
-                    <div>
-                      <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                      <span>{this.props.productDetail.alertText}</span>
-                    </div>
-                  ) : (
-                    undefined
-                  )}
-                  <div css={{ minWidth: "260px" }}>
-                    <h3>Current Payment Details</h3>
-                    <CurrentPaymentDetails
-                      {...this.props.productDetail.subscription}
-                    />
+                {this.props.productDetail.alertText && (
+                  <div>
+                    <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
+                    <span>{this.props.productDetail.alertText}</span>
                   </div>
+                )}
+                <div css={{ minWidth: "260px" }}>
+                  <h3>Current Payment Details</h3>
+                  <CurrentPaymentDetails
+                    {...this.props.productDetail.subscription}
+                  />
                 </div>
                 <PaymentMethodBar
                   updatePaymentMethod={this.updatePaymentMethod}
@@ -242,7 +239,12 @@ class PaymentUpdaterStep extends React.Component<
                   productType={this.props.routeableStepProps.productType}
                 /> */}
                 <LinkButton
-                  to={`/manage/${this.props.routeableStepProps.productType.urlPart}`}
+                  to={`/manage/${
+                    typeof this.props.routeableStepProps.productType
+                      .productPage === "object"
+                      ? this.props.routeableStepProps.productType.productPage.title.toLowerCase()
+                      : this.props.routeableStepProps.productType.productPage
+                  }`}
                   text={"Return to your account"}
                   state={this.props.productDetail}
                   colour={palette.neutral[100]}

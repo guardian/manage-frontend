@@ -12,12 +12,14 @@ import {
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
+import { isCancelled } from "../cancel/cancellationSummary";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
+import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { RouteableStepProps } from "../wizardRouterAdapter";
@@ -41,7 +43,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
       hideHeading
       hasLeftNav={{
         pageTitle: "Manage contribution",
-        selectedNavItem: navLinks.subscriptions
+        selectedNavItem: navLinks.accountOverview
       }}
       supportRefererSuffix="manage_contribution_flow"
       loadingMessagePrefix="Retrieving details of your"
@@ -80,6 +82,20 @@ export const ManageMembership = (props: RouteableStepProps) => {
             <PageNavAndContentContainer
               selectedNavItem={navLinks.accountOverview}
             >
+              {productDetail.alertText && (
+                <ProblemAlert
+                  title="A payment needs your attention"
+                  message={productDetail.alertText}
+                  button={{
+                    title: "Update payment method",
+                    link: `/payment/${props.productType.urlPart}`,
+                    state: productDetail
+                  }}
+                  additionalcss={css`
+                    margin-top: 30px;
+                  `}
+                />
+              )}
               <h2
                 css={css`
                   ${subHeadingCss}
@@ -198,23 +214,27 @@ export const ManageMembership = (props: RouteableStepProps) => {
                 to={`/payment/${props.productType.urlPart}`}
                 state={productDetail}
               />
-              <p
-                css={css`
-                  ${textSans.medium()};
-                  margin: ${space["9"]}px 0;
-                  padding: 0;
-                `}
-              >
-                We no longer have a membership programme but you can still
-                continue to support The Guardian via a contribution or
-                subscription.
-              </p>
-              <SupportTheGuardianButton
-                supportReferer={props.productType.urlPart}
-                textColour={palette.neutral[100]}
-                colour={palette.brand[400]}
-                notPrimary
-              />
+              {isCancelled(productDetail.subscription) && (
+                <>
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                      margin: ${space["9"]}px 0;
+                      padding: 0;
+                    `}
+                  >
+                    We no longer have a membership programme but you can still
+                    continue to support The Guardian via a contribution or
+                    subscription.
+                  </p>
+                  <SupportTheGuardianButton
+                    supportReferer={props.productType.urlPart}
+                    textColour={palette.neutral[100]}
+                    colour={palette.brand[400]}
+                    notPrimary
+                  />
+                </>
+              )}
             </PageNavAndContentContainer>
           </>
         );

@@ -82,15 +82,25 @@ class ReasonPicker extends React.Component<
             <PageHeaderContainer
               selectedNavItem={navLinks.accountOverview}
               title={`Cancel ${this.props.productType.friendlyName}`}
+              breadcrumbs={[
+                {
+                  title: navLinks.accountOverview.title,
+                  link: navLinks.accountOverview.link
+                },
+                {
+                  title: "Cancel membership",
+                  currentPage: true
+                }
+              ]}
             />
             <PageNavAndContentContainer
               selectedNavItem={navLinks.accountOverview}
             >
               <ProgressIndicator
                 steps={[
-                  { title: "", isCurrentStep: true },
-                  { title: "" },
-                  { title: "" }
+                  { title: "Reason", isCurrentStep: true },
+                  { title: "Review" },
+                  { title: "Confirmation" }
                 ]}
                 additionalCSS={css`
                   margin: ${space[5]}px 0 ${space[12]}px;

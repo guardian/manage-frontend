@@ -1,3 +1,4 @@
+import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
@@ -65,9 +66,17 @@ export const visuallyNavigateToParent = (props: RouteableStepProps) => {
 export const ReturnToYourProductButton = (
   props: WithProductType<ProductType>
 ) => (
+  // <LinkButton
+  //   text="Return to your account"
+  //   to={"/" + props.productType.urlPart}
+  //   hollow
+  //   left
+  // />
   <LinkButton
-    text="Return to your account"
-    to={"/" + props.productType.urlPart}
+    to={"/account-overview"}
+    text={"Return to your account"}
+    colour={palette.neutral[100]}
+    textColour={palette.neutral[0]}
     hollow
     left
   />
