@@ -162,6 +162,13 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: !GetAtt ManageFrontendLogGroup.Arn
+        - PolicyName: PushMetrics
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: cloudwatch:PutMetricData
+                Resource: "*"
         - PolicyName: ReadPrivateCredentials
           PolicyDocument:
             Statement:

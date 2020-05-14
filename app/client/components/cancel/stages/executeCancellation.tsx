@@ -60,7 +60,9 @@ const getCaseUpdateWithCancelOutcomeFunc = (
           Subject: "Online Cancellation Completed"
         }
       : {
-          Subject: "Online Cancellation Error"
+          Subject: "Online Cancellation Error",
+          Status: "New",
+          Priority: "High"
         }
   );
 

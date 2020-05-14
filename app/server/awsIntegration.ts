@@ -24,6 +24,8 @@ export const APIGateway = new AWS.APIGateway(standardAwsConfig);
 
 export const CloudFormation = new AWS.CloudFormation(standardAwsConfig);
 
+export const CloudWatch = new AWS.CloudWatch(standardAwsConfig);
+
 export const handleAwsRelatedError = (message: string, detail?: any) => {
   log.error(message, detail);
   Raven.captureMessage(message);
@@ -75,3 +77,25 @@ export const s3FilePromise = <ConfigInterface>(
       s3PromiseResult
     );
   })();
+
+export interface MetricDimensions {
+  [name: string]: string;
+}
+export const putMetricDataPromise = (
+  metricName: string,
+  dimensions: MetricDimensions
+) =>
+  CloudWatch.putMetricData({
+    Namespace: "manage-frontend",
+    MetricData: [
+      {
+        MetricName: metricName,
+        Dimensions: Object.entries(dimensions).map(([Name, Value]) => ({
+          Name,
+          Value
+        })),
+        Value: 1,
+        Unit: "Count"
+      }
+    ]
+  }).promise();
