@@ -40,7 +40,7 @@ export const EmptyAccountOverview = () => {
         `}
       >
         When you subscribe or contribute, you’ll be able to see your support
-        information here. There’s currently no subscription, membership or
+        information here. There’s currently no active subscription, membership or
         recurring contribution linked to this email address.
       </p>
       <dl
