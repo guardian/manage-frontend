@@ -256,7 +256,7 @@ export const createProductDetailFetcher = (
     }
   );
 
-export const createAllProductsDetailFetcher = () => () =>
+export const allProductsDetailFetcher = () =>
   fetch("/api/me/mma", {
     credentials: "include",
     mode: "same-origin",
