@@ -2,9 +2,14 @@ import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
+import { isInAccountOverviewTest } from "../accountOverviewRelease";
 import { expanderButtonCss } from "../expanderButton";
 import { minWidth } from "../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../styles/grid";
+import {
+  accountOverviewActiveFilter,
+  accountOverviewInactiveFilter
+} from "./nav";
 import { ProfileIcon } from "./svgs/profileIcon";
 import { SignoutIcon } from "./svgs/signoutIcon";
 
@@ -275,39 +280,45 @@ export const UserNav = () => {
       </button>
 
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
-        {userNavItems.map((item: UserNavItem) => (
-          <React.Fragment key={item.title}>
-            <li
-              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
-            >
-              <a href={item.link} css={userNavItemCss}>
-                {item.icon && (
+        {userNavItems
+          .filter(
+            isInAccountOverviewTest()
+              ? accountOverviewActiveFilter
+              : accountOverviewInactiveFilter
+          )
+          .map((item: UserNavItem) => (
+            <React.Fragment key={item.title}>
+              <li
+                className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
+              >
+                <a href={item.link} css={userNavItemCss}>
+                  {item.icon && (
+                    <span
+                      css={{
+                        marginRight: "5px",
+                        display: "block",
+                        height: "0.8em",
+                        width: "0.8em",
+                        " svg": { display: "block" }
+                      }}
+                    >
+                      {item.icon}
+                    </span>
+                  )}
                   <span
                     css={{
-                      marginRight: "5px",
-                      display: "block",
-                      height: "0.8em",
-                      width: "0.8em",
-                      " svg": { display: "block" }
+                      lineHeight: "33px",
+                      [minWidth.desktop]: {
+                        lineHeight: "normal"
+                      }
                     }}
                   >
-                    {item.icon}
+                    {item.title}
                   </span>
-                )}
-                <span
-                  css={{
-                    lineHeight: "33px",
-                    [minWidth.desktop]: {
-                      lineHeight: "normal"
-                    }
-                  }}
-                >
-                  {item.title}
-                </span>
-              </a>
-            </li>
-          </React.Fragment>
-        ))}
+                </a>
+              </li>
+            </React.Fragment>
+          ))}
       </ul>
     </nav>
   );

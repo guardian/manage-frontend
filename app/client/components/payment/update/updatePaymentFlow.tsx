@@ -10,6 +10,7 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
@@ -19,7 +20,11 @@ import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
-import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
+import {
+  ReturnToYourProductButton,
+  RouteableStepProps,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
@@ -162,6 +167,64 @@ class PaymentUpdaterStep extends React.Component<
       };
     `;
 
+    const innerContent = () => (
+      <>
+        <ProgressIndicator
+          steps={[
+            { title: "New details", isCurrentStep: true },
+            { title: "Review" },
+            { title: "Confirmation" }
+          ]}
+          additionalCSS={css`
+            margin: ${space[5]}px 0 ${space[12]}px;
+          `}
+        />
+        <h2
+          css={css`
+            ${subHeadingCss}
+          `}
+        >
+          Update payment for your{" "}
+          {this.props.routeableStepProps.productType.friendlyName}
+        </h2>
+        {this.props.productDetail.alertText && (
+          <div>
+            <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
+            <span>{this.props.productDetail.alertText}</span>
+          </div>
+        )}
+        <div css={{ minWidth: "260px" }}>
+          <h3>Current Payment Details</h3>
+          <CurrentPaymentDetails {...this.props.productDetail.subscription} />
+        </div>
+        <PaymentMethodBar
+          updatePaymentMethod={this.updatePaymentMethod}
+          value={this.state.selectedPaymentMethod}
+        />
+        <h3>New Payment Details</h3>
+        {this.getInputForm(
+          this.props.productDetail.subscription,
+          this.props.productDetail.isTestUser
+        )}
+        <div css={{ height: "10px" }} />
+        {isInAccountOverviewTest() ? (
+          <LinkButton
+            to={"/"}
+            text={"Return to your account"}
+            state={this.props.productDetail}
+            colour={palette.neutral[100]}
+            textColour={palette.neutral[0]}
+            hollow
+            left
+          />
+        ) : (
+          <ReturnToYourProductButton
+            productType={this.props.routeableStepProps.productType}
+          />
+        )}
+      </>
+    );
+
     return (
       <MembersDataApiItemContext.Provider value={this.props.productDetail}>
         <NewPaymentMethodContext.Provider
@@ -176,83 +239,33 @@ class PaymentUpdaterStep extends React.Component<
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
               hideBackButton
-              fullWidth
+              {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
             >
-              <PageHeaderContainer
-                selectedNavItem={navLinks.accountOverview}
-                title="Manage payment method"
-                breadcrumbs={[
-                  {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
-                  },
-                  {
-                    title: "Manage payment method",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
-              >
-                <ProgressIndicator
-                  steps={[
-                    { title: "New details", isCurrentStep: true },
-                    { title: "Review" },
-                    { title: "Confirmation" }
-                  ]}
-                  additionalCSS={css`
-                    margin: ${space[5]}px 0 ${space[12]}px;
-                  `}
-                />
-                <h2
-                  css={css`
-                    ${subHeadingCss}
-                  `}
-                >
-                  Update payment for your{" "}
-                  {this.props.routeableStepProps.productType.friendlyName}
-                </h2>
-                {this.props.productDetail.alertText && (
-                  <div>
-                    <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                    <span>{this.props.productDetail.alertText}</span>
-                  </div>
-                )}
-                <div css={{ minWidth: "260px" }}>
-                  <h3>Current Payment Details</h3>
-                  <CurrentPaymentDetails
-                    {...this.props.productDetail.subscription}
+              {isInAccountOverviewTest() ? (
+                <>
+                  <PageHeaderContainer
+                    selectedNavItem={navLinks.accountOverview}
+                    title="Manage payment method"
+                    breadcrumbs={[
+                      {
+                        title: navLinks.accountOverview.title,
+                        link: navLinks.accountOverview.link
+                      },
+                      {
+                        title: "Manage payment method",
+                        currentPage: true
+                      }
+                    ]}
                   />
-                </div>
-                <PaymentMethodBar
-                  updatePaymentMethod={this.updatePaymentMethod}
-                  value={this.state.selectedPaymentMethod}
-                />
-                <h3>New Payment Details</h3>
-                {this.getInputForm(
-                  this.props.productDetail.subscription,
-                  this.props.productDetail.isTestUser
-                )}
-                <div css={{ height: "10px" }} />
-                {/* <ReturnToYourProductButton
-                  productType={this.props.routeableStepProps.productType}
-                /> */}
-                <LinkButton
-                  to={`/manage/${
-                    typeof this.props.routeableStepProps.productType
-                      .productPage === "object"
-                      ? this.props.routeableStepProps.productType.productPage.title.toLowerCase()
-                      : this.props.routeableStepProps.productType.productPage
-                  }`}
-                  text={"Return to your account"}
-                  state={this.props.productDetail}
-                  colour={palette.neutral[100]}
-                  textColour={palette.neutral[0]}
-                  hollow
-                  left
-                />
-              </PageNavAndContentContainer>
+                  <PageNavAndContentContainer
+                    selectedNavItem={navLinks.accountOverview}
+                  >
+                    {innerContent()}
+                  </PageNavAndContentContainer>
+                </>
+              ) : (
+                innerContent()
+              )}
             </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>

@@ -11,6 +11,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
@@ -151,71 +152,87 @@ class ExecutePaymentUpdate extends React.Component<
   };
 }
 
-export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
-  <NewPaymentMethodContext.Consumer>
-    {newPaymentMethodDetail => (
-      <MembersDataApiItemContext.Consumer>
-        {productDetail =>
-          props.navigate &&
-          isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          isProduct(productDetail) ? (
-            <WizardStep
-              routeableStepProps={labelPaymentStepProps(props)}
-              extraFooterComponents={
-                <QuestionsFooter topic={paymentQuestionsTopicString} />
-              }
-              hideBackButton
-              fullWidth
-            >
-              <PageHeaderContainer
-                selectedNavItem={navLinks.accountOverview}
-                title="Manage payment method"
-                breadcrumbs={[
-                  {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
-                  },
-                  {
-                    title: "Manage payment method",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
+export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
+  const innerContent = (
+    productDetail: ProductDetail,
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => (
+    <>
+      <ProgressIndicator
+        steps={[
+          { title: "New details" },
+          { title: "Review", isCurrentStep: true },
+          { title: "Confirmation" }
+        ]}
+        additionalCSS={css`
+          margin: ${space[5]}px 0 ${space[12]}px;
+        `}
+      />
+      <h3>Please confirm your change from...</h3>
+      <CurrentPaymentDetails {...productDetail.subscription} />
+      <h3>...to...</h3>
+      {newPaymentMethodDetail.render()}
+      <div css={{ margin: "20px 0", textAlign: "right" }}>
+        {newPaymentMethodDetail.confirmButtonWrapper(
+          <div css={{ marginTop: "20px", textAlign: "right" }}>
+            <ExecutePaymentUpdate
+              {...props}
+              productDetail={productDetail}
+              newPaymentMethodDetail={newPaymentMethodDetail}
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
+  return (
+    <NewPaymentMethodContext.Consumer>
+      {newPaymentMethodDetail => (
+        <MembersDataApiItemContext.Consumer>
+          {productDetail =>
+            props.navigate &&
+            isNewPaymentMethodDetail(newPaymentMethodDetail) &&
+            isProduct(productDetail) ? (
+              <WizardStep
+                routeableStepProps={labelPaymentStepProps(props)}
+                extraFooterComponents={
+                  <QuestionsFooter topic={paymentQuestionsTopicString} />
+                }
+                hideBackButton
+                {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
               >
-                <ProgressIndicator
-                  steps={[
-                    { title: "New details" },
-                    { title: "Review", isCurrentStep: true },
-                    { title: "Confirmation" }
-                  ]}
-                  additionalCSS={css`
-                    margin: ${space[5]}px 0 ${space[12]}px;
-                  `}
-                />
-                <h3>Please confirm your change from...</h3>
-                <CurrentPaymentDetails {...productDetail.subscription} />
-                <h3>...to...</h3>
-                {newPaymentMethodDetail.render()}
-                <div css={{ margin: "20px 0", textAlign: "right" }}>
-                  {newPaymentMethodDetail.confirmButtonWrapper(
-                    <div css={{ marginTop: "20px", textAlign: "right" }}>
-                      <ExecutePaymentUpdate
-                        {...props}
-                        productDetail={productDetail}
-                        newPaymentMethodDetail={newPaymentMethodDetail}
-                      />
-                    </div>
-                  )}
-                </div>
-              </PageNavAndContentContainer>
-            </WizardStep>
-          ) : (
-            visuallyNavigateToParent(props)
-          )
-        }
-      </MembersDataApiItemContext.Consumer>
-    )}
-  </NewPaymentMethodContext.Consumer>
-);
+                {isInAccountOverviewTest() ? (
+                  <>
+                    <PageHeaderContainer
+                      selectedNavItem={navLinks.accountOverview}
+                      title="Manage payment method"
+                      breadcrumbs={[
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Manage payment method",
+                          currentPage: true
+                        }
+                      ]}
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
+                    >
+                      {innerContent(productDetail, newPaymentMethodDetail)}
+                    </PageNavAndContentContainer>
+                  </>
+                ) : (
+                  innerContent(productDetail, newPaymentMethodDetail)
+                )}
+              </WizardStep>
+            ) : (
+              visuallyNavigateToParent(props)
+            )
+          }
+        </MembersDataApiItemContext.Consumer>
+      )}
+    </NewPaymentMethodContext.Consumer>
+  );
+};

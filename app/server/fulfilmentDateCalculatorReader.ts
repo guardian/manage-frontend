@@ -45,7 +45,7 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday = async (
   productDetail: ProductDetail
 ) => {
-  const maybeProductType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+  const maybeProductType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
     productDetail
   );
   const maybeFulfilmentDateCalculatorProductFilenamePart =

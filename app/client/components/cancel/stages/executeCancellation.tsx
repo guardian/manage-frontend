@@ -3,6 +3,7 @@ import { palette, space } from "@guardian/src-foundations";
 import React, { ReactNode } from "react";
 import {
   isProduct,
+  MembersDataApiItem,
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -11,6 +12,7 @@ import {
   ProductType,
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
 import { LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -90,7 +92,7 @@ const getCancellationSummaryWithReturnButton = (
     <div css={{ height: "20px" }} />
     {/* <ReturnToYourProductButton productType={productType} /> */}
     <LinkButton
-      to={`/manage/${productType.urlPart}`}
+      to={"/"}
       text={"Return to your account"}
       state={productDetail}
       colour={palette.neutral[100]}
@@ -131,86 +133,105 @@ const escalatedConfirmationBody = (
   </p>
 );
 
+const innerContent = (
+  productDetail: MembersDataApiItem,
+  props: RouteableStepPropsWithCancellationFlow,
+  reason: OptionalCancellationReasonId,
+  caseId: string
+) => (
+  <>
+    <ProgressIndicator
+      steps={[
+        { title: "Reason" },
+        { title: "Review" },
+        { title: "Confirmation", isCurrentStep: true }
+      ]}
+      additionalCSS={css`
+        margin: ${space[5]}px 0 ${space[12]}px;
+      `}
+    />
+    {isProduct(productDetail) ? (
+      <CancellationFlowEscalationCheck {...props}>
+        {escalationCauses =>
+          escalationCauses.length > 0 ? (
+            <CaseUpdateAsyncLoader
+              fetch={getCaseUpdateFuncForEscalation(
+                caseId,
+                escalationCauses,
+                productDetail.isTestUser
+              )}
+              render={getCancellationSummaryWithReturnButton(
+                props.productType,
+                productDetail,
+                escalatedConfirmationBody
+              )}
+              loadingMessage="Requesting your cancellation..."
+            />
+          ) : (
+            <PerformCancelAsyncLoader
+              fetch={getCancelFunc(
+                productDetail.subscription.subscriptionId,
+                reason,
+                createProductDetailFetcher(
+                  props.productType,
+                  productDetail.subscription.subscriptionId
+                )
+              )}
+              render={getCaseUpdatingCancellationSummary(
+                caseId,
+                props.productType
+              )}
+              loadingMessage="Performing your cancellation..."
+            />
+          )
+        }
+      </CancellationFlowEscalationCheck>
+    ) : (
+      <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+    )}
+  </>
+);
+
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+  <WizardStep
+    routeableStepProps={props}
+    hideBackButton
+    {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+  >
     <CancellationReasonContext.Consumer>
       {reason => (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
             <MembersDataApiItemContext.Consumer>
-              {productDetail => (
-                <>
-                  <PageHeaderContainer
-                    selectedNavItem={navLinks.accountOverview}
-                    title={`Cancel ${props.productType.friendlyName}`}
-                    breadcrumbs={[
-                      {
-                        title: navLinks.accountOverview.title,
-                        link: navLinks.accountOverview.link
-                      },
-                      {
-                        title: "Cancel membership",
-                        currentPage: true
-                      }
-                    ]}
-                  />
-                  <PageNavAndContentContainer
-                    selectedNavItem={navLinks.accountOverview}
-                  >
-                    <ProgressIndicator
-                      steps={[
-                        { title: "Reason" },
-                        { title: "Review" },
-                        { title: "Confirmation", isCurrentStep: true }
-                      ]}
-                      additionalCSS={css`
-                        margin: ${space[5]}px 0 ${space[12]}px;
-                      `}
-                    />
-                    {isProduct(productDetail) ? (
-                      <CancellationFlowEscalationCheck {...props}>
-                        {escalationCauses =>
-                          escalationCauses.length > 0 ? (
-                            <CaseUpdateAsyncLoader
-                              fetch={getCaseUpdateFuncForEscalation(
-                                caseId,
-                                escalationCauses,
-                                productDetail.isTestUser
-                              )}
-                              render={getCancellationSummaryWithReturnButton(
-                                props.productType,
-                                productDetail,
-                                escalatedConfirmationBody
-                              )}
-                              loadingMessage="Requesting your cancellation..."
-                            />
-                          ) : (
-                            <PerformCancelAsyncLoader
-                              fetch={getCancelFunc(
-                                productDetail.subscription.subscriptionId,
-                                reason,
-                                createProductDetailFetcher(
-                                  props.productType,
-                                  productDetail.subscription.subscriptionId
-                                )
-                              )}
-                              render={getCaseUpdatingCancellationSummary(
-                                caseId,
-                                props.productType
-                              )}
-                              loadingMessage="Performing your cancellation..."
-                            />
-                          )
+              {productDetail =>
+                isInAccountOverviewTest() ? (
+                  <>
+                    <PageHeaderContainer
+                      selectedNavItem={navLinks.accountOverview}
+                      title={`Cancel ${props.productType.friendlyName}`}
+                      breadcrumbs={[
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Cancel membership",
+                          currentPage: true
                         }
-                      </CancellationFlowEscalationCheck>
-                    ) : (
-                      <GenericErrorScreen loggingMessage="invalid product detail to cancel" />
-                    )}
-                  </PageNavAndContentContainer>
-                </>
-              )}
+                      ]}
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
+                    >
+                      {innerContent(productDetail, props, reason, caseId)}
+                    </PageNavAndContentContainer>
+                  </>
+                ) : (
+                  innerContent(productDetail, props, reason, caseId)
+                )
+              }
             </MembersDataApiItemContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>

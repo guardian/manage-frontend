@@ -44,7 +44,7 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
         margin-top: 2px;
       `}
     >
-      <DirectDebitLogo justLogo />
+      <DirectDebitLogo fill={palette.neutral[7]} />
     </i>
     <div
       css={css`

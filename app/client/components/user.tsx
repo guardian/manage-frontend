@@ -36,10 +36,8 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
+import { isInAccountOverviewTest } from "../accountOverviewRelease";
 import { AccountOverview } from "./accountoverview/accountOverview";
-import { ManageContribution } from "./accountoverview/manageContribution";
-import { ManageMembership } from "./accountoverview/manageMembership";
-import { ManageSubscription } from "./accountoverview/manageSubscription";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -63,61 +61,29 @@ const User = () => (
     <Global styles={css(`${fonts}`)} />
 
     <Router>
-      <RedirectOnMeResponse path="/" />
-
-      <AccountOverview path="/account-overview" />
-
-      {Object.values(ProductTypes).map((productType: ProductType) => {
-        if (
-          productType.productPage === "subscriptions" ||
-          (typeof productType.productPage === "object" &&
-            productType.productPage?.title === "Subscriptions")
-        ) {
-          return (
-            <ManageSubscription
-              key={productType.urlPart}
-              path={"/manage/subscriptions"}
-              productType={productType}
-            />
-          );
-        }
-        if (
-          productType.productPage === "contributions" ||
-          (typeof productType.productPage === "object" &&
-            productType.productPage?.title === "Contributions")
-        ) {
-          return (
-            <ManageContribution
-              key={productType.urlPart}
-              path={"/manage/contributions"}
-              productType={productType}
-            />
-          );
-        }
-        if (
-          productType.productPage === "membership" ||
-          (typeof productType.productPage === "object" &&
-            productType.productPage?.title === "Membership")
-        ) {
-          return (
-            <ManageMembership
-              key={productType.urlPart}
-              path={"/manage/membership"}
-              productType={productType}
-            />
-          );
-        }
-      })}
+      {isInAccountOverviewTest() ? (
+        <AccountOverview path="/" />
+      ) : (
+        <RedirectOnMeResponse path="/" />
+      )}
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)
-        .map((productType: ProductTypeWithProductPageProperties) => (
-          <ProductPage
-            key={productType.urlPart}
-            path={"/" + productType.urlPart}
-            productType={productType}
-          />
-        ))}
+        .map((productType: ProductTypeWithProductPageProperties) =>
+          isInAccountOverviewTest() ? (
+            <productType.productPage.manageComponent
+              key={productType.urlPart}
+              path={"/" + productType.urlPart}
+              productType={productType}
+            />
+          ) : (
+            <ProductPage
+              key={productType.urlPart}
+              path={"/" + productType.urlPart}
+              productType={productType}
+            />
+          )
+        )}
       {Object.values(ProductTypes)
         .filter(hasProductPageRedirect)
         .map((productType: ProductTypeWithProductPageRedirect) => (

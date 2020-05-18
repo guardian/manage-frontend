@@ -16,6 +16,7 @@ import {
   createProductDetailFetcher,
   ProductType
 } from "../../../../shared/productTypes";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
@@ -122,11 +123,7 @@ const WithSubscriptionRenderer = (
       />
       {/* <ReturnToYourProductButton productType={productType} /> */}
       <LinkButton
-        to={`/manage/${
-          typeof productType.productPage === "object"
-            ? productType.productPage.title.toLowerCase()
-            : productType.productPage
-        }`}
+        to={"/"}
         text={"Return to your account"}
         state={previousProductDetail}
         colour={palette.neutral[100]}
@@ -137,61 +134,80 @@ const WithSubscriptionRenderer = (
     </>
   );
 
-export const PaymentUpdated = (props: RouteableStepProps) => (
-  <MembersDataApiItemContext.Consumer>
-    {previousProductDetail => (
-      <NewPaymentMethodContext.Consumer>
-        {newPaymentMethodDetail =>
-          isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-          isProduct(previousProductDetail) ? (
-            <WizardStep
-              routeableStepProps={labelPaymentStepProps(props)}
-              extraFooterComponents={[
-                <QuestionsFooter
-                  key="questions"
-                  topic={paymentQuestionsTopicString}
-                />,
-                <SpreadTheWordFooter key="share" />
-              ]}
-              hideBackButton
-              fullWidth
-            >
-              <PageHeaderContainer
-                selectedNavItem={navLinks.accountOverview}
-                title="Manage payment method"
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
+export const PaymentUpdated = (props: RouteableStepProps) => {
+  const innerContent = (
+    previousProductDetail: ProductDetail,
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => (
+    <>
+      <ProgressIndicator
+        steps={[
+          { title: "New details" },
+          { title: "Review" },
+          { title: "Confirmation", isCurrentStep: true }
+        ]}
+        additionalCSS={css`
+          margin: ${space[5]}px 0 ${space[12]}px;
+        `}
+      />
+      <WithSubscriptionAsyncLoader
+        fetch={createProductDetailFetcher(
+          props.productType,
+          previousProductDetail.subscription.subscriptionId
+        )}
+        render={WithSubscriptionRenderer(
+          props.productType,
+          newPaymentMethodDetail,
+          previousProductDetail
+        )}
+        loadingMessage="Looks good so far. Just checking everything is done..."
+      />
+    </>
+  );
+  return (
+    <MembersDataApiItemContext.Consumer>
+      {previousProductDetail => (
+        <NewPaymentMethodContext.Consumer>
+          {newPaymentMethodDetail =>
+            isNewPaymentMethodDetail(newPaymentMethodDetail) &&
+            isProduct(previousProductDetail) ? (
+              <WizardStep
+                routeableStepProps={labelPaymentStepProps(props)}
+                extraFooterComponents={[
+                  <QuestionsFooter
+                    key="questions"
+                    topic={paymentQuestionsTopicString}
+                  />,
+                  <SpreadTheWordFooter key="share" />
+                ]}
+                hideBackButton
+                {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
               >
-                <ProgressIndicator
-                  steps={[
-                    { title: "New details" },
-                    { title: "Review" },
-                    { title: "Confirmation", isCurrentStep: true }
-                  ]}
-                  additionalCSS={css`
-                    margin: ${space[5]}px 0 ${space[12]}px;
-                  `}
-                />
-                <WithSubscriptionAsyncLoader
-                  fetch={createProductDetailFetcher(
-                    props.productType,
-                    previousProductDetail.subscription.subscriptionId
-                  )}
-                  render={WithSubscriptionRenderer(
-                    props.productType,
-                    newPaymentMethodDetail,
-                    previousProductDetail
-                  )}
-                  loadingMessage="Looks good so far. Just checking everything is done..."
-                />
-              </PageNavAndContentContainer>
-            </WizardStep>
-          ) : (
-            visuallyNavigateToParent(props)
-          )
-        }
-      </NewPaymentMethodContext.Consumer>
-    )}
-  </MembersDataApiItemContext.Consumer>
-);
+                {isInAccountOverviewTest() ? (
+                  <>
+                    <PageHeaderContainer
+                      selectedNavItem={navLinks.accountOverview}
+                      title="Manage payment method"
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
+                    >
+                      {innerContent(
+                        previousProductDetail,
+                        newPaymentMethodDetail
+                      )}
+                    </PageNavAndContentContainer>
+                  </>
+                ) : (
+                  innerContent(previousProductDetail, newPaymentMethodDetail)
+                )}
+              </WizardStep>
+            ) : (
+              visuallyNavigateToParent(props)
+            )
+          }
+        </NewPaymentMethodContext.Consumer>
+      )}
+    </MembersDataApiItemContext.Consumer>
+  );
+};

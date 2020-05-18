@@ -93,7 +93,7 @@ export const addressChangeAffectedInfo = (
     .flatMap<ProductDetail>(flattenEquivalent)
     .map(productDetail => ({
       productDetail,
-      productType: ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+      productType: ProductTypes.subscriptions.mapGroupedToSpecific?.(
         productDetail
       )
     }))
@@ -231,7 +231,7 @@ const FormContainer = (props: FormContainerProps) => {
   )
     .flatMap(flattenEquivalent)
     .map(productDetail => {
-      const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+      const friendlyProductName = ProductTypes.subscriptions.mapGroupedToSpecific?.(
         productDetail
       ).friendlyName;
       return `${friendlyProductName}`;
@@ -767,7 +767,7 @@ const Form = (props: FormProps) => {
 
 export const DeliveryAddressForm = (props: RouteableStepProps) => {
   if (props.location?.state?.productDetail?.subscription.deliveryAddress) {
-    const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+    const productType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
       props.location?.state?.productDetail
     );
     const enableDeliveryInstructions = !!productType?.delivery
@@ -784,7 +784,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
     <FlowStartMultipleProductDetailHandler
       {...props}
       overrideProductTypeForFetch={
-        ProductTypes.contentSubscriptions as ProductTypeWithMapGroupedToSpecific
+        ProductTypes.subscriptions as ProductTypeWithMapGroupedToSpecific
       }
       headingPrefix={"View delivery address"}
       hideHeading
@@ -800,7 +800,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail
       ) => {
-        const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+        const productType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
           productDetail
         );
         const friendlyProductName = productType?.friendlyName || "subscription";
@@ -814,9 +814,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
               enableDeliveryInstructions,
               productDetail.subscription.deliveryAddress
             )}
-            fetch={createProductDetailFetcher(
-              ProductTypes.contentSubscriptions
-            )}
+            fetch={createProductDetailFetcher(ProductTypes.subscriptions)}
             loadingMessage={"Loading delivery details..."}
           />
         );

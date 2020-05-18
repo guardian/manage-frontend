@@ -57,9 +57,8 @@ export const ManageSubscription = (props: RouteableStepProps) => {
         ) as PaidSubscriptionPlan;
 
         const productType =
-          ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-            productDetail
-          ) || props.productType;
+          ProductTypes.subscriptions.mapGroupedToSpecific?.(productDetail) ||
+          props.productType;
         const productName =
           productType?.alternateTierValue || productDetail.tier;
 
