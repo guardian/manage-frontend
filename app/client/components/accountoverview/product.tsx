@@ -9,26 +9,29 @@ import {
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductTypes } from "../../../shared/productTypes";
+import { ProductType } from "../../../shared/productTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
+import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 
-interface SubscriptionProductProps {
+type ProductCategory = "subscription" | "membership" | "contribution";
+
+interface ProductProps {
+  productCategory: ProductCategory;
   productDetail: ProductDetail;
+  topLevelProductType: ProductType;
+  specificProductType: ProductType;
 }
 
-export const SubscriptionProduct = (props: SubscriptionProductProps) => {
-  const productType = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
-    props.productDetail
-  );
+export const Product = (props: ProductProps) => {
   const productName =
-    productType?.alternateTierValue || props.productDetail.tier;
+    props.specificProductType.alternateTierValue || props.productDetail.tier;
 
   const mainPlan = getMainPlan(
     props.productDetail.subscription
@@ -36,6 +39,8 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
 
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
+
+  const hasPaymentFailure: boolean = !!props.productDetail.alertText;
 
   const keyValuePairCss = css`
     list-style: none;
@@ -71,12 +76,12 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
       <h2
         css={css`
           position: relative;
-          background-color: ${hasCancellationPending
+          background-color: ${hasCancellationPending || hasPaymentFailure
             ? palette.neutral[97]
             : palette.brand[400]};
           margin: 0;
           padding: ${space[3]}px 12ch ${space[3]}px ${space[3]}px;
-          color: ${hasCancellationPending
+          color: ${hasCancellationPending || hasPaymentFailure
             ? palette.neutral[7]
             : palette.neutral[100]};
           ${titlepiece.small()};
@@ -88,9 +93,28 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
           }
         `}
       >
-        {productName}
-        {mainPlan.name && ` - ${mainPlan.name}`}
-        {hasCancellationPending ? (
+        {props.productCategory === "subscription" && (
+          <>
+            {productName}
+            {mainPlan.name && ` - ${mainPlan.name}`}
+          </>
+        )}
+        {props.productCategory === "membership" && (
+          <>
+            Guardian membership
+            {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+          </>
+        )}
+        {props.productCategory === "contribution" && (
+          <>
+            {props.productDetail.subscription.autoRenew
+              ? "Recurring"
+              : "Single"}
+            {" contribution"}
+            {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+          </>
+        )}
+        {hasCancellationPending || hasPaymentFailure ? (
           <i
             css={css`
               position: absolute;
@@ -99,7 +123,11 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
               transform: translateY(-50%);
             `}
           >
-            <ErrorIcon fill={palette.brandYellow[200]} />
+            <ErrorIcon
+              {...(hasCancellationPending
+                ? { fill: palette.brandYellow[200] }
+                : {})}
+            />
             <span
               css={css`
                 ${textSans.medium({ fontWeight: "bold" })};
@@ -107,7 +135,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                 font-style: normal;
               `}
             >
-              Cancelled
+              {hasCancellationPending && "Cancelled"}
             </span>
           </i>
         ) : (
@@ -125,26 +153,30 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
           )
         )}
       </h2>
-      {hasCancellationPending && props.productDetail.subscription.end && (
-        <p
-          css={css`
-            ${textSans.medium()};
-            padding: 20px 20px 0;
-            margin: 0;
-          `}
-        >
-          Your subscription has been cancelled. You are able to access your
-          subscription until{" "}
-          <span
+      {hasCancellationPending &&
+        props.productDetail.subscription.end &&
+        props.productCategory !== "contribution" && (
+          <p
             css={css`
-              font-weight: bold;
+              ${textSans.medium()};
+              padding: 20px 20px 0;
+              margin: 0;
             `}
           >
-            {formatDateStr(props.productDetail.subscription.end)}
-          </span>
-          .
-        </p>
-      )}
+            {props.productCategory === "subscription" &&
+              "Your subscription has been cancelled. You are able to access your subscription until "}
+            {props.productCategory === "membership" &&
+              "Your membership has been cancelled. You will receive the benefit of your membership until "}
+            <span
+              css={css`
+                font-weight: bold;
+              `}
+            >
+              {formatDateStr(props.productDetail.subscription.end)}
+            </span>
+            .
+          </p>
+        )}
       <div
         css={css`
           padding: ${space[5]}px ${space[3]}px;
@@ -168,12 +200,27 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
             }
           `}
         >
-          <ul css={keyValuePairCss}>
-            <li css={keyCss}>Subscription ID</li>
-            <li css={valueCss}>
-              {props.productDetail.subscription.subscriptionId}
-            </li>
-          </ul>
+          {props.productCategory !== "contribution" && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>
+                {props.productCategory === "subscription" && "Subscription ID"}
+                {props.productCategory === "membership" && "Membership tier"}
+              </li>
+              <li css={valueCss}>
+                {props.productCategory === "subscription" &&
+                  props.productDetail.subscription.subscriptionId}
+                {props.productCategory === "membership" && productName}
+              </li>
+            </ul>
+          )}
+          {props.productCategory === "contribution" && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Payment amount</li>
+              <li css={valueCss}>
+                {`${mainPlan.currency}${(mainPlan.amount / 100.0).toFixed(2)}`}
+              </li>
+            </ul>
+          )}
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
@@ -195,26 +242,28 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
               margin-top: auto;
             `}
           >
-            {hasCancellationPending ? (
+            {hasCancellationPending &&
+            props.productCategory !== "contribution" ? (
+              <SupportTheGuardianButton
+                supportReferer={`${
+                  props.topLevelProductType.urlPart
+                }_${"subscription_product_page"}`}
+                urlSuffix={props.topLevelProductType.noProductSupportUrlSuffix}
+                notPrimary
+                colour={palette.brand[800]}
+                textColour={palette.brand[400]}
+                fontWeight="bold"
+                withoutArrow
+              />
+            ) : (
               <LinkButton
-                to={"adsf"}
-                text={"Subscribe again"}
+                to={`/${props.topLevelProductType.urlPart}`}
+                text={`Manage ${props.productCategory}`}
+                state={props.productDetail}
                 colour={palette.brand[800]}
                 textColour={palette.brand[400]}
                 fontWeight={"bold"}
-                right
               />
-            ) : (
-              <>
-                <LinkButton
-                  to={`/manage/${props.productDetail.mmaCategory}`}
-                  text={"Manage subscription"}
-                  state={props.productDetail}
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
-                  fontWeight={"bold"}
-                />
-              </>
             )}
           </div>
         </div>
@@ -250,29 +299,39 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                         display: block;
                       `}
                     >
-                      {`${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
-                    </span>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
-                      {props.productDetail.subscription.nextPaymentDate
+                      {props.productCategory !== "contribution" &&
+                        `${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
+                      {props.productCategory === "contribution" &&
+                      props.productDetail.subscription.nextPaymentDate
                         ? formatDateStr(
                             props.productDetail.subscription.nextPaymentDate
                           )
                         : "-"}
                     </span>
+                    {props.productCategory !== "contribution" && (
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {props.productDetail.subscription.nextPaymentDate
+                          ? formatDateStr(
+                              props.productDetail.subscription.nextPaymentDate
+                            )
+                          : "-"}
+                      </span>
+                    )}
                   </li>
                 </ul>
               )}
             </>
           ) : (
             <>
-              {props.productDetail.subscription.nextPaymentDate &&
+              {props.productCategory === "subscription" &&
+                props.productDetail.subscription.nextPaymentDate &&
                 props.productDetail.subscription.nextPaymentPrice &&
                 props.productDetail.subscription.autoRenew &&
-                !props.productDetail.alertText && (
+                !hasPaymentFailure && (
                   <ul css={keyValuePairCss}>
                     <li css={keyCss}>Next payment</li>
                     <li css={valueCss}>
@@ -300,12 +359,60 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                     </li>
                   </ul>
                 )}
+              {props.productCategory === "membership" &&
+                props.productDetail.subscription.nextPaymentPrice && (
+                  <ul css={keyValuePairCss}>
+                    <li css={keyCss}>Next payment</li>
+                    <li css={valueCss}>
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {`${mainPlan.currency}${(
+                          props.productDetail.subscription.nextPaymentPrice /
+                          100.0
+                        ).toFixed(2)}`}
+                      </span>
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {props.productDetail.subscription.nextPaymentDate
+                          ? formatDateStr(
+                              props.productDetail.subscription.nextPaymentDate
+                            )
+                          : "-"}
+                      </span>
+                    </li>
+                  </ul>
+                )}
+              {props.productCategory === "contribution" &&
+                props.productDetail.subscription.nextPaymentPrice && (
+                  <ul css={keyValuePairCss}>
+                    <li css={keyCss}>Next payment</li>
+                    <li css={valueCss}>
+                      <span
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {props.productDetail.subscription.nextPaymentDate
+                          ? formatDateStr(
+                              props.productDetail.subscription.nextPaymentDate
+                            )
+                          : "-"}
+                      </span>
+                    </li>
+                  </ul>
+                )}
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment method</li>
                 <li css={valueCss}>
                   {props.productDetail.subscription.card && (
                     <CardDisplay
-                      inErrorState={!!props.productDetail.alertText}
+                      inErrorState={hasPaymentFailure}
                       margin="0"
                       {...props.productDetail.subscription.card}
                     />
@@ -315,7 +422,7 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                   )}
                   {props.productDetail.subscription.mandate && (
                     <DirectDebitDisplay
-                      inErrorState={!!props.productDetail.alertText}
+                      inErrorState={hasPaymentFailure}
                       {...props.productDetail.subscription.mandate}
                     />
                   )}
@@ -325,23 +432,20 @@ export const SubscriptionProduct = (props: SubscriptionProductProps) => {
                   )}
                 </li>
               </ul>
-              {productType && (
-                <div
-                  css={css`
-                    margin-top: auto;
-                  `}
-                >
-                  <LinkButton
-                    // to={`/payment/${props.productDetail.mmaCategory}`}
-                    to={`/payment/${productType.urlPart}`}
-                    state={props.productDetail}
-                    text={"Manage payment method"}
-                    colour={palette.brand[800]}
-                    textColour={palette.brand[400]}
-                    fontWeight={"bold"}
-                  />
-                </div>
-              )}
+              <div
+                css={css`
+                  margin-top: auto;
+                `}
+              >
+                <LinkButton
+                  to={`/payment/${props.specificProductType.urlPart}`}
+                  state={props.productDetail}
+                  text={"Manage payment method"}
+                  colour={palette.brand[800]}
+                  textColour={palette.brand[400]}
+                  fontWeight={"bold"}
+                />
+              </div>
             </>
           )}
         </div>

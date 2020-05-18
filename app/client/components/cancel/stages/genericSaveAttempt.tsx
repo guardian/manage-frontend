@@ -4,12 +4,14 @@ import { navigate } from "@reach/router";
 import React, { ChangeEvent, ReactNode } from "react";
 import {
   isProduct,
-  MembersDataApiItemContext
+  MembersDataApiItemContext,
+  ProductDetail
 } from "../../../../shared/productResponse";
 import {
   ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../../shared/productTypes";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
@@ -269,6 +271,80 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
     props.productType.cancellation.flowWrapper ||
     (() => (restOfFlow: RestOfCancellationFlow) => restOfFlow);
 
+  const innerContent = (productDetail: ProductDetail) => (
+    <>
+      <ProgressIndicator
+        steps={[
+          { title: "Reason" },
+          { title: "Review", isCurrentStep: true },
+          { title: "Confirmation" }
+        ]}
+        additionalCSS={css`
+          margin: ${space[5]}px 0 ${space[12]}px;
+        `}
+      />
+      <PageContainerSection>
+        <h3 id="save_title">
+          {props.productType.cancellation.hideReasonTitlePrefix
+            ? ""
+            : "Reason: "}
+          {props.reason.saveTitle || props.reason.linkLabel}
+        </h3>
+
+        <CancellationFlowEscalationCheck {...props}>
+          {escalationCauses => (
+            <>
+              {escalationCauses.length > 0 && (
+                <p>
+                  Once you submit your cancellation request our customer service
+                  team will try their best to contact you as soon as possible to
+                  confirm the cancellation and refund any credit you are owed.
+                </p>
+              )}
+              <p id="save_body">
+                {escalationCauses.length > 0 &&
+                props.reason.escalationSaveBody !== undefined
+                  ? props.reason.escalationSaveBody
+                  : props.reason.saveBody}
+              </p>
+            </>
+          )}
+        </CancellationFlowEscalationCheck>
+
+        <CancellationCaseIdContext.Consumer>
+          {caseId =>
+            caseId && !props.reason.skipFeedback ? (
+              <FeedbackFormAndContactUs
+                characterLimit={2500}
+                caseId={caseId}
+                reason={props.reason}
+                productType={props.productType}
+                isTestUser={productDetail.isTestUser}
+              />
+            ) : (
+              <div
+                css={{
+                  display: "flex",
+                  flexDirection:
+                    props.productType.cancellation.swapFeedbackAndContactUs &&
+                    caseId
+                      ? "column-reverse"
+                      : "column"
+                }}
+              >
+                <ContactUs {...props.reason} />
+                <ConfirmCancellationAndReturnRow
+                  reasonId={props.reason.reasonId}
+                  productType={props.productType}
+                />
+              </div>
+            )
+          }
+        </CancellationCaseIdContext.Consumer>
+      </PageContainerSection>
+    </>
+  );
+
   return (
     <MembersDataApiItemContext.Consumer>
       {productDetail =>
@@ -284,95 +360,36 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                 productDetail={productDetail}
                 sfCaseProduct={props.productType.cancellation.sfCaseProduct}
               >
-                <WizardStep routeableStepProps={props} hideBackButton fullWidth>
-                  <PageHeaderContainer
-                    selectedNavItem={navLinks.accountOverview}
-                    title={`Cancel ${props.productType.friendlyName}`}
-                    breadcrumbs={[
-                      {
-                        title: navLinks.accountOverview.title,
-                        link: navLinks.accountOverview.link
-                      },
-                      {
-                        title: "Cancel membership",
-                        currentPage: true
-                      }
-                    ]}
-                  />
-                  <PageNavAndContentContainer
-                    selectedNavItem={navLinks.accountOverview}
-                  >
-                    <ProgressIndicator
-                      steps={[
-                        { title: "Reason" },
-                        { title: "Review", isCurrentStep: true },
-                        { title: "Confirmation" }
-                      ]}
-                      additionalCSS={css`
-                        margin: ${space[5]}px 0 ${space[12]}px;
-                      `}
-                    />
-                    <PageContainerSection>
-                      <h3 id="save_title">
-                        {props.productType.cancellation.hideReasonTitlePrefix
-                          ? ""
-                          : "Reason: "}
-                        {props.reason.saveTitle || props.reason.linkLabel}
-                      </h3>
-
-                      <CancellationFlowEscalationCheck {...props}>
-                        {escalationCauses => (
-                          <>
-                            {escalationCauses.length > 0 && (
-                              <p>
-                                Once you submit your cancellation request our
-                                customer service team will try their best to
-                                contact you as soon as possible to confirm the
-                                cancellation and refund any credit you are owed.
-                              </p>
-                            )}
-                            <p id="save_body">
-                              {escalationCauses.length > 0 &&
-                              props.reason.escalationSaveBody !== undefined
-                                ? props.reason.escalationSaveBody
-                                : props.reason.saveBody}
-                            </p>
-                          </>
-                        )}
-                      </CancellationFlowEscalationCheck>
-
-                      <CancellationCaseIdContext.Consumer>
-                        {caseId =>
-                          caseId && !props.reason.skipFeedback ? (
-                            <FeedbackFormAndContactUs
-                              characterLimit={2500}
-                              caseId={caseId}
-                              reason={props.reason}
-                              productType={props.productType}
-                              isTestUser={productDetail.isTestUser}
-                            />
-                          ) : (
-                            <div
-                              css={{
-                                display: "flex",
-                                flexDirection:
-                                  props.productType.cancellation
-                                    .swapFeedbackAndContactUs && caseId
-                                    ? "column-reverse"
-                                    : "column"
-                              }}
-                            >
-                              <ContactUs {...props.reason} />
-                              <ConfirmCancellationAndReturnRow
-                                reasonId={props.reason.reasonId}
-                                productType={props.productType}
-                              />
-                            </div>
-                          )
-                        }
-                      </CancellationCaseIdContext.Consumer>
-                    </PageContainerSection>
-                  </PageNavAndContentContainer>
+                <WizardStep
+                  routeableStepProps={props}
+                  hideBackButton
+                  {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+                >
+                  {isInAccountOverviewTest() ? (
+                    <>
+                      <PageHeaderContainer
+                        selectedNavItem={navLinks.accountOverview}
+                        title={`Cancel ${props.productType.friendlyName}`}
+                        breadcrumbs={[
+                          {
+                            title: navLinks.accountOverview.title,
+                            link: navLinks.accountOverview.link
+                          },
+                          {
+                            title: "Cancel membership",
+                            currentPage: true
+                          }
+                        ]}
+                      />
+                      <PageNavAndContentContainer
+                        selectedNavItem={navLinks.accountOverview}
+                      >
+                        {innerContent(productDetail)}
+                      </PageNavAndContentContainer>
+                    </>
+                  ) : (
+                    innerContent(productDetail)
+                  )}
                 </WizardStep>
               </CaseCreationWrapper>
             </CancellationReasonContext.Provider>

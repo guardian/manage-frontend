@@ -19,37 +19,44 @@ import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProblemAlert } from "../ProblemAlert";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
-import { ContributionProduct } from "./contributionProduct";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
-import { MembershipProduct } from "./membershipProduct";
-import { SubscriptionProduct } from "./subscriptionProduct";
+import { Product } from "./product";
 
 const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
-  const productDetailList = apiResponse.filter(isProduct).sort(sortByJoinDate);
+  const productDetailList = apiResponse
+    .filter(isProduct)
+    .sort(sortByJoinDate)
+    .map(productDetail => {
+      const topLevelProductType = ProductTypes[productDetail.mmaCategory];
+      return {
+        productDetail,
+        topLevelProductType,
+        specificProductType:
+          topLevelProductType.mapGroupedToSpecific?.(productDetail) ||
+          topLevelProductType
+      };
+    });
 
   const subscriptionData = productDetailList.filter(
-    item => item.mmaCategory.toLowerCase() === "subscriptions"
+    _ => _.topLevelProductType === ProductTypes.subscriptions
   );
 
   const contributorData = productDetailList.filter(
-    item => item.mmaCategory.toLowerCase() === "contributions"
+    _ => _.topLevelProductType === ProductTypes.contributions
   );
 
   const membershipData = productDetailList.filter(
-    item => item.mmaCategory.toLowerCase() === "membership"
+    _ => _.topLevelProductType === ProductTypes.membership
   );
 
-  if (
-    subscriptionData.length === 0 &&
-    contributorData.length === 0 &&
-    membershipData.length === 0
-  ) {
+  if (productDetailList.length === 0) {
     return <EmptyAccountOverview />;
   }
 
+  // TODO: check to see if babel polyfils find
   const firstPaymentFailureProductDetail = productDetailList.find(
-    productDetail => productDetail.alertText
-  );
+    _ => _.productDetail.alertText
+  )?.productDetail;
 
   return (
     <>
@@ -60,7 +67,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           button={{
             title: "Update payment method",
             link: `/payment/${
-              ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+              ProductTypes.subscriptions.mapGroupedToSpecific?.(
                 firstPaymentFailureProductDetail
               ).urlPart
             }`,
@@ -86,10 +93,11 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           >
             My subscriptions
           </h2>
-          {subscriptionData.map((productDetail, index) => (
-            <SubscriptionProduct
-              productDetail={productDetail}
-              key={`subscription-${index}`}
+          {subscriptionData.map(item => (
+            <Product
+              key={item.productDetail.subscription.subscriptionId}
+              {...item}
+              productCategory="subscription"
             />
           ))}
         </>
@@ -109,14 +117,15 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           >
             My membership
           </h2>
-          {membershipData.map((productDetail, index) => (
-            <MembershipProduct
-              productDetail={productDetail}
-              key={`membership-${index}`}
+          {membershipData.map(item => (
+            <Product
+              key={item.productDetail.subscription.subscriptionId}
+              {...item}
+              productCategory="membership"
             />
           ))}
-          {membershipData.some(productDetail =>
-            isCancelled(productDetail.subscription)
+          {membershipData.some(item =>
+            isCancelled(item.productDetail.subscription)
           ) && (
             <>
               <p
@@ -157,11 +166,12 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           >
             My contributions
           </h2>
-          {contributorData.map((productDetail, index) => {
+          {contributorData.map(item => {
             return (
-              <ContributionProduct
-                productDetail={productDetail}
-                key={`contributions-${index}`}
+              <Product
+                key={item.productDetail.subscription.subscriptionId}
+                {...item}
+                productCategory="contribution"
               />
             );
           })}

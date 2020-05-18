@@ -13,6 +13,7 @@ export interface SupportTheGuardianButtonProps {
   notPrimary?: true;
   textColour?: string;
   colour?: string;
+  withoutArrow?: boolean;
 }
 
 const hasWindow = typeof window !== "undefined" && window.guardian;
@@ -69,7 +70,7 @@ export const SupportTheGuardianButton = (
       primary={props.notPrimary ? undefined : true}
       textColour={props.textColour}
       colour={props.colour}
-      right
+      {...(!props.withoutArrow ? { right: true } : {})}
     />
   </a>
 );

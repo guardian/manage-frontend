@@ -3,6 +3,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
 import { conf } from "../../server/config";
+import { isInAccountOverviewTest } from "../accountOverviewRelease";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { AccountOverviewIcon } from "./svgs/accountOverviewIcon";
@@ -101,7 +102,7 @@ export interface NavLinks {
 export const navLinks: NavLinks = {
   accountOverview: {
     title: "Account overview",
-    link: "/account-overview",
+    link: "/",
     local: true,
     icon: <AccountOverviewIcon />
   },
@@ -157,18 +158,22 @@ export interface NavProps {
   selectedNavItem?: NavItem;
 }
 
-const accountOverviewActiveFilter = (navItem: NavItem) =>
+export const accountOverviewActiveFilter = (navItem: NavItem) =>
   navItem.title !== "Membership" &&
   navItem.title !== "Subscriptions" &&
   navItem.title !== "Contributions";
 
-// const accountOverviewInactiveFilter = (navItem: NavItem) =>
-//   navItem.title !== "Account overview";
+export const accountOverviewInactiveFilter = (navItem: NavItem) =>
+  navItem.title !== "Account overview";
 
 export const Nav = (props: NavProps) => (
   <ul role="tablist" css={navCss}>
     {Object.values(navLinks)
-      .filter(accountOverviewActiveFilter)
+      .filter(
+        isInAccountOverviewTest()
+          ? accountOverviewActiveFilter
+          : accountOverviewInactiveFilter
+      )
       .map((navItem: NavItem) => (
         <li
           css={navItemCss(props.selectedNavItem === navItem)}
@@ -179,7 +184,7 @@ export const Nav = (props: NavProps) => (
               css={navLinkCss(props.selectedNavItem === navItem)}
               to={navItem.link}
             >
-              {navItem.icon && (
+              {navItem.icon && isInAccountOverviewTest() && (
                 <i
                   css={css`
                     display: inline-block;

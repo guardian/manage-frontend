@@ -10,6 +10,7 @@ import {
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
+import { isInAccountOverviewTest } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
@@ -73,141 +74,157 @@ class ReasonPicker extends React.Component<
       (child: { props: MultiRouteableProps }) => child.props
     );
 
+    const innerContent = () => (
+      <>
+        <ProgressIndicator
+          steps={[
+            { title: "Reason", isCurrentStep: true },
+            { title: "Review" },
+            { title: "Confirmation" }
+          ]}
+          additionalCSS={css`
+            margin: ${space[5]}px 0 ${space[12]}px;
+          `}
+        />
+        {this.props.productType.cancellation.startPageBody(
+          this.props.productDetail.subscription
+        )}
+        <PageContainerSection>
+          <h4>Please select a reason</h4>
+          <form css={css({ marginBottom: "30px" })}>
+            {options.map((reason: MultiRouteableProps) => (
+              <RadioButton
+                key={reason.path}
+                value={reason.path}
+                label={reason.linkLabel}
+                checked={reason.path === this.state.reasonPath}
+                groupName="reasons"
+                onChange={() => this.setState({ reasonPath: reason.path })}
+              />
+            ))}
+          </form>
+
+          {shouldOfferEffectiveDateOptions && (
+            <>
+              <h4>
+                When would you like your cancellation to become effective?
+              </h4>
+              <form css={css({ marginBottom: "30px" })}>
+                <RadioButton
+                  value="Today"
+                  label="Today"
+                  checked={
+                    this.state.cancellationPolicy === cancellationEffectiveToday
+                  }
+                  groupName="cancellationPolicy"
+                  onChange={() =>
+                    this.setState({
+                      cancellationPolicy: cancellationEffectiveToday
+                    })
+                  }
+                />
+                <RadioButton
+                  value="EndOfLastInvoicePeriod"
+                  label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
+                  checked={
+                    this.state.cancellationPolicy ===
+                    cancellationEffectiveEndOfLastInvoicePeriod
+                  }
+                  groupName="cancellationPolicy"
+                  onChange={() =>
+                    this.setState({
+                      cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
+                    })
+                  }
+                />
+              </form>
+            </>
+          )}
+
+          <div
+            css={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "row-reverse",
+              [maxWidth.mobileLandscape]: {
+                flexDirection: "column"
+              }
+            }}
+          >
+            <div
+              css={{
+                textAlign: "right",
+                marginBottom: "10px"
+              }}
+            >
+              <LinkButton
+                text="Continue"
+                to={this.state.reasonPath}
+                disabled={
+                  !this.state.reasonPath ||
+                  (shouldOfferEffectiveDateOptions &&
+                    !this.state.cancellationPolicy)
+                }
+                right
+              />
+            </div>
+            <div>
+              {isInAccountOverviewTest() ? (
+                <LinkButton
+                  to={"/"}
+                  text={"Return to your account"}
+                  state={this.props.productDetail}
+                  colour={palette.neutral[100]}
+                  textColour={palette.neutral[0]}
+                  hollow
+                  left
+                />
+              ) : (
+                <ReturnToYourProductButton
+                  productType={this.props.productType}
+                />
+              )}
+            </div>
+          </div>
+        </PageContainerSection>
+      </>
+    );
+
     return (
       <MembersDataApiItemContext.Provider value={this.props.productDetail}>
         <CancellationPolicyContext.Provider
           value={this.state.cancellationPolicy}
         >
-          <WizardStep routeableStepProps={this.props} hideBackButton fullWidth>
-            <PageHeaderContainer
-              selectedNavItem={navLinks.accountOverview}
-              title={`Cancel ${this.props.productType.friendlyName}`}
-              breadcrumbs={[
-                {
-                  title: navLinks.accountOverview.title,
-                  link: navLinks.accountOverview.link
-                },
-                {
-                  title: "Cancel membership",
-                  currentPage: true
-                }
-              ]}
-            />
-            <PageNavAndContentContainer
-              selectedNavItem={navLinks.accountOverview}
-            >
-              <ProgressIndicator
-                steps={[
-                  { title: "Reason", isCurrentStep: true },
-                  { title: "Review" },
-                  { title: "Confirmation" }
-                ]}
-                additionalCSS={css`
-                  margin: ${space[5]}px 0 ${space[12]}px;
-                `}
-              />
-              {this.props.productType.cancellation.startPageBody(
-                this.props.productDetail.subscription
-              )}
-              <PageContainerSection>
-                <h4>Please select a reason</h4>
-                <form css={css({ marginBottom: "30px" })}>
-                  {options.map((reason: MultiRouteableProps) => (
-                    <RadioButton
-                      key={reason.path}
-                      value={reason.path}
-                      label={reason.linkLabel}
-                      checked={reason.path === this.state.reasonPath}
-                      groupName="reasons"
-                      onChange={() =>
-                        this.setState({ reasonPath: reason.path })
-                      }
-                    />
-                  ))}
-                </form>
-
-                {shouldOfferEffectiveDateOptions && (
-                  <>
-                    <h4>
-                      When would you like your cancellation to become effective?
-                    </h4>
-                    <form css={css({ marginBottom: "30px" })}>
-                      <RadioButton
-                        value="Today"
-                        label="Today"
-                        checked={
-                          this.state.cancellationPolicy ===
-                          cancellationEffectiveToday
-                        }
-                        groupName="cancellationPolicy"
-                        onChange={() =>
-                          this.setState({
-                            cancellationPolicy: cancellationEffectiveToday
-                          })
-                        }
-                      />
-                      <RadioButton
-                        value="EndOfLastInvoicePeriod"
-                        label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
-                        checked={
-                          this.state.cancellationPolicy ===
-                          cancellationEffectiveEndOfLastInvoicePeriod
-                        }
-                        groupName="cancellationPolicy"
-                        onChange={() =>
-                          this.setState({
-                            cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
-                          })
-                        }
-                      />
-                    </form>
-                  </>
-                )}
-
-                <div
-                  css={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "row-reverse",
-                    [maxWidth.mobileLandscape]: {
-                      flexDirection: "column"
+          <WizardStep
+            routeableStepProps={this.props}
+            hideBackButton
+            {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+          >
+            {isInAccountOverviewTest() ? (
+              <>
+                <PageHeaderContainer
+                  selectedNavItem={navLinks.accountOverview}
+                  title={`Cancel ${this.props.productType.friendlyName}`}
+                  breadcrumbs={[
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Cancel membership",
+                      currentPage: true
                     }
-                  }}
+                  ]}
+                />
+                <PageNavAndContentContainer
+                  selectedNavItem={navLinks.accountOverview}
                 >
-                  <div
-                    css={{
-                      textAlign: "right",
-                      marginBottom: "10px"
-                    }}
-                  >
-                    <LinkButton
-                      text="Continue"
-                      to={this.state.reasonPath}
-                      disabled={
-                        !this.state.reasonPath ||
-                        (shouldOfferEffectiveDateOptions &&
-                          !this.state.cancellationPolicy)
-                      }
-                      right
-                    />
-                  </div>
-                  <div>
-                    {/* <ReturnToYourProductButton
-                      productType={this.props.productType}
-                    /> */}
-                    <LinkButton
-                      to={`/manage/${this.props.productType.urlPart}`}
-                      text={"Return to your account"}
-                      state={this.props.productDetail}
-                      colour={palette.neutral[100]}
-                      textColour={palette.neutral[0]}
-                      hollow
-                      left
-                    />
-                  </div>
-                </div>
-              </PageContainerSection>
-            </PageNavAndContentContainer>
+                  {innerContent()}
+                </PageNavAndContentContainer>
+              </>
+            ) : (
+              innerContent()
+            )}
           </WizardStep>
         </CancellationPolicyContext.Provider>
       </MembersDataApiItemContext.Provider>
@@ -245,10 +262,14 @@ export const CancellationFlow = (
     {...props}
     headingPrefix="Cancel"
     hideHeading
-    hasLeftNav={{
-      pageTitle: "Manage contribution",
-      selectedNavItem: navLinks.subscriptions
-    }}
+    {...(isInAccountOverviewTest()
+      ? {
+          hasLeftNav: {
+            pageTitle: "Manage contribution",
+            selectedNavItem: navLinks.subscriptions
+          }
+        }
+      : {})}
     supportRefererSuffix="cancellation_flow"
     loadingMessagePrefix="Checking the status of your"
     cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
