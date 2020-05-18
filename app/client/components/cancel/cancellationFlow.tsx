@@ -203,7 +203,6 @@ class ReasonPicker extends React.Component<
             {isInAccountOverviewTest() ? (
               <>
                 <PageHeaderContainer
-                  selectedNavItem={navLinks.accountOverview}
                   title={`Cancel ${this.props.productType.friendlyName}`}
                   breadcrumbs={[
                     {

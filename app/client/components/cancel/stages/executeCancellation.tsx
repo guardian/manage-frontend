@@ -19,7 +19,10 @@ import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
-import { WizardStep } from "../../wizardRouterAdapter";
+import {
+  ReturnToYourProductButton,
+  WizardStep
+} from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
   CancellationReasonContext
@@ -90,16 +93,19 @@ const getCancellationSummaryWithReturnButton = (
   <div>
     {body}
     <div css={{ height: "20px" }} />
-    {/* <ReturnToYourProductButton productType={productType} /> */}
-    <LinkButton
-      to={"/"}
-      text={"Return to your account"}
-      state={productDetail}
-      colour={palette.neutral[100]}
-      textColour={palette.neutral[0]}
-      hollow
-      left
-    />
+    {isInAccountOverviewTest() ? (
+      <LinkButton
+        to={"/"}
+        text={"Return to your account"}
+        state={productDetail}
+        colour={palette.neutral[100]}
+        textColour={palette.neutral[0]}
+        hollow
+        left
+      />
+    ) : (
+      <ReturnToYourProductButton productType={productType} />
+    )}
   </div>
 );
 
@@ -209,7 +215,6 @@ export const ExecuteCancellation = (
                 isInAccountOverviewTest() ? (
                   <>
                     <PageHeaderContainer
-                      selectedNavItem={navLinks.accountOverview}
                       title={`Cancel ${props.productType.friendlyName}`}
                       breadcrumbs={[
                         {

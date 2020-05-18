@@ -193,6 +193,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
               <>
                 <TextInput
                   label="Phone number"
+                  supporting="Enter your phone number"
                   width={30}
                   css={css`
                     max-width: 100%;

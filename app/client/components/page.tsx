@@ -5,7 +5,7 @@ import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { ReactElement } from "react";
 import { minWidth } from "../styles/breakpoints";
-// import { titlepiece } from "../styles/fonts";
+// import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { Nav, NavProps } from "./nav";
 
@@ -180,7 +180,7 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
           max-width: calc(${breakpoints.wide}px + 2.5rem);
           margin: auto;
           color: ${palette.neutral["100"]};
-          ${props.breadcrumbs ? gridBasev2() : gridBasev2()}
+          ${gridBasev2()}
         `}
       >
         {props.breadcrumbs && (

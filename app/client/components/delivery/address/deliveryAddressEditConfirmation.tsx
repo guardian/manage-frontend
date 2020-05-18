@@ -4,6 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -79,7 +80,6 @@ const ConfirmationFC = (props: RouteableStepProps) => {
       {isAddress(addressContext.newDeliveryAddress) ? (
         <>
           <PageHeaderContainer
-            selectedNavItem={navLinks.accountOverview}
             title={
               <span
                 css={css`
@@ -113,7 +113,11 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={
+              isInAccountOverviewTest()
+                ? navLinks.accountOverview
+                : navLinks.subscriptions
+            }
           >
             <ProgressIndicator
               steps={[

@@ -218,7 +218,6 @@ export class HolidayDateChooser extends React.Component<
                       {isInAccountOverviewTest() ? (
                         <>
                           <PageHeaderContainer
-                            selectedNavItem={navLinks.accountOverview}
                             title="Manage suspensions"
                             breadcrumbs={[
                               {

@@ -70,7 +70,7 @@ export const SupportTheGuardianButton = (
       primary={props.notPrimary ? undefined : true}
       textColour={props.textColour}
       colour={props.colour}
-      {...(!props.withoutArrow ? { right: true } : {})}
+      right={!props.withoutArrow}
     />
   </a>
 );

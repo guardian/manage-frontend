@@ -14,7 +14,7 @@ export interface ButtonProps {
   height?: string;
   fontWeight?: "bold";
   left?: true;
-  right?: true;
+  right?: boolean;
   disabled?: boolean;
   colour?: string;
   textColour?: string;
@@ -35,8 +35,8 @@ export interface LinkButtonProps extends ButtonProps {
 
 const applyIconStyleIfApplicable = (
   hover: boolean,
-  left?: true,
-  right?: true,
+  left?: boolean,
+  right?: boolean,
   leftTick?: true
 ) => {
   if (left) {
@@ -50,9 +50,6 @@ const applyIconStyleIfApplicable = (
   }
   return {
     padding: `1px ${space[5]}px 0 ${space[5]}px`
-    // svg: {
-    //   display: "none",
-    // },
   };
 };
 

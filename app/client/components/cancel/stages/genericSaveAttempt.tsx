@@ -368,7 +368,6 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                   {isInAccountOverviewTest() ? (
                     <>
                       <PageHeaderContainer
-                        selectedNavItem={navLinks.accountOverview}
                         title={`Cancel ${props.productType.friendlyName}`}
                         breadcrumbs={[
                           {

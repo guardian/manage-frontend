@@ -10,7 +10,7 @@ import {
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
-  createAllProductsDetailFetcher,
+  allProductsDetailFetcher,
   ProductTypes
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
@@ -53,7 +53,6 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     return <EmptyAccountOverview />;
   }
 
-  // TODO: check to see if babel polyfils find
   const firstPaymentFailureProductDetail = productDetailList.find(
     _ => _.productDetail.alertText
   )?.productDetail;
@@ -190,7 +189,7 @@ export const AccountOverview = (props: RouteComponentProps) => {
       />
       <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <MembersDatApiAsyncLoader
-          fetch={createAllProductsDetailFetcher()}
+          fetch={allProductsDetailFetcher}
           render={AccountOverviewRenderer}
           loadingMessage={`Loading your account details...`}
         />

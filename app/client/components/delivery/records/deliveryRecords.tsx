@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
-import { headline } from "@guardian/src-foundations/typography";
+import { space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
+import { headline } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
@@ -22,6 +22,7 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   WithProductType
 } from "../../../../shared/productTypes";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -311,7 +312,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           fullWidth
         >
           <PageHeaderContainer
-            selectedNavItem={navLinks.accountOverview}
             title="Delivery history"
             breadcrumbs={[
               {
@@ -325,7 +325,11 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={
+              isInAccountOverviewTest()
+                ? navLinks.accountOverview
+                : navLinks.subscriptions
+            }
           >
             {pageStatus !== PageStatus.READ_ONLY &&
               pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (

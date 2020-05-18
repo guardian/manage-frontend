@@ -204,7 +204,6 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                 {isInAccountOverviewTest() ? (
                   <>
                     <PageHeaderContainer
-                      selectedNavItem={navLinks.accountOverview}
                       title="Manage payment method"
                       breadcrumbs={[
                         {

@@ -87,7 +87,6 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                     {isInAccountOverviewTest() ? (
                       <>
                         <PageHeaderContainer
-                          selectedNavItem={navLinks.accountOverview}
                           title="Manage suspensions"
                           breadcrumbs={[
                             {

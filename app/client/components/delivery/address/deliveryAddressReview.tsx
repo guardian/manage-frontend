@@ -4,6 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import React, { useContext, useState } from "react";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { navLinks } from "../../nav";
@@ -69,7 +70,6 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
   return (
     <WizardStep routeableStepProps={props} hideBackButton fullWidth>
       <PageHeaderContainer
-        selectedNavItem={navLinks.accountOverview}
         title={
           <span
             css={css`
@@ -102,7 +102,13 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
+      <PageNavAndContentContainer
+        selectedNavItem={
+          isInAccountOverviewTest()
+            ? navLinks.accountOverview
+            : navLinks.subscriptions
+        }
+      >
         <ProgressIndicator
           steps={[
             { title: "Update" },

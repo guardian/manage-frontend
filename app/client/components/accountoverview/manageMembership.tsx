@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
@@ -122,22 +123,6 @@ export const ManageMembership = (props: RouteableStepProps) => {
               >
                 <Button priority="secondary">Change tier</Button>
               </a>
-              <a
-                href={`/cancel/${props.productType.urlPart}`}
-                css={css`
-                display: inline-block;
-                margin-left: ${space["5"]}px;
-                ${textSans.medium({ fontWeight: "bold" })}
-                color: ${palette.brand["400"]};
-                border-bottom: 1px solid ${palette.neutral["100"]};
-                transition: border-color .15s ease-out;
-                :hover: {
-                  borderBottom: 1px solid ${palette.brand["400"]};
-                }
-              `}
-              >
-                Cancel membership
-              </a>
               <h2
                 css={css`
                   ${subHeadingCss}
@@ -234,6 +219,26 @@ export const ManageMembership = (props: RouteableStepProps) => {
                     notPrimary
                   />
                 </>
+              )}
+              {!isCancelled(productDetail.subscription) && (
+                <Link
+                  css={css`
+                    display: block;
+                    float: right;
+                    margin: ${space[24]}px 0 0 auto;
+                    ${textSans.medium()}
+                    color: ${palette.brand["500"]};
+                    border-bottom: 1px solid ${palette.neutral["100"]};
+                    transition: border-color .15s ease-out;
+                    :hover: {
+                      borderBottom: 1px solid ${palette.brand["400"]};
+                    }
+                  `}
+                  to={`/cancel/${props.productType.urlPart}`}
+                  state={productDetail}
+                >
+                  Cancel membership
+                </Link>
               )}
             </PageNavAndContentContainer>
           </>

@@ -26,6 +26,7 @@ import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
+  ReturnToYourProductButton,
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
@@ -121,16 +122,19 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      {/* <ReturnToYourProductButton productType={productType} /> */}
-      <LinkButton
-        to={"/"}
-        text={"Return to your account"}
-        state={previousProductDetail}
-        colour={palette.neutral[100]}
-        textColour={palette.neutral[0]}
-        hollow
-        left
-      />
+      {isInAccountOverviewTest() ? (
+        <LinkButton
+          to={"/"}
+          text={"Return to your account"}
+          state={previousProductDetail}
+          colour={palette.neutral[100]}
+          textColour={palette.neutral[0]}
+          hollow
+          left
+        />
+      ) : (
+        <ReturnToYourProductButton productType={productType} />
+      )}
     </>
   );
 
@@ -185,10 +189,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
               >
                 {isInAccountOverviewTest() ? (
                   <>
-                    <PageHeaderContainer
-                      selectedNavItem={navLinks.accountOverview}
-                      title="Manage payment method"
-                    />
+                    <PageHeaderContainer title="Manage payment method" />
                     <PageNavAndContentContainer
                       selectedNavItem={navLinks.accountOverview}
                     >

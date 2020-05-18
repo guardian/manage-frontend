@@ -32,6 +32,7 @@ import { palette } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -303,7 +304,6 @@ const FormContainer = (props: FormContainerProps) => {
               fullWidth
             >
               <PageHeaderContainer
-                selectedNavItem={navLinks.accountOverview}
                 breadcrumbs={[
                   {
                     title: navLinks.accountOverview.title,
@@ -337,7 +337,11 @@ const FormContainer = (props: FormContainerProps) => {
                 }
               />
               <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
+                selectedNavItem={
+                  isInAccountOverviewTest()
+                    ? navLinks.accountOverview
+                    : navLinks.subscriptions
+                }
               >
                 <ProgressIndicator
                   steps={[

@@ -244,7 +244,6 @@ class PaymentUpdaterStep extends React.Component<
               {isInAccountOverviewTest() ? (
                 <>
                   <PageHeaderContainer
-                    selectedNavItem={navLinks.accountOverview}
                     title="Manage payment method"
                     breadcrumbs={[
                       {

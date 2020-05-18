@@ -301,7 +301,6 @@ const renderHolidayStopsOverview = (
           {isInAccountOverviewTest() ? (
             <>
               <PageHeaderContainer
-                selectedNavItem={navLinks.accountOverview}
                 title="Manage suspensions"
                 breadcrumbs={[
                   {
