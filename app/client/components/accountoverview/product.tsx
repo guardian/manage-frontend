@@ -76,12 +76,12 @@ export const Product = (props: ProductProps) => {
       <h2
         css={css`
           position: relative;
-          background-color: ${hasCancellationPending || hasPaymentFailure
+          background-color: ${hasCancellationPending
             ? palette.neutral[97]
             : palette.brand[400]};
           margin: 0;
           padding: ${space[3]}px 12ch ${space[3]}px ${space[3]}px;
-          color: ${hasCancellationPending || hasPaymentFailure
+          color: ${hasCancellationPending
             ? palette.neutral[7]
             : palette.neutral[100]};
           ${titlepiece.small()};
@@ -114,7 +114,7 @@ export const Product = (props: ProductProps) => {
             {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
           </>
         )}
-        {hasCancellationPending || hasPaymentFailure ? (
+        {hasCancellationPending ? (
           <i
             css={css`
               position: absolute;
@@ -441,9 +441,16 @@ export const Product = (props: ProductProps) => {
                   to={`/payment/${props.specificProductType.urlPart}`}
                   state={props.productDetail}
                   text={"Manage payment method"}
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
+                  colour={
+                    hasPaymentFailure ? palette.brand[400] : palette.brand[800]
+                  }
+                  textColour={
+                    hasPaymentFailure
+                      ? palette.neutral[100]
+                      : palette.brand[400]
+                  }
                   fontWeight={"bold"}
+                  {...(hasPaymentFailure ? { alert: true } : {})}
                 />
               </div>
             </>

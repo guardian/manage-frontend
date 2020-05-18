@@ -1,11 +1,11 @@
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
-import palette from "../colours";
 import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
+import { ErrorIcon } from "./svgs/errorIcon";
 import { TickIcon } from "./svgs/tickIcon";
 
 export interface ButtonProps {
@@ -24,6 +24,7 @@ export interface ButtonProps {
   forceCircle?: true;
   hoverColour?: string;
   leftTick?: true;
+  alert?: true;
   type?: "button" | "submit" | "reset";
 }
 
@@ -48,10 +49,10 @@ const applyIconStyleIfApplicable = (
     };
   }
   return {
-    padding: `1px ${space[5]}px 0 ${space[5]}px`,
-    svg: {
-      display: "none"
-    }
+    padding: `1px ${space[5]}px 0 ${space[5]}px`
+    // svg: {
+    //   display: "none",
+    // },
   };
 };
 
@@ -62,11 +63,11 @@ const calcBackgroundColour = (
   hollow?: true
 ) => {
   if (disabled) {
-    return palette.neutral["4"];
+    return palette.neutral[60];
   } else if (primary) {
-    return palette.yellow.medium;
+    return palette.brandAlt[400];
   } else if (hollow) {
-    return palette.white;
+    return palette.neutral[100];
   }
   return colour;
 };
@@ -78,20 +79,20 @@ const calcTextColour = (
   hollow?: true
 ) => {
   if (disabled) {
-    return palette.white;
+    return palette.neutral[100];
   } else if (primary || hollow) {
-    return palette.neutral["1"];
+    return palette.neutral[7];
   }
   return textColour;
 };
 
-const defaultColour = palette.neutral["2"];
+const defaultColour = palette.neutral[20];
 const buttonCss = ({
   disabled,
   height,
   fontWeight,
   colour = defaultColour,
-  textColour = palette.white,
+  textColour = palette.neutral[100],
   left,
   right,
   primary,
@@ -186,8 +187,16 @@ export const LinkButton = (props: LinkButtonProps) => (
     css={buttonCss(props)}
     state={props.state}
   >
+    {props.alert && (
+      <ErrorIcon
+        fill={palette.neutral[100]}
+        additionalCss={css`
+          margin-right: ${space[2]}px;
+        `}
+      />
+    )}
     {props.text}
-    <ArrowIcon />
+    {props.left || (props.right && <ArrowIcon />)}
   </Link>
 );
 
