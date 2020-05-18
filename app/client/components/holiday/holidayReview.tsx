@@ -346,7 +346,6 @@ export class HolidayReview extends React.Component<
           ) : (
             innerContent()
           )}
-          ;
         </WizardStep>
       </HolidayDateChooserStateContext.Provider>
     ) : (
