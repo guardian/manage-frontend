@@ -196,7 +196,7 @@ export const LinkButton = (props: LinkButtonProps) => (
       />
     )}
     {props.text}
-    {props.left || (props.right && <ArrowIcon />)}
+    {(props.left || props.right) && <ArrowIcon />}
   </Link>
 );
 

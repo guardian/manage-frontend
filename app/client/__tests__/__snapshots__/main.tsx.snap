@@ -214,6 +214,34 @@ exports[`Main renders something 1`] = `
                   "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
                 }
               }
+              href="/account-overview"
+            >
+              <span
+                css={
+                  Object {
+                    "@media (min-width: 980px)": Object {
+                      "lineHeight": "normal",
+                    },
+                    "lineHeight": "33px",
+                  }
+                }
+              >
+                Account overview
+              </span>
+            </a>
+          </li>
+          <li
+            className="hide--gte-desktop"
+          >
+            <a
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1c2of0y",
+                  "next": undefined,
+                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                }
+              }
               href="/public-settings"
             >
               <span
@@ -283,90 +311,6 @@ exports[`Main renders something 1`] = `
                 }
               >
                 Emails & marketing
-              </span>
-            </a>
-          </li>
-          <li
-            className="hide--gte-desktop"
-          >
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1c2of0y",
-                  "next": undefined,
-                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
-                }
-              }
-              href="/membership"
-            >
-              <span
-                css={
-                  Object {
-                    "@media (min-width: 980px)": Object {
-                      "lineHeight": "normal",
-                    },
-                    "lineHeight": "33px",
-                  }
-                }
-              >
-                Membership
-              </span>
-            </a>
-          </li>
-          <li
-            className="hide--gte-desktop"
-          >
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1c2of0y",
-                  "next": undefined,
-                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
-                }
-              }
-              href="/contributions"
-            >
-              <span
-                css={
-                  Object {
-                    "@media (min-width: 980px)": Object {
-                      "lineHeight": "normal",
-                    },
-                    "lineHeight": "33px",
-                  }
-                }
-              >
-                Contributions
-              </span>
-            </a>
-          </li>
-          <li
-            className="hide--gte-desktop"
-          >
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1c2of0y",
-                  "next": undefined,
-                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
-                }
-              }
-              href="/subscriptions"
-            >
-              <span
-                css={
-                  Object {
-                    "@media (min-width: 980px)": Object {
-                      "lineHeight": "normal",
-                    },
-                    "lineHeight": "33px",
-                  }
-                }
-              >
-                Subscriptions
               </span>
             </a>
           </li>
@@ -1280,9 +1224,9 @@ exports[`Main renders something 1`] = `
                       css={
                         Object {
                           "map": undefined,
-                          "name": "x5i4w7",
+                          "name": "1dykxcg",
                           "next": undefined,
-                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                         }
                       }
                       onMouseUp={[Function]}
@@ -1306,9 +1250,9 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "x5i4w7",
+                        "name": "1dykxcg",
                         "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                       }
                     }
                     onMouseUp={[Function]}
