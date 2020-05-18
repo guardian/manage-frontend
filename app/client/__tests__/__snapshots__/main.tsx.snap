@@ -214,34 +214,6 @@ exports[`Main renders something 1`] = `
                   "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
                 }
               }
-              href="/account-overview"
-            >
-              <span
-                css={
-                  Object {
-                    "@media (min-width: 980px)": Object {
-                      "lineHeight": "normal",
-                    },
-                    "lineHeight": "33px",
-                  }
-                }
-              >
-                Account overview
-              </span>
-            </a>
-          </li>
-          <li
-            className="hide--gte-desktop"
-          >
-            <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1c2of0y",
-                  "next": undefined,
-                  "styles": "padding:9px 30px 8px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 30px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
-                }
-              }
               href="/public-settings"
             >
               <span
