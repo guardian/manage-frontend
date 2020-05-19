@@ -11,6 +11,7 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
+import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
@@ -108,16 +109,20 @@ const DeliveryRecordsProblemConfirmationFC = (
       <PageHeaderContainer
         selectedNavItem={navLinks.accountOverview}
         title="Delivery history"
-        breadcrumbs={[
-          {
-            title: navLinks.accountOverview.title,
-            link: navLinks.accountOverview.link
-          },
-          {
-            title: "Delivery history",
-            currentPage: true
-          }
-        ]}
+        breadcrumbs={
+          isInAccountOverviewTest()
+            ? [
+                {
+                  title: navLinks.accountOverview.title,
+                  link: navLinks.accountOverview.link
+                },
+                {
+                  title: "Delivery history",
+                  currentPage: true
+                }
+              ]
+            : []
+        }
       />
       <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <ProgressIndicator

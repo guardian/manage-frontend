@@ -187,16 +187,20 @@ const DeliveryRecordsProblemReviewFC = (
         <WizardStep routeableStepProps={props} hideBackButton fullWidth>
           <PageHeaderContainer
             title="Delivery history"
-            breadcrumbs={[
-              {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
-              },
-              {
-                title: "Delivery history",
-                currentPage: true
-              }
-            ]}
+            breadcrumbs={
+              isInAccountOverviewTest()
+                ? [
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Delivery history",
+                      currentPage: true
+                    }
+                  ]
+                : []
+            }
           />
           <PageNavAndContentContainer
             selectedNavItem={

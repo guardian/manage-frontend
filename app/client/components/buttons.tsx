@@ -13,7 +13,7 @@ export interface ButtonProps {
   onClick?: () => void;
   height?: string;
   fontWeight?: "bold";
-  left?: true;
+  left?: boolean;
   right?: boolean;
   disabled?: boolean;
   colour?: string;
@@ -49,7 +49,7 @@ const applyIconStyleIfApplicable = (
     };
   }
   return {
-    padding: `1px ${space[5]}px 0 ${space[5]}px`
+    padding: "1px 15px 0 15px"
   };
 };
 

@@ -8,4 +8,4 @@ export const momentiseDateStr = (dateStr: string) =>
   moment(dateStr, DATE_INPUT_FORMAT);
 
 export const formatDateStr = (dateStr: string, outputFormat?: string) =>
-  moment(dateStr).format(outputFormat || "D MMM YYYY");
+  momentiseDateStr(dateStr).format(outputFormat || "D MMM YYYY");

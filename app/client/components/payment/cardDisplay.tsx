@@ -65,7 +65,7 @@ export const CardDisplay = (props: CardDisplayProps) => (
         color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
       `}
     >
-      Ending {props.last4}
+      ending {props.last4}
     </span>
   </div>
 );

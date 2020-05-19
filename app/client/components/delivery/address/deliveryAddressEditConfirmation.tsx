@@ -101,16 +101,20 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                 delivery details
               </span>
             }
-            breadcrumbs={[
-              {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
-              },
-              {
-                title: "Edit delivery address",
-                currentPage: true
-              }
-            ]}
+            breadcrumbs={
+              isInAccountOverviewTest()
+                ? [
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Edit delivery address",
+                      currentPage: true
+                    }
+                  ]
+                : []
+            }
           />
           <PageNavAndContentContainer
             selectedNavItem={

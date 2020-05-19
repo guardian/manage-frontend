@@ -12,6 +12,9 @@ export const cleanSortCode = (sortCode: string) =>
   sortCode.replace(/[^0-9]/g, "");
 
 export const dashifySortCode = (sortCode: string) => {
+  if (!sortCode) {
+    return sortCode;
+  }
   const cleanedSortCode = cleanSortCode(sortCode);
   if (cleanedSortCode.length !== 6) {
     return cleanedSortCode;
@@ -22,6 +25,32 @@ export const dashifySortCode = (sortCode: string) => {
     cleanedSortCode.substr(2, 2) +
     "-" +
     cleanedSortCode.substr(4, 2)
+  );
+};
+
+const sanitiseAccountNumber = (accountNumber: string) => {
+  if (!accountNumber) {
+    return accountNumber;
+  }
+  return (
+    accountNumber.length >= NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW && (
+      <span
+        css={{
+          marginLeft: "10px"
+        }}
+      >
+        {/* TODO:
+         {`ending ${accountNumber.substr(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}`} */}
+        {"•".repeat(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}
+        {accountNumber.substr(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}
+      </span>
+    )
   );
 };
 
@@ -80,7 +109,7 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
           }
         `}
       >
-        {mandate.accountNumber}
+        {sanitiseAccountNumber(mandate.accountNumber)}
       </span>
     </div>
   </div>
@@ -105,27 +134,9 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
           marginLeft: "10px"
         }}
       >
-        {mandate.sortCode ? dashifySortCode(mandate.sortCode) : undefined}
+        {dashifySortCode(mandate.sortCode)}
       </span>
-      {mandate.accountNumber &&
-      mandate.accountNumber.length > NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW ? (
-        <span
-          css={{
-            marginLeft: "10px"
-          }}
-        >
-          {"•".repeat(
-            mandate.accountNumber.length -
-              NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-          ) +
-            mandate.accountNumber.substr(
-              mandate.accountNumber.length -
-                NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-            )}
-        </span>
-      ) : (
-        undefined
-      )}
+      {sanitiseAccountNumber(mandate.accountNumber)}
       {mandate.showAccountName && mandate.accountName ? (
         <span
           css={{

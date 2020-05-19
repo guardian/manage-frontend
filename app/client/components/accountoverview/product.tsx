@@ -107,10 +107,7 @@ export const Product = (props: ProductProps) => {
         )}
         {props.productCategory === "contribution" && (
           <>
-            {props.productDetail.subscription.autoRenew
-              ? "Recurring"
-              : "Single"}
-            {" contribution"}
+            Recurring contribution
             {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
           </>
         )}

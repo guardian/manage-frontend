@@ -304,16 +304,20 @@ const FormContainer = (props: FormContainerProps) => {
               fullWidth
             >
               <PageHeaderContainer
-                breadcrumbs={[
-                  {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
-                  },
-                  {
-                    title: "Edit delivery address",
-                    currentPage: true
-                  }
-                ]}
+                breadcrumbs={
+                  isInAccountOverviewTest()
+                    ? [
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Edit delivery address",
+                          currentPage: true
+                        }
+                      ]
+                    : []
+                }
                 title={
                   <span
                     css={css`
@@ -729,7 +733,11 @@ const Form = (props: FormProps) => {
         >
           <Button type="submit">Review details</Button>
           <Link
-            to={navLinks.accountOverview.link}
+            to={
+              isInAccountOverviewTest()
+                ? navLinks.accountOverview.link
+                : navLinks.subscriptions.link
+            }
             css={css`
               ${textSans.medium()};
               font-weight: bold;

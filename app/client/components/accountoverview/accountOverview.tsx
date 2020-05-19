@@ -53,24 +53,20 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     return <EmptyAccountOverview />;
   }
 
-  const firstPaymentFailureProductDetail = productDetailList.find(
+  const firstPaymentFailure = productDetailList.find(
     _ => _.productDetail.alertText
-  )?.productDetail;
+  );
 
   return (
     <>
-      {firstPaymentFailureProductDetail?.alertText && (
+      {firstPaymentFailure?.productDetail.alertText && (
         <ProblemAlert
           title="A payment needs your attention"
-          message={firstPaymentFailureProductDetail.alertText}
+          message={firstPaymentFailure.productDetail.alertText}
           button={{
             title: "Update payment method",
-            link: `/payment/${
-              ProductTypes.subscriptions.mapGroupedToSpecific?.(
-                firstPaymentFailureProductDetail
-              ).urlPart
-            }`,
-            state: firstPaymentFailureProductDetail
+            link: `/payment/${firstPaymentFailure.specificProductType.urlPart}`,
+            state: firstPaymentFailure.productDetail
           }}
           additionalcss={css`
             margin-top: 30px;
