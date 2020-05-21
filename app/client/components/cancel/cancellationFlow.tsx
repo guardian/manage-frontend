@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React from "react";
+import React, { useContext } from "react";
 import {
   friendlyLongDateFormat,
   momentiseDateStr
@@ -10,7 +10,7 @@ import {
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
@@ -169,7 +169,7 @@ class ReasonPicker extends React.Component<
               />
             </div>
             <div>
-              {isInAccountOverviewTest() ? (
+              {useContext(IsInAccountOverviewContext) ? (
                 <LinkButton
                   to={"/"}
                   text={"Return to your account"}
@@ -198,9 +198,11 @@ class ReasonPicker extends React.Component<
           <WizardStep
             routeableStepProps={this.props}
             hideBackButton
-            {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+            {...(useContext(IsInAccountOverviewContext)
+              ? { fullWidth: true }
+              : {})}
           >
-            {isInAccountOverviewTest() ? (
+            {useContext(IsInAccountOverviewContext) ? (
               <>
                 <PageHeaderContainer
                   title={`Cancel ${this.props.productType.friendlyName}`}
@@ -261,7 +263,7 @@ export const CancellationFlow = (
     {...props}
     headingPrefix="Cancel"
     hideHeading
-    {...(isInAccountOverviewTest()
+    {...(useContext(IsInAccountOverviewContext)
       ? {
           hasLeftNav: {
             pageTitle: "Manage contribution",

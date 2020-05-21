@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React from "react";
+import React, { useContext } from "react";
 import {
   augmentInterval,
   formatDate,
@@ -16,7 +16,7 @@ import {
   createProductDetailFetcher,
   ProductType
 } from "../../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
@@ -122,7 +122,7 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      {isInAccountOverviewTest() ? (
+      {useContext(IsInAccountOverviewContext) ? (
         <LinkButton
           to={"/"}
           text={"Return to your account"}
@@ -185,9 +185,11 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   <SpreadTheWordFooter key="share" />
                 ]}
                 hideBackButton
-                {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+                {...(useContext(IsInAccountOverviewContext)
+                  ? { fullWidth: true }
+                  : {})}
               >
-                {isInAccountOverviewTest() ? (
+                {useContext(IsInAccountOverviewContext) ? (
                   <>
                     <PageHeaderContainer title="Manage payment method" />
                     <PageNavAndContentContainer

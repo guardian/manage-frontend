@@ -19,6 +19,7 @@ import {
   hasProductPageProperties,
   ProductTypeWithMapGroupedToSpecific
 } from "../../shared/productTypes";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
@@ -35,7 +36,8 @@ import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import {
   ReturnToYourProductButton,
-  RouteableStepProps
+  RouteableStepProps,
+  visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 
 interface WithLeftNavProps {
@@ -242,11 +244,19 @@ const getProductDetailSelector = (
     }
   }
   return (
-    <NoProduct
-      inTab={false}
-      supportRefererSuffix={supportRefererSuffix}
-      productType={props.productType}
-    />
+    <IsInAccountOverviewContext.Consumer>
+      {isInAccountOverviewTest =>
+        isInAccountOverviewTest ? (
+          visuallyNavigateToParent(props)
+        ) : (
+          <NoProduct
+            inTab={false}
+            supportRefererSuffix={supportRefererSuffix}
+            productType={props.productType}
+          />
+        )
+      }
+    </IsInAccountOverviewContext.Consumer>
   );
 };
 

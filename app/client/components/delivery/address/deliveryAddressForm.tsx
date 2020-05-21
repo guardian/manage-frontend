@@ -7,6 +7,7 @@ import React, {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useContext,
   useState
 } from "react";
 import {
@@ -32,7 +33,7 @@ import { palette } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -305,7 +306,7 @@ const FormContainer = (props: FormContainerProps) => {
             >
               <PageHeaderContainer
                 breadcrumbs={
-                  isInAccountOverviewTest()
+                  useContext(IsInAccountOverviewContext)
                     ? [
                         {
                           title: navLinks.accountOverview.title,
@@ -342,7 +343,7 @@ const FormContainer = (props: FormContainerProps) => {
               />
               <PageNavAndContentContainer
                 selectedNavItem={
-                  isInAccountOverviewTest()
+                  useContext(IsInAccountOverviewContext)
                     ? navLinks.accountOverview
                     : navLinks.subscriptions
                 }
@@ -734,7 +735,7 @@ const Form = (props: FormProps) => {
           <Button type="submit">Review details</Button>
           <Link
             to={
-              isInAccountOverviewTest()
+              useContext(IsInAccountOverviewContext)
                 ? navLinks.accountOverview.link
                 : navLinks.subscriptions.link
             }
@@ -831,6 +832,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
           />
         );
       }}
+      allowCancelledSubscription
     />
   );
 };

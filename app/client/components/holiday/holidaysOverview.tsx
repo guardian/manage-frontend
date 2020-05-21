@@ -1,5 +1,5 @@
 import { navigate } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import {
   friendlyLongDateFormat,
   momentiseDateStr
@@ -15,7 +15,7 @@ import {
   ProductTypeWithHolidayStopsFlow,
   WithProductType
 } from "../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -296,9 +296,9 @@ const renderHolidayStopsOverview = (
         <WizardStep
           routeableStepProps={props}
           hideBackButton
-          fullWidth={isInAccountOverviewTest() || undefined}
+          fullWidth={useContext(IsInAccountOverviewContext) || undefined}
         >
-          {isInAccountOverviewTest() ? (
+          {useContext(IsInAccountOverviewContext) ? (
             <>
               <PageHeaderContainer
                 title="Manage suspensions"
@@ -355,7 +355,7 @@ export class HolidaysOverview extends React.Component<
       {...this.props}
       headingPrefix="Manage suspensions of"
       hideHeading
-      {...(isInAccountOverviewTest()
+      {...(useContext(IsInAccountOverviewContext)
         ? {
             hasLeftNav: {
               pageTitle: "Manage suspensions",

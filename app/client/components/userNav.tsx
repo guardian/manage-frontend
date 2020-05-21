@@ -1,8 +1,8 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { expanderButtonCss } from "../expanderButton";
 import { minWidth } from "../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../styles/grid";
@@ -135,7 +135,7 @@ export const UserNav = () => {
   const userNavItems: UserNavItem[] = [
     {
       title: "Account overview",
-      link: "/account-overview",
+      link: "/",
       hideAtDesktop: true
     },
     {
@@ -282,7 +282,7 @@ export const UserNav = () => {
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
         {userNavItems
           .filter(
-            isInAccountOverviewTest()
+            useContext(IsInAccountOverviewContext)
               ? accountOverviewActiveFilter
               : accountOverviewInactiveFilter
           )

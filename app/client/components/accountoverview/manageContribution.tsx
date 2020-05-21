@@ -5,8 +5,9 @@ import { Link } from "@reach/router";
 import React, { useState } from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
+  augmentInterval,
   getMainPlan,
-  PaidSubscriptionPlan,
+  isPaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
@@ -25,7 +26,7 @@ import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
 export const ManageContribution = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
     {...props}
-    headingPrefix={"Manage contribution"}
+    headingPrefix={"Manage"}
     hideHeading
     hasLeftNav={{
       pageTitle: "Manage contribution",
@@ -75,9 +76,9 @@ const SingleProductDetailRenderer = ({
     routeableStepProps.productType.mapGroupedToSpecific?.(productDetail) ||
     routeableStepProps.productType;
 
-  const mainPlan = getMainPlan(
-    productDetail.subscription
-  ) as PaidSubscriptionPlan;
+  const mainPlan = getMainPlan(productDetail.subscription);
+
+  const hasCancellationPending = productDetail.subscription.cancelledAt;
 
   return (
     <>
@@ -110,20 +111,24 @@ const SingleProductDetailRenderer = ({
             `}
           />
         )}
-        <h2
-          css={css`
-            ${subHeadingCss}
-          `}
-        >
-          Contribution details
-        </h2>
-        <ContributionUpdateAmountForm
-          subscriptionId={productDetail.subscription.subscriptionId}
-          mainPlan={mainPlan}
-          productType={productType}
-          nextPaymentDate={productDetail.subscription.nextPaymentDate}
-          amountUpdateStateChange={setNewContributionAmount}
-        />
+        {isPaidSubscriptionPlan(mainPlan) && (
+          <>
+            <h2
+              css={css`
+                ${subHeadingCss}
+              `}
+            >
+              Contribution details
+            </h2>
+            <ContributionUpdateAmountForm
+              subscriptionId={productDetail.subscription.subscriptionId}
+              mainPlan={mainPlan}
+              productType={productType}
+              nextPaymentDate={productDetail.subscription.nextPaymentDate}
+              amountUpdateStateChange={setNewContributionAmount}
+            />
+          </>
+        )}
         <h2
           css={css`
             ${subHeadingCss}
@@ -135,15 +140,20 @@ const SingleProductDetailRenderer = ({
           borderColour={palette.neutral[86]}
           alternateRowBgColors
           content={[
-            {
-              title: "Next payment",
-              ...(productDetail.subscription.nextPaymentDate &&
-                productDetail.subscription.autoRenew && {
-                  value: `${mainPlan.currency}${(
-                    updatedContributionAmount || mainPlan.amount / 100.0
-                  ).toFixed(2)}${" "}${mainPlan.currencyISO}`
-                })
-            },
+            ...(isPaidSubscriptionPlan(mainPlan) &&
+            productDetail.subscription.autoRenew &&
+            !hasCancellationPending
+              ? [
+                  {
+                    title: `Next ${augmentInterval(mainPlan.interval)} payment`,
+                    value: `${mainPlan.currency}${(
+                      updatedContributionAmount ||
+                      (productDetail.subscription.nextPaymentPrice ||
+                        mainPlan.amount) / 100.0
+                    ).toFixed(2)}${" "}${mainPlan.currencyISO}`
+                  }
+                ]
+              : []),
             {
               title: "Next payment date",
               ...(productDetail.subscription.nextPaymentDate &&
@@ -155,17 +165,19 @@ const SingleProductDetailRenderer = ({
             },
             {
               title: "Payment method",
-              value: (
+              value: productDetail.isPaidTier ? (
                 <>
                   {productDetail.subscription.card && (
                     <CardDisplay
                       margin="0"
+                      inErrorState={!!productDetail.alertText}
                       {...productDetail.subscription.card}
                     />
                   )}
                   {productDetail.subscription.payPalEmail && <PaypalLogo />}
                   {productDetail.subscription.mandate && (
                     <DirectDebitDisplay
+                      inErrorState={!!productDetail.alertText}
                       {...productDetail.subscription.mandate}
                     />
                   )}
@@ -174,6 +186,8 @@ const SingleProductDetailRenderer = ({
                     <span>No Payment Method</span>
                   )}
                 </>
+              ) : (
+                <span>FREE</span>
               )
             },
             {
@@ -188,16 +202,26 @@ const SingleProductDetailRenderer = ({
             }
           ]}
         />
-        <LinkButton
-          colour={palette.brand[800]}
-          textColour={palette.brand[400]}
-          fontWeight="bold"
-          text="Update payment method"
-          to={`/payment/${productType.urlPart}`}
-          state={productDetail}
-        />
-        <Link
-          css={css`
+        {productDetail.isPaidTier && (
+          <LinkButton
+            colour={
+              productDetail.alertText ? palette.brand[400] : palette.brand[800]
+            }
+            textColour={
+              productDetail.alertText
+                ? palette.neutral[100]
+                : palette.brand[400]
+            }
+            fontWeight={"bold"}
+            {...(productDetail.alertText ? { alert: true } : {})}
+            text="Update payment method"
+            to={`/payment/${productType.urlPart}`}
+            state={productDetail}
+          />
+        )}
+        {productType.cancellation && !hasCancellationPending && (
+          <Link
+            css={css`
                     display: block;
                     float: right;
                     margin: ${space[24]}px 0 0 auto;
@@ -209,11 +233,12 @@ const SingleProductDetailRenderer = ({
                       borderBottom: 1px solid ${palette.brand["400"]};
                     }
                   `}
-          to={"/cancel/" + productType.urlPart}
-          state={productDetail}
-        >
-          Cancel contribution
-        </Link>
+            to={"/cancel/" + productType.urlPart}
+            state={productDetail}
+          >
+            Cancel contribution
+          </Link>
+        )}
       </PageNavAndContentContainer>
     </>
   );

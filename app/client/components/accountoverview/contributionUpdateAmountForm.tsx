@@ -2,9 +2,13 @@ import { css, SerializedStyles } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { InlineError } from "@guardian/src-inline-error";
+import { capitalize } from "lodash";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatDateStr } from "../../../shared/dates";
-import { PaidSubscriptionPlan } from "../../../shared/productResponse";
+import {
+  augmentInterval,
+  PaidSubscriptionPlan
+} from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
@@ -39,6 +43,7 @@ interface ContributionAmountsLookup {
 
 class UpdateAmountLoader extends AsyncLoader<string> {}
 
+// TODO: make this dynamic (i.e. looks up api/config file agreed/shared by contributions team)
 const contributionAmountsLookup: ContributionAmountsLookup = {
   GBP: {
     month: {
@@ -62,7 +67,7 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
       maxAmount: 800
     },
     year: {
-      amounts: [2, 5, 10],
+      amounts: [50, 100, 250, 500],
       otherDefaultAmount: 20,
       minAmount: 10,
       maxAmount: 10000
@@ -143,10 +148,11 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
 export const ContributionUpdateAmountForm = (
   props: ContributionUpdateAmountForm
 ) => {
-  const currentContributionOptions =
-    contributionAmountsLookup[props.mainPlan.currencyISO][
-      props.mainPlan.interval as ContributionInterval
-    ];
+  const currentContributionOptions = (contributionAmountsLookup[
+    props.mainPlan.currencyISO
+  ] || contributionAmountsLookup.international)[
+    props.mainPlan.interval as ContributionInterval
+  ];
 
   const [otherAmount, setOtherAmount] = useState<string | number>(
     currentContributionOptions.otherDefaultAmount
@@ -311,7 +317,7 @@ export const ContributionUpdateAmountForm = (
       <>
         <SuccessMessage
           message={`We have successfully updated the amount of your contribution. ${props.nextPaymentDate &&
-            `This amount will be taken out on ${formatDateStr(
+            `This amount will be taken on ${formatDateStr(
               props.nextPaymentDate
             )}. `}Thank you for supporting the Guardian.`}
           additionalCss={css`
@@ -322,8 +328,12 @@ export const ContributionUpdateAmountForm = (
           borderColour={palette.neutral[86]}
           content={[
             {
-              title: "Current amount",
-              value: `${props.mainPlan.currency}${pendingAmount.toFixed(2)}`
+              title: `${capitalize(
+                augmentInterval(props.mainPlan.interval)
+              )} amount`,
+              value: `${props.mainPlan.currency}${pendingAmount.toFixed(2)} ${
+                props.mainPlan.currencyISO
+              }`
             }
           ]}
         />
@@ -368,7 +378,7 @@ export const ContributionUpdateAmountForm = (
                 display: inline-block;
               `}
             >
-              Current amount
+              {capitalize(augmentInterval(props.mainPlan.interval))} amount
             </dt>
             <dd
               css={css`
@@ -376,7 +386,7 @@ export const ContributionUpdateAmountForm = (
               `}
             >{`${props.mainPlan.currency}${(
               confirmedAmount || props.mainPlan.amount / 100
-            ).toFixed(2)}`}</dd>
+            ).toFixed(2)} ${props.mainPlan.currencyISO}`}</dd>
           </dl>
           <div
             css={css`
@@ -425,29 +435,31 @@ export const ContributionUpdateAmountForm = (
               />
               <label htmlFor="amount-other">Other</label>
             </div>
-            <div
-              css={css`
-                margin-top: ${space[3]}px;
-              `}
-            >
-              <Input
-                type="number"
-                min={`${currentContributionOptions.minAmount}`}
-                step="1.00"
-                label="Other amount"
-                prefixValue={props.mainPlan.currency}
-                width={30}
-                value={otherAmount}
-                changeSetState={setOtherAmount}
-                onFocus={otherAmountOnFocus}
-                setFocus={isOtherAmountSelected}
-                inErrorState={
-                  inValidationErrorState &&
-                  (!!selectedValue || (isOtherAmountSelected && !otherAmount))
-                }
-                errorMessage={validationErrorMessage}
-              />
-            </div>
+            {isOtherAmountSelected && (
+              <div
+                css={css`
+                  margin-top: ${space[3]}px;
+                `}
+              >
+                <Input
+                  type="number"
+                  min={`${currentContributionOptions.minAmount}`}
+                  step="1.00"
+                  label="Other amount"
+                  prefixValue={props.mainPlan.currency}
+                  width={30}
+                  value={otherAmount}
+                  changeSetState={setOtherAmount}
+                  onFocus={otherAmountOnFocus}
+                  setFocus={isOtherAmountSelected}
+                  inErrorState={
+                    inValidationErrorState &&
+                    (!!selectedValue || (isOtherAmountSelected && !otherAmount))
+                  }
+                  errorMessage={validationErrorMessage}
+                />
+              </div>
+            )}
           </div>
         </div>
         <Button
@@ -475,10 +487,12 @@ export const ContributionUpdateAmountForm = (
         borderColour={palette.neutral[86]}
         content={[
           {
-            title: "Current amount",
+            title: `${capitalize(
+              augmentInterval(props.mainPlan.interval)
+            )} amount`,
             value: `${props.mainPlan.currency}${(
               props.mainPlan.amount / 100
-            ).toFixed(2)}`
+            ).toFixed(2)} ${props.mainPlan.currencyISO}`
           }
         ]}
       />

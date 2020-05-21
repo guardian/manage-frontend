@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
@@ -36,7 +36,8 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
+import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
@@ -61,7 +62,7 @@ const User = () => (
     <Global styles={css(`${fonts}`)} />
 
     <Router>
-      {isInAccountOverviewTest() ? (
+      {useContext(IsInAccountOverviewContext) ? (
         <AccountOverview path="/" />
       ) : (
         <RedirectOnMeResponse path="/" />
@@ -70,7 +71,7 @@ const User = () => (
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)
         .map((productType: ProductTypeWithProductPageProperties) =>
-          isInAccountOverviewTest() ? (
+          useContext(IsInAccountOverviewContext) ? (
             <productType.productPage.manageComponent
               key={productType.urlPart}
               path={"/" + productType.urlPart}
@@ -214,17 +215,20 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string) => (
-  <>
+export const ServerUser = (url: string, isInAccountOverviewTest: boolean) => (
+  <IsInAccountOverviewContext.Provider value={isInAccountOverviewTest}>
     <ServerLocation url={url}>
       <User />
     </ServerLocation>
-  </>
+  </IsInAccountOverviewContext.Provider>
 );
 
+const globals = typeof window !== "undefined" ? window.guardian : undefined;
 export const BrowserUser = (
-  <>
+  <IsInAccountOverviewContext.Provider
+    value={isIdentityInAccountOverviewTest(globals?.identityDetails?.userId)}
+  >
     <AnalyticsTracker />
     <User />
-  </>
+  </IsInAccountOverviewContext.Provider>
 );

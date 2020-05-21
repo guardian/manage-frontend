@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { navigate } from "@reach/router";
-import React, { ChangeEvent, ReactNode } from "react";
+import React, { ChangeEvent, ReactNode, useContext } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
@@ -11,7 +11,7 @@ import {
   ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
@@ -363,9 +363,11 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                 <WizardStep
                   routeableStepProps={props}
                   hideBackButton
-                  {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+                  {...(useContext(IsInAccountOverviewContext)
+                    ? { fullWidth: true }
+                    : {})}
                 >
-                  {isInAccountOverviewTest() ? (
+                  {useContext(IsInAccountOverviewContext) ? (
                     <>
                       <PageHeaderContainer
                         title={`Cancel ${props.productType.friendlyName}`}

@@ -1,11 +1,15 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
-import { headline } from "@guardian/src-foundations/typography";
+import { palette, space } from "@guardian/src-foundations";
+import { headline, textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
+  augmentInterval,
+  getFuturePlanIfVisible,
   getMainPlan,
-  PaidSubscriptionPlan,
+  isPaidSubscriptionPlan,
+  isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductTypes } from "../../../shared/productTypes";
@@ -20,6 +24,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
+import { ErrorIcon } from "../svgs/errorIcon";
 import { RouteableStepProps } from "../wizardRouterAdapter";
 
 export const ManageSubscription = (props: RouteableStepProps) => {
@@ -37,7 +42,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
   return (
     <FlowStartMultipleProductDetailHandler
       {...props}
-      headingPrefix={"Manage subscription"}
+      headingPrefix={"Manage"}
       hideHeading
       hasLeftNav={{
         pageTitle: "Delivery history",
@@ -52,15 +57,17 @@ export const ManageSubscription = (props: RouteableStepProps) => {
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail
       ) => {
-        const mainPlan = getMainPlan(
-          productDetail.subscription
-        ) as PaidSubscriptionPlan;
+        const mainPlan = getMainPlan(productDetail.subscription);
+
+        const futurePlan = getFuturePlanIfVisible(productDetail.subscription);
 
         const productType =
           ProductTypes.subscriptions.mapGroupedToSpecific?.(productDetail) ||
           props.productType;
         const productName =
           productType?.alternateTierValue || productDetail.tier;
+
+        const hasCancellationPending = productDetail.subscription.cancelledAt;
 
         return (
           <>
@@ -101,7 +108,31 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                 `}
               >
                 {productName}
+                {mainPlan.name &&
+                  !isSixForSix(mainPlan.name) &&
+                  ` - ${mainPlan.name}`}
               </h2>
+              {hasCancellationPending && (
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  <ErrorIcon fill={palette.brandYellow[200]} />
+                  <span
+                    css={css`
+                      margin-left: ${space[2]}px;
+                    `}
+                  >
+                    Your subscription has been <strong>cancelled</strong>. You
+                    are able to access your subscription until{" "}
+                    <strong>
+                      {formatDateStr(productDetail.subscription.end)}
+                    </strong>
+                  </span>
+                  .
+                </p>
+              )}
               <ProductDescriptionListTable
                 content={[
                   {
@@ -123,35 +154,59 @@ export const ManageSubscription = (props: RouteableStepProps) => {
               >
                 Payment
               </h2>
+              {isSixForSix(mainPlan.name) &&
+                isPaidSubscriptionPlan(mainPlan) &&
+                !hasCancellationPending && (
+                  <p
+                    css={css`
+                      ${textSans.medium()};
+                    `}
+                  >
+                    This subscription is still in the initial '6 issues for{" "}
+                    {mainPlan.currency}6' promotional period.
+                  </p>
+                )}
               <ProductDescriptionListTable
                 borderColour={palette.neutral[86]}
                 alternateRowBgColors
                 content={[
-                  {
-                    title: "Next payment",
-                    ...(productDetail.subscription.nextPaymentDate &&
-                      productDetail.subscription.autoRenew && {
-                        value: `${mainPlan.currency}${(
-                          mainPlan.amount / 100.0
-                        ).toFixed(2)}${" "}${mainPlan.currencyISO}`
-                      })
-                  },
-                  {
-                    title: "Next payment date",
-                    ...(productDetail.subscription.nextPaymentDate &&
-                      productDetail.subscription.autoRenew && {
-                        value: formatDateStr(
-                          productDetail.subscription.nextPaymentDate
-                        )
-                      })
-                  },
+                  ...(isPaidSubscriptionPlan(mainPlan) &&
+                  productDetail.subscription.autoRenew &&
+                  !hasCancellationPending
+                    ? [
+                        {
+                          title: `Next ${augmentInterval(
+                            productDetail.subscription.currentPlans.length !==
+                              0 && isSixForSix(mainPlan.name)
+                              ? futurePlan.interval
+                              : mainPlan.interval
+                          )} payment`,
+                          value: `${mainPlan.currency}${(
+                            (productDetail.subscription.nextPaymentPrice ||
+                              mainPlan.amount) / 100.0
+                          ).toFixed(2)}${" "}${mainPlan.currencyISO}`
+                        },
+                        {
+                          title: "Next payment date",
+                          ...(productDetail.subscription.nextPaymentDate && {
+                            value: formatDateStr(
+                              productDetail.subscription.currentPlans.length ===
+                                0
+                                ? mainPlan.start
+                                : productDetail.subscription.nextPaymentDate
+                            )
+                          })
+                        }
+                      ]
+                    : []),
                   {
                     title: "Payment method",
-                    value: (
+                    value: productDetail.isPaidTier ? (
                       <>
                         {productDetail.subscription.card && (
                           <CardDisplay
                             margin="0"
+                            inErrorState={!!productDetail.alertText}
                             {...productDetail.subscription.card}
                           />
                         )}
@@ -160,6 +215,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                         )}
                         {productDetail.subscription.mandate && (
                           <DirectDebitDisplay
+                            inErrorState={!!productDetail.alertText}
                             {...productDetail.subscription.mandate}
                           />
                         )}
@@ -168,6 +224,8 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                           <span>No Payment Method</span>
                         )}
                       </>
+                    ) : (
+                      <span>FREE</span>
                     )
                   },
                   {
@@ -184,14 +242,25 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   }
                 ]}
               />
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Update payment method"
-                to={`/payment/${productType.urlPart}`}
-                state={productDetail}
-              />
+              {productDetail.isPaidTier && (
+                <LinkButton
+                  colour={
+                    productDetail.alertText
+                      ? palette.brand[400]
+                      : palette.brand[800]
+                  }
+                  textColour={
+                    productDetail.alertText
+                      ? palette.neutral[100]
+                      : palette.brand[400]
+                  }
+                  fontWeight={"bold"}
+                  {...(productDetail.alertText ? { alert: true } : {})}
+                  text="Update payment method"
+                  to={`/payment/${productType.urlPart}`}
+                  state={productDetail}
+                />
+              )}
               <h2
                 css={css`
                   ${subHeadingCss}
@@ -238,26 +307,50 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                 to={`/delivery/${productType.urlPart}/records`}
                 state={productDetail}
               />
-              <h2
-                css={css`
-                  ${subHeadingCss}
+              {!hasCancellationPending && (
+                <>
+                  <h2
+                    css={css`
+                      ${subHeadingCss}
+                    `}
+                  >
+                    Going on holiday?
+                  </h2>
+                  <p>
+                    Don’t fret - you can suspend up to 6 issues per year with a
+                    notice period. You will be credited for a suspended issue on
+                    the first bill after the suspension date.
+                  </p>
+                  <LinkButton
+                    colour={palette.brand[800]}
+                    textColour={palette.brand[400]}
+                    fontWeight="bold"
+                    text="Manage suspensions"
+                    to={`/suspend/${productType.urlPart}`}
+                    state={productDetail}
+                  />
+                </>
+              )}
+              {productType.cancellation && !hasCancellationPending && (
+                <Link
+                  css={css`
+                  display: block;
+                  float: right;
+                  margin: ${space[24]}px 0 0 auto;
+                  ${textSans.medium()}
+                  color: ${palette.brand["500"]};
+                  border-bottom: 1px solid ${palette.neutral["100"]};
+                  transition: border-color .15s ease-out;
+                  :hover: {
+                    borderBottom: 1px solid ${palette.brand["400"]};
+                  }
                 `}
-              >
-                Going on holiday?
-              </h2>
-              <p>
-                Don’t fret - you can suspend up to 6 issues per year with a
-                notice period. You will be credited for a suspended issue on the
-                first bill after the suspension date.
-              </p>
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Manage suspensions"
-                to={`/suspend/${productType.urlPart}`}
-                state={productDetail}
-              />
+                  to={"/cancel/" + productType.urlPart}
+                  state={productDetail}
+                >
+                  Cancel subscription
+                </Link>
+              )}
             </PageNavAndContentContainer>
           </>
         );

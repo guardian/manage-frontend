@@ -4,19 +4,21 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
+  augmentInterval,
+  getFuturePlanIfVisible,
   getMainPlan,
   isGift,
-  PaidSubscriptionPlan,
+  isPaidSubscriptionPlan,
+  isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
-import { minWidth } from "../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
-import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 
@@ -33,9 +35,9 @@ export const Product = (props: ProductProps) => {
   const productName =
     props.specificProductType.alternateTierValue || props.productDetail.tier;
 
-  const mainPlan = getMainPlan(
-    props.productDetail.subscription
-  ) as PaidSubscriptionPlan;
+  const mainPlan = getMainPlan(props.productDetail.subscription);
+
+  const futurePlan = getFuturePlanIfVisible(props.productDetail.subscription);
 
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
@@ -96,7 +98,9 @@ export const Product = (props: ProductProps) => {
         {props.productCategory === "subscription" && (
           <>
             {productName}
-            {mainPlan.name && ` - ${mainPlan.name}`}
+            {mainPlan.name &&
+              !isSixForSix(mainPlan.name) &&
+              ` - ${mainPlan.name}`}
           </>
         )}
         {props.productCategory === "membership" && (
@@ -111,45 +115,60 @@ export const Product = (props: ProductProps) => {
             {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
           </>
         )}
-        {hasCancellationPending ? (
-          <i
-            css={css`
-              position: absolute;
-              right: 0;
-              top: 50%;
-              transform: translateY(-50%);
-            `}
-          >
-            <ErrorIcon
-              {...(hasCancellationPending
-                ? { fill: palette.brandYellow[200] }
-                : {})}
-            />
-            <span
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                margin: 0 ${space[3]}px 0 ${space[2]}px;
-                font-style: normal;
-              `}
-            >
-              {hasCancellationPending && "Cancelled"}
-            </span>
-          </i>
-        ) : (
-          isGift(props.productDetail.subscription) && (
+
+        <div
+          css={css`
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+          `}
+        >
+          {hasCancellationPending && (
+            <i>
+              <ErrorIcon fill={palette.brandYellow[200]} />
+              <span
+                css={css`
+                  ${textSans.medium({ fontWeight: "bold" })};
+                  margin: 0 ${space[3]}px 0 ${space[2]}px;
+                  font-style: normal;
+                `}
+              >
+                Cancelled
+              </span>
+            </i>
+          )}
+          {isGift(props.productDetail.subscription) && (
             <i
-              css={css`
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-              `}
+              css={
+                hasCancellationPending &&
+                css`
+                  ${maxWidth.mobileLandscape} {
+                    display: none; // TODO: find a way to include both cancelation and gift display on mobile
+                  }
+                `
+              }
             >
               <GiftIcon alignArrowToThisSide={"left"} />
             </i>
-          )
-        )}
+          )}
+        </div>
       </h2>
+      {isSixForSix(mainPlan.name) &&
+        isPaidSubscriptionPlan(mainPlan) &&
+        !hasCancellationPending && (
+          <p
+            css={css`
+              ${textSans.medium()};
+              padding: 20px 20px 0;
+              margin: 0;
+            `}
+          >
+            This subscription is still in the initial '6 issues for{" "}
+            {mainPlan.currency}6' promotional period.
+          </p>
+        )}
       {hasCancellationPending &&
         props.productDetail.subscription.end &&
         props.productCategory !== "contribution" && (
@@ -206,62 +225,51 @@ export const Product = (props: ProductProps) => {
               <li css={valueCss}>
                 {props.productCategory === "subscription" &&
                   props.productDetail.subscription.subscriptionId}
-                {props.productCategory === "membership" && productName}
-              </li>
-            </ul>
-          )}
-          {props.productCategory === "contribution" && (
-            <ul css={keyValuePairCss}>
-              <li css={keyCss}>Payment amount</li>
-              <li css={valueCss}>
-                {`${mainPlan.currency}${(mainPlan.amount / 100.0).toFixed(2)}`}
+                {props.productCategory === "membership" &&
+                  props.productDetail.tier}
               </li>
             </ul>
           )}
           {props.productDetail.subscription.start && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>Start date</li>
+              <li css={keyCss}>
+                {props.productCategory !== "membership" ? "Start " : "Join "}
+                date
+              </li>
               <li css={valueCss}>
-                {formatDateStr(props.productDetail.subscription.start)}
+                {formatDateStr(
+                  props.productCategory === "membership"
+                    ? props.productDetail.joinDate
+                    : props.productDetail.subscription.start
+                )}
               </li>
             </ul>
           )}
-          {hasCancellationPending && props.productDetail.subscription.end && (
-            <ul css={keyValuePairCss}>
-              <li css={keyCss}>End date</li>
-              <li css={valueCss}>
-                {formatDateStr(props.productDetail.subscription.end)}
-              </li>
-            </ul>
-          )}
+          {props.specificProductType.showTrialRemainingIfApplicable &&
+            props.productDetail.subscription.trialLength > 0 && (
+              <ul css={keyValuePairCss}>
+                <li css={keyCss}>Trial remaining</li>
+                <li css={valueCss}>
+                  {props.productDetail.subscription.trialLength} day
+                  {props.productDetail.subscription.trialLength !== 1
+                    ? "s"
+                    : ""}
+                </li>
+              </ul>
+            )}
           <div
             css={css`
               margin-top: auto;
             `}
           >
-            {hasCancellationPending &&
-            props.productCategory !== "contribution" ? (
-              <SupportTheGuardianButton
-                supportReferer={`${
-                  props.topLevelProductType.urlPart
-                }_${"subscription_product_page"}`}
-                urlSuffix={props.topLevelProductType.noProductSupportUrlSuffix}
-                notPrimary
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                withoutArrow
-              />
-            ) : (
-              <LinkButton
-                to={`/${props.topLevelProductType.urlPart}`}
-                text={`Manage ${props.productCategory}`}
-                state={props.productDetail}
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight={"bold"}
-              />
-            )}
+            <LinkButton
+              to={`/${props.topLevelProductType.urlPart}`}
+              text={`Manage ${props.productCategory}`}
+              state={props.productDetail}
+              colour={palette.brand[800]}
+              textColour={palette.brand[400]}
+              fontWeight={"bold"}
+            />
           </div>
         </div>
 
@@ -285,125 +293,46 @@ export const Product = (props: ProductProps) => {
             }
           `}
         >
-          {hasCancellationPending ? (
+          {isPaidSubscriptionPlan(mainPlan) &&
+            props.productDetail.subscription.autoRenew &&
+            !hasCancellationPending && (
+              <ul css={keyValuePairCss}>
+                <li css={keyCss}>{`Next ${augmentInterval(
+                  props.productDetail.subscription.currentPlans.length !== 0 &&
+                    isSixForSix(mainPlan.name)
+                    ? futurePlan.interval
+                    : mainPlan.interval
+                )} payment`}</li>
+                <li css={valueCss}>
+                  <span
+                    css={css`
+                      display: block;
+                    `}
+                  >
+                    {`${mainPlan.currency}${(
+                      (props.productDetail.subscription.nextPaymentPrice ||
+                        mainPlan.amount) / 100.0
+                    ).toFixed(2)} ${mainPlan.currencyISO}`}
+                  </span>
+                  <span
+                    css={css`
+                      display: block;
+                    `}
+                  >
+                    {props.productDetail.subscription.nextPaymentDate &&
+                      !hasPaymentFailure &&
+                      formatDateStr(
+                        props.productDetail.subscription.currentPlans.length ===
+                          0
+                          ? mainPlan.start
+                          : props.productDetail.subscription.nextPaymentDate
+                      )}
+                  </span>
+                </li>
+              </ul>
+            )}
+          {props.productDetail.isPaidTier ? (
             <>
-              {props.productDetail.subscription.nextPaymentPrice && (
-                <ul css={keyValuePairCss}>
-                  <li css={keyCss}>Last payment</li>
-                  <li css={valueCss}>
-                    <span
-                      css={css`
-                        display: block;
-                      `}
-                    >
-                      {props.productCategory !== "contribution" &&
-                        `${mainPlan.currency}${props.productDetail.subscription.nextPaymentPrice}`}
-                      {props.productCategory === "contribution" &&
-                      props.productDetail.subscription.nextPaymentDate
-                        ? formatDateStr(
-                            props.productDetail.subscription.nextPaymentDate
-                          )
-                        : "-"}
-                    </span>
-                    {props.productCategory !== "contribution" && (
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {props.productDetail.subscription.nextPaymentDate
-                          ? formatDateStr(
-                              props.productDetail.subscription.nextPaymentDate
-                            )
-                          : "-"}
-                      </span>
-                    )}
-                  </li>
-                </ul>
-              )}
-            </>
-          ) : (
-            <>
-              {props.productCategory === "subscription" &&
-                props.productDetail.subscription.nextPaymentDate &&
-                props.productDetail.subscription.nextPaymentPrice &&
-                props.productDetail.subscription.autoRenew &&
-                !hasPaymentFailure && (
-                  <ul css={keyValuePairCss}>
-                    <li css={keyCss}>Next payment</li>
-                    <li css={valueCss}>
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {`${mainPlan.currency}${(
-                          props.productDetail.subscription.nextPaymentPrice /
-                          100.0
-                        ).toFixed(2)}`}
-                      </span>
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {props.productDetail.subscription.nextPaymentDate
-                          ? formatDateStr(
-                              props.productDetail.subscription.nextPaymentDate
-                            )
-                          : "-"}
-                      </span>
-                    </li>
-                  </ul>
-                )}
-              {props.productCategory === "membership" &&
-                props.productDetail.subscription.nextPaymentPrice && (
-                  <ul css={keyValuePairCss}>
-                    <li css={keyCss}>Next payment</li>
-                    <li css={valueCss}>
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {`${mainPlan.currency}${(
-                          props.productDetail.subscription.nextPaymentPrice /
-                          100.0
-                        ).toFixed(2)}`}
-                      </span>
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {props.productDetail.subscription.nextPaymentDate
-                          ? formatDateStr(
-                              props.productDetail.subscription.nextPaymentDate
-                            )
-                          : "-"}
-                      </span>
-                    </li>
-                  </ul>
-                )}
-              {props.productCategory === "contribution" &&
-                props.productDetail.subscription.nextPaymentPrice && (
-                  <ul css={keyValuePairCss}>
-                    <li css={keyCss}>Next payment</li>
-                    <li css={valueCss}>
-                      <span
-                        css={css`
-                          display: block;
-                        `}
-                      >
-                        {props.productDetail.subscription.nextPaymentDate
-                          ? formatDateStr(
-                              props.productDetail.subscription.nextPaymentDate
-                            )
-                          : "-"}
-                      </span>
-                    </li>
-                  </ul>
-                )}
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment method</li>
                 <li css={valueCss}>
@@ -451,6 +380,11 @@ export const Product = (props: ProductProps) => {
                 />
               </div>
             </>
+          ) : (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Payment</li>
+              <li css={valueCss}>FREE</li>
+            </ul>
           )}
         </div>
       </div>

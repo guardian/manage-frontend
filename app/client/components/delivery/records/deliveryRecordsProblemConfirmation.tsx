@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
@@ -11,7 +11,7 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
@@ -110,7 +110,7 @@ const DeliveryRecordsProblemConfirmationFC = (
         selectedNavItem={navLinks.accountOverview}
         title="Delivery history"
         breadcrumbs={
-          isInAccountOverviewTest()
+          useContext(IsInAccountOverviewContext)
             ? [
                 {
                   title: navLinks.accountOverview.title,

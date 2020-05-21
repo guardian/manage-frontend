@@ -6,7 +6,7 @@ import { startCase } from "lodash";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import * as Raven from "raven-js";
-import React from "react";
+import React, { useContext } from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
   friendlyLongDateFormat,
@@ -17,7 +17,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import palette from "../../colours";
 import { maxWidth, minWidth, queries } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -211,11 +211,11 @@ export class HolidayDateChooser extends React.Component<
                     <WizardStep
                       routeableStepProps={this.props}
                       hideBackButton
-                      {...(isInAccountOverviewTest()
+                      {...(useContext(IsInAccountOverviewContext)
                         ? { fullWidth: true }
                         : {})}
                     >
-                      {isInAccountOverviewTest() ? (
+                      {useContext(IsInAccountOverviewContext) ? (
                         <>
                           <PageHeaderContainer
                             title="Manage suspensions"

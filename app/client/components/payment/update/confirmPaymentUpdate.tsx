@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import Raven from "raven-js";
-import React from "react";
+import React, { useContext } from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -11,7 +11,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
@@ -199,9 +199,11 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
                 hideBackButton
-                {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+                {...(useContext(IsInAccountOverviewContext)
+                  ? { fullWidth: true }
+                  : {})}
               >
-                {isInAccountOverviewTest() ? (
+                {useContext(IsInAccountOverviewContext) ? (
                   <>
                     <PageHeaderContainer
                       title="Manage payment method"

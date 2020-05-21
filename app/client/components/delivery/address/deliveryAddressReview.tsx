@@ -4,7 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import React, { useContext, useState } from "react";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { navLinks } from "../../nav";
@@ -92,7 +92,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           </span>
         }
         breadcrumbs={
-          isInAccountOverviewTest()
+          useContext(IsInAccountOverviewContext)
             ? [
                 {
                   title: navLinks.accountOverview.title,
@@ -108,7 +108,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
       />
       <PageNavAndContentContainer
         selectedNavItem={
-          isInAccountOverviewTest()
+          useContext(IsInAccountOverviewContext)
             ? navLinks.accountOverview
             : navLinks.subscriptions
         }

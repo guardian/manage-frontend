@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import { conf } from "../../server/config";
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { AccountOverviewIcon } from "./svgs/accountOverviewIcon";
@@ -170,7 +170,7 @@ export const Nav = (props: NavProps) => (
   <ul role="tablist" css={navCss}>
     {Object.values(navLinks)
       .filter(
-        isInAccountOverviewTest()
+        useContext(IsInAccountOverviewContext)
           ? accountOverviewActiveFilter
           : accountOverviewInactiveFilter
       )
@@ -184,7 +184,7 @@ export const Nav = (props: NavProps) => (
               css={navLinkCss(props.selectedNavItem === navItem)}
               to={navItem.link}
             >
-              {navItem.icon && isInAccountOverviewTest() && (
+              {navItem.icon && useContext(IsInAccountOverviewContext) && (
                 <i
                   css={css`
                     display: inline-block;

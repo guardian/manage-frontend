@@ -1,8 +1,8 @@
 import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer, PageContainerSection } from "./page";
@@ -68,10 +68,18 @@ export const ReturnToYourProductButton = (
   props: WithProductType<ProductType>
 ) => (
   <LinkButton
-    to={isInAccountOverviewTest() ? "/" : `/${props.productType.urlPart}`}
+    to={
+      useContext(IsInAccountOverviewContext)
+        ? "/"
+        : `/${props.productType.urlPart}`
+    }
     text={"Return to your account"}
-    {...(isInAccountOverviewTest() ? { colour: palette.neutral[100] } : {})}
-    {...(isInAccountOverviewTest() ? { textColour: palette.neutral[0] } : {})}
+    {...(useContext(IsInAccountOverviewContext)
+      ? { colour: palette.neutral[100] }
+      : {})}
+    {...(useContext(IsInAccountOverviewContext)
+      ? { textColour: palette.neutral[0] }
+      : {})}
     hollow
     left
   />

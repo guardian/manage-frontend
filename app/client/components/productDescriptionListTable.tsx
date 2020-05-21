@@ -92,7 +92,9 @@ export const ProductDescriptionListTable = (
     min-width: 15ch;
     font-weight: bold;
     width:1%;
-    white-space:nowrap;
+    ${minWidth.tablet} {
+      white-space:nowrap;
+    }
     margin: 0;
     
 

@@ -8,7 +8,7 @@ import moment from "moment";
 import React, { useContext, useState } from "react";
 import { formatDateStr } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -188,7 +188,7 @@ const DeliveryRecordsProblemReviewFC = (
           <PageHeaderContainer
             title="Delivery history"
             breadcrumbs={
-              isInAccountOverviewTest()
+              useContext(IsInAccountOverviewContext)
                 ? [
                     {
                       title: navLinks.accountOverview.title,
@@ -204,7 +204,7 @@ const DeliveryRecordsProblemReviewFC = (
           />
           <PageNavAndContentContainer
             selectedNavItem={
-              isInAccountOverviewTest()
+              useContext(IsInAccountOverviewContext)
                 ? navLinks.accountOverview
                 : navLinks.subscriptions
             }

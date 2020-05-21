@@ -1,13 +1,13 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import React from "react";
+import React, { useContext } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { navLinks } from "../nav";
@@ -82,9 +82,11 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                   <WizardStep
                     routeableStepProps={props}
                     hideBackButton
-                    {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+                    {...(useContext(IsInAccountOverviewContext)
+                      ? { fullWidth: true }
+                      : {})}
                   >
-                    {isInAccountOverviewTest() ? (
+                    {useContext(IsInAccountOverviewContext) ? (
                       <>
                         <PageHeaderContainer
                           title="Manage suspensions"

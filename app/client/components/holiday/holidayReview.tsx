@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
-import React from "react";
+import React, { useContext } from "react";
 import { DATE_INPUT_FORMAT } from "../../../shared/dates";
 import {
   isProduct,
@@ -10,7 +10,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { Button, LinkButton } from "../buttons";
@@ -309,9 +309,11 @@ export class HolidayReview extends React.Component<
         <WizardStep
           routeableStepProps={this.props}
           hideBackButton
-          {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+          {...(useContext(IsInAccountOverviewContext)
+            ? { fullWidth: true }
+            : {})}
         >
-          {isInAccountOverviewTest() ? (
+          {useContext(IsInAccountOverviewContext) ? (
             <>
               <PageHeaderContainer
                 title="Manage suspensions"

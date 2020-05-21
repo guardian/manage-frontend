@@ -1,16 +1,16 @@
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import Raven from "raven-js";
-import React from "react";
+import React, { useContext } from "react";
 import {
   MembersDataApiItemContext,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
@@ -169,16 +169,18 @@ class PaymentUpdaterStep extends React.Component<
 
     const innerContent = () => (
       <>
-        <ProgressIndicator
-          steps={[
-            { title: "New details", isCurrentStep: true },
-            { title: "Review" },
-            { title: "Confirmation" }
-          ]}
-          additionalCSS={css`
-            margin: ${space[5]}px 0 ${space[12]}px;
-          `}
-        />
+        {this.state.selectedPaymentMethod !== PaymentMethod.payPal && (
+          <ProgressIndicator
+            steps={[
+              { title: "New details", isCurrentStep: true },
+              { title: "Review" },
+              { title: "Confirmation" }
+            ]}
+            additionalCSS={css`
+              margin: ${space[5]}px 0 ${space[12]}px;
+            `}
+          />
+        )}
         <h2
           css={css`
             ${subHeadingCss}
@@ -207,7 +209,7 @@ class PaymentUpdaterStep extends React.Component<
           this.props.productDetail.isTestUser
         )}
         <div css={{ height: "10px" }} />
-        {isInAccountOverviewTest() ? (
+        {useContext(IsInAccountOverviewContext) ? (
           <LinkButton
             to={"/"}
             text={"Return to your account"}
@@ -239,9 +241,11 @@ class PaymentUpdaterStep extends React.Component<
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
               hideBackButton
-              {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+              {...(useContext(IsInAccountOverviewContext)
+                ? { fullWidth: true }
+                : {})}
             >
-              {isInAccountOverviewTest() ? (
+              {useContext(IsInAccountOverviewContext) ? (
                 <>
                   <PageHeaderContainer
                     title="Manage payment method"
@@ -360,5 +364,6 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
         productDetail={productDetail}
       />
     )}
+    allowCancelledSubscription
   />
 );

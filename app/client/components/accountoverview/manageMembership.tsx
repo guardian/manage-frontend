@@ -8,12 +8,11 @@ import { formatDateStr } from "../../../shared/dates";
 import {
   augmentInterval,
   getMainPlan,
-  PaidSubscriptionPlan,
+  isPaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
-import { isCancelled } from "../cancel/cancellationSummary";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
@@ -22,7 +21,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PaypalLogo } from "../payment/paypalLogo";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
-import { SupportTheGuardianButton } from "../supportTheGuardianButton";
+import { ErrorIcon } from "../svgs/errorIcon";
 import { RouteableStepProps } from "../wizardRouterAdapter";
 
 export const ManageMembership = (props: RouteableStepProps) => {
@@ -40,7 +39,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
   return (
     <FlowStartMultipleProductDetailHandler
       {...props}
-      headingPrefix={"Manage contribution"}
+      headingPrefix={"Manage"}
       hideHeading
       hasLeftNav={{
         pageTitle: "Manage contribution",
@@ -58,11 +57,9 @@ export const ManageMembership = (props: RouteableStepProps) => {
         const membershipTier =
           props.productType.alternateTierValue || productDetail.tier;
 
-        const mainPlan = getMainPlan(
-          productDetail.subscription
-        ) as PaidSubscriptionPlan;
+        const mainPlan = getMainPlan(productDetail.subscription);
 
-        const mainPlanInterval = augmentInterval(mainPlan.interval);
+        const hasCancellationPending = productDetail.subscription.cancelledAt;
 
         return (
           <>
@@ -104,6 +101,27 @@ export const ManageMembership = (props: RouteableStepProps) => {
               >
                 Membership details
               </h2>
+              {hasCancellationPending && (
+                <p
+                  css={css`
+                    ${textSans.medium()};
+                  `}
+                >
+                  <ErrorIcon fill={palette.brandYellow[200]} />
+                  <span
+                    css={css`
+                      margin-left: ${space[2]}px;
+                    `}
+                  >
+                    Your membership has been <strong>cancelled</strong>. You
+                    will receive the benefits of your membership until{" "}
+                    <strong>
+                      {formatDateStr(productDetail.subscription.end)}
+                    </strong>
+                  </span>
+                  .
+                </p>
+              )}
               <ProductDescriptionListTable
                 content={[
                   {
@@ -134,15 +152,21 @@ export const ManageMembership = (props: RouteableStepProps) => {
                 borderColour={palette.neutral[86]}
                 alternateRowBgColors
                 content={[
-                  {
-                    title: `Next ${mainPlanInterval} payment`,
-                    ...(productDetail.subscription.nextPaymentDate &&
-                      productDetail.subscription.autoRenew && {
-                        value: `${mainPlan.currency}${(
-                          mainPlan.amount / 100.0
-                        ).toFixed(2)}${" "}${mainPlan.currencyISO}`
-                      })
-                  },
+                  ...(isPaidSubscriptionPlan(mainPlan) &&
+                  productDetail.subscription.autoRenew &&
+                  !hasCancellationPending
+                    ? [
+                        {
+                          title: `Next ${augmentInterval(
+                            mainPlan.interval
+                          )} payment`,
+                          value: `${mainPlan.currency}${(
+                            (productDetail.subscription.nextPaymentPrice ||
+                              mainPlan.amount) / 100.0
+                          ).toFixed(2)}${" "}${mainPlan.currencyISO}`
+                        }
+                      ]
+                    : []),
                   {
                     title: "Next payment date",
                     ...(productDetail.subscription.nextPaymentDate &&
@@ -153,12 +177,15 @@ export const ManageMembership = (props: RouteableStepProps) => {
                       })
                   },
                   {
-                    title: "Payment method",
-                    value: (
+                    title: `Payment${
+                      productDetail.isPaidTier ? " method" : ""
+                    }`,
+                    value: productDetail.isPaidTier ? (
                       <>
                         {productDetail.subscription.card && (
                           <CardDisplay
                             margin="0"
+                            inErrorState={!!productDetail.alertText}
                             {...productDetail.subscription.card}
                           />
                         )}
@@ -167,6 +194,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
                         )}
                         {productDetail.subscription.mandate && (
                           <DirectDebitDisplay
+                            inErrorState={!!productDetail.alertText}
                             {...productDetail.subscription.mandate}
                           />
                         )}
@@ -175,6 +203,8 @@ export const ManageMembership = (props: RouteableStepProps) => {
                           <span>No Payment Method</span>
                         )}
                       </>
+                    ) : (
+                      <span>FREE</span>
                     )
                   },
                   {
@@ -191,36 +221,26 @@ export const ManageMembership = (props: RouteableStepProps) => {
                   }
                 ]}
               />
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Update payment method"
-                to={`/payment/${props.productType.urlPart}`}
-                state={productDetail}
-              />
-              {isCancelled(productDetail.subscription) && (
-                <>
-                  <p
-                    css={css`
-                      ${textSans.medium()};
-                      margin: ${space["9"]}px 0;
-                      padding: 0;
-                    `}
-                  >
-                    We no longer have a membership programme but you can still
-                    continue to support The Guardian via a contribution or
-                    subscription.
-                  </p>
-                  <SupportTheGuardianButton
-                    supportReferer={props.productType.urlPart}
-                    textColour={palette.neutral[100]}
-                    colour={palette.brand[400]}
-                    notPrimary
-                  />
-                </>
+              {productDetail.isPaidTier && (
+                <LinkButton
+                  colour={
+                    productDetail.alertText
+                      ? palette.brand[400]
+                      : palette.brand[800]
+                  }
+                  textColour={
+                    productDetail.alertText
+                      ? palette.neutral[100]
+                      : palette.brand[400]
+                  }
+                  fontWeight={"bold"}
+                  {...(productDetail.alertText ? { alert: true } : {})}
+                  text="Update payment method"
+                  to={`/payment/${props.productType.urlPart}`}
+                  state={productDetail}
+                />
               )}
-              {!isCancelled(productDetail.subscription) && (
+              {props.productType.cancellation && !hasCancellationPending && (
                 <Link
                   css={css`
                     display: block;

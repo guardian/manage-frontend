@@ -1,13 +1,13 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
+import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -22,7 +22,7 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   WithProductType
 } from "../../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -314,7 +314,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           <PageHeaderContainer
             title="Delivery history"
             breadcrumbs={
-              isInAccountOverviewTest()
+              useContext(IsInAccountOverviewContext)
                 ? [
                     {
                       title: navLinks.accountOverview.title,
@@ -330,7 +330,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           />
           <PageNavAndContentContainer
             selectedNavItem={
-              isInAccountOverviewTest()
+              useContext(IsInAccountOverviewContext)
                 ? navLinks.accountOverview
                 : navLinks.subscriptions
             }

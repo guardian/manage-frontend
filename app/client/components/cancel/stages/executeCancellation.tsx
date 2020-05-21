@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import {
   isProduct,
   MembersDataApiItem,
@@ -12,7 +12,7 @@ import {
   ProductType,
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
-import { isInAccountOverviewTest } from "../../../accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
 import { LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -93,7 +93,7 @@ const getCancellationSummaryWithReturnButton = (
   <div>
     {body}
     <div css={{ height: "20px" }} />
-    {isInAccountOverviewTest() ? (
+    {useContext(IsInAccountOverviewContext) ? (
       <LinkButton
         to={"/"}
         text={"Return to your account"}
@@ -204,7 +204,7 @@ export const ExecuteCancellation = (
   <WizardStep
     routeableStepProps={props}
     hideBackButton
-    {...(isInAccountOverviewTest() ? { fullWidth: true } : {})}
+    {...(useContext(IsInAccountOverviewContext) ? { fullWidth: true } : {})}
   >
     <CancellationReasonContext.Consumer>
       {reason => (
@@ -212,7 +212,7 @@ export const ExecuteCancellation = (
           {caseId => (
             <MembersDataApiItemContext.Consumer>
               {productDetail =>
-                isInAccountOverviewTest() ? (
+                useContext(IsInAccountOverviewContext) ? (
                   <>
                     <PageHeaderContainer
                       title={`Cancel ${props.productType.friendlyName}`}
