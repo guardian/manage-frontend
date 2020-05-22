@@ -54,9 +54,12 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export const visuallyNavigateToParent = (props: RouteableStepProps) => {
+export const visuallyNavigateToParent = (
+  props: RouteableStepProps,
+  toRoot?: boolean
+) => {
   if (props.navigate) {
-    props.navigate("..", { replace: true }); // step back up a level
+    props.navigate(toRoot ? "/" : "..", { replace: true }); // step back up a level
     return null;
   }
   return (

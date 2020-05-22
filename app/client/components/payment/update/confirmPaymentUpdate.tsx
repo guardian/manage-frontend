@@ -152,39 +152,43 @@ class ExecutePaymentUpdate extends React.Component<
   };
 }
 
+interface InnerContentProps {
+  productDetail: ProductDetail;
+  newPaymentMethodDetail: NewPaymentMethodDetail;
+  routeableStepProps: RouteableStepProps;
+}
+const InnerContent = (props: InnerContentProps) => (
+  <>
+    <ProgressIndicator
+      steps={[
+        { title: "New details" },
+        { title: "Review", isCurrentStep: true },
+        { title: "Confirmation" }
+      ]}
+      additionalCSS={css`
+        margin: ${space[5]}px 0 ${space[12]}px;
+      `}
+    />
+    <h3>Please confirm your change from...</h3>
+    <CurrentPaymentDetails {...props.productDetail.subscription} />
+    <h3>...to...</h3>
+    {props.newPaymentMethodDetail.render()}
+    <div css={{ margin: "20px 0", textAlign: "right" }}>
+      {props.newPaymentMethodDetail.confirmButtonWrapper(
+        <div css={{ marginTop: "20px", textAlign: "right" }}>
+          <ExecutePaymentUpdate
+            {...props.routeableStepProps}
+            productDetail={props.productDetail}
+            newPaymentMethodDetail={props.newPaymentMethodDetail}
+          />
+        </div>
+      )}
+    </div>
+  </>
+);
+
 export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
-  const innerContent = (
-    productDetail: ProductDetail,
-    newPaymentMethodDetail: NewPaymentMethodDetail
-  ) => (
-    <>
-      <ProgressIndicator
-        steps={[
-          { title: "New details" },
-          { title: "Review", isCurrentStep: true },
-          { title: "Confirmation" }
-        ]}
-        additionalCSS={css`
-          margin: ${space[5]}px 0 ${space[12]}px;
-        `}
-      />
-      <h3>Please confirm your change from...</h3>
-      <CurrentPaymentDetails {...productDetail.subscription} />
-      <h3>...to...</h3>
-      {newPaymentMethodDetail.render()}
-      <div css={{ margin: "20px 0", textAlign: "right" }}>
-        {newPaymentMethodDetail.confirmButtonWrapper(
-          <div css={{ marginTop: "20px", textAlign: "right" }}>
-            <ExecutePaymentUpdate
-              {...props}
-              productDetail={productDetail}
-              newPaymentMethodDetail={newPaymentMethodDetail}
-            />
-          </div>
-        )}
-      </div>
-    </>
-  );
+  const isInAccountOverview = useContext(IsInAccountOverviewContext);
   return (
     <NewPaymentMethodContext.Consumer>
       {newPaymentMethodDetail => (
@@ -199,11 +203,9 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
                 hideBackButton
-                {...(useContext(IsInAccountOverviewContext)
-                  ? { fullWidth: true }
-                  : {})}
+                {...(isInAccountOverview ? { fullWidth: true } : {})}
               >
-                {useContext(IsInAccountOverviewContext) ? (
+                {isInAccountOverview ? (
                   <>
                     <PageHeaderContainer
                       title="Manage payment method"
@@ -221,11 +223,19 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                     <PageNavAndContentContainer
                       selectedNavItem={navLinks.accountOverview}
                     >
-                      {innerContent(productDetail, newPaymentMethodDetail)}
+                      <InnerContent
+                        routeableStepProps={props}
+                        productDetail={productDetail}
+                        newPaymentMethodDetail={newPaymentMethodDetail}
+                      />
                     </PageNavAndContentContainer>
                   </>
                 ) : (
-                  innerContent(productDetail, newPaymentMethodDetail)
+                  <InnerContent
+                    routeableStepProps={props}
+                    productDetail={productDetail}
+                    newPaymentMethodDetail={newPaymentMethodDetail}
+                  />
                 )}
               </WizardStep>
             ) : (

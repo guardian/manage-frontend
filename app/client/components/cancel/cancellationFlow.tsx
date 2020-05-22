@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { useContext } from "react";
+import React from "react";
 import {
   friendlyLongDateFormat,
   momentiseDateStr
@@ -74,7 +74,7 @@ class ReasonPicker extends React.Component<
       (child: { props: MultiRouteableProps }) => child.props
     );
 
-    const innerContent = () => (
+    const innerContent = (isInAccountOverview: boolean) => (
       <>
         <ProgressIndicator
           steps={[
@@ -169,7 +169,7 @@ class ReasonPicker extends React.Component<
               />
             </div>
             <div>
-              {useContext(IsInAccountOverviewContext) ? (
+              {isInAccountOverview ? (
                 <LinkButton
                   to={"/"}
                   text={"Return to your account"}
@@ -195,38 +195,40 @@ class ReasonPicker extends React.Component<
         <CancellationPolicyContext.Provider
           value={this.state.cancellationPolicy}
         >
-          <WizardStep
-            routeableStepProps={this.props}
-            hideBackButton
-            {...(useContext(IsInAccountOverviewContext)
-              ? { fullWidth: true }
-              : {})}
-          >
-            {useContext(IsInAccountOverviewContext) ? (
-              <>
-                <PageHeaderContainer
-                  title={`Cancel ${this.props.productType.friendlyName}`}
-                  breadcrumbs={[
-                    {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
-                    },
-                    {
-                      title: "Cancel membership",
-                      currentPage: true
-                    }
-                  ]}
-                />
-                <PageNavAndContentContainer
-                  selectedNavItem={navLinks.accountOverview}
-                >
-                  {innerContent()}
-                </PageNavAndContentContainer>
-              </>
-            ) : (
-              innerContent()
+          <IsInAccountOverviewContext.Consumer>
+            {isInAccountOverview => (
+              <WizardStep
+                routeableStepProps={this.props}
+                hideBackButton
+                {...(isInAccountOverview ? { fullWidth: true } : {})}
+              >
+                {isInAccountOverview ? (
+                  <>
+                    <PageHeaderContainer
+                      title={`Cancel ${this.props.productType.friendlyName}`}
+                      breadcrumbs={[
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Cancel membership",
+                          currentPage: true
+                        }
+                      ]}
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
+                    >
+                      {innerContent(isInAccountOverview)}
+                    </PageNavAndContentContainer>
+                  </>
+                ) : (
+                  innerContent(isInAccountOverview)
+                )}
+              </WizardStep>
             )}
-          </WizardStep>
+          </IsInAccountOverviewContext.Consumer>
         </CancellationPolicyContext.Provider>
       </MembersDataApiItemContext.Provider>
     );
@@ -259,21 +261,25 @@ const reasonsRenderer = (
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <FlowStartMultipleProductDetailHandler
-    {...props}
-    headingPrefix="Cancel"
-    hideHeading
-    {...(useContext(IsInAccountOverviewContext)
-      ? {
-          hasLeftNav: {
-            pageTitle: "Manage contribution",
-            selectedNavItem: navLinks.subscriptions
-          }
-        }
-      : {})}
-    supportRefererSuffix="cancellation_flow"
-    loadingMessagePrefix="Checking the status of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-    singleProductDetailRenderer={reasonsRenderer(props)}
-  />
+  <IsInAccountOverviewContext.Consumer>
+    {isInAccountOverview => (
+      <FlowStartMultipleProductDetailHandler
+        {...props}
+        headingPrefix="Cancel"
+        hideHeading
+        {...(isInAccountOverview
+          ? {
+              hasLeftNav: {
+                pageTitle: `Cancel ${props.productType.friendlyName}`,
+                selectedNavItem: navLinks.subscriptions
+              }
+            }
+          : {})}
+        supportRefererSuffix="cancellation_flow"
+        loadingMessagePrefix="Checking the status of your"
+        cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
+        singleProductDetailRenderer={reasonsRenderer(props)}
+      />
+    )}
+  </IsInAccountOverviewContext.Consumer>
 );

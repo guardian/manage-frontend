@@ -247,7 +247,7 @@ const getProductDetailSelector = (
     <IsInAccountOverviewContext.Consumer>
       {isInAccountOverviewTest =>
         isInAccountOverviewTest ? (
-          visuallyNavigateToParent(props)
+          visuallyNavigateToParent(props, true)
         ) : (
           <NoProduct
             inTab={false}

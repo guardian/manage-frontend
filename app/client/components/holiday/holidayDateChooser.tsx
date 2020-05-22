@@ -6,7 +6,7 @@ import { startCase } from "lodash";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
 import * as Raven from "raven-js";
-import React, { useContext } from "react";
+import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
   friendlyLongDateFormat,
@@ -208,52 +208,54 @@ export class HolidayDateChooser extends React.Component<
                   <HolidayDateChooserStateContext.Provider
                     value={this.state || {}}
                   >
-                    <WizardStep
-                      routeableStepProps={this.props}
-                      hideBackButton
-                      {...(useContext(IsInAccountOverviewContext)
-                        ? { fullWidth: true }
-                        : {})}
-                    >
-                      {useContext(IsInAccountOverviewContext) ? (
-                        <>
-                          <PageHeaderContainer
-                            title="Manage suspensions"
-                            breadcrumbs={[
-                              {
-                                title: navLinks.accountOverview.title,
-                                link: navLinks.accountOverview.link
-                              },
-                              {
-                                title: "Manage suspensions",
-                                currentPage: true
-                              }
-                            ]}
-                          />
-                          <PageNavAndContentContainer
-                            selectedNavItem={navLinks.accountOverview}
-                          >
-                            {this.innerContent(
+                    <IsInAccountOverviewContext.Consumer>
+                      {isInAccountOverview => (
+                        <WizardStep
+                          routeableStepProps={this.props}
+                          hideBackButton
+                          {...(isInAccountOverview ? { fullWidth: true } : {})}
+                        >
+                          {isInAccountOverview ? (
+                            <>
+                              <PageHeaderContainer
+                                title="Manage suspensions"
+                                breadcrumbs={[
+                                  {
+                                    title: navLinks.accountOverview.title,
+                                    link: navLinks.accountOverview.link
+                                  },
+                                  {
+                                    title: "Manage suspensions",
+                                    currentPage: true
+                                  }
+                                ]}
+                              />
+                              <PageNavAndContentContainer
+                                selectedNavItem={navLinks.accountOverview}
+                              >
+                                {this.innerContent(
+                                  holidayStopsResponse,
+                                  existingHolidayStopToAmendId,
+                                  renewalDateMoment,
+                                  combinedIssuesImpactedPerYear,
+                                  allIssuesImpactedPerYear,
+                                  productDetail
+                                )}
+                              </PageNavAndContentContainer>
+                            </>
+                          ) : (
+                            this.innerContent(
                               holidayStopsResponse,
                               existingHolidayStopToAmendId,
                               renewalDateMoment,
                               combinedIssuesImpactedPerYear,
                               allIssuesImpactedPerYear,
                               productDetail
-                            )}
-                          </PageNavAndContentContainer>
-                        </>
-                      ) : (
-                        this.innerContent(
-                          holidayStopsResponse,
-                          existingHolidayStopToAmendId,
-                          renewalDateMoment,
-                          combinedIssuesImpactedPerYear,
-                          allIssuesImpactedPerYear,
-                          productDetail
-                        )
+                            )
+                          )}
+                        </WizardStep>
                       )}
-                    </WizardStep>
+                    </IsInAccountOverviewContext.Consumer>
                   </HolidayDateChooserStateContext.Provider>
                 );
               } else {
@@ -393,7 +395,18 @@ export class HolidayDateChooser extends React.Component<
             holidayStopFlowProperties={this.props.productType.holidayStops}
           />
         </div>
-        <Link css={cancelLinkCss} to=".." replace={true}>
+        <Link
+          css={{
+            marginRight: "20px",
+            fontFamily: sans,
+            fontWeight: "bold" as FontWeightProperty,
+            textDecoration: "underline",
+            fontSize: "16px",
+            color: palette.neutral["2"]
+          }}
+          to=".."
+          replace={true}
+        >
           Cancel
         </Link>
         <div>

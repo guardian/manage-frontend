@@ -92,7 +92,8 @@ const ConfirmedNewPaymentDetailsRenderer = ({
 const WithSubscriptionRenderer = (
   productType: ProductType,
   newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail
+  previousProductDetail: ProductDetail,
+  isInAccountOverview: boolean
 ) => (subs: WithSubscription[]) =>
   subs && subs.length === 1 ? (
     <>
@@ -122,7 +123,7 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      {useContext(IsInAccountOverviewContext) ? (
+      {isInAccountOverview ? (
         <LinkButton
           to={"/"}
           text={"Return to your account"}
@@ -139,6 +140,8 @@ const WithSubscriptionRenderer = (
   );
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
+  const isInAccountOverview = useContext(IsInAccountOverviewContext);
+
   const innerContent = (
     previousProductDetail: ProductDetail,
     newPaymentMethodDetail: NewPaymentMethodDetail
@@ -162,7 +165,8 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
         render={WithSubscriptionRenderer(
           props.productType,
           newPaymentMethodDetail,
-          previousProductDetail
+          previousProductDetail,
+          isInAccountOverview
         )}
         loadingMessage="Looks good so far. Just checking everything is done..."
       />
@@ -185,11 +189,9 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   <SpreadTheWordFooter key="share" />
                 ]}
                 hideBackButton
-                {...(useContext(IsInAccountOverviewContext)
-                  ? { fullWidth: true }
-                  : {})}
+                {...(isInAccountOverview ? { fullWidth: true } : {})}
               >
-                {useContext(IsInAccountOverviewContext) ? (
+                {isInAccountOverview ? (
                   <>
                     <PageHeaderContainer title="Manage payment method" />
                     <PageNavAndContentContainer

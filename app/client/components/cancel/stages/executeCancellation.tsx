@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import {
   isProduct,
   MembersDataApiItem,
@@ -90,23 +90,27 @@ const getCancellationSummaryWithReturnButton = (
   productDetail: ProductDetail,
   body: ReactNode
 ) => () => (
-  <div>
-    {body}
-    <div css={{ height: "20px" }} />
-    {useContext(IsInAccountOverviewContext) ? (
-      <LinkButton
-        to={"/"}
-        text={"Return to your account"}
-        state={productDetail}
-        colour={palette.neutral[100]}
-        textColour={palette.neutral[0]}
-        hollow
-        left
-      />
-    ) : (
-      <ReturnToYourProductButton productType={productType} />
+  <IsInAccountOverviewContext.Consumer>
+    {isInAccountOverview => (
+      <div>
+        {body}
+        <div css={{ height: "20px" }} />
+        {isInAccountOverview ? (
+          <LinkButton
+            to={"/"}
+            text={"Return to your account"}
+            state={productDetail}
+            colour={palette.neutral[100]}
+            textColour={palette.neutral[0]}
+            hollow
+            left
+          />
+        ) : (
+          <ReturnToYourProductButton productType={productType} />
+        )}
+      </div>
     )}
-  </div>
+  </IsInAccountOverviewContext.Consumer>
 );
 
 const getCaseUpdatingCancellationSummary = (
@@ -201,46 +205,50 @@ const innerContent = (
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <WizardStep
-    routeableStepProps={props}
-    hideBackButton
-    {...(useContext(IsInAccountOverviewContext) ? { fullWidth: true } : {})}
-  >
-    <CancellationReasonContext.Consumer>
-      {reason => (
-        <CancellationCaseIdContext.Consumer>
-          {caseId => (
-            <MembersDataApiItemContext.Consumer>
-              {productDetail =>
-                useContext(IsInAccountOverviewContext) ? (
-                  <>
-                    <PageHeaderContainer
-                      title={`Cancel ${props.productType.friendlyName}`}
-                      breadcrumbs={[
-                        {
-                          title: navLinks.accountOverview.title,
-                          link: navLinks.accountOverview.link
-                        },
-                        {
-                          title: "Cancel membership",
-                          currentPage: true
-                        }
-                      ]}
-                    />
-                    <PageNavAndContentContainer
-                      selectedNavItem={navLinks.accountOverview}
-                    >
-                      {innerContent(productDetail, props, reason, caseId)}
-                    </PageNavAndContentContainer>
-                  </>
-                ) : (
-                  innerContent(productDetail, props, reason, caseId)
-                )
-              }
-            </MembersDataApiItemContext.Consumer>
+  <IsInAccountOverviewContext.Consumer>
+    {isInAccountOverview => (
+      <WizardStep
+        routeableStepProps={props}
+        hideBackButton
+        {...(isInAccountOverview ? { fullWidth: true } : {})}
+      >
+        <CancellationReasonContext.Consumer>
+          {reason => (
+            <CancellationCaseIdContext.Consumer>
+              {caseId => (
+                <MembersDataApiItemContext.Consumer>
+                  {productDetail =>
+                    isInAccountOverview ? (
+                      <>
+                        <PageHeaderContainer
+                          title={`Cancel ${props.productType.friendlyName}`}
+                          breadcrumbs={[
+                            {
+                              title: navLinks.accountOverview.title,
+                              link: navLinks.accountOverview.link
+                            },
+                            {
+                              title: "Cancel membership",
+                              currentPage: true
+                            }
+                          ]}
+                        />
+                        <PageNavAndContentContainer
+                          selectedNavItem={navLinks.accountOverview}
+                        >
+                          {innerContent(productDetail, props, reason, caseId)}
+                        </PageNavAndContentContainer>
+                      </>
+                    ) : (
+                      innerContent(productDetail, props, reason, caseId)
+                    )
+                  }
+                </MembersDataApiItemContext.Consumer>
+              )}
+            </CancellationCaseIdContext.Consumer>
           )}
-        </CancellationCaseIdContext.Consumer>
-      )}
-    </CancellationReasonContext.Consumer>
-  </WizardStep>
+        </CancellationReasonContext.Consumer>
+      </WizardStep>
+    )}
+  </IsInAccountOverviewContext.Consumer>
 );

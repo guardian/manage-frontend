@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Link, navigate, NavigateFn } from "@reach/router";
 import { DateRange } from "moment-range";
-import React, { useContext } from "react";
+import React from "react";
 import { DATE_INPUT_FORMAT } from "../../../shared/dates";
 import {
   isProduct,
@@ -306,48 +306,50 @@ export class HolidayReview extends React.Component<
       <HolidayDateChooserStateContext.Provider
         value={dateChooserStateWithCredits}
       >
-        <WizardStep
-          routeableStepProps={this.props}
-          hideBackButton
-          {...(useContext(IsInAccountOverviewContext)
-            ? { fullWidth: true }
-            : {})}
-        >
-          {useContext(IsInAccountOverviewContext) ? (
-            <>
-              <PageHeaderContainer
-                title="Manage suspensions"
-                breadcrumbs={[
-                  {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
-                  },
-                  {
-                    title: "Manage suspensions",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
-              >
-                <ProgressIndicator
-                  steps={[
-                    { title: "Choose dates" },
-                    { title: "Review", isCurrentStep: true },
-                    { title: "Confirmation" }
-                  ]}
-                  additionalCSS={css`
-                    margin: ${space[5]}px 0 ${space[12]}px;
-                  `}
-                />
-                {innerContent()}
-              </PageNavAndContentContainer>
-            </>
-          ) : (
-            innerContent()
+        <IsInAccountOverviewContext.Consumer>
+          {isInAccountOverview => (
+            <WizardStep
+              routeableStepProps={this.props}
+              hideBackButton
+              {...(isInAccountOverview ? { fullWidth: true } : {})}
+            >
+              {isInAccountOverview ? (
+                <>
+                  <PageHeaderContainer
+                    title="Manage suspensions"
+                    breadcrumbs={[
+                      {
+                        title: navLinks.accountOverview.title,
+                        link: navLinks.accountOverview.link
+                      },
+                      {
+                        title: "Manage suspensions",
+                        currentPage: true
+                      }
+                    ]}
+                  />
+                  <PageNavAndContentContainer
+                    selectedNavItem={navLinks.accountOverview}
+                  >
+                    <ProgressIndicator
+                      steps={[
+                        { title: "Choose dates" },
+                        { title: "Review", isCurrentStep: true },
+                        { title: "Confirmation" }
+                      ]}
+                      additionalCSS={css`
+                        margin: ${space[5]}px 0 ${space[12]}px;
+                      `}
+                    />
+                    {innerContent()}
+                  </PageNavAndContentContainer>
+                </>
+              ) : (
+                innerContent()
+              )}
+            </WizardStep>
           )}
-        </WizardStep>
+        </IsInAccountOverviewContext.Consumer>
       </HolidayDateChooserStateContext.Provider>
     ) : (
       visuallyNavigateToParent(this.props)
