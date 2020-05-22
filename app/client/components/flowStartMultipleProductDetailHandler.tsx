@@ -129,8 +129,8 @@ const getProductDetailSelector = (
             <>
               {props.hasLeftNav && (
                 <PageHeaderContainer
-                  selectedNavItem={props.hasLeftNav?.selectedNavItem}
-                  title={props.hasLeftNav?.pageTitle}
+                  selectedNavItem={props.hasLeftNav.selectedNavItem}
+                  title={props.hasLeftNav.pageTitle}
                 />
               )}
               <PageNavAndContentContainer

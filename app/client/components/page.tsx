@@ -168,7 +168,6 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
           ${!props.breadcrumbs && `padding-top: 100px;`}
         }
         ${minWidth.desktop} {
-          max-height: calc(7em + 57px);
           position: relative;
         }
       `}

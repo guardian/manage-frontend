@@ -101,7 +101,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           {subscriptionData.some(item =>
             isCancelled(item.productDetail.subscription)
           ) && (
-            <SupportTheGButton
+            <SupportTheGuardianSection
               alternateButtonText="Subscribe again"
               supportReferer="account_overview_subscriptions_section"
               urlSuffix="subscribe"
@@ -135,7 +135,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           {membershipData.some(item =>
             isCancelled(item.productDetail.subscription)
           ) && (
-            <SupportTheGButton
+            <SupportTheGuardianSection
               supportReferer="account_overview_membership_section"
               message="We no longer have a membership programme but you can still continue to support The Guardian via a contribution or subscription."
             />
@@ -169,7 +169,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           {contributorData.some(item =>
             isCancelled(item.productDetail.subscription)
           ) && (
-            <SupportTheGButton
+            <SupportTheGuardianSection
               alternateButtonText="Contribute again"
               supportReferer="account_overview_contributions_section"
               urlSuffix="contribute"
@@ -200,10 +200,10 @@ export const AccountOverview = (props: RouteComponentProps) => {
   );
 };
 
-interface SupportTheGButtonProps extends SupportTheGuardianButtonProps {
+interface SupportTheGuardianSectionProps extends SupportTheGuardianButtonProps {
   message: string;
 }
-const SupportTheGButton = (props: SupportTheGButtonProps) => (
+const SupportTheGuardianSection = (props: SupportTheGuardianSectionProps) => (
   <>
     <p
       css={css`

@@ -34,8 +34,7 @@ export const ManageContribution = (props: RouteableStepProps) => (
     }}
     supportRefererSuffix="manage_contribution_flow"
     loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
-    Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
+    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
     allowCancelledSubscription
     singleProductDetailRenderer={(
       routeableStepProps: RouteableStepProps,
