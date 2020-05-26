@@ -9,6 +9,8 @@ export const GridRoundel = (props: RoundelProps) => (
       ...gridItemPlacement(-2, 1),
       display: "inline-block",
       [minWidth.tablet]: {
+        margin: "auto",
+        maxHeight: "51px",
         ...gridItemPlacement(-2, 1, gridColumns.tabletAndDesktop)
       },
       [minWidth.wide]: {

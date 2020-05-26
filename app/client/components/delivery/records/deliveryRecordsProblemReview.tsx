@@ -6,7 +6,9 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useState } from "react";
+import { formatDateStr } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -178,16 +180,35 @@ const DeliveryRecordsProblemReviewFC = (
             }${props.totalCreditAmount.toFixed(2)}`
           }),
           ...(props.creditDate && {
-            creditDate:
-              props.creditDate && moment(props.creditDate).format("D MMM YYYY")
+            creditDate: props.creditDate && formatDateStr(props.creditDate)
           })
         }}
       >
         <WizardStep routeableStepProps={props} hideBackButton fullWidth>
-          <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-            <h1>Delivery history</h1>
-          </PageHeaderContainer>
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <PageHeaderContainer
+            title="Delivery history"
+            breadcrumbs={
+              useContext(IsInAccountOverviewContext)
+                ? [
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Delivery history",
+                      currentPage: true
+                    }
+                  ]
+                : []
+            }
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={
+              useContext(IsInAccountOverviewContext)
+                ? navLinks.accountOverview
+                : navLinks.subscriptions
+            }
+          >
             <ProgressIndicator
               steps={[
                 { title: "Update" },
@@ -475,8 +496,7 @@ const DeliveryRecordsProblemReviewFC = (
                         }
                       `}
                     >
-                      {props.creditDate &&
-                        moment(props.creditDate).format("D MMM YYYY")}
+                      {props.creditDate && formatDateStr(props.creditDate)}
                     </dd>
                   </div>
                 </dl>

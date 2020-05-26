@@ -7,7 +7,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -22,6 +22,7 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   WithProductType
 } from "../../../../shared/productTypes";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -310,10 +311,30 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           hideBackButton
           fullWidth
         >
-          <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-            <h1>Delivery history</h1>
-          </PageHeaderContainer>
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+          <PageHeaderContainer
+            title="Delivery history"
+            breadcrumbs={
+              useContext(IsInAccountOverviewContext)
+                ? [
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Delivery history",
+                      currentPage: true
+                    }
+                  ]
+                : []
+            }
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={
+              useContext(IsInAccountOverviewContext)
+                ? navLinks.accountOverview
+                : navLinks.subscriptions
+            }
+          >
             {pageStatus !== PageStatus.READ_ONLY &&
               pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (
                 <ProgressIndicator
@@ -391,7 +412,6 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     >
                       Contact us
                     </span>
-                    .
                   </p>
                   {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
                   {pageStatus === PageStatus.CANNOT_REPORT_PROBLEM && (
@@ -782,7 +802,7 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       hideHeading
       hasLeftNav={{
         pageTitle: "Delivery history",
-        selectedNavItem: navLinks.subscriptions
+        selectedNavItem: navLinks.accountOverview
       }}
       supportRefererSuffix="delivery_records_flow"
       loadingMessagePrefix="Retrieving details of your"

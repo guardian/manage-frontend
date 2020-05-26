@@ -26,7 +26,8 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
           margin: "10px"
         }}
       >
-        <InfoIcon />Questions? Check here
+        <InfoIcon />
+        Questions? Check here
       </a>
     }
   >
@@ -44,7 +45,8 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
           Please provide{" "}
           <strong>
             {props.holidayStopFlowProperties.alternateNoticeString}
-          </strong>.
+          </strong>
+          .
         </li>
       ) : (
         <li>Notice period is for our printing and delivery schedule.</li>

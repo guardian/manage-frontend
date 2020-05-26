@@ -1,10 +1,16 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import { conf } from "../../server/config";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
+import { AccountOverviewIcon } from "./svgs/accountOverviewIcon";
+import { EmailPrefsIcon } from "./svgs/emailPrefIcon";
+import { HelpIcon } from "./svgs/helpIcon";
+import { ProfileIcon } from "./svgs/profileIcon";
+import { SettingsIcon } from "./svgs/settingsIcon";
 
 const navCss = css({
   width: "100%",
@@ -79,11 +85,13 @@ export interface NavItem {
   title: string;
   link: string;
   local?: boolean;
+  icon?: JSX.Element;
 }
 
 export interface NavLinks {
-  publicProfile: NavItem;
-  accountDetails: NavItem;
+  accountOverview: NavItem;
+  profile: NavItem;
+  settings: NavItem;
   membership: NavItem;
   subscriptions: NavItem;
   contributions: NavItem;
@@ -92,15 +100,17 @@ export interface NavLinks {
 }
 
 export const navLinks: NavLinks = {
-  publicProfile: {
-    title: "Public profile",
-    link: "/public-settings",
-    local: true
+  accountOverview: {
+    title: "Account overview",
+    link: "/",
+    local: true,
+    icon: <AccountOverviewIcon />
   },
-  accountDetails: {
-    title: "Account details",
-    link: "/account-settings",
-    local: true
+  profile: {
+    title: "Profile",
+    link: "/public-settings",
+    local: true,
+    icon: <ProfileIcon />
   },
   membership: {
     title: "Membership",
@@ -120,12 +130,20 @@ export const navLinks: NavLinks = {
   emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs",
-    local: true
+    local: true,
+    icon: <EmailPrefsIcon />
+  },
+  settings: {
+    title: "Settings",
+    link: "/account-settings",
+    local: true,
+    icon: <SettingsIcon />
   },
   help: {
     title: "Help",
     link: "/help",
-    local: true
+    local: true,
+    icon: <HelpIcon />
   }
 };
 
@@ -140,29 +158,58 @@ export interface NavProps {
   selectedNavItem?: NavItem;
 }
 
+export const accountOverviewActiveFilter = (navItem: NavItem) =>
+  navItem.title !== "Membership" &&
+  navItem.title !== "Subscriptions" &&
+  navItem.title !== "Contributions";
+
+export const accountOverviewInactiveFilter = (navItem: NavItem) =>
+  navItem.title !== "Account overview";
+
 export const Nav = (props: NavProps) => (
   <ul role="tablist" css={navCss}>
-    {Object.values(navLinks).map((navItem: NavItem) => (
-      <li
-        css={navItemCss(props.selectedNavItem === navItem)}
-        key={navItem.title}
-      >
-        {navItem.local ? (
-          <Link
-            css={navLinkCss(props.selectedNavItem === navItem)}
-            to={navItem.link}
-          >
-            {navItem.title}
-          </Link>
-        ) : (
-          <a
-            css={navLinkCss(props.selectedNavItem === navItem)}
-            href={`https://profile.${domain}${navItem.link}`}
-          >
-            {navItem.title}
-          </a>
-        )}
-      </li>
-    ))}
+    {Object.values(navLinks)
+      .filter(
+        useContext(IsInAccountOverviewContext)
+          ? accountOverviewActiveFilter
+          : accountOverviewInactiveFilter
+      )
+      .map((navItem: NavItem) => (
+        <li
+          css={navItemCss(props.selectedNavItem === navItem)}
+          key={navItem.title}
+        >
+          {navItem.local ? (
+            <Link
+              css={navLinkCss(props.selectedNavItem === navItem)}
+              to={navItem.link}
+            >
+              {navItem.icon && useContext(IsInAccountOverviewContext) && (
+                <i
+                  css={css`
+                    display: inline-block;
+                    vertical-align: top;
+                    width: auto;
+                    height: 100%;
+                    max-width: 20px;
+                    max-height: 20px;
+                    margin-right: ${space[5]}px;
+                  `}
+                >
+                  {navItem.icon}
+                </i>
+              )}
+              {navItem.title}
+            </Link>
+          ) : (
+            <a
+              css={navLinkCss(props.selectedNavItem === navItem)}
+              href={`https://profile.${domain}${navItem.link}`}
+            >
+              {navItem.title}
+            </a>
+          )}
+        </li>
+      ))}
   </ul>
 );

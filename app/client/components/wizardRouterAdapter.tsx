@@ -1,6 +1,8 @@
+import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer, PageContainerSection } from "./page";
@@ -52,9 +54,12 @@ const estimateTotal = (currentStep: number, child: any) => {
   return 3; // TODO dynamically estimate total steps by recursively exploring children
 };
 
-export const visuallyNavigateToParent = (props: RouteableStepProps) => {
+export const visuallyNavigateToParent = (
+  props: RouteableStepProps,
+  toRoot?: boolean
+) => {
   if (props.navigate) {
-    props.navigate("..", { replace: true }); // step back up a level
+    props.navigate(toRoot ? "/" : "..", { replace: true }); // step back up a level
     return null;
   }
   return (
@@ -66,8 +71,18 @@ export const ReturnToYourProductButton = (
   props: WithProductType<ProductType>
 ) => (
   <LinkButton
-    text="Return to your account"
-    to={"/" + props.productType.urlPart}
+    to={
+      useContext(IsInAccountOverviewContext)
+        ? "/"
+        : `/${props.productType.urlPart}`
+    }
+    text={"Return to your account"}
+    {...(useContext(IsInAccountOverviewContext)
+      ? { colour: palette.neutral[100] }
+      : {})}
+    {...(useContext(IsInAccountOverviewContext)
+      ? { textColour: palette.neutral[0] }
+      : {})}
     hollow
     left
   />

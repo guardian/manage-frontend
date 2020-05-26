@@ -144,25 +144,51 @@ exports[`Main renders something 1`] = `
           onClick={[Function]}
           type="button"
         >
-          <svg
+          <i
             css={
               Object {
-                "display": "inline-block",
-                "fill": "#FFFFFF",
-                "height": "26px",
-                "marginRight": "0.5rem",
-                "width": "26px",
+                "map": undefined,
+                "name": "1g9alb6",
+                "next": undefined,
+                "styles": "
+              display: inline-block;
+              width: 26px;
+              height: 26px;
+              margin-right: 0.5rem;
+              border-radius: 50%;
+              background-color: white;
+              position: relative;
+            ",
               }
             }
-            viewBox="0 0 14 14"
           >
-            <path
-              d="M7 0C3.1 0 0 3.1 0 7c0 2 .9 3.9 2.4 5.2C3.6 13.4 5.3 14 7 14s3.4-.6 4.7-1.8C13.2 10.9 14 9 14 7c0-3.9-3.1-7-7-7zm0 1.8c1.3 0 2.1.8 2.1 2.1S8 6.3 7 6.3c-.8 0-2-1.1-2-2.4 0-1.4.7-2.1 2-2.1zm0 11.6c-1.7 0-3.3-.7-4.5-1.8l.8-3.2.5-.5c1-.4 2.1-.5 3.1-.5 1.1 0 2.1.2 3.1.5l.5.5.9 3.2c-1.1 1.2-2.7 1.8-4.4 1.8z"
-            />
-            <path
-              d="M9.6 4.2c.1-.1.1-.1 0 0zm.1 0s0-.1 0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0zm.1 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0zm.1-.1c0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 0 0 .1 0 0 0 .1 0 .1 0 0zm0 0c0 .1 0 .1 0 0 0 .1 0 0 0 0zm0 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 0 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 0 0 0 0s.1 0 0 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0 .1 0 .1 0 0 0zm.1 0zm.1 0c-.1 0-.1 0 0 0zm0 0zm0 0zm.1 0s-.1 0 0 0c-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0zm-.1 0c.1 0 .1 0 0 0 .1 0 .1 0 0 0zm.2 0c-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1 0 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0zm0 0s0-.1 0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0zm.1 0c-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0-.1-.1-.1-.1 0 0zm0 0c0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0-.1 0 0 0-.1 0 0 0 0zm0-.1z"
-            />
-          </svg>
+            <svg
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1sjg7kv",
+                  "next": undefined,
+                  "styles": "
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 65%;
+                height: auto;
+              ",
+                }
+              }
+              fill="none"
+              height="19"
+              viewBox="0 0 16 19"
+              width="16"
+            >
+              <path
+                d="M8.00001 7.69047C9.62222 7.69047 11.5333 5.8357 11.5333 3.57381C11.5333 1.31191 10.2222 0 8.00001 0C5.77779 0 4.48888 1.31191 4.48888 3.57381C4.48888 5.8357 6.55556 7.69047 8.00001 7.69047ZM2.66667 10.3821L1.75556 11.3095L0 18.0952L0.866666 19H15.0889L16 18.0952L14.2222 11.3095L13.3334 10.3821C11.5556 9.81665 9.93335 9.50001 8.00001 9.50001C6.04445 9.50001 4.44445 9.77143 2.66667 10.3821Z"
+                fill="#052962"
+              />
+            </svg>
+          </i>
           My account
         </button>
         <ul
@@ -228,7 +254,7 @@ exports[`Main renders something 1`] = `
                   }
                 }
               >
-                Account details
+                Settings
               </span>
             </a>
           </li>
@@ -481,6 +507,8 @@ exports[`Main renders something 1`] = `
             "@media (min-width: 740px)": Object {
               "gridColumnEnd": "span 1",
               "gridColumnStart": "-2",
+              "margin": "auto",
+              "maxHeight": "51px",
               "msGridColumn": "12",
               "msGridColumnSpan": "1",
               "msGridRow": "1",
@@ -1254,9 +1282,9 @@ exports[`Main renders something 1`] = `
                       css={
                         Object {
                           "map": undefined,
-                          "name": "x5i4w7",
+                          "name": "1dykxcg",
                           "next": undefined,
-                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                         }
                       }
                       onMouseUp={[Function]}
@@ -1280,9 +1308,9 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "x5i4w7",
+                        "name": "1dykxcg",
                         "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#ffe500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
                       }
                     }
                     onMouseUp={[Function]}

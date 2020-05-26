@@ -19,6 +19,7 @@ import {
   hasProductPageProperties,
   ProductTypeWithMapGroupedToSpecific
 } from "../../shared/productTypes";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
@@ -35,7 +36,8 @@ import { CardDisplay } from "./payment/cardDisplay";
 import { DirectDebitDisplay } from "./payment/directDebitDisplay";
 import {
   ReturnToYourProductButton,
-  RouteableStepProps
+  RouteableStepProps,
+  visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 
 interface WithLeftNavProps {
@@ -125,11 +127,12 @@ const getProductDetailSelector = (
           condition={props.hasLeftNav !== undefined}
           wrapper={(children: ReactElement | null) => (
             <>
-              <PageHeaderContainer
-                selectedNavItem={props.hasLeftNav?.selectedNavItem}
-              >
-                <h1>{props.hasLeftNav?.pageTitle}</h1>
-              </PageHeaderContainer>
+              {props.hasLeftNav && (
+                <PageHeaderContainer
+                  selectedNavItem={props.hasLeftNav.selectedNavItem}
+                  title={props.hasLeftNav.pageTitle}
+                />
+              )}
               <PageNavAndContentContainer
                 selectedNavItem={props.hasLeftNav?.selectedNavItem}
               >
@@ -241,11 +244,19 @@ const getProductDetailSelector = (
     }
   }
   return (
-    <NoProduct
-      inTab={false}
-      supportRefererSuffix={supportRefererSuffix}
-      productType={props.productType}
-    />
+    <IsInAccountOverviewContext.Consumer>
+      {isInAccountOverviewTest =>
+        isInAccountOverviewTest ? (
+          visuallyNavigateToParent(props, true)
+        ) : (
+          <NoProduct
+            inTab={false}
+            supportRefererSuffix={supportRefererSuffix}
+            productType={props.productType}
+          />
+        )
+      }
+    </IsInAccountOverviewContext.Consumer>
   );
 };
 

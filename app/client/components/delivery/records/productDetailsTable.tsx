@@ -62,7 +62,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
           padding: ${space[3]}px;
           margin: 0;
           background-color: ${palette.brand[400]};
-          color: white;
+          color: ${palette.neutral[100]};
           position: relative;
           ${minWidth.tablet} {
             font-size: 20px;

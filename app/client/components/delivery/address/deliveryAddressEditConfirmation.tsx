@@ -4,6 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -78,28 +79,50 @@ const ConfirmationFC = (props: RouteableStepProps) => {
     <WizardStep routeableStepProps={props} hideBackButton fullWidth>
       {isAddress(addressContext.newDeliveryAddress) ? (
         <>
-          <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-            <h1
-              css={css`
-                ::first-letter {
-                  text-transform: capitalize;
-                }
-              `}
-            >
+          <PageHeaderContainer
+            title={
               <span
                 css={css`
-                  display: none;
-                  ${minWidth.tablet} {
-                    display: inline;
+                  ::first-letter {
+                    text-transform: capitalize;
                   }
                 `}
               >
-                Update{" "}
+                <span
+                  css={css`
+                    display: none;
+                    ${minWidth.tablet} {
+                      display: inline;
+                    }
+                  `}
+                >
+                  Update{" "}
+                </span>
+                delivery details
               </span>
-              delivery details
-            </h1>
-          </PageHeaderContainer>
-          <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+            }
+            breadcrumbs={
+              useContext(IsInAccountOverviewContext)
+                ? [
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Edit delivery address",
+                      currentPage: true
+                    }
+                  ]
+                : []
+            }
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={
+              useContext(IsInAccountOverviewContext)
+                ? navLinks.accountOverview
+                : navLinks.subscriptions
+            }
+          >
             <ProgressIndicator
               steps={[
                 { title: "Update" },

@@ -1,10 +1,15 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { expanderButtonCss } from "../expanderButton";
 import { minWidth } from "../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../styles/grid";
+import {
+  accountOverviewActiveFilter,
+  accountOverviewInactiveFilter
+} from "./nav";
 import { ProfileIcon } from "./svgs/profileIcon";
 import { SignoutIcon } from "./svgs/signoutIcon";
 
@@ -129,12 +134,17 @@ export const UserNav = () => {
 
   const userNavItems: UserNavItem[] = [
     {
+      title: "Account overview",
+      link: "/",
+      hideAtDesktop: true
+    },
+    {
       title: "Public profile",
       link: `/public-settings`,
       hideAtDesktop: true
     },
     {
-      title: "Account details",
+      title: "Settings",
       link: `/account-settings`,
       hideAtDesktop: true
     },
@@ -242,43 +252,73 @@ export const UserNav = () => {
         onClick={() => setShowMenu(!showMenu)}
         ref={buttonRef}
       >
-        {<ProfileIcon />}My account
+        {
+          <i
+            css={css`
+              display: inline-block;
+              width: 26px;
+              height: 26px;
+              margin-right: 0.5rem;
+              border-radius: 50%;
+              background-color: white;
+              position: relative;
+            `}
+          >
+            <ProfileIcon
+              css={css`
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 65%;
+                height: auto;
+              `}
+            />
+          </i>
+        }
+        My account
       </button>
 
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
-        {userNavItems.map((item: UserNavItem) => (
-          <React.Fragment key={item.title}>
-            <li
-              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
-            >
-              <a href={item.link} css={userNavItemCss}>
-                {item.icon && (
+        {userNavItems
+          .filter(
+            useContext(IsInAccountOverviewContext)
+              ? accountOverviewActiveFilter
+              : accountOverviewInactiveFilter
+          )
+          .map((item: UserNavItem) => (
+            <React.Fragment key={item.title}>
+              <li
+                className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
+              >
+                <a href={item.link} css={userNavItemCss}>
+                  {item.icon && (
+                    <span
+                      css={{
+                        marginRight: "5px",
+                        display: "block",
+                        height: "0.8em",
+                        width: "0.8em",
+                        " svg": { display: "block" }
+                      }}
+                    >
+                      {item.icon}
+                    </span>
+                  )}
                   <span
                     css={{
-                      marginRight: "5px",
-                      display: "block",
-                      height: "0.8em",
-                      width: "0.8em",
-                      " svg": { display: "block" }
+                      lineHeight: "33px",
+                      [minWidth.desktop]: {
+                        lineHeight: "normal"
+                      }
                     }}
                   >
-                    {item.icon}
+                    {item.title}
                   </span>
-                )}
-                <span
-                  css={{
-                    lineHeight: "33px",
-                    [minWidth.desktop]: {
-                      lineHeight: "normal"
-                    }
-                  }}
-                >
-                  {item.title}
-                </span>
-              </a>
-            </li>
-          </React.Fragment>
-        ))}
+                </a>
+              </li>
+            </React.Fragment>
+          ))}
       </ul>
     </nav>
   );

@@ -46,11 +46,11 @@ export const ProductDescriptionListTable = (
           ? `
         dt:first-of-type, 
         dd:first-of-type {
-          border-top: 1px solid ${palette.neutral[20]};
+          border-top: 1px solid ${props.borderColour || palette.neutral[20]};
         }
         ${minWidth.tablet} {
           dt, dd {
-            border-top: 1px solid ${palette.neutral[20]};
+            border-top: 1px solid ${props.borderColour || palette.neutral[20]};
           }
         }
       `
@@ -61,11 +61,12 @@ export const ProductDescriptionListTable = (
           ? `
         dt:last-of-type, 
         dd:last-of-type {
-          border-bottom: 1px solid ${palette.neutral[20]};
+          border-bottom: 1px solid ${props.borderColour || palette.neutral[20]};
         }
         ${minWidth.tablet} {
           dt, dd {
-            border-bottom: 1px solid ${palette.neutral[20]};
+            border-bottom: 1px solid ${props.borderColour ||
+              palette.neutral[20]};
           }
         }
       `
@@ -91,7 +92,9 @@ export const ProductDescriptionListTable = (
     min-width: 15ch;
     font-weight: bold;
     width:1%;
-    white-space:nowrap;
+    ${minWidth.tablet} {
+      white-space:nowrap;
+    }
     margin: 0;
     
 

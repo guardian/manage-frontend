@@ -158,7 +158,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     const subscriptionNames = Object.values(contactIdToArrayOfProductDetail)
       .flatMap(flattenEquivalent)
       .map(productDetail => {
-        const friendlyProductName = ProductTypes.contentSubscriptions.mapGroupedToSpecific?.(
+        const friendlyProductName = ProductTypes.subscriptions.mapGroupedToSpecific?.(
           productDetail
         ).friendlyName;
         return `${friendlyProductName}`;
@@ -549,7 +549,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       >
         <MembersDatApiAsyncLoader
           render={renderDeliveryAddressForm}
-          fetch={createProductDetailFetcher(ProductTypes.contentSubscriptions)}
+          fetch={createProductDetailFetcher(ProductTypes.subscriptions)}
           loadingMessage={"Loading delivery details..."}
         />
       </div>

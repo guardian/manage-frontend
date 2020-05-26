@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
-import React from "react";
+import React, { useContext } from "react";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
@@ -36,15 +36,18 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
+import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
+import { IsInAccountOverviewContext } from "../accountOverviewRelease";
+import { AccountOverview } from "./accountoverview/accountOverview";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { HolidaysOverview } from "./holiday/holidaysOverview";
-import { AccountDetails } from "./identity/AccountDetails";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
+import { Settings } from "./identity/Settings";
 import { Main } from "./main";
 import { NotFound } from "./notFound";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
@@ -59,17 +62,29 @@ const User = () => (
     <Global styles={css(`${fonts}`)} />
 
     <Router>
-      <RedirectOnMeResponse path="/" />
+      {useContext(IsInAccountOverviewContext) ? (
+        <AccountOverview path="/" />
+      ) : (
+        <RedirectOnMeResponse path="/" />
+      )}
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)
-        .map((productType: ProductTypeWithProductPageProperties) => (
-          <ProductPage
-            key={productType.urlPart}
-            path={"/" + productType.urlPart}
-            productType={productType}
-          />
-        ))}
+        .map((productType: ProductTypeWithProductPageProperties) =>
+          useContext(IsInAccountOverviewContext) ? (
+            <productType.productPage.manageComponent
+              key={productType.urlPart}
+              path={"/" + productType.urlPart}
+              productType={productType}
+            />
+          ) : (
+            <ProductPage
+              key={productType.urlPart}
+              path={"/" + productType.urlPart}
+              productType={productType}
+            />
+          )
+        )}
       {Object.values(ProductTypes)
         .filter(hasProductPageRedirect)
         .map((productType: ProductTypeWithProductPageRedirect) => (
@@ -87,7 +102,6 @@ const User = () => (
             key={productType.urlPart}
             path={"/cancel/" + productType.urlPart}
             productType={productType}
-            currentStep={1}
           >
             {productType.cancellation.reasons.map(
               (reason: CancellationReason) => (
@@ -97,12 +111,10 @@ const User = () => (
                   reason={reason}
                   key={reason.reasonId}
                   linkLabel={reason.linkLabel}
-                  currentStep={2}
                 >
                   <ExecuteCancellation
                     path="confirmed"
                     productType={productType}
-                    currentStep={3}
                   />
                 </GenericSaveAttempt>
               )
@@ -117,18 +129,9 @@ const User = () => (
             key={productType.urlPart}
             path={"/payment/" + productType.urlPart}
             productType={productType}
-            currentStep={1}
           >
-            <ConfirmPaymentUpdate
-              path="confirm"
-              productType={productType}
-              currentStep={2}
-            >
-              <PaymentUpdated
-                path="updated"
-                productType={productType}
-                currentStep={3}
-              />
+            <ConfirmPaymentUpdate path="confirm" productType={productType}>
+              <PaymentUpdated path="updated" productType={productType} />
             </ConfirmPaymentUpdate>
           </PaymentUpdateFlow>
         ))}
@@ -140,41 +143,19 @@ const User = () => (
             key={productType.urlPart}
             path={"/suspend/" + productType.urlPart}
             productType={productType}
-            currentStep={0}
           >
-            <HolidayDateChooser
-              path="create"
-              productType={productType}
-              currentStep={1}
-            >
-              <HolidayReview
-                path="review"
-                productType={productType}
-                currentStep={2}
-              >
-                <HolidayConfirmed
-                  path="confirmed"
-                  productType={productType}
-                  currentStep={3}
-                />
+            <HolidayDateChooser path="create" productType={productType}>
+              <HolidayReview path="review" productType={productType}>
+                <HolidayConfirmed path="confirmed" productType={productType} />
               </HolidayReview>
             </HolidayDateChooser>
             <HolidayDateChooser
               path="amend"
               productType={productType}
-              currentStep={1}
               requiresExistingHolidayStopToAmendInContext
             >
-              <HolidayReview
-                path="review"
-                productType={productType}
-                currentStep={2}
-              >
-                <HolidayConfirmed
-                  path="confirmed"
-                  productType={productType}
-                  currentStep={3}
-                />
+              <HolidayReview path="review" productType={productType}>
+                <HolidayConfirmed path="confirmed" productType={productType} />
               </HolidayReview>
             </HolidayDateChooser>
           </HolidaysOverview>
@@ -221,7 +202,7 @@ const User = () => (
 
       <PublicProfile path="/public-settings" />
 
-      <AccountDetails path="/account-settings" />
+      <Settings path="/account-settings" />
 
       <Help path="/help" />
 
@@ -234,17 +215,20 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string) => (
-  <>
+export const ServerUser = (url: string, isInAccountOverviewTest: boolean) => (
+  <IsInAccountOverviewContext.Provider value={isInAccountOverviewTest}>
     <ServerLocation url={url}>
       <User />
     </ServerLocation>
-  </>
+  </IsInAccountOverviewContext.Provider>
 );
 
+const globals = typeof window !== "undefined" ? window.guardian : undefined;
 export const BrowserUser = (
-  <>
+  <IsInAccountOverviewContext.Provider
+    value={isIdentityInAccountOverviewTest(globals?.identityDetails?.userId)}
+  >
     <AnalyticsTracker />
     <User />
-  </>
+  </IsInAccountOverviewContext.Provider>
 );

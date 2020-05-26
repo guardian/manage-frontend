@@ -1,5 +1,8 @@
 import { Link } from "@reach/router";
 import React, { ReactNode } from "react";
+import { ManageContribution } from "../client/components/accountoverview/manageContribution";
+import { ManageMembership } from "../client/components/accountoverview/manageMembership";
+import { ManageSubscription } from "../client/components/accountoverview/manageSubscription";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -19,6 +22,7 @@ import {
 import { voucherCancellationFlowStart } from "../client/components/cancel/voucher/voucherCancellationFlowStart";
 import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
 import { NavItem, navLinks } from "../client/components/nav";
+import { RouteableStepProps } from "../client/components/wizardRouterAdapter";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -99,6 +103,7 @@ export interface ProductPageProperties {
   tierChangeable?: true;
   showSubscriptionId?: true;
   forceShowJoinDateOnly?: true;
+  manageComponent: (props: RouteableStepProps) => JSX.Element;
 }
 
 export interface HolidayStopFlowProperties {
@@ -251,6 +256,17 @@ export const createProductDetailFetcher = (
     }
   );
 
+export const allProductsDetailFetcher = () =>
+  fetch("/api/me/mma", {
+    credentials: "include",
+    mode: "same-origin",
+    headers: {
+      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+      )
+    }
+  });
+
 const domainSpecificSubsManageURL = `https://subscribe.${
   typeof window !== "undefined" && window.guardian && window.guardian.domain
     ? window.guardian.domain
@@ -294,7 +310,7 @@ export type ProductTypeKeys =
   | "voucher"
   | "guardianweekly"
   | "digipack"
-  | "contentSubscriptions";
+  | "subscriptions";
 
 export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
@@ -320,7 +336,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       ]),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
-      forceShowJoinDateOnly: true
+      forceShowJoinDateOnly: true,
+      manageComponent: ManageMembership
     },
     includeGuardianInTitles: true,
     cancellation: {
@@ -347,7 +364,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       noProductInTabCopy: getNoProductInTabCopy([
         { ...navLinks.membership, title: "membership" },
         { ...navLinks.subscriptions, title: "subscription" }
-      ])
+      ]),
+      manageComponent: ManageContribution
     },
     cancellation: {
       linkOnProductPage: true,
@@ -547,7 +565,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     productPage: "subscriptions"
   },
-  contentSubscriptions: {
+  subscriptions: {
     friendlyName: "subscription",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
@@ -559,7 +577,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         { ...navLinks.contributions, title: "contribution" }
       ]),
       tierRowLabel: "Subscription product",
-      showSubscriptionId: true
+      showSubscriptionId: true,
+      manageComponent: ManageSubscription
     },
     mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
@@ -571,7 +590,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
         return ProductTypes.guardianweekly;
       }
-      return ProductTypes.contentSubscriptions; // This should never happen!
+      return ProductTypes.subscriptions; // This should never happen!
     }
   }
 };

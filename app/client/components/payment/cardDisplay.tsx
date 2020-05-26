@@ -1,14 +1,22 @@
+import { css } from "@emotion/core";
+import { palette } from "@guardian/src-foundations";
 import React from "react";
 import { Inlineable } from "./inlineable";
 
+interface CardExpiryDetails {
+  month: number;
+  year: number;
+}
 export interface CardProps {
   last4: string;
+  expiry?: CardExpiryDetails;
   type: string;
   stripePublicKeyForUpdate?: string;
 }
 
 export interface CardDisplayProps extends CardProps, Inlineable {
   margin?: string;
+  inErrorState?: boolean;
 }
 
 const cardTypeToSVG = (cardType: string) => {
@@ -32,9 +40,10 @@ const cardTypeToSVG = (cardType: string) => {
           borderRadius: "6px",
           marginRight: "9px",
           backgroundImage,
-          width: "54px",
-          height: "35px",
-          backgroundPosition: "0 0"
+          width: "31px",
+          height: "20px",
+          backgroundPosition: "0 0",
+          backgroundSize: "cover"
         }}
       />
     );
@@ -50,6 +59,13 @@ export const CardDisplay = (props: CardDisplayProps) => (
       margin: props.margin || "10px"
     }}
   >
-    {cardTypeToSVG(props.type)}•••• •••• •••• {props.last4}
+    {cardTypeToSVG(props.type)}{" "}
+    <span
+      css={css`
+        color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
+      `}
+    >
+      ending {props.last4}
+    </span>
   </div>
 );

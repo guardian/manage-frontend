@@ -1,7 +1,6 @@
 import { css } from "@emotion/core";
 import React from "react";
 import palette from "../../../colours";
-import { minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { PageContainerSection } from "../../page";
 import { hrefStyle } from "../cancellationConstants";
@@ -23,12 +22,7 @@ const cssBullet = (flexBasis: string = "50%") =>
 
 const benefitsCss = css({
   margin: 0,
-  padding: 0,
-
-  [minWidth.tablet]: {
-    display: "flex",
-    flexWrap: "wrap"
-  }
+  padding: 0
 });
 
 const clickHereToFindOutMoreAboutOurNewFeatures = (
@@ -57,7 +51,6 @@ export const membershipCancellationFlowStart = () => (
     >
       <h4
         css={{
-          textAlign: "center",
           marginTop: "0",
           marginBottom: "10px"
         }}

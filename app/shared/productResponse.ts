@@ -40,6 +40,7 @@ export interface ProductDetail extends WithSubscription {
   regNumber?: string;
   tier: string;
   joinDate: string;
+  mmaCategory: "subscriptions" | "contributions" | "membership";
   alertText?: string;
 }
 
@@ -73,8 +74,12 @@ export interface CurrencyAndIntervalDetail {
   interval: string;
 }
 
+// 6 weeks interval referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
 export const augmentInterval = (interval: string) =>
-  interval === "6 weeks" ? "One-off" : `${interval}ly`;
+  interval === "6 weeks" ? "one-off" : `${interval}ly`;
+
+export const isSixForSix = (planName: string | null) =>
+  planName && planName.indexOf("6 for 6") !== -1;
 
 export interface PaidSubscriptionPlan
   extends SubscriptionPlan,
@@ -167,5 +172,5 @@ export const getFuturePlanIfVisible = (subscription: Subscription) => {
   const indexToFetch = subscription.currentPlans.length === 0 ? 1 : 0; // if main plan is using the first future plan use the 2nd future plan
   return subscription.futurePlans
     .filter(isPaidSubscriptionPlan)
-    .filter(plan => plan.shouldBeVisible)[indexToFetch];
+    .filter(plan => plan.shouldBeVisible)[indexToFetch]; // TODO: check if this is unsafe
 };

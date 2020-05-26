@@ -5,12 +5,13 @@ import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext } from "react";
-import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
   Subscription
 } from "../../../../shared/productResponse";
+import { getMainPlan } from "../../../../shared/productResponse";
+import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
@@ -105,10 +106,25 @@ const DeliveryRecordsProblemConfirmationFC = (
       hideBackButton
       fullWidth
     >
-      <PageHeaderContainer selectedNavItem={navLinks.subscriptions}>
-        <h1>Delivery history</h1>
-      </PageHeaderContainer>
-      <PageNavAndContentContainer selectedNavItem={navLinks.subscriptions}>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.accountOverview}
+        title="Delivery history"
+        breadcrumbs={
+          useContext(IsInAccountOverviewContext)
+            ? [
+                {
+                  title: navLinks.accountOverview.title,
+                  link: navLinks.accountOverview.link
+                },
+                {
+                  title: "Delivery history",
+                  currentPage: true
+                }
+              ]
+            : []
+        }
+      />
+      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
         <ProgressIndicator
           steps={[
             { title: "Update" },

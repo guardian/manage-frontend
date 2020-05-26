@@ -1,6 +1,5 @@
 import Raven from "raven-js";
 import React, { useEffect, useState } from "react";
-import { headline } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
 import { navLinks } from "../../nav";
 import {
@@ -111,20 +110,11 @@ export const PublicProfile = (props: { path?: string }) => {
 
   return (
     <>
-      <PageHeaderContainer selectedNavItem={navLinks.publicProfile}>
-        <h1
-          css={{
-            fontSize: "32px",
-            lineHeight: "36px",
-            fontFamily: headline,
-            marginBottom: "30px",
-            marginTop: "0"
-          }}
-        >
-          Edit your profile
-        </h1>
-      </PageHeaderContainer>
-      <PageNavAndContentContainer selectedNavItem={navLinks.publicProfile}>
+      <PageHeaderContainer
+        selectedNavItem={navLinks.profile}
+        title="Edit your profile"
+      />
+      <PageNavAndContentContainer selectedNavItem={navLinks.profile}>
         <PageContainer>
           {error ? <GenericErrorMessage ref={errorRef} /> : null}
         </PageContainer>

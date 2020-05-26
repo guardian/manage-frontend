@@ -1,6 +1,8 @@
+import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
-import palette from "../../colours";
+import { minWidth } from "../../styles/breakpoints";
 import { DirectDebitLogo } from "./directDebitLogo";
 import { Inlineable } from "./inlineable";
 
@@ -10,6 +12,9 @@ export const cleanSortCode = (sortCode: string) =>
   sortCode.replace(/[^0-9]/g, "");
 
 export const dashifySortCode = (sortCode: string) => {
+  if (!sortCode) {
+    return sortCode;
+  }
   const cleanedSortCode = cleanSortCode(sortCode);
   if (cleanedSortCode.length !== 6) {
     return cleanedSortCode;
@@ -23,11 +28,92 @@ export const dashifySortCode = (sortCode: string) => {
   );
 };
 
+const sanitiseAccountNumber = (accountNumber: string) => {
+  if (!accountNumber) {
+    return accountNumber;
+  }
+  return (
+    accountNumber.length >= NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW && (
+      <span
+        css={{
+          marginLeft: "10px"
+        }}
+      >
+        {/* TODO:
+         {`ending ${accountNumber.substr(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}`} */}
+        {"•".repeat(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}
+        {accountNumber.substr(
+          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
+        )}
+      </span>
+    )
+  );
+};
+
 export interface DirectDebitDisplayProps
   extends DirectDebitDetails,
     Inlineable {
   showAccountName?: true;
+  inErrorState?: boolean;
 }
+
+export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
+  <div
+    css={{
+      display: mandate.inline ? "inline-flex" : "flex",
+      alignItems: "top"
+    }}
+  >
+    <i
+      css={css`
+        margin-top: 2px;
+      `}
+    >
+      <DirectDebitLogo fill={palette.neutral[7]} />
+    </i>
+    <div
+      css={css`
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+      `}
+    >
+      <span
+        css={css`
+          display: block;
+          color: ${mandate.inErrorState
+            ? palette.news[400]
+            : palette.neutral[7]};
+          ${minWidth.tablet} {
+            display: inline-block;
+            vertical-align: top;
+          }
+        `}
+      >
+        {mandate.accountName}
+      </span>
+      <span
+        css={css`
+          display: block;
+          color: ${mandate.inErrorState
+            ? palette.news[400]
+            : palette.neutral[7]};
+          ${minWidth.tablet} {
+            display: inline-block;
+            vertical-align: top;
+            margin-left: ${space[2]}px;
+          }
+        `}
+      >
+        {sanitiseAccountNumber(mandate.accountNumber)}
+      </span>
+    </div>
+  </div>
+);
 
 export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
   <div
@@ -36,7 +122,7 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
       alignItems: "top"
     }}
   >
-    <DirectDebitLogo fill={palette.neutral["1"]} />
+    <DirectDebitLogo fill={palette.neutral[7]} />
     <div
       css={{
         display: "flex",
@@ -48,27 +134,9 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
           marginLeft: "10px"
         }}
       >
-        {mandate.sortCode ? dashifySortCode(mandate.sortCode) : undefined}
+        {dashifySortCode(mandate.sortCode)}
       </span>
-      {mandate.accountNumber &&
-      mandate.accountNumber.length > NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW ? (
-        <span
-          css={{
-            marginLeft: "10px"
-          }}
-        >
-          {"•".repeat(
-            mandate.accountNumber.length -
-              NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-          ) +
-            mandate.accountNumber.substr(
-              mandate.accountNumber.length -
-                NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-            )}
-        </span>
-      ) : (
-        undefined
-      )}
+      {sanitiseAccountNumber(mandate.accountNumber)}
       {mandate.showAccountName && mandate.accountName ? (
         <span
           css={{

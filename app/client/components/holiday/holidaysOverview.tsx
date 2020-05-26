@@ -15,12 +15,15 @@ import {
   ProductTypeWithHolidayStopsFlow,
   WithProductType
 } from "../../../shared/productTypes";
+import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import { navLinks } from "../nav";
+import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
@@ -79,7 +82,8 @@ const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
   props: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
-  setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
+  setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void,
+  isInAccountOverviewTest: boolean
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDateMoment = momentiseDateStr(
     productDetail.subscription.renewalDate
@@ -115,6 +119,172 @@ const renderHolidayStopsOverview = (
     reload();
   };
 
+  const InnerContent = () => (
+    <>
+      <h1>Suspend {props.productType.friendlyName}</h1>
+      {productDetail.subscription.autoRenew ? (
+        <OverviewRow heading="How">
+          <>
+            <div>
+              You can suspend up to{" "}
+              <strong>
+                {holidayStopsResponse.annualIssueLimit}{" "}
+                {props.productType.holidayStops.issueKeyword}s
+              </strong>{" "}
+              per year of your subscription. <br />
+            </div>
+            {props.productType.holidayStops.alternateNoticeString && (
+              <div>
+                Please provide{" "}
+                <strong>
+                  {props.productType.holidayStops.alternateNoticeString}
+                </strong>
+                .
+              </div>
+            )}
+            <div>
+              {creditExplainerSentence(
+                props.productType.holidayStops.issueKeyword
+              )}
+            </div>
+            {props.productType.holidayStops.additionalHowAdvice && (
+              <div>{props.productType.holidayStops.additionalHowAdvice}</div>
+            )}
+            <div
+              css={{
+                fontFamily: sans,
+                fontSize: "14px",
+                margin: "10px",
+                display: "flex",
+                alignItems: "top"
+              }}
+            >
+              <InfoIcon />
+              <div>
+                <strong>
+                  {renewalDateMoment.format(friendlyLongDateFormat)}
+                </strong>{" "}
+                is the next anniversary of your subscription.
+                <br />
+                The number of {props.productType.holidayStops.issueKeyword}s you
+                can suspend per year is reset on this date.
+              </div>
+            </div>
+            <HolidayQuestionsModal
+              annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+              holidayStopFlowProperties={props.productType.holidayStops}
+            />
+          </>
+        </OverviewRow>
+      ) : (
+        <h4>
+          This subscription does not automatically renew, so unfortunately you{" "}
+          {holidayStopsResponse.existing.length > 0
+            ? "can no longer"
+            : "cannot"}{" "}
+          create a holiday suspension for this subscription.
+        </h4>
+      )}
+      {(productDetail.subscription.autoRenew ||
+        holidayStopsResponse.existing.length > 0) && (
+        <>
+          <OverviewRow heading="Summary">
+            <>
+              {holidayStopsResponse.existing.length > 0 ? (
+                <>
+                  <div>
+                    You have suspended{" "}
+                    <strong>
+                      {combinedIssuesImpactedPerYear.issuesThisYear.length}/
+                      {holidayStopsResponse.annualIssueLimit}
+                    </strong>{" "}
+                    {props.productType.holidayStops.issueKeyword}s until{" "}
+                    {renewalDateMoment.format(friendlyLongDateFormat)}
+                    {combinedIssuesImpactedPerYear.issuesNextYear.length >
+                      0 && (
+                      <span>
+                        {" "}
+                        and{" "}
+                        <strong>
+                          {combinedIssuesImpactedPerYear.issuesNextYear.length}/
+                          {holidayStopsResponse.annualIssueLimit}
+                        </strong>{" "}
+                        {props.productType.holidayStops.issueKeyword}s the
+                        following year
+                      </span>
+                    )}
+                    .
+                  </div>
+                </>
+              ) : (
+                <div>
+                  You have{" "}
+                  <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
+                  {props.productType.holidayStops.issueKeyword}s available to
+                  suspend until{" "}
+                  {renewalDateMoment.format(friendlyLongDateFormat)}.
+                </div>
+              )}
+              <div
+                css={{
+                  textAlign: "right",
+                  marginTop: "10px",
+                  [minWidth.phablet]: {
+                    display: "none"
+                  }
+                }}
+              >
+                {productDetail.subscription.autoRenew && createSuspensionButton}
+              </div>
+            </>
+          </OverviewRow>
+          {holidayStopsResponse.existing.length > 0 && (
+            <OverviewRow heading="Expected Credits">
+              <CollatedCredits
+                publicationsImpacted={holidayStopsResponse.existing
+                  .filter(isNotWithdrawn)
+                  .flatMap(_ => _.publicationsImpacted)}
+                currency={currency}
+              />
+            </OverviewRow>
+          )}
+          <OverviewRow heading="Details">
+            {holidayStopsResponse.existing.length > 0 ? (
+              <SummaryTable
+                data={holidayStopsResponse.existing}
+                isTestUser={productDetail.isTestUser}
+                subscription={productDetail.subscription}
+                issueKeyword={props.productType.holidayStops.issueKeyword}
+                reloadParent={reload}
+                setExistingHolidayStopToAmend={setExistingHolidayStopToAmend}
+              />
+            ) : (
+              "You currently don't have any scheduled suspensions."
+            )}
+          </OverviewRow>
+        </>
+      )}
+      <div
+        css={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "30px",
+          [maxWidth.phablet]: {
+            flexDirection: "column-reverse"
+          }
+        }}
+      >
+        <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
+          <ReturnToYourProductButton productType={props.productType} />
+        </div>
+        <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
+          {productDetail.subscription.autoRenew && createSuspensionButton}
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <HolidayStopsResponseContext.Provider
       value={{
@@ -124,183 +294,35 @@ const renderHolidayStopsOverview = (
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
-        <WizardStep routeableStepProps={props} hideBackButton>
-          <div>
-            <h1>Suspend {props.productType.friendlyName}</h1>
-            {productDetail.subscription.autoRenew ? (
-              <OverviewRow heading="How">
-                <>
-                  <div>
-                    You can suspend up to{" "}
-                    <strong>
-                      {holidayStopsResponse.annualIssueLimit}{" "}
-                      {props.productType.holidayStops.issueKeyword}s
-                    </strong>{" "}
-                    per year of your subscription. <br />
-                  </div>
-                  {props.productType.holidayStops.alternateNoticeString && (
-                    <div>
-                      Please provide{" "}
-                      <strong>
-                        {props.productType.holidayStops.alternateNoticeString}
-                      </strong>
-                      .
-                    </div>
-                  )}
-                  <div>
-                    {creditExplainerSentence(
-                      props.productType.holidayStops.issueKeyword
-                    )}
-                  </div>
-                  {props.productType.holidayStops.additionalHowAdvice && (
-                    <div>
-                      {props.productType.holidayStops.additionalHowAdvice}
-                    </div>
-                  )}
-                  <div
-                    css={{
-                      fontFamily: sans,
-                      fontSize: "14px",
-                      margin: "10px",
-                      display: "flex",
-                      alignItems: "top"
-                    }}
-                  >
-                    <InfoIcon />
-                    <div>
-                      <strong>
-                        {renewalDateMoment.format(friendlyLongDateFormat)}
-                      </strong>{" "}
-                      is the next anniversary of your subscription.
-                      <br />
-                      The number of{" "}
-                      {props.productType.holidayStops.issueKeyword}s you can
-                      suspend per year is reset on this date.
-                    </div>
-                  </div>
-                  <HolidayQuestionsModal
-                    annualIssueLimit={holidayStopsResponse.annualIssueLimit}
-                    holidayStopFlowProperties={props.productType.holidayStops}
-                  />
-                </>
-              </OverviewRow>
-            ) : (
-              <h4>
-                This subscription does not automatically renew, so unfortunately
-                you{" "}
-                {holidayStopsResponse.existing.length > 0
-                  ? "can no longer"
-                  : "cannot"}{" "}
-                create a holiday suspension for this subscription.
-              </h4>
-            )}
-            {(productDetail.subscription.autoRenew ||
-              holidayStopsResponse.existing.length > 0) && (
-              <>
-                <OverviewRow heading="Summary">
-                  <>
-                    {holidayStopsResponse.existing.length > 0 ? (
-                      <>
-                        <div>
-                          You have suspended{" "}
-                          <strong>
-                            {
-                              combinedIssuesImpactedPerYear.issuesThisYear
-                                .length
-                            }
-                            /{holidayStopsResponse.annualIssueLimit}
-                          </strong>{" "}
-                          {props.productType.holidayStops.issueKeyword}s until{" "}
-                          {renewalDateMoment.format(friendlyLongDateFormat)}
-                          {combinedIssuesImpactedPerYear.issuesNextYear.length >
-                            0 && (
-                            <span>
-                              {" "}
-                              and{" "}
-                              <strong>
-                                {
-                                  combinedIssuesImpactedPerYear.issuesNextYear
-                                    .length
-                                }
-                                /{holidayStopsResponse.annualIssueLimit}
-                              </strong>{" "}
-                              {props.productType.holidayStops.issueKeyword}s the
-                              following year
-                            </span>
-                          )}
-                          .
-                        </div>
-                      </>
-                    ) : (
-                      <div>
-                        You have{" "}
-                        <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
-                        {props.productType.holidayStops.issueKeyword}s available
-                        to suspend until{" "}
-                        {renewalDateMoment.format(friendlyLongDateFormat)}.
-                      </div>
-                    )}
-                    <div
-                      css={{
-                        textAlign: "right",
-                        marginTop: "10px",
-                        [minWidth.phablet]: {
-                          display: "none"
-                        }
-                      }}
-                    >
-                      {productDetail.subscription.autoRenew &&
-                        createSuspensionButton}
-                    </div>
-                  </>
-                </OverviewRow>
-                {holidayStopsResponse.existing.length > 0 && (
-                  <OverviewRow heading="Expected Credits">
-                    <CollatedCredits
-                      publicationsImpacted={holidayStopsResponse.existing
-                        .filter(isNotWithdrawn)
-                        .flatMap(_ => _.publicationsImpacted)}
-                      currency={currency}
-                    />
-                  </OverviewRow>
-                )}
-                <OverviewRow heading="Details">
-                  {holidayStopsResponse.existing.length > 0 ? (
-                    <SummaryTable
-                      data={holidayStopsResponse.existing}
-                      isTestUser={productDetail.isTestUser}
-                      subscription={productDetail.subscription}
-                      issueKeyword={props.productType.holidayStops.issueKeyword}
-                      reloadParent={reload}
-                      setExistingHolidayStopToAmend={
-                        setExistingHolidayStopToAmend
-                      }
-                    />
-                  ) : (
-                    "You currently don't have any scheduled suspensions."
-                  )}
-                </OverviewRow>
-              </>
-            )}
-            <div
-              css={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: "30px",
-                [maxWidth.phablet]: {
-                  flexDirection: "column-reverse"
-                }
-              }}
-            >
-              <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
-                <ReturnToYourProductButton productType={props.productType} />
-              </div>
-              <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
-                {productDetail.subscription.autoRenew && createSuspensionButton}
-              </div>
-            </div>
-          </div>
+        <WizardStep
+          routeableStepProps={props}
+          hideBackButton
+          fullWidth={isInAccountOverviewTest || undefined}
+        >
+          {isInAccountOverviewTest ? (
+            <>
+              <PageHeaderContainer
+                title="Manage suspensions"
+                breadcrumbs={[
+                  {
+                    title: navLinks.accountOverview.title,
+                    link: navLinks.accountOverview.link
+                  },
+                  {
+                    title: "Manage suspensions",
+                    currentPage: true
+                  }
+                ]}
+              />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
+              >
+                <InnerContent />
+              </PageNavAndContentContainer>
+            </>
+          ) : (
+            <InnerContent />
+          )}
         </WizardStep>
       </MembersDataApiItemContext.Provider>
     </HolidayStopsResponseContext.Provider>
@@ -330,43 +352,58 @@ export class HolidaysOverview extends React.Component<
   };
 
   public render = () => (
-    <FlowStartMultipleProductDetailHandler
-      {...this.props}
-      headingPrefix="Manage suspensions of"
-      hideHeading
-      supportRefererSuffix="holiday_stop_flow"
-      loadingMessagePrefix="Retrieving details of your"
-      cancelledExplainer={`This ${this.props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 
+    <IsInAccountOverviewContext.Consumer>
+      {isInAccountOverviewTest => (
+        <FlowStartMultipleProductDetailHandler
+          {...this.props}
+          headingPrefix="Manage suspensions of"
+          hideHeading
+          {...(isInAccountOverviewTest
+            ? {
+                hasLeftNav: {
+                  pageTitle: "Manage suspensions",
+                  selectedNavItem: navLinks.accountOverview
+                }
+              }
+            : {})}
+          supportRefererSuffix="holiday_stop_flow"
+          loadingMessagePrefix="Retrieving details of your"
+          cancelledExplainer={`This ${this.props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 
       Please contact us if you would like to re-start this ${this.props.productType.friendlyName}, make any amendments or need further help.`}
-      singleProductDetailRenderer={(
-        routeableStepProps: RouteableStepProps,
-        productDetail: ProductDetail
-      ) => (
-        <MembersDataApiItemContext.Provider value={productDetail}>
-          <NavigateFnContext.Provider value={{ navigate: this.props.navigate }}>
-            {" "}
-            {productDetail.subscription.start ? (
-              <GetHolidayStopsAsyncLoader
-                fetch={createGetHolidayStopsFetcher(
-                  productDetail.subscription.subscriptionId,
-                  productDetail.isTestUser
+          singleProductDetailRenderer={(
+            routeableStepProps: RouteableStepProps,
+            productDetail: ProductDetail
+          ) => (
+            <MembersDataApiItemContext.Provider value={productDetail}>
+              <NavigateFnContext.Provider
+                value={{ navigate: this.props.navigate }}
+              >
+                {" "}
+                {productDetail.subscription.start ? (
+                  <GetHolidayStopsAsyncLoader
+                    fetch={createGetHolidayStopsFetcher(
+                      productDetail.subscription.subscriptionId,
+                      productDetail.isTestUser
+                    )}
+                    render={renderHolidayStopsOverview(
+                      productDetail,
+                      this.props,
+                      this.state.existingHolidayStopToAmend,
+                      this.setExistingHolidayStopToAmend,
+                      isInAccountOverviewTest
+                    )}
+                    loadingMessage="Loading existing suspensions..."
+                    readerOnOK={embellishExistingHolidayStops}
+                  />
+                ) : (
+                  <GenericErrorScreen loggingMessage="Subscription had no start date" />
                 )}
-                render={renderHolidayStopsOverview(
-                  productDetail,
-                  this.props,
-                  this.state.existingHolidayStopToAmend,
-                  this.setExistingHolidayStopToAmend
-                )}
-                loadingMessage="Loading existing suspensions..."
-                readerOnOK={embellishExistingHolidayStops}
-              />
-            ) : (
-              <GenericErrorScreen loggingMessage="Subscription had no start date" />
-            )}
-          </NavigateFnContext.Provider>
-        </MembersDataApiItemContext.Provider>
+              </NavigateFnContext.Provider>
+            </MembersDataApiItemContext.Provider>
+          )}
+        />
       )}
-    />
+    </IsInAccountOverviewContext.Consumer>
   );
 
   private setExistingHolidayStopToAmend = (

@@ -1,10 +1,10 @@
 import { Location } from "@reach/router";
 import React, { ReactNode } from "react";
 import parse from "url-parse";
+import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
 import { OphanProduct } from "../../shared/ophanTypes";
 import { ProductDetail } from "../../shared/productResponse";
 import { ProductType } from "../../shared/productTypes";
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
 
 declare global {
   interface Window {
@@ -25,7 +25,10 @@ export interface Event {
   eventValue?: number;
 }
 
-const MMA_AB_TEST_DIMENSION_VALUE = isInAccountOverviewTest()
+const globals = typeof window !== "undefined" ? window.guardian : undefined;
+const MMA_AB_TEST_DIMENSION_VALUE = isIdentityInAccountOverviewTest(
+  globals?.identityDetails?.userId
+)
   ? "IN-ACCOUNT-OVERVIEW_TEST"
   : "NOT-IN-ACCOUNT-OVERVIEW_TEST";
 

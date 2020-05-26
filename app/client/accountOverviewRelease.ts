@@ -1,6 +1,3 @@
-import { isIdentityInAccountOverviewTest } from "../shared/accountOverviewRelease";
+import { createContext } from "react";
 
-export const isInAccountOverviewTest = () => {
-  const globals = typeof window !== "undefined" ? window.guardian : undefined;
-  return isIdentityInAccountOverviewTest(globals?.identityDetails?.userId);
-};
+export const IsInAccountOverviewContext = createContext<boolean>(false);
