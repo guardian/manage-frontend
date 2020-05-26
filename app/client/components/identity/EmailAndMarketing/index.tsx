@@ -132,7 +132,7 @@ export const EmailAndMarketing = (props: { path?: string }) => {
     <>
       <PageHeaderContainer
         selectedNavItem={navLinks.emailPrefs}
-        title="Emails &amp;` marketing"
+        title="Emails &amp; marketing"
       />
       <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
         {state.error ? errorMessage : null}
