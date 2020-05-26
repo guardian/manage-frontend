@@ -1,5 +1,5 @@
 import { navigate } from "@reach/router";
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   friendlyLongDateFormat,
   momentiseDateStr
@@ -83,7 +83,7 @@ const renderHolidayStopsOverview = (
   props: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void,
-  isInAccountOverview: boolean
+  isInAccountOverviewTest: boolean
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDateMoment = momentiseDateStr(
     productDetail.subscription.renewalDate
@@ -297,9 +297,9 @@ const renderHolidayStopsOverview = (
         <WizardStep
           routeableStepProps={props}
           hideBackButton
-          fullWidth={isInAccountOverview || undefined}
+          fullWidth={isInAccountOverviewTest || undefined}
         >
-          {isInAccountOverview ? (
+          {isInAccountOverviewTest ? (
             <>
               <PageHeaderContainer
                 title="Manage suspensions"
@@ -343,62 +343,70 @@ export interface HolidaysOverviewState {
   existingHolidayStopToAmend: HolidayStopRequest | null;
 }
 
-export const HolidaysOverview = (
-  props: RouteableStepProps & WithProductType<ProductTypeWithHolidayStopsFlow>
-) => {
-  const [
-    existingHolidayStopToAmend,
-    setExistingHolidayStopToAmend
-  ] = useState<HolidayStopRequest | null>(null);
+export class HolidaysOverview extends React.Component<
+  HolidayStopsRouteableStepProps,
+  HolidaysOverviewState
+> {
+  public state: HolidaysOverviewState = {
+    existingHolidayStopToAmend: null
+  };
 
-  const isInAccountOverview = useContext(IsInAccountOverviewContext);
-
-  return (
-    <FlowStartMultipleProductDetailHandler
-      {...props}
-      headingPrefix="Manage suspensions of"
-      hideHeading
-      {...(isInAccountOverview
-        ? {
-            hasLeftNav: {
-              pageTitle: "Manage suspensions",
-              selectedNavItem: navLinks.accountOverview
-            }
-          }
-        : {})}
-      supportRefererSuffix="holiday_stop_flow"
-      loadingMessagePrefix="Retrieving details of your"
-      cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 
-      Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-      singleProductDetailRenderer={(
-        routeableStepProps: RouteableStepProps,
-        productDetail: ProductDetail
-      ) => (
-        <MembersDataApiItemContext.Provider value={productDetail}>
-          <NavigateFnContext.Provider value={{ navigate: props.navigate }}>
-            {" "}
-            {productDetail.subscription.start ? (
-              <GetHolidayStopsAsyncLoader
-                fetch={createGetHolidayStopsFetcher(
-                  productDetail.subscription.subscriptionId,
-                  productDetail.isTestUser
+  public render = () => (
+    <IsInAccountOverviewContext.Consumer>
+      {isInAccountOverviewTest => (
+        <FlowStartMultipleProductDetailHandler
+          {...this.props}
+          headingPrefix="Manage suspensions of"
+          hideHeading
+          {...(isInAccountOverviewTest
+            ? {
+                hasLeftNav: {
+                  pageTitle: "Manage suspensions",
+                  selectedNavItem: navLinks.accountOverview
+                }
+              }
+            : {})}
+          supportRefererSuffix="holiday_stop_flow"
+          loadingMessagePrefix="Retrieving details of your"
+          cancelledExplainer={`This ${this.props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 
+      Please contact us if you would like to re-start this ${this.props.productType.friendlyName}, make any amendments or need further help.`}
+          singleProductDetailRenderer={(
+            routeableStepProps: RouteableStepProps,
+            productDetail: ProductDetail
+          ) => (
+            <MembersDataApiItemContext.Provider value={productDetail}>
+              <NavigateFnContext.Provider
+                value={{ navigate: this.props.navigate }}
+              >
+                {" "}
+                {productDetail.subscription.start ? (
+                  <GetHolidayStopsAsyncLoader
+                    fetch={createGetHolidayStopsFetcher(
+                      productDetail.subscription.subscriptionId,
+                      productDetail.isTestUser
+                    )}
+                    render={renderHolidayStopsOverview(
+                      productDetail,
+                      this.props,
+                      this.state.existingHolidayStopToAmend,
+                      this.setExistingHolidayStopToAmend,
+                      isInAccountOverviewTest
+                    )}
+                    loadingMessage="Loading existing suspensions..."
+                    readerOnOK={embellishExistingHolidayStops}
+                  />
+                ) : (
+                  <GenericErrorScreen loggingMessage="Subscription had no start date" />
                 )}
-                render={renderHolidayStopsOverview(
-                  productDetail,
-                  props,
-                  existingHolidayStopToAmend,
-                  setExistingHolidayStopToAmend,
-                  isInAccountOverview
-                )}
-                loadingMessage="Loading existing suspensions..."
-                readerOnOK={embellishExistingHolidayStops}
-              />
-            ) : (
-              <GenericErrorScreen loggingMessage="Subscription had no start date" />
-            )}
-          </NavigateFnContext.Provider>
-        </MembersDataApiItemContext.Provider>
+              </NavigateFnContext.Provider>
+            </MembersDataApiItemContext.Provider>
+          )}
+        />
       )}
-    />
+    </IsInAccountOverviewContext.Consumer>
   );
-};
+
+  private setExistingHolidayStopToAmend = (
+    newValue: HolidayStopRequest | null
+  ) => this.setState({ existingHolidayStopToAmend: newValue });
+}
