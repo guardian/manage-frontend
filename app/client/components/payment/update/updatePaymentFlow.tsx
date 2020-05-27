@@ -4,10 +4,11 @@ import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import Raven from "raven-js";
-import React, { Dispatch, SetStateAction, useContext, useState } from "react";
+import React from "react";
 import {
   MembersDataApiItemContext,
-  ProductDetail
+  ProductDetail,
+  Subscription
 } from "../../../../shared/productResponse";
 import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth } from "../../../styles/breakpoints";
@@ -45,7 +46,7 @@ export enum PaymentMethod {
 
 interface PaymentMethodProps {
   value: PaymentMethod;
-  updatePaymentMethod: Dispatch<SetStateAction<PaymentMethod>>;
+  updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
 }
 
 interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
@@ -137,18 +138,24 @@ interface PaymentUpdaterStepProps {
   routeableStepProps: RouteableStepProps;
 }
 
-interface PaymentUpdaterStepProps {
-  productDetail: ProductDetail;
+interface PaymentUpdaterStepState {
+  selectedPaymentMethod: PaymentMethod;
+  newPaymentMethodDetail?: NewPaymentMethodDetail;
 }
-const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
-  const [newPaymentMethodDetail, setNewPaymentMethodDetail] = useState<
-    NewPaymentMethodDetail | undefined
-  >();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-    PaymentMethod
-  >(subscriptionToPaymentMethod(props.productDetail));
 
-  const InnerContent = () => {
+class PaymentUpdaterStep extends React.Component<
+  PaymentUpdaterStepProps,
+  PaymentUpdaterStepState
+> {
+  public readonly currentPaymentMethod = subscriptionToPaymentMethod(
+    this.props.productDetail
+  );
+  public state = {
+    newPaymentMethodDetail: undefined,
+    selectedPaymentMethod: this.currentPaymentMethod
+  };
+
+  public render(): React.ReactNode {
     const subHeadingCss = `
       border-top: 1px solid ${palette.neutral["86"]};
       ${headline.small()};
@@ -160,9 +167,9 @@ const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
       };
     `;
 
-    return (
+    const innerContent = (isInAccountOverviewTest: boolean) => (
       <>
-        {selectedPaymentMethod !== PaymentMethod.payPal && (
+        {this.state.selectedPaymentMethod !== PaymentMethod.payPal && (
           <ProgressIndicator
             steps={[
               { title: "New details", isCurrentStep: true },
@@ -180,30 +187,33 @@ const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
           `}
         >
           Update payment for your{" "}
-          {props.routeableStepProps.productType.friendlyName}
+          {this.props.routeableStepProps.productType.friendlyName}
         </h2>
-        {props.productDetail.alertText && (
+        {this.props.productDetail.alertText && (
           <div>
             <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-            <span>{props.productDetail.alertText}</span>
+            <span>{this.props.productDetail.alertText}</span>
           </div>
         )}
         <div css={{ minWidth: "260px" }}>
           <h3>Current Payment Details</h3>
-          <CurrentPaymentDetails {...props.productDetail.subscription} />
+          <CurrentPaymentDetails {...this.props.productDetail.subscription} />
         </div>
         <PaymentMethodBar
-          updatePaymentMethod={setSelectedPaymentMethod}
-          value={selectedPaymentMethod}
+          updatePaymentMethod={this.updatePaymentMethod}
+          value={this.state.selectedPaymentMethod}
         />
         <h3>New Payment Details</h3>
-        <InputForm />
+        {this.getInputForm(
+          this.props.productDetail.subscription,
+          this.props.productDetail.isTestUser
+        )}
         <div css={{ height: "10px" }} />
-        {useContext(IsInAccountOverviewContext) ? (
+        {isInAccountOverviewTest ? (
           <LinkButton
             to={"/"}
             text={"Return to your account"}
-            state={props.productDetail}
+            state={this.props.productDetail}
             colour={palette.neutral[100]}
             textColour={palette.neutral[0]}
             hollow
@@ -211,39 +221,90 @@ const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
           />
         ) : (
           <ReturnToYourProductButton
-            productType={props.routeableStepProps.productType}
+            productType={this.props.routeableStepProps.productType}
           />
         )}
       </>
     );
-  };
 
-  const InputForm = () => {
-    switch (selectedPaymentMethod) {
+    return (
+      <MembersDataApiItemContext.Provider value={this.props.productDetail}>
+        <NewPaymentMethodContext.Provider
+          value={this.state.newPaymentMethodDetail || {}}
+        >
+          <NavigateFnContext.Provider
+            value={{ navigate: this.props.routeableStepProps.navigate }}
+          >
+            <IsInAccountOverviewContext.Consumer>
+              {isInAccountOverviewTest => (
+                <WizardStep
+                  routeableStepProps={this.props.routeableStepProps}
+                  extraFooterComponents={
+                    <QuestionsFooter topic={paymentQuestionsTopicString} />
+                  }
+                  hideBackButton
+                  fullWidth={isInAccountOverviewTest ? true : undefined}
+                >
+                  {isInAccountOverviewTest ? (
+                    <>
+                      <PageHeaderContainer
+                        title="Manage payment method"
+                        breadcrumbs={[
+                          {
+                            title: navLinks.accountOverview.title,
+                            link: navLinks.accountOverview.link
+                          },
+                          {
+                            title: "Manage payment method",
+                            currentPage: true
+                          }
+                        ]}
+                      />
+                      <PageNavAndContentContainer
+                        selectedNavItem={navLinks.accountOverview}
+                      >
+                        {innerContent(isInAccountOverviewTest)}
+                      </PageNavAndContentContainer>
+                    </>
+                  ) : (
+                    innerContent(isInAccountOverviewTest)
+                  )}
+                </WizardStep>
+              )}
+            </IsInAccountOverviewContext.Consumer>
+          </NavigateFnContext.Provider>
+        </NewPaymentMethodContext.Provider>
+      </MembersDataApiItemContext.Provider>
+    );
+  }
+
+  private newPaymentMethodDetailUpdater = (
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => this.setState({ newPaymentMethodDetail });
+
+  private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
+    this.setState({ selectedPaymentMethod: newPaymentMethod });
+
+  private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
+    switch (this.state.selectedPaymentMethod) {
       case PaymentMethod.resetRequired:
-        return props.productDetail.subscription
-          .stripePublicKeyForCardAddition ? (
+        return subscription.stripePublicKeyForCardAddition ? (
           <CardInputForm
-            stripeApiKey={
-              props.productDetail.subscription.stripePublicKeyForCardAddition
-            }
-            newPaymentMethodDetailUpdater={setNewPaymentMethodDetail}
+            stripeApiKey={subscription.stripePublicKeyForCardAddition}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
             userEmail={window.guardian.identityDetails.email}
           />
         ) : (
           <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
         );
       case PaymentMethod.card:
-        return props.productDetail.subscription.card &&
-          props.productDetail.subscription.card.stripePublicKeyForUpdate ? (
+        return subscription.card &&
+          subscription.card.stripePublicKeyForUpdate ? (
           <CardInputForm
-            stripeApiKey={
-              props.productDetail.subscription.card.stripePublicKeyForUpdate
-            }
-            newPaymentMethodDetailUpdater={setNewPaymentMethodDetail}
+            stripeApiKey={subscription.card.stripePublicKeyForUpdate}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
             userEmail={
-              props.productDetail.subscription.card.email ||
-              window.guardian.identityDetails.email
+              subscription.card.email || window.guardian.identityDetails.email
             }
           />
         ) : (
@@ -269,8 +330,8 @@ const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
       case PaymentMethod.dd:
         return (
           <DirectDebitInputForm
-            newPaymentMethodDetailUpdater={setNewPaymentMethodDetail}
-            testUser={props.productDetail.isTestUser}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            testUser={isTestUser}
           />
         );
       default:
@@ -282,53 +343,7 @@ const PaymentUpdaterStep = (props: PaymentUpdaterStepProps) => {
         );
     }
   };
-
-  return (
-    <MembersDataApiItemContext.Provider value={props.productDetail}>
-      <NewPaymentMethodContext.Provider value={newPaymentMethodDetail || {}}>
-        <NavigateFnContext.Provider
-          value={{ navigate: props.routeableStepProps.navigate }}
-        >
-          <WizardStep
-            routeableStepProps={props.routeableStepProps}
-            extraFooterComponents={
-              <QuestionsFooter topic={paymentQuestionsTopicString} />
-            }
-            hideBackButton
-            {...(useContext(IsInAccountOverviewContext)
-              ? { fullWidth: true }
-              : {})}
-          >
-            {useContext(IsInAccountOverviewContext) ? (
-              <>
-                <PageHeaderContainer
-                  title="Manage payment method"
-                  breadcrumbs={[
-                    {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
-                    },
-                    {
-                      title: "Manage payment method",
-                      currentPage: true
-                    }
-                  ]}
-                />
-                <PageNavAndContentContainer
-                  selectedNavItem={navLinks.accountOverview}
-                >
-                  <InnerContent />
-                </PageNavAndContentContainer>
-              </>
-            ) : (
-              <InnerContent />
-            )}
-          </WizardStep>
-        </NavigateFnContext.Provider>
-      </NewPaymentMethodContext.Provider>
-    </MembersDataApiItemContext.Provider>
-  );
-};
+}
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
   <FlowStartMultipleProductDetailHandler
