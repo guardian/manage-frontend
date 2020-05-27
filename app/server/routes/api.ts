@@ -1,5 +1,5 @@
+import * as Sentry from "@sentry/node";
 import { Router } from "express";
-import Raven from "raven";
 import {
   isProduct,
   MDA_TEST_USER_HEADER,
@@ -62,7 +62,7 @@ router.get(
         const errorMessage =
           "Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
         log.error(errorMessage, error);
-        Raven.captureMessage(errorMessage);
+        Sentry.captureMessage(errorMessage);
         response.json(augmentedWithTestUser); // fallback to sending sending the response augmented with just isTestUser
       });
   })(

@@ -1,7 +1,7 @@
+import * as Sentry from "@sentry/node";
 import bodyParser from "body-parser";
 import { default as express, NextFunction, Response } from "express";
 import helmet from "helmet";
-import Raven from "raven";
 import { conf } from "./config";
 import { log } from "./log";
 import * as routes from "./routes";
@@ -12,11 +12,18 @@ const server = express();
 
 declare var WEBPACK_BUILD: string;
 if (conf.SERVER_DSN) {
-  Raven.config(conf.SERVER_DSN, {
+  Sentry.init({
+    dsn: conf.SERVER_DSN,
     release: WEBPACK_BUILD || "local",
     environment: conf.DOMAIN
-  }).install();
-  // server.use(Raven.requestHandler()); // IMPORTANT: If we do this we get cookies, headers etc (i.e. PI)
+  });
+  server.use(
+    Sentry.Handlers.requestHandler({
+      ip: false,
+      user: false,
+      request: ["method", "query_string", "url"] // this list is explicit, to avoid sending cookies
+    })
+  );
 }
 
 if (conf.DOMAIN === "thegulocal.com") {
@@ -50,7 +57,7 @@ server.use(routes.productsProvider("/api/"));
 server.use(routes.frontend);
 
 if (conf.SERVER_DSN) {
-  server.use(Raven.errorHandler());
+  server.use(Sentry.Handlers.errorHandler());
 }
 server.listen(port);
 log.info(`Serving at http://localhost:${port}`);

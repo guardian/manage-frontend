@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import { getMainPlan, ProductDetail } from "../shared/productResponse";
 import { ProductTypes } from "../shared/productTypes";
 import { s3FilePromise } from "./awsIntegration";
@@ -68,7 +68,7 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
   ) {
     const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${maybeProductType?.friendlyName}, but wasn't.`;
     log.error(errorMessage);
-    Raven.captureMessage(errorMessage);
+    Sentry.captureMessage(errorMessage);
   }
   return maybeDeliveryAddressChangeEffectiveDate
     ? {

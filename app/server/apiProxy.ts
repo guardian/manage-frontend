@@ -1,6 +1,6 @@
+import * as Sentry from "@sentry/node";
 import { Request, Response } from "express";
 import fetch from "node-fetch";
-import Raven from "raven";
 import { parse } from "url";
 import { LOGGING_CODE_SUFFIX_HEADER } from "../shared/globals";
 import { X_GU_ID_FORWARDED_SCOPE } from "../shared/identity";
@@ -126,7 +126,7 @@ export const proxyApiHandler = (
         ...res.locals.loggingDetail,
         exception: error ? error.toString() : "undefined"
       });
-      Raven.captureException(error);
+      Sentry.captureException(error);
       putMetric(res.locals.loggingDetail);
       res.status(500).send("Something broke!");
     });
