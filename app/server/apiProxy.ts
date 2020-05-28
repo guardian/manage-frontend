@@ -113,9 +113,7 @@ export const proxyApiHandler = (
       return intermediateResponse.text();
     })
     .then(body => {
-      const suitableLog = res.locals.loggingDetail.isOK
-        ? log.info
-        : log.warning;
+      const suitableLog = res.locals.loggingDetail.isOK ? log.info : log.warn;
       suitableLog("proxying", {
         ...res.locals.loggingDetail,
         responseBody: safeJsonParse(body)
@@ -126,7 +124,7 @@ export const proxyApiHandler = (
     .catch(error => {
       log.error("ERROR proxying", {
         ...res.locals.loggingDetail,
-        exception: error || "undefined"
+        exception: error ? error.toString() : "undefined"
       });
       Raven.captureException(error);
       putMetric(res.locals.loggingDetail);
