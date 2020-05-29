@@ -150,7 +150,10 @@ const getPaymentMethodRow = (
       <ProductDetailRow
         label="Payment method"
         data={
-          <PayPalDisplay payPalEmail={productDetail.subscription.payPalEmail} />
+          <PayPalDisplay
+            payPalId={productDetail.subscription.payPalEmail}
+            shouldIncludePrefixCopy
+          />
         }
       />
     );

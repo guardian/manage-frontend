@@ -17,7 +17,7 @@ import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
-import { PaypalLogo } from "../payment/paypalLogo";
+import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { RouteableStepProps } from "../wizardRouterAdapter";
@@ -173,7 +173,12 @@ const SingleProductDetailRenderer = ({
                       {...productDetail.subscription.card}
                     />
                   )}
-                  {productDetail.subscription.payPalEmail && <PaypalLogo />}
+                  {productDetail.subscription.payPalEmail && (
+                    <PayPalDisplay
+                      payPalId={productDetail.subscription.payPalEmail}
+                      shouldIncludePrefixCopy
+                    />
+                  )}
                   {productDetail.subscription.mandate && (
                     <DirectDebitDisplay
                       inErrorState={!!productDetail.alertText}
@@ -201,23 +206,26 @@ const SingleProductDetailRenderer = ({
             }
           ]}
         />
-        {productDetail.isPaidTier && (
-          <LinkButton
-            colour={
-              productDetail.alertText ? palette.brand[400] : palette.brand[800]
-            }
-            textColour={
-              productDetail.alertText
-                ? palette.neutral[100]
-                : palette.brand[400]
-            }
-            fontWeight={"bold"}
-            {...(productDetail.alertText ? { alert: true } : {})}
-            text="Update payment method"
-            to={`/payment/${productType.urlPart}`}
-            state={productDetail}
-          />
-        )}
+        {productDetail.isPaidTier &&
+          !productDetail.subscription.payPalEmail && (
+            <LinkButton
+              colour={
+                productDetail.alertText
+                  ? palette.brand[400]
+                  : palette.brand[800]
+              }
+              textColour={
+                productDetail.alertText
+                  ? palette.neutral[100]
+                  : palette.brand[400]
+              }
+              fontWeight={"bold"}
+              {...(productDetail.alertText ? { alert: true } : {})}
+              text="Update payment method"
+              to={`/payment/${productType.urlPart}`}
+              state={productDetail}
+            />
+          )}
         {productType.cancellation && !hasCancellationPending && (
           <Link
             css={css`

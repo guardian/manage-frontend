@@ -1,59 +1,35 @@
 import React from "react";
-import { minWidth } from "../../styles/breakpoints";
-import { Button } from "../buttons";
-import { wrappingContainerCSS } from "../productPage";
+import { PaypalLogo } from "./paypalLogo";
 
 export interface PayPalProps {
-  payPalEmail: string;
+  payPalId: string;
+  shouldIncludePrefixCopy?: true;
 }
 
-export interface PayPalDisplayState {
-  shouldShowAccountName: boolean;
-}
-
-export class PayPalDisplay extends React.Component<
-  PayPalProps,
-  PayPalDisplayState
-> {
-  public state = { shouldShowAccountName: false };
-
-  public render(): React.ReactNode {
-    return (
-      <div>
-        <div css={wrappingContainerCSS}>
-          <span css={{ marginRight: "15px", display: "inline-block" }}>
-            You are paying with PayPal. Please login to PayPal to change your
-            payment details.
-          </span>
-          <div
-            css={{
-              margin: "8px 0",
-              [minWidth.mobileLandscape]: {
-                margin: 0
-              }
-            }}
-          >
-            <Button
-              text={
-                (this.state.shouldShowAccountName ? "Hide" : "Show") +
-                " account name"
-              }
-              onClick={() =>
-                this.setState({
-                  shouldShowAccountName: !this.state.shouldShowAccountName
-                })
-              }
-            />
-          </div>
-        </div>
-        <div
-          css={{
-            visibility: this.state.shouldShowAccountName ? "visible" : "hidden"
-          }}
-        >
-          Your PayPal account is <b>{this.props.payPalEmail}</b>
-        </div>
-      </div>
-    );
+export const getPaypalIdObfuscate = (rawId: string) => {
+  const indexOfAtSymbol = rawId.indexOf("@");
+  if (indexOfAtSymbol > -1) {
+    return `${rawId.charAt(0)}${"*".repeat(indexOfAtSymbol - 2)}${rawId.charAt(
+      indexOfAtSymbol - 1
+    )}${rawId.substring(indexOfAtSymbol)}`;
   }
-}
+  return `${rawId.charAt(0)}${"*".repeat(rawId.length - 2)}${rawId.charAt(
+    rawId.length - 1
+  )}`;
+};
+
+export const PayPalDisplay = (props: PayPalProps) => (
+  <>
+    <PaypalLogo />
+    <p>
+      {props.shouldIncludePrefixCopy && (
+        <>
+          To update your payment details, please login to your PayPal account.
+          <br />
+          Your PayPal ID is&nbsp;
+        </>
+      )}
+      {getPaypalIdObfuscate(props.payPalId)}
+    </p>
+  </>
+);

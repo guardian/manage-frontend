@@ -7,6 +7,7 @@ import { minWidth } from "../styles/breakpoints";
 export interface ProductDescriptionListKeyValue {
   title: string;
   value?: string | number | ReactElement | HTMLElement;
+  fullWidth?: boolean;
 }
 
 interface ProductDescriptionListTable {
@@ -19,182 +20,148 @@ interface ProductDescriptionListTable {
 export const ProductDescriptionListTable = (
   props: ProductDescriptionListTable
 ) => {
-  const dlCss: string = `
-    ${textSans.medium()};
-    border: 1px solid ${props.borderColour || palette.neutral[20]};
-    ${minWidth.tablet} {
-      display: table;
-    }
-  `;
-
-  const newDlRow = (
-    rowIndex: number,
-    isFirstRow: boolean,
-    isLastRow: boolean
-  ) => `
-    ${
-      (props.alternateRowBgColors || props.seperateEachRow) &&
-      rowIndex % 2 === 0
-        ? `
-        ${
-          props.alternateRowBgColors
-            ? `background-color: ${palette.neutral[97]};`
-            : ""
-        }
-      ${
-        !isFirstRow
-          ? `
-        dt:first-of-type, 
-        dd:first-of-type {
-          border-top: 1px solid ${props.borderColour || palette.neutral[20]};
-        }
-        ${minWidth.tablet} {
-          dt, dd {
-            border-top: 1px solid ${props.borderColour || palette.neutral[20]};
-          }
-        }
-      `
-          : ""
-      }
-      ${
-        !isLastRow
-          ? `
-        dt:last-of-type, 
-        dd:last-of-type {
-          border-bottom: 1px solid ${props.borderColour || palette.neutral[20]};
-        }
-        ${minWidth.tablet} {
-          dt, dd {
-            border-bottom: 1px solid ${props.borderColour ||
-              palette.neutral[20]};
-          }
-        }
-      `
-          : ""
-      }
-    `
-        : ""
-    }
-    ${minWidth.tablet} {
-      display: table-row;
-    }
-  `;
-
-  const dtCss = (
-    isFirstRow: boolean,
-    isLastRow: boolean,
-    isFirstOption: boolean,
-    isLastOption: boolean
+  const tableEntryTitleCss = (
+    isFullWidth: boolean,
+    rightAlignTitle?: boolean
   ) => {
-    return `
-    display: inline-block;
-    vertical-align: top;
-    min-width: 15ch;
-    font-weight: bold;
-    width:1%;
-    ${minWidth.tablet} {
-      white-space:nowrap;
-    }
-    margin: 0;
-    
-
-    padding: ${isFirstOption ? `${space[3]}px` : `${space[3] * 0.5}px`} 0 ${
-      isLastOption ? `${space[3]}px` : `${space[3] * 0.5}px`
-    } ${space[3]}px;
-    ${minWidth.tablet} {
-      display: table-cell;
-      margin-right: 2ch;
-      min-width: 14ch;
-      margin-top: 0;
-      padding: ${space[5]}px 2ch ${space[5]}px ${space[5]}px;
-    }
-  `;
+    return css`
+      display: inline-block;
+      vertical-align: top;
+      min-width: 12ch;
+      padding-right: ${space[3]}px;
+      margin: ${isFullWidth ? `0 0 ${space[3]}px` : "0"};
+      ${textSans.medium({ fontWeight: "bold" })}
+      ${minWidth.tablet} {
+        text-align: ${rightAlignTitle ? "right" : "left"};
+        padding-right: ${space[5]}px;
+        min-width: 15ch;
+        margin: 0;
+      }
+    `;
   };
 
-  const ddCss = (
-    isFirstRow: boolean,
-    isLastRow: boolean,
-    isFirstOption: boolean,
-    isLastOption: boolean
-  ) => `
+  const tableValueCss = (isFullWidth: boolean) => css`
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - (15ch + 4px));
-    margin: 0;
-
-    padding: ${isFirstOption ? `${space[3]}px` : `${space[3] * 0.5}px`} ${
-    space[3]
-  }px ${isLastOption ? `${space[3]}px` : `${space[3] * 0.5}px`} 0;
-    ${minWidth.tablet} {
-      width: auto;
-      display: table-cell;
-      padding: ${space[5]}px ${space[3]}px ${space[5]}px 0;
-    }
   `;
 
-  const rowPairs = props.content.reduce(
-    (result: ProductDescriptionListKeyValue[][], value, index, array) => {
-      if (index % 2 === 0) {
-        result.push(array.slice(index, index + 2));
-      }
-      return result;
-    },
-    []
+  const filteredContent = props.content.filter(
+    tableEntry => !!tableEntry.value
   );
 
+  interface ContentRowMapEntry {
+    row: number;
+    isFirstCollum: boolean;
+  }
+
+  const contentRowMap = new Map<number, ContentRowMapEntry>();
+  filteredContent.map((tableEntry, tableEntryIndex) => {
+    const previousContentRowMapEntry = contentRowMap.get(tableEntryIndex - 1);
+
+    if (!previousContentRowMapEntry) {
+      contentRowMap.set(tableEntryIndex, {
+        row: tableEntryIndex,
+        isFirstCollum: true
+      });
+    } else {
+      const previousTableEntry = filteredContent[tableEntryIndex - 1];
+      const contentRowMapEntryTwoBack = contentRowMap.get(tableEntryIndex - 2);
+      const currentRow =
+        previousTableEntry.fullWidth ||
+        (contentRowMapEntryTwoBack &&
+          previousContentRowMapEntry.row === contentRowMapEntryTwoBack.row)
+          ? previousContentRowMapEntry.row + 1
+          : previousContentRowMapEntry.row;
+      contentRowMap.set(tableEntryIndex, {
+        row: currentRow,
+        isFirstCollum:
+          previousTableEntry.fullWidth ||
+          previousContentRowMapEntry.row !== currentRow
+      });
+    }
+  });
+
   return (
-    <dl
+    <div
       css={css`
-        ${dlCss}
+        ${textSans.medium()};
+        border: 1px solid ${props.borderColour || palette.neutral[20]};
+        display: flex;
+        flex-wrap: wrap;
+        margin ${space[5]}px 0; 
       `}
     >
-      {rowPairs.map((tableRow, rowIndex) => (
-        <div
-          css={css`
-            ${newDlRow(
-              rowIndex,
-              rowIndex === 0,
-              rowIndex === rowPairs.length - 1
-            )}
-          `}
-          key={`productdlrow-${rowIndex}`}
-        >
-          {tableRow.map((productTableKeyValue, productIndex) => {
-            return productTableKeyValue.value ? (
-              <React.Fragment key={`productpart-${productIndex}`}>
-                <dt
-                  css={css`
-                    ${dtCss(
-                      rowIndex === 0,
-                      rowIndex === rowPairs.length - 1,
-                      rowIndex === 0 && productIndex === 0,
-                      rowIndex === rowPairs.length - 1 &&
-                        productIndex === tableRow.length - 1
-                    )}
-                  `}
-                >
-                  {productTableKeyValue.title}
-                </dt>
-                <dd
-                  css={css`
-                    ${ddCss(
-                      rowIndex === 0,
-                      rowIndex === rowPairs.length - 1,
-                      rowIndex === 0 && productIndex === 0,
-                      rowIndex === rowPairs.length - 1 &&
-                        productIndex === tableRow.length - 1
-                    )}
-                  `}
-                >
-                  {productTableKeyValue.value}
-                </dd>
-              </React.Fragment>
-            ) : (
-              <React.Fragment key={`emptyproductpart-${productIndex}`} />
-            );
-          })}
-        </div>
-      ))}
-    </dl>
+      {filteredContent.map((tableEntry, tableEntryIndex) => {
+        const isFirstTableRow = tableEntryIndex < 2;
+        const isLastTableRow =
+          tableEntryIndex === props.content.length - 1 ||
+          (props.content.length % 2 === 0 &&
+            !tableEntry.fullWidth &&
+            tableEntryIndex === props.content.length - 2);
+        const { row: currentRow, isFirstCollum } = contentRowMap.get(
+          tableEntryIndex
+        ) as ContentRowMapEntry;
+
+        return (
+          <div
+            key={tableEntryIndex}
+            css={css`
+              display: ${tableEntry.fullWidth ? "block" : "inline-flex"};
+              width: 100%;
+              padding: ${isFirstCollum ? space[3] : space[3] * 0.5}px ${
+              space[3]
+            }px ${
+              tableEntry.fullWidth || !isFirstCollum ? space[3] : space[3] * 0.5
+            }px;
+              background-color: ${
+                props.alternateRowBgColors && currentRow % 2 === 0
+                  ? palette.neutral[97]
+                  : "transparent"
+              };
+              border-top: ${
+                !isFirstTableRow && isFirstCollum
+                  ? `1px solid ${props.borderColour || palette.neutral[20]};`
+                  : "none;"
+              }
+              ${minWidth.tablet} {
+                border-top: ${
+                  !isFirstTableRow
+                    ? `1px solid ${props.borderColour || palette.neutral[20]};`
+                    : "none;"
+                }
+                width: ${tableEntry.fullWidth ? "100%;" : "50%;"};
+                padding: ${
+                  isFirstTableRow
+                    ? space[5]
+                    : props.alternateRowBgColors
+                    ? space[5]
+                    : space[5] * 0.5
+                }px
+                ${space[5]}px
+                ${
+                  isLastTableRow
+                    ? space[5]
+                    : props.alternateRowBgColors
+                    ? space[5]
+                    : space[5] * 0.5
+                }px;
+              }
+            `}
+          >
+            <h4
+              css={tableEntryTitleCss(
+                !!tableEntry.fullWidth,
+                !isFirstCollum && !tableEntry.fullWidth
+              )}
+            >
+              {tableEntry.title}
+            </h4>
+            <div css={tableValueCss(!!tableEntry.fullWidth)}>
+              {tableEntry.value}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 };

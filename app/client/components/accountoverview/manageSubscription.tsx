@@ -21,7 +21,7 @@ import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
-import { PaypalLogo } from "../payment/paypalLogo";
+import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { ErrorIcon } from "../svgs/errorIcon";
@@ -64,7 +64,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
           ProductTypes.subscriptions.mapGroupedToSpecific?.(productDetail) ||
           props.productType;
         const productName =
-          productType?.alternateTierValue || productDetail.tier;
+          productType.alternateTierValue || productDetail.tier;
 
         const hasCancellationPending = productDetail.subscription.cancelledAt;
 
@@ -210,7 +210,10 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                           />
                         )}
                         {productDetail.subscription.payPalEmail && (
-                          <PaypalLogo />
+                          <PayPalDisplay
+                            payPalId={productDetail.subscription.payPalEmail}
+                            shouldIncludePrefixCopy
+                          />
                         )}
                         {productDetail.subscription.mandate && (
                           <DirectDebitDisplay
@@ -225,7 +228,10 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                       </>
                     ) : (
                       <span>FREE</span>
-                    )
+                    ),
+                    fullWidth: productDetail.subscription.payPalEmail
+                      ? true
+                      : undefined
                   },
                   {
                     title: "Expiry date",
@@ -241,25 +247,26 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   }
                 ]}
               />
-              {productDetail.isPaidTier && (
-                <LinkButton
-                  colour={
-                    productDetail.alertText
-                      ? palette.brand[400]
-                      : palette.brand[800]
-                  }
-                  textColour={
-                    productDetail.alertText
-                      ? palette.neutral[100]
-                      : palette.brand[400]
-                  }
-                  fontWeight={"bold"}
-                  {...(productDetail.alertText ? { alert: true } : {})}
-                  text="Update payment method"
-                  to={`/payment/${productType.urlPart}`}
-                  state={productDetail}
-                />
-              )}
+              {productDetail.isPaidTier &&
+                !productDetail.subscription.payPalEmail && (
+                  <LinkButton
+                    colour={
+                      productDetail.alertText
+                        ? palette.brand[400]
+                        : palette.brand[800]
+                    }
+                    textColour={
+                      productDetail.alertText
+                        ? palette.neutral[100]
+                        : palette.brand[400]
+                    }
+                    fontWeight={"bold"}
+                    {...(productDetail.alertText ? { alert: true } : {})}
+                    text="Update payment method"
+                    to={`/payment/${productType.urlPart}`}
+                    state={productDetail}
+                  />
+                )}
               <h2
                 css={css`
                   ${subHeadingCss}
@@ -277,7 +284,8 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                         <DeliveryAddressDisplay
                           {...productDetail.subscription.deliveryAddress}
                         />
-                      )
+                      ),
+                      fullWidth: true
                     }
                   ]}
                 />
