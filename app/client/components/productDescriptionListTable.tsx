@@ -36,15 +36,17 @@ export const ProductDescriptionListTable = (
     `;
   };
 
-  const tableValueCss = css`
-    display: inline-block;
-    vertical-align: top;
-    margin: 0;
-    width: 40%;
-    ${minWidth.tablet} {
-      width: auto;
-    }
-  `;
+  const tableValueCss = (isTwoColWidth: boolean) => {
+    return css`
+      display: inline-block;
+      vertical-align: top;
+      margin: 0;
+      width: ${isTwoColWidth ? "100" : "40"}%;
+      ${minWidth.tablet} {
+        width: auto;
+      }
+    `;
+  };
 
   const filteredContent = props.content.filter(
     tableEntry => !!tableEntry.value
@@ -155,7 +157,9 @@ export const ProductDescriptionListTable = (
             <dt css={tableEntryTitleCss(!!tableEntry.spanTwoCols)}>
               {tableEntry.title}
             </dt>
-            <dd css={tableValueCss}>{tableEntry.value}</dd>
+            <dd css={tableValueCss(!!tableEntry.spanTwoCols)}>
+              {tableEntry.value}
+            </dd>
           </dl>
         );
       })}
