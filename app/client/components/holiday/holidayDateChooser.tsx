@@ -1,11 +1,11 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Link, navigate } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import { FlexWrapProperty, FontWeightProperty } from "csstype";
 import { startCase } from "lodash";
 import { Moment } from "moment";
 import { DateRange } from "moment-range";
-import * as Raven from "raven-js";
 import React from "react";
 import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
@@ -506,7 +506,7 @@ export class HolidayDateChooser extends React.Component<
               eventAction: "error",
               eventLabel: error ? error.toString() : undefined
             });
-            Raven.captureException(error);
+            Sentry.captureException(error);
           })
     );
 

@@ -1,5 +1,5 @@
+import * as Sentry from "@sentry/node";
 import { Request, Response, Router } from "express";
-import Raven from "raven";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../../client/components/user";
 import { isInAccountOverviewTest } from "../accountOverviewRelease";
@@ -34,7 +34,7 @@ const getRecaptchaPublicKey = async () => {
       "could not provide recaptcha public key to client, client-side errors will ensue",
       err
     );
-    Raven.captureException(err);
+    Sentry.captureException(err);
   }
 };
 

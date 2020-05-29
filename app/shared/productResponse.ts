@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { DeliveryRecordDetail } from "../client/components/delivery/records/deliveryRecordsApi";
@@ -152,7 +152,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 ) => {
   if (subscription.currentPlans.length > 0) {
     if (subscription.currentPlans.length > 1) {
-      Raven.captureException(
+      Sentry.captureException(
         "User with more than one 'current plan' for a given subscription"
       );
     }

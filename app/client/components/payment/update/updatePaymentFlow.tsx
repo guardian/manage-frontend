@@ -3,7 +3,7 @@ import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import {
   MembersDataApiItemContext,
@@ -335,7 +335,7 @@ class PaymentUpdaterStep extends React.Component<
           />
         );
       default:
-        Raven.captureException("user cannot update their payment online");
+        Sentry.captureException("user cannot update their payment online");
         return (
           <span>
             It is not currently possible to update your payment method online.

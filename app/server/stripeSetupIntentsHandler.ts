@@ -1,6 +1,6 @@
+import * as Sentry from "@sentry/node";
 import express from "express";
 import fetch from "node-fetch";
-import Raven from "raven";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
@@ -119,7 +119,7 @@ export const stripeSetupIntentHandler = async (
 };
 
 const handleTerminalError = (response: express.Response) => (error: Error) => {
-  Raven.captureException(error);
+  Sentry.captureException(error);
   log.error("Failed to create SetupIntent", {
     ...response.locals.loggingDetail,
     exception: error || "undefined"

@@ -1,6 +1,6 @@
+import * as Sentry from "@sentry/node";
 import * as AWS from "aws-sdk";
 import { GetObjectRequest } from "aws-sdk/clients/s3";
-import Raven from "raven";
 import { conf } from "./config";
 import { log } from "./log";
 
@@ -28,7 +28,7 @@ export const CloudWatch = new AWS.CloudWatch(standardAwsConfig);
 
 export const handleAwsRelatedError = (message: string, detail?: any) => {
   log.error(message, detail);
-  Raven.captureMessage(message);
+  Sentry.captureMessage(message);
 };
 
 export const s3ConfigPromise = <ConfigInterface>(

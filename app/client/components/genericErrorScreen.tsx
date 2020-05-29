@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { CallCentreNumbers } from "./callCentreNumbers";
@@ -12,7 +12,7 @@ export const GenericErrorScreen = ({
   loggingMessage
 }: GenericErrorScreenProps) => {
   if (loggingMessage) {
-    Raven.captureException(loggingMessage);
+    Sentry.captureException(loggingMessage);
     trackEvent({
       eventCategory: "genericErrorScreen",
       eventAction: "error",
