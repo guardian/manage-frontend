@@ -229,7 +229,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                     ) : (
                       <span>FREE</span>
                     ),
-                    fullWidth: productDetail.subscription.payPalEmail
+                    spanTwoCols: productDetail.subscription.payPalEmail
                       ? true
                       : undefined
                   },
@@ -285,7 +285,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                           {...productDetail.subscription.deliveryAddress}
                         />
                       ),
-                      fullWidth: true
+                      spanTwoCols: true
                     }
                   ]}
                 />

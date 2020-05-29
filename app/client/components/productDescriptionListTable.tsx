@@ -7,7 +7,7 @@ import { minWidth } from "../styles/breakpoints";
 export interface ProductDescriptionListKeyValue {
   title: string;
   value?: string | number | ReactElement | HTMLElement;
-  fullWidth?: boolean;
+  spanTwoCols?: boolean;
 }
 
 interface ProductDescriptionListTable {
@@ -20,19 +20,15 @@ interface ProductDescriptionListTable {
 export const ProductDescriptionListTable = (
   props: ProductDescriptionListTable
 ) => {
-  const tableEntryTitleCss = (
-    isFullWidth: boolean,
-    rightAlignTitle?: boolean
-  ) => {
+  const tableEntryTitleCss = (isTwoColWidth: boolean) => {
     return css`
       display: inline-block;
       vertical-align: top;
-      width: ${isFullWidth ? "100" : "60"}%;
+      width: ${isTwoColWidth ? "100" : "60"}%;
       padding-right: ${space[3]}px;
-      margin: ${isFullWidth ? `0 0 ${space[3]}px` : "0"};
+      margin: ${isTwoColWidth ? `0 0 ${space[3]}px` : "0"};
       ${textSans.medium({ fontWeight: "bold" })}
       ${minWidth.tablet} {
-        text-align: ${rightAlignTitle ? "right" : "left"};
         padding-right: ${space[5]}px;
         width: 16ch;
         margin: 0;
@@ -72,7 +68,7 @@ export const ProductDescriptionListTable = (
       const previousTableEntry = filteredContent[tableEntryIndex - 1];
       const contentRowMapEntryTwoBack = contentRowMap.get(tableEntryIndex - 2);
       const currentRow =
-        previousTableEntry.fullWidth ||
+        previousTableEntry.spanTwoCols ||
         (contentRowMapEntryTwoBack &&
           previousContentRowMapEntry.row === contentRowMapEntryTwoBack.row)
           ? previousContentRowMapEntry.row + 1
@@ -80,7 +76,7 @@ export const ProductDescriptionListTable = (
       contentRowMap.set(tableEntryIndex, {
         row: currentRow,
         isFirstCollum:
-          previousTableEntry.fullWidth ||
+          previousTableEntry.spanTwoCols ||
           previousContentRowMapEntry.row !== currentRow
       });
     }
@@ -101,7 +97,7 @@ export const ProductDescriptionListTable = (
         const isLastTableRow =
           tableEntryIndex === props.content.length - 1 ||
           (props.content.length % 2 === 0 &&
-            !tableEntry.fullWidth &&
+            !tableEntry.spanTwoCols &&
             tableEntryIndex === props.content.length - 2);
         const { row: currentRow, isFirstCollum } = contentRowMap.get(
           tableEntryIndex
@@ -111,12 +107,14 @@ export const ProductDescriptionListTable = (
           <dl
             key={tableEntryIndex}
             css={css`
-              display: ${tableEntry.fullWidth ? "block" : "inline-flex"};
+              display: ${tableEntry.spanTwoCols ? "block" : "inline-flex"};
               width: 100%;
               padding: ${isFirstCollum ? space[3] : space[3] * 0.5}px ${
               space[3]
             }px ${
-              tableEntry.fullWidth || !isFirstCollum ? space[3] : space[3] * 0.5
+              tableEntry.spanTwoCols || !isFirstCollum
+                ? space[3]
+                : space[3] * 0.5
             }px;
               margin: 0;
               background-color: ${
@@ -135,7 +133,7 @@ export const ProductDescriptionListTable = (
                     ? `1px solid ${props.borderColour || palette.neutral[20]};`
                     : "none;"
                 }
-                width: ${tableEntry.fullWidth ? "100%;" : "50%;"};
+                width: ${tableEntry.spanTwoCols ? "100%;" : "50%;"};
                 padding: ${
                   isFirstTableRow
                     ? space[5]
@@ -154,12 +152,7 @@ export const ProductDescriptionListTable = (
               }
             `}
           >
-            <dt
-              css={tableEntryTitleCss(
-                !!tableEntry.fullWidth,
-                !isFirstCollum && !tableEntry.fullWidth
-              )}
-            >
+            <dt css={tableEntryTitleCss(!!tableEntry.spanTwoCols)}>
               {tableEntry.title}
             </dt>
             <dd css={tableValueCss}>{tableEntry.value}</dd>

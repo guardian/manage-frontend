@@ -6,7 +6,7 @@ export interface PayPalProps {
   shouldIncludePrefixCopy?: true;
 }
 
-export const getPaypalIdObfuscate = (rawId: string) => {
+export const getObfuscatedPayPalId = (rawId: string) => {
   const indexOfAtSymbol = rawId.indexOf("@");
   if (indexOfAtSymbol > -1) {
     return `${rawId.charAt(0)}${"*".repeat(indexOfAtSymbol - 2)}${rawId.charAt(
@@ -29,7 +29,7 @@ export const PayPalDisplay = (props: PayPalProps) => (
           Your PayPal ID is&nbsp;
         </>
       )}
-      {getPaypalIdObfuscate(props.payPalId)}
+      {getObfuscatedPayPalId(props.payPalId)}
     </p>
   </>
 );
