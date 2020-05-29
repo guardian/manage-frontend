@@ -27,22 +27,27 @@ export const ProductDescriptionListTable = (
     return css`
       display: inline-block;
       vertical-align: top;
-      min-width: 12ch;
+      width: ${isFullWidth ? "100" : "60"}%;
       padding-right: ${space[3]}px;
       margin: ${isFullWidth ? `0 0 ${space[3]}px` : "0"};
       ${textSans.medium({ fontWeight: "bold" })}
       ${minWidth.tablet} {
         text-align: ${rightAlignTitle ? "right" : "left"};
         padding-right: ${space[5]}px;
-        min-width: 15ch;
+        width: 16ch;
         margin: 0;
       }
     `;
   };
 
-  const tableValueCss = (isFullWidth: boolean) => css`
+  const tableValueCss = css`
     display: inline-block;
     vertical-align: top;
+    margin: 0;
+    width: 40%;
+    ${minWidth.tablet} {
+      width: auto;
+    }
   `;
 
   const filteredContent = props.content.filter(
@@ -103,7 +108,7 @@ export const ProductDescriptionListTable = (
         ) as ContentRowMapEntry;
 
         return (
-          <div
+          <dl
             key={tableEntryIndex}
             css={css`
               display: ${tableEntry.fullWidth ? "block" : "inline-flex"};
@@ -113,6 +118,7 @@ export const ProductDescriptionListTable = (
             }px ${
               tableEntry.fullWidth || !isFirstCollum ? space[3] : space[3] * 0.5
             }px;
+              margin: 0;
               background-color: ${
                 props.alternateRowBgColors && currentRow % 2 === 0
                   ? palette.neutral[97]
@@ -148,18 +154,16 @@ export const ProductDescriptionListTable = (
               }
             `}
           >
-            <h4
+            <dt
               css={tableEntryTitleCss(
                 !!tableEntry.fullWidth,
                 !isFirstCollum && !tableEntry.fullWidth
               )}
             >
               {tableEntry.title}
-            </h4>
-            <div css={tableValueCss(!!tableEntry.fullWidth)}>
-              {tableEntry.value}
-            </div>
-          </div>
+            </dt>
+            <dd css={tableValueCss}>{tableEntry.value}</dd>
+          </dl>
         );
       })}
     </div>
