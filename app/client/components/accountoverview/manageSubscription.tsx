@@ -12,7 +12,10 @@ import {
   isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductTypes } from "../../../shared/productTypes";
+import {
+  hasDeliveryRecordsFlow,
+  ProductTypes
+} from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
@@ -247,73 +250,81 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   }
                 ]}
               />
-              {productDetail.isPaidTier &&
-                !productDetail.subscription.payPalEmail && (
-                  <LinkButton
-                    colour={
-                      productDetail.alertText
-                        ? palette.brand[400]
-                        : palette.brand[800]
-                    }
-                    textColour={
-                      productDetail.alertText
-                        ? palette.neutral[100]
-                        : palette.brand[400]
-                    }
-                    fontWeight={"bold"}
-                    {...(productDetail.alertText ? { alert: true } : {})}
-                    text="Update payment method"
-                    to={`/payment/${productType.urlPart}`}
-                    state={productDetail}
-                  />
-                )}
-              <h2
-                css={css`
-                  ${subHeadingCss}
-                `}
-              >
-                Delivery address
-              </h2>
-              {productDetail.subscription.deliveryAddress && (
-                <ProductDescriptionListTable
-                  borderColour={palette.neutral[86]}
-                  content={[
-                    {
-                      title: "Address",
-                      value: (
-                        <DeliveryAddressDisplay
-                          {...productDetail.subscription.deliveryAddress}
-                        />
-                      ),
-                      spanTwoCols: true
-                    }
-                  ]}
+              {productDetail.isPaidTier && (
+                <LinkButton
+                  colour={
+                    productDetail.alertText
+                      ? palette.brand[400]
+                      : palette.brand[800]
+                  }
+                  textColour={
+                    productDetail.alertText
+                      ? palette.neutral[100]
+                      : palette.brand[400]
+                  }
+                  fontWeight={"bold"}
+                  {...(productDetail.alertText ? { alert: true } : {})}
+                  text="Update payment method"
+                  to={`/payment/${productType.urlPart}`}
+                  state={productDetail}
                 />
               )}
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Manage delivery address"
-                to={`/delivery/${productType.urlPart}/address`}
-                state={productDetail}
-              />
-              <h2
-                css={css`
-                  ${subHeadingCss}
-                `}
-              >
-                Delivery history
-              </h2>
-              <p>Check delivery history and report an issue.</p>
-              <LinkButton
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
-                fontWeight="bold"
-                text="Manage delivery history"
-                to={`/delivery/${productType.urlPart}/records`}
-                state={productDetail}
-              />
+              {productType.delivery?.showAddress?.(
+                productDetail.subscription
+              ) &&
+                productDetail.subscription.deliveryAddress && (
+                  <>
+                    <h2
+                      css={css`
+                        ${subHeadingCss}
+                      `}
+                    >
+                      Delivery address
+                    </h2>
+                    <ProductDescriptionListTable
+                      borderColour={palette.neutral[86]}
+                      content={[
+                        {
+                          title: "Address",
+                          value: (
+                            <DeliveryAddressDisplay
+                              {...productDetail.subscription.deliveryAddress}
+                            />
+                          ),
+                          spanTwoCols: true
+                        }
+                      ]}
+                    />
+                    <LinkButton
+                      colour={palette.brand[800]}
+                      textColour={palette.brand[400]}
+                      fontWeight="bold"
+                      text="Manage delivery address"
+                      to={`/delivery/${productType.urlPart}/address`}
+                      state={productDetail}
+                    />
+                  </>
+                )}
+              {hasDeliveryRecordsFlow(productType) && (
+                <>
+                  <h2
+                    css={css`
+                      ${subHeadingCss}
+                    `}
+                  >
+                    Delivery history
+                  </h2>
+                  <p>Check delivery history and report an issue.</p>
+                  <LinkButton
+                    colour={palette.brand[800]}
+                    textColour={palette.brand[400]}
+                    fontWeight="bold"
+                    text="Manage delivery history"
+                    to={`/delivery/${productType.urlPart}/records`}
+                    state={productDetail}
+                  />
+                </>
+              )}
               {!hasCancellationPending && (
                 <>
                   <h2
