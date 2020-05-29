@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React, { useContext } from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -132,7 +132,7 @@ class ExecutePaymentUpdate extends React.Component<
       eventLabel: this.props.productType.urlPart
     });
 
-    Raven.captureException(
+    Sentry.captureException(
       this.props.newPaymentMethodDetail.friendlyName + "payment update failed"
     );
 

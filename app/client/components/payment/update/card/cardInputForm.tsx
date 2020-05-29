@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import { Elements, injectStripe, StripeProvider } from "react-stripe-elements";
 import {
@@ -154,7 +154,7 @@ export class CardInputForm extends React.Component<
         this.setState({ stripeSetupIntent: setupIntent })
       )
       .catch(error => {
-        Raven.captureException(error);
+        Sentry.captureException(error);
         this.setState({ stripeSetupIntentError: error });
       });
   };

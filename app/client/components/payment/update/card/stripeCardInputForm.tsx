@@ -1,5 +1,5 @@
 import { NavigateFn } from "@reach/router";
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import { ReactStripeElements } from "react-stripe-elements";
 import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
@@ -196,7 +196,7 @@ export class StripeCardInputForm extends React.Component<
           createPaymentMethodResult.paymentMethod.card.last4
         )
       ) {
-        Raven.captureException(
+        Sentry.captureException(
           createPaymentMethodResult.error ||
             "something missing from the createPaymentMethod response"
         );
@@ -226,7 +226,7 @@ export class StripeCardInputForm extends React.Component<
         );
         navigate("confirm");
       } else {
-        Raven.captureException(
+        Sentry.captureException(
           intentResult.error ||
             "something missing from the SetupIntent response"
         );

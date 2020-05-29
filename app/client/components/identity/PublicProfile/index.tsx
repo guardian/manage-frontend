@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { navLinks } from "../../nav";
@@ -32,7 +32,7 @@ export const PublicProfile = (props: { path?: string }) => {
 
   const handleGeneralError = (e: any) => {
     setError(true);
-    Raven.captureException(e);
+    Sentry.captureException(e);
     trackEvent({
       eventCategory: "publicProfileError",
       eventAction: "error",

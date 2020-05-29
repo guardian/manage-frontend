@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import { startCase } from "lodash";
 import { toWords } from "number-to-words";
-import Raven from "raven-js";
 import React from "react";
 import {
   alertTextWithoutCTA,
@@ -174,7 +174,7 @@ const getPaymentMethodRow = (
       />
     );
   } else {
-    Raven.captureException("Unknown payment method");
+    Sentry.captureException("Unknown payment method");
   }
   return undefined;
 };

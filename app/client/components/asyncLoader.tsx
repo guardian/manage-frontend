@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
@@ -121,6 +121,6 @@ export default class AsyncLoader<
       eventAction: "error",
       eventLabel: error ? error.toString() : undefined
     });
-    Raven.captureException(error);
+    Sentry.captureException(error);
   }
 }

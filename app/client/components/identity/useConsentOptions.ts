@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import { useReducer } from "react";
 import { trackEvent } from "../analytics";
 import { ConsentOption, ConsentOptionType } from "./models";
@@ -37,7 +37,7 @@ const reducer = (state: State, action: Action) => {
   const { payload } = action;
   switch (action.type) {
     case ERROR:
-      Raven.captureException(payload);
+      Sentry.captureException(payload);
       trackEvent({
         eventCategory: "emailPrefError",
         eventAction: "error",

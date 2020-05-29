@@ -1,6 +1,6 @@
 import { CSSObject } from "@emotion/core";
+import * as Sentry from "@sentry/browser";
 import { Form, Formik, FormikProps } from "formik";
-import Raven from "raven-js";
 import React, { FC, useEffect } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
@@ -41,7 +41,7 @@ const errorHandler = (e: any) => {
   if (isEmptyAvatarError(e)) {
     return;
   }
-  Raven.captureException(e);
+  Sentry.captureException(e);
   trackEvent({
     eventCategory: "publicProfileError",
     eventAction: "error",
