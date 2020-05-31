@@ -55,6 +55,7 @@ export const CardDisplay = (props: CardDisplayProps) => (
   <div
     css={{
       display: props.inline ? "inline-flex" : "flex",
+      flexWrap: "wrap",
       alignItems: "center",
       margin: props.margin || "10px"
     }}

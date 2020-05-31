@@ -36,19 +36,12 @@ const sanitiseAccountNumber = (accountNumber: string) => {
     accountNumber.length >= NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW && (
       <span
         css={{
-          marginLeft: "10px"
+          marginRight: "10px"
         }}
       >
-        {/* TODO:
-         {`ending ${accountNumber.substr(
+        {`ending ${accountNumber.substr(
           accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-        )}`} */}
-        {"•".repeat(
-          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-        )}
-        {accountNumber.substr(
-          accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
-        )}
+        )}`}
       </span>
     )
   );
@@ -61,10 +54,10 @@ export interface DirectDebitDisplayProps
   inErrorState?: boolean;
 }
 
-export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
+export const DirectDebitInlineDisplay = (props: DirectDebitDisplayProps) => (
   <div
     css={{
-      display: mandate.inline ? "inline-flex" : "flex",
+      display: props.inline ? "inline-flex" : "flex",
       alignItems: "top"
     }}
   >
@@ -85,23 +78,19 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
       <span
         css={css`
           display: block;
-          color: ${mandate.inErrorState
-            ? palette.news[400]
-            : palette.neutral[7]};
+          color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
           ${minWidth.tablet} {
             display: inline-block;
             vertical-align: top;
           }
         `}
       >
-        {mandate.accountName}
+        {props.accountName}
       </span>
       <span
         css={css`
           display: block;
-          color: ${mandate.inErrorState
-            ? palette.news[400]
-            : palette.neutral[7]};
+          color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
           ${minWidth.tablet} {
             display: inline-block;
             vertical-align: top;
@@ -109,7 +98,7 @@ export const DirectDebitInlineDisplay = (mandate: DirectDebitDisplayProps) => (
           }
         `}
       >
-        {sanitiseAccountNumber(mandate.accountNumber)}
+        {sanitiseAccountNumber(props.accountNumber)}
       </span>
     </div>
   </div>
@@ -119,10 +108,11 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
   <div
     css={{
       display: mandate.inline ? "inline-flex" : "flex",
+      flexWrap: "wrap",
       alignItems: "top"
     }}
   >
-    <DirectDebitLogo fill={palette.neutral[7]} />
+    <DirectDebitLogo fill={palette.neutral[7]} marginRight />
     <div
       css={{
         display: "flex",
@@ -130,21 +120,15 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
       }}
     >
       <span
-        css={{
-          marginLeft: "10px"
-        }}
+        css={css`
+          margin-right: 10px;
+        `}
       >
         {dashifySortCode(mandate.sortCode)}
       </span>
       {sanitiseAccountNumber(mandate.accountNumber)}
       {mandate.showAccountName && mandate.accountName ? (
-        <span
-          css={{
-            marginLeft: "10px"
-          }}
-        >
-          {mandate.accountName}
-        </span>
+        <span>{mandate.accountName}</span>
       ) : (
         undefined
       )}
