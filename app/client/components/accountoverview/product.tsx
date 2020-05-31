@@ -89,6 +89,14 @@ export const Product = (props: ProductProps) => {
           ${titlepiece.small()};
           font-weight: bold;
           font-size: 17px;
+          ${maxWidth.mobileLandscape} {
+            padding: ${space[3]}px
+              ${hasCancellationPending &&
+              isGift(props.productDetail.subscription)
+                ? "15"
+                : "12"}ch
+              ${space[3]}px ${space[3]}px;
+          }
           ${minWidth.tablet} {
             font-size: 20px;
             padding: ${space[3]}px ${space[5]}px;
@@ -123,6 +131,13 @@ export const Product = (props: ProductProps) => {
             top: 50%;
             transform: translateY(-50%);
             display: flex;
+            ${maxWidth.mobileLandscape} {
+              ${isGift(props.productDetail.subscription) &&
+              hasCancellationPending
+                ? `top: ${space[3]}px;
+              transform: none;`
+                : ""}
+            }
           `}
         >
           {hasCancellationPending && (
@@ -136,6 +151,19 @@ export const Product = (props: ProductProps) => {
                 `}
               >
                 Cancelled
+                {isGift(props.productDetail.subscription) && (
+                  <span
+                    css={css`
+                      display: none;
+                      ${maxWidth.mobileLandscape} {
+                        display: inline;
+                      }
+                    `}
+                  >
+                    {" "}
+                    gift
+                  </span>
+                )}
               </span>
             </i>
           )}
@@ -145,7 +173,7 @@ export const Product = (props: ProductProps) => {
                 hasCancellationPending &&
                 css`
                   ${maxWidth.mobileLandscape} {
-                    display: none; // TODO: find a way to include both cancelation and gift display on mobile
+                    display: none;
                   }
                 `
               }
