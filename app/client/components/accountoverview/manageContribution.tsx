@@ -220,7 +220,7 @@ const SingleProductDetailRenderer = ({
                   : palette.brand[400]
               }
               fontWeight={"bold"}
-              {...(productDetail.alertText ? { alert: true } : {})}
+              alert={!!productDetail.alertText}
               text="Update payment method"
               to={`/payment/${productType.urlPart}`}
               state={productDetail}

@@ -237,7 +237,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
                         : palette.brand[400]
                     }
                     fontWeight={"bold"}
-                    {...(productDetail.alertText ? { alert: true } : {})}
+                    alert={!!productDetail.alertText}
                     text="Update payment method"
                     to={`/payment/${props.productType.urlPart}`}
                     state={productDetail}

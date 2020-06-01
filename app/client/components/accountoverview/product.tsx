@@ -381,7 +381,7 @@ export const Product = (props: ProductProps) => {
                         : palette.brand[400]
                     }
                     fontWeight={"bold"}
-                    {...(hasPaymentFailure ? { alert: true } : {})}
+                    alert={hasPaymentFailure}
                   />
                 </div>
               )}
