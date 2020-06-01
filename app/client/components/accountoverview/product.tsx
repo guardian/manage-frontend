@@ -189,8 +189,11 @@ export const Product = (props: ProductProps) => {
           <p
             css={css`
               ${textSans.medium()};
-              padding: 20px 20px 0;
+              padding: ${space[3]}px ${space[3]}px 0;
               margin: 0;
+              ${minWidth.tablet} {
+                padding: ${space[5]}px ${space[5]}px 0;
+              }
             `}
           >
             This subscription is still in the initial '6 issues for{" "}
@@ -203,8 +206,11 @@ export const Product = (props: ProductProps) => {
           <p
             css={css`
               ${textSans.medium()};
-              padding: 20px 20px 0;
+              padding: ${space[3]}px ${space[3]}px 0;
               margin: 0;
+              ${minWidth.tablet} {
+                padding: ${space[5]}px ${space[5]}px 0;
+              }
             `}
           >
             {props.productCategory === "subscription" &&
