@@ -39,7 +39,7 @@ const sanitiseAccountNumber = (accountNumber: string) => {
           marginRight: "10px"
         }}
       >
-        {`ending ${accountNumber.substr(
+        {`account ending ${accountNumber.substr(
           accountNumber.length - NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW
         )}`}
       </span>
@@ -119,13 +119,6 @@ export const DirectDebitDisplay = (mandate: DirectDebitDisplayProps) => (
         flexWrap: "wrap"
       }}
     >
-      <span
-        css={css`
-          margin-right: 10px;
-        `}
-      >
-        {dashifySortCode(mandate.sortCode)}
-      </span>
       {sanitiseAccountNumber(mandate.accountNumber)}
       {mandate.showAccountName && mandate.accountName ? (
         <span>{mandate.accountName}</span>
