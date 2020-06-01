@@ -18,7 +18,7 @@ import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
-import { PaypalLogo } from "../payment/paypalLogo";
+import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 
@@ -344,7 +344,9 @@ export const Product = (props: ProductProps) => {
                     />
                   )}
                   {props.productDetail.subscription.payPalEmail && (
-                    <PaypalLogo />
+                    <PayPalDisplay
+                      payPalId={props.productDetail.subscription.payPalEmail}
+                    />
                   )}
                   {props.productDetail.subscription.mandate && (
                     <DirectDebitDisplay
@@ -358,27 +360,31 @@ export const Product = (props: ProductProps) => {
                   )}
                 </li>
               </ul>
-              <div
-                css={css`
-                  margin-top: auto;
-                `}
-              >
-                <LinkButton
-                  to={`/payment/${props.specificProductType.urlPart}`}
-                  state={props.productDetail}
-                  text={"Manage payment method"}
-                  colour={
-                    hasPaymentFailure ? palette.brand[400] : palette.brand[800]
-                  }
-                  textColour={
-                    hasPaymentFailure
-                      ? palette.neutral[100]
-                      : palette.brand[400]
-                  }
-                  fontWeight={"bold"}
-                  {...(hasPaymentFailure ? { alert: true } : {})}
-                />
-              </div>
+              {!props.productDetail.subscription.payPalEmail && (
+                <div
+                  css={css`
+                    margin-top: auto;
+                  `}
+                >
+                  <LinkButton
+                    to={`/payment/${props.specificProductType.urlPart}`}
+                    state={props.productDetail}
+                    text={"Manage payment method"}
+                    colour={
+                      hasPaymentFailure
+                        ? palette.brand[400]
+                        : palette.brand[800]
+                    }
+                    textColour={
+                      hasPaymentFailure
+                        ? palette.neutral[100]
+                        : palette.brand[400]
+                    }
+                    fontWeight={"bold"}
+                    alert={hasPaymentFailure}
+                  />
+                </div>
+              )}
             </>
           ) : (
             <ul css={keyValuePairCss}>

@@ -25,6 +25,7 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
+import { PayPalDisplay } from "../paypalDisplay";
 import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
@@ -169,44 +170,63 @@ class PaymentUpdaterStep extends React.Component<
 
     const innerContent = (isInAccountOverviewTest: boolean) => (
       <>
-        {this.state.selectedPaymentMethod !== PaymentMethod.payPal && (
-          <ProgressIndicator
-            steps={[
-              { title: "New details", isCurrentStep: true },
-              { title: "Review" },
-              { title: "Confirmation" }
-            ]}
-            additionalCSS={css`
-              margin: ${space[5]}px 0 ${space[12]}px;
-            `}
-          />
-        )}
-        <h2
-          css={css`
-            ${subHeadingCss}
-          `}
-        >
-          Update payment for your{" "}
-          {this.props.routeableStepProps.productType.friendlyName}
-        </h2>
-        {this.props.productDetail.alertText && (
-          <div>
-            <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-            <span>{this.props.productDetail.alertText}</span>
-          </div>
-        )}
-        <div css={{ minWidth: "260px" }}>
-          <h3>Current Payment Details</h3>
-          <CurrentPaymentDetails {...this.props.productDetail.subscription} />
-        </div>
-        <PaymentMethodBar
-          updatePaymentMethod={this.updatePaymentMethod}
-          value={this.state.selectedPaymentMethod}
-        />
-        <h3>New Payment Details</h3>
-        {this.getInputForm(
-          this.props.productDetail.subscription,
-          this.props.productDetail.isTestUser
+        {this.props.productDetail.subscription.payPalEmail ? (
+          <>
+            <h2
+              css={css`
+                ${subHeadingCss}
+              `}
+            >
+              Payment method for{" "}
+              {this.props.routeableStepProps.productType.friendlyName}
+            </h2>
+            <PayPalDisplay
+              payPalId={this.props.productDetail.subscription.payPalEmail}
+              shouldIncludePrefixCopy
+            />
+          </>
+        ) : (
+          <>
+            <ProgressIndicator
+              steps={[
+                { title: "New details", isCurrentStep: true },
+                { title: "Review" },
+                { title: "Confirmation" }
+              ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
+            />
+            <h2
+              css={css`
+                ${subHeadingCss}
+              `}
+            >
+              Update payment for your{" "}
+              {this.props.routeableStepProps.productType.friendlyName}
+            </h2>
+            {this.props.productDetail.alertText && (
+              <div>
+                <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
+                <span>{this.props.productDetail.alertText}</span>
+              </div>
+            )}
+            <div css={{ minWidth: "260px" }}>
+              <h3>Current Payment Details</h3>
+              <CurrentPaymentDetails
+                {...this.props.productDetail.subscription}
+              />
+            </div>
+            <PaymentMethodBar
+              updatePaymentMethod={this.updatePaymentMethod}
+              value={this.state.selectedPaymentMethod}
+            />
+            <h3>New Payment Details</h3>
+            {this.getInputForm(
+              this.props.productDetail.subscription,
+              this.props.productDetail.isTestUser
+            )}
+          </>
         )}
         <div css={{ height: "10px" }} />
         {isInAccountOverviewTest ? (
