@@ -232,11 +232,9 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                     ) : (
                       <span>FREE</span>
                     ),
-                    spanTwoCols:
-                      productDetail.subscription.payPalEmail ||
-                      productDetail.subscription.mandate
-                        ? true
-                        : undefined
+                    spanTwoCols: productDetail.subscription.payPalEmail
+                      ? true
+                      : undefined
                   },
                   {
                     title: "Expiry date",

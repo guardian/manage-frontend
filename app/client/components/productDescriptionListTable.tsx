@@ -124,14 +124,14 @@ export const ProductDescriptionListTable = (
                   ? palette.neutral[97]
                   : "transparent"
               };
-              border-top: ${
-                !isFirstTableRow && isFirstCollum
+              border-bottom: ${
+                !isLastTableRow && !isFirstCollum
                   ? `1px solid ${props.borderColour || palette.neutral[20]};`
                   : "none;"
               }
               ${minWidth.tablet} {
-                border-top: ${
-                  !isFirstTableRow
+                border-bottom: ${
+                  !isLastTableRow
                     ? `1px solid ${props.borderColour || palette.neutral[20]};`
                     : "none;"
                 }

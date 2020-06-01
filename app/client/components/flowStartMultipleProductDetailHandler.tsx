@@ -33,7 +33,7 @@ import {
   PageNavAndContentContainer
 } from "./page";
 import { CardDisplay } from "./payment/cardDisplay";
-import { DirectDebitDisplay } from "./payment/directDebitDisplay";
+import { DirectDebitInlineDisplay } from "./payment/directDebitDisplay";
 import {
   ReturnToYourProductButton,
   RouteableStepProps,
@@ -54,7 +54,9 @@ const flexCSS = (display: "inline-flex" | "flex") =>
     alignItems: "center",
     flexWrap: "wrap",
     "span, div": {
-      marginRight: "10px"
+      ":not(:last-child)": {
+        marginRight: "10px"
+      }
     }
   });
 
@@ -62,7 +64,7 @@ const PaymentTypeRenderer = (subscription: Subscription) => {
   if (subscription.card) {
     return <CardDisplay margin="0" {...subscription.card} inline />;
   } else if (subscription.mandate) {
-    return <DirectDebitDisplay {...subscription.mandate} inline />;
+    return <DirectDebitInlineDisplay {...subscription.mandate} />;
   } else if (subscription.payPalEmail) {
     return <span>via PayPal</span>;
   }

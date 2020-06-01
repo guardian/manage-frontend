@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/core";
 import React from "react";
 
 export interface DirectDebitLogoProps {
   fill?: string;
   justLogo?: true;
-  marginRight?: true;
+  additionalCss?: SerializedStyles;
 }
 
 export const DirectDebitLogo = (props: DirectDebitLogoProps) => (
@@ -14,7 +14,7 @@ export const DirectDebitLogo = (props: DirectDebitLogoProps) => (
     width="65"
     height="32%"
     css={css`
-      ${props.marginRight ? "margin-right: 10px;" : ""}
+      ${props.additionalCss}
     `}
   >
     <path
