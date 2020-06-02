@@ -75,114 +75,99 @@ export const Product = (props: ProductProps) => {
         margin-top: ${space[12]}px;
       `}
     >
-      <h2
+      <div
         css={css`
-          position: relative;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           background-color: ${hasCancellationPending
             ? palette.neutral[97]
             : palette.brand[400]};
-          margin: 0;
-          padding: ${space[3]}px 12ch ${space[3]}px ${space[3]}px;
-          color: ${hasCancellationPending
-            ? palette.neutral[7]
-            : palette.neutral[100]};
-          ${titlepiece.small()};
-          font-weight: bold;
-          font-size: 17px;
-          ${maxWidth.mobileLandscape} {
-            padding: ${space[3]}px
-              ${hasCancellationPending &&
-              isGift(props.productDetail.subscription)
-                ? "15"
-                : "12"}ch
-              ${space[3]}px ${space[3]}px;
-          }
-          ${minWidth.tablet} {
-            font-size: 20px;
-            padding: ${space[3]}px ${space[5]}px;
-          }
         `}
       >
-        {props.productCategory === "subscription" && (
-          <>
-            {productName}
-            {mainPlan.name &&
-              !isSixForSix(mainPlan.name) &&
-              ` - ${mainPlan.name}`}
-          </>
-        )}
-        {props.productCategory === "membership" && (
-          <>
-            Guardian membership
-            {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-          </>
-        )}
-        {props.productCategory === "contribution" && (
-          <>
-            Recurring contribution
-            {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-          </>
-        )}
-
+        <h2
+          css={css`
+            margin: 0;
+            padding: ${space[3]}px;
+            color: ${hasCancellationPending
+              ? palette.neutral[7]
+              : palette.neutral[100]};
+            ${titlepiece.small()};
+            font-weight: bold;
+            font-size: 17px;
+            ${maxWidth.mobileLandscape} {
+              padding: ${space[3]}px;
+            }
+            ${minWidth.tablet} {
+              font-size: 20px;
+              padding: ${space[3]}px ${space[5]}px;
+            }
+          `}
+        >
+          {props.productCategory === "subscription" && (
+            <>
+              {productName}
+              {mainPlan.name &&
+                !isSixForSix(mainPlan.name) &&
+                ` - ${mainPlan.name}`}
+            </>
+          )}
+          {props.productCategory === "membership" && (
+            <>
+              Guardian membership
+              {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+            </>
+          )}
+          {props.productCategory === "contribution" && (
+            <>
+              Recurring contribution
+              {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+            </>
+          )}
+        </h2>
         <div
           css={css`
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
             display: flex;
+            align-items: center;
+            padding: 10px 0;
             ${maxWidth.mobileLandscape} {
-              ${isGift(props.productDetail.subscription) &&
-              hasCancellationPending
-                ? `top: ${space[3]}px;
-              transform: none;`
-                : ""}
+              flex-direction: column;
+              align-items: end;
             }
           `}
         >
           {hasCancellationPending && (
-            <i>
-              <ErrorIcon fill={palette.brandYellow[200]} />
+            <div
+              css={css`
+                margin-right: 10px;
+                white-space: nowrap;
+                ${maxWidth.mobileLandscape} {
+                  margin: 5px 5px 5px 0;
+                }
+              `}
+            >
+              <ErrorIcon
+                fill={palette.brandYellow[200]}
+                additionalCss={css`
+                  transform: translateY(1px);
+                `}
+              />
               <span
                 css={css`
                   ${textSans.medium({ fontWeight: "bold" })};
-                  margin: 0 ${space[3]}px 0 ${space[2]}px;
-                  font-style: normal;
+                  line-height: 1;
+                  margin-left: 6px;
                 `}
               >
                 Cancelled
-                {isGift(props.productDetail.subscription) && (
-                  <span
-                    css={css`
-                      display: none;
-                      ${maxWidth.mobileLandscape} {
-                        display: inline;
-                      }
-                    `}
-                  >
-                    {" "}
-                    gift
-                  </span>
-                )}
               </span>
-            </i>
+            </div>
           )}
           {isGift(props.productDetail.subscription) && (
-            <i
-              css={
-                hasCancellationPending &&
-                css`
-                  ${maxWidth.mobileLandscape} {
-                    display: none;
-                  }
-                `
-              }
-            >
-              <GiftIcon alignArrowToThisSide={"left"} />
-            </i>
+            <GiftIcon alignArrowToThisSide={"left"} />
           )}
         </div>
-      </h2>
+      </div>
       {isSixForSix(mainPlan.name) &&
         isPaidSubscriptionPlan(mainPlan) &&
         !hasCancellationPending && (

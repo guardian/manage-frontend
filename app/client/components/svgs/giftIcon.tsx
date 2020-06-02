@@ -12,7 +12,7 @@ export const GiftIcon = (props: GiftIconProps) => (
   <i
     css={css`
       padding: ${props.alignArrowToThisSide === "left"
-        ? "0 20px 0 30px"
+        ? "0 25px 0 35px"
         : "0 30px 0 15px"};
       background-color: #eacca0;
       display: inline-block;
@@ -22,7 +22,6 @@ export const GiftIcon = (props: GiftIconProps) => (
       height: 28px;
     `}
   >
-    {/* "polygon(calc(100% - 10px) 0, 0 0, 0 100%, calc(100% - 10px) 100%, 100% 50%)" */}
     <svg
       width="15"
       height="19"
