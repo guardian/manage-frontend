@@ -139,10 +139,15 @@ export const Product = (props: ProductProps) => {
           {hasCancellationPending && (
             <div
               css={css`
-                margin-right: 10px;
+                margin-right: ${space[3]}px;
                 white-space: nowrap;
                 ${maxWidth.mobileLandscape} {
-                  margin: 5px 5px 5px 0;
+                  ${isGift(props.productDetail.subscription)
+                    ? "margin: 0 5px 5px 0;"
+                    : ""};
+                }
+                ${minWidth.tablet} {
+                  margin-right: ${space[5]}px;
                 }
               `}
             >
