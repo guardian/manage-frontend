@@ -80,7 +80,14 @@ export const DirectDebitInlineDisplay = (props: DirectDebitDisplayProps) => (
       >
         {dashifySortCode(props.sortCode)}
       </span>
-      {sanitiseAccountNumber(props.accountNumber)}
+      <span
+        css={css`
+          ${props.showAccountName ? "margin-right: 10px;" : ""}
+        `}
+      >
+        {sanitiseAccountNumber(props.accountNumber)}
+      </span>
+      {props.showAccountName && props.accountName}
     </span>
   </div>
 );
