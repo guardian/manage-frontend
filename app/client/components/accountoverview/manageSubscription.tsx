@@ -14,7 +14,8 @@ import {
 } from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
-  ProductTypes
+  ProductTypes,
+  shouldHaveHolidayStopsFlow
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
@@ -325,30 +326,33 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   />
                 </>
               )}
-              {!hasCancellationPending && (
-                <>
-                  <h2
-                    css={css`
-                      ${subHeadingCss}
-                    `}
-                  >
-                    Going on holiday?
-                  </h2>
-                  <p>
-                    Don’t fret - you can suspend up to 6 issues per year with a
-                    notice period. You will be credited for a suspended issue on
-                    the first bill after the suspension date.
-                  </p>
-                  <LinkButton
-                    colour={palette.brand[800]}
-                    textColour={palette.brand[400]}
-                    fontWeight="bold"
-                    text="Manage suspensions"
-                    to={`/suspend/${productType.urlPart}`}
-                    state={productDetail}
-                  />
-                </>
-              )}
+              {shouldHaveHolidayStopsFlow(productType) &&
+                productDetail.subscription.autoRenew &&
+                !hasCancellationPending && (
+                  <>
+                    <h2
+                      css={css`
+                        ${subHeadingCss}
+                      `}
+                    >
+                      Going on holiday?
+                    </h2>
+                    <p>
+                      Don’t fret - you can manage your suspensions by clicking
+                      the button below. You will be credited for each suspended
+                      {productType.holidayStops.issueKeyword} on the first bill
+                      after the suspension date.
+                    </p>
+                    <LinkButton
+                      colour={palette.brand[800]}
+                      textColour={palette.brand[400]}
+                      fontWeight="bold"
+                      text="Manage suspensions"
+                      to={`/suspend/${productType.urlPart}`}
+                      state={productDetail}
+                    />
+                  </>
+                )}
               {productType.cancellation && !hasCancellationPending && (
                 <Link
                   css={css`
