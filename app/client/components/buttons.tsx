@@ -24,7 +24,7 @@ export interface ButtonProps {
   forceCircle?: true;
   hoverColour?: string;
   leftTick?: true;
-  alert?: true;
+  alert?: boolean;
   type?: "button" | "submit" | "reset";
 }
 
