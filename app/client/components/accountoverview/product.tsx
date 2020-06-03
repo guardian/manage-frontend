@@ -79,10 +79,13 @@ export const Product = (props: ProductProps) => {
         css={css`
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: start;
           background-color: ${hasCancellationPending
             ? palette.neutral[97]
             : palette.brand[400]};
+          ${minWidth.tablet} {
+            align-items: center;
+          }
         `}
       >
         <h2
@@ -129,7 +132,7 @@ export const Product = (props: ProductProps) => {
           css={css`
             display: flex;
             align-items: center;
-            padding: 10px 0;
+            padding: ${space[3]}px 0;
             ${maxWidth.mobileLandscape} {
               flex-direction: column;
               align-items: end;
