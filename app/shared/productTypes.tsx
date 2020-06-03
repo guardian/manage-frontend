@@ -22,6 +22,7 @@ import {
 import { voucherCancellationFlowStart } from "../client/components/cancel/voucher/voucherCancellationFlowStart";
 import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
 import { NavItem, navLinks } from "../client/components/nav";
+import { SupportTheGuardianButtonProps } from "../client/components/supportTheGuardianButton";
 import { RouteableStepProps } from "../client/components/wizardRouterAdapter";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -161,10 +162,7 @@ export interface ProductType {
   ) => OphanProduct | undefined;
   includeGuardianInTitles?: true;
   alternateTierValue?: string;
-  alternateManagementUrl?: string;
-  alternateManagementCtaLabel?: (
-    productDetail: ProductDetail
-  ) => string | undefined;
+  renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
@@ -266,12 +264,6 @@ export const allProductsDetailFetcher = () =>
       )
     }
   });
-
-const domainSpecificSubsManageURL = `https://subscribe.${
-  typeof window !== "undefined" && window.guardian && window.guardian.domain
-    ? window.guardian.domain
-    : "theguardian.com"
-}/manage`;
 
 const getNoProductInTabCopy = (links: NavItem[]) => {
   return (
@@ -498,12 +490,12 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
+    renewalMetadata: {
+      alternateButtonText: "Subscribe here",
+      urlSuffix: "subscribe/weekly",
+      supportReferer: "gw_renewal"
+    },
     alternateTierValue: "Guardian Weekly",
-    alternateManagementUrl: domainSpecificSubsManageURL,
-    alternateManagementCtaLabel: (productDetail: ProductDetail) =>
-      productDetail.subscription.autoRenew
-        ? undefined
-        : "renew your one-off Guardian Weekly subscription",
     holidayStops: {
       issueKeyword: "issue"
     },

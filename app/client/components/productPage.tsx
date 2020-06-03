@@ -241,9 +241,6 @@ const getProductDetailRenderer = (
   const productType = originalProductType.mapGroupedToSpecific
     ? originalProductType.mapGroupedToSpecific(productDetail)
     : originalProductType;
-  const alternateManagementCtaLabel =
-    productType.alternateManagementCtaLabel &&
-    productType.alternateManagementCtaLabel(productDetail);
   const subscription = productDetail.subscription;
   const mainPlan = getMainPlan(subscription);
   return (
@@ -437,23 +434,13 @@ const getProductDetailRenderer = (
                 }
               />
             )}
-            {productType.alternateManagementUrl &&
-              alternateManagementCtaLabel &&
-              (productDetailList.length > 1 ? (
+            {productType.renewalMetadata &&
+              !productDetail.subscription.autoRenew && (
                 <div css={{ fontWeight: "bold" }}>
-                  To {alternateManagementCtaLabel}, please <InlineContactUs />
+                  To renew your one-off {productType.friendlyName}, please{" "}
+                  <InlineContactUs />
                 </div>
-              ) : (
-                <a href={productType.alternateManagementUrl}>
-                  <Button
-                    text={
-                      alternateManagementCtaLabel.substr(0, 1).toUpperCase() +
-                      alternateManagementCtaLabel.substr(1)
-                    }
-                    right
-                  />
-                </a>
-              ))}
+              )}
             {productType.cancellation &&
               productType.cancellation.linkOnProductPage && (
                 <Link
