@@ -251,31 +251,37 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
 
             ${props.breadcrumbs
               ? `
-            ${gridItemPlacementv2(2, 1, 1, 3)};
-            ${minWidth.tablet} {
-              ${gridItemPlacementv2(2, 1, 1, 10)};
-            };
-            ${minWidth.desktop} {
-              ${gridItemPlacementv2(2, 1, 5, 8)};
-              font-size: 2.625rem;
-            };
-            ${minWidth.wide} {
-              ${gridItemPlacementv2(2, 1, 6, 10)};
-            };  
-          `
+                ${gridItemPlacementv2(2, 1, 1, 4)};
+                ${minWidth.mobileMedium} {
+                  ${gridItemPlacementv2(2, 1, 1, 3)};
+                };
+                ${minWidth.tablet} {
+                  ${gridItemPlacementv2(2, 1, 1, 10)};
+                };
+                ${minWidth.desktop} {
+                  ${gridItemPlacementv2(2, 1, 5, 8)};
+                  font-size: 2.625rem;
+                };
+                ${minWidth.wide} {
+                  ${gridItemPlacementv2(2, 1, 6, 10)};
+                };  
+              `
               : `
-            ${gridItemPlacementv2(1, 1, 1, 3)};
-            ${minWidth.tablet} {
-              ${gridItemPlacementv2(1, 1, 1, 10)};
-            };
-            ${minWidth.desktop} {
-              ${gridItemPlacementv2(1, 1, 5, 8)};
-              font-size: 2.625rem;
-            };
-            ${minWidth.wide} {
-              ${gridItemPlacementv2(1, 1, 6, 10)};
-            };
-          `}
+                ${gridItemPlacementv2(1, 1, 1, 4)};
+                ${minWidth.mobileMedium} {
+                  ${gridItemPlacementv2(1, 1, 1, 3)};
+                };
+                ${minWidth.tablet} {
+                  ${gridItemPlacementv2(1, 1, 1, 10)};
+                };
+                ${minWidth.desktop} {
+                  ${gridItemPlacementv2(1, 1, 5, 8)};
+                  font-size: 2.625rem;
+                };
+                ${minWidth.wide} {
+                  ${gridItemPlacementv2(1, 1, 6, 10)};
+                };
+              `}
           `}
         >
           {props.title}
