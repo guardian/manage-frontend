@@ -372,8 +372,8 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                     <CallCentreEmailAndNumbers />
                     <p>
                       Alternatively, if you would prefer to start a recurring{" "}
-                      {productType.friendlyName} you can do so by clicking the
-                      button below.
+                      {productType.friendlyName} you can explore payment options
+                      and subscribe online by clicking the button below.
                     </p>
                     <SupportTheGuardianButton
                       {...productType.renewalMetadata}
