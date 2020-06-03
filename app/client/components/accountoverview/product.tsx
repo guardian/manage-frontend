@@ -83,7 +83,7 @@ export const Product = (props: ProductProps) => {
           background-color: ${hasCancellationPending
             ? palette.neutral[97]
             : palette.brand[400]};
-          ${minWidth.tablet} {
+          ${minWidth.mobileLandscape} {
             align-items: center;
           }
         `}
@@ -144,9 +144,10 @@ export const Product = (props: ProductProps) => {
               css={css`
                 margin-right: ${space[3]}px;
                 white-space: nowrap;
+                transform: translateY(1px);
                 ${maxWidth.mobileLandscape} {
                   ${isGift(props.productDetail.subscription)
-                    ? "margin: 0 5px 5px 0;"
+                    ? "margin: 0 5px 6px 0;"
                     : ""};
                 }
                 ${minWidth.tablet} {
