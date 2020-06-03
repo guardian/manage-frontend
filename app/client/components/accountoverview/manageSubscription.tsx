@@ -8,6 +8,7 @@ import {
   augmentInterval,
   getFuturePlanIfVisible,
   getMainPlan,
+  isGift,
   isPaidSubscriptionPlan,
   isSixForSix,
   ProductDetail
@@ -31,18 +32,25 @@ import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
+import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepProps } from "../wizardRouterAdapter";
 
 export const ManageSubscription = (props: RouteableStepProps) => {
-  const subHeadingCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+  const subHeadingTitleCss = `
     ${headline.small()};
     font-weight: bold;
-    margin-top: 50px;
     ${maxWidth.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };
+  `;
+  const subHeadingBorderTopCss = `
+    border-top: 1px solid ${palette.neutral["86"]};
+    margin-top: 50px;
+  `;
+  const subHeadingCss = `
+    ${subHeadingBorderTopCss}
+    ${subHeadingTitleCss}
   `;
 
   return (
@@ -107,16 +115,35 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   `}
                 />
               )}
-              <h2
+              <div
                 css={css`
-                  ${subHeadingCss}
+                  ${subHeadingBorderTopCss}
+                  display: flex;
+                  align-items: start;
+                  justify-content: space-between;
                 `}
               >
-                {productName}
-                {mainPlan.name &&
-                  !isSixForSix(mainPlan.name) &&
-                  ` - ${mainPlan.name}`}
-              </h2>
+                <h2
+                  css={css`
+                    ${subHeadingTitleCss}
+                    margin: 0;
+                  `}
+                >
+                  {productName}
+                  {mainPlan.name &&
+                    !isSixForSix(mainPlan.name) &&
+                    ` - ${mainPlan.name}`}
+                </h2>
+                {isGift(productDetail.subscription) && (
+                  <i
+                    css={css`
+                      margin: 4px 0 0 ${space[3]}px;
+                    `}
+                  >
+                    <GiftIcon alignArrowToThisSide={"left"} />
+                  </i>
+                )}
+              </div>
               {hasCancellationPending && (
                 <p
                   css={css`
