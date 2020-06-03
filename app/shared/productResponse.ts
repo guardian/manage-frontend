@@ -79,7 +79,7 @@ export const augmentInterval = (interval: string) =>
   interval === "6 weeks" ? "one-off" : `${interval}ly`;
 
 export const isSixForSix = (planName: string | null) =>
-  planName && planName.indexOf("6 for 6") !== -1;
+  !!planName && planName.indexOf("6 for 6") !== -1;
 
 export interface PaidSubscriptionPlan
   extends SubscriptionPlan,
