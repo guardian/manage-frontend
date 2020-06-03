@@ -19,6 +19,7 @@ import {
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
 import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../nav";
@@ -28,6 +29,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
+import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { RouteableStepProps } from "../wizardRouterAdapter";
 
@@ -350,6 +352,35 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                       text="Manage suspensions"
                       to={`/suspend/${productType.urlPart}`}
                       state={productDetail}
+                    />
+                  </>
+                )}
+              {!productDetail.subscription.autoRenew &&
+                productType.renewalMetadata && (
+                  <>
+                    <h2
+                      css={css`
+                        ${subHeadingCss}
+                      `}
+                    >
+                      Renewal
+                    </h2>
+                    <p>
+                      To renew your one-off {productType.friendlyName}, please
+                      contact us.
+                    </p>
+                    <CallCentreEmailAndNumbers />
+                    <p>
+                      Alternatively, if you would prefer to start a recurring{" "}
+                      {productType.friendlyName} you can do so by clicking the
+                      button below.
+                    </p>
+                    <SupportTheGuardianButton
+                      {...productType.renewalMetadata}
+                      fontWeight="bold"
+                      textColour={palette.neutral[100]}
+                      colour={palette.brand[400]}
+                      notPrimary
                     />
                   </>
                 )}
