@@ -503,7 +503,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     productPage: "subscriptions"
   },
   guardianweekly: {
-    productTitle: calculateProductTitle("Guardian Weekly"),
+    productTitle: () => "Guardian Weekly",
     friendlyName: "Guardian Weekly subscription",
     shortFriendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
