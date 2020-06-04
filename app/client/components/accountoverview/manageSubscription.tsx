@@ -77,8 +77,6 @@ export const ManageSubscription = (props: RouteableStepProps) => {
         const productType =
           ProductTypes.subscriptions.mapGroupedToSpecific?.(productDetail) ||
           props.productType;
-        const productName =
-          productType.alternateTierValue || productDetail.tier;
 
         const hasCancellationPending = productDetail.subscription.cancelledAt;
 
@@ -129,7 +127,7 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                     margin: 0;
                   `}
                 >
-                  {productName}
+                  {productType.productTitle(mainPlan)}
                   {mainPlan.name &&
                     !isSixForSix(mainPlan.name) &&
                     ` - ${mainPlan.name}`}
