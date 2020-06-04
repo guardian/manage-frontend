@@ -128,9 +128,6 @@ export const ManageSubscription = (props: RouteableStepProps) => {
                   `}
                 >
                   {productType.productTitle(mainPlan)}
-                  {mainPlan.name &&
-                    !isSixForSix(mainPlan.name) &&
-                    ` - ${mainPlan.name}`}
                 </h2>
                 {isGift(productDetail.subscription) && (
                   <i
