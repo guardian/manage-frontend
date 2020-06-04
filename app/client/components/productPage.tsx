@@ -267,8 +267,7 @@ const getProductDetailRenderer = (
                 </h2>
               ) : (
                 <h2>
-                  {productType.alternateTierValue || productDetail.tier}
-                  {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
+                  {productType.productTitle(mainPlan)}
                   {isGift(subscription) && giftFlag}
                 </h2>
               )}
@@ -331,8 +330,7 @@ const getProductDetailRenderer = (
                       {productPageProperties.tierChangeable ? (
                         <div css={wrappingContainerCSS}>
                           <div css={{ marginRight: "15px" }}>
-                            {productType.alternateTierValue ||
-                              productDetail.tier}
+                            {productDetail.tier}
                           </div>
                           {/*TODO add a !=="Patron" condition around the Change tier button once we have a direct journey to cancellation*/}
                           <a
@@ -346,7 +344,7 @@ const getProductDetailRenderer = (
                           </a>
                         </div>
                       ) : (
-                        productType.alternateTierValue || productDetail.tier
+                        productType.productTitle(mainPlan)
                       )}
                       {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
                       {isGift(subscription) && giftFlag}

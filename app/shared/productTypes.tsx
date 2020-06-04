@@ -33,6 +33,7 @@ import {
   isGift,
   ProductDetail,
   Subscription,
+  SubscriptionPlan,
   SubscriptionWithDeliveryAddress
 } from "./productResponse";
 
@@ -152,6 +153,7 @@ export interface DeliveryProperties {
 }
 
 export interface ProductType {
+  productTitle: (mainPlan?: SubscriptionPlan) => string;
   friendlyName: ProductFriendlyName;
   shortFriendlyName?: string;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
@@ -160,8 +162,9 @@ export interface ProductType {
   getOphanProductType?: (
     productDetail: ProductDetail
   ) => OphanProduct | undefined;
+  shouldRevealSubscriptionId?: boolean;
+  tierLabel?: string;
   includeGuardianInTitles?: true;
-  alternateTierValue?: string;
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
@@ -175,6 +178,8 @@ export interface ProductType {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
   };
+  cancelledCopy?: string;
+  shouldShowJoinDateNotStartDate?: true;
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {
@@ -294,6 +299,10 @@ const showDeliveryAddressCheck = (
 ): subscription is SubscriptionWithDeliveryAddress =>
   !isGift(subscription) && !!subscription.deliveryAddress;
 
+const calculateProductTitle = (baseProductTtile: string) => (
+  mainPlan?: SubscriptionPlan
+) => baseProductTtile + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
+
 export type ProductTypeKeys =
   | "membership"
   | "contributions"
@@ -306,6 +315,7 @@ export type ProductTypeKeys =
 
 export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
+    productTitle: () => "Guardian membership",
     friendlyName: "membership",
     allProductsProductTypeFilterString: "Membership",
     urlPart: "membership",
@@ -341,9 +351,14 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       onlyShowSupportSectionIfAlternateText: false,
       alternateSupportButtonText: () => undefined,
       alternateSupportButtonUrlSuffix: () => undefined
-    }
+    },
+    cancelledCopy:
+      "Your membership has been cancelled. You will continue to receive the benefits of your membership until",
+    tierLabel: "Membership tier",
+    shouldShowJoinDateNotStartDate: true
   },
   contributions: {
+    productTitle: () => "Recurring contribution",
     friendlyName: "recurring contribution",
     allProductsProductTypeFilterString: "Contribution",
     urlPart: "contributions",
@@ -400,8 +415,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       swapFeedbackAndContactUs: true
     }
   },
+  // FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL
   newspaper: {
-    // FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL
+    productTitle: calculateProductTitle("Newspaper subscription"),
     friendlyName: "newspaper subscription",
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
@@ -414,6 +430,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     productPage: "subscriptions"
   },
   homedelivery: {
+    productTitle: calculateProductTitle("Newspaper Delivery"),
     friendlyName: "home delivery subscription",
     shortFriendlyName: "home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
@@ -443,6 +460,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     }
   },
   voucher: {
+    productTitle: calculateProductTitle("Newspaper Voucher"),
     friendlyName: "newspaper voucher subscription",
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
@@ -485,6 +503,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     productPage: "subscriptions"
   },
   guardianweekly: {
+    productTitle: () => "Guardian Weekly",
     friendlyName: "Guardian Weekly subscription",
     shortFriendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
@@ -495,7 +514,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       urlSuffix: "subscribe/weekly",
       supportReferer: "gw_renewal"
     },
-    alternateTierValue: "Guardian Weekly",
     holidayStops: {
       issueKeyword: "issue"
     },
@@ -533,13 +551,13 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     }
   },
   digipack: {
+    productTitle: () => "Digital Subscription",
     friendlyName: "digital subscription",
     allProductsProductTypeFilterString: "Digipack",
     urlPart: "digital",
     legacyUrlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
-    alternateTierValue: "Digital Subscription",
     cancellation: {
       linkOnProductPage: true,
       reasons: digipackCancellationReasons,
@@ -558,6 +576,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     productPage: "subscriptions"
   },
   subscriptions: {
+    productTitle: () => "", // this is just a top level product type
     friendlyName: "subscription",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
@@ -583,6 +602,9 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         return ProductTypes.guardianweekly;
       }
       return ProductTypes.subscriptions; // This should never happen!
-    }
+    },
+    cancelledCopy:
+      "Your subscription has been cancelled. You are able to access your subscription until",
+    shouldRevealSubscriptionId: true
   }
 };
