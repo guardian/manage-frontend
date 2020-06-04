@@ -22,8 +22,8 @@ import {
   SupportTheGuardianButton,
   SupportTheGuardianButtonProps
 } from "../supportTheGuardianButton";
+import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
-import { Product } from "./product";
 
 const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
   const productDetailList = apiResponse
@@ -92,10 +92,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
             My subscriptions
           </h2>
           {subscriptionData.map(item => (
-            <Product
+            <AccountOverviewCard
               key={item.productDetail.subscription.subscriptionId}
               {...item}
-              productCategory="subscription"
             />
           ))}
           {subscriptionData.some(item =>
@@ -126,10 +125,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
             My membership
           </h2>
           {membershipData.map(item => (
-            <Product
+            <AccountOverviewCard
               key={item.productDetail.subscription.subscriptionId}
               {...item}
-              productCategory="membership"
             />
           ))}
           {membershipData.some(item =>
@@ -159,10 +157,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           </h2>
           {contributorData.map(item => {
             return (
-              <Product
+              <AccountOverviewCard
                 key={item.productDetail.subscription.subscriptionId}
                 {...item}
-                productCategory="contribution"
               />
             );
           })}

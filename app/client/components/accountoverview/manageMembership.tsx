@@ -53,9 +53,6 @@ export const ManageMembership = (props: RouteableStepProps) => {
         routeableStepProps: RouteableStepProps,
         productDetail: ProductDetail
       ) => {
-        const membershipTier =
-          props.productType.alternateTierValue || productDetail.tier;
-
         const mainPlan = getMainPlan(productDetail.subscription);
 
         const hasCancellationPending = productDetail.subscription.cancelledAt;
@@ -125,7 +122,7 @@ export const ManageMembership = (props: RouteableStepProps) => {
                 content={[
                   {
                     title: "Membership tier",
-                    value: membershipTier
+                    value: productDetail.tier
                   },
                   {
                     title: "Start date",

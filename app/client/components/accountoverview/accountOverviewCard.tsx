@@ -22,19 +22,13 @@ import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 
-type ProductCategory = "subscription" | "membership" | "contribution";
-
-interface ProductProps {
-  productCategory: ProductCategory;
+interface AccountOverviewCardProps {
   productDetail: ProductDetail;
   topLevelProductType: ProductType;
   specificProductType: ProductType;
 }
 
-export const Product = (props: ProductProps) => {
-  const productName =
-    props.specificProductType.alternateTierValue || props.productDetail.tier;
-
+export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
   const mainPlan = getMainPlan(props.productDetail.subscription);
 
   const futurePlan = getFuturePlanIfVisible(props.productDetail.subscription);
@@ -42,7 +36,16 @@ export const Product = (props: ProductProps) => {
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
 
+  const cancelledCopy =
+    props.specificProductType.cancelledCopy ||
+    props.topLevelProductType.cancelledCopy;
+
   const hasPaymentFailure: boolean = !!props.productDetail.alertText;
+
+  const shouldShowJoinDateNotStartDate =
+    props.topLevelProductType.shouldShowJoinDateNotStartDate;
+
+  const subscriptionStartDate = props.productDetail.subscription.start;
 
   const keyValuePairCss = css`
     list-style: none;
@@ -107,26 +110,7 @@ export const Product = (props: ProductProps) => {
             }
           `}
         >
-          {props.productCategory === "subscription" && (
-            <>
-              {productName}
-              {mainPlan.name &&
-                !isSixForSix(mainPlan.name) &&
-                ` - ${mainPlan.name}`}
-            </>
-          )}
-          {props.productCategory === "membership" && (
-            <>
-              Guardian membership
-              {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-            </>
-          )}
-          {props.productCategory === "contribution" && (
-            <>
-              Recurring contribution
-              {mainPlan.name && <i>&nbsp;({mainPlan.name})</i>}
-            </>
-          )}
+          {props.specificProductType.productTitle(mainPlan)}
         </h2>
         <div
           css={css`
@@ -196,7 +180,7 @@ export const Product = (props: ProductProps) => {
         )}
       {hasCancellationPending &&
         props.productDetail.subscription.end &&
-        props.productCategory !== "contribution" && (
+        cancelledCopy && (
           <p
             css={css`
               ${textSans.medium()};
@@ -207,10 +191,7 @@ export const Product = (props: ProductProps) => {
               }
             `}
           >
-            {props.productCategory === "subscription" &&
-              "Your subscription has been cancelled. You are able to access your subscription until "}
-            {props.productCategory === "membership" &&
-              "Your membership has been cancelled. You will receive the benefit of your membership until "}
+            {cancelledCopy.trim() + " "}
             <span
               css={css`
                 font-weight: bold;
@@ -244,32 +225,31 @@ export const Product = (props: ProductProps) => {
             }
           `}
         >
-          {props.productCategory !== "contribution" && (
+          {props.topLevelProductType.shouldRevealSubscriptionId && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>
-                {props.productCategory === "subscription" && "Subscription ID"}
-                {props.productCategory === "membership" && "Membership tier"}
-              </li>
+              <li css={keyCss}>Subscription ID</li>
               <li css={valueCss}>
-                {props.productCategory === "subscription" &&
-                  props.productDetail.subscription.subscriptionId}
-                {props.productCategory === "membership" &&
-                  props.productDetail.tier}
+                {props.productDetail.subscription.subscriptionId}
               </li>
             </ul>
           )}
-          {props.productDetail.subscription.start && (
+          {props.topLevelProductType.tierLabel && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>
-                {props.productCategory !== "membership" ? "Start " : "Join "}
-                date
-              </li>
+              <li css={keyCss}>{props.topLevelProductType.tierLabel}</li>
+              <li css={valueCss}>{props.productDetail.tier}</li>
+            </ul>
+          )}
+          {subscriptionStartDate && !shouldShowJoinDateNotStartDate && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Start date</li>
+              <li css={valueCss}>{formatDateStr(subscriptionStartDate)}</li>
+            </ul>
+          )}
+          {shouldShowJoinDateNotStartDate && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Join date</li>
               <li css={valueCss}>
-                {formatDateStr(
-                  props.productCategory === "membership"
-                    ? props.productDetail.joinDate
-                    : props.productDetail.subscription.start
-                )}
+                {formatDateStr(props.productDetail.joinDate)}
               </li>
             </ul>
           )}
@@ -292,7 +272,7 @@ export const Product = (props: ProductProps) => {
           >
             <LinkButton
               to={`/${props.topLevelProductType.urlPart}`}
-              text={`Manage ${props.productCategory}`}
+              text={`Manage ${props.topLevelProductType.friendlyName}`}
               state={props.productDetail}
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
