@@ -1,8 +1,5 @@
 import { Link } from "@reach/router";
 import React, { ReactNode } from "react";
-import { ManageContribution } from "../client/components/accountoverview/manageContribution";
-import { ManageMembership } from "../client/components/accountoverview/manageMembership";
-import { ManageSubscription } from "../client/components/accountoverview/manageSubscription";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -23,7 +20,6 @@ import { voucherCancellationFlowStart } from "../client/components/cancel/vouche
 import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
 import { NavItem, navLinks } from "../client/components/nav";
 import { SupportTheGuardianButtonProps } from "../client/components/supportTheGuardianButton";
-import { RouteableStepProps } from "../client/components/wizardRouterAdapter";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -105,7 +101,6 @@ export interface ProductPageProperties {
   tierChangeable?: true;
   showSubscriptionId?: true;
   forceShowJoinDateOnly?: true;
-  manageComponent: (props: RouteableStepProps) => JSX.Element;
 }
 
 export interface HolidayStopFlowProperties {
@@ -164,6 +159,7 @@ export interface ProductType {
   ) => OphanProduct | undefined;
   shouldRevealSubscriptionId?: boolean;
   tierLabel?: string;
+  changeTierUrl?: (domain?: string) => string;
   includeGuardianInTitles?: true;
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
@@ -338,8 +334,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       ]),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
-      forceShowJoinDateOnly: true,
-      manageComponent: ManageMembership
+      forceShowJoinDateOnly: true
     },
     includeGuardianInTitles: true,
     cancellation: {
@@ -355,6 +350,8 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     cancelledCopy:
       "Your membership has been cancelled. You will continue to receive the benefits of your membership until",
     tierLabel: "Membership tier",
+    changeTierUrl: (domain?: string) =>
+      `https://membership.${domain || "theguardian.com"}/tier/change`,
     shouldShowJoinDateNotStartDate: true
   },
   contributions: {
@@ -371,8 +368,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       noProductInTabCopy: getNoProductInTabCopy([
         { ...navLinks.membership, title: "membership" },
         { ...navLinks.subscriptions, title: "subscription" }
-      ]),
-      manageComponent: ManageContribution
+      ])
     },
     cancellation: {
       linkOnProductPage: true,
@@ -588,8 +584,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         { ...navLinks.contributions, title: "contribution" }
       ]),
       tierRowLabel: "Subscription product",
-      showSubscriptionId: true,
-      manageComponent: ManageSubscription
+      showSubscriptionId: true
     },
     mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
