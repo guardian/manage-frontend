@@ -240,7 +240,7 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
             color: ${palette.neutral["100"]};
             ${headline.medium({ fontWeight: "bold" })};
             font-size: 1.5rem;
-            padding: 0 8px 8px 8px;
+            padding: 8px;
             border: 1px solid ${palette.brand.pastel};
             border-bottom: 0;
             ${minWidth.tablet} {

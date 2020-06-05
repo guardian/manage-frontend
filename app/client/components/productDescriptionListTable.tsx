@@ -52,6 +52,9 @@ export const ProductDescriptionListTable = (
     tableEntry => !!tableEntry.value
   );
 
+  const showAlternativeTableRowBgColours =
+    props.alternateRowBgColors && filteredContent.length > 2;
+
   interface ContentRowMapEntry {
     row: number;
     isFirstCollum: boolean;
@@ -120,7 +123,7 @@ export const ProductDescriptionListTable = (
             }px;
               margin: 0;
               background-color: ${
-                props.alternateRowBgColors && currentRow % 2 === 0
+                showAlternativeTableRowBgColours && currentRow % 2 === 0
                   ? palette.neutral[97]
                   : "transparent"
               };
@@ -139,7 +142,7 @@ export const ProductDescriptionListTable = (
                 padding: ${
                   isFirstTableRow
                     ? space[5]
-                    : props.alternateRowBgColors
+                    : showAlternativeTableRowBgColours
                     ? space[5]
                     : space[5] * 0.5
                 }px
@@ -147,7 +150,7 @@ export const ProductDescriptionListTable = (
                 ${
                   isLastTableRow
                     ? space[5]
-                    : props.alternateRowBgColors
+                    : showAlternativeTableRowBgColours
                     ? space[5]
                     : space[5] * 0.5
                 }px;
