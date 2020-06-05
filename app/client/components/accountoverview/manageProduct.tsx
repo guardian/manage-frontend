@@ -152,7 +152,7 @@ const SingleProductDetailRenderer = ({
               margin: 0;
             `}
           >
-            {specificProductType.productTitle(mainPlan)} details
+            {specificProductType.productTitle(mainPlan)}
           </h2>
           {isGift(productDetail.subscription) && (
             <i
@@ -243,7 +243,7 @@ const SingleProductDetailRenderer = ({
           Payment
         </h2>
         <SixForSixExplainerIfApplicable
-          css={css`
+          additionalCss={css`
             ${textSans.medium()};
           `}
           mainPlan={mainPlan}
@@ -396,7 +396,13 @@ const SingleProductDetailRenderer = ({
             >
               Delivery history
             </h2>
-            <p>Check delivery history and report an issue.</p>
+            <p
+              css={css`
+                ${textSans.medium()}
+              `}
+            >
+              Check delivery history and report an issue.
+            </p>
             <LinkButton
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
@@ -419,9 +425,13 @@ const SingleProductDetailRenderer = ({
               >
                 Going on holiday?
               </h2>
-              <p>
+              <p
+                css={css`
+                  ${textSans.medium()}
+                `}
+              >
                 Don’t fret - you can manage your suspensions by clicking the
-                button below. You will be credited for each suspended
+                button below. You will be credited for each suspended{" "}
                 {specificProductType.holidayStops.issueKeyword} on the first
                 bill after the suspension date.
               </p>
@@ -446,12 +456,20 @@ const SingleProductDetailRenderer = ({
               >
                 Renewal
               </h2>
-              <p>
-                To renew your one-off {specificProductType.friendlyName}, please
+              <p
+                css={css`
+                  ${textSans.medium()}
+                `}
+              >
+                To renew this one-off {specificProductType.friendlyName}, please
                 contact us.
               </p>
               <CallCentreEmailAndNumbers />
-              <p>
+              <p
+                css={css`
+                  ${textSans.medium()}
+                `}
+              >
                 Alternatively, if you would prefer to start a recurring{" "}
                 {specificProductType.friendlyName} you can explore payment
                 options and subscribe online by clicking the button below.

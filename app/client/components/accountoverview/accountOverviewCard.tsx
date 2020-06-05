@@ -163,7 +163,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
         </div>
       </div>
       <SixForSixExplainerIfApplicable
-        css={css`
+        additionalCss={css`
           ${textSans.medium()};
           padding: ${space[3]}px ${space[3]}px 0;
           margin: 0;
