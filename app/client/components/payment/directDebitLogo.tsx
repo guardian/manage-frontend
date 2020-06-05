@@ -12,7 +12,6 @@ export const DirectDebitLogo = (props: DirectDebitLogoProps) => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 603.094 195.188"
     width="65"
-    height="auto"
     css={css`
       ${props.additionalCss}
     `}
