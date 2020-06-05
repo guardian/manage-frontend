@@ -60,6 +60,16 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     _ => _.productDetail.alertText
   );
 
+  const subHeadingCss = css`
+    margin: ${space[12]}px 0 ${space[6]}px;
+    border-top: 1px solid ${palette.neutral["86"]};
+    ${headline.small({ fontWeight: "bold" })};
+    ${maxWidth.tablet} {
+      font-size: 1.25rem;
+      line-height: 1.6;
+    }
+  `;
+
   return (
     <>
       {firstPaymentFailure?.productDetail.alertText && (
@@ -78,19 +88,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       )}
       {!!subscriptionData.length && (
         <>
-          <h2
-            css={css`
-              margin-top: 50px;
-              border-top: 1px solid ${palette.neutral["86"]};
-              ${headline.small({ fontWeight: "bold" })};
-              ${maxWidth.tablet} {
-                font-size: 1.25rem;
-                line-height: 1.6;
-              }
-            `}
-          >
-            My subscriptions
-          </h2>
+          <h2 css={subHeadingCss}>My subscriptions</h2>
           {subscriptionData.map(item => (
             <AccountOverviewCard
               key={item.productDetail.subscription.subscriptionId}
@@ -111,19 +109,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       )}
       {!!membershipData.length && (
         <>
-          <h2
-            css={css`
-              margin-top: 50px;
-              border-top: 1px solid ${palette.neutral["86"]};
-              ${headline.small({ fontWeight: "bold" })};
-              ${maxWidth.tablet} {
-                font-size: 1.25rem;
-                line-height: 1.6;
-              }
-            `}
-          >
-            My membership
-          </h2>
+          <h2 css={subHeadingCss}>My membership</h2>
           {membershipData.map(item => (
             <AccountOverviewCard
               key={item.productDetail.subscription.subscriptionId}
@@ -142,19 +128,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       )}
       {!!contributorData.length && (
         <>
-          <h2
-            css={css`
-              margin-top: 50px;
-              border-top: 1px solid ${palette.neutral["86"]};
-              ${headline.small({ fontWeight: "bold" })};
-              ${maxWidth.tablet} {
-                font-size: 1.25rem;
-                line-height: 1.6;
-              }
-            `}
-          >
-            My contributions
-          </h2>
+          <h2 css={subHeadingCss}>My contributions</h2>
           {contributorData.map(item => {
             return (
               <AccountOverviewCard

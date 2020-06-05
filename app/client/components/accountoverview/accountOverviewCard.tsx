@@ -21,6 +21,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
+import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 interface AccountOverviewCardProps {
   productDetail: ProductDetail;
@@ -75,7 +76,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     <div
       css={css`
         border: 1px solid ${palette.neutral[86]};
-        margin-top: ${space[12]}px;
+        margin-bottom: ${space[6]}px;
       `}
     >
       <div
@@ -161,23 +162,18 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
           )}
         </div>
       </div>
-      {isSixForSix(mainPlan.name) &&
-        isPaidSubscriptionPlan(mainPlan) &&
-        !hasCancellationPending && (
-          <p
-            css={css`
-              ${textSans.medium()};
-              padding: ${space[3]}px ${space[3]}px 0;
-              margin: 0;
-              ${minWidth.tablet} {
-                padding: ${space[5]}px ${space[5]}px 0;
-              }
-            `}
-          >
-            This subscription is still in the initial '6 issues for{" "}
-            {mainPlan.currency}6' promotional period.
-          </p>
-        )}
+      <SixForSixExplainerIfApplicable
+        additionalCss={css`
+          ${textSans.medium()};
+          padding: ${space[3]}px ${space[3]}px 0;
+          margin: 0;
+          ${minWidth.tablet} {
+            padding: ${space[5]}px ${space[5]}px 0;
+          }
+        `}
+        mainPlan={mainPlan}
+        hasCancellationPending={hasCancellationPending}
+      />
       {hasCancellationPending &&
         props.productDetail.subscription.end &&
         cancelledCopy && (

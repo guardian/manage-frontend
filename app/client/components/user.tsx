@@ -39,6 +39,7 @@ import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecords
 import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
 import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { AccountOverview } from "./accountoverview/accountOverview";
+import { ManageProduct } from "./accountoverview/manageProduct";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -72,7 +73,7 @@ const User = () => (
         .filter(hasProductPageProperties)
         .map((productType: ProductTypeWithProductPageProperties) =>
           useContext(IsInAccountOverviewContext) ? (
-            <productType.productPage.manageComponent
+            <ManageProduct
               key={productType.urlPart}
               path={"/" + productType.urlPart}
               productType={productType}
