@@ -47,7 +47,7 @@ const subHeadingTitleCss = `
   `;
 const subHeadingBorderTopCss = `
     border-top: 1px solid ${palette.neutral["86"]};
-    margin-top: 50px;
+    margin: 50px 0 ${space[5]}px;
   `;
 const subHeadingCss = `
     ${subHeadingBorderTopCss}
@@ -231,7 +231,7 @@ const SingleProductDetailRenderer = ({
         )}
 
         {specificProductType.changeTierUrl && (
-          <a href={specificProductType.changeTierUrl(window.guardian.domain)}>
+          <a href={specificProductType.changeTierUrl(window?.guardian?.domain)}>
             <Button priority="secondary">Change tier</Button>
           </a>
         )}

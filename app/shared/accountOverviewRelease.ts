@@ -5,4 +5,4 @@ export const isIdentityInAccountOverviewTest = (
 ) =>
   TEST_IDENTITY_ID_SUFFIXES.filter(
     suffix => identityID && identityID.endsWith(suffix)
-  ).length > 0 || true;
+  ).length > 0;

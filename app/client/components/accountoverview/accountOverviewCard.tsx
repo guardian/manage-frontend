@@ -76,7 +76,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     <div
       css={css`
         border: 1px solid ${palette.neutral[86]};
-        margin-top: ${space[12]}px;
+        margin-bottom: ${space[6]}px;
       `}
     >
       <div
