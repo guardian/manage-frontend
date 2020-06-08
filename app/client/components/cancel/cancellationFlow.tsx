@@ -13,13 +13,13 @@ import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
-import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../nav";
 import {
   PageContainerSection,
   PageHeaderContainer,
   PageNavAndContentContainer
 } from "../page";
+import { ProductDetailWrapper } from "../productDetailWrapper";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
@@ -33,7 +33,6 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
-import { getCancellationSummary } from "./cancellationSummary";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -235,51 +234,13 @@ class ReasonPicker extends React.Component<
   }
 }
 
-const reasonsRenderer = (
-  routeableStepPropsWithCancellationFlow: RouteableStepPropsWithCancellationFlow
-) => (_: RouteableStepProps, productDetail: ProductDetail) => {
-  if (productDetail.subscription.cancelledAt) {
-    return (
-      <div>
-        {getCancellationSummary(
-          routeableStepPropsWithCancellationFlow.productType
-        )(productDetail)}
-        <ReturnToYourProductButton
-          {...routeableStepPropsWithCancellationFlow}
-        />
-      </div>
-    );
-  }
-  return (
-    <ReasonPicker
-      {...routeableStepPropsWithCancellationFlow}
-      productDetail={productDetail}
-    />
-  );
-};
-
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <IsInAccountOverviewContext.Consumer>
-    {isInAccountOverview => (
-      <FlowStartMultipleProductDetailHandler
-        {...props}
-        headingPrefix="Cancel"
-        hideHeading
-        {...(isInAccountOverview
-          ? {
-              hasLeftNav: {
-                pageTitle: `Cancel ${props.productType.friendlyName}`,
-                selectedNavItem: navLinks.subscriptions
-              }
-            }
-          : {})}
-        supportRefererSuffix="cancellation_flow"
-        loadingMessagePrefix="Checking the status of your"
-        cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-        singleProductDetailRenderer={reasonsRenderer(props)}
-      />
-    )}
-  </IsInAccountOverviewContext.Consumer>
+  <ProductDetailWrapper
+    {...props}
+    loadingMessagePrefix="Checking the status of your"
+  >
+    {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
+  </ProductDetailWrapper>
 );

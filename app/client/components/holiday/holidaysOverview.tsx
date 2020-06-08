@@ -20,11 +20,11 @@ import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
-import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
+import { ProductDetailWrapper } from "../productDetailWrapper";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToYourProductButton,
@@ -354,26 +354,11 @@ export class HolidaysOverview extends React.Component<
   public render = () => (
     <IsInAccountOverviewContext.Consumer>
       {isInAccountOverviewTest => (
-        <FlowStartMultipleProductDetailHandler
+        <ProductDetailWrapper
           {...this.props}
-          headingPrefix="Manage suspensions of"
-          hideHeading
-          {...(isInAccountOverviewTest
-            ? {
-                hasLeftNav: {
-                  pageTitle: "Manage suspensions",
-                  selectedNavItem: navLinks.accountOverview
-                }
-              }
-            : {})}
-          supportRefererSuffix="holiday_stop_flow"
           loadingMessagePrefix="Retrieving details of your"
-          cancelledExplainer={`This ${this.props.productType.friendlyName} has been cancelled. Any scheduled holiday suspensions have been removed. 
-      Please contact us if you would like to re-start this ${this.props.productType.friendlyName}, make any amendments or need further help.`}
-          singleProductDetailRenderer={(
-            routeableStepProps: RouteableStepProps,
-            productDetail: ProductDetail
-          ) => (
+        >
+          {productDetail => (
             <MembersDataApiItemContext.Provider value={productDetail}>
               <NavigateFnContext.Provider
                 value={{ navigate: this.props.navigate }}
@@ -401,7 +386,7 @@ export class HolidaysOverview extends React.Component<
               </NavigateFnContext.Provider>
             </MembersDataApiItemContext.Provider>
           )}
-        />
+        </ProductDetailWrapper>
       )}
     </IsInAccountOverviewContext.Consumer>
   );

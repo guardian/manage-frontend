@@ -36,10 +36,7 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-import {
-  labelPaymentStepProps,
-  paymentQuestionsTopicString
-} from "./updatePaymentFlow";
+import { paymentQuestionsTopicString } from "./updatePaymentFlow";
 
 export class WithSubscriptionAsyncLoader extends AsyncLoader<
   WithSubscription[]
@@ -180,7 +177,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
               <WizardStep
-                routeableStepProps={labelPaymentStepProps(props)}
+                routeableStepProps={props}
                 extraFooterComponents={[
                   <QuestionsFooter
                     key="questions"

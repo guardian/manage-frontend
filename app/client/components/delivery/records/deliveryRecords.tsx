@@ -26,10 +26,10 @@ import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
+import { ProductDetailWrapper } from "../../productDetailWrapper";
 import { ProgressIndicator } from "../../progressIndicator";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -796,23 +796,12 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
 export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
   return (
-    <FlowStartMultipleProductDetailHandler
+    <ProductDetailWrapper
       {...props}
-      headingPrefix={"View delivery history"}
-      hideHeading
-      hasLeftNav={{
-        pageTitle: "Delivery history",
-        selectedNavItem: navLinks.accountOverview
-      }}
-      supportRefererSuffix="delivery_records_flow"
       loadingMessagePrefix="Retrieving details of your"
-      cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
-    Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
       allowCancelledSubscription
-      singleProductDetailRenderer={(
-        routeableStepProps: RouteableStepProps,
-        productDetail: ProductDetail
-      ) => (
+    >
+      {productDetail => (
         <DeliveryRecordsApiAsyncLoader
           render={renderDeliveryRecords(props, productDetail)}
           fetch={createDeliveryRecordsFetcher(
@@ -822,6 +811,6 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
           loadingMessage={"Loading delivery history..."}
         />
       )}
-    />
+    </ProductDetailWrapper>
   );
 };

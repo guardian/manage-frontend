@@ -32,7 +32,6 @@ import {
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
 import {
-  labelPaymentStepProps,
   PaymentMethod,
   paymentQuestionsTopicString
 } from "./updatePaymentFlow";
@@ -198,7 +197,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(productDetail) ? (
               <WizardStep
-                routeableStepProps={labelPaymentStepProps(props)}
+                routeableStepProps={props}
                 extraFooterComponents={
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
