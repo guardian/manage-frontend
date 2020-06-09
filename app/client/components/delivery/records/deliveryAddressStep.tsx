@@ -120,14 +120,14 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   const renderDeliveryAddressForm = (
     allProductDetails: MembersDataApiItem[]
   ) => {
-    const contactIdToArrayOfProductDetail = getValidDeliveryAddressChangeEffectiveDates(
+    const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
         .filter(isProduct)
         .filter(product => product.subscription.readerType !== "Gift")
     );
 
     const addressChangeAffectedInfoArray = addressChangeAffectedInfo(
-      contactIdToArrayOfProductDetail
+      contactIdToArrayOfProductDetailAndProductType
     );
 
     setAddressChangeInformation(
@@ -155,9 +155,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       addressChangeAffectedInfoArray
     );
 
-    const subscriptionNames = Object.values(contactIdToArrayOfProductDetail)
+    const subscriptionNames = Object.values(
+      contactIdToArrayOfProductDetailAndProductType
+    )
       .flatMap(flattenEquivalent)
-      .map(productDetail => {
+      .map(({ productDetail }) => {
         const friendlyProductName = ProductTypes.subscriptions.mapGroupedToSpecific?.(
           productDetail
         ).friendlyName;

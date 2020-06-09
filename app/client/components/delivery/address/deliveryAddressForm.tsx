@@ -20,7 +20,7 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductFriendlyName,
+  ProductType,
   ProductTypes
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
@@ -42,7 +42,6 @@ import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
-import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -50,15 +49,19 @@ import {
   ContactIdContext,
   convertToDescriptionListData,
   NewDeliveryAddressContext,
-  ProductName,
   SubscriptionEffectiveData
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Input } from "./input";
 import { Select } from "./select";
 
-export interface ContactIdToArrayOfProductDetail {
-  [contactId: string]: ProductDetail[];
+interface ProductDetailAndProductType {
+  productDetail: ProductDetail;
+  productType?: ProductType;
+}
+
+export interface ContactIdToArrayOfProductDetailAndProductType {
+  [contactId: string]: ProductDetailAndProductType[];
 }
 
 interface ProductDetailWithContactId extends ProductDetail {
@@ -76,22 +79,8 @@ function hasContactId(
 export const getValidDeliveryAddressChangeEffectiveDates = (
   allProductDetail: ProductDetail[]
 ) =>
-  allProductDetail.filter(hasContactId).reduce(
-    (accumulator, productDetail) => ({
-      ...accumulator,
-      [productDetail.subscription.contactId]: [
-        ...(accumulator[productDetail.subscription.contactId] || []),
-        productDetail
-      ]
-    }),
-    {} as ContactIdToArrayOfProductDetail
-  );
-
-export const addressChangeAffectedInfo = (
-  contactIdToArrayOfProductDetail: ContactIdToArrayOfProductDetail
-): SubscriptionEffectiveData[] =>
-  Object.values(contactIdToArrayOfProductDetail)
-    .flatMap<ProductDetail>(flattenEquivalent)
+  allProductDetail
+    .filter(hasContactId)
     .map(productDetail => ({
       productDetail,
       productType: ProductTypes.subscriptions.mapGroupedToSpecific?.(
@@ -99,6 +88,22 @@ export const addressChangeAffectedInfo = (
       )
     }))
     .filter(_ => _.productType?.delivery?.showAddress)
+    .reduce(
+      (accumulator, { productDetail, productType }) => ({
+        ...accumulator,
+        [productDetail.subscription.contactId]: [
+          ...(accumulator[productDetail.subscription.contactId] || []),
+          { productDetail, productType }
+        ]
+      }),
+      {} as ContactIdToArrayOfProductDetailAndProductType
+    );
+
+export const addressChangeAffectedInfo = (
+  contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType
+): SubscriptionEffectiveData[] =>
+  Object.values(contactIdToArrayOfProductDetailAndProductType)
+    .flatMap<ProductDetailAndProductType>(flattenEquivalent)
     .map(({ productDetail, productType }) => {
       const friendlyProductName = capitalize(
         productType?.shortFriendlyName || productType?.friendlyName
@@ -133,23 +138,17 @@ export const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const renderDeliveryAddressForm = (
-  routeableStepProps: RouteableStepProps,
-  productName: ProductFriendlyName,
-  enableDeilveryInstructions: boolean,
-  existingDeliveryAddress?: DeliveryAddress
-) => (allProductDetails: MembersDataApiItem[]) => {
+const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
+  allProductDetails: MembersDataApiItem[]
+) => {
   return (
     <FormContainer
-      contactIdToArrayOfProductDetail={getValidDeliveryAddressChangeEffectiveDates(
+      contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
         allProductDetails
           .filter(isProduct)
-          .filter(product => product.subscription.readerType !== "Gift")
+          .filter(_ => _.subscription.readerType !== "Gift")
       )}
       routeableStepProps={routeableStepProps}
-      productName={productName}
-      existingDeliveryAddress={existingDeliveryAddress}
-      enableDeilveryInstructions={enableDeilveryInstructions}
     />
   );
 };
@@ -178,42 +177,40 @@ const clearState = (
 };
 
 interface FormContainerProps {
-  contactIdToArrayOfProductDetail: ContactIdToArrayOfProductDetail;
+  contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType;
   routeableStepProps: RouteableStepProps;
-  productName: ProductFriendlyName;
-  existingDeliveryAddress?: DeliveryAddress;
-  enableDeilveryInstructions: boolean;
 }
 const FormContainer = (props: FormContainerProps) => {
+  const existingDeliveryAddress = Object.values(
+    props.contactIdToArrayOfProductDetailAndProductType
+  )[0][0].productDetail.subscription.deliveryAddress;
+
   const [formStatus, setFormStatus] = useState(formStates.INIT);
   const [formErrors, setFormErrors] = useState({ isValid: false });
   const [addressLine1, setAddressLine1] = useState(
-    props.existingDeliveryAddress?.addressLine1 || ""
+    existingDeliveryAddress?.addressLine1 || ""
   );
   const [addressLine2, setAddressLine2] = useState(
-    props.existingDeliveryAddress?.addressLine2 || ""
+    existingDeliveryAddress?.addressLine2 || ""
   );
-  const [town, setTown] = useState(props.existingDeliveryAddress?.town || "");
-  const [region, setRegion] = useState(
-    props.existingDeliveryAddress?.region || ""
-  );
+  const [town, setTown] = useState(existingDeliveryAddress?.town || "");
+  const [region, setRegion] = useState(existingDeliveryAddress?.region || "");
   const [postcode, setPostcode] = useState(
-    props.existingDeliveryAddress?.postcode || ""
+    existingDeliveryAddress?.postcode || ""
   );
 
   const [country, setCountry] = useState(
-    props.existingDeliveryAddress?.country
+    existingDeliveryAddress?.country
       ? COUNTRIES.find(
-          countryObj =>
-            props.existingDeliveryAddress?.country === countryObj.iso
-        )?.name || props.existingDeliveryAddress?.country
+          countryObj => existingDeliveryAddress?.country === countryObj.iso
+        )?.name || existingDeliveryAddress?.country
       : ""
   );
   const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
     false
   );
   const [instructions, setInstructions] = useState(
-    props.existingDeliveryAddress?.instructions || ""
+    existingDeliveryAddress?.instructions || ""
   );
 
   const subHeadingCss = `
@@ -228,10 +225,10 @@ const FormContainer = (props: FormContainerProps) => {
   `;
 
   const subscriptionsNames = Object.values(
-    props.contactIdToArrayOfProductDetail
+    props.contactIdToArrayOfProductDetailAndProductType
   )
     .flatMap(flattenEquivalent)
-    .map(productDetail => {
+    .map(({ productDetail }) => {
       const friendlyProductName = ProductTypes.subscriptions.mapGroupedToSpecific?.(
         productDetail
       ).friendlyName;
@@ -272,170 +269,166 @@ const FormContainer = (props: FormContainerProps) => {
   };
 
   return (
-    <ProductName.Provider value={props.productName}>
-      <NewDeliveryAddressContext.Provider
-        value={{
-          newDeliveryAddress: evolvingAddressObject,
-          addressStateReset: clearState(
-            setFormStatus,
-            setFormErrors,
-            setAddressLine1,
-            setAddressLine2,
-            setTown,
-            setRegion,
-            setPostcode,
-            setCountry,
-            setInstructions,
-            setAcknowledgementState
-          )
-        }}
+    <NewDeliveryAddressContext.Provider
+      value={{
+        newDeliveryAddress: evolvingAddressObject,
+        addressStateReset: clearState(
+          setFormStatus,
+          setFormErrors,
+          setAddressLine1,
+          setAddressLine2,
+          setTown,
+          setRegion,
+          setPostcode,
+          setCountry,
+          setInstructions,
+          setAcknowledgementState
+        )
+      }}
+    >
+      <AddressChangedInformationContext.Provider
+        value={addressChangeAffectedInfo(
+          props.contactIdToArrayOfProductDetailAndProductType
+        )}
       >
-        <AddressChangedInformationContext.Provider
-          value={addressChangeAffectedInfo(
-            props.contactIdToArrayOfProductDetail
-          )}
+        <ContactIdContext.Provider
+          value={
+            Object.keys(props.contactIdToArrayOfProductDetailAndProductType)[0]
+          }
         >
-          <ContactIdContext.Provider
-            value={Object.keys(props.contactIdToArrayOfProductDetail)[0]}
+          <WizardStep
+            routeableStepProps={props.routeableStepProps}
+            hideBackButton
+            fullWidth
           >
-            <WizardStep
-              routeableStepProps={props.routeableStepProps}
-              hideBackButton
-              fullWidth
-            >
-              <PageHeaderContainer
-                breadcrumbs={
-                  useContext(IsInAccountOverviewContext)
-                    ? [
-                        {
-                          title: navLinks.accountOverview.title,
-                          link: navLinks.accountOverview.link
-                        },
-                        {
-                          title: "Edit delivery address",
-                          currentPage: true
-                        }
-                      ]
-                    : []
-                }
-                title={
+            <PageHeaderContainer
+              breadcrumbs={
+                useContext(IsInAccountOverviewContext)
+                  ? [
+                      {
+                        title: navLinks.accountOverview.title,
+                        link: navLinks.accountOverview.link
+                      },
+                      {
+                        title: "Edit delivery address",
+                        currentPage: true
+                      }
+                    ]
+                  : []
+              }
+              title={
+                <span
+                  css={css`
+                    ::first-letter {
+                      text-transform: capitalize;
+                    }
+                  `}
+                >
                   <span
                     css={css`
-                      ::first-letter {
-                        text-transform: capitalize;
+                      display: none;
+                      ${minWidth.tablet} {
+                        display: inline;
                       }
                     `}
                   >
-                    <span
+                    Update{" "}
+                  </span>
+                  delivery details
+                </span>
+              }
+            />
+            <PageNavAndContentContainer
+              selectedNavItem={
+                useContext(IsInAccountOverviewContext)
+                  ? navLinks.accountOverview
+                  : navLinks.subscriptions
+              }
+            >
+              <ProgressIndicator
+                steps={[
+                  { title: "Update", isCurrentStep: true },
+                  { title: "Review" },
+                  { title: "Confirmation" }
+                ]}
+                additionalCSS={css`
+                  margin-top: ${space[5]}px;
+                `}
+              />
+              <h2
+                css={css`
+                  ${subHeadingCss}
+                `}
+              >
+                Update address details
+              </h2>
+              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+                .length === 0 && (
+                <div>
+                  <p>
+                    No addresses available for update. If this doesn't seem
+                    right please contact us
+                  </p>
+                  <CallCentreNumbers />
+                </div>
+              )}
+              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+                .length > 1 && (
+                <div>
+                  <p>You will need to contact us to update your addresses</p>
+                  <CallCentreNumbers />
+                </div>
+              )}
+              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+                .length === 1 && (
+                <div>
+                  {Object.values(
+                    props.contactIdToArrayOfProductDetailAndProductType
+                  ).flatMap(flattenEquivalent).length > 1 && (
+                    <p
                       css={css`
-                        display: none;
-                        ${minWidth.tablet} {
-                          display: inline;
-                        }
+                        ${textSans.medium()};
+                        background-color: ${palette.neutral[97]};
+                        padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
+                        margin-bottom: 12px;
+                        position: relative;
                       `}
                     >
-                      Update{" "}
-                    </span>
-                    delivery details
-                  </span>
-                }
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={
-                  useContext(IsInAccountOverviewContext)
-                    ? navLinks.accountOverview
-                    : navLinks.subscriptions
-                }
-              >
-                <ProgressIndicator
-                  steps={[
-                    { title: "Update", isCurrentStep: true },
-                    { title: "Review" },
-                    { title: "Confirmation" }
-                  ]}
-                  additionalCSS={css`
-                    margin-top: ${space[5]}px;
-                  `}
-                />
-                <h2
-                  css={css`
-                    ${subHeadingCss}
-                  `}
-                >
-                  Update address details
-                </h2>
-                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                  0 && (
-                  <div>
-                    <p>
-                      No addresses available for update. If this doesn't seem
-                      right please contact us
-                    </p>
-                    <CallCentreNumbers />
-                  </div>
-                )}
-                {Object.keys(props.contactIdToArrayOfProductDetail).length >
-                  1 && (
-                  <div>
-                    <p>You will need to contact us to update your addresses</p>
-                    <CallCentreNumbers />
-                  </div>
-                )}
-                {Object.keys(props.contactIdToArrayOfProductDetail).length ===
-                  1 && (
-                  <div>
-                    {Object.values(
-                      props.contactIdToArrayOfProductDetail
-                    ).flatMap(flattenEquivalent).length > 1 && (
-                      <p
+                      <i
                         css={css`
-                          ${textSans.medium()};
-                          background-color: ${palette.neutral[97]};
-                          padding: ${space[5]}px ${space[5]}px ${space[5]}px
-                            49px;
-                          margin-bottom: 12px;
-                          position: relative;
+                          width: 17px;
+                          height: 17px;
+                          position: absolute;
+                          top: ${space[5]}px;
+                          left: ${space[5]}px;
                         `}
                       >
-                        <i
-                          css={css`
-                            width: 17px;
-                            height: 17px;
-                            position: absolute;
-                            top: ${space[5]}px;
-                            left: ${space[5]}px;
-                          `}
-                        >
-                          <InfoIconDark fillColor={palette.brand[500]} />
-                        </i>
-                        Please note that changing your address here will update
-                        the delivery address for all of your subscriptions.
-                      </p>
-                    )}
-                    {(formStatus === formStates.INIT ||
-                      formStatus === formStates.PENDING ||
-                      formStatus === formStates.VALIDATION_ERROR) && (
-                      <Form
-                        {...defaultFormProps}
-                        routeableStepProps={props.routeableStepProps}
-                        warning={convertToDescriptionListData(
-                          addressChangeAffectedInfo(
-                            props.contactIdToArrayOfProductDetail
-                          )
-                        )}
-                        enableDeilveryInstructions={
-                          props.enableDeilveryInstructions
-                        }
-                      />
-                    )}
-                  </div>
-                )}
-              </PageNavAndContentContainer>
-            </WizardStep>
-          </ContactIdContext.Provider>
-        </AddressChangedInformationContext.Provider>
-      </NewDeliveryAddressContext.Provider>
-    </ProductName.Provider>
+                        <InfoIconDark fillColor={palette.brand[500]} />
+                      </i>
+                      Please note that changing your address here will update
+                      the delivery address for all of your subscriptions.
+                    </p>
+                  )}
+                  {(formStatus === formStates.INIT ||
+                    formStatus === formStates.PENDING ||
+                    formStatus === formStates.VALIDATION_ERROR) && (
+                    <Form
+                      {...defaultFormProps}
+                      routeableStepProps={props.routeableStepProps}
+                      warning={convertToDescriptionListData(
+                        addressChangeAffectedInfo(
+                          props.contactIdToArrayOfProductDetailAndProductType
+                        )
+                      )}
+                    />
+                  )}
+                </div>
+              )}
+            </PageNavAndContentContainer>
+          </WizardStep>
+        </ContactIdContext.Provider>
+      </AddressChangedInformationContext.Provider>
+    </NewDeliveryAddressContext.Provider>
   );
 };
 
@@ -463,7 +456,6 @@ interface FormProps {
   warning?: ProductDescriptionListKeyValue[];
   subscriptionsNames: string[];
   routeableStepProps: RouteableStepProps;
-  enableDeilveryInstructions: boolean;
 }
 
 const Form = (props: FormProps) => {
@@ -542,7 +534,9 @@ const Form = (props: FormProps) => {
               border-bottom: 1px solid ${palette.neutral["86"]};
             `}
           >
-            Delivery address and instructions
+            Delivery address
+            {props.routeableStepProps.productType.delivery
+              ?.enableDeliveryInstructionsUpdate && " and instructions"}
           </legend>
           <Input
             label={"Address line 1"}
@@ -611,7 +605,8 @@ const Form = (props: FormProps) => {
             }
             errorMessage={props.formErrors.country?.message}
           />
-          {props.enableDeilveryInstructions && (
+          {props.routeableStepProps.productType.delivery
+            ?.enableDeliveryInstructionsUpdate && (
             <label
               css={css`
                 display: block;
@@ -777,47 +772,10 @@ const Form = (props: FormProps) => {
   );
 };
 
-export const DeliveryAddressForm = (props: RouteableStepProps) => {
-  if (props.location?.state?.productDetail?.subscription.deliveryAddress) {
-    const productType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
-      props.location?.state?.productDetail
-    );
-    const enableDeliveryInstructions = !!productType?.delivery
-      ?.enableDeliveryInstructionsUpdate;
-    const friendlyProductName = productType?.friendlyName || "subscription";
-    return renderDeliveryAddressForm(
-      props,
-      friendlyProductName,
-      enableDeliveryInstructions,
-      props.location?.state?.productDetail.subscription.deliveryAddress
-    )(props.location.state.allProductDetails);
-  }
-  return (
-    <ProductDetailProvider // TODO: refactor to remove this wrapper (not needed)
-      {...props}
-      loadingMessagePrefix="Retrieving details of your"
-      allowCancelledSubscription
-    >
-      {productDetail => {
-        const productType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
-          productDetail
-        );
-        const friendlyProductName = productType?.friendlyName || "subscription";
-        const enableDeliveryInstructions = !!productType?.delivery
-          ?.enableDeliveryInstructionsUpdate;
-        return (
-          <MembersDatApiAsyncLoader
-            render={renderDeliveryAddressForm(
-              props,
-              friendlyProductName,
-              enableDeliveryInstructions,
-              productDetail.subscription.deliveryAddress
-            )}
-            fetch={createProductDetailFetcher(ProductTypes.subscriptions)}
-            loadingMessage={"Loading delivery details..."}
-          />
-        );
-      }}
-    </ProductDetailProvider>
-  );
-};
+export const DeliveryAddressForm = (props: RouteableStepProps) => (
+  <MembersDatApiAsyncLoader
+    render={renderDeliveryAddressForm(props)}
+    fetch={createProductDetailFetcher(ProductTypes.subscriptions)}
+    loadingMessage={"Loading delivery details..."}
+  />
+);

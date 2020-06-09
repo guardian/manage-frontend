@@ -2,7 +2,6 @@ import { Moment } from "moment";
 import { createContext } from "react";
 import { friendlyLongDateFormat } from "../../../../shared/dates";
 import { DeliveryAddress } from "../../../../shared/productResponse";
-import { ProductFriendlyName } from "../../../../shared/productTypes";
 import { flattenEquivalent } from "../../../utils";
 
 interface NewDeliveryAddressContextInterface {
@@ -15,8 +14,6 @@ export interface SubscriptionEffectiveData {
   subscriptionId: string;
   effectiveDate?: Moment;
 }
-
-export const ProductName = createContext<ProductFriendlyName | null>(null);
 
 export const NewDeliveryAddressContext = createContext<
   NewDeliveryAddressContextInterface

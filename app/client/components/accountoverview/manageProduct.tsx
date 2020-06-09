@@ -335,6 +335,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
                 Delivery address
               </h2>
               <ProductDescriptionListTable
+                alternateRowBgColors
                 borderColour={palette.neutral[86]}
                 content={[
                   {
@@ -345,7 +346,19 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
                       />
                     ),
                     spanTwoCols: true
-                  }
+                  },
+                  ...(specificProductType.delivery
+                    ?.enableDeliveryInstructionsUpdate
+                    ? [
+                        {
+                          title: "Instructions",
+                          value:
+                            productDetail.subscription.deliveryAddress
+                              .instructions,
+                          spanTwoCols: true
+                        }
+                      ]
+                    : [])
                 ]}
               />
               <LinkButton

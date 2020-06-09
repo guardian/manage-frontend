@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { palette } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
@@ -13,7 +14,6 @@ import {
 import { getMainPlan } from "../../../../shared/productResponse";
 import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
-import { LinkButton } from "../../buttons";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
@@ -420,12 +420,17 @@ const DeliveryRecordsProblemConfirmationFC = (
             </section>
           )}
         <LinkButton
-          to={navLinks.subscriptions.link}
-          text={"Go back to subscriptions"}
-          colour={palette.brand.main}
-          textColour={palette.neutral[100]}
-          right
-        />
+          css={css`
+            margin-top: ${space[3]}px;
+            ${minWidth.tablet} {
+              margin-top: ${space[5]}px;
+            }
+          `}
+          href={navLinks.accountOverview.link}
+          showIcon={false}
+        >
+          Return to your account
+        </LinkButton>
       </PageNavAndContentContainer>
     </WizardStep>
   );
