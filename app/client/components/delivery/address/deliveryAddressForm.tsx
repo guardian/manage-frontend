@@ -21,8 +21,7 @@ import {
 import {
   createProductDetailFetcher,
   ProductFriendlyName,
-  ProductTypes,
-  ProductTypeWithMapGroupedToSpecific
+  ProductTypes
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
@@ -38,12 +37,12 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../../nav";
 import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
+import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -99,7 +98,7 @@ export const addressChangeAffectedInfo = (
         productDetail
       )
     }))
-    .filter(_ => _.productType && _.productType.delivery?.showAddress)
+    .filter(_ => _.productType?.delivery?.showAddress)
     .map(({ productDetail, productType }) => {
       const friendlyProductName = capitalize(
         productType?.shortFriendlyName || productType?.friendlyName
@@ -794,25 +793,12 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
     )(props.location.state.allProductDetails);
   }
   return (
-    <FlowStartMultipleProductDetailHandler
+    <ProductDetailProvider // TODO: refactor to remove this wrapper (not needed)
       {...props}
-      overrideProductTypeForFetch={
-        ProductTypes.subscriptions as ProductTypeWithMapGroupedToSpecific
-      }
-      headingPrefix={"View delivery address"}
-      hideHeading
-      hasLeftNav={{
-        pageTitle: "",
-        selectedNavItem: navLinks.accountOverview
-      }}
-      supportRefererSuffix="delivery_address_flow"
       loadingMessagePrefix="Retrieving details of your"
-      cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. You cannot view any of its delivery history.
-    Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-      singleProductDetailRenderer={(
-        routeableStepProps: RouteableStepProps,
-        productDetail: ProductDetail
-      ) => {
+      allowCancelledSubscription
+    >
+      {productDetail => {
         const productType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
           productDetail
         );
@@ -832,7 +818,6 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
           />
         );
       }}
-      allowCancelledSubscription
-    />
+    </ProductDetailProvider>
   );
 };

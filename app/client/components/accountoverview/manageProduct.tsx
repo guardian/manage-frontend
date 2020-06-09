@@ -22,7 +22,6 @@ import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
-import { FlowStartMultipleProductDetailHandler } from "../flowStartMultipleProductDetailHandler";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { CardDisplay } from "../payment/cardDisplay";
@@ -30,6 +29,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
+import { ProductDetailProvider } from "../productDetailProvider";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
@@ -54,44 +54,16 @@ const subHeadingCss = `
     ${subHeadingTitleCss}
   `;
 
-export const ManageProduct = (props: RouteableStepProps) => (
-  <FlowStartMultipleProductDetailHandler
-    {...props}
-    headingPrefix={"Manage"}
-    hideHeading
-    hasLeftNav={{
-      pageTitle: `Manage ${props.productType.friendlyName}`,
-      selectedNavItem: navLinks.accountOverview
-    }}
-    supportRefererSuffix={`manage_${props.productType.friendlyName}_page`}
-    loadingMessagePrefix="Retrieving details of your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-    allowCancelledSubscription
-    singleProductDetailRenderer={(
-      routeableStepProps: RouteableStepProps,
-      productDetail: ProductDetail
-    ) => (
-      <SingleProductDetailRenderer
-        routeableStepProps={routeableStepProps}
-        productDetail={productDetail}
-      />
-    )}
-  />
-);
-
-interface SingleProductDetailRendererProps {
-  routeableStepProps: RouteableStepProps;
+interface InnerContentProps {
+  props: RouteableStepProps;
   productDetail: ProductDetail;
 }
-const SingleProductDetailRenderer = ({
-  routeableStepProps,
-  productDetail
-}: SingleProductDetailRendererProps) => {
+const InnerContent = ({ props, productDetail }: InnerContentProps) => {
   const mainPlan = getMainPlan(productDetail.subscription);
 
   const futurePlan = getFuturePlanIfVisible(productDetail.subscription);
 
-  const topLevelProductType = routeableStepProps.productType;
+  const topLevelProductType = props.productType;
 
   const specificProductType =
     topLevelProductType.mapGroupedToSpecific?.(productDetail) ||
@@ -508,3 +480,15 @@ const SingleProductDetailRenderer = ({
     </>
   );
 };
+
+export const ManageProduct = (props: RouteableStepProps) => (
+  <ProductDetailProvider
+    {...props}
+    loadingMessagePrefix="Retrieving details of your"
+    allowCancelledSubscription
+  >
+    {productDetail => (
+      <InnerContent props={props} productDetail={productDetail} />
+    )}
+  </ProductDetailProvider>
+);

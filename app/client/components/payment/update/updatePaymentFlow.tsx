@@ -13,11 +13,11 @@ import {
 import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
-import { FlowStartMultipleProductDetailHandler } from "../../flowStartMultipleProductDetailHandler";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
@@ -57,13 +57,6 @@ interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
 export const NavigateFnContext: React.Context<{
   navigate?: NavigateFn;
 }> = React.createContext({});
-
-export const labelPaymentStepProps: (
-  routeableStepProps: RouteableStepProps
-) => RouteableStepProps = (routeableStepProps: RouteableStepProps) => ({
-  stepLabels: ["Change details", "Summary", "Confirmation"],
-  ...routeableStepProps
-});
 
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
   <label
@@ -366,26 +359,16 @@ class PaymentUpdaterStep extends React.Component<
 }
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <FlowStartMultipleProductDetailHandler
-    {...labelPaymentStepProps(props)}
-    headingPrefix="Update payment for"
-    hideHeading
-    hasLeftNav={{
-      pageTitle: "Manage contribution",
-      selectedNavItem: navLinks.accountOverview
-    }}
-    supportRefererSuffix="payment_flow"
+  <ProductDetailProvider
+    {...props}
     loadingMessagePrefix="Retrieving current payment details for your"
-    cancelledExplainer={`This ${props.productType.friendlyName} has been cancelled. Please contact us if you would like to re-start this ${props.productType.friendlyName}, make any amendments or need further help.`}
-    singleProductDetailRenderer={(
-      routeableStepProps: RouteableStepProps,
-      productDetail: ProductDetail
-    ) => (
+    allowCancelledSubscription
+  >
+    {productDetail => (
       <PaymentUpdaterStep
-        routeableStepProps={routeableStepProps}
+        routeableStepProps={props}
         productDetail={productDetail}
       />
     )}
-    allowCancelledSubscription
-  />
+  </ProductDetailProvider>
 );
