@@ -29,7 +29,7 @@ import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
-import { ProductDetailWrapper } from "../productDetailWrapper";
+import { ProductDetailProvider } from "../productDetailProvider";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
@@ -482,7 +482,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
 };
 
 export const ManageProduct = (props: RouteableStepProps) => (
-  <ProductDetailWrapper
+  <ProductDetailProvider
     {...props}
     loadingMessagePrefix="Retrieving details of your"
     allowCancelledSubscription
@@ -490,5 +490,5 @@ export const ManageProduct = (props: RouteableStepProps) => (
     {productDetail => (
       <InnerContent props={props} productDetail={productDetail} />
     )}
-  </ProductDetailWrapper>
+  </ProductDetailProvider>
 );

@@ -17,7 +17,7 @@ import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
-import { ProductDetailWrapper } from "../../productDetailWrapper";
+import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
@@ -359,7 +359,7 @@ class PaymentUpdaterStep extends React.Component<
 }
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <ProductDetailWrapper
+  <ProductDetailProvider
     {...props}
     loadingMessagePrefix="Retrieving current payment details for your"
     allowCancelledSubscription
@@ -370,5 +370,5 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
         productDetail={productDetail}
       />
     )}
-  </ProductDetailWrapper>
+  </ProductDetailProvider>
 );

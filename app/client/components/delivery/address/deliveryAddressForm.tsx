@@ -42,7 +42,7 @@ import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
-import { ProductDetailWrapper } from "../../productDetailWrapper";
+import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -793,7 +793,7 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
     )(props.location.state.allProductDetails);
   }
   return (
-    <ProductDetailWrapper // TODO: refactor to remove this wrapper (not needed)
+    <ProductDetailProvider // TODO: refactor to remove this wrapper (not needed)
       {...props}
       loadingMessagePrefix="Retrieving details of your"
       allowCancelledSubscription
@@ -818,6 +818,6 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
           />
         );
       }}
-    </ProductDetailWrapper>
+    </ProductDetailProvider>
   );
 };

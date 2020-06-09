@@ -29,7 +29,7 @@ import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
-import { ProductDetailWrapper } from "../../productDetailWrapper";
+import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -796,7 +796,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
 export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
   return (
-    <ProductDetailWrapper
+    <ProductDetailProvider
       {...props}
       loadingMessagePrefix="Retrieving details of your"
       allowCancelledSubscription
@@ -811,6 +811,6 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
           loadingMessage={"Loading delivery history..."}
         />
       )}
-    </ProductDetailWrapper>
+    </ProductDetailProvider>
   );
 };

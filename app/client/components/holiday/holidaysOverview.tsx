@@ -24,7 +24,7 @@ import { GenericErrorScreen } from "../genericErrorScreen";
 import { navLinks } from "../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
-import { ProductDetailWrapper } from "../productDetailWrapper";
+import { ProductDetailProvider } from "../productDetailProvider";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToYourProductButton,
@@ -354,7 +354,7 @@ export class HolidaysOverview extends React.Component<
   public render = () => (
     <IsInAccountOverviewContext.Consumer>
       {isInAccountOverviewTest => (
-        <ProductDetailWrapper
+        <ProductDetailProvider
           {...this.props}
           loadingMessagePrefix="Retrieving details of your"
         >
@@ -386,7 +386,7 @@ export class HolidaysOverview extends React.Component<
               </NavigateFnContext.Provider>
             </MembersDataApiItemContext.Provider>
           )}
-        </ProductDetailWrapper>
+        </ProductDetailProvider>
       )}
     </IsInAccountOverviewContext.Consumer>
   );

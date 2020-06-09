@@ -19,7 +19,7 @@ import {
   PageHeaderContainer,
   PageNavAndContentContainer
 } from "../page";
-import { ProductDetailWrapper } from "../productDetailWrapper";
+import { ProductDetailProvider } from "../productDetailProvider";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
@@ -237,10 +237,10 @@ class ReasonPicker extends React.Component<
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <ProductDetailWrapper
+  <ProductDetailProvider
     {...props}
     loadingMessagePrefix="Checking the status of your"
   >
     {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
-  </ProductDetailWrapper>
+  </ProductDetailProvider>
 );

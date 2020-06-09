@@ -11,13 +11,13 @@ import {
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 
-interface ProductDetailWrapperProps extends RouteableStepProps {
+interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
   allowCancelledSubscription?: true;
   loadingMessagePrefix: string;
 }
 
-export const ProductDetailWrapper = (props: ProductDetailWrapperProps) => {
+export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
   const productDetailFromBrowserHistoryState =
     isProduct(props.location?.state) && props.location?.state;
 
@@ -56,7 +56,7 @@ export const ProductDetailWrapper = (props: ProductDetailWrapperProps) => {
 };
 
 const renderSingleProductOrReturnToAccountOverview = (
-  props: ProductDetailWrapperProps,
+  props: ProductDetailProviderProps,
   setSelectedProductDetail: (productDetail: ProductDetail) => void
 ) => (data: MembersDataApiItem[]) => {
   const filteredProductDetails = data
