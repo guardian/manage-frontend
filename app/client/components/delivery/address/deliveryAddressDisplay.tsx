@@ -1,27 +1,10 @@
 import { css } from "@emotion/core";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import {
-  DeliveryAddress,
-  ProductDetail
-} from "../../../../shared/productResponse";
-import { ProductUrlPart } from "../../../../shared/productTypes";
-import { LinkButton } from "../../buttons";
+import { DeliveryAddress } from "../../../../shared/productResponse";
 import { COUNTRIES } from "../../identity/models";
 
-interface DeliveryAddressDisplayProps extends DeliveryAddress {
-  allProductDetails?: ProductDetail[];
-  productDetail?: ProductDetail;
-  withEditButton?: true;
-  productUrlPart?: ProductUrlPart;
-}
-
-export interface DeliveryAddressState {
-  allProductDetails: ProductDetail[];
-  productDetail: ProductDetail;
-}
-
-export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => {
+export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
   return (
     <div
       css={css`
@@ -43,14 +26,6 @@ export const DeliveryAddressDisplay = (props: DeliveryAddressDisplayProps) => {
         {COUNTRIES.find(country => props.country === country.iso)?.name ||
           props.country}
       </span>
-      {props.withEditButton && (
-        <LinkButton
-          text={"Update delivery details"}
-          to={`/delivery/${props.productUrlPart}/address`}
-          state={props.productDetail}
-          right
-        />
-      )}
     </div>
   );
 };

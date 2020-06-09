@@ -409,13 +409,7 @@ const getProductDetailRenderer = (
                 }`}
                 alignItemsAtTop
                 data={
-                  <DeliveryAddressDisplay
-                    {...subscription.deliveryAddress}
-                    withEditButton={true}
-                    allProductDetails={productDetailList}
-                    productUrlPart={productType.urlPart}
-                    productDetail={productDetail}
-                  />
+                  <DeliveryAddressDisplay {...subscription.deliveryAddress} />
                 }
               />
             )}

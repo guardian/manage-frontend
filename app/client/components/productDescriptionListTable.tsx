@@ -53,7 +53,11 @@ export const ProductDescriptionListTable = (
   );
 
   const showAlternativeTableRowBgColours =
-    props.alternateRowBgColors && filteredContent.length > 2;
+    props.alternateRowBgColors &&
+    filteredContent.reduce(
+      (cellCount, item) => cellCount + (item.spanTwoCols ? 2 : 1),
+      0
+    ) > 2;
 
   interface ContentRowMapEntry {
     row: number;

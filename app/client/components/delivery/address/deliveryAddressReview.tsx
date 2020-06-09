@@ -174,7 +174,9 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
                 }
               `}
             >
-              Delivery address and instructions
+              Delivery address
+              {props.productType.delivery?.enableDeliveryInstructionsUpdate &&
+                " and instructions"}
             </h2>
             <dl
               css={css`

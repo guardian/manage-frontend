@@ -25,8 +25,7 @@ import {
   ContactIdContext,
   convertToDescriptionListData,
   isAddress,
-  NewDeliveryAddressContext,
-  ProductName
+  NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 
 const renderConfirmation = (props: RouteableStepProps) => () => (
@@ -38,7 +37,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   const addressChangedInformationContext = useContext(
     AddressChangedInformationContext
   );
-  const productName = useContext(ProductName);
+  const productName = props.productType.friendlyName;
 
   const [
     showTopCallCentreNumbers,
@@ -161,7 +160,9 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                   }
                 `}
               >
-                Delivery address and instructions
+                Delivery address
+                {props.productType.delivery?.enableDeliveryInstructionsUpdate &&
+                  " and instructions"}
               </h2>
               <dl
                 css={css`
@@ -248,9 +249,10 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                   margin-top: ${space[5]}px;
                 }
               `}
-              href={navLinks.subscriptions.link}
+              href={navLinks.accountOverview.link}
+              showIcon={false}
             >
-              Go back to Subscriptions
+              Return to your account
             </LinkButton>
             <p
               css={css`
