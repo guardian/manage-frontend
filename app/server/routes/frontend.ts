@@ -2,7 +2,6 @@ import * as Sentry from "@sentry/node";
 import { Request, Response, Router } from "express";
 import { renderToString } from "react-dom/server";
 import { ServerUser } from "../../client/components/user";
-import { isInAccountOverviewTest } from "../accountOverviewRelease";
 import { conf, Environments } from "../config";
 import html from "../html";
 import { log } from "../log";
@@ -43,9 +42,7 @@ router.use(withIdentity(), async (req: Request, res: Response) => {
    * renderToString() will take our React app and turn it into a string
    * to be inserted into our Html template function.
    */
-  const body = renderToString(
-    ServerUser(req.url, isInAccountOverviewTest(res))
-  );
+  const body = renderToString(ServerUser(req.url));
   const title = "My Account | The Guardian";
   const src = "/static/user.js";
 

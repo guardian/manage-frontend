@@ -1,5 +1,4 @@
-import { Link } from "@reach/router";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -18,7 +17,6 @@ import {
 } from "../client/components/cancel/physicalSubsCancellationFlowWrapper";
 import { voucherCancellationFlowStart } from "../client/components/cancel/voucher/voucherCancellationFlowStart";
 import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
-import { NavItem, navLinks } from "../client/components/nav";
 import { SupportTheGuardianButtonProps } from "../client/components/supportTheGuardianButton";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -95,8 +93,6 @@ export interface CancellationFlowProperties {
 
 export interface ProductPageProperties {
   title: ProductTitle;
-  navLink: NavItem;
-  noProductInTabCopy: JSX.Element | string;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
   showSubscriptionId?: true;
@@ -266,30 +262,6 @@ export const allProductsDetailFetcher = () =>
     }
   });
 
-const getNoProductInTabCopy = (links: NavItem[]) => {
-  return (
-    <>
-      {links.map((link, index) => {
-        return (
-          <span key={`noProduct-${index}`}>
-            {index === 0
-              ? ` Perhaps you ${
-                  link.title === "contribution"
-                    ? "support us via a "
-                    : "have a "
-                }`
-              : ` or ${
-                  link.title === "contribution" ? "support us via a " : ""
-                }`}
-            <Link to={link.link}>{link.title}</Link>
-          </span>
-        );
-      })}
-      {"."}
-    </>
-  );
-};
-
 const showDeliveryAddressCheck = (
   subscription: Subscription
 ): subscription is SubscriptionWithDeliveryAddress =>
@@ -327,11 +299,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     },
     productPage: {
       title: "Membership",
-      navLink: navLinks.membership,
-      noProductInTabCopy: getNoProductInTabCopy([
-        { ...navLinks.subscriptions, title: "subscription" },
-        { ...navLinks.contributions, title: "contribution" }
-      ]),
       tierRowLabel: "Membership tier",
       tierChangeable: true,
       forceShowJoinDateOnly: true
@@ -363,12 +330,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     noProductSupportUrlSuffix: "/contribute",
     updateAmountMdaEndpoint: "contribution-update-amount",
     productPage: {
-      title: "Contributions",
-      navLink: navLinks.contributions,
-      noProductInTabCopy: getNoProductInTabCopy([
-        { ...navLinks.membership, title: "membership" },
-        { ...navLinks.subscriptions, title: "subscription" }
-      ])
+      title: "Contributions"
     },
     cancellation: {
       linkOnProductPage: true,
@@ -578,11 +540,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "subscriptions",
     productPage: {
       title: "Subscriptions",
-      navLink: navLinks.subscriptions,
-      noProductInTabCopy: getNoProductInTabCopy([
-        { ...navLinks.membership, title: "membership" },
-        { ...navLinks.contributions, title: "contribution" }
-      ]),
       tierRowLabel: "Subscription product",
       showSubscriptionId: true
     },

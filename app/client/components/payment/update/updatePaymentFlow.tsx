@@ -10,9 +10,7 @@ import {
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth } from "../../../styles/breakpoints";
-import { LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
@@ -21,7 +19,7 @@ import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
@@ -161,7 +159,7 @@ class PaymentUpdaterStep extends React.Component<
       };
     `;
 
-    const innerContent = (isInAccountOverviewTest: boolean) => (
+    const innerContent = (
       <>
         {this.props.productDetail.subscription.payPalEmail ? (
           <>
@@ -222,21 +220,7 @@ class PaymentUpdaterStep extends React.Component<
           </>
         )}
         <div css={{ height: "10px" }} />
-        {isInAccountOverviewTest ? (
-          <LinkButton
-            to={"/"}
-            text={"Return to your account"}
-            state={this.props.productDetail}
-            colour={palette.neutral[100]}
-            textColour={palette.neutral[0]}
-            hollow
-            left
-          />
-        ) : (
-          <ReturnToYourProductButton
-            productType={this.props.routeableStepProps.productType}
-          />
-        )}
+        <ReturnToAccountOverviewButton />
       </>
     );
 
@@ -248,43 +232,33 @@ class PaymentUpdaterStep extends React.Component<
           <NavigateFnContext.Provider
             value={{ navigate: this.props.routeableStepProps.navigate }}
           >
-            <IsInAccountOverviewContext.Consumer>
-              {isInAccountOverviewTest => (
-                <WizardStep
-                  routeableStepProps={this.props.routeableStepProps}
-                  extraFooterComponents={
-                    <QuestionsFooter topic={paymentQuestionsTopicString} />
+            <WizardStep
+              routeableStepProps={this.props.routeableStepProps}
+              extraFooterComponents={
+                <QuestionsFooter topic={paymentQuestionsTopicString} />
+              }
+              hideBackButton
+              fullWidth
+            >
+              <PageHeaderContainer
+                title="Manage payment method"
+                breadcrumbs={[
+                  {
+                    title: navLinks.accountOverview.title,
+                    link: navLinks.accountOverview.link
+                  },
+                  {
+                    title: "Manage payment method",
+                    currentPage: true
                   }
-                  hideBackButton
-                  fullWidth={isInAccountOverviewTest ? true : undefined}
-                >
-                  {isInAccountOverviewTest ? (
-                    <>
-                      <PageHeaderContainer
-                        title="Manage payment method"
-                        breadcrumbs={[
-                          {
-                            title: navLinks.accountOverview.title,
-                            link: navLinks.accountOverview.link
-                          },
-                          {
-                            title: "Manage payment method",
-                            currentPage: true
-                          }
-                        ]}
-                      />
-                      <PageNavAndContentContainer
-                        selectedNavItem={navLinks.accountOverview}
-                      >
-                        {innerContent(isInAccountOverviewTest)}
-                      </PageNavAndContentContainer>
-                    </>
-                  ) : (
-                    innerContent(isInAccountOverviewTest)
-                  )}
-                </WizardStep>
-              )}
-            </IsInAccountOverviewContext.Consumer>
+                ]}
+              />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
+              >
+                {innerContent}
+              </PageNavAndContentContainer>
+            </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>
       </MembersDataApiItemContext.Provider>

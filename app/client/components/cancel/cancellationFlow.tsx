@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
 import React from "react";
 import {
   friendlyLongDateFormat,
@@ -10,7 +10,6 @@ import {
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { navLinks } from "../nav";
@@ -24,7 +23,7 @@ import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
   MultiRouteableProps,
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
@@ -73,7 +72,7 @@ class ReasonPicker extends React.Component<
       (child: { props: MultiRouteableProps }) => child.props
     );
 
-    const innerContent = (isInAccountOverview: boolean) => (
+    const innerContent = (
       <>
         <ProgressIndicator
           steps={[
@@ -168,21 +167,7 @@ class ReasonPicker extends React.Component<
               />
             </div>
             <div>
-              {isInAccountOverview ? (
-                <LinkButton
-                  to={"/"}
-                  text={"Return to your account"}
-                  state={this.props.productDetail}
-                  colour={palette.neutral[100]}
-                  textColour={palette.neutral[0]}
-                  hollow
-                  left
-                />
-              ) : (
-                <ReturnToYourProductButton
-                  productType={this.props.productType}
-                />
-              )}
+              <ReturnToAccountOverviewButton />
             </div>
           </div>
         </PageContainerSection>
@@ -194,40 +179,28 @@ class ReasonPicker extends React.Component<
         <CancellationPolicyContext.Provider
           value={this.state.cancellationPolicy}
         >
-          <IsInAccountOverviewContext.Consumer>
-            {isInAccountOverview => (
-              <WizardStep
-                routeableStepProps={this.props}
-                hideBackButton
-                {...(isInAccountOverview ? { fullWidth: true } : {})}
+          <WizardStep routeableStepProps={this.props} hideBackButton fullWidth>
+            <>
+              <PageHeaderContainer
+                title={`Cancel ${this.props.productType.friendlyName}`}
+                breadcrumbs={[
+                  {
+                    title: navLinks.accountOverview.title,
+                    link: navLinks.accountOverview.link
+                  },
+                  {
+                    title: "Cancel membership",
+                    currentPage: true
+                  }
+                ]}
+              />
+              <PageNavAndContentContainer
+                selectedNavItem={navLinks.accountOverview}
               >
-                {isInAccountOverview ? (
-                  <>
-                    <PageHeaderContainer
-                      title={`Cancel ${this.props.productType.friendlyName}`}
-                      breadcrumbs={[
-                        {
-                          title: navLinks.accountOverview.title,
-                          link: navLinks.accountOverview.link
-                        },
-                        {
-                          title: "Cancel membership",
-                          currentPage: true
-                        }
-                      ]}
-                    />
-                    <PageNavAndContentContainer
-                      selectedNavItem={navLinks.accountOverview}
-                    >
-                      {innerContent(isInAccountOverview)}
-                    </PageNavAndContentContainer>
-                  </>
-                ) : (
-                  innerContent(isInAccountOverview)
-                )}
-              </WizardStep>
-            )}
-          </IsInAccountOverviewContext.Consumer>
+                {innerContent}
+              </PageNavAndContentContainer>
+            </>
+          </WizardStep>
         </CancellationPolicyContext.Provider>
       </MembersDataApiItemContext.Provider>
     );

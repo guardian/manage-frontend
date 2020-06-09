@@ -15,7 +15,6 @@ import {
   ProductTypeWithHolidayStopsFlow,
   WithProductType
 } from "../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
@@ -27,7 +26,7 @@ import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import { ProductDetailProvider } from "../productDetailProvider";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   RouteableStepProps,
   WizardStep
 } from "../wizardRouterAdapter";
@@ -82,8 +81,7 @@ const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
   props: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
-  setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void,
-  isInAccountOverviewTest: boolean
+  setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDateMoment = momentiseDateStr(
     productDetail.subscription.renewalDate
@@ -276,7 +274,7 @@ const renderHolidayStopsOverview = (
         }}
       >
         <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
-          <ReturnToYourProductButton productType={props.productType} />
+          <ReturnToAccountOverviewButton />
         </div>
         <div css={{ marginTop: "10px", alignSelf: "flex-end" }}>
           {productDetail.subscription.autoRenew && createSuspensionButton}
@@ -294,35 +292,25 @@ const renderHolidayStopsOverview = (
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
-        <WizardStep
-          routeableStepProps={props}
-          hideBackButton
-          fullWidth={isInAccountOverviewTest || undefined}
-        >
-          {isInAccountOverviewTest ? (
-            <>
-              <PageHeaderContainer
-                title="Manage suspensions"
-                breadcrumbs={[
-                  {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
-                  },
-                  {
-                    title: "Manage suspensions",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
-              >
-                <InnerContent />
-              </PageNavAndContentContainer>
-            </>
-          ) : (
+        <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+          <PageHeaderContainer
+            title="Manage suspensions"
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Manage suspensions",
+                currentPage: true
+              }
+            ]}
+          />
+          <PageNavAndContentContainer
+            selectedNavItem={navLinks.accountOverview}
+          >
             <InnerContent />
-          )}
+          </PageNavAndContentContainer>
         </WizardStep>
       </MembersDataApiItemContext.Provider>
     </HolidayStopsResponseContext.Provider>
@@ -352,43 +340,36 @@ export class HolidaysOverview extends React.Component<
   };
 
   public render = () => (
-    <IsInAccountOverviewContext.Consumer>
-      {isInAccountOverviewTest => (
-        <ProductDetailProvider
-          {...this.props}
-          loadingMessagePrefix="Retrieving details of your"
-        >
-          {productDetail => (
-            <MembersDataApiItemContext.Provider value={productDetail}>
-              <NavigateFnContext.Provider
-                value={{ navigate: this.props.navigate }}
-              >
-                {" "}
-                {productDetail.subscription.start ? (
-                  <GetHolidayStopsAsyncLoader
-                    fetch={createGetHolidayStopsFetcher(
-                      productDetail.subscription.subscriptionId,
-                      productDetail.isTestUser
-                    )}
-                    render={renderHolidayStopsOverview(
-                      productDetail,
-                      this.props,
-                      this.state.existingHolidayStopToAmend,
-                      this.setExistingHolidayStopToAmend,
-                      isInAccountOverviewTest
-                    )}
-                    loadingMessage="Loading existing suspensions..."
-                    readerOnOK={embellishExistingHolidayStops}
-                  />
-                ) : (
-                  <GenericErrorScreen loggingMessage="Subscription had no start date" />
+    <ProductDetailProvider
+      {...this.props}
+      loadingMessagePrefix="Retrieving details of your"
+    >
+      {productDetail => (
+        <MembersDataApiItemContext.Provider value={productDetail}>
+          <NavigateFnContext.Provider value={{ navigate: this.props.navigate }}>
+            {" "}
+            {productDetail.subscription.start ? (
+              <GetHolidayStopsAsyncLoader
+                fetch={createGetHolidayStopsFetcher(
+                  productDetail.subscription.subscriptionId,
+                  productDetail.isTestUser
                 )}
-              </NavigateFnContext.Provider>
-            </MembersDataApiItemContext.Provider>
-          )}
-        </ProductDetailProvider>
+                render={renderHolidayStopsOverview(
+                  productDetail,
+                  this.props,
+                  this.state.existingHolidayStopToAmend,
+                  this.setExistingHolidayStopToAmend
+                )}
+                loadingMessage="Loading existing suspensions..."
+                readerOnOK={embellishExistingHolidayStops}
+              />
+            ) : (
+              <GenericErrorScreen loggingMessage="Subscription had no start date" />
+            )}
+          </NavigateFnContext.Provider>
+        </MembersDataApiItemContext.Provider>
       )}
-    </IsInAccountOverviewContext.Consumer>
+    </ProductDetailProvider>
   );
 
   private setExistingHolidayStopToAmend = (

@@ -1,8 +1,7 @@
 import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
-import React, { useContext } from "react";
+import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer, PageContainerSection } from "./page";
@@ -67,22 +66,12 @@ export const visuallyNavigateToParent = (
   );
 };
 
-export const ReturnToYourProductButton = (
-  props: WithProductType<ProductType>
-) => (
+export const ReturnToAccountOverviewButton = () => (
   <LinkButton
-    to={
-      useContext(IsInAccountOverviewContext)
-        ? "/"
-        : `/${props.productType.urlPart}`
-    }
-    text={"Return to your account"}
-    {...(useContext(IsInAccountOverviewContext)
-      ? { colour: palette.neutral[100] }
-      : {})}
-    {...(useContext(IsInAccountOverviewContext)
-      ? { textColour: palette.neutral[0] }
-      : {})}
+    to="/"
+    text="Return to your account"
+    colour={palette.neutral[100]}
+    textColour={palette.neutral[0]}
     hollow
     left
   />
@@ -131,7 +120,7 @@ const ThisStageContent = (props: WizardStepProps) => (
 export interface WizardStepProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   children: any;
-  fullWidth?: true;
+  fullWidth: true;
 }
 
 export const WizardStep = (props: WizardStepProps) => (

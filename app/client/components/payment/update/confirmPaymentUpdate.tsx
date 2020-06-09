@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import * as Sentry from "@sentry/browser";
-import React, { useContext } from "react";
+import React from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -11,7 +11,6 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
@@ -187,7 +186,6 @@ const InnerContent = (props: InnerContentProps) => (
 );
 
 export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
-  const isInAccountOverview = useContext(IsInAccountOverviewContext);
   return (
     <NewPaymentMethodContext.Consumer>
       {newPaymentMethodDetail => (
@@ -202,40 +200,30 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
                 hideBackButton
-                {...(isInAccountOverview ? { fullWidth: true } : {})}
+                fullWidth
               >
-                {isInAccountOverview ? (
-                  <>
-                    <PageHeaderContainer
-                      title="Manage payment method"
-                      breadcrumbs={[
-                        {
-                          title: navLinks.accountOverview.title,
-                          link: navLinks.accountOverview.link
-                        },
-                        {
-                          title: "Manage payment method",
-                          currentPage: true
-                        }
-                      ]}
-                    />
-                    <PageNavAndContentContainer
-                      selectedNavItem={navLinks.accountOverview}
-                    >
-                      <InnerContent
-                        routeableStepProps={props}
-                        productDetail={productDetail}
-                        newPaymentMethodDetail={newPaymentMethodDetail}
-                      />
-                    </PageNavAndContentContainer>
-                  </>
-                ) : (
+                <PageHeaderContainer
+                  title="Manage payment method"
+                  breadcrumbs={[
+                    {
+                      title: navLinks.accountOverview.title,
+                      link: navLinks.accountOverview.link
+                    },
+                    {
+                      title: "Manage payment method",
+                      currentPage: true
+                    }
+                  ]}
+                />
+                <PageNavAndContentContainer
+                  selectedNavItem={navLinks.accountOverview}
+                >
                   <InnerContent
                     routeableStepProps={props}
                     productDetail={productDetail}
                     newPaymentMethodDetail={newPaymentMethodDetail}
                   />
-                )}
+                </PageNavAndContentContainer>
               </WizardStep>
             ) : (
               visuallyNavigateToParent(props)

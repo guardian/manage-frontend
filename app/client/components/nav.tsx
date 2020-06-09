@@ -1,9 +1,8 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React, { useContext } from "react";
+import React from "react";
 import { conf } from "../../server/config";
-import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { AccountOverviewIcon } from "./svgs/accountOverviewIcon";
@@ -92,9 +91,6 @@ export interface NavLinks {
   accountOverview: NavItem;
   profile: NavItem;
   settings: NavItem;
-  membership: NavItem;
-  subscriptions: NavItem;
-  contributions: NavItem;
   emailPrefs: NavItem;
   help: NavItem;
 }
@@ -111,21 +107,6 @@ export const navLinks: NavLinks = {
     link: "/public-settings",
     local: true,
     icon: <ProfileIcon />
-  },
-  membership: {
-    title: "Membership",
-    link: "/membership",
-    local: true
-  },
-  subscriptions: {
-    title: "Subscriptions",
-    link: "/subscriptions",
-    local: true
-  },
-  contributions: {
-    title: "Contributions",
-    link: "/contributions",
-    local: true
   },
   emailPrefs: {
     title: "Emails & marketing",
@@ -158,58 +139,44 @@ export interface NavProps {
   selectedNavItem?: NavItem;
 }
 
-export const accountOverviewActiveFilter = (navItem: NavItem) =>
-  navItem.title !== "Membership" &&
-  navItem.title !== "Subscriptions" &&
-  navItem.title !== "Contributions";
-
-export const accountOverviewInactiveFilter = (navItem: NavItem) =>
-  navItem.title !== "Account overview";
-
 export const Nav = (props: NavProps) => (
   <ul role="tablist" css={navCss}>
-    {Object.values(navLinks)
-      .filter(
-        useContext(IsInAccountOverviewContext)
-          ? accountOverviewActiveFilter
-          : accountOverviewInactiveFilter
-      )
-      .map((navItem: NavItem) => (
-        <li
-          css={navItemCss(props.selectedNavItem === navItem)}
-          key={navItem.title}
-        >
-          {navItem.local ? (
-            <Link
-              css={navLinkCss(props.selectedNavItem === navItem)}
-              to={navItem.link}
-            >
-              {navItem.icon && useContext(IsInAccountOverviewContext) && (
-                <i
-                  css={css`
-                    display: inline-block;
-                    vertical-align: top;
-                    width: auto;
-                    height: 100%;
-                    max-width: 20px;
-                    max-height: 20px;
-                    margin-right: ${space[5]}px;
-                  `}
-                >
-                  {navItem.icon}
-                </i>
-              )}
-              {navItem.title}
-            </Link>
-          ) : (
-            <a
-              css={navLinkCss(props.selectedNavItem === navItem)}
-              href={`https://profile.${domain}${navItem.link}`}
-            >
-              {navItem.title}
-            </a>
-          )}
-        </li>
-      ))}
+    {Object.values(navLinks).map((navItem: NavItem) => (
+      <li
+        css={navItemCss(props.selectedNavItem === navItem)}
+        key={navItem.title}
+      >
+        {navItem.local ? (
+          <Link
+            css={navLinkCss(props.selectedNavItem === navItem)}
+            to={navItem.link}
+          >
+            {navItem.icon && (
+              <i
+                css={css`
+                  display: inline-block;
+                  vertical-align: top;
+                  width: auto;
+                  height: 100%;
+                  max-width: 20px;
+                  max-height: 20px;
+                  margin-right: ${space[5]}px;
+                `}
+              >
+                {navItem.icon}
+              </i>
+            )}
+            {navItem.title}
+          </Link>
+        ) : (
+          <a
+            css={navLinkCss(props.selectedNavItem === navItem)}
+            href={`https://profile.${domain}${navItem.link}`}
+          >
+            {navItem.title}
+          </a>
+        )}
+      </li>
+    ))}
   </ul>
 );

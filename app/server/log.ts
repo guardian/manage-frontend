@@ -19,14 +19,12 @@ export const log = winston.createLogger({
 export interface MetricLoggingFields {
   loggingCode: string;
   isOK: boolean;
-  isInAccountOverviewTest: boolean;
 }
 
 export const putMetric = (fields: MetricLoggingFields) => {
   const dimensions = {
     Stage: conf.STAGE,
-    outcome: fields.isOK ? "SUCCESS" : "ERROR",
-    variant: fields.isInAccountOverviewTest ? "ACCOUNT OVERVIEW" : "LEGACY"
+    outcome: fields.isOK ? "SUCCESS" : "ERROR"
   };
 
   if (fields.loggingCode) {

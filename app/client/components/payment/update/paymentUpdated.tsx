@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
-import React, { useContext } from "react";
+import { space } from "@guardian/src-foundations";
+import React from "react";
 import {
   augmentInterval,
   formatDate,
@@ -16,7 +16,6 @@ import {
   createProductDetailFetcher,
   ProductType
 } from "../../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
@@ -26,7 +25,7 @@ import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
@@ -89,8 +88,7 @@ const ConfirmedNewPaymentDetailsRenderer = ({
 const WithSubscriptionRenderer = (
   productType: ProductType,
   newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail,
-  isInAccountOverview: boolean
+  previousProductDetail: ProductDetail
 ) => (subs: WithSubscription[]) =>
   subs && subs.length === 1 ? (
     <>
@@ -120,25 +118,11 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      {isInAccountOverview ? (
-        <LinkButton
-          to={"/"}
-          text={"Return to your account"}
-          state={previousProductDetail}
-          colour={palette.neutral[100]}
-          textColour={palette.neutral[0]}
-          hollow
-          left
-        />
-      ) : (
-        <ReturnToYourProductButton productType={productType} />
-      )}
+      <ReturnToAccountOverviewButton />
     </>
   );
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
-  const isInAccountOverview = useContext(IsInAccountOverviewContext);
-
   const innerContent = (
     previousProductDetail: ProductDetail,
     newPaymentMethodDetail: NewPaymentMethodDetail
@@ -162,8 +146,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
         render={WithSubscriptionRenderer(
           props.productType,
           newPaymentMethodDetail,
-          previousProductDetail,
-          isInAccountOverview
+          previousProductDetail
         )}
         loadingMessage="Looks good so far. Just checking everything is done..."
       />
@@ -186,23 +169,14 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   <SpreadTheWordFooter key="share" />
                 ]}
                 hideBackButton
-                {...(isInAccountOverview ? { fullWidth: true } : {})}
+                fullWidth
               >
-                {isInAccountOverview ? (
-                  <>
-                    <PageHeaderContainer title="Manage payment method" />
-                    <PageNavAndContentContainer
-                      selectedNavItem={navLinks.accountOverview}
-                    >
-                      {innerContent(
-                        previousProductDetail,
-                        newPaymentMethodDetail
-                      )}
-                    </PageNavAndContentContainer>
-                  </>
-                ) : (
-                  innerContent(previousProductDetail, newPaymentMethodDetail)
-                )}
+                <PageHeaderContainer title="Manage payment method" />
+                <PageNavAndContentContainer
+                  selectedNavItem={navLinks.accountOverview}
+                >
+                  {innerContent(previousProductDetail, newPaymentMethodDetail)}
+                </PageNavAndContentContainer>
               </WizardStep>
             ) : (
               visuallyNavigateToParent(props)

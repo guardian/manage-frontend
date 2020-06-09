@@ -4,7 +4,6 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -100,27 +99,19 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                 delivery details
               </span>
             }
-            breadcrumbs={
-              useContext(IsInAccountOverviewContext)
-                ? [
-                    {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
-                    },
-                    {
-                      title: "Edit delivery address",
-                      currentPage: true
-                    }
-                  ]
-                : []
-            }
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Edit delivery address",
+                currentPage: true
+              }
+            ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={
-              useContext(IsInAccountOverviewContext)
-                ? navLinks.accountOverview
-                : navLinks.subscriptions
-            }
+            selectedNavItem={navLinks.accountOverview}
           >
             <ProgressIndicator
               steps={[

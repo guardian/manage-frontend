@@ -1,7 +1,6 @@
 import { Location } from "@reach/router";
 import React, { ReactNode } from "react";
 import parse from "url-parse";
-import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
 import { OphanProduct } from "../../shared/ophanTypes";
 import { ProductDetail } from "../../shared/productResponse";
 import { ProductType } from "../../shared/productTypes";
@@ -25,12 +24,7 @@ export interface Event {
   eventValue?: number;
 }
 
-const globals = typeof window !== "undefined" ? window.guardian : undefined;
-const MMA_AB_TEST_DIMENSION_VALUE = isIdentityInAccountOverviewTest(
-  globals?.identityDetails?.userId
-)
-  ? "IN-ACCOUNT-OVERVIEW_TEST"
-  : "NOT-IN-ACCOUNT-OVERVIEW_TEST";
+const MMA_AB_TEST_DIMENSION_VALUE = ""; // this can be used for a/b testing
 
 export const trackEvent = (
   { eventCategory, eventAction, product, eventLabel, eventValue }: Event,
@@ -62,7 +56,9 @@ export const trackEvent = (
             eventCategory.toUpperCase(),
             eventAction.toUpperCase(),
             ...(eventLabel ? [eventLabel.toUpperCase()] : []),
-            MMA_AB_TEST_DIMENSION_VALUE
+            ...(MMA_AB_TEST_DIMENSION_VALUE
+              ? [MMA_AB_TEST_DIMENSION_VALUE]
+              : [])
           ]
         },
         action: "VIEW",

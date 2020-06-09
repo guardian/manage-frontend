@@ -11,7 +11,6 @@ import {
   ProductTypeWithCancellationFlow,
   WithProductType
 } from "../../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
@@ -28,7 +27,7 @@ import {
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   MultiRouteableProps,
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   WizardStep
 } from "../../wizardRouterAdapter";
 import {
@@ -261,7 +260,7 @@ const ConfirmCancellationAndReturnRow = (
       />
     </div>
     <div>
-      <ReturnToYourProductButton productType={props.productType} />
+      <ReturnToAccountOverviewButton />
     </div>
   </div>
 );
@@ -360,40 +359,28 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                 productDetail={productDetail}
                 sfCaseProduct={props.productType.cancellation.sfCaseProduct}
               >
-                <IsInAccountOverviewContext.Consumer>
-                  {isInAccountOverview => (
-                    <WizardStep
-                      routeableStepProps={props}
-                      hideBackButton
-                      {...(isInAccountOverview ? { fullWidth: true } : {})}
+                <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+                  <>
+                    <PageHeaderContainer
+                      title={`Cancel ${props.productType.friendlyName}`}
+                      breadcrumbs={[
+                        {
+                          title: navLinks.accountOverview.title,
+                          link: navLinks.accountOverview.link
+                        },
+                        {
+                          title: "Cancel membership",
+                          currentPage: true
+                        }
+                      ]}
+                    />
+                    <PageNavAndContentContainer
+                      selectedNavItem={navLinks.accountOverview}
                     >
-                      {isInAccountOverview ? (
-                        <>
-                          <PageHeaderContainer
-                            title={`Cancel ${props.productType.friendlyName}`}
-                            breadcrumbs={[
-                              {
-                                title: navLinks.accountOverview.title,
-                                link: navLinks.accountOverview.link
-                              },
-                              {
-                                title: "Cancel membership",
-                                currentPage: true
-                              }
-                            ]}
-                          />
-                          <PageNavAndContentContainer
-                            selectedNavItem={navLinks.accountOverview}
-                          >
-                            {innerContent(productDetail)}
-                          </PageNavAndContentContainer>
-                        </>
-                      ) : (
-                        innerContent(productDetail)
-                      )}
-                    </WizardStep>
-                  )}
-                </IsInAccountOverviewContext.Consumer>
+                      {innerContent(productDetail)}
+                    </PageNavAndContentContainer>
+                  </>
+                </WizardStep>
               </CaseCreationWrapper>
             </CancellationReasonContext.Provider>
           )
