@@ -78,11 +78,7 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
               {dateChooserState =>
                 isSharedHolidayDateChooserState(dateChooserState) &&
                 isProduct(productDetail) ? (
-                  <WizardStep
-                    routeableStepProps={props}
-                    hideBackButton
-                    fullWidth
-                  >
+                  <WizardStep routeableStepProps={props}>
                     <>
                       <PageHeaderContainer
                         title="Manage suspensions"

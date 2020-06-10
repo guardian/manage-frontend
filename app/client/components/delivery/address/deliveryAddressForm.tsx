@@ -294,11 +294,7 @@ const FormContainer = (props: FormContainerProps) => {
             Object.keys(props.contactIdToArrayOfProductDetailAndProductType)[0]
           }
         >
-          <WizardStep
-            routeableStepProps={props.routeableStepProps}
-            hideBackButton
-            fullWidth
-          >
+          <WizardStep routeableStepProps={props.routeableStepProps}>
             <PageHeaderContainer
               breadcrumbs={[
                 {

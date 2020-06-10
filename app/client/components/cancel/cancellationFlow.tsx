@@ -179,7 +179,7 @@ class ReasonPicker extends React.Component<
         <CancellationPolicyContext.Provider
           value={this.state.cancellationPolicy}
         >
-          <WizardStep routeableStepProps={this.props} hideBackButton fullWidth>
+          <WizardStep routeableStepProps={this.props}>
             <>
               <PageHeaderContainer
                 title={`Cancel ${this.props.productType.friendlyName}`}

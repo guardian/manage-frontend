@@ -237,8 +237,6 @@ class PaymentUpdaterStep extends React.Component<
               extraFooterComponents={
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
-              hideBackButton
-              fullWidth
             >
               <PageHeaderContainer
                 title="Manage payment method"

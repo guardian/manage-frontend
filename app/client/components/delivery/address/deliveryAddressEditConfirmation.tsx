@@ -74,7 +74,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   `;
 
   return (
-    <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+    <WizardStep routeableStepProps={props}>
       {isAddress(addressContext.newDeliveryAddress) ? (
         <>
           <PageHeaderContainer

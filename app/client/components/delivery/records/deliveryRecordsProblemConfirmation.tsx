@@ -100,11 +100,7 @@ const DeliveryRecordsProblemConfirmationFC = (
     vertical-align: top;
   `;
   return (
-    <WizardStep
-      routeableStepProps={props.routeableStepProps}
-      hideBackButton
-      fullWidth
-    >
+    <WizardStep routeableStepProps={props.routeableStepProps}>
       <PageHeaderContainer
         selectedNavItem={navLinks.accountOverview}
         title="Delivery history"

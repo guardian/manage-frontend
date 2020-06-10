@@ -292,7 +292,7 @@ const renderHolidayStopsOverview = (
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
-        <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+        <WizardStep routeableStepProps={props}>
           <PageHeaderContainer
             title="Manage suspensions"
             breadcrumbs={[

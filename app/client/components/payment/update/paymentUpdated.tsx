@@ -168,8 +168,6 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   />,
                   <SpreadTheWordFooter key="share" />
                 ]}
-                hideBackButton
-                fullWidth
               >
                 <PageHeaderContainer title="Manage payment method" />
                 <PageNavAndContentContainer

@@ -67,7 +67,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
   `;
 
   return (
-    <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+    <WizardStep routeableStepProps={props}>
       <PageHeaderContainer
         title={
           <span

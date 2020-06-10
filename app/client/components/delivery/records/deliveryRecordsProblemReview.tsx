@@ -183,7 +183,7 @@ const DeliveryRecordsProblemReviewFC = (
           })
         }}
       >
-        <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+        <WizardStep routeableStepProps={props}>
           <PageHeaderContainer
             title="Delivery history"
             breadcrumbs={[

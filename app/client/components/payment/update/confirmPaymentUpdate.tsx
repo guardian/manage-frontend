@@ -199,8 +199,6 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                 extraFooterComponents={
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
-                hideBackButton
-                fullWidth
               >
                 <PageHeaderContainer
                   title="Manage payment method"

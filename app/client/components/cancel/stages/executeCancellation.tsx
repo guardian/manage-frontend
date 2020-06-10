@@ -178,7 +178,7 @@ const innerContent = (
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+  <WizardStep routeableStepProps={props}>
     <CancellationReasonContext.Consumer>
       {reason => (
         <CancellationCaseIdContext.Consumer>

@@ -305,11 +305,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           enableDeliveryInstructions
         }}
       >
-        <WizardStep
-          routeableStepProps={props.routeableStepProps}
-          hideBackButton
-          fullWidth
-        >
+        <WizardStep routeableStepProps={props.routeableStepProps}>
           <PageHeaderContainer
             title="Delivery history"
             breadcrumbs={[

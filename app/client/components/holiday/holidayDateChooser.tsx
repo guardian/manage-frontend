@@ -207,11 +207,7 @@ export class HolidayDateChooser extends React.Component<
                   <HolidayDateChooserStateContext.Provider
                     value={this.state || {}}
                   >
-                    <WizardStep
-                      routeableStepProps={this.props}
-                      hideBackButton
-                      fullWidth
-                    >
+                    <WizardStep routeableStepProps={this.props}>
                       <>
                         <PageHeaderContainer
                           title="Manage suspensions"
