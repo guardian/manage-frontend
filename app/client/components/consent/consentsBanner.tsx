@@ -147,4 +147,4 @@ export class ConsentsBanner extends React.Component<
   };
 }
 
-export const SuppressConsentBanner = (props: RouteComponentProps) => null;
+export const SuppressConsentBanner = (_: RouteComponentProps) => null;

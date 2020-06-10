@@ -156,7 +156,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
   );
 };
 
-export const AccountOverview = (props: RouteComponentProps) => {
+export const AccountOverview = (_: RouteComponentProps) => {
   return (
     <>
       <PageHeaderContainer

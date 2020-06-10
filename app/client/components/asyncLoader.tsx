@@ -92,12 +92,12 @@ export default class AsyncLoader<
 
   private processResponse = (
     resp: Response,
-    index?: number,
+    _?: number, // index
     allResponses?: Response[]
   ) => {
     const locationHeader = resp.headers.get("Location");
     const allResponsesAreOK =
-      (allResponses || [resp]).filter(_ => !_.ok).length === 0;
+      (allResponses || [resp]).filter(res => !res.ok).length === 0;
     if (resp.status === 401 && locationHeader && window !== undefined) {
       window.location.replace(locationHeader);
       return Promise.resolve(null);

@@ -229,7 +229,7 @@ export const ContributionUpdateAmountForm = (
     margin: 0 ${space[3]}px ${space[3]}px 0;
   `;
 
-  const otherAmountOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const otherAmountOnFocus = () => {
     setIsOtherAmountSelected(true);
     setSelectedValue("other");
   };

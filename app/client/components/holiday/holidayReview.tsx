@@ -77,7 +77,8 @@ const getPerformCreateOrAmendFetcher = (
   );
 
 const getRenderCreateOrAmendSuccess = (nav: NavigateFn) => (
-  response: CreateOrAmendHolidayStopsResponse
+  // TODO should probably check the 'success' string within this (even thought status code should catch failure)
+  _: CreateOrAmendHolidayStopsResponse
 ) => {
   nav("confirmed", { replace: true });
   return null;

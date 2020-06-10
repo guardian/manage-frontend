@@ -364,9 +364,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
             return undefined;
         }
       },
-      alternateSupportButtonUrlSuffix: (
-        reasonId: OptionalCancellationReasonId
-      ) => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
+      alternateSupportButtonUrlSuffix: () => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
       swapFeedbackAndContactUs: true
     }
   },
