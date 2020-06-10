@@ -87,7 +87,7 @@ export interface NavItem {
   icon?: JSX.Element;
 }
 
-export interface NavLinks {
+interface NavLinks {
   accountOverview: NavItem;
   profile: NavItem;
   settings: NavItem;

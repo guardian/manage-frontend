@@ -91,7 +91,7 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
     <LinkButton to=".." text="Back" left />
   </div>
 );
-export interface HolidayReviewState {
+interface HolidayReviewState {
   isExecuting: boolean;
   isCheckboxConfirmed: boolean;
 }

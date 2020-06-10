@@ -53,7 +53,6 @@ export const APIFilePostOptions = (payload: File): RequestInit => {
   };
 };
 
-export const APIPostOptions = getAPIOptionsForMethod("POST");
 export const APIPutOptions = getAPIOptionsForMethod("PUT");
 export const APIPatchOptions = getAPIOptionsForMethod("PATCH");
 

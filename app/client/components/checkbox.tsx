@@ -1,7 +1,7 @@
 import React from "react";
 import palette from "../colours";
 
-export interface CheckboxProps {
+interface CheckboxProps {
   checked: boolean;
   required?: true;
   onChange: (newValue: boolean) => void;

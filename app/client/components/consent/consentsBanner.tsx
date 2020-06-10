@@ -21,7 +21,7 @@ const requiresConsents = () =>
     .split(";")
     .find(keyValue => keyValue.trim().startsWith(CONSENT_COOKIE_NAME + "="));
 
-export interface ConsentsBannerState {
+interface ConsentsBannerState {
   requiresConsents: boolean;
 }
 
@@ -93,7 +93,8 @@ export class ConsentsBanner extends React.Component<
               {" and "}
               <a href="https://www.theguardian.com/info/cookies">
                 cookie policy
-              </a>.
+              </a>
+              .
             </p>
             <Button
               text="I'm OK with that"

@@ -26,10 +26,11 @@ export const formatDate = (shortForm: string) => {
 
 export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
 
-export const alertTextWithoutCTA = (productDetail: ProductDetail) =>
-  productDetail.alertText
-    ? productDetail.alertText.replace(/Please check .*/g, "")
-    : undefined;
+export const replaceAlertTextCTA = (alertText: string) =>
+  alertText.replace(
+    /Please check .*/g,
+    "Please check that the payment details shown are up to date."
+  );
 
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
@@ -68,7 +69,7 @@ export interface SubscriptionPlan {
   daysOfWeek?: string[];
 }
 
-export interface CurrencyAndIntervalDetail {
+interface CurrencyAndIntervalDetail {
   currency: string;
   currencyISO: string;
   interval: string;
@@ -107,7 +108,7 @@ export interface DeliveryAddress {
   addressChangeInformation?: string;
 }
 
-export type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
+type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
 
 export interface Subscription {
   subscriptionId: string;

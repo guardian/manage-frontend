@@ -12,7 +12,8 @@ import {
   isGift,
   isPaidSubscriptionPlan,
   isSixForSix,
-  ProductDetail
+  ProductDetail,
+  replaceAlertTextCTA
 } from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
@@ -99,7 +100,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
         {productDetail.alertText && (
           <ProblemAlert
             title="A payment needs your attention"
-            message={productDetail.alertText}
+            message={replaceAlertTextCTA(productDetail.alertText)}
             button={{
               title: "Update payment method",
               link: `/payment/${specificProductType.urlPart}`,

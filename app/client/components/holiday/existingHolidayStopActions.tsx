@@ -10,14 +10,13 @@ import {
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
 
-export interface ExistingHolidayStopActionsProps
-  extends MinimalHolidayStopRequest {
+interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
   reloadParent?: ReFetch;
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
-export interface ExistingHolidayStopActionsState {
+interface ExistingHolidayStopActionsState {
   isDeleting: boolean;
 }
 

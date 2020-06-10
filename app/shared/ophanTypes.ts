@@ -12,7 +12,7 @@ export type OphanProduct =
   | "PRINT_SUBSCRIPTION"
   | "APP_PREMIUM_TIER";
 
-export type OphanAction =
+type OphanAction =
   | "INSERT"
   | "VIEW"
   | "EXPAND"
@@ -23,7 +23,7 @@ export type OphanAction =
   | "VOTE"
   | "CLICK";
 
-export type OphanComponentType =
+type OphanComponentType =
   | "READERS_QUESTIONS_ATOM"
   | "QANDA_ATOM"
   | "PROFILE_ATOM"
@@ -58,7 +58,7 @@ export type OphanComponentType =
   | "APP_THRASHER"
   | "APP_VIDEO";
 
-export interface OphanComponent {
+interface OphanComponent {
   componentType: OphanComponentType;
   id?: string;
   products?: OphanProduct[];

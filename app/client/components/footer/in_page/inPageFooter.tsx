@@ -3,7 +3,7 @@ import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
 import { PageContainer } from "../../page";
 
-export interface InPageFooterProps {
+interface InPageFooterProps {
   title: string;
   children: any;
 }

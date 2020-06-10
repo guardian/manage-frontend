@@ -7,6 +7,7 @@ import {
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
+  replaceAlertTextCTA,
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
@@ -75,7 +76,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       {firstPaymentFailure?.productDetail.alertText && (
         <ProblemAlert
           title="A payment needs your attention"
-          message={firstPaymentFailure.productDetail.alertText}
+          message={replaceAlertTextCTA(
+            firstPaymentFailure.productDetail.alertText
+          )}
           button={{
             title: "Update payment method",
             link: `/payment/${firstPaymentFailure.specificProductType.urlPart}`,

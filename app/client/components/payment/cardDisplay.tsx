@@ -14,7 +14,7 @@ export interface CardProps {
   stripePublicKeyForUpdate?: string;
 }
 
-export interface CardDisplayProps extends CardProps, Inlineable {
+interface CardDisplayProps extends CardProps, Inlineable {
   margin?: string;
   inErrorState?: boolean;
 }

@@ -16,7 +16,7 @@ export const log = winston.createLogger({
   ]
 });
 
-export interface MetricLoggingFields {
+interface MetricLoggingFields {
   loggingCode: string;
   isOK: boolean;
 }

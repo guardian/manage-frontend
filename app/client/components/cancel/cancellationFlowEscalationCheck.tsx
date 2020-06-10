@@ -7,7 +7,7 @@ import {
 } from "./cancellationContexts";
 import { RouteableStepPropsWithCancellationFlow } from "./cancellationFlow";
 
-export interface VoucherCancellationFlowEscalationCheckProps
+interface VoucherCancellationFlowEscalationCheckProps
   extends RouteableStepPropsWithCancellationFlow {
   children: (reasonsList: string[]) => ReactNode | ReactNodeArray;
 }

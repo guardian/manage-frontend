@@ -4,7 +4,7 @@ import { trackEvent } from "./analytics";
 import { CallCentreNumbers } from "./callCentreNumbers";
 import { PageContainer } from "./page";
 
-export interface GenericErrorScreenProps {
+interface GenericErrorScreenProps {
   loggingMessage: string | false;
 }
 

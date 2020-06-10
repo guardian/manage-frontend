@@ -2,7 +2,7 @@ import React from "react";
 import { InlineContactUs } from "../../inlineContactUs";
 import { InPageFooter } from "./inPageFooter";
 
-export interface QuestionsFooterProps {
+interface QuestionsFooterProps {
   topic: string;
 }
 

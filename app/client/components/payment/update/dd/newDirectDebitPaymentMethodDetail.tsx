@@ -10,7 +10,7 @@ import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { ddFormWidth } from "./directDebitInputForm";
 import { DirectDebitLegal, GoCardlessGuarantee } from "./directDebitLegal";
 
-export interface SubscriptionWithMandate extends Subscription {
+interface SubscriptionWithMandate extends Subscription {
   mandate: DirectDebitDetails;
 }
 
@@ -28,7 +28,7 @@ export class NewDirectDebitPaymentMethodDetail
 
   public readonly subHasExpectedPaymentType = isSubscriptionWithMandate;
 
-  public readonly updatedSuccessExtras = <GoCardlessGuarantee />;
+  public readonly updatedSuccessExtras = (<GoCardlessGuarantee />);
 
   private readonly ddDetail: DirectDebitDetails;
 

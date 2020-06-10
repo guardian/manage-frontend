@@ -6,12 +6,11 @@ import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer } from "./page";
 
-export interface RouteableProps extends RouteComponentProps {
+interface RouteableProps extends RouteComponentProps {
   path: string;
 }
 
-export type RouteableProductProps = RouteableProps &
-  WithProductType<ProductType>;
+type RouteableProductProps = RouteableProps & WithProductType<ProductType>;
 
 export interface RouteableStepProps extends RouteableProductProps {
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
@@ -22,7 +21,7 @@ export interface MultiRouteableProps extends RouteableStepProps {
   linkLabel: string;
 }
 
-export interface CommonProps {
+interface CommonProps {
   extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
@@ -75,7 +74,7 @@ const ThisStageContent = (props: WizardStepProps) => (
   </Router>
 );
 
-export interface WizardStepProps extends CommonProps {
+interface WizardStepProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   children: any;
 }

@@ -31,7 +31,7 @@ interface DeliveryRecordsProblemContextInterface {
   resetDeliveryRecordsPage: () => void;
 }
 
-export interface DeliveryProblemCreditInterface {
+interface DeliveryProblemCreditInterface {
   showCredit?: boolean;
   creditAmount?: string;
   creditDate?: string | null;

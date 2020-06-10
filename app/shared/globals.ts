@@ -1,6 +1,6 @@
 import { AbTest, OphanComponentEvent } from "./ophanTypes";
 
-export interface CommonGlobals {
+interface CommonGlobals {
   domain: string;
   dsn: string | null;
 }

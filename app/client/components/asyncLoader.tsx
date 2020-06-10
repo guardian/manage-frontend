@@ -5,11 +5,11 @@ import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer } from "./page";
 import { LoadingProps, Spinner } from "./spinner";
 
-export type ReaderOnOK<T> = (resp: Response) => Promise<T>;
+type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 
 export type ReFetch = () => void;
 
-export interface AsyncLoaderProps<T> extends LoadingProps {
+interface AsyncLoaderProps<T> extends LoadingProps {
   readonly fetch: () => Promise<Response | Response[]>;
   readonly readerOnOK?: ReaderOnOK<T>; // json reader by default
   readonly shouldPreventRender?: (data: T) => boolean;
@@ -21,13 +21,13 @@ export interface AsyncLoaderProps<T> extends LoadingProps {
   readonly spinnerScale?: number;
 }
 
-export enum LoadingState {
+enum LoadingState {
   loading,
   loaded,
   error
 }
 
-export interface AsyncLoaderState<T> {
+interface AsyncLoaderState<T> {
   readonly data?: T;
   readonly loadingState: LoadingState;
 }

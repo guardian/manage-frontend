@@ -2,14 +2,14 @@ import React from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 
-export interface FieldWrapperProps {
+interface FieldWrapperProps {
   label: string;
   width: string;
   children: any;
   onChange?: (event: any) => void;
 }
 
-export interface FieldWrapperState {
+interface FieldWrapperState {
   error: {
     code?: string;
     message?: string;

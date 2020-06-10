@@ -23,7 +23,7 @@ const reduceCreditCallback = (
   return null; // if we don't have credits and dates for EVERY entry we shouldn't show anything
 };
 
-export interface CollatedCreditsProps {
+interface CollatedCreditsProps {
   publicationsImpacted: HolidayStopDetail[];
   currency?: string;
   withBullet?: true;

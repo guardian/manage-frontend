@@ -35,7 +35,7 @@ const getError = <T extends unknown>(
   }
 };
 
-export const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
+const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
   const { name, label, formikProps, children } = props;
   const error = getError(name, formikProps);
   const errorCss = error ? formFieldErrorCss : {};

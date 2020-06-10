@@ -86,7 +86,7 @@ export class GoCardlessGuarantee extends React.Component<
     });
 }
 
-export interface DirectDebitLegalProps {
+interface DirectDebitLegalProps {
   newDirectDebit?: true; // intended for use in a payment method 'switch' scenario
 }
 
