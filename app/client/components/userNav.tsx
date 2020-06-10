@@ -1,15 +1,10 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { conf } from "../../server/config";
-import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { expanderButtonCss } from "../expanderButton";
 import { minWidth } from "../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../styles/grid";
-import {
-  accountOverviewActiveFilter,
-  accountOverviewInactiveFilter
-} from "./nav";
 import { ProfileIcon } from "./svgs/profileIcon";
 import { SignoutIcon } from "./svgs/signoutIcon";
 
@@ -154,21 +149,6 @@ export const UserNav = () => {
       hideAtDesktop: true
     },
     {
-      title: "Membership",
-      link: "/membership",
-      hideAtDesktop: true
-    },
-    {
-      title: "Contributions",
-      link: "/contributions",
-      hideAtDesktop: true
-    },
-    {
-      title: "Subscriptions",
-      link: "/subscriptions",
-      hideAtDesktop: true
-    },
-    {
       title: "Help",
       link: "/help",
       hideAtDesktop: true
@@ -280,45 +260,39 @@ export const UserNav = () => {
       </button>
 
       <ul role="tablist" css={userNavMenuCss(showMenu)}>
-        {userNavItems
-          .filter(
-            useContext(IsInAccountOverviewContext)
-              ? accountOverviewActiveFilter
-              : accountOverviewInactiveFilter
-          )
-          .map((item: UserNavItem) => (
-            <React.Fragment key={item.title}>
-              <li
-                className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
-              >
-                <a href={item.link} css={userNavItemCss}>
-                  {item.icon && (
-                    <span
-                      css={{
-                        marginRight: "5px",
-                        display: "block",
-                        height: "0.8em",
-                        width: "0.8em",
-                        " svg": { display: "block" }
-                      }}
-                    >
-                      {item.icon}
-                    </span>
-                  )}
+        {userNavItems.map((item: UserNavItem) => (
+          <React.Fragment key={item.title}>
+            <li
+              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
+            >
+              <a href={item.link} css={userNavItemCss}>
+                {item.icon && (
                   <span
                     css={{
-                      lineHeight: "33px",
-                      [minWidth.desktop]: {
-                        lineHeight: "normal"
-                      }
+                      marginRight: "5px",
+                      display: "block",
+                      height: "0.8em",
+                      width: "0.8em",
+                      " svg": { display: "block" }
                     }}
                   >
-                    {item.title}
+                    {item.icon}
                   </span>
-                </a>
-              </li>
-            </React.Fragment>
-          ))}
+                )}
+                <span
+                  css={{
+                    lineHeight: "33px",
+                    [minWidth.desktop]: {
+                      lineHeight: "normal"
+                    }
+                  }}
+                >
+                  {item.title}
+                </span>
+              </a>
+            </li>
+          </React.Fragment>
+        ))}
       </ul>
     </nav>
   );

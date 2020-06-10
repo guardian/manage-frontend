@@ -1,13 +1,10 @@
 import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
-import React, { useContext } from "react";
+import React from "react";
 import { ProductType, WithProductType } from "../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { PageContainer, PageContainerSection } from "./page";
-import { ProgressBreadcrumb } from "./progressBreadcrumb";
-import { ProgressCounter } from "./progressCounter";
+import { PageContainer } from "./page";
 
 export interface RouteableProps extends RouteComponentProps {
   path: string;
@@ -17,8 +14,6 @@ export type RouteableProductProps = RouteableProps &
   WithProductType<ProductType>;
 
 export interface RouteableStepProps extends RouteableProductProps {
-  currentStep?: number;
-  stepLabels?: string[];
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
 
@@ -27,11 +22,7 @@ export interface MultiRouteableProps extends RouteableStepProps {
   linkLabel: string;
 }
 
-export interface ButtonStyleModifierProps {
-  hideBackButton?: true;
-}
-
-export interface CommonProps extends ButtonStyleModifierProps {
+export interface CommonProps {
   extraFooterComponents?: JSX.Element | JSX.Element[];
 }
 
@@ -40,19 +31,7 @@ interface RootComponentProps extends CommonProps {
   thisStageChildren: any;
   path: string;
   children: null;
-  fullWidth?: true;
 }
-
-const estimateTotal = (currentStep: number, child: any) => {
-  // if(child && Array.isArray(child)) {
-  //   child = child[0];
-  // }
-  // if (child){
-  //   child.hasOwnProperty()
-  // }
-  // return currentStep;
-  return 3; // TODO dynamically estimate total steps by recursively exploring children
-};
 
 export const visuallyNavigateToParent = (
   props: RouteableStepProps,
@@ -67,22 +46,12 @@ export const visuallyNavigateToParent = (
   );
 };
 
-export const ReturnToYourProductButton = (
-  props: WithProductType<ProductType>
-) => (
+export const ReturnToAccountOverviewButton = () => (
   <LinkButton
-    to={
-      useContext(IsInAccountOverviewContext)
-        ? "/"
-        : `/${props.productType.urlPart}`
-    }
-    text={"Return to your account"}
-    {...(useContext(IsInAccountOverviewContext)
-      ? { colour: palette.neutral[100] }
-      : {})}
-    {...(useContext(IsInAccountOverviewContext)
-      ? { textColour: palette.neutral[0] }
-      : {})}
+    to="/"
+    text="Return to your account"
+    colour={palette.neutral[100]}
+    textColour={palette.neutral[0]}
     hollow
     left
   />
@@ -90,29 +59,7 @@ export const ReturnToYourProductButton = (
 
 const RootComponent = (props: RootComponentProps) => (
   <>
-    <PageContainer fullWidth={props.fullWidth}>
-      {!!props.routeableStepProps.currentStep &&
-        (props.routeableStepProps.stepLabels ? (
-          <ProgressBreadcrumb
-            current={props.routeableStepProps.currentStep}
-            labels={props.routeableStepProps.stepLabels}
-          />
-        ) : (
-          <PageContainerSection>
-            <ProgressCounter
-              current={props.routeableStepProps.currentStep}
-              total={estimateTotal(
-                props.routeableStepProps.currentStep,
-                props.routeableStepProps.children
-              )}
-            />
-          </PageContainerSection>
-        ))}
-
-      {props.thisStageChildren}
-
-      <LinkButton hide={props.hideBackButton} text="Back" to=".." hollow left />
-    </PageContainer>
+    <PageContainer fullWidth>{props.thisStageChildren}</PageContainer>
     {props.extraFooterComponents}
   </>
 );
@@ -131,7 +78,6 @@ const ThisStageContent = (props: WizardStepProps) => (
 export interface WizardStepProps extends CommonProps {
   routeableStepProps: RouteableStepProps;
   children: any;
-  fullWidth?: true;
 }
 
 export const WizardStep = (props: WizardStepProps) => (

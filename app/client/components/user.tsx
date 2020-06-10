@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
-import React, { useContext } from "react";
+import React from "react";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
@@ -36,8 +36,6 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 
-import { isIdentityInAccountOverviewTest } from "../../shared/accountOverviewRelease";
-import { IsInAccountOverviewContext } from "../accountOverviewRelease";
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageProduct } from "./accountoverview/manageProduct";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
@@ -54,8 +52,6 @@ import { NotFound } from "./notFound";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
-import { ProductPage } from "./productPage";
-import { RedirectOnMeResponse } from "./redirectOnMeResponse";
 
 const User = () => (
   <Main>
@@ -63,29 +59,17 @@ const User = () => (
     <Global styles={css(`${fonts}`)} />
 
     <Router>
-      {useContext(IsInAccountOverviewContext) ? (
-        <AccountOverview path="/" />
-      ) : (
-        <RedirectOnMeResponse path="/" />
-      )}
+      <AccountOverview path="/" />
 
       {Object.values(ProductTypes)
         .filter(hasProductPageProperties)
-        .map((productType: ProductTypeWithProductPageProperties) =>
-          useContext(IsInAccountOverviewContext) ? (
-            <ManageProduct
-              key={productType.urlPart}
-              path={"/" + productType.urlPart}
-              productType={productType}
-            />
-          ) : (
-            <ProductPage
-              key={productType.urlPart}
-              path={"/" + productType.urlPart}
-              productType={productType}
-            />
-          )
-        )}
+        .map((productType: ProductTypeWithProductPageProperties) => (
+          <ManageProduct
+            key={productType.urlPart}
+            path={"/" + productType.urlPart}
+            productType={productType}
+          />
+        ))}
       {Object.values(ProductTypes)
         .filter(hasProductPageRedirect)
         .map((productType: ProductTypeWithProductPageRedirect) => (
@@ -216,20 +200,15 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string, isInAccountOverviewTest: boolean) => (
-  <IsInAccountOverviewContext.Provider value={isInAccountOverviewTest}>
-    <ServerLocation url={url}>
-      <User />
-    </ServerLocation>
-  </IsInAccountOverviewContext.Provider>
+export const ServerUser = (url: string) => (
+  <ServerLocation url={url}>
+    <User />
+  </ServerLocation>
 );
 
-const globals = typeof window !== "undefined" ? window.guardian : undefined;
 export const BrowserUser = (
-  <IsInAccountOverviewContext.Provider
-    value={isIdentityInAccountOverviewTest(globals?.identityDetails?.userId)}
-  >
+  <>
     <AnalyticsTracker />
     <User />
-  </IsInAccountOverviewContext.Provider>
+  </>
 );

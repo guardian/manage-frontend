@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
 import React, { ReactNode } from "react";
 import {
   isProduct,
@@ -9,18 +9,15 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductType,
   ProductTypeWithCancellationFlow
 } from "../../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import AsyncLoader from "../../asyncLoader";
-import { LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { navLinks } from "../../nav";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
-  ReturnToYourProductButton,
+  ReturnToAccountOverviewButton,
   WizardStep
 } from "../../wizardRouterAdapter";
 import {
@@ -85,32 +82,12 @@ const getCaseUpdateFuncForEscalation = (
     Priority: "High"
   });
 
-const getCancellationSummaryWithReturnButton = (
-  productType: ProductType,
-  productDetail: ProductDetail,
-  body: ReactNode
-) => () => (
-  <IsInAccountOverviewContext.Consumer>
-    {isInAccountOverview => (
-      <div>
-        {body}
-        <div css={{ height: "20px" }} />
-        {isInAccountOverview ? (
-          <LinkButton
-            to={"/"}
-            text={"Return to your account"}
-            state={productDetail}
-            colour={palette.neutral[100]}
-            textColour={palette.neutral[0]}
-            hollow
-            left
-          />
-        ) : (
-          <ReturnToYourProductButton productType={productType} />
-        )}
-      </div>
-    )}
-  </IsInAccountOverviewContext.Consumer>
+const getCancellationSummaryWithReturnButton = (body: ReactNode) => () => (
+  <div>
+    {body}
+    <div css={{ height: "20px" }} />
+    <ReturnToAccountOverviewButton />
+  </div>
 );
 
 const getCaseUpdatingCancellationSummary = (
@@ -119,8 +96,6 @@ const getCaseUpdatingCancellationSummary = (
 ) => (productDetails: ProductDetail[]) => {
   const productDetail = productDetails[0] || { subscription: {} };
   const render = getCancellationSummaryWithReturnButton(
-    productType,
-    productDetail,
     getCancellationSummary(productType)(productDetail)
   );
   return caseId ? (
@@ -171,8 +146,6 @@ const innerContent = (
                 productDetail.isTestUser
               )}
               render={getCancellationSummaryWithReturnButton(
-                props.productType,
-                productDetail,
                 escalatedConfirmationBody
               )}
               loadingMessage="Requesting your cancellation..."
@@ -205,50 +178,38 @@ const innerContent = (
 export const ExecuteCancellation = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <IsInAccountOverviewContext.Consumer>
-    {isInAccountOverview => (
-      <WizardStep
-        routeableStepProps={props}
-        hideBackButton
-        {...(isInAccountOverview ? { fullWidth: true } : {})}
-      >
-        <CancellationReasonContext.Consumer>
-          {reason => (
-            <CancellationCaseIdContext.Consumer>
-              {caseId => (
-                <MembersDataApiItemContext.Consumer>
-                  {productDetail =>
-                    isInAccountOverview ? (
-                      <>
-                        <PageHeaderContainer
-                          title={`Cancel ${props.productType.friendlyName}`}
-                          breadcrumbs={[
-                            {
-                              title: navLinks.accountOverview.title,
-                              link: navLinks.accountOverview.link
-                            },
-                            {
-                              title: "Cancel membership",
-                              currentPage: true
-                            }
-                          ]}
-                        />
-                        <PageNavAndContentContainer
-                          selectedNavItem={navLinks.accountOverview}
-                        >
-                          {innerContent(productDetail, props, reason, caseId)}
-                        </PageNavAndContentContainer>
-                      </>
-                    ) : (
-                      innerContent(productDetail, props, reason, caseId)
-                    )
-                  }
-                </MembersDataApiItemContext.Consumer>
+  <WizardStep routeableStepProps={props}>
+    <CancellationReasonContext.Consumer>
+      {reason => (
+        <CancellationCaseIdContext.Consumer>
+          {caseId => (
+            <MembersDataApiItemContext.Consumer>
+              {productDetail => (
+                <>
+                  <PageHeaderContainer
+                    title={`Cancel ${props.productType.friendlyName}`}
+                    breadcrumbs={[
+                      {
+                        title: navLinks.accountOverview.title,
+                        link: navLinks.accountOverview.link
+                      },
+                      {
+                        title: "Cancel membership",
+                        currentPage: true
+                      }
+                    ]}
+                  />
+                  <PageNavAndContentContainer
+                    selectedNavItem={navLinks.accountOverview}
+                  >
+                    {innerContent(productDetail, props, reason, caseId)}
+                  </PageNavAndContentContainer>
+                </>
               )}
-            </CancellationCaseIdContext.Consumer>
+            </MembersDataApiItemContext.Consumer>
           )}
-        </CancellationReasonContext.Consumer>
-      </WizardStep>
-    )}
-  </IsInAccountOverviewContext.Consumer>
+        </CancellationCaseIdContext.Consumer>
+      )}
+    </CancellationReasonContext.Consumer>
+  </WizardStep>
 );

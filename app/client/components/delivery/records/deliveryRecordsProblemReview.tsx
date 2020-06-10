@@ -8,7 +8,6 @@ import moment from "moment";
 import React, { useContext, useState } from "react";
 import { formatDateStr } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
@@ -184,30 +183,22 @@ const DeliveryRecordsProblemReviewFC = (
           })
         }}
       >
-        <WizardStep routeableStepProps={props} hideBackButton fullWidth>
+        <WizardStep routeableStepProps={props}>
           <PageHeaderContainer
             title="Delivery history"
-            breadcrumbs={
-              useContext(IsInAccountOverviewContext)
-                ? [
-                    {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
-                    },
-                    {
-                      title: "Delivery history",
-                      currentPage: true
-                    }
-                  ]
-                : []
-            }
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Delivery history",
+                currentPage: true
+              }
+            ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={
-              useContext(IsInAccountOverviewContext)
-                ? navLinks.accountOverview
-                : navLinks.subscriptions
-            }
+            selectedNavItem={navLinks.accountOverview}
           >
             <ProgressIndicator
               steps={[

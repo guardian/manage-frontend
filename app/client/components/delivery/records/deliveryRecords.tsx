@@ -7,7 +7,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -22,7 +22,6 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   WithProductType
 } from "../../../../shared/productTypes";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -306,34 +305,22 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           enableDeliveryInstructions
         }}
       >
-        <WizardStep
-          routeableStepProps={props.routeableStepProps}
-          hideBackButton
-          fullWidth
-        >
+        <WizardStep routeableStepProps={props.routeableStepProps}>
           <PageHeaderContainer
             title="Delivery history"
-            breadcrumbs={
-              useContext(IsInAccountOverviewContext)
-                ? [
-                    {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
-                    },
-                    {
-                      title: "Delivery history",
-                      currentPage: true
-                    }
-                  ]
-                : []
-            }
+            breadcrumbs={[
+              {
+                title: navLinks.accountOverview.title,
+                link: navLinks.accountOverview.link
+              },
+              {
+                title: "Delivery history",
+                currentPage: true
+              }
+            ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={
-              useContext(IsInAccountOverviewContext)
-                ? navLinks.accountOverview
-                : navLinks.subscriptions
-            }
+            selectedNavItem={navLinks.accountOverview}
           >
             {pageStatus !== PageStatus.READ_ONLY &&
               pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (

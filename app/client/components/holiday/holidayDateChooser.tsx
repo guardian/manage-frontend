@@ -17,7 +17,6 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import palette from "../../colours";
 import { maxWidth, minWidth, queries } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -208,54 +207,35 @@ export class HolidayDateChooser extends React.Component<
                   <HolidayDateChooserStateContext.Provider
                     value={this.state || {}}
                   >
-                    <IsInAccountOverviewContext.Consumer>
-                      {isInAccountOverview => (
-                        <WizardStep
-                          routeableStepProps={this.props}
-                          hideBackButton
-                          {...(isInAccountOverview ? { fullWidth: true } : {})}
+                    <WizardStep routeableStepProps={this.props}>
+                      <>
+                        <PageHeaderContainer
+                          title="Manage suspensions"
+                          breadcrumbs={[
+                            {
+                              title: navLinks.accountOverview.title,
+                              link: navLinks.accountOverview.link
+                            },
+                            {
+                              title: "Manage suspensions",
+                              currentPage: true
+                            }
+                          ]}
+                        />
+                        <PageNavAndContentContainer
+                          selectedNavItem={navLinks.accountOverview}
                         >
-                          {isInAccountOverview ? (
-                            <>
-                              <PageHeaderContainer
-                                title="Manage suspensions"
-                                breadcrumbs={[
-                                  {
-                                    title: navLinks.accountOverview.title,
-                                    link: navLinks.accountOverview.link
-                                  },
-                                  {
-                                    title: "Manage suspensions",
-                                    currentPage: true
-                                  }
-                                ]}
-                              />
-                              <PageNavAndContentContainer
-                                selectedNavItem={navLinks.accountOverview}
-                              >
-                                {this.innerContent(
-                                  holidayStopsResponse,
-                                  existingHolidayStopToAmendId,
-                                  renewalDateMoment,
-                                  combinedIssuesImpactedPerYear,
-                                  allIssuesImpactedPerYear,
-                                  productDetail
-                                )}
-                              </PageNavAndContentContainer>
-                            </>
-                          ) : (
-                            this.innerContent(
-                              holidayStopsResponse,
-                              existingHolidayStopToAmendId,
-                              renewalDateMoment,
-                              combinedIssuesImpactedPerYear,
-                              allIssuesImpactedPerYear,
-                              productDetail
-                            )
+                          {this.innerContent(
+                            holidayStopsResponse,
+                            existingHolidayStopToAmendId,
+                            renewalDateMoment,
+                            combinedIssuesImpactedPerYear,
+                            allIssuesImpactedPerYear,
+                            productDetail
                           )}
-                        </WizardStep>
-                      )}
-                    </IsInAccountOverviewContext.Consumer>
+                        </PageNavAndContentContainer>
+                      </>
+                    </WizardStep>
                   </HolidayDateChooserStateContext.Provider>
                 );
               } else {

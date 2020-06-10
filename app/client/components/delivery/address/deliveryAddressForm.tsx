@@ -7,7 +7,6 @@ import React, {
   Dispatch,
   FormEvent,
   SetStateAction,
-  useContext,
   useState
 } from "react";
 import {
@@ -32,7 +31,6 @@ import { palette } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
-import { IsInAccountOverviewContext } from "../../../accountOverviewRelease";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -296,26 +294,18 @@ const FormContainer = (props: FormContainerProps) => {
             Object.keys(props.contactIdToArrayOfProductDetailAndProductType)[0]
           }
         >
-          <WizardStep
-            routeableStepProps={props.routeableStepProps}
-            hideBackButton
-            fullWidth
-          >
+          <WizardStep routeableStepProps={props.routeableStepProps}>
             <PageHeaderContainer
-              breadcrumbs={
-                useContext(IsInAccountOverviewContext)
-                  ? [
-                      {
-                        title: navLinks.accountOverview.title,
-                        link: navLinks.accountOverview.link
-                      },
-                      {
-                        title: "Edit delivery address",
-                        currentPage: true
-                      }
-                    ]
-                  : []
-              }
+              breadcrumbs={[
+                {
+                  title: navLinks.accountOverview.title,
+                  link: navLinks.accountOverview.link
+                },
+                {
+                  title: "Edit delivery address",
+                  currentPage: true
+                }
+              ]}
               title={
                 <span
                   css={css`
@@ -339,11 +329,7 @@ const FormContainer = (props: FormContainerProps) => {
               }
             />
             <PageNavAndContentContainer
-              selectedNavItem={
-                useContext(IsInAccountOverviewContext)
-                  ? navLinks.accountOverview
-                  : navLinks.subscriptions
-              }
+              selectedNavItem={navLinks.accountOverview}
             >
               <ProgressIndicator
                 steps={[
@@ -728,11 +714,7 @@ const Form = (props: FormProps) => {
         >
           <Button type="submit">Review details</Button>
           <Link
-            to={
-              useContext(IsInAccountOverviewContext)
-                ? navLinks.accountOverview.link
-                : navLinks.subscriptions.link
-            }
+            to={navLinks.accountOverview.link}
             css={css`
               ${textSans.medium()};
               font-weight: bold;

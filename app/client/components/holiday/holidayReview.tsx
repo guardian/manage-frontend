@@ -10,7 +10,6 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { IsInAccountOverviewContext } from "../../accountOverviewRelease";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { Button, LinkButton } from "../buttons";
@@ -157,7 +156,7 @@ export class HolidayReview extends React.Component<
       )
     };
 
-    const innerContent = () => (
+    const innerContent = (
       <>
         <div>
           <h1>Review details before confirming</h1>
@@ -306,50 +305,38 @@ export class HolidayReview extends React.Component<
       <HolidayDateChooserStateContext.Provider
         value={dateChooserStateWithCredits}
       >
-        <IsInAccountOverviewContext.Consumer>
-          {isInAccountOverview => (
-            <WizardStep
-              routeableStepProps={this.props}
-              hideBackButton
-              {...(isInAccountOverview ? { fullWidth: true } : {})}
+        <WizardStep routeableStepProps={this.props}>
+          <>
+            <PageHeaderContainer
+              title="Manage suspensions"
+              breadcrumbs={[
+                {
+                  title: navLinks.accountOverview.title,
+                  link: navLinks.accountOverview.link
+                },
+                {
+                  title: "Manage suspensions",
+                  currentPage: true
+                }
+              ]}
+            />
+            <PageNavAndContentContainer
+              selectedNavItem={navLinks.accountOverview}
             >
-              {isInAccountOverview ? (
-                <>
-                  <PageHeaderContainer
-                    title="Manage suspensions"
-                    breadcrumbs={[
-                      {
-                        title: navLinks.accountOverview.title,
-                        link: navLinks.accountOverview.link
-                      },
-                      {
-                        title: "Manage suspensions",
-                        currentPage: true
-                      }
-                    ]}
-                  />
-                  <PageNavAndContentContainer
-                    selectedNavItem={navLinks.accountOverview}
-                  >
-                    <ProgressIndicator
-                      steps={[
-                        { title: "Choose dates" },
-                        { title: "Review", isCurrentStep: true },
-                        { title: "Confirmation" }
-                      ]}
-                      additionalCSS={css`
-                        margin: ${space[5]}px 0 ${space[12]}px;
-                      `}
-                    />
-                    {innerContent()}
-                  </PageNavAndContentContainer>
-                </>
-              ) : (
-                innerContent()
-              )}
-            </WizardStep>
-          )}
-        </IsInAccountOverviewContext.Consumer>
+              <ProgressIndicator
+                steps={[
+                  { title: "Choose dates" },
+                  { title: "Review", isCurrentStep: true },
+                  { title: "Confirmation" }
+                ]}
+                additionalCSS={css`
+                  margin: ${space[5]}px 0 ${space[12]}px;
+                `}
+              />
+              {innerContent}
+            </PageNavAndContentContainer>
+          </>
+        </WizardStep>
       </HolidayDateChooserStateContext.Provider>
     ) : (
       visuallyNavigateToParent(this.props)
