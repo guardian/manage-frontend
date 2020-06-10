@@ -499,6 +499,7 @@ export const ManageProduct = (props: RouteableStepProps) => (
     {...props}
     loadingMessagePrefix="Retrieving details of your"
     allowCancelledSubscription
+    forceRedirectToAccountOverviewIfNoBrowserHistoryState
   >
     {productDetail => (
       <InnerContent props={props} productDetail={productDetail} />

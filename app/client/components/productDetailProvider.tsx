@@ -15,6 +15,7 @@ interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
   allowCancelledSubscription?: true;
   loadingMessagePrefix: string;
+  forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
 }
 
 export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
@@ -40,7 +41,9 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
   }
   // ie definitely no browser history state
   else if (selectedProductDetail === null) {
-    return (
+    return props.forceRedirectToAccountOverviewIfNoBrowserHistoryState ? (
+      visuallyNavigateToParent(props, true)
+    ) : (
       <MembersDatApiAsyncLoader
         fetch={createProductDetailFetcher(props.productType)}
         render={renderSingleProductOrReturnToAccountOverview(

@@ -76,7 +76,7 @@ const User = () => (
           <Redirect
             key={productType.urlPart}
             from={"/" + productType.urlPart}
-            to={"/" + productType.productPage}
+            to={"/"}
             noThrow
           />
         ))}
