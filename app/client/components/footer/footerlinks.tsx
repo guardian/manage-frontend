@@ -7,7 +7,7 @@ if (typeof window !== "undefined" && window.guardian) {
   domain = conf.DOMAIN;
 }
 
-export interface FooterLink {
+interface FooterLink {
   title: string;
   link: string;
 }

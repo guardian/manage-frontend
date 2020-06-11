@@ -1,4 +1,4 @@
-export interface Breakpoints {
+interface Breakpoints {
   readonly mobile: number;
   readonly mobileMedium: number;
   readonly mobileLarge: number;
@@ -10,11 +10,9 @@ export interface Breakpoints {
   readonly wide: number;
 }
 
-export type SomeBreakPoints = { [_ in keyof Breakpoints]?: number };
+type BreakpointQueries = { [_ in keyof Breakpoints]: string };
 
-export type BreakpointQueries = { [_ in keyof Breakpoints]: string };
-
-export const namedBreakpoints: Breakpoints = {
+const namedBreakpoints: Breakpoints = {
   mobile: 320,
   mobileMedium: 375,
   mobileLarge: 425,

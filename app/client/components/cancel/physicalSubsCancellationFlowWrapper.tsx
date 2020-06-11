@@ -20,11 +20,11 @@ type CombinedOutstandingCreditsResponse = [
   DeliveryRecordsResponse | undefined
 ];
 
-export class OutstandingHolidayStopsAsyncLoader extends AsyncLoader<
+class OutstandingHolidayStopsAsyncLoader extends AsyncLoader<
   CombinedOutstandingCreditsResponse
 > {}
 
-export const getOutstandingCreditsFetcher = (
+const getOutstandingCreditsFetcher = (
   productDetail: ProductDetail,
   productType: ProductType,
   cancellationPolicy: string | undefined

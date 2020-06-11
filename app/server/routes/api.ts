@@ -27,11 +27,6 @@ const router = Router();
 router.use(withIdentity(401));
 
 router.get(
-  "/me",
-  membersDataApiHandler("user-attributes/me", "MDA_BASIC_ATTRIBUTES")
-);
-
-router.get(
   "/existing-payment-options",
   membersDataApiHandler(
     "user-attributes/me/existing-payment-options",

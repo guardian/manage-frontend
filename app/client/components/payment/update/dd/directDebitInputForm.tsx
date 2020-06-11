@@ -36,12 +36,12 @@ class DirectDebitValidationLoader extends AsyncLoader<
   DirectDebitValidationResponse
 > {}
 
-export interface DirectDebitUpdateFormProps {
+interface DirectDebitUpdateFormProps {
   newPaymentMethodDetailUpdater: (ddDetails: NewPaymentMethodDetail) => void;
   testUser: boolean;
 }
 
-export interface DirectDebitUpdateFormState extends DirectDebitDetails {
+interface DirectDebitUpdateFormState extends DirectDebitDetails {
   soleAccountHolderConfirmed: boolean;
   isValidating: boolean;
   error?: string;

@@ -19,11 +19,11 @@ export interface StripeSetupIntentDetails {
   stripeSetupIntentError?: Error;
 }
 
-export type StripeCardInputFormProps = ReactStripeElements.InjectedStripeProps &
+type StripeCardInputFormProps = ReactStripeElements.InjectedStripeProps &
   CardInputFormProps &
   StripeSetupIntentDetails;
 
-export interface StripeCardInputFormState {
+interface StripeCardInputFormState {
   isValidating: boolean;
   error: {
     code?: string;

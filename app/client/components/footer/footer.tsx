@@ -15,7 +15,7 @@ if (typeof window !== "undefined" && window.guardian) {
 
 const TODAY = new Date();
 
-const fillEmailSignup = (emailForm: SyntheticEvent<HTMLIFrameElement>) => {
+const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
   // Placeholder method to autofill user email when the iframe is hosted on the same hostname
   return;
 };

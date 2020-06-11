@@ -16,7 +16,7 @@ interface RedirectResponseBody extends IdentityDetails {
   };
 }
 
-export interface MockableExpressRequest {
+interface MockableExpressRequest {
   baseUrl: string;
   path: string;
   get: (name: string) => string | undefined;

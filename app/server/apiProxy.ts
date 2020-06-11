@@ -12,12 +12,12 @@ import {
   getCookiesOrEmptyString
 } from "./middleware/identityMiddleware";
 
-export type BodyHandler = (res: Response, body: string) => void;
+type BodyHandler = (res: Response, body: string) => void;
 
 export const straightThroughBodyHandler: BodyHandler = (res, body) =>
   res.send(body);
 
-export function safeJsonParse(jsonStr: Buffer | string | undefined): any {
+function safeJsonParse(jsonStr: Buffer | string | undefined): any {
   try {
     if (jsonStr) {
       return JSON.parse(jsonStr.toString());

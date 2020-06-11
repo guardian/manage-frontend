@@ -1,10 +1,5 @@
 import { DeliveryAddress } from "../../../../shared/productResponse";
 
-export interface PostDeliveryAddressUpdateResponse {
-  ok: boolean;
-  message: string;
-}
-
 export const updateAddressFetcher = (
   formData: DeliveryAddress,
   contactId: string

@@ -27,7 +27,7 @@ const stateDefinitions = {
   }
 };
 
-export interface LegendItemProps {
+interface LegendItemProps {
   color?: string;
   label: string;
   extraCss?: string;
@@ -122,7 +122,7 @@ const LegendItem = (props: LegendItemProps) => (
   </div>
 );
 
-export interface DatePickerProps {
+interface DatePickerProps {
   firstAvailableDate: Moment;
   issueDaysOfWeek: number[];
   issueKeyword: string;
@@ -148,7 +148,9 @@ export const DatePicker = (props: DatePickerProps) => (
         props.issueKeyword,
         props.existingDates.length > 0,
         !!props.amendableDateRange
-      ).map(itemProps => <LegendItem key={itemProps.label} {...itemProps} />)}
+      ).map(itemProps => (
+        <LegendItem key={itemProps.label} {...itemProps} />
+      ))}
     </div>
     <div
       css={{

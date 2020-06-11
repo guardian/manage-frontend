@@ -11,7 +11,7 @@ interface Action {
   payload?: any;
 }
 
-export enum FetchStatus {
+enum FetchStatus {
   ERROR = "ERROR",
   FETCHING = "FETCHING",
   INITIAL = "INITIAL",

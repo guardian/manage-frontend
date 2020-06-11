@@ -107,7 +107,7 @@ const domain: string =
     : conf.DOMAIN;
 const profileHostName = `https://profile.${domain}`;
 
-export interface UserNavItem {
+interface UserNavItem {
   title: string;
   link: string;
   icon?: JSX.Element;

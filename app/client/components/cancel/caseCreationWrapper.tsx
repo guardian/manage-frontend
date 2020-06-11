@@ -8,7 +8,7 @@ import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { OptionalCancellationReasonId } from "./cancellationReason";
 
-export interface CaseCreationResponse {
+interface CaseCreationResponse {
   id: string;
 }
 
@@ -46,7 +46,7 @@ const renderWithCaseIdContextProvider = (children: any) => (
 
 class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 
-export interface CaseCreationWrapperProps {
+interface CaseCreationWrapperProps {
   children: any;
   sfCaseProduct: string;
   productDetail: ProductDetail;

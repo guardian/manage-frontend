@@ -26,7 +26,7 @@ const loader = (
   </PageContainer>
 );
 
-export const Settings = (props: { path?: string }) => {
+export const Settings = (_: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();

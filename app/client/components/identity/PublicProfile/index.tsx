@@ -23,7 +23,7 @@ import { ProfileFormSection } from "./ProfileFormSection";
 
 const hasUsername = (user: User) => !!user.username;
 
-export const PublicProfile = (props: { path?: string }) => {
+export const PublicProfile = (_: { path?: string }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();

@@ -28,7 +28,7 @@ export type ContactPhoneNumbersType =
   | "MobilePhone"
   | "OtherPhone";
 
-export interface DeliveryCredit {
+interface DeliveryCredit {
   amount: number;
   invoiceDate: string | null;
   isActioned: boolean;
@@ -61,7 +61,7 @@ export interface DeliveryRecordsResponse {
   problemTypes: string[];
 }
 
-export interface DeliveryRecordsPostObj {
+interface DeliveryRecordsPostObj {
   id: string;
   creditAmount?: number;
   invoiceDate?: string | null;

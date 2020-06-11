@@ -73,7 +73,7 @@ const DeliveryRecordsProblemConfirmationFC = (
   const deliveryProblemCredit = useContext(DeliveryRecordCreditContext);
   const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
   const filteredData = props.data.results.filter(
-    (record, index) =>
+    record =>
       deliveryIssuePostPayload?.deliveryRecords?.findIndex(
         affectedRecord => affectedRecord.id === record.id
       ) !== -1

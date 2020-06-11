@@ -9,7 +9,7 @@ import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { Nav, NavProps } from "./nav";
 
-export interface PageNavAndContentContainerProps extends NavProps {
+interface PageNavAndContentContainerProps extends NavProps {
   children: React.ReactNode;
   withoutNav?: true;
 }
@@ -75,7 +75,7 @@ export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerPro
   </div>
 );
 
-export interface PageContainerProps {
+interface PageContainerProps {
   noVerticalMargin?: true;
   children: React.ReactNode;
   fullWidth?: true;
@@ -111,7 +111,7 @@ interface Breadcrumbs {
   link?: string;
   currentPage?: boolean;
 }
-export interface PageHeaderContainerProps extends NavProps {
+interface PageHeaderContainerProps extends NavProps {
   breadcrumbs?: Breadcrumbs[];
   title: string | ReactElement;
 }

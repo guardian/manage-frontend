@@ -38,7 +38,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         }
     `;
 
-  const ddCss = (withMobileBlockContent?: boolean) => `
+  const ddCss = `
         ${textSans.medium()};
         display: inline-block;
         vertical-align: top;
@@ -130,7 +130,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         </dt>
         <dd
           css={css`
-            ${ddCss()}
+            ${ddCss}
           `}
         >
           {formatDateStr(props.deliveryRecord.deliveryDate)}
@@ -154,7 +154,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         </dt>
         <dd
           css={css`
-            ${ddCss(true)}
+            ${ddCss}
           `}
         >
           {props.deliveryRecord.addressLine1 &&
@@ -185,7 +185,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         </dt>
         <dd
           css={css`
-            ${ddCss()}
+            ${ddCss}
             width: calc(100% - 11ch);
             ${minWidth.tablet} {
               width: calc(100% - (13ch + 16px));
@@ -231,7 +231,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             </dt>
             <dd
               css={css`
-                ${ddCss()}
+                ${ddCss}
                 width: calc(100% - 11ch);
                 ${minWidth.tablet} {
                   width: calc(100% - (13ch + 16px));
@@ -272,7 +272,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         </dt>
         <dd
           css={css`
-            ${ddCss(true)}
+            ${ddCss}
           `}
         >
           {props.deliveryRecord.deliveryInstruction &&

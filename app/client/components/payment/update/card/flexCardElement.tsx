@@ -7,7 +7,7 @@ import {
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
 
-export interface FlexCardElementProps {
+interface FlexCardElementProps {
   disabled?: boolean;
   markElementReady: (element: string) => () => void;
 }

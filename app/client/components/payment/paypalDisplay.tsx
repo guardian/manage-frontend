@@ -1,7 +1,7 @@
 import React from "react";
 import { PaypalLogo } from "./paypalLogo";
 
-export interface PayPalProps {
+interface PayPalProps {
   payPalId: string;
   shouldIncludePrefixCopy?: true;
 }

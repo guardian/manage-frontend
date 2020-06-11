@@ -20,7 +20,7 @@ interface DeliveryRecordProblemFormProps {
   problemTypes: DeliveryProblemType[];
 }
 
-export interface SelectedDeliveryProblem {
+interface SelectedDeliveryProblem {
   value: string;
   message?: string;
 }
@@ -54,10 +54,9 @@ export const DeliveryRecordProblemForm = (
       const deliveryProblem = props.problemTypes.find(
         issue => issue.label === selectedDeliveryProblem?.value
       );
-      const isValid =
+      const isValid = !(
         deliveryProblem?.messageIsMandatory && !selectedDeliveryProblem?.message
-          ? false
-          : true;
+      );
       return {
         isValid,
         ...(!isValid && {

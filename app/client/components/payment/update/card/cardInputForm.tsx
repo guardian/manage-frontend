@@ -33,7 +33,7 @@ export interface CardInputFormProps {
   ) => void;
 }
 
-export interface CardInputFormState extends StripeSetupIntentDetails {
+interface CardInputFormState extends StripeSetupIntentDetails {
   stripe?: stripe.Stripe;
   didCompleteRecaptcha?: true;
 }

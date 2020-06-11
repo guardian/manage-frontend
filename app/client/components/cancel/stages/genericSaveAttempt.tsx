@@ -43,7 +43,7 @@ import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
 
-export interface GenericSaveAttemptProps extends MultiRouteableProps {
+interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
   productType: ProductTypeWithCancellationFlow;
 }

@@ -145,7 +145,7 @@ class HackedDateRangePicker extends DateRangePicker {
   }
 }
 
-export interface WrappedDateRangePickerProps extends Props {
+interface WrappedDateRangePickerProps extends Props {
   dateToAsterisk?: Moment;
   daysOfWeekToIconify: number[];
   maybeLockedStartDate: Moment | null;

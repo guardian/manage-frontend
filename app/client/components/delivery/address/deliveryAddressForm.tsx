@@ -58,7 +58,7 @@ interface ProductDetailAndProductType {
   productType?: ProductType;
 }
 
-export interface ContactIdToArrayOfProductDetailAndProductType {
+interface ContactIdToArrayOfProductDetailAndProductType {
   [contactId: string]: ProductDetailAndProductType[];
 }
 
@@ -127,7 +127,7 @@ interface FormStates {
   SUCCESS: string;
   POST_ERROR: string;
 }
-export const formStates: FormStates = {
+const formStates: FormStates = {
   INIT: "init",
   PENDING: "pending",
   VALIDATION_ERROR: "validationError",

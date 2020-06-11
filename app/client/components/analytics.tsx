@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export interface Event {
+interface Event {
   eventCategory: string;
   eventAction: string;
   product?: {

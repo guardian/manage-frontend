@@ -36,7 +36,7 @@ const buildAcquisitionData = (componentId: string) => ({
   referrerUrl: hasWindow ? window.location.href : undefined
 });
 
-export const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
+const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
   url.format({
     protocol: "https",
     host: `support.${domain || "theguardian.com"}`,

@@ -8,7 +8,7 @@ import { ArrowIcon } from "./svgs/arrowIcon";
 import { ErrorIcon } from "./svgs/errorIcon";
 import { TickIcon } from "./svgs/tickIcon";
 
-export interface ButtonProps {
+interface ButtonProps {
   text: string;
   onClick?: () => void;
   height?: string;
@@ -28,7 +28,7 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
 }
 
-export interface LinkButtonProps extends ButtonProps {
+interface LinkButtonProps extends ButtonProps {
   to: string;
   state?: any;
 }

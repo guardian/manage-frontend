@@ -50,7 +50,7 @@ import { SummaryTable } from "./summaryTable";
 export type HolidayStopsRouteableStepProps = RouteableStepProps &
   WithProductType<ProductTypeWithHolidayStopsFlow>;
 
-export interface OverviewRowProps {
+interface OverviewRowProps {
   heading: string;
   children: React.ReactFragment;
 }
@@ -327,7 +327,7 @@ const createGetHolidayStopsFetcher = (
     }
   });
 
-export interface HolidaysOverviewState {
+interface HolidaysOverviewState {
   existingHolidayStopToAmend: HolidayStopRequest | null;
 }
 

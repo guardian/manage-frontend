@@ -1,7 +1,7 @@
 import React from "react";
 import { CallCentreNumbers } from "./callCentreNumbers";
 
-export interface InlineContactUsState {
+interface InlineContactUsState {
   expanded: boolean;
 }
 

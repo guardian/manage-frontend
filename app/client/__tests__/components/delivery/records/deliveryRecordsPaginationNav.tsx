@@ -12,7 +12,7 @@ describe("PaginationNav", () => {
         resultsPerPage={7}
         totalNumberOfResults={90}
         currentPage={0}
-        setCurrentPage={num => true}
+        setCurrentPage={() => true}
         changeCallBack={() => true}
       />
     );
@@ -38,7 +38,7 @@ describe("PaginationNav", () => {
         resultsPerPage={7}
         totalNumberOfResults={90}
         currentPage={0}
-        setCurrentPage={num => true}
+        setCurrentPage={() => true}
         changeCallBack={() => true}
       />
     );
@@ -54,7 +54,7 @@ describe("PaginationNav", () => {
         resultsPerPage={7}
         totalNumberOfResults={90}
         currentPage={1}
-        setCurrentPage={num => true}
+        setCurrentPage={() => true}
         changeCallBack={() => true}
       />
     );
@@ -70,7 +70,7 @@ describe("PaginationNav", () => {
         resultsPerPage={7}
         totalNumberOfResults={10}
         currentPage={1}
-        setCurrentPage={num => true}
+        setCurrentPage={() => true}
         changeCallBack={() => true}
       />
     );

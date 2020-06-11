@@ -64,7 +64,6 @@ const lookupApiKey = async (apiKey: string) =>
 
 const getApiKeyPromise = (
   stackName: string,
-  stage: string,
   stackResourceSummaries?: StackResourceSummaries
 ) => {
   const apiKeyPromises = stackResourceSummaries
@@ -100,11 +99,7 @@ function getHostAndApiKeyForStack(
     .promise()
     .then(async result => ({
       host: getHost(stackName, stage, result.StackResourceSummaries),
-      apiKey: await getApiKeyPromise(
-        stackName,
-        stage,
-        result.StackResourceSummaries
-      )
+      apiKey: await getApiKeyPromise(stackName, result.StackResourceSummaries)
     }))
     .catch(err => {
       log.error(`ERROR loading host and api key for ${stackName}`, err);

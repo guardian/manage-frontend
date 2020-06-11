@@ -11,7 +11,7 @@ const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 export const cleanSortCode = (sortCode: string) =>
   sortCode.replace(/[^0-9]/g, "");
 
-export const dashifySortCode = (sortCode: string) => {
+const dashifySortCode = (sortCode: string) => {
   if (!sortCode) {
     return sortCode;
   }
@@ -52,45 +52,10 @@ const sanitiseAccountNumber = (accountNumber: string) => {
   );
 };
 
-export interface DirectDebitDisplayProps
-  extends DirectDebitDetails,
-    Inlineable {
+interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
   showAccountName?: true;
   inErrorState?: boolean;
 }
-
-export const DirectDebitInlineDisplay = (props: DirectDebitDisplayProps) => (
-  <div>
-    <DirectDebitLogo
-      fill={palette.neutral[7]}
-      additionalCss={css`
-        vertical-align: middle;
-        margin-right: 10px;
-      `}
-    />
-    <span
-      css={css`
-        color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
-      `}
-    >
-      <span
-        css={css`
-          margin-right: 10px;
-        `}
-      >
-        {dashifySortCode(props.sortCode)}
-      </span>
-      <span
-        css={css`
-          ${props.showAccountName ? "margin-right: 10px;" : ""}
-        `}
-      >
-        {sanitiseAccountNumber(props.accountNumber)}
-      </span>
-      {props.showAccountName && props.accountName}
-    </span>
-  </div>
-);
 
 export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => (
   <>

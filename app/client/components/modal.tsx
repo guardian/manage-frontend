@@ -4,7 +4,7 @@ import { Button } from "./buttons";
 
 export type HideFunction = () => void;
 
-export interface ModalProps {
+interface ModalProps {
   instigator: React.ReactNode;
   title: string;
   children: any;
@@ -13,7 +13,7 @@ export interface ModalProps {
   extraOnHideFunctionality?: () => void;
 }
 
-export interface ModalState {
+interface ModalState {
   isDisplayed: boolean;
 }
 
