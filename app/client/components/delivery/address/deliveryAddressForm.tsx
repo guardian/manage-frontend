@@ -19,8 +19,8 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  ProductType,
-  ProductTypes
+  GroupedProductTypes,
+  ProductType
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
@@ -55,7 +55,7 @@ import { Select } from "./select";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
-  productType?: ProductType;
+  productType: ProductType;
 }
 
 interface ContactIdToArrayOfProductDetailAndProductType {
@@ -81,11 +81,11 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
     .filter(hasContactId)
     .map(productDetail => ({
       productDetail,
-      productType: ProductTypes.subscriptions.mapGroupedToSpecific?.(
+      productType: GroupedProductTypes.subscriptions.mapGroupedToSpecific(
         productDetail
       )
     }))
-    .filter(_ => _.productType?.delivery?.showAddress)
+    .filter(_ => _.productType.delivery?.showAddress)
     .reduce(
       (accumulator, { productDetail, productType }) => ({
         ...accumulator,
@@ -227,7 +227,7 @@ const FormContainer = (props: FormContainerProps) => {
   )
     .flatMap(flattenEquivalent)
     .map(({ productDetail }) => {
-      const friendlyProductName = ProductTypes.subscriptions.mapGroupedToSpecific?.(
+      const friendlyProductName = GroupedProductTypes.subscriptions.mapGroupedToSpecific(
         productDetail
       ).friendlyName;
       return `${friendlyProductName}`;
@@ -757,7 +757,7 @@ const Form = (props: FormProps) => {
 export const DeliveryAddressForm = (props: RouteableStepProps) => (
   <MembersDatApiAsyncLoader
     render={renderDeliveryAddressForm(props)}
-    fetch={createProductDetailFetcher(ProductTypes.subscriptions)}
+    fetch={createProductDetailFetcher(GroupedProductTypes.subscriptions)}
     loadingMessage={"Loading delivery details..."}
   />
 );

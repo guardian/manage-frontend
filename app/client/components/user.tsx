@@ -2,22 +2,17 @@ import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
+  GroupedProductType,
+  GroupedProductTypes,
   hasCancellationFlow,
   hasDeliveryFlow,
   hasDeliveryRecordsFlow,
-  hasProductPageRedirect,
   ProductType,
   ProductTypes,
   ProductTypeWithCancellationFlow,
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow,
-  ProductTypeWithProductPageProperties,
-  shouldCreatePaymentUpdateFlow,
   shouldHaveHolidayStopsFlow
-} from "../../shared/productTypes";
-import {
-  hasProductPageProperties,
-  ProductTypeWithProductPageRedirect
 } from "../../shared/productTypes";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -48,7 +43,6 @@ import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Settings } from "./identity/Settings";
 import { Main } from "./main";
-import { NotFound } from "./notFound";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
@@ -61,25 +55,15 @@ const User = () => (
     <Router>
       <AccountOverview path="/" />
 
-      {Object.values(ProductTypes)
-        .filter(hasProductPageProperties)
-        .map((productType: ProductTypeWithProductPageProperties) => (
+      {Object.values(GroupedProductTypes).map(
+        (groupedProductType: GroupedProductType) => (
           <ManageProduct
-            key={productType.urlPart}
-            path={"/" + productType.urlPart}
-            productType={productType}
+            key={groupedProductType.urlPart}
+            path={"/" + groupedProductType.urlPart}
+            groupedProductType={groupedProductType}
           />
-        ))}
-      {Object.values(ProductTypes)
-        .filter(hasProductPageRedirect)
-        .map((productType: ProductTypeWithProductPageRedirect) => (
-          <Redirect
-            key={productType.urlPart}
-            from={"/" + productType.urlPart}
-            to={"/"}
-            noThrow
-          />
-        ))}
+        )
+      )}
       {Object.values(ProductTypes)
         .filter(hasCancellationFlow)
         .map((productType: ProductTypeWithCancellationFlow) => (
@@ -107,19 +91,17 @@ const User = () => (
           </CancellationFlow>
         ))}
 
-      {Object.values(ProductTypes)
-        .filter(shouldCreatePaymentUpdateFlow)
-        .map((productType: ProductType) => (
-          <PaymentUpdateFlow
-            key={productType.urlPart}
-            path={"/payment/" + productType.urlPart}
-            productType={productType}
-          >
-            <ConfirmPaymentUpdate path="confirm" productType={productType}>
-              <PaymentUpdated path="updated" productType={productType} />
-            </ConfirmPaymentUpdate>
-          </PaymentUpdateFlow>
-        ))}
+      {Object.values(ProductTypes).map((productType: ProductType) => (
+        <PaymentUpdateFlow
+          key={productType.urlPart}
+          path={"/payment/" + productType.urlPart}
+          productType={productType}
+        >
+          <ConfirmPaymentUpdate path="confirm" productType={productType}>
+            <PaymentUpdated path="updated" productType={productType} />
+          </ConfirmPaymentUpdate>
+        </PaymentUpdateFlow>
+      ))}
 
       {Object.values(ProductTypes)
         .filter(shouldHaveHolidayStopsFlow)
@@ -191,7 +173,8 @@ const User = () => (
 
       <Help path="/help" />
 
-      <NotFound default={true} />
+      {/* otherwise redirect to root instead of having a "not found page" */}
+      <Redirect default={true} to="/" />
     </Router>
     <Router>
       <SuppressConsentBanner path="/payment/*" />

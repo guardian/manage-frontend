@@ -12,7 +12,7 @@ import {
   isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductType } from "../../../shared/productTypes";
+import { GroupedProductTypes } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
@@ -25,8 +25,6 @@ import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 interface AccountOverviewCardProps {
   productDetail: ProductDetail;
-  topLevelProductType: ProductType;
-  specificProductType: ProductType;
 }
 
 export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
@@ -37,14 +35,20 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
 
+  const groupedProductType =
+    GroupedProductTypes[props.productDetail.mmaCategory];
+
+  const specificProductType = groupedProductType.mapGroupedToSpecific(
+    props.productDetail
+  );
+
   const cancelledCopy =
-    props.specificProductType.cancelledCopy ||
-    props.topLevelProductType.cancelledCopy;
+    specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
   const hasPaymentFailure: boolean = !!props.productDetail.alertText;
 
   const shouldShowJoinDateNotStartDate =
-    props.topLevelProductType.shouldShowJoinDateNotStartDate;
+    groupedProductType.shouldShowJoinDateNotStartDate;
 
   const subscriptionStartDate = props.productDetail.subscription.start;
 
@@ -111,7 +115,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             }
           `}
         >
-          {props.specificProductType.productTitle(mainPlan)}
+          {specificProductType.productTitle(mainPlan)}
         </h2>
         <div
           css={css`
@@ -221,7 +225,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             }
           `}
         >
-          {props.topLevelProductType.shouldRevealSubscriptionId && (
+          {groupedProductType.shouldRevealSubscriptionId && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Subscription ID</li>
               <li css={valueCss}>
@@ -229,9 +233,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               </li>
             </ul>
           )}
-          {props.topLevelProductType.tierLabel && (
+          {groupedProductType.tierLabel && (
             <ul css={keyValuePairCss}>
-              <li css={keyCss}>{props.topLevelProductType.tierLabel}</li>
+              <li css={keyCss}>{groupedProductType.tierLabel}</li>
               <li css={valueCss}>{props.productDetail.tier}</li>
             </ul>
           )}
@@ -249,7 +253,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               </li>
             </ul>
           )}
-          {props.specificProductType.showTrialRemainingIfApplicable &&
+          {specificProductType.showTrialRemainingIfApplicable &&
             props.productDetail.subscription.trialLength > 0 && (
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Trial remaining</li>
@@ -267,8 +271,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             `}
           >
             <LinkButton
-              to={`/${props.topLevelProductType.urlPart}`}
-              text={`Manage ${props.topLevelProductType.friendlyName}`}
+              to={`/${groupedProductType.urlPart}`}
+              text={`Manage ${groupedProductType.friendlyName}`}
               state={props.productDetail}
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
@@ -371,7 +375,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   `}
                 >
                   <LinkButton
-                    to={`/payment/${props.specificProductType.urlPart}`}
+                    to={`/payment/${specificProductType.urlPart}`}
                     state={props.productDetail}
                     text={"Manage payment method"}
                     colour={

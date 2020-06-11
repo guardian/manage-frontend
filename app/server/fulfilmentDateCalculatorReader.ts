@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { getMainPlan, ProductDetail } from "../shared/productResponse";
-import { ProductTypes } from "../shared/productTypes";
+import { GroupedProductTypes } from "../shared/productTypes";
 import { s3FilePromise } from "./awsIntegration";
 import { conf } from "./config";
 import { log } from "./log";
@@ -45,13 +45,13 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday = async (
   productDetail: ProductDetail
 ) => {
-  const maybeProductType = ProductTypes.subscriptions.mapGroupedToSpecific?.(
+  const productType = GroupedProductTypes.subscriptions.mapGroupedToSpecific(
     productDetail
   );
   const maybeFulfilmentDateCalculatorProductFilenamePart =
-    maybeProductType?.fulfilmentDateCalculator?.productFilenamePart;
+    productType.fulfilmentDateCalculator?.productFilenamePart;
   const maybeExplicitSingleDayOfWeek =
-    maybeProductType?.fulfilmentDateCalculator?.explicitSingleDayOfWeek;
+    productType.fulfilmentDateCalculator?.explicitSingleDayOfWeek;
   const maybeDaysOfWeek = maybeExplicitSingleDayOfWeek
     ? [maybeExplicitSingleDayOfWeek]
     : getMainPlan(productDetail.subscription).daysOfWeek;
@@ -66,7 +66,7 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
     maybeFulfilmentDateCalculatorProductFilenamePart &&
     !(maybeDeliveryAddressChangeEffectiveDate && maybeDaysOfWeek)
   ) {
-    const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${maybeProductType?.friendlyName}, but wasn't.`;
+    const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${productType.friendlyName}, but wasn't.`;
     log.error(errorMessage);
     Sentry.captureMessage(errorMessage);
   }
