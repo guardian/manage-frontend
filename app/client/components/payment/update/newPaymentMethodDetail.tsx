@@ -2,8 +2,8 @@ import React from "react";
 import { Subscription } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 
-export type PaymentUpdateTypeName = "card" | "direct_debit";
-export type PaymentUpdateTypeApiUrlPart = "card" | "dd";
+type PaymentUpdateTypeName = "card" | "direct_debit";
+type PaymentUpdateTypeApiUrlPart = "card" | "dd";
 
 export interface NewPaymentMethodDetail {
   readonly name: PaymentUpdateTypeName;
@@ -18,7 +18,7 @@ export interface NewPaymentMethodDetail {
   readonly updatedSuccessExtras?: JSX.Element;
 }
 
-export type MaybeNewPaymentMethodDetail = NewPaymentMethodDetail | {};
+type MaybeNewPaymentMethodDetail = NewPaymentMethodDetail | {};
 
 export function isNewPaymentMethodDetail(
   maybeDetail: MaybeNewPaymentMethodDetail
@@ -29,8 +29,8 @@ export function isNewPaymentMethodDetail(
   );
 }
 
-export const NewPaymentMethodContext: React.Context<
-  MaybeNewPaymentMethodDetail
-> = React.createContext({});
+export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> = React.createContext(
+  {}
+);
 
 export class PaymentUpdateAsyncLoader extends AsyncLoader<object> {}

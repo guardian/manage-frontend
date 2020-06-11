@@ -1,6 +1,6 @@
 import { s3ConfigPromise } from "./awsIntegration";
 
-export interface StripePublicToSecretKeyMapping {
+interface StripePublicToSecretKeyMapping {
   [publicKey: string]: string;
 }
 
@@ -10,7 +10,7 @@ export const stripeSetupIntentConfigPromise: Promise<
   "stripe-public-to-private-key-mapping"
 );
 
-export interface ReCaptchaKeys {
+interface ReCaptchaKeys {
   publicKey: string;
   secretKey: string;
 }

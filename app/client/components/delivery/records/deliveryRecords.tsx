@@ -235,7 +235,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
         .filter(_ => !_.problemCaseId);
     }
-    return props.data.results.filter((element, index) =>
+    return props.data.results.filter((_, index) =>
       isRecordInCurrentPage(
         index,
         currentPage * resultsPerPage,

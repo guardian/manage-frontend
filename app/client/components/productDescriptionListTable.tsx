@@ -65,7 +65,7 @@ export const ProductDescriptionListTable = (
   }
 
   const contentRowMap = new Map<number, ContentRowMapEntry>();
-  filteredContent.map((tableEntry, tableEntryIndex) => {
+  filteredContent.map((_, tableEntryIndex) => {
     const previousContentRowMapEntry = contentRowMap.get(tableEntryIndex - 1);
 
     if (!previousContentRowMapEntry) {

@@ -5,12 +5,12 @@ import { DATE_INPUT_FORMAT, momentiseDateStr } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 
-export interface CommonCreditProperties {
+interface CommonCreditProperties {
   estimatedPrice?: number;
   actualPrice?: number;
 }
 
-export interface RawHolidayStopDetail extends CommonCreditProperties {
+interface RawHolidayStopDetail extends CommonCreditProperties {
   publicationDate: string;
   invoiceDate?: string;
 }
@@ -20,12 +20,12 @@ export interface HolidayStopDetail extends CommonCreditProperties {
   invoiceDate?: Moment;
 }
 
-export interface MutabilityFlags {
+interface MutabilityFlags {
   isFullyMutable: boolean;
   isEndDateEditable: boolean;
 }
 
-export interface RawHolidayStopRequest {
+interface RawHolidayStopRequest {
   startDate: string;
   endDate: string;
   id: string;

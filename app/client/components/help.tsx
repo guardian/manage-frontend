@@ -145,7 +145,7 @@ const faqs: Faqs = {
   }
 };
 
-export const Help = (props: RouteComponentProps) => (
+export const Help = (_: RouteComponentProps) => (
   <>
     <PageHeaderContainer
       selectedNavItem={navLinks.emailPrefs}

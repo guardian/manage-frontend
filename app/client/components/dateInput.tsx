@@ -30,7 +30,7 @@ const dividerCss = {
 
 const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
 
-export interface DateInputProps {
+interface DateInputProps {
   selectedDate?: Moment;
   defaultDate: Moment;
   labelText: string;
@@ -38,7 +38,7 @@ export interface DateInputProps {
   // onChange: (newValue: DateInputState) => void; // TODO: UNCOMMENT WHEN INPUT ACTIVATED
 }
 
-export interface DateInputState {
+interface DateInputState {
   day: number;
   month: number;
   year: number;

@@ -153,12 +153,12 @@ describe("DeliveryRecords", () => {
   beforeEach(() => {
     // tslint:disable-next-line: no-object-mutation
     global.fetch = jest.fn().mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         resolve({
           ok: true,
           status: 200,
           headers: {
-            get: (prop: string) => "pass"
+            get: () => "pass"
           },
           json: () => {
             return url.includes("/api/me/mma")

@@ -1,7 +1,7 @@
 import { css, SerializedStyles } from "@emotion/core";
 import React from "react";
 
-export interface DirectDebitLogoProps {
+interface DirectDebitLogoProps {
   fill?: string;
   justLogo?: true;
   additionalCss?: SerializedStyles;

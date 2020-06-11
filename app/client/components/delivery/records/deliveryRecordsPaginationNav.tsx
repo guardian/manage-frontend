@@ -31,7 +31,7 @@ export const PaginationNav = (props: PaginationNavProps) => {
       >
         {Array(totalNumberOfPages)
           .fill(null)
-          .map((pagesArrEl, pagesArrIndex) => (
+          .map((_, pagesArrIndex) => (
             <li
               key={`deliveryRecordsNavItem-${pagesArrIndex}`}
               css={css`

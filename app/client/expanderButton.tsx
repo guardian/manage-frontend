@@ -47,12 +47,12 @@ export const expanderButtonCss = (
     color: isExpanded ? highlightColour : mainColour
   });
 
-export interface ExpanderButtonProps {
+interface ExpanderButtonProps {
   buttonLabel: string | React.ReactElement;
   children: React.ReactElement | React.ReactElement[];
 }
 
-export interface ExpanderButtonState {
+interface ExpanderButtonState {
   isExpanded: boolean;
 }
 

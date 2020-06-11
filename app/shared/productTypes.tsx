@@ -31,7 +31,7 @@ import {
   SubscriptionWithDeliveryAddress
 } from "./productResponse";
 
-export type ProductFriendlyName =
+type ProductFriendlyName =
   | "membership"
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
@@ -40,7 +40,7 @@ export type ProductFriendlyName =
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
-export type ProductUrlPart =
+type ProductUrlPart =
   | "membership"
   | "contributions"
   | "paper"
@@ -49,14 +49,14 @@ export type ProductUrlPart =
   | "digital"
   | "guardianweekly"
   | "subscriptions";
-export type SfCaseProduct =
+type SfCaseProduct =
   | "Membership"
   | "Recurring - Contributions"
   | "Voucher Subscriptions"
   | "Guardian Weekly"
   | "Digital Pack Subscriptions";
-export type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
-export type AllProductsProductTypeFilterString =
+type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
+type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
   | "Voucher"
@@ -66,7 +66,7 @@ export type AllProductsProductTypeFilterString =
   | "Digipack"
   | "ContentSubscription";
 
-export interface CancellationFlowProperties {
+interface CancellationFlowProperties {
   reasons: CancellationReason[];
   sfCaseProduct: SfCaseProduct;
   linkOnProductPage?: true;
@@ -91,7 +91,7 @@ export interface CancellationFlowProperties {
   swapFeedbackAndContactUs?: true;
 }
 
-export interface ProductPageProperties {
+interface ProductPageProperties {
   title: ProductTitle;
   tierRowLabel?: string; // no label means row is not displayed;
   tierChangeable?: true;
@@ -120,7 +120,7 @@ export const holidaySuspensionDeliveryProblem: DeliveryProblemType = {
   messageIsMandatory: false
 };
 
-export const commonDeliveryProblemTypes: DeliveryProblemType[] = [
+const commonDeliveryProblemTypes: DeliveryProblemType[] = [
   { label: "Damaged Paper", messageIsMandatory: true },
   { label: "No Delivery", messageIsMandatory: false },
   { label: "Other", messageIsMandatory: true }
@@ -135,7 +135,7 @@ interface DeliveryRecordsProperties {
   availableProblemTypes: DeliveryProblemType[];
 }
 
-export interface DeliveryProperties {
+interface DeliveryProperties {
   showAddress?: (
     subscription: Subscription
   ) => subscription is SubscriptionWithDeliveryAddress;
@@ -198,9 +198,6 @@ export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
   delivery: {
     records: DeliveryRecordsProperties;
   };
-}
-export interface ProductTypeWithMapGroupedToSpecific extends ProductType {
-  mapGroupedToSpecific: (productDetail: ProductDetail) => ProductType;
 }
 
 export const hasDeliveryRecordsFlow = (
@@ -271,7 +268,7 @@ const calculateProductTitle = (baseProductTtile: string) => (
   mainPlan?: SubscriptionPlan
 ) => baseProductTtile + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
 
-export type ProductTypeKeys =
+type ProductTypeKeys =
   | "membership"
   | "contributions"
   | "newspaper"
@@ -367,9 +364,7 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
             return undefined;
         }
       },
-      alternateSupportButtonUrlSuffix: (
-        reasonId: OptionalCancellationReasonId
-      ) => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
+      alternateSupportButtonUrlSuffix: () => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
       swapFeedbackAndContactUs: true
     }
   },

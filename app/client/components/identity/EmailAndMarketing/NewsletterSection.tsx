@@ -7,7 +7,7 @@ import { PageSection } from "../PageSection";
 
 type ClickHandler = (id: string) => {};
 
-export interface NewsletterSectionProps {
+interface NewsletterSectionProps {
   newsletters: ConsentOption[];
   clickHandler: ClickHandler;
 }

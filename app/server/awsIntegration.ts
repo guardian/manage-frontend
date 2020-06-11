@@ -24,7 +24,7 @@ export const APIGateway = new AWS.APIGateway(standardAwsConfig);
 
 export const CloudFormation = new AWS.CloudFormation(standardAwsConfig);
 
-export const CloudWatch = new AWS.CloudWatch(standardAwsConfig);
+const CloudWatch = new AWS.CloudWatch(standardAwsConfig);
 
 export const handleAwsRelatedError = (message: string, detail?: any) => {
   log.error(message, detail);
@@ -78,7 +78,7 @@ export const s3FilePromise = <ConfigInterface>(
     );
   })();
 
-export interface MetricDimensions {
+interface MetricDimensions {
   [name: string]: string;
 }
 export const putMetricDataPromise = (

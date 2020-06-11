@@ -1,4 +1,4 @@
-export interface Config {
+interface Config {
   readonly STAGE: string;
   readonly DOMAIN: string;
   readonly API_DOMAIN: string;

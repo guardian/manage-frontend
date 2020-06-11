@@ -3,7 +3,7 @@ import { Card, Subscription } from "../../../../../shared/productResponse";
 import { CardDisplay } from "../../cardDisplay";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 
-export interface SubscriptionWithCard extends Subscription {
+interface SubscriptionWithCard extends Subscription {
   card: Card;
 }
 
@@ -18,7 +18,7 @@ interface StripePaymentMethod {
   card: stripe.Card;
 }
 
-export interface CardUpdateResponse {
+interface CardUpdateResponse {
   type: string;
   last4: string;
   expiryMonth: number;

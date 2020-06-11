@@ -8,6 +8,7 @@ import React from "react";
 import {
   MembersDataApiItemContext,
   ProductDetail,
+  replaceAlertTextCTA,
   Subscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
@@ -199,7 +200,9 @@ class PaymentUpdaterStep extends React.Component<
             {this.props.productDetail.alertText && (
               <div>
                 <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                <span>{this.props.productDetail.alertText}</span>
+                <span>
+                  {replaceAlertTextCTA(this.props.productDetail.alertText)}
+                </span>
               </div>
             )}
             <div css={{ minWidth: "260px" }}>

@@ -2,7 +2,7 @@ import React from "react";
 import palette from "../../colours";
 import { Modal } from "../modal";
 
-export interface HolidayAnniversaryDateExplainerModalProps {
+interface HolidayAnniversaryDateExplainerModalProps {
   dateElement: JSX.Element;
   issueKeyword: string;
 }

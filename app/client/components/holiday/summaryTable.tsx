@@ -28,7 +28,7 @@ const cellCss = {
   border: "1px solid " + palette.neutral["5"]
 };
 
-export interface SummaryTableProps {
+interface SummaryTableProps {
   data: HolidayStopRequest[] | SharedHolidayDateChooserState;
   isTestUser: boolean;
   subscription: Subscription;

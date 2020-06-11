@@ -98,7 +98,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
   return props.children;
 };
 
-export interface ResubscribeThrasherProps {
+interface ResubscribeThrasherProps {
   children: ReactNode;
   usageContext: string;
 }

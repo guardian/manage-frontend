@@ -26,12 +26,9 @@ const routeProvider = (apiPathPrefix: string) => {
   });
 
   Object.values(ProductTypes).forEach((productType: ProductType) => {
-    router.use(
-      "/banner/" + productType.urlPart,
-      (req: Request, res: Response) => {
-        res.redirect("/payment/" + productType.urlPart + "?INTCMP=BANNER");
-      }
-    );
+    router.use("/banner/" + productType.urlPart, (_, res: Response) => {
+      res.redirect("/payment/" + productType.urlPart + "?INTCMP=BANNER");
+    });
 
     if (productType.updateAmountMdaEndpoint) {
       router.post(
@@ -49,7 +46,7 @@ const routeProvider = (apiPathPrefix: string) => {
       );
     }
     if (hasProductPageRedirect(productType)) {
-      router.get("/" + productType.urlPart, (req: Request, res: Response) => {
+      router.get("/" + productType.urlPart, (_, res: Response) => {
         res.redirect("/" + productType.productPage);
       });
     }

@@ -37,9 +37,7 @@ import {
 } from "./newPaymentMethodDetail";
 import { paymentQuestionsTopicString } from "./updatePaymentFlow";
 
-export class WithSubscriptionAsyncLoader extends AsyncLoader<
-  WithSubscription[]
-> {}
+class WithSubscriptionAsyncLoader extends AsyncLoader<WithSubscription[]> {}
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;

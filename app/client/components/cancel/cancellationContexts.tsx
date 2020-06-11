@@ -14,12 +14,12 @@ export const CancellationCaseIdContext: React.Context<string> = React.createCont
 export const cancellationEffectiveToday = "Today";
 export const cancellationEffectiveEndOfLastInvoicePeriod =
   "EndOfLastInvoicePeriod";
-export type OptionalCancellationPolicy = string | undefined;
+type OptionalCancellationPolicy = string | undefined;
 export const CancellationPolicyContext: React.Context<OptionalCancellationPolicy> = React.createContext(
   undefined as OptionalCancellationPolicy
 );
 
-export type OptionalOutstandingCredits =
+type OptionalOutstandingCredits =
   | undefined
   | {
       holidayStops?: OutstandingHolidayStop[];
