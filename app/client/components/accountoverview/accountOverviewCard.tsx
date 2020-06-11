@@ -12,7 +12,7 @@ import {
   isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
-import { GroupedProductTypes } from "../../../shared/productTypes";
+import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
 import { LinkButton } from "../buttons";
@@ -36,7 +36,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     props.productDetail.subscription.cancelledAt;
 
   const groupedProductType =
-    GroupedProductTypes[props.productDetail.mmaCategory];
+    GROUPED_PRODUCT_TYPES[props.productDetail.mmaCategory];
 
   const specificProductType = groupedProductType.mapGroupedToSpecific(
     props.productDetail

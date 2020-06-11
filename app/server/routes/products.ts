@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
-import { ProductType, ProductTypes } from "../../shared/productTypes";
+import { PRODUCT_TYPES, ProductType } from "../../shared/productTypes";
 import { membersDataApiHandler } from "../apiProxy";
 
 const routeProvider = (apiPathPrefix: string) => {
   const router = Router();
 
-  Object.values(ProductTypes).forEach((productType: ProductType) => {
+  Object.values(PRODUCT_TYPES).forEach((productType: ProductType) => {
     router.use("/banner/" + productType.urlPart, (_, res: Response) => {
       res.redirect("/payment/" + productType.urlPart + "?INTCMP=BANNER");
     });

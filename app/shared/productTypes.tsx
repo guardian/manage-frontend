@@ -261,7 +261,7 @@ export type GroupedProductTypeKeys =
   | "contributions"
   | "subscriptions";
 
-export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
+export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
     productTitle: () => "Guardian membership",
     friendlyName: "membership",
@@ -499,12 +499,12 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   }
 };
 
-export const GroupedProductTypes: {
+export const GROUPED_PRODUCT_TYPES: {
   [productKey in GroupedProductTypeKeys]: GroupedProductType;
 } = {
   membership: {
-    ...ProductTypes.membership,
-    mapGroupedToSpecific: () => ProductTypes.membership,
+    ...PRODUCT_TYPES.membership,
+    mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
     groupFriendlyName: "membership",
     supportTheGuardianSectionProps: {
       supportReferer: "account_overview_membership_section",
@@ -513,8 +513,8 @@ export const GroupedProductTypes: {
     }
   },
   contributions: {
-    ...ProductTypes.contributions,
-    mapGroupedToSpecific: () => ProductTypes.contributions,
+    ...PRODUCT_TYPES.contributions,
+    mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
     groupFriendlyName: "contributions",
     supportTheGuardianSectionProps: {
       alternateButtonText: "Contribute again",
@@ -532,15 +532,15 @@ export const GroupedProductTypes: {
     urlPart: "subscriptions",
     mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
-        return ProductTypes.digipack;
+        return PRODUCT_TYPES.digipack;
       } else if (productDetail.tier === "Newspaper Delivery") {
-        return ProductTypes.homedelivery;
+        return PRODUCT_TYPES.homedelivery;
       } else if (productDetail.tier === "Newspaper Voucher") {
-        return ProductTypes.voucher;
+        return PRODUCT_TYPES.voucher;
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
-        return ProductTypes.guardianweekly;
+        return PRODUCT_TYPES.guardianweekly;
       }
-      return GroupedProductTypes.subscriptions; // This should never happen!
+      return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
     },
     cancelledCopy:
       "Your subscription has been cancelled. You are able to access your subscription until",

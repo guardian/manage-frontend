@@ -1,5 +1,5 @@
 import { DeliveryAddress } from "../../../../shared/productResponse";
-import { ProductTypes } from "../../../../shared/productTypes";
+import { PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { ukPhoneNumberWithoutPrefix } from "../../callCentreNumbers";
 
 interface ErrorState {
@@ -37,7 +37,7 @@ export const isFormValid = (
     isPostcodeInM25(formData.postcode);
 
   const enteredPostcodeIsInValidArea =
-    !subscriptionsNames.includes(ProductTypes.homedelivery.friendlyName) ||
+    !subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
     enteredPostcodeIsInM25;
 
   const postcode = {
@@ -49,7 +49,7 @@ export const isFormValid = (
   };
 
   const userHasVoucherSubscription = subscriptionsNames.includes(
-    ProductTypes.voucher.friendlyName
+    PRODUCT_TYPES.voucher.friendlyName
   );
 
   const country = {

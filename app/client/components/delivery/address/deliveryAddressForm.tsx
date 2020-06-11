@@ -19,7 +19,7 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  GroupedProductTypes,
+  GROUPED_PRODUCT_TYPES,
   ProductType
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
@@ -81,7 +81,7 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
     .filter(hasContactId)
     .map(productDetail => ({
       productDetail,
-      productType: GroupedProductTypes.subscriptions.mapGroupedToSpecific(
+      productType: GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
         productDetail
       )
     }))
@@ -227,7 +227,7 @@ const FormContainer = (props: FormContainerProps) => {
   )
     .flatMap(flattenEquivalent)
     .map(({ productDetail }) => {
-      const friendlyProductName = GroupedProductTypes.subscriptions.mapGroupedToSpecific(
+      const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
         productDetail
       ).friendlyName;
       return `${friendlyProductName}`;
@@ -757,7 +757,7 @@ const Form = (props: FormProps) => {
 export const DeliveryAddressForm = (props: RouteableStepProps) => (
   <MembersDatApiAsyncLoader
     render={renderDeliveryAddressForm(props)}
-    fetch={createProductDetailFetcher(GroupedProductTypes.subscriptions)}
+    fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
     loadingMessage={"Loading delivery details..."}
   />
 );

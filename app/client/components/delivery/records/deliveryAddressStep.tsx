@@ -22,7 +22,7 @@ import {
 } from "../../../../shared/productResponse";
 import {
   createProductDetailFetcher,
-  GroupedProductTypes
+  GROUPED_PRODUCT_TYPES
 } from "../../../../shared/productTypes";
 import { minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
@@ -160,7 +160,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     )
       .flatMap(flattenEquivalent)
       .map(({ productDetail }) => {
-        const friendlyProductName = GroupedProductTypes.subscriptions.mapGroupedToSpecific(
+        const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
           productDetail
         ).friendlyName;
         return `${friendlyProductName}`;
@@ -551,7 +551,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       >
         <MembersDatApiAsyncLoader
           render={renderDeliveryAddressForm}
-          fetch={createProductDetailFetcher(GroupedProductTypes.subscriptions)}
+          fetch={createProductDetailFetcher(
+            GROUPED_PRODUCT_TYPES.subscriptions
+          )}
           loadingMessage={"Loading delivery details..."}
         />
       </div>

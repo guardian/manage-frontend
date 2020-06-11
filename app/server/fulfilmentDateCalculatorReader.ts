@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { getMainPlan, ProductDetail } from "../shared/productResponse";
-import { GroupedProductTypes } from "../shared/productTypes";
+import { GROUPED_PRODUCT_TYPES } from "../shared/productTypes";
 import { s3FilePromise } from "./awsIntegration";
 import { conf } from "./config";
 import { log } from "./log";
@@ -45,7 +45,7 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday = async (
   productDetail: ProductDetail
 ) => {
-  const productType = GroupedProductTypes.subscriptions.mapGroupedToSpecific(
+  const productType = GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
     productDetail
   );
   const maybeFulfilmentDateCalculatorProductFilenamePart =

@@ -2,13 +2,13 @@ import { css, Global } from "@emotion/core";
 import { Redirect, Router, ServerLocation } from "@reach/router";
 import React from "react";
 import {
+  GROUPED_PRODUCT_TYPES,
   GroupedProductType,
-  GroupedProductTypes,
   hasCancellationFlow,
   hasDeliveryFlow,
   hasDeliveryRecordsFlow,
+  PRODUCT_TYPES,
   ProductType,
-  ProductTypes,
   ProductTypeWithCancellationFlow,
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow,
@@ -55,7 +55,7 @@ const User = () => (
     <Router>
       <AccountOverview path="/" />
 
-      {Object.values(GroupedProductTypes).map(
+      {Object.values(GROUPED_PRODUCT_TYPES).map(
         (groupedProductType: GroupedProductType) => (
           <ManageProduct
             key={groupedProductType.urlPart}
@@ -64,7 +64,7 @@ const User = () => (
           />
         )
       )}
-      {Object.values(ProductTypes)
+      {Object.values(PRODUCT_TYPES)
         .filter(hasCancellationFlow)
         .map((productType: ProductTypeWithCancellationFlow) => (
           <CancellationFlow
@@ -91,7 +91,7 @@ const User = () => (
           </CancellationFlow>
         ))}
 
-      {Object.values(ProductTypes).map((productType: ProductType) => (
+      {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
         <PaymentUpdateFlow
           key={productType.urlPart}
           path={"/payment/" + productType.urlPart}
@@ -103,7 +103,7 @@ const User = () => (
         </PaymentUpdateFlow>
       ))}
 
-      {Object.values(ProductTypes)
+      {Object.values(PRODUCT_TYPES)
         .filter(shouldHaveHolidayStopsFlow)
         .map((productType: ProductTypeWithHolidayStopsFlow) => (
           <HolidaysOverview
@@ -128,7 +128,7 @@ const User = () => (
           </HolidaysOverview>
         ))}
 
-      {Object.values(ProductTypes)
+      {Object.values(PRODUCT_TYPES)
         .filter(hasDeliveryFlow)
         .map((productType: ProductType) => (
           <DeliveryAddressForm
@@ -145,7 +145,7 @@ const User = () => (
           </DeliveryAddressForm>
         ))}
 
-      {Object.values(ProductTypes)
+      {Object.values(PRODUCT_TYPES)
         .filter(hasDeliveryRecordsFlow)
         .map((productType: ProductTypeWithDeliveryRecordsProperties) => (
           <DeliveryRecords

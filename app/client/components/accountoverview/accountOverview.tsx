@@ -13,8 +13,8 @@ import {
 } from "../../../shared/productResponse";
 import {
   allProductsDetailFetcher,
-  GroupedProductTypeKeys,
-  GroupedProductTypes
+  GROUPED_PRODUCT_TYPES,
+  GroupedProductTypeKeys
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
@@ -81,7 +81,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           button={{
             title: "Update payment method",
             link: `/payment/${
-              GroupedProductTypes[
+              GROUPED_PRODUCT_TYPES[
                 firstPaymentFailure.mmaCategory
               ].mapGroupedToSpecific(firstPaymentFailure).urlPart
             }`,
@@ -96,7 +96,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       {Object.entries(mmaCategoryToProductDetails).map(
         ([mmaCategory, productDetails]) => {
           const groupedProductType =
-            GroupedProductTypes[mmaCategory as GroupedProductTypeKeys];
+            GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
           return (
             !!productDetails.length && (
               <>
