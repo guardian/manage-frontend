@@ -37,6 +37,7 @@ type ProductFriendlyName =
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
   | "newspaper voucher subscription"
+  | "newspaper subscription card"
   | "home delivery subscription"
   | "digital subscription"
   | "Guardian Weekly subscription"
@@ -46,6 +47,7 @@ type ProductUrlPart =
   | "contributions"
   | "paper"
   | "voucher"
+  | "subscriptioncard"
   | "homedelivery"
   | "digital"
   | "guardianweekly"
@@ -60,6 +62,7 @@ type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
   | "Voucher"
+  | "DigitalVoucher"
   | "HomeDelivery"
   | "Contribution"
   | "Membership"
@@ -253,6 +256,7 @@ type ProductTypeKeys =
   | "newspaper"
   | "homedelivery"
   | "voucher"
+  | "digitalvoucher"
   | "guardianweekly"
   | "digipack";
 
@@ -426,6 +430,17 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
       swapFeedbackAndContactUs: true
     }
   },
+  digitalvoucher: {
+    productTitle: calculateProductTitle("Newspaper Subscription Card"),
+    friendlyName: "newspaper subscription card",
+    allProductsProductTypeFilterString: "DigitalVoucher",
+    urlPart: "subscriptioncard",
+    legacyUrlPart: "digitalvoucher",
+    getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    delivery: {
+      showAddress: showDeliveryAddressCheck
+    }
+  },
   guardianweekly: {
     productTitle: () => "Guardian Weekly",
     friendlyName: "Guardian Weekly subscription",
@@ -537,6 +552,8 @@ export const GROUPED_PRODUCT_TYPES: {
         return PRODUCT_TYPES.homedelivery;
       } else if (productDetail.tier === "Newspaper Voucher") {
         return PRODUCT_TYPES.voucher;
+      } else if (productDetail.tier.startsWith("Newspaper Digital Voucher")) {
+        return PRODUCT_TYPES.digitalvoucher;
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
         return PRODUCT_TYPES.guardianweekly;
       }
