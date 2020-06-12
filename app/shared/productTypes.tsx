@@ -38,7 +38,7 @@ type ProductFriendlyName =
   | "newspaper subscription"
   | "newspaper voucher subscription"
   | "newspaper subscription card"
-  | "home delivery subscription"
+  | "newspaper home delivery subscription"
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
@@ -358,8 +358,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   homedelivery: {
     productTitle: calculateProductTitle("Newspaper Delivery"),
-    friendlyName: "home delivery subscription",
-    shortFriendlyName: "home delivery",
+    friendlyName: "newspaper home delivery subscription",
+    shortFriendlyName: "newspaper home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
@@ -387,6 +387,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   voucher: {
     productTitle: calculateProductTitle("Newspaper Voucher"),
     friendlyName: "newspaper voucher subscription",
+    shortFriendlyName: "newspaper voucher booklet",
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",

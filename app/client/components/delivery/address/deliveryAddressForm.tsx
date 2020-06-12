@@ -104,10 +104,8 @@ export const addressChangeAffectedInfo = (
     .flatMap<ProductDetailAndProductType>(flattenEquivalent)
     .map(({ productDetail, productType }) => {
       const friendlyProductName = capitalize(
-        productType?.shortFriendlyName || productType?.friendlyName
-      )
-        .replace("subscription", "")
-        .trim();
+        productType.shortFriendlyName || productType.friendlyName
+      ).trim();
       const effectiveDate = productDetail.subscription
         .deliveryAddressChangeEffectiveDate
         ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
