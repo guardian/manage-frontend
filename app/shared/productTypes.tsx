@@ -525,7 +525,7 @@ export const GROUPED_PRODUCT_TYPES: {
     }
   },
   subscriptions: {
-    productTitle: () => "Subscription", // this is just a top level product type
+    productTitle: () => "Subscription",
     friendlyName: "subscription",
     groupFriendlyName: "subscriptions",
     allProductsProductTypeFilterString: "ContentSubscription",
