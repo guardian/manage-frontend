@@ -4,7 +4,7 @@ import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import {
   hasDeliveryRecordsFlow,
-  PRODUCT_TYPES
+  ProductTypes
 } from "../../../../../../shared/productTypes";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
 import {
@@ -171,11 +171,11 @@ describe("DeliveryRecords", () => {
   });
 
   it("renders without crashing", async done => {
-    if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
+    if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
-          productType={PRODUCT_TYPES.guardianweekly}
+          productType={ProductTypes.guardianweekly}
         />
       );
 
@@ -196,11 +196,11 @@ describe("DeliveryRecords", () => {
   });
 
   it("renders in 'read only' mode initially", async done => {
-    if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
+    if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
-          productType={PRODUCT_TYPES.guardianweekly}
+          productType={ProductTypes.guardianweekly}
         />
       );
 
@@ -225,11 +225,11 @@ describe("DeliveryRecords", () => {
   });
 
   it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async done => {
-    if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
+    if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
-          productType={PRODUCT_TYPES.guardianweekly}
+          productType={ProductTypes.guardianweekly}
         />
       );
 
@@ -282,11 +282,11 @@ describe("DeliveryRecords", () => {
   });
 
   it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
-    if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
+    if (hasDeliveryRecordsFlow(ProductTypes.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
-          productType={PRODUCT_TYPES.guardianweekly}
+          productType={ProductTypes.guardianweekly}
         />
       );
 
