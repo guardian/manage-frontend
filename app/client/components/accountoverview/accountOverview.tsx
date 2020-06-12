@@ -88,7 +88,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
           const groupedProductType =
             GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
           return (
-            !!productDetails.length && (
+            productDetails.length > 0 && (
               <>
                 <h2 css={subHeadingCss}>
                   My {groupedProductType.groupFriendlyName}
