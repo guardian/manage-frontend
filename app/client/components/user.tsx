@@ -174,11 +174,11 @@ const User = () => (
       <Help path="/help" />
 
       {/* otherwise redirect to root instead of having a "not found page" */}
-      <Redirect default={true} to="/" />
+      <Redirect default from="/*" to="/" noThrow />
     </Router>
     <Router>
       <SuppressConsentBanner path="/payment/*" />
-      <ConsentsBanner default={true} />
+      <ConsentsBanner default />
     </Router>
   </Main>
 );
