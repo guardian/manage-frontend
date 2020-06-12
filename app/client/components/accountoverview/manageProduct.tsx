@@ -34,7 +34,7 @@ import { ProductDetailProvider } from "../productDetailProvider";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
-import { RouteableStepProps } from "../wizardRouterAdapter";
+import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
 import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
@@ -56,7 +56,7 @@ const subHeadingCss = `
   `;
 
 interface InnerContentProps {
-  props: RouteableStepProps;
+  props: RouteableStepPropsForGrouped;
   productDetail: ProductDetail;
 }
 const InnerContent = ({ props, productDetail }: InnerContentProps) => {
@@ -64,18 +64,18 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
 
   const futurePlan = getFuturePlanIfVisible(productDetail.subscription);
 
-  const topLevelProductType = props.productType;
+  const groupedProductType = props.groupedProductType;
 
-  const specificProductType =
-    topLevelProductType.mapGroupedToSpecific?.(productDetail) ||
-    topLevelProductType;
+  const specificProductType = groupedProductType.mapGroupedToSpecific(
+    productDetail
+  );
 
   const hasCancellationPending = productDetail.subscription.cancelledAt;
 
-  const pageTitle = `Manage ${topLevelProductType.friendlyName}`;
+  const pageTitle = `Manage ${groupedProductType.friendlyName}`;
 
   const cancelledCopy =
-    specificProductType.cancelledCopy || topLevelProductType.cancelledCopy;
+    specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
   const [overiddenAmount, setOveriddenAmount] = useState<number | null>(null);
   const isAmountOveridable = specificProductType.updateAmountMdaEndpoint;
@@ -168,7 +168,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
         ) : (
           <ProductDescriptionListTable
             content={[
-              ...(topLevelProductType.shouldRevealSubscriptionId
+              ...(groupedProductType.shouldRevealSubscriptionId
                 ? [
                     {
                       title: "Subscription ID",
@@ -176,15 +176,15 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
                     }
                   ]
                 : []),
-              ...(topLevelProductType.tierLabel
+              ...(groupedProductType.tierLabel
                 ? [
                     {
-                      title: topLevelProductType.tierLabel,
+                      title: groupedProductType.tierLabel,
                       value: productDetail.tier
                     }
                   ]
                 : []),
-              ...(topLevelProductType.shouldShowJoinDateNotStartDate
+              ...(groupedProductType.shouldShowJoinDateNotStartDate
                 ? [
                     {
                       title: "Join date",
@@ -487,7 +487,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             to={"/cancel/" + specificProductType.urlPart}
             state={productDetail}
           >
-            Cancel {topLevelProductType.friendlyName}
+            Cancel {groupedProductType.friendlyName}
           </Link>
         )}
       </PageNavAndContentContainer>
@@ -495,9 +495,10 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
   );
 };
 
-export const ManageProduct = (props: RouteableStepProps) => (
+export const ManageProduct = (props: RouteableStepPropsForGrouped) => (
   <ProductDetailProvider
     {...props}
+    productType={props.groupedProductType}
     loadingMessagePrefix="Retrieving details of your"
     allowCancelledSubscription
     forceRedirectToAccountOverviewIfNoBrowserHistoryState

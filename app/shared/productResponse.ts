@@ -3,6 +3,7 @@ import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
 import { DeliveryRecordDetail } from "../client/components/delivery/records/deliveryRecordsApi";
 import { CardProps } from "../client/components/payment/cardDisplay";
+import { GroupedProductTypeKeys } from "./productTypes";
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
@@ -41,7 +42,7 @@ export interface ProductDetail extends WithSubscription {
   regNumber?: string;
   tier: string;
   joinDate: string;
-  mmaCategory: "subscriptions" | "contributions" | "membership";
+  mmaCategory: GroupedProductTypeKeys;
   alertText?: string;
 }
 

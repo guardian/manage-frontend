@@ -7,12 +7,14 @@ import {
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
+  ProductDetail,
   replaceAlertTextCTA,
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
   allProductsDetailFetcher,
-  ProductTypes
+  GROUPED_PRODUCT_TYPES,
+  GroupedProductTypeKeys
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
@@ -26,40 +28,29 @@ import {
 import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
 
+type MMACategoryToProductDetails = {
+  [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
+};
+
 const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
-  const productDetailList = apiResponse
-    .filter(isProduct)
-    .sort(sortByJoinDate)
-    .map(productDetail => {
-      const topLevelProductType = ProductTypes[productDetail.mmaCategory];
-      return {
-        productDetail,
-        topLevelProductType,
-        specificProductType:
-          topLevelProductType.mapGroupedToSpecific?.(productDetail) ||
-          topLevelProductType
-      };
-    });
+  const allProductDetails = apiResponse.filter(isProduct).sort(sortByJoinDate);
 
-  const subscriptionData = productDetailList.filter(
-    _ => _.topLevelProductType === ProductTypes.subscriptions
+  const mmaCategoryToProductDetails = allProductDetails.reduce(
+    (accumulator, productDetail) => ({
+      ...accumulator,
+      [productDetail.mmaCategory]: [
+        ...(accumulator[productDetail.mmaCategory] || []),
+        productDetail
+      ]
+    }),
+    {} as MMACategoryToProductDetails
   );
 
-  const contributorData = productDetailList.filter(
-    _ => _.topLevelProductType === ProductTypes.contributions
-  );
-
-  const membershipData = productDetailList.filter(
-    _ => _.topLevelProductType === ProductTypes.membership
-  );
-
-  if (productDetailList.length === 0) {
+  if (allProductDetails.length === 0) {
     return <EmptyAccountOverview />;
   }
 
-  const firstPaymentFailure = productDetailList.find(
-    _ => _.productDetail.alertText
-  );
+  const firstPaymentFailure = allProductDetails.find(_ => _.alertText);
 
   const subHeadingCss = css`
     margin: ${space[12]}px 0 ${space[6]}px;
@@ -73,84 +64,52 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
 
   return (
     <>
-      {firstPaymentFailure?.productDetail.alertText && (
+      {firstPaymentFailure?.alertText && (
         <ProblemAlert
           title="A payment needs your attention"
-          message={replaceAlertTextCTA(
-            firstPaymentFailure.productDetail.alertText
-          )}
+          message={replaceAlertTextCTA(firstPaymentFailure.alertText)}
           button={{
             title: "Update payment method",
-            link: `/payment/${firstPaymentFailure.specificProductType.urlPart}`,
-            state: firstPaymentFailure.productDetail
+            link: `/payment/${
+              GROUPED_PRODUCT_TYPES[
+                firstPaymentFailure.mmaCategory
+              ].mapGroupedToSpecific(firstPaymentFailure).urlPart
+            }`,
+            state: firstPaymentFailure
           }}
           additionalcss={css`
             margin-top: 30px;
           `}
         />
       )}
-      {!!subscriptionData.length && (
-        <>
-          <h2 css={subHeadingCss}>My subscriptions</h2>
-          {subscriptionData.map(item => (
-            <AccountOverviewCard
-              key={item.productDetail.subscription.subscriptionId}
-              {...item}
-            />
-          ))}
-          {subscriptionData.some(item =>
-            isCancelled(item.productDetail.subscription)
-          ) && (
-            <SupportTheGuardianSection
-              alternateButtonText="Subscribe again"
-              supportReferer="account_overview_subscriptions_section"
-              urlSuffix="subscribe"
-              message="" // TODO : copy here!!
-            />
-          )}
-        </>
-      )}
-      {!!membershipData.length && (
-        <>
-          <h2 css={subHeadingCss}>My membership</h2>
-          {membershipData.map(item => (
-            <AccountOverviewCard
-              key={item.productDetail.subscription.subscriptionId}
-              {...item}
-            />
-          ))}
-          {membershipData.some(item =>
-            isCancelled(item.productDetail.subscription)
-          ) && (
-            <SupportTheGuardianSection
-              supportReferer="account_overview_membership_section"
-              message="We no longer have a membership programme but you can still continue to support The Guardian via a contribution or subscription."
-            />
-          )}
-        </>
-      )}
-      {!!contributorData.length && (
-        <>
-          <h2 css={subHeadingCss}>My contributions</h2>
-          {contributorData.map(item => {
-            return (
-              <AccountOverviewCard
-                key={item.productDetail.subscription.subscriptionId}
-                {...item}
-              />
-            );
-          })}
-          {contributorData.some(item =>
-            isCancelled(item.productDetail.subscription)
-          ) && (
-            <SupportTheGuardianSection
-              alternateButtonText="Contribute again"
-              supportReferer="account_overview_contributions_section"
-              urlSuffix="contribute"
-              message="You can use your existing payment details, so setting up a new recurring contribution only takes a minute."
-            />
-          )}
-        </>
+
+      {Object.entries(mmaCategoryToProductDetails).map(
+        ([mmaCategory, productDetails]) => {
+          const groupedProductType =
+            GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
+          return (
+            productDetails.length > 0 && (
+              <>
+                <h2 css={subHeadingCss}>
+                  My {groupedProductType.groupFriendlyName}
+                </h2>
+                {productDetails.map(productDetail => (
+                  <AccountOverviewCard
+                    key={productDetail.subscription.subscriptionId}
+                    productDetail={productDetail}
+                  />
+                ))}
+                {productDetails.some(productDetail =>
+                  isCancelled(productDetail.subscription)
+                ) && (
+                  <SupportTheGuardianSection
+                    {...groupedProductType.supportTheGuardianSectionProps}
+                  />
+                )}
+              </>
+            )
+          );
+        }
       )}
     </>
   );
@@ -174,7 +133,8 @@ export const AccountOverview = (_: RouteComponentProps) => {
   );
 };
 
-interface SupportTheGuardianSectionProps extends SupportTheGuardianButtonProps {
+export interface SupportTheGuardianSectionProps
+  extends SupportTheGuardianButtonProps {
   message: string;
 }
 const SupportTheGuardianSection = (props: SupportTheGuardianSectionProps) => (

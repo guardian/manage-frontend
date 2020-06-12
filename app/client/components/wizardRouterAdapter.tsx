@@ -1,7 +1,12 @@
 import { palette } from "@guardian/src-foundations";
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
-import { ProductType, WithProductType } from "../../shared/productTypes";
+import {
+  GroupedProductType,
+  ProductType,
+  WithGroupedProductType,
+  WithProductType
+} from "../../shared/productTypes";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { PageContainer } from "./page";
@@ -10,11 +15,15 @@ interface RouteableProps extends RouteComponentProps {
   path: string;
 }
 
-type RouteableProductProps = RouteableProps & WithProductType<ProductType>;
-
-export interface RouteableStepProps extends RouteableProductProps {
+interface RoutablePropsWithChildren extends RouteableProps {
   children?: any; // TODO ReactElement<RouteableProps> | ReactElement<MultiRouteableProps>[];
 }
+
+export type RouteableStepProps = RoutablePropsWithChildren &
+  WithProductType<ProductType>;
+
+export type RouteableStepPropsForGrouped = RoutablePropsWithChildren &
+  WithGroupedProductType<GroupedProductType>;
 
 export interface MultiRouteableProps extends RouteableStepProps {
   // TODO refactor this out by adding type params to children
