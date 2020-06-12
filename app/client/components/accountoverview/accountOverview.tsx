@@ -45,16 +45,6 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     }),
     {} as MMACategoryToProductDetails
   );
-  // .map((productDetail) => {
-  //   const groupedProductType = GroupedProductTypes[productDetail.mmaCategory];
-  //   return {
-  //     productDetail,
-  //     groupedProductType,
-  //     specificProductType: groupedProductType.mapGroupedToSpecific(
-  //       productDetail
-  //     ),
-  //   };
-  // });
 
   if (allProductDetails.length === 0) {
     return <EmptyAccountOverview />;
