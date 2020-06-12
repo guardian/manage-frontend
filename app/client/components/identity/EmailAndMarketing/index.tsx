@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import {
   PageContainer,
   PageHeaderContainer,
@@ -131,10 +131,10 @@ export const EmailAndMarketing = (_: { path?: string }) => {
   return (
     <>
       <PageHeaderContainer
-        selectedNavItem={navLinks.emailPrefs}
+        selectedNavItem={NAV_LINKS.emailPrefs}
         title="Emails &amp; marketing"
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.emailPrefs}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.emailPrefs}>
         {state.error ? errorMessage : null}
         {loading ? (!state.error ? loader : null) : content}
       </PageNavAndContentContainer>

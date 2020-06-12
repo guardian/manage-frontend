@@ -9,7 +9,7 @@ import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import { Button } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
-import { NavItem, navLinks } from "./nav";
+import { NAV_LINKS, NavItem } from "./nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
 
@@ -148,10 +148,10 @@ const faqs: Faqs = {
 export const Help = (_: RouteComponentProps) => (
   <>
     <PageHeaderContainer
-      selectedNavItem={navLinks.emailPrefs}
+      selectedNavItem={NAV_LINKS.emailPrefs}
       title="Help centre"
     />
-    <PageNavAndContentContainer selectedNavItem={navLinks.help}>
+    <PageNavAndContentContainer selectedNavItem={NAV_LINKS.help}>
       <div
         css={css`
           display: flex;

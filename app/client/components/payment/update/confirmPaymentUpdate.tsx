@@ -15,7 +15,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
@@ -204,8 +204,8 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   title="Manage payment method"
                   breadcrumbs={[
                     {
-                      title: navLinks.accountOverview.title,
-                      link: navLinks.accountOverview.link
+                      title: NAV_LINKS.accountOverview.title,
+                      link: NAV_LINKS.accountOverview.link
                     },
                     {
                       title: "Manage payment method",
@@ -214,7 +214,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   ]}
                 />
                 <PageNavAndContentContainer
-                  selectedNavItem={navLinks.accountOverview}
+                  selectedNavItem={NAV_LINKS.accountOverview}
                 >
                   <InnerContent
                     routeableStepProps={props}

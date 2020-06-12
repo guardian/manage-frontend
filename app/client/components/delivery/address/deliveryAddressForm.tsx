@@ -35,7 +35,7 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
@@ -298,8 +298,8 @@ const FormContainer = (props: FormContainerProps) => {
             <PageHeaderContainer
               breadcrumbs={[
                 {
-                  title: navLinks.accountOverview.title,
-                  link: navLinks.accountOverview.link
+                  title: NAV_LINKS.accountOverview.title,
+                  link: NAV_LINKS.accountOverview.link
                 },
                 {
                   title: "Edit delivery address",
@@ -329,7 +329,7 @@ const FormContainer = (props: FormContainerProps) => {
               }
             />
             <PageNavAndContentContainer
-              selectedNavItem={navLinks.accountOverview}
+              selectedNavItem={NAV_LINKS.accountOverview}
             >
               <ProgressIndicator
                 steps={[
@@ -714,7 +714,7 @@ const Form = (props: FormProps) => {
         >
           <Button type="submit">Review details</Button>
           <Link
-            to={navLinks.accountOverview.link}
+            to={NAV_LINKS.accountOverview.link}
             css={css`
               ${textSans.medium()};
               font-weight: bold;

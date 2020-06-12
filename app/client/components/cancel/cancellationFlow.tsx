@@ -12,7 +12,7 @@ import {
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import {
   PageContainerSection,
   PageHeaderContainer,
@@ -185,8 +185,8 @@ class ReasonPicker extends React.Component<
                 title={`Cancel ${this.props.productType.friendlyName}`}
                 breadcrumbs={[
                   {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
+                    title: NAV_LINKS.accountOverview.title,
+                    link: NAV_LINKS.accountOverview.link
                   },
                   {
                     title: "Cancel membership",
@@ -195,7 +195,7 @@ class ReasonPicker extends React.Component<
                 ]}
               />
               <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
+                selectedNavItem={NAV_LINKS.accountOverview}
               >
                 {innerContent}
               </PageNavAndContentContainer>

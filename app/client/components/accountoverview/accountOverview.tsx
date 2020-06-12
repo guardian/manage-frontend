@@ -16,7 +16,7 @@ import {
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProblemAlert } from "../ProblemAlert";
 import {
@@ -160,10 +160,10 @@ export const AccountOverview = (_: RouteComponentProps) => {
   return (
     <>
       <PageHeaderContainer
-        selectedNavItem={navLinks.accountOverview}
+        selectedNavItem={NAV_LINKS.accountOverview}
         title="Account overview"
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
         <MembersDatApiAsyncLoader
           fetch={allProductsDetailFetcher}
           render={AccountOverviewRenderer}

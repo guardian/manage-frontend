@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -101,8 +101,8 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             }
             breadcrumbs={[
               {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
+                title: NAV_LINKS.accountOverview.title,
+                link: NAV_LINKS.accountOverview.link
               },
               {
                 title: "Edit delivery address",
@@ -111,7 +111,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={NAV_LINKS.accountOverview}
           >
             <ProgressIndicator
               steps={[
@@ -240,7 +240,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                   margin-top: ${space[5]}px;
                 }
               `}
-              href={navLinks.accountOverview.link}
+              href={NAV_LINKS.accountOverview.link}
               showIcon={false}
             >
               Return to your account

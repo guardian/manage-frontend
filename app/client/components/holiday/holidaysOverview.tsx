@@ -20,7 +20,7 @@ import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
 import { ProductDetailProvider } from "../productDetailProvider";
@@ -297,8 +297,8 @@ const renderHolidayStopsOverview = (
             title="Manage suspensions"
             breadcrumbs={[
               {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
+                title: NAV_LINKS.accountOverview.title,
+                link: NAV_LINKS.accountOverview.link
               },
               {
                 title: "Manage suspensions",
@@ -307,7 +307,7 @@ const renderHolidayStopsOverview = (
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={NAV_LINKS.accountOverview}
           >
             <InnerContent />
           </PageNavAndContentContainer>
