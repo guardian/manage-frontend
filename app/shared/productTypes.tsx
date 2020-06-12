@@ -243,9 +243,9 @@ const showDeliveryAddressCheck = (
 ): subscription is SubscriptionWithDeliveryAddress =>
   !isGift(subscription) && !!subscription.deliveryAddress;
 
-const calculateProductTitle = (baseProductTtile: string) => (
+const calculateProductTitle = (baseProductTitle: string) => (
   mainPlan?: SubscriptionPlan
-) => baseProductTtile + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
+) => baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
 
 type ProductTypeKeys =
   | "membership"
@@ -525,7 +525,7 @@ export const GROUPED_PRODUCT_TYPES: {
     }
   },
   subscriptions: {
-    productTitle: () => "", // this is just a top level product type
+    productTitle: () => "Subscription", // this is just a top level product type
     friendlyName: "subscription",
     groupFriendlyName: "subscriptions",
     allProductsProductTypeFilterString: "ContentSubscription",
