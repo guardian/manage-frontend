@@ -38,7 +38,7 @@ type ProductFriendlyName =
   | "newspaper subscription"
   | "newspaper voucher subscription"
   | "newspaper subscription card"
-  | "home delivery subscription"
+  | "newspaper home delivery subscription"
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
@@ -151,7 +151,6 @@ export interface ProductType {
   shouldRevealSubscriptionId?: boolean;
   tierLabel?: string;
   changeTierUrl?: (domain?: string) => string;
-  includeGuardianInTitles?: true;
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
@@ -281,7 +280,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
           return "MEMBERSHIP_PATRON";
       }
     },
-    includeGuardianInTitles: true,
     cancellation: {
       reasons: membershipCancellationReasons,
       sfCaseProduct: "Membership",
@@ -353,7 +351,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
@@ -361,12 +358,11 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   },
   homedelivery: {
     productTitle: calculateProductTitle("Newspaper Delivery"),
-    friendlyName: "home delivery subscription",
-    shortFriendlyName: "home delivery",
+    friendlyName: "newspaper home delivery subscription",
+    shortFriendlyName: "newspaper home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -391,10 +387,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   voucher: {
     productTitle: calculateProductTitle("Newspaper Voucher"),
     friendlyName: "newspaper voucher subscription",
+    shortFriendlyName: "newspaper voucher booklet",
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
