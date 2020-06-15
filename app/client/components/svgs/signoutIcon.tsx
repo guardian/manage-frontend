@@ -1,12 +1,23 @@
 import { palette } from "@guardian/src-foundations";
 import React from "react";
+import { minWidth } from "../../styles/breakpoints";
 
 interface SignoutIconProps {
   overrideFillColor?: string;
+  overrideWidthAtDesktop?: number;
 }
 
 export const SignoutIcon = (props: SignoutIconProps) => (
-  <svg width="14" height="16" viewBox="0 0 20 22" fill="none">
+  <svg
+    width="19"
+    viewBox="0 0 20 22"
+    fill="none"
+    css={
+      props.overrideWidthAtDesktop && {
+        [minWidth.desktop]: { width: `${props.overrideWidthAtDesktop}px` }
+      }
+    }
+  >
     <g clipPath="url(#a)">
       <path
         fillRule="evenodd"

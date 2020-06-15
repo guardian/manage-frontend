@@ -1,4 +1,3 @@
-import React from "react";
 import { conf } from "../../../server/config";
 import { AccountOverviewIcon } from "../svgs/accountOverviewIcon";
 import { EmailPrefsIcon } from "../svgs/emailPrefIcon";
@@ -7,12 +6,15 @@ import { ProfileIcon } from "../svgs/profileIcon";
 import { SettingsIcon } from "../svgs/settingsIcon";
 import { SignoutIcon } from "../svgs/signoutIcon";
 
+interface NavIconProps {
+  overrideFillColor?: string;
+  overrideWidthAtDesktop?: number;
+}
 export interface NavItem {
   title: string;
   link: string;
   local?: boolean;
-  icon?: (overrideFillColor?: string) => JSX.Element;
-  inlineIcon?: (overrideFillColor?: string) => JSX.Element;
+  icon?: (props: NavIconProps) => JSX.Element;
 }
 
 export interface MenuSpecificNavItem extends NavItem {
@@ -43,45 +45,35 @@ export const NAV_LINKS: NavLinks = {
     title: "Account overview",
     link: "/",
     local: true,
-    icon: overrideFillColor => (
-      <AccountOverviewIcon overrideFillColor={overrideFillColor} />
-    ),
+    icon: AccountOverviewIcon,
     dropdownHideAtDesktop: true
   },
   profile: {
     title: "Profile",
     link: "/public-settings",
     local: true,
-    icon: overrideFillColor => (
-      <ProfileIcon overrideFillColor={overrideFillColor} />
-    ),
+    icon: ProfileIcon,
     dropdownHideAtDesktop: true
   },
   emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs",
     local: true,
-    icon: overrideFillColor => (
-      <EmailPrefsIcon overrideFillColor={overrideFillColor} />
-    ),
+    icon: EmailPrefsIcon,
     dropdownHideAtDesktop: true
   },
   settings: {
     title: "Settings",
     link: "/account-settings",
     local: true,
-    icon: overrideFillColor => (
-      <SettingsIcon overrideFillColor={overrideFillColor} />
-    ),
+    icon: SettingsIcon,
     dropdownHideAtDesktop: true
   },
   help: {
     title: "Help",
     link: "/help",
     local: true,
-    icon: overrideFillColor => (
-      <HelpIcon overrideFillColor={overrideFillColor} />
-    ),
+    icon: HelpIcon,
     dropdownHideAtDesktop: true
   },
   comments: {
@@ -93,8 +85,6 @@ export const NAV_LINKS: NavLinks = {
     title: "Sign out",
     link: `${PROFILE_HOST_NAME}/signout`,
     isDropDownExclusive: true,
-    inlineIcon: overrideFillColor => (
-      <SignoutIcon overrideFillColor={overrideFillColor} />
-    )
+    icon: SignoutIcon
   }
 };

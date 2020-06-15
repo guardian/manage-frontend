@@ -223,27 +223,21 @@ export const DropdownNav = () => {
                     left: ${space[3]}px;
                   `}
                 >
-                  {navItem.icon(palette.neutral[100])}
+                  <navItem.icon
+                    overrideFillColor={palette.neutral[100]}
+                    overrideWidthAtDesktop={12}
+                  />
                 </div>
               )}
               <span
                 css={{
                   lineHeight: "33px",
                   [minWidth.desktop]: {
-                    lineHeight: "normal"
+                    lineHeight: "normal",
+                    marginLeft: navItem.icon && `${space[5]}px`
                   }
                 }}
               >
-                {navItem.inlineIcon && (
-                  <span
-                    css={css`
-                      display: inline-block;
-                      margin-right: 8px;
-                    `}
-                  >
-                    {navItem.inlineIcon()}
-                  </span>
-                )}
                 {navItem.title}
               </span>
             </a>

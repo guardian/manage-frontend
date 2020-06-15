@@ -246,6 +246,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
@@ -299,6 +300,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
@@ -356,6 +358,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
@@ -411,6 +414,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
@@ -464,6 +468,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
@@ -490,6 +495,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": undefined,
                     },
                     "lineHeight": "33px",
                   }
@@ -511,58 +517,65 @@ exports[`Main renders something 1`] = `
               }
               href="https://profile.thegulocal.com/signout"
             >
+              <div
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "trni7b",
+                    "next": undefined,
+                    "styles": "
+                    position: absolute;
+                    left: 12px;
+                  ",
+                  }
+                }
+              >
+                <svg
+                  css={
+                    Object {
+                      "@media (min-width: 980px)": Object {
+                        "width": "12px",
+                      },
+                    }
+                  }
+                  fill="none"
+                  viewBox="0 0 20 22"
+                  width="19"
+                >
+                  <g
+                    clipPath="url(#a)"
+                  >
+                    <path
+                      className="icon--fill"
+                      clipRule="evenodd"
+                      d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
+                      fill="#FFFFFF"
+                      fillRule="evenodd"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath
+                      id="a"
+                    >
+                      <path
+                        d="M0 0h20v22H0z"
+                        fill="#FFFFFF"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
               <span
                 css={
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
+                      "marginLeft": "20px",
                     },
                     "lineHeight": "33px",
                   }
                 }
               >
-                <span
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "ulupfw",
-                      "next": undefined,
-                      "styles": "
-                      display: inline-block;
-                      margin-right: 8px;
-                    ",
-                    }
-                  }
-                >
-                  <svg
-                    fill="none"
-                    height="16"
-                    viewBox="0 0 20 22"
-                    width="14"
-                  >
-                    <g
-                      clipPath="url(#a)"
-                    >
-                      <path
-                        className="icon--fill"
-                        clipRule="evenodd"
-                        d="M14.875 16.475l-.875-.9L16.725 12H8v-2h8.725L14 6.425l.875-.875L20 10.65v.7l-5.125 5.125zM11 21v1H1.025L0 20.975v-20L1.025 0H11v1l-1 1H2v18h8l1 1z"
-                        fill="#FFFFFF"
-                        fillRule="evenodd"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath
-                        id="a"
-                      >
-                        <path
-                          d="M0 0h20v22H0z"
-                          fill="#FFFFFF"
-                        />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
                 Sign out
               </span>
             </a>
