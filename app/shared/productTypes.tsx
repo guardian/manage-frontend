@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { SupportTheGuardianSectionProps } from "../client/components/accountoverview/accountOverview";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -36,7 +37,8 @@ type ProductFriendlyName =
   | "recurring contribution" // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
   | "newspaper subscription"
   | "newspaper voucher subscription"
-  | "home delivery subscription"
+  | "newspaper subscription card"
+  | "newspaper home delivery subscription"
   | "digital subscription"
   | "Guardian Weekly subscription"
   | "subscription";
@@ -45,6 +47,7 @@ type ProductUrlPart =
   | "contributions"
   | "paper"
   | "voucher"
+  | "subscriptioncard"
   | "homedelivery"
   | "digital"
   | "guardianweekly"
@@ -55,11 +58,11 @@ type SfCaseProduct =
   | "Voucher Subscriptions"
   | "Guardian Weekly"
   | "Digital Pack Subscriptions";
-type ProductTitle = "Membership" | "Contributions" | "Subscriptions";
 type AllProductsProductTypeFilterString =
   | "Weekly"
   | "Paper"
   | "Voucher"
+  | "DigitalVoucher"
   | "HomeDelivery"
   | "Contribution"
   | "Membership"
@@ -89,14 +92,6 @@ interface CancellationFlowProperties {
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
   swapFeedbackAndContactUs?: true;
-}
-
-interface ProductPageProperties {
-  title: ProductTitle;
-  tierRowLabel?: string; // no label means row is not displayed;
-  tierChangeable?: true;
-  showSubscriptionId?: true;
-  forceShowJoinDateOnly?: true;
 }
 
 export interface HolidayStopFlowProperties {
@@ -156,13 +151,10 @@ export interface ProductType {
   shouldRevealSubscriptionId?: boolean;
   tierLabel?: string;
   changeTierUrl?: (domain?: string) => string;
-  includeGuardianInTitles?: true;
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
-  productPage?: ProductPageProperties | ProductUrlPart; // undefined 'productPage' means no product page
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
   showTrialRemainingIfApplicable?: true;
-  mapGroupedToSpecific?: (productDetail: ProductDetail) => ProductType;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
   delivery?: DeliveryProperties;
@@ -174,6 +166,12 @@ export interface ProductType {
   shouldShowJoinDateNotStartDate?: true;
 }
 
+export interface GroupedProductType extends ProductType {
+  mapGroupedToSpecific: (productDetail: ProductDetail) => ProductType;
+  groupFriendlyName: string;
+  supportTheGuardianSectionProps: SupportTheGuardianSectionProps;
+}
+
 export interface ProductTypeWithCancellationFlow extends ProductType {
   cancellation: CancellationFlowProperties;
 }
@@ -181,15 +179,6 @@ export const hasCancellationFlow = (
   productType: ProductType
 ): productType is ProductTypeWithCancellationFlow =>
   productType.cancellation !== undefined;
-
-export interface ProductTypeWithProductPageProperties extends ProductType {
-  productPage: ProductPageProperties;
-}
-export const hasProductPageProperties = (
-  productType: ProductType
-): productType is ProductTypeWithProductPageProperties =>
-  productType.productPage !== undefined &&
-  typeof productType.productPage === "object";
 
 export const hasDeliveryFlow = (productType: ProductType) =>
   productType.delivery?.showAddress;
@@ -205,21 +194,13 @@ export const hasDeliveryRecordsFlow = (
 ): productType is ProductTypeWithDeliveryRecordsProperties =>
   !!productType.delivery?.records;
 
-export interface ProductTypeWithProductPageRedirect extends ProductType {
-  productPage: ProductUrlPart;
-}
-export const hasProductPageRedirect = (
-  productType: ProductType
-): productType is ProductTypeWithProductPageRedirect =>
-  productType.productPage !== undefined &&
-  typeof productType.productPage === "string";
-
-export interface WithProductType<ProductTypeVariant extends ProductType> {
-  productType: ProductTypeVariant;
+export interface WithProductType<PT extends ProductType> {
+  productType: PT;
 }
 
-export const shouldCreatePaymentUpdateFlow = (productType: ProductType) =>
-  !productType.mapGroupedToSpecific;
+export interface WithGroupedProductType<GPT extends GroupedProductType> {
+  groupedProductType: GPT;
+}
 
 export interface ProductTypeWithHolidayStopsFlow extends ProductType {
   holidayStops: HolidayStopFlowProperties;
@@ -264,9 +245,9 @@ const showDeliveryAddressCheck = (
 ): subscription is SubscriptionWithDeliveryAddress =>
   !isGift(subscription) && !!subscription.deliveryAddress;
 
-const calculateProductTitle = (baseProductTtile: string) => (
+const calculateProductTitle = (baseProductTitle: string) => (
   mainPlan?: SubscriptionPlan
-) => baseProductTtile + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
+) => baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
 
 type ProductTypeKeys =
   | "membership"
@@ -274,11 +255,16 @@ type ProductTypeKeys =
   | "newspaper"
   | "homedelivery"
   | "voucher"
+  | "digitalvoucher"
   | "guardianweekly"
-  | "digipack"
+  | "digipack";
+
+export type GroupedProductTypeKeys =
+  | "membership"
+  | "contributions"
   | "subscriptions";
 
-export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
+export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
   membership: {
     productTitle: () => "Guardian membership",
     friendlyName: "membership",
@@ -294,13 +280,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
           return "MEMBERSHIP_PATRON";
       }
     },
-    productPage: {
-      title: "Membership",
-      tierRowLabel: "Membership tier",
-      tierChangeable: true,
-      forceShowJoinDateOnly: true
-    },
-    includeGuardianInTitles: true,
     cancellation: {
       reasons: membershipCancellationReasons,
       sfCaseProduct: "Membership",
@@ -326,9 +305,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "RECURRING_CONTRIBUTION",
     noProductSupportUrlSuffix: "/contribute",
     updateAmountMdaEndpoint: "contribution-update-amount",
-    productPage: {
-      title: "Contributions"
-    },
     cancellation: {
       linkOnProductPage: true,
       reasons: contributionsCancellationReasons,
@@ -375,21 +351,18 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
-    },
-    productPage: "subscriptions"
+    }
   },
   homedelivery: {
     productTitle: calculateProductTitle("Newspaper Delivery"),
-    friendlyName: "home delivery subscription",
-    shortFriendlyName: "home delivery",
+    friendlyName: "newspaper home delivery subscription",
+    shortFriendlyName: "newspaper home delivery",
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -407,7 +380,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         ]
       }
     },
-    productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Newspaper - Home Delivery"
     }
@@ -415,10 +387,10 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
   voucher: {
     productTitle: calculateProductTitle("Newspaper Voucher"),
     friendlyName: "newspaper voucher subscription",
+    shortFriendlyName: "newspaper voucher booklet",
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    includeGuardianInTitles: true,
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
@@ -452,8 +424,18 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       ) =>
         reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       swapFeedbackAndContactUs: true
-    },
-    productPage: "subscriptions"
+    }
+  },
+  digitalvoucher: {
+    productTitle: calculateProductTitle("Newspaper Subscription Card"),
+    friendlyName: "newspaper subscription card",
+    allProductsProductTypeFilterString: "DigitalVoucher",
+    urlPart: "subscriptioncard",
+    legacyUrlPart: "digitalvoucher",
+    getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    delivery: {
+      showAddress: showDeliveryAddressCheck
+    }
   },
   guardianweekly: {
     productTitle: () => "Guardian Weekly",
@@ -497,7 +479,6 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
         reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       swapFeedbackAndContactUs: true
     },
-    productPage: "subscriptions",
     fulfilmentDateCalculator: {
       productFilenamePart: "Guardian Weekly",
       explicitSingleDayOfWeek: "Friday"
@@ -525,33 +506,63 @@ export const ProductTypes: { [productKey in ProductTypeKeys]: ProductType } = {
       ) =>
         reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       swapFeedbackAndContactUs: true
-    },
-    productPage: "subscriptions"
+    }
+  }
+};
+
+export const GROUPED_PRODUCT_TYPES: {
+  [productKey in GroupedProductTypeKeys]: GroupedProductType;
+} = {
+  membership: {
+    ...PRODUCT_TYPES.membership,
+    mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
+    groupFriendlyName: "membership",
+    supportTheGuardianSectionProps: {
+      supportReferer: "account_overview_membership_section",
+      message:
+        "We no longer have a membership programme but you can still continue to support The Guardian via a contribution or subscription."
+    }
+  },
+  contributions: {
+    ...PRODUCT_TYPES.contributions,
+    mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
+    groupFriendlyName: "contributions",
+    supportTheGuardianSectionProps: {
+      alternateButtonText: "Contribute again",
+      supportReferer: "account_overview_contributions_section",
+      urlSuffix: "contribute",
+      message:
+        "You can use your existing payment details, so setting up a new recurring contribution only takes a minute."
+    }
   },
   subscriptions: {
-    productTitle: () => "", // this is just a top level product type
+    productTitle: () => "Subscription",
     friendlyName: "subscription",
+    groupFriendlyName: "subscriptions",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
-    productPage: {
-      title: "Subscriptions",
-      tierRowLabel: "Subscription product",
-      showSubscriptionId: true
-    },
     mapGroupedToSpecific: (productDetail: ProductDetail) => {
       if (productDetail.tier === "Digital Pack") {
-        return ProductTypes.digipack;
+        return PRODUCT_TYPES.digipack;
       } else if (productDetail.tier === "Newspaper Delivery") {
-        return ProductTypes.homedelivery;
+        return PRODUCT_TYPES.homedelivery;
       } else if (productDetail.tier === "Newspaper Voucher") {
-        return ProductTypes.voucher;
+        return PRODUCT_TYPES.voucher;
+      } else if (productDetail.tier.startsWith("Newspaper Digital Voucher")) {
+        return PRODUCT_TYPES.digitalvoucher;
       } else if (productDetail.tier.startsWith("Guardian Weekly")) {
-        return ProductTypes.guardianweekly;
+        return PRODUCT_TYPES.guardianweekly;
       }
-      return ProductTypes.subscriptions; // This should never happen!
+      return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
     },
     cancelledCopy:
       "Your subscription has been cancelled. You are able to access your subscription until",
-    shouldRevealSubscriptionId: true
+    shouldRevealSubscriptionId: true,
+    supportTheGuardianSectionProps: {
+      alternateButtonText: "Subscribe again",
+      supportReferer: "account_overview_subscriptions_section",
+      urlSuffix: "subscribe",
+      message: "" // TODO : copy here!!
+    }
   }
 };

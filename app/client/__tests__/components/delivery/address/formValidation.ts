@@ -22,7 +22,7 @@ describe("update delivery address form validation", () => {
     country: "US"
   };
   const guardianWeeklySubscription = ["Guardian Weekly subscription"];
-  const homeDeliverySubscription = ["home delivery subscription"];
+  const homeDeliverySubscription = ["newspaper home delivery subscription"];
   const voucherSubscription = ["newspaper voucher subscription"];
 
   test(`isFormValid returns 'isValid' true given valid UK address. Subscriptions: ${guardianWeeklySubscription}`, () => {

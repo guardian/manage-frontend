@@ -176,7 +176,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     }
   }, [addressInValidState]);
   const productType = props.routeableStepProps.productType;
-  const enableDeliveryInstructions = !!productType?.delivery
+  const enableDeliveryInstructions = !!productType.delivery
     ?.enableDeliveryInstructionsUpdate;
   const step1FormRadioOptionCallback = (value: string) =>
     setChoosenDeliveryProblem(value);
