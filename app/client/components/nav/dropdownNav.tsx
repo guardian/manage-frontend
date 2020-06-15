@@ -234,6 +234,16 @@ export const DropdownNav = () => {
                   }
                 }}
               >
+                {navItem.inlineIcon && (
+                  <span
+                    css={css`
+                      display: inline-block;
+                      margin-right: 8px;
+                    `}
+                  >
+                    {navItem.inlineIcon()}
+                  </span>
+                )}
                 {navItem.title}
               </span>
             </a>

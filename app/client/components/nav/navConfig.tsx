@@ -5,12 +5,14 @@ import { EmailPrefsIcon } from "../svgs/emailPrefIcon";
 import { HelpIcon } from "../svgs/helpIcon";
 import { ProfileIcon } from "../svgs/profileIcon";
 import { SettingsIcon } from "../svgs/settingsIcon";
+import { SignoutIcon } from "../svgs/signoutIcon";
 
 export interface NavItem {
   title: string;
   link: string;
   local?: boolean;
   icon?: (overrideFillColor?: string) => JSX.Element;
+  inlineIcon?: (overrideFillColor?: string) => JSX.Element;
 }
 
 export interface MenuSpecificNavItem extends NavItem {
@@ -83,13 +85,16 @@ export const NAV_LINKS: NavLinks = {
     dropdownHideAtDesktop: true
   },
   comments: {
-    title: "Comments",
+    title: "Comments & replies",
     link: "/profile/user", // note this hits a redirect/proxy endpoint
     isDropDownExclusive: true
   },
   signOut: {
     title: "Sign out",
     link: `${PROFILE_HOST_NAME}/signout`,
-    isDropDownExclusive: true
+    isDropDownExclusive: true,
+    inlineIcon: overrideFillColor => (
+      <SignoutIcon overrideFillColor={overrideFillColor} />
+    )
   }
 };
