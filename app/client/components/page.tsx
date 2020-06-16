@@ -122,18 +122,19 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
   const gridBasev2 = () => {
     return `
       display: grid;
-      ms-grid-columns: (minmax(0, 1fr))[${gridColumns.default}];
+      display: -ms-grid;
+      -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.default}];
       grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
       grid-auto-columns: max-content;
       column-gap: ${space[5]}px;
       ${minWidth.tablet} {
         padding-left: ${space[5]}px;
         padding-right: ${space[5]}px;
-        ms-grid-columns: (minmax(0, 1fr))[${gridColumns.tabletAndDesktop}];
+        -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.tabletAndDesktop}];
         grid-template-columns: repeat(${gridColumns.tabletAndDesktop}, minmax(0, 1fr));
       };
       ${minWidth.wide} {
-        ms-grid-columns: (minmax(0, 1fr))[${gridColumns.wide}];
+        -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.wide}];
         grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
       };
     `;
@@ -150,11 +151,14 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
       grid-column-end: span ${span};
       grid-row-start: ${targetRow};
       grid-row-end: span ${rowSpan};
-      ${startingPos > 0 && `ms-grid-column: ${startingPos};`}
-      ${startingPos < 0 &&
-        `ms-grid-column: ${columnsBreakpoint + 2 + startingPos};`}
-      ms-grid-column-span: ${span};
-      ms-grid-row: ${targetRow};
+      ${startingPos > 0 ? `-ms-grid-column: ${startingPos};` : ""}
+      ${
+        startingPos < 0
+          ? `-ms-grid-column: ${columnsBreakpoint + 2 + startingPos};`
+          : ""
+      }
+      -ms-grid-column-span: ${span};
+      -ms-grid-row: ${targetRow};
     `;
   };
   return (
