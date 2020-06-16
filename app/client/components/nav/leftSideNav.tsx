@@ -40,6 +40,9 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
     color: palette.brand.main,
 
     [minWidth.desktop]: {
+      borderLeft: `${space[2]}px solid ${
+        isSelected ? palette.brandYellow.main : palette.neutral["46"]
+      }`,
       boxShadow: isSelected ? "0 1px 0 white" : undefined,
       minHeight: 0,
       padding: "18px 0 18px 22px",
@@ -64,19 +67,11 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
   margin: 0,
-  background: `0.0625rem solid ${
-    isSelected ? palette.neutral["100"] : palette.neutral["86"]
-  }`,
+  background: isSelected ? palette.neutral["100"] : palette.neutral["86"],
   display: "block",
   width: "100%",
   [minWidth.tablet]: {
     minWidth: "155.5px" // gross hack to make IE11 work
-  },
-  [minWidth.desktop]: {
-    paddingLeft: `${space[2]}px`,
-    backgroundColor: isSelected
-      ? palette.brandYellow.main
-      : palette.neutral["46"]
   }
 });
 
