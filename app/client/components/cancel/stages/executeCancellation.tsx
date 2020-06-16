@@ -13,7 +13,7 @@ import {
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
@@ -190,8 +190,8 @@ export const ExecuteCancellation = (
                     title={`Cancel ${props.productType.friendlyName}`}
                     breadcrumbs={[
                       {
-                        title: navLinks.accountOverview.title,
-                        link: navLinks.accountOverview.link
+                        title: NAV_LINKS.accountOverview.title,
+                        link: NAV_LINKS.accountOverview.link
                       },
                       {
                         title: "Cancel membership",
@@ -200,7 +200,7 @@ export const ExecuteCancellation = (
                     ]}
                   />
                   <PageNavAndContentContainer
-                    selectedNavItem={navLinks.accountOverview}
+                    selectedNavItem={NAV_LINKS.accountOverview}
                   >
                     {innerContent(productDetail, props, reason, caseId)}
                   </PageNavAndContentContainer>

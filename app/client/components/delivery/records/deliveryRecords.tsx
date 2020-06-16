@@ -25,7 +25,7 @@ import {
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
 import { ProductDetailProvider } from "../../productDetailProvider";
@@ -310,8 +310,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             title="Delivery history"
             breadcrumbs={[
               {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
+                title: NAV_LINKS.accountOverview.title,
+                link: NAV_LINKS.accountOverview.link
               },
               {
                 title: "Delivery history",
@@ -320,7 +320,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={NAV_LINKS.accountOverview}
           >
             {pageStatus !== PageStatus.READ_ONLY &&
               pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (

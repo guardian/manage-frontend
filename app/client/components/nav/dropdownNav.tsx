@@ -1,14 +1,13 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import React, { useEffect, useRef, useState } from "react";
-import { conf } from "../../server/config";
-import { expanderButtonCss } from "../expanderButton";
-import { minWidth } from "../styles/breakpoints";
-import { gridColumns, gridItemPlacement } from "../styles/grid";
-import { ProfileIcon } from "./svgs/profileIcon";
-import { SignoutIcon } from "./svgs/signoutIcon";
+import { expanderButtonCss } from "../../expanderButton";
+import { minWidth } from "../../styles/breakpoints";
+import { gridColumns, gridItemPlacement } from "../../styles/grid";
+import { ProfileIcon } from "../svgs/profileIcon";
+import { MenuSpecificNavItem, NAV_LINKS } from "./navConfig";
 
-const userNavMenuCss = (showMenu: boolean) =>
+const dropdownNavCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
     background: palette.brand.main,
@@ -59,8 +58,8 @@ const userNavMenuCss = (showMenu: boolean) =>
     }
   });
 
-const userNavItemCss = css({
-  padding: `9px 30px ${space[2]}px`,
+const dropdownNavItemCss = css({
+  padding: `9px 30px ${space[2]}px 46px`,
   textDecoration: "none",
   color: palette.neutral["100"],
   whiteSpace: "nowrap",
@@ -82,7 +81,7 @@ const userNavItemCss = css({
     position: "absolute",
     bottom: 0,
     right: 0,
-    width: "calc(100% - 30px)",
+    width: "calc(100% - 46px)",
     height: "1px",
     backgroundColor: `${palette.brand.pastel}`
   },
@@ -101,21 +100,7 @@ const userNavItemCss = css({
   }
 });
 
-const domain: string =
-  typeof window !== "undefined" && window.guardian
-    ? window.guardian.domain
-    : conf.DOMAIN;
-const profileHostName = `https://profile.${domain}`;
-
-interface UserNavItem {
-  title: string;
-  link: string;
-  icon?: JSX.Element;
-  border?: boolean;
-  hideAtDesktop?: boolean;
-}
-
-export const UserNav = () => {
+export const DropdownNav = () => {
   const [showMenu, setShowMenu] = useState(false);
   const wrapperRef = useRef<HTMLElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -126,43 +111,6 @@ export const UserNav = () => {
       removeListeners();
     };
   });
-
-  const userNavItems: UserNavItem[] = [
-    {
-      title: "Account overview",
-      link: "/",
-      hideAtDesktop: true
-    },
-    {
-      title: "Public profile",
-      link: `/public-settings`,
-      hideAtDesktop: true
-    },
-    {
-      title: "Settings",
-      link: `/account-settings`,
-      hideAtDesktop: true
-    },
-    {
-      title: "Emails & marketing",
-      link: `/email-prefs`,
-      hideAtDesktop: true
-    },
-    {
-      title: "Help",
-      link: "/help",
-      hideAtDesktop: true
-    },
-    {
-      title: "Comments & replies",
-      link: "/profile/user" // note this hits a redirect/proxy endpoint
-    },
-    {
-      title: "Sign out",
-      link: `${profileHostName}/signout`,
-      icon: <SignoutIcon />
-    }
-  ];
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === "Escape" && showMenu) {
@@ -245,7 +193,7 @@ export const UserNav = () => {
             `}
           >
             <ProfileIcon
-              css={css`
+              additionalCss={css`
                 position: absolute;
                 bottom: 0;
                 left: 50%;
@@ -259,39 +207,41 @@ export const UserNav = () => {
         My account
       </button>
 
-      <ul role="tablist" css={userNavMenuCss(showMenu)}>
-        {userNavItems.map((item: UserNavItem) => (
-          <React.Fragment key={item.title}>
-            <li
-              className={item.hideAtDesktop ? "hide--gte-desktop" : undefined}
-            >
-              <a href={item.link} css={userNavItemCss}>
-                {item.icon && (
-                  <span
-                    css={{
-                      marginRight: "5px",
-                      display: "block",
-                      height: "0.8em",
-                      width: "0.8em",
-                      " svg": { display: "block" }
-                    }}
-                  >
-                    {item.icon}
-                  </span>
-                )}
-                <span
-                  css={{
-                    lineHeight: "33px",
-                    [minWidth.desktop]: {
-                      lineHeight: "normal"
-                    }
-                  }}
+      <ul role="tablist" css={dropdownNavCss(showMenu)}>
+        {Object.values(NAV_LINKS).map((navItem: MenuSpecificNavItem) => (
+          <li
+            className={
+              navItem.dropdownHideAtDesktop ? "hide--gte-desktop" : undefined
+            }
+            key={navItem.title}
+          >
+            <a href={navItem.link} css={dropdownNavItemCss}>
+              {navItem.icon && (
+                <div
+                  css={css`
+                    position: absolute;
+                    left: ${space[3]}px;
+                  `}
                 >
-                  {item.title}
-                </span>
-              </a>
-            </li>
-          </React.Fragment>
+                  <navItem.icon
+                    overrideFillColor={palette.neutral[100]}
+                    overrideWidthAtDesktop={12}
+                  />
+                </div>
+              )}
+              <span
+                css={{
+                  lineHeight: "33px",
+                  [minWidth.desktop]: {
+                    lineHeight: "normal",
+                    marginLeft: navItem.icon && `${space[5]}px`
+                  }
+                }}
+              >
+                {navItem.title}
+              </span>
+            </a>
+          </li>
         ))}
       </ul>
     </nav>

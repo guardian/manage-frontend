@@ -17,7 +17,7 @@ import {
   PotentialHolidayStopsResponse,
   RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -188,8 +188,8 @@ const DeliveryRecordsProblemReviewFC = (
             title="Delivery history"
             breadcrumbs={[
               {
-                title: navLinks.accountOverview.title,
-                link: navLinks.accountOverview.link
+                title: NAV_LINKS.accountOverview.title,
+                link: NAV_LINKS.accountOverview.link
               },
               {
                 title: "Delivery history",
@@ -198,7 +198,7 @@ const DeliveryRecordsProblemReviewFC = (
             ]}
           />
           <PageNavAndContentContainer
-            selectedNavItem={navLinks.accountOverview}
+            selectedNavItem={NAV_LINKS.accountOverview}
           >
             <ProgressIndicator
               steps={[

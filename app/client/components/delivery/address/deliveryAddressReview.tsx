@@ -6,7 +6,7 @@ import { Link, navigate } from "@reach/router";
 import React, { useContext, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -92,8 +92,8 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
         }
         breadcrumbs={[
           {
-            title: navLinks.accountOverview.title,
-            link: navLinks.accountOverview.link
+            title: NAV_LINKS.accountOverview.title,
+            link: NAV_LINKS.accountOverview.link
           },
           {
             title: "Edit delivery address",
@@ -101,7 +101,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
         <ProgressIndicator
           steps={[
             { title: "Update" },

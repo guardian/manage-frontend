@@ -21,7 +21,7 @@ import { Button, LinkButton } from "../../buttons";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
@@ -169,7 +169,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
               >
                 <PageHeaderContainer title="Manage payment method" />
                 <PageNavAndContentContainer
-                  selectedNavItem={navLinks.accountOverview}
+                  selectedNavItem={NAV_LINKS.accountOverview}
                 >
                   {innerContent(previousProductDetail, newPaymentMethodDetail)}
                 </PageNavAndContentContainer>

@@ -7,9 +7,9 @@ import React, { ReactElement } from "react";
 import { minWidth } from "../styles/breakpoints";
 // import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
-import { Nav, NavProps } from "./nav";
+import { LeftSideNav, LeftSideNavProps } from "./nav/leftSideNav";
 
-interface PageNavAndContentContainerProps extends NavProps {
+interface PageNavAndContentContainerProps extends LeftSideNavProps {
   children: React.ReactNode;
   withoutNav?: true;
 }
@@ -50,7 +50,7 @@ export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerPro
           }
         }}
       >
-        <Nav {...props} />
+        <LeftSideNav {...props} />
       </nav>
     )}
     <section
@@ -111,7 +111,7 @@ interface Breadcrumbs {
   link?: string;
   currentPage?: boolean;
 }
-interface PageHeaderContainerProps extends NavProps {
+interface PageHeaderContainerProps extends LeftSideNavProps {
   breadcrumbs?: Breadcrumbs[];
   title: string | ReactElement;
 }

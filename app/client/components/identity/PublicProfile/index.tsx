@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import {
   PageContainer,
   PageHeaderContainer,
@@ -111,10 +111,10 @@ export const PublicProfile = (_: { path?: string }) => {
   return (
     <>
       <PageHeaderContainer
-        selectedNavItem={navLinks.profile}
+        selectedNavItem={NAV_LINKS.profile}
         title="Edit your profile"
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.profile}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.profile}>
         <PageContainer>
           {error ? <GenericErrorMessage ref={errorRef} /> : null}
         </PageContainer>

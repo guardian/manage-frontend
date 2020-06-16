@@ -24,7 +24,7 @@ import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { Spinner } from "../spinner";
@@ -213,8 +213,8 @@ export class HolidayDateChooser extends React.Component<
                           title="Manage suspensions"
                           breadcrumbs={[
                             {
-                              title: navLinks.accountOverview.title,
-                              link: navLinks.accountOverview.link
+                              title: NAV_LINKS.accountOverview.title,
+                              link: NAV_LINKS.accountOverview.link
                             },
                             {
                               title: "Manage suspensions",
@@ -223,7 +223,7 @@ export class HolidayDateChooser extends React.Component<
                           ]}
                         />
                         <PageNavAndContentContainer
-                          selectedNavItem={navLinks.accountOverview}
+                          selectedNavItem={NAV_LINKS.accountOverview}
                         >
                           {this.innerContent(
                             holidayStopsResponse,

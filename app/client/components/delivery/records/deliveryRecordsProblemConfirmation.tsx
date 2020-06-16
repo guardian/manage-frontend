@@ -13,7 +13,7 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -102,12 +102,12 @@ const DeliveryRecordsProblemConfirmationFC = (
   return (
     <WizardStep routeableStepProps={props.routeableStepProps}>
       <PageHeaderContainer
-        selectedNavItem={navLinks.accountOverview}
+        selectedNavItem={NAV_LINKS.accountOverview}
         title="Delivery history"
         breadcrumbs={[
           {
-            title: navLinks.accountOverview.title,
-            link: navLinks.accountOverview.link
+            title: NAV_LINKS.accountOverview.title,
+            link: NAV_LINKS.accountOverview.link
           },
           {
             title: "Delivery history",
@@ -115,7 +115,7 @@ const DeliveryRecordsProblemConfirmationFC = (
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
         <ProgressIndicator
           steps={[
             { title: "Update" },
@@ -417,7 +417,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               margin-top: ${space[5]}px;
             }
           `}
-          href={navLinks.accountOverview.link}
+          href={NAV_LINKS.accountOverview.link}
           showIcon={false}
         >
           Return to your account

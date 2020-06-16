@@ -18,7 +18,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import {
   PageContainerSection,
   PageHeaderContainer,
@@ -365,8 +365,8 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                       title={`Cancel ${props.productType.friendlyName}`}
                       breadcrumbs={[
                         {
-                          title: navLinks.accountOverview.title,
-                          link: navLinks.accountOverview.link
+                          title: NAV_LINKS.accountOverview.title,
+                          link: NAV_LINKS.accountOverview.link
                         },
                         {
                           title: "Cancel membership",
@@ -375,7 +375,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                       ]}
                     />
                     <PageNavAndContentContainer
-                      selectedNavItem={navLinks.accountOverview}
+                      selectedNavItem={NAV_LINKS.accountOverview}
                     >
                       {innerContent(productDetail)}
                     </PageNavAndContentContainer>

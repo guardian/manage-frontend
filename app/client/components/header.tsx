@@ -3,8 +3,8 @@ import { Link } from "@reach/router";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
+import { DropdownNav } from "./nav/dropdownNav";
 import { GridRoundel } from "./svgs/gridRoundel";
-import { UserNav } from "./userNav";
 
 const Header = () => {
   return (
@@ -53,7 +53,7 @@ const Header = () => {
             My account
           </Link>
         </h1>
-        <UserNav />
+        <DropdownNav />
         <GridRoundel
           fillMain={palette.neutral["100"]}
           fillG={palette.brand.main}

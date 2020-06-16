@@ -17,7 +17,7 @@ import { CallCentreNumbers } from "../callCentreNumbers";
 import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Modal } from "../modal";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { InfoIcon } from "../svgs/infoIcon";
@@ -312,8 +312,8 @@ export class HolidayReview extends React.Component<
               title="Manage suspensions"
               breadcrumbs={[
                 {
-                  title: navLinks.accountOverview.title,
-                  link: navLinks.accountOverview.link
+                  title: NAV_LINKS.accountOverview.title,
+                  link: NAV_LINKS.accountOverview.link
                 },
                 {
                   title: "Manage suspensions",
@@ -322,7 +322,7 @@ export class HolidayReview extends React.Component<
               ]}
             />
             <PageNavAndContentContainer
-              selectedNavItem={navLinks.accountOverview}
+              selectedNavItem={NAV_LINKS.accountOverview}
             >
               <ProgressIndicator
                 steps={[

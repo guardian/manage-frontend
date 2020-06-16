@@ -23,7 +23,7 @@ import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
@@ -83,12 +83,12 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
   return (
     <>
       <PageHeaderContainer
-        selectedNavItem={navLinks.accountOverview}
+        selectedNavItem={NAV_LINKS.accountOverview}
         title={pageTitle}
         breadcrumbs={[
           {
-            title: navLinks.accountOverview.title,
-            link: navLinks.accountOverview.link
+            title: NAV_LINKS.accountOverview.title,
+            link: NAV_LINKS.accountOverview.link
           },
           {
             title: pageTitle,
@@ -96,7 +96,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           }
         ]}
       />
-      <PageNavAndContentContainer selectedNavItem={navLinks.accountOverview}>
+      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
         {productDetail.alertText && (
           <ProblemAlert
             title="A payment needs your attention"

@@ -14,7 +14,7 @@ import {
 import { maxWidth } from "../../../styles/breakpoints";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { navLinks } from "../../nav";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -245,8 +245,8 @@ class PaymentUpdaterStep extends React.Component<
                 title="Manage payment method"
                 breadcrumbs={[
                   {
-                    title: navLinks.accountOverview.title,
-                    link: navLinks.accountOverview.link
+                    title: NAV_LINKS.accountOverview.title,
+                    link: NAV_LINKS.accountOverview.link
                   },
                   {
                     title: "Manage payment method",
@@ -255,7 +255,7 @@ class PaymentUpdaterStep extends React.Component<
                 ]}
               />
               <PageNavAndContentContainer
-                selectedNavItem={navLinks.accountOverview}
+                selectedNavItem={NAV_LINKS.accountOverview}
               >
                 {innerContent}
               </PageNavAndContentContainer>

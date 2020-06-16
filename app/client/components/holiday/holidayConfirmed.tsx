@@ -9,7 +9,7 @@ import {
 import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { navLinks } from "../nav";
+import { NAV_LINKS } from "../nav/navConfig";
 import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
@@ -84,8 +84,8 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                         title="Manage suspensions"
                         breadcrumbs={[
                           {
-                            title: navLinks.accountOverview.title,
-                            link: navLinks.accountOverview.link
+                            title: NAV_LINKS.accountOverview.title,
+                            link: NAV_LINKS.accountOverview.link
                           },
                           {
                             title: "Manage suspensions",
@@ -94,7 +94,7 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                         ]}
                       />
                       <PageNavAndContentContainer
-                        selectedNavItem={navLinks.accountOverview}
+                        selectedNavItem={NAV_LINKS.accountOverview}
                       >
                         <ProgressIndicator
                           steps={[
