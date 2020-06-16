@@ -89,7 +89,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
             GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
           return (
             productDetails.length > 0 && (
-              <>
+              <React.Fragment key={mmaCategory}>
                 <h2 css={subHeadingCss}>
                   My {groupedProductType.groupFriendlyName}
                 </h2>
@@ -106,7 +106,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
                     {...groupedProductType.supportTheGuardianSectionProps}
                   />
                 )}
-              </>
+              </React.Fragment>
             )
           );
         }
