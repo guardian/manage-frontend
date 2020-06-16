@@ -64,9 +64,7 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
   margin: 0,
-  background: `0.0625rem solid ${
-    isSelected ? palette.neutral["100"] : palette.neutral["86"]
-  }`,
+  background: isSelected ? palette.neutral["100"] : palette.neutral["86"],
   display: "block",
   width: "100%",
   [minWidth.tablet]: {
