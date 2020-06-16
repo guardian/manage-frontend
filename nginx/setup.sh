@@ -1,15 +1,21 @@
 #!/bin/bash
 #Clean up legacy config
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NGINX_HOME=$(nginx -V 2>&1 | grep 'configure arguments:' | sed 's#.*conf-path=\([^ ]*\)/nginx\.conf.*#\1#g')
+NGINX_HOME=$(dev-nginx locate-nginx)
 sudo rm -f $NGINX_HOME/sites-enabled/manage-frontend.conf
 
 # Setup Nginx proxies for local development with valid SSL
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $( dirname "${BASH_SOURCE[0]}" )
 
-SITE_CONF=${SCRIPT_DIR}/manage-frontend.conf
-
+dev-nginx add-to-hosts-file manage.thegulocal.com
 dev-nginx setup-cert manage.thegulocal.com
+dev-nginx link-config $(pwd)/manage-frontend.conf
 
-dev-nginx link-config ${SITE_CONF}
+dev-nginx add-to-hosts-file profile.thegulocal.com
+dev-nginx setup-cert profile.thegulocal.com
+dev-nginx link-config $(pwd)/identity-frontend-CODE-fallback.conf
+
+dev-nginx add-to-hosts-file members-data-api.thegulocal.com
+dev-nginx setup-cert members-data-api.thegulocal.com
+dev-nginx link-config $(pwd)/members-data-api-CODE-fallback.conf
+
 dev-nginx restart-nginx
