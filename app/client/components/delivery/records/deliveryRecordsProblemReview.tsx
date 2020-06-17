@@ -17,8 +17,6 @@ import {
   PotentialHolidayStopsResponse,
   RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
-import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
@@ -184,20 +182,7 @@ const DeliveryRecordsProblemReviewFC = (
         }}
       >
         <WizardStep routeableStepProps={props}>
-          <PageContainer
-            selectedNavItem={NAV_LINKS.accountOverview}
-            pageTitle="Delivery history"
-            breadcrumbs={[
-              {
-                title: NAV_LINKS.accountOverview.title,
-                link: NAV_LINKS.accountOverview.link
-              },
-              {
-                title: "Delivery history",
-                currentPage: true
-              }
-            ]}
-          >
+          <>
             <ProgressIndicator
               steps={[
                 { title: "Update" },
@@ -587,7 +572,7 @@ const DeliveryRecordsProblemReviewFC = (
               </span>
             </p>
             {showCallCenterNumbers && <CallCentreEmailAndNumbers />}
-          </PageContainer>
+          </>
         </WizardStep>
       </DeliveryRecordCreditContext.Provider>
     </DeliveryRecordsProblemPostPayloadContext.Provider>

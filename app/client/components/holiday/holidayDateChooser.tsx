@@ -24,8 +24,6 @@ import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { NAV_LINKS } from "../nav/navConfig";
-import { PageContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
@@ -208,29 +206,14 @@ export class HolidayDateChooser extends React.Component<
                     value={this.state || {}}
                   >
                     <WizardStep routeableStepProps={this.props}>
-                      <PageContainer
-                        selectedNavItem={NAV_LINKS.accountOverview}
-                        pageTitle="Manage suspensions"
-                        breadcrumbs={[
-                          {
-                            title: NAV_LINKS.accountOverview.title,
-                            link: NAV_LINKS.accountOverview.link
-                          },
-                          {
-                            title: "Manage suspensions",
-                            currentPage: true
-                          }
-                        ]}
-                      >
-                        {this.innerContent(
-                          holidayStopsResponse,
-                          existingHolidayStopToAmendId,
-                          renewalDateMoment,
-                          combinedIssuesImpactedPerYear,
-                          allIssuesImpactedPerYear,
-                          productDetail
-                        )}
-                      </PageContainer>
+                      {this.innerContent(
+                        holidayStopsResponse,
+                        existingHolidayStopToAmendId,
+                        renewalDateMoment,
+                        combinedIssuesImpactedPerYear,
+                        allIssuesImpactedPerYear,
+                        productDetail
+                      )}
                     </WizardStep>
                   </HolidayDateChooserStateContext.Provider>
                 );

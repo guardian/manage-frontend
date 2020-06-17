@@ -13,8 +13,6 @@ import {
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   ReturnToAccountOverviewButton,
@@ -185,25 +183,7 @@ export const ExecuteCancellation = (
           {caseId => (
             <MembersDataApiItemContext.Consumer>
               {productDetail => {
-                const pageTitle = `Cancel ${props.productType.friendlyName}`;
-                return (
-                  <PageContainer
-                    selectedNavItem={NAV_LINKS.accountOverview}
-                    pageTitle={pageTitle}
-                    breadcrumbs={[
-                      {
-                        title: NAV_LINKS.accountOverview.title,
-                        link: NAV_LINKS.accountOverview.link
-                      },
-                      {
-                        title: pageTitle,
-                        currentPage: true
-                      }
-                    ]}
-                  >
-                    {innerContent(productDetail, props, reason, caseId)}
-                  </PageContainer>
-                );
+                return innerContent(productDetail, props, reason, caseId);
               }}
             </MembersDataApiItemContext.Consumer>
           )}

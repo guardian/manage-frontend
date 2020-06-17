@@ -17,8 +17,6 @@ import { CallCentreNumbers } from "../callCentreNumbers";
 import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Modal } from "../modal";
-import { NAV_LINKS } from "../nav/navConfig";
-import { PageContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { InfoIcon } from "../svgs/infoIcon";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
@@ -307,32 +305,17 @@ export class HolidayReview extends React.Component<
         value={dateChooserStateWithCredits}
       >
         <WizardStep routeableStepProps={this.props}>
-          <PageContainer
-            selectedNavItem={NAV_LINKS.accountOverview}
-            pageTitle="Manage suspensions"
-            breadcrumbs={[
-              {
-                title: NAV_LINKS.accountOverview.title,
-                link: NAV_LINKS.accountOverview.link
-              },
-              {
-                title: "Manage suspensions",
-                currentPage: true
-              }
+          <ProgressIndicator
+            steps={[
+              { title: "Choose dates" },
+              { title: "Review", isCurrentStep: true },
+              { title: "Confirmation" }
             ]}
-          >
-            <ProgressIndicator
-              steps={[
-                { title: "Choose dates" },
-                { title: "Review", isCurrentStep: true },
-                { title: "Confirmation" }
-              ]}
-              additionalCSS={css`
-                margin: ${space[5]}px 0 ${space[12]}px;
-              `}
-            />
-            {innerContent}
-          </PageContainer>
+            additionalCSS={css`
+              margin: ${space[5]}px 0 ${space[12]}px;
+            `}
+          />
+          {innerContent}
         </WizardStep>
       </HolidayDateChooserStateContext.Provider>
     ) : (

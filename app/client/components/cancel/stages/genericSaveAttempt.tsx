@@ -18,8 +18,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer, PageContainerSection } from "../../page";
+import { PageContainerSection } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   MultiRouteableProps,
@@ -356,22 +355,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                 sfCaseProduct={props.productType.cancellation.sfCaseProduct}
               >
                 <WizardStep routeableStepProps={props}>
-                  <PageContainer
-                    selectedNavItem={NAV_LINKS.accountOverview}
-                    pageTitle={`Cancel ${props.productType.friendlyName}`}
-                    breadcrumbs={[
-                      {
-                        title: NAV_LINKS.accountOverview.title,
-                        link: NAV_LINKS.accountOverview.link
-                      },
-                      {
-                        title: "Cancel membership",
-                        currentPage: true
-                      }
-                    ]}
-                  >
-                    {innerContent(productDetail)}
-                  </PageContainer>
+                  {innerContent(productDetail)}
                 </WizardStep>
               </CaseCreationWrapper>
             </CancellationReasonContext.Provider>

@@ -9,8 +9,6 @@ import {
 import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { NAV_LINKS } from "../nav/navConfig";
-import { PageContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
@@ -79,40 +77,25 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                 isSharedHolidayDateChooserState(dateChooserState) &&
                 isProduct(productDetail) ? (
                   <WizardStep routeableStepProps={props}>
-                    <PageContainer
-                      selectedNavItem={NAV_LINKS.accountOverview}
-                      pageTitle="Manage suspensions"
-                      breadcrumbs={[
+                    <ProgressIndicator
+                      steps={[
+                        { title: "Choose dates" },
+                        { title: "Review" },
                         {
-                          title: NAV_LINKS.accountOverview.title,
-                          link: NAV_LINKS.accountOverview.link
-                        },
-                        {
-                          title: "Manage suspensions",
-                          currentPage: true
+                          title: "Confirmation",
+                          isCurrentStep: true
                         }
                       ]}
-                    >
-                      <ProgressIndicator
-                        steps={[
-                          { title: "Choose dates" },
-                          { title: "Review" },
-                          {
-                            title: "Confirmation",
-                            isCurrentStep: true
-                          }
-                        ]}
-                        additionalCSS={css`
-                          margin: ${space[5]}px 0 ${space[12]}px;
-                        `}
-                      />
-                      {innerContent(
-                        props.productType,
-                        productDetail,
-                        dateChooserState,
-                        holidayStopsResponse
-                      )}
-                    </PageContainer>
+                      additionalCSS={css`
+                        margin: ${space[5]}px 0 ${space[12]}px;
+                      `}
+                    />
+                    {innerContent(
+                      props.productType,
+                      productDetail,
+                      dateChooserState,
+                      holidayStopsResponse
+                    )}
                   </WizardStep>
                 ) : (
                   visuallyNavigateToParent(props)
