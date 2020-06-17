@@ -6,24 +6,16 @@ import {
   ProductDetail
 } from "../../shared/productResponse";
 import { createProductDetailFetcher } from "../../shared/productTypes";
-import { NavItem } from "./nav/navConfig";
-import { Breadcrumbs, PageContainer } from "./page";
 import {
   RouteableStepProps,
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 
-interface PageProperties {
-  selectedNavItem: NavItem;
-  pageTitle: string;
-  breadcrumbs?: Breadcrumbs[] | undefined;
-}
-interface ProductDetailProviderProps extends RouteableStepProps {
+export interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
   allowCancelledSubscription?: true;
   loadingMessagePrefix: string;
   forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
-  pageProperties: PageProperties;
 }
 
 export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
@@ -45,11 +37,7 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
   }, []); // Equivalent to componentDidMount (ie only happens on the client)
 
   if (selectedProductDetail) {
-    return (
-      <PageContainer {...props.pageProperties}>
-        {props.children(selectedProductDetail)}
-      </PageContainer>
-    );
+    return props.children(selectedProductDetail);
   }
   // ie definitely no browser history state
   else if (selectedProductDetail === null) {

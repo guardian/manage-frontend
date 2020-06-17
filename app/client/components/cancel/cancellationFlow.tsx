@@ -12,9 +12,9 @@ import {
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
+import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
 import { PageContainerSection } from "../page";
-import { ProductDetailProvider } from "../productDetailProvider";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
@@ -187,24 +187,22 @@ class ReasonPicker extends React.Component<
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <ProductDetailProvider
+  <FlowWrapper
     {...props}
     loadingMessagePrefix="Checking the status of your"
-    pageProperties={{
-      selectedNavItem: NAV_LINKS.accountOverview,
-      pageTitle: `Cancel ${props.productType.friendlyName}`,
-      breadcrumbs: [
-        {
-          title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
-        },
-        {
-          title: `Cancel ${props.productType.friendlyName}`,
-          currentPage: true
-        }
-      ]
-    }}
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle={`Cancel ${props.productType.friendlyName}`}
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: `Cancel ${props.productType.friendlyName}`,
+        currentPage: true
+      }
+    ]}
   >
     {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
-  </ProductDetailProvider>
+  </FlowWrapper>
 );

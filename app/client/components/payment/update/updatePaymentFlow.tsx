@@ -12,10 +12,10 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
+import { FlowWrapper } from "../../FlowWrapper";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
@@ -316,24 +316,22 @@ class PaymentUpdaterStep extends React.Component<
 }
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <ProductDetailProvider
+  <FlowWrapper
     {...props}
     loadingMessagePrefix="Retrieving current payment details for your"
     allowCancelledSubscription
-    pageProperties={{
-      selectedNavItem: NAV_LINKS.accountOverview,
-      pageTitle: "Manage payment method",
-      breadcrumbs: [
-        {
-          title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
-        },
-        {
-          title: "Manage payment method",
-          currentPage: true
-        }
-      ]
-    }}
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle="Manage payment method"
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: "Manage payment method",
+        currentPage: true
+      }
+    ]}
   >
     {productDetail => (
       <PaymentUpdaterStep
@@ -341,5 +339,5 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
         productDetail={productDetail}
       />
     )}
-  </ProductDetailProvider>
+  </FlowWrapper>
 );

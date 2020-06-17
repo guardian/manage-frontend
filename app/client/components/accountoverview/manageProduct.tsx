@@ -23,13 +23,13 @@ import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
+import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
-import { ProductDetailProvider } from "../productDetailProvider";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
@@ -473,30 +473,28 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
 export const ManageProduct = (props: RouteableStepPropsForGrouped) => {
   const pageTitle = `Manage ${props.groupedProductType.friendlyName}`;
   return (
-    <ProductDetailProvider
+    <FlowWrapper
       {...props}
       productType={props.groupedProductType}
       loadingMessagePrefix="Retrieving details of your"
       allowCancelledSubscription
       forceRedirectToAccountOverviewIfNoBrowserHistoryState
-      pageProperties={{
-        selectedNavItem: NAV_LINKS.accountOverview,
-        pageTitle,
-        breadcrumbs: [
-          {
-            title: NAV_LINKS.accountOverview.title,
-            link: NAV_LINKS.accountOverview.link
-          },
-          {
-            title: pageTitle,
-            currentPage: true
-          }
-        ]
-      }}
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle={pageTitle}
+      breadcrumbs={[
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: pageTitle,
+          currentPage: true
+        }
+      ]}
     >
       {productDetail => (
         <InnerContent props={props} productDetail={productDetail} />
       )}
-    </ProductDetailProvider>
+    </FlowWrapper>
   );
 };

@@ -19,10 +19,10 @@ import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
+import { FlowWrapper } from "../FlowWrapper";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { NAV_LINKS } from "../nav/navConfig";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
-import { ProductDetailProvider } from "../productDetailProvider";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToAccountOverviewButton,
@@ -322,23 +322,21 @@ export class HolidaysOverview extends React.Component<
   };
 
   public render = () => (
-    <ProductDetailProvider
+    <FlowWrapper
       {...this.props}
       loadingMessagePrefix="Retrieving details of your"
-      pageProperties={{
-        selectedNavItem: NAV_LINKS.accountOverview,
-        pageTitle: "Manage suspensions",
-        breadcrumbs: [
-          {
-            title: NAV_LINKS.accountOverview.title,
-            link: NAV_LINKS.accountOverview.link
-          },
-          {
-            title: "Manage suspensions",
-            currentPage: true
-          }
-        ]
-      }}
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle="Manage suspensions"
+      breadcrumbs={[
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: "Manage suspensions",
+          currentPage: true
+        }
+      ]}
     >
       {productDetail => (
         <MembersDataApiItemContext.Provider value={productDetail}>
@@ -365,7 +363,7 @@ export class HolidaysOverview extends React.Component<
           </NavigateFnContext.Provider>
         </MembersDataApiItemContext.Provider>
       )}
-    </ProductDetailProvider>
+    </FlowWrapper>
   );
 
   private setExistingHolidayStopToAmend = (

@@ -25,9 +25,9 @@ import {
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
+import { FlowWrapper } from "../../FlowWrapper";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
-import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -758,24 +758,22 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
 export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
   return (
-    <ProductDetailProvider
+    <FlowWrapper
       {...props}
       loadingMessagePrefix="Retrieving details of your"
       allowCancelledSubscription
-      pageProperties={{
-        selectedNavItem: NAV_LINKS.accountOverview,
-        pageTitle: "Delivery history",
-        breadcrumbs: [
-          {
-            title: NAV_LINKS.accountOverview.title,
-            link: NAV_LINKS.accountOverview.link
-          },
-          {
-            title: "Delivery history",
-            currentPage: true
-          }
-        ]
-      }}
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle="Delivery history"
+      breadcrumbs={[
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: "Delivery history",
+          currentPage: true
+        }
+      ]}
     >
       {productDetail => (
         <DeliveryRecordsApiAsyncLoader
@@ -787,6 +785,6 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
           loadingMessage={"Loading delivery history..."}
         />
       )}
-    </ProductDetailProvider>
+    </FlowWrapper>
   );
 };
