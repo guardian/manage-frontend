@@ -16,7 +16,7 @@ import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { PageContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
@@ -200,8 +200,9 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                   <QuestionsFooter topic={paymentQuestionsTopicString} />
                 }
               >
-                <PageHeaderContainer
-                  title="Manage payment method"
+                <PageContainer
+                  selectedNavItem={NAV_LINKS.accountOverview}
+                  pageTitle="Manage payment method"
                   breadcrumbs={[
                     {
                       title: NAV_LINKS.accountOverview.title,
@@ -212,16 +213,13 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
                       currentPage: true
                     }
                   ]}
-                />
-                <PageNavAndContentContainer
-                  selectedNavItem={NAV_LINKS.accountOverview}
                 >
                   <InnerContent
                     routeableStepProps={props}
                     productDetail={productDetail}
                     newPaymentMethodDetail={newPaymentMethodDetail}
                   />
-                </PageNavAndContentContainer>
+                </PageContainer>
               </WizardStep>
             ) : (
               visuallyNavigateToParent(props)

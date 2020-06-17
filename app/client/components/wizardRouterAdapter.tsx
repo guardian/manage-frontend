@@ -9,7 +9,7 @@ import {
 } from "../../shared/productTypes";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { PageContainer } from "./page";
+import { EmptyPageContainer } from "./page";
 
 interface RouteableProps extends RouteComponentProps {
   path: string;
@@ -67,7 +67,7 @@ export const ReturnToAccountOverviewButton = () => (
 
 const RootComponent = (props: RootComponentProps) => (
   <>
-    <PageContainer fullWidth>{props.thisStageChildren}</PageContainer>
+    <EmptyPageContainer fullWidth>{props.thisStageChildren}</EmptyPageContainer>
     {props.extraFooterComponents}
   </>
 );

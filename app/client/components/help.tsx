@@ -10,7 +10,7 @@ import { trackEvent } from "./analytics";
 import { Button } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NAV_LINKS, NavItem } from "./nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "./page";
+import { PageContainer } from "./page";
 import { HelpSectionIcon } from "./svgs/helpSectionIcon";
 
 let domain: string;
@@ -146,185 +146,178 @@ const faqs: Faqs = {
 };
 
 export const Help = (_: RouteComponentProps) => (
-  <>
-    <PageHeaderContainer
-      selectedNavItem={NAV_LINKS.emailPrefs}
-      title="Help centre"
-    />
-    <PageNavAndContentContainer selectedNavItem={NAV_LINKS.help}>
-      <div
-        css={css`
-          display: flex;
-          flex-wrap: wrap;
-          margin: 50px -10px -10px -10px;
-        `}
-      >
-        {Object.keys(faqs).map((faqSectionTitle, sectionIndex) => {
-          const faqSectionLinks =
-            faqs[faqSectionTitle as FaqSectionNames].links;
-          const seeAllNavItem: NavItem =
-            faqs[faqSectionTitle as FaqSectionNames].seeAll;
-          return (
-            <div
-              key={`section-${sectionIndex}`}
+  <PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help centre">
+    <div
+      css={css`
+        display: flex;
+        flex-wrap: wrap;
+        margin: 50px -10px -10px -10px;
+      `}
+    >
+      {Object.keys(faqs).map((faqSectionTitle, sectionIndex) => {
+        const faqSectionLinks = faqs[faqSectionTitle as FaqSectionNames].links;
+        const seeAllNavItem: NavItem =
+          faqs[faqSectionTitle as FaqSectionNames].seeAll;
+        return (
+          <div
+            key={`section-${sectionIndex}`}
+            css={css`
+              border: 1px solid ${palette.neutral["86"]};
+              flex: 1 1 370px;
+              margin: 10px;
+              display: flex;
+              flex-direction: column;
+            `}
+          >
+            <h2
               css={css`
-                border: 1px solid ${palette.neutral["86"]};
-                flex: 1 1 370px;
-                margin: 10px;
-                display: flex;
-                flex-direction: column;
+                ${textSans.medium({ fontWeight: "bold" })};
+                color: #333333;
+                position: relative;
+                margin: 0;
+                padding: 18px 0 18px 60px;
+                border-bottom: 1px solid ${palette.neutral["86"]};
+                width: 100%;
               `}
             >
-              <h2
+              <i
                 css={css`
-                  ${textSans.medium({ fontWeight: "bold" })};
-                  color: #333333;
-                  position: relative;
-                  margin: 0;
-                  padding: 18px 0 18px 60px;
-                  border-bottom: 1px solid ${palette.neutral["86"]};
-                  width: 100%;
+                  position: absolute;
+                  top: 11px;
+                  left: 11px;
                 `}
               >
-                <i
+                <HelpSectionIcon
+                  subsection={faqSectionTitle as FaqSectionNames}
+                />
+              </i>
+              {faqSectionTitle}
+            </h2>
+            <ul
+              css={css`
+                list-style: none;
+                margin: 0 0 20px;
+                padding: 0 12px;
+              `}
+            >
+              {faqSectionLinks.map((faqLink, questionIndex) => (
+                <li
+                  key={`${faqSectionTitle}Question-${questionIndex}`}
                   css={css`
-                    position: absolute;
-                    top: 11px;
-                    left: 11px;
+                    padding: 12px 20px 12px 0;
+                    border-bottom: 1px solid ${palette.neutral["86"]};
+                    position: relative;
                   `}
                 >
-                  <HelpSectionIcon
-                    subsection={faqSectionTitle as FaqSectionNames}
-                  />
-                </i>
-                {faqSectionTitle}
-              </h2>
-              <ul
-                css={css`
-                  list-style: none;
-                  margin: 0 0 20px;
-                  padding: 0 12px;
-                `}
-              >
-                {faqSectionLinks.map((faqLink, questionIndex) => (
-                  <li
-                    key={`${faqSectionTitle}Question-${questionIndex}`}
+                  <a
+                    href={faqLink.link}
+                    target="_blank"
                     css={css`
-                      padding: 12px 20px 12px 0;
-                      border-bottom: 1px solid ${palette.neutral["86"]};
-                      position: relative;
+                      display: inline-block;
+                      width: 100%;
+                      ${textSans.medium()};
+                      color: ${palette.neutral["7"]};
+                      :visited {
+                        color: ${palette.neutral["7"]};
+                      }
                     `}
                   >
-                    <a
-                      href={faqLink.link}
-                      target="_blank"
-                      css={css`
-                        display: inline-block;
-                        width: 100%;
-                        ${textSans.medium()};
-                        color: ${palette.neutral["7"]};
-                        :visited {
-                          color: ${palette.neutral["7"]};
-                        }
-                      `}
-                    >
-                      {faqLink.title}
-                    </a>
-                    <span
-                      css={css`
-                        display: block;
-                        width: 7px;
-                        height: 7px;
-                        border-top: 2px solid ${palette.neutral["7"]};
-                        border-right: 2px solid ${palette.neutral["7"]};
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%) rotate(45deg);
-                        right: 7px;
-                      `}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <div
+                    {faqLink.title}
+                  </a>
+                  <span
+                    css={css`
+                      display: block;
+                      width: 7px;
+                      height: 7px;
+                      border-top: 2px solid ${palette.neutral["7"]};
+                      border-right: 2px solid ${palette.neutral["7"]};
+                      position: absolute;
+                      top: 50%;
+                      transform: translateY(-50%) rotate(45deg);
+                      right: 7px;
+                    `}
+                  />
+                </li>
+              ))}
+            </ul>
+            <div
+              css={css`
+                margin: auto 11px 20px 11px;
+              `}
+            >
+              <a
+                href={seeAllNavItem.link}
+                target={"_blank"}
                 css={css`
-                  margin: auto 11px 20px 11px;
+                  display: inline-block;
+                  ${textSans.small({ fontWeight: "bold" })};
+                  line-height: 36px;
+                  min-height: 36px;
+                  height: 36px;
+                  border-radius: 18px;
+                  padding: 0 16px;
+                  color: ${palette.brand.main};
+                  background-color: ${palette.brand.faded};
+                  :hover {
+                    background-color: ${Color(palette.brand.faded, "hex")
+                      .darken(0.1)
+                      .string()};
+                  }
+                  :visited {
+                    color: ${palette.brand.main};
+                  }
                 `}
               >
-                <a
-                  href={seeAllNavItem.link}
-                  target={"_blank"}
-                  css={css`
-                    display: inline-block;
-                    ${textSans.small({ fontWeight: "bold" })};
-                    line-height: 36px;
-                    min-height: 36px;
-                    height: 36px;
-                    border-radius: 18px;
-                    padding: 0 16px;
-                    color: ${palette.brand.main};
-                    background-color: ${palette.brand.faded};
-                    :hover {
-                      background-color: ${Color(palette.brand.faded, "hex")
-                        .darken(0.1)
-                        .string()};
-                    }
-                    :visited {
-                      color: ${palette.brand.main};
-                    }
-                  `}
-                >
-                  {seeAllNavItem.title}
-                </a>
-              </div>
+                {seeAllNavItem.title}
+              </a>
             </div>
-          );
-        })}
-      </div>
-      <h2
-        css={css`
-          border-top: 1px solid ${palette.neutral["86"]};
-          margin-top: 30px;
-          ${minWidth.tablet} {
-            margin-top: 40px;
-          }
-          ${headline.small({ fontWeight: "bold" })};
-        `}
-      >
-        Can’t find what you’re looking for?
-      </h2>
-      <CallCentreEmailAndNumbers />
-      <h2
-        css={css`
-          border-top: 1px solid ${palette.neutral["86"]};
-          margin-top: 30px;
-          ${minWidth.tablet} {
-            margin-top: 40px;
-          }
-          ${headline.small({ fontWeight: "bold" })};
-        `}
-      >
-        Having a technical issue?
-      </h2>
-      <a
-        href={reportTechnicalIssue.link}
-        onClick={() => {
-          trackEvent({
-            eventCategory: "href",
-            eventAction: "click",
-            eventLabel: "report_technical_issue"
-          });
-        }}
-      >
-        <Button
-          text={reportTechnicalIssue.title}
-          fontWeight="bold"
-          colour={palette.brand.main}
-          textColour={palette.neutral[100]}
-          height="36px"
-          right
-        />
-      </a>
-    </PageNavAndContentContainer>
-  </>
+          </div>
+        );
+      })}
+    </div>
+    <h2
+      css={css`
+        border-top: 1px solid ${palette.neutral["86"]};
+        margin-top: 30px;
+        ${minWidth.tablet} {
+          margin-top: 40px;
+        }
+        ${headline.small({ fontWeight: "bold" })};
+      `}
+    >
+      Can’t find what you’re looking for?
+    </h2>
+    <CallCentreEmailAndNumbers />
+    <h2
+      css={css`
+        border-top: 1px solid ${palette.neutral["86"]};
+        margin-top: 30px;
+        ${minWidth.tablet} {
+          margin-top: 40px;
+        }
+        ${headline.small({ fontWeight: "bold" })};
+      `}
+    >
+      Having a technical issue?
+    </h2>
+    <a
+      href={reportTechnicalIssue.link}
+      onClick={() => {
+        trackEvent({
+          eventCategory: "href",
+          eventAction: "click",
+          eventLabel: "report_technical_issue"
+        });
+      }}
+    >
+      <Button
+        text={reportTechnicalIssue.title}
+        fontWeight="bold"
+        colour={palette.brand.main}
+        textColour={palette.neutral[100]}
+        height="36px"
+        right
+      />
+    </a>
+  </PageContainer>
 );

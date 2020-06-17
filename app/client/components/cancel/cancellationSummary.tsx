@@ -12,7 +12,7 @@ import {
   ProductType
 } from "../../../shared/productTypes";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { PageContainer } from "../page";
+import { EmptyPageContainer } from "../page";
 import { ResubscribeThrasher } from "../resubscribeThrasher";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { hrefStyle } from "./cancellationConstants";
@@ -26,7 +26,7 @@ const actuallyCancelled = (
   const subscription = productDetail.subscription;
   return (
     <>
-      <PageContainer>
+      <EmptyPageContainer>
         <h3>Your {productType.friendlyName} is cancelled.</h3>
         {productType.cancellation && (
           <p>
@@ -50,11 +50,11 @@ const actuallyCancelled = (
               ))}
           </p>
         )}
-      </PageContainer>
+      </EmptyPageContainer>
       <ResubscribeThrasher
         usageContext={`${productType.urlPart}_cancellation_summary`}
       >
-        <PageContainer>
+        <EmptyPageContainer>
           {hasDeliveryRecordsFlow(productType) && (
             <p>
               You can still{" "}
@@ -131,7 +131,7 @@ const actuallyCancelled = (
               )
             }
           </CancellationReasonContext.Consumer>
-        </PageContainer>
+        </EmptyPageContainer>
       </ResubscribeThrasher>
     </>
   );

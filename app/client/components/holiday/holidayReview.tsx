@@ -18,7 +18,7 @@ import { Checkbox } from "../checkbox";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { Modal } from "../modal";
 import { NAV_LINKS } from "../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { PageContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { InfoIcon } from "../svgs/infoIcon";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
@@ -307,36 +307,32 @@ export class HolidayReview extends React.Component<
         value={dateChooserStateWithCredits}
       >
         <WizardStep routeableStepProps={this.props}>
-          <>
-            <PageHeaderContainer
-              title="Manage suspensions"
-              breadcrumbs={[
-                {
-                  title: NAV_LINKS.accountOverview.title,
-                  link: NAV_LINKS.accountOverview.link
-                },
-                {
-                  title: "Manage suspensions",
-                  currentPage: true
-                }
+          <PageContainer
+            selectedNavItem={NAV_LINKS.accountOverview}
+            pageTitle="Manage suspensions"
+            breadcrumbs={[
+              {
+                title: NAV_LINKS.accountOverview.title,
+                link: NAV_LINKS.accountOverview.link
+              },
+              {
+                title: "Manage suspensions",
+                currentPage: true
+              }
+            ]}
+          >
+            <ProgressIndicator
+              steps={[
+                { title: "Choose dates" },
+                { title: "Review", isCurrentStep: true },
+                { title: "Confirmation" }
               ]}
+              additionalCSS={css`
+                margin: ${space[5]}px 0 ${space[12]}px;
+              `}
             />
-            <PageNavAndContentContainer
-              selectedNavItem={NAV_LINKS.accountOverview}
-            >
-              <ProgressIndicator
-                steps={[
-                  { title: "Choose dates" },
-                  { title: "Review", isCurrentStep: true },
-                  { title: "Confirmation" }
-                ]}
-                additionalCSS={css`
-                  margin: ${space[5]}px 0 ${space[12]}px;
-                `}
-              />
-              {innerContent}
-            </PageNavAndContentContainer>
-          </>
+            {innerContent}
+          </PageContainer>
         </WizardStep>
       </HolidayDateChooserStateContext.Provider>
     ) : (

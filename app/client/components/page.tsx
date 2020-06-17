@@ -8,79 +8,14 @@ import { minWidth } from "../styles/breakpoints";
 // import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { LeftSideNav, LeftSideNavProps } from "./nav/leftSideNav";
+import { NavItem } from "./nav/navConfig";
 
-interface PageNavAndContentContainerProps extends LeftSideNavProps {
-  children: React.ReactNode;
-  withoutNav?: true;
-}
-
-export const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
-  props: PageNavAndContentContainerProps
-) => (
-  <div
-    css={{
-      ...gridBase,
-      maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
-      margin: "0 auto",
-      paddingBottom: "1rem",
-      [minWidth.desktop]: {
-        ...(gridBase[minWidth.desktop] as object),
-        paddingBottom: "9rem"
-      },
-      [minWidth.wide]: {
-        ...(gridBase[minWidth.wide] as object),
-        paddingBottom: "12rem"
-      }
-    }}
-  >
-    {!props.withoutNav && (
-      <nav
-        css={{
-          marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
-          display: "none",
-
-          [minWidth.desktop]: {
-            ...gridItemPlacement(1, 4),
-            display: "block",
-            paddingRight: "1.25rem"
-          },
-
-          [minWidth.wide]: {
-            paddingRight: "0"
-          }
-        }}
-      >
-        <LeftSideNav {...props} />
-      </nav>
-    )}
-    <section
-      css={{
-        ...gridItemPlacement(1, 4),
-
-        [minWidth.tablet]: {
-          ...gridItemPlacement(1, 12)
-        },
-
-        [minWidth.desktop]: {
-          ...gridItemPlacement(5, 8)
-        },
-
-        [minWidth.wide]: {
-          ...gridItemPlacement(6, 10)
-        }
-      }}
-    >
-      {props.children}
-    </section>
-  </div>
-);
-
-interface PageContainerProps {
+interface EmptyPageContainerProps {
   noVerticalMargin?: true;
   children: React.ReactNode;
   fullWidth?: true;
 }
-export const PageContainer = (props: PageContainerProps) => (
+export const EmptyPageContainer = (props: EmptyPageContainerProps) => (
   <div
     css={css`
       ${!props.fullWidth
@@ -106,17 +41,31 @@ export const PageContainerSection: React.SFC<{}> = ({ children }) => (
   </div>
 );
 
-interface Breadcrumbs {
-  title: string;
-  link?: string;
-  currentPage?: boolean;
+interface PageContainerProps {
+  children: React.ReactNode;
+  selectedNavItem: NavItem;
+  pageTitle: string | ReactElement;
+  breadcrumbs?: Breadcrumbs[] | undefined;
 }
+export const PageContainer = (props: PageContainerProps) => (
+  <>
+    <PageHeaderContainer
+      selectedNavItem={props.selectedNavItem}
+      title={props.pageTitle}
+      breadcrumbs={props.breadcrumbs}
+    />
+    <PageNavAndContentContainer selectedNavItem={props.selectedNavItem}>
+      {props.children}
+    </PageNavAndContentContainer>
+  </>
+);
+
 interface PageHeaderContainerProps extends LeftSideNavProps {
   breadcrumbs?: Breadcrumbs[];
   title: string | ReactElement;
 }
 
-export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
+const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
   props: PageHeaderContainerProps
 ) => {
   const gridBasev2 = () => {
@@ -294,3 +243,75 @@ export const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
     </div>
   );
 };
+
+interface PageNavAndContentContainerProps extends LeftSideNavProps {
+  children: React.ReactNode;
+  withoutNav?: true;
+}
+
+const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
+  props: PageNavAndContentContainerProps
+) => (
+  <div
+    css={{
+      ...gridBase,
+      maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
+      margin: "0 auto",
+      paddingBottom: "1rem",
+      [minWidth.desktop]: {
+        ...(gridBase[minWidth.desktop] as object),
+        paddingBottom: "9rem"
+      },
+      [minWidth.wide]: {
+        ...(gridBase[minWidth.wide] as object),
+        paddingBottom: "12rem"
+      }
+    }}
+  >
+    {!props.withoutNav && (
+      <nav
+        css={{
+          marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
+          display: "none",
+
+          [minWidth.desktop]: {
+            ...gridItemPlacement(1, 4),
+            display: "block",
+            paddingRight: "1.25rem"
+          },
+
+          [minWidth.wide]: {
+            paddingRight: "0"
+          }
+        }}
+      >
+        <LeftSideNav {...props} />
+      </nav>
+    )}
+    <section
+      css={{
+        ...gridItemPlacement(1, 4),
+
+        [minWidth.tablet]: {
+          ...gridItemPlacement(1, 12)
+        },
+
+        [minWidth.desktop]: {
+          ...gridItemPlacement(5, 8)
+        },
+
+        [minWidth.wide]: {
+          ...gridItemPlacement(6, 10)
+        }
+      }}
+    >
+      {props.children}
+    </section>
+  </div>
+);
+
+export interface Breadcrumbs {
+  title: string;
+  link?: string;
+  currentPage?: boolean;
+}

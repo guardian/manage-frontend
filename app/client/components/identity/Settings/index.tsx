@@ -2,11 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { EmptyPageContainer, PageContainer } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -21,9 +17,9 @@ const errorRef = React.createRef<GenericErrorMessageRef>();
 const pageTopRef = React.createRef<HTMLDivElement>();
 
 const loader = (
-  <PageContainer>
+  <EmptyPageContainer>
     <Spinner loadingMessage="Loading your profile ..." />
-  </PageContainer>
+  </EmptyPageContainer>
 );
 
 export const Settings = (_: { path?: string }) => {
@@ -79,12 +75,12 @@ export const Settings = (_: { path?: string }) => {
   const content = () => (
     <>
       <div ref={pageTopRef} css={{ display: "none" }} />
-      <PageContainer>
+      <EmptyPageContainer>
         <span css={textSmall}>
           These details will only be visible to you and the Guardian.
         </span>
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <SettingsFormSection
           user={user}
           saveUser={saveUser}
@@ -93,24 +89,18 @@ export const Settings = (_: { path?: string }) => {
           onDone={scrollToTop}
           emailMessage={emailMessage}
         />
-      </PageContainer>
+      </EmptyPageContainer>
     </>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.settings}
-        title="Settings"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.settings}>
-        {!error || (
-          <PageContainer>
-            <GenericErrorMessage ref={errorRef} />
-          </PageContainer>
-        )}
-        {loading ? loader : content()}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer selectedNavItem={NAV_LINKS.settings} pageTitle="Settings">
+      {!error || (
+        <EmptyPageContainer>
+          <GenericErrorMessage ref={errorRef} />
+        </EmptyPageContainer>
+      )}
+      {loading ? loader : content()}
+    </PageContainer>
   );
 };

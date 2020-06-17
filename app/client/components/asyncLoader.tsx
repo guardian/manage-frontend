@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { PageContainer } from "./page";
+import { EmptyPageContainer } from "./page";
 import { LoadingProps, Spinner } from "./spinner";
 
 type ReaderOnOK<T> = (resp: Response) => Promise<T>;
@@ -70,9 +70,9 @@ export default class AsyncLoader<
           scale={this.props.spinnerScale}
         />
       ) : (
-        <PageContainer>
+        <EmptyPageContainer>
           <Spinner loadingMessage={this.props.loadingMessage} />
-        </PageContainer>
+        </EmptyPageContainer>
       );
     } else if (
       this.state.loadingState === LoadingState.loaded &&

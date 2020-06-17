@@ -22,7 +22,7 @@ import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { PageContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   ReturnToAccountOverviewButton,
@@ -167,12 +167,12 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   <SpreadTheWordFooter key="share" />
                 ]}
               >
-                <PageHeaderContainer title="Manage payment method" />
-                <PageNavAndContentContainer
+                <PageContainer
                   selectedNavItem={NAV_LINKS.accountOverview}
+                  pageTitle="Manage payment method"
                 >
                   {innerContent(previousProductDetail, newPaymentMethodDetail)}
-                </PageNavAndContentContainer>
+                </PageContainer>
               </WizardStep>
             ) : (
               visuallyNavigateToParent(props)

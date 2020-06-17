@@ -1,7 +1,7 @@
 import React from "react";
 import palette from "../../../colours";
 import { minWidth } from "../../../styles/breakpoints";
-import { PageContainer } from "../../page";
+import { EmptyPageContainer } from "../../page";
 
 interface InPageFooterProps {
   title: string;
@@ -16,7 +16,7 @@ export const InPageFooter = (props: InPageFooterProps) => (
       borderTop: "1px solid " + palette.neutral["5"]
     }}
   >
-    <PageContainer noVerticalMargin>
+    <EmptyPageContainer noVerticalMargin>
       <div
         css={{
           [minWidth.phablet]: {
@@ -45,6 +45,6 @@ export const InPageFooter = (props: InPageFooterProps) => (
           {props.children}
         </div>
       </div>
-    </PageContainer>
+    </EmptyPageContainer>
   </div>
 );

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { EmptyPageContainer, PageContainer } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -84,60 +80,57 @@ export const EmailAndMarketing = (_: { path?: string }) => {
   }, [state.error]);
 
   const errorMessage = (
-    <PageContainer>
+    <EmptyPageContainer>
       <GenericErrorMessage ref={errorRef} />
-    </PageContainer>
+    </EmptyPageContainer>
   );
 
   const content = (
     <>
-      <PageContainer>
+      <EmptyPageContainer>
         <NewsletterSection
           newsletters={newsletters}
           clickHandler={toggleSubscription}
         />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <Lines n={4} />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <ConsentSection consents={consents} clickHandler={toggleSubscription} />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <Lines n={1} />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <EmailSettingsSection
           email={email}
           actionHandler={setRemoveAllEmailConsents}
           removed={removed}
         />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <Lines n={4} />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <OptOutSection consents={consents} clickHandler={toggleSubscription} />
-      </PageContainer>
+      </EmptyPageContainer>
     </>
   );
 
   const loader = (
-    <PageContainer>
+    <EmptyPageContainer>
       <Spinner loadingMessage="Loading your email preferences..." />
-    </PageContainer>
+    </EmptyPageContainer>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.emailPrefs}
-        title="Emails &amp; marketing"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.emailPrefs}>
-        {state.error ? errorMessage : null}
-        {loading ? (!state.error ? loader : null) : content}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer
+      selectedNavItem={NAV_LINKS.emailPrefs}
+      pageTitle="Emails &amp; marketing"
+    >
+      {state.error ? errorMessage : null}
+      {loading ? (!state.error ? loader : null) : content}
+    </PageContainer>
   );
 };

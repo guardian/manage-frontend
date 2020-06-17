@@ -7,7 +7,7 @@ import React, { useContext, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { PageContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -68,8 +68,9 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 
   return (
     <WizardStep routeableStepProps={props}>
-      <PageHeaderContainer
-        title={
+      <PageContainer
+        selectedNavItem={NAV_LINKS.accountOverview}
+        pageTitle={
           <span
             css={css`
               ::first-letter {
@@ -100,8 +101,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
             currentPage: true
           }
         ]}
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
+      >
         <ProgressIndicator
           steps={[
             { title: "Update" },
@@ -301,7 +301,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           </p>
           {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
         </div>
-      </PageNavAndContentContainer>
+      </PageContainer>
     </WizardStep>
   );
 };

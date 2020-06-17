@@ -10,7 +10,7 @@ import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
 import { LinkButton } from "../buttons";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { NAV_LINKS } from "../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { PageContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
 import {
@@ -79,44 +79,40 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                 isSharedHolidayDateChooserState(dateChooserState) &&
                 isProduct(productDetail) ? (
                   <WizardStep routeableStepProps={props}>
-                    <>
-                      <PageHeaderContainer
-                        title="Manage suspensions"
-                        breadcrumbs={[
+                    <PageContainer
+                      selectedNavItem={NAV_LINKS.accountOverview}
+                      pageTitle="Manage suspensions"
+                      breadcrumbs={[
+                        {
+                          title: NAV_LINKS.accountOverview.title,
+                          link: NAV_LINKS.accountOverview.link
+                        },
+                        {
+                          title: "Manage suspensions",
+                          currentPage: true
+                        }
+                      ]}
+                    >
+                      <ProgressIndicator
+                        steps={[
+                          { title: "Choose dates" },
+                          { title: "Review" },
                           {
-                            title: NAV_LINKS.accountOverview.title,
-                            link: NAV_LINKS.accountOverview.link
-                          },
-                          {
-                            title: "Manage suspensions",
-                            currentPage: true
+                            title: "Confirmation",
+                            isCurrentStep: true
                           }
                         ]}
+                        additionalCSS={css`
+                          margin: ${space[5]}px 0 ${space[12]}px;
+                        `}
                       />
-                      <PageNavAndContentContainer
-                        selectedNavItem={NAV_LINKS.accountOverview}
-                      >
-                        <ProgressIndicator
-                          steps={[
-                            { title: "Choose dates" },
-                            { title: "Review" },
-                            {
-                              title: "Confirmation",
-                              isCurrentStep: true
-                            }
-                          ]}
-                          additionalCSS={css`
-                            margin: ${space[5]}px 0 ${space[12]}px;
-                          `}
-                        />
-                        {innerContent(
-                          props.productType,
-                          productDetail,
-                          dateChooserState,
-                          holidayStopsResponse
-                        )}
-                      </PageNavAndContentContainer>
-                    </>
+                      {innerContent(
+                        props.productType,
+                        productDetail,
+                        dateChooserState,
+                        holidayStopsResponse
+                      )}
+                    </PageContainer>
                   </WizardStep>
                 ) : (
                   visuallyNavigateToParent(props)

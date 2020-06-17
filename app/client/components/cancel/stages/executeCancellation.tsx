@@ -14,7 +14,7 @@ import {
 import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { PageContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   ReturnToAccountOverviewButton,
@@ -184,28 +184,27 @@ export const ExecuteCancellation = (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
             <MembersDataApiItemContext.Consumer>
-              {productDetail => (
-                <>
-                  <PageHeaderContainer
-                    title={`Cancel ${props.productType.friendlyName}`}
+              {productDetail => {
+                const pageTitle = `Cancel ${props.productType.friendlyName}`;
+                return (
+                  <PageContainer
+                    selectedNavItem={NAV_LINKS.accountOverview}
+                    pageTitle={pageTitle}
                     breadcrumbs={[
                       {
                         title: NAV_LINKS.accountOverview.title,
                         link: NAV_LINKS.accountOverview.link
                       },
                       {
-                        title: "Cancel membership",
+                        title: pageTitle,
                         currentPage: true
                       }
                     ]}
-                  />
-                  <PageNavAndContentContainer
-                    selectedNavItem={NAV_LINKS.accountOverview}
                   >
                     {innerContent(productDetail, props, reason, caseId)}
-                  </PageNavAndContentContainer>
-                </>
-              )}
+                  </PageContainer>
+                );
+              }}
             </MembersDataApiItemContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>

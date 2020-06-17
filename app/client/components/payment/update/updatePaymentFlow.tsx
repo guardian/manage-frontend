@@ -15,7 +15,6 @@ import { maxWidth } from "../../../styles/breakpoints";
 import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
@@ -241,24 +240,7 @@ class PaymentUpdaterStep extends React.Component<
                 <QuestionsFooter topic={paymentQuestionsTopicString} />
               }
             >
-              <PageHeaderContainer
-                title="Manage payment method"
-                breadcrumbs={[
-                  {
-                    title: NAV_LINKS.accountOverview.title,
-                    link: NAV_LINKS.accountOverview.link
-                  },
-                  {
-                    title: "Manage payment method",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={NAV_LINKS.accountOverview}
-              >
-                {innerContent}
-              </PageNavAndContentContainer>
+              {innerContent}
             </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>
@@ -338,6 +320,20 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
     {...props}
     loadingMessagePrefix="Retrieving current payment details for your"
     allowCancelledSubscription
+    pageProperties={{
+      selectedNavItem: NAV_LINKS.accountOverview,
+      pageTitle: "Manage payment method",
+      breadcrumbs: [
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: "Manage payment method",
+          currentPage: true
+        }
+      ]
+    }}
   >
     {productDetail => (
       <PaymentUpdaterStep

@@ -23,7 +23,6 @@ import {
   ProductType
 } from "../../../../shared/productTypes";
 import { COUNTRIES } from "../../identity/models";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
 import { Button } from "@guardian/src-button";
@@ -36,6 +35,7 @@ import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { NAV_LINKS } from "../../nav/navConfig";
+import { PageContainer } from "../../page";
 import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
@@ -293,18 +293,9 @@ const FormContainer = (props: FormContainerProps) => {
           }
         >
           <WizardStep routeableStepProps={props.routeableStepProps}>
-            <PageHeaderContainer
-              breadcrumbs={[
-                {
-                  title: NAV_LINKS.accountOverview.title,
-                  link: NAV_LINKS.accountOverview.link
-                },
-                {
-                  title: "Edit delivery address",
-                  currentPage: true
-                }
-              ]}
-              title={
+            <PageContainer
+              selectedNavItem={NAV_LINKS.accountOverview}
+              pageTitle={
                 <span
                   css={css`
                     ::first-letter {
@@ -325,9 +316,16 @@ const FormContainer = (props: FormContainerProps) => {
                   delivery details
                 </span>
               }
-            />
-            <PageNavAndContentContainer
-              selectedNavItem={NAV_LINKS.accountOverview}
+              breadcrumbs={[
+                {
+                  title: NAV_LINKS.accountOverview.title,
+                  link: NAV_LINKS.accountOverview.link
+                },
+                {
+                  title: "Edit delivery address",
+                  currentPage: true
+                }
+              ]}
             >
               <ProgressIndicator
                 steps={[
@@ -408,7 +406,7 @@ const FormContainer = (props: FormContainerProps) => {
                   )}
                 </div>
               )}
-            </PageNavAndContentContainer>
+            </PageContainer>
           </WizardStep>
         </ContactIdContext.Provider>
       </AddressChangedInformationContext.Provider>
@@ -644,7 +642,6 @@ const Form = (props: FormProps) => {
                 <p
                   css={css`
                     display: block;
-                    vertical-align: top;
                     ${textSans.medium()};
                     border: 4px solid ${palette.brand[500]};
                     padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
@@ -652,6 +649,7 @@ const Form = (props: FormProps) => {
                     position: relative;
                     ${minWidth.tablet} {
                       display: inline-block;
+                      vertical-align: top;
                       margin: 2px 0 ${space[3]}px ${space[3]}px;
                       width: calc(100% - (30ch + ${space[3]}px + 2px));
                     }

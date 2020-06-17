@@ -13,11 +13,7 @@ import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { NAV_LINKS } from "../nav/navConfig";
-import {
-  PageContainerSection,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../page";
+import { PageContainerSection } from "../page";
 import { ProductDetailProvider } from "../productDetailProvider";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
@@ -180,26 +176,7 @@ class ReasonPicker extends React.Component<
           value={this.state.cancellationPolicy}
         >
           <WizardStep routeableStepProps={this.props}>
-            <>
-              <PageHeaderContainer
-                title={`Cancel ${this.props.productType.friendlyName}`}
-                breadcrumbs={[
-                  {
-                    title: NAV_LINKS.accountOverview.title,
-                    link: NAV_LINKS.accountOverview.link
-                  },
-                  {
-                    title: "Cancel membership",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={NAV_LINKS.accountOverview}
-              >
-                {innerContent}
-              </PageNavAndContentContainer>
-            </>
+            {innerContent}
           </WizardStep>
         </CancellationPolicyContext.Provider>
       </MembersDataApiItemContext.Provider>
@@ -213,6 +190,20 @@ export const CancellationFlow = (
   <ProductDetailProvider
     {...props}
     loadingMessagePrefix="Checking the status of your"
+    pageProperties={{
+      selectedNavItem: NAV_LINKS.accountOverview,
+      pageTitle: `Cancel ${props.productType.friendlyName}`,
+      breadcrumbs: [
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: `Cancel ${props.productType.friendlyName}`,
+          currentPage: true
+        }
+      ]
+    }}
   >
     {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
   </ProductDetailProvider>

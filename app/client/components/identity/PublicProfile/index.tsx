@@ -2,11 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { EmptyPageContainer, PageContainer } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -61,25 +57,25 @@ export const PublicProfile = (_: { path?: string }) => {
   }, [error]);
 
   const loader = (
-    <PageContainer>
+    <EmptyPageContainer>
       <Spinner loadingMessage="Loading your profile ..." />
-    </PageContainer>
+    </EmptyPageContainer>
   );
 
   const usernameDisplay = (u: User) => (
     <>
-      <PageContainer>
+      <EmptyPageContainer>
         <PageSection title="Username">{u.username}</PageSection>
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <Lines n={1} />
-      </PageContainer>
+      </EmptyPageContainer>
     </>
   );
 
   const content = () => (
     <>
-      <PageContainer>
+      <EmptyPageContainer>
         <p css={{ fontSize: "14px" }}>
           These details will be publicly visible to everyone who sees your
           profile in the{" "}
@@ -88,10 +84,10 @@ export const PublicProfile = (_: { path?: string }) => {
           </a>{" "}
           section.
         </p>
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <Lines n={1} />
-      </PageContainer>
+      </EmptyPageContainer>
       {hasUsername(user) ? usernameDisplay(user) : null}
       <ProfileFormSection
         user={user}
@@ -99,27 +95,24 @@ export const PublicProfile = (_: { path?: string }) => {
         onError={handleGeneralError}
         onSuccess={setUser}
       />
-      <PageContainer>
+      <EmptyPageContainer>
         <Lines n={1} />
-      </PageContainer>
-      <PageContainer>
+      </EmptyPageContainer>
+      <EmptyPageContainer>
         <AvatarSection userId={user.id} />
-      </PageContainer>
+      </EmptyPageContainer>
     </>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.profile}
-        title="Edit your profile"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.profile}>
-        <PageContainer>
-          {error ? <GenericErrorMessage ref={errorRef} /> : null}
-        </PageContainer>
-        {loading ? loader : content()}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer
+      selectedNavItem={NAV_LINKS.profile}
+      pageTitle="Edit your profile"
+    >
+      <EmptyPageContainer>
+        {error ? <GenericErrorMessage ref={errorRef} /> : null}
+      </EmptyPageContainer>
+      {loading ? loader : content()}
+    </PageContainer>
   );
 };

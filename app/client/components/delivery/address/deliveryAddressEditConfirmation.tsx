@@ -8,7 +8,7 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
+import { PageContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { TickInCircle } from "../../svgs/tickInCircle";
@@ -76,201 +76,197 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   return (
     <WizardStep routeableStepProps={props}>
       {isAddress(addressContext.newDeliveryAddress) ? (
-        <>
-          <PageHeaderContainer
-            title={
+        <PageContainer
+          selectedNavItem={NAV_LINKS.accountOverview}
+          pageTitle={
+            <span
+              css={css`
+                ::first-letter {
+                  text-transform: capitalize;
+                }
+              `}
+            >
               <span
                 css={css`
-                  ::first-letter {
-                    text-transform: capitalize;
+                  display: none;
+                  ${minWidth.tablet} {
+                    display: inline;
                   }
                 `}
               >
-                <span
-                  css={css`
-                    display: none;
-                    ${minWidth.tablet} {
-                      display: inline;
-                    }
-                  `}
-                >
-                  Update{" "}
-                </span>
-                delivery details
+                Update{" "}
               </span>
+              delivery details
+            </span>
+          }
+          breadcrumbs={[
+            {
+              title: NAV_LINKS.accountOverview.title,
+              link: NAV_LINKS.accountOverview.link
+            },
+            {
+              title: "Edit delivery address",
+              currentPage: true
             }
-            breadcrumbs={[
-              {
-                title: NAV_LINKS.accountOverview.title,
-                link: NAV_LINKS.accountOverview.link
-              },
-              {
-                title: "Edit delivery address",
-                currentPage: true
-              }
+          ]}
+        >
+          <ProgressIndicator
+            steps={[
+              { title: "Update" },
+              { title: "Review" },
+              { title: "Confirmation", isCurrentStep: true }
             ]}
+            additionalCSS={css`
+              margin-top: ${space[5]}px;
+            `}
           />
-          <PageNavAndContentContainer
-            selectedNavItem={NAV_LINKS.accountOverview}
+          <h2
+            css={css`
+              ${subHeadingCss}
+            `}
           >
-            <ProgressIndicator
-              steps={[
-                { title: "Update" },
-                { title: "Review" },
-                { title: "Confirmation", isCurrentStep: true }
-              ]}
-              additionalCSS={css`
-                margin-top: ${space[5]}px;
-              `}
-            />
+            Confirmation
+          </h2>
+          <SuccessMessage
+            message={`We have successfully updated your delivery details for your ${productName}. You will shortly receive a confirmation email.`}
+          />
+          <section
+            css={css`
+              border: 1px solid ${palette.neutral["86"]};
+              margin-top: ${space[5]}px;
+            `}
+          >
             <h2
               css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Confirmation
-            </h2>
-            <SuccessMessage
-              message={`We have successfully updated your delivery details for your ${productName}. You will shortly receive a confirmation email.`}
-            />
-            <section
-              css={css`
-                border: 1px solid ${palette.neutral["86"]};
-                margin-top: ${space[5]}px;
-              `}
-            >
-              <h2
-                css={css`
-                  margin: 0;
-                  padding: ${space[3]}px;
-                  background-color: ${palette.neutral["97"]};
-                  border-bottom: 1px solid ${palette.neutral["86"]};
-                  ${textSans.medium({ fontWeight: "bold" })};
-                  ${minWidth.tablet} {
-                    padding: ${space[3]}px ${space[5]}px;
-                  }
-                `}
-              >
-                Delivery address
-                {props.productType.delivery?.enableDeliveryInstructionsUpdate &&
-                  " and instructions"}
-              </h2>
-              <dl
-                css={css`
-                  padding: 0 ${space[3]}px;
-                  ${textSans.medium()};
-                  display: flex;
-                  flex-wrap: wrap;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  ${minWidth.tablet} {
-                    padding: 0 ${space[5]}px;
-                  }
-                `}
-              >
-                <div
-                  css={css`
-                    flex-grow: 1;
-                  `}
-                >
-                  <dt
-                    css={css`
-                      ${dtCss}
-                    `}
-                  >
-                    Address
-                  </dt>
-                  <dd
-                    css={css`
-                      ${ddCss}
-                    `}
-                  >
-                    {addressContext.newDeliveryAddress && (
-                      <DeliveryAddressDisplay
-                        {...addressContext.newDeliveryAddress}
-                      />
-                    )}
-                  </dd>
-                </div>
-                <div
-                  css={css`
-                    flex-grow: 1;
-                    margin-top: 16px;
-                    ${minWidth.tablet} {
-                      margin-top: 0;
-                    }
-                  `}
-                >
-                  <dt
-                    css={css`
-                      ${dtCss}
-                    `}
-                  >
-                    Instructions
-                  </dt>
-                  <dd
-                    css={css`
-                      ${ddCss}
-                    `}
-                  >
-                    {addressContext.newDeliveryAddress?.instructions || "-"}
-                  </dd>
-                </div>
-              </dl>
-            </section>
-            <p
-              css={css`
-                ${textSans.medium()};
-                margin-top: ${space[9]}px;
-              `}
-            >
-              I understand that this address change will affect the following
-              subscriptions
-            </p>
-            <ProductDescriptionListTable
-              content={convertToDescriptionListData(
-                addressChangedInformationContext
-              )}
-              seperateEachRow
-            />
-            <LinkButton
-              css={css`
-                margin-top: ${space[3]}px;
+                margin: 0;
+                padding: ${space[3]}px;
+                background-color: ${palette.neutral["97"]};
+                border-bottom: 1px solid ${palette.neutral["86"]};
+                ${textSans.medium({ fontWeight: "bold" })};
                 ${minWidth.tablet} {
-                  margin-top: ${space[5]}px;
+                  padding: ${space[3]}px ${space[5]}px;
                 }
               `}
-              href={NAV_LINKS.accountOverview.link}
-              showIcon={false}
             >
-              Return to your account
-            </LinkButton>
-            <p
+              Delivery address
+              {props.productType.delivery?.enableDeliveryInstructionsUpdate &&
+                " and instructions"}
+            </h2>
+            <dl
               css={css`
+                padding: 0 ${space[3]}px;
                 ${textSans.medium()};
-                margin-top: ${space[12]}px;
-                color: ${palette.neutral[46]};
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+                justify-content: space-between;
+                ${minWidth.tablet} {
+                  padding: 0 ${space[5]}px;
+                }
               `}
             >
-              If you need seperate delivery addresses for each of your
-              subscriptions, please{" "}
-              <span
+              <div
                 css={css`
-                  cursor: pointer;
-                  color: ${palette.brand[500]};
-                  text-decoration: underline;
+                  flex-grow: 1;
                 `}
-                onClick={() =>
-                  setTopCallCentreNumbersVisibility(!showTopCallCentreNumbers)
-                }
               >
-                contact us
-              </span>
-              .
-            </p>
-            {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-          </PageNavAndContentContainer>
-        </>
+                <dt
+                  css={css`
+                    ${dtCss}
+                  `}
+                >
+                  Address
+                </dt>
+                <dd
+                  css={css`
+                    ${ddCss}
+                  `}
+                >
+                  {addressContext.newDeliveryAddress && (
+                    <DeliveryAddressDisplay
+                      {...addressContext.newDeliveryAddress}
+                    />
+                  )}
+                </dd>
+              </div>
+              <div
+                css={css`
+                  flex-grow: 1;
+                  margin-top: 16px;
+                  ${minWidth.tablet} {
+                    margin-top: 0;
+                  }
+                `}
+              >
+                <dt
+                  css={css`
+                    ${dtCss}
+                  `}
+                >
+                  Instructions
+                </dt>
+                <dd
+                  css={css`
+                    ${ddCss}
+                  `}
+                >
+                  {addressContext.newDeliveryAddress?.instructions || "-"}
+                </dd>
+              </div>
+            </dl>
+          </section>
+          <p
+            css={css`
+              ${textSans.medium()};
+              margin-top: ${space[9]}px;
+            `}
+          >
+            I understand that this address change will affect the following
+            subscriptions
+          </p>
+          <ProductDescriptionListTable
+            content={convertToDescriptionListData(
+              addressChangedInformationContext
+            )}
+            seperateEachRow
+          />
+          <LinkButton
+            css={css`
+              margin-top: ${space[3]}px;
+              ${minWidth.tablet} {
+                margin-top: ${space[5]}px;
+              }
+            `}
+            href={NAV_LINKS.accountOverview.link}
+            showIcon={false}
+          >
+            Return to your account
+          </LinkButton>
+          <p
+            css={css`
+              ${textSans.medium()};
+              margin-top: ${space[12]}px;
+              color: ${palette.neutral[46]};
+            `}
+          >
+            If you need seperate delivery addresses for each of your
+            subscriptions, please{" "}
+            <span
+              css={css`
+                cursor: pointer;
+                color: ${palette.brand[500]};
+                text-decoration: underline;
+              `}
+              onClick={() =>
+                setTopCallCentreNumbersVisibility(!showTopCallCentreNumbers)
+              }
+            >
+              contact us
+            </span>
+            .
+          </p>
+          {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+        </PageContainer>
       ) : (
         visuallyNavigateToParent(props)
       )}
