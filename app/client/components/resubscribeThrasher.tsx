@@ -7,7 +7,6 @@ import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import AsyncLoader from "./asyncLoader";
-import { EmptyPageContainer } from "./page";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 
 const fetchExistingPaymentOptions = () =>
@@ -65,7 +64,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
           margin: "30px 0"
         }}
       >
-        <EmptyPageContainer noVerticalMargin>
+        <div>
           <h2 css={{ fontWeight: "bold", margin: "0" }}>
             Have you considered a monthly or annual contribution?
           </h2>
@@ -91,7 +90,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
             height="42px"
             notPrimary
           />
-        </EmptyPageContainer>
+        </div>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { EmptyPageContainer, PageContainer } from "../../page";
+import { PageContainer, WithStandardTopMargin } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -17,9 +17,9 @@ const errorRef = React.createRef<GenericErrorMessageRef>();
 const pageTopRef = React.createRef<HTMLDivElement>();
 
 const loader = (
-  <EmptyPageContainer>
+  <WithStandardTopMargin>
     <Spinner loadingMessage="Loading your profile ..." />
-  </EmptyPageContainer>
+  </WithStandardTopMargin>
 );
 
 export const Settings = (_: { path?: string }) => {
@@ -75,12 +75,12 @@ export const Settings = (_: { path?: string }) => {
   const content = () => (
     <>
       <div ref={pageTopRef} css={{ display: "none" }} />
-      <EmptyPageContainer>
+      <WithStandardTopMargin>
         <span css={textSmall}>
           These details will only be visible to you and the Guardian.
         </span>
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <SettingsFormSection
           user={user}
           saveUser={saveUser}
@@ -89,16 +89,16 @@ export const Settings = (_: { path?: string }) => {
           onDone={scrollToTop}
           emailMessage={emailMessage}
         />
-      </EmptyPageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   return (
     <PageContainer selectedNavItem={NAV_LINKS.settings} pageTitle="Settings">
       {!error || (
-        <EmptyPageContainer>
+        <WithStandardTopMargin>
           <GenericErrorMessage ref={errorRef} />
-        </EmptyPageContainer>
+        </WithStandardTopMargin>
       )}
       {loading ? loader : content()}
     </PageContainer>

@@ -182,9 +182,9 @@ export const ExecuteCancellation = (
         <CancellationCaseIdContext.Consumer>
           {caseId => (
             <MembersDataApiItemContext.Consumer>
-              {productDetail => {
-                return innerContent(productDetail, props, reason, caseId);
-              }}
+              {productDetail =>
+                innerContent(productDetail, props, reason, caseId)
+              }
             </MembersDataApiItemContext.Consumer>
           )}
         </CancellationCaseIdContext.Consumer>

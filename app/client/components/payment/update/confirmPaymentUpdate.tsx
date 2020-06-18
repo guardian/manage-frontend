@@ -14,7 +14,6 @@ import {
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
@@ -28,10 +27,7 @@ import {
   NewPaymentMethodDetail,
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
-import {
-  PaymentMethod,
-  paymentQuestionsTopicString
-} from "./updatePaymentFlow";
+import { PaymentMethod } from "./updatePaymentFlow";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -192,12 +188,7 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
             props.navigate &&
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(productDetail) ? (
-              <WizardStep
-                routeableStepProps={props}
-                extraFooterComponents={
-                  <QuestionsFooter topic={paymentQuestionsTopicString} />
-                }
-              >
+              <WizardStep routeableStepProps={props}>
                 <InnerContent
                   routeableStepProps={props}
                   productDetail={productDetail}

@@ -14,7 +14,7 @@ import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
-import { PageContainerSection } from "../page";
+import { WithStandardTopMargin } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
@@ -83,7 +83,7 @@ class ReasonPicker extends React.Component<
         {this.props.productType.cancellation.startPageBody(
           this.props.productDetail.subscription
         )}
-        <PageContainerSection>
+        <WithStandardTopMargin>
           <h4>Please select a reason</h4>
           <form css={css({ marginBottom: "30px" })}>
             {options.map((reason: MultiRouteableProps) => (
@@ -166,7 +166,7 @@ class ReasonPicker extends React.Component<
               <ReturnToAccountOverviewButton />
             </div>
           </div>
-        </PageContainerSection>
+        </WithStandardTopMargin>
       </>
     );
 

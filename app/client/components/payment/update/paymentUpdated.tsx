@@ -18,8 +18,6 @@ import {
 } from "../../../../shared/productTypes";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
-import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { SpreadTheWordFooter } from "../../footer/in_page/spreadTheWordFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
@@ -33,7 +31,6 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-import { paymentQuestionsTopicString } from "./updatePaymentFlow";
 
 class WithSubscriptionAsyncLoader extends AsyncLoader<WithSubscription[]> {}
 
@@ -155,16 +152,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
           {newPaymentMethodDetail =>
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
-              <WizardStep
-                routeableStepProps={props}
-                extraFooterComponents={[
-                  <QuestionsFooter
-                    key="questions"
-                    topic={paymentQuestionsTopicString}
-                  />,
-                  <SpreadTheWordFooter key="share" />
-                ]}
-              >
+              <WizardStep routeableStepProps={props}>
                 {innerContent(previousProductDetail, newPaymentMethodDetail)}
               </WizardStep>
             ) : (

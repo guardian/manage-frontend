@@ -10,38 +10,21 @@ import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { LeftSideNav, LeftSideNavProps } from "./nav/leftSideNav";
 import { NavItem } from "./nav/navConfig";
 
-interface EmptyPageContainerProps {
-  noVerticalMargin?: true;
+interface WithStandardTopMarginProps {
   children: React.ReactNode;
-  fullWidth?: true;
 }
-export const EmptyPageContainer = (props: EmptyPageContainerProps) => (
+export const WithStandardTopMargin = (props: WithStandardTopMarginProps) => (
+  // TODO: could this component with it's funky margin value be replaced with a design systems component/token
   <div
     css={css`
-      ${!props.fullWidth
-        ? `
-        margin: ${props.noVerticalMargin ? "0" : "1.8125rem"} auto 0;
-        max-width: 980px;
-      `
-        : ""}
+      margin-top: 1.8125rem;
     `}
   >
     {props.children}
   </div>
 );
 
-// Thinner container, for readable text, etc
-export const PageContainerSection: React.SFC<{}> = ({ children }) => (
-  <div
-    css={{
-      margin: "1.8125rem auto 0"
-    }}
-  >
-    {children}
-  </div>
-);
-
-interface PageContainerProps {
+export interface PageContainerProps {
   children: React.ReactNode;
   selectedNavItem: NavItem;
   pageTitle: string | ReactElement;

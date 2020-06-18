@@ -9,7 +9,6 @@ import {
 } from "../../shared/productTypes";
 import { LinkButton } from "./buttons";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { EmptyPageContainer } from "./page";
 
 interface RouteableProps extends RouteComponentProps {
   path: string;
@@ -28,17 +27,6 @@ export type RouteableStepPropsForGrouped = RoutablePropsWithChildren &
 export interface MultiRouteableProps extends RouteableStepProps {
   // TODO refactor this out by adding type params to children
   linkLabel: string;
-}
-
-interface CommonProps {
-  extraFooterComponents?: JSX.Element | JSX.Element[];
-}
-
-interface RootComponentProps extends CommonProps {
-  routeableStepProps: RouteableStepProps;
-  thisStageChildren: any;
-  path: string;
-  children: null;
 }
 
 export const visuallyNavigateToParent = (
@@ -65,32 +53,23 @@ export const ReturnToAccountOverviewButton = () => (
   />
 );
 
-const RootComponent = (props: RootComponentProps) => (
-  <>
-    <EmptyPageContainer fullWidth>{props.thisStageChildren}</EmptyPageContainer>
-    {props.extraFooterComponents}
-  </>
-);
+interface CurrentStepProps {
+  path: string;
+  content: React.ReactNode;
+}
 
-const ThisStageContent = (props: WizardStepProps) => (
-  <Router>
-    <RootComponent
-      {...props}
-      children={null} // override passed prop from spread
-      path="/"
-      thisStageChildren={props.children}
-    />
-  </Router>
-);
+const CurrentStep = (props: CurrentStepProps) => <div>{props.content}</div>;
 
-interface WizardStepProps extends CommonProps {
+interface WizardStepProps {
   routeableStepProps: RouteableStepProps;
-  children: any;
+  children: React.ReactNode;
 }
 
 export const WizardStep = (props: WizardStepProps) => (
   <>
-    <ThisStageContent {...props} />
+    <Router>
+      <CurrentStep path="/" content={props.children} />
+    </Router>
     {props.routeableStepProps.children}
   </>
 );

@@ -13,7 +13,6 @@ import {
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
 import { FlowWrapper } from "../../FlowWrapper";
-import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -31,8 +30,6 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-
-export const paymentQuestionsTopicString = "updating your payment details";
 
 export enum PaymentMethod {
   card = "Card",
@@ -234,12 +231,7 @@ class PaymentUpdaterStep extends React.Component<
           <NavigateFnContext.Provider
             value={{ navigate: this.props.routeableStepProps.navigate }}
           >
-            <WizardStep
-              routeableStepProps={this.props.routeableStepProps}
-              extraFooterComponents={
-                <QuestionsFooter topic={paymentQuestionsTopicString} />
-              }
-            >
+            <WizardStep routeableStepProps={this.props.routeableStepProps}>
               {innerContent}
             </WizardStep>
           </NavigateFnContext.Provider>

@@ -18,7 +18,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { PageContainerSection } from "../../page";
+import { WithStandardTopMargin } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   MultiRouteableProps,
@@ -277,7 +277,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
           margin: ${space[5]}px 0 ${space[12]}px;
         `}
       />
-      <PageContainerSection>
+      <WithStandardTopMargin>
         <h3 id="save_title">
           {props.productType.cancellation.hideReasonTitlePrefix
             ? ""
@@ -335,7 +335,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
             )
           }
         </CancellationCaseIdContext.Consumer>
-      </PageContainerSection>
+      </WithStandardTopMargin>
     </>
   );
 

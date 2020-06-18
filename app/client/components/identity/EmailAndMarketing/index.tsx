@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { EmptyPageContainer, PageContainer } from "../../page";
+import { PageContainer, WithStandardTopMargin } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -80,48 +80,48 @@ export const EmailAndMarketing = (_: { path?: string }) => {
   }, [state.error]);
 
   const errorMessage = (
-    <EmptyPageContainer>
+    <WithStandardTopMargin>
       <GenericErrorMessage ref={errorRef} />
-    </EmptyPageContainer>
+    </WithStandardTopMargin>
   );
 
   const content = (
     <>
-      <EmptyPageContainer>
+      <WithStandardTopMargin>
         <NewsletterSection
           newsletters={newsletters}
           clickHandler={toggleSubscription}
         />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={4} />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <ConsentSection consents={consents} clickHandler={toggleSubscription} />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <EmailSettingsSection
           email={email}
           actionHandler={setRemoveAllEmailConsents}
           removed={removed}
         />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={4} />
-      </EmptyPageContainer>
-      <EmptyPageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <OptOutSection consents={consents} clickHandler={toggleSubscription} />
-      </EmptyPageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   const loader = (
-    <EmptyPageContainer>
+    <WithStandardTopMargin>
       <Spinner loadingMessage="Loading your email preferences..." />
-    </EmptyPageContainer>
+    </WithStandardTopMargin>
   );
 
   return (
