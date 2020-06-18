@@ -8,7 +8,6 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { TickInCircle } from "../../svgs/tickInCircle";
@@ -76,40 +75,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   return (
     <WizardStep routeableStepProps={props}>
       {isAddress(addressContext.newDeliveryAddress) ? (
-        <PageContainer
-          selectedNavItem={NAV_LINKS.accountOverview}
-          pageTitle={
-            <span
-              css={css`
-                ::first-letter {
-                  text-transform: capitalize;
-                }
-              `}
-            >
-              <span
-                css={css`
-                  display: none;
-                  ${minWidth.tablet} {
-                    display: inline;
-                  }
-                `}
-              >
-                Update{" "}
-              </span>
-              delivery details
-            </span>
-          }
-          breadcrumbs={[
-            {
-              title: NAV_LINKS.accountOverview.title,
-              link: NAV_LINKS.accountOverview.link
-            },
-            {
-              title: "Edit delivery address",
-              currentPage: true
-            }
-          ]}
-        >
+        <>
           <ProgressIndicator
             steps={[
               { title: "Update" },
@@ -266,7 +232,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             .
           </p>
           {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-        </PageContainer>
+        </>
       ) : (
         visuallyNavigateToParent(props)
       )}

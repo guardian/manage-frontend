@@ -293,120 +293,85 @@ const FormContainer = (props: FormContainerProps) => {
           }
         >
           <WizardStep routeableStepProps={props.routeableStepProps}>
-            <PageContainer
-              selectedNavItem={NAV_LINKS.accountOverview}
-              pageTitle={
-                <span
-                  css={css`
-                    ::first-letter {
-                      text-transform: capitalize;
-                    }
-                  `}
-                >
-                  <span
+            <ProgressIndicator
+              steps={[
+                { title: "Update", isCurrentStep: true },
+                { title: "Review" },
+                { title: "Confirmation" }
+              ]}
+              additionalCSS={css`
+                margin-top: ${space[5]}px;
+              `}
+            />
+            <h2
+              css={css`
+                ${subHeadingCss}
+              `}
+            >
+              Update address details
+            </h2>
+            {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+              .length === 0 && (
+              <div>
+                <p>
+                  No addresses available for update. If this doesn't seem right
+                  please contact us
+                </p>
+                <CallCentreNumbers />
+              </div>
+            )}
+            {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+              .length > 1 && (
+              <div>
+                <p>You will need to contact us to update your addresses</p>
+                <CallCentreNumbers />
+              </div>
+            )}
+            {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
+              .length === 1 && (
+              <div>
+                {Object.values(
+                  props.contactIdToArrayOfProductDetailAndProductType
+                ).flatMap(flattenEquivalent).length > 1 && (
+                  <p
                     css={css`
-                      display: none;
-                      ${minWidth.tablet} {
-                        display: inline;
-                      }
+                      ${textSans.medium()};
+                      background-color: ${palette.neutral[97]};
+                      padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
+                      margin-bottom: 12px;
+                      position: relative;
                     `}
                   >
-                    Update{" "}
-                  </span>
-                  delivery details
-                </span>
-              }
-              breadcrumbs={[
-                {
-                  title: NAV_LINKS.accountOverview.title,
-                  link: NAV_LINKS.accountOverview.link
-                },
-                {
-                  title: "Edit delivery address",
-                  currentPage: true
-                }
-              ]}
-            >
-              <ProgressIndicator
-                steps={[
-                  { title: "Update", isCurrentStep: true },
-                  { title: "Review" },
-                  { title: "Confirmation" }
-                ]}
-                additionalCSS={css`
-                  margin-top: ${space[5]}px;
-                `}
-              />
-              <h2
-                css={css`
-                  ${subHeadingCss}
-                `}
-              >
-                Update address details
-              </h2>
-              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
-                .length === 0 && (
-                <div>
-                  <p>
-                    No addresses available for update. If this doesn't seem
-                    right please contact us
-                  </p>
-                  <CallCentreNumbers />
-                </div>
-              )}
-              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
-                .length > 1 && (
-                <div>
-                  <p>You will need to contact us to update your addresses</p>
-                  <CallCentreNumbers />
-                </div>
-              )}
-              {Object.keys(props.contactIdToArrayOfProductDetailAndProductType)
-                .length === 1 && (
-                <div>
-                  {Object.values(
-                    props.contactIdToArrayOfProductDetailAndProductType
-                  ).flatMap(flattenEquivalent).length > 1 && (
-                    <p
+                    <i
                       css={css`
-                        ${textSans.medium()};
-                        background-color: ${palette.neutral[97]};
-                        padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
-                        margin-bottom: 12px;
-                        position: relative;
+                        width: 17px;
+                        height: 17px;
+                        position: absolute;
+                        top: ${space[5]}px;
+                        left: ${space[5]}px;
                       `}
                     >
-                      <i
-                        css={css`
-                          width: 17px;
-                          height: 17px;
-                          position: absolute;
-                          top: ${space[5]}px;
-                          left: ${space[5]}px;
-                        `}
-                      >
-                        <InfoIconDark fillColor={palette.brand[500]} />
-                      </i>
-                      Please note that changing your address here will update
-                      the delivery address for all of your subscriptions.
-                    </p>
-                  )}
-                  {(formStatus === formStates.INIT ||
-                    formStatus === formStates.PENDING ||
-                    formStatus === formStates.VALIDATION_ERROR) && (
-                    <Form
-                      {...defaultFormProps}
-                      routeableStepProps={props.routeableStepProps}
-                      warning={convertToDescriptionListData(
-                        addressChangeAffectedInfo(
-                          props.contactIdToArrayOfProductDetailAndProductType
-                        )
-                      )}
-                    />
-                  )}
-                </div>
-              )}
-            </PageContainer>
+                      <InfoIconDark fillColor={palette.brand[500]} />
+                    </i>
+                    Please note that changing your address here will update the
+                    delivery address for all of your subscriptions.
+                  </p>
+                )}
+                {(formStatus === formStates.INIT ||
+                  formStatus === formStates.PENDING ||
+                  formStatus === formStates.VALIDATION_ERROR) && (
+                  <Form
+                    {...defaultFormProps}
+                    routeableStepProps={props.routeableStepProps}
+                    warning={convertToDescriptionListData(
+                      addressChangeAffectedInfo(
+                        props.contactIdToArrayOfProductDetailAndProductType
+                      )
+                    )}
+                  />
+                )}
+              </div>
+            )}
           </WizardStep>
         </ContactIdContext.Provider>
       </AddressChangedInformationContext.Provider>
@@ -751,9 +716,44 @@ const Form = (props: FormProps) => {
 };
 
 export const DeliveryAddressForm = (props: RouteableStepProps) => (
-  <MembersDatApiAsyncLoader
-    render={renderDeliveryAddressForm(props)}
-    fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
-    loadingMessage={"Loading delivery details..."}
-  />
+  <PageContainer
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle={
+      <span
+        css={css`
+          ::first-letter {
+            text-transform: capitalize;
+          }
+        `}
+      >
+        <span
+          css={css`
+            display: none;
+            ${minWidth.tablet} {
+              display: inline;
+            }
+          `}
+        >
+          Update{" "}
+        </span>
+        delivery details
+      </span>
+    }
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: "Edit delivery address",
+        currentPage: true
+      }
+    ]}
+  >
+    <MembersDatApiAsyncLoader
+      render={renderDeliveryAddressForm(props)}
+      fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
+      loadingMessage={"Loading delivery details..."}
+    />
+  </PageContainer>
 );
