@@ -8,9 +8,9 @@ import {
 type FlowWrapperProps = PageContainerProps & ProductDetailProviderProps;
 
 export const FlowWrapper = (props: FlowWrapperProps) => (
-  <ProductDetailProvider {...props}>
-    {productDetail => (
-      <PageContainer {...props}>{props.children(productDetail)}</PageContainer>
-    )}
-  </ProductDetailProvider>
+  <PageContainer {...props}>
+    <ProductDetailProvider {...props}>
+      {productDetail => props.children(productDetail)}
+    </ProductDetailProvider>
+  </PageContainer>
 );
