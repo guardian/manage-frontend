@@ -493,31 +493,29 @@ const CancellationCTA = (props: CancellationCTAProps) => {
   );
 };
 
-export const ManageProduct = (props: RouteableStepPropsForGrouped) => {
-  const pageTitle = `Manage ${props.groupedProductType.friendlyName}`;
-  return (
-    <FlowWrapper
-      {...props}
-      productType={props.groupedProductType}
-      loadingMessagePrefix="Retrieving details of your"
-      allowCancelledSubscription
-      forceRedirectToAccountOverviewIfNoBrowserHistoryState
-      selectedNavItem={NAV_LINKS.accountOverview}
-      pageTitle={pageTitle}
-      breadcrumbs={[
-        {
-          title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
-        },
-        {
-          title: pageTitle,
-          currentPage: true
-        }
-      ]}
-    >
-      {productDetail => (
-        <InnerContent props={props} productDetail={productDetail} />
-      )}
-    </FlowWrapper>
-  );
-};
+export const ManageProduct = (props: RouteableStepPropsForGrouped) => (
+  <FlowWrapper
+    {...props}
+    productType={props.groupedProductType}
+    loadingMessagePrefix="Retrieving details of your"
+    allowCancelledSubscription
+    forceRedirectToAccountOverviewIfNoBrowserHistoryState
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle={`Manage ${props.groupedProductType.shortFriendlyName ||
+      props.groupedProductType.friendlyName}`}
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: `Manage ${props.groupedProductType.friendlyName}`,
+        currentPage: true
+      }
+    ]}
+  >
+    {productDetail => (
+      <InnerContent props={props} productDetail={productDetail} />
+    )}
+  </FlowWrapper>
+);

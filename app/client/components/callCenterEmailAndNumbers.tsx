@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { CallCentreNumbersProps } from "./callCentreNumbers";
@@ -90,7 +90,7 @@ export const CallCentreEmailAndNumbers = (
   const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
     ${textSans.medium()};
     margin: 0;
-    padding: 12px 17px 12px 12px;
+    padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
     position: relative;
     cursor: pointer;
     :after {

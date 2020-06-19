@@ -229,7 +229,8 @@ const DeliveryRecordsProblemConfirmationFC = (
             <div>
               <dt css={dtCss}>Product:</dt>
               <dd css={ddCss}>
-                {props.routeableStepProps.productType.shortFriendlyName}
+                {props.routeableStepProps.productType.shortFriendlyName ||
+                  props.routeableStepProps.productType.friendlyName}
               </dd>
             </div>
             <div>

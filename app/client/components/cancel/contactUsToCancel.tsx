@@ -8,9 +8,11 @@ import { ProductType } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { NAV_LINKS } from "../nav/navConfig";
+import { ProductDescriptionListTable } from "../productDescriptionListTable";
 
 interface ContactUsToCancelProps {
   selfServiceCancellation: SelfServiceCancellation;
+  subscriptionId: string;
   productType: ProductType;
 }
 
@@ -40,6 +42,14 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
       >
         Contact us to cancel
       </h2>
+      <ProductDescriptionListTable
+        content={[
+          {
+            title: "Subscription ID",
+            value: props.subscriptionId
+          }
+        ]}
+      />
       <p
         css={css`
           ${textSans.medium()}

@@ -193,7 +193,8 @@ export const CancellationFlow = (props: RouteableStepProps) => (
     {...props}
     loadingMessagePrefix="Checking the status of your"
     selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={`Cancel ${props.productType.friendlyName}`} // TODO: rethink title as too long with hd sub
+    pageTitle={`Cancel ${props.productType.shortFriendlyName ||
+      props.productType.friendlyName}`}
     breadcrumbs={[
       {
         title: NAV_LINKS.accountOverview.title,
@@ -216,6 +217,7 @@ export const CancellationFlow = (props: RouteableStepProps) => (
       ) : (
         <ContactUsToCancel
           selfServiceCancellation={productDetail.selfServiceCancellation}
+          subscriptionId={productDetail.subscription.subscriptionId}
           productType={props.productType}
         />
       )
