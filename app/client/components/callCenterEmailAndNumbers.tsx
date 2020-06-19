@@ -205,6 +205,7 @@ export const CallCentreEmailAndNumbers = (
                 >
                   {phoneRegion.phoneNumbers.map(({ phoneNumber, suffix }) => (
                     <span
+                      key={phoneNumber}
                       css={css`
                         ${innerSectionBlockSpanCss}
                       `}

@@ -154,7 +154,6 @@ export interface ProductType {
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
-  cancellationContactUsWarningSuffix?: string;
   cancelledCopy?: string;
   showTrialRemainingIfApplicable?: true;
   updateAmountMdaEndpoint?: string;
@@ -425,9 +424,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
       ) =>
         reasonId === "mma_financial_circumstances" ? "/contribute" : undefined,
       swapFeedbackAndContactUs: true
-    },
-    cancellationContactUsWarningSuffix:
-      "that you must call us at least 6 weeks in advance before the date printed on the last voucher in your voucher book."
+    }
   },
   digitalvoucher: {
     productTitle: calculateProductTitle("Newspaper Subscription Card"),

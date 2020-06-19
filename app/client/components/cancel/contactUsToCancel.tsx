@@ -7,7 +7,6 @@ import { SelfServiceCancellation } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
-import { InfoSection } from "../infoSection";
 import { NAV_LINKS } from "../nav/navConfig";
 
 interface ContactUsToCancelProps {
@@ -49,12 +48,6 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
         Please contact our Customer Service team. You can find the contact
         details for your region below.
       </p>
-      {props.productType.cancellationContactUsWarningSuffix && (
-        <InfoSection>
-          <strong>Please remember</strong>{" "}
-          {props.productType.cancellationContactUsWarningSuffix}
-        </InfoSection>
-      )}
       <CallCentreEmailAndNumbers
         hideEmailAddress={!props.selfServiceCancellation.shouldDisplayEmail}
         phoneRegionFilterKeys={
@@ -75,6 +68,4 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
       </LinkButton>
     </>
   );
-  // TODO: Ask jian about displaying subscription id
-  // Do everything else! (will need new key on productType for warning text about cancellation notice)
 };
