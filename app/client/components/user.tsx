@@ -9,7 +9,6 @@ import {
   hasDeliveryRecordsFlow,
   PRODUCT_TYPES,
   ProductType,
-  ProductTypeWithCancellationFlow,
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow,
   shouldHaveHolidayStopsFlow
@@ -64,15 +63,14 @@ const User = () => (
           />
         )
       )}
-      {Object.values(PRODUCT_TYPES)
-        .filter(hasCancellationFlow)
-        .map((productType: ProductTypeWithCancellationFlow) => (
-          <CancellationFlow
-            key={productType.urlPart}
-            path={"/cancel/" + productType.urlPart}
-            productType={productType}
-          >
-            {productType.cancellation.reasons.map(
+      {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
+        <CancellationFlow
+          key={productType.urlPart}
+          path={"/cancel/" + productType.urlPart}
+          productType={productType}
+        >
+          {hasCancellationFlow(productType) &&
+            productType.cancellation.reasons.map(
               (reason: CancellationReason) => (
                 <GenericSaveAttempt
                   path={reason.reasonId}
@@ -88,8 +86,8 @@ const User = () => (
                 </GenericSaveAttempt>
               )
             )}
-          </CancellationFlow>
-        ))}
+        </CancellationFlow>
+      ))}
 
       {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
         <PaymentUpdateFlow

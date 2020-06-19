@@ -9,7 +9,10 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
+import {
+  hasCancellationFlow,
+  ProductTypeWithCancellationFlow
+} from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowWrapper } from "../FlowWrapper";
@@ -28,6 +31,7 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
+import { ContactUsToCancel } from "./contactUsToCancel";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -184,14 +188,12 @@ class ReasonPicker extends React.Component<
   }
 }
 
-export const CancellationFlow = (
-  props: RouteableStepPropsWithCancellationFlow
-) => (
+export const CancellationFlow = (props: RouteableStepProps) => (
   <FlowWrapper
     {...props}
     loadingMessagePrefix="Checking the status of your"
     selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={`Cancel ${props.productType.friendlyName}`}
+    pageTitle={`Cancel ${props.productType.friendlyName}`} // TODO: rethink title as too long with hd sub
     breadcrumbs={[
       {
         title: NAV_LINKS.accountOverview.title,
@@ -203,6 +205,20 @@ export const CancellationFlow = (
       }
     ]}
   >
-    {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
+    {productDetail =>
+      productDetail.selfServiceCancellation.isAllowed &&
+      hasCancellationFlow(props.productType) ? (
+        <ReasonPicker
+          {...props}
+          productType={props.productType}
+          productDetail={productDetail}
+        />
+      ) : (
+        <ContactUsToCancel
+          selfServiceCancellation={productDetail.selfServiceCancellation}
+          productType={props.productType}
+        />
+      )
+    }
   </FlowWrapper>
 );

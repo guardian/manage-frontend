@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
 import AsyncLoader from "../client/components/asyncLoader";
+import { PhoneRegionKey } from "../client/components/callCenterEmailAndNumbers";
 import { DeliveryRecordDetail } from "../client/components/delivery/records/deliveryRecordsApi";
 import { CardProps } from "../client/components/payment/cardDisplay";
 import { GroupedProductTypeKeys } from "./productTypes";
@@ -36,6 +37,11 @@ export const replaceAlertTextCTA = (alertText: string) =>
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
 
+export interface SelfServiceCancellation {
+  isAllowed: boolean;
+  shouldDisplayEmail: boolean;
+  phoneRegionsToDisplay: PhoneRegionKey[];
+}
 export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
   isPaidTier: boolean;
@@ -44,6 +50,7 @@ export interface ProductDetail extends WithSubscription {
   joinDate: string;
   mmaCategory: GroupedProductTypeKeys;
   alertText?: string;
+  selfServiceCancellation: SelfServiceCancellation;
 }
 
 export function isProduct(
