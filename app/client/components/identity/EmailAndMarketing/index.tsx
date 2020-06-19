@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { PageContainer, WithStandardTopMargin } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -84,60 +80,57 @@ export const EmailAndMarketing = (_: { path?: string }) => {
   }, [state.error]);
 
   const errorMessage = (
-    <PageContainer>
+    <WithStandardTopMargin>
       <GenericErrorMessage ref={errorRef} />
-    </PageContainer>
+    </WithStandardTopMargin>
   );
 
   const content = (
     <>
-      <PageContainer>
+      <WithStandardTopMargin>
         <NewsletterSection
           newsletters={newsletters}
           clickHandler={toggleSubscription}
         />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={4} />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <ConsentSection consents={consents} clickHandler={toggleSubscription} />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <EmailSettingsSection
           email={email}
           actionHandler={setRemoveAllEmailConsents}
           removed={removed}
         />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={4} />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <OptOutSection consents={consents} clickHandler={toggleSubscription} />
-      </PageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   const loader = (
-    <PageContainer>
+    <WithStandardTopMargin>
       <Spinner loadingMessage="Loading your email preferences..." />
-    </PageContainer>
+    </WithStandardTopMargin>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.emailPrefs}
-        title="Emails &amp; marketing"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.emailPrefs}>
-        {state.error ? errorMessage : null}
-        {loading ? (!state.error ? loader : null) : content}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer
+      selectedNavItem={NAV_LINKS.emailPrefs}
+      pageTitle="Emails &amp; marketing"
+    >
+      {state.error ? errorMessage : null}
+      {loading ? (!state.error ? loader : null) : content}
+    </PageContainer>
   );
 };

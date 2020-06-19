@@ -18,12 +18,7 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainerSection,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { WithStandardTopMargin } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   MultiRouteableProps,
@@ -282,7 +277,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
           margin: ${space[5]}px 0 ${space[12]}px;
         `}
       />
-      <PageContainerSection>
+      <WithStandardTopMargin>
         <h3 id="save_title">
           {props.productType.cancellation.hideReasonTitlePrefix
             ? ""
@@ -340,7 +335,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
             )
           }
         </CancellationCaseIdContext.Consumer>
-      </PageContainerSection>
+      </WithStandardTopMargin>
     </>
   );
 
@@ -360,26 +355,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                 sfCaseProduct={props.productType.cancellation.sfCaseProduct}
               >
                 <WizardStep routeableStepProps={props}>
-                  <>
-                    <PageHeaderContainer
-                      title={`Cancel ${props.productType.friendlyName}`}
-                      breadcrumbs={[
-                        {
-                          title: NAV_LINKS.accountOverview.title,
-                          link: NAV_LINKS.accountOverview.link
-                        },
-                        {
-                          title: "Cancel membership",
-                          currentPage: true
-                        }
-                      ]}
-                    />
-                    <PageNavAndContentContainer
-                      selectedNavItem={NAV_LINKS.accountOverview}
-                    >
-                      {innerContent(productDetail)}
-                    </PageNavAndContentContainer>
-                  </>
+                  {innerContent(productDetail)}
                 </WizardStep>
               </CaseCreationWrapper>
             </CancellationReasonContext.Provider>

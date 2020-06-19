@@ -5,7 +5,6 @@ import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { trackEventInOphanOnly } from "../analytics";
 import { Button } from "../buttons";
-import { PageContainer } from "../page";
 import { Roundel } from "../svgs/roundel";
 
 const CONSENT_COOKIE_NAME = "GU_TK";
@@ -52,7 +51,12 @@ export class ConsentsBanner extends React.Component<
           eventCategory: CONSENTS_BANNER_OPHAN_EVENT_CATEGORY,
           eventAction: "impression"
         })}
-        <PageContainer noVerticalMargin>
+        <div
+          css={{
+            margin: "0 auto",
+            maxWidth: 980
+          }}
+        >
           <div
             css={{
               maxWidth: "620px",
@@ -125,7 +129,7 @@ export class ConsentsBanner extends React.Component<
               My options
             </a>
           </div>
-        </PageContainer>
+        </div>
       </div>
     ) : null;
 

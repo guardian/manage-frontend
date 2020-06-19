@@ -19,7 +19,7 @@ import {
 import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
 import { NAV_LINKS } from "../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
+import { PageContainer } from "../page";
 import { ProblemAlert } from "../ProblemAlert";
 import {
   SupportTheGuardianButton,
@@ -117,19 +117,16 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
 
 export const AccountOverview = (_: RouteComponentProps) => {
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.accountOverview}
-        title="Account overview"
+    <PageContainer
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle="Account overview"
+    >
+      <MembersDatApiAsyncLoader
+        fetch={allProductsDetailFetcher}
+        render={AccountOverviewRenderer}
+        loadingMessage={`Loading your account details...`}
       />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
-        <MembersDatApiAsyncLoader
-          fetch={allProductsDetailFetcher}
-          render={AccountOverviewRenderer}
-          loadingMessage={`Loading your account details...`}
-        />
-      </PageNavAndContentContainer>
-    </>
+    </PageContainer>
   );
 };
 

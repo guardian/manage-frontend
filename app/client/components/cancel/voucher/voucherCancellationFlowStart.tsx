@@ -1,7 +1,7 @@
 import React from "react";
 import { getMainPlan, Subscription } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
-import { PageContainerSection } from "../../page";
+import { WithStandardTopMargin } from "../../page";
 import { hrefStyle } from "../cancellationConstants";
 
 const trackCancellationClickEvent = (eventLabel: string) => () =>
@@ -18,7 +18,7 @@ export const voucherCancellationFlowStart = (subscription: Subscription) => {
     mainPlan?.name?.indexOf("plus Digi") === -1;
 
   return (
-    <PageContainerSection>
+    <WithStandardTopMargin>
       <h3>
         We’re sorry to hear you’re thinking of cancelling your voucher
         subscription.
@@ -80,6 +80,6 @@ export const voucherCancellationFlowStart = (subscription: Subscription) => {
       )}
 
       <p>Please could you take a moment to tell us why you want to cancel?</p>
-    </PageContainerSection>
+    </WithStandardTopMargin>
   );
 };

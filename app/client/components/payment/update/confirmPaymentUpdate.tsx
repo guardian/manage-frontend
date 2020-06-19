@@ -14,9 +14,6 @@ import {
 import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
-import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
-import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
@@ -30,10 +27,7 @@ import {
   NewPaymentMethodDetail,
   PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
-import {
-  PaymentMethod,
-  paymentQuestionsTopicString
-} from "./updatePaymentFlow";
+import { PaymentMethod } from "./updatePaymentFlow";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -194,34 +188,12 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
             props.navigate &&
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(productDetail) ? (
-              <WizardStep
-                routeableStepProps={props}
-                extraFooterComponents={
-                  <QuestionsFooter topic={paymentQuestionsTopicString} />
-                }
-              >
-                <PageHeaderContainer
-                  title="Manage payment method"
-                  breadcrumbs={[
-                    {
-                      title: NAV_LINKS.accountOverview.title,
-                      link: NAV_LINKS.accountOverview.link
-                    },
-                    {
-                      title: "Manage payment method",
-                      currentPage: true
-                    }
-                  ]}
+              <WizardStep routeableStepProps={props}>
+                <InnerContent
+                  routeableStepProps={props}
+                  productDetail={productDetail}
+                  newPaymentMethodDetail={newPaymentMethodDetail}
                 />
-                <PageNavAndContentContainer
-                  selectedNavItem={NAV_LINKS.accountOverview}
-                >
-                  <InnerContent
-                    routeableStepProps={props}
-                    productDetail={productDetail}
-                    newPaymentMethodDetail={newPaymentMethodDetail}
-                  />
-                </PageNavAndContentContainer>
               </WizardStep>
             ) : (
               visuallyNavigateToParent(props)

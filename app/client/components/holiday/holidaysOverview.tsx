@@ -19,11 +19,10 @@ import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { Button } from "../buttons";
+import { FlowWrapper } from "../FlowWrapper";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { NAV_LINKS } from "../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { NavigateFnContext } from "../payment/update/updatePaymentFlow";
-import { ProductDetailProvider } from "../productDetailProvider";
 import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToAccountOverviewButton,
@@ -293,24 +292,7 @@ const renderHolidayStopsOverview = (
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
         <WizardStep routeableStepProps={props}>
-          <PageHeaderContainer
-            title="Manage suspensions"
-            breadcrumbs={[
-              {
-                title: NAV_LINKS.accountOverview.title,
-                link: NAV_LINKS.accountOverview.link
-              },
-              {
-                title: "Manage suspensions",
-                currentPage: true
-              }
-            ]}
-          />
-          <PageNavAndContentContainer
-            selectedNavItem={NAV_LINKS.accountOverview}
-          >
-            <InnerContent />
-          </PageNavAndContentContainer>
+          <InnerContent />
         </WizardStep>
       </MembersDataApiItemContext.Provider>
     </HolidayStopsResponseContext.Provider>
@@ -340,9 +322,21 @@ export class HolidaysOverview extends React.Component<
   };
 
   public render = () => (
-    <ProductDetailProvider
+    <FlowWrapper
       {...this.props}
       loadingMessagePrefix="Retrieving details of your"
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle="Manage suspensions"
+      breadcrumbs={[
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: "Manage suspensions",
+          currentPage: true
+        }
+      ]}
     >
       {productDetail => (
         <MembersDataApiItemContext.Provider value={productDetail}>
@@ -369,7 +363,7 @@ export class HolidaysOverview extends React.Component<
           </NavigateFnContext.Provider>
         </MembersDataApiItemContext.Provider>
       )}
-    </ProductDetailProvider>
+    </FlowWrapper>
   );
 
   private setExistingHolidayStopToAmend = (

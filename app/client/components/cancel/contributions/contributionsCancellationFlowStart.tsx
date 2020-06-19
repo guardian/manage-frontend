@@ -1,8 +1,8 @@
 import React from "react";
-import { PageContainerSection } from "../../page";
+import { WithStandardTopMargin } from "../../page";
 
 export const contributionsCancellationFlowStart = () => (
-  <PageContainerSection>
+  <WithStandardTopMargin>
     <h3>
       We’re sorry to hear you’re thinking of cancelling your recurring
       contribution.
@@ -16,5 +16,5 @@ export const contributionsCancellationFlowStart = () => (
     </p>
 
     <p>Please could you take a moment to tell us why you want to cancel?</p>
-  </PageContainerSection>
+  </WithStandardTopMargin>
 );

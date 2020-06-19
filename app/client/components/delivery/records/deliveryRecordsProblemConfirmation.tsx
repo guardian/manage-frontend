@@ -14,7 +14,6 @@ import {
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -101,21 +100,7 @@ const DeliveryRecordsProblemConfirmationFC = (
   `;
   return (
     <WizardStep routeableStepProps={props.routeableStepProps}>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.accountOverview}
-        title="Delivery history"
-        breadcrumbs={[
-          {
-            title: NAV_LINKS.accountOverview.title,
-            link: NAV_LINKS.accountOverview.link
-          },
-          {
-            title: "Delivery history",
-            currentPage: true
-          }
-        ]}
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.accountOverview}>
+      <>
         <ProgressIndicator
           steps={[
             { title: "Update" },
@@ -422,7 +407,7 @@ const DeliveryRecordsProblemConfirmationFC = (
         >
           Return to your account
         </LinkButton>
-      </PageNavAndContentContainer>
+      </>
     </WizardStep>
   );
 };

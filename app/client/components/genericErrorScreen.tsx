@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { CallCentreNumbers } from "./callCentreNumbers";
-import { PageContainer } from "./page";
+import { WithStandardTopMargin } from "./page";
 
 interface GenericErrorScreenProps {
   loggingMessage: string | false;
@@ -21,7 +21,7 @@ export const GenericErrorScreen = ({
   }
 
   return (
-    <PageContainer>
+    <WithStandardTopMargin>
       <h2>Oops!</h2>
       <p>
         Sorry, it seems as if our system has encountered an error.
@@ -29,6 +29,6 @@ export const GenericErrorScreen = ({
         Please try again in a few minutes.
       </p>
       <CallCentreNumbers prefixText="Alternatively, to contact us" />
-    </PageContainer>
+    </WithStandardTopMargin>
   );
 };

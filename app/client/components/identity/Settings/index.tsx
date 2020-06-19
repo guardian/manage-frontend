@@ -2,11 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { PageContainer, WithStandardTopMargin } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -21,9 +17,9 @@ const errorRef = React.createRef<GenericErrorMessageRef>();
 const pageTopRef = React.createRef<HTMLDivElement>();
 
 const loader = (
-  <PageContainer>
+  <WithStandardTopMargin>
     <Spinner loadingMessage="Loading your profile ..." />
-  </PageContainer>
+  </WithStandardTopMargin>
 );
 
 export const Settings = (_: { path?: string }) => {
@@ -79,12 +75,12 @@ export const Settings = (_: { path?: string }) => {
   const content = () => (
     <>
       <div ref={pageTopRef} css={{ display: "none" }} />
-      <PageContainer>
+      <WithStandardTopMargin>
         <span css={textSmall}>
           These details will only be visible to you and the Guardian.
         </span>
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <SettingsFormSection
           user={user}
           saveUser={saveUser}
@@ -93,24 +89,18 @@ export const Settings = (_: { path?: string }) => {
           onDone={scrollToTop}
           emailMessage={emailMessage}
         />
-      </PageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.settings}
-        title="Settings"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.settings}>
-        {!error || (
-          <PageContainer>
-            <GenericErrorMessage ref={errorRef} />
-          </PageContainer>
-        )}
-        {loading ? loader : content()}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer selectedNavItem={NAV_LINKS.settings} pageTitle="Settings">
+      {!error || (
+        <WithStandardTopMargin>
+          <GenericErrorMessage ref={errorRef} />
+        </WithStandardTopMargin>
+      )}
+      {loading ? loader : content()}
+    </PageContainer>
   );
 };

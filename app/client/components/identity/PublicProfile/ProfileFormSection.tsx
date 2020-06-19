@@ -2,7 +2,7 @@ import { Form, FormikProps, withFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { Button } from "../../buttons";
-import { PageContainer } from "../../page";
+import { WithStandardTopMargin } from "../../page";
 import { FormTextAreaField, FormTextField } from "../Form/FormField";
 import { ErrorTypes, User } from "../models";
 import { PageSection } from "../PageSection";
@@ -86,10 +86,10 @@ const EnhancedProfileForm = withFormik({
 
 export const ProfileFormSection = (props: ProfileFormSectionProps) => {
   return (
-    <PageContainer>
+    <WithStandardTopMargin>
       <PageSection title="Profile">
         <EnhancedProfileForm {...props} />
       </PageSection>
-    </PageContainer>
+    </WithStandardTopMargin>
   );
 };

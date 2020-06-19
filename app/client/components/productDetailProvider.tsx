@@ -11,7 +11,7 @@ import {
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 
-interface ProductDetailProviderProps extends RouteableStepProps {
+export interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
   allowCancelledSubscription?: true;
   loadingMessagePrefix: string;

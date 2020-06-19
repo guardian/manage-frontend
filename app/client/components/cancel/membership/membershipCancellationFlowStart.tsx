@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import React from "react";
 import palette from "../../../colours";
 import { trackEvent } from "../../analytics";
-import { PageContainerSection } from "../../page";
+import { WithStandardTopMargin } from "../../page";
 import { hrefStyle } from "../cancellationConstants";
 
 const cssBullet = (flexBasis: string = "50%") =>
@@ -71,7 +71,7 @@ export const membershipCancellationFlowStart = () => (
         </li>
       </ul>
     </div>
-    <PageContainerSection>
+    <WithStandardTopMargin>
       <p
         css={{
           fontSize: "1rem",
@@ -87,6 +87,6 @@ export const membershipCancellationFlowStart = () => (
         <br />
         Can you take a moment to tell us why?
       </p>
-    </PageContainerSection>
+    </WithStandardTopMargin>
   </>
 );

@@ -24,8 +24,6 @@ import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { NAV_LINKS } from "../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { Spinner } from "../spinner";
 import { InfoIcon } from "../svgs/infoIcon";
@@ -208,33 +206,14 @@ export class HolidayDateChooser extends React.Component<
                     value={this.state || {}}
                   >
                     <WizardStep routeableStepProps={this.props}>
-                      <>
-                        <PageHeaderContainer
-                          title="Manage suspensions"
-                          breadcrumbs={[
-                            {
-                              title: NAV_LINKS.accountOverview.title,
-                              link: NAV_LINKS.accountOverview.link
-                            },
-                            {
-                              title: "Manage suspensions",
-                              currentPage: true
-                            }
-                          ]}
-                        />
-                        <PageNavAndContentContainer
-                          selectedNavItem={NAV_LINKS.accountOverview}
-                        >
-                          {this.innerContent(
-                            holidayStopsResponse,
-                            existingHolidayStopToAmendId,
-                            renewalDateMoment,
-                            combinedIssuesImpactedPerYear,
-                            allIssuesImpactedPerYear,
-                            productDetail
-                          )}
-                        </PageNavAndContentContainer>
-                      </>
+                      {this.innerContent(
+                        holidayStopsResponse,
+                        existingHolidayStopToAmendId,
+                        renewalDateMoment,
+                        combinedIssuesImpactedPerYear,
+                        allIssuesImpactedPerYear,
+                        productDetail
+                      )}
                     </WizardStep>
                   </HolidayDateChooserStateContext.Provider>
                 );

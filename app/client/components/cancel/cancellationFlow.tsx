@@ -12,13 +12,9 @@ import {
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
+import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
-import {
-  PageContainerSection,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../page";
-import { ProductDetailProvider } from "../productDetailProvider";
+import { WithStandardTopMargin } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
@@ -87,7 +83,7 @@ class ReasonPicker extends React.Component<
         {this.props.productType.cancellation.startPageBody(
           this.props.productDetail.subscription
         )}
-        <PageContainerSection>
+        <WithStandardTopMargin>
           <h4>Please select a reason</h4>
           <form css={css({ marginBottom: "30px" })}>
             {options.map((reason: MultiRouteableProps) => (
@@ -170,7 +166,7 @@ class ReasonPicker extends React.Component<
               <ReturnToAccountOverviewButton />
             </div>
           </div>
-        </PageContainerSection>
+        </WithStandardTopMargin>
       </>
     );
 
@@ -180,26 +176,7 @@ class ReasonPicker extends React.Component<
           value={this.state.cancellationPolicy}
         >
           <WizardStep routeableStepProps={this.props}>
-            <>
-              <PageHeaderContainer
-                title={`Cancel ${this.props.productType.friendlyName}`}
-                breadcrumbs={[
-                  {
-                    title: NAV_LINKS.accountOverview.title,
-                    link: NAV_LINKS.accountOverview.link
-                  },
-                  {
-                    title: "Cancel membership",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={NAV_LINKS.accountOverview}
-              >
-                {innerContent}
-              </PageNavAndContentContainer>
-            </>
+            {innerContent}
           </WizardStep>
         </CancellationPolicyContext.Provider>
       </MembersDataApiItemContext.Provider>
@@ -210,10 +187,22 @@ class ReasonPicker extends React.Component<
 export const CancellationFlow = (
   props: RouteableStepPropsWithCancellationFlow
 ) => (
-  <ProductDetailProvider
+  <FlowWrapper
     {...props}
     loadingMessagePrefix="Checking the status of your"
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle={`Cancel ${props.productType.friendlyName}`}
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: `Cancel ${props.productType.friendlyName}`,
+        currentPage: true
+      }
+    ]}
   >
     {productDetail => <ReasonPicker {...props} productDetail={productDetail} />}
-  </ProductDetailProvider>
+  </FlowWrapper>
 );

@@ -12,11 +12,9 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
-import { QuestionsFooter } from "../../footer/in_page/questionsFooter";
+import { FlowWrapper } from "../../FlowWrapper";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageHeaderContainer, PageNavAndContentContainer } from "../../page";
-import { ProductDetailProvider } from "../../productDetailProvider";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
@@ -32,8 +30,6 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-
-export const paymentQuestionsTopicString = "updating your payment details";
 
 export enum PaymentMethod {
   card = "Card",
@@ -235,30 +231,8 @@ class PaymentUpdaterStep extends React.Component<
           <NavigateFnContext.Provider
             value={{ navigate: this.props.routeableStepProps.navigate }}
           >
-            <WizardStep
-              routeableStepProps={this.props.routeableStepProps}
-              extraFooterComponents={
-                <QuestionsFooter topic={paymentQuestionsTopicString} />
-              }
-            >
-              <PageHeaderContainer
-                title="Manage payment method"
-                breadcrumbs={[
-                  {
-                    title: NAV_LINKS.accountOverview.title,
-                    link: NAV_LINKS.accountOverview.link
-                  },
-                  {
-                    title: "Manage payment method",
-                    currentPage: true
-                  }
-                ]}
-              />
-              <PageNavAndContentContainer
-                selectedNavItem={NAV_LINKS.accountOverview}
-              >
-                {innerContent}
-              </PageNavAndContentContainer>
+            <WizardStep routeableStepProps={this.props.routeableStepProps}>
+              {innerContent}
             </WizardStep>
           </NavigateFnContext.Provider>
         </NewPaymentMethodContext.Provider>
@@ -334,10 +308,22 @@ class PaymentUpdaterStep extends React.Component<
 }
 
 export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <ProductDetailProvider
+  <FlowWrapper
     {...props}
     loadingMessagePrefix="Retrieving current payment details for your"
     allowCancelledSubscription
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle="Manage payment method"
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: "Manage payment method",
+        currentPage: true
+      }
+    ]}
   >
     {productDetail => (
       <PaymentUpdaterStep
@@ -345,5 +331,5 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => (
         productDetail={productDetail}
       />
     )}
-  </ProductDetailProvider>
+  </FlowWrapper>
 );

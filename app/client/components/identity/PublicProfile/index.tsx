@@ -2,11 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
-import {
-  PageContainer,
-  PageHeaderContainer,
-  PageNavAndContentContainer
-} from "../../page";
+import { PageContainer, WithStandardTopMargin } from "../../page";
 import { Spinner } from "../../spinner";
 import {
   GenericErrorMessage,
@@ -61,25 +57,25 @@ export const PublicProfile = (_: { path?: string }) => {
   }, [error]);
 
   const loader = (
-    <PageContainer>
+    <WithStandardTopMargin>
       <Spinner loadingMessage="Loading your profile ..." />
-    </PageContainer>
+    </WithStandardTopMargin>
   );
 
   const usernameDisplay = (u: User) => (
     <>
-      <PageContainer>
+      <WithStandardTopMargin>
         <PageSection title="Username">{u.username}</PageSection>
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </PageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   const content = () => (
     <>
-      <PageContainer>
+      <WithStandardTopMargin>
         <p css={{ fontSize: "14px" }}>
           These details will be publicly visible to everyone who sees your
           profile in the{" "}
@@ -88,10 +84,10 @@ export const PublicProfile = (_: { path?: string }) => {
           </a>{" "}
           section.
         </p>
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </PageContainer>
+      </WithStandardTopMargin>
       {hasUsername(user) ? usernameDisplay(user) : null}
       <ProfileFormSection
         user={user}
@@ -99,27 +95,24 @@ export const PublicProfile = (_: { path?: string }) => {
         onError={handleGeneralError}
         onSuccess={setUser}
       />
-      <PageContainer>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </PageContainer>
-      <PageContainer>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
         <AvatarSection userId={user.id} />
-      </PageContainer>
+      </WithStandardTopMargin>
     </>
   );
 
   return (
-    <>
-      <PageHeaderContainer
-        selectedNavItem={NAV_LINKS.profile}
-        title="Edit your profile"
-      />
-      <PageNavAndContentContainer selectedNavItem={NAV_LINKS.profile}>
-        <PageContainer>
-          {error ? <GenericErrorMessage ref={errorRef} /> : null}
-        </PageContainer>
-        {loading ? loader : content()}
-      </PageNavAndContentContainer>
-    </>
+    <PageContainer
+      selectedNavItem={NAV_LINKS.profile}
+      pageTitle="Edit your profile"
+    >
+      <WithStandardTopMargin>
+        {error ? <GenericErrorMessage ref={errorRef} /> : null}
+      </WithStandardTopMargin>
+      {loading ? loader : content()}
+    </PageContainer>
   );
 };
