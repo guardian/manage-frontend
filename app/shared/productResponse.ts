@@ -27,12 +27,6 @@ export const formatDate = (shortForm: string) => {
 
 export const MDA_TEST_USER_HEADER = "X-Gu-Membership-Test-User";
 
-export const replaceAlertTextCTA = (alertText: string) =>
-  alertText.replace(
-    /Please check .*/g,
-    "Please check that the payment details shown are up to date."
-  );
-
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
   b.joinDate.localeCompare(a.joinDate);
 

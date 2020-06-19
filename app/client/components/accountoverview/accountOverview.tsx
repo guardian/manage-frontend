@@ -8,7 +8,6 @@ import {
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail,
-  replaceAlertTextCTA,
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
@@ -20,7 +19,7 @@ import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
 import { NAV_LINKS } from "../nav/navConfig";
 import { PageContainer } from "../page";
-import { ProblemAlert } from "../ProblemAlert";
+import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
 import {
   SupportTheGuardianButton,
   SupportTheGuardianButtonProps
@@ -50,7 +49,7 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
     return <EmptyAccountOverview />;
   }
 
-  const firstPaymentFailure = allProductDetails.find(_ => _.alertText);
+  const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
 
   const subHeadingCss = css`
     margin: ${space[12]}px 0 ${space[6]}px;
@@ -64,24 +63,9 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
 
   return (
     <>
-      {firstPaymentFailure?.alertText && (
-        <ProblemAlert
-          title="A payment needs your attention"
-          message={replaceAlertTextCTA(firstPaymentFailure.alertText)}
-          button={{
-            title: "Update payment method",
-            link: `/payment/${
-              GROUPED_PRODUCT_TYPES[
-                firstPaymentFailure.mmaCategory
-              ].mapGroupedToSpecific(firstPaymentFailure).urlPart
-            }`,
-            state: firstPaymentFailure
-          }}
-          additionalcss={css`
-            margin-top: 30px;
-          `}
-        />
-      )}
+      <PaymentFailureAlertIfApplicable
+        productDetail={maybeFirstPaymentFailure}
+      />
 
       {Object.entries(mmaCategoryToProductDetails).map(
         ([mmaCategory, productDetails]) => {

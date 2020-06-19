@@ -8,7 +8,6 @@ import React from "react";
 import {
   MembersDataApiItemContext,
   ProductDetail,
-  replaceAlertTextCTA,
   Subscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
@@ -22,6 +21,7 @@ import {
   RouteableStepProps,
   WizardStep
 } from "../../wizardRouterAdapter";
+import { augmentPaymentFailureAlertText } from "../paymentFailureAlertIfApplicable";
 import { PayPalDisplay } from "../paypalDisplay";
 import { CardInputForm } from "./card/cardInputForm";
 import { CurrentPaymentDetails } from "./currentPaymentDetails";
@@ -197,7 +197,9 @@ class PaymentUpdaterStep extends React.Component<
               <div>
                 <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
                 <span>
-                  {replaceAlertTextCTA(this.props.productDetail.alertText)}
+                  {augmentPaymentFailureAlertText(
+                    this.props.productDetail.alertText
+                  )}
                 </span>
               </div>
             )}
