@@ -34,6 +34,7 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
+import { InfoSection } from "../../infoSection";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
 import {
@@ -333,29 +334,10 @@ const FormContainer = (props: FormContainerProps) => {
                 {Object.values(
                   props.contactIdToArrayOfProductDetailAndProductType
                 ).flatMap(flattenEquivalent).length > 1 && (
-                  <p
-                    css={css`
-                      ${textSans.medium()};
-                      background-color: ${palette.neutral[97]};
-                      padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
-                      margin-bottom: 12px;
-                      position: relative;
-                    `}
-                  >
-                    <i
-                      css={css`
-                        width: 17px;
-                        height: 17px;
-                        position: absolute;
-                        top: ${space[5]}px;
-                        left: ${space[5]}px;
-                      `}
-                    >
-                      <InfoIconDark fillColor={palette.brand[500]} />
-                    </i>
+                  <InfoSection>
                     Please note that changing your address here will update the
                     delivery address for all of your subscriptions.
-                  </p>
+                  </InfoSection>
                 )}
                 {(formStatus === formStates.INIT ||
                   formStatus === formStates.PENDING ||

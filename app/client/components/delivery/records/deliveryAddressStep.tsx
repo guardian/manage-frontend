@@ -29,6 +29,7 @@ import { flattenEquivalent } from "../../../utils";
 import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { COUNTRIES } from "../../identity/models";
+import { InfoSection } from "../../infoSection";
 import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
@@ -169,29 +170,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     return (
       <>
         {productsAffected.length > 1 && (
-          <p
-            css={css`
-              ${textSans.medium()};
-              background-color: ${palette.neutral[97]};
-              padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
-              margin-bottom: 12px;
-              position: relative;
-            `}
-          >
-            <i
-              css={css`
-                width: 17px;
-                height: 17px;
-                position: absolute;
-                top: ${space[5]}px;
-                left: ${space[5]}px;
-              `}
-            >
-              <InfoIconDark fillColor={palette.brand[500]} />
-            </i>
+          <InfoSection>
             Please note that changing your address here will update the delivery
             address for all of your subscriptions.
-          </p>
+          </InfoSection>
         )}
         <form
           action="#"
