@@ -54,7 +54,7 @@ export const ReturnToAccountOverviewButton = () => (
 );
 
 interface CurrentStepProps {
-  path: string;
+  path: "/";
   content: React.ReactNode;
 }
 
