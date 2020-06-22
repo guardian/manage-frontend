@@ -12,8 +12,7 @@ import {
   isGift,
   isPaidSubscriptionPlan,
   isSixForSix,
-  ProductDetail,
-  replaceAlertTextCTA
+  ProductDetail
 } from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
@@ -27,8 +26,8 @@ import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
+import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
 import { PayPalDisplay } from "../payment/paypalDisplay";
-import { ProblemAlert } from "../ProblemAlert";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
@@ -79,20 +78,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
 
   return (
     <>
-      {productDetail.alertText && (
-        <ProblemAlert
-          title="A payment needs your attention"
-          message={replaceAlertTextCTA(productDetail.alertText)}
-          button={{
-            title: "Update payment method",
-            link: `/payment/${specificProductType.urlPart}`,
-            state: productDetail
-          }}
-          additionalcss={css`
-            margin-top: 30px;
-          `}
-        />
-      )}
+      <PaymentFailureAlertIfApplicable productDetail={productDetail} />
       <div
         css={css`
           ${subHeadingBorderTopCss}
