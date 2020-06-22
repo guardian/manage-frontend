@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import React from "react";
+import { ProductDetail } from "../../../../shared/productResponse";
 import palette from "../../../colours";
 import { trackEvent } from "../../analytics";
 import { WithStandardTopMargin } from "../../page";
@@ -40,37 +41,39 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
   </a>
 );
 
-export const membershipCancellationFlowStart = () => (
+export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
   <>
-    <div
-      css={{
-        backgroundColor: palette.neutral["6"],
-        padding: "10px 20px",
-        marginBottom: "40px"
-      }}
-    >
-      <h4
+    {tier !== "Friend" && (
+      <div
         css={{
-          marginTop: "0",
-          marginBottom: "10px"
+          backgroundColor: palette.neutral["6"],
+          padding: "10px 20px",
+          marginBottom: "40px"
         }}
       >
-        If you cancel your Membership you will miss out on:
-      </h4>
-      <ul css={benefitsCss}>
-        <li css={cssBullet()}>Access to events tickets</li>
-        <li css={cssBullet()}>Exclusive emails from our membership editor</li>
-        <li
+        <h4
           css={{
-            ...cssBullet("100%"),
-            paddingTop: "5px"
+            marginTop: "0",
+            marginBottom: "10px"
           }}
         >
-          Free access to the premium tier of the Guardian app -{" "}
-          {clickHereToFindOutMoreAboutOurNewFeatures}
-        </li>
-      </ul>
-    </div>
+          If you cancel your Membership you will miss out on:
+        </h4>
+        <ul css={benefitsCss}>
+          <li css={cssBullet()}>Access to events tickets</li>
+          <li css={cssBullet()}>Exclusive emails from our membership editor</li>
+          <li
+            css={{
+              ...cssBullet("100%"),
+              paddingTop: "5px"
+            }}
+          >
+            Free access to the premium tier of the Guardian app -{" "}
+            {clickHereToFindOutMoreAboutOurNewFeatures}
+          </li>
+        </ul>
+      </div>
+    )}
     <WithStandardTopMargin>
       <p
         css={{
