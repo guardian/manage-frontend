@@ -16,6 +16,7 @@ import {
 } from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
+  ProductType,
   shouldHaveHolidayStopsFlow
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
@@ -432,55 +433,75 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           </>
         )}
 
-      {specificProductType.cancellation && !hasCancellationPending && (
-        <Link
-          css={css`
-                  display: block;
-                  float: right;
-                  margin: ${space[24]}px 0 0 auto;
-                  ${textSans.medium()}
-                  color: ${palette.brand["500"]};
-                  border-bottom: 1px solid ${palette.neutral["100"]};
-                  transition: border-color .15s ease-out;
-                  :hover: {
-                    borderBottom: 1px solid ${palette.brand["400"]};
-                  }
-                `}
-          to={"/cancel/" + specificProductType.urlPart}
-          state={productDetail}
-        >
-          Cancel {groupedProductType.friendlyName}
-        </Link>
+      {!hasCancellationPending && (
+        <CancellationCTA
+          productDetail={productDetail}
+          friendlyName={groupedProductType.friendlyName}
+          specificProductType={specificProductType}
+        />
       )}
     </>
   );
 };
 
-export const ManageProduct = (props: RouteableStepPropsForGrouped) => {
-  const pageTitle = `Manage ${props.groupedProductType.friendlyName}`;
+interface CancellationCTAProps {
+  productDetail: ProductDetail;
+  friendlyName: string;
+  specificProductType: ProductType;
+}
+
+const CancellationCTA = (props: CancellationCTAProps) => {
+  const shouldContactUsToCancel =
+    !props.productDetail.selfServiceCancellation.isAllowed ||
+    !props.specificProductType.cancellation;
   return (
-    <FlowWrapper
-      {...props}
-      productType={props.groupedProductType}
-      loadingMessagePrefix="Retrieving details of your"
-      allowCancelledSubscription
-      forceRedirectToAccountOverviewIfNoBrowserHistoryState
-      selectedNavItem={NAV_LINKS.accountOverview}
-      pageTitle={pageTitle}
-      breadcrumbs={[
-        {
-          title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
-        },
-        {
-          title: pageTitle,
-          currentPage: true
-        }
-      ]}
+    <div
+      css={css`
+        margin: ${space[24]}px 0 0 auto;
+        ${textSans.medium()}
+        color: ${palette.neutral[46]};
+      `}
     >
-      {productDetail => (
-        <InnerContent props={props} productDetail={productDetail} />
-      )}
-    </FlowWrapper>
+      {shouldContactUsToCancel &&
+        "Would you like to cancel your subscription? "}
+      <Link
+        css={css`
+          color: ${palette.brand["500"]};
+        `}
+        to={"/cancel/" + props.specificProductType.urlPart}
+        state={props.productDetail}
+      >
+        {shouldContactUsToCancel
+          ? "Contact us"
+          : `Cancel ${props.friendlyName}`}
+      </Link>
+    </div>
   );
 };
+
+export const ManageProduct = (props: RouteableStepPropsForGrouped) => (
+  <FlowWrapper
+    {...props}
+    productType={props.groupedProductType}
+    loadingMessagePrefix="Retrieving details of your"
+    allowCancelledSubscription
+    forceRedirectToAccountOverviewIfNoBrowserHistoryState
+    selectedNavItem={NAV_LINKS.accountOverview}
+    pageTitle={`Manage ${props.groupedProductType.shortFriendlyName ||
+      props.groupedProductType.friendlyName}`}
+    breadcrumbs={[
+      {
+        title: NAV_LINKS.accountOverview.title,
+        link: NAV_LINKS.accountOverview.link
+      },
+      {
+        title: `Manage ${props.groupedProductType.friendlyName}`,
+        currentPage: true
+      }
+    ]}
+  >
+    {productDetail => (
+      <InnerContent props={props} productDetail={productDetail} />
+    )}
+  </FlowWrapper>
+);

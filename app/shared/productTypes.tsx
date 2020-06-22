@@ -154,6 +154,7 @@ export interface ProductType {
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
+  cancelledCopy?: string;
   showTrialRemainingIfApplicable?: true;
   updateAmountMdaEndpoint?: string;
   holidayStops?: HolidayStopFlowProperties;
@@ -162,7 +163,6 @@ export interface ProductType {
     productFilenamePart: string;
     explicitSingleDayOfWeek?: string;
   };
-  cancelledCopy?: string;
   shouldShowJoinDateNotStartDate?: true;
 }
 

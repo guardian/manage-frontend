@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { CallCentreNumbersProps } from "./callCentreNumbers";
@@ -17,24 +17,82 @@ const callCenterStyles = css({
   fontWeight: "normal"
 });
 
-export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
-  const [accordianStatus, setAccordianStatus] = useState([
-    {
-      isOpen: true
-    },
-    {
-      isOpen: false
-    },
-    {
-      isOpen: false
-    }
-  ]);
+export type PhoneRegionKey = "US" | "AUS" | "UK & ROW";
 
-  const sectionTitleCss = (sectionNum: number) => `
+interface PhoneRegion {
+  key: PhoneRegionKey;
+  title: string;
+  openingHours: string;
+  phoneNumbers: Array<{ phoneNumber: string; suffix?: string }>;
+}
+
+const EMAIL_ADDRESS: string = "customer.help@theguardian.com";
+
+const PHONE_DATA: PhoneRegion[] = [
+  {
+    key: "UK & ROW",
+    title: "United Kingdom, Europe and rest of world",
+    openingHours: "8am - 8pm on weekdays, 8am - 6pm at weekends (GMP/BST)",
+    phoneNumbers: [
+      {
+        phoneNumber: "+44 (0) 330 333 6790"
+      }
+    ]
+  },
+  {
+    key: "AUS",
+    title: "Australia, New Zealand, and Asia Pacific",
+    openingHours: "9am - 5pm Monday - Friday (AEDT)",
+    phoneNumbers: [
+      {
+        phoneNumber: "1800 773 766",
+        suffix: "(within Australia)"
+      },
+      {
+        phoneNumber: "+61 28076 8599",
+        suffix: "(outside Australia)"
+      }
+    ]
+  },
+  {
+    key: "US",
+    title: "Canada and USA",
+    openingHours: "9am - 5pm on weekdays (EST/EDT)",
+    phoneNumbers: [
+      {
+        phoneNumber: "1-844-632-2010",
+        suffix: "(toll free USA)"
+      },
+      {
+        phoneNumber: "+1 917-900-4663",
+        suffix: "(outside USA)"
+      }
+    ]
+  }
+];
+
+interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
+  hideEmailAddress?: boolean;
+  phoneRegionFilterKeys?: PhoneRegionKey[];
+}
+
+export const CallCentreEmailAndNumbers = (
+  props: CallCentreEmailAndNumbersProps
+) => {
+  const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>(0);
+
+  const filteredPhoneData = PHONE_DATA.filter(
+    phoneRegion =>
+      !props.phoneRegionFilterKeys ||
+      props.phoneRegionFilterKeys.includes(phoneRegion.key)
+  );
+
+  const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
     ${textSans.medium()};
     margin: 0;
-    padding: 12px 17px 12px 12px;
+    padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
     position: relative;
+    cursor: pointer;
     :after {
       content: "";
       display: block;
@@ -45,12 +103,12 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
       position: absolute;
       top: 50%;
       transform: translateY(-50%) ${
-        accordianStatus[sectionNum].isOpen ? "rotate(-45deg)" : "rotate(135deg)"
+        isOpen ? "rotate(-45deg)" : "rotate(135deg)"
       };
       transition: transform 0.4s;
       right: 17px;
     }
-    ${sectionNum > 0 &&
+    ${isNotFirstOption &&
       `
       :before {
         content: "";
@@ -80,19 +138,13 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
       font-weight: bold;
   `;
 
-  const innerSectionTitleCss = (isTopTitle: boolean) => `
+  const innerSectionTitleCss = `
     ${textSans.medium()};
-    margin: ${isTopTitle ? "6px 0 4px" : "20px 0 4px"};
+    margin: 6px 0 4px;
   `;
 
   const handleSectionClick = (sectionNum: number) => () => {
-    setAccordianStatus(
-      accordianStatus.map((section, sectionIndex) =>
-        sectionIndex === sectionNum
-          ? { isOpen: !section.isOpen }
-          : { isOpen: false }
-      )
-    );
+    setIndexOfOpenSection(indexOfOpenSection === sectionNum ? -1 : sectionNum);
   };
   return (
     <div css={callCenterStyles}>
@@ -103,201 +155,80 @@ export const CallCentreEmailAndNumbers = (props: CallCentreNumbersProps) => {
           border: 1px solid ${palette.neutral["86"]};
         `}
       >
-        <div css={css`subsectionCss`}>
-          <h2
-            css={css`
-              ${sectionTitleCss(0)}
-            `}
-            onClick={handleSectionClick(0)}
-          >
-            United Kingdom, Europe and rest of world
-          </h2>
-          <div
-            css={css`
-              ${innerSectionCss(accordianStatus[0].isOpen)}
-            `}
-          >
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Email:
-            </h4>
-            <span
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
-              customer.help@theguardian.com
-            </span>
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Phone:
-            </h4>
-            <p
-              css={css`
-                ${innerSectionPCss}
-              `}
-            >
-              <span
+        {filteredPhoneData.map((phoneRegion, index) => {
+          const isOpen = index === indexOfOpenSection;
+          const isNotFirstOption = index > 0;
+          return (
+            <div css={css`subsectionCss`} key={phoneRegion.key}>
+              <h2
                 css={css`
-                  ${innerSectionBlockSpanCss}
+                  ${sectionTitleCss(isOpen, isNotFirstOption)}
+                `}
+                onClick={handleSectionClick(index)}
+              >
+                {phoneRegion.title}
+              </h2>
+              <div
+                css={css`
+                  ${innerSectionCss(isOpen)}
                 `}
               >
-                +44 (0) 330 333 6790
-              </span>
-              8am - 8pm on weekdays, 8am - 6pm at weekends (GMP/BST)
-            </p>
-          </div>
-        </div>
-        <div css={css`subsectionCss`}>
-          <h2
-            css={css`
-              ${sectionTitleCss(1)}
-            `}
-            onClick={handleSectionClick(1)}
-          >
-            Australia, New Zealand, and Asia Pacific
-          </h2>
-          <div
-            css={css`
-              ${innerSectionCss(accordianStatus[1].isOpen)}
-            `}
-          >
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Email:
-            </h4>
-            <span
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
-              customer.help@theguardian.com
-            </span>
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Phone:
-            </h4>
-            <p
-              css={css`
-                ${innerSectionPCss}
-              `}
-            >
-              <span
-                css={css`
-                  ${innerSectionBlockSpanCss}
-                `}
-              >
-                1800 773 766{" "}
-                <span
+                {!props.hideEmailAddress && (
+                  <>
+                    <h4
+                      css={css`
+                        ${innerSectionTitleCss}
+                      `}
+                    >
+                      Email:
+                    </h4>
+                    <span
+                      css={css`
+                        ${textSans.medium({ fontWeight: "bold" })};
+                      `}
+                    >
+                      {EMAIL_ADDRESS}
+                    </span>
+                  </>
+                )}
+                <h4
                   css={css`
-                    font-weight: normal;
+                    ${innerSectionTitleCss}
                   `}
                 >
-                  (within Australia)
-                </span>
-              </span>
-              <span
-                css={css`
-                  ${innerSectionBlockSpanCss}
-                `}
-              >
-                +61 28076 8599{" "}
-                <span
+                  Phone:
+                </h4>
+                <p
                   css={css`
-                    font-weight: normal;
+                    ${innerSectionPCss}
                   `}
                 >
-                  (outside Australia)
-                </span>
-              </span>
-              9am - 5pm Monday - Friday (AEDT)
-            </p>
-          </div>
-        </div>
-        <div css={css`subsectionCss`}>
-          <h2
-            css={css`
-              ${sectionTitleCss(2)}
-            `}
-            onClick={handleSectionClick(2)}
-          >
-            Canada and USA
-          </h2>
-          <div
-            css={css`
-              ${innerSectionCss(accordianStatus[2].isOpen)}
-            `}
-          >
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Email:
-            </h4>
-            <span
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-              `}
-            >
-              customer.help@theguardian.com
-            </span>
-            <h4
-              css={css`
-                ${innerSectionTitleCss(true)}
-              `}
-            >
-              Phone:
-            </h4>
-            <p
-              css={css`
-                ${innerSectionPCss}
-              `}
-            >
-              <span
-                css={css`
-                  ${innerSectionBlockSpanCss}
-                `}
-              >
-                1-844-632-2010{" "}
-                <span
-                  css={css`
-                    font-weight: normal;
-                  `}
-                >
-                  (toll free USA)
-                </span>
-              </span>
-              <span
-                css={css`
-                  ${innerSectionBlockSpanCss}
-                `}
-              >
-                +1 917-900-4663{" "}
-                <span
-                  css={css`
-                    font-weight: normal;
-                  `}
-                >
-                  (outside USA)
-                </span>
-              </span>
-              9am - 5pm on weekdays (EST/EDT)
-            </p>
-          </div>
-        </div>
+                  {phoneRegion.phoneNumbers.map(({ phoneNumber, suffix }) => (
+                    <span
+                      key={phoneNumber}
+                      css={css`
+                        ${innerSectionBlockSpanCss}
+                      `}
+                    >
+                      {phoneNumber}
+                      {suffix && (
+                        <span
+                          css={css`
+                            font-weight: normal;
+                          `}
+                        >
+                          {" "}
+                          {suffix}
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                  {phoneRegion.openingHours}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
