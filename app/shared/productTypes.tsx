@@ -77,7 +77,7 @@ interface CancellationFlowProperties {
     productDetail: ProductDetail,
     productType: ProductType
   ) => (restOfFlow: RestOfCancellationFlow) => ReactNode;
-  startPageBody: (subscription: Subscription) => JSX.Element;
+  startPageBody: (productDetail: ProductDetail) => JSX.Element;
   startPageOfferEffectiveDateOptions?: true;
   hideReasonTitlePrefix?: true;
   alternateSummaryMainPara?: string;

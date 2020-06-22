@@ -85,7 +85,7 @@ class ReasonPicker extends React.Component<
           `}
         />
         {this.props.productType.cancellation.startPageBody(
-          this.props.productDetail.subscription
+          this.props.productDetail
         )}
         <WithStandardTopMargin>
           <h4>Please select a reason</h4>

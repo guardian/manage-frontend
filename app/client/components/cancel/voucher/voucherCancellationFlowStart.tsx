@@ -1,5 +1,5 @@
 import React from "react";
-import { getMainPlan, Subscription } from "../../../../shared/productResponse";
+import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
 import { WithStandardTopMargin } from "../../page";
 import { hrefStyle } from "../cancellationConstants";
@@ -11,7 +11,9 @@ const trackCancellationClickEvent = (eventLabel: string) => () =>
     eventLabel
   });
 
-export const voucherCancellationFlowStart = (subscription: Subscription) => {
+export const voucherCancellationFlowStart = ({
+  subscription
+}: ProductDetail) => {
   const mainPlan = getMainPlan(subscription);
 
   const isEligibleForFreeDigipackAccess =
