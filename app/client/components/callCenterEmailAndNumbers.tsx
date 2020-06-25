@@ -32,7 +32,7 @@ const PHONE_DATA: PhoneRegion[] = [
   {
     key: "UK & ROW",
     title: "United Kingdom, Europe and rest of world",
-    openingHours: "8am - 8pm on weekdays, 8am - 6pm at weekends (GMP/BST)",
+    openingHours: "8am - 8pm on weekdays, 8am - 6pm at weekends (GMT/BST)",
     phoneNumbers: [
       {
         phoneNumber: "+44 (0) 330 333 6790"
