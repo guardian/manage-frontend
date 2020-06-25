@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import React, { useEffect, useRef, useState } from "react";
-import { expanderButtonCss } from "../../expanderButton";
 import { minWidth } from "../../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../../styles/grid";
+import { expanderButtonCss } from "../expanderButton";
 import { ProfileIcon } from "../svgs/profileIcon";
 import { MenuSpecificNavItem, NAV_LINKS } from "./navConfig";
 

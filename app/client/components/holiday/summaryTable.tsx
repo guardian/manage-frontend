@@ -7,10 +7,10 @@ import {
   Subscription
 } from "../../../shared/productResponse";
 import palette from "../../colours";
-import { ExpanderButton } from "../../expanderButton";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
+import { ExpanderButton } from "../expanderButton";
 import { CollatedCredits } from "./collatedCredits";
 import { ExistingHolidayStopActions } from "./existingHolidayStopActions";
 import {
