@@ -170,10 +170,3 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
     shouldBeVisible: true
   };
 };
-
-export const getFuturePlanIfVisible = (subscription: Subscription) => {
-  const indexToFetch = subscription.currentPlans.length === 0 ? 1 : 0; // if main plan is using the first future plan use the 2nd future plan
-  return subscription.futurePlans
-    .filter(isPaidSubscriptionPlan)
-    .filter(plan => plan.shouldBeVisible)[indexToFetch]; // TODO: check if this is unsafe
-};
