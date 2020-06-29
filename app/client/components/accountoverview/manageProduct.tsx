@@ -35,6 +35,7 @@ import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
 import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
+import { NewsletterOptinForm } from "./newsletterOptinForm";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 const subHeadingTitleCss = `
@@ -432,6 +433,19 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             />
           </>
         )}
+
+      {specificProductType.showFrontPageNewsletterOptin && (
+        <>
+          <h2
+            css={css`
+              ${subHeadingCss}
+            `}
+          >
+            Newspaper Newsletter
+          </h2>
+          <NewsletterOptinForm />
+        </>
+      )}
 
       {!hasCancellationPending && (
         <CancellationCTA
