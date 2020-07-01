@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import palette from "../../../colours";
 import { DropMenu } from "../DropMenu";
 import { MarketingPreference } from "../MarketingPreference";
-import { ConsentOption, Theme } from "../models";
+import { ConsentOption, FRONT_PAGE_NEWSLETTER_ID, Theme } from "../models";
 import { PageSection } from "../PageSection";
 
 type ClickHandler = (id: string) => {};
@@ -59,6 +59,7 @@ const newsletterPreferenceGroups = (
     <DropMenu key={theme} color={colors[theme]} title={theme}>
       {newsletters
         .filter(n => n.theme === theme)
+        .filter(n => n.id !== FRONT_PAGE_NEWSLETTER_ID) // TODO: (Temporary solution to filter out restricted "Daily Front Page" newsletter). Add functionality in identity to return newsletter restrictions
         .map(n => newsletterPreference(n, clickHandler))}
     </DropMenu>
   ));
