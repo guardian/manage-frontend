@@ -221,6 +221,13 @@ export const Help = (_: RouteComponentProps) => (
                         color: ${palette.neutral["7"]};
                       }
                     `}
+                    onClick={() => {
+                      trackEvent({
+                        eventCategory: "href",
+                        eventAction: "click",
+                        eventLabel: faqLink.link
+                      });
+                    }}
                   >
                     {faqLink.title}
                   </a>
@@ -267,6 +274,13 @@ export const Help = (_: RouteComponentProps) => (
                     color: ${palette.brand.main};
                   }
                 `}
+                onClick={() => {
+                  trackEvent({
+                    eventCategory: "href",
+                    eventAction: "click",
+                    eventLabel: seeAllNavItem.link
+                  });
+                }}
               >
                 {seeAllNavItem.title}
               </a>
