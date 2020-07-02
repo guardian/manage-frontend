@@ -1,3 +1,4 @@
+import { PaymentMethod } from "@stripe/stripe-js";
 import * as React from "react";
 import { Card, Subscription } from "../../../../../shared/productResponse";
 import { CardDisplay } from "../../cardDisplay";
@@ -13,9 +14,8 @@ function isSubscriptionWithCard(
   return subscription !== undefined && subscription.card !== undefined;
 }
 
-interface StripePaymentMethod {
-  id: string;
-  card: stripe.Card;
+export interface StripePaymentMethod extends PaymentMethod {
+  card: PaymentMethod.Card;
 }
 
 interface CardUpdateResponse {

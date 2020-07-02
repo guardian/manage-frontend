@@ -1,9 +1,9 @@
-import React from "react";
 import {
-  CardCVCElement,
+  CardCvcElement,
   CardExpiryElement,
   CardNumberElement
-} from "react-stripe-elements";
+} from "@stripe/react-stripe-js";
+import React from "react";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
 
@@ -29,8 +29,10 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
     >
       <FieldWrapper width="500px" label="Card Number">
         <CardNumberElement
-          style={baseStyle}
-          placeholder="Card Number"
+          options={{
+            style: baseStyle,
+            placeholder: "Card Number"
+          }}
           onReady={props.markElementReady("CardNumberElement")}
         />
       </FieldWrapper>
@@ -43,13 +45,17 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
       >
         <FieldWrapper width="240px" label="Expiry Date">
           <CardExpiryElement
-            style={baseStyle}
+            options={{
+              style: baseStyle
+            }}
             onReady={props.markElementReady("CardExpiryElement")}
           />
         </FieldWrapper>
         <FieldWrapper width="240px" label="CVC">
-          <CardCVCElement
-            style={baseStyle}
+          <CardCvcElement
+            options={{
+              style: baseStyle
+            }}
             onReady={props.markElementReady("CardCVCElement")}
           />
         </FieldWrapper>

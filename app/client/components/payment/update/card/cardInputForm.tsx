@@ -1,17 +1,13 @@
 import * as Sentry from "@sentry/browser";
-import React from "react";
-import { Elements, injectStripe, StripeProvider } from "react-stripe-elements";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect, useState } from "react";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
 } from "../../../../../shared/stripeSetupIntent";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-import {
-  StripeCardInputForm,
-  StripeSetupIntentDetails
-} from "./stripeCardInputForm";
-
-const InjectedStripeCardInputForm = injectStripe(StripeCardInputForm);
+import { StripeCardInputForm } from "./stripeCardInputForm";
 
 declare let window: Window & {
   Stripe: any;
@@ -33,30 +29,20 @@ export interface CardInputFormProps {
   ) => void;
 }
 
-interface CardInputFormState extends StripeSetupIntentDetails {
-  stripe?: stripe.Stripe;
-  didCompleteRecaptcha?: true;
-}
+export const CardInputForm = (props: CardInputFormProps) => {
+  const [didCompleteRecaptcha, setDidCompleteRecaptcha] = useState<boolean>(
+    false
+  );
+  const [stripeSetupIntent, setStripeSetupIntent] = useState<
+    StripeSetupIntent
+  >();
+  const [stripeSetupIntentError, setstripeSetupIntentError] = useState<Error>();
 
-export class CardInputForm extends React.Component<
-  CardInputFormProps,
-  CardInputFormState
-> {
-  public state: CardInputFormState = {};
+  const stripePromise = loadStripe(props.stripeApiKey);
 
-  public componentDidMount(): void {
-    if (window.Stripe) {
-      // prevents multiple loading of Stripe.js
-      this.updateStripeStateFromWindow();
-    } else {
-      const script = document.createElement("script");
-      script.setAttribute("src", "https://js.stripe.com/v3/");
-      script.addEventListener("load", this.updateStripeStateFromWindow);
-      document.head.appendChild(script);
-    }
-
+  useEffect(() => {
     if (window.grecaptcha) {
-      this.renderReCaptcha();
+      renderReCaptcha();
     } else {
       const script = document.createElement("script");
       script.setAttribute(
@@ -64,72 +50,28 @@ export class CardInputForm extends React.Component<
         "https://www.google.com/recaptcha/api.js?onload=v2ReCaptchaOnLoadCallback&render=explicit"
       );
       // tslint:disable-next-line:no-object-mutation
-      window.v2ReCaptchaOnLoadCallback = this.renderReCaptcha;
+      window.v2ReCaptchaOnLoadCallback = renderReCaptcha;
       document.head.appendChild(script);
     }
-  }
+  }, []);
 
-  public render(): JSX.Element {
-    return this.state.didCompleteRecaptcha ? (
-      <StripeProvider stripe={this.state.stripe || null}>
-        <Elements
-          fonts={[
-            {
-              src:
-                "url(https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2)",
-              family: "Guardian Text Sans Web",
-              style: "normal"
-            }
-          ]}
-        >
-          <InjectedStripeCardInputForm {...this.props} {...this.state} />
-        </Elements>
-      </StripeProvider>
-    ) : (
-      <div css={{ marginBottom: "30px" }}>
-        <p>
-          Before entering new card details please confirm you're not a robot
-          below to help us prevent card fraud. By ticking this box, you agree to
-          let Google perform a security check to confirm you are a human. Please
-          refer to their{" "}
-          <a
-            href="https://policies.google.com/terms"
-            target="_blank"
-            css={hrefStyle}
-          >
-            Terms
-          </a>{" "}
-          and{" "}
-          <a
-            href="https://policies.google.com/privacy"
-            target="_blank"
-            css={hrefStyle}
-          >
-            Privacy
-          </a>{" "}
-          policies.
-        </p>
-        <div id="recaptcha" />
-      </div>
-    );
-  }
-
-  private renderReCaptcha = () =>
+  const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
       callback: (recaptchaToken: string) =>
         // 1sec delay is so the user see's the green tick for a short period before proceeding
-        setTimeout(() => this.loadSetupIntent(recaptchaToken), 1000)
+        setTimeout(() => loadSetupIntent(recaptchaToken), 1000)
     });
+  };
 
-  private loadSetupIntent = (recaptchaToken: string) => {
-    this.setState({ didCompleteRecaptcha: true });
+  const loadSetupIntent = (recaptchaToken: string) => {
+    setDidCompleteRecaptcha(true);
 
     fetch("/api/payment/card", {
       method: "POST",
       credentials: "include",
       headers: {
-        [STRIPE_PUBLIC_KEY_HEADER]: this.props.stripeApiKey
+        [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey
       },
       body: recaptchaToken
     })
@@ -151,14 +93,62 @@ export class CardInputForm extends React.Component<
         }
       })
       .then((setupIntent: StripeSetupIntent) =>
-        this.setState({ stripeSetupIntent: setupIntent })
+        setStripeSetupIntent(setupIntent)
       )
       .catch(error => {
         Sentry.captureException(error);
-        this.setState({ stripeSetupIntentError: error });
+        setstripeSetupIntentError(error);
       });
   };
 
-  private updateStripeStateFromWindow = () =>
-    this.setState({ stripe: window.Stripe(this.props.stripeApiKey) });
-}
+  return didCompleteRecaptcha ? (
+    <Elements
+      stripe={stripePromise}
+      options={{
+        fonts: [
+          {
+            src:
+              "url(https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2)",
+            family: "Guardian Text Sans Web",
+            style: "normal"
+          }
+        ]
+      }}
+    >
+      <StripeCardInputForm
+        {...props}
+        {...{
+          didCompleteRecaptcha,
+          stripeSetupIntent,
+          stripeSetupIntentError
+        }}
+      />
+    </Elements>
+  ) : (
+    <div css={{ marginBottom: "30px" }}>
+      <p>
+        Before entering new card details please confirm you're not a robot below
+        to help us prevent card fraud. By ticking this box, you agree to let
+        Google perform a security check to confirm you are a human. Please refer
+        to their{" "}
+        <a
+          href="https://policies.google.com/terms"
+          target="_blank"
+          css={hrefStyle}
+        >
+          Terms
+        </a>{" "}
+        and{" "}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          css={hrefStyle}
+        >
+          Privacy
+        </a>{" "}
+        policies.
+      </p>
+      <div id="recaptcha" />
+    </div>
+  );
+};
