@@ -1,6 +1,10 @@
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  useElements,
+  useStripe
+} from "@stripe/react-stripe-js";
 import React, { useState } from "react";
 import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
@@ -34,17 +38,22 @@ interface StripeInputFormError {
 
 export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const [isValidating, setIsValidating] = useState<boolean>(false);
-  const [readyElements, setReadyElements] = useState<string[]>([]);
+  const [cardNumberReady, markCardNumberReady] = useState<boolean>(false);
+  const [cardExpiryReady, markCardExpiryReady] = useState<boolean>(false);
+  const [cardCVCReady, markCardCVCReady] = useState<boolean>(false);
   const [error, setError] = useState<StripeInputFormError>({});
-  const stripe = useStripe();
   const elements = useElements();
+  const stripe = useStripe();
 
   const isLoaded = () => {
-    return stripe && readyElements.length === 3 && props.stripeSetupIntent;
+    return (
+      stripe &&
+      cardNumberReady &&
+      cardExpiryReady &&
+      cardCVCReady &&
+      props.stripeSetupIntent
+    );
   };
-
-  const markElementReady = (element: string) => () =>
-    setReadyElements(readyElements.concat(element));
 
   const renderError = () => {
     if (error && error.message) {
@@ -75,7 +84,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 
   const startCardUpdate = (navigate: NavigateFn) => async () => {
     setIsValidating(true);
-    const cardElement = elements?.getElement(CardElement);
+    const cardElement = elements?.getElement(CardNumberElement);
     if (stripe && cardElement && props.stripeSetupIntent) {
       const createPaymentMethodResult = await stripe.createPaymentMethod({
         type: "card",
@@ -110,9 +119,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         return;
       }
 
-      //
       const intentResult = await stripe.confirmCardSetup(
-        props.stripeSetupIntent.client_secret
+        props.stripeSetupIntent.client_secret,
+        { payment_method: createPaymentMethodResult.paymentMethod.id }
       );
       if (
         intentResult.setupIntent &&
@@ -137,8 +146,8 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
               "Something went wrong, please check the details and try again."
           }
         );
+        setIsValidating(false);
       }
-      //
     }
   };
   return props.stripeSetupIntentError ? (
@@ -160,7 +169,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       >
         <FlexCardElement
           disabled={isValidating}
-          markElementReady={markElementReady}
+          markCardNumberReady={markCardNumberReady}
+          markCardExpiryReady={markCardExpiryReady}
+          markCardCVCReady={markCardCVCReady}
         />
         <div
           css={{
