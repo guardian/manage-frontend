@@ -11,6 +11,7 @@ import {
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
+import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
@@ -282,6 +283,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
               fontWeight={"bold"}
+              onClick={() =>
+                trackEvent({
+                  eventCategory: "account_overview",
+                  eventAction: "click",
+                  eventLabel: `manage_${groupedProductType.urlPart}`
+                })
+              }
             />
           </div>
         </div>
@@ -385,6 +393,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                     }
                     fontWeight={"bold"}
                     alert={hasPaymentFailure}
+                    onClick={() =>
+                      trackEvent({
+                        eventCategory: "account_overview",
+                        eventAction: "click",
+                        eventLabel: "manage_payment_method"
+                      })
+                    }
                   />
                 </div>
               )}
