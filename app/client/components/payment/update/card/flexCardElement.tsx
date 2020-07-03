@@ -1,15 +1,18 @@
-import React from "react";
 import {
-  CardCVCElement,
+  CardCvcElement,
   CardExpiryElement,
   CardNumberElement
-} from "react-stripe-elements";
+} from "@stripe/react-stripe-js";
+import { StripeElementBase } from "@stripe/stripe-js";
+import React, { Dispatch, SetStateAction } from "react";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
 
 interface FlexCardElementProps {
   disabled?: boolean;
-  markElementReady: (element: string) => () => void;
+  setCardNumberElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
+  setCardExpiryElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
+  setCardCVCElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
 }
 
 const baseStyle = {
@@ -29,9 +32,11 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
     >
       <FieldWrapper width="500px" label="Card Number">
         <CardNumberElement
-          style={baseStyle}
-          placeholder="Card Number"
-          onReady={props.markElementReady("CardNumberElement")}
+          options={{
+            style: baseStyle,
+            placeholder: "Card Number"
+          }}
+          onReady={props.setCardNumberElement}
         />
       </FieldWrapper>
       <div
@@ -43,14 +48,18 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
       >
         <FieldWrapper width="240px" label="Expiry Date">
           <CardExpiryElement
-            style={baseStyle}
-            onReady={props.markElementReady("CardExpiryElement")}
+            options={{
+              style: baseStyle
+            }}
+            onReady={props.setCardExpiryElement}
           />
         </FieldWrapper>
         <FieldWrapper width="240px" label="CVC">
-          <CardCVCElement
-            style={baseStyle}
-            onReady={props.markElementReady("CardCVCElement")}
+          <CardCvcElement
+            options={{
+              style: baseStyle
+            }}
+            onReady={props.setCardCVCElement}
           />
         </FieldWrapper>
       </div>

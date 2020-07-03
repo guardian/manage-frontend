@@ -1,3 +1,4 @@
+import { StripeError } from "@stripe/stripe-js";
 import React from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
@@ -102,9 +103,9 @@ export class FieldWrapper extends React.Component<
     );
   }
 
-  private validateField = (otherOnChange?: (event: any) => void) => (
-    field: stripe.elements.ElementChangeResponse
-  ) => {
+  private validateField = (otherOnChange?: (event: any) => void) => (field: {
+    error: StripeError;
+  }) => {
     if (otherOnChange) {
       otherOnChange(field);
     }
