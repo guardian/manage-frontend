@@ -85,7 +85,15 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const startCardUpdate = (navigate: NavigateFn) => async () => {
     setIsValidating(true);
     const cardElement = elements?.getElement(CardNumberElement);
-    if (stripe && cardElement && props.stripeSetupIntent) {
+    if (!cardElement) {
+      Sentry.captureException("StripeElements returning null");
+      setError({
+        message: "Something went wrong, please check the details and try again."
+      });
+      setIsValidating(false);
+      return;
+    }
+    if (stripe && props.stripeSetupIntent) {
       const createPaymentMethodResult = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
