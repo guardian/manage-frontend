@@ -84,8 +84,6 @@ export interface ConsentOptionCollection {
   findByIds: (options: ConsentOption[], ids: string[]) => ConsentOption[];
 }
 
-export const FRONT_PAGE_NEWSLETTER_ID = "4279";
-
 /*
  * The following models are being used to aid in migration of functionality off of a legacy system. There is
  * currently no standard library or API for these values at the Guardian, when these become available, these hardcoded values should be replaced.

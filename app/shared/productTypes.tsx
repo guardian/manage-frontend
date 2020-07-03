@@ -27,6 +27,7 @@ import { OphanProduct } from "./ophanTypes";
 import {
   isGift,
   ProductDetail,
+  RestrictedNewsletterId,
   Subscription,
   SubscriptionPlan,
   SubscriptionWithDeliveryAddress
@@ -164,7 +165,7 @@ export interface ProductType {
     explicitSingleDayOfWeek?: string;
   };
   shouldShowJoinDateNotStartDate?: true;
-  showFrontPageNewsletterOptin?: true;
+  showRestrictedNewsletters?: RestrictedNewsletterId[];
 }
 
 export interface GroupedProductType extends ProductType {
@@ -352,7 +353,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showFrontPageNewsletterOptin: true,
+    showRestrictedNewsletters: ["6009"],
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
@@ -365,7 +366,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showFrontPageNewsletterOptin: true,
+    showRestrictedNewsletters: ["6009"],
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -394,7 +395,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showFrontPageNewsletterOptin: true,
+    showRestrictedNewsletters: ["6009"],
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
@@ -448,7 +449,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
-    showFrontPageNewsletterOptin: true,
+    showRestrictedNewsletters: ["6009"],
     renewalMetadata: {
       alternateButtonText: "Subscribe here",
       urlSuffix: "subscribe/weekly",
