@@ -3,15 +3,16 @@ import {
   CardExpiryElement,
   CardNumberElement
 } from "@stripe/react-stripe-js";
+import { StripeElementBase } from "@stripe/stripe-js";
 import React, { Dispatch, SetStateAction } from "react";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
 
 interface FlexCardElementProps {
   disabled?: boolean;
-  markCardNumberReady: Dispatch<SetStateAction<boolean>>;
-  markCardExpiryReady: Dispatch<SetStateAction<boolean>>;
-  markCardCVCReady: Dispatch<SetStateAction<boolean>>;
+  setCardNumberElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
+  setCardExpiryElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
+  setCardCVCElement: Dispatch<SetStateAction<undefined | StripeElementBase>>;
 }
 
 const baseStyle = {
@@ -35,7 +36,7 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
             style: baseStyle,
             placeholder: "Card Number"
           }}
-          onReady={() => props.markCardNumberReady(true)}
+          onReady={props.setCardNumberElement}
         />
       </FieldWrapper>
       <div
@@ -50,7 +51,7 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
             options={{
               style: baseStyle
             }}
-            onReady={() => props.markCardExpiryReady(true)}
+            onReady={props.setCardExpiryElement}
           />
         </FieldWrapper>
         <FieldWrapper width="240px" label="CVC">
@@ -58,7 +59,7 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
             options={{
               style: baseStyle
             }}
-            onReady={() => props.markCardCVCReady(true)}
+            onReady={props.setCardCVCElement}
           />
         </FieldWrapper>
       </div>

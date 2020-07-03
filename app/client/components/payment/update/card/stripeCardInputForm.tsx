@@ -5,6 +5,7 @@ import {
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
+import { StripeElementBase } from "@stripe/stripe-js";
 import React, { useState } from "react";
 import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
@@ -38,9 +39,15 @@ interface StripeInputFormError {
 
 export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const [isValidating, setIsValidating] = useState<boolean>(false);
-  const [cardNumberReady, markCardNumberReady] = useState<boolean>(false);
-  const [cardExpiryReady, markCardExpiryReady] = useState<boolean>(false);
-  const [cardCVCReady, markCardCVCReady] = useState<boolean>(false);
+  const [cardNumberElement, setCardNumberElement] = useState<
+    undefined | StripeElementBase
+  >();
+  const [cardExpiryElement, setCardExpiryElement] = useState<
+    undefined | StripeElementBase
+  >();
+  const [cardCVCElement, setCardCVCElement] = useState<
+    undefined | StripeElementBase
+  >();
   const [error, setError] = useState<StripeInputFormError>({});
   const elements = useElements();
   const stripe = useStripe();
@@ -48,9 +55,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const isLoaded = () => {
     return (
       stripe &&
-      cardNumberReady &&
-      cardExpiryReady &&
-      cardCVCReady &&
+      cardNumberElement &&
+      cardExpiryElement &&
+      cardCVCElement &&
       props.stripeSetupIntent
     );
   };
@@ -177,9 +184,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       >
         <FlexCardElement
           disabled={isValidating}
-          markCardNumberReady={markCardNumberReady}
-          markCardExpiryReady={markCardExpiryReady}
-          markCardCVCReady={markCardCVCReady}
+          setCardNumberElement={setCardNumberElement}
+          setCardExpiryElement={setCardExpiryElement}
+          setCardCVCElement={setCardCVCElement}
         />
         <div
           css={{
