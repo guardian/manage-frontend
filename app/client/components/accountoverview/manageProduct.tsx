@@ -6,12 +6,9 @@ import { Link } from "@reach/router";
 import React, { useState } from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
-  augmentInterval,
-  getFuturePlanIfVisible,
   getMainPlan,
   isGift,
   isPaidSubscriptionPlan,
-  isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
 import {
@@ -36,6 +33,10 @@ import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
 import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
 import { NewsletterOptinSection } from "./newsletterOptinSection";
+import {
+  getNextPaymentDetails,
+  NewPaymentPriceAlert
+} from "./nextPaymentDetails";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 const subHeadingTitleCss = `
@@ -62,8 +63,6 @@ interface InnerContentProps {
 const InnerContent = ({ props, productDetail }: InnerContentProps) => {
   const mainPlan = getMainPlan(productDetail.subscription);
 
-  const futurePlan = getFuturePlanIfVisible(productDetail.subscription);
-
   const groupedProductType = props.groupedProductType;
 
   const specificProductType = groupedProductType.mapGroupedToSpecific(
@@ -77,6 +76,13 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
 
   const [overiddenAmount, setOveriddenAmount] = useState<number | null>(null);
   const isAmountOveridable = specificProductType.updateAmountMdaEndpoint;
+
+  const nextPaymentDetails = getNextPaymentDetails(
+    mainPlan,
+    productDetail.subscription,
+    overiddenAmount,
+    !!productDetail.alertText
+  );
 
   return (
     <>
@@ -196,31 +202,25 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
         borderColour={palette.neutral[86]}
         alternateRowBgColors
         content={[
-          ...(isPaidSubscriptionPlan(mainPlan) &&
+          ...(nextPaymentDetails &&
           productDetail.subscription.autoRenew &&
           !hasCancellationPending
             ? [
                 {
-                  title: `Next ${augmentInterval(
-                    productDetail.subscription.currentPlans.length !== 0 &&
-                      isSixForSix(mainPlan.name)
-                      ? futurePlan.interval
-                      : mainPlan.interval
-                  )} payment`,
-                  value: `${mainPlan.currency}${(
-                    overiddenAmount ||
-                    (productDetail.subscription.nextPaymentPrice ||
-                      mainPlan.amount) / 100.0
-                  ).toFixed(2)}${" "}${mainPlan.currencyISO}`
+                  title: nextPaymentDetails.paymentKey,
+                  value: (
+                    <span>
+                      {nextPaymentDetails.isNewPaymentValue && (
+                        <NewPaymentPriceAlert />
+                      )}
+                      {nextPaymentDetails.paymentValue}
+                    </span>
+                  )
                 },
                 {
-                  title: "Next payment date",
+                  title: nextPaymentDetails.nextPaymentDateKey,
                   ...(productDetail.subscription.nextPaymentDate && {
-                    value: formatDateStr(
-                      productDetail.subscription.currentPlans.length === 0
-                        ? mainPlan.start
-                        : productDetail.subscription.nextPaymentDate
-                    )
+                    value: nextPaymentDetails.nextPaymentDateValue
                   })
                 }
               ]

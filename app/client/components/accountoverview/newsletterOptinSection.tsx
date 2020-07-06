@@ -30,6 +30,9 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
   );
   const [newsletters, setNewsletters] = useState<ConsentOption[]>();
   const [focussedNewsletter, setFocussedNewsletter] = useState<ConsentOption>();
+  const [newslettersPendingChange, setNewslettersPendingChange] = useState<
+    string[]
+  >([]);
   useEffect(() => {
     const makeRestrictedNewslettersAPICall = async () => {
       try {
@@ -106,7 +109,15 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
                   ? ConsentOptions.subscribe(focussedNewsletter)
                   : ConsentOptions.unsubscribe(focussedNewsletter);
                 updatePreference.then(
-                  () => setShowUpdateMsg({ isSuccessful: true }),
+                  () => {
+                    setShowUpdateMsg({ isSuccessful: true });
+                    setNewslettersPendingChange(
+                      newslettersPendingChange.filter(
+                        newsletterPendingChange =>
+                          newsletterPendingChange !== focussedNewsletter.id
+                      )
+                    );
+                  },
                   () => {
                     setShowUpdateMsg({ isSuccessful: false });
                     setNewsletters(
@@ -162,14 +173,21 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
                           : newsletterMap
                       )
                     );
+                    setNewslettersPendingChange(
+                      newslettersPendingChange.includes(targetNewsletter.id)
+                        ? newslettersPendingChange
+                        : [...newslettersPendingChange, targetNewsletter.id]
+                    );
                   }
                   setShowUpdateMsg(false);
                 }}
               />
             </fieldset>
-            <Button icon={<TickIcon />} type="submit">
-              Confirm preferences
-            </Button>
+            {newslettersPendingChange.includes(newsletter.id) && (
+              <Button icon={<TickIcon />} type="submit">
+                Confirm preferences
+              </Button>
+            )}
           </form>
         </React.Fragment>
       ))}

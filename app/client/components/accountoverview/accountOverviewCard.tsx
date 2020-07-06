@@ -4,23 +4,24 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
-  augmentInterval,
-  getFuturePlanIfVisible,
   getMainPlan,
   isGift,
-  isPaidSubscriptionPlan,
-  isSixForSix,
   ProductDetail
 } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { titlepiece } from "../../styles/fonts";
+import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
+import {
+  getNextPaymentDetails,
+  NewPaymentPriceAlert
+} from "./nextPaymentDetails";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 interface AccountOverviewCardProps {
@@ -29,8 +30,6 @@ interface AccountOverviewCardProps {
 
 export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
   const mainPlan = getMainPlan(props.productDetail.subscription);
-
-  const futurePlan = getFuturePlanIfVisible(props.productDetail.subscription);
 
   const hasCancellationPending: boolean =
     props.productDetail.subscription.cancelledAt;
@@ -51,6 +50,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     groupedProductType.shouldShowJoinDateNotStartDate;
 
   const subscriptionStartDate = props.productDetail.subscription.start;
+
+  const nextPaymentDetails = getNextPaymentDetails(
+    mainPlan,
+    props.productDetail.subscription,
+    null,
+    hasPaymentFailure
+  );
 
   const keyValuePairCss = css`
     list-style: none;
@@ -277,6 +283,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
               fontWeight={"bold"}
+              onClick={() =>
+                trackEvent({
+                  eventCategory: "account_overview",
+                  eventAction: "click",
+                  eventLabel: `manage_${groupedProductType.urlPart}`
+                })
+              }
             />
           </div>
         </div>
@@ -301,41 +314,31 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             }
           `}
         >
-          {isPaidSubscriptionPlan(mainPlan) &&
+          {nextPaymentDetails &&
             props.productDetail.subscription.autoRenew &&
             !hasCancellationPending && (
               <ul css={keyValuePairCss}>
-                <li css={keyCss}>{`Next ${augmentInterval(
-                  props.productDetail.subscription.currentPlans.length !== 0 &&
-                    isSixForSix(mainPlan.name)
-                    ? futurePlan.interval
-                    : mainPlan.interval
-                )} payment`}</li>
+                <li css={keyCss}>{nextPaymentDetails.paymentKey}</li>
                 <li css={valueCss}>
                   <span
                     css={css`
                       display: block;
                     `}
                   >
-                    {`${mainPlan.currency}${(
-                      (props.productDetail.subscription.nextPaymentPrice ||
-                        mainPlan.amount) / 100.0
-                    ).toFixed(2)} ${mainPlan.currencyISO}`}
+                    {nextPaymentDetails.isNewPaymentValue && (
+                      <NewPaymentPriceAlert />
+                    )}
+                    {nextPaymentDetails.paymentValue}
                   </span>
-                  <span
-                    css={css`
-                      display: block;
-                    `}
-                  >
-                    {props.productDetail.subscription.nextPaymentDate &&
-                      !hasPaymentFailure &&
-                      formatDateStr(
-                        props.productDetail.subscription.currentPlans.length ===
-                          0
-                          ? mainPlan.start
-                          : props.productDetail.subscription.nextPaymentDate
-                      )}
-                  </span>
+                  {nextPaymentDetails.nextPaymentDateValue && (
+                    <span
+                      css={css`
+                        display: block;
+                      `}
+                    >
+                      {nextPaymentDetails.nextPaymentDateValue}
+                    </span>
+                  )}
                 </li>
               </ul>
             )}
@@ -390,6 +393,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                     }
                     fontWeight={"bold"}
                     alert={hasPaymentFailure}
+                    onClick={() =>
+                      trackEvent({
+                        eventCategory: "account_overview",
+                        eventAction: "click",
+                        eventLabel: "manage_payment_method"
+                      })
+                    }
                   />
                 </div>
               )}
