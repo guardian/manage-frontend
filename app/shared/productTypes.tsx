@@ -440,6 +440,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "subscriptioncard",
     legacyUrlPart: "digitalvoucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck
     }
