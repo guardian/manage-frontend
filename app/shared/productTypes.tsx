@@ -452,7 +452,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
-    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
     renewalMetadata: {
       alternateButtonText: "Subscribe here",
       urlSuffix: "subscribe/weekly",
