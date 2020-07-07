@@ -28,7 +28,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
     false
   );
   const [newsletters, setNewsletters] = useState<ConsentOption[]>();
-  const [focussedNewsletter, setFocussedNewsletter] = useState<ConsentOption>();
+  const [focusedNewsletter, setFocusedNewsletter] = useState<ConsentOption>();
   const [newslettersPendingChange, setNewslettersPendingChange] = useState<
     string[]
   >([]);
@@ -72,7 +72,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
         newsletterSearch => newsletterSearch.id === event.target.value
       );
       if (targetNewsletter) {
-        setFocussedNewsletter({
+        setFocusedNewsletter({
           ...targetNewsletter,
           subscribed: event.target.checked
         });
@@ -95,19 +95,19 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
       setShowUpdateMsg(false);
     };
 
-    const formSubmitionHandler = (event: FormEvent) => {
+    const formSubmissionHandler = (event: FormEvent) => {
       event.preventDefault();
-      if (focussedNewsletter) {
-        const updatePreference = focussedNewsletter.subscribed
-          ? ConsentOptions.subscribe(focussedNewsletter)
-          : ConsentOptions.unsubscribe(focussedNewsletter);
+      if (focusedNewsletter) {
+        const updatePreference = focusedNewsletter.subscribed
+          ? ConsentOptions.subscribe(focusedNewsletter)
+          : ConsentOptions.unsubscribe(focusedNewsletter);
         updatePreference.then(
           () => {
             setShowUpdateMsg({ isSuccessful: true });
             setNewslettersPendingChange(
               newslettersPendingChange.filter(
                 newsletterPendingChange =>
-                  newsletterPendingChange !== focussedNewsletter.id
+                  newsletterPendingChange !== focusedNewsletter.id
               )
             );
           },
@@ -115,10 +115,10 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
             setShowUpdateMsg({ isSuccessful: false });
             setNewsletters(
               newsletters.map(newsletterMap =>
-                newsletterMap.id === focussedNewsletter.id
+                newsletterMap.id === focusedNewsletter.id
                   ? {
-                      ...focussedNewsletter,
-                      subscribed: !focussedNewsletter.subscribed
+                      ...focusedNewsletter,
+                      subscribed: !focusedNewsletter.subscribed
                     }
                   : newsletterMap
               )
@@ -147,7 +147,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
               {newsletter.description}
             </p>
             {showUpdateMsg && <UpdateMessage updateStatus={showUpdateMsg} />}
-            <form onSubmit={formSubmitionHandler}>
+            <form onSubmit={formSubmissionHandler}>
               <fieldset
                 css={css`
                   padding: ${space[3]}px ${space[5]}px;
