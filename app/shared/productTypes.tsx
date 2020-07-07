@@ -164,6 +164,7 @@ export interface ProductType {
     explicitSingleDayOfWeek?: string;
   };
   shouldShowJoinDateNotStartDate?: true;
+  restrictedNewsletterIDs?: string[];
 }
 
 export interface GroupedProductType extends ProductType {
@@ -248,6 +249,8 @@ const showDeliveryAddressCheck = (
 const calculateProductTitle = (baseProductTitle: string) => (
   mainPlan?: SubscriptionPlan
 ) => baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
+
+const FRONT_PAGE_NEWSLETTER_ID = "6009";
 
 type ProductTypeKeys =
   | "membership"
@@ -351,6 +354,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
@@ -363,6 +367,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -391,6 +396,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
@@ -433,6 +439,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "subscriptioncard",
     legacyUrlPart: "digitalvoucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck
     }
