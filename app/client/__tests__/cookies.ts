@@ -23,7 +23,7 @@ describe("cookies", () => {
 
   it("getCookie returns the cookie value when a cookie is found", () => {
     // tslint:disable-next-line:no-object-mutation
-    window.document.cookie = `testName=testValue;${cookieName}=${cookieValue}`;
+    window.document.cookie = `testName=testValue; ${cookieName}=${cookieValue}`;
 
     expect(getCookie(cookieName)).toBe(cookieValue);
   });

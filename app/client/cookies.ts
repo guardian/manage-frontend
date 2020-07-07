@@ -3,5 +3,5 @@ export const getCookie = (name: string): string | null => {
     .split(";")
     .filter(keyValue => keyValue.trim().startsWith(name + "="));
 
-  return cookies.length ? cookies[0].replace(name + "=", "") : null;
+  return cookies.length ? cookies[0].trim().replace(name + "=", "") : null;
 };
