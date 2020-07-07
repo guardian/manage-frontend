@@ -123,28 +123,32 @@ const Footer = () => (
                     }
                   }}
                 >
-                  {linkList.map(({ title, link }) => (
-                    <li
-                      key={title}
-                      css={{
-                        listStyle: "none"
-                      }}
-                    >
-                      <a
-                        href={link}
+                  {linkList.map(({ title, link, onClick }) => {
+                    return (
+                      <li
+                        key={title}
                         css={{
-                          display: "inline-block",
-                          padding: "6px 0",
-                          color: palette.white,
-                          ":hover": {
-                            color: palette.yellow.medium
-                          }
+                          listStyle: "none"
                         }}
                       >
-                        {title}
-                      </a>
-                    </li>
-                  ))}
+                        <a
+                          href={link}
+                          onClick={onClick}
+                          css={{
+                            display: "inline-block",
+                            padding: "6px 0",
+                            color: palette.white,
+                            ":hover": {
+                              color: palette.yellow.medium,
+                              cursor: "pointer"
+                            }
+                          }}
+                        >
+                          {title}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               ))}
               <div
