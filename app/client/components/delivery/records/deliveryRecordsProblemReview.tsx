@@ -387,6 +387,10 @@ const DeliveryRecordsProblemReviewFC = (
                         deliveryRecord={deliveryRecord}
                         listIndex={listIndex}
                         pageStatus={PageStatus.READ_ONLY}
+                        showDeliveryInstructions={
+                          props.productType.delivery.records
+                            .showDeliveryInstructions
+                        }
                         deliveryProblemMap={
                           deliveryProblemContext.deliveryProblemMap
                         }
