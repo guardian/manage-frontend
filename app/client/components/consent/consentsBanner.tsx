@@ -1,6 +1,7 @@
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import palette from "../../colours";
+import { getCookie } from "../../cookies";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { trackEventInOphanOnly } from "../analytics";
@@ -14,11 +15,7 @@ const CONSENTS_BANNER_OPHAN_EVENT_CATEGORY = "consents_banner";
 
 const documentIsAvailable = typeof document !== "undefined" && document;
 
-const requiresConsents = () =>
-  documentIsAvailable &&
-  !document.cookie
-    .split(";")
-    .find(keyValue => keyValue.trim().startsWith(CONSENT_COOKIE_NAME + "="));
+const requiresConsents = () => !getCookie(CONSENT_COOKIE_NAME);
 
 interface ConsentsBannerState {
   requiresConsents: boolean;
