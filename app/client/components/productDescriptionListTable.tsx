@@ -98,7 +98,7 @@ export const ProductDescriptionListTable = (
         border: 1px solid ${props.borderColour || palette.neutral[20]};
         display: flex;
         flex-wrap: wrap;
-        margin ${space[5]}px 0; 
+        margin: ${space[5]}px 0;
       `}
     >
       {filteredContent.map((tableEntry, tableEntryIndex) => {
@@ -118,46 +118,35 @@ export const ProductDescriptionListTable = (
             css={css`
               display: ${tableEntry.spanTwoCols ? "block" : "inline-flex"};
               width: 100%;
-              padding: ${isFirstCollum ? space[3] : space[3] * 0.5}px ${
-              space[3]
-            }px ${
-              tableEntry.spanTwoCols || !isFirstCollum
-                ? space[3]
-                : space[3] * 0.5
-            }px;
+              padding: ${isFirstCollum ? space[3] : space[3] * 0.5}px
+                ${space[3]}px
+                ${tableEntry.spanTwoCols || !isFirstCollum
+                  ? space[3]
+                  : space[3] * 0.5}px;
               margin: 0;
-              background-color: ${
-                showAlternativeTableRowBgColours && currentRow % 2 === 0
-                  ? palette.neutral[97]
-                  : "transparent"
-              };
-              border-bottom: ${
-                !isLastTableRow && !isFirstCollum
+              background-color: ${showAlternativeTableRowBgColours &&
+              currentRow % 2 === 0
+                ? palette.neutral[97]
+                : "transparent"};
+              border-bottom: ${!isLastTableRow && !isFirstCollum
                   ? `1px solid ${props.borderColour || palette.neutral[20]};`
-                  : "none;"
-              }
-              ${minWidth.tablet} {
-                border-bottom: ${
-                  !isLastTableRow
-                    ? `1px solid ${props.borderColour || palette.neutral[20]};`
-                    : "none;"
-                }
-                width: ${tableEntry.spanTwoCols ? "100%;" : "50%;"};
-                padding: ${
-                  isFirstTableRow
+                  : "none;"}
+                ${minWidth.tablet} {
+                border-bottom: ${!isLastTableRow
+                  ? `1px solid ${props.borderColour || palette.neutral[20]}`
+                  : "none"};
+                width: ${tableEntry.spanTwoCols ? "100%" : "50%"};
+                padding: ${isFirstTableRow
                     ? space[5]
                     : showAlternativeTableRowBgColours
                     ? space[5]
-                    : space[5] * 0.5
-                }px
-                ${space[5]}px
-                ${
-                  isLastTableRow
+                    : space[5] * 0.5}px
+                  ${space[5]}px
+                  ${isLastTableRow
                     ? space[5]
                     : showAlternativeTableRowBgColours
                     ? space[5]
-                    : space[5] * 0.5
-                }px;
+                    : space[5] * 0.5}px;
               }
             `}
           >

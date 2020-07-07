@@ -32,6 +32,7 @@ import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
 import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
+import { NewsletterOptinSection } from "./newsletterOptinSection";
 import {
   getNextPaymentDetails,
   NewPaymentPriceAlert
@@ -50,7 +51,7 @@ const subHeadingBorderTopCss = `
     border-top: 1px solid ${palette.neutral["86"]};
     margin: 50px 0 ${space[5]}px;
   `;
-const subHeadingCss = `
+export const subHeadingCss = `
     ${subHeadingBorderTopCss}
     ${subHeadingTitleCss}
   `;
@@ -432,6 +433,12 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             />
           </>
         )}
+
+      {specificProductType.restrictedNewsletterIDs && (
+        <NewsletterOptinSection
+          activeNewletterIDs={specificProductType.restrictedNewsletterIDs}
+        />
+      )}
 
       {!hasCancellationPending && (
         <CancellationCTA
