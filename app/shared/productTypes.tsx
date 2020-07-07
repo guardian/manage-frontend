@@ -27,7 +27,6 @@ import { OphanProduct } from "./ophanTypes";
 import {
   isGift,
   ProductDetail,
-  RestrictedNewsletterId,
   Subscription,
   SubscriptionPlan,
   SubscriptionWithDeliveryAddress
@@ -165,7 +164,7 @@ export interface ProductType {
     explicitSingleDayOfWeek?: string;
   };
   shouldShowJoinDateNotStartDate?: true;
-  showRestrictedNewsletters?: RestrictedNewsletterId[];
+  restrictedNewsletterIDs?: string[];
 }
 
 export interface GroupedProductType extends ProductType {
@@ -355,7 +354,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
@@ -368,7 +367,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -397,7 +396,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
@@ -440,7 +439,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "subscriptioncard",
     legacyUrlPart: "digitalvoucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    showRestrictedNewsletters: [FRONT_PAGE_NEWSLETTER_ID],
+    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck
     }

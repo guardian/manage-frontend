@@ -112,8 +112,6 @@ export interface DeliveryAddress {
 
 type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
 
-export type RestrictedNewsletterId = string;
-
 export interface Subscription {
   subscriptionId: string;
   start?: string;
