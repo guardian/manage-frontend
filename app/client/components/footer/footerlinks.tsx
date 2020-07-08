@@ -12,6 +12,7 @@ interface FooterLink {
   title: string;
   link?: string;
   onClick?: () => any;
+  USAonly?: boolean;
 }
 
 export const footerLinks: FooterLink[][] = [
@@ -38,7 +39,8 @@ export const footerLinks: FooterLink[][] = [
     },
     {
       title: "California resident – Do Not Sell",
-      onClick: showPrivacyManager
+      onClick: showPrivacyManager,
+      USAonly: true
     },
     {
       title: "Privacy policy",

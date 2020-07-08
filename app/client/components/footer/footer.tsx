@@ -231,8 +231,8 @@ export const Footer = () => {
               <div css={footerMenuStyles}>
                 {footerLinks.map((linkList, i) => (
                   <ul key={i} css={footerMenuUlStyles}>
-                    {linkList.map(({ title, link, onClick }) => {
-                      return (
+                    {linkList.map(({ title, link, onClick, USAonly }) => {
+                      return USAonly && !useCCPA ? null : (
                         <li key={title} css={footerMenuLiStyles}>
                           <a
                             href={link}
