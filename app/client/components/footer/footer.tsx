@@ -1,8 +1,9 @@
 import { css } from "@emotion/core";
 import { from } from "@guardian/src-foundations/mq";
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { conf } from "../../../server/config";
 import palette from "../../colours";
+import { isInUSA } from "../../geolocation";
 import { headline } from "../../styles/fonts";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { footerLinks } from "./footerlinks";
@@ -201,6 +202,12 @@ const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
 };
 
 export const Footer = () => {
+  const [useCCPA, setUseCCPA] = useState<boolean>(false);
+
+  useEffect(() => {
+    setUseCCPA(isInUSA());
+  }, [useCCPA]);
+
   return (
     <footer css={footerStyles}>
       <div>
