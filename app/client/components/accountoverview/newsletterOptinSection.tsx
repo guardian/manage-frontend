@@ -135,7 +135,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
             ${subHeadingCss}
           `}
         >
-          Newspaper Newsletter
+          Front Page Newsletter
         </h2>
         {newsletters.map(newsletter => (
           <React.Fragment key={newsletter.id}>
