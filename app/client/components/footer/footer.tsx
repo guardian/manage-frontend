@@ -200,80 +200,85 @@ const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
   return;
 };
 
-const Footer = () => (
-  <footer css={footerStyles}>
-    <div>
-      <div css={footerColourStyles}>
-        <div css={footerSizeStyles}>
-          <div css={footerContentStyles}>
-            <div css={emailSignUpStyles}>
-              <iframe
-                title="Guardian Email Sign-up Form"
-                src={`https://profile.${domain}/email/form/footer/today-uk`}
-                scrolling="no"
-                seamless={false}
-                frameBorder="0"
-                data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
-                data-node-uid="2"
-                height="86px"
-                onLoad={emailForm => fillEmailSignup(emailForm)}
-              />
-            </div>
+export const Footer = () => {
+  return (
+    <footer css={footerStyles}>
+      <div>
+        <div css={footerColourStyles}>
+          <div css={footerSizeStyles}>
+            <div css={footerContentStyles}>
+              <div css={emailSignUpStyles}>
+                <iframe
+                  title="Guardian Email Sign-up Form"
+                  src={`https://profile.${domain}/email/form/footer/today-uk`}
+                  scrolling="no"
+                  seamless={false}
+                  frameBorder="0"
+                  data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
+                  data-node-uid="2"
+                  height="86px"
+                  onLoad={emailForm => fillEmailSignup(emailForm)}
+                />
+              </div>
 
-            <div css={footerMenuStyles}>
-              {footerLinks.map((linkList, i) => (
-                <ul key={i} css={footerMenuUlStyles}>
-                  {linkList.map(({ title, link, onClick }) => {
-                    return (
-                      <li key={title} css={footerMenuLiStyles}>
-                        <a href={link} onClick={onClick} css={footerLinkStyles}>
-                          {title}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              ))}
-              <div css={supportStyles}>
-                <div css={supportTitleStyles}>Support The&nbsp;Guardian</div>
-                <div css={supportButtonContainerStyles}>
+              <div css={footerMenuStyles}>
+                {footerLinks.map((linkList, i) => (
+                  <ul key={i} css={footerMenuUlStyles}>
+                    {linkList.map(({ title, link, onClick }) => {
+                      return (
+                        <li key={title} css={footerMenuLiStyles}>
+                          <a
+                            href={link}
+                            onClick={onClick}
+                            css={footerLinkStyles}
+                          >
+                            {title}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ))}
+
+                <div css={supportStyles}>
+                  <div css={supportTitleStyles}>Support The&nbsp;Guardian</div>
+                  <div css={supportButtonContainerStyles}>
+                    <SupportTheGuardianButton
+                      urlSuffix="contribute"
+                      supportReferer="footer_support_contribute"
+                      alternateButtonText="Contribute"
+                      fontWeight="bold"
+                    />
+                  </div>
                   <SupportTheGuardianButton
-                    urlSuffix="contribute"
-                    supportReferer="footer_support_contribute"
-                    alternateButtonText="Contribute"
+                    urlSuffix="subscribe"
+                    supportReferer="footer_support_subscribe"
+                    alternateButtonText="Subscribe"
                     fontWeight="bold"
                   />
                 </div>
-                <SupportTheGuardianButton
-                  urlSuffix="subscribe"
-                  supportReferer="footer_support_subscribe"
-                  alternateButtonText="Subscribe"
-                  fontWeight="bold"
-                />
               </div>
             </div>
-          </div>
 
-          <div css={copyrightStyles}>
-            <a href="#top" css={backToTopLinkStyles}>
-              <span css={backToTopLabelStyles}>Back to top</span>
-              <span css={backToTopButtonOutterContainerStyles}>
-                <span css={backToTopButtonInnerContainerStyles}>
-                  <svg width="24" height="18" viewBox="0 0 24 18">
-                    <path d="M.4 15.3l10.5-8.4L12 6l1.1.9 10.5 8.4-.5.7L12 9.7.9 16l-.5-.7z" />
-                  </svg>
+            <div css={copyrightStyles}>
+              <a href="#top" css={backToTopLinkStyles}>
+                <span css={backToTopLabelStyles}>Back to top</span>
+                <span css={backToTopButtonOutterContainerStyles}>
+                  <span css={backToTopButtonInnerContainerStyles}>
+                    <svg width="24" height="18" viewBox="0 0 24 18">
+                      <path d="M.4 15.3l10.5-8.4L12 6l1.1.9 10.5 8.4-.5.7L12 9.7.9 16l-.5-.7z" />
+                    </svg>
+                  </span>
                 </span>
-              </span>
-            </a>
-            <div css={copyrightTextStyles}>
-              © {TODAY.getFullYear()} Guardian News and Media Limited or its
-              affiliated companies. All&nbsp;rights&nbsp;reserved.
+              </a>
+              <div css={copyrightTextStyles}>
+                © {TODAY.getFullYear()} Guardian News and Media Limited or its
+                affiliated companies. All&nbsp;rights&nbsp;reserved.
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </footer>
-);
-
-export default Footer;
+    </footer>
+  );
+};
