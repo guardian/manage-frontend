@@ -33,6 +33,13 @@ export const read = async (): Promise<ConsentOption[]> => {
   );
 };
 
+export const readRestricted = async (): Promise<ConsentOption[]> => {
+  const url = "/newsletters/restricted";
+  return ((await identityFetch(url)) as NewsletterAPIResponse[]).map(
+    newsletterToConsentOption
+  );
+};
+
 export const update = async (id: string, subscribed: boolean = true) => {
   const url = "/users/me/newsletters";
   const payload = {

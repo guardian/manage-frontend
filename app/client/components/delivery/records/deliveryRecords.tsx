@@ -544,6 +544,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 removeRecordFromDeliveryProblem={
                   removeRecordFromDeliveryProblem
                 }
+                showDeliveryInstructions={
+                  productType.delivery.records.showDeliveryInstructions
+                }
                 recordCurrency={props.subscriptionCurrency}
                 isChecked={selectedProblemRecords.includes(deliveryRecord.id)}
                 productName={capitalize(

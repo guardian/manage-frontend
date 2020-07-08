@@ -278,6 +278,10 @@ const DeliveryRecordsProblemConfirmationFC = (
                     deliveryRecord={deliveryRecord}
                     listIndex={listIndex}
                     pageStatus={PageStatus.REPORT_ISSUE_CONFIRMATION}
+                    showDeliveryInstructions={
+                      props.routeableStepProps.productType.delivery?.records
+                        ?.showDeliveryInstructions
+                    }
                     deliveryProblemMap={props.data.deliveryProblemMap}
                     recordCurrency={props.subscriptionCurrency}
                   />

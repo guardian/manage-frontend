@@ -21,6 +21,7 @@ interface DeliveryRecordCardProps {
   productName?: string;
   recordCurrency?: string;
   isChecked?: boolean;
+  showDeliveryInstructions?: boolean;
   addRecordToDeliveryProblem?: (id: string) => void;
   removeRecordFromDeliveryProblem?: (id: string) => void;
 }
@@ -258,33 +259,35 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
           </div>
         </>
       )}
-      <div
-        css={css`
-          ${recordRowCss}
-        `}
-      >
-        <dt
+      {props.showDeliveryInstructions && (
+        <div
           css={css`
-            ${dtCss()}
+            ${recordRowCss}
           `}
         >
-          Instructions:
-        </dt>
-        <dd
-          css={css`
-            ${ddCss}
-          `}
-        >
-          {props.deliveryRecord.deliveryInstruction &&
-          !props.deliveryRecord.hasHolidayStop ? (
-            <DeliveryRecordInstructions
-              message={props.deliveryRecord.deliveryInstruction}
-            />
-          ) : (
-            "N/A"
-          )}
-        </dd>
-      </div>
+          <dt
+            css={css`
+              ${dtCss()}
+            `}
+          >
+            Instructions:
+          </dt>
+          <dd
+            css={css`
+              ${ddCss}
+            `}
+          >
+            {props.deliveryRecord.deliveryInstruction &&
+            !props.deliveryRecord.hasHolidayStop ? (
+              <DeliveryRecordInstructions
+                message={props.deliveryRecord.deliveryInstruction}
+              />
+            ) : (
+              "N/A"
+            )}
+          </dd>
+        </div>
+      )}
     </dl>
   );
 };
