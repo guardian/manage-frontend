@@ -11,7 +11,7 @@ if (typeof window !== "undefined" && window.guardian) {
 interface FooterLink {
   title: string;
   link?: string;
-  onClick?: () => any;
+  onClick?: () => void;
   USAonly?: boolean;
 }
 
