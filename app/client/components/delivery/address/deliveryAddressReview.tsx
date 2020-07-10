@@ -204,7 +204,9 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
         >
           <Button
             onClick={() => {
-              (props.navigate || navigate)("confirmed");
+              (props.navigate || navigate)("confirmed", {
+                state: props.location?.state
+              });
             }}
           >
             Submit details
