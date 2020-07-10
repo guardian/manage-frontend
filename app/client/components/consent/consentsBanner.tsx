@@ -1,6 +1,9 @@
+import { init as initCMP } from "@guardian/consent-management-platform";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import palette from "../../colours";
+import { getCookie } from "../../cookies";
+import { isInUSA } from "../../geolocation";
 import { maxWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { trackEventInOphanOnly } from "../analytics";
@@ -14,13 +17,10 @@ const CONSENTS_BANNER_OPHAN_EVENT_CATEGORY = "consents_banner";
 
 const documentIsAvailable = typeof document !== "undefined" && document;
 
-const requiresConsents = () =>
-  documentIsAvailable &&
-  !document.cookie
-    .split(";")
-    .find(keyValue => keyValue.trim().startsWith(CONSENT_COOKIE_NAME + "="));
+const requiresConsents = () => !getCookie(CONSENT_COOKIE_NAME);
 
 interface ConsentsBannerState {
+  useCCPA: boolean;
   requiresConsents: boolean;
 }
 
@@ -29,13 +29,24 @@ export class ConsentsBanner extends React.Component<
   ConsentsBannerState
 > {
   public state = {
+    useCCPA: false,
     requiresConsents: false
   };
 
-  public componentDidMount = () => this.updateStateWithConsents();
+  public componentDidMount = () => {
+    if (isInUSA()) {
+      initCMP({ useCcpa: true });
+      this.setState({ useCCPA: true });
+    } else {
+      this.updateStateWithConsents();
+    }
+  };
 
-  public render = () =>
-    documentIsAvailable && this.state.requiresConsents ? (
+  public render = () => {
+    // tslint:disable-next-line:no-shadowed-variable
+    const { useCCPA, requiresConsents } = this.state;
+
+    return documentIsAvailable && !useCCPA && requiresConsents ? (
       <div
         css={{
           zIndex: 99,
@@ -132,6 +143,7 @@ export class ConsentsBanner extends React.Component<
         </div>
       </div>
     ) : null;
+  };
 
   private updateStateWithConsents = () =>
     this.setState({ requiresConsents: requiresConsents() });

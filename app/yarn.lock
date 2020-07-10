@@ -1030,13 +1030,14 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.3.tgz#dfa0c92efe44a1d1a7974fb49ffeb40ef2da5a27"
   integrity sha512-zVgvPwGK7c1aVdUVc9Qv7SqepOGRDrqCw7KZPSZziWGxSlbII3gmvGLPzLX4d0n0BMbamBacUrN22zOMyFFEkQ==
 
-"@guardian/consent-management-platform@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-1.1.0.tgz#ca93b41c9649f3f90c8075fa1b64065406ea682c"
-  integrity sha512-+C1IzMb+PDCatnmA9B2oNx4KVbaQw/U0fwpIAUC7l/ebDhU2a6b94ha4xTu+iE2gAt/heOMKLs+o3avCNdSGqA==
+"@guardian/consent-management-platform@^3.4.8":
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-3.4.8.tgz#01c8e9894a93ec581024f59d53038ffd915ddc8c"
+  integrity sha512-NZHnq4ayk+tERo72aaTIGJE0uOV/zXFXJUYw2y9M2KKgwqSMQ5ht82jmsLeuEmgVg79EYjKgPWIXU8KeWFShNQ==
   dependencies:
-    consent-string "^1.5.1"
-    js-cookie "^2.2.1"
+    consent-string "1.5.2"
+    js-cookie "2.2.1"
+    whatwg-fetch "3.0.0"
 
 "@guardian/src-button@^0.18.1":
   version "0.18.1"
@@ -3947,7 +3948,7 @@ connect-history-api-fallback@^1.6.0:
   resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
   integrity sha512-e54B99q/OUoH64zYYRf3HBP5z24G38h5D3qXu23JGRoigpX5Ss4r9ZnDk3g0Z8uQC2x2lPaJ+UlWBc1ZWBWdLg==
 
-consent-string@^1.5.1:
+consent-string@1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/consent-string/-/consent-string-1.5.2.tgz#cd3615f406a1d7649ebc9722960b5e451cf6a685"
   integrity sha512-xzfHnFzHQSupiamNY93UGn8FggPajHYExI45pzadhVpXVaj3ztnhnA7lYjKXl09pKRQKCT4hvjytt+2eoH7Jaw==
@@ -7213,7 +7214,7 @@ jmespath@0.15.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
-js-cookie@^2.2.1:
+js-cookie@2.2.1, js-cookie@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
   integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
@@ -11659,7 +11660,7 @@ whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.3:
   dependencies:
     iconv-lite "0.4.24"
 
-whatwg-fetch@>=0.10.0:
+whatwg-fetch@3.0.0, whatwg-fetch@>=0.10.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
