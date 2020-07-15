@@ -15,13 +15,13 @@ import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
-import { PayPalDisplay } from "../payment/paypalDisplay";
-import { ErrorIcon } from "../svgs/errorIcon";
-import { GiftIcon } from "../svgs/giftIcon";
 import {
   getNextPaymentDetails,
   NewPaymentPriceAlert
-} from "./nextPaymentDetails";
+} from "../payment/nextPaymentDetails";
+import { PayPalDisplay } from "../payment/paypalDisplay";
+import { ErrorIcon } from "../svgs/errorIcon";
+import { GiftIcon } from "../svgs/giftIcon";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 interface AccountOverviewCardProps {

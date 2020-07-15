@@ -32,6 +32,7 @@ import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecords
 
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageProduct } from "./accountoverview/manageProduct";
+import { Billing } from "./billing/billing";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -53,6 +54,7 @@ const User = () => (
 
     <Router>
       <AccountOverview path="/" />
+      <Billing path="/billing" />
 
       {Object.values(GROUPED_PRODUCT_TYPES).map(
         (groupedProductType: GroupedProductType) => (
