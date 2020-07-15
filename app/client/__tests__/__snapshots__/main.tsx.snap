@@ -676,7 +676,12 @@ exports[`Main renders something 1`] = `
   <footer
     css={
       Object {
-        "marginTop": "2rem",
+        "map": undefined,
+        "name": "zpu9mn",
+        "next": undefined,
+        "styles": "
+  margin-top: 2rem;
+",
       }
     }
   >
@@ -684,47 +689,69 @@ exports[`Main renders something 1`] = `
       <div
         css={
           Object {
-            "backgroundColor": "#052962",
-            "color": "#ffffff",
+            "map": undefined,
+            "name": "vck559",
+            "next": undefined,
+            "styles": "
+  background-color: #052962;
+  color: #ffffff;
+",
           }
         }
       >
         <div
           css={
             Object {
-              "margin": "auto",
-              "maxWidth": "1300px",
+              "map": undefined,
+              "name": "1fkn892",
+              "next": undefined,
+              "styles": "
+  max-width: 1300px;
+  margin: auto;
+",
             }
           }
         >
           <div
             css={
               Object {
-                "@media (min-width: 1140px)": Object {
-                  "display": "flex",
-                },
-                "@media (min-width: 980px)": Object {
-                  "padding": "0 20px",
-                },
-                "border": "1px solid rgba(255,255,255,0.3)",
-                "borderTop": 0,
-                "padding": "10px",
+                "map": undefined,
+                "name": "1ku4d2x",
+                "next": undefined,
+                "styles": "
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 0;
+
+  @media (min-width: 980px) {
+    padding: 0 20px;
+  }
+
+  @media (min-width: 1140px) {
+    display: flex;
+  }
+",
               }
             }
           >
             <div
               css={
                 Object {
-                  "@media (min-width: 1140px)": Object {
-                    "width": "340px",
-                  },
-                  "@media (min-width: 1300px)": Object {
-                    "width": "460px",
-                  },
-                  "border": 0,
-                  "margin": 0,
-                  "padding": 0,
-                  "width": "100%",
+                  "map": undefined,
+                  "name": "1jqhtyp",
+                  "next": undefined,
+                  "styles": "
+  padding: 0;
+  border: 0;
+  width: 100%;
+  margin: 0;
+  @media (min-width: 1140px) {
+    width: 340px;
+  }
+  @media (min-width: 1300px) {
+    width: 460px;
+  }
+",
                 }
               }
             >
@@ -743,61 +770,86 @@ exports[`Main renders something 1`] = `
             <div
               css={
                 Object {
-                  "@media (min-width: 1300px)": Object {
-                    "borderTop": 0,
-                  },
-                  "borderTop": "1px solid rgba(255,255,255,0.3)",
-                  "display": "flex",
-                  "flexDirection": "row",
-                  "flexWrap": "wrap",
-                  "fontFeatureSettings": "kern",
-                  "fontSize": "16px",
-                  "lineHeight": "16px",
-                  "paddingBottom": "18px",
+                  "map": undefined,
+                  "name": "1x6vqcu",
+                  "next": undefined,
+                  "styles": "
+  font-feature-settings: kern;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  @media (min-width: 1300px) {
+    border-top: 0;
+  }
+",
                 }
               }
             >
               <ul
                 css={
                   Object {
-                    "&:nth-of-type(even)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "@media (min-width: 740px)": Object {
-                      "&:not(:first-of-type)": Object {
-                        "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                      },
-                      "flex": "1 0 0",
-                      "width": "161px",
-                    },
-                    "@media (min-width: 980px)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "lineHeight": "19.2px",
-                    "listStyle": "none",
-                    "margin": 0,
-                    "padding": "0 10px",
-                    "position": "relative",
-                    "width": "calc(50% - 1.250rem - 1px)",
+                    "map": undefined,
+                    "name": "1hkg2v9",
+                    "next": undefined,
+                    "styles": "
+  line-height: 19.2px;
+  width: calc(50% - 1.25rem - 1px);
+  list-style: none;
+  position: relative;
+  padding: 0 10px;
+  margin: 0;
+
+  &:nth-of-type(even) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @media (min-width: 740px) {
+    &:not(:first-of-type) {
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    width: 161px;
+    flex: 1 0 0;
+  }
+
+  @media (min-width: 980px) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+",
                   }
                 }
               >
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/about"
@@ -808,19 +860,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/help/contact-us"
@@ -831,19 +894,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/info/complaints-and-corrections"
@@ -854,19 +928,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/securedrop"
@@ -877,19 +962,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://workforus.thegulocal.com"
@@ -900,19 +996,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/info/privacy"
@@ -923,19 +1030,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/info/cookies"
@@ -946,19 +1064,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://www.thegulocal.com/help/terms-of-service"
@@ -969,19 +1098,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://www.thegulocal.com/help"
@@ -993,44 +1133,64 @@ exports[`Main renders something 1`] = `
               <ul
                 css={
                   Object {
-                    "&:nth-of-type(even)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "@media (min-width: 740px)": Object {
-                      "&:not(:first-of-type)": Object {
-                        "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                      },
-                      "flex": "1 0 0",
-                      "width": "161px",
-                    },
-                    "@media (min-width: 980px)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "lineHeight": "19.2px",
-                    "listStyle": "none",
-                    "margin": 0,
-                    "padding": "0 10px",
-                    "position": "relative",
-                    "width": "calc(50% - 1.250rem - 1px)",
+                    "map": undefined,
+                    "name": "1hkg2v9",
+                    "next": undefined,
+                    "styles": "
+  line-height: 19.2px;
+  width: calc(50% - 1.25rem - 1px);
+  list-style: none;
+  position: relative;
+  padding: 0 10px;
+  margin: 0;
+
+  &:nth-of-type(even) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @media (min-width: 740px) {
+    &:not(:first-of-type) {
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    width: 161px;
+    flex: 1 0 0;
+  }
+
+  @media (min-width: 980px) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+",
                   }
                 }
               >
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/index/subjects/a"
@@ -1041,19 +1201,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/index/contributors"
@@ -1064,19 +1235,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT"
@@ -1087,19 +1269,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://theguardian.newspapers.com/"
@@ -1110,19 +1303,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://www.facebook.com/theguardian"
@@ -1133,19 +1337,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://twitter.com/guardian"
@@ -1157,44 +1372,64 @@ exports[`Main renders something 1`] = `
               <ul
                 css={
                   Object {
-                    "&:nth-of-type(even)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "@media (min-width: 740px)": Object {
-                      "&:not(:first-of-type)": Object {
-                        "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                      },
-                      "flex": "1 0 0",
-                      "width": "161px",
-                    },
-                    "@media (min-width: 980px)": Object {
-                      "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    },
-                    "lineHeight": "19.2px",
-                    "listStyle": "none",
-                    "margin": 0,
-                    "padding": "0 10px",
-                    "position": "relative",
-                    "width": "calc(50% - 1.250rem - 1px)",
+                    "map": undefined,
+                    "name": "1hkg2v9",
+                    "next": undefined,
+                    "styles": "
+  line-height: 19.2px;
+  width: calc(50% - 1.25rem - 1px);
+  list-style: none;
+  position: relative;
+  padding: 0 10px;
+  margin: 0;
+
+  &:nth-of-type(even) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @media (min-width: 740px) {
+    &:not(:first-of-type) {
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    width: 161px;
+    flex: 1 0 0;
+  }
+
+  @media (min-width: 980px) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+",
                   }
                 }
               >
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://advertising.thegulocal.com"
@@ -1205,19 +1440,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://thegulocal.com/guardian-labs"
@@ -1228,19 +1474,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://jobs.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
@@ -1251,19 +1508,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://soulmates.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES"
@@ -1274,19 +1542,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://patrons.thegulocal.com/?INTCMP=footer_patrons"
@@ -1297,19 +1576,30 @@ exports[`Main renders something 1`] = `
                 <li
                   css={
                     Object {
-                      "listStyle": "none",
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
                     }
                   }
                 >
                   <a
                     css={
                       Object {
-                        ":hover": Object {
-                          "color": "#ffe500",
-                        },
-                        "color": "#ffffff",
-                        "display": "inline-block",
-                        "padding": "6px 0",
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
                       }
                     }
                     href="https://discountcode.thegulocal.com/uk?INTCMP=guardian_footer"
@@ -1321,33 +1611,43 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "@media (min-width: 660px)": Object {
-                      "width": "300px",
-                    },
-                    "@media (min-width: 740px)": Object {
-                      "borderTop": 0,
-                    },
-                    "borderLeft": "1px solid rgba(255,255,255,0.3)",
-                    "borderTop": "1px solid rgba(255,255,255,0.3)",
-                    "paddingLeft": "10px",
-                    "width": "50%",
+                    "map": undefined,
+                    "name": "pt8jss",
+                    "next": undefined,
+                    "styles": "
+  width: 50%;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 10px;
+  @media (min-width: 660px) {
+    width: 300px;
+  }
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  @media (min-width: 740px) {
+    border-top: 0;
+  }
+",
                   }
                 }
               >
                 <div
                   css={
                     Object {
-                      "@media (min-width: 660px)": Object {
-                        "fontSize": "32px",
-                        "lineHeight": "32px",
-                      },
-                      "color": "#ffe500",
-                      "fontFamily": "GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif",
-                      "fontSize": "24px",
-                      "fontWeight": "bold",
-                      "lineHeight": "24px",
-                      "marginBottom": "12px",
-                      "marginTop": "3px",
+                      "map": undefined,
+                      "name": "1k0upo6",
+                      "next": undefined,
+                      "styles": "
+  color: #ffe500;
+  font-family: GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  margin-top: 3px;
+  margin-bottom: 12px;
+  @media (min-width: 660px) {
+    font-size: 32px;
+    line-height: 32px;
+  }
+",
                     }
                   }
                 >
@@ -1356,9 +1656,14 @@ exports[`Main renders something 1`] = `
                 <div
                   css={
                     Object {
-                      "display": "inline-block",
-                      "marginBottom": "6px",
-                      "marginRight": "10px",
+                      "map": undefined,
+                      "name": "l2bq3g",
+                      "next": undefined,
+                      "styles": "
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 6px;
+",
                     }
                   }
                 >
@@ -1419,27 +1724,37 @@ exports[`Main renders something 1`] = `
           <div
             css={
               Object {
-                "paddingBottom": "24px",
-                "paddingLeft": "20px",
-                "paddingRight": "20px",
-                "position": "relative",
+                "map": undefined,
+                "name": "1wu2ni1",
+                "next": undefined,
+                "styles": "
+  padding-bottom: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+",
               }
             }
           >
             <a
               css={
                 Object {
-                  ":hover": Object {
-                    "color": "#ffe500",
-                  },
-                  "backgroundColor": "#052962",
-                  "color": "#ffffff",
-                  "fontSize": "16px",
-                  "fontWeight": "bold",
-                  "padding": "0 5px",
-                  "position": "absolute",
-                  "right": "20px",
-                  "transform": "translateY(-50%)",
+                  "map": undefined,
+                  "name": "rhcyrc",
+                  "next": undefined,
+                  "styles": "
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0 5px;
+  background-color: #052962;
+  :hover {
+    color: #ffe500;
+  }
+  position: absolute;
+  right: 20px;
+  transform: translateY(-50%);
+",
                 }
               }
               href="#top"
@@ -1447,9 +1762,14 @@ exports[`Main renders something 1`] = `
               <span
                 css={
                   Object {
-                    "display": "inline-block",
-                    "paddingRight": "5px",
-                    "paddingTop": "9px",
+                    "map": undefined,
+                    "name": "m3p6yb",
+                    "next": undefined,
+                    "styles": "
+  display: inline-block;
+  padding-right: 5px;
+  padding-top: 9px;
+",
                   }
                 }
               >
@@ -1458,22 +1778,32 @@ exports[`Main renders something 1`] = `
               <span
                 css={
                   Object {
-                    "backgroundColor": "currentColor",
-                    "borderRadius": "100%",
-                    "float": "right",
-                    "height": "42px",
-                    "position": "relative",
-                    "width": "42px",
+                    "map": undefined,
+                    "name": "n17lfs",
+                    "next": undefined,
+                    "styles": "
+  position: relative;
+  float: right;
+  background-color: currentColor;
+  border-radius: 100%;
+  height: 42px;
+  width: 42px;
+",
                   }
                 }
               >
                 <span
                   css={
                     Object {
-                      "fill": "#052962",
-                      "left": "9px",
-                      "position": "absolute",
-                      "top": "9px",
+                      "map": undefined,
+                      "name": "1e08lku",
+                      "next": undefined,
+                      "styles": "
+  position: absolute;
+  fill: #052962;
+  top: 9px;
+  left: 9px;
+",
                     }
                   }
                 >
@@ -1492,11 +1822,16 @@ exports[`Main renders something 1`] = `
             <div
               css={
                 Object {
-                  "@media (min-width: 740px)": Object {
-                    "paddingTop": "6px",
-                  },
-                  "fontSize": "12px",
-                  "paddingTop": "26px",
+                  "map": undefined,
+                  "name": "n9fado",
+                  "next": undefined,
+                  "styles": "
+  @media (min-width: 740px) {
+    padding-top: 6px;
+  }
+  padding-top: 26px;
+  font-size: 12px;
+",
                 }
               }
             >
