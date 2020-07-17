@@ -97,3 +97,10 @@ export const NAV_LINKS: NavLinks = {
     icon: SignoutIcon
   }
 };
+
+export const getNavItemFromFlowReferrer = (
+  flowReferrerTitle?: string
+): MenuSpecificNavItem =>
+  Object.entries(NAV_LINKS).find(
+    navLinkEntry => navLinkEntry[1].title === flowReferrerTitle
+  )?.[1] || NAV_LINKS.accountOverview;

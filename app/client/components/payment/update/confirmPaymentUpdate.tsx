@@ -106,7 +106,10 @@ class ExecutePaymentUpdate extends React.Component<
         },
         eventLabel: this.props.productType.urlPart
       });
-      this.props.navigate("updated", { replace: true });
+      this.props.navigate("updated", {
+        replace: true,
+        state: this.props.location?.state
+      });
       return null;
     }
 
@@ -179,28 +182,26 @@ const InnerContent = (props: InnerContentProps) => (
   </>
 );
 
-export const ConfirmPaymentUpdate = (props: RouteableStepProps) => {
-  return (
-    <NewPaymentMethodContext.Consumer>
-      {newPaymentMethodDetail => (
-        <MembersDataApiItemContext.Consumer>
-          {productDetail =>
-            props.navigate &&
-            isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-            isProduct(productDetail) ? (
-              <WizardStep routeableStepProps={props}>
-                <InnerContent
-                  routeableStepProps={props}
-                  productDetail={productDetail}
-                  newPaymentMethodDetail={newPaymentMethodDetail}
-                />
-              </WizardStep>
-            ) : (
-              visuallyNavigateToParent(props)
-            )
-          }
-        </MembersDataApiItemContext.Consumer>
-      )}
-    </NewPaymentMethodContext.Consumer>
-  );
-};
+export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
+  <NewPaymentMethodContext.Consumer>
+    {newPaymentMethodDetail => (
+      <MembersDataApiItemContext.Consumer>
+        {productDetail =>
+          props.navigate &&
+          isNewPaymentMethodDetail(newPaymentMethodDetail) &&
+          isProduct(productDetail) ? (
+            <WizardStep routeableStepProps={props}>
+              <InnerContent
+                routeableStepProps={props}
+                productDetail={productDetail}
+                newPaymentMethodDetail={newPaymentMethodDetail}
+              />
+            </WizardStep>
+          ) : (
+            visuallyNavigateToParent(props)
+          )
+        }
+      </MembersDataApiItemContext.Consumer>
+    )}
+  </NewPaymentMethodContext.Consumer>
+);

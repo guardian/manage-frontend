@@ -186,7 +186,13 @@ const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
                             alert={!!productDetail.alertText}
                             text="Update payment method"
                             to={`/payment/${specificProductType.urlPart}`}
-                            state={productDetail}
+                            state={{
+                              productDetail,
+                              flowReferrer: {
+                                title: NAV_LINKS.billing.title,
+                                link: NAV_LINKS.billing.link
+                              }
+                            }}
                           />
                         )}
                     </React.Fragment>
