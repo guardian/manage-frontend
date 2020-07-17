@@ -20,6 +20,7 @@ import {
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
+import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
@@ -52,7 +53,7 @@ const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
   const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
 
   if (allProductDetails.length === 0) {
-    return <span>Empty billing details</span>;
+    return <EmptyAccountOverview />;
   }
 
   const subHeadingTitleCss = `

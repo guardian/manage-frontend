@@ -40,8 +40,8 @@ export const EmptyAccountOverview = () => {
         `}
       >
         When you subscribe or contribute, you’ll be able to see your support
-        information here. There’s currently no active subscription, membership or
-        recurring contribution linked to this email address.
+        information here. There’s currently no active subscription, membership
+        or recurring contribution linked to this email address.
       </p>
       <dl
         css={css`
@@ -54,12 +54,12 @@ export const EmptyAccountOverview = () => {
       >
         <dt
           css={css`
-              font-weight: bold;
-              margin: 0;
-              padding 0;
-              display: inline-block;
-              min-width: 13ch;
-            `}
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            min-width: 13ch;
+          `}
         >
           Email address
         </dt>
