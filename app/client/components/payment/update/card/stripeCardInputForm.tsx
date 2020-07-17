@@ -6,14 +6,14 @@ import {
   useStripe
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
 import { validationWarningCSS } from "../../../../styles/fonts";
 import { Button } from "../../../buttons";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
 import { Spinner } from "../../../spinner";
-import { NavigateFnContext, FlowReferrerContext } from "../updatePaymentFlow";
+import { FlowReferrerContext, NavigateFnContext } from "../updatePaymentFlow";
 import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
 import {
