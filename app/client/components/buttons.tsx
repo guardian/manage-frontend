@@ -3,6 +3,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
+import { ProductDetail } from "../../shared/productResponse";
 import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
 import { ErrorIcon } from "./svgs/errorIcon";
@@ -28,9 +29,14 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
 }
 
+interface LinkButtonState {
+  productDetail: ProductDetail;
+  flowReferrer?: { title: string; link: string };
+}
+
 interface LinkButtonProps extends ButtonProps {
   to: string;
-  state?: any;
+  state?: LinkButtonState;
 }
 
 const applyIconStyleIfApplicable = (

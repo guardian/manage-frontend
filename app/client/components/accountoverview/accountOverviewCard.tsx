@@ -15,13 +15,13 @@ import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
-import { PayPalDisplay } from "../payment/paypalDisplay";
-import { ErrorIcon } from "../svgs/errorIcon";
-import { GiftIcon } from "../svgs/giftIcon";
 import {
   getNextPaymentDetails,
   NewPaymentPriceAlert
-} from "./nextPaymentDetails";
+} from "../payment/nextPaymentDetails";
+import { PayPalDisplay } from "../payment/paypalDisplay";
+import { ErrorIcon } from "../svgs/errorIcon";
+import { GiftIcon } from "../svgs/giftIcon";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 interface AccountOverviewCardProps {
@@ -279,7 +279,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             <LinkButton
               to={`/${groupedProductType.urlPart}`}
               text={`Manage ${groupedProductType.friendlyName}`}
-              state={props.productDetail}
+              state={{ productDetail: props.productDetail }}
               colour={palette.brand[800]}
               textColour={palette.brand[400]}
               fontWeight={"bold"}
@@ -379,7 +379,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 >
                   <LinkButton
                     to={`/payment/${specificProductType.urlPart}`}
-                    state={props.productDetail}
+                    state={{ productDetail: props.productDetail }}
                     text={"Manage payment method"}
                     colour={
                       hasPaymentFailure

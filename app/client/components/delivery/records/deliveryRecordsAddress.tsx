@@ -52,7 +52,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
         css={css`
           display: block;
           text-align: left;
-          ${textSans.small({ italic: true })};
+          ${textSans.small({ fontStyle: "italic" })};
           color: ${palette.brand.bright};
           font-style: normal;
           text-decoration: underline;
