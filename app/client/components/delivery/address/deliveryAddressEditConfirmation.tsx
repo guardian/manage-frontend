@@ -294,7 +294,7 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
       position: relative;
       width: 100%;
       text-align: left;
-      border: 4px solid ${palette.success.main};
+      border: 4px solid ${palette.success[400]};
       box-sizing: border-box;
       padding: 14px 14px 14px 50px;
       margin-bottom: 50px;

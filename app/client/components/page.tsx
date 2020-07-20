@@ -177,7 +177,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
             ${headline.medium({ fontWeight: "bold" })};
             font-size: 1.5rem;
             padding: 8px;
-            border: 1px solid ${palette.brand.pastel};
+            border: 1px solid ${palette.brand[600]};
             border-bottom: 0;
             ${minWidth.tablet} {
               line-height: 57px;

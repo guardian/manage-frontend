@@ -130,7 +130,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
               left: 0;
             `}
           >
-            <InfoIconDark fillColor={palette.brand.bright} size={22} />
+            <InfoIconDark fillColor={palette.brand[500]} size={22} />
           </i>
           {changesMessage}
         </span>

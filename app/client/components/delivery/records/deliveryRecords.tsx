@@ -405,7 +405,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         left: ${space[3]}px;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand.bright} />
+                      <InfoIconDark fillColor={palette.brand[500]} />
                     </i>
                     You don't have any available delivery history to report.
                     Your deliveries may be too far in the past or have already
@@ -617,7 +617,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         position: relative;
                         padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
                         ${textSans.medium()};
-                        border: 4px solid ${palette.news.main};
+                        border: 4px solid ${palette.news[400]};
                       `}
                     >
                       <i
@@ -713,7 +713,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     font-weight: bold;
                     margin-left: 22px;
                     padding: 0;
-                    color: ${palette.brand.main};
+                    color: ${palette.brand[400]};
                     :hover {
                       background-color: transparent;
                     }
