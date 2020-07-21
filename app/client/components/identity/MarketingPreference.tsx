@@ -6,6 +6,7 @@ import { Checkbox } from "../checkbox";
 interface MarketingPreferenceProps {
   id: string;
   description: string;
+  identityName?: string;
   frequency?: string;
   title?: string;
   selected?: boolean;
@@ -81,7 +82,18 @@ const getFrequency = (frequency: MarketingPreferenceProps["frequency"]) => (
 );
 
 export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
-  const { id, description, frequency, selected, title, onClick } = props;
+  const {
+    id,
+    description,
+    frequency,
+    selected,
+    title,
+    identityName,
+    onClick
+  } = props;
+  const linkName = `mma-switch : ${identityName} : ${
+    selected ? "tick" : "untick"
+  }`;
   return (
     <div
       onClick={e => {
@@ -101,6 +113,7 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           position: "relative"
         }
       ]}
+      data-link-name={identityName ? linkName : null}
     >
       <div css={{ position: "absolute", left: 0 }}>
         <Checkbox

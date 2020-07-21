@@ -68,6 +68,7 @@ export interface ConsentOption {
   theme?: string;
   type: ConsentOptionType;
   subscribed: boolean;
+  identityName?: string;
 }
 
 export interface ConsentOptionCollection {
