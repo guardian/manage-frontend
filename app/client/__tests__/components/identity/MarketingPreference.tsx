@@ -11,7 +11,8 @@ describe("MarketingPreference component", () => {
     description: "Test description",
     frequency: "Test frequency",
     title: "Test title",
-    clickHandler: jest.fn()
+    clickHandler: jest.fn(),
+    identityName: "Test-13"
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(
@@ -19,6 +20,7 @@ describe("MarketingPreference component", () => {
         id={input.id}
         description={input.description}
         frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         onClick={input.clickHandler}
       />
@@ -32,6 +34,7 @@ describe("MarketingPreference component", () => {
         id={input.id}
         description={input.description}
         frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         selected={true}
         onClick={input.clickHandler}
@@ -41,6 +44,20 @@ describe("MarketingPreference component", () => {
   });
 
   it("will omit the frequency information if it is not supplied", () => {
+    const rendered = create(
+      <MarketingPreference
+        id={input.id}
+        description={input.description}
+        identityName={input.identityName}
+        title={input.title}
+        selected={true}
+        onClick={input.clickHandler}
+      />
+    );
+    expect(rendered.toJSON()).toMatchSnapshot();
+  });
+
+  it("will omit the identityName/data-link-name information if it is not supplied", () => {
     const rendered = create(
       <MarketingPreference
         id={input.id}
@@ -59,6 +76,7 @@ describe("MarketingPreference component", () => {
         id={input.id}
         description={input.description}
         frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         onClick={input.clickHandler}
       />

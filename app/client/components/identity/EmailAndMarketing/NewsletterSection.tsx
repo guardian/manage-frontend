@@ -27,12 +27,20 @@ const newsletterPreference = (
   newsletter: ConsentOption,
   clickHandler: ClickHandler
 ) => {
-  const { id, name, description, frequency, subscribed } = newsletter;
+  const {
+    id,
+    name,
+    description,
+    frequency,
+    subscribed,
+    identityName
+  } = newsletter;
   return (
     <MarketingPreference
       id={id}
       key={id}
       title={name}
+      identityName={identityName}
       description={description}
       frequency={frequency}
       selected={subscribed}
