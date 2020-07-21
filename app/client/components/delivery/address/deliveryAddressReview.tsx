@@ -215,7 +215,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
               ${textSans.medium()};
               font-weight: bold;
               margin-left: 22px;
-              color: ${palette.brand.main};
+              color: ${palette.brand[400]};
             `}
           >
             Go back

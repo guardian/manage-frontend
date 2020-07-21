@@ -255,7 +255,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                 left: 0;
               `}
             >
-              <InfoIconDark fillColor={palette.brand.bright} />
+              <InfoIconDark fillColor={palette.brand[500]} />
             </i>
             Your number will be updated when you submit your report.
           </span>

@@ -53,7 +53,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
           display: block;
           text-align: left;
           ${textSans.small({ italic: true })};
-          color: ${palette.brand.bright};
+          color: ${palette.brand[500]};
           font-style: normal;
           text-decoration: underline;
           cursor: pointer;
@@ -70,8 +70,8 @@ export const RecordAddress = (props: DeliveryAddress) => {
             height: 6px;
             margin-left: 6px;
             margin-bottom: ${showAddress ? -1 : 2}px;
-            border-top: 1px solid ${palette.brand.bright};
-            border-right: 1px solid ${palette.brand.bright};
+            border-top: 1px solid ${palette.brand[500]};
+            border-right: 1px solid ${palette.brand[500]};
             transform: rotate(${showAddress ? -45 : 135}deg);
           `}
         />

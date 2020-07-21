@@ -33,7 +33,7 @@ export const DeliveryRecordInstructions = (
             : "none"};
           text-align: left;
           ${textSans.small({ italic: true })};
-          color: ${palette.brand.bright};
+          color: ${palette.brand[500]};
           cursor: pointer;
         `}
         onClick={() => {

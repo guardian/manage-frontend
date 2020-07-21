@@ -37,7 +37,7 @@ export const Select = (props: SelectProps) => (
       <span
         css={css`
           display: block;
-          color: ${palette.error.main};
+          color: ${palette.error[400]};
         `}
       >
         <ErrorIcon />
@@ -61,7 +61,7 @@ export const Select = (props: SelectProps) => (
           margin-top: 4px;
           padding: 8px 0 8px 4px;
           border: ${props.inErrorState ? 4 : 2}px solid ${
-        props.inErrorState ? palette.error.main : palette.neutral["60"]
+        props.inErrorState ? palette.error[400] : palette.neutral["60"]
       };
           &:focus {
             ${focusHalo};

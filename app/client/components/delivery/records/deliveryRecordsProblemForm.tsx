@@ -191,7 +191,7 @@ export const DeliveryRecordProblemForm = (
                             <span
                               css={css`
                                 display: block;
-                                color: ${palette.news.main};
+                                color: ${palette.news[400]};
                               `}
                             >
                               <i
@@ -219,7 +219,7 @@ export const DeliveryRecordProblemForm = (
                             ${props.inValidationState &&
                             deliveryProblemRadioOption.messageIsMandatory &&
                             !selectedDeliveryProblem.message
-                              ? palette.news.main
+                              ? palette.news[400]
                               : palette.neutral["60"]};
                           width: 100%;
                           padding: 12px;
@@ -243,7 +243,7 @@ export const DeliveryRecordProblemForm = (
             display: block;
             position: relative;
             padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
-            border: 4px solid ${palette.news.main};
+            border: 4px solid ${palette.news[400]};
             margin-bottom: ${space[5]}px;
           `}
         >
@@ -269,7 +269,7 @@ export const DeliveryRecordProblemForm = (
               font-weight: bold;
               margin-left: 22px;
               padding: 0;
-              color: ${palette.brand.main};
+              color: ${palette.brand[400]};
               :hover {
                 background-color: transparent;
               }
