@@ -500,7 +500,7 @@ const DeliveryRecordsProblemReviewFC = (
                         left: 0;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand.bright} />
+                      <InfoIconDark fillColor={palette.brand[500]} />
                     </i>
                     Once you submit your report, your case will be marked as
                     high priority. Our customer service team will try their best
@@ -540,7 +540,7 @@ const DeliveryRecordsProblemReviewFC = (
                   font-weight: bold;
                   margin-left: 22px;
                   padding: 0;
-                  color: ${palette.brand.main};
+                  color: ${palette.brand[400]};
                   :hover {
                     background-color: transparent;
                   }

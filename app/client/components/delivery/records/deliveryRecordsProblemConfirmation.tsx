@@ -152,7 +152,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               left: ${space[3]}px;
             `}
           >
-            <InfoIconDark fillColor={palette.brand.bright} />
+            <InfoIconDark fillColor={palette.brand[500]} />
           </i>
           {deliveryProblemCredit?.showCredit
             ? `Thank you for reporting your delivery problem${

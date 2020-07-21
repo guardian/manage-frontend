@@ -37,11 +37,11 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     background: palette.neutral["100"],
-    color: palette.brand.main,
+    color: palette.brand[400],
 
     [minWidth.desktop]: {
       borderLeft: `${space[2]}px solid ${
-        isSelected ? palette.brandYellow.main : palette.neutral["46"]
+        isSelected ? palette.brandAlt[400] : palette.neutral["46"]
       }`,
       boxShadow: isSelected ? "0 1px 0 white" : undefined,
       minHeight: 0,

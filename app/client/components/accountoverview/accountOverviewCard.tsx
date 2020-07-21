@@ -151,7 +151,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               `}
             >
               <ErrorIcon
-                fill={palette.brandYellow[200]}
+                fill={palette.brandAlt[200]}
                 additionalCss={css`
                   transform: translateY(1px);
                 `}
