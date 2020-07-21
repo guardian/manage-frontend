@@ -113,7 +113,7 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           position: "relative"
         }
       ]}
-      data-link-name={identityName ? linkName : null}
+      data-link-name={identityName ? linkName : undefined}
     >
       <div css={{ position: "absolute", left: 0 }}>
         <Checkbox
