@@ -41,7 +41,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
             {props.region && <li>{props.region}</li>}
             {props.country && (
               <li>
-                {COUNTRIES.find(country => props.country === country.iso)
+                {COUNTRIES.find((country) => props.country === country.iso)
                   ?.name || props.country}
               </li>
             )}
@@ -52,7 +52,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
         css={css`
           display: block;
           text-align: left;
-          ${textSans.small({ italic: true })};
+          ${textSans.small({ fontStyle: "italic" })};
           color: ${palette.brand[500]};
           font-style: normal;
           text-decoration: underline;

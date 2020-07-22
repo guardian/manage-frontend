@@ -118,7 +118,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
           >
             <li>
               <a css={aCss} href={IdentityLocations.RESET_PASSWORD}>
-                Reset your password
+                Change password
               </a>
             </li>
           </ul>
