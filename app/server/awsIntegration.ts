@@ -1,6 +1,8 @@
 import * as Sentry from "@sentry/node";
 import * as AWS from "aws-sdk";
+import { CredentialProviderChain, Credentials } from "aws-sdk";
 import { GetObjectRequest } from "aws-sdk/clients/s3";
+import { RequestSigner } from "aws4";
 import { conf } from "./config";
 import { log } from "./log";
 
@@ -19,6 +21,30 @@ const standardAwsConfig = {
 };
 
 const S3 = new AWS.S3(standardAwsConfig);
+
+// Returns AWS signature version 4 headers to be used for AWS_IAM authorization in API Gateway
+export const signAwsRequest = async (
+  host: string,
+  path: string,
+  body: string,
+  apiKey: string,
+  credentials: CredentialProviderChain = CREDENTIAL_PROVIDER
+) => {
+  const creds: Credentials = await credentials.resolvePromise();
+  const opts = {
+    region: AWS_REGION,
+    service: "execute-api",
+    host, // foo.execute-api.eu-west-1.amazonaws.com
+    path, // DEV/bar
+    body, // '{"foo": "bar"}'
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey // it is not actually necessary for signature
+    }
+  };
+  const { headers } = new RequestSigner(opts, creds).sign();
+  return headers;
+};
 
 export const APIGateway = new AWS.APIGateway(standardAwsConfig);
 
