@@ -263,15 +263,15 @@ export const Help = (_: RouteComponentProps) => (
                   height: 36px;
                   border-radius: 18px;
                   padding: 0 16px;
-                  color: ${palette.brand.main};
-                  background-color: ${palette.brand.faded};
+                  color: ${palette.brand[400]};
+                  background-color: ${palette.brand[800]};
                   :hover {
-                    background-color: ${Color(palette.brand.faded, "hex")
+                    background-color: ${Color(palette.brand[800], "hex")
                       .darken(0.1)
                       .string()};
                   }
                   :visited {
-                    color: ${palette.brand.main};
+                    color: ${palette.brand[400]};
                   }
                 `}
                 onClick={() => {
@@ -327,7 +327,7 @@ export const Help = (_: RouteComponentProps) => (
       <Button
         text={reportTechnicalIssue.title}
         fontWeight="bold"
-        colour={palette.brand.main}
+        colour={palette.brand[400]}
         textColour={palette.neutral[100]}
         height="36px"
         right

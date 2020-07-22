@@ -10,11 +10,11 @@ const Header = () => {
   return (
     <header
       css={{
-        backgroundColor: palette.brand.main,
+        backgroundColor: palette.brand[400],
         minHeight: "50px",
         overflow: "visible",
         position: "relative",
-        boxShadow: `0 2px 1px -1px ${palette.brand.pastel}`,
+        boxShadow: `0 2px 1px -1px ${palette.brand[600]}`,
         zIndex: 1070,
         [minWidth.desktop]: {
           minHeight: "82px"
@@ -56,7 +56,7 @@ const Header = () => {
         <DropdownNav />
         <GridRoundel
           fillMain={palette.neutral["100"]}
-          fillG={palette.brand.main}
+          fillG={palette.brand[400]}
         />
       </div>
     </header>

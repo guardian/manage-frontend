@@ -61,7 +61,7 @@ export const Input = (props: InputProps) => {
           css={css`
             display: block;
             font-weight: normal;
-            color: ${palette.error.main};
+            color: ${palette.error[400]};
           `}
         >
           <ErrorIcon
@@ -109,7 +109,7 @@ export const Input = (props: InputProps) => {
           padding: 0 8px;
           background-color: ${palette.neutral["100"]};
           border: ${props.inErrorState ? 4 : 2}px solid ${
-            props.inErrorState ? palette.error.main : palette.neutral["60"]
+            props.inErrorState ? palette.error[400] : palette.neutral["60"]
           };
           ${props.prefixValue &&
             `
