@@ -11,7 +11,7 @@ import {
 } from "../../../shared/productResponse";
 import { InfoIconDark } from "../svgs/infoIconDark";
 
-interface NextPaymentDetails {
+export interface NextPaymentDetails {
   paymentKey: string;
   paymentValue: string;
   isNewPaymentValue?: boolean;

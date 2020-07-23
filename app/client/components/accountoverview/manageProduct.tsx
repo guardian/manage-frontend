@@ -17,15 +17,15 @@ import {
   shouldHaveHolidayStopsFlow
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
+import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { DeliveryAddressDisplay } from "../delivery/address/deliveryAddressDisplay";
 import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
-import { CardDisplay } from "../payment/cardDisplay";
-import { DirectDebitDisplay } from "../payment/directDebitDisplay";
+import { getNextPaymentDetails } from "../payment/nextPaymentDetails";
+import { PaymentDetailsTable } from "../payment/paymentDetailsTable";
 import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
-import { PayPalDisplay } from "../payment/paypalDisplay";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
@@ -33,10 +33,6 @@ import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
 import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
 import { NewsletterOptinSection } from "./newsletterOptinSection";
-import {
-  getNextPaymentDetails,
-  NewPaymentPriceAlert
-} from "./nextPaymentDetails";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
 const subHeadingTitleCss = `
@@ -142,40 +138,9 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           amountUpdateStateChange={setOveriddenAmount}
         />
       ) : (
-        <ProductDescriptionListTable
-          content={[
-            ...(groupedProductType.shouldRevealSubscriptionId
-              ? [
-                  {
-                    title: "Subscription ID",
-                    value: productDetail.subscription.subscriptionId
-                  }
-                ]
-              : []),
-            ...(groupedProductType.tierLabel
-              ? [
-                  {
-                    title: groupedProductType.tierLabel,
-                    value: productDetail.tier
-                  }
-                ]
-              : []),
-            ...(groupedProductType.shouldShowJoinDateNotStartDate
-              ? [
-                  {
-                    title: "Join date",
-                    value: formatDateStr(productDetail.joinDate)
-                  }
-                ]
-              : [
-                  {
-                    title: "Start date",
-                    value: productDetail.subscription.start
-                      ? formatDateStr(productDetail.subscription.start)
-                      : "-"
-                  }
-                ])
-          ]}
+        <BasicProductInfoTable
+          groupedProductType={groupedProductType}
+          productDetail={productDetail}
         />
       )}
 
@@ -198,78 +163,10 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
         mainPlan={mainPlan}
         hasCancellationPending={hasCancellationPending}
       />
-      <ProductDescriptionListTable
-        borderColour={palette.neutral[86]}
-        alternateRowBgColors
-        content={[
-          ...(nextPaymentDetails &&
-          productDetail.subscription.autoRenew &&
-          !hasCancellationPending
-            ? [
-                {
-                  title: nextPaymentDetails.paymentKey,
-                  value: (
-                    <span>
-                      {nextPaymentDetails.isNewPaymentValue && (
-                        <NewPaymentPriceAlert />
-                      )}
-                      {nextPaymentDetails.paymentValue}
-                    </span>
-                  )
-                },
-                {
-                  title: nextPaymentDetails.nextPaymentDateKey,
-                  ...(productDetail.subscription.nextPaymentDate && {
-                    value: nextPaymentDetails.nextPaymentDateValue
-                  })
-                }
-              ]
-            : []),
-          {
-            title: `Payment${productDetail.isPaidTier ? " method" : ""}`,
-            value: productDetail.isPaidTier ? (
-              <>
-                {productDetail.subscription.card && (
-                  <CardDisplay
-                    margin="0"
-                    inErrorState={!!productDetail.alertText}
-                    {...productDetail.subscription.card}
-                  />
-                )}
-                {productDetail.subscription.payPalEmail && (
-                  <PayPalDisplay
-                    payPalId={productDetail.subscription.payPalEmail}
-                    shouldIncludePrefixCopy
-                  />
-                )}
-                {productDetail.subscription.mandate && (
-                  <DirectDebitDisplay
-                    inErrorState={!!productDetail.alertText}
-                    {...productDetail.subscription.mandate}
-                  />
-                )}
-                {productDetail.subscription.stripePublicKeyForCardAddition && (
-                  <span>No Payment Method</span>
-                )}
-              </>
-            ) : (
-              <span>FREE</span>
-            ),
-            spanTwoCols: productDetail.subscription.payPalEmail
-              ? true
-              : undefined
-          },
-          {
-            title: "Expiry date",
-            ...(productDetail.subscription.card?.expiry && {
-              value: `${
-                productDetail.subscription.card.expiry.month < 10 ? "0" : ""
-              }${productDetail.subscription.card.expiry.month}
-                    ${" / "}
-                    ${productDetail.subscription.card.expiry.year}`
-            })
-          }
-        ]}
+      <PaymentDetailsTable
+        productDetail={productDetail}
+        nextPaymentDetails={nextPaymentDetails}
+        hasCancellationPending={hasCancellationPending}
       />
       {productDetail.isPaidTier && !productDetail.subscription.payPalEmail && (
         <LinkButton
@@ -283,7 +180,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           alert={!!productDetail.alertText}
           text="Update payment method"
           to={`/payment/${specificProductType.urlPart}`}
-          state={productDetail}
+          state={{ productDetail }}
         />
       )}
 
@@ -332,7 +229,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               fontWeight="bold"
               text="Manage delivery address"
               to={`/delivery/${specificProductType.urlPart}/address`}
-              state={productDetail}
+              state={{ productDetail }}
             />
           </>
         )}
@@ -359,7 +256,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             fontWeight="bold"
             text="Manage delivery history"
             to={`/delivery/${specificProductType.urlPart}/records`}
-            state={productDetail}
+            state={{ productDetail }}
           />
         </>
       )}
@@ -391,7 +288,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               fontWeight="bold"
               text="Manage suspensions"
               to={`/suspend/${specificProductType.urlPart}`}
-              state={productDetail}
+              state={{ productDetail }}
             />
           </>
         )}

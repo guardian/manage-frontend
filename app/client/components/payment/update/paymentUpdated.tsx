@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
+import { palette, space } from "@guardian/src-foundations";
 import React from "react";
 import {
   augmentInterval,
@@ -19,6 +19,7 @@ import {
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
+import { NAV_LINKS } from "../../nav/navConfig";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
   ReturnToAccountOverviewButton,
@@ -81,7 +82,8 @@ const ConfirmedNewPaymentDetailsRenderer = ({
 const WithSubscriptionRenderer = (
   productType: ProductType,
   newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail
+  previousProductDetail: ProductDetail,
+  flowReferrer?: { title: string; link: string }
 ) => (subs: WithSubscription[]) =>
   subs && subs.length === 1 ? (
     <>
@@ -93,12 +95,23 @@ const WithSubscriptionRenderer = (
       />
       <h2>Thank you. You are helping to support independent journalism.</h2>
       <div>
-        <LinkButton
-          to={"/" + productType.urlPart}
-          text={"Manage your " + productType.friendlyName}
-          primary
-          right
-        />
+        {flowReferrer?.title === NAV_LINKS.billing.title ? (
+          <LinkButton
+            to={flowReferrer?.link}
+            text="Return to your billing"
+            colour={palette.neutral[100]}
+            textColour={palette.neutral[0]}
+            hollow
+            left
+          />
+        ) : (
+          <LinkButton
+            to={"/" + productType.urlPart}
+            text={"Manage your " + productType.friendlyName}
+            primary
+            right
+          />
+        )}
       </div>
       <div css={{ marginTop: "20px" }}>
         <a href="https://www.theguardian.com">
@@ -139,7 +152,8 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
         render={WithSubscriptionRenderer(
           props.productType,
           newPaymentMethodDetail,
-          previousProductDetail
+          previousProductDetail,
+          props.location?.state?.flowReferrer
         )}
         loadingMessage="Looks good so far. Just checking everything is done..."
       />
