@@ -83,6 +83,6 @@ You must ssh via the bastion, e.g. using [ssm-scala](https://github.com/guardian
 | application directory | `/etc/gu/dist` |
 | application logs | `/var/log/manage-frontend.log` |
 | service config | `/etc/systemd/system/manage-frontend.service` |
-| service logs | `journalctl -u manage-frontend |
+| service logs | `journalctl -u manage-frontend` |
 | service status | `systemctl status manage-frontend` |
 | healthcheck | `curl http://127.0.0.1:9000/healthcheck` |
