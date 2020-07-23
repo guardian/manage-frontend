@@ -77,3 +77,12 @@ NOTE nginx proxies CODE instances of [`identity-frontend`](https://github.com/gu
 
 You must ssh via the bastion, e.g. using [ssm-scala](https://github.com/guardian/ssm-scala):
 `ssm ssh --profile membership --bastion-tags contributions-store-bastion,support,PROD --tags manage-frontend,support,CODE -a -x --newest`
+
+| Description           | Command |
+| --------------------- | --------------------- |
+| application directory | `/etc/gu/dist` |
+| application logs | `/var/log/manage-frontend.log` |
+| service config | `/etc/systemd/system/manage-frontend.service` |
+| service logs | `journalctl -u manage-frontend |
+| service status | `systemctl status manage-frontend` |
+| healthcheck | `curl http://127.0.0.1:9000/healthcheck` |
