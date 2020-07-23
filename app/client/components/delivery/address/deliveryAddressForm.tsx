@@ -664,7 +664,7 @@ const Form = (props: FormProps) => {
               ${textSans.medium()};
               font-weight: bold;
               margin-left: 22px;
-              color: ${palette.brand.main};
+              color: ${palette.brand[400]};
             `}
           >
             Cancel

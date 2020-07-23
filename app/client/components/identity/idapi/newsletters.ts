@@ -14,7 +14,14 @@ interface NewsletterAPIResponse {
 const newsletterToConsentOption = (
   newsletter: NewsletterAPIResponse
 ): ConsentOption => {
-  const { theme, name, description, frequency, exactTargetListId } = newsletter;
+  const {
+    id: identityName,
+    theme,
+    name,
+    description,
+    frequency,
+    exactTargetListId
+  } = newsletter;
   return {
     id: exactTargetListId.toString(),
     description,
@@ -22,7 +29,8 @@ const newsletterToConsentOption = (
     type: ConsentOptionType.NEWSLETTER,
     name,
     frequency,
-    subscribed: false
+    subscribed: false,
+    identityName
   };
 };
 

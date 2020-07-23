@@ -16,6 +16,7 @@ exports[`MarketingPreference component renders correctly and displays marketing 
       },
     ]
   }
+  data-link-name="mma-switch : Test-13 : untick"
   onClick={[Function]}
 >
   <div
@@ -192,6 +193,147 @@ exports[`MarketingPreference component will omit the frequency information if it
       },
     ]
   }
+  data-link-name="mma-switch : Test-13 : tick"
+  onClick={[Function]}
+>
+  <div
+    css={
+      Object {
+        "left": 0,
+        "position": "absolute",
+      }
+    }
+  >
+    <label
+      css={
+        Object {
+          ":hover .checkbox": Object {
+            "boxShadow": "0 0 0 3px #ececec",
+          },
+          "cursor": "pointer",
+          "display": "flex",
+          "maxWidth": undefined,
+          "userSelect": "none",
+        }
+      }
+    >
+      <div
+        aria-checked={true}
+        className="checkbox"
+        css={
+          Object {
+            ":focus": Object {
+              "boxShadow": "0 0 0 3px #ffe500",
+            },
+            "background": "#22834D",
+            "border": undefined,
+            "display": "inline-block",
+            "height": "18px",
+            "margin": "3px",
+            "marginRight": "10px",
+            "minWidth": "18px",
+            "outline": 0,
+            "position": "relative",
+            "transition": "all .2s ease-in-out",
+          }
+        }
+        onKeyPress={[Function]}
+        role="checkbox"
+        tabIndex={0}
+      >
+        <input
+          checked={true}
+          css={
+            Object {
+              "opacity": 0,
+              "overflow": "hidden",
+              "position": "absolute",
+              "zIndex": -999999,
+            }
+          }
+          onChange={[Function]}
+          tabIndex={-1}
+          type="checkbox"
+        />
+        <div
+          css={
+            Object {
+              "height": "6px",
+              "left": "3px",
+              "position": "absolute",
+              "textAlign": "right",
+              "top": "5px",
+              "transform": "rotate(-45deg)",
+              "width": "12px",
+            }
+          }
+        >
+          <div
+            css={
+              Object {
+                "borderColor": "#ffffff",
+                "borderStyle": "solid",
+                "borderWidth": "0 0 2px 2px",
+                "height": "6px",
+                "transition": "all .2s ease-in-out",
+                "transitionDelay": ".1s",
+                "width": "12px",
+              }
+            }
+          />
+        </div>
+      </div>
+      <span />
+    </label>
+  </div>
+  <p
+    css={
+      Array [
+        Object {
+          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
+          "fontSize": "14px",
+        },
+        Object {
+          "cursor": "pointer",
+          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "bold",
+          "lineHeight": "22px",
+          "margin": "0",
+        },
+      ]
+    }
+  >
+    Test title
+  </p>
+  <p
+    css={
+      Object {
+        "padding": "2.88px 0 0 0",
+      }
+    }
+  >
+    Test description
+  </p>
+</div>
+`;
+
+exports[`MarketingPreference component will omit the identityName/data-link-name information if it is not supplied 1`] = `
+<div
+  css={
+    Array [
+      Object {
+        "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
+        "fontSize": "14px",
+      },
+      Object {
+        "lineHeight": "1.333",
+        "marginTop": "12px",
+        "paddingLeft": "30px",
+        "position": "relative",
+      },
+    ]
+  }
   onClick={[Function]}
 >
   <div
@@ -332,6 +474,7 @@ exports[`MarketingPreference component will select the checkbox when the selecte
       },
     ]
   }
+  data-link-name="mma-switch : Test-13 : tick"
   onClick={[Function]}
 >
   <div

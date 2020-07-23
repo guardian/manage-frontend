@@ -116,7 +116,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             ${textSans.medium()};
           `}
         >
-          <ErrorIcon fill={palette.brandYellow[200]} />
+          <ErrorIcon fill={palette.brandAlt[200]} />
           <span
             css={css`
               margin-left: ${space[2]}px;

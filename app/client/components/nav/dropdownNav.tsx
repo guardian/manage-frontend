@@ -10,8 +10,8 @@ import { MenuSpecificNavItem, NAV_LINKS } from "./navConfig";
 const dropdownNavCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
-    background: palette.brand.main,
-    borderTop: `1px solid ${palette.brand.pastel}`,
+    background: palette.brand[400],
+    borderTop: `1px solid ${palette.brand[600]}`,
     position: "absolute",
     top: "50px",
     left: 0,
@@ -68,7 +68,7 @@ const dropdownNavItemCss = css({
   display: "flex",
   alignItems: "center",
   ":hover, :focus": {
-    backgroundColor: palette.brand.dark,
+    backgroundColor: palette.brand[300],
     textDecoration: "none"
   },
   ":focus": {
@@ -83,7 +83,7 @@ const dropdownNavItemCss = css({
     right: 0,
     width: "calc(100% - 46px)",
     height: "1px",
-    backgroundColor: `${palette.brand.pastel}`
+    backgroundColor: `${palette.brand[600]}`
   },
   [minWidth.desktop]: {
     padding: "18px 14px",

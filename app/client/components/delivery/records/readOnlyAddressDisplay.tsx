@@ -68,10 +68,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
               css={css`
                 display: block;
                 margin-top: ${space[5]}px;
-                color: ${palette.brand.main};
-                background-color: ${palette.brand.faded};
+                color: ${palette.brand[400]};
+                background-color: ${palette.brand[800]};
                 :hover {
-                  background-color: ${Color(palette.brand.faded, "hex")
+                  background-color: ${Color(palette.brand[800], "hex")
                     .darken(0.1)
                     .string()};
                 }
@@ -107,10 +107,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
                 css={css`
                   display: block;
                   margin-top: ${space[5]}px;
-                  color: ${palette.brand.main};
-                  background-color: ${palette.brand.faded};
+                  color: ${palette.brand[400]};
+                  background-color: ${palette.brand[800]};
                   :hover {
-                    background-color: ${Color(palette.brand.faded, "hex")
+                    background-color: ${Color(palette.brand[800], "hex")
                       .darken(0.1)
                       .string()};
                   }
