@@ -1,8 +1,8 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import React, { ReactElement } from "react";
-import { minWidth } from "../styles/breakpoints";
+import { maxWidth, minWidth } from "../styles/breakpoints";
 
 export interface ProductDescriptionListKeyValue {
   title: string;
@@ -12,6 +12,7 @@ export interface ProductDescriptionListKeyValue {
 
 interface ProductDescriptionListTable {
   borderColour?: string;
+  tableHeading?: string;
   alternateRowBgColors?: true;
   seperateEachRow?: true;
   content: ProductDescriptionListKeyValue[];
@@ -48,9 +49,24 @@ export const ProductDescriptionListTable = (
     `;
   };
 
+  const tableHeadingCss = css`
+    width: 100%;
+    ${headline.xxsmall({ fontWeight: "bold" })};
+    margin: 0;
+    padding: ${space[3]}px ${space[5]}px;
+    background-color: ${palette.neutral[97]};
+    ${maxWidth.tablet} {
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      padding: ${space[3]}px;
+    }
+  `;
+
   const filteredContent = props.content.filter(
     tableEntry => !!tableEntry.value
   );
+
+  const isOddNumberOfEntries = filteredContent.length % 2 === 1;
 
   const showAlternativeTableRowBgColours =
     props.alternateRowBgColors &&
@@ -101,6 +117,9 @@ export const ProductDescriptionListTable = (
         margin: ${space[5]}px 0;
       `}
     >
+      {props.tableHeading && (
+        <h2 css={tableHeadingCss}>{props.tableHeading}</h2>
+      )}
       {filteredContent.map((tableEntry, tableEntryIndex) => {
         const isFirstTableRow = tableEntryIndex < 2;
         const isLastTableRow =
@@ -108,6 +127,7 @@ export const ProductDescriptionListTable = (
           (props.content.length % 2 === 0 &&
             !tableEntry.spanTwoCols &&
             tableEntryIndex === props.content.length - 2);
+        const isLastEntry = tableEntryIndex === filteredContent.length - 1;
         const { row: currentRow, isFirstCollum } = contentRowMap.get(
           tableEntryIndex
         ) as ContentRowMapEntry;
@@ -125,7 +145,7 @@ export const ProductDescriptionListTable = (
                   : space[3] * 0.5}px;
               margin: 0;
               background-color: ${showAlternativeTableRowBgColours &&
-              currentRow % 2 === 0
+              currentRow % 2 === (props.tableHeading ? 1 : 0)
                 ? palette.neutral[97]
                 : "transparent"};
               border-bottom: ${!isLastTableRow && !isFirstCollum
@@ -135,18 +155,26 @@ export const ProductDescriptionListTable = (
                 border-bottom: ${!isLastTableRow
                   ? `1px solid ${props.borderColour || palette.neutral[20]}`
                   : "none"};
-                width: ${tableEntry.spanTwoCols ? "100%" : "50%"};
+                width: ${tableEntry.spanTwoCols ||
+                (isLastEntry && isOddNumberOfEntries)
+                  ? "100%"
+                  : "50%"};
                 padding: ${isFirstTableRow
                     ? space[5]
                     : showAlternativeTableRowBgColours
                     ? space[5]
                     : space[5] * 0.5}px
-                  ${space[5]}px
+                  ${isLastEntry &&
+                  isOddNumberOfEntries &&
+                  !tableEntry.spanTwoCols
+                    ? "50%"
+                    : `${space[5]}px`}
                   ${isLastTableRow
                     ? space[5]
                     : showAlternativeTableRowBgColours
                     ? space[5]
-                    : space[5] * 0.5}px;
+                    : space[5] * 0.5}px
+                  ${space[5]}px;
               }
             `}
           >

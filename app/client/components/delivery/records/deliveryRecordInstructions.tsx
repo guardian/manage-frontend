@@ -32,7 +32,7 @@ export const DeliveryRecordInstructions = (
             ? "block"
             : "none"};
           text-align: left;
-          ${textSans.small({ italic: true })};
+          ${textSans.small({ fontStyle: "italic" })};
           color: ${palette.brand[500]};
           cursor: pointer;
         `}

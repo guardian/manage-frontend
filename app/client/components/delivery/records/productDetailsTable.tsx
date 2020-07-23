@@ -21,10 +21,11 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
       padding: ${space[5]}px;
     }
     & div {
-      display: inline-block;
+      display: inline-flex;
       width: 100%;
       ${minWidth.tablet} {
         width: 50%;
+        padding-right: ${space[5]}px;
       }
     }
     & div + div {

@@ -11,9 +11,10 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
+import { LinkButton } from "../../buttons";
 import { FlowWrapper } from "../../FlowWrapper";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NAV_LINKS } from "../../nav/navConfig";
+import { getNavItemFromFlowReferrer, NAV_LINKS } from "../../nav/navConfig";
 import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
@@ -52,6 +53,8 @@ interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
 export const NavigateFnContext: React.Context<{
   navigate?: NavigateFn;
 }> = React.createContext({});
+
+export const FlowReferrerContext = React.createContext({});
 
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
   <label
@@ -221,7 +224,21 @@ class PaymentUpdaterStep extends React.Component<
           </>
         )}
         <div css={{ height: "10px" }} />
-        <ReturnToAccountOverviewButton />
+        {this.props.routeableStepProps.location?.state?.flowReferrer?.title ===
+        NAV_LINKS.billing.title ? (
+          <LinkButton
+            to={
+              this.props.routeableStepProps.location?.state?.flowReferrer?.link
+            }
+            text="Return to your billing"
+            colour={palette.neutral[100]}
+            textColour={palette.neutral[0]}
+            hollow
+            left
+          />
+        ) : (
+          <ReturnToAccountOverviewButton />
+        )}
       </>
     );
 
@@ -309,29 +326,37 @@ class PaymentUpdaterStep extends React.Component<
   };
 }
 
-export const PaymentUpdateFlow = (props: RouteableStepProps) => (
-  <FlowWrapper
-    {...props}
-    loadingMessagePrefix="Retrieving current payment details for your"
-    allowCancelledSubscription
-    selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle="Manage payment method"
-    breadcrumbs={[
-      {
-        title: NAV_LINKS.accountOverview.title,
-        link: NAV_LINKS.accountOverview.link
-      },
-      {
-        title: "Manage payment method",
-        currentPage: true
-      }
-    ]}
-  >
-    {productDetail => (
-      <PaymentUpdaterStep
-        routeableStepProps={props}
-        productDetail={productDetail}
-      />
-    )}
-  </FlowWrapper>
-);
+export const PaymentUpdateFlow = (props: RouteableStepProps) => {
+  const navItemReferrer = getNavItemFromFlowReferrer(
+    props.location?.state?.flowReferrer?.title
+  );
+
+  return (
+    <FlowReferrerContext.Provider value={props.location?.state}>
+      <FlowWrapper
+        {...props}
+        loadingMessagePrefix="Retrieving current payment details for your"
+        allowCancelledSubscription
+        selectedNavItem={navItemReferrer}
+        pageTitle="Manage payment method"
+        breadcrumbs={[
+          {
+            title: navItemReferrer.title,
+            link: navItemReferrer.link
+          },
+          {
+            title: "Manage payment method",
+            currentPage: true
+          }
+        ]}
+      >
+        {productDetail => (
+          <PaymentUpdaterStep
+            routeableStepProps={props}
+            productDetail={productDetail}
+          />
+        )}
+      </FlowWrapper>
+    </FlowReferrerContext.Provider>
+  );
+};

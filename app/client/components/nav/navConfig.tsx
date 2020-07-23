@@ -1,5 +1,6 @@
 import { conf } from "../../../server/config";
 import { AccountOverviewIcon } from "../svgs/accountOverviewIcon";
+import { CreditCardIcon } from "../svgs/creditCardIcon";
 import { EmailPrefsIcon } from "../svgs/emailPrefIcon";
 import { HelpIcon } from "../svgs/helpIcon";
 import { ProfileIcon } from "../svgs/profileIcon";
@@ -24,6 +25,7 @@ export interface MenuSpecificNavItem extends NavItem {
 
 interface NavLinks {
   accountOverview: MenuSpecificNavItem;
+  billing: MenuSpecificNavItem;
   profile: MenuSpecificNavItem;
   settings: MenuSpecificNavItem;
   emailPrefs: MenuSpecificNavItem;
@@ -46,6 +48,13 @@ export const NAV_LINKS: NavLinks = {
     link: "/",
     local: true,
     icon: AccountOverviewIcon,
+    dropdownHideAtDesktop: true
+  },
+  billing: {
+    title: "Billing",
+    link: "/billing",
+    local: true,
+    icon: CreditCardIcon,
     dropdownHideAtDesktop: true
   },
   profile: {
@@ -88,3 +97,10 @@ export const NAV_LINKS: NavLinks = {
     icon: SignoutIcon
   }
 };
+
+export const getNavItemFromFlowReferrer = (
+  flowReferrerTitle?: string
+): MenuSpecificNavItem =>
+  Object.entries(NAV_LINKS).find(
+    navLinkEntry => navLinkEntry[1].title === flowReferrerTitle
+  )?.[1] || NAV_LINKS.accountOverview;
