@@ -20,7 +20,6 @@ export interface NavItem {
 
 export interface MenuSpecificNavItem extends NavItem {
   isDropDownExclusive?: boolean;
-  dropdownHideAtDesktop?: boolean;
 }
 
 interface NavLinks {
@@ -47,43 +46,37 @@ export const NAV_LINKS: NavLinks = {
     title: "Account overview",
     link: "/",
     local: true,
-    icon: AccountOverviewIcon,
-    dropdownHideAtDesktop: true
+    icon: AccountOverviewIcon
   },
   billing: {
     title: "Billing",
     link: "/billing",
     local: true,
-    icon: CreditCardIcon,
-    dropdownHideAtDesktop: true
+    icon: CreditCardIcon
   },
   profile: {
     title: "Profile",
     link: "/public-settings",
     local: true,
-    icon: ProfileIcon,
-    dropdownHideAtDesktop: true
+    icon: ProfileIcon
   },
   emailPrefs: {
     title: "Emails & marketing",
     link: "/email-prefs",
     local: true,
-    icon: EmailPrefsIcon,
-    dropdownHideAtDesktop: true
+    icon: EmailPrefsIcon
   },
   settings: {
     title: "Settings",
     link: "/account-settings",
     local: true,
-    icon: SettingsIcon,
-    dropdownHideAtDesktop: true
+    icon: SettingsIcon
   },
   help: {
     title: "Help",
     link: "/help",
     local: true,
-    icon: HelpIcon,
-    dropdownHideAtDesktop: true
+    icon: HelpIcon
   },
   comments: {
     title: "Comments & replies",
