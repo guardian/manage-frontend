@@ -41,7 +41,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
             {props.region && <li>{props.region}</li>}
             {props.country && (
               <li>
-                {COUNTRIES.find(country => props.country === country.iso)
+                {COUNTRIES.find((country) => props.country === country.iso)
                   ?.name || props.country}
               </li>
             )}
