@@ -423,7 +423,9 @@ const Form = (props: FormProps) => {
 
     if (isFormValidResponse.isValid && props.acknowledgementChecked) {
       // formStates.VALIDATION_SUCCESS`);
-      (props.routeableStepProps.navigate || navigate)("review");
+      (props.routeableStepProps.navigate || navigate)("review", {
+        state: props.routeableStepProps.location?.state
+      });
     } else {
       props.setFormStatus(formStates.VALIDATION_ERROR);
     }
@@ -697,45 +699,48 @@ const Form = (props: FormProps) => {
   );
 };
 
-export const DeliveryAddressForm = (props: RouteableStepProps) => (
-  <PageContainer
-    selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={
-      <span
-        css={css`
-          ::first-letter {
-            text-transform: capitalize;
-          }
-        `}
-      >
+export const DeliveryAddressForm = (props: RouteableStepProps) => {
+  // const ProductDetailContext = React.createContext(props.location?.state);
+  return (
+    <PageContainer
+      selectedNavItem={NAV_LINKS.accountOverview}
+      pageTitle={
         <span
           css={css`
-            display: none;
-            ${minWidth.tablet} {
-              display: inline;
+            ::first-letter {
+              text-transform: capitalize;
             }
           `}
         >
-          Update{" "}
+          <span
+            css={css`
+              display: none;
+              ${minWidth.tablet} {
+                display: inline;
+              }
+            `}
+          >
+            Update{" "}
+          </span>
+          delivery details
         </span>
-        delivery details
-      </span>
-    }
-    breadcrumbs={[
-      {
-        title: NAV_LINKS.accountOverview.title,
-        link: NAV_LINKS.accountOverview.link
-      },
-      {
-        title: "Edit delivery address",
-        currentPage: true
       }
-    ]}
-  >
-    <MembersDatApiAsyncLoader
-      render={renderDeliveryAddressForm(props)}
-      fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
-      loadingMessage={"Loading delivery details..."}
-    />
-  </PageContainer>
-);
+      breadcrumbs={[
+        {
+          title: NAV_LINKS.accountOverview.title,
+          link: NAV_LINKS.accountOverview.link
+        },
+        {
+          title: "Edit delivery address",
+          currentPage: true
+        }
+      ]}
+    >
+      <MembersDatApiAsyncLoader
+        render={renderDeliveryAddressForm(props)}
+        fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
+        loadingMessage={"Loading delivery details..."}
+      />
+    </PageContainer>
+  );
+};

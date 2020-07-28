@@ -1,13 +1,13 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { LinkButton } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
+import { trackEvent } from "../../analytics";
 import AsyncLoader from "../../asyncLoader";
+import { LinkButton } from "../../buttons";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
-import { NAV_LINKS } from "../../nav/navConfig";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { TickInCircle } from "../../svgs/tickInCircle";
@@ -196,18 +196,30 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             )}
             seperateEachRow
           />
-          <LinkButton
+          <div
             css={css`
               margin-top: ${space[3]}px;
               ${minWidth.tablet} {
                 margin-top: ${space[5]}px;
               }
             `}
-            href={NAV_LINKS.accountOverview.link}
-            showIcon={false}
           >
-            Return to your account
-          </LinkButton>
+            <LinkButton
+              to={"/subscriptions"}
+              text={"Return to subscription"}
+              state={props.location?.state}
+              colour={palette.background.ctaPrimary}
+              textColour={palette.text.ctaPrimary}
+              fontWeight={"bold"}
+              onClick={() =>
+                trackEvent({
+                  eventCategory: "delivery_address_update_confirmation",
+                  eventAction: "click",
+                  eventLabel: `manage_${props.productType.urlPart}`
+                })
+              }
+            />
+          </div>
           <p
             css={css`
               ${textSans.medium()};
