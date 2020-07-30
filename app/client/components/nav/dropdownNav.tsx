@@ -41,9 +41,6 @@ const dropdownNavCss = (showMenu: boolean) =>
       "li:not(:last-child)": {
         borderBottom: `1px solid ${palette.neutral["86"]}`
       },
-      " .hide--gte-desktop": {
-        display: "none"
-      },
       ":before": {
         content: "''",
         width: 0,
@@ -209,19 +206,19 @@ export const DropdownNav = () => {
 
       <ul role="tablist" css={dropdownNavCss(showMenu)}>
         {Object.values(NAV_LINKS).map((navItem: MenuSpecificNavItem) => (
-          <li
-            className={
-              navItem.dropdownHideAtDesktop ? "hide--gte-desktop" : undefined
-            }
-            key={navItem.title}
-          >
+          <li key={navItem.title}>
             <a href={navItem.link} css={dropdownNavItemCss}>
               {navItem.icon && (
                 <div
-                  css={css`
-                    position: absolute;
-                    left: ${space[3]}px;
-                  `}
+                  css={{
+                    ...(!navItem.isDropDownExclusive && {
+                      [minWidth.desktop]: {
+                        display: "none"
+                      }
+                    }),
+                    position: "absolute",
+                    left: `${space[3]}px`
+                  }}
                 >
                   <navItem.icon
                     overrideFillColor={palette.neutral[100]}
@@ -234,7 +231,10 @@ export const DropdownNav = () => {
                   lineHeight: "33px",
                   [minWidth.desktop]: {
                     lineHeight: "normal",
-                    marginLeft: navItem.icon && `${space[5]}px`
+                    marginLeft:
+                      navItem.isDropDownExclusive && navItem.icon
+                        ? `${space[5]}px`
+                        : 0
                   }
                 }}
               >

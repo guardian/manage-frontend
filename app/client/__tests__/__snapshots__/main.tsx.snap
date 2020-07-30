@@ -195,16 +195,14 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "map": undefined,
-              "name": "gud8wi",
+              "name": "nzm8rg",
               "next": undefined,
-              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:50px;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;min-width:220px;max-width:none;top:36px;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#FFFFFF;li:not(:last-child){border-bottom:1px solid #DCDCDC;} .hide--gte-desktop{display:none;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #FFFFFF;}}",
+              "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:50px;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;min-width:220px;max-width:none;top:36px;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#FFFFFF;li:not(:last-child){border-bottom:1px solid #DCDCDC;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #FFFFFF;}}",
             }
           }
           role="tablist"
         >
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -219,13 +217,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -246,7 +242,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -256,9 +252,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
           </li>
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -273,13 +267,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -302,7 +294,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -312,9 +304,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
           </li>
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -329,13 +319,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -356,7 +344,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -366,9 +354,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
           </li>
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -383,13 +369,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -414,7 +398,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -424,9 +408,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
           </li>
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -441,13 +423,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -470,7 +450,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -480,9 +460,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
           </li>
-          <li
-            className="hide--gte-desktop"
-          >
+          <li>
             <a
               css={
                 Object {
@@ -497,13 +475,11 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "@media (min-width: 980px)": Object {
+                      "display": "none",
+                    },
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
@@ -524,7 +500,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": "20px",
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -551,7 +527,7 @@ exports[`Main renders something 1`] = `
                   Object {
                     "@media (min-width: 980px)": Object {
                       "lineHeight": "normal",
-                      "marginLeft": undefined,
+                      "marginLeft": 0,
                     },
                     "lineHeight": "33px",
                   }
@@ -576,13 +552,8 @@ exports[`Main renders something 1`] = `
               <div
                 css={
                   Object {
-                    "map": undefined,
-                    "name": "trni7b",
-                    "next": undefined,
-                    "styles": "
-                    position: absolute;
-                    left: 12px;
-                  ",
+                    "left": "12px",
+                    "position": "absolute",
                   }
                 }
               >
