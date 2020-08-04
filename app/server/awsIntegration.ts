@@ -23,20 +23,20 @@ const standardAwsConfig = {
 const S3 = new AWS.S3(standardAwsConfig);
 
 // Returns AWS signature version 4 headers to be used for AWS_IAM authorization in API Gateway
-export const signAwsRequest = async (
-  host: string,
-  path: string,
-  body: string,
-  apiKey: string,
+export const getAwsSignature = async (
+  host: string, // foo.execute-api.eu-west-1.amazonaws.com
+  path: string, // DEV/bar
+  body: string, // '{"foo": "bar"}'
+  apiKey: string, // x-api-key
   credentials: CredentialProviderChain = CREDENTIAL_PROVIDER
 ) => {
   const creds: Credentials = await credentials.resolvePromise();
   const opts = {
     region: AWS_REGION,
     service: "execute-api",
-    host, // foo.execute-api.eu-west-1.amazonaws.com
-    path, // DEV/bar
-    body, // '{"foo": "bar"}'
+    host,
+    path,
+    body,
     headers: {
       "Content-Type": "application/json",
       "x-api-key": apiKey // it is not actually necessary for signature
