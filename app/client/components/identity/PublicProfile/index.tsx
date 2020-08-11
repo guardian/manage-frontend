@@ -20,9 +20,8 @@ import { ProfileFormSection } from "./ProfileFormSection";
 const hasUsername = (user: User) => !!user.username;
 
 export const PublicProfile = (_: { path?: string }) => {
-  const [user, setUser] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
+  const [user, setUser] = useState<User>();
+  const [error, setError] = useState(false);
 
   const errorRef = React.createRef<GenericErrorMessageRef>();
 
@@ -41,13 +40,12 @@ export const PublicProfile = (_: { path?: string }) => {
       .then((u: User) => {
         setUser(u);
       })
-      .then(() => setLoading(false))
       .catch(handleGeneralError);
   }, []);
 
-  const saveUser = async (values: User) => {
-    const changedUser = { ...user, ...values };
-    return await Users.saveChanges(user, changedUser);
+  const saveUser = async (originalUser: User, values: User) => {
+    const changedUser = { ...originalUser, ...values };
+    return await Users.saveChanges(originalUser, changedUser);
   };
 
   useEffect(() => {
@@ -73,7 +71,7 @@ export const PublicProfile = (_: { path?: string }) => {
     </>
   );
 
-  const content = () => (
+  const content = (u: User) => (
     <>
       <WithStandardTopMargin>
         <p css={{ fontSize: "14px" }}>
@@ -88,10 +86,10 @@ export const PublicProfile = (_: { path?: string }) => {
       <WithStandardTopMargin>
         <Lines n={1} />
       </WithStandardTopMargin>
-      {hasUsername(user) ? usernameDisplay(user) : null}
+      {hasUsername(u) ? usernameDisplay(u) : null}
       <ProfileFormSection
-        user={user}
-        saveUser={saveUser}
+        user={u}
+        saveUser={values => saveUser(u, values)}
         onError={handleGeneralError}
         onSuccess={setUser}
       />
@@ -99,7 +97,7 @@ export const PublicProfile = (_: { path?: string }) => {
         <Lines n={1} />
       </WithStandardTopMargin>
       <WithStandardTopMargin>
-        <AvatarSection userId={user.id} />
+        <AvatarSection userId={u.id} />
       </WithStandardTopMargin>
     </>
   );
@@ -112,7 +110,7 @@ export const PublicProfile = (_: { path?: string }) => {
       <WithStandardTopMargin>
         {error ? <GenericErrorMessage ref={errorRef} /> : null}
       </WithStandardTopMargin>
-      {loading ? loader : content()}
+      {user ? content(user) : loader}
     </PageContainer>
   );
 };
