@@ -142,7 +142,7 @@
     "@sentry/node": "^5.15.5",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.7.0",
-    "aws-sdk": "^2.383.0",
+    "aws-sdk": "^2.720.0",
     "base-64": "^0.1.0",
     "color": "^3.0.0",
     "cookie-parser": "^1.4.4",
