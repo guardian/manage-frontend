@@ -8,7 +8,8 @@ import {
 import {
   cancellationSfCasesAPI,
   deliveryRecordsAPI,
-  holidayStopAPI
+  holidayStopAPI,
+  invoicingAPI
 } from "../apiGatewayDiscovery";
 import {
   customMembersDataApiHandler,
@@ -100,9 +101,11 @@ router.post(
 
 router.post(
   "/validate/payment/dd",
-  proxyApiHandler("https://payment." + conf.API_DOMAIN)(
-    straightThroughBodyHandler
-  )("direct-debit/check-account", "PAPI_VALIDATE_DIRECT_DEBIT", true)
+  proxyApiHandler("payment." + conf.API_DOMAIN)(straightThroughBodyHandler)(
+    "direct-debit/check-account",
+    "PAPI_VALIDATE_DIRECT_DEBIT",
+    true
+  )
 );
 
 router.post(
@@ -192,5 +195,7 @@ router.put(
     "contactId"
   )
 );
+
+router.get("/invoices", invoicingAPI("invoices", "LIST_INVOICES"));
 
 export default router;

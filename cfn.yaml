@@ -190,6 +190,9 @@ Resources:
                   - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-DEV-*
                   - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-CODE-*
                   - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-${Stage}-* # avoids PROD resources being available to lower environments
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-DEV-*
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-CODE-*
+                  - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-${Stage}-* # avoids PROD resources being available to lower environments
         - PolicyName: DiscoverApiGatewayApiKeys
           PolicyDocument:
             Statement:
