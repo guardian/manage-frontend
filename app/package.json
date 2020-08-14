@@ -138,7 +138,7 @@
     "@guardian/src-svgs": "^1.8.0",
     "@guardian/src-text-input": "^1.8.0",
     "@reach/router": "^1.2.1",
-    "@sentry/browser": "^5.15.5",
+    "@sentry/browser": "^5.20.1",
     "@sentry/node": "^5.15.5",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.7.0",
