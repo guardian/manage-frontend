@@ -198,4 +198,9 @@ router.put(
 
 router.get("/invoices", invoicingAPI("invoices", "LIST_INVOICES"));
 
+router.get(
+  "/invoices/:invoiceId",
+  invoicingAPI("invoices/:invoiceId", "GET_INVOICE_PDF", "invoiceId")
+);
+
 export default router;
