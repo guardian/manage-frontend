@@ -6,12 +6,17 @@ import moment from "moment";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../shared/identity";
+import {
   getMainPlan,
+  InvoiceDataApiItem,
   isGift,
   isPaidSubscriptionPlan,
   isProduct,
   MembersDataApiItem,
-  MembersDatApiAsyncLoader,
+  PaidSubscriptionPlan,
   ProductDetail,
   sortByJoinDate
 } from "../../../shared/productResponse";
@@ -23,6 +28,7 @@ import {
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
+import AsyncLoader from "../asyncLoader";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
 import { NAV_LINKS } from "../nav/navConfig";
@@ -38,8 +44,18 @@ type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
 
-const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
-  const allProductDetails = apiResponse.filter(isProduct).sort(sortByJoinDate);
+class BillingDataAsyncLoader extends AsyncLoader<
+  [MembersDataApiItem[], InvoiceDataApiItem[]]
+> {}
+
+const BillingRenderer = (
+  apiResponse: [MembersDataApiItem[], InvoiceDataApiItem[]]
+) => {
+  // console.log(apiResponse);
+  const allProductDetails = apiResponse[0]
+    .filter(isProduct)
+    .sort(sortByJoinDate);
+  const invoiceData = apiResponse[1];
 
   const mmaCategoryToProductDetails = allProductDetails.reduce(
     (accumulator, productDetail) => ({
@@ -206,259 +222,16 @@ const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
                       >
                         <InvoicesTable
                           invoiceInterval={InvoiceInterval.annually}
-                          invoiceData={[
-                            {
-                              id: "1",
-                              date: moment().format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1111",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "2",
-                              date: moment()
-                                .subtract(1, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "2222",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "3",
-                              date: moment()
-                                .subtract(2, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "3333",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "4",
-                              date: moment()
-                                .subtract(2, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "4444",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "5",
-                              date: moment()
-                                .subtract(3, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "5555",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "6",
-                              date: moment()
-                                .subtract(4, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "6666",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "7",
-                              date: moment()
-                                .subtract(4, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "7777",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "8",
-                              date: moment()
-                                .subtract(4, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "8888",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "9",
-                              date: moment()
-                                .subtract(5, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "9999",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "10",
-                              date: moment()
-                                .subtract(6, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1010",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "11",
-                              date: moment()
-                                .subtract(6, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1111",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "12",
-                              date: moment()
-                                .subtract(6, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1212",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "13",
-                              date: moment()
-                                .subtract(6, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1313",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "14",
-                              date: moment()
-                                .subtract(6, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1414",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "15",
-                              date: moment()
-                                .subtract(7, "years")
-                                .format(),
-                              paymentMethod: "Card",
-                              card: {
-                                last4: "1515",
-                                type: "Visa"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "11.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "16",
-                              date: moment()
-                                .subtract(7, "years")
-                                .format(),
-                              paymentMethod: "DirectDebit",
-                              mandate: {
-                                accountName: "acount",
-                                accountNumber: "****9911",
-                                sortCode: "200000"
-                              },
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "9.99",
-                              downloadUrl: "download link"
-                            },
-                            {
-                              id: "17",
-                              date: moment()
-                                .subtract(7, "years")
-                                .format(),
-                              paymentMethod: "Paypal",
-                              payPalEmail: "yo@yo.com",
-                              currency: "£",
-                              currencyISO: "GBP",
-                              price: "9.99",
-                              downloadUrl: "download link"
-                            }
-                          ]}
+                          invoiceData={mockInvoiceData.map(invoice => {
+                            const paidPlan = getMainPlan(
+                              productDetail.subscription
+                            ) as PaidSubscriptionPlan;
+                            return {
+                              ...invoice,
+                              currency: paidPlan.currency,
+                              currencyISO: paidPlan.currencyISO
+                            };
+                          })}
                         />
                       </div>
                     </React.Fragment>
@@ -476,11 +249,227 @@ const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
 export const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-      <MembersDatApiAsyncLoader
-        fetch={allProductsDetailFetcher}
+      <BillingDataAsyncLoader
+        fetch={billingFetcher}
         render={BillingRenderer}
         loadingMessage={`Loading your billing details...`}
       />
     </PageContainer>
   );
 };
+
+const billingFetcher = () =>
+  Promise.all([
+    allProductsDetailFetcher(),
+    fetch("/api/existing-payment-options", {
+      credentials: "include",
+      mode: "same-origin",
+      headers: {
+        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+          window.location.href
+        )
+      }
+    })
+  ]);
+
+const mockInvoiceData = [
+  {
+    invoiceId: "1",
+    subscriptionName: "A-S00052639",
+    date: moment().format(),
+    paymentMethod: "Card",
+    last4: "1111",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "2",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(1, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "2222",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "3",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(2, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "3333",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "4",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(2, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "4444",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "5",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(3, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "5555",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "6",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(4, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "6666",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "7",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(4, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "7777",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "8",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(4, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "8888",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "9",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(5, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "9999",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "10",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(6, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1010",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "11",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(6, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1111",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "12",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(6, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1212",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "13",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(6, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1313",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "14",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(6, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1414",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "15",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(7, "years")
+      .format(),
+    paymentMethod: "Card",
+    last4: "1515",
+    cardType: "Visa",
+    price: "11.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "16",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(7, "years")
+      .format(),
+    paymentMethod: "DirectDebit",
+    last4: "9911",
+    price: "9.99",
+    pdfPath: "download link"
+  },
+  {
+    invoiceId: "17",
+    subscriptionName: "A-S00052639",
+    date: moment()
+      .subtract(7, "years")
+      .format(),
+    paymentMethod: "Paypal",
+    price: "9.99",
+    pdfPath: "download link"
+  }
+];

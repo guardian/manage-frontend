@@ -4,10 +4,10 @@ import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useState } from "react";
 import { DATE_INPUT_FORMAT, formatDateStr } from "../../../shared/dates";
-import { DirectDebitDetails } from "../../../shared/productResponse";
+import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { Pagination } from "../pagination";
-import { CardDisplay, CardProps } from "../payment/cardDisplay";
+import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { DownloadIcon } from "../svgs/downloadIcon";
@@ -18,19 +18,16 @@ export enum InvoiceInterval {
   annually
 }
 
-interface InvoiceInfo {
-  id: string;
-  subscriptionId?: string;
+const invoicePaymentMethods = {
+  CARD: "Card",
+  DIRECT_DEBIT: "Directdebit",
+  PAYPAL: "PayPal"
+};
+
+interface InvoiceInfo extends InvoiceDataApiItem {
   product?: string;
-  date: string;
-  downloadUrl: string;
-  price: string;
   currencyISO: string;
   currency: string;
-  paymentMethod: string;
-  card?: CardProps;
-  payPalEmail?: string;
-  mandate?: DirectDebitDetails;
 }
 
 interface InvoicesTableProps {
@@ -260,38 +257,49 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                 index < (currentPage - 1) * resultsPerPage + resultsPerPage
             )
             .map((tableRow, index) => (
-              <div css={tableRowCss2} key={tableRow.id}>
+              <div css={tableRowCss2} key={tableRow.invoiceId}>
                 <div css={tdCss2(index, tableHeadings[0])}>
                   {formatDateStr(tableRow.date)}
                 </div>
                 <div css={tdCss2(index, tableHeadings[1])}>
                   <div css={paymentDetailsHolderCss}>
-                    {tableRow.card && (
-                      <CardDisplay margin="0" {...tableRow.card} />
+                    {tableRow.cardType && (
+                      <CardDisplay
+                        margin="0"
+                        last4={tableRow.last4}
+                        type={tableRow.cardType}
+                      />
                     )}
-                    {tableRow.payPalEmail && <PayPalDisplay />}
-                    {tableRow.mandate && (
+                    {tableRow.paymentMethod ===
+                      invoicePaymentMethods.PAYPAL && <PayPalDisplay />}
+                    {tableRow.paymentMethod ===
+                      invoicePaymentMethods.DIRECT_DEBIT && (
                       <DirectDebitDisplay
-                        {...tableRow.mandate}
+                        accountNumber={tableRow.last4}
+                        accountName=""
+                        sortCode=""
                         onlyAccountEnding
                       />
                     )}
-                    {!tableRow.card &&
-                      !tableRow.payPalEmail &&
-                      !tableRow.mandate && <span>No Payment Method</span>}
+                    {tableRow.paymentMethod !== invoicePaymentMethods.CARD &&
+                      tableRow.paymentMethod !== invoicePaymentMethods.PAYPAL &&
+                      tableRow.paymentMethod !==
+                        invoicePaymentMethods.DIRECT_DEBIT && (
+                        <span>No Payment Method</span>
+                      )}
                   </div>
                 </div>
                 <div css={tdCss2(index, tableHeadings[2])}>
                   {`${tableRow.currency}${tableRow.price} ${tableRow.currencyISO}`}
                 </div>
                 <div css={tdCss2(index)}>
-                  <a css={invoiceLinkCss} href={tableRow.downloadUrl}>
+                  <a css={invoiceLinkCss} href={tableRow.pdfPath}>
                     View invoice (PDF)
                   </a>
                   <a
                     css={invoiceDownloadLinkCss}
                     download
-                    href={tableRow.downloadUrl}
+                    href={tableRow.pdfPath}
                   >
                     <DownloadIcon />
                   </a>
