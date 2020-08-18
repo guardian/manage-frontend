@@ -17,7 +17,7 @@ import { OptOutSection } from "./OptOutSection";
 
 export const EmailAndMarketing = (_: { path?: string }) => {
   const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState<string>("");
   const [removed, setRemoved] = useState(false);
   const [state, dispatch] = useConsentOptions();
 

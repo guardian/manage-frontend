@@ -23,10 +23,9 @@ const loader = (
 );
 
 export const Settings = (_: { path?: string }) => {
-  const [user, setUser] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const [emailMessage, setEmailMessage] = useState();
+  const [user, setUser] = useState<User>();
+  const [error, setError] = useState(false);
+  const [emailMessage, setEmailMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (error && errorRef.current) {
@@ -49,13 +48,12 @@ export const Settings = (_: { path?: string }) => {
       .then((u: User) => {
         setUser(u);
       })
-      .then(() => setLoading(false))
       .catch(handleGeneralError);
   }, []);
 
-  const saveUser = async (values: User) => {
-    const changedUser = { ...user, ...values };
-    return await Users.saveChanges(user, changedUser);
+  const saveUser = async (originalUser: User, values: User) => {
+    const changedUser = { ...originalUser, ...values };
+    return await Users.saveChanges(originalUser, changedUser);
   };
 
   const scrollToTop = () => {
@@ -72,7 +70,7 @@ export const Settings = (_: { path?: string }) => {
     setUser(response);
   };
 
-  const content = () => (
+  const content = (u: User) => (
     <>
       <div ref={pageTopRef} css={{ display: "none" }} />
       <WithStandardTopMargin>
@@ -82,8 +80,8 @@ export const Settings = (_: { path?: string }) => {
       </WithStandardTopMargin>
       <WithStandardTopMargin>
         <SettingsFormSection
-          user={user}
-          saveUser={saveUser}
+          user={u}
+          saveUser={values => saveUser(u, values)}
           onError={handleGeneralError}
           onSuccess={updateValues}
           onDone={scrollToTop}
@@ -100,7 +98,7 @@ export const Settings = (_: { path?: string }) => {
           <GenericErrorMessage ref={errorRef} />
         </WithStandardTopMargin>
       )}
-      {loading ? loader : content()}
+      {user ? content(user) : loader}
     </PageContainer>
   );
 };
