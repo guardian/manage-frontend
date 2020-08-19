@@ -1,6 +1,33 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.14.1
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-LODASH-590103:
+    - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: No upgrade available
+        expires: '2020-09-16T14:22:02.872Z'
+    - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: No upgrade available
+        expires: '2020-09-16T14:22:02.872Z'
+    - formik > lodash:
+        reason: No upgrade available
+        expires: '2020-09-16T14:22:02.872Z'
+    - winston > async > lodash:
+        reason: No upgrade available
+        expires: '2020-09-16T14:22:02.872Z'
+    - yup > lodash:
+        reason: No upgrade available
+        expires: '2020-09-16T14:22:02.872Z'
+  SNYK-JS-MINIMIST-559764:
+    - node-pre-gyp > mkdirp > minimist:
+        reason: cannot be upgraded
+        expires: '2020-09-17T12:49:32.839Z'
+    - node-pre-gyp > tar > mkdirp > minimist:
+        reason: cannot be upgraded
+        expires: '2020-09-17T12:49:32.839Z'
+    - node-pre-gyp > rc > minimist:
+        reason: cannot be upgraded
+        expires: '2020-09-17T12:49:32.839Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:

@@ -4,8 +4,17 @@ import {
 } from "aws-sdk/clients/cloudformation";
 import express from "express";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
-import { proxyApiHandler, straightThroughBodyHandler } from "./apiProxy";
-import { APIGateway, AWS_REGION, CloudFormation } from "./awsIntegration";
+import {
+  AdditionalHeaderGenerator,
+  proxyApiHandler,
+  straightThroughBodyHandler
+} from "./apiProxy";
+import {
+  APIGateway,
+  AWS_REGION,
+  CloudFormation,
+  generateAwsSignatureHeaders
+} from "./awsIntegration";
 import { conf } from "./config";
 import { log } from "./log";
 
@@ -17,7 +26,8 @@ const testUserApiStage = "CODE";
 const apiNames = [
   "cancellation-sf-cases-api",
   "delivery-records-api",
-  "holiday-stop-api"
+  "holiday-stop-api",
+  "invoicing-api"
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -38,15 +48,13 @@ const toDefinedPhysicalResourceId = (stackName: string) => (
 
 const getHost = (
   stackName: string,
-  stage: string,
   stackResourceSummaries?: StackResourceSummaries
 ) => {
   const hosts = stackResourceSummaries
     ?.filter(byResourceType("AWS::ApiGateway::RestApi"))
     .map(toDefinedPhysicalResourceId(stackName))
     .map(
-      apiGatewayId =>
-        `${apiGatewayId}.execute-api.${AWS_REGION}.amazonaws.com/${stage}`
+      apiGatewayId => `${apiGatewayId}.execute-api.${AWS_REGION}.amazonaws.com`
     );
   if (hosts && hosts.length === 1) {
     return hosts[0];
@@ -83,11 +91,14 @@ interface HostAndApiKey {
   apiKey?: string;
 }
 
+type StackPrefix = "membership" | "support";
+
 function getHostAndApiKeyForStack(
+  stackPrefix: StackPrefix,
   apiName: ApiName,
   stage: string
 ): Promise<HostAndApiKey> {
-  const stackName = `membership-${stage}-${apiName}`;
+  const stackName = `${stackPrefix}-${stage}-${apiName}`;
 
   log.info(`loading host and api key for ${stackName}`);
 
@@ -98,7 +109,7 @@ function getHostAndApiKeyForStack(
   })
     .promise()
     .then(async result => ({
-      host: getHost(stackName, stage, result.StackResourceSummaries),
+      host: getHost(stackName, result.StackResourceSummaries),
       apiKey: await getApiKeyPromise(stackName, result.StackResourceSummaries)
     }))
     .catch(err => {
@@ -107,12 +118,18 @@ function getHostAndApiKeyForStack(
     });
 }
 
-const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
+const getAuthorisedExpressCallbackForApiGateway = (
+  stackPrefix: StackPrefix,
+  apiName: ApiName,
+  additionalHeaderGenerator?: AdditionalHeaderGenerator
+) => {
   const normalModeConfigPromise = getHostAndApiKeyForStack(
+    stackPrefix,
     apiName,
     normalUserApiStage
   );
   const testModeConfigPromise = getHostAndApiKeyForStack(
+    stackPrefix,
     apiName,
     testUserApiStage
   );
@@ -138,11 +155,15 @@ const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
       res.status(500).send();
     } else {
       const forwardQueryArgs = true;
-      return proxyApiHandler(`https://${host}`, {
-        "x-api-key": apiKey,
-        "x-identity-id": res.locals.identity && res.locals.identity.userId
-      })(straightThroughBodyHandler)(
-        path,
+      return proxyApiHandler(
+        host,
+        {
+          "x-api-key": apiKey,
+          "x-identity-id": res.locals.identity && res.locals.identity.userId
+        },
+        additionalHeaderGenerator
+      )(straightThroughBodyHandler)(
+        `${stage}/${path}`,
         loggingCode,
         forwardQueryArgs,
         ...urlParamNamesToReplace
@@ -152,11 +173,19 @@ const getAuthorisedExpressCallbackForApiGateway = (apiName: ApiName) => {
 };
 
 export const cancellationSfCasesAPI = getAuthorisedExpressCallbackForApiGateway(
+  "membership",
   "cancellation-sf-cases-api"
 );
 export const holidayStopAPI = getAuthorisedExpressCallbackForApiGateway(
+  "membership",
   "holiday-stop-api"
 );
 export const deliveryRecordsAPI = getAuthorisedExpressCallbackForApiGateway(
+  "membership",
   "delivery-records-api"
+);
+export const invoicingAPI = getAuthorisedExpressCallbackForApiGateway(
+  "support",
+  "invoicing-api",
+  generateAwsSignatureHeaders
 );
