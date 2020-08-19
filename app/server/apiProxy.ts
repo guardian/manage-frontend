@@ -27,17 +27,27 @@ function safeJsonParse(jsonStr: Buffer | string | undefined): any {
     return jsonStr;
   }
 }
+export interface Headers {
+  [headerName: string]: string;
+}
+export type AdditionalHeaderGenerator = (
+  method: string,
+  host: string,
+  path: string,
+  body: string
+) => Promise<Headers>;
 
 export const proxyApiHandler = (
-  basePath: string,
-  extraHeaders: { [headerName: string]: string } = {},
-  ...headersToForward: string[]
+  host: string,
+  headers: Headers = {},
+  additionalHeaderGenerator: AdditionalHeaderGenerator = () =>
+    Promise.resolve({})
 ) => (bodyHandler: BodyHandler) => (
   path: string,
   mainLoggingCode: string,
   forwardQueryArgs?: boolean, // TODO could we eliminate this and always forward query params
   ...urlParamNamesToReplace: string[]
-) => (req: Request, res: Response) => {
+) => async (req: Request, res: Response) => {
   const parameterisedPath = urlParamNamesToReplace
     .reduce(
       (evolvingPath: string, urlParamName: string) =>
@@ -57,7 +67,8 @@ export const proxyApiHandler = (
   const isTestUser = req.header(MDA_TEST_USER_HEADER) === "true";
   const requestBody = Buffer.isBuffer(req.body) ? req.body : undefined;
   const httpMethod = req.method;
-  const outgoingURL = `${basePath}/${parameterisedPath}${queryString}`;
+  const finalPath = `/${parameterisedPath}${queryString}`;
+  const outgoingURL = `https://${host}${finalPath}`;
   const loggingCode = `${mainLoggingCode}${req.header(
     LOGGING_CODE_SUFFIX_HEADER
   ) || ""}`;
@@ -80,8 +91,13 @@ export const proxyApiHandler = (
       "Content-Type": "application/json",
       Cookie: getCookiesOrEmptyString(req),
       [X_GU_ID_FORWARDED_SCOPE]: req.header(X_GU_ID_FORWARDED_SCOPE) || "",
-      ...extraHeaders
-      // headersToForward are added in the 'then' block below
+      ...headers,
+      ...(await additionalHeaderGenerator(
+        httpMethod,
+        host,
+        finalPath,
+        requestBody?.toString() || ""
+      ))
     }
   })
     .then(intermediateResponse => {
@@ -92,12 +108,11 @@ export const proxyApiHandler = (
 
       res.status(intermediateResponse.status);
 
-      headersToForward.forEach((headerName: string) =>
-        res.header(
-          headerName,
-          intermediateResponse.headers.get(headerName) || undefined
-        )
+      res.header(
+        MDA_TEST_USER_HEADER,
+        intermediateResponse.headers.get(MDA_TEST_USER_HEADER) || undefined
       );
+
       const idapiRedirect = intermediateResponse.headers.get(
         "X-GU-IDAPI-Redirect"
       );
@@ -131,9 +146,7 @@ export const proxyApiHandler = (
 };
 
 export const customMembersDataApiHandler = proxyApiHandler(
-  "https://members-data-api." + conf.DOMAIN,
-  {},
-  MDA_TEST_USER_HEADER
+  "members-data-api." + conf.DOMAIN
 );
 export const membersDataApiHandler = customMembersDataApiHandler(
   straightThroughBodyHandler
