@@ -53,6 +53,7 @@ const BillingRenderer = (
   const allProductDetails = apiResponse[0]
     .filter(isProduct)
     .sort(sortByJoinDate);
+
   const invoiceData = apiResponse[1].invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
       b.date.localeCompare(a.date)
@@ -136,7 +137,7 @@ const BillingRenderer = (
                         currencyISO: paidPlan.currencyISO
                       };
                     });
-                  const resultsPerPage = paidPlan.interval.includes("year")
+                  const resultsPerPage = paidPlan.interval?.includes("year")
                     ? productInvoiceData.length
                     : 6;
                   return (

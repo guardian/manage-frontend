@@ -14,9 +14,9 @@ import { DownloadIcon } from "../svgs/downloadIcon";
 import { InvoiceTableYearSelect } from "./invoiceTableYearSelect";
 
 const invoicePaymentMethods = {
-  CARD: "Card",
-  DIRECT_DEBIT: "Directdebit",
-  PAYPAL: "PayPal"
+  CARD: "card",
+  DIRECT_DEBIT: "directdebit",
+  PAYPAL: "paypal"
 };
 
 interface InvoiceInfo extends InvoiceDataApiItem {
@@ -61,14 +61,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   };
 
   const directYearUpdate = (newYear: string) => {
-    const targetPage = Math.ceil(
-      (props.invoiceData.findIndex(
-        invoice =>
-          `${moment(invoice.date, DATE_INPUT_FORMAT).year()}` === newYear
-      ) +
-        1) *
-        0.5
+    const invoiceIndex = props.invoiceData.findIndex(
+      invoice => `${moment(invoice.date, DATE_INPUT_FORMAT).year()}` === newYear
     );
+    const targetPage = Math.ceil((invoiceIndex + 1) / props.resultsPerPage);
     setCurrentPaginationPage(targetPage);
     setCurrentPage(targetPage);
   };
@@ -153,7 +149,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     padding: ${space[3]}px ${space[3]}px 0;
     :last-of-type {
       border-top: 1px solid ${palette.neutral[86]};
-      border-bottom: 1px solid ${palette.neutral[86]};
+      ${maxWidth.tablet} {
+        border-bottom: 1px solid ${palette.neutral[86]};
+      }
       padding: ${space[3]}px;
       margin-top: ${space[3]}px;
     }
@@ -252,61 +250,65 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                   (currentPage - 1) * props.resultsPerPage +
                     props.resultsPerPage
             )
-            .map((tableRow, index) => (
-              <div css={tableRowCss2} key={tableRow.invoiceId}>
-                <div css={tdCss2(index, tableHeadings[0])}>
-                  {formatDateStr(tableRow.date)}
-                </div>
-                <div css={tdCss2(index, tableHeadings[1])}>
-                  <div css={paymentDetailsHolderCss}>
-                    {tableRow.cardType && tableRow.last4 && (
-                      <CardDisplay
-                        margin="0"
-                        last4={tableRow.last4}
-                        type={tableRow.cardType}
-                      />
-                    )}
-                    {tableRow.paymentMethod ===
-                      invoicePaymentMethods.PAYPAL && <PayPalDisplay />}
-                    {tableRow.paymentMethod ===
-                      invoicePaymentMethods.DIRECT_DEBIT &&
-                      tableRow.last4 && (
-                        <DirectDebitDisplay
-                          accountNumber={tableRow.last4}
-                          accountName=""
-                          sortCode=""
-                          onlyAccountEnding
+            .map((tableRow, index) => {
+              const paymentMethodLowercase = tableRow.paymentMethod.toLowerCase();
+              return (
+                <div css={tableRowCss2} key={tableRow.invoiceId}>
+                  <div css={tdCss2(index, tableHeadings[0])}>
+                    {formatDateStr(tableRow.date)}
+                  </div>
+                  <div css={tdCss2(index, tableHeadings[1])}>
+                    <div css={paymentDetailsHolderCss}>
+                      {tableRow.cardType && tableRow.last4 && (
+                        <CardDisplay
+                          margin="0"
+                          last4={tableRow.last4}
+                          type={tableRow.cardType}
                         />
                       )}
-                    {tableRow.paymentMethod !== invoicePaymentMethods.CARD &&
-                      tableRow.paymentMethod !== invoicePaymentMethods.PAYPAL &&
-                      tableRow.paymentMethod !==
-                        invoicePaymentMethods.DIRECT_DEBIT && (
-                        <span>No Payment Method</span>
-                      )}
+                      {paymentMethodLowercase ===
+                        invoicePaymentMethods.PAYPAL && <PayPalDisplay />}
+                      {paymentMethodLowercase ===
+                        invoicePaymentMethods.DIRECT_DEBIT &&
+                        tableRow.last4 && (
+                          <DirectDebitDisplay
+                            accountNumber={tableRow.last4}
+                            accountName=""
+                            sortCode=""
+                            onlyAccountEnding
+                          />
+                        )}
+                      {paymentMethodLowercase !== invoicePaymentMethods.CARD &&
+                        paymentMethodLowercase !==
+                          invoicePaymentMethods.PAYPAL &&
+                        paymentMethodLowercase !==
+                          invoicePaymentMethods.DIRECT_DEBIT && (
+                          <span>No Payment Method</span>
+                        )}
+                    </div>
+                  </div>
+                  <div css={tdCss2(index, tableHeadings[2])}>
+                    {`${tableRow.currency}${Number(tableRow.price).toFixed(
+                      2
+                    )} ${tableRow.currencyISO}`}
+                  </div>
+                  <div css={tdCss2(index)}>
+                    <a css={invoiceLinkCss} href={tableRow.pdfPath}>
+                      View invoice (PDF)
+                    </a>
+                    <a
+                      css={invoiceDownloadLinkCss}
+                      download={`invoice_${tableRow.subscriptionName}_${moment(
+                        tableRow.date
+                      ).format("YYYY-MM-DD")}.pdf`}
+                      href={tableRow.pdfPath}
+                    >
+                      <DownloadIcon />
+                    </a>
                   </div>
                 </div>
-                <div css={tdCss2(index, tableHeadings[2])}>
-                  {`${tableRow.currency}${Number(tableRow.price).toFixed(2)} ${
-                    tableRow.currencyISO
-                  }`}
-                </div>
-                <div css={tdCss2(index)}>
-                  <a css={invoiceLinkCss} href={tableRow.pdfPath}>
-                    View invoice (PDF)
-                  </a>
-                  <a
-                    css={invoiceDownloadLinkCss}
-                    download={`invoice_${tableRow.subscriptionName}_${moment(
-                      tableRow.date
-                    ).format("YYYY-MM-DD")}.pdf`}
-                    href={tableRow.pdfPath}
-                  >
-                    <DownloadIcon />
-                  </a>
-                </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </div>
       {props.resultsPerPage < props.invoiceData.length && (
