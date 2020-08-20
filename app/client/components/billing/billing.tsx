@@ -2,7 +2,6 @@ import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import moment from "moment";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
@@ -38,24 +37,26 @@ import { PaymentDetailsTable } from "../payment/paymentDetailsTable";
 import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
-import { InvoiceInterval, InvoicesTable } from "./invoicesTable";
+import { InvoicesTable } from "./invoicesTable";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
 
 class BillingDataAsyncLoader extends AsyncLoader<
-  [MembersDataApiItem[], InvoiceDataApiItem[]]
+  [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
 > {}
 
 const BillingRenderer = (
-  apiResponse: [MembersDataApiItem[], InvoiceDataApiItem[]]
+  apiResponse: [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
 ) => {
-  // console.log(apiResponse);
   const allProductDetails = apiResponse[0]
     .filter(isProduct)
     .sort(sortByJoinDate);
-  const invoiceData = apiResponse[1];
+  const invoiceData = apiResponse[1].invoices.sort(
+    (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
+      b.date.localeCompare(a.date)
+  );
 
   const mmaCategoryToProductDetails = allProductDetails.reduce(
     (accumulator, productDetail) => ({
@@ -118,6 +119,26 @@ const BillingRenderer = (
                     null,
                     !!productDetail.alertText
                   );
+                  const paidPlan = getMainPlan(
+                    productDetail.subscription
+                  ) as PaidSubscriptionPlan;
+                  const productInvoiceData = invoiceData
+                    .filter(
+                      invoice =>
+                        invoice.subscriptionName ===
+                        productDetail.subscription.subscriptionId
+                    )
+                    .map(invoice => {
+                      return {
+                        ...invoice,
+                        pdfPath: `/api/${invoice.pdfPath}`,
+                        currency: paidPlan.currency,
+                        currencyISO: paidPlan.currencyISO
+                      };
+                    });
+                  const resultsPerPage = paidPlan.interval.includes("year")
+                    ? productInvoiceData.length
+                    : 6;
                   return (
                     <React.Fragment
                       key={productDetail.subscription.subscriptionId}
@@ -214,26 +235,19 @@ const BillingRenderer = (
                             }}
                           />
                         )}
-                      <div
-                        css={css`
-                          margin-top: ${space[12]}px;
-                          margin-bottom: ${space[3]}px;
-                        `}
-                      >
-                        <InvoicesTable
-                          invoiceInterval={InvoiceInterval.annually}
-                          invoiceData={mockInvoiceData.map(invoice => {
-                            const paidPlan = getMainPlan(
-                              productDetail.subscription
-                            ) as PaidSubscriptionPlan;
-                            return {
-                              ...invoice,
-                              currency: paidPlan.currency,
-                              currencyISO: paidPlan.currencyISO
-                            };
-                          })}
-                        />
-                      </div>
+                      {productInvoiceData.length > 0 && (
+                        <div
+                          css={css`
+                            margin-top: ${space[12]}px;
+                            margin-bottom: ${space[3]}px;
+                          `}
+                        >
+                          <InvoicesTable
+                            resultsPerPage={resultsPerPage}
+                            invoiceData={productInvoiceData}
+                          />
+                        </div>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -261,7 +275,7 @@ export const Billing = (_: RouteComponentProps) => {
 const billingFetcher = () =>
   Promise.all([
     allProductsDetailFetcher(),
-    fetch("/api/existing-payment-options", {
+    fetch("/api/invoices", {
       credentials: "include",
       mode: "same-origin",
       headers: {
@@ -271,205 +285,3 @@ const billingFetcher = () =>
       }
     })
   ]);
-
-const mockInvoiceData = [
-  {
-    invoiceId: "1",
-    subscriptionName: "A-S00052639",
-    date: moment().format(),
-    paymentMethod: "Card",
-    last4: "1111",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "2",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(1, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "2222",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "3",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(2, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "3333",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "4",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(2, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "4444",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "5",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(3, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "5555",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "6",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(4, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "6666",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "7",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(4, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "7777",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "8",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(4, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "8888",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "9",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(5, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "9999",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "10",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(6, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1010",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "11",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(6, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1111",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "12",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(6, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1212",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "13",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(6, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1313",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "14",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(6, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1414",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "15",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(7, "years")
-      .format(),
-    paymentMethod: "Card",
-    last4: "1515",
-    cardType: "Visa",
-    price: "11.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "16",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(7, "years")
-      .format(),
-    paymentMethod: "DirectDebit",
-    last4: "9911",
-    price: "9.99",
-    pdfPath: "download link"
-  },
-  {
-    invoiceId: "17",
-    subscriptionName: "A-S00052639",
-    date: moment()
-      .subtract(7, "years")
-      .format(),
-    paymentMethod: "Paypal",
-    price: "9.99",
-    pdfPath: "download link"
-  }
-];

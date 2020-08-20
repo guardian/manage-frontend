@@ -6,6 +6,7 @@ import express from "express";
 import { MDA_TEST_USER_HEADER } from "../shared/productResponse";
 import {
   AdditionalHeaderGenerator,
+  Headers,
   proxyApiHandler,
   straightThroughBodyHandler
 } from "./apiProxy";
@@ -137,7 +138,9 @@ const getAuthorisedExpressCallbackForApiGateway = (
   return (
     path: string,
     loggingCode: string,
-    ...urlParamNamesToReplace: string[]
+    urlParamNamesToReplace: string[] = [],
+    headers: Headers = {},
+    shouldNotLogBody?: boolean
   ) => async (req: express.Request, res: express.Response) => {
     const isTestUser = req.header(MDA_TEST_USER_HEADER) === "true";
     const { host, apiKey } = await (isTestUser
@@ -154,19 +157,21 @@ const getAuthorisedExpressCallbackForApiGateway = (
       log.error(`Missing identity ID on the request object`);
       res.status(500).send();
     } else {
-      const forwardQueryArgs = true;
+      const shouldForwardQueryArgs = true;
       return proxyApiHandler(
         host,
         {
           "x-api-key": apiKey,
-          "x-identity-id": res.locals.identity && res.locals.identity.userId
+          "x-identity-id": res.locals.identity && res.locals.identity.userId,
+          ...headers
         },
         additionalHeaderGenerator
       )(straightThroughBodyHandler)(
         `${stage}/${path}`,
         loggingCode,
-        forwardQueryArgs,
-        ...urlParamNamesToReplace
+        urlParamNamesToReplace,
+        shouldForwardQueryArgs,
+        shouldNotLogBody
       )(req, res);
     }
   };

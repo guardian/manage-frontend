@@ -13,11 +13,6 @@ import { PayPalDisplay } from "../payment/paypalDisplay";
 import { DownloadIcon } from "../svgs/downloadIcon";
 import { InvoiceTableYearSelect } from "./invoiceTableYearSelect";
 
-export enum InvoiceInterval {
-  quarterly,
-  annually
-}
-
 const invoicePaymentMethods = {
   CARD: "Card",
   DIRECT_DEBIT: "Directdebit",
@@ -31,7 +26,7 @@ interface InvoiceInfo extends InvoiceDataApiItem {
 }
 
 interface InvoicesTableProps {
-  invoiceInterval: InvoiceInterval;
+  resultsPerPage: number;
   invoiceData: InvoiceInfo[];
 }
 
@@ -39,7 +34,6 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
-  const resultsPerPage = 2;
 
   const tableHeadings = ["Date", "Payment method", "Price", ""];
   const invoiceYears = [
@@ -59,7 +53,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
   const directPaginationUpdate = (newPageNumber: number) => {
     const targetInvoiceYear = `${moment(
-      props.invoiceData[(newPageNumber - 1) * resultsPerPage].date,
+      props.invoiceData[(newPageNumber - 1) * props.resultsPerPage].date,
       DATE_INPUT_FORMAT
     ).year()}`;
     setCurrentInvoiceYear(targetInvoiceYear);
@@ -191,7 +185,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     width: calc(40% + ${space[3]}px);
     ${minWidth.tablet} {
       width: auto;
-      min-width: 18ch;
+      min-width: 15ch;
     }
   `;
 
@@ -253,8 +247,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
           {props.invoiceData
             .filter(
               (_, index) =>
-                index >= (currentPage - 1) * resultsPerPage &&
-                index < (currentPage - 1) * resultsPerPage + resultsPerPage
+                index >= (currentPage - 1) * props.resultsPerPage &&
+                index <
+                  (currentPage - 1) * props.resultsPerPage +
+                    props.resultsPerPage
             )
             .map((tableRow, index) => (
               <div css={tableRowCss2} key={tableRow.invoiceId}>
@@ -263,7 +259,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                 </div>
                 <div css={tdCss2(index, tableHeadings[1])}>
                   <div css={paymentDetailsHolderCss}>
-                    {tableRow.cardType && (
+                    {tableRow.cardType && tableRow.last4 && (
                       <CardDisplay
                         margin="0"
                         last4={tableRow.last4}
@@ -273,14 +269,15 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     {tableRow.paymentMethod ===
                       invoicePaymentMethods.PAYPAL && <PayPalDisplay />}
                     {tableRow.paymentMethod ===
-                      invoicePaymentMethods.DIRECT_DEBIT && (
-                      <DirectDebitDisplay
-                        accountNumber={tableRow.last4}
-                        accountName=""
-                        sortCode=""
-                        onlyAccountEnding
-                      />
-                    )}
+                      invoicePaymentMethods.DIRECT_DEBIT &&
+                      tableRow.last4 && (
+                        <DirectDebitDisplay
+                          accountNumber={tableRow.last4}
+                          accountName=""
+                          sortCode=""
+                          onlyAccountEnding
+                        />
+                      )}
                     {tableRow.paymentMethod !== invoicePaymentMethods.CARD &&
                       tableRow.paymentMethod !== invoicePaymentMethods.PAYPAL &&
                       tableRow.paymentMethod !==
@@ -290,7 +287,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                   </div>
                 </div>
                 <div css={tdCss2(index, tableHeadings[2])}>
-                  {`${tableRow.currency}${tableRow.price} ${tableRow.currencyISO}`}
+                  {`${tableRow.currency}${Number(tableRow.price).toFixed(2)} ${
+                    tableRow.currencyISO
+                  }`}
                 </div>
                 <div css={tdCss2(index)}>
                   <a css={invoiceLinkCss} href={tableRow.pdfPath}>
@@ -298,7 +297,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                   </a>
                   <a
                     css={invoiceDownloadLinkCss}
-                    download
+                    download={`invoice_${tableRow.subscriptionName}_${moment(
+                      tableRow.date
+                    ).format("YYYY-MM-DD")}.pdf`}
                     href={tableRow.pdfPath}
                   >
                     <DownloadIcon />
@@ -308,16 +309,18 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
             ))}
         </div>
       </div>
-      <Pagination
-        currentPage={currentPaginationPage}
-        setCurrentPage={setCurrentPaginationPage}
-        onDirectUpdate={directPaginationUpdate}
-        numberOfResults={props.invoiceData.length}
-        resultsPerPage={resultsPerPage}
-        additionalCSS={css`
-          margin-top: ${space[5]}px;
-        `}
-      />
+      {props.resultsPerPage < props.invoiceData.length && (
+        <Pagination
+          currentPage={currentPaginationPage}
+          setCurrentPage={setCurrentPaginationPage}
+          onDirectUpdate={directPaginationUpdate}
+          numberOfResults={props.invoiceData.length}
+          resultsPerPage={props.resultsPerPage}
+          additionalCSS={css`
+            margin-top: ${space[5]}px;
+          `}
+        />
+      )}
     </>
   );
 };
