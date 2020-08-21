@@ -404,80 +404,122 @@ const DeliveryRecordsProblemReviewFC = (
               {deliveryProblemContext &&
               deliveryProblemContext.showProblemCredit &&
               props.totalCreditAmount ? (
-                <dl
-                  css={css`
-                    ${textSans.medium()};
-                    padding: ${space[3]}px;
-                    margin: ${space[3]}px;
-                    background-color: ${palette.neutral["97"]};
-                    ${minWidth.tablet} {
-                      padding: ${space[5]}px;
-                      margin: ${space[5]}px;
-                    }
-                  `}
-                >
-                  <div
+                <>
+                  <span
                     css={css`
-                      display: inline-block;
+                      position: relative;
+                      display: block;
+                      margin: ${space[3]}px;
+                      padding: 0 ${space[3]}px 0 ${space[5] + space[2]}px;
+                      ${textSans.medium()};
+                      ${minWidth.tablet} {
+                        margin: ${space[5]}px;
+                        padding: 0 ${space[5]}px 0 ${space[5] + space[2]}px;
+                      }
                     `}
                   >
-                    <dt
+                    <i
                       css={css`
-                        display: inline-block;
-                        font-weight: bold;
-                        min-width: 12ch;
-                        ${minWidth.tablet} {
-                          min-width: 0;
-                        }
+                        position: absolute;
+                        top: 4px;
+                        left: 0;
                       `}
                     >
-                      Credit amount:
-                    </dt>
-                    <dd
+                      <InfoIconDark fillColor={palette.brand[500]} />
+                    </i>
+                    We apologise for any inconvenience caused and will credit
+                    you the amount shown below once you submit your report. We
+                    continually review these reports and use them to improve our
+                    service. If you’re not satisfied with this outcome please{" "}
+                    <span
                       css={css`
-                        display: inline-block;
-                        margin-left: 0;
-                        font-weight: bold;
-                        ${minWidth.tablet} {
-                          margin-left: ${space[9]}px;
-                          min-width: 9ch;
-                        }
+                        color: ${palette.brand[500]};
+                        text-decoration: underline;
+                        cursor: pointer;
                       `}
+                      onClick={() =>
+                        setShowCallCenterNumbers(!showCallCenterNumbers)
+                      }
                     >
-                      {deliveryProblemContext?.subscriptionCurrency}
-                      {props.totalCreditAmount.toFixed(2)}
-                    </dd>
-                  </div>
-                  <div
+                      contact us
+                    </span>{" "}
+                    instead of submitting your report.
+                  </span>
+                  <dl
                     css={css`
-                      display: inline-block;
+                      ${textSans.medium()};
+                      padding: ${space[3]}px;
+                      margin: ${space[3]}px;
+                      background-color: ${palette.neutral["97"]};
+                      ${minWidth.tablet} {
+                        padding: ${space[5]}px;
+                        margin: ${space[5]}px;
+                      }
                     `}
                   >
-                    <dt
+                    <div
                       css={css`
                         display: inline-block;
-                        font-weight: bold;
-                        min-width: 12ch;
-                        ${minWidth.tablet} {
-                          min-width: 0;
-                        }
                       `}
                     >
-                      Credit date:
-                    </dt>
-                    <dd
+                      <dt
+                        css={css`
+                          display: inline-block;
+                          font-weight: bold;
+                          min-width: 12ch;
+                          ${minWidth.tablet} {
+                            min-width: 0;
+                          }
+                        `}
+                      >
+                        Credit amount:
+                      </dt>
+                      <dd
+                        css={css`
+                          display: inline-block;
+                          margin-left: 0;
+                          font-weight: bold;
+                          ${minWidth.tablet} {
+                            margin-left: ${space[9]}px;
+                            min-width: 9ch;
+                          }
+                        `}
+                      >
+                        {deliveryProblemContext?.subscriptionCurrency}
+                        {props.totalCreditAmount.toFixed(2)}
+                      </dd>
+                    </div>
+                    <div
                       css={css`
                         display: inline-block;
-                        margin-left: 0;
-                        ${minWidth.tablet} {
-                          margin-left: ${space[9]}px;
-                        }
                       `}
                     >
-                      {props.creditDate && formatDateStr(props.creditDate)}
-                    </dd>
-                  </div>
-                </dl>
+                      <dt
+                        css={css`
+                          display: inline-block;
+                          font-weight: bold;
+                          min-width: 12ch;
+                          ${minWidth.tablet} {
+                            min-width: 0;
+                          }
+                        `}
+                      >
+                        Credit date:
+                      </dt>
+                      <dd
+                        css={css`
+                          display: inline-block;
+                          margin-left: 0;
+                          ${minWidth.tablet} {
+                            margin-left: ${space[9]}px;
+                          }
+                        `}
+                      >
+                        {props.creditDate && formatDateStr(props.creditDate)}
+                      </dd>
+                    </div>
+                  </dl>
+                </>
               ) : (
                 <>
                   <span
@@ -562,8 +604,8 @@ const DeliveryRecordsProblemReviewFC = (
                 color: ${palette.neutral[46]};
               `}
             >
-              Is your delivery problem urgent? Or want to report a problem older
-              than the above?{" "}
+              If your delivery is not shown above, or you’d like to talk to
+              someone,{" "}
               <span
                 css={css`
                   color: ${palette.brand[500]};
@@ -572,7 +614,7 @@ const DeliveryRecordsProblemReviewFC = (
                 `}
                 onClick={() => setShowCallCenterNumbers(!showCallCenterNumbers)}
               >
-                Contact us
+                contact us
               </span>
             </p>
             {showCallCenterNumbers && <CallCentreEmailAndNumbers />}
