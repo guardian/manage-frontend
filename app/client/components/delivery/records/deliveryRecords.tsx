@@ -357,16 +357,17 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   `}
                 >
                   Have you been experiencing problems with your delivery? Report
-                  it and we will take care of it for you. Depending on the type
-                  of problem, you will be credited or contacted by our customer
-                  service team.
+                  it online and let us take care of it for you. Depending on the
+                  problem you’re having, you’ll either be automatically credited
+                  or escalated to customer service. It’s easy to use and only
+                  takes a couple of minutes.
                 </p>
                 <p
                   css={css`
                     ${textSans.medium()};
                   `}
                 >
-                  Is your problem urgent?{" "}
+                  Please remember, you can also{" "}
                   <span
                     css={css`
                       cursor: pointer;
@@ -379,8 +380,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       )
                     }
                   >
-                    Contact us
-                  </span>
+                    contact us
+                  </span>{" "}
+                  if you wish to speak to us in person.
                 </p>
                 {showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
                 {pageStatus === PageStatus.CANNOT_REPORT_PROBLEM && (
@@ -731,8 +733,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     margin-top: ${space[6]}px;
                   `}
                 >
-                  Is your delivery problem urgent? Or want to report a problem
-                  older than the above?{" "}
+                  If your delivery is not shown above, or you’d like to talk to
+                  someone,{" "}
                   <span
                     css={css`
                       cursor: pointer;
@@ -745,7 +747,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       )
                     }
                   >
-                    Contact us
+                    contact us
                   </span>
                   .
                 </p>
