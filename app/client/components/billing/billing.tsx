@@ -5,10 +5,6 @@ import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../../shared/identity";
-import {
   getMainPlan,
   InvoiceDataApiItem,
   isGift,
@@ -47,14 +43,13 @@ class BillingDataAsyncLoader extends AsyncLoader<
   [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
 > {}
 
-const BillingRenderer = (
-  apiResponse: [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
-) => {
-  const allProductDetails = apiResponse[0]
-    .filter(isProduct)
-    .sort(sortByJoinDate);
+const BillingRenderer = ([mdaResponse, invoiceResponse]: [
+  MembersDataApiItem[],
+  { invoices: InvoiceDataApiItem[] }
+]) => {
+  const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
 
-  const invoiceData = apiResponse[1].invoices.sort(
+  const invoiceData = invoiceResponse.invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
       b.date.localeCompare(a.date)
   );
@@ -130,12 +125,11 @@ const BillingRenderer = (
                         productDetail.subscription.subscriptionId
                     )
                     .map(invoice => ({
-                        ...invoice,
-                        pdfPath: `/api/${invoice.pdfPath}`,
-                        currency: paidPlan.currency,
-                        currencyISO: paidPlan.currencyISO
-                      })
-                   );
+                      ...invoice,
+                      pdfPath: `/api/${invoice.pdfPath}`,
+                      currency: paidPlan.currency,
+                      currencyISO: paidPlan.currencyISO
+                    }));
                   const resultsPerPage = paidPlan.interval?.includes("year")
                     ? productInvoiceData.length
                     : 6;
@@ -273,15 +267,4 @@ export const Billing = (_: RouteComponentProps) => {
 };
 
 const billingFetcher = () =>
-  Promise.all([
-    allProductsDetailFetcher(),
-    fetch("/api/invoices", {
-      credentials: "include",
-      mode: "same-origin",
-      headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-          window.location.href
-        )
-      }
-    })
-  ]);
+  Promise.all([allProductsDetailFetcher(), fetch("/api/invoices")]);

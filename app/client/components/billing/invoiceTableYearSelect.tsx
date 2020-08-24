@@ -13,8 +13,6 @@ interface InvoiceTableYearSelectProps {
 }
 
 export const InvoiceTableYearSelect = (props: InvoiceTableYearSelectProps) => {
-  // const [selectedYear, setSelectedYear] = useState<string>(props.years[0]);
-
   const selectCss = css`
     ${headline.xxsmall({ fontWeight: "bold" })};
     color: ${palette.neutral[7]};
