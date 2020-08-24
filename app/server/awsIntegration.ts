@@ -12,12 +12,12 @@ const PROFILE = "membership";
 
 const CREDENTIAL_PROVIDER = new AWS.CredentialProviderChain([
   () => new AWS.SharedIniFileCredentials({ profile: PROFILE }),
-  ...AWS.CredentialProviderChain.defaultProviders,
+  ...AWS.CredentialProviderChain.defaultProviders
 ]);
 
 const standardAwsConfig = {
   region: AWS_REGION,
-  credentialProvider: CREDENTIAL_PROVIDER,
+  credentialProvider: CREDENTIAL_PROVIDER
 };
 
 const S3 = new AWS.S3(standardAwsConfig);
@@ -36,7 +36,7 @@ export const generateAwsSignatureHeaders = async (
     method,
     host,
     path,
-    body,
+    body
   };
   return new RequestSigner(opts, creds).sign().headers;
 };
@@ -69,7 +69,7 @@ export const s3FilePromise = <ConfigInterface>(
   (async () => {
     const configPath: GetObjectRequest = {
       Bucket: bucket,
-      Key: fileKey,
+      Key: fileKey
     };
 
     const s3PromiseResult = await S3.getObject(configPath).promise();
@@ -78,14 +78,14 @@ export const s3FilePromise = <ConfigInterface>(
       try {
         const parsed = JSON.parse(s3PromiseResult.Body.toString());
         const missingProperties = fieldNamesToValidate.filter(
-          (field) => !parsed.hasOwnProperty(field)
+          field => !parsed.hasOwnProperty(field)
         );
         if (missingProperties.length === 0) {
           return parsed as ConfigInterface;
         }
         handleAwsRelatedError(
           `${fileKey} missing ${missingProperties.map(
-            (field) => `'${field}'`
+            field => `'${field}'`
           )} properties in '${bucket}'`
         );
       } catch (err) {
@@ -113,10 +113,10 @@ export const putMetricDataPromise = (
         MetricName: metricName,
         Dimensions: Object.entries(dimensions).map(([Name, Value]) => ({
           Name,
-          Value,
+          Value
         })),
         Value: 1,
-        Unit: "Count",
-      },
-    ],
+        Unit: "Count"
+      }
+    ]
   }).promise();
