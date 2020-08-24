@@ -129,14 +129,13 @@ const BillingRenderer = (
                         invoice.subscriptionName ===
                         productDetail.subscription.subscriptionId
                     )
-                    .map(invoice => {
-                      return {
+                    .map(invoice => ({
                         ...invoice,
                         pdfPath: `/api/${invoice.pdfPath}`,
                         currency: paidPlan.currency,
                         currencyISO: paidPlan.currencyISO
-                      };
-                    });
+                      })
+                   );
                   const resultsPerPage = paidPlan.interval?.includes("year")
                     ? productInvoiceData.length
                     : 6;
