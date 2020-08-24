@@ -148,12 +148,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     ${textSans.medium()}
     padding: ${space[3]}px ${space[3]}px 0;
     :last-of-type {
-      border-top: 1px solid ${palette.neutral[86]};
       ${maxWidth.tablet} {
         border-bottom: 1px solid ${palette.neutral[86]};
       }
       padding: ${space[3]}px;
-      margin-top: ${space[3]}px;
     }
     :before {
       display: ${title ? "inline-block" : "none"};

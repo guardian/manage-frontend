@@ -48,7 +48,6 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
   { invoices: InvoiceDataApiItem[] }
 ]) => {
   const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
-
   const invoiceData = invoiceResponse.invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
       b.date.localeCompare(a.date)
