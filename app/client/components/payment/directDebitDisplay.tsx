@@ -28,7 +28,10 @@ const dashifySortCode = (sortCode: string) => {
   );
 };
 
-const sanitiseAccountNumber = (accountNumber: string) => {
+const sanitiseAccountNumber = (
+  accountNumber: string,
+  shortVersion?: boolean
+) => {
   if (!accountNumber) {
     return accountNumber;
   }
@@ -39,7 +42,7 @@ const sanitiseAccountNumber = (accountNumber: string) => {
           ${minWidth.tablet} {
             :before {
               display: inline;
-              content: "account ";
+              content: "${shortVersion ? "" : "account "}";
             }
           }
         `}
@@ -55,36 +58,58 @@ const sanitiseAccountNumber = (accountNumber: string) => {
 interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
   showAccountName?: true;
   inErrorState?: boolean;
+  onlyAccountEnding?: true;
 }
 
-export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => (
-  <>
-    <DirectDebitLogo
-      fill={palette.neutral[7]}
-      additionalCss={css`
-        margin: 0 10px 0 0;
+export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
+  props.onlyAccountEnding ? (
+    <div
+      css={css`
+        display: flex;
       `}
-    />
-    <div>
+    >
+      <DirectDebitLogo
+        fill={palette.neutral[7]}
+        additionalCss={css`
+          margin: 0 10px 0 0;
+        `}
+      />
       <span
         css={css`
           margin-right: 10px;
         `}
       >
-        {dashifySortCode(props.sortCode)}
+        {sanitiseAccountNumber(props.accountNumber, true)}
       </span>
-      <span
-        css={css`
-          display: block;
-        `}
-      >
-        {sanitiseAccountNumber(props.accountNumber)}
-      </span>
-      {props.showAccountName && props.accountName ? (
-        <span>{props.accountName}</span>
-      ) : (
-        undefined
-      )}
     </div>
-  </>
-);
+  ) : (
+    <>
+      <DirectDebitLogo
+        fill={palette.neutral[7]}
+        additionalCss={css`
+          margin: 0 10px 0 0;
+        `}
+      />
+      <div>
+        <span
+          css={css`
+            margin-right: 10px;
+          `}
+        >
+          {dashifySortCode(props.sortCode)}
+        </span>
+        <span
+          css={css`
+            display: block;
+          `}
+        >
+          {sanitiseAccountNumber(props.accountNumber)}
+        </span>
+        {props.showAccountName && props.accountName ? (
+          <span>{props.accountName}</span>
+        ) : (
+          undefined
+        )}
+      </div>
+    </>
+  );

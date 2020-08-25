@@ -40,7 +40,7 @@ router.get(
   customMembersDataApiHandler((response, body) => {
     const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === "true";
     const augmentedWithTestUser = (JSON.parse(
-      body
+      body.toString()
     ) as MembersDataApiItem[]).map(mdaItem => ({
       ...mdaItem,
       isTestUser
@@ -64,8 +64,8 @@ router.get(
   })(
     "user-attributes/me/mma/:subscriptionName",
     "MDA_DETAIL",
-    true,
-    "subscriptionName"
+    ["subscriptionName"],
+    true
   )
 );
 
@@ -74,8 +74,7 @@ router.post(
   membersDataApiHandler(
     "/user-attributes/me/cancel/:subscriptionName",
     "MDA_CANCEL",
-    false,
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 
@@ -85,8 +84,7 @@ router.post(
   membersDataApiHandler(
     "/user-attributes/me/update-card/:subscriptionName",
     "MDA_UPDATE_PAYMENT_CARD",
-    false,
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 router.post(
@@ -94,8 +92,7 @@ router.post(
   membersDataApiHandler(
     "/user-attributes/me/update-direct-debit/:subscriptionName",
     "MDA_UPDATE_PAYMENT_DIRECT_DEBIT",
-    false,
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 
@@ -104,6 +101,7 @@ router.post(
   proxyApiHandler("payment." + conf.API_DOMAIN)(straightThroughBodyHandler)(
     "direct-debit/check-account",
     "PAPI_VALIDATE_DIRECT_DEBIT",
+    [],
     true
   )
 );
@@ -114,51 +112,43 @@ router.post(
 );
 router.patch(
   "/case/:caseId?",
-  cancellationSfCasesAPI("case/:caseId", "UPDATE_CANCELLATION_CASE", "caseId")
+  cancellationSfCasesAPI("case/:caseId", "UPDATE_CANCELLATION_CASE", ["caseId"])
 );
 
 router.get(
   "/holidays/:subscriptionName/potential",
-  holidayStopAPI(
-    "potential/:subscriptionName",
-    "HOLIDAY_STOP_POTENTIALS",
+  holidayStopAPI("potential/:subscriptionName", "HOLIDAY_STOP_POTENTIALS", [
     "subscriptionName"
-  )
+  ])
 );
 router.get(
   "/holidays/:subscriptionName/cancel",
   holidayStopAPI(
     "hsr/:subscriptionName/cancel",
     "HOLIDAY_STOP_CANCELLATION_PREVIEW",
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 router.get(
   "/holidays/:subscriptionName",
-  holidayStopAPI(
-    "hsr/:subscriptionName",
-    "HOLIDAY_STOP_EXISTING",
+  holidayStopAPI("hsr/:subscriptionName", "HOLIDAY_STOP_EXISTING", [
     "subscriptionName"
-  )
+  ])
 );
 router.post("/holidays", holidayStopAPI("/hsr", "HOLIDAY_STOP_CREATE"));
 router.patch(
   "/holidays/:subscriptionName/:sfId",
-  holidayStopAPI(
-    "hsr/:subscriptionName/:sfId",
-    "HOLIDAY_STOP_AMEND",
+  holidayStopAPI("hsr/:subscriptionName/:sfId", "HOLIDAY_STOP_AMEND", [
     "subscriptionName",
     "sfId"
-  )
+  ])
 );
 router.delete(
   "/holidays/:subscriptionName/:sfId",
-  holidayStopAPI(
-    "hsr/:subscriptionName/:sfId",
-    "HOLIDAY_STOP_WITHDRAW",
+  holidayStopAPI("hsr/:subscriptionName/:sfId", "HOLIDAY_STOP_WITHDRAW", [
     "subscriptionName",
     "sfId"
-  )
+  ])
 );
 
 router.get(
@@ -166,7 +156,7 @@ router.get(
   deliveryRecordsAPI(
     "delivery-records/:subscriptionName",
     "DELIVERY_RECORDS_GET",
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 router.get(
@@ -174,7 +164,7 @@ router.get(
   deliveryRecordsAPI(
     "delivery-records/:subscriptionName/cancel",
     "DELIVERY_RECORDS_CANCELLATION_PREVIEW",
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 router.post(
@@ -182,7 +172,7 @@ router.post(
   deliveryRecordsAPI(
     "delivery-records/:subscriptionName",
     "DELIVERY_PROBLEM_CREATE",
-    "subscriptionName"
+    ["subscriptionName"]
   )
 );
 
@@ -191,8 +181,7 @@ router.put(
   membersDataApiHandler(
     "/user-attributes/me/delivery-address/:contactId",
     "MDA_DELIVERY_ADDRESS_UPDATE",
-    false,
-    "contactId"
+    ["contactId"]
   )
 );
 
@@ -200,7 +189,13 @@ router.get("/invoices", invoicingAPI("invoices", "LIST_INVOICES"));
 
 router.get(
   "/invoices/:invoiceId",
-  invoicingAPI("invoices/:invoiceId", "GET_INVOICE_PDF", "invoiceId")
+  invoicingAPI(
+    "invoices/:invoiceId",
+    "GET_INVOICE_PDF",
+    ["invoiceId"],
+    { Accept: "application/pdf" },
+    true // should not log body for pdf download
+  )
 );
 
 export default router;
