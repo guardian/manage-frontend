@@ -384,462 +384,516 @@ Resources:
       DashboardName: "manage-frontend"
       DashboardBody: '{
         "widgets": [
-        {
-        "type": "metric",
-        "x": 12,
-        "y": 12,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "MDA_UPDATE_CONTRIBUTIONS_AMOUNT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "MDA_UPDATE_CONTRIBUTIONS_AMOUNT (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 12,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "MDA_UPDATE_CONTRIBUTIONS_AMOUNT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "MDA_UPDATE_CONTRIBUTIONS_AMOUNT (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 12,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "PAPI_VALIDATE_DIRECT_DEBIT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "PAPI_VALIDATE_DIRECT_DEBIT (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 6,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR    ", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "RECAPTURE_FAILURE", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "RECAPTURE_FAILURE (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 0,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "MDA_CANCEL", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "MDA_CANCEL (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 3,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "HOLIDAY_STOP_CREATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "HOLIDAY_STOP_CREATE (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 6,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "DELIVERY_PROBLEM_CREATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "DELIVERY_PROBLEM_CREATE (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 9,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "MDA_UPDATE_PAYMENT_DIRECT_DEBIT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "MDA_UPDATE_PAYMENT_DIRECT_DEBIT (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 0,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "MDA_UPDATE_PAYMENT_CARD", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "MDA_UPDATE_PAYMENT_CARD (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "color": "#d62728",
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 3,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "STRIPE_SETUP_INTENT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "STRIPE_SETUP_INTENT (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 9,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
+                        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
+                        [ "manage-frontend", "MDA_DELIVERY_ADDRESS_UPDATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
+                        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
+                        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
+                        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "MDA_DELIVERY_ADDRESS_UPDATE (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    },
+                    "annotations": {
+                        "vertical": [
+                            {
+                                "label": "50% ACCOUNT OVERVIEW",
+                                "value": "2020-05-26T10:17:00.000Z"
+                            },
+                            {
+                                "color": "#d62728",
+                                "label": "100% ACCOUNT OVERVIEW",
+                                "value": "2020-06-05T09:57:00.000Z"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 0,
+                "y": 15,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ "manage-frontend", "LIST_INVOICES", "Stage", "PROD", "outcome", "ERROR", { "id": "m1", "color": "#ff7f0e" } ],
+                        [ "...", "SUCCESS", { "id": "m2", "color": "#2ca02c" } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "LIST_INVOICES (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    }
+                }
+            },
+            {
+                "type": "metric",
+                "x": 12,
+                "y": 15,
+                "width": 12,
+                "height": 3,
+                "properties": {
+                    "metrics": [
+                        [ "manage-frontend", "GET_INVOICE_PDF", "Stage", "PROD", "outcome", "ERROR", { "id": "m1", "color": "#ff7f0e" } ],
+                        [ "...", "SUCCESS", { "id": "m2", "color": "#2ca02c" } ]
+                    ],
+                    "view": "timeSeries",
+                    "stacked": false,
+                    "region": "eu-west-1",
+                    "stat": "Sum",
+                    "period": 3600,
+                    "title": "GET_INVOICE_PDF (per hour)",
+                    "yAxis": {
+                        "left": {
+                            "min": 0
+                        }
+                    },
+                    "legend": {
+                        "position": "right"
+                    }
+                }
+            }
         ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 0,
-        "y": 12,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "PAPI_VALIDATE_DIRECT_DEBIT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "PAPI_VALIDATE_DIRECT_DEBIT (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 0,
-        "y": 6,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR    ", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "RECAPTURE_FAILURE", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "RECAPTURE_FAILURE (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 12,
-        "y": 0,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "MDA_CANCEL", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "MDA_CANCEL (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 12,
-        "y": 3,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "HOLIDAY_STOP_CREATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "HOLIDAY_STOP_CREATE (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 12,
-        "y": 6,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "DELIVERY_PROBLEM_CREATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "DELIVERY_PROBLEM_CREATE (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 0,
-        "y": 9,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "MDA_UPDATE_PAYMENT_DIRECT_DEBIT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "MDA_UPDATE_PAYMENT_DIRECT_DEBIT (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 0,
-        "y": 0,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "MDA_UPDATE_PAYMENT_CARD", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "MDA_UPDATE_PAYMENT_CARD (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "color": "#d62728",
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 0,
-        "y": 3,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "STRIPE_SETUP_INTENT", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "STRIPE_SETUP_INTENT (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        },
-        {
-        "type": "metric",
-        "x": 12,
-        "y": 9,
-        "width": 12,
-        "height": 3,
-        "properties": {
-        "metrics": [
-        [ { "expression": "s1 + s2 + s3", "label": "SUCCESS", "id": "success", "color": "#2ca02c" } ],
-        [ { "expression": "e1 + e2 + e3", "label": "ERROR", "id": "error", "color": "#ff7f0e" } ],
-        [ "manage-frontend", "MDA_DELIVERY_ADDRESS_UPDATE", "variant", "LEGACY", "Stage", "PROD", "outcome", "SUCCESS", { "id": "s1", "visible": false, "color": "#98df8a" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "s2", "visible": false, "color": "#98df8a" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "SUCCESS", { "label": "SUCCESS FINAL", "color": "#98df8a", "id": "s3", "visible": false } ],
-        [ ".", ".", "variant", "LEGACY", "Stage", "PROD", "outcome", "ERROR", { "id": "e1", "visible": false, "color": "#ffbb78" } ],
-        [ "...", "ACCOUNT OVERVIEW", ".", ".", ".", ".", { "id": "e2", "visible": false, "color": "#ffbb78" } ],
-        [ ".", ".", "Stage", "PROD", "outcome", "ERROR", { "label": "ERROR FINAL", "color": "#ffbb78", "yAxis": "left", "id": "e3", "visible": false } ]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "eu-west-1",
-        "stat": "Sum",
-        "period": 3600,
-        "title": "MDA_DELIVERY_ADDRESS_UPDATE (per hour)",
-        "yAxis": {
-        "left": {
-        "min": 0
-        }
-        },
-        "legend": {
-        "position": "right"
-        },
-        "annotations": {
-        "vertical": [
-        {
-        "label": "50% ACCOUNT OVERVIEW",
-        "value": "2020-05-26T10:17:00.000Z"
-        },
-        {
-        "color": "#d62728",
-        "label": "100% ACCOUNT OVERVIEW",
-        "value": "2020-06-05T09:57:00.000Z"
-        }
-        ]
-        }
-        }
-        }
-        ]
-        }'
+    }'
