@@ -10,17 +10,6 @@ export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
 export type MembersDataApiItem = ProductDetail | {};
 
-export interface InvoiceDataApiItem {
-  invoiceId: string;
-  subscriptionName: string;
-  date: string;
-  pdfPath: string;
-  price: string;
-  paymentMethod: string;
-  last4?: string;
-  cardType?: string;
-}
-
 export class MembersDatApiAsyncLoader extends AsyncLoader<
   MembersDataApiItem[]
 > {}

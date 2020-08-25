@@ -6,12 +6,11 @@ import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
   getMainPlan,
-  InvoiceDataApiItem,
   isGift,
   isPaidSubscriptionPlan,
   isProduct,
   MembersDataApiItem,
-  PaidSubscriptionPlan,
+  MembersDatApiAsyncLoader,
   ProductDetail,
   sortByJoinDate
 } from "../../../shared/productResponse";
@@ -23,7 +22,6 @@ import {
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
-import AsyncLoader from "../asyncLoader";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
 import { NAV_LINKS } from "../nav/navConfig";
@@ -33,25 +31,13 @@ import { PaymentDetailsTable } from "../payment/paymentDetailsTable";
 import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
-import { InvoicesTable } from "./invoicesTable";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
 
-class BillingDataAsyncLoader extends AsyncLoader<
-  [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
-> {}
-
-const BillingRenderer = ([mdaResponse, invoiceResponse]: [
-  MembersDataApiItem[],
-  { invoices: InvoiceDataApiItem[] }
-]) => {
-  const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
-  const invoiceData = invoiceResponse.invoices.sort(
-    (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
-      b.date.localeCompare(a.date)
-  );
+const BillingRenderer = (apiResponse: MembersDataApiItem[]) => {
+  const allProductDetails = apiResponse.filter(isProduct).sort(sortByJoinDate);
 
   const mmaCategoryToProductDetails = allProductDetails.reduce(
     (accumulator, productDetail) => ({
@@ -114,24 +100,6 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                     null,
                     !!productDetail.alertText
                   );
-                  const paidPlan = getMainPlan(
-                    productDetail.subscription
-                  ) as PaidSubscriptionPlan;
-                  const productInvoiceData = invoiceData
-                    .filter(
-                      invoice =>
-                        invoice.subscriptionName ===
-                        productDetail.subscription.subscriptionId
-                    )
-                    .map(invoice => ({
-                      ...invoice,
-                      pdfPath: `/api/${invoice.pdfPath}`,
-                      currency: paidPlan.currency,
-                      currencyISO: paidPlan.currencyISO
-                    }));
-                  const resultsPerPage = paidPlan.interval?.includes("year")
-                    ? productInvoiceData.length
-                    : 6;
                   return (
                     <React.Fragment
                       key={productDetail.subscription.subscriptionId}
@@ -228,19 +196,6 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                             }}
                           />
                         )}
-                      {productInvoiceData.length > 0 && (
-                        <div
-                          css={css`
-                            margin-top: ${space[12]}px;
-                            margin-bottom: ${space[3]}px;
-                          `}
-                        >
-                          <InvoicesTable
-                            resultsPerPage={resultsPerPage}
-                            invoiceData={productInvoiceData}
-                          />
-                        </div>
-                      )}
                     </React.Fragment>
                   );
                 })}
@@ -256,14 +211,11 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 export const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-      <BillingDataAsyncLoader
-        fetch={billingFetcher}
+      <MembersDatApiAsyncLoader
+        fetch={allProductsDetailFetcher}
         render={BillingRenderer}
         loadingMessage={`Loading your billing details...`}
       />
     </PageContainer>
   );
 };
-
-const billingFetcher = () =>
-  Promise.all([allProductsDetailFetcher(), fetch("/api/invoices")]);

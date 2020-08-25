@@ -34,7 +34,8 @@ const routeProvider = (apiPathPrefix: string) => {
             productType.updateAmountMdaEndpoint +
             "/:subscriptionName",
           "MDA_UPDATE_CONTRIBUTIONS_AMOUNT",
-          ["subscriptionName"]
+          false,
+          "subscriptionName"
         )
       );
     }

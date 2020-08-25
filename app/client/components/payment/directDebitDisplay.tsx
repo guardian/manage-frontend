@@ -28,10 +28,7 @@ const dashifySortCode = (sortCode: string) => {
   );
 };
 
-const sanitiseAccountNumber = (
-  accountNumber: string,
-  shortVersion?: boolean
-) => {
+const sanitiseAccountNumber = (accountNumber: string) => {
   if (!accountNumber) {
     return accountNumber;
   }
@@ -42,7 +39,7 @@ const sanitiseAccountNumber = (
           ${minWidth.tablet} {
             :before {
               display: inline;
-              content: "${shortVersion ? "" : "account "}";
+              content: "account ";
             }
           }
         `}
@@ -58,58 +55,36 @@ const sanitiseAccountNumber = (
 interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
   showAccountName?: true;
   inErrorState?: boolean;
-  onlyAccountEnding?: true;
 }
 
-export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
-  props.onlyAccountEnding ? (
-    <div
-      css={css`
-        display: flex;
+export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => (
+  <>
+    <DirectDebitLogo
+      fill={palette.neutral[7]}
+      additionalCss={css`
+        margin: 0 10px 0 0;
       `}
-    >
-      <DirectDebitLogo
-        fill={palette.neutral[7]}
-        additionalCss={css`
-          margin: 0 10px 0 0;
-        `}
-      />
+    />
+    <div>
       <span
         css={css`
           margin-right: 10px;
         `}
       >
-        {sanitiseAccountNumber(props.accountNumber, true)}
+        {dashifySortCode(props.sortCode)}
       </span>
-    </div>
-  ) : (
-    <>
-      <DirectDebitLogo
-        fill={palette.neutral[7]}
-        additionalCss={css`
-          margin: 0 10px 0 0;
+      <span
+        css={css`
+          display: block;
         `}
-      />
-      <div>
-        <span
-          css={css`
-            margin-right: 10px;
-          `}
-        >
-          {dashifySortCode(props.sortCode)}
-        </span>
-        <span
-          css={css`
-            display: block;
-          `}
-        >
-          {sanitiseAccountNumber(props.accountNumber)}
-        </span>
-        {props.showAccountName && props.accountName ? (
-          <span>{props.accountName}</span>
-        ) : (
-          undefined
-        )}
-      </div>
-    </>
-  );
+      >
+        {sanitiseAccountNumber(props.accountNumber)}
+      </span>
+      {props.showAccountName && props.accountName ? (
+        <span>{props.accountName}</span>
+      ) : (
+        undefined
+      )}
+    </div>
+  </>
+);

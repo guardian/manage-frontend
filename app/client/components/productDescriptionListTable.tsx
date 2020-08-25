@@ -25,7 +25,7 @@ export const ProductDescriptionListTable = (
     return css`
       display: inline-block;
       vertical-align: top;
-      width: ${isTwoColWidth ? "100%" : `calc(60% - ${space[3]}px)`};
+      width: ${isTwoColWidth ? "100" : "60"}%;
       padding-right: ${space[3]}px;
       margin: ${isTwoColWidth ? `0 0 ${space[3]}px` : "0"};
       ${textSans.medium({ fontWeight: "bold" })}
@@ -42,7 +42,7 @@ export const ProductDescriptionListTable = (
       display: inline-block;
       vertical-align: top;
       margin: 0;
-      width: ${isTwoColWidth ? "100%" : `calc(40% + ${space[3]}px)`};
+      width: ${isTwoColWidth ? "100" : "40"}%;
       ${minWidth.tablet} {
         width: auto;
       }
