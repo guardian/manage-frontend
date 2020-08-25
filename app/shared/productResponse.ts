@@ -17,6 +17,7 @@ export interface InvoiceDataApiItem {
   pdfPath: string;
   price: string;
   paymentMethod: string;
+  hasMultipleSubs: boolean;
   last4?: string;
   cardType?: string;
 }
