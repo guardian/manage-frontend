@@ -12,7 +12,7 @@ import {
   getCookiesOrEmptyString
 } from "./middleware/identityMiddleware";
 
-type BodyHandler = (res: Response, body: string) => void;
+type BodyHandler = (res: Response, body: Buffer) => void;
 
 export const straightThroughBodyHandler: BodyHandler = (res, body) =>
   res.send(body);
@@ -45,8 +45,9 @@ export const proxyApiHandler = (
 ) => (bodyHandler: BodyHandler) => (
   path: string,
   mainLoggingCode: string,
+  urlParamNamesToReplace: string[] = [],
   forwardQueryArgs?: boolean, // TODO could we eliminate this and always forward query params
-  ...urlParamNamesToReplace: string[]
+  shouldNotLogBody?: boolean
 ) => async (req: Request, res: Response) => {
   const parameterisedPath = urlParamNamesToReplace
     .reduce(
@@ -88,7 +89,7 @@ export const proxyApiHandler = (
     method: httpMethod,
     body: requestBody,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json", // TODO: set this from the client req headers (would need to check all client calls actually specify content-type)
       Cookie: getCookiesOrEmptyString(req),
       [X_GU_ID_FORWARDED_SCOPE]: req.header(X_GU_ID_FORWARDED_SCOPE) || "",
       ...headers,
@@ -108,9 +109,16 @@ export const proxyApiHandler = (
 
       res.status(intermediateResponse.status);
 
-      res.header(
-        MDA_TEST_USER_HEADER,
-        intermediateResponse.headers.get(MDA_TEST_USER_HEADER) || undefined
+      // Forward certain headers in the response to the client
+      [
+        "Content-Type",
+        "Content-Length",
+        MDA_TEST_USER_HEADER
+      ].forEach(headerName =>
+        res.header(
+          headerName,
+          intermediateResponse.headers.get(headerName) || undefined
+        )
       );
 
       const idapiRedirect = intermediateResponse.headers.get(
@@ -122,15 +130,19 @@ export const proxyApiHandler = (
           augmentRedirectURL(req, idapiRedirect, conf.DOMAIN, true)
         );
       }
-
-      return intermediateResponse.text();
+      return intermediateResponse.buffer();
     })
     .then(body => {
       const suitableLog = res.locals.loggingDetail.isOK ? log.info : log.warn;
-      suitableLog("proxying", {
-        ...res.locals.loggingDetail,
-        responseBody: safeJsonParse(body)
-      });
+      suitableLog(
+        "proxying",
+        shouldNotLogBody
+          ? res.locals.loggingDetail
+          : {
+              ...res.locals.loggingDetail,
+              responseBody: safeJsonParse(body)
+            }
+      );
       putMetric(res.locals.loggingDetail);
       bodyHandler(res, body);
     })
