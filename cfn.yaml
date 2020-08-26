@@ -199,6 +199,15 @@ Resources:
               - Effect: Allow
                 Action: apigateway:GET
                 Resource: !Sub arn:aws:apigateway:${AWS::Region}::/apikeys/*
+        - PolicyName: InvokeApiGateway
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: execute-api:Invoke
+                Resource:
+                  - !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/DEV/*
+                  - !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/CODE/*
+                  - !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/${Stage}/* # avoids PROD resources being available to lower environments
 
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
