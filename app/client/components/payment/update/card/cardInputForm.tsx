@@ -74,9 +74,7 @@ export const CardInputForm = (props: CardInputFormProps) => {
   };
 
   const loadSetupIntent = (recaptchaToken: string) => {
-    if (stripePromise === null) {
-      loadStripe();
-    }
+    loadStripe();
 
     setDidCompleteRecaptcha(true);
 
