@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { Stripe } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
@@ -38,7 +38,10 @@ export const CardInputForm = (props: CardInputFormProps) => {
   >();
   const [stripeSetupIntentError, setstripeSetupIntentError] = useState<Error>();
 
-  const stripePromise = loadStripe(props.stripeApiKey);
+  const [
+    stripePromise,
+    setStripePromise
+  ] = useState<Promise<Stripe | null> | null>(null);
 
   useEffect(() => {
     if (window.grecaptcha) {
@@ -64,7 +67,15 @@ export const CardInputForm = (props: CardInputFormProps) => {
     });
   };
 
+  const loadStripe = () => {
+    import("@stripe/stripe-js").then(StripeAsync => {
+      setStripePromise(StripeAsync.loadStripe(props.stripeApiKey));
+    });
+  };
+
   const loadSetupIntent = (recaptchaToken: string) => {
+    loadStripe();
+
     setDidCompleteRecaptcha(true);
 
     fetch("/api/payment/card", {
