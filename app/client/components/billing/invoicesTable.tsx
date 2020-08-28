@@ -286,9 +286,11 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     </div>
                   </div>
                   <div css={tdCss2(index, tableHeadings[2])}>
-                    {`${tableRow.currency}${Number(tableRow.price).toFixed(
-                      2
-                    )} ${tableRow.currencyISO}`}
+                    {tableRow.hasMultipleSubs
+                      ? "Multiple prices"
+                      : `${tableRow.currency}${Number(tableRow.price).toFixed(
+                          2
+                        )} ${tableRow.currencyISO}`}
                   </div>
                   <div css={tdCss2(index)}>
                     <a css={invoiceLinkCss} href={tableRow.pdfPath}>
