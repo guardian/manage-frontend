@@ -128,7 +128,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                       pdfPath: `/api/${invoice.pdfPath}`,
                       currency: paidPlan.currency,
                       currencyISO: paidPlan.currencyISO,
-                      product: specificProductType.productTitle(mainPlan)
+                      productTitle: specificProductType.urlPart
                     }));
                   const resultsPerPage = paidPlan.interval?.includes("year")
                     ? productInvoiceData.length
