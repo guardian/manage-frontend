@@ -21,7 +21,7 @@ const invoicePaymentMethods = {
 };
 
 interface InvoiceInfo extends InvoiceDataApiItem {
-  productTitle?: string;
+  productUrlPart?: string;
   currencyISO: string;
   currency: string;
 }
@@ -308,7 +308,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         return trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `view_${tableRow.productTitle}_pdf_invoice`
+                          eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`
                         });
                       }}
                     >
@@ -324,7 +324,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         return trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `download_${tableRow.productTitle}_pdf_invoice`
+                          eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`
                         });
                       }}
                     >
