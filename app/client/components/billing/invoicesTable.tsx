@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { DATE_INPUT_FORMAT, formatDateStr } from "../../../shared/dates";
 import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
+import { trackEvent } from "../analytics";
 import { Pagination } from "../pagination";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
@@ -31,6 +32,7 @@ interface InvoicesTableProps {
 }
 
 export const InvoicesTable = (props: InvoicesTableProps) => {
+  let trackingPaginationInteractionCount = 1;
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
@@ -58,6 +60,12 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     ).year()}`;
     setCurrentInvoiceYear(targetInvoiceYear);
     setCurrentPage(newPageNumber);
+    trackEvent({
+      eventCategory: "invoice",
+      eventAction: "click",
+      eventLabel: "invoice_pagination_select",
+      eventValue: trackingPaginationInteractionCount++
+    });
   };
 
   const directYearUpdate = (newYear: string) => {
@@ -293,7 +301,20 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         )} ${tableRow.currencyISO}`}
                   </div>
                   <div css={tdCss2(index)}>
-                    <a css={invoiceLinkCss} href={tableRow.pdfPath}>
+                    <a
+                      css={invoiceLinkCss}
+                      href={tableRow.pdfPath}
+                      onClick={() => {
+                        return trackEvent({
+                          eventCategory: "invoice",
+                          eventAction: "click",
+                          eventLabel: `view_${tableRow.product?.replace(
+                            /\s+/g,
+                            ""
+                          )}_pdf_invoice`
+                        });
+                      }}
+                    >
                       View invoice (PDF)
                     </a>
                     <a
@@ -302,6 +323,16 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         tableRow.date
                       ).format("YYYY-MM-DD")}.pdf`}
                       href={tableRow.pdfPath}
+                      onClick={() => {
+                        return trackEvent({
+                          eventCategory: "invoice",
+                          eventAction: "click",
+                          eventLabel: `download_${tableRow.product?.replace(
+                            /\s+/g,
+                            ""
+                          )}_pdf_invoice`
+                        });
+                      }}
                     >
                       <DownloadIcon />
                     </a>
