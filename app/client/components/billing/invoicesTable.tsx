@@ -32,7 +32,10 @@ interface InvoicesTableProps {
 }
 
 export const InvoicesTable = (props: InvoicesTableProps) => {
-  let trackingPaginationInteractionCount = 1;
+  const [
+    trackingPaginationInteractionCount,
+    setTrackingPaginationInteractionCount
+  ] = useState<number>(1);
   const initialPage = 1;
 
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
@@ -64,8 +67,11 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
       eventCategory: "invoice",
       eventAction: "click",
       eventLabel: "invoice_pagination_select",
-      eventValue: trackingPaginationInteractionCount++
+      eventValue: trackingPaginationInteractionCount
     });
+    setTrackingPaginationInteractionCount(
+      trackingPaginationInteractionCount + 1
+    );
   };
 
   const directYearUpdate = (newYear: string) => {
@@ -304,13 +310,13 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     <a
                       css={invoiceLinkCss}
                       href={tableRow.pdfPath}
-                      onClick={() => {
-                        return trackEvent({
+                      onClick={() =>
+                        trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
                           eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`
-                        });
-                      }}
+                        })
+                      }
                     >
                       View invoice (PDF)
                     </a>
@@ -320,13 +326,13 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         tableRow.date
                       ).format("YYYY-MM-DD")}.pdf`}
                       href={tableRow.pdfPath}
-                      onClick={() => {
-                        return trackEvent({
+                      onClick={() =>
+                        trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
                           eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`
-                        });
-                      }}
+                        })
+                      }
                     >
                       <DownloadIcon />
                     </a>
