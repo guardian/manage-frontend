@@ -4,6 +4,7 @@ import { headline } from "@guardian/src-foundations/typography";
 import { SvgChevronDownSingle } from "@guardian/src-icons";
 import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { maxWidth } from "../../styles/breakpoints";
+import { trackEvent } from "../analytics";
 
 interface InvoiceTableYearSelectProps {
   years: string[];
@@ -48,6 +49,11 @@ export const InvoiceTableYearSelect = (props: InvoiceTableYearSelectProps) => {
             const newYear = event.target.value;
             props.setSelectedYear(newYear);
             props.onDirectUpdate(newYear);
+            trackEvent({
+              eventCategory: "invoice",
+              eventAction: "click",
+              eventLabel: "invoice_year_select"
+            });
           }
         }}
         value={props.selectedYear}
