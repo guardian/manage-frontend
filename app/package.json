@@ -57,7 +57,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
-    "@emotion/babel-preset-css-prop": "^10.0.14",
+    "@emotion/babel-preset-css-prop": "^10.0.27",
     "@testing-library/react": "^8.0.1",
     "@types/assets-webpack-plugin": "^3.9.0",
     "@types/base-64": "^0.1.2",
@@ -126,8 +126,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.14",
-    "@emotion/styled": "^10.0.14",
+    "@emotion/core": "^10.0.35",
+    "@emotion/styled": "^10.0.27",
     "@guardian/consent-management-platform": "^3.4.8",
     "@guardian/src-button": "^1.8.0",
     "@guardian/src-checkbox": "^1.8.0",
