@@ -126,8 +126,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.14",
-    "@emotion/styled": "^10.0.14",
+    "@emotion/core": "^10.0.34",
+    "@emotion/styled": "^10.0.27",
     "@guardian/consent-management-platform": "^3.4.8",
     "@guardian/src-button": "^1.8.0",
     "@guardian/src-checkbox": "^1.8.0",
