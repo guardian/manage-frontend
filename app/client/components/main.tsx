@@ -3,38 +3,50 @@ import palette from "../colours";
 import { serif } from "../styles/fonts";
 import { Footer } from "./footer/footer";
 import Header from "./header";
+import { pathsToAllowThroughWithoutSignin } from "../../shared/pathsToAllowThroughWithoutSignin";
 
-export class Main extends React.PureComponent<{}> {
-  public render(): React.ReactNode {
-    const children = this.props.children;
-    return (
+export interface WithOptionalServerPathWithQueryParams {
+  serverPathWithQueryParams?: string;
+}
+
+interface MainProps extends WithOptionalServerPathWithQueryParams {
+  children: any;
+}
+
+export const Main = ({ children, serverPathWithQueryParams }: MainProps) => {
+  const pathWithoutQueryParams =
+    serverPathWithQueryParams?.split(/[?#]/)[0] || window.location.pathname;
+  return (
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        alignItems: "stretch",
+        width: "100%",
+        color: palette.neutral["2"]
+      }}
+    >
+      {pathsToAllowThroughWithoutSignin.includes(pathWithoutQueryParams) ? (
+        <span>Not signed in header</span>
+      ) : (
+        <Header />
+      )}
       <div
         css={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          alignItems: "stretch",
-          width: "100%",
-          color: palette.neutral["2"]
+          flexGrow: 1,
+          flexShrink: 0
         }}
       >
-        <Header />
-        <div
+        <main
           css={{
-            flexGrow: 1,
-            flexShrink: 0
+            fontFamily: serif
           }}
         >
-          <main
-            css={{
-              fontFamily: serif
-            }}
-          >
-            {children}
-          </main>
-        </div>
-        <Footer />
+          {children}
+        </main>
       </div>
-    );
-  }
-}
+      <Footer />
+    </div>
+  );
+};

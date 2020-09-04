@@ -8,6 +8,7 @@ import {
 import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
 import { idapiConfigPromise } from "../idapiConfig";
+import { pathsToAllowThroughWithoutSignin } from "../../shared/pathsToAllowThroughWithoutSignin";
 
 interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
@@ -139,9 +140,9 @@ const redirectOrCustomStatusCode = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
-export const withIdentity: (statusCode?: number) => express.RequestHandler = (
-  statusCode?: number
-) => (
+export const withIdentity: (
+  statusCodeOverride?: number
+) => express.RequestHandler = (statusCodeOverride?: number) => (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -151,7 +152,7 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
     res.sendStatus(500); // TODO maybe server side render a pretty response
   };
 
-  const useRefererHeaderForManageUrl = !!statusCode;
+  const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
   idapiConfigPromise
     .then(idapiConfig => {
@@ -178,7 +179,11 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
               redirectResponse.json() as Promise<RedirectResponseBody>
           )
           .then(redirectResponseBody => {
-            if (redirectResponseBody.redirect) {
+            // tslint:disable-next-line:no-object-mutation
+            Object.assign(res.locals, { identity: redirectResponseBody });
+            if (pathsToAllowThroughWithoutSignin.includes(req.path)) {
+              next();
+            } else if (redirectResponseBody.redirect) {
               redirectOrCustomStatusCode(
                 res,
                 augmentRedirectURL(
@@ -187,7 +192,7 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                   conf.DOMAIN,
                   useRefererHeaderForManageUrl
                 ),
-                statusCode
+                statusCodeOverride
               );
             } else if (
               redirectResponseBody.signInStatus === "signedInRecently"
@@ -204,8 +209,6 @@ export const withIdentity: (statusCode?: number) => express.RequestHandler = (
                   updateManageUrl(req, useRefererHeaderForManageUrl)
                 );
               } else {
-                // tslint:disable-next-line:no-object-mutation
-                Object.assign(res.locals, { identity: redirectResponseBody });
                 next();
               }
             } else {

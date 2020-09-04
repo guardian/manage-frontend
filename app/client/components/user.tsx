@@ -33,7 +33,6 @@ import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecords
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageProduct } from "./accountoverview/manageProduct";
 import { Billing } from "./billing/billing";
-import { ContactUs } from "./contactus/contactus";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -43,13 +42,14 @@ import { HolidaysOverview } from "./holiday/holidaysOverview";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Settings } from "./identity/Settings";
-import { Main } from "./main";
+import { Main, WithOptionalServerPathWithQueryParams } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { ContactUs } from "./contactus/contactus";
 
-const User = () => (
-  <Main>
+const User = (props: WithOptionalServerPathWithQueryParams) => (
+  <Main {...props}>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
@@ -174,7 +174,7 @@ const User = () => (
 
       <Help path="/help" />
 
-      <ContactUs path="/contact-us" />
+      <ContactUs path="/contact-us-form" />
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
@@ -186,9 +186,9 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string) => (
-  <ServerLocation url={url}>
-    <User />
+export const ServerUser = (serverPathWithQueryParams: string) => (
+  <ServerLocation url={serverPathWithQueryParams}>
+    <User serverPathWithQueryParams={serverPathWithQueryParams} />
   </ServerLocation>
 );
 
