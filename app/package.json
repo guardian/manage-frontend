@@ -142,7 +142,7 @@
     "@sentry/node": "^5.22.3",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.7.0",
-    "aws-sdk": "^2.383.0",
+    "aws-sdk": "^2.746.0",
     "base-64": "^0.1.0",
     "color": "^3.0.0",
     "cookie-parser": "^1.4.4",
@@ -165,7 +165,7 @@
     "webpack-node-externals": "^1.7.2",
     "winston": "^3.2.1",
     "yup": "^0.28.2",
-    "aws4": "^1.10.0"
+    "aws4": "^1.10.1"
   },
   "license": "UNLICENSED",
   "snyk": true
