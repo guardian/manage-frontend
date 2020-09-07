@@ -139,6 +139,7 @@ exports[`Main renders something 1`] = `
               "name": "1ne05um",
               "next": undefined,
               "styles": "display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;font-size:16px;padding:10px 1px 10px 0;position:relative;transform:translateY(-1px);::after{content:'';display:block;width:5px;height:5px;border:1px solid currentColor;border-left:transparent;border-top:transparent;margin-left:8px;transform:translateY(-2px) rotate(45deg);}:hover, :focus{color:#FFFFFF;}:hover{::after{transform:translateY(0px) rotate(45deg);transition-property:transform;transition-duration:250ms;transition-timing-function:ease-in-out;}}color:#FFFFFF;",
+              "toString": [Function],
             }
           }
           onClick={[Function]}
@@ -159,6 +160,7 @@ exports[`Main renders something 1`] = `
               background-color: white;
               position: relative;
             ",
+                "toString": [Function],
               }
             }
           >
@@ -176,6 +178,7 @@ exports[`Main renders something 1`] = `
                 width: 65%;
                 height: auto;
               ",
+                  "toString": [Function],
                 }
               }
               fill="none"
@@ -198,6 +201,7 @@ exports[`Main renders something 1`] = `
               "name": "nzm8rg",
               "next": undefined,
               "styles": "display:none;background:#052962;border-top:1px solid #506991;position:absolute;top:50px;left:0;width:calc(100% - 30px);max-width:350px;z-index:1071;list-style:none;line-height:1.375rem;box-shadow:0 0 0 0.0625rem rgba(0,0,0,0.1);margin:0;padding:0; li{padding:0;margin:0;}@media (min-width: 980px){width:auto;min-width:220px;max-width:none;top:36px;left:auto;right:16px;margin-right:-32px;bottom:auto;border-top:none;background:#FFFFFF;li:not(:last-child){border-bottom:1px solid #DCDCDC;}:before{content:'';width:0;height:0;position:absolute;top:-8px;right:12px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid #FFFFFF;}}",
+              "toString": [Function],
             }
           }
           role="tablist"
@@ -210,6 +214,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/"
@@ -260,6 +265,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/billing"
@@ -312,6 +318,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/public-settings"
@@ -362,6 +369,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/email-prefs"
@@ -416,6 +424,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/account-settings"
@@ -468,6 +477,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/help"
@@ -518,6 +528,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="/profile/user"
@@ -545,6 +556,7 @@ exports[`Main renders something 1`] = `
                   "name": "1e07s7s",
                   "next": undefined,
                   "styles": "padding:9px 30px 8px 46px;text-decoration:none;color:#FFFFFF;white-space:nowrap;position:relative;margin-top:-1px;display:flex;align-items:center;:hover, :focus{background-color:#041F4A;text-decoration:none;}:focus{outline:0;}:after{content:'';display:block;z-index:1;position:absolute;bottom:0;right:0;width:calc(100% - 46px);height:1px;background-color:#506991;}@media (min-width: 980px){padding:18px 14px;color:#333333;.icon--fill{fill:#333333;}:after{content:none;}:hover, :focus{background-color:#F6F6F6;}}",
+                  "toString": [Function],
                 }
               }
               href="https://profile.thegulocal.com/signout"
@@ -709,6 +721,7 @@ exports[`Main renders something 1`] = `
         "styles": "
   margin-top: 2rem;
 ",
+        "toString": [Function],
       }
     }
   >
@@ -723,6 +736,7 @@ exports[`Main renders something 1`] = `
   background-color: #052962;
   color: #ffffff;
 ",
+            "toString": [Function],
           }
         }
       >
@@ -736,6 +750,7 @@ exports[`Main renders something 1`] = `
   max-width: 1300px;
   margin: auto;
 ",
+              "toString": [Function],
             }
           }
         >
@@ -758,6 +773,7 @@ exports[`Main renders something 1`] = `
     display: flex;
   }
 ",
+                "toString": [Function],
               }
             }
           >
@@ -779,6 +795,7 @@ exports[`Main renders something 1`] = `
     width: 460px;
   }
 ",
+                  "toString": [Function],
                 }
               }
             >
@@ -813,6 +830,7 @@ exports[`Main renders something 1`] = `
     border-top: 0;
   }
 ",
+                  "toString": [Function],
                 }
               }
             >
@@ -847,6 +865,7 @@ exports[`Main renders something 1`] = `
     border-left: 1px solid rgba(255, 255, 255, 0.3);
   }
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -859,6 +878,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -877,6 +897,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/about"
@@ -893,6 +914,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -911,6 +933,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/help/contact-us"
@@ -927,6 +950,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -945,6 +969,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/info/complaints-and-corrections"
@@ -961,6 +986,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -979,6 +1005,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/securedrop"
@@ -995,6 +1022,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1013,6 +1041,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://workforus.thegulocal.com"
@@ -1029,6 +1058,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1047,6 +1077,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/info/privacy"
@@ -1063,6 +1094,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1081,6 +1113,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/info/cookies"
@@ -1097,6 +1130,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1115,6 +1149,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://www.thegulocal.com/help/terms-of-service"
@@ -1131,6 +1166,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1149,6 +1185,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://www.thegulocal.com/help"
@@ -1188,6 +1225,7 @@ exports[`Main renders something 1`] = `
     border-left: 1px solid rgba(255, 255, 255, 0.3);
   }
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -1200,6 +1238,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1218,6 +1257,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/index/subjects/a"
@@ -1234,6 +1274,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1252,6 +1293,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/index/contributors"
@@ -1268,6 +1310,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1286,6 +1329,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT"
@@ -1302,6 +1346,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1320,6 +1365,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://theguardian.newspapers.com/"
@@ -1336,6 +1382,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1354,6 +1401,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://www.facebook.com/theguardian"
@@ -1370,6 +1418,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1388,6 +1437,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://twitter.com/guardian"
@@ -1427,6 +1477,7 @@ exports[`Main renders something 1`] = `
     border-left: 1px solid rgba(255, 255, 255, 0.3);
   }
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -1439,6 +1490,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1457,6 +1509,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://advertising.thegulocal.com"
@@ -1473,6 +1526,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1491,6 +1545,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://thegulocal.com/guardian-labs"
@@ -1507,6 +1562,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1525,6 +1581,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://jobs.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
@@ -1541,6 +1598,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1559,6 +1617,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://soulmates.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES"
@@ -1575,6 +1634,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1593,6 +1653,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://patrons.thegulocal.com/?INTCMP=footer_patrons"
@@ -1609,6 +1670,7 @@ exports[`Main renders something 1`] = `
                       "styles": "
   list-style: none;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1627,6 +1689,7 @@ exports[`Main renders something 1`] = `
     cursor: pointer;
   }
 ",
+                        "toString": [Function],
                       }
                     }
                     href="https://discountcode.thegulocal.com/uk?INTCMP=guardian_footer"
@@ -1653,6 +1716,7 @@ exports[`Main renders something 1`] = `
     border-top: 0;
   }
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -1675,6 +1739,7 @@ exports[`Main renders something 1`] = `
     line-height: 32px;
   }
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1691,6 +1756,7 @@ exports[`Main renders something 1`] = `
   margin-right: 10px;
   margin-bottom: 6px;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1705,6 +1771,7 @@ exports[`Main renders something 1`] = `
                           "name": "1dykxcg",
                           "next": undefined,
                           "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                          "toString": [Function],
                         }
                       }
                       onMouseUp={[Function]}
@@ -1731,6 +1798,7 @@ exports[`Main renders something 1`] = `
                         "name": "1dykxcg",
                         "next": undefined,
                         "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
+                        "toString": [Function],
                       }
                     }
                     onMouseUp={[Function]}
@@ -1760,6 +1828,7 @@ exports[`Main renders something 1`] = `
   padding-right: 20px;
   position: relative;
 ",
+                "toString": [Function],
               }
             }
           >
@@ -1782,6 +1851,7 @@ exports[`Main renders something 1`] = `
   right: 20px;
   transform: translateY(-50%);
 ",
+                  "toString": [Function],
                 }
               }
               href="#top"
@@ -1797,6 +1867,7 @@ exports[`Main renders something 1`] = `
   padding-right: 5px;
   padding-top: 9px;
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -1816,6 +1887,7 @@ exports[`Main renders something 1`] = `
   height: 42px;
   width: 42px;
 ",
+                    "toString": [Function],
                   }
                 }
               >
@@ -1831,6 +1903,7 @@ exports[`Main renders something 1`] = `
   top: 9px;
   left: 9px;
 ",
+                      "toString": [Function],
                     }
                   }
                 >
@@ -1859,6 +1932,7 @@ exports[`Main renders something 1`] = `
   padding-top: 26px;
   font-size: 12px;
 ",
+                  "toString": [Function],
                 }
               }
             >
