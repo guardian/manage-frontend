@@ -4,7 +4,7 @@ set -e
 
 # Installing yarn
 
-YARN_VERSION="1.17.3"
+YARN_VERSION="1.22.5"
 YARN_LOCATION="$(pwd)/tools/${YARN_VERSION}"
 
 if [ ! -d "$YARN_LOCATION" ]; then
