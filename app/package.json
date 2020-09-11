@@ -159,7 +159,7 @@
     "react": "^16.13.1",
     "react-daterange-picker": "^2.0.1",
     "react-dom": "^16.13.1",
-    "source-map-support": "^0.5.6",
+    "source-map-support": "^0.5.19",
     "stylis-pxtorem": "^0.0.2",
     "url-parse": "^1.4.4",
     "webpack-node-externals": "^1.7.2",
