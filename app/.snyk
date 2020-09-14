@@ -28,6 +28,16 @@ ignore:
     - node-pre-gyp > rc > minimist:
         reason: cannot be upgraded
         expires: '2020-09-17T12:49:32.839Z'
+  SNYK-JS-NODEFETCH-674311:
+    - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
+        reason: Can be upgraded but will require code changes
+        expires: '2020-10-11T22:24:44.022Z'
+    - react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
+        reason: Cannot be upgraded; repo seems inactive
+        expires: '2020-10-11T22:24:44.022Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
+        reason: Cannot be upgraded; repo seems inactive
+        expires: '2020-10-11T22:24:44.022Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
