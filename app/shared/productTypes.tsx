@@ -440,6 +440,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     legacyUrlPart: "digitalvoucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    holidayStops: {
+      issueKeyword: "issue",
+      alternateNoticeString: "one day's notice",
+      additionalHowAdvice:
+        "Please note you will not be able to redeem your paper on any days that you have a suspension in place.",
+      hideDeliveryRedirectionHelpBullet: true
+    },
     delivery: {
       showAddress: showDeliveryAddressCheck
     }
