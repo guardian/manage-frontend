@@ -71,6 +71,21 @@ export const PublicProfile = (_: { path?: string }) => {
     </>
   );
 
+  const usernameInputForm = (u: User) => (
+    <>
+      <ProfileFormSection
+        user={u}
+        saveUser={values => saveUser(u, values)}
+        onError={handleGeneralError}
+        onSuccess={setUser}
+      />
+
+      <WithStandardTopMargin>
+        <Lines n={1} />
+      </WithStandardTopMargin>
+    </>
+  );
+
   const content = (u: User) => (
     <>
       <WithStandardTopMargin>
@@ -86,16 +101,7 @@ export const PublicProfile = (_: { path?: string }) => {
       <WithStandardTopMargin>
         <Lines n={1} />
       </WithStandardTopMargin>
-      {hasUsername(u) ? usernameDisplay(u) : null}
-      <ProfileFormSection
-        user={u}
-        saveUser={values => saveUser(u, values)}
-        onError={handleGeneralError}
-        onSuccess={setUser}
-      />
-      <WithStandardTopMargin>
-        <Lines n={1} />
-      </WithStandardTopMargin>
+      {hasUsername(u) ? usernameDisplay(u) : usernameInputForm(u)}
       <WithStandardTopMargin>
         <AvatarSection userId={u.id} />
       </WithStandardTopMargin>

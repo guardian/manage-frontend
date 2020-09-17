@@ -24,9 +24,6 @@ export enum ConsentOptionType {
 export interface User {
   id: string;
   primaryEmailAddress: string;
-  location: string;
-  aboutMe: string;
-  interests: string;
   consents: string[];
   username: string;
   validated: boolean;
@@ -46,9 +43,6 @@ export interface User {
 export interface UserError {
   type: ErrorTypes.VALIDATION;
   error: {
-    aboutMe: string;
-    location: string;
-    interests: string;
     username: string;
   };
 }

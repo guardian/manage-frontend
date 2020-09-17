@@ -3,7 +3,7 @@ import React from "react";
 import * as Yup from "yup";
 import { Button } from "../../buttons";
 import { WithStandardTopMargin } from "../../page";
-import { FormTextAreaField, FormTextField } from "../Form/FormField";
+import { FormTextField } from "../Form/FormField";
 import { ErrorTypes, User } from "../models";
 import { PageSection } from "../PageSection";
 import { textSmall } from "../sharedStyles";
@@ -15,15 +15,10 @@ interface ProfileFormSectionProps {
   onSuccess: (user: User) => void;
 }
 
-const hasUsername = (user: User) => !!user.username;
-
 const formValidationSchema = Yup.object().shape({
   username: Yup.string()
     .min(6, "Must be 6 characters minimum")
-    .max(20, "Must be 20 characters or less"),
-  location: Yup.string().max(255, "Maximum length is 255"),
-  aboutMe: Yup.string().max(1500, "Maximum length is 1500"),
-  interests: Yup.string().max(255, "Maximum length is 255")
+    .max(20, "Must be 20 characters or less")
 });
 
 const usernameInput = (formikProps: FormikProps<User>) => (
@@ -45,14 +40,7 @@ const fieldSetCss = {
 const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
   <Form>
     <fieldset css={fieldSetCss} disabled={props.isSubmitting}>
-      {!hasUsername(props.user) ? usernameInput(props) : null}
-      <FormTextField name="location" label="Location" formikProps={props} />
-      <FormTextAreaField name="aboutMe" label="About Me" formikProps={props} />
-      <FormTextAreaField
-        name="interests"
-        label="Interests"
-        formikProps={props}
-      />
+      {usernameInput(props)}
       <Button
         disabled={props.isSubmitting}
         text="Save changes"

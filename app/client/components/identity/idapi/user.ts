@@ -7,9 +7,9 @@ import {
   localFetch
 } from "./fetch";
 
-type UserPublicFields = Partial<
-  Pick<User, "aboutMe" | "interests" | "location" | "username">
-> & { displayName?: string };
+type UserPublicFields = Partial<Pick<User, "username">> & {
+  displayName?: string;
+};
 
 type UserPrivateFields = Partial<
   Pick<
@@ -77,9 +77,6 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 
   return {
     publicFields: {
-      aboutMe: user.aboutMe,
-      interests: user.interests,
-      location: user.location,
       username: user.username,
       // Currently displayname and username must be set to the same value, but this is not enforced on IDAPI
       // and clients are expected to implement this logic for the time being.
@@ -108,9 +105,6 @@ const toUser = (response: UserAPIResponse): User => {
   return {
     id: user.id,
     primaryEmailAddress: user.primaryEmailAddress,
-    location: getFromUser("publicFields.location"),
-    aboutMe: getFromUser("publicFields.aboutMe"),
-    interests: getFromUser("publicFields.interests"),
     username: getFromUser("publicFields.username"),
     title: getFromUser("privateFields.title"),
     firstName: getFromUser("privateFields.firstName"),
