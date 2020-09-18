@@ -5,29 +5,29 @@ ignore:
   SNYK-JS-LODASH-590103:
     - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: No upgrade available
-        expires: '2020-09-16T14:22:02.872Z'
+        expires: '2020-10-17T17:00:51.078Z'
     - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: No upgrade available
-        expires: '2020-09-16T14:22:02.872Z'
+        expires: '2020-10-17T17:00:51.078Z'
     - formik > lodash:
         reason: No upgrade available
-        expires: '2020-09-16T14:22:02.872Z'
+        expires: '2020-10-17T17:00:51.078Z'
     - winston > async > lodash:
         reason: No upgrade available
-        expires: '2020-09-16T14:22:02.872Z'
+        expires: '2020-10-17T17:00:51.079Z'
     - yup > lodash:
         reason: No upgrade available
-        expires: '2020-09-16T14:22:02.872Z'
+        expires: '2020-10-17T17:00:51.079Z'
   SNYK-JS-MINIMIST-559764:
     - node-pre-gyp > mkdirp > minimist:
         reason: cannot be upgraded
-        expires: '2020-09-17T12:49:32.839Z'
+        expires: '2020-10-17T17:00:51.079Z'
     - node-pre-gyp > tar > mkdirp > minimist:
         reason: cannot be upgraded
-        expires: '2020-09-17T12:49:32.839Z'
+        expires: '2020-10-17T17:00:51.079Z'
     - node-pre-gyp > rc > minimist:
         reason: cannot be upgraded
-        expires: '2020-09-17T12:49:32.839Z'
+        expires: '2020-10-17T17:00:51.079Z'
   SNYK-JS-NODEFETCH-674311:
     - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
         reason: Can be upgraded but will require code changes
@@ -38,6 +38,16 @@ ignore:
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
         reason: Cannot be upgraded; repo seems inactive
         expires: '2020-10-11T22:24:44.022Z'
+  SNYK-JS-UAPARSERJS-610226:
+    - formik > create-react-context > fbjs > ua-parser-js:
+        reason: No upgrade available
+        expires: '2020-10-17T17:00:51.078Z'
+    - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
+        reason: No upgrade available
+        expires: '2020-10-17T17:00:51.078Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
+        reason: No upgrade available
+        expires: '2020-10-17T17:00:51.079Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
