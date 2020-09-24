@@ -800,6 +800,17 @@ exports[`Main renders something 1`] = `
               }
             >
               <iframe
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "a2zj5o",
+                    "next": undefined,
+                    "styles": "
+  min-height: 150px;
+",
+                    "toString": [Function],
+                  }
+                }
                 data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
                 data-node-uid="2"
                 frameBorder="0"
