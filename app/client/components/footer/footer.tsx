@@ -58,7 +58,7 @@ const emailSignUpStyles = css`
   }
 `;
 
-const emailIframeSignUpStyles = css`
+const emailSignUpIframeStyles = css`
   min-height: 150px;
 `;
 
@@ -229,7 +229,7 @@ export const Footer = () => {
                   data-node-uid="2"
                   height="86px"
                   onLoad={emailForm => fillEmailSignup(emailForm)}
-                  css={emailIframeSignUpStyles}
+                  css={emailSignUpIframeStyles}
                 />
               </div>
 
