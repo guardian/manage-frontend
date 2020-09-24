@@ -63,12 +63,12 @@ class ReasonPicker extends React.Component<
 
   public render(): React.ReactNode {
     // offer choice if not trial period or lead time, and startPageOfferEffectiveDateOptions config set to true
-    const showCancellationDateOptions =
+    const shouldOfferEffectiveDateOptions =
       !isNaN(Date.parse(this.props.chargedThroughCancellationDate)) &&
       this.props.productType.cancellation.startPageOfferEffectiveDateOptions;
 
     const chargedThroughDateStr =
-      showCancellationDateOptions &&
+      shouldOfferEffectiveDateOptions &&
       momentiseDateStr(this.props.chargedThroughCancellationDate).format(
         friendlyLongDateFormat
       );
@@ -108,7 +108,7 @@ class ReasonPicker extends React.Component<
             ))}
           </form>
 
-          {showCancellationDateOptions && (
+          {shouldOfferEffectiveDateOptions && (
             <>
               <h4>
                 When would you like your cancellation to become effective?
@@ -166,7 +166,7 @@ class ReasonPicker extends React.Component<
                 to={this.state.reasonPath}
                 disabled={
                   !this.state.reasonPath ||
-                  (showCancellationDateOptions &&
+                  (shouldOfferEffectiveDateOptions &&
                     !this.state.cancellationPolicy)
                 }
                 right
