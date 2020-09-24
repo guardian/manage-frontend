@@ -30,6 +30,7 @@ import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { COUNTRIES } from "../../identity/models";
 import { InfoSection } from "../../infoSection";
+import { Input } from "../../input";
 import {
   ProductDescriptionListKeyValue,
   ProductDescriptionListTable
@@ -43,7 +44,6 @@ import {
 } from "../address/deliveryAddressForm";
 import { convertToDescriptionListData } from "../address/deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "../address/formValidation";
-import { Input } from "../address/input";
 import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";

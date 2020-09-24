@@ -14,7 +14,7 @@ import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
 import { Button } from "../buttons";
 import { SuccessMessage } from "../delivery/address/deliveryAddressEditConfirmation";
-import { Input } from "../delivery/address/input";
+import { Input } from "../input";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 
 interface ContributionUpdateAmountForm {

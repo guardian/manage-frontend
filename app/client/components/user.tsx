@@ -33,6 +33,7 @@ import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecords
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageProduct } from "./accountoverview/manageProduct";
 import { Billing } from "./billing/billing";
+import { ContactUs } from "./contactus/contactus";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -46,14 +47,13 @@ import { Main, WithOptionalServerPathWithQueryParams } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
-import { ContactUs } from "./contactus/contactus";
 
 const User = (props: WithOptionalServerPathWithQueryParams) => (
   <Main {...props}>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
-    <Router>
+    <Router css={{ height: "100%" }}>
       <AccountOverview path="/" />
       <Billing path="/billing" />
 
@@ -175,6 +175,9 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Help path="/help" />
 
       <ContactUs path="/contact-us-form" />
+      <ContactUs path="/contact-us-form/:topicId" />
+      <ContactUs path="/contact-us-form/:topicId/:subTopicId" />
+      <ContactUs path="/contact-us-form/:topicId/:subTopicId/:subSubTopicId" />
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />

@@ -3,12 +3,12 @@ import fetch from "node-fetch";
 import url, { UrlWithParsedQuery } from "url";
 import {
   getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
+  X_GU_ID_FORWARDED_SCOPE,
 } from "../../shared/identity";
+import { allowPathThroughWithoutSignin } from "../../shared/pathsToAllowThroughWithoutSignin";
 import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
 import { idapiConfigPromise } from "../idapiConfig";
-import { pathsToAllowThroughWithoutSignin } from "../../shared/pathsToAllowThroughWithoutSignin";
 
 interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
@@ -45,7 +45,7 @@ const signInTokenQueryParameterNames = ["encryptedEmail", "autoSignInToken"];
 const containsSignInTokenQueryParameters = (
   req: MockableExpressRequest
 ): boolean =>
-  signInTokenQueryParameterNames.some(name => req.query[name] !== undefined);
+  signInTokenQueryParameterNames.some((name) => req.query[name] !== undefined);
 
 // Adds the redirect url (if defined) as query parameter profileReferer,
 // and removes the sign-in token query parameters since they are not required by manage
@@ -59,7 +59,7 @@ const updateManageUrl = (
   // See the implementation of withIdentity() for more context.
   const queryParameters = filterQueryParametersByName(
     req.query,
-    name => !signInTokenQueryParameterNames.includes(name)
+    (name) => !signInTokenQueryParameterNames.includes(name)
   );
 
   const profileReferrer =
@@ -75,8 +75,8 @@ const updateManageUrl = (
         pathname: req.baseUrl + req.path,
         query: {
           ...queryParameters,
-          profileReferrer
-        }
+          profileReferrer,
+        },
       });
 };
 
@@ -106,11 +106,12 @@ export const augmentRedirectURL = (
     "abName",
     "abVariant",
     "journey",
-    ...signInTokenQueryParameterNames
+    ...signInTokenQueryParameterNames,
   ];
 
-  const profileQueryParameters = filterQueryParametersByName(req.query, name =>
-    profileQueryParameterNames.includes(name)
+  const profileQueryParameters = filterQueryParametersByName(
+    req.query,
+    (name) => profileQueryParameterNames.includes(name)
   );
 
   return url.format({
@@ -120,8 +121,8 @@ export const augmentRedirectURL = (
     query: {
       ...parsedSimpleURL.query,
       ...profileQueryParameters,
-      returnUrl // this is automatically URL encoded
-    }
+      returnUrl, // this is automatically URL encoded
+    },
   });
 };
 
@@ -155,13 +156,13 @@ export const withIdentity: (
   const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
   idapiConfigPromise
-    .then(idapiConfig => {
+    .then((idapiConfig) => {
       if (idapiConfig) {
         fetch(
           url.format({
             protocol: "https",
             host: idapiConfig.host,
-            pathname: "auth/redirect"
+            pathname: "auth/redirect",
           }),
           {
             headers: {
@@ -170,18 +171,39 @@ export const withIdentity: (
               [X_GU_ID_FORWARDED_SCOPE]:
                 req.header(X_GU_ID_FORWARDED_SCOPE) ||
                 getScopeFromRequestPathOrEmptyString(req.path),
-              Cookie: getCookiesOrEmptyString(req)
-            }
+              Cookie: getCookiesOrEmptyString(req),
+            },
           }
         )
           .then(
-            redirectResponse =>
+            (redirectResponse) =>
               redirectResponse.json() as Promise<RedirectResponseBody>
           )
-          .then(redirectResponseBody => {
+          .then((redirectResponseBody) => {
             // tslint:disable-next-line:no-object-mutation
             Object.assign(res.locals, { identity: redirectResponseBody });
-            if (pathsToAllowThroughWithoutSignin.includes(req.path)) {
+
+            ////////////////////////////////////////////////////////////////////////////////
+            // const pathSplit = req.path.split("/");
+            // const allowPathThroughWithoutSignin = pathsToAllowThroughWithoutSignin.some(
+            //   (whiteListedPath) => {
+            //     if (whiteListedPath === req.path) {
+            //       return true;
+            //     }
+            //     const whiteListedPathSplit = whiteListedPath.split("/");
+            //     if (whiteListedPathSplit.length === pathSplit.length) {
+            //       const isGlobWhiteListed = whiteListedPathSplit.every(
+            //         (pathPart, index) =>
+            //           pathPart === pathSplit[index] || pathPart === "*"
+            //       );
+            //       return isGlobWhiteListed;
+            //     }
+            //   }
+            // );
+            ////////////////////////////////////////////////////////////////////////////////
+
+            // if (pathsToAllowThroughWithoutSignin.includes(req.path)) {
+            if (allowPathThroughWithoutSignin(req.path)) {
               next();
             } else if (redirectResponseBody.redirect) {
               redirectOrCustomStatusCode(
@@ -218,12 +240,12 @@ export const withIdentity: (
               );
             }
           })
-          .catch(err =>
+          .catch((err) =>
             errorHandler("IDAPI config promise threw an error", err)
           );
       } else {
         errorHandler("IDAPI config is undefined");
       }
     })
-    .catch(err => errorHandler("error fetching IDAPI config", err));
+    .catch((err) => errorHandler("error fetching IDAPI config", err));
 };

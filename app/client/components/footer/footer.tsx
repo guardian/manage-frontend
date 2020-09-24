@@ -9,10 +9,6 @@ import { footerLinks } from "./footerlinks";
 
 const TODAY = new Date();
 
-const footerStyles = css`
-  margin-top: 2rem;
-`;
-
 const footerColourStyles = css`
   background-color: ${palette.blue.header};
   color: ${palette.white};
@@ -205,7 +201,7 @@ export const Footer = () => {
   }, [isInUSA]);
 
   return (
-    <footer css={footerStyles}>
+    <footer>
       <div>
         <div css={footerColourStyles}>
           <div css={footerSizeStyles}>

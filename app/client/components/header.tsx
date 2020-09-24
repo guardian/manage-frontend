@@ -2,11 +2,15 @@ import { breakpoints, palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
-import { gridBase, gridItemPlacement } from "../styles/grid";
+import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { DropdownNav } from "./nav/dropdownNav";
 import { GridRoundel } from "./svgs/gridRoundel";
 
-const Header = () => {
+interface HeaderProps {
+  isSignedOut?: boolean;
+}
+
+const Header = (props: HeaderProps) => {
   return (
     <header
       css={{
@@ -30,30 +34,56 @@ const Header = () => {
           margin: "auto"
         }}
       >
-        <h1
-          css={{
-            fontSize: "1.75rem",
-            fontWeight: "bold",
-            color: palette.neutral["100"],
-            display: "none",
-            [minWidth.desktop]: {
-              display: "block",
-              ...gridItemPlacement(1, 8)
-            }
-          }}
-        >
+        {!props.isSignedOut ? (
+          <>
+            <h1
+              css={{
+                fontSize: "1.75rem",
+                fontWeight: "bold",
+                color: palette.neutral["100"],
+                display: "none",
+                [minWidth.desktop]: {
+                  display: "block",
+                  ...gridItemPlacement(1, 8)
+                }
+              }}
+            >
+              <Link
+                to={"/"}
+                css={{
+                  textDecoration: "none",
+                  color: palette.neutral["100"],
+                  ":visited": { color: "inherit" }
+                }}
+              >
+                My account
+              </Link>
+            </h1>
+            <DropdownNav />
+          </>
+        ) : (
           <Link
             to={"/"}
             css={{
               textDecoration: "none",
               color: palette.neutral["100"],
-              ":visited": { color: "inherit" }
+              ...gridItemPlacement(1, 2),
+              whiteSpace: "nowrap",
+              margin: "auto 0",
+              [minWidth.desktop]: {
+                position: "relative",
+                left: "0.5rem",
+                ...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
+                marginLeft: "auto"
+              },
+              [minWidth.wide]: {
+                ...gridItemPlacement(-4, 2, gridColumns.wide)
+              }
             }}
           >
-            My account
+            Sign in
           </Link>
-        </h1>
-        <DropdownNav />
+        )}
         <GridRoundel
           fillMain={palette.neutral["100"]}
           fillG={palette.brand[400]}
