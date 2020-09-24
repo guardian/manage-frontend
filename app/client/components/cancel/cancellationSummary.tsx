@@ -2,11 +2,8 @@ import { css } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
-import {
-  formatDate,
-  ProductDetail,
-  Subscription
-} from "../../../shared/productResponse";
+import { cancellationFormatDate } from "../../../shared/dates";
+import { ProductDetail, Subscription } from "../../../shared/productResponse";
 import {
   hasDeliveryRecordsFlow,
   ProductType
@@ -35,8 +32,13 @@ const actuallyCancelled = (
                 <>
                   You will continue to receive the benefits of your{" "}
                   {productType.friendlyName} until{" "}
-                  <b>{formatDate(subscription.end)}</b>. You will not be charged
-                  again. If you think you’re owed a refund, please contact us at{" "}
+                  <b>
+                    {cancellationFormatDate(
+                      subscription.cancellationEffectiveDate
+                    )}
+                  </b>
+                  . You will not be charged again. If you think you’re owed a
+                  refund, please contact us at{" "}
                   <a
                     css={hrefStyle}
                     href="mailto:customer.help@theguardian.com"

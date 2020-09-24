@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import { formatDateStr } from "../../../shared/dates";
+import { cancellationFormatDate, formatDateStr } from "../../../shared/dates";
 import {
   getMainPlan,
   isGift,
@@ -203,7 +203,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 font-weight: bold;
               `}
             >
-              {formatDateStr(props.productDetail.subscription.end)}
+              {cancellationFormatDate(
+                props.productDetail.subscription.cancellationEffectiveDate
+              )}
             </span>
             .
           </p>
