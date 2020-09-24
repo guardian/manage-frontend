@@ -58,6 +58,10 @@ const emailSignUpStyles = css`
   }
 `;
 
+const emailSignUpIframeStyles = css`
+  min-height: 150px;
+`;
+
 const footerMenuStyles = css`
   font-feature-settings: kern;
   font-size: 16px;
@@ -225,6 +229,7 @@ export const Footer = () => {
                   data-node-uid="2"
                   height="86px"
                   onLoad={emailForm => fillEmailSignup(emailForm)}
+                  css={emailSignUpIframeStyles}
                 />
               </div>
 
