@@ -62,9 +62,10 @@ class ReasonPicker extends React.Component<
   };
 
   public render(): React.ReactNode {
-    const showCancellationDateOptions = !isNaN(
-      Date.parse(this.props.chargedThroughCancellationDate)
-    );
+    // offer choice if not trial period or lead time, and startPageOfferEffectiveDateOptions config set to true
+    const showCancellationDateOptions =
+      !isNaN(Date.parse(this.props.chargedThroughCancellationDate)) &&
+      this.props.productType.cancellation.startPageOfferEffectiveDateOptions;
 
     const chargedThroughDateStr =
       showCancellationDateOptions &&
@@ -114,19 +115,6 @@ class ReasonPicker extends React.Component<
               </h4>
               <form css={css({ marginBottom: "30px" })}>
                 <RadioButton
-                  value="Today"
-                  label="Today"
-                  checked={
-                    this.state.cancellationPolicy === cancellationEffectiveToday
-                  }
-                  groupName="cancellationPolicy"
-                  onChange={() =>
-                    this.setState({
-                      cancellationPolicy: cancellationEffectiveToday
-                    })
-                  }
-                />
-                <RadioButton
                   value="EndOfLastInvoicePeriod"
                   label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
                   checked={
@@ -137,6 +125,19 @@ class ReasonPicker extends React.Component<
                   onChange={() =>
                     this.setState({
                       cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
+                    })
+                  }
+                />
+                <RadioButton
+                  value="Today"
+                  label="Today"
+                  checked={
+                    this.state.cancellationPolicy === cancellationEffectiveToday
+                  }
+                  groupName="cancellationPolicy"
+                  onChange={() =>
+                    this.setState({
+                      cancellationPolicy: cancellationEffectiveToday
                     })
                   }
                 />
