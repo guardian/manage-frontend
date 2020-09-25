@@ -72,7 +72,7 @@ router.get(
 router.get(
   "/cancellation-date/:subscriptionName",
   membersDataApiHandler(
-    "user-attributes/me/cancel/:subscriptionName",
+    "user-attributes/me/cancellation-date/:subscriptionName",
     "MDA_CANCEL",
     ["subscriptionName"]
   )
