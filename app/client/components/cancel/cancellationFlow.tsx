@@ -31,6 +31,11 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
+import {
+  CancellationDateAsyncLoader,
+  cancellationDateFetcher,
+  CancellationDateResponse
+} from "./cancellationDateResponse";
 import { ContactUsToCancel } from "./contactUsToCancel";
 
 export interface RouteableStepPropsWithCancellationFlow
@@ -40,6 +45,7 @@ export interface RouteableStepPropsWithCancellationFlow
 
 interface ReasonPickerProps extends RouteableStepPropsWithCancellationFlow {
   productDetail: ProductDetail;
+  chargedThroughCancellationDate: string;
 }
 
 interface ReasonPickerState {
@@ -56,16 +62,16 @@ class ReasonPicker extends React.Component<
   };
 
   public render(): React.ReactNode {
-    const chargedThroughDate: string | null = this.props.productDetail
-      .subscription.chargedThroughDate;
-
+    // offer choice if not trial period or lead time, and startPageOfferEffectiveDateOptions config set to true
     const shouldOfferEffectiveDateOptions =
-      !!chargedThroughDate &&
+      !isNaN(Date.parse(this.props.chargedThroughCancellationDate)) &&
       this.props.productType.cancellation.startPageOfferEffectiveDateOptions;
 
     const chargedThroughDateStr =
-      chargedThroughDate &&
-      momentiseDateStr(chargedThroughDate).format(friendlyLongDateFormat);
+      shouldOfferEffectiveDateOptions &&
+      momentiseDateStr(this.props.chargedThroughCancellationDate).format(
+        friendlyLongDateFormat
+      );
 
     // we extract the options from the children rather than direct from the ProductType to guarantee the routes are setup correctly
     const options = this.props.children.props.children.map(
@@ -109,19 +115,6 @@ class ReasonPicker extends React.Component<
               </h4>
               <form css={css({ marginBottom: "30px" })}>
                 <RadioButton
-                  value="Today"
-                  label="Today"
-                  checked={
-                    this.state.cancellationPolicy === cancellationEffectiveToday
-                  }
-                  groupName="cancellationPolicy"
-                  onChange={() =>
-                    this.setState({
-                      cancellationPolicy: cancellationEffectiveToday
-                    })
-                  }
-                />
-                <RadioButton
                   value="EndOfLastInvoicePeriod"
                   label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
                   checked={
@@ -132,6 +125,19 @@ class ReasonPicker extends React.Component<
                   onChange={() =>
                     this.setState({
                       cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
+                    })
+                  }
+                />
+                <RadioButton
+                  value="Today"
+                  label="Today"
+                  checked={
+                    this.state.cancellationPolicy === cancellationEffectiveToday
+                  }
+                  groupName="cancellationPolicy"
+                  onChange={() =>
+                    this.setState({
+                      cancellationPolicy: cancellationEffectiveToday
                     })
                   }
                 />
@@ -188,6 +194,21 @@ class ReasonPicker extends React.Component<
   }
 }
 
+const ReasonPickerRenderer = (
+  props: RouteableStepProps,
+  productType: ProductTypeWithCancellationFlow,
+  productDetail: ProductDetail
+) => (apiResponse: CancellationDateResponse) => {
+  return (
+    <ReasonPicker
+      {...props}
+      productType={productType}
+      productDetail={productDetail}
+      chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
+    />
+  );
+};
+
 export const CancellationFlow = (props: RouteableStepProps) => (
   <FlowWrapper
     {...props}
@@ -209,10 +230,13 @@ export const CancellationFlow = (props: RouteableStepProps) => (
     {productDetail =>
       productDetail.selfServiceCancellation.isAllowed &&
       hasCancellationFlow(props.productType) ? (
-        <ReasonPicker
-          {...props}
-          productType={props.productType}
-          productDetail={productDetail}
+        <CancellationDateAsyncLoader
+          fetch={cancellationDateFetcher(
+            productDetail.subscription.subscriptionId
+          )}
+          render={ReasonPickerRenderer(props, props.productType, productDetail)}
+          loadingMessage={`Checking your ${props.productType
+            .shortFriendlyName || props.productType.friendlyName} details...`}
         />
       ) : (
         <ContactUsToCancel

@@ -4,7 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { useState } from "react";
-import { formatDateStr } from "../../../shared/dates";
+import { cancellationFormatDate } from "../../../shared/dates";
 import {
   getMainPlan,
   isGift,
@@ -123,7 +123,11 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             `}
           >
             {cancelledCopy}{" "}
-            <strong>{formatDateStr(productDetail.subscription.end)}</strong>
+            <strong>
+              {cancellationFormatDate(
+                productDetail.subscription.cancellationEffectiveDate
+              )}
+            </strong>
           </span>
           .
         </p>

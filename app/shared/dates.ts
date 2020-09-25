@@ -9,3 +9,9 @@ export const momentiseDateStr = (dateStr: string) =>
 
 export const formatDateStr = (dateStr: string, outputFormat?: string) =>
   momentiseDateStr(dateStr).format(outputFormat || "D MMM YYYY");
+
+export const cancellationFormatDate = (cancellationEffectiveDate?: string) => {
+  return cancellationEffectiveDate === undefined
+    ? "today"
+    : formatDateStr(cancellationEffectiveDate);
+};

@@ -69,6 +69,15 @@ router.get(
   )
 );
 
+router.get(
+  "/cancellation-date/:subscriptionName",
+  membersDataApiHandler(
+    "user-attributes/me/cancellation-date/:subscriptionName",
+    "MDA_CANCEL",
+    ["subscriptionName"]
+  )
+);
+
 router.post(
   "/cancel/:subscriptionName?",
   membersDataApiHandler(
