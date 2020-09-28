@@ -16,6 +16,7 @@ export interface ProductDetailProviderProps extends RouteableStepProps {
   allowCancelledSubscription?: true;
   loadingMessagePrefix: string;
   forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
+  subscriptionId?: string;
 }
 
 export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
@@ -46,7 +47,10 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
       visuallyNavigateToParent(props, true)
     ) : (
       <MembersDatApiAsyncLoader
-        fetch={createProductDetailFetcher(props.productType)}
+        fetch={createProductDetailFetcher(
+          props.productType,
+          props.subscriptionId
+        )}
         render={renderSingleProductOrReturnToAccountOverview(
           props,
           setSelectedProductDetail
@@ -76,8 +80,8 @@ const renderSingleProductOrReturnToAccountOverview = (
     );
 
   if (filteredProductDetails.length === 1) {
-    setSelectedProductDetail(filteredProductDetails[0]);
+    setSelectedProductDetail(filteredProductDetails[0]); // FIXME: Could this filtering be more precise on subscriptionId?
     return null;
   }
-  return visuallyNavigateToParent(props, true);
+  return visuallyNavigateToParent(props, true); // FIXME: This seems to happen silently currently. Should some error feedback be provided, as we have users reporting they are stuck in a loop.
 };

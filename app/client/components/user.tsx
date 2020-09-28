@@ -68,7 +68,7 @@ const User = () => (
       {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
         <CancellationFlow
           key={productType.urlPart}
-          path={"/cancel/" + productType.urlPart}
+          path={"/cancel/" + productType.urlPart + "/:subscriptionId"}
           productType={productType}
         >
           {hasCancellationFlow(productType) &&

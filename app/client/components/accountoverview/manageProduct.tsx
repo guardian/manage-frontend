@@ -376,7 +376,12 @@ const CancellationCTA = (props: CancellationCTAProps) => {
         css={css`
           color: ${palette.brand["500"]};
         `}
-        to={"/cancel/" + props.specificProductType.urlPart}
+        to={
+          "/cancel/" +
+          props.specificProductType.urlPart +
+          "/" +
+          props.productDetail.subscription.subscriptionId
+        }
         state={props.productDetail}
       >
         {shouldContactUsToCancel
