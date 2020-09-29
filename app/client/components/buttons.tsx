@@ -36,7 +36,7 @@ interface LinkButtonState {
 
 interface LinkButtonProps extends ButtonProps {
   to: string;
-  state?: LinkButtonState;
+  state?: LinkButtonState | ProductDetail;
 }
 
 const applyIconStyleIfApplicable = (

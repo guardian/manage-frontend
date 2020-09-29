@@ -31,10 +31,18 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 
   // Browser history state is inspected inside this hook to avoid race condition with server side rendering
   useEffect(() => {
-    const productDetailFromBrowserHistoryState =
+    const productDetailNestedFromBrowserHistoryState =
       isProduct(props.location?.state?.productDetail) &&
       props.location?.state?.productDetail;
-    setSelectedProductDetail(productDetailFromBrowserHistoryState || null);
+
+    const productDetailDirectFromBrowserHistoryState =
+      isProduct(props.location?.state) && props.location?.state;
+
+    setSelectedProductDetail(
+      productDetailNestedFromBrowserHistoryState ||
+        productDetailDirectFromBrowserHistoryState ||
+        null
+    );
   }, []); // Equivalent to componentDidMount (ie only happens on the client)
 
   if (selectedProductDetail) {
