@@ -184,7 +184,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           alert={!!productDetail.alertText}
           text="Update payment method"
           to={`/payment/${specificProductType.urlPart}`}
-          state={{ productDetail }}
+          state={productDetail}
         />
       )}
 
@@ -233,7 +233,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               fontWeight="bold"
               text="Manage delivery address"
               to={`/delivery/${specificProductType.urlPart}/address`}
-              state={{ productDetail }}
+              state={productDetail}
             />
           </>
         )}
@@ -260,7 +260,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             fontWeight="bold"
             text="Manage delivery history"
             to={`/delivery/${specificProductType.urlPart}/records`}
-            state={{ productDetail }}
+            state={productDetail}
           />
         </>
       )}
@@ -292,7 +292,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               fontWeight="bold"
               text="Manage suspensions"
               to={`/suspend/${specificProductType.urlPart}`}
-              state={{ productDetail }}
+              state={productDetail}
             />
           </>
         )}
