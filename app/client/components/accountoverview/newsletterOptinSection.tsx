@@ -5,6 +5,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import * as Sentry from "@sentry/browser";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { trackEvent } from "../analytics";
 import { SuccessMessage } from "../delivery/address/deliveryAddressEditConfirmation";
 import * as NewslettersAPI from "../identity/idapi/newsletters";
 import * as NewslettersSubscriptionsAPI from "../identity/idapi/newsletterSubscriptions";
@@ -110,6 +111,13 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
                   newsletterPendingChange !== focusedNewsletter.id
               )
             );
+            trackEvent({
+              eventCategory: "newsletter_preference_update",
+              eventAction: "newsletter_preference_update_success",
+              eventLabel: focusedNewsletter.subscribed
+                ? `newsletter_optin_${focusedNewsletter.id}`
+                : `newsletter_optout_${focusedNewsletter.id}`
+            });
           },
           () => {
             setShowUpdateMsg({ isSuccessful: false });
@@ -123,6 +131,11 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
                   : newsletterMap
               )
             );
+            trackEvent({
+              eventCategory: "newsletter_preference_update",
+              eventAction: "newsletter_preference_update_error",
+              eventLabel: `newsletter_preference_update_error_${focusedNewsletter.id}`
+            });
           }
         );
       }
