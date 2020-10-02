@@ -129,6 +129,7 @@ export interface Subscription {
   start?: string;
   end: string;
   renewalDate: string;
+  anniversaryDate: string;
   cancelledAt: boolean;
   nextPaymentDate: string | null;
   lastPaymentDate: string | null;

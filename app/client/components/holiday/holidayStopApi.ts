@@ -202,20 +202,20 @@ export interface IssuesImpactedPerYear {
 
 export const calculateIssuesImpactedPerYear = (
   publicationsImpacted: HolidayStopDetail[],
-  nextYearStartDate: Moment
+  anniversaryDate: Moment
 ) => {
   return {
     issuesThisYear: publicationsImpacted.filter(
       issue =>
-        issue.publicationDate.isBefore(nextYearStartDate) &&
+        issue.publicationDate.isBefore(anniversaryDate) &&
         issue.publicationDate.isSameOrAfter(
-          nextYearStartDate.clone().subtract(1, "year")
+          anniversaryDate.clone().subtract(1, "year")
         )
     ),
     issuesNextYear: publicationsImpacted.filter(
       issue =>
-        issue.publicationDate.isSameOrAfter(nextYearStartDate) &&
-        issue.publicationDate.isBefore(nextYearStartDate.clone().add(1, "year"))
+        issue.publicationDate.isSameOrAfter(anniversaryDate) &&
+        issue.publicationDate.isBefore(anniversaryDate.clone().add(1, "year"))
     )
   } as IssuesImpactedPerYear;
 };
