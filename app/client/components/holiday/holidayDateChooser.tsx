@@ -180,8 +180,8 @@ export class HolidayDateChooser extends React.Component<
                   holidayStopsResponse.existingHolidayStopToAmend &&
                   holidayStopsResponse.existingHolidayStopToAmend.id;
 
-                const renewalDateMoment = momentiseDateStr(
-                  productDetail.subscription.renewalDate
+                const anniversaryDateMoment = momentiseDateStr(
+                  productDetail.subscription.anniversaryDate
                 );
 
                 const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
@@ -190,7 +190,7 @@ export class HolidayDateChooser extends React.Component<
                     .filter(isNotBulkSuspension)
                     .filter(_ => _.id !== existingHolidayStopToAmendId)
                     .flatMap(_ => _.publicationsImpacted),
-                  renewalDateMoment
+                  anniversaryDateMoment
                 );
 
                 const allIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
@@ -198,7 +198,7 @@ export class HolidayDateChooser extends React.Component<
                     .filter(isNotWithdrawn)
                     .filter(isNotBulkSuspension)
                     .flatMap(_ => _.publicationsImpacted),
-                  renewalDateMoment
+                  anniversaryDateMoment
                 );
 
                 return (
@@ -209,7 +209,7 @@ export class HolidayDateChooser extends React.Component<
                       {this.innerContent(
                         holidayStopsResponse,
                         existingHolidayStopToAmendId,
-                        renewalDateMoment,
+                        anniversaryDateMoment,
                         combinedIssuesImpactedPerYear,
                         allIssuesImpactedPerYear,
                         productDetail
