@@ -1,19 +1,11 @@
 import { css } from "@emotion/core";
 import { from } from "@guardian/src-foundations/mq";
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import { conf } from "../../../server/config";
 import palette from "../../colours";
 import { isInUSA as isUserInUSA } from "../../geolocation";
 import { headline } from "../../styles/fonts";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { footerLinks } from "./footerlinks";
-
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
 
 const TODAY = new Date();
 
@@ -221,7 +213,7 @@ export const Footer = () => {
               <div css={emailSignUpStyles}>
                 <iframe
                   title="Guardian Email Sign-up Form"
-                  src={`https://profile.${domain}/email/form/footer/today-uk`}
+                  src={`https://www.theguardian.com/email/form/footer/today-uk`}
                   scrolling="no"
                   seamless={false}
                   frameBorder="0"
