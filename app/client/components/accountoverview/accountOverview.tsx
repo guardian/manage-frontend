@@ -5,7 +5,6 @@ import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import {
   CancelledProductDetail,
-  isCancelledProduct,
   isProduct,
   MembersDataApiItem,
   ProductDetail,
@@ -27,12 +26,6 @@ import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
 import { SupportTheGuardianSection } from "./supportTheGuardianSection";
 
-type MMACategoryToProduct = {
-  [mmaCategory in GroupedProductTypeKeys]: Array<
-    ProductDetail | CancelledProductDetail
-  >;
-};
-
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
   MembersDataApiItem[],
   CancelledProductDetail[]
@@ -40,26 +33,20 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
   const allActiveProductDetails = mdaResponse
     .filter(isProduct)
     .sort(sortByJoinDate);
+
   const allCancelledProductDetails = cancelledProductsResponse.sort(
     (a: CancelledProductDetail, b: CancelledProductDetail) =>
       b.subscription.start.localeCompare(a.subscription.start)
   );
 
-  const allProducts: Array<ProductDetail | CancelledProductDetail> = [
+  const productCategories = [
     ...allActiveProductDetails,
     ...allCancelledProductDetails
-  ];
-
-  const mmaCategoryToProductDetails = allProducts.reduce(
-    (accumulator, product) => ({
-      ...accumulator,
-      [product.mmaCategory]: [
-        ...(accumulator[product.mmaCategory] || []),
-        product
-      ]
-    }),
-    {} as MMACategoryToProduct
-  );
+  ]
+    .map(
+      (product: ProductDetail | CancelledProductDetail) => product.mmaCategory
+    )
+    .filter((value, index, self) => self.indexOf(value) === index);
 
   if (allActiveProductDetails.length === 0) {
     return <EmptyAccountOverview />;
@@ -84,50 +71,46 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
       <PaymentFailureAlertIfApplicable
         productDetail={maybeFirstPaymentFailure}
       />
+      {productCategories.map(category => {
+        const groupedProductType =
+          GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
+        const activeProductsInCategory = allActiveProductDetails.filter(
+          activeProduct => activeProduct.mmaCategory === category
+        );
+        const cancelledProductsInCategory = allCancelledProductDetails.filter(
+          activeProduct => activeProduct.mmaCategory === category
+        );
 
-      {Object.entries(mmaCategoryToProductDetails).map(
-        ([mmaCategory, products]) => {
-          const groupedProductType =
-            GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
-          return (
-            products.length > 0 && (
-              <React.Fragment key={mmaCategory}>
-                <h2 css={subHeadingCss}>
-                  My {groupedProductType.groupFriendlyName}
-                </h2>
-                {products.map(product => {
-                  return isCancelledProduct(product) ? (
-                    <AccountOverviewCancelledCard
-                      key={product.subscription.subscriptionId}
-                      product={product as CancelledProductDetail}
-                    />
-                  ) : (
-                    <AccountOverviewCard
-                      key={product.subscription.subscriptionId}
-                      productDetail={product as ProductDetail}
-                    />
-                  );
-                })}
-                {(groupedProductType.groupFriendlyName === "membership" ||
-                  groupedProductType.groupFriendlyName === "contribution") &&
-                  products.some(product => {
-                    if (isCancelledProduct(product)) {
-                      return true;
-                    } else {
-                      return isCancelled(
-                        (product as ProductDetail).subscription
-                      );
-                    }
-                  }) && (
-                    <SupportTheGuardianSection
-                      {...groupedProductType.supportTheGuardianSectionProps}
-                    />
-                  )}
-              </React.Fragment>
-            )
-          );
-        }
-      )}
+        return (
+          <React.Fragment key={category}>
+            <h2 css={subHeadingCss}>
+              My {groupedProductType.groupFriendlyName}
+            </h2>
+            {activeProductsInCategory.map(productDetail => (
+              <AccountOverviewCard
+                key={productDetail.subscription.subscriptionId}
+                productDetail={productDetail}
+              />
+            ))}
+            {cancelledProductsInCategory.map(cancelledProductDetail => (
+              <AccountOverviewCancelledCard
+                key={cancelledProductDetail.subscription.subscriptionId}
+                product={cancelledProductDetail}
+              />
+            ))}
+            {(groupedProductType.groupFriendlyName === "membership" ||
+              groupedProductType.groupFriendlyName === "contribution") &&
+              (cancelledProductsInCategory.length > 0 ||
+                activeProductsInCategory.some(productDetail =>
+                  isCancelled((productDetail as ProductDetail).subscription)
+                )) && (
+                <SupportTheGuardianSection
+                  {...groupedProductType.supportTheGuardianSectionProps}
+                />
+              )}
+          </React.Fragment>
+        );
+      })}
     </>
   );
 };
