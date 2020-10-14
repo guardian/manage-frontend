@@ -25,12 +25,12 @@ import {
 } from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import {
+  CancelledProductDetail,
   isGift,
   ProductDetail,
   Subscription,
   SubscriptionPlan,
-  SubscriptionWithDeliveryAddress,
-  CancelledProductDetail
+  SubscriptionWithDeliveryAddress
 } from "./productResponse";
 
 type ProductFriendlyName =
