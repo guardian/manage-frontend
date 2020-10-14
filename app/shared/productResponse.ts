@@ -63,6 +63,7 @@ export interface CancelledProductDetail {
   mmaCategory: GroupedProductTypeKeys;
   tier: string;
   joinDate: string;
+  isCancelledAndEnded: string;
   subscription: CancelledSubscription;
 }
 
@@ -74,7 +75,7 @@ export function isProduct(
 
 export const isCancelledProduct = (
   data: CancelledProductDetail | ProductDetail | undefined
-) => !!data && !data.hasOwnProperty("joinDate");
+) => !!data && data.hasOwnProperty("isCancelledAndEnded");
 
 export interface Card extends CardProps {
   stripePublicKeyForUpdate: string;
