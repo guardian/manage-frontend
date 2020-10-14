@@ -818,7 +818,7 @@ exports[`Main renders something 1`] = `
                 onLoad={[Function]}
                 scrolling="no"
                 seamless={false}
-                src="https://profile.thegulocal.com/email/form/footer/today-uk"
+                src="https://www.theguardian.com/email/form/footer/today-uk"
                 title="Guardian Email Sign-up Form"
               />
             </div>
