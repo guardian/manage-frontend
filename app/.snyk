@@ -28,16 +28,6 @@ ignore:
     - node-pre-gyp > rc > minimist:
         reason: cannot be upgraded
         expires: '2020-10-17T17:00:51.079Z'
-  SNYK-JS-NODEFETCH-674311:
-    - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
-        reason: Can be upgraded but will require code changes
-        expires: '2020-10-11T22:24:44.022Z'
-    - react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
-        reason: Cannot be upgraded; repo seems inactive
-        expires: '2020-10-11T22:24:44.022Z'
-    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
-        reason: Cannot be upgraded; repo seems inactive
-        expires: '2020-10-11T22:24:44.022Z'
   SNYK-JS-UAPARSERJS-610226:
     - formik > create-react-context > fbjs > ua-parser-js:
         reason: No upgrade available
@@ -48,6 +38,16 @@ ignore:
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
         reason: No upgrade available
         expires: '2020-10-17T17:00:51.079Z'
+  SNYK-JS-NODEFETCH-674311:
+    - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
+        reason: fix in seperate pr
+        expires: '2020-11-13T10:41:08.711Z'
+    - react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
+        reason: no fix available
+        expires: '2020-11-13T10:41:08.711Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
+        reason: no fix available
+        expires: '2020-11-13T10:41:08.711Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
