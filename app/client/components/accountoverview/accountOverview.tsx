@@ -1,12 +1,13 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
-import { headline, textSans } from "@guardian/src-foundations/typography";
+import { headline } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import {
+  CancelledProductDetail,
+  isCancelledProduct,
   isProduct,
   MembersDataApiItem,
-  MembersDatApiAsyncLoader,
   ProductDetail,
   sortByJoinDate
 } from "../../../shared/productResponse";
@@ -16,40 +17,57 @@ import {
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
 import { maxWidth } from "../../styles/breakpoints";
+import AsyncLoader from "../asyncLoader";
 import { isCancelled } from "../cancel/cancellationSummary";
 import { NAV_LINKS } from "../nav/navConfig";
 import { PageContainer } from "../page";
 import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertIfApplicable";
-import {
-  SupportTheGuardianButton,
-  SupportTheGuardianButtonProps
-} from "../supportTheGuardianButton";
+import { AccountOverviewCancelledCard } from "./accountOverviewCancelledCard";
 import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
+import { SupportTheGuardianSection } from "./supportTheGuardianSection";
 
-type MMACategoryToProductDetails = {
-  [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
+type MMACategoryToProduct = {
+  [mmaCategory in GroupedProductTypeKeys]: Array<
+    ProductDetail | CancelledProductDetail
+  >;
 };
 
-const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
-  const allProductDetails = apiResponse.filter(isProduct).sort(sortByJoinDate);
-
-  const mmaCategoryToProductDetails = allProductDetails.reduce(
-    (accumulator, productDetail) => ({
-      ...accumulator,
-      [productDetail.mmaCategory]: [
-        ...(accumulator[productDetail.mmaCategory] || []),
-        productDetail
-      ]
-    }),
-    {} as MMACategoryToProductDetails
+const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
+  MembersDataApiItem[],
+  CancelledProductDetail[]
+]) => {
+  const allActiveProductDetails = mdaResponse
+    .filter(isProduct)
+    .sort(sortByJoinDate);
+  const allCancelledProductDetails = cancelledProductsResponse.sort(
+    (a: CancelledProductDetail, b: CancelledProductDetail) =>
+      b.subscription.start.localeCompare(a.subscription.start)
   );
 
-  if (allProductDetails.length === 0) {
+  const allProducts: Array<ProductDetail | CancelledProductDetail> = [
+    ...allActiveProductDetails,
+    ...allCancelledProductDetails
+  ];
+
+  const mmaCategoryToProductDetails = allProducts.reduce(
+    (accumulator, product) => ({
+      ...accumulator,
+      [product.mmaCategory]: [
+        ...(accumulator[product.mmaCategory] || []),
+        product
+      ]
+    }),
+    {} as MMACategoryToProduct
+  );
+
+  if (allActiveProductDetails.length === 0) {
     return <EmptyAccountOverview />;
   }
 
-  const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
+  const maybeFirstPaymentFailure = allActiveProductDetails.find(
+    _ => _.alertText
+  );
 
   const subHeadingCss = css`
     margin: ${space[12]}px 0 ${space[6]}px;
@@ -68,28 +86,43 @@ const AccountOverviewRenderer = (apiResponse: MembersDataApiItem[]) => {
       />
 
       {Object.entries(mmaCategoryToProductDetails).map(
-        ([mmaCategory, productDetails]) => {
+        ([mmaCategory, products]) => {
           const groupedProductType =
             GROUPED_PRODUCT_TYPES[mmaCategory as GroupedProductTypeKeys];
           return (
-            productDetails.length > 0 && (
+            products.length > 0 && (
               <React.Fragment key={mmaCategory}>
                 <h2 css={subHeadingCss}>
                   My {groupedProductType.groupFriendlyName}
                 </h2>
-                {productDetails.map(productDetail => (
-                  <AccountOverviewCard
-                    key={productDetail.subscription.subscriptionId}
-                    productDetail={productDetail}
-                  />
-                ))}
-                {productDetails.some(productDetail =>
-                  isCancelled(productDetail.subscription)
-                ) && (
-                  <SupportTheGuardianSection
-                    {...groupedProductType.supportTheGuardianSectionProps}
-                  />
-                )}
+                {products.map(product => {
+                  return isCancelledProduct(product) ? (
+                    <AccountOverviewCancelledCard
+                      key={product.subscription.subscriptionId}
+                      product={product as CancelledProductDetail}
+                    />
+                  ) : (
+                    <AccountOverviewCard
+                      key={product.subscription.subscriptionId}
+                      productDetail={product as ProductDetail}
+                    />
+                  );
+                })}
+                {(groupedProductType.groupFriendlyName === "membership" ||
+                  groupedProductType.groupFriendlyName === "contribution") &&
+                  products.some(product => {
+                    if (isCancelledProduct(product)) {
+                      return true;
+                    } else {
+                      return isCancelled(
+                        (product as ProductDetail).subscription
+                      );
+                    }
+                  }) && (
+                    <SupportTheGuardianSection
+                      {...groupedProductType.supportTheGuardianSectionProps}
+                    />
+                  )}
               </React.Fragment>
             )
           );
@@ -105,8 +138,8 @@ export const AccountOverview = (_: RouteComponentProps) => {
       selectedNavItem={NAV_LINKS.accountOverview}
       pageTitle="Account overview"
     >
-      <MembersDatApiAsyncLoader
-        fetch={allProductsDetailFetcher}
+      <AccountOverviewAsyncLoader
+        fetch={AccountOverviewFetcher}
         render={AccountOverviewRenderer}
         loadingMessage={`Loading your account details...`}
       />
@@ -114,26 +147,9 @@ export const AccountOverview = (_: RouteComponentProps) => {
   );
 };
 
-export interface SupportTheGuardianSectionProps
-  extends SupportTheGuardianButtonProps {
-  message: string;
-}
-const SupportTheGuardianSection = (props: SupportTheGuardianSectionProps) => (
-  <>
-    <p
-      css={css`
-        ${textSans.medium()}
-        margin-top: ${space[6]}px;
-      `}
-    >
-      {props.message}
-    </p>
-    <SupportTheGuardianButton
-      fontWeight="bold"
-      textColour={palette.neutral[100]}
-      colour={palette.brand[400]}
-      notPrimary
-      {...props}
-    />
-  </>
-);
+class AccountOverviewAsyncLoader extends AsyncLoader<
+  [MembersDataApiItem[], CancelledProductDetail[]]
+> {}
+
+const AccountOverviewFetcher = () =>
+  Promise.all([allProductsDetailFetcher(), fetch("/api/cancelled")]);

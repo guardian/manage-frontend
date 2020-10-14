@@ -207,4 +207,12 @@ router.get(
   )
 );
 
+router.get(
+  "/cancelled",
+  membersDataApiHandler(
+    "user-attributes/me/cancelled-subscriptions",
+    "MDA_CANCELLED_SUBSCRIPTIONS"
+  )
+);
+
 export default router;

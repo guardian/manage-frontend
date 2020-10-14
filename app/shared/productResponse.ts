@@ -59,11 +59,22 @@ export interface ProductDetail extends WithSubscription {
   selfServiceCancellation: SelfServiceCancellation;
 }
 
+export interface CancelledProductDetail {
+  mmaCategory: GroupedProductTypeKeys;
+  tier: string;
+  joinDate: string;
+  subscription: CancelledSubscription;
+}
+
 export function isProduct(
   data: MembersDataApiItem | undefined
 ): data is ProductDetail {
   return !!data && data.hasOwnProperty("tier");
 }
+
+export const isCancelledProduct = (
+  data: CancelledProductDetail | ProductDetail | undefined
+) => !!data && !data.hasOwnProperty("joinDate");
 
 export interface Card extends CardProps {
   stripePublicKeyForUpdate: string;
@@ -153,6 +164,15 @@ export interface Subscription {
   cancellationEffectiveDate?: string;
 }
 
+export interface CancelledSubscription {
+  subscriptionId: string;
+  cancellationEffectiveDate: string;
+  start: string;
+  end: string;
+  readerType: ReaderType;
+  accountId: string;
+}
+
 export interface SubscriptionWithDeliveryAddress extends Subscription {
   deliveryAddress: DeliveryAddress;
 }
@@ -161,7 +181,7 @@ export interface WithSubscription {
   subscription: Subscription;
 }
 
-export const isGift = (subscription: Subscription) =>
+export const isGift = (subscription: { readerType: string }) =>
   subscription.readerType === "Gift";
 
 export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (

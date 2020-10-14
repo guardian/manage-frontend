@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { SupportTheGuardianSectionProps } from "../client/components/accountoverview/accountOverview";
+import { SupportTheGuardianSectionProps } from "../client/components/accountoverview/supportTheGuardianSection";
 import {
   CancellationReason,
   OptionalCancellationReasonId
@@ -29,7 +29,8 @@ import {
   ProductDetail,
   Subscription,
   SubscriptionPlan,
-  SubscriptionWithDeliveryAddress
+  SubscriptionWithDeliveryAddress,
+  CancelledProductDetail
 } from "./productResponse";
 
 type ProductFriendlyName =
@@ -168,7 +169,9 @@ export interface ProductType {
 }
 
 export interface GroupedProductType extends ProductType {
-  mapGroupedToSpecific: (productDetail: ProductDetail) => ProductType;
+  mapGroupedToSpecific: (
+    productDetail: ProductDetail | CancelledProductDetail
+  ) => ProductType;
   groupFriendlyName: string;
   supportTheGuardianSectionProps: SupportTheGuardianSectionProps;
 }
@@ -555,7 +558,9 @@ export const GROUPED_PRODUCT_TYPES: {
     groupFriendlyName: "subscriptions",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
-    mapGroupedToSpecific: (productDetail: ProductDetail) => {
+    mapGroupedToSpecific: (
+      productDetail: ProductDetail | CancelledProductDetail
+    ) => {
       if (productDetail.tier === "Digital Pack") {
         return PRODUCT_TYPES.digipack;
       } else if (productDetail.tier === "Newspaper Delivery") {
