@@ -15,7 +15,10 @@ import {
 } from "../../shared/productTypes";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
+import { AccountOverview } from "./accountoverview/accountOverview";
+import { ManageProduct } from "./accountoverview/manageProduct";
 import { AnalyticsTracker } from "./analytics";
+import { Billing } from "./billing/billing";
 import { CancellationFlow } from "./cancel/cancellationFlow";
 import { CancellationReason } from "./cancel/cancellationReason";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
@@ -24,16 +27,13 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
+import { ContactUsPage } from "./contactUs/contactUs";
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
+import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
-
-import { AccountOverview } from "./accountoverview/accountOverview";
-import { ManageProduct } from "./accountoverview/manageProduct";
-import { Billing } from "./billing/billing";
-import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
@@ -172,12 +172,11 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Settings path="/account-settings" />
 
       <Help path="/help" />
-      {/*
-      <ContactUs path="/contact-us-form" />
-      <ContactUs path="/contact-us-form/:urlTopicId" />
-      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId" />
-      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-      */}
+
+      <ContactUsPage path="/contact-us" />
+      <ContactUsPage path="/contact-us/:topicId" />
+      <ContactUsPage path="/contact-us/:topicId/:subTopicId" />
+      <ContactUsPage path="/contact-us/:topicId/:subTopicId/:subSubTopicId" />
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
