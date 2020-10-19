@@ -13,7 +13,7 @@ interface MainProps extends WithOptionalServerPathWithQueryParams {
 }
 
 export const Main = ({ children }: MainProps) => {
-  const tmpIsSignedIn =
+  const isSignedIn =
     typeof window !== "undefined" && !!window.guardian?.identityDetails?.userId;
   return (
     <div
@@ -23,23 +23,23 @@ export const Main = ({ children }: MainProps) => {
         height: "100vh",
         alignItems: "stretch",
         width: "100%",
-        color: palette.neutral["2"],
+        color: palette.neutral["2"]
       }}
     >
-      <Header isSignedOut={!tmpIsSignedIn} />
+      <Header isSignedOut={!isSignedIn} />
       <div
         css={{
           flexGrow: 1,
           flexShrink: 0,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
       >
         <main
           css={{
             fontFamily: serif,
             flexGrow: 1,
-            flexShrink: 0,
+            flexShrink: 0
           }}
         >
           {children}

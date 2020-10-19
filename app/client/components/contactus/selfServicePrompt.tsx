@@ -38,25 +38,15 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => (
       <InfoIconDark fillColor={palette.brand[500]} />
     </i>
     {props.copy}
-    <a
-      css={css`
-        display: block;
-        margin-top: ${space[5]}px;
-        text-decoration: underline;
-        font-weight: normal;
-        color: ${palette.brand[500]};
-      `}
-      href={props.linkHref}
-    >
-      {props.linkCopy} &gt;
-    </a>
     <Link
       to={props.linkHref}
-      onClick={() => trackEvent({
-        eventCategory: "selfservice_link",
-        eventAction: "click",
-        eventLabel: props.topicReferer
-      })}
+      onClick={() =>
+        trackEvent({
+          eventCategory: "selfservice_link",
+          eventAction: "click",
+          eventLabel: props.topicReferer
+        })
+      }
       css={css`
         display: block;
         margin-top: ${space[5]}px;

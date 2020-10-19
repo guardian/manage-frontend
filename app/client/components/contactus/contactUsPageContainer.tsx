@@ -74,7 +74,7 @@ export const ContactUsPageContainer = (props: ContactUsPageContainerProps) => (
           },
 
           [minWidth.wide]: {
-            ...gridItemPlacement(6, 11)
+            ...gridItemPlacement(6, 10)
           }
         }}
       >

@@ -8,11 +8,18 @@ import { Input } from "../input";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface ContactUsFormProps {
-  submitCallback: (success: boolean) => void;
+  submitCallback: (payload: FormPayload) => void;
   title: string;
   subjectLine: string;
   editableSubjectLine?: boolean;
   additionalCss?: SerializedStyles;
+}
+
+interface FormPayload {
+  fullName: string;
+  email: string;
+  subjectLine: string;
+  details: string;
 }
 
 interface FormElValidationObject {
@@ -29,9 +36,13 @@ interface FormValidationState {
 }
 
 export const ContactUsForm = (props: ContactUsFormProps) => {
-  const [fullName, setFullName] = useState<string>("");
-  const [emailAddress, setEmailAddress] = useState<string>("");
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
+  const [fullName, setFullName] = useState<string>(
+    window.guardian?.identityDetails?.displayName || ""
+  );
+  const [email, setEmail] = useState<string>(
+    window.guardian?.identityDetails?.email || ""
+  );
   const [details, setDetails] = useState<string>("");
   const [
     instructionsRemainingCharacters,
@@ -40,7 +51,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
-  const [formValidationSate, setFormValidationState] = useState<
+  const [formValidationState, setFormValidationState] = useState<
     FormValidationState
   >({
     inValidationMode: false,
@@ -64,20 +75,20 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   const validateForm = () => {
     const isFullNameValid = !!fullName.length;
-    const isEmailValid = !!emailAddress.length;
+    const isEmailValid = !!email.length;
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
     const isFormInValidState =
       isFullNameValid && isEmailValid && isDetailsValid;
     setFormValidationState({
       inValidationMode: !isFormInValidState,
-      fullName: { ...formValidationSate.fullName, isValid: isFullNameValid },
-      email: { ...formValidationSate.fullName, isValid: isEmailValid },
+      fullName: { ...formValidationState.fullName, isValid: isFullNameValid },
+      email: { ...formValidationState.fullName, isValid: isEmailValid },
       subjectLine: {
-        ...formValidationSate.subjectLine,
+        ...formValidationState.subjectLine,
         isValid: isSubjectLineValid
       },
-      details: { ...formValidationSate.fullName, isValid: isDetailsValid }
+      details: { ...formValidationState.fullName, isValid: isDetailsValid }
     });
     return isFormInValidState;
   };
@@ -86,8 +97,14 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     <form
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
-        const isFormValid = validateForm();
-        props.submitCallback(isFormValid);
+        if (validateForm()) {
+          props.submitCallback({
+            fullName,
+            subjectLine,
+            email,
+            details
+          });
+        }
       }}
       css={css`
         ${props.additionalCss}
@@ -95,7 +112,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     >
       <fieldset
         onChange={() => {
-          if (formValidationSate.inValidationMode) {
+          if (formValidationState.inValidationMode) {
             validateForm();
           }
         }}
@@ -148,26 +165,26 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             margin: ${space[5]}px;
           `}
           inErrorState={
-            formValidationSate.inValidationMode &&
-            !formValidationSate.fullName.isValid
+            formValidationState.inValidationMode &&
+            !formValidationState.fullName.isValid
           }
-          errorMessage={formValidationSate.fullName.message}
+          errorMessage={formValidationState.fullName.message}
         />
         <Input
           label="Email address"
           secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
           type="email"
           width={50}
-          changeSetState={setEmailAddress}
-          value={emailAddress}
+          changeSetState={setEmail}
+          value={email}
           additionalCss={css`
             margin: ${space[5]}px;
           `}
           inErrorState={
-            formValidationSate.inValidationMode &&
-            !formValidationSate.email.isValid
+            formValidationState.inValidationMode &&
+            !formValidationState.email.isValid
           }
-          errorMessage={formValidationSate.email.message}
+          errorMessage={formValidationState.email.message}
         />
         {props.editableSubjectLine ? (
           <Input
@@ -180,10 +197,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               margin: ${space[5]}px;
             `}
             inErrorState={
-              formValidationSate.inValidationMode &&
-              !formValidationSate.subjectLine.isValid
+              formValidationState.inValidationMode &&
+              !formValidationState.subjectLine.isValid
             }
-            errorMessage={formValidationSate.subjectLine.message}
+            errorMessage={formValidationState.subjectLine.message}
           />
         ) : (
           <label
@@ -202,7 +219,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
                 font-weight: normal;
               `}
             >
-              {props.subjectLine}
+              {subjectLine}
             </span>
           </label>
         )}
@@ -216,8 +233,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           `}
         >
           Problem details
-          {formValidationSate.inValidationMode &&
-            !formValidationSate.details.isValid && (
+          {formValidationState.inValidationMode &&
+            !formValidationState.details.isValid && (
               <span
                 css={css`
                   display: block;
@@ -232,7 +249,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
                 >
                   <ErrorIcon />
                 </i>
-                {formValidationSate.details.message}
+                {formValidationState.details.message}
               </span>
             )}
           <textarea
@@ -247,8 +264,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             }}
             css={css`
               width: 100%;
-              border: ${formValidationSate.inValidationMode &&
-              !formValidationSate.details.isValid
+              border: ${formValidationState.inValidationMode &&
+              !formValidationState.details.isValid
                 ? `4px solid ${palette.news[400]}`
                 : `2px solid ${palette.neutral[60]}`};
               padding: 12px;

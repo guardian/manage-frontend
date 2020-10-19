@@ -3,7 +3,7 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { SubTopic } from "./contactUsConfig";
 
@@ -19,14 +19,6 @@ interface SubTopicFormProps {
 }
 
 export const SubTopicForm = (props: SubTopicFormProps) => {
-  const [subTopicChoice, setSubTopicChoice] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (subTopicChoice) {
-      props.updateCallback(subTopicChoice);
-    }
-  }, [subTopicChoice]);
-
   return (
     <form
       onSubmit={(event: FormEvent) => {
@@ -40,7 +32,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
       <fieldset
         onChange={(event: FormEvent<HTMLFieldSetElement>) => {
           const target: HTMLInputElement = event.target as HTMLInputElement;
-          setSubTopicChoice(target.value);
+          props.updateCallback(target.value);
         }}
         css={css`
           border: 1px solid ${palette.neutral["86"]};
@@ -94,9 +86,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
                   value={subTopic.id}
                   label={subTopic.name}
                   checked={
-                    subTopicChoice === subTopic.id ||
-                    (!!props.preSelectedId &&
-                      subTopic.id === props.preSelectedId)
+                    !!props.preSelectedId && subTopic.id === props.preSelectedId
                   }
                   css={css`
                     vertical-align: top;
