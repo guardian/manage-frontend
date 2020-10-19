@@ -2,8 +2,8 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
+import { Topic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
-import { Topic } from "./contactUsConfig";
 import { TopicIcon } from "./topicIcon";
 
 interface TopicButtonProps extends Topic {
