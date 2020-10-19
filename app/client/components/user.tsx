@@ -33,7 +33,6 @@ import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecords
 import { AccountOverview } from "./accountoverview/accountOverview";
 import { ManageProduct } from "./accountoverview/manageProduct";
 import { Billing } from "./billing/billing";
-import { ContactUs } from "./contactus/contactus";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
 import { Help } from "./help";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
@@ -173,11 +172,12 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Settings path="/account-settings" />
 
       <Help path="/help" />
-
+      {/*
       <ContactUs path="/contact-us-form" />
       <ContactUs path="/contact-us-form/:topicId" />
       <ContactUs path="/contact-us-form/:topicId/:subTopicId" />
       <ContactUs path="/contact-us-form/:topicId/:subTopicId/:subSubTopicId" />
+      */}
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
