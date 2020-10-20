@@ -21,22 +21,22 @@ interface ContactUsFormStateSnapshot {
 }
 
 interface ContactUsProps extends RouteComponentProps {
-  topicId?: string;
-  subTopicId?: string;
-  subSubTopicId?: string;
+  urlTopicId?: string;
+  urlSubTopicId?: string;
+  urlSubSubTopicId?: string;
 }
 
 export const ContactUs = (props: ContactUsProps) => {
   const validDeepLinkTopic = contactUsConfig.find(
-    topic => topic.id === props.topicId
+    topic => topic.id === props.urlTopicId
   );
 
   const validDeepLinkSubTopic = validDeepLinkTopic?.subtopics?.find(
-    subTopic => subTopic.id === props.subTopicId
+    subTopic => subTopic.id === props.urlSubTopicId
   );
 
   const validDeepLinkSubSubTopic = validDeepLinkSubTopic?.subsubtopics?.find(
-    subSubTopic => subSubTopic.id === props.subSubTopicId
+    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
 
   const initialTopicSelection: string =

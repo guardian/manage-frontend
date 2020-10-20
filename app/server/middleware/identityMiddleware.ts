@@ -5,7 +5,7 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../shared/identity";
-import { allowPathThroughWithoutSignin } from "../../shared/pathsToAllowThroughWithoutSignin";
+import { requiresSignin } from "../../shared/requiresSignin";
 import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
 import { idapiConfigPromise } from "../idapiConfig";
@@ -182,7 +182,7 @@ export const withIdentity: (
             // tslint:disable-next-line:no-object-mutation
             Object.assign(res.locals, { identity: redirectResponseBody });
 
-            if (allowPathThroughWithoutSignin(req.path)) {
+            if (!requiresSignin(req.path)) {
               next();
             } else if (redirectResponseBody.redirect) {
               redirectOrCustomStatusCode(

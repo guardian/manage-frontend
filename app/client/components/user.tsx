@@ -174,9 +174,9 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Help path="/help" />
       {/*
       <ContactUs path="/contact-us-form" />
-      <ContactUs path="/contact-us-form/:topicId" />
-      <ContactUs path="/contact-us-form/:topicId/:subTopicId" />
-      <ContactUs path="/contact-us-form/:topicId/:subTopicId/:subSubTopicId" />
+      <ContactUs path="/contact-us-form/:urlTopicId" />
+      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId" />
+      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
       */}
 
       {/* otherwise redirect to root instead of having a "not found page" */}

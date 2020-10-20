@@ -22,17 +22,17 @@ interface FormPayload {
   details: string;
 }
 
-interface FormElValidationObject {
+interface FormElemValidationObject {
   isValid: boolean;
   message: string;
 }
 
 interface FormValidationState {
   inValidationMode: boolean;
-  fullName: FormElValidationObject;
-  email: FormElValidationObject;
-  subjectLine: FormElValidationObject;
-  details: FormElValidationObject;
+  fullName: FormElemValidationObject;
+  email: FormElemValidationObject;
+  subjectLine: FormElemValidationObject;
+  details: FormElemValidationObject;
 }
 
 export const ContactUsForm = (props: ContactUsFormProps) => {
@@ -75,11 +75,12 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   const validateForm = () => {
     const isFullNameValid = !!fullName.length;
-    const isEmailValid = !!email.length;
+    const emailSplit = email.split("@");
+    const isEmailValid = emailSplit.length === 2 && emailSplit[1].includes(".");
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
     const isFormInValidState =
-      isFullNameValid && isEmailValid && isDetailsValid;
+      isFullNameValid && isEmailValid && isSubjectLineValid && isDetailsValid;
     setFormValidationState({
       inValidationMode: !isFormInValidState,
       fullName: { ...formValidationState.fullName, isValid: isFullNameValid },

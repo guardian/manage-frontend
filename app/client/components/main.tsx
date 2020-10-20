@@ -12,9 +12,10 @@ interface MainProps extends WithOptionalServerPathWithQueryParams {
   children: any;
 }
 
+export const isSignedIn =
+  typeof window !== "undefined" && !!window.guardian?.identityDetails?.userId;
+
 export const Main = ({ children }: MainProps) => {
-  const isSignedIn =
-    typeof window !== "undefined" && !!window.guardian?.identityDetails?.userId;
   return (
     <div
       css={{
