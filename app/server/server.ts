@@ -50,7 +50,6 @@ server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffe
 server.use(routes.core);
 server.use("/profile/", routes.profile);
 server.use("/api/", routes.api);
-server.use("/publicapi/", routes.publicApi);
 server.use("/idapi", routes.idapi);
 server.use(routes.productsProvider("/api/"));
 

@@ -403,7 +403,7 @@ export const ContactUsPage = (props: ContactUsProps) => (
     <ContactUsPageContainer>
       <ContactUsFormAsyncLoader
         render={renderContactUs(props)}
-        fetch={() => fetch("/publicapi/contact-us-config/")}
+        fetch={() => fetch("/api/contact-us-config/")}
         loadingMessage={"Loading form..."}
       />
     </ContactUsPageContainer>
