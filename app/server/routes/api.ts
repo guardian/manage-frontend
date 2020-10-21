@@ -18,6 +18,7 @@ import {
   straightThroughBodyHandler
 } from "../apiProxy";
 import { conf } from "../config";
+import { contactUsConfig } from "../contactUsConfig";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
@@ -214,5 +215,7 @@ router.get(
     "MDA_CANCELLED_SUBSCRIPTIONS"
   )
 );
+
+router.get("/contact-us-config", (_, res) => res.json(contactUsConfig));
 
 export default router;
