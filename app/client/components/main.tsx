@@ -4,37 +4,49 @@ import { serif } from "../styles/fonts";
 import { Footer } from "./footer/footer";
 import Header from "./header";
 
-export class Main extends React.PureComponent<{}> {
-  public render(): React.ReactNode {
-    const children = this.props.children;
-    return (
+export interface WithOptionalServerPathWithQueryParams {
+  serverPathWithQueryParams?: string;
+}
+
+interface MainProps extends WithOptionalServerPathWithQueryParams {
+  children: any;
+}
+
+export const isSignedIn =
+  typeof window !== "undefined" && !!window.guardian?.identityDetails?.userId;
+
+export const Main = ({ children }: MainProps) => {
+  return (
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        alignItems: "stretch",
+        width: "100%",
+        color: palette.neutral["2"]
+      }}
+    >
+      <Header isSignedOut={!isSignedIn} />
       <div
         css={{
+          flexGrow: 1,
+          flexShrink: 0,
           display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          alignItems: "stretch",
-          width: "100%",
-          color: palette.neutral["2"]
+          flexDirection: "column"
         }}
       >
-        <Header />
-        <div
+        <main
           css={{
+            fontFamily: serif,
             flexGrow: 1,
             flexShrink: 0
           }}
         >
-          <main
-            css={{
-              fontFamily: serif
-            }}
-          >
-            {children}
-          </main>
-        </div>
-        <Footer />
+          {children}
+        </main>
       </div>
-    );
-  }
-}
+      <Footer />
+    </div>
+  );
+};

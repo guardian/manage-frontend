@@ -35,6 +35,7 @@ import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { InfoSection } from "../../infoSection";
+import { Input } from "../../input";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
 import {
@@ -51,7 +52,6 @@ import {
   SubscriptionEffectiveData
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
-import { Input } from "./input";
 import { Select } from "./select";
 
 interface ProductDetailAndProductType {

@@ -42,17 +42,17 @@ import { HolidaysOverview } from "./holiday/holidaysOverview";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Settings } from "./identity/Settings";
-import { Main } from "./main";
+import { Main, WithOptionalServerPathWithQueryParams } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
 
-const User = () => (
-  <Main>
+const User = (props: WithOptionalServerPathWithQueryParams) => (
+  <Main {...props}>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
-    <Router>
+    <Router css={{ height: "100%" }}>
       <AccountOverview path="/" />
       <Billing path="/billing" />
 
@@ -172,6 +172,12 @@ const User = () => (
       <Settings path="/account-settings" />
 
       <Help path="/help" />
+      {/*
+      <ContactUs path="/contact-us-form" />
+      <ContactUs path="/contact-us-form/:urlTopicId" />
+      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId" />
+      <ContactUs path="/contact-us-form/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
+      */}
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
@@ -183,9 +189,9 @@ const User = () => (
   </Main>
 );
 
-export const ServerUser = (url: string) => (
-  <ServerLocation url={url}>
-    <User />
+export const ServerUser = (serverPathWithQueryParams: string) => (
+  <ServerLocation url={serverPathWithQueryParams}>
+    <User serverPathWithQueryParams={serverPathWithQueryParams} />
   </ServerLocation>
 );
 

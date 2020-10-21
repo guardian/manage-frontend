@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/core";
 import { palette } from "@guardian/src-foundations";
 import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useRef } from "react";
-import { ErrorIcon } from "../../svgs/errorIcon";
+import { ErrorIcon } from "./svgs/errorIcon";
 
 type setStateFunc = (value: string) => void;
 
@@ -12,6 +12,7 @@ interface InputProps {
   step?: string;
   min?: string;
   label: string;
+  secondaryLabel?: string;
   width: number;
   value: string | number;
   optional?: boolean;
@@ -23,6 +24,7 @@ interface InputProps {
   inErrorState?: boolean;
   errorMessage?: string;
   prefixValue?: string;
+  additionalCss?: SerializedStyles;
 }
 
 export const Input = (props: InputProps) => {
@@ -41,6 +43,7 @@ export const Input = (props: InputProps) => {
         color: ${palette.neutral["7"]};
         ${textSans.medium()};
         font-weight: bold;
+        ${props.additionalCss}
       `}
     >
       {props.label}
@@ -54,6 +57,18 @@ export const Input = (props: InputProps) => {
         >
           {" "}
           optional
+        </span>
+      )}
+      {props.secondaryLabel && (
+        <span
+          css={css`
+            display: block;
+            font-weight: normal;
+            color: ${palette.neutral["46"]};
+            max-width: ${props.width}ch;
+          `}
+        >
+          {props.secondaryLabel}
         </span>
       )}
       {props.inErrorState && (
@@ -87,7 +102,7 @@ export const Input = (props: InputProps) => {
         )}
         <input
           type={props.type || "text"}
-          name={name}
+          name={props.name}
           id={props.id}
           step={props.step}
           min={props.min}
@@ -117,7 +132,6 @@ export const Input = (props: InputProps) => {
             box-sizing: border-box;
             padding-left: calc(${props.prefixValue.length}ch + 10px);
           `}
-        };
           &:focus {
             ${focusHalo};
           }

@@ -4,40 +4,40 @@ version: v1.14.1
 ignore:
   SNYK-JS-LODASH-590103:
     - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.078Z'
+        reason: No remediations available
+        expires: '2020-11-18T15:43:00.923Z'
     - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.078Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.923Z'
     - formik > lodash:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.078Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.923Z'
     - winston > async > lodash:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
     - yup > lodash:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
   SNYK-JS-MINIMIST-559764:
     - node-pre-gyp > mkdirp > minimist:
-        reason: cannot be upgraded
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
     - node-pre-gyp > tar > mkdirp > minimist:
-        reason: cannot be upgraded
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
     - node-pre-gyp > rc > minimist:
-        reason: cannot be upgraded
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
   SNYK-JS-UAPARSERJS-610226:
     - formik > create-react-context > fbjs > ua-parser-js:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.078Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
     - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.078Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
-        reason: No upgrade available
-        expires: '2020-10-17T17:00:51.079Z'
+        reason: No remediation available
+        expires: '2020-11-18T15:43:00.924Z'
   SNYK-JS-NODEFETCH-674311:
     - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
         reason: fix in seperate pr
