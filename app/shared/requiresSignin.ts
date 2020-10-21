@@ -1,23 +1,10 @@
-const publicPaths = [
-  "/contact-us-form",
-  "/contact-us-form/*",
-  "/contact-us-form/*/*",
-  "/contact-us-form/*/*/*"
-];
+import * as pathLib from "path";
+
+const publicPaths = ["/contact-us-form"];
 
 export const requiresSignin = (path: string) => {
-  const pathSplit = path.split("/");
+  const normalizedPath = pathLib.normalize(path);
   return !publicPaths.some(publicPath => {
-    if (path === publicPath) {
-      return true;
-    }
-    const publicPathSplit = publicPath.split("/");
-    if (publicPathSplit.length === pathSplit.length) {
-      const isGlobPublic = publicPathSplit.every(
-        (pathPart, index) => pathPart === pathSplit[index] || pathPart === "*"
-      );
-      return isGlobPublic;
-    }
-    return false;
+    return normalizedPath.startsWith(publicPath);
   });
 };
