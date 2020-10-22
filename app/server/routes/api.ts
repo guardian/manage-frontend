@@ -18,7 +18,7 @@ import {
   straightThroughBodyHandler
 } from "../apiProxy";
 import { conf } from "../config";
-import { contactUsConfig } from "../contactUsConfig";
+import { contactUsConfigHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
@@ -216,6 +216,6 @@ router.get(
   )
 );
 
-router.get("/contact-us-config", (_, res) => res.json(contactUsConfig));
+router.get("/contact-us-config", contactUsConfigHandler);
 
 export default router;
