@@ -19,7 +19,7 @@ class ContactUsFormAsyncLoader extends AsyncLoader<ContactUsConfigResponse> {}
 
 type ContactUsConfigResponse = Topic[];
 
-interface ContactUsFormStateSnapshot {
+interface ContactUsFormState {
   selectedTopic: string | undefined;
   selectedSubTopic: string | undefined;
   selectedSubSubTopic: string | undefined;
@@ -59,8 +59,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
     false
   );
 
-  const [contactUsFormStateSnapshot, setContactUsFormStateSnapshot] = useState<
-    ContactUsFormStateSnapshot
+  const [contactUsFormState, setContactUsFormState] = useState<
+    ContactUsFormState
   >({
     selectedTopic: initialTopicSelection,
     selectedSubTopic: validDeepLinkSubTopic?.id,
@@ -82,11 +82,11 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   ] = useState<boolean>(!validDeepLinkSubSubTopic);
 
   const setTopic = (newTopicId: string, hasComeFromSubmitButton: boolean) => {
-    setContactUsFormStateSnapshot({
+    setContactUsFormState({
       selectedTopic:
         hasComeFromSubmitButton || !requireTopicSubmitButton
           ? newTopicId
-          : contactUsFormStateSnapshot.selectedTopic,
+          : contactUsFormState.selectedTopic,
       selectedSubTopic: props.config.find(topic => topic.id === newTopicId)
         ?.subtopics?.[0].id,
       selectedSubSubTopic: undefined
@@ -96,8 +96,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   };
 
   const setSubTopic = (selectedSubTopic: string) => {
-    setContactUsFormStateSnapshot({
-      ...contactUsFormStateSnapshot,
+    setContactUsFormState({
+      ...contactUsFormState,
       selectedSubTopic,
       selectedSubSubTopic: undefined
     });
@@ -105,8 +105,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   };
 
   const setSubSubTopic = (selectedSubSubTopic: string) =>
-    setContactUsFormStateSnapshot({
-      ...contactUsFormStateSnapshot,
+    setContactUsFormState({
+      ...contactUsFormState,
       selectedSubSubTopic
     });
 
@@ -135,7 +135,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   };
 
   const subTopicSubmitCallback = () => {
-    if (!!contactUsFormStateSnapshot.selectedSubTopic) {
+    if (!!contactUsFormState.selectedSubTopic) {
       setRequireSubTopicSubmitButton(false);
     }
   };
@@ -151,38 +151,38 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   };
 
   const subSubTopicSubmitCallback = () => {
-    if (!!contactUsFormStateSnapshot.selectedSubSubTopic) {
+    if (!!contactUsFormState.selectedSubSubTopic) {
       setRequireSubSubTopicSubmitButton(false);
     }
   };
 
   const currentTopic = props.config.find(
-    topic => topic.id === contactUsFormStateSnapshot.selectedTopic
+    topic => topic.id === contactUsFormState.selectedTopic
   );
 
   const subTopics = currentTopic?.subtopics;
 
   const subSubTopics = subTopics?.find(
-    subTopic => subTopic.id === contactUsFormStateSnapshot.selectedSubTopic
+    subTopic => subTopic.id === contactUsFormState.selectedSubTopic
   )?.subsubtopics;
 
   const showSubTopics =
-    !!contactUsFormStateSnapshot.selectedTopic &&
+    !!contactUsFormState.selectedTopic &&
     !requireTopicSubmitButton &&
     !!subTopics;
 
   const showSubSubTopics =
-    !!contactUsFormStateSnapshot.selectedSubTopic &&
+    !!contactUsFormState.selectedSubTopic &&
     !requireSubTopicSubmitButton &&
     !!subSubTopics;
 
   const showForm =
-    (!!contactUsFormStateSnapshot.selectedSubSubTopic &&
+    (!!contactUsFormState.selectedSubSubTopic &&
       !requireSubSubTopicSubmitButton) ||
-    (!!contactUsFormStateSnapshot.selectedSubTopic &&
+    (!!contactUsFormState.selectedSubTopic &&
       !requireSubTopicSubmitButton &&
       !subSubTopics) ||
-    (!!contactUsFormStateSnapshot.selectedTopic &&
+    (!!contactUsFormState.selectedTopic &&
       !requireTopicSubmitButton &&
       !subTopics);
 
@@ -201,11 +201,10 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
 
   useEffect(() => {
     const selectedSubtopic = currentTopic?.subtopics?.find(
-      subTopic => subTopic.id === contactUsFormStateSnapshot.selectedSubTopic
+      subTopic => subTopic.id === contactUsFormState.selectedSubTopic
     );
     const selectedSubSubtopic = selectedSubtopic?.subsubtopics?.find(
-      subSubTopic =>
-        subSubTopic.id === contactUsFormStateSnapshot.selectedSubSubTopic
+      subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
     );
     setShowSelfServicePrompt(
       (!showSubTopics &&
@@ -238,7 +237,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
       setSubTopicsTitle(currentTopic.subTopicsTitle);
     }
   }, [
-    contactUsFormStateSnapshot,
+    contactUsFormState,
     requireTopicSubmitButton,
     requireSubTopicSubmitButton,
     requireSubSubTopicSubmitButton
@@ -304,9 +303,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                   {...topic}
                   id={topic.id}
                   updateCallback={topicSelectionCallback}
-                  isSelected={
-                    topic.id === contactUsFormStateSnapshot.selectedTopic
-                  }
+                  isSelected={topic.id === contactUsFormState.selectedTopic}
                   key={topicIndex}
                 />
               ))}
@@ -332,7 +329,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                 submitButonText="Continue to step 2"
                 showSubmitButton={requireSubTopicSubmitButton}
                 data={subTopics}
-                preSelectedId={contactUsFormStateSnapshot.selectedSubTopic}
+                preSelectedId={contactUsFormState.selectedSubTopic}
                 additionalCss={css`
                   margin-top: ${space[9]}px;
                 `}
@@ -346,7 +343,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                 submitButonText="Continue to step 3"
                 showSubmitButton={requireSubSubTopicSubmitButton}
                 data={subSubTopics}
-                preSelectedId={contactUsFormStateSnapshot.selectedSubSubTopic}
+                preSelectedId={contactUsFormState.selectedSubSubTopic}
                 additionalCss={css`
                   margin-top: ${space[9]}px;
                 `}
@@ -359,9 +356,9 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                 }
                 linkCopy="Go to your account"
                 linkHref="/"
-                topicReferer={`${contactUsFormStateSnapshot.selectedTopic ||
-                  contactUsFormStateSnapshot.selectedSubTopic ||
-                  contactUsFormStateSnapshot.selectedSubSubTopic}`}
+                topicReferer={`${contactUsFormState.selectedTopic ||
+                  contactUsFormState.selectedSubTopic ||
+                  contactUsFormState.selectedSubSubTopic}`}
                 additionalCss={css`
                   margin: ${space[9]}px 0 ${space[6]}px;
                 `}
@@ -376,9 +373,9 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                   trackEvent({
                     eventCategory: "contactus_form",
                     eventAction: "submission",
-                    eventLabel: `${contactUsFormStateSnapshot.selectedTopic ||
-                      contactUsFormStateSnapshot.selectedSubTopic ||
-                      contactUsFormStateSnapshot.selectedSubSubTopic}`
+                    eventLabel: `${contactUsFormState.selectedTopic ||
+                      contactUsFormState.selectedSubTopic ||
+                      contactUsFormState.selectedSubSubTopic}`
                   });
                 }}
                 title={`${
