@@ -96,9 +96,9 @@ export const contactUsConfig: Topic[] = [
               text:
                 "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
               linkText: "Go to your account",
-              href: "/billing",
-              noForm: true
-            }
+              href: "/billing"
+            },
+            noForm: true
           },
           {
             id: "ss2",

@@ -18,7 +18,7 @@ import {
   straightThroughBodyHandler
 } from "../apiProxy";
 import { conf } from "../config";
-import { contactUsConfigHandler } from "../contactUsApi";
+import { contactUsConfigHandler, contactUsFormHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
@@ -217,5 +217,7 @@ router.get(
 );
 
 router.get("/contact-us-config", contactUsConfigHandler);
+
+router.post("/contact-us", contactUsFormHandler);
 
 export default router;
