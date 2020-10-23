@@ -119,8 +119,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
     setTransientTopicSelection(newTopicId);
     setTopic(newTopicId, requireTopicSubmitButton);
     trackEvent({
-      eventCategory: "contact_us_topic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "topic_click",
       eventLabel: newTopicId
     });
   };
@@ -129,8 +129,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
     setSubTopic(newSubTopicId);
 
     trackEvent({
-      eventCategory: "contact_us_subtopic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "subtopic_click",
       eventLabel: newSubTopicId
     });
   };
@@ -145,8 +145,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
     setSubSubTopic(newSubSubTopicId);
 
     trackEvent({
-      eventCategory: "contact_us_subsubtopic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "subsubtopic_click",
       eventLabel: newSubSubTopicId
     });
   };
@@ -181,7 +181,6 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
         eventCategory: "ContactUs",
         eventAction: "submission_success",
         eventLabel:
-          "Succeeded in submiting form with topics " +
           `${contactUsFormState.selectedTopic} - ` +
           `${contactUsFormState.selectedSubTopic} - ` +
           `${contactUsFormState.selectedSubSubTopic}`
@@ -409,9 +408,11 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
                 }
                 linkCopy="Go to your account"
                 linkHref="/"
-                topicReferer={`${contactUsFormState.selectedTopic ||
-                  contactUsFormState.selectedSubTopic ||
-                  contactUsFormState.selectedSubSubTopic}`}
+                topicReferer={
+                  `${contactUsFormState.selectedTopic} - ` +
+                  `${contactUsFormState.selectedSubTopic} - ` +
+                  `${contactUsFormState.selectedSubSubTopic}`
+                }
                 additionalCss={css`
                   margin: ${space[9]}px 0 ${space[6]}px;
                 `}
