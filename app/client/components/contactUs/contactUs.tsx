@@ -3,12 +3,13 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { Topic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
-import { ContactUsForm } from "./contactUsForm";
+import { ContactUsForm, FormPayload } from "./contactUsForm";
 import { ContactUsHeader } from "./contactUsHeader";
 import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
@@ -153,6 +154,49 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   const subSubTopicSubmitCallback = () => {
     if (!!contactUsFormState.selectedSubSubTopic) {
       setRequireSubSubTopicSubmitButton(false);
+    }
+  };
+
+  const submitForm = async (formData: FormPayload): Promise<void> => {
+    const body = JSON.stringify({
+      ...(contactUsFormState.selectedTopic && {
+        topic: contactUsFormState.selectedTopic
+      }),
+      ...(contactUsFormState.selectedSubSubTopic && {
+        subtopic: contactUsFormState.selectedSubSubTopic
+      }),
+      ...(contactUsFormState.selectedSubSubTopic && {
+        subsubtopic: contactUsFormState.selectedSubSubTopic
+      }),
+      name: formData.fullName,
+      email: formData.email,
+      subject: formData.subjectLine,
+      message: formData.details
+    });
+
+    const res = await fetch("/api/contact-us/", { method: "POST", body });
+    if (res.ok) {
+      setFormSubmitionStatus(true);
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_success",
+        eventLabel:
+          "Succeeded in submiting form with topics " +
+          `${contactUsFormState.selectedTopic} - ` +
+          `${contactUsFormState.selectedSubTopic} - ` +
+          `${contactUsFormState.selectedSubSubTopic}`
+      });
+    } else {
+      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${
+        res.statusText
+      }: ${JSON.stringify(res.body)}`;
+
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_failure",
+        eventLabel: errorMsg
+      });
+      Sentry.captureException(errorMsg);
     }
   };
 
@@ -377,16 +421,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
             {showForm && (
               <ContactUsForm
                 key={formSubjectLine}
-                submitCallback={() => {
-                  setFormSubmitionStatus(true);
-                  trackEvent({
-                    eventCategory: "contactus_form",
-                    eventAction: "submission",
-                    eventLabel: `${contactUsFormState.selectedTopic ||
-                      contactUsFormState.selectedSubTopic ||
-                      contactUsFormState.selectedSubSubTopic}`
-                  });
-                }}
+                submitCallback={submitForm}
                 title={`${
                   showSubTopics || showSubSubTopics
                     ? `Step ${showSubTopics ? "3" : "2"}: `
