@@ -52,7 +52,8 @@ export const contactUsConfig: Topic[] = [
       },
       {
         id: "s8",
-        name: "I would like to cancel my payment"
+        name: "I would like to cancel my payment",
+        noForm: true
       },
       {
         id: "s9",
@@ -259,6 +260,7 @@ export const contactUsConfig: Topic[] = [
     id: "other",
     name: "Something else",
     enquiryLabel: "your issue",
-    editableSubjectLine: true
+    editableSubjectLine: true,
+    noForm: true
   }
 ];
