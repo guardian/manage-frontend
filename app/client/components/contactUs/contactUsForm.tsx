@@ -8,14 +8,14 @@ import { Input } from "../input";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface ContactUsFormProps {
-  submitCallback: (payload: FormPayload) => void;
+  submitCallback: (payload: FormPayload) => Promise<void>;
   title: string;
   subjectLine: string;
   editableSubjectLine?: boolean;
   additionalCss?: SerializedStyles;
 }
 
-interface FormPayload {
+export interface FormPayload {
   fullName: string;
   email: string;
   subjectLine: string;
@@ -35,6 +35,14 @@ interface FormValidationState {
   details: FormElemValidationObject;
 }
 
+const disabledButtonStyles = css`
+  background: #999999;
+  cursor: not-allowed;
+  &:hover {
+    background: #999999;
+  }
+`;
+
 export const ContactUsForm = (props: ContactUsFormProps) => {
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
   const [fullName, setFullName] = useState<string>(
@@ -48,6 +56,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     instructionsRemainingCharacters,
     setInstructionsRemainingCharacters
   ] = useState<number>(250);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
@@ -99,12 +108,15 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
         if (validateForm()) {
-          props.submitCallback({
-            fullName,
-            subjectLine,
-            email,
-            details
-          });
+          setSubmitting(true);
+          props
+            .submitCallback({
+              fullName,
+              subjectLine,
+              email,
+              details
+            })
+            .then(() => setSubmitting(false));
         }
       }}
       css={css`
@@ -286,7 +298,13 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           </span>
         </label>
       </fieldset>
-      <Button type="submit">Submit</Button>
+      <Button
+        type="submit"
+        cssOverrides={submitting ? disabledButtonStyles : undefined}
+        disabled={submitting}
+      >
+        Submit
+      </Button>
     </form>
   );
 };

@@ -18,6 +18,7 @@ export const contactUsFormHandler = (req: Request, res: Response) => {
 const parseAndValidate = (body: any): ContactUsReq | undefined => {
   try {
     const bodyAsJson = body ? JSON.parse(body) : "{}";
+
     return validateContactUsFormBody(bodyAsJson)
       ? (bodyAsJson as ContactUsReq)
       : undefined;
@@ -26,22 +27,15 @@ const parseAndValidate = (body: any): ContactUsReq | undefined => {
   }
 };
 
-const validateContactUsFormBody = (body: any): boolean => {
-  if (
-    body &&
-    body.topic &&
-    validateTopics(body.topic, body.subtopic, body.subsubtopic) &&
-    body.name &&
-    body.email &&
-    isEmail(body.email) &&
-    body.subject &&
-    body.message
-  ) {
-    return true;
-  }
-
-  return false;
-};
+const validateContactUsFormBody = (body: any): boolean =>
+  body &&
+  body.topic &&
+  validateTopics(body.topic, body.subtopic, body.subsubtopic) &&
+  body.name &&
+  body.email &&
+  isEmail(body.email) &&
+  body.subject &&
+  body.message;
 
 const validateTopics = (
   reqTopic: string | undefined,
