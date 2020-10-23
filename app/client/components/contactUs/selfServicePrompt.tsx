@@ -24,6 +24,13 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
     color: ${palette.brand[500]};
   `;
 
+  const onServicelinkClick = () =>
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "servicelink_click",
+      eventLabel: props.topicReferer
+    });
+
   return (
     <p
       css={css`
@@ -51,13 +58,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
       {isSignedIn ? (
         <Link
           to={props.linkHref}
-          onClick={() =>
-            trackEvent({
-              eventCategory: "selfservice_link",
-              eventAction: "click",
-              eventLabel: `signed in: ${props.topicReferer}`
-            })
-          }
+          onClick={onServicelinkClick}
           css={css`
             ${linkCss}
           `}
@@ -67,13 +68,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
       ) : (
         <a
           href={props.linkHref}
-          onClick={() =>
-            trackEvent({
-              eventCategory: "selfservice_link",
-              eventAction: "click",
-              eventLabel: `signed out: ${props.topicReferer}`
-            })
-          }
+          onClick={onServicelinkClick}
           css={css`
             ${linkCss}
           `}
