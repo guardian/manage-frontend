@@ -3,7 +3,7 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import * as Sentry from "@sentry/browser";
+import { captureException } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { Topic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
@@ -196,7 +196,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
         eventAction: "submission_failure",
         eventLabel: errorMsg
       });
-      Sentry.captureException(errorMsg);
+      captureException(errorMsg);
     }
   };
 
