@@ -1,18 +1,51 @@
+import { captureMessage } from "@sentry/node";
 import { Request, Response } from "express";
+import fetch from "node-fetch";
 import { ContactUsReq } from "../shared/contactUsTypes";
+import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
 import { contactUsConfig } from "./contactUsConfig";
+import { log } from "./log";
 
 export const contactUsConfigHandler = (_: Request, res: Response) =>
   res.json(contactUsConfig);
 
-export const contactUsFormHandler = (req: Request, res: Response) => {
+export const contactUsFormHandler = async (req: Request, res: Response) => {
   const validBody = parseAndValidate(req.body);
-
   if (!validBody) {
     return res.status(400).send();
   }
 
-  res.status(201).send();
+  const apiConfig = await getContactUsAPIHostAndKey();
+  if (!apiConfig) {
+    const errorMessage = "Could not obtain contact-us-api host/key.";
+    log.error(errorMessage);
+    captureMessage(errorMessage);
+    return res.status(500).send();
+  }
+
+  fetch(apiConfig.host, {
+    method: "POST",
+    body: JSON.stringify(validBody),
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": apiConfig.apiKey
+    }
+  })
+    .then(contactUsAPIResponse => {
+      if (!contactUsAPIResponse.ok) {
+        const errorMessage = `Unexpected error from contact-us-api endpoint. ${contactUsAPIResponse.status} ${contactUsAPIResponse.statusText}`;
+        log.error(errorMessage);
+        captureMessage(errorMessage);
+      }
+      res.status(contactUsAPIResponse.status).send();
+    })
+    .catch(error => {
+      const errorMessage =
+        "Unexpected error when trying to contact contact-us-api endpoint.";
+      log.error(errorMessage, error);
+      captureMessage(errorMessage);
+      res.status(500).send();
+    });
 };
 
 const parseAndValidate = (body: any): ContactUsReq | undefined => {
@@ -20,7 +53,7 @@ const parseAndValidate = (body: any): ContactUsReq | undefined => {
     const bodyAsJson = body ? JSON.parse(body) : "{}";
 
     return validateContactUsFormBody(bodyAsJson)
-      ? (bodyAsJson as ContactUsReq)
+      ? buildContactUsReqBody(bodyAsJson)
       : undefined;
   } catch (error) {
     return undefined;
@@ -43,36 +76,36 @@ const validateTopics = (
   reqSubsubtopic: string | undefined
 ): boolean => {
   // Validate topic
-  const topicIndex = contactUsConfig.findIndex(topic => topic.id === reqTopic);
-  if (topicIndex === -1 || contactUsConfig[topicIndex].noForm) {
+  const topic = contactUsConfig.find(topicEntry => topicEntry.id === reqTopic);
+  if (!topic || topic.noForm) {
     return false;
   }
 
   // Validate subtopic
-  const subtopics = contactUsConfig[topicIndex].subtopics;
-  if (subtopics) {
+  const subtopicList = topic.subtopics;
+  if (subtopicList) {
     if (!reqSubtopic) {
       return false;
     }
 
-    const subtopicIndex = subtopics.findIndex(
-      subtopic => subtopic.id === reqSubtopic
+    const subtopic = subtopicList.find(
+      subtopicEntry => subtopicEntry.id === reqSubtopic
     );
-    if (subtopicIndex === -1 || subtopics[subtopicIndex].noForm) {
+    if (!subtopic || subtopic.noForm) {
       return false;
     }
 
     // Validate subsubtopic
-    const subsubtopics = subtopics[subtopicIndex].subsubtopics;
-    if (subsubtopics) {
+    const subsubtopicList = subtopic.subsubtopics;
+    if (subsubtopicList) {
       if (!reqSubsubtopic) {
         return false;
       }
 
-      const subsubtopicsIndex = subsubtopics.findIndex(
-        subsubtopic => subsubtopic.id === reqSubsubtopic
+      const subsubtopic = subsubtopicList.find(
+        subsubtopicEntry => subsubtopicEntry.id === reqSubsubtopic
       );
-      if (subtopicIndex === -1 || subsubtopics[subsubtopicsIndex].noForm) {
+      if (!subsubtopic || subsubtopic.noForm) {
         return false;
       }
     } else if (reqSubsubtopic) {
@@ -89,3 +122,17 @@ const isEmail = (email: string): boolean => {
   const emailSplit = email.split("@");
   return emailSplit.length === 2 && emailSplit[1].includes(".");
 };
+
+const buildContactUsReqBody = (body: any): ContactUsReq => ({
+  topic: body.topic,
+  ...(body.subtopic && {
+    subtopic: body.subtopic
+  }),
+  ...(body.subsubtopic && {
+    subsubtopic: body.subsubtopic
+  }),
+  name: body.name,
+  email: body.email,
+  subject: body.subject,
+  message: body.message
+});

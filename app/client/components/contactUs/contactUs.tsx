@@ -186,9 +186,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
           `${contactUsFormState.selectedSubSubTopic}`
       });
     } else {
-      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${
-        res.statusText
-      }: ${JSON.stringify(res.body)}`;
+      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
 
       trackEvent({
         eventCategory: "ContactUs",
