@@ -162,8 +162,8 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
       ...(contactUsFormState.selectedTopic && {
         topic: contactUsFormState.selectedTopic
       }),
-      ...(contactUsFormState.selectedSubSubTopic && {
-        subtopic: contactUsFormState.selectedSubSubTopic
+      ...(contactUsFormState.selectedSubTopic && {
+        subtopic: contactUsFormState.selectedSubTopic
       }),
       ...(contactUsFormState.selectedSubSubTopic && {
         subsubtopic: contactUsFormState.selectedSubSubTopic
