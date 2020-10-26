@@ -58,6 +58,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     hasPaymentFailure
   );
 
+  // We want to hide manage sub/payment buttons and the trial period if the product is a gifted digi sub
+  const isDigiSubGift =
+    specificProductType.friendlyName === "digital subscription" &&
+    isGift(props.productDetail.subscription);
+
   const keyValuePairCss = css`
     list-style: none;
     margin: 0;
@@ -262,7 +267,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             </ul>
           )}
           {specificProductType.showTrialRemainingIfApplicable &&
-            props.productDetail.subscription.trialLength > 0 && (
+            props.productDetail.subscription.trialLength > 0 &&
+            !isDigiSubGift && (
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Trial remaining</li>
                 <li css={valueCss}>
@@ -273,27 +279,29 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </li>
               </ul>
             )}
-          <div
-            css={css`
-              margin-top: auto;
-            `}
-          >
-            <LinkButton
-              to={`/${groupedProductType.urlPart}`}
-              text={`Manage ${groupedProductType.friendlyName}`}
-              state={props.productDetail}
-              colour={palette.brand[800]}
-              textColour={palette.brand[400]}
-              fontWeight={"bold"}
-              onClick={() =>
-                trackEvent({
-                  eventCategory: "account_overview",
-                  eventAction: "click",
-                  eventLabel: `manage_${groupedProductType.urlPart}`
-                })
-              }
-            />
-          </div>
+          {!isDigiSubGift && (
+            <div
+              css={css`
+                margin-top: auto;
+              `}
+            >
+              <LinkButton
+                to={`/${groupedProductType.urlPart}`}
+                text={`Manage ${groupedProductType.friendlyName}`}
+                state={props.productDetail}
+                colour={palette.brand[800]}
+                textColour={palette.brand[400]}
+                fontWeight={"bold"}
+                onClick={() =>
+                  trackEvent({
+                    eventCategory: "account_overview",
+                    eventAction: "click",
+                    eventLabel: `manage_${groupedProductType.urlPart}`
+                  })
+                }
+              />
+            </div>
+          )}
         </div>
 
         <div
@@ -373,7 +381,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   )}
                 </li>
               </ul>
-              {!props.productDetail.subscription.payPalEmail && (
+              {!props.productDetail.subscription.payPalEmail && !isDigiSubGift && (
                 <div
                   css={css`
                     margin-top: auto;
