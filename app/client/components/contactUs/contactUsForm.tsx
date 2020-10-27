@@ -8,7 +8,7 @@ import { Input } from "../input";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface ContactUsFormProps {
-  submitCallback: (payload: FormPayload) => Promise<void>;
+  submitCallback: (payload: FormPayload) => Promise<boolean>;
   title: string;
   subjectLine: string;
   editableSubjectLine?: boolean;
@@ -35,6 +35,8 @@ interface FormValidationState {
   details: FormElemValidationObject;
 }
 
+type ContactUsFormStatus = "form" | "submitting" | "failure";
+
 const disabledButtonStyles = css`
   background: #999999;
   cursor: not-allowed;
@@ -56,7 +58,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     instructionsRemainingCharacters,
     setInstructionsRemainingCharacters
   ] = useState<number>(250);
-  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const [status, setStatus] = useState<ContactUsFormStatus>("form");
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
@@ -108,7 +111,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
         if (validateForm()) {
-          setSubmitting(true);
+          setStatus("submitting");
           props
             .submitCallback({
               fullName,
@@ -116,7 +119,11 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               email,
               details
             })
-            .then(() => setSubmitting(false));
+            .then(success => {
+              if (!success) {
+                setStatus("failure");
+              }
+            });
         }
       }}
       css={css`
@@ -298,10 +305,15 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           </span>
         </label>
       </fieldset>
+      {status === "failure" && (
+        <span>Oops. We couldn't submit this form. Please try again later.</span>
+      )}
       <Button
         type="submit"
-        cssOverrides={submitting ? disabledButtonStyles : undefined}
-        disabled={submitting}
+        cssOverrides={
+          status === "submitting" ? disabledButtonStyles : undefined
+        }
+        disabled={status === "submitting"}
       >
         Submit
       </Button>
