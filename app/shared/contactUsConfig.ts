@@ -1,4 +1,4 @@
-import { Topic } from "../shared/contactUsTypes";
+import { Topic } from "./contactUsTypes";
 
 export const contactUsConfig: Topic[] = [
   {

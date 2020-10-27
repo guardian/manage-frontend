@@ -27,7 +27,7 @@ import {
   ConsentsBanner,
   SuppressConsentBanner
 } from "./consent/consentsBanner";
-import { ContactUsPage } from "./contactUs/contactUs";
+import { ContactUs } from "./contactUs/contactUs";
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
 import { DeliveryAddressReview } from "./delivery/address/deliveryAddressReview";
@@ -173,10 +173,10 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
 
       <Help path="/help" />
 
-      <ContactUsPage path="/contact-us" />
-      <ContactUsPage path="/contact-us/:topicId" />
-      <ContactUsPage path="/contact-us/:topicId/:subTopicId" />
-      <ContactUsPage path="/contact-us/:topicId/:subTopicId/:subSubTopicId" />
+      <ContactUs path="/contact-us" />
+      <ContactUs path="/contact-us/:topicId" />
+      <ContactUs path="/contact-us/:topicId/:subTopicId" />
+      <ContactUs path="/contact-us/:topicId/:subTopicId/:subSubTopicId" />
 
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />

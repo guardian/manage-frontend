@@ -5,20 +5,15 @@ import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import { Topic } from "../../../shared/contactUsTypes";
+import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import AsyncLoader from "../asyncLoader";
 import { ContactUsForm, FormPayload } from "./contactUsForm";
 import { ContactUsHeader } from "./contactUsHeader";
 import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicButton } from "./topicButton";
-
-class ContactUsFormAsyncLoader extends AsyncLoader<ContactUsConfigResponse> {}
-
-type ContactUsConfigResponse = Topic[];
 
 interface ContactUsFormState {
   selectedTopic: string | undefined;
@@ -32,16 +27,8 @@ interface ContactUsProps extends RouteComponentProps {
   urlSubSubTopicId?: string;
 }
 
-interface ContactUsPropsWithConfig extends ContactUsProps {
-  config: Topic[];
-}
-
-const renderContactUs = (props: ContactUsProps) => (
-  config: ContactUsConfigResponse
-) => <ContactUs {...props} config={config} />;
-
-const ContactUs = (props: ContactUsPropsWithConfig) => {
-  const validDeepLinkTopic = props.config.find(
+export const ContactUs = (props: ContactUsProps) => {
+  const validDeepLinkTopic = contactUsConfig.find(
     topic => topic.id === props.urlTopicId
   );
 
@@ -54,7 +41,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
   );
 
   const initialTopicSelection: string =
-    validDeepLinkTopic?.id || props.config[0].id;
+    validDeepLinkTopic?.id || contactUsConfig[0].id;
 
   const [formSubmittedSuccessfully, setFormSubmitionStatus] = useState<boolean>(
     false
@@ -88,7 +75,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
         hasComeFromSubmitButton || !requireTopicSubmitButton
           ? newTopicId
           : contactUsFormState.selectedTopic,
-      selectedSubTopic: props.config.find(topic => topic.id === newTopicId)
+      selectedSubTopic: contactUsConfig.find(topic => topic.id === newTopicId)
         ?.subtopics?.[0].id,
       selectedSubSubTopic: undefined
     });
@@ -197,7 +184,7 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
     }
   };
 
-  const currentTopic = props.config.find(
+  const currentTopic = contactUsConfig.find(
     topic => topic.id === contactUsFormState.selectedTopic
   );
 
@@ -295,157 +282,147 @@ const ContactUs = (props: ContactUsPropsWithConfig) => {
 
   return (
     <>
-      <div
-        css={css`
-          margin-bottom: ${space[24]}px;
-        `}
-      >
-        <h1
+      <ContactUsHeader />
+      <ContactUsPageContainer>
+        <div
           css={css`
-            ${headline.xxsmall({ fontWeight: "bold" })};
-            margin: 0;
-            border-top: 1px solid ${palette.neutral[86]};
-            ${minWidth.desktop} {
-              font-size: 1.75rem;
-              border-top: 0;
-            }
+            margin-bottom: ${space[24]}px;
           `}
         >
-          {formSubmittedSuccessfully
-            ? "Thank you for contacting us"
-            : "We are here to help"}
-        </h1>
-        <p
-          css={css`
-            margin-top: ${space[5]}px;
-            ${textSans.medium()};
-          `}
-        >
-          {formSubmittedSuccessfully
-            ? `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
-            : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes."}
-        </p>
-        {!formSubmittedSuccessfully && (
-          <>
-            <h2
-              css={css`
-                ${headline.xxsmall({ fontWeight: "bold" })};
-                border-top: 1px solid ${palette.neutral[86]};
-                margin-top: ${space[6]}px;
-                padding: ${space[1]}px 0;
-                ${minWidth.desktop} {
-                  margin-top: ${space[9]}px;
-                }
-              `}
-            >
-              Choose a topic you would like to discuss
-            </h2>
-            <div
-              css={css`
-                display: flex;
-                flex-wrap: wrap;
-                align-items: stretch;
-                justify-content: space-between;
-              `}
-            >
-              {props.config.map((topic, topicIndex) => (
-                <TopicButton
-                  {...topic}
-                  id={topic.id}
-                  updateCallback={topicSelectionCallback}
-                  isSelected={topic.id === contactUsFormState.selectedTopic}
-                  key={topicIndex}
-                />
-              ))}
-            </div>
-            {requireTopicSubmitButton && (
-              <Button
+          <h1
+            css={css`
+              ${headline.xxsmall({ fontWeight: "bold" })};
+              margin: 0;
+              border-top: 1px solid ${palette.neutral[86]};
+              ${minWidth.desktop} {
+                font-size: 1.75rem;
+                border-top: 0;
+              }
+            `}
+          >
+            {formSubmittedSuccessfully
+              ? "Thank you for contacting us"
+              : "We are here to help"}
+          </h1>
+          <p
+            css={css`
+              margin-top: ${space[5]}px;
+              ${textSans.medium()};
+            `}
+          >
+            {formSubmittedSuccessfully
+              ? `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
+              : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes."}
+          </p>
+          {!formSubmittedSuccessfully && (
+            <>
+              <h2
                 css={css`
+                  ${headline.xxsmall({ fontWeight: "bold" })};
+                  border-top: 1px solid ${palette.neutral[86]};
                   margin-top: ${space[6]}px;
+                  padding: ${space[1]}px 0;
+                  ${minWidth.desktop} {
+                    margin-top: ${space[9]}px;
+                  }
                 `}
-                onClick={() => {
-                  setTopic(transientTopicSelection, true);
-                  setRequireTopicSubmitButton(false);
-                }}
               >
-                Begin form
-              </Button>
-            )}
-            {showSubTopics && (
-              <SubTopicForm
-                updateCallback={subTopicSelectionCallback}
-                submitCallback={subTopicSubmitCallback}
-                title={subTopicsTitle}
-                submitButonText="Continue to step 2"
-                showSubmitButton={requireSubTopicSubmitButton}
-                data={subTopics}
-                preSelectedId={contactUsFormState.selectedSubTopic}
-                additionalCss={css`
-                  margin-top: ${space[9]}px;
+                Choose a topic you would like to discuss
+              </h2>
+              <div
+                css={css`
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: stretch;
+                  justify-content: space-between;
                 `}
-              />
-            )}
-            {showSubSubTopics && (
-              <SubTopicForm
-                updateCallback={subSubTopicSelectionCallback}
-                submitCallback={subSubTopicSubmitCallback}
-                title={subSubTopicsTitle}
-                submitButonText="Continue to step 3"
-                showSubmitButton={requireSubSubTopicSubmitButton}
-                data={subSubTopics}
-                preSelectedId={contactUsFormState.selectedSubSubTopic}
-                additionalCss={css`
-                  margin-top: ${space[9]}px;
-                `}
-              />
-            )}
-            {showSelfServicePrompt && (
-              <SelfServicePrompt
-                copy={
-                  "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response."
-                }
-                linkCopy="Go to your account"
-                linkHref="/"
-                topicReferer={
-                  `${contactUsFormState.selectedTopic} - ` +
-                  `${contactUsFormState.selectedSubTopic} - ` +
-                  `${contactUsFormState.selectedSubSubTopic}`
-                }
-                additionalCss={css`
-                  margin: ${space[9]}px 0 ${space[6]}px;
-                `}
-              />
-            )}
+              >
+                {contactUsConfig.map((topic, topicIndex) => (
+                  <TopicButton
+                    {...topic}
+                    id={topic.id}
+                    updateCallback={topicSelectionCallback}
+                    isSelected={topic.id === contactUsFormState.selectedTopic}
+                    key={topicIndex}
+                  />
+                ))}
+              </div>
+              {requireTopicSubmitButton && (
+                <Button
+                  css={css`
+                    margin-top: ${space[6]}px;
+                  `}
+                  onClick={() => {
+                    setTopic(transientTopicSelection, true);
+                    setRequireTopicSubmitButton(false);
+                  }}
+                >
+                  Begin form
+                </Button>
+              )}
+              {showSubTopics && (
+                <SubTopicForm
+                  updateCallback={subTopicSelectionCallback}
+                  submitCallback={subTopicSubmitCallback}
+                  title={subTopicsTitle}
+                  submitButonText="Continue to step 2"
+                  showSubmitButton={requireSubTopicSubmitButton}
+                  data={subTopics}
+                  preSelectedId={contactUsFormState.selectedSubTopic}
+                  additionalCss={css`
+                    margin-top: ${space[9]}px;
+                  `}
+                />
+              )}
+              {showSubSubTopics && (
+                <SubTopicForm
+                  updateCallback={subSubTopicSelectionCallback}
+                  submitCallback={subSubTopicSubmitCallback}
+                  title={subSubTopicsTitle}
+                  submitButonText="Continue to step 3"
+                  showSubmitButton={requireSubSubTopicSubmitButton}
+                  data={subSubTopics}
+                  preSelectedId={contactUsFormState.selectedSubSubTopic}
+                  additionalCss={css`
+                    margin-top: ${space[9]}px;
+                  `}
+                />
+              )}
+              {showSelfServicePrompt && (
+                <SelfServicePrompt
+                  copy={
+                    "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response."
+                  }
+                  linkCopy="Go to your account"
+                  linkHref="/"
+                  topicReferer={
+                    `${contactUsFormState.selectedTopic} - ` +
+                    `${contactUsFormState.selectedSubTopic} - ` +
+                    `${contactUsFormState.selectedSubSubTopic}`
+                  }
+                  additionalCss={css`
+                    margin: ${space[9]}px 0 ${space[6]}px;
+                  `}
+                />
+              )}
 
-            {showForm && (
-              <ContactUsForm
-                key={formSubjectLine}
-                submitCallback={submitForm}
-                title={`${
-                  showSubTopics || showSubSubTopics
-                    ? `Step ${showSubTopics ? "3" : "2"}: `
-                    : ""
-                }Tell us more`}
-                subjectLine={formSubjectLine}
-                editableSubjectLine={formHasEditableSubjectLine}
-              />
-            )}
-          </>
-        )}
-      </div>
+              {showForm && (
+                <ContactUsForm
+                  key={formSubjectLine}
+                  submitCallback={submitForm}
+                  title={`${
+                    showSubTopics || showSubSubTopics
+                      ? `Step ${showSubTopics ? "3" : "2"}: `
+                      : ""
+                  }Tell us more`}
+                  subjectLine={formSubjectLine}
+                  editableSubjectLine={formHasEditableSubjectLine}
+                />
+              )}
+            </>
+          )}
+        </div>
+      </ContactUsPageContainer>
     </>
   );
 };
-
-export const ContactUsPage = (props: ContactUsProps) => (
-  <>
-    <ContactUsHeader />
-    <ContactUsPageContainer>
-      <ContactUsFormAsyncLoader
-        render={renderContactUs(props)}
-        fetch={() => fetch("/api/contact-us-config/")}
-        loadingMessage={"Loading form..."}
-      />
-    </ContactUsPageContainer>
-  </>
-);

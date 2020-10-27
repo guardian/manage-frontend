@@ -1,13 +1,10 @@
 import { captureMessage } from "@sentry/node";
 import { Request, Response } from "express";
 import fetch from "node-fetch";
+import { contactUsConfig } from "../shared/contactUsConfig";
 import { ContactUsReq } from "../shared/contactUsTypes";
 import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
-import { contactUsConfig } from "./contactUsConfig";
 import { log } from "./log";
-
-export const contactUsConfigHandler = (_: Request, res: Response) =>
-  res.json(contactUsConfig);
 
 export const contactUsFormHandler = async (req: Request, res: Response) => {
   const validBody = parseAndValidate(req.body);
