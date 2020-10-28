@@ -408,7 +408,6 @@ const DeliveryRecordsProblemConfirmationFC = (
             }
           `}
           href={NAV_LINKS.accountOverview.link}
-          showIcon={false}
         >
           Return to your account
         </LinkButton>

@@ -72,7 +72,6 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
           }
         `}
         href={NAV_LINKS.accountOverview.link}
-        showIcon={false}
       >
         Return to your account
       </LinkButton>

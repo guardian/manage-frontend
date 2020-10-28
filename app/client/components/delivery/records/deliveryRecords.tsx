@@ -1,9 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { space } from "@guardian/src-foundations";
-import { palette } from "@guardian/src-foundations";
-import { headline } from "@guardian/src-foundations/typography";
-import { textSans } from "@guardian/src-foundations/typography";
+import { palette, space } from "@guardian/src-foundations";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import moment from "moment";

@@ -4,7 +4,9 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
+import { FormError } from "../FormError";
 import { Input } from "../input";
+import { Spinner } from "../spinner";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface ContactUsFormProps {
@@ -36,14 +38,6 @@ interface FormValidationState {
 }
 
 type ContactUsFormStatus = "form" | "submitting" | "failure";
-
-const disabledButtonStyles = css`
-  background: #999999;
-  cursor: not-allowed;
-  &:hover {
-    background: #999999;
-  }
-`;
 
 export const ContactUsForm = (props: ContactUsFormProps) => {
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
@@ -309,32 +303,15 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         </label>
       </fieldset>
       {status === "failure" && (
-        <span
-          css={css`
-            display: block;
-            position: relative;
-            padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
-            border: 4px solid ${palette.news[400]};
-            margin: ${space[5]}px 0;
-          `}
-        >
-          <i
-            css={css`
-              position: absolute;
-              top: ${space[5]}px;
-              left: ${space[5]}px;
-            `}
-          >
-            <ErrorIcon />
-          </i>
-          Oops. We couldn't submit this form. Please try again later.
-        </span>
+        <FormError
+          title="Oops"
+          messages={["We couldn't submit this form. Please try again later."]}
+        />
       )}
       <Button
         type="submit"
-        cssOverrides={
-          status === "submitting" ? disabledButtonStyles : undefined
-        }
+        iconSide="right"
+        icon={status === "submitting" ? <Spinner scale={0.5} /> : undefined}
         disabled={status === "submitting"}
       >
         Submit

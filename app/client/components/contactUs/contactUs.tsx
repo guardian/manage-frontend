@@ -162,7 +162,7 @@ export const ContactUs = (props: ContactUsProps) => {
     });
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });
-    if (!res.ok) {
+    if (res.ok) {
       setFormStatus("success");
       trackEvent({
         eventCategory: "ContactUs",
