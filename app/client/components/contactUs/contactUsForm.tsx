@@ -135,6 +135,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           if (formValidationState.inValidationMode) {
             validateForm();
           }
+          if (status === "failure") {
+            setStatus("form");
+          }
         }}
         css={css`
           border: 1px solid ${palette.neutral["86"]};
