@@ -306,7 +306,26 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         </label>
       </fieldset>
       {status === "failure" && (
-        <span>Oops. We couldn't submit this form. Please try again later.</span>
+        <span
+          css={css`
+            display: block;
+            position: relative;
+            padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
+            border: 4px solid ${palette.news[400]};
+            margin: ${space[5]}px 0;
+          `}
+        >
+          <i
+            css={css`
+              position: absolute;
+              top: ${space[5]}px;
+              left: ${space[5]}px;
+            `}
+          >
+            <ErrorIcon />
+          </i>
+          Oops. We couldn't submit this form. Please try again later.
+        </span>
       )}
       <Button
         type="submit"
