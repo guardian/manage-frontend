@@ -4,6 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { FormError } from "../FormError";
 import { Input } from "../input";
 import { Spinner } from "../spinner";
@@ -54,6 +55,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   ] = useState<number>(250);
 
   const [status, setStatus] = useState<ContactUsFormStatus>("form");
+
+  const [showCustomerServiceInfo, setShowCustomerServiceInfo] = useState<
+    boolean
+  >(false);
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
@@ -304,10 +309,25 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       </fieldset>
       {status === "failure" && (
         <FormError
-          title="Oops"
-          messages={["We couldn't submit this form. Please try again later."]}
+          title="Something went wrong when submitting your form"
+          messages={[
+            <>
+              Please try again or if the problem persists please contact{" "}
+              <Button
+                priority="subdued"
+                cssOverrides={css`
+                  font-weight: normal;
+                  text-decoration: underline;
+                `}
+                onClick={() => setShowCustomerServiceInfo(true)}
+              >
+                Customer Service
+              </Button>
+            </>
+          ]}
         />
       )}
+      {showCustomerServiceInfo && <CallCentreEmailAndNumbers />}
       <Button
         type="submit"
         iconSide="right"

@@ -1,12 +1,12 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
+import React, { ReactElement } from "react";
 import { ErrorIcon } from "./svgs/errorIcon";
 
 interface FormErrorProps {
   title?: string;
-  messages: string[];
+  messages: Array<string | ReactElement>;
 }
 
 const dlStyles = css`

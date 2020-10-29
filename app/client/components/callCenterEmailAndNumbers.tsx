@@ -159,7 +159,7 @@ export const CallCentreEmailAndNumbers = (
           const isOpen = index === indexOfOpenSection;
           const isNotFirstOption = index > 0;
           return (
-            <div css={css`subsectionCss`} key={phoneRegion.key}>
+            <div key={phoneRegion.key}>
               <h2
                 css={css`
                   ${sectionTitleCss(isOpen, isNotFirstOption)}
