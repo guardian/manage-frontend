@@ -4,20 +4,38 @@ export const contactUsConfig: Topic[] = [
   {
     id: "delivery",
     name: "Delivery",
-    enquiryLabel: "your delivery problem",
-    subTopicsTitle: "sub topic title here",
+    enquiryLabel: "your delivery",
+    subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
       {
         id: "s1",
-        name: "I'm going on holiday and need to pause deliveries"
+        name: "I’m going on holiday and need to pause deliveries",
+        selfServiceBox: {
+          text:
+            "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s2",
-        name: "I need to report a problem with my delivery"
+        name: "I need to report a problem with my delivery",
+        selfServiceBox: {
+          text:
+            "Did you know you can report delivery issues online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means we can resolve the problem as quickly as possible.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s3",
-        name: "I need to update my delivery details"
+        name: "I need to update my delivery details",
+        selfServiceBox: {
+          text:
+            "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s4",
@@ -28,32 +46,50 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "billing",
-    name: "Billing",
-    enquiryLabel: "your billing enquiry",
-    subTopicsTitle: "sub topic title here",
+    name: "My billing",
+    enquiryLabel: "your billing query",
+    subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
       {
         id: "s5",
         name: "I want to update my payment details",
         selfServiceBox: {
           text:
-            "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+            "Did you know you can update your payment details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
           linkText: "Go to your account",
-          href: "/billing"
+          href: "/"
         }
       },
       {
         id: "s6",
-        name: "My payment has failed"
+        name: "My payment has failed",
+        selfServiceBox: {
+          text:
+            "There might be something wrong with your payment details. Did you know you can check these online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s7",
-        name: "I would like to see my invoices and payments"
+        name: "I would like to see my invoices and payments",
+        selfServiceBox: {
+          text:
+            "Did you know you can view your invoices below by logging in below and navigating to the billing tab? It’s easy to use and means you don’t have to wait for a response.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s8",
         name: "I would like to cancel my payment",
-        noForm: true
+        noForm: true,
+        selfServiceBox: {
+          text:
+            "Did you know you can cancel by logging in below and selecting ‘Manage my subscription/membership/recurring contribution? It’s easy to use and means you don’t have to wait for a response.",
+          linkText: "Go to your account",
+          href: "/"
+        }
       },
       {
         id: "s9",
@@ -64,13 +100,13 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "vouchers",
-    name: "newspaper vouchers",
-    enquiryLabel: "your newspaper voucher issue",
-    subTopicsTitle: "sub topic title here",
+    name: "My newspaper vouchers",
+    enquiryLabel: "your newspaper vouchers",
+    subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
       {
         id: "s10",
-        name: "I've lost my vouchers"
+        name: "I’ve lost my vouchers"
       },
       {
         id: "s11",
@@ -82,36 +118,48 @@ export const contactUsConfig: Topic[] = [
   {
     id: "account",
     name: "My account",
-    enquiryLabel: "your account issue",
-    subTopicsTitle: "sub topic title here",
+    enquiryLabel: "your account",
+    subTopicsTitle: "Step 1: What kind of account do you have with us?",
     subtopics: [
       {
         id: "s12",
         name: "Guardian account",
-        subsubTopicsTitle: "sub sub topic title here",
+        subsubTopicsTitle:
+          "Step 2: Help us understand what you need to talk about",
         subsubtopics: [
           {
             id: "ss1",
-            name: "I don't remember what email I use to sign in with",
-            selfServiceBox: {
-              text:
-                "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
-              linkText: "Go to your account",
-              href: "/billing"
-            },
-            noForm: true
+            name: "I don’t remember what email I use to sign in with"
           },
           {
             id: "ss2",
-            name: "I forgot my password"
+            name: "I forgot my password",
+            selfServiceBox: {
+              text:
+                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss3",
-            name: "I need to update my account details"
+            name: "I need to update my account details",
+            selfServiceBox: {
+              text:
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss4",
-            name: "I want to delete my account"
+            name: "I want to delete my account",
+            selfServiceBox: {
+              text:
+                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss5",
@@ -123,27 +171,46 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s13",
         name: "Guardian Jobs account",
-        subsubTopicsTitle: "sub sub topic title here",
+        subsubTopicsTitle:
+          "Step 2: Help us understand what you need to talk about",
         subsubtopics: [
           {
             id: "ss6",
-            name: "I haven't been receiving job alerts"
+            name: "I haven’t been receiving job alerts"
           },
           {
             id: "ss7",
-            name: "I don't remember what email I use to sign in with"
+            name: "I don’t remember what email I use to sign in with"
           },
           {
             id: "ss8",
-            name: "I forgot my password"
+            name: "I forgot my password",
+            selfServiceBox: {
+              text:
+                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss9",
-            name: "I need to update my account details"
+            name: "I need to update my account details",
+            selfServiceBox: {
+              text:
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss10",
-            name: "I want to delete my account"
+            name: "I want to delete my account",
+            selfServiceBox: {
+              text:
+                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss11",
@@ -155,15 +222,22 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s14",
         name: "I have a problem with my newsletter email",
-        subsubTopicsTitle: "sub sub topic title here",
+        subsubTopicsTitle:
+          "Step 2: Help us understand what you need to talk about",
         subsubtopics: [
           {
             id: "ss12",
-            name: "I'm not receiving my newsletter emails"
+            name: "I’m not receiving my newsletter emails"
           },
           {
             id: "ss13",
-            name: "I need to update my email address"
+            name: "I need to update my email address",
+            selfServiceBox: {
+              text:
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              linkText: "Go to your account",
+              href: "/"
+            }
           },
           {
             id: "ss14",
@@ -181,21 +255,22 @@ export const contactUsConfig: Topic[] = [
   {
     id: "tech",
     name: "Technical issues",
-    enquiryLabel: "the technical issue",
-    subTopicsTitle: "sub topic title here",
+    enquiryLabel: "this issue",
+    subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
       {
         id: "s15",
-        name: "I'd like to report a technical issue with your website"
+        name: "I’d like to report a technical issue with your website"
       },
       {
         id: "s16",
-        name: "I'd like to report a technical issue with your app"
+        name: "I’d like to report a technical issue with your app"
       },
       {
         id: "s17",
-        name: "I'd like to provide feedback on your website or app",
-        subsubTopicsTitle: "sub sub topic title here",
+        name: "I’d like to provide feedback on your website or app",
+        subsubTopicsTitle:
+          "Step 2: What would you like to provide feedback on?",
         subsubtopics: [
           {
             id: "ss16",
@@ -209,11 +284,11 @@ export const contactUsConfig: Topic[] = [
       },
       {
         id: "s18",
-        name: "I'd like to report a suspected vulnerability"
+        name: "I’d like to report a suspected vulnerability"
       },
       {
         id: "s19",
-        name: "I'd like to feedback about the advertisements you’re using"
+        name: "I’d like to feedback about the advertisements you’re using"
       },
       {
         id: "s20",
@@ -226,23 +301,23 @@ export const contactUsConfig: Topic[] = [
     id: "journalism",
     name: "Guardian journalism",
     enquiryLabel: "our journalism",
-    subTopicsTitle: "sub topic title here",
+    subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
       {
         id: "s21",
-        name: "I'd like to report an error in your article"
+        name: "I’d like to report an error in your article"
       },
       {
         id: "s22",
-        name: "I'd like to make a complaint about your articles"
+        name: "I’d like to make a complaint about your articles"
       },
       {
         id: "s23",
-        name: "I'd like to provide some feedback on your article"
+        name: "I’d like to provide some feedback on your article"
       },
       {
         id: "s24",
-        name: "I'd like to report a broken link in your article"
+        name: "I’d like to report a broken link in your article"
       },
       {
         id: "s25",
@@ -254,13 +329,12 @@ export const contactUsConfig: Topic[] = [
   {
     id: "comments",
     name: "Commenting",
-    enquiryLabel: "your comments"
+    enquiryLabel: "commenting"
   },
   {
     id: "other",
     name: "Something else",
-    enquiryLabel: "your issue",
-    editableSubjectLine: true,
-    noForm: true
+    enquiryLabel: "your query",
+    editableSubjectLine: true
   }
 ];
