@@ -58,43 +58,6 @@ exports[`Main renders something 1`] = `
         }
       }
     >
-      <a
-        aria-current="page"
-        css={
-          Object {
-            "@media (min-width: 1300px)": Object {
-              "gridColumnEnd": "span 2",
-              "gridColumnStart": "-4",
-              "msGridColumn": "14",
-              "msGridColumnSpan": "2",
-              "msGridRow": "1",
-            },
-            "@media (min-width: 980px)": Object {
-              "gridColumnEnd": "span 2",
-              "gridColumnStart": "-4",
-              "left": "0.5rem",
-              "marginLeft": "auto",
-              "msGridColumn": "10",
-              "msGridColumnSpan": "2",
-              "msGridRow": "1",
-              "position": "relative",
-            },
-            "color": "#FFFFFF",
-            "gridColumnEnd": "span 2",
-            "gridColumnStart": "1",
-            "margin": "auto 0",
-            "msGridColumn": "1",
-            "msGridColumnSpan": "2",
-            "msGridRow": "1",
-            "textDecoration": "none",
-            "whiteSpace": "nowrap",
-          }
-        }
-        href="/"
-        onClick={[Function]}
-      >
-        Sign in
-      </a>
       <div
         css={
           Object {

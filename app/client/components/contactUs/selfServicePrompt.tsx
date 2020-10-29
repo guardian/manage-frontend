@@ -1,10 +1,8 @@
 import { css, SerializedStyles } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import { Link } from "@reach/router";
 import React from "react";
 import { trackEvent } from "../analytics";
-import { isSignedIn } from "../main";
 import { InfoIconDark } from "../svgs/infoIconDark";
 
 interface SelfServicePromptProps {
@@ -55,27 +53,15 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
         <InfoIconDark fillColor={palette.brand[500]} />
       </i>
       {props.copy}
-      {isSignedIn ? (
-        <Link
-          to={props.linkHref}
-          onClick={onServicelinkClick}
-          css={css`
-            ${linkCss}
-          `}
-        >
-          {props.linkCopy} &gt;
-        </Link>
-      ) : (
-        <a
-          href={props.linkHref}
-          onClick={onServicelinkClick}
-          css={css`
-            ${linkCss}
-          `}
-        >
-          {props.linkCopy} &gt;
-        </a>
-      )}
+      <a
+        href={props.linkHref}
+        onClick={onServicelinkClick}
+        css={css`
+          ${linkCss}
+        `}
+      >
+        {props.linkCopy} &gt;
+      </a>
     </p>
   );
 };

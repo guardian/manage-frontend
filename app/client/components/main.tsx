@@ -12,9 +12,6 @@ interface MainProps extends WithOptionalServerPathWithQueryParams {
   children: any;
 }
 
-export const isSignedIn =
-  typeof window !== "undefined" && !!window.guardian?.identityDetails?.userId;
-
 export const Main = ({ children }: MainProps) => {
   return (
     <div
@@ -27,7 +24,7 @@ export const Main = ({ children }: MainProps) => {
         color: palette.neutral["2"]
       }}
     >
-      <Header isSignedOut={!isSignedIn} />
+      <Header />
       <div
         css={{
           flexGrow: 1,
