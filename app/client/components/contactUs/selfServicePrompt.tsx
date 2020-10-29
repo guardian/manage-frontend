@@ -1,4 +1,5 @@
 import { css, SerializedStyles } from "@emotion/core";
+import { LinkButton } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
@@ -10,16 +11,20 @@ interface SelfServicePromptProps {
   linkCopy: string;
   linkHref: string;
   topicReferer: string;
+  linkAsButton?: boolean;
   additionalCss?: SerializedStyles;
 }
 
 export const SelfServicePrompt = (props: SelfServicePromptProps) => {
-  const linkCss = `
-    display: block;
-    margin-top: ${space[5]}px;
+  const linkCss = css`
     text-decoration: underline;
     font-weight: normal;
     color: ${palette.brand[500]};
+  `;
+
+  const spanCss = css`
+    display: block;
+    margin-bottom: ${space[5]}px;
   `;
 
   const onServicelinkClick = () =>
@@ -52,16 +57,16 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
       >
         <InfoIconDark fillColor={palette.brand[500]} />
       </i>
-      {props.copy}
-      <a
-        href={props.linkHref}
-        onClick={onServicelinkClick}
-        css={css`
-          ${linkCss}
-        `}
-      >
-        {props.linkCopy} &gt;
-      </a>
+      <span css={spanCss}>{props.copy}</span>
+      {props.linkAsButton ? (
+        <LinkButton href={props.linkHref} onClick={onServicelinkClick}>
+          {props.linkCopy}
+        </LinkButton>
+      ) : (
+        <a href={props.linkHref} onClick={onServicelinkClick} css={linkCss}>
+          {props.linkCopy} &gt;
+        </a>
+      )}
     </p>
   );
 };

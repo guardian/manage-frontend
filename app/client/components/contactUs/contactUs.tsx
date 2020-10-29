@@ -243,6 +243,16 @@ export const ContactUs = (props: ContactUsProps) => {
       !currentTopic?.noForm &&
       !subTopics);
 
+  const selfServiceBox =
+    currentSubSubTopic?.selfServiceBox ||
+    currentSubTopic?.selfServiceBox ||
+    currentTopic?.selfServiceBox;
+
+  const linkAsbutton =
+    currentSubSubTopic?.noForm ||
+    currentSubTopic?.noForm ||
+    currentTopic?.noForm;
+
   const [showSelfServicePrompt, setShowSelfServicePrompt] = useState<boolean>(
     false
   );
@@ -404,13 +414,12 @@ export const ContactUs = (props: ContactUsProps) => {
                   `}
                 />
               )}
-              {showSelfServicePrompt && (
+              {showSelfServicePrompt && selfServiceBox && (
                 <SelfServicePrompt
-                  copy={
-                    "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response."
-                  }
-                  linkCopy="Go to your account"
-                  linkHref="/"
+                  copy={selfServiceBox.text}
+                  linkCopy={selfServiceBox.linkText}
+                  linkHref={selfServiceBox.href}
+                  linkAsButton={linkAsbutton}
                   topicReferer={
                     `${contactUsFormState.selectedTopic} - ` +
                     `${contactUsFormState.selectedSubTopic} - ` +
