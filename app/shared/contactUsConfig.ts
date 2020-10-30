@@ -12,7 +12,7 @@ export const contactUsConfig: Topic[] = [
         name: "I’m going on holiday and need to pause deliveries",
         selfServiceBox: {
           text:
-            "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+            "Did you know you can suspend your subscription online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
           linkText: "Go to your account",
           href: "/"
         }
@@ -22,7 +22,7 @@ export const contactUsConfig: Topic[] = [
         name: "I need to report a problem with my delivery",
         selfServiceBox: {
           text:
-            "Did you know you can report delivery issues online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means we can resolve the problem as quickly as possible.",
+            "Did you know you can report your delivery problem by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response.",
           linkText: "Go to your account",
           href: "/"
         }
@@ -32,7 +32,7 @@ export const contactUsConfig: Topic[] = [
         name: "I need to update my delivery details",
         selfServiceBox: {
           text:
-            "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+            "Did you know you can update your details online by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response.",
           linkText: "Go to your account",
           href: "/"
         }
