@@ -10,11 +10,4 @@ export const stripeSetupIntentConfigPromise: Promise<
   "stripe-public-to-private-key-mapping"
 );
 
-interface ReCaptchaKeys {
-  publicKey: string;
-  secretKey: string;
-}
 
-export const recaptchaConfigPromise = s3ConfigPromise<ReCaptchaKeys>()(
-  "recaptcha"
-);

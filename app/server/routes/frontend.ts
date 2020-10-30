@@ -6,7 +6,7 @@ import { conf, Environments } from "../config";
 import html from "../html";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
-import { recaptchaConfigPromise } from "../stripeSetupIntentConfig";
+import { recaptchaConfigPromise } from "../recaptchaConfig";
 
 const router = Router();
 

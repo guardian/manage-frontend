@@ -6,6 +6,7 @@ import { ContactUsReq } from "../shared/contactUsTypes";
 import { isEmail } from "../shared/validationUtils";
 import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
 import { log } from "./log";
+import { recaptchaConfigPromise } from "./recaptchaConfig";
 
 export const contactUsFormHandler = async (req: Request, res: Response) => {
   const validBody = parseAndValidate(req.body);
@@ -30,10 +31,10 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
     body: JSON.stringify(validBody),
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": apiConfig.apiKey
-    }
+      "x-api-key": apiConfig.apiKey,
+    },
   })
-    .then(contactUsAPIResponse => {
+    .then((contactUsAPIResponse) => {
       if (!contactUsAPIResponse.ok) {
         const errorMessage = `Unexpected error from contact-us-api endpoint. ${contactUsAPIResponse.status} ${contactUsAPIResponse.statusText}`;
         log.error(errorMessage);
@@ -41,7 +42,7 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
       }
       res.status(contactUsAPIResponse.status).send();
     })
-    .catch(error => {
+    .catch((error) => {
       const errorMessage =
         "Unexpected error when trying to contact contact-us-api endpoint.";
       log.error(errorMessage, error);
@@ -54,12 +55,31 @@ const parseAndValidate = (body: any): ContactUsReq | undefined => {
   try {
     const bodyAsJson = body ? JSON.parse(body) : "{}";
 
-    return validateContactUsFormBody(bodyAsJson)
+    const passedCaptchaValidation = validateCaptchaToken(
+      `${bodyAsJson.captchaToken}`
+    );
+    return passedCaptchaValidation && validateContactUsFormBody(bodyAsJson)
       ? buildContactUsReqBody(bodyAsJson)
       : undefined;
   } catch (error) {
     return undefined;
   }
+};
+
+const validateCaptchaToken = async (token: string) => {
+  const recaptchaSecret = (await recaptchaConfigPromise)?.secretKey;
+  fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: `secret=${recaptchaSecret}&response=${token}`,
+  })
+    .then((res) => res.json())
+    .then((validationResponse) => {
+      console.log(`validationResponse.success = ${validationResponse.success}`);
+      return validationResponse.success;
+    });
 };
 
 const validateContactUsFormBody = (body: any): boolean =>
@@ -70,7 +90,8 @@ const validateContactUsFormBody = (body: any): boolean =>
   body.email &&
   isEmail(body.email) &&
   body.subject &&
-  body.message;
+  body.message &&
+  body.captchaToken;
 
 const validateTopics = (
   reqTopic: unknown,
@@ -78,7 +99,9 @@ const validateTopics = (
   reqSubsubtopic: unknown
 ): boolean => {
   // Validate topic
-  const topic = contactUsConfig.find(topicEntry => topicEntry.id === reqTopic);
+  const topic = contactUsConfig.find(
+    (topicEntry) => topicEntry.id === reqTopic
+  );
   if (!topic || topic.noForm) {
     return false;
   }
@@ -91,7 +114,7 @@ const validateTopics = (
     }
 
     const subtopic = subtopicList.find(
-      subtopicEntry => subtopicEntry.id === reqSubtopic
+      (subtopicEntry) => subtopicEntry.id === reqSubtopic
     );
     if (!subtopic || subtopic.noForm) {
       return false;
@@ -105,7 +128,7 @@ const validateTopics = (
       }
 
       const subsubtopic = subsubtopicList.find(
-        subsubtopicEntry => subsubtopicEntry.id === reqSubsubtopic
+        (subsubtopicEntry) => subsubtopicEntry.id === reqSubsubtopic
       );
       if (!subsubtopic || subsubtopic.noForm) {
         return false;
@@ -123,13 +146,13 @@ const validateTopics = (
 const buildContactUsReqBody = (body: any): ContactUsReq => ({
   topic: body.topic,
   ...(body.subtopic && {
-    subtopic: body.subtopic
+    subtopic: body.subtopic,
   }),
   ...(body.subsubtopic && {
-    subsubtopic: body.subsubtopic
+    subsubtopic: body.subsubtopic,
   }),
   name: body.name,
   email: body.email,
   subject: body.subject,
-  message: body.message
+  message: body.message,
 });

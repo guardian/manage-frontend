@@ -2,7 +2,7 @@ import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { isEmail } from "../../../shared/validationUtils";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
@@ -37,11 +37,19 @@ interface FormValidationState {
   email: FormElemValidationObject;
   subjectLine: FormElemValidationObject;
   details: FormElemValidationObject;
+  captcha: FormElemValidationObject;
 }
 
 type ContactUsFormStatus = "form" | "submitting" | "failure";
 
+declare let window: Window & {
+  Stripe: any;
+  grecaptcha: any;
+  v2ReCaptchaOnLoadCallback: () => void;
+};
+
 export const ContactUsForm = (props: ContactUsFormProps) => {
+  const [captchaComplete, setCaptchaComplete] = useState<boolean>(false);
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
   const [fullName, setFullName] = useState<string>(
     (typeof window !== "undefined" &&
@@ -50,7 +58,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   );
   const [email, setEmail] = useState<string>(
     (typeof window !== "undefined" &&
-      window?.guardian?.identityDetails?.email) ||
+      window.guardian?.identityDetails?.email) ||
       ""
   );
   const [details, setDetails] = useState<string>("");
@@ -85,8 +93,37 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     details: {
       isValid: true,
       message: mandatoryFieldMessage
+    },
+    captcha: {
+      isValid: captchaComplete,
+      message: "Please confirm you are not a robot"
     }
   });
+
+  useEffect(() => {
+    if (window.grecaptcha) {
+      renderReCaptcha();
+    } else {
+      const script = document.createElement("script");
+      script.setAttribute(
+        "src",
+        "https://www.google.com/recaptcha/api.js?onload=v2ReCaptchaOnLoadCallback&render=explicit"
+      );
+      // tslint:disable-next-line:no-object-mutation
+      window.v2ReCaptchaOnLoadCallback = renderReCaptcha;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  const renderReCaptcha = () => {
+    window.grecaptcha.render("recaptcha", {
+      sitekey: window.guardian?.recaptchaPublicKey,
+      callback: () => {
+        // 1sec delay is so the user see's the green tick for a short period before proceeding
+        setTimeout(() => setCaptchaComplete(true), 1000);
+      }
+    });
+  };
 
   const validateForm = () => {
     const isFullNameValid = !!fullName.length;
@@ -94,8 +131,13 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
     const isFormInValidState =
-      isFullNameValid && isEmailValid && isSubjectLineValid && isDetailsValid;
+      isFullNameValid &&
+      isEmailValid &&
+      isSubjectLineValid &&
+      isDetailsValid &&
+      captchaComplete;
     setFormValidationState({
+      ...formValidationState,
       inValidationMode: !isFormInValidState,
       fullName: { ...formValidationState.fullName, isValid: isFullNameValid },
       email: { ...formValidationState.fullName, isValid: isEmailValid },
@@ -331,6 +373,35 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         />
       )}
       {showCustomerServiceInfo && <CallCentreEmailAndNumbers />}
+      {!captchaComplete && (
+        <div
+          css={css`
+            margin: ${space[5]}px 0;
+          `}
+        >
+          {formValidationState.inValidationMode &&
+            !formValidationState.captcha.isValid && (
+              <span
+                css={css`
+                  display: block;
+                  color: ${palette.news[400]};
+                  ${textSans.medium({ fontWeight: "bold" })};
+                  font-weight: normal;
+                `}
+              >
+                <i
+                  css={css`
+                    margin-right: 4px;
+                  `}
+                >
+                  <ErrorIcon />
+                </i>
+                {formValidationState.captcha.message}
+              </span>
+            )}
+          <div id="recaptcha" />
+        </div>
+      )}
       <Button
         type="submit"
         iconSide="right"

@@ -6,8 +6,8 @@ import {
   StripeSetupIntent
 } from "../shared/stripeSetupIntent";
 import { log, putMetric } from "./log";
+import {recaptchaConfigPromise} from "./recaptchaConfig"
 import {
-  recaptchaConfigPromise,
   stripeSetupIntentConfigPromise
 } from "./stripeSetupIntentConfig";
 
