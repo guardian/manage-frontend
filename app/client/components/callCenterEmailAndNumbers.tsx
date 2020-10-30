@@ -185,6 +185,7 @@ export const CallCentreEmailAndNumbers = (
                     <span
                       css={css`
                         ${textSans.medium({ fontWeight: "bold" })};
+                        word-break: break-word;
                       `}
                     >
                       {EMAIL_ADDRESS}
