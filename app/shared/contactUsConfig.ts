@@ -11,8 +11,9 @@ export const contactUsConfig: Topic[] = [
         id: "s1",
         name: "I’m going on holiday and need to pause deliveries",
         selfServiceBox: {
-          text:
-            "Did you know you can suspend your subscription online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response.",
+          text: [
+            "Did you know you can suspend your subscription online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -21,8 +22,9 @@ export const contactUsConfig: Topic[] = [
         id: "s2",
         name: "I need to report a problem with my delivery",
         selfServiceBox: {
-          text:
-            "Did you know you can report your delivery problem by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response.",
+          text: [
+            "Did you know you can report your delivery problem by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -31,8 +33,9 @@ export const contactUsConfig: Topic[] = [
         id: "s3",
         name: "I need to update my delivery details",
         selfServiceBox: {
-          text:
-            "Did you know you can update your details online by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response.",
+          text: [
+            "Did you know you can update your details online by logging in below and selecting ‘Manage Subscription’? It’s easy to do and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -54,8 +57,9 @@ export const contactUsConfig: Topic[] = [
         id: "s5",
         name: "I want to update my payment details",
         selfServiceBox: {
-          text:
-            "Did you know you can update your payment details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+          text: [
+            "Did you know you can update your payment details online by logging in below’? It’s easy to use and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -64,8 +68,9 @@ export const contactUsConfig: Topic[] = [
         id: "s6",
         name: "My payment has failed",
         selfServiceBox: {
-          text:
-            "There might be something wrong with your payment details. Did you know you can check these online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+          text: [
+            "There might be something wrong with your payment details. Did you know you can check these online by logging in below’? It’s easy to use and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -74,8 +79,9 @@ export const contactUsConfig: Topic[] = [
         id: "s7",
         name: "I would like to see my invoices and payments",
         selfServiceBox: {
-          text:
-            "Did you know you can view your invoices below by logging in below and navigating to the billing tab? It’s easy to use and means you don’t have to wait for a response.",
+          text: [
+            "Did you know you can view your invoices below by logging in below and navigating to the billing tab? It’s easy to use and means you don’t have to wait for a response."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -85,8 +91,10 @@ export const contactUsConfig: Topic[] = [
         name: "I would like to cancel my payment",
         noForm: true,
         selfServiceBox: {
-          text:
+          text: [
             "Did you know you can cancel by logging in below and selecting ‘Manage my subscription/membership/recurring contribution? It’s easy to use and means you don’t have to wait for a response.",
+            "If you still want to contact us, please contact our Customer Service team. You can find the contact details for your region below."
+          ],
           linkText: "Go to your account",
           href: "/"
         }
@@ -135,8 +143,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss2",
             name: "I forgot my password",
             selfServiceBox: {
-              text:
-                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response.",
+              text: [
+                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -145,8 +154,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss3",
             name: "I need to update my account details",
             selfServiceBox: {
-              text:
-                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              text: [
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -155,8 +165,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss4",
             name: "I want to delete my account",
             selfServiceBox: {
-              text:
-                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first.",
+              text: [
+                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -186,8 +197,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss8",
             name: "I forgot my password",
             selfServiceBox: {
-              text:
-                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response.",
+              text: [
+                "Did you know you can update your password online using the button below? It’s easy to use and means you don’t have to wait for a response."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -196,8 +208,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss9",
             name: "I need to update my account details",
             selfServiceBox: {
-              text:
-                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              text: [
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -206,8 +219,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss10",
             name: "I want to delete my account",
             selfServiceBox: {
-              text:
-                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first.",
+              text: [
+                "Did you know you can delete your account by logging in below’? It’s easy to use and means you don’t have to wait for a response. Please note that if you have an active subscription or recurring contribution you will need to cancel that first."
+              ],
               linkText: "Go to your account",
               href: "/"
             }
@@ -233,8 +247,9 @@ export const contactUsConfig: Topic[] = [
             id: "ss13",
             name: "I need to update my email address",
             selfServiceBox: {
-              text:
-                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response.",
+              text: [
+                "Did you know you can update your personal details online by logging in below’? It’s easy to use and means you don’t have to wait for a response."
+              ],
               linkText: "Go to your account",
               href: "/"
             }

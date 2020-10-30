@@ -248,7 +248,7 @@ export const ContactUs = (props: ContactUsProps) => {
     currentSubTopic?.selfServiceBox ||
     currentTopic?.selfServiceBox;
 
-  const linkAsbutton =
+  const noForm =
     currentSubSubTopic?.noForm ||
     currentSubTopic?.noForm ||
     currentTopic?.noForm;
@@ -419,7 +419,8 @@ export const ContactUs = (props: ContactUsProps) => {
                   copy={selfServiceBox.text}
                   linkCopy={selfServiceBox.linkText}
                   linkHref={selfServiceBox.href}
-                  linkAsButton={linkAsbutton}
+                  linkAsButton={noForm}
+                  showContacts={noForm}
                   topicReferer={
                     `${contactUsFormState.selectedTopic} - ` +
                     `${contactUsFormState.selectedSubTopic} - ` +

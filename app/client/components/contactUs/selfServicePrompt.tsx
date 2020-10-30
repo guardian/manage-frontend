@@ -4,27 +4,41 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { trackEvent } from "../analytics";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { InfoIconDark } from "../svgs/infoIconDark";
 
 interface SelfServicePromptProps {
-  copy: string;
+  copy: string[];
   linkCopy: string;
   linkHref: string;
   topicReferer: string;
   linkAsButton?: boolean;
+  showContacts?: boolean;
   additionalCss?: SerializedStyles;
 }
 
 export const SelfServicePrompt = (props: SelfServicePromptProps) => {
+  const divCss = css`
+    display: block;
+    ${textSans.medium({ fontWeight: "bold" })};
+    border: 4px solid ${palette.brand[500]};
+    padding: ${space[5]}px ${space[5]}px ${space[5]}px 53px;
+    margin: ${space[3]}px 0;
+    position: relative;
+    word-break: break-word;
+    ${props.additionalCss}
+  `;
+
+  const pCss = css`
+    padding: 0;
+    margin: 0 0 ${space[5]}px 0;
+  `;
+
   const linkCss = css`
+    margin-top: ${space[5]}px;
     text-decoration: underline;
     font-weight: normal;
     color: ${palette.brand[500]};
-  `;
-
-  const spanCss = css`
-    display: block;
-    margin-bottom: ${space[5]}px;
   `;
 
   const onServicelinkClick = () =>
@@ -35,17 +49,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
     });
 
   return (
-    <p
-      css={css`
-        display: block;
-        ${textSans.medium({ fontWeight: "bold" })};
-        border: 4px solid ${palette.brand[500]};
-        padding: ${space[5]}px ${space[5]}px ${space[5]}px 53px;
-        margin: ${space[3]}px 0;
-        position: relative;
-        ${props.additionalCss}
-      `}
-    >
+    <div css={divCss}>
       <i
         css={css`
           width: 21px;
@@ -57,9 +61,20 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
       >
         <InfoIconDark fillColor={palette.brand[500]} />
       </i>
-      <span css={spanCss}>{props.copy}</span>
+      {props.copy.map((paragraph, index) => (
+        <p key={`ssb-${index}`} css={pCss}>
+          {paragraph}
+        </p>
+      ))}
+      {props.showContacts && <CallCentreEmailAndNumbers />}
       {props.linkAsButton ? (
-        <LinkButton href={props.linkHref} onClick={onServicelinkClick}>
+        <LinkButton
+          href={props.linkHref}
+          cssOverrides={css`
+            margin-top: ${space[5]}px;
+          `}
+          onClick={onServicelinkClick}
+        >
           {props.linkCopy}
         </LinkButton>
       ) : (
@@ -67,6 +82,6 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
           {props.linkCopy} &gt;
         </a>
       )}
-    </p>
+    </div>
   );
 };

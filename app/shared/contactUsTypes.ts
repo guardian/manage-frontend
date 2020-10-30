@@ -7,7 +7,7 @@ interface BaseTopic {
 }
 
 interface SelfServiceBox {
-  text: string;
+  text: string[];
   linkText: string;
   href: string;
 }
