@@ -49,7 +49,7 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
     month: {
       amounts: [3, 7, 12],
       otherDefaultAmount: 2,
-      minAmount: 2,
+      minAmount: 1,
       maxAmount: 166
     },
     year: {
@@ -91,7 +91,7 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
     month: {
       amounts: [10, 20, 40],
       otherDefaultAmount: 10,
-      minAmount: 10,
+      minAmount: 2,
       maxAmount: 200
     },
     year: {
