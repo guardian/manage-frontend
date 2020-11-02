@@ -109,7 +109,8 @@ export const Input = (props: InputProps) => {
           value={props.value}
           ref={inputEl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-            props.changeSetState && props.changeSetState(`${e.target.value}`)
+            props.changeSetState &&
+            props.changeSetState(`${e.target.valueAsNumber}`)
           }
           onFocus={(e: React.FocusEvent<HTMLInputElement>): void =>
             props.onFocus && props.onFocus(e)

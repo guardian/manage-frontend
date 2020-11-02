@@ -274,7 +274,21 @@ export const ContributionUpdateAmountForm = (
           props.mainPlan.interval
         }ly contribution amount of ${
           props.mainPlan.currency
-        }${currentContributionOptions.minAmount.toFixed(2)}${
+        }${currentContributionOptions.minAmount.toFixed(2)} ${
+          props.mainPlan.currencyISO
+        }`
+      };
+    } else if (
+      !isNaN(chosenOptionNum) &&
+      chosenOptionNum > currentContributionOptions.maxAmount
+    ) {
+      return {
+        passed: false,
+        message: `There is a maximum ${
+          props.mainPlan.interval
+        }ly contribution amount of ${
+          props.mainPlan.currency
+        }${currentContributionOptions.maxAmount.toFixed(2)} ${
           props.mainPlan.currencyISO
         }`
       };
