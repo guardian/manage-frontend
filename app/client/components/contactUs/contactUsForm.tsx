@@ -43,10 +43,14 @@ type ContactUsFormStatus = "form" | "submitting" | "failure";
 export const ContactUsForm = (props: ContactUsFormProps) => {
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
   const [fullName, setFullName] = useState<string>(
-    window.guardian?.identityDetails?.displayName || ""
+    (typeof window !== "undefined" &&
+      window?.guardian?.identityDetails?.displayName) ||
+      ""
   );
   const [email, setEmail] = useState<string>(
-    window.guardian?.identityDetails?.email || ""
+    (typeof window !== "undefined" &&
+      window?.guardian?.identityDetails?.email) ||
+      ""
   );
   const [details, setDetails] = useState<string>("");
   const [
