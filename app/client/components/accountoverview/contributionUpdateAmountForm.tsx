@@ -246,22 +246,51 @@ export const ContributionUpdateAmountForm = (
       (selectedValue === "other"
         ? otherAmount
         : `${selectedValue}`.replace(props.mainPlan.currency, ""));
+    const chosenOptionNum = Number(chosenOption);
     if (!chosenOption) {
       return {
         passed: false,
         message: "Please make a selection",
         noSelection: true
       };
-    } else if (Number(chosenOption) === props.mainPlan.amount / 100) {
+    } else if (chosenOptionNum === props.mainPlan.amount / 100) {
       return {
         passed: false,
         message: "You have selected the same amount as you currently contribute"
       };
-    } else if (isNaN(Number(chosenOption))) {
+    } else if (isNaN(chosenOptionNum)) {
       return {
         passed: false,
         message:
           "There is a problem with the amount you have selected, please make sure it is a valid amount"
+      };
+    } else if (
+      !isNaN(chosenOptionNum) &&
+      chosenOptionNum < currentContributionOptions.minAmount
+    ) {
+      return {
+        passed: false,
+        message: `There is a minimum ${
+          props.mainPlan.interval
+        }ly contribution amount of ${
+          props.mainPlan.currency
+        }${currentContributionOptions.minAmount.toFixed(2)} ${
+          props.mainPlan.currencyISO
+        }`
+      };
+    } else if (
+      !isNaN(chosenOptionNum) &&
+      chosenOptionNum > currentContributionOptions.maxAmount
+    ) {
+      return {
+        passed: false,
+        message: `There is a maximum ${
+          props.mainPlan.interval
+        }ly contribution amount of ${
+          props.mainPlan.currency
+        }${currentContributionOptions.maxAmount.toFixed(2)} ${
+          props.mainPlan.currencyISO
+        }`
       };
     }
     return {
