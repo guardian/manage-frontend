@@ -9,6 +9,10 @@ import { log } from "./log";
 export const contactUsFormHandler = async (req: Request, res: Response) => {
   const validBody = parseAndValidate(req.body);
   if (!validBody) {
+    // This could indicate we have a bug in our code or an external system is making invalid requests to this endpoint
+    const errorMessage = `Could not parse and validate Contact Us request body.`;
+    log.error(errorMessage);
+    captureMessage(errorMessage);
     return res.status(400).send();
   }
 
