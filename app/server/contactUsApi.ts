@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import fetch from "node-fetch";
 import { contactUsConfig } from "../shared/contactUsConfig";
 import { ContactUsReq } from "../shared/contactUsTypes";
+import { isEmail } from "../shared/validationUtils";
 import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
 import { log } from "./log";
 
@@ -117,11 +118,6 @@ const validateTopics = (
   }
 
   return true;
-};
-
-const isEmail = (email: string): boolean => {
-  const emailSplit = email.split("@");
-  return emailSplit.length === 2 && emailSplit[1].includes(".");
 };
 
 const buildContactUsReqBody = (body: any): ContactUsReq => ({

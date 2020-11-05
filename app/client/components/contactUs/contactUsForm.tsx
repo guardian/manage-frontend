@@ -3,6 +3,7 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { isEmail } from "../../../shared/validationUtils";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { FormError } from "../FormError";
@@ -90,8 +91,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   const validateForm = () => {
     const isFullNameValid = !!fullName.length;
-    const emailSplit = email.split("@");
-    const isEmailValid = emailSplit.length === 2 && emailSplit[1].includes(".");
+    const isEmailValid = isEmail(email);
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
     const isFormInValidState =
