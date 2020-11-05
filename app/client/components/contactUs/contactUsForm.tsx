@@ -54,10 +54,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       ""
   );
   const [details, setDetails] = useState<string>("");
-  const [
-    instructionsRemainingCharacters,
-    setInstructionsRemainingCharacters
-  ] = useState<number>(250);
+  const [detailsRemainingCharacters, setDetailsRemainingCharacters] = useState<
+    number
+  >(250);
 
   const [status, setStatus] = useState<ContactUsFormStatus>("form");
 
@@ -279,14 +278,14 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               </span>
             )}
           <textarea
-            id="delivery-instructions"
-            name="instructions"
+            id="contact-us-details"
+            name="details"
             rows={2}
             maxLength={250}
             value={details}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setDetails(e.target.value);
-              setInstructionsRemainingCharacters(250 - e.target.value.length);
+              setDetailsRemainingCharacters(250 - e.target.value.length);
             }}
             css={css`
               width: 100%;
@@ -307,7 +306,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               color: ${palette.neutral[46]};
             `}
           >
-            {instructionsRemainingCharacters} characters remaining
+            {detailsRemainingCharacters} characters remaining
           </span>
         </label>
       </fieldset>
