@@ -24,6 +24,7 @@ export interface FormPayload {
   email: string;
   subjectLine: string;
   details: string;
+  captchaToken: string;
 }
 
 interface FormElemValidationObject {
@@ -49,7 +50,7 @@ declare let window: Window & {
 };
 
 export const ContactUsForm = (props: ContactUsFormProps) => {
-  const [captchaComplete, setCaptchaComplete] = useState<boolean>(false);
+  const [captchaToken, setCaptchaToken] = useState<string>("");
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
   const [fullName, setFullName] = useState<string>(
     (typeof window !== "undefined" &&
@@ -95,7 +96,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       message: mandatoryFieldMessage
     },
     captcha: {
-      isValid: captchaComplete,
+      isValid: !!captchaToken.length,
       message: "Please confirm you are not a robot"
     }
   });
@@ -118,9 +119,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
-      callback: () => {
+      callback: (token: string) => {
         // 1sec delay is so the user see's the green tick for a short period before proceeding
-        setTimeout(() => setCaptchaComplete(true), 1000);
+        setTimeout(() => setCaptchaToken(token), 1000);
       }
     });
   };
@@ -135,7 +136,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       isEmailValid &&
       isSubjectLineValid &&
       isDetailsValid &&
-      captchaComplete;
+      !!captchaToken.length;
     setFormValidationState({
       ...formValidationState,
       inValidationMode: !isFormInValidState,
@@ -161,7 +162,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               fullName,
               subjectLine,
               email,
-              details
+              details,
+              captchaToken
             })
             .then(success => {
               if (!success) {
@@ -373,7 +375,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         />
       )}
       {showCustomerServiceInfo && <CallCentreEmailAndNumbers />}
-      {!captchaComplete && (
+      {!captchaToken.length && (
         <div
           css={css`
             margin: ${space[5]}px 0;
