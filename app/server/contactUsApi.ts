@@ -68,9 +68,9 @@ const validateContactUsFormBody = (body: any): boolean =>
   body.message;
 
 const validateTopics = (
-  reqTopic: string | undefined,
-  reqSubtopic: string | undefined,
-  reqSubsubtopic: string | undefined
+  reqTopic: unknown,
+  reqSubtopic: unknown,
+  reqSubsubtopic: unknown
 ): boolean => {
   // Validate topic
   const topic = contactUsConfig.find(topicEntry => topicEntry.id === reqTopic);
