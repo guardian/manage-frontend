@@ -1,38 +1,47 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { SubTopic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 
 interface SubTopicFormProps {
-  updateCallback: (subTopicId: string) => void;
-  submitCallback: () => void;
+  submitCallback: (subTopicId: string) => void;
   title: string;
   submitButonText: string;
-  showSubmitButton: boolean;
-  additionalCss?: SerializedStyles;
-  data?: SubTopic[];
+  data: SubTopic[];
   preSelectedId?: string;
 }
 
 export const SubTopicForm = (props: SubTopicFormProps) => {
+  const [selectedId, setSelectedId] = useState<string>(
+    props.preSelectedId || props.data[0].id
+  );
+
+  const [requiresSubmitButton, setRequiresSubmitButton] = useState<boolean>(
+    true
+  );
+
   return (
     <form
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
-        props.submitCallback();
+        setRequiresSubmitButton(false);
+        props.submitCallback(selectedId);
       }}
       css={css`
-        ${props.additionalCss}
+        margin-top: ${space[9]}px;
       `}
     >
       <fieldset
         onChange={(event: FormEvent<HTMLFieldSetElement>) => {
           const target: HTMLInputElement = event.target as HTMLInputElement;
-          props.updateCallback(target.value);
+          setSelectedId(target.value);
+          if (!requiresSubmitButton) {
+            props.submitCallback(target.value);
+          }
         }}
         css={css`
           border: 1px solid ${palette.neutral["86"]};
@@ -75,7 +84,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
               }
             `}
           >
-            {props.data?.map((subTopic, index) => (
+            {props.data.map((subTopic, index) => (
               <li
                 key={`deliveryProblemRadio-${index}`}
                 css={css`
@@ -85,9 +94,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
                 <Radio
                   value={subTopic.id}
                   label={subTopic.name}
-                  checked={
-                    !!props.preSelectedId && subTopic.id === props.preSelectedId
-                  }
+                  checked={subTopic.id === selectedId}
                   css={css`
                     vertical-align: top;
                     text-transform: lowercase;
@@ -101,7 +108,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
           </ul>
         </RadioGroup>
       </fieldset>
-      {props.showSubmitButton && (
+      {requiresSubmitButton && (
         <Button type="submit">{props.submitButonText}</Button>
       )}
     </form>

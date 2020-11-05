@@ -59,28 +59,15 @@ export const ContactUs = (props: ContactUsProps) => {
     boolean
   >(!validDeepLinkTopic);
 
-  const [
-    requireSubTopicSubmitButton,
-    setRequireSubTopicSubmitButton
-  ] = useState<boolean>(!validDeepLinkSubTopic);
-
-  const [
-    requireSubSubTopicSubmitButton,
-    setRequireSubSubTopicSubmitButton
-  ] = useState<boolean>(!validDeepLinkSubSubTopic);
-
   const setTopic = (newTopicId: string, hasComeFromSubmitButton: boolean) => {
     setContactUsFormState({
       selectedTopic:
         hasComeFromSubmitButton || !requireTopicSubmitButton
           ? newTopicId
           : contactUsFormState.selectedTopic,
-      selectedSubTopic: contactUsConfig.find(topic => topic.id === newTopicId)
-        ?.subtopics?.[0].id,
+      selectedSubTopic: undefined,
       selectedSubSubTopic: undefined
     });
-    setRequireSubTopicSubmitButton(true);
-    setRequireSubSubTopicSubmitButton(true);
   };
 
   const setSubTopic = (selectedSubTopic: string) => {
@@ -89,14 +76,26 @@ export const ContactUs = (props: ContactUsProps) => {
       selectedSubTopic,
       selectedSubSubTopic: undefined
     });
-    setRequireSubSubTopicSubmitButton(true);
+
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subtopic_click",
+      eventLabel: selectedSubTopic
+    });
   };
 
-  const setSubSubTopic = (selectedSubSubTopic: string) =>
+  const setSubSubTopic = (selectedSubSubTopic: string) => {
     setContactUsFormState({
       ...contactUsFormState,
       selectedSubSubTopic
     });
+
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subsubtopic_click",
+      eventLabel: selectedSubSubTopic
+    });
+  };
 
   const [transientTopicSelection, setTransientTopicSelection] = useState<
     string
@@ -110,38 +109,6 @@ export const ContactUs = (props: ContactUsProps) => {
       eventAction: "topic_click",
       eventLabel: newTopicId
     });
-  };
-
-  const subTopicSelectionCallback = (newSubTopicId: string) => {
-    setSubTopic(newSubTopicId);
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subtopic_click",
-      eventLabel: newSubTopicId
-    });
-  };
-
-  const subTopicSubmitCallback = () => {
-    if (!!contactUsFormState.selectedSubTopic) {
-      setRequireSubTopicSubmitButton(false);
-    }
-  };
-
-  const subSubTopicSelectionCallback = (newSubSubTopicId: string) => {
-    setSubSubTopic(newSubSubTopicId);
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subsubtopic_click",
-      eventLabel: newSubSubTopicId
-    });
-  };
-
-  const subSubTopicSubmitCallback = () => {
-    if (!!contactUsFormState.selectedSubSubTopic) {
-      setRequireSubSubTopicSubmitButton(false);
-    }
   };
 
   const submitForm = async (formData: FormPayload): Promise<boolean> => {
@@ -227,16 +194,11 @@ export const ContactUs = (props: ContactUsProps) => {
     !!subTopics;
 
   const showSubSubTopics =
-    !!contactUsFormState.selectedSubTopic &&
-    !requireSubTopicSubmitButton &&
-    !!subSubTopics;
+    !!contactUsFormState.selectedSubTopic && !!subSubTopics;
 
   const showForm =
-    (!!contactUsFormState.selectedSubSubTopic &&
-      !requireSubSubTopicSubmitButton &&
-      !currentSubSubTopic?.noForm) ||
+    (!!contactUsFormState.selectedSubSubTopic && !currentSubSubTopic?.noForm) ||
     (!!contactUsFormState.selectedSubTopic &&
-      !requireSubTopicSubmitButton &&
       !currentSubTopic?.noForm &&
       !subSubTopics) ||
     (!!contactUsFormState.selectedTopic &&
@@ -279,10 +241,8 @@ export const ContactUs = (props: ContactUsProps) => {
         !!currentTopic?.selfServiceBox &&
         !requireTopicSubmitButton) ||
         (!selectedSubtopic?.subsubtopics &&
-          !!selectedSubtopic?.selfServiceBox &&
-          !requireSubTopicSubmitButton) ||
-        (!!selectedSubSubtopic?.selfServiceBox &&
-          !requireSubSubTopicSubmitButton)
+          !!selectedSubtopic?.selfServiceBox) ||
+        !!selectedSubSubtopic?.selfServiceBox
     );
     setFormSubjectLine(
       `${currentTopic ? currentTopic.name : ""}${
@@ -304,12 +264,7 @@ export const ContactUs = (props: ContactUsProps) => {
     if (currentTopic?.subTopicsTitle) {
       setSubTopicsTitle(currentTopic.subTopicsTitle);
     }
-  }, [
-    contactUsFormState,
-    requireTopicSubmitButton,
-    requireSubTopicSubmitButton,
-    requireSubSubTopicSubmitButton
-  ]);
+  }, [contactUsFormState, requireTopicSubmitButton]);
 
   return (
     <>
@@ -387,32 +342,24 @@ export const ContactUs = (props: ContactUsProps) => {
                   Begin form
                 </Button>
               )}
-              {showSubTopics && (
+              {showSubTopics && subTopics && (
                 <SubTopicForm
-                  updateCallback={subTopicSelectionCallback}
-                  submitCallback={subTopicSubmitCallback}
+                  key={`subtopic-${contactUsFormState.selectedTopic}`}
+                  submitCallback={setSubTopic}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
-                  showSubmitButton={requireSubTopicSubmitButton}
                   data={subTopics}
                   preSelectedId={contactUsFormState.selectedSubTopic}
-                  additionalCss={css`
-                    margin-top: ${space[9]}px;
-                  `}
                 />
               )}
-              {showSubSubTopics && (
+              {showSubSubTopics && subSubTopics && (
                 <SubTopicForm
-                  updateCallback={subSubTopicSelectionCallback}
-                  submitCallback={subSubTopicSubmitCallback}
+                  key={`subsubtopic-${contactUsFormState.selectedSubTopic}`}
+                  submitCallback={setSubSubTopic}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
-                  showSubmitButton={requireSubSubTopicSubmitButton}
                   data={subSubTopics}
                   preSelectedId={contactUsFormState.selectedSubSubTopic}
-                  additionalCss={css`
-                    margin-top: ${space[9]}px;
-                  `}
                 />
               )}
               {showSelfServicePrompt && selfServiceBox && (
@@ -439,7 +386,7 @@ export const ContactUs = (props: ContactUsProps) => {
                   submitCallback={submitForm}
                   title={`${
                     showSubTopics || showSubSubTopics
-                      ? `Step ${showSubTopics ? "3" : "2"}: `
+                      ? `Step ${showSubSubTopics ? "3" : "2"}: `
                       : ""
                   }Tell us more`}
                   subjectLine={formSubjectLine}
