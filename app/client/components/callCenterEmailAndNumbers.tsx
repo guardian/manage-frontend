@@ -159,7 +159,7 @@ export const CallCentreEmailAndNumbers = (
           const isOpen = index === indexOfOpenSection;
           const isNotFirstOption = index > 0;
           return (
-            <div css={css`subsectionCss`} key={phoneRegion.key}>
+            <div key={phoneRegion.key}>
               <h2
                 css={css`
                   ${sectionTitleCss(isOpen, isNotFirstOption)}
@@ -185,6 +185,7 @@ export const CallCentreEmailAndNumbers = (
                     <span
                       css={css`
                         ${textSans.medium({ fontWeight: "bold" })};
+                        word-break: break-word;
                       `}
                     >
                       {EMAIL_ADDRESS}

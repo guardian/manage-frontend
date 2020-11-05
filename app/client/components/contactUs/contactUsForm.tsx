@@ -3,19 +3,23 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { isEmail } from "../../../shared/validationUtils";
 import { minWidth } from "../../styles/breakpoints";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { FormError } from "../FormError";
 import { Input } from "../input";
+import { Spinner } from "../spinner";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface ContactUsFormProps {
-  submitCallback: (payload: FormPayload) => void;
+  submitCallback: (payload: FormPayload) => Promise<boolean>;
   title: string;
   subjectLine: string;
   editableSubjectLine?: boolean;
   additionalCss?: SerializedStyles;
 }
 
-interface FormPayload {
+export interface FormPayload {
   fullName: string;
   email: string;
   subjectLine: string;
@@ -35,19 +39,30 @@ interface FormValidationState {
   details: FormElemValidationObject;
 }
 
+type ContactUsFormStatus = "form" | "submitting" | "failure";
+
 export const ContactUsForm = (props: ContactUsFormProps) => {
   const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
   const [fullName, setFullName] = useState<string>(
-    window.guardian?.identityDetails?.displayName || ""
+    (typeof window !== "undefined" &&
+      window?.guardian?.identityDetails?.displayName) ||
+      ""
   );
   const [email, setEmail] = useState<string>(
-    window.guardian?.identityDetails?.email || ""
+    (typeof window !== "undefined" &&
+      window?.guardian?.identityDetails?.email) ||
+      ""
   );
   const [details, setDetails] = useState<string>("");
-  const [
-    instructionsRemainingCharacters,
-    setInstructionsRemainingCharacters
-  ] = useState<number>(250);
+  const [detailsRemainingCharacters, setDetailsRemainingCharacters] = useState<
+    number
+  >(250);
+
+  const [status, setStatus] = useState<ContactUsFormStatus>("form");
+
+  const [showCustomerServiceInfo, setShowCustomerServiceInfo] = useState<
+    boolean
+  >(false);
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
@@ -75,8 +90,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   const validateForm = () => {
     const isFullNameValid = !!fullName.length;
-    const emailSplit = email.split("@");
-    const isEmailValid = emailSplit.length === 2 && emailSplit[1].includes(".");
+    const isEmailValid = isEmail(email);
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
     const isFormInValidState =
@@ -99,12 +113,19 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
         if (validateForm()) {
-          props.submitCallback({
-            fullName,
-            subjectLine,
-            email,
-            details
-          });
+          setStatus("submitting");
+          props
+            .submitCallback({
+              fullName,
+              subjectLine,
+              email,
+              details
+            })
+            .then(success => {
+              if (!success) {
+                setStatus("failure");
+              }
+            });
         }
       }}
       css={css`
@@ -115,6 +136,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         onChange={() => {
           if (formValidationState.inValidationMode) {
             validateForm();
+          }
+          if (status === "failure") {
+            setStatus("form");
           }
         }}
         css={css`
@@ -254,14 +278,14 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               </span>
             )}
           <textarea
-            id="delivery-instructions"
-            name="instructions"
+            id="contact-us-details"
+            name="details"
             rows={2}
             maxLength={250}
             value={details}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setDetails(e.target.value);
-              setInstructionsRemainingCharacters(250 - e.target.value.length);
+              setDetailsRemainingCharacters(250 - e.target.value.length);
             }}
             css={css`
               width: 100%;
@@ -282,11 +306,39 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               color: ${palette.neutral[46]};
             `}
           >
-            {instructionsRemainingCharacters} characters remaining
+            {detailsRemainingCharacters} characters remaining
           </span>
         </label>
       </fieldset>
-      <Button type="submit">Submit</Button>
+      {status === "failure" && (
+        <FormError
+          title="Something went wrong when submitting your form"
+          messages={[
+            <>
+              Please try again or if the problem persists please contact{" "}
+              <Button
+                priority="subdued"
+                cssOverrides={css`
+                  font-weight: normal;
+                  text-decoration: underline;
+                `}
+                onClick={() => setShowCustomerServiceInfo(true)}
+              >
+                Customer Service
+              </Button>
+            </>
+          ]}
+        />
+      )}
+      {showCustomerServiceInfo && <CallCentreEmailAndNumbers />}
+      <Button
+        type="submit"
+        iconSide="right"
+        icon={status === "submitting" ? <Spinner scale={0.5} /> : undefined}
+        disabled={status === "submitting"}
+      >
+        Submit
+      </Button>
     </form>
   );
 };

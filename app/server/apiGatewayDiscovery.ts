@@ -28,7 +28,8 @@ const apiNames = [
   "cancellation-sf-cases-api",
   "delivery-records-api",
   "holiday-stop-api",
-  "invoicing-api"
+  "invoicing-api",
+  "contact-us-api"
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -194,3 +195,21 @@ export const invoicingAPI = getAuthorisedExpressCallbackForApiGateway(
   "invoicing-api",
   generateAwsSignatureHeaders
 );
+export const getContactUsAPIHostAndKey = async () => {
+  const stage = conf.STAGE.toUpperCase();
+  const { host, apiKey } = await getHostAndApiKeyForStack(
+    "membership",
+    "contact-us-api",
+    stage
+  );
+
+  if (!apiKey) {
+    log.error(`Missing API Key for ${stage} contact-us-api`);
+    return undefined;
+  } else if (!host) {
+    log.error(`Missing host for ${stage} contact-us-api`);
+    return undefined;
+  }
+
+  return { host: `http://${host}/${stage}/`, apiKey };
+};

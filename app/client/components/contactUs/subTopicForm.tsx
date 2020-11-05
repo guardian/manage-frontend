@@ -4,8 +4,8 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import React, { FormEvent } from "react";
+import { SubTopic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
-import { SubTopic } from "./contactUsConfig";
 
 interface SubTopicFormProps {
   updateCallback: (subTopicId: string) => void;

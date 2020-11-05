@@ -1,8 +1,9 @@
 import * as pathLib from "path";
 
-const publicPaths = ["/contact-us-form"];
+// To avoid security vulnerabilities do no add public paths that do not end in a slash
+const publicPaths = ["/contact-us/", "/api/contact-us/"];
 
 export const requiresSignin = (path: string) => {
-  const normalizedPath = pathLib.normalize(path);
+  const normalizedPath = pathLib.normalize(path + "/");
   return !publicPaths.some(publicPath => normalizedPath.startsWith(publicPath));
 };

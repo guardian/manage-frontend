@@ -3,18 +3,19 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
+import { captureException } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
+import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import { contactUsConfig } from "./contactUsConfig";
-import { ContactUsForm } from "./contactUsForm";
+import { ContactUsForm, FormPayload } from "./contactUsForm";
 import { ContactUsHeader } from "./contactUsHeader";
 import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicButton } from "./topicButton";
 
-interface ContactUsFormStateSnapshot {
+interface ContactUsFormState {
   selectedTopic: string | undefined;
   selectedSubTopic: string | undefined;
   selectedSubSubTopic: string | undefined;
@@ -25,6 +26,8 @@ interface ContactUsProps extends RouteComponentProps {
   urlSubTopicId?: string;
   urlSubSubTopicId?: string;
 }
+
+type ContactUsFormStatus = "form" | "success";
 
 export const ContactUs = (props: ContactUsProps) => {
   const validDeepLinkTopic = contactUsConfig.find(
@@ -42,12 +45,10 @@ export const ContactUs = (props: ContactUsProps) => {
   const initialTopicSelection: string =
     validDeepLinkTopic?.id || contactUsConfig[0].id;
 
-  const [formSubmittedSuccessfully, setFormSubmitionStatus] = useState<boolean>(
-    false
-  );
+  const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
-  const [contactUsFormStateSnapshot, setContactUsFormStateSnapshot] = useState<
-    ContactUsFormStateSnapshot
+  const [contactUsFormState, setContactUsFormState] = useState<
+    ContactUsFormState
   >({
     selectedTopic: initialTopicSelection,
     selectedSubTopic: validDeepLinkSubTopic?.id,
@@ -69,11 +70,11 @@ export const ContactUs = (props: ContactUsProps) => {
   ] = useState<boolean>(!validDeepLinkSubSubTopic);
 
   const setTopic = (newTopicId: string, hasComeFromSubmitButton: boolean) => {
-    setContactUsFormStateSnapshot({
+    setContactUsFormState({
       selectedTopic:
         hasComeFromSubmitButton || !requireTopicSubmitButton
           ? newTopicId
-          : contactUsFormStateSnapshot.selectedTopic,
+          : contactUsFormState.selectedTopic,
       selectedSubTopic: contactUsConfig.find(topic => topic.id === newTopicId)
         ?.subtopics?.[0].id,
       selectedSubSubTopic: undefined
@@ -83,8 +84,8 @@ export const ContactUs = (props: ContactUsProps) => {
   };
 
   const setSubTopic = (selectedSubTopic: string) => {
-    setContactUsFormStateSnapshot({
-      ...contactUsFormStateSnapshot,
+    setContactUsFormState({
+      ...contactUsFormState,
       selectedSubTopic,
       selectedSubSubTopic: undefined
     });
@@ -92,8 +93,8 @@ export const ContactUs = (props: ContactUsProps) => {
   };
 
   const setSubSubTopic = (selectedSubSubTopic: string) =>
-    setContactUsFormStateSnapshot({
-      ...contactUsFormStateSnapshot,
+    setContactUsFormState({
+      ...contactUsFormState,
       selectedSubSubTopic
     });
 
@@ -105,8 +106,8 @@ export const ContactUs = (props: ContactUsProps) => {
     setTransientTopicSelection(newTopicId);
     setTopic(newTopicId, requireTopicSubmitButton);
     trackEvent({
-      eventCategory: "contact_us_topic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "topic_click",
       eventLabel: newTopicId
     });
   };
@@ -115,14 +116,14 @@ export const ContactUs = (props: ContactUsProps) => {
     setSubTopic(newSubTopicId);
 
     trackEvent({
-      eventCategory: "contact_us_subtopic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "subtopic_click",
       eventLabel: newSubTopicId
     });
   };
 
   const subTopicSubmitCallback = () => {
-    if (!!contactUsFormStateSnapshot.selectedSubTopic) {
+    if (!!contactUsFormState.selectedSubTopic) {
       setRequireSubTopicSubmitButton(false);
     }
   };
@@ -131,47 +132,126 @@ export const ContactUs = (props: ContactUsProps) => {
     setSubSubTopic(newSubSubTopicId);
 
     trackEvent({
-      eventCategory: "contact_us_subsubtopic",
-      eventAction: "click",
+      eventCategory: "ContactUs",
+      eventAction: "subsubtopic_click",
       eventLabel: newSubSubTopicId
     });
   };
 
   const subSubTopicSubmitCallback = () => {
-    if (!!contactUsFormStateSnapshot.selectedSubSubTopic) {
+    if (!!contactUsFormState.selectedSubSubTopic) {
       setRequireSubSubTopicSubmitButton(false);
     }
   };
 
+  const submitForm = async (formData: FormPayload): Promise<boolean> => {
+    const body = JSON.stringify({
+      ...(contactUsFormState.selectedTopic && {
+        topic: contactUsFormState.selectedTopic
+      }),
+      ...(contactUsFormState.selectedSubTopic && {
+        subtopic: contactUsFormState.selectedSubTopic
+      }),
+      ...(contactUsFormState.selectedSubSubTopic && {
+        subsubtopic: contactUsFormState.selectedSubSubTopic
+      }),
+      name: formData.fullName,
+      email: formData.email,
+      subject: formData.subjectLine,
+      message: formData.details
+    });
+
+    const res = await fetch("/api/contact-us/", { method: "POST", body });
+    if (res.ok) {
+      setFormStatus("success");
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_success",
+        eventLabel:
+          `${contactUsFormState.selectedTopic} - ` +
+          `${contactUsFormState.selectedSubTopic} - ` +
+          `${contactUsFormState.selectedSubSubTopic}`
+      });
+      return true;
+    } else {
+      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
+
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_failure",
+        eventLabel: errorMsg
+      });
+      captureException(errorMsg);
+      return false;
+    }
+  };
+
+  const headerText = (status: ContactUsFormStatus) => {
+    switch (status) {
+      case "form":
+        return "We are here to help";
+      case "success":
+        return "Thank you for contacting us";
+    }
+  };
+
+  const containerText = (status: ContactUsFormStatus) => {
+    switch (status) {
+      case "form":
+        return "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
+      case "success":
+        return `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`;
+    }
+  };
+
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === contactUsFormStateSnapshot.selectedTopic
+    topic => topic.id === contactUsFormState.selectedTopic
   );
 
   const subTopics = currentTopic?.subtopics;
 
-  const subSubTopics = subTopics?.find(
-    subTopic => subTopic.id === contactUsFormStateSnapshot.selectedSubTopic
-  )?.subsubtopics;
+  const currentSubTopic = subTopics?.find(
+    subTopic => subTopic.id === contactUsFormState.selectedSubTopic
+  );
+
+  const subSubTopics = currentSubTopic?.subsubtopics;
+
+  const currentSubSubTopic = subSubTopics?.find(
+    subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
+  );
 
   const showSubTopics =
-    !!contactUsFormStateSnapshot.selectedTopic &&
+    !!contactUsFormState.selectedTopic &&
     !requireTopicSubmitButton &&
     !!subTopics;
 
   const showSubSubTopics =
-    !!contactUsFormStateSnapshot.selectedSubTopic &&
+    !!contactUsFormState.selectedSubTopic &&
     !requireSubTopicSubmitButton &&
     !!subSubTopics;
 
   const showForm =
-    (!!contactUsFormStateSnapshot.selectedSubSubTopic &&
-      !requireSubSubTopicSubmitButton) ||
-    (!!contactUsFormStateSnapshot.selectedSubTopic &&
+    (!!contactUsFormState.selectedSubSubTopic &&
+      !requireSubSubTopicSubmitButton &&
+      !currentSubSubTopic?.noForm) ||
+    (!!contactUsFormState.selectedSubTopic &&
       !requireSubTopicSubmitButton &&
+      !currentSubTopic?.noForm &&
       !subSubTopics) ||
-    (!!contactUsFormStateSnapshot.selectedTopic &&
+    (!!contactUsFormState.selectedTopic &&
       !requireTopicSubmitButton &&
+      !currentTopic?.noForm &&
       !subTopics);
+
+  const selfServiceBox =
+    currentSubSubTopic?.selfServiceBox ||
+    currentSubTopic?.selfServiceBox ||
+    currentTopic?.selfServiceBox;
+
+  const noForm =
+    currentSubSubTopic?.noForm ||
+    currentSubTopic?.noForm ||
+    currentTopic?.noForm;
 
   const [showSelfServicePrompt, setShowSelfServicePrompt] = useState<boolean>(
     false
@@ -188,11 +268,10 @@ export const ContactUs = (props: ContactUsProps) => {
 
   useEffect(() => {
     const selectedSubtopic = currentTopic?.subtopics?.find(
-      subTopic => subTopic.id === contactUsFormStateSnapshot.selectedSubTopic
+      subTopic => subTopic.id === contactUsFormState.selectedSubTopic
     );
     const selectedSubSubtopic = selectedSubtopic?.subsubtopics?.find(
-      subSubTopic =>
-        subSubTopic.id === contactUsFormStateSnapshot.selectedSubSubTopic
+      subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
     );
     setShowSelfServicePrompt(
       (!showSubTopics &&
@@ -225,7 +304,7 @@ export const ContactUs = (props: ContactUsProps) => {
       setSubTopicsTitle(currentTopic.subTopicsTitle);
     }
   }, [
-    contactUsFormStateSnapshot,
+    contactUsFormState,
     requireTopicSubmitButton,
     requireSubTopicSubmitButton,
     requireSubSubTopicSubmitButton
@@ -251,9 +330,7 @@ export const ContactUs = (props: ContactUsProps) => {
               }
             `}
           >
-            {formSubmittedSuccessfully
-              ? "Thank you for contacting us"
-              : "We are here to help"}
+            {headerText(formStatus)}
           </h1>
           <p
             css={css`
@@ -261,11 +338,9 @@ export const ContactUs = (props: ContactUsProps) => {
               ${textSans.medium()};
             `}
           >
-            {formSubmittedSuccessfully
-              ? `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
-              : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes."}
+            {containerText(formStatus)}
           </p>
-          {!formSubmittedSuccessfully && (
+          {formStatus === "form" && (
             <>
               <h2
                 css={css`
@@ -293,9 +368,7 @@ export const ContactUs = (props: ContactUsProps) => {
                     {...topic}
                     id={topic.id}
                     updateCallback={topicSelectionCallback}
-                    isSelected={
-                      topic.id === contactUsFormStateSnapshot.selectedTopic
-                    }
+                    isSelected={topic.id === contactUsFormState.selectedTopic}
                     key={topicIndex}
                   />
                 ))}
@@ -321,7 +394,7 @@ export const ContactUs = (props: ContactUsProps) => {
                   submitButonText="Continue to step 2"
                   showSubmitButton={requireSubTopicSubmitButton}
                   data={subTopics}
-                  preSelectedId={contactUsFormStateSnapshot.selectedSubTopic}
+                  preSelectedId={contactUsFormState.selectedSubTopic}
                   additionalCss={css`
                     margin-top: ${space[9]}px;
                   `}
@@ -335,22 +408,24 @@ export const ContactUs = (props: ContactUsProps) => {
                   submitButonText="Continue to step 3"
                   showSubmitButton={requireSubSubTopicSubmitButton}
                   data={subSubTopics}
-                  preSelectedId={contactUsFormStateSnapshot.selectedSubSubTopic}
+                  preSelectedId={contactUsFormState.selectedSubSubTopic}
                   additionalCss={css`
                     margin-top: ${space[9]}px;
                   `}
                 />
               )}
-              {showSelfServicePrompt && (
+              {showSelfServicePrompt && selfServiceBox && (
                 <SelfServicePrompt
-                  copy={
-                    "Did you know you can suspend your deliveries online by logging in below and selecting ‘Manage Subscription’? It’s easy to use and means you don’t have to wait for a response."
+                  copy={selfServiceBox.text}
+                  linkCopy={selfServiceBox.linkText}
+                  linkHref={selfServiceBox.href}
+                  linkAsButton={noForm}
+                  showContacts={noForm}
+                  topicReferer={
+                    `${contactUsFormState.selectedTopic} - ` +
+                    `${contactUsFormState.selectedSubTopic} - ` +
+                    `${contactUsFormState.selectedSubSubTopic}`
                   }
-                  linkCopy="Go to your account"
-                  linkHref="/"
-                  topicReferer={`${contactUsFormStateSnapshot.selectedTopic ||
-                    contactUsFormStateSnapshot.selectedSubTopic ||
-                    contactUsFormStateSnapshot.selectedSubSubTopic}`}
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
                   `}
@@ -360,16 +435,7 @@ export const ContactUs = (props: ContactUsProps) => {
               {showForm && (
                 <ContactUsForm
                   key={formSubjectLine}
-                  submitCallback={() => {
-                    setFormSubmitionStatus(true);
-                    trackEvent({
-                      eventCategory: "contactus_form",
-                      eventAction: "submission",
-                      eventLabel: `${contactUsFormStateSnapshot.selectedTopic ||
-                        contactUsFormStateSnapshot.selectedSubTopic ||
-                        contactUsFormStateSnapshot.selectedSubSubTopic}`
-                    });
-                  }}
+                  submitCallback={submitForm}
                   title={`${
                     showSubTopics || showSubSubTopics
                       ? `Step ${showSubTopics ? "3" : "2"}: `

@@ -1,16 +1,22 @@
 import { breakpoints, palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { DropdownNav } from "./nav/dropdownNav";
 import { GridRoundel } from "./svgs/gridRoundel";
 
-interface HeaderProps {
-  isSignedOut?: boolean;
-}
+type HeaderStatus = "init" | "signedIn" | "signedOut";
 
-const Header = (props: HeaderProps) => {
+const Header = () => {
+  const [headerStatus, setHeaderStatus] = useState<HeaderStatus>("init");
+
+  useEffect(() => {
+    const isSignedIn =
+      typeof window !== "undefined" &&
+      !!window.guardian?.identityDetails?.userId;
+    setHeaderStatus(isSignedIn ? "signedIn" : "signedOut");
+  }, []);
   return (
     <header
       css={{
@@ -34,7 +40,7 @@ const Header = (props: HeaderProps) => {
           margin: "auto"
         }}
       >
-        {!props.isSignedOut ? (
+        {headerStatus === "signedIn" && (
           <>
             <h1
               css={{
@@ -61,7 +67,8 @@ const Header = (props: HeaderProps) => {
             </h1>
             <DropdownNav />
           </>
-        ) : (
+        )}
+        {headerStatus === "signedOut" && (
           <Link
             to={"/"}
             css={{

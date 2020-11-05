@@ -1448,13 +1448,12 @@
     js-cookie "2.2.1"
     whatwg-fetch "3.0.0"
 
-"@guardian/src-button@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@guardian/src-button/-/src-button-1.8.0.tgz#fbccba84deb4d1c4bc061bf7136efaf3b35a7dd6"
-  integrity sha512-7Ak0G4LXHkljB+vcZXULKMM0s29io834Wi71XKSPkGDxdixgxeeV267DNlflBO+GqrdUomyNayEQFN4A1aOKCg==
+"@guardian/src-button@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-button/-/src-button-2.5.0.tgz#abb08a9e076f8ad6643633c6c6f435bc0fb4d842"
+  integrity sha512-feuaIzUqqdPZ/HPLOmtKk8C93fwk6R+/CXWoiuUaEML1g5VVV4v24ToMkxEQBhvNPwJgfJaokKUTenHr0XTdOQ==
   dependencies:
-    "@guardian/src-helpers" "^1.8.0"
-    "@guardian/src-icons" "^1.8.0"
+    "@guardian/src-helpers" "^2.5.0"
 
 "@guardian/src-checkbox@^1.8.0":
   version "1.8.0"
@@ -1474,6 +1473,11 @@
   resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-1.9.1.tgz#5a78f2a60e8138d42c781c6cdfc3d465d4c3c27a"
   integrity sha512-gC8fjZPt7gq8r0bqlaaWRGqpeKQMnBPPDpj9Hvvc4/9usWdJhLVYJmLLCOz9l0L5nvawu52jwW68KJLCoxE1zQ==
 
+"@guardian/src-foundations@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-2.5.0.tgz#5c96d17b7a6d5a8b317356cc7866dd3061ce9d88"
+  integrity sha512-B8LyzqXcidyAgkBnMWNa1CdC6GHyC/5HP4ueB8mRzw8SffrRPJmRayR9eJRdt3c6LpqVv0oPOfeEfKPH+jDN2Q==
+
 "@guardian/src-helpers@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-helpers/-/src-helpers-1.8.0.tgz#8c4ad4689cf1725e758aec66da1fc2252f3127a3"
@@ -1487,6 +1491,13 @@
   integrity sha512-3FiBxezg0JwNxJpvMHsvw2qYNyUn4P+7gQQcqtk8JMFQSeBtnlOQpwmKxjkm/eHzwoAk4l08Vc/fnWI3nPIEPQ==
   dependencies:
     "@guardian/src-foundations" "^1.9.1"
+
+"@guardian/src-helpers@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@guardian/src-helpers/-/src-helpers-2.5.0.tgz#8182d2be98f4c5a4fa42ec8cfd5e916c55af73b1"
+  integrity sha512-DK8DugKETAQqiRDgGc2NKk+YATvKY3dWtmK7+lJQccmqN4IISgoxGYIYdCbDhMj1v3PFKxxsWOaimf8LtY/j3w==
+  dependencies:
+    "@guardian/src-foundations" "^2.5.0"
 
 "@guardian/src-icons@^1.8.0":
   version "1.8.0"

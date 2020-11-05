@@ -182,7 +182,7 @@ export const withIdentity: (
             // tslint:disable-next-line:no-object-mutation
             Object.assign(res.locals, { identity: redirectResponseBody });
 
-            if (!requiresSignin(req.path)) {
+            if (!requiresSignin(req.originalUrl)) {
               next();
             } else if (redirectResponseBody.redirect) {
               redirectOrCustomStatusCode(
