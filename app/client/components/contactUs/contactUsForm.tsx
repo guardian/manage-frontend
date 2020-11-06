@@ -173,7 +173,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         }
       }}
       css={css`
-        ${props.additionalCss}
+        margin-top: ${space[9]}px;
       `}
     >
       <fieldset
