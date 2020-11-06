@@ -1,5 +1,4 @@
 import { css } from "@emotion/core";
-import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
@@ -13,7 +12,7 @@ import { ContactUsHeader } from "./contactUsHeader";
 import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
-import { TopicButton } from "./topicButton";
+import { TopicForm } from "./topicForm";
 
 interface ContactUsFormState {
   selectedTopic: string | undefined;
@@ -42,31 +41,27 @@ export const ContactUs = (props: ContactUsProps) => {
     subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
 
-  const initialTopicSelection: string =
-    validDeepLinkTopic?.id || contactUsConfig[0].id;
-
   const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
   const [contactUsFormState, setContactUsFormState] = useState<
     ContactUsFormState
   >({
-    selectedTopic: initialTopicSelection,
+    selectedTopic: validDeepLinkTopic?.id,
     selectedSubTopic: validDeepLinkSubTopic?.id,
     selectedSubSubTopic: validDeepLinkSubSubTopic?.id
   });
 
-  const [requireTopicSubmitButton, setRequireTopicSubmitButton] = useState<
-    boolean
-  >(!validDeepLinkTopic);
-
-  const setTopic = (newTopicId: string, hasComeFromSubmitButton: boolean) => {
+  const setTopic = (selectedTopic: string) => {
     setContactUsFormState({
-      selectedTopic:
-        hasComeFromSubmitButton || !requireTopicSubmitButton
-          ? newTopicId
-          : contactUsFormState.selectedTopic,
+      selectedTopic,
       selectedSubTopic: undefined,
       selectedSubSubTopic: undefined
+    });
+
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "topic_click",
+      eventLabel: selectedTopic
     });
   };
 
@@ -94,20 +89,6 @@ export const ContactUs = (props: ContactUsProps) => {
       eventCategory: "ContactUs",
       eventAction: "subsubtopic_click",
       eventLabel: selectedSubSubTopic
-    });
-  };
-
-  const [transientTopicSelection, setTransientTopicSelection] = useState<
-    string
-  >(initialTopicSelection);
-
-  const topicSelectionCallback = (newTopicId: string) => {
-    setTransientTopicSelection(newTopicId);
-    setTopic(newTopicId, requireTopicSubmitButton);
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "topic_click",
-      eventLabel: newTopicId
     });
   };
 
@@ -188,10 +169,7 @@ export const ContactUs = (props: ContactUsProps) => {
     subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
   );
 
-  const showSubTopics =
-    !!contactUsFormState.selectedTopic &&
-    !requireTopicSubmitButton &&
-    !!subTopics;
+  const showSubTopics = !!contactUsFormState.selectedTopic && !!subTopics;
 
   const showSubSubTopics =
     !!contactUsFormState.selectedSubTopic && !!subSubTopics;
@@ -201,10 +179,7 @@ export const ContactUs = (props: ContactUsProps) => {
     (!!contactUsFormState.selectedSubTopic &&
       !currentSubTopic?.noForm &&
       !subSubTopics) ||
-    (!!contactUsFormState.selectedTopic &&
-      !requireTopicSubmitButton &&
-      !currentTopic?.noForm &&
-      !subTopics);
+    (!!contactUsFormState.selectedTopic && !currentTopic?.noForm && !subTopics);
 
   const selfServiceBox =
     currentSubSubTopic?.selfServiceBox ||
@@ -237,9 +212,7 @@ export const ContactUs = (props: ContactUsProps) => {
       subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
     );
     setShowSelfServicePrompt(
-      (!showSubTopics &&
-        !!currentTopic?.selfServiceBox &&
-        !requireTopicSubmitButton) ||
+      (!showSubTopics && !!currentTopic?.selfServiceBox) ||
         (!selectedSubtopic?.subsubtopics &&
           !!selectedSubtopic?.selfServiceBox) ||
         !!selectedSubSubtopic?.selfServiceBox
@@ -264,7 +237,7 @@ export const ContactUs = (props: ContactUsProps) => {
     if (currentTopic?.subTopicsTitle) {
       setSubTopicsTitle(currentTopic.subTopicsTitle);
     }
-  }, [contactUsFormState, requireTopicSubmitButton]);
+  }, [contactUsFormState]);
 
   return (
     <>
@@ -298,68 +271,29 @@ export const ContactUs = (props: ContactUsProps) => {
           </p>
           {formStatus === "form" && (
             <>
-              <h2
-                css={css`
-                  ${headline.xxsmall({ fontWeight: "bold" })};
-                  border-top: 1px solid ${palette.neutral[86]};
-                  margin-top: ${space[6]}px;
-                  padding: ${space[1]}px 0;
-                  ${minWidth.desktop} {
-                    margin-top: ${space[9]}px;
-                  }
-                `}
-              >
-                Choose a topic you would like to discuss
-              </h2>
-              <div
-                css={css`
-                  display: flex;
-                  flex-wrap: wrap;
-                  align-items: stretch;
-                  justify-content: space-between;
-                `}
-              >
-                {contactUsConfig.map((topic, topicIndex) => (
-                  <TopicButton
-                    {...topic}
-                    id={topic.id}
-                    updateCallback={topicSelectionCallback}
-                    isSelected={topic.id === contactUsFormState.selectedTopic}
-                    key={topicIndex}
-                  />
-                ))}
-              </div>
-              {requireTopicSubmitButton && (
-                <Button
-                  css={css`
-                    margin-top: ${space[6]}px;
-                  `}
-                  onClick={() => {
-                    setTopic(transientTopicSelection, true);
-                    setRequireTopicSubmitButton(false);
-                  }}
-                >
-                  Begin form
-                </Button>
-              )}
+              <TopicForm
+                data={contactUsConfig}
+                preSelectedId={contactUsFormState.selectedTopic}
+                submitCallback={setTopic}
+              />
               {showSubTopics && subTopics && (
                 <SubTopicForm
                   key={`subtopic-${contactUsFormState.selectedTopic}`}
-                  submitCallback={setSubTopic}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
                   data={subTopics}
                   preSelectedId={contactUsFormState.selectedSubTopic}
+                  submitCallback={setSubTopic}
                 />
               )}
               {showSubSubTopics && subSubTopics && (
                 <SubTopicForm
                   key={`subsubtopic-${contactUsFormState.selectedSubTopic}`}
-                  submitCallback={setSubSubTopic}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
                   data={subSubTopics}
                   preSelectedId={contactUsFormState.selectedSubSubTopic}
+                  submitCallback={setSubSubTopic}
                 />
               )}
               {showSelfServicePrompt && selfServiceBox && (

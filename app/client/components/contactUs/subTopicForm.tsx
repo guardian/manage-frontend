@@ -8,11 +8,11 @@ import { SubTopic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 
 interface SubTopicFormProps {
-  submitCallback: (subTopicId: string) => void;
   title: string;
   submitButonText: string;
   data: SubTopic[];
   preSelectedId?: string;
+  submitCallback: (subTopicId: string) => void;
 }
 
 export const SubTopicForm = (props: SubTopicFormProps) => {
