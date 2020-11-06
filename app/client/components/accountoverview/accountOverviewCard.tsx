@@ -63,6 +63,10 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     specificProductType.friendlyName === "digital subscription" &&
     isGift(props.productDetail.subscription);
 
+  const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
+  const shouldNotShowStartDate =
+    shouldShowJoinDateNotStartDate || isDigiSubGift;
+
   const keyValuePairCss = css`
     list-style: none;
     margin: 0;
@@ -252,7 +256,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               <li css={valueCss}>{props.productDetail.tier}</li>
             </ul>
           )}
-          {subscriptionStartDate && !shouldShowJoinDateNotStartDate && (
+          {subscriptionStartDate && !shouldNotShowStartDate && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
               <li css={valueCss}>{formatDateStr(subscriptionStartDate)}</li>
@@ -264,6 +268,12 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               <li css={valueCss}>
                 {formatDateStr(props.productDetail.joinDate)}
               </li>
+            </ul>
+          )}
+          {isDigiSubGift && giftPurchaseDate && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Purchase date</li>
+              <li css={valueCss}>{formatDateStr(giftPurchaseDate)}</li>
             </ul>
           )}
           {specificProductType.showTrialRemainingIfApplicable &&
