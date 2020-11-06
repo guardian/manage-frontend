@@ -3,7 +3,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -14,7 +14,7 @@ import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
 
-interface ContactUsFormState {
+interface ContactUsState {
   selectedTopic: string | undefined;
   selectedSubTopic: string | undefined;
   selectedSubSubTopic: string | undefined;
@@ -43,16 +43,14 @@ export const ContactUs = (props: ContactUsProps) => {
 
   const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
-  const [contactUsFormState, setContactUsFormState] = useState<
-    ContactUsFormState
-  >({
+  const [contactUsState, setContactUsState] = useState<ContactUsState>({
     selectedTopic: validDeepLinkTopic?.id,
     selectedSubTopic: validDeepLinkSubTopic?.id,
     selectedSubSubTopic: validDeepLinkSubSubTopic?.id
   });
 
   const setTopic = (selectedTopic: string) => {
-    setContactUsFormState({
+    setContactUsState({
       selectedTopic,
       selectedSubTopic: undefined,
       selectedSubSubTopic: undefined
@@ -66,8 +64,8 @@ export const ContactUs = (props: ContactUsProps) => {
   };
 
   const setSubTopic = (selectedSubTopic: string) => {
-    setContactUsFormState({
-      ...contactUsFormState,
+    setContactUsState({
+      ...contactUsState,
       selectedSubTopic,
       selectedSubSubTopic: undefined
     });
@@ -80,8 +78,8 @@ export const ContactUs = (props: ContactUsProps) => {
   };
 
   const setSubSubTopic = (selectedSubSubTopic: string) => {
-    setContactUsFormState({
-      ...contactUsFormState,
+    setContactUsState({
+      ...contactUsState,
       selectedSubSubTopic
     });
 
@@ -94,14 +92,14 @@ export const ContactUs = (props: ContactUsProps) => {
 
   const submitForm = async (formData: FormPayload): Promise<boolean> => {
     const body = JSON.stringify({
-      ...(contactUsFormState.selectedTopic && {
-        topic: contactUsFormState.selectedTopic
+      ...(contactUsState.selectedTopic && {
+        topic: contactUsState.selectedTopic
       }),
-      ...(contactUsFormState.selectedSubTopic && {
-        subtopic: contactUsFormState.selectedSubTopic
+      ...(contactUsState.selectedSubTopic && {
+        subtopic: contactUsState.selectedSubTopic
       }),
-      ...(contactUsFormState.selectedSubSubTopic && {
-        subsubtopic: contactUsFormState.selectedSubSubTopic
+      ...(contactUsState.selectedSubSubTopic && {
+        subsubtopic: contactUsState.selectedSubSubTopic
       }),
       name: formData.fullName,
       email: formData.email,
@@ -117,9 +115,9 @@ export const ContactUs = (props: ContactUsProps) => {
         eventCategory: "ContactUs",
         eventAction: "submission_success",
         eventLabel:
-          `${contactUsFormState.selectedTopic} - ` +
-          `${contactUsFormState.selectedSubTopic} - ` +
-          `${contactUsFormState.selectedSubSubTopic}`
+          `${contactUsState.selectedTopic} - ` +
+          `${contactUsState.selectedSubTopic} - ` +
+          `${contactUsState.selectedSubSubTopic}`
       });
       return true;
     } else {
@@ -135,109 +133,44 @@ export const ContactUs = (props: ContactUsProps) => {
     }
   };
 
-  const headerText = (status: ContactUsFormStatus) => {
-    switch (status) {
-      case "form":
-        return "We are here to help";
-      case "success":
-        return "Thank you for contacting us";
-    }
-  };
-
-  const containerText = (status: ContactUsFormStatus) => {
-    switch (status) {
-      case "form":
-        return "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
-      case "success":
-        return `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`;
-    }
-  };
-
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === contactUsFormState.selectedTopic
+    topic => topic.id === contactUsState.selectedTopic
   );
 
   const subTopics = currentTopic?.subtopics;
-
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === contactUsFormState.selectedSubTopic
+    subTopic => subTopic.id === contactUsState.selectedSubTopic
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
-
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
+    subSubTopic => subSubTopic.id === contactUsState.selectedSubSubTopic
   );
 
-  const showSubTopics = !!contactUsFormState.selectedTopic && !!subTopics;
-
-  const showSubSubTopics =
-    !!contactUsFormState.selectedSubTopic && !!subSubTopics;
-
-  const showForm =
-    (!!contactUsFormState.selectedSubSubTopic && !currentSubSubTopic?.noForm) ||
-    (!!contactUsFormState.selectedSubTopic &&
-      !currentSubTopic?.noForm &&
-      !subSubTopics) ||
-    (!!contactUsFormState.selectedTopic && !currentTopic?.noForm && !subTopics);
+  const subTopicsTitle = currentTopic?.subTopicsTitle || "";
+  const subSubTopicsTitle = currentSubTopic?.subsubTopicsTitle || "";
 
   const selfServiceBox =
     currentSubSubTopic?.selfServiceBox ||
     currentSubTopic?.selfServiceBox ||
     currentTopic?.selfServiceBox;
 
-  const noForm =
-    currentSubSubTopic?.noForm ||
-    currentSubTopic?.noForm ||
-    currentTopic?.noForm;
+  const showForm =
+    (currentSubSubTopic && !currentSubSubTopic?.noForm) ||
+    (currentSubTopic && !currentSubTopic?.noForm && !subSubTopics) ||
+    (currentTopic && !currentTopic?.noForm && !subTopics);
 
-  const [showSelfServicePrompt, setShowSelfServicePrompt] = useState<boolean>(
-    false
+  const subjectLine = `${currentTopic ? currentTopic.name : ""}${
+    currentSubSubTopic ? ` - ${currentSubSubTopic.name}` : ""
+  }${
+    !currentSubSubTopic && currentSubTopic ? ` - ${currentSubTopic.name}` : ""
+  }`;
+
+  const isSubjectLineEditable = !!(
+    currentSubSubTopic?.editableSubjectLine ||
+    currentSubTopic?.editableSubjectLine ||
+    currentTopic?.editableSubjectLine
   );
-
-  const [subTopicsTitle, setSubTopicsTitle] = useState<string>("");
-  const [subSubTopicsTitle, setSubSubTopicsTitle] = useState<string>("");
-
-  const [formSubjectLine, setFormSubjectLine] = useState<string>("");
-
-  const [formHasEditableSubjectLine, setFormHasEditableSubjectLine] = useState<
-    boolean
-  >(false);
-
-  useEffect(() => {
-    const selectedSubtopic = currentTopic?.subtopics?.find(
-      subTopic => subTopic.id === contactUsFormState.selectedSubTopic
-    );
-    const selectedSubSubtopic = selectedSubtopic?.subsubtopics?.find(
-      subSubTopic => subSubTopic.id === contactUsFormState.selectedSubSubTopic
-    );
-    setShowSelfServicePrompt(
-      (!showSubTopics && !!currentTopic?.selfServiceBox) ||
-        (!selectedSubtopic?.subsubtopics &&
-          !!selectedSubtopic?.selfServiceBox) ||
-        !!selectedSubSubtopic?.selfServiceBox
-    );
-    setFormSubjectLine(
-      `${currentTopic ? currentTopic.name : ""}${
-        selectedSubSubtopic ? ` - ${selectedSubSubtopic.name}` : ""
-      }${
-        !selectedSubSubtopic && selectedSubtopic
-          ? ` - ${selectedSubtopic.name}`
-          : ""
-      }`
-    );
-    setFormHasEditableSubjectLine(
-      !!selectedSubSubtopic?.editableSubjectLine ||
-        !!selectedSubtopic?.editableSubjectLine ||
-        !!currentTopic?.editableSubjectLine
-    );
-    if (selectedSubtopic?.subsubTopicsTitle) {
-      setSubSubTopicsTitle(selectedSubtopic?.subsubTopicsTitle);
-    }
-    if (currentTopic?.subTopicsTitle) {
-      setSubTopicsTitle(currentTopic.subTopicsTitle);
-    }
-  }, [contactUsFormState]);
 
   return (
     <>
@@ -267,46 +200,46 @@ export const ContactUs = (props: ContactUsProps) => {
               ${textSans.medium()};
             `}
           >
-            {containerText(formStatus)}
+            {containerText(formStatus, currentTopic?.enquiryLabel || "")}
           </p>
           {formStatus === "form" && (
             <>
               <TopicForm
                 data={contactUsConfig}
-                preSelectedId={contactUsFormState.selectedTopic}
+                preSelectedId={contactUsState.selectedTopic}
                 submitCallback={setTopic}
               />
-              {showSubTopics && subTopics && (
+              {subTopics && (
                 <SubTopicForm
-                  key={`subtopic-${contactUsFormState.selectedTopic}`}
+                  key={`subtopic-${contactUsState.selectedTopic}`}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
                   data={subTopics}
-                  preSelectedId={contactUsFormState.selectedSubTopic}
+                  preSelectedId={contactUsState.selectedSubTopic}
                   submitCallback={setSubTopic}
                 />
               )}
-              {showSubSubTopics && subSubTopics && (
+              {subSubTopics && (
                 <SubTopicForm
-                  key={`subsubtopic-${contactUsFormState.selectedSubTopic}`}
+                  key={`subsubtopic-${contactUsState.selectedSubTopic}`}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
                   data={subSubTopics}
-                  preSelectedId={contactUsFormState.selectedSubSubTopic}
+                  preSelectedId={contactUsState.selectedSubSubTopic}
                   submitCallback={setSubSubTopic}
                 />
               )}
-              {showSelfServicePrompt && selfServiceBox && (
+              {selfServiceBox && (
                 <SelfServicePrompt
                   copy={selfServiceBox.text}
                   linkCopy={selfServiceBox.linkText}
                   linkHref={selfServiceBox.href}
-                  linkAsButton={noForm}
-                  showContacts={noForm}
+                  linkAsButton={!showForm}
+                  showContacts={!showForm}
                   topicReferer={
-                    `${contactUsFormState.selectedTopic} - ` +
-                    `${contactUsFormState.selectedSubTopic} - ` +
-                    `${contactUsFormState.selectedSubSubTopic}`
+                    `${contactUsState.selectedTopic} - ` +
+                    `${contactUsState.selectedSubTopic} - ` +
+                    `${contactUsState.selectedSubSubTopic}`
                   }
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
@@ -316,15 +249,15 @@ export const ContactUs = (props: ContactUsProps) => {
 
               {showForm && (
                 <ContactUsForm
-                  key={formSubjectLine}
+                  key={subjectLine}
                   submitCallback={submitForm}
                   title={`${
-                    showSubTopics || showSubSubTopics
-                      ? `Step ${showSubSubTopics ? "3" : "2"}: `
+                    subTopics || subSubTopics
+                      ? `Step ${subSubTopics ? "3" : "2"}:`
                       : ""
-                  }Tell us more`}
-                  subjectLine={formSubjectLine}
-                  editableSubjectLine={formHasEditableSubjectLine}
+                  } Tell us more`}
+                  subjectLine={subjectLine}
+                  editableSubjectLine={isSubjectLineEditable}
                 />
               )}
             </>
@@ -333,4 +266,22 @@ export const ContactUs = (props: ContactUsProps) => {
       </ContactUsPageContainer>
     </>
   );
+};
+
+const headerText = (status: ContactUsFormStatus) => {
+  switch (status) {
+    case "form":
+      return "We are here to help";
+    case "success":
+      return "Thank you for contacting us";
+  }
+};
+
+const containerText = (status: ContactUsFormStatus, label: string) => {
+  switch (status) {
+    case "form":
+      return "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
+    case "success":
+      return `Thank you for contacting us regarding ${label}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`;
+  }
 };
