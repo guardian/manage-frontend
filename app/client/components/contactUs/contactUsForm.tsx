@@ -10,6 +10,7 @@ import { FormError } from "../FormError";
 import { Input } from "../input";
 import { Spinner } from "../spinner";
 import { ErrorIcon } from "../svgs/errorIcon";
+import { UploadFileInput } from "./uploadFileInput";
 
 interface ContactUsFormProps {
   submitCallback: (payload: FormPayload) => Promise<boolean>;
@@ -353,6 +354,18 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             {detailsRemainingCharacters} characters remaining
           </span>
         </label>
+        <UploadFileInput
+          title="Upload image"
+          optional
+          description="Explain file format and size limitation"
+          allowedFileFormats={[
+            "image/png",
+            "image/jpeg",
+            "image/jpg",
+            "image/gif",
+            "application/pdf"
+          ]}
+        />
       </fieldset>
       {status === "failure" && (
         <FormError
