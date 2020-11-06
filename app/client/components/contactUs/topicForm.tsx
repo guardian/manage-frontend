@@ -45,9 +45,9 @@ export const TopicForm = (props: TopicFormProps) => {
           justify-content: space-between;
         `}
       >
-        {props.data.map((topic, topicIndex) => (
+        {props.data.map(topic => (
           <TopicButton
-            key={topicIndex}
+            key={topic.id}
             {...topic}
             id={topic.id}
             updateCallback={(newId: string) => {

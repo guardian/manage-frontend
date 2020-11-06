@@ -249,7 +249,7 @@ export const ContactUs = (props: ContactUsProps) => {
 
               {showForm && (
                 <ContactUsForm
-                  key={subjectLine}
+                  key={`${contactUsState.selectedTopic}-${contactUsState.selectedSubTopic}-${contactUsState.selectedSubSubTopic}`}
                   submitCallback={submitForm}
                   title={`${
                     subTopics || subSubTopics

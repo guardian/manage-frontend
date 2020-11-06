@@ -84,9 +84,9 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
               }
             `}
           >
-            {props.data.map((subTopic, index) => (
+            {props.data.map(subTopic => (
               <li
-                key={`deliveryProblemRadio-${index}`}
+                key={subTopic.id}
                 css={css`
                   ${textSans.medium()};
                 `}
