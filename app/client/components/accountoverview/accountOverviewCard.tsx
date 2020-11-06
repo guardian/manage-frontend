@@ -51,6 +51,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 
   const subscriptionStartDate = props.productDetail.subscription.start;
 
+  const subscriptionEndDate = props.productDetail.subscription.end;
+
   const nextPaymentDetails = getNextPaymentDetails(
     mainPlan,
     props.productDetail.subscription,
@@ -63,9 +65,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     specificProductType.friendlyName === "digital subscription" &&
     isGift(props.productDetail.subscription);
 
+  const userIsGifter = isDigiSubGift && props.productDetail.isPaidTier;
+
   const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
-  const shouldNotShowStartDate =
-    shouldShowJoinDateNotStartDate || isDigiSubGift;
+
+  const shouldNotShowStartDate = shouldShowJoinDateNotStartDate || userIsGifter;
 
   const keyValuePairCss = css`
     list-style: none;
@@ -270,10 +274,16 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               </li>
             </ul>
           )}
-          {isDigiSubGift && giftPurchaseDate && (
+          {userIsGifter && giftPurchaseDate && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Purchase date</li>
               <li css={valueCss}>{formatDateStr(giftPurchaseDate)}</li>
+            </ul>
+          )}
+          {isDigiSubGift && !userIsGifter && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>End date</li>
+              <li css={valueCss}>{formatDateStr(subscriptionEndDate)}</li>
             </ul>
           )}
           {specificProductType.showTrialRemainingIfApplicable &&
@@ -362,7 +372,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </li>
               </ul>
             )}
-          {props.productDetail.isPaidTier ? (
+          {props.productDetail.isPaidTier && (
             <>
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment method</li>
@@ -424,6 +434,12 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </div>
               )}
             </>
+          )}
+          {!props.productDetail.isPaidTier && isDigiSubGift ? (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Payment</li>
+              <li css={valueCss}>Gift redemption</li>
+            </ul>
           ) : (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Payment</li>
