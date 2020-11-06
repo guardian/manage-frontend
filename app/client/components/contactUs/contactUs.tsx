@@ -15,9 +15,9 @@ import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
 
 interface ContactUsState {
-  selectedTopic: string | undefined;
-  selectedSubTopic: string | undefined;
-  selectedSubSubTopic: string | undefined;
+  topicId: string | undefined;
+  subTopicId: string | undefined;
+  subSubTopicId: string | undefined;
 }
 
 interface ContactUsProps extends RouteComponentProps {
@@ -29,31 +29,31 @@ interface ContactUsProps extends RouteComponentProps {
 type ContactUsFormStatus = "form" | "success";
 
 export const ContactUs = (props: ContactUsProps) => {
-  const validDeepLinkTopic = contactUsConfig.find(
+  const validUrlTopicId = contactUsConfig.find(
     topic => topic.id === props.urlTopicId
   );
 
-  const validDeepLinkSubTopic = validDeepLinkTopic?.subtopics?.find(
+  const validUrlSubTopicId = validUrlTopicId?.subtopics?.find(
     subTopic => subTopic.id === props.urlSubTopicId
   );
 
-  const validDeepLinkSubSubTopic = validDeepLinkSubTopic?.subsubtopics?.find(
+  const validUrlSubSubTopicId = validUrlSubTopicId?.subsubtopics?.find(
     subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
 
   const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
   const [contactUsState, setContactUsState] = useState<ContactUsState>({
-    selectedTopic: validDeepLinkTopic?.id,
-    selectedSubTopic: validDeepLinkSubTopic?.id,
-    selectedSubSubTopic: validDeepLinkSubSubTopic?.id
+    topicId: validUrlTopicId?.id,
+    subTopicId: validUrlSubTopicId?.id,
+    subSubTopicId: validUrlSubSubTopicId?.id
   });
 
   const setTopic = (selectedTopic: string) => {
     setContactUsState({
-      selectedTopic,
-      selectedSubTopic: undefined,
-      selectedSubSubTopic: undefined
+      topicId: selectedTopic,
+      subTopicId: undefined,
+      subSubTopicId: undefined
     });
 
     trackEvent({
@@ -66,8 +66,8 @@ export const ContactUs = (props: ContactUsProps) => {
   const setSubTopic = (selectedSubTopic: string) => {
     setContactUsState({
       ...contactUsState,
-      selectedSubTopic,
-      selectedSubSubTopic: undefined
+      subTopicId: selectedSubTopic,
+      subSubTopicId: undefined
     });
 
     trackEvent({
@@ -80,7 +80,7 @@ export const ContactUs = (props: ContactUsProps) => {
   const setSubSubTopic = (selectedSubSubTopic: string) => {
     setContactUsState({
       ...contactUsState,
-      selectedSubSubTopic
+      subSubTopicId: selectedSubSubTopic
     });
 
     trackEvent({
@@ -92,14 +92,14 @@ export const ContactUs = (props: ContactUsProps) => {
 
   const submitForm = async (formData: FormPayload): Promise<boolean> => {
     const body = JSON.stringify({
-      ...(contactUsState.selectedTopic && {
-        topic: contactUsState.selectedTopic
+      ...(contactUsState.topicId && {
+        topic: contactUsState.topicId
       }),
-      ...(contactUsState.selectedSubTopic && {
-        subtopic: contactUsState.selectedSubTopic
+      ...(contactUsState.subTopicId && {
+        subtopic: contactUsState.subTopicId
       }),
-      ...(contactUsState.selectedSubSubTopic && {
-        subsubtopic: contactUsState.selectedSubSubTopic
+      ...(contactUsState.subSubTopicId && {
+        subsubtopic: contactUsState.subSubTopicId
       }),
       name: formData.fullName,
       email: formData.email,
@@ -115,9 +115,9 @@ export const ContactUs = (props: ContactUsProps) => {
         eventCategory: "ContactUs",
         eventAction: "submission_success",
         eventLabel:
-          `${contactUsState.selectedTopic} - ` +
-          `${contactUsState.selectedSubTopic} - ` +
-          `${contactUsState.selectedSubSubTopic}`
+          `${contactUsState.topicId} - ` +
+          `${contactUsState.subTopicId} - ` +
+          `${contactUsState.subSubTopicId}`
       });
       return true;
     } else {
@@ -134,17 +134,17 @@ export const ContactUs = (props: ContactUsProps) => {
   };
 
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === contactUsState.selectedTopic
+    topic => topic.id === contactUsState.topicId
   );
 
   const subTopics = currentTopic?.subtopics;
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === contactUsState.selectedSubTopic
+    subTopic => subTopic.id === contactUsState.subTopicId
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === contactUsState.selectedSubSubTopic
+    subSubTopic => subSubTopic.id === contactUsState.subSubTopicId
   );
 
   const subTopicsTitle = currentTopic?.subTopicsTitle || "";
@@ -206,26 +206,26 @@ export const ContactUs = (props: ContactUsProps) => {
             <>
               <TopicForm
                 data={contactUsConfig}
-                preSelectedId={contactUsState.selectedTopic}
+                preSelectedId={contactUsState.topicId}
                 submitCallback={setTopic}
               />
               {subTopics && (
                 <SubTopicForm
-                  key={`subtopic-${contactUsState.selectedTopic}`}
+                  key={`subtopic-${contactUsState.topicId}`}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
                   data={subTopics}
-                  preSelectedId={contactUsState.selectedSubTopic}
+                  preSelectedId={contactUsState.subTopicId}
                   submitCallback={setSubTopic}
                 />
               )}
               {subSubTopics && (
                 <SubTopicForm
-                  key={`subsubtopic-${contactUsState.selectedSubTopic}`}
+                  key={`subsubtopic-${contactUsState.subTopicId}`}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
                   data={subSubTopics}
-                  preSelectedId={contactUsState.selectedSubSubTopic}
+                  preSelectedId={contactUsState.subSubTopicId}
                   submitCallback={setSubSubTopic}
                 />
               )}
@@ -237,9 +237,9 @@ export const ContactUs = (props: ContactUsProps) => {
                   linkAsButton={!showForm}
                   showContacts={!showForm}
                   topicReferer={
-                    `${contactUsState.selectedTopic} - ` +
-                    `${contactUsState.selectedSubTopic} - ` +
-                    `${contactUsState.selectedSubSubTopic}`
+                    `${contactUsState.topicId} - ` +
+                    `${contactUsState.subTopicId} - ` +
+                    `${contactUsState.subSubTopicId}`
                   }
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
@@ -249,7 +249,7 @@ export const ContactUs = (props: ContactUsProps) => {
 
               {showForm && (
                 <ContactUsForm
-                  key={`${contactUsState.selectedTopic}-${contactUsState.selectedSubTopic}-${contactUsState.selectedSubSubTopic}`}
+                  key={`${contactUsState.topicId}-${contactUsState.subTopicId}-${contactUsState.subSubTopicId}`}
                   submitCallback={submitForm}
                   title={`${
                     subTopics || subSubTopics
