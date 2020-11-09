@@ -43,8 +43,7 @@ interface FormValidationState {
 
 type ContactUsFormStatus = "form" | "submitting" | "failure";
 
-declare let window: Window & {
-  Stripe: any;
+declare const window: Window & {
   grecaptcha: any;
   v2ReCaptchaOnLoadCallback: () => void;
 };
