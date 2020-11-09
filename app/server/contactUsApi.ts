@@ -56,20 +56,20 @@ const parseAndValidate = async (
 ): Promise<ContactUsReq | undefined> => {
   try {
     const bodyAsJson = body ? JSON.parse(body) : "{}";
-
-    const passedCaptchaValidation = await validateCaptchaToken(
-      `${bodyAsJson.captchaToken}`
-    );
-    return validateContactUsFormBody(bodyAsJson) && passedCaptchaValidation
-      ? buildContactUsReqBody(bodyAsJson)
-      : undefined;
+    const isBodyValid = await validateContactUsFormBody(bodyAsJson);
+    return isBodyValid ? buildContactUsReqBody(bodyAsJson) : undefined;
   } catch (error) {
     return undefined;
   }
 };
 
 const validateCaptchaToken = async (token: string) => {
-  const recaptchaSecret = (await recaptchaConfigPromise)?.secretKey;
+  const captchaConfigPromise = await recaptchaConfigPromise;
+  if (!captchaConfigPromise) {
+    captureMessage("Could not retrieve recaptcha config");
+    return false;
+  }
+  const recaptchaSecret = captchaConfigPromise?.secretKey;
   const captchaValidationResponse = await fetch(
     "https://www.google.com/recaptcha/api/siteverify",
     {
@@ -84,7 +84,7 @@ const validateCaptchaToken = async (token: string) => {
   return json.success;
 };
 
-const validateContactUsFormBody = (body: any): boolean =>
+const validateContactUsFormBody = async (body: any): Promise<boolean> =>
   body &&
   body.topic &&
   validateTopics(body.topic, body.subtopic, body.subsubtopic) &&
@@ -93,7 +93,8 @@ const validateContactUsFormBody = (body: any): boolean =>
   isEmail(body.email) &&
   body.subject &&
   body.message &&
-  body.captchaToken;
+  body.captchaToken &&
+  (await validateCaptchaToken(body.captchaToken));
 
 const validateTopics = (
   reqTopic: unknown,
