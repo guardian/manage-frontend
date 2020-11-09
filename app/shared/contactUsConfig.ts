@@ -49,7 +49,7 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "billing",
-    name: "My billing",
+    name: "My Billing",
     enquiryLabel: "your billing query",
     subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
@@ -108,7 +108,7 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "vouchers",
-    name: "My newspaper vouchers",
+    name: "My Newspaper Vouchers",
     enquiryLabel: "your newspaper vouchers",
     subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
@@ -125,7 +125,7 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "account",
-    name: "My account",
+    name: "My Account",
     enquiryLabel: "your account",
     subTopicsTitle: "Step 1: What kind of account do you have with us?",
     subtopics: [
@@ -269,7 +269,7 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "tech",
-    name: "Technical issues",
+    name: "Technical Issues",
     enquiryLabel: "this issue",
     subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
@@ -314,7 +314,7 @@ export const contactUsConfig: Topic[] = [
   },
   {
     id: "journalism",
-    name: "Guardian journalism",
+    name: "Guardian Journalism",
     enquiryLabel: "our journalism",
     subTopicsTitle: "Step 1: Help us understand what you need to talk about",
     subtopics: [
