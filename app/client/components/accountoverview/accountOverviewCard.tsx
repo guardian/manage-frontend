@@ -435,17 +435,18 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               )}
             </>
           )}
-          {!props.productDetail.isPaidTier && isDigiSubGift ? (
-            <ul css={keyValuePairCss}>
-              <li css={keyCss}>Payment</li>
-              <li css={valueCss}>Gift redemption</li>
-            </ul>
-          ) : (
-            <ul css={keyValuePairCss}>
-              <li css={keyCss}>Payment</li>
-              <li css={valueCss}>FREE</li>
-            </ul>
-          )}
+          {!props.productDetail.isPaidTier &&
+            (isDigiSubGift ? (
+              <ul css={keyValuePairCss}>
+                <li css={keyCss}>Payment</li>
+                <li css={valueCss}>Gift redemption</li>
+              </ul>
+            ) : (
+              <ul css={keyValuePairCss}>
+                <li css={keyCss}>Payment</li>
+                <li css={valueCss}>FREE</li>
+              </ul>
+            ))}
         </div>
       </div>
     </div>
