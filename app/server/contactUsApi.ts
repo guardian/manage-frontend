@@ -6,9 +6,10 @@ import { ContactUsReq } from "../shared/contactUsTypes";
 import { isEmail } from "../shared/validationUtils";
 import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
 import { log } from "./log";
+import { recaptchaConfigPromise } from "./recaptchaConfig";
 
 export const contactUsFormHandler = async (req: Request, res: Response) => {
-  const validBody = parseAndValidate(req.body);
+  const validBody = await parseAndValidate(req.body);
   if (!validBody) {
     // This could indicate we have a bug in our code or an external system is making invalid requests to this endpoint
     const errorMessage = `Could not parse and validate Contact Us request body.`;
@@ -50,19 +51,40 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
     });
 };
 
-const parseAndValidate = (body: any): ContactUsReq | undefined => {
+const parseAndValidate = async (
+  body: any
+): Promise<ContactUsReq | undefined> => {
   try {
     const bodyAsJson = body ? JSON.parse(body) : "{}";
-
-    return validateContactUsFormBody(bodyAsJson)
-      ? buildContactUsReqBody(bodyAsJson)
-      : undefined;
+    const isBodyValid = await validateContactUsFormBody(bodyAsJson);
+    return isBodyValid ? buildContactUsReqBody(bodyAsJson) : undefined;
   } catch (error) {
     return undefined;
   }
 };
 
-const validateContactUsFormBody = (body: any): boolean =>
+const validateCaptchaToken = async (token: string) => {
+  const captchaConfigPromise = await recaptchaConfigPromise;
+  if (!captchaConfigPromise) {
+    captureMessage("Could not retrieve recaptcha config");
+    return false;
+  }
+  const recaptchaSecret = captchaConfigPromise?.secretKey;
+  const captchaValidationResponse = await fetch(
+    "https://www.google.com/recaptcha/api/siteverify",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `secret=${recaptchaSecret}&response=${token}`
+    }
+  );
+  const json = await captchaValidationResponse.json();
+  return json.success;
+};
+
+const validateContactUsFormBody = async (body: any): Promise<boolean> =>
   body &&
   body.topic &&
   validateTopics(body.topic, body.subtopic, body.subsubtopic) &&
@@ -70,7 +92,9 @@ const validateContactUsFormBody = (body: any): boolean =>
   body.email &&
   isEmail(body.email) &&
   body.subject &&
-  body.message;
+  body.message &&
+  body.captchaToken &&
+  (await validateCaptchaToken(body.captchaToken));
 
 const validateTopics = (
   reqTopic: unknown,
