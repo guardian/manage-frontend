@@ -365,6 +365,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             "image/gif",
             "application/pdf"
           ]}
+          additionalCss={css`
+            margin: ${space[5]}px;
+          `}
         />
       </fieldset>
       {status === "failure" && (
