@@ -60,16 +60,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
     hasPaymentFailure
   );
 
-  // We want to hide manage sub/payment buttons and the trial period if the product is a gifted digi sub
-  const isDigiSubGift =
-    specificProductType.friendlyName === "digital subscription" &&
-    isGift(props.productDetail.subscription);
+  const isGifted = isGift(props.productDetail.subscription);
 
-  const userIsGifter = isDigiSubGift && props.productDetail.isPaidTier;
+  const userIsGifter = isGifted && props.productDetail.isPaidTier;
 
   const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
 
-  const shouldNotShowStartDate = shouldShowJoinDateNotStartDate || userIsGifter;
+  const shouldShowStartDate = !(shouldShowJoinDateNotStartDate || userIsGifter);
 
   const keyValuePairCss = css`
     list-style: none;
@@ -260,7 +257,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               <li css={valueCss}>{props.productDetail.tier}</li>
             </ul>
           )}
-          {subscriptionStartDate && !shouldNotShowStartDate && (
+          {subscriptionStartDate && shouldShowStartDate && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
               <li css={valueCss}>{formatDateStr(subscriptionStartDate)}</li>
@@ -280,7 +277,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               <li css={valueCss}>{formatDateStr(giftPurchaseDate)}</li>
             </ul>
           )}
-          {isDigiSubGift && !userIsGifter && (
+          {isGifted && !userIsGifter && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>End date</li>
               <li css={valueCss}>{formatDateStr(subscriptionEndDate)}</li>
@@ -288,7 +285,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
           )}
           {specificProductType.showTrialRemainingIfApplicable &&
             props.productDetail.subscription.trialLength > 0 &&
-            !isDigiSubGift && (
+            !isGifted && (
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Trial remaining</li>
                 <li css={valueCss}>
@@ -299,7 +296,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </li>
               </ul>
             )}
-          {!isDigiSubGift && (
+          {!isGifted && (
             <div
               css={css`
                 margin-top: auto;
@@ -401,7 +398,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   )}
                 </li>
               </ul>
-              {!props.productDetail.subscription.payPalEmail && !isDigiSubGift && (
+              {!props.productDetail.subscription.payPalEmail && !isGifted && (
                 <div
                   css={css`
                     margin-top: auto;
@@ -436,7 +433,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             </>
           )}
           {!props.productDetail.isPaidTier &&
-            (isDigiSubGift ? (
+            (isGifted ? (
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment</li>
                 <li css={valueCss}>Gift redemption</li>
