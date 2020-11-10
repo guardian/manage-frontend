@@ -19,7 +19,7 @@ export const TopicForm = (props: TopicFormProps) => {
   );
 
   const [requiresSubmitButton, setRequiresSubmitButton] = useState<boolean>(
-    true
+    props.preSelectedId ? false : true
   );
 
   return (
