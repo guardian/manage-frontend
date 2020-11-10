@@ -10,18 +10,25 @@ import {
 import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { height } from "@guardian/src-foundations/size";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ErrorIcon } from "../svgs/errorIcon";
 
 interface UploadFileUploadProps {
   title: string;
   allowedFileFormats: string[];
+  changeSetState?: (value: File | undefined) => void;
   description?: string;
   optional?: true;
+  inErrorState?: boolean;
+  errorMessage?: string;
   additionalCss?: SerializedStyles;
 }
 
 export const UploadFileInput = (props: UploadFileUploadProps) => {
-  const [selectedFile, setSelectedFile] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  useEffect(() => {
+    props.changeSetState?.(selectedFile);
+  }, [selectedFile]);
   return (
     <label
       css={css`
@@ -56,6 +63,22 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
           {props.description}
         </span>
       )}
+      {props.inErrorState && (
+        <span
+          css={css`
+            display: block;
+            font-weight: normal;
+            color: ${palette.error[400]};
+          `}
+        >
+          <ErrorIcon
+            additionalCss={css`
+              margin-right: 4px;
+            `}
+          />
+          {props.errorMessage}
+        </span>
+      )}
       <input
         type="file"
         name="imageAttachment"
@@ -65,7 +88,10 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
           display: none;
         `}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setSelectedFile(e.target.files?.[0].name || "");
+          const file = e.target.files?.[0];
+          if (file) {
+            setSelectedFile(file);
+          }
         }}
       />
       <div
@@ -77,11 +103,9 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
         <span
           css={css`
             height: ${height.ctaMedium}px;
-
             min-height: ${height.ctaMedium}px;
             padding: 0 ${space[5]}px;
             border-radius: ${height.ctaMedium}px;
-
             display: inline-flex;
             justify-content: space-between;
             align-items: center;
@@ -103,7 +127,7 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
         >
           Choose file
         </span>
-        {selectedFile.length > 0 && (
+        {selectedFile && (
           <Button
             priority="subdued"
             cssOverrides={css`
@@ -112,7 +136,7 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
             `}
             onClick={event => {
               event.preventDefault();
-              setSelectedFile("");
+              setSelectedFile(undefined);
             }}
           >
             Cancel
@@ -123,10 +147,12 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
             display: inline-flex;
             margin-left: ${space[3]}px;
             font-weight: normal;
-            color: ${palette.neutral["46"]};
+            color: ${props.inErrorState
+              ? palette.error[400]
+              : palette.neutral["46"]};
           `}
         >
-          {selectedFile}
+          {selectedFile?.name}
         </span>
       </div>
     </label>

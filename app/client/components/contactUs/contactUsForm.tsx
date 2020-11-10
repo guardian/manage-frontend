@@ -3,6 +3,11 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  MAX_FILE_ATTACHMENT_SIZE_KB,
+  VALID_IMAGE_FILE_EXTENSIONS,
+  VALID_IMAGE_FILE_MIME_TYPES
+} from "../../../shared/fileUploadUtils";
 import { isEmail } from "../../../shared/validationUtils";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
@@ -26,6 +31,7 @@ export interface FormPayload {
   subjectLine: string;
   details: string;
   captchaToken: string;
+  fileAttachment?: File;
 }
 
 interface FormElemValidationObject {
@@ -40,6 +46,7 @@ interface FormValidationState {
   subjectLine: FormElemValidationObject;
   details: FormElemValidationObject;
   captcha: FormElemValidationObject;
+  fileAttachment: FormElemValidationObject;
 }
 
 type ContactUsFormStatus = "form" | "submitting" | "failure";
@@ -66,6 +73,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   const [detailsRemainingCharacters, setDetailsRemainingCharacters] = useState<
     number
   >(250);
+
+  const [fileAttachment, setFileAttachment] = useState<File | undefined>();
 
   const [status, setStatus] = useState<ContactUsFormStatus>("form");
 
@@ -98,6 +107,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     captcha: {
       isValid: !!captchaToken.length,
       message: "Please confirm you are not a robot"
+    },
+    fileAttachment: {
+      isValid: true,
+      message: "There is a maximum file size limit of 5mb"
     }
   });
 
@@ -116,6 +129,12 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!formValidationState.fileAttachment.isValid) {
+      validateForm();
+    }
+  }, [fileAttachment]);
+
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
@@ -128,12 +147,16 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     const isEmailValid = isEmail(email);
     const isSubjectLineValid = !!subjectLine.length;
     const isDetailsValid = !!details.length;
+    const isFileAttachmentValid =
+      fileAttachment === undefined ||
+      fileAttachment.size / 1024 <= MAX_FILE_ATTACHMENT_SIZE_KB;
     const isFormInValidState =
       isFullNameValid &&
       isEmailValid &&
       isSubjectLineValid &&
       isDetailsValid &&
-      !!captchaToken.length;
+      !!captchaToken.length &&
+      isFileAttachmentValid;
     setFormValidationState({
       ...formValidationState,
       inValidationMode: !isFormInValidState,
@@ -144,6 +167,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         isValid: isSubjectLineValid
       },
       details: { ...formValidationState.details, isValid: isDetailsValid },
+      fileAttachment: {
+        ...formValidationState.fileAttachment,
+        isValid: isFileAttachmentValid
+      },
       captcha: {
         ...formValidationState.captcha,
         isValid: !!captchaToken.length
@@ -164,7 +191,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               subjectLine,
               email,
               details,
-              captchaToken
+              captchaToken,
+              fileAttachment
             })
             .then(success => {
               if (!success) {
@@ -357,14 +385,16 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <UploadFileInput
           title="Upload image"
           optional
-          description="Explain file format and size limitation"
-          allowedFileFormats={[
-            "image/png",
-            "image/jpeg",
-            "image/jpg",
-            "image/gif",
-            "application/pdf"
-          ]}
+          description={`File must be in ${VALID_IMAGE_FILE_EXTENSIONS.join(
+            ", "
+          ).replace(/,(?=[^,]*$)/, " or ")} format and less than 5MB`}
+          allowedFileFormats={VALID_IMAGE_FILE_MIME_TYPES}
+          changeSetState={setFileAttachment}
+          inErrorState={
+            formValidationState.inValidationMode &&
+            !formValidationState.fileAttachment.isValid
+          }
+          errorMessage={formValidationState.fileAttachment.message}
           additionalCss={css`
             margin: ${space[5]}px;
           `}

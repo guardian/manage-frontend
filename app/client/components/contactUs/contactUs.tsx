@@ -5,6 +5,7 @@ import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
 import React from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
+import { base64FromFile } from "../../../shared/fileUploadUtils";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { ContactUsForm, FormPayload } from "./contactUsForm";
@@ -123,7 +124,13 @@ export const ContactUs = (props: ContactUsProps) => {
       email: formData.email,
       subject: formData.subjectLine,
       message: formData.details,
-      captchaToken: formData.captchaToken
+      captchaToken: formData.captchaToken,
+      ...(formData.fileAttachment && {
+        attachment: {
+          name: formData.fileAttachment.name,
+          contents: await base64FromFile(formData.fileAttachment)
+        }
+      })
     });
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });

@@ -3,6 +3,11 @@ import { Request, Response } from "express";
 import fetch from "node-fetch";
 import { contactUsConfig } from "../shared/contactUsConfig";
 import { ContactUsReq } from "../shared/contactUsTypes";
+import {
+  validateBase64FileSize,
+  validateBase64ImageMimeType,
+  validateImageFileExtension
+} from "../shared/fileUploadUtils";
 import { isEmail } from "../shared/validationUtils";
 import { getContactUsAPIHostAndKey } from "./apiGatewayDiscovery";
 import { log } from "./log";
@@ -84,6 +89,11 @@ const validateCaptchaToken = async (token: string) => {
   return json.success;
 };
 
+const validateFileAttachment = (fileName: string, base64String: string) =>
+  validateBase64FileSize(base64String) &&
+  validateBase64ImageMimeType(base64String) &&
+  validateImageFileExtension(fileName);
+
 const validateContactUsFormBody = async (body: any): Promise<boolean> =>
   body &&
   body.topic &&
@@ -94,7 +104,10 @@ const validateContactUsFormBody = async (body: any): Promise<boolean> =>
   body.subject &&
   body.message &&
   body.captchaToken &&
-  (await validateCaptchaToken(body.captchaToken));
+  (await validateCaptchaToken(body.captchaToken)) &&
+  (body.attachment
+    ? validateFileAttachment(body.attachment.name, body.attachment.contents)
+    : true);
 
 const validateTopics = (
   reqTopic: unknown,

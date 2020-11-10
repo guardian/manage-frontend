@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/node";
 import bodyParser from "body-parser";
 import { default as express, NextFunction, Response } from "express";
 import helmet from "helmet";
+import { MAX_FILE_ATTACHMENT_SIZE_KB } from "../shared/fileUploadUtils";
 import { conf } from "./config";
 import { log } from "./log";
 import * as routes from "./routes";
@@ -45,7 +46,12 @@ server.use((_, res: Response, next: NextFunction) => {
   next();
 });
 
-server.use(bodyParser.raw({ type: "*/*" })); // parses all bodys to a raw 'Buffer'
+server.use(
+  bodyParser.raw({
+    type: "*/*",
+    limit: `${MAX_FILE_ATTACHMENT_SIZE_KB + 100}kb`
+  })
+); // parses all bodys to a raw 'Buffer'
 
 server.use(routes.core);
 server.use("/profile/", routes.profile);
