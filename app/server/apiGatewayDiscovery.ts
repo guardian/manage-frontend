@@ -211,5 +211,5 @@ export const getContactUsAPIHostAndKey = async () => {
     return undefined;
   }
 
-  return { host: `http://${host}/${stage}/`, apiKey };
+  return { host: `https://${host}/${stage}/`, apiKey };
 };
