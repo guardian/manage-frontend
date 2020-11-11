@@ -46,6 +46,7 @@ import { Main, WithOptionalServerPathWithQueryParams } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { ScrollToTop } from "./scrollToTop";
 
 const User = (props: WithOptionalServerPathWithQueryParams) => (
   <Main {...props}>
@@ -197,6 +198,7 @@ export const ServerUser = (serverPathWithQueryParams: string) => (
 export const BrowserUser = (
   <>
     <AnalyticsTracker />
+    <ScrollToTop />
     <User />
   </>
 );
