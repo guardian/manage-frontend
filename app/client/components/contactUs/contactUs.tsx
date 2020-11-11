@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import { RouteComponentProps } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
 import React, { useState } from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
@@ -13,12 +13,6 @@ import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
-
-interface ContactUsState {
-  topicId: string | undefined;
-  subTopicId: string | undefined;
-  subSubTopicId: string | undefined;
-}
 
 interface ContactUsProps extends RouteComponentProps {
   urlTopicId?: string;
@@ -43,108 +37,18 @@ export const ContactUs = (props: ContactUsProps) => {
 
   const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
-  const [contactUsState, setContactUsState] = useState<ContactUsState>({
-    topicId: validUrlTopicId?.id,
-    subTopicId: validUrlSubTopicId?.id,
-    subSubTopicId: validUrlSubSubTopicId?.id
-  });
-
-  const setTopic = (selectedTopic: string) => {
-    setContactUsState({
-      topicId: selectedTopic,
-      subTopicId: undefined,
-      subSubTopicId: undefined
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "topic_click",
-      eventLabel: selectedTopic
-    });
-  };
-
-  const setSubTopic = (selectedSubTopic: string) => {
-    setContactUsState({
-      ...contactUsState,
-      subTopicId: selectedSubTopic,
-      subSubTopicId: undefined
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subtopic_click",
-      eventLabel: selectedSubTopic
-    });
-  };
-
-  const setSubSubTopic = (selectedSubSubTopic: string) => {
-    setContactUsState({
-      ...contactUsState,
-      subSubTopicId: selectedSubSubTopic
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subsubtopic_click",
-      eventLabel: selectedSubSubTopic
-    });
-  };
-
-  const submitForm = async (formData: FormPayload): Promise<boolean> => {
-    const body = JSON.stringify({
-      ...(contactUsState.topicId && {
-        topic: contactUsState.topicId
-      }),
-      ...(contactUsState.subTopicId && {
-        subtopic: contactUsState.subTopicId
-      }),
-      ...(contactUsState.subSubTopicId && {
-        subsubtopic: contactUsState.subSubTopicId
-      }),
-      name: formData.fullName,
-      email: formData.email,
-      subject: formData.subjectLine,
-      message: formData.details,
-      captchaToken: formData.captchaToken
-    });
-
-    const res = await fetch("/api/contact-us/", { method: "POST", body });
-    if (res.ok) {
-      setFormStatus("success");
-      trackEvent({
-        eventCategory: "ContactUs",
-        eventAction: "submission_success",
-        eventLabel:
-          `${contactUsState.topicId} - ` +
-          `${contactUsState.subTopicId} - ` +
-          `${contactUsState.subSubTopicId}`
-      });
-      return true;
-    } else {
-      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
-
-      trackEvent({
-        eventCategory: "ContactUs",
-        eventAction: "submission_failure",
-        eventLabel: errorMsg
-      });
-      captureException(errorMsg);
-      return false;
-    }
-  };
-
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === contactUsState.topicId
+    topic => topic.id === validUrlTopicId?.id
   );
 
   const subTopics = currentTopic?.subtopics;
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === contactUsState.subTopicId
+    subTopic => subTopic.id === validUrlSubTopicId?.id
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === contactUsState.subSubTopicId
+    subSubTopic => subSubTopic.id === validUrlSubSubTopicId?.id
   );
 
   const subTopicsTitle = currentTopic?.subTopicsTitle || "";
@@ -171,6 +75,86 @@ export const ContactUs = (props: ContactUsProps) => {
     currentSubTopic?.editableSubjectLine ||
     currentTopic?.editableSubjectLine
   );
+
+  const setTopic = (selectedTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "topic_click",
+      eventLabel: selectedTopic
+    });
+
+    navigate(`/contact-us/${selectedTopic}`, { replace: true });
+  };
+
+  const setSubTopic = (selectedSubTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subtopic_click",
+      eventLabel: selectedSubTopic
+    });
+
+    navigate(`/contact-us/${currentTopic?.id}/${selectedSubTopic}`, {
+      replace: true
+    });
+  };
+
+  const setSubSubTopic = (selectedSubSubTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subsubtopic_click",
+      eventLabel: selectedSubSubTopic
+    });
+
+    navigate(
+      `/contact-us/${currentTopic?.id}/${currentSubTopic?.id}/${selectedSubSubTopic}`,
+      {
+        replace: true
+      }
+    );
+  };
+
+  const submitForm = async (formData: FormPayload): Promise<boolean> => {
+    const body = JSON.stringify({
+      ...(currentTopic?.id && {
+        topic: currentTopic?.id
+      }),
+      ...(currentSubSubTopic?.id && {
+        subtopic: currentSubSubTopic?.id
+      }),
+      ...(currentSubSubTopic?.id && {
+        subsubtopic: currentSubSubTopic?.id
+      }),
+      name: formData.fullName,
+      email: formData.email,
+      subject: formData.subjectLine,
+      message: formData.details,
+      captchaToken: formData.captchaToken
+    });
+
+    const res = await fetch("/api/contact-us/", { method: "POST", body });
+    if (res.ok) {
+      setFormStatus("success");
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_success",
+        eventLabel:
+          `${currentTopic?.id} - ` +
+          `${currentSubTopic?.id} - ` +
+          `${currentSubSubTopic?.id}`
+      });
+      return true;
+    } else {
+      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
+
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_failure",
+        eventLabel: errorMsg
+      });
+      captureException(errorMsg);
+      return false;
+    }
+  };
 
   return (
     <>
@@ -206,26 +190,26 @@ export const ContactUs = (props: ContactUsProps) => {
             <>
               <TopicForm
                 data={contactUsConfig}
-                preSelectedId={contactUsState.topicId}
+                preSelectedId={currentTopic?.id}
                 submitCallback={setTopic}
               />
               {subTopics && (
                 <SubTopicForm
-                  key={`subtopic-${contactUsState.topicId}`}
+                  key={`subtopic-${currentTopic?.id}`}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
                   data={subTopics}
-                  preSelectedId={contactUsState.subTopicId}
+                  preSelectedId={currentSubTopic?.id}
                   submitCallback={setSubTopic}
                 />
               )}
               {subSubTopics && (
                 <SubTopicForm
-                  key={`subsubtopic-${contactUsState.subTopicId}`}
+                  key={`subsubtopic-${currentSubTopic?.id}`}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
                   data={subSubTopics}
-                  preSelectedId={contactUsState.subSubTopicId}
+                  preSelectedId={currentSubSubTopic?.id}
                   submitCallback={setSubSubTopic}
                 />
               )}
@@ -237,9 +221,9 @@ export const ContactUs = (props: ContactUsProps) => {
                   linkAsButton={!showForm}
                   showContacts={!showForm}
                   topicReferer={
-                    `${contactUsState.topicId} - ` +
-                    `${contactUsState.subTopicId} - ` +
-                    `${contactUsState.subSubTopicId}`
+                    `${currentTopic?.id} - ` +
+                    `${currentSubSubTopic?.id} - ` +
+                    `${currentSubSubTopic?.id}`
                   }
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
@@ -249,7 +233,7 @@ export const ContactUs = (props: ContactUsProps) => {
 
               {showForm && (
                 <ContactUsForm
-                  key={`${contactUsState.topicId}-${contactUsState.subTopicId}-${contactUsState.subSubTopicId}`}
+                  key={`${currentTopic?.id}-${currentSubTopic?.id}-${currentSubSubTopic?.id}`}
                   submitCallback={submitForm}
                   title={`${
                     subTopics || subSubTopics
