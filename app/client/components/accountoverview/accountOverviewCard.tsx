@@ -51,12 +51,22 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 
   const subscriptionStartDate = props.productDetail.subscription.start;
 
+  const subscriptionEndDate = props.productDetail.subscription.end;
+
   const nextPaymentDetails = getNextPaymentDetails(
     mainPlan,
     props.productDetail.subscription,
     null,
     hasPaymentFailure
   );
+
+  const isGifted = isGift(props.productDetail.subscription);
+
+  const userIsGifter = isGifted && props.productDetail.isPaidTier;
+
+  const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
+
+  const shouldShowStartDate = !(shouldShowJoinDateNotStartDate || userIsGifter);
 
   const keyValuePairCss = css`
     list-style: none;
@@ -247,7 +257,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               <li css={valueCss}>{props.productDetail.tier}</li>
             </ul>
           )}
-          {subscriptionStartDate && !shouldShowJoinDateNotStartDate && (
+          {subscriptionStartDate && shouldShowStartDate && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
               <li css={valueCss}>{formatDateStr(subscriptionStartDate)}</li>
@@ -261,8 +271,21 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               </li>
             </ul>
           )}
+          {userIsGifter && giftPurchaseDate && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>Purchase date</li>
+              <li css={valueCss}>{formatDateStr(giftPurchaseDate)}</li>
+            </ul>
+          )}
+          {isGifted && !userIsGifter && (
+            <ul css={keyValuePairCss}>
+              <li css={keyCss}>End date</li>
+              <li css={valueCss}>{formatDateStr(subscriptionEndDate)}</li>
+            </ul>
+          )}
           {specificProductType.showTrialRemainingIfApplicable &&
-            props.productDetail.subscription.trialLength > 0 && (
+            props.productDetail.subscription.trialLength > 0 &&
+            !isGifted && (
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Trial remaining</li>
                 <li css={valueCss}>
@@ -273,27 +296,29 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </li>
               </ul>
             )}
-          <div
-            css={css`
-              margin-top: auto;
-            `}
-          >
-            <LinkButton
-              to={`/${groupedProductType.urlPart}`}
-              text={`Manage ${groupedProductType.friendlyName}`}
-              state={props.productDetail}
-              colour={palette.brand[800]}
-              textColour={palette.brand[400]}
-              fontWeight={"bold"}
-              onClick={() =>
-                trackEvent({
-                  eventCategory: "account_overview",
-                  eventAction: "click",
-                  eventLabel: `manage_${groupedProductType.urlPart}`
-                })
-              }
-            />
-          </div>
+          {!isGifted && (
+            <div
+              css={css`
+                margin-top: auto;
+              `}
+            >
+              <LinkButton
+                to={`/${groupedProductType.urlPart}`}
+                text={`Manage ${groupedProductType.friendlyName}`}
+                state={props.productDetail}
+                colour={palette.brand[800]}
+                textColour={palette.brand[400]}
+                fontWeight={"bold"}
+                onClick={() =>
+                  trackEvent({
+                    eventCategory: "account_overview",
+                    eventAction: "click",
+                    eventLabel: `manage_${groupedProductType.urlPart}`
+                  })
+                }
+              />
+            </div>
+          )}
         </div>
 
         <div
@@ -344,7 +369,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </li>
               </ul>
             )}
-          {props.productDetail.isPaidTier ? (
+          {props.productDetail.isPaidTier && (
             <>
               <ul css={keyValuePairCss}>
                 <li css={keyCss}>Payment method</li>
@@ -373,7 +398,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   )}
                 </li>
               </ul>
-              {!props.productDetail.subscription.payPalEmail && (
+              {!props.productDetail.subscription.payPalEmail && !isGifted && (
                 <div
                   css={css`
                     margin-top: auto;
@@ -406,10 +431,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 </div>
               )}
             </>
-          ) : (
+          )}
+          {!props.productDetail.isPaidTier && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Payment</li>
-              <li css={valueCss}>FREE</li>
+              <li css={valueCss}>{isGifted ? "Gift redemption" : "Free"}</li>
             </ul>
           )}
         </div>
