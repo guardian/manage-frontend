@@ -53,7 +53,7 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
-    <Router primary={false} css={{ height: "100%" }}>
+    <Router primary={true} css={{ height: "100%" }}>
       <AccountOverview path="/" />
       <Billing path="/billing" />
 
@@ -198,7 +198,7 @@ export const ServerUser = (serverPathWithQueryParams: string) => (
 export const BrowserUser = (
   <>
     <AnalyticsTracker />
-    <ScrollToTop />
     <User />
+    <ScrollToTop />
   </>
 );
