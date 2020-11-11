@@ -3,7 +3,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
-import React, { useState } from "react";
+import React from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -18,11 +18,12 @@ interface ContactUsProps extends RouteComponentProps {
   urlTopicId?: string;
   urlSubTopicId?: string;
   urlSubSubTopicId?: string;
+  urlSuccess?: string;
 }
 
-type ContactUsFormStatus = "form" | "success";
-
 export const ContactUs = (props: ContactUsProps) => {
+  const success = props.urlSuccess === "1";
+
   const validUrlTopicId = contactUsConfig.find(
     topic => topic.id === props.urlTopicId
   );
@@ -34,8 +35,6 @@ export const ContactUs = (props: ContactUsProps) => {
   const validUrlSubSubTopicId = validUrlSubTopicId?.subsubtopics?.find(
     subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
-
-  const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
 
   const currentTopic = contactUsConfig.find(
     topic => topic.id === validUrlTopicId?.id
@@ -133,7 +132,6 @@ export const ContactUs = (props: ContactUsProps) => {
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });
     if (res.ok) {
-      setFormStatus("success");
       trackEvent({
         eventCategory: "ContactUs",
         eventAction: "submission_success",
@@ -142,6 +140,12 @@ export const ContactUs = (props: ContactUsProps) => {
           `${currentSubTopic?.id} - ` +
           `${currentSubSubTopic?.id}`
       });
+
+      navigate(
+        `/contact-us/${currentTopic?.id}/${currentSubTopic?.id ||
+          "0"}/${currentSubSubTopic?.id || "0"}/1`
+      );
+
       return true;
     } else {
       const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
@@ -176,7 +180,7 @@ export const ContactUs = (props: ContactUsProps) => {
               }
             `}
           >
-            {headerText(formStatus)}
+            {headerText(success)}
           </h1>
           <p
             css={css`
@@ -184,9 +188,9 @@ export const ContactUs = (props: ContactUsProps) => {
               ${textSans.medium()};
             `}
           >
-            {containerText(formStatus, currentTopic?.enquiryLabel || "")}
+            {containerText(success, currentTopic?.enquiryLabel || "")}
           </p>
-          {formStatus === "form" && (
+          {!success && (
             <>
               <TopicForm
                 data={contactUsConfig}
@@ -252,20 +256,10 @@ export const ContactUs = (props: ContactUsProps) => {
   );
 };
 
-const headerText = (status: ContactUsFormStatus) => {
-  switch (status) {
-    case "form":
-      return "We are here to help";
-    case "success":
-      return "Thank you for contacting us";
-  }
-};
+const headerText = (formSubmitted: boolean) =>
+  formSubmitted ? "Thank you for contacting us" : "We are here to help";
 
-const containerText = (status: ContactUsFormStatus, label: string) => {
-  switch (status) {
-    case "form":
-      return "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
-    case "success":
-      return `Thank you for contacting us regarding ${label}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`;
-  }
-};
+const containerText = (formSubmitted: boolean, label: string) =>
+  formSubmitted
+    ? `Thank you for contacting us regarding ${label}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
+    : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
