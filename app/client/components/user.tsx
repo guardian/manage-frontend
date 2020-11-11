@@ -52,7 +52,7 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
-    <Router css={{ height: "100%" }}>
+    <Router primary={false} css={{ height: "100%" }}>
       <AccountOverview path="/" />
       <Billing path="/billing" />
 
@@ -181,7 +181,7 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
     </Router>
-    <Router>
+    <Router primary={false}>
       <SuppressConsentBanner path="/payment/*" />
       <ConsentsBanner default />
     </Router>
