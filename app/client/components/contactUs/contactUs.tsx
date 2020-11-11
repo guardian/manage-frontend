@@ -22,33 +22,29 @@ interface ContactUsProps extends RouteComponentProps {
 }
 
 export const ContactUs = (props: ContactUsProps) => {
-  const success = props.urlSuccess === "1";
-
-  const validUrlTopicId = contactUsConfig.find(
-    topic => topic.id === props.urlTopicId
-  );
-
-  const validUrlSubTopicId = validUrlTopicId?.subtopics?.find(
-    subTopic => subTopic.id === props.urlSubTopicId
-  );
-
-  const validUrlSubSubTopicId = validUrlSubTopicId?.subsubtopics?.find(
-    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
-  );
-
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === validUrlTopicId?.id
+    topic => topic.id === props.urlTopicId
   );
 
   const subTopics = currentTopic?.subtopics;
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === validUrlSubTopicId?.id
+    subTopic => subTopic.id === props.urlSubTopicId
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === validUrlSubSubTopicId?.id
+    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
+
+  const success = props.urlSuccess === "1";
+
+  const headerText = success
+    ? "Thank you for contacting us"
+    : "We are here to help";
+
+  const containerText = success
+    ? `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
+    : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
 
   const subTopicsTitle = currentTopic?.subTopicsTitle || "";
   const subSubTopicsTitle = currentSubTopic?.subsubTopicsTitle || "";
@@ -137,25 +133,29 @@ export const ContactUs = (props: ContactUsProps) => {
         eventAction: "submission_success",
         eventLabel:
           `${currentTopic?.id} - ` +
-          `${currentSubTopic?.id} - ` +
-          `${currentSubSubTopic?.id}`
+          `${currentSubTopic?.id || "N/A"} - ` +
+          `${currentSubSubTopic?.id || "N/A"}`
       });
 
-      navigate(
-        `/contact-us/${currentTopic?.id}/${currentSubTopic?.id ||
-          "0"}/${currentSubSubTopic?.id || "0"}/1`
-      );
+      const urlSections = [
+        "/contact-us",
+        currentTopic?.id,
+        currentSubTopic?.id || "0",
+        currentSubSubTopic?.id || "0",
+        "1"
+      ];
+      navigate(urlSections.join("/"));
 
       return true;
     } else {
       const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
-
       trackEvent({
         eventCategory: "ContactUs",
         eventAction: "submission_failure",
         eventLabel: errorMsg
       });
       captureException(errorMsg);
+
       return false;
     }
   };
@@ -180,7 +180,7 @@ export const ContactUs = (props: ContactUsProps) => {
               }
             `}
           >
-            {headerText(success)}
+            {headerText}
           </h1>
           <p
             css={css`
@@ -188,7 +188,7 @@ export const ContactUs = (props: ContactUsProps) => {
               ${textSans.medium()};
             `}
           >
-            {containerText(success, currentTopic?.enquiryLabel || "")}
+            {containerText}
           </p>
           {!success && (
             <>
@@ -255,11 +255,3 @@ export const ContactUs = (props: ContactUsProps) => {
     </>
   );
 };
-
-const headerText = (formSubmitted: boolean) =>
-  formSubmitted ? "Thank you for contacting us" : "We are here to help";
-
-const containerText = (formSubmitted: boolean, label: string) =>
-  formSubmitted
-    ? `Thank you for contacting us regarding ${label}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
-    : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
