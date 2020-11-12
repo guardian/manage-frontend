@@ -4,6 +4,7 @@ import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
+  base64FromFile,
   MAX_FILE_ATTACHMENT_SIZE_KB,
   VALID_IMAGE_FILE_EXTENSIONS,
   VALID_IMAGE_FILE_MIME_TYPES
@@ -31,7 +32,7 @@ export interface FormPayload {
   subjectLine: string;
   details: string;
   captchaToken: string;
-  fileAttachment?: File;
+  attachment?: { name: string; contents: string };
 }
 
 interface FormElemValidationObject {
@@ -181,7 +182,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
   return (
     <form
-      onSubmit={(event: FormEvent) => {
+      onSubmit={async (event: FormEvent) => {
         event.preventDefault();
         if (validateForm()) {
           setStatus("submitting");
@@ -192,7 +193,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               email,
               details,
               captchaToken,
-              fileAttachment
+              attachment: fileAttachment && {
+                name: fileAttachment.name,
+                contents: (await base64FromFile(fileAttachment)) as string
+              }
             })
             .then(success => {
               if (!success) {
