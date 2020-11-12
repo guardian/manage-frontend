@@ -168,5 +168,8 @@ const buildContactUsReqBody = (body: any): ContactUsReq => ({
   name: body.name,
   email: body.email,
   subject: body.subject,
-  message: body.message
+  message: body.message,
+  ...(body.attachment && {
+    attachment: body.attachment
+  })
 });
