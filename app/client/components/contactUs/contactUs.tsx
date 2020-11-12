@@ -113,8 +113,8 @@ export const ContactUs = (props: ContactUsProps) => {
       ...(currentTopic?.id && {
         topic: currentTopic?.id
       }),
-      ...(currentSubSubTopic?.id && {
-        subtopic: currentSubSubTopic?.id
+      ...(currentSubTopic?.id && {
+        subtopic: currentSubTopic?.id
       }),
       ...(currentSubSubTopic?.id && {
         subsubtopic: currentSubSubTopic?.id
