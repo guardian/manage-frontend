@@ -226,8 +226,8 @@ export const ContactUs = (props: ContactUsProps) => {
                   showContacts={!showForm}
                   topicReferer={
                     `${currentTopic?.id} - ` +
-                    `${currentSubSubTopic?.id} - ` +
-                    `${currentSubSubTopic?.id}`
+                    `${currentSubSubTopic?.id || "N/A"} - ` +
+                    `${currentSubSubTopic?.id || "N/A"}`
                   }
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
