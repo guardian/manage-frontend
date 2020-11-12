@@ -118,10 +118,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
-      callback: (token: string) => {
-        // 1sec delay is so the user see's the green tick for a short period before proceeding
-        setTimeout(() => setCaptchaToken(token), 1000);
-      }
+      callback: (token: string) => setCaptchaToken(token)
     });
   };
 
@@ -374,35 +371,33 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         />
       )}
       {showCustomerServiceInfo && <CallCentreEmailAndNumbers />}
-      {!captchaToken.length && (
-        <div
-          css={css`
-            margin: ${space[5]}px 0;
-          `}
-        >
-          {formValidationState.inValidationMode &&
-            !formValidationState.captcha.isValid && (
-              <span
+      <div
+        css={css`
+          margin: ${space[5]}px 0;
+        `}
+      >
+        {formValidationState.inValidationMode &&
+          !formValidationState.captcha.isValid && (
+            <span
+              css={css`
+                display: block;
+                color: ${palette.news[400]};
+                ${textSans.medium({ fontWeight: "bold" })};
+                font-weight: normal;
+              `}
+            >
+              <i
                 css={css`
-                  display: block;
-                  color: ${palette.news[400]};
-                  ${textSans.medium({ fontWeight: "bold" })};
-                  font-weight: normal;
+                  margin-right: 4px;
                 `}
               >
-                <i
-                  css={css`
-                    margin-right: 4px;
-                  `}
-                >
-                  <ErrorIcon />
-                </i>
-                {formValidationState.captcha.message}
-              </span>
-            )}
-          <div id="recaptcha" />
-        </div>
-      )}
+                <ErrorIcon />
+              </i>
+              {formValidationState.captcha.message}
+            </span>
+          )}
+        <div id="recaptcha" />
+      </div>
       <Button
         type="submit"
         iconSide="right"
