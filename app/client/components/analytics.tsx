@@ -130,12 +130,6 @@ export class AnalyticsTracker extends React.PureComponent<{}> {
       <Location>
         {({ location }) => {
           if (location && typeof window !== "undefined") {
-            setTimeout(() => {
-              // tslint:disable-next-line:no-object-mutation
-              document.body.scrollTop = 0; // For Safari
-              // tslint:disable-next-line:no-object-mutation
-              document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            }, 250);
             if (
               window.guardian &&
               window.guardian.ophan &&

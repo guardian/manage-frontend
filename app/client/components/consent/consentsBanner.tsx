@@ -33,6 +33,8 @@ export class ConsentsBanner extends React.Component<
     requiresConsents: false
   };
 
+  private bannerRef = React.createRef<HTMLDivElement>();
+
   public componentDidMount = () => {
     if (isInUSA()) {
       initCMP({ useCcpa: true });
@@ -48,6 +50,8 @@ export class ConsentsBanner extends React.Component<
 
     return documentIsAvailable && !useCCPA && requiresConsents ? (
       <div
+        ref={this.bannerRef}
+        tabIndex={-1}
         css={{
           zIndex: 99,
           position: "fixed",
@@ -146,7 +150,7 @@ export class ConsentsBanner extends React.Component<
   };
 
   private updateStateWithConsents = () =>
-    this.setState({ requiresConsents: requiresConsents() });
+    this.setState({ requiresConsents: requiresConsents() }, this.focusBanner);
 
   private writeConsents = () => {
     const newGuTkCookieValue = `1.${Date.now()}`;
@@ -160,6 +164,15 @@ export class ConsentsBanner extends React.Component<
       `expires=${expires.toUTCString()};domain=.${window.guardian.domain}`;
 
     this.updateStateWithConsents();
+  };
+
+  private focusBanner = () => {
+    // tslint:disable-next-line:no-shadowed-variable
+    const { useCCPA, requiresConsents } = this.state;
+
+    if (documentIsAvailable && !useCCPA && requiresConsents) {
+      this.bannerRef.current?.focus();
+    }
   };
 }
 

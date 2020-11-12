@@ -46,13 +46,14 @@ import { Main, WithOptionalServerPathWithQueryParams } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
+import { ScrollToTop } from "./scrollToTop";
 
 const User = (props: WithOptionalServerPathWithQueryParams) => (
   <Main {...props}>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
-    <Router css={{ height: "100%" }}>
+    <Router primary={true} css={{ height: "100%" }}>
       <AccountOverview path="/" />
       <Billing path="/billing" />
 
@@ -181,7 +182,7 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
     </Router>
-    <Router>
+    <Router primary={false}>
       <SuppressConsentBanner path="/payment/*" />
       <ConsentsBanner default />
     </Router>
@@ -198,5 +199,6 @@ export const BrowserUser = (
   <>
     <AnalyticsTracker />
     <User />
+    <ScrollToTop />
   </>
 );
