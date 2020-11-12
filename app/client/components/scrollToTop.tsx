@@ -1,7 +1,7 @@
 import { Location } from "@reach/router";
 import React from "react";
 
-const exceptions: string[] = [];
+const exceptions: string[] = ["/contact-us/"];
 
 export const ScrollToTop = () => (
   <Location>

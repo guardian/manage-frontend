@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { palette, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import { RouteComponentProps } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
-import React, { useState } from "react";
+import React from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -14,138 +14,37 @@ import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
 
-interface ContactUsState {
-  topicId: string | undefined;
-  subTopicId: string | undefined;
-  subSubTopicId: string | undefined;
-}
-
 interface ContactUsProps extends RouteComponentProps {
   urlTopicId?: string;
   urlSubTopicId?: string;
   urlSubSubTopicId?: string;
+  urlSuccess?: string;
 }
 
-type ContactUsFormStatus = "form" | "success";
-
 export const ContactUs = (props: ContactUsProps) => {
-  const validUrlTopicId = contactUsConfig.find(
-    topic => topic.id === props.urlTopicId
-  );
-
-  const validUrlSubTopicId = validUrlTopicId?.subtopics?.find(
-    subTopic => subTopic.id === props.urlSubTopicId
-  );
-
-  const validUrlSubSubTopicId = validUrlSubTopicId?.subsubtopics?.find(
-    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
-  );
-
-  const [formStatus, setFormStatus] = useState<ContactUsFormStatus>("form");
-
-  const [contactUsState, setContactUsState] = useState<ContactUsState>({
-    topicId: validUrlTopicId?.id,
-    subTopicId: validUrlSubTopicId?.id,
-    subSubTopicId: validUrlSubSubTopicId?.id
-  });
-
-  const setTopic = (selectedTopic: string) => {
-    setContactUsState({
-      topicId: selectedTopic,
-      subTopicId: undefined,
-      subSubTopicId: undefined
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "topic_click",
-      eventLabel: selectedTopic
-    });
-  };
-
-  const setSubTopic = (selectedSubTopic: string) => {
-    setContactUsState({
-      ...contactUsState,
-      subTopicId: selectedSubTopic,
-      subSubTopicId: undefined
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subtopic_click",
-      eventLabel: selectedSubTopic
-    });
-  };
-
-  const setSubSubTopic = (selectedSubSubTopic: string) => {
-    setContactUsState({
-      ...contactUsState,
-      subSubTopicId: selectedSubSubTopic
-    });
-
-    trackEvent({
-      eventCategory: "ContactUs",
-      eventAction: "subsubtopic_click",
-      eventLabel: selectedSubSubTopic
-    });
-  };
-
-  const submitForm = async (formData: FormPayload): Promise<boolean> => {
-    const body = JSON.stringify({
-      ...(contactUsState.topicId && {
-        topic: contactUsState.topicId
-      }),
-      ...(contactUsState.subTopicId && {
-        subtopic: contactUsState.subTopicId
-      }),
-      ...(contactUsState.subSubTopicId && {
-        subsubtopic: contactUsState.subSubTopicId
-      }),
-      name: formData.fullName,
-      email: formData.email,
-      subject: formData.subjectLine,
-      message: formData.details,
-      captchaToken: formData.captchaToken
-    });
-
-    const res = await fetch("/api/contact-us/", { method: "POST", body });
-    if (res.ok) {
-      setFormStatus("success");
-      trackEvent({
-        eventCategory: "ContactUs",
-        eventAction: "submission_success",
-        eventLabel:
-          `${contactUsState.topicId} - ` +
-          `${contactUsState.subTopicId} - ` +
-          `${contactUsState.subSubTopicId}`
-      });
-      return true;
-    } else {
-      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
-
-      trackEvent({
-        eventCategory: "ContactUs",
-        eventAction: "submission_failure",
-        eventLabel: errorMsg
-      });
-      captureException(errorMsg);
-      return false;
-    }
-  };
-
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === contactUsState.topicId
+    topic => topic.id === props.urlTopicId
   );
 
   const subTopics = currentTopic?.subtopics;
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === contactUsState.subTopicId
+    subTopic => subTopic.id === props.urlSubTopicId
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === contactUsState.subSubTopicId
+    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
   );
+
+  const success = props.urlSuccess === "1";
+
+  const headerText = success
+    ? "Thank you for contacting us"
+    : "We are here to help";
+
+  const containerText = success
+    ? `Thank you for contacting us regarding ${currentTopic?.enquiryLabel}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`
+    : "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
 
   const subTopicsTitle = currentTopic?.subTopicsTitle || "";
   const subSubTopicsTitle = currentSubTopic?.subsubTopicsTitle || "";
@@ -172,6 +71,95 @@ export const ContactUs = (props: ContactUsProps) => {
     currentTopic?.editableSubjectLine
   );
 
+  const setTopic = (selectedTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "topic_click",
+      eventLabel: selectedTopic
+    });
+
+    navigate(`/contact-us/${selectedTopic}`, { replace: true });
+  };
+
+  const setSubTopic = (selectedSubTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subtopic_click",
+      eventLabel: selectedSubTopic
+    });
+
+    navigate(`/contact-us/${currentTopic?.id}/${selectedSubTopic}`, {
+      replace: true
+    });
+  };
+
+  const setSubSubTopic = (selectedSubSubTopic: string) => {
+    trackEvent({
+      eventCategory: "ContactUs",
+      eventAction: "subsubtopic_click",
+      eventLabel: selectedSubSubTopic
+    });
+
+    navigate(
+      `/contact-us/${currentTopic?.id}/${currentSubTopic?.id}/${selectedSubSubTopic}`,
+      {
+        replace: true
+      }
+    );
+  };
+
+  const submitForm = async (formData: FormPayload): Promise<boolean> => {
+    const body = JSON.stringify({
+      ...(currentTopic?.id && {
+        topic: currentTopic?.id
+      }),
+      ...(currentSubSubTopic?.id && {
+        subtopic: currentSubSubTopic?.id
+      }),
+      ...(currentSubSubTopic?.id && {
+        subsubtopic: currentSubSubTopic?.id
+      }),
+      name: formData.fullName,
+      email: formData.email,
+      subject: formData.subjectLine,
+      message: formData.details,
+      captchaToken: formData.captchaToken
+    });
+
+    const res = await fetch("/api/contact-us/", { method: "POST", body });
+    if (res.ok) {
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_success",
+        eventLabel:
+          `${currentTopic?.id} - ` +
+          `${currentSubTopic?.id || "N/A"} - ` +
+          `${currentSubSubTopic?.id || "N/A"}`
+      });
+
+      const urlSections = [
+        "/contact-us",
+        currentTopic?.id,
+        currentSubTopic?.id || "0",
+        currentSubSubTopic?.id || "0",
+        "1"
+      ];
+      navigate(urlSections.join("/"));
+
+      return true;
+    } else {
+      const errorMsg = `Could not submit Contact Us form. ${res.status} - ${res.statusText}`;
+      trackEvent({
+        eventCategory: "ContactUs",
+        eventAction: "submission_failure",
+        eventLabel: errorMsg
+      });
+      captureException(errorMsg);
+
+      return false;
+    }
+  };
+
   return (
     <>
       <ContactUsHeader />
@@ -192,7 +180,7 @@ export const ContactUs = (props: ContactUsProps) => {
               }
             `}
           >
-            {headerText(formStatus)}
+            {headerText}
           </h1>
           <p
             css={css`
@@ -200,32 +188,32 @@ export const ContactUs = (props: ContactUsProps) => {
               ${textSans.medium()};
             `}
           >
-            {containerText(formStatus, currentTopic?.enquiryLabel || "")}
+            {containerText}
           </p>
-          {formStatus === "form" && (
+          {!success && (
             <>
               <TopicForm
                 data={contactUsConfig}
-                preSelectedId={contactUsState.topicId}
+                preSelectedId={currentTopic?.id}
                 submitCallback={setTopic}
               />
               {subTopics && (
                 <SubTopicForm
-                  key={`subtopic-${contactUsState.topicId}`}
+                  key={`subtopic-${currentTopic?.id}`}
                   title={subTopicsTitle}
                   submitButonText="Continue to step 2"
                   data={subTopics}
-                  preSelectedId={contactUsState.subTopicId}
+                  preSelectedId={currentSubTopic?.id}
                   submitCallback={setSubTopic}
                 />
               )}
               {subSubTopics && (
                 <SubTopicForm
-                  key={`subsubtopic-${contactUsState.subTopicId}`}
+                  key={`subsubtopic-${currentSubTopic?.id}`}
                   title={subSubTopicsTitle}
                   submitButonText="Continue to step 3"
                   data={subSubTopics}
-                  preSelectedId={contactUsState.subSubTopicId}
+                  preSelectedId={currentSubSubTopic?.id}
                   submitCallback={setSubSubTopic}
                 />
               )}
@@ -237,9 +225,9 @@ export const ContactUs = (props: ContactUsProps) => {
                   linkAsButton={!showForm}
                   showContacts={!showForm}
                   topicReferer={
-                    `${contactUsState.topicId} - ` +
-                    `${contactUsState.subTopicId} - ` +
-                    `${contactUsState.subSubTopicId}`
+                    `${currentTopic?.id} - ` +
+                    `${currentSubSubTopic?.id || "N/A"} - ` +
+                    `${currentSubSubTopic?.id || "N/A"}`
                   }
                   additionalCss={css`
                     margin: ${space[9]}px 0 ${space[6]}px;
@@ -249,7 +237,7 @@ export const ContactUs = (props: ContactUsProps) => {
 
               {showForm && (
                 <ContactUsForm
-                  key={`${contactUsState.topicId}-${contactUsState.subTopicId}-${contactUsState.subSubTopicId}`}
+                  key={`${currentTopic?.id}-${currentSubTopic?.id}-${currentSubSubTopic?.id}`}
                   submitCallback={submitForm}
                   title={`${
                     subTopics || subSubTopics
@@ -266,22 +254,4 @@ export const ContactUs = (props: ContactUsProps) => {
       </ContactUsPageContainer>
     </>
   );
-};
-
-const headerText = (status: ContactUsFormStatus) => {
-  switch (status) {
-    case "form":
-      return "We are here to help";
-    case "success":
-      return "Thank you for contacting us";
-  }
-};
-
-const containerText = (status: ContactUsFormStatus, label: string) => {
-  switch (status) {
-    case "form":
-      return "Visit our help centre to view our commonly asked questions, or continue below to use our contact form. It only takes a few minutes.";
-    case "success":
-      return `Thank you for contacting us regarding ${label}. We will send a confirmation email detailing your request and aim to get back to you within 48 hours.`;
-  }
 };

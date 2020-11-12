@@ -21,7 +21,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
   );
 
   const [requiresSubmitButton, setRequiresSubmitButton] = useState<boolean>(
-    true
+    props.preSelectedId ? false : true
   );
 
   return (
