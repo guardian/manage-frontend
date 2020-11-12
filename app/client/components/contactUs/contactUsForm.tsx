@@ -142,7 +142,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         ...formValidationState.subjectLine,
         isValid: isSubjectLineValid
       },
-      details: { ...formValidationState.fullName, isValid: isDetailsValid },
+      details: { ...formValidationState.details, isValid: isDetailsValid },
       captcha: {
         ...formValidationState.captcha,
         isValid: !!captchaToken.length
