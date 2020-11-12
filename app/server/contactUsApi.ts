@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import { contactUsConfig } from "../shared/contactUsConfig";
 import { ContactUsReq } from "../shared/contactUsTypes";
 import {
+  removeDataUrlDeclarationFromBase64,
   validateBase64FileSize,
   validateBase64ImageMimeType,
   validateImageFileExtension
@@ -170,6 +171,9 @@ const buildContactUsReqBody = (body: any): ContactUsReq => ({
   subject: body.subject,
   message: body.message,
   ...(body.attachment && {
-    attachment: body.attachment
+    attachment: {
+      name: body.attachment.name,
+      contents: removeDataUrlDeclarationFromBase64(body.attachment.contents)
+    }
   })
 });

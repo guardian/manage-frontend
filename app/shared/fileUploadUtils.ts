@@ -56,3 +56,6 @@ export const validateImageFileExtension = (fileName: string) =>
   VALID_IMAGE_FILE_EXTENSIONS.filter(validFileExtension =>
     fileName.endsWith(validFileExtension)
   ).length > 0;
+
+export const removeDataUrlDeclarationFromBase64 = (fileBase64: string) =>
+  fileBase64.replace(/data:(.*)base64,/m, "");
