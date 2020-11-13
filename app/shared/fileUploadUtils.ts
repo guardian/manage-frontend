@@ -5,7 +5,7 @@ export const base64FromFile = (file: File) => {
     reader.addEventListener(
       "load",
       () => {
-        resolve(reader.result);
+        resolve(removeDataUrlDeclarationFromBase64(reader.result as string));
       },
       false
     );
@@ -47,15 +47,10 @@ export const validateBase64FileSize = (fileBase64: string) => {
   return fileSizeInKb <= MAX_FILE_ATTACHMENT_SIZE_KB;
 };
 
-export const validateBase64ImageMimeType = (fileBase64: string) =>
-  VALID_IMAGE_FILE_MIME_TYPES.filter(validMimeType =>
-    fileBase64.startsWith(`data:${validMimeType}`)
-  ).length > 0;
-
 export const validateImageFileExtension = (fileName: string) =>
   VALID_IMAGE_FILE_EXTENSIONS.filter(validFileExtension =>
     fileName.endsWith(validFileExtension)
   ).length > 0;
 
-export const removeDataUrlDeclarationFromBase64 = (fileBase64: string) =>
+const removeDataUrlDeclarationFromBase64 = (fileBase64: string) =>
   fileBase64.replace(/data:(.*)base64,/m, "");

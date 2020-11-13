@@ -4,9 +4,7 @@ import fetch from "node-fetch";
 import { contactUsConfig } from "../shared/contactUsConfig";
 import { ContactUsReq } from "../shared/contactUsTypes";
 import {
-  removeDataUrlDeclarationFromBase64,
   validateBase64FileSize,
-  validateBase64ImageMimeType,
   validateImageFileExtension
 } from "../shared/fileUploadUtils";
 import { isEmail } from "../shared/validationUtils";
@@ -91,9 +89,7 @@ const validateCaptchaToken = async (token: string) => {
 };
 
 const validateFileAttachment = (fileName: string, base64String: string) =>
-  validateBase64FileSize(base64String) &&
-  validateBase64ImageMimeType(base64String) &&
-  validateImageFileExtension(fileName);
+  validateBase64FileSize(base64String) && validateImageFileExtension(fileName);
 
 const validateContactUsFormBody = async (body: any): Promise<boolean> =>
   body &&
@@ -171,9 +167,6 @@ const buildContactUsReqBody = (body: any): ContactUsReq => ({
   subject: body.subject,
   message: body.message,
   ...(body.attachment && {
-    attachment: {
-      name: body.attachment.name,
-      contents: removeDataUrlDeclarationFromBase64(body.attachment.contents)
-    }
+    attachment: body.attachment
   })
 });
