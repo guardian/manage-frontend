@@ -162,10 +162,10 @@ const buildContactUsReqBody = (body: any): ContactUsReq => ({
   ...(body.subsubtopic && {
     subsubtopic: body.subsubtopic
   }),
-  name: body.name,
-  email: body.email,
-  subject: body.subject,
-  message: body.message,
+  name: (body.name as string).substr(0, 50),
+  email: (body.email as string).substr(0, 50),
+  subject: (body.subject as string).substr(0, 50),
+  message: (body.message as string).substr(0, 255),
   ...(body.attachment && {
     attachment: body.attachment
   })
