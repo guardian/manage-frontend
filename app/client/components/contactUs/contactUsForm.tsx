@@ -73,7 +73,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   const [details, setDetails] = useState<string>("");
   const [detailsRemainingCharacters, setDetailsRemainingCharacters] = useState<
     number
-  >(250);
+  >(2500);
 
   const [fileAttachment, setFileAttachment] = useState<File | undefined>();
 
@@ -360,11 +360,11 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             id="contact-us-details"
             name="details"
             rows={2}
-            maxLength={250}
+            maxLength={2500}
             value={details}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setDetails(e.target.value);
-              setDetailsRemainingCharacters(250 - e.target.value.length);
+              setDetailsRemainingCharacters(2500 - e.target.value.length);
             }}
             css={css`
               width: 100%;
