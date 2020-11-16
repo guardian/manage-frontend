@@ -261,7 +261,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <Input
           label="Full Name"
           width={50}
-          changeSetState={setFullName}
+          changeSetState={newFullName => setFullName(newFullName.substr(0, 50))}
           value={fullName}
           additionalCss={css`
             margin: ${space[5]}px;
@@ -277,7 +277,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
           type="email"
           width={50}
-          changeSetState={setEmail}
+          changeSetState={newEmail => setEmail(newEmail.substr(0, 50))}
           value={email}
           additionalCss={css`
             margin: ${space[5]}px;
@@ -293,7 +293,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             label="Subject of enquiry"
             type="text"
             width={50}
-            changeSetState={setSubjectLine}
+            changeSetState={newSubjectLine =>
+              setSubjectLine(newSubjectLine.substr(0, 50))
+            }
             value={subjectLine}
             additionalCss={css`
               margin: ${space[5]}px;
