@@ -12,18 +12,18 @@ ignore:
     - formik > lodash:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.923Z'
-      winston > async > lodash:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.660Z'
     - winston > async > lodash:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
-      yup > lodash:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.660Z'
     - yup > lodash:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
+    - winston > async > lodash:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.660Z'
+    - yup > lodash:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.660Z'
   SNYK-JS-MINIMIST-559764:
     - node-pre-gyp > mkdirp > minimist:
         reason: no upgrade or patch available
@@ -38,34 +38,34 @@ ignore:
     - formik > create-react-context > fbjs > ua-parser-js:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
-      react-daterange-picker > create-react-class > fbjs > ua-parser-js:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.660Z'
     - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
-      react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.660Z'
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
+    - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.660Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.660Z'
   SNYK-JS-NODEFETCH-674311:
     - formik > create-react-context > fbjs > isomorphic-fetch > node-fetch:
         reason: fix in seperate pr
-        expires: '2020-11-13T10:41:08.711Z'
-      react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.660Z'
+        expires: '2020-12-16T11:34:12.965Z'
     - react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
         reason: no fix available
         expires: '2020-11-13T10:41:08.711Z'
-      react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
-        reason: no upgrade or patch available
-        expires: '2020-12-16T11:03:52.661Z'
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
         reason: no fix available
         expires: '2020-11-13T10:41:08.711Z'
+    - react-daterange-picker > create-react-class > fbjs > isomorphic-fetch > node-fetch:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.660Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
+        reason: no upgrade or patch available
+        expires: '2020-12-16T11:03:52.661Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
