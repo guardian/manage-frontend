@@ -1,7 +1,6 @@
 import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { textSans, titlepiece } from "@guardian/src-foundations/typography";
-import { Link } from "@reach/router";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../../styles/grid";
@@ -11,7 +10,7 @@ export const ContactUsHeader = () => {
   const breadcrumbs: Breadcrumbs[] = [
     {
       title: "Help centre",
-      link: "/"
+      link: "https://www.theguardian.com/help"
     },
     {
       title: "Contact us",
@@ -58,15 +57,15 @@ export const ContactUsHeader = () => {
           {breadcrumbs.map((breadcrumbItem, index) => (
             <React.Fragment key={`breadcrumb-${index}`}>
               {breadcrumbItem.link ? (
-                <Link
-                  to={breadcrumbItem.link}
+                <a
+                  href={breadcrumbItem.link}
                   css={css`
                     ${textSans.medium()};
                     color: ${palette.neutral[0]};
                   `}
                 >
                   {breadcrumbItem.title}
-                </Link>
+                </a>
               ) : (
                 <span
                   css={css`
