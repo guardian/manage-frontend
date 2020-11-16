@@ -123,7 +123,8 @@ export const ContactUs = (props: ContactUsProps) => {
       email: formData.email,
       subject: formData.subjectLine,
       message: formData.details,
-      captchaToken: formData.captchaToken
+      captchaToken: formData.captchaToken,
+      attachment: formData.attachment
     });
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });
