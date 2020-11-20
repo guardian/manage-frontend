@@ -275,7 +275,6 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <Input
           label="Email address"
           secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
-          type="email"
           width={50}
           changeSetState={newEmail => setEmail(newEmail.substr(0, 50))}
           value={email}
