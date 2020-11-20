@@ -87,7 +87,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     },
     email: {
       isValid: true,
-      message: "Please insert a valid email address."
+      errorMessage: "Please insert a valid email address."
     },
     subject: {
       isValid: true,
