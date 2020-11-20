@@ -283,8 +283,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           <Input
             label="Subject of enquiry"
             type="text"
-            width={50}
-            changeSetState={newSubject => setSubject(newSubject.substr(0, 50))}
+            width={100}
+            changeSetState={newSubject => setSubject(newSubject.substr(0, 100))}
             value={subject}
             additionalCss={css`
               margin: ${space[5]}px;

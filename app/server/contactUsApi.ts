@@ -173,7 +173,7 @@ const buildContactUsReqBody = (body: any): ContactUsReq => {
     }),
     name: (body.name as string).substr(0, 50),
     email: (body.email as string).substr(0, 50),
-    subject: (body.subject as string).substr(0, 50),
+    subject: (body.subject as string).substr(0, 100),
     message: (body.message as string).substr(0, 2500),
     ...(attachment && {
       attachment
