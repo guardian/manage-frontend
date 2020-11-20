@@ -159,7 +159,7 @@ const buildContactUsReqBody = (body: any): ContactUsReq => {
     body.attachment.name && body.attachment.contents
       ? {
           name: body.attachment?.name,
-          contents: body.attachment?.name
+          contents: body.attachment?.contents
         }
       : undefined;
 
