@@ -162,7 +162,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       ...formValidationState,
       inValidationMode: !isFormInValidState,
       fullName: { ...formValidationState.fullName, isValid: isFullNameValid },
-      email: { ...formValidationState.fullName, isValid: isEmailValid },
+      email: { ...formValidationState.email, isValid: isEmailValid },
       subjectLine: {
         ...formValidationState.subjectLine,
         isValid: isSubjectLineValid
