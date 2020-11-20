@@ -5,9 +5,10 @@ import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
 import React from "react";
 import { contactUsConfig } from "../../../shared/contactUsConfig";
+import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import { ContactUsForm, FormPayload } from "./contactUsForm";
+import { ContactUsForm } from "./contactUsForm";
 import { ContactUsHeader } from "./contactUsHeader";
 import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
@@ -59,16 +60,16 @@ export const ContactUs = (props: ContactUsProps) => {
     (currentSubTopic && !currentSubTopic?.noForm && !subSubTopics) ||
     (currentTopic && !currentTopic?.noForm && !subTopics);
 
-  const subjectLine = `${currentTopic ? currentTopic.name : ""}${
+  const subject = `${currentTopic ? currentTopic.name : ""}${
     currentSubSubTopic ? ` - ${currentSubSubTopic.name}` : ""
   }${
     !currentSubSubTopic && currentSubTopic ? ` - ${currentSubTopic.name}` : ""
   }`;
 
-  const isSubjectLineEditable = !!(
-    currentSubSubTopic?.editableSubjectLine ||
-    currentSubTopic?.editableSubjectLine ||
-    currentTopic?.editableSubjectLine
+  const isSubjectEditable = !!(
+    currentSubSubTopic?.editableSubject ||
+    currentSubTopic?.editableSubject ||
+    currentTopic?.editableSubject
   );
 
   const setTopic = (selectedTopic: string) => {
@@ -108,7 +109,9 @@ export const ContactUs = (props: ContactUsProps) => {
     );
   };
 
-  const submitForm = async (formData: FormPayload): Promise<boolean> => {
+  const submitForm = async (
+    formData: ContactUsFormPayload
+  ): Promise<boolean> => {
     const body = JSON.stringify({
       ...(currentTopic?.id && {
         topic: currentTopic?.id
@@ -119,12 +122,7 @@ export const ContactUs = (props: ContactUsProps) => {
       ...(currentSubSubTopic?.id && {
         subsubtopic: currentSubSubTopic?.id
       }),
-      name: formData.fullName,
-      email: formData.email,
-      subject: formData.subjectLine,
-      message: formData.details,
-      captchaToken: formData.captchaToken,
-      attachment: formData.attachment
+      ...formData
     });
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });
@@ -245,8 +243,8 @@ export const ContactUs = (props: ContactUsProps) => {
                       ? `Step ${subSubTopics ? "3" : "2"}:`
                       : ""
                   } Tell us more`}
-                  subjectLine={subjectLine}
-                  editableSubjectLine={isSubjectLineEditable}
+                  subject={subject}
+                  editableSubject={isSubjectEditable}
                 />
               )}
             </>

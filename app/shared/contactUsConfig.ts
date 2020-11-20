@@ -43,7 +43,7 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s4",
         name: "Something else",
-        editableSubjectLine: true
+        editableSubject: true
       }
     ]
   },
@@ -102,7 +102,7 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s9",
         name: "Something else",
-        editableSubjectLine: true
+        editableSubject: true
       }
     ]
   },
@@ -119,7 +119,7 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s11",
         name: "Something else",
-        editableSubjectLine: true
+        editableSubject: true
       }
     ]
   },
@@ -175,7 +175,7 @@ export const contactUsConfig: Topic[] = [
           {
             id: "ss5",
             name: "Something else",
-            editableSubjectLine: true
+            editableSubject: true
           }
         ]
       },
@@ -229,7 +229,7 @@ export const contactUsConfig: Topic[] = [
           {
             id: "ss11",
             name: "Something else",
-            editableSubjectLine: true
+            editableSubject: true
           }
         ]
       },
@@ -261,7 +261,7 @@ export const contactUsConfig: Topic[] = [
           {
             id: "ss15",
             name: "Something else",
-            editableSubjectLine: true
+            editableSubject: true
           }
         ]
       }
@@ -308,7 +308,7 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s20",
         name: "Something else",
-        editableSubjectLine: true
+        editableSubject: true
       }
     ]
   },
@@ -337,7 +337,7 @@ export const contactUsConfig: Topic[] = [
       {
         id: "s25",
         name: "Something else",
-        editableSubjectLine: true
+        editableSubject: true
       }
     ]
   },
@@ -350,6 +350,6 @@ export const contactUsConfig: Topic[] = [
     id: "other",
     name: "Something else",
     enquiryLabel: "your query",
-    editableSubjectLine: true
+    editableSubject: true
   }
 ];

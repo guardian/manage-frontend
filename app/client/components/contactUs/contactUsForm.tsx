@@ -3,6 +3,7 @@ import { Button } from "@guardian/src-button";
 import { palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import {
   base64FromFile,
   MAX_FILE_ATTACHMENT_SIZE_KB,
@@ -19,33 +20,24 @@ import { ErrorIcon } from "../svgs/errorIcon";
 import { UploadFileInput } from "./uploadFileInput";
 
 interface ContactUsFormProps {
-  submitCallback: (payload: FormPayload) => Promise<boolean>;
+  submitCallback: (payload: ContactUsFormPayload) => Promise<boolean>;
   title: string;
-  subjectLine: string;
-  editableSubjectLine?: boolean;
+  subject: string;
+  editableSubject?: boolean;
   additionalCss?: SerializedStyles;
-}
-
-export interface FormPayload {
-  fullName: string;
-  email: string;
-  subjectLine: string;
-  details: string;
-  captchaToken: string;
-  attachment?: { name: string; contents: string };
 }
 
 interface FormElemValidationObject {
   isValid: boolean;
-  message: string;
+  errorMessage: string;
 }
 
 interface FormValidationState {
   inValidationMode: boolean;
-  fullName: FormElemValidationObject;
+  name: FormElemValidationObject;
   email: FormElemValidationObject;
-  subjectLine: FormElemValidationObject;
-  details: FormElemValidationObject;
+  subject: FormElemValidationObject;
+  message: FormElemValidationObject;
   captcha: FormElemValidationObject;
   fileAttachment: FormElemValidationObject;
 }
@@ -59,8 +51,8 @@ declare const window: Window & {
 
 export const ContactUsForm = (props: ContactUsFormProps) => {
   const [captchaToken, setCaptchaToken] = useState<string>("");
-  const [subjectLine, setSubjectLine] = useState<string>(props.subjectLine);
-  const [fullName, setFullName] = useState<string>(
+  const [subject, setSubject] = useState<string>(props.subject);
+  const [name, setName] = useState<string>(
     (typeof window !== "undefined" &&
       window?.guardian?.identityDetails?.displayName) ||
       ""
@@ -70,8 +62,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       window.guardian?.identityDetails?.email) ||
       ""
   );
-  const [details, setDetails] = useState<string>("");
-  const [detailsRemainingCharacters, setDetailsRemainingCharacters] = useState<
+  const [message, setDetails] = useState<string>("");
+  const [messageRemainingCharacters, setDetailsRemainingCharacters] = useState<
     number
   >(2500);
 
@@ -89,29 +81,29 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     FormValidationState
   >({
     inValidationMode: false,
-    fullName: {
+    name: {
       isValid: true,
-      message: mandatoryFieldMessage
+      errorMessage: mandatoryFieldMessage
     },
     email: {
       isValid: true,
       message: "Please insert a valid email address."
     },
-    subjectLine: {
+    subject: {
       isValid: true,
-      message: mandatoryFieldMessage
+      errorMessage: mandatoryFieldMessage
     },
-    details: {
+    message: {
       isValid: true,
-      message: mandatoryFieldMessage
+      errorMessage: mandatoryFieldMessage
     },
     captcha: {
       isValid: !!captchaToken.length,
-      message: "Please confirm you are not a robot"
+      errorMessage: "Please confirm you are not a robot"
     },
     fileAttachment: {
       isValid: true,
-      message: "There is a maximum file size limit of 5mb"
+      errorMessage: "There is a maximum file size limit of 5mb"
     }
   });
 
@@ -144,30 +136,30 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   };
 
   const validateForm = () => {
-    const isFullNameValid = !!fullName.length;
+    const isNameValid = !!name.length;
     const isEmailValid = isEmail(email);
-    const isSubjectLineValid = !!subjectLine.length;
-    const isDetailsValid = !!details.length;
+    const isSubjectValid = !!subject.length;
+    const isDetailsValid = !!message.length;
     const isFileAttachmentValid =
       fileAttachment === undefined ||
       fileAttachment.size / 1024 <= MAX_FILE_ATTACHMENT_SIZE_KB;
     const isFormInValidState =
-      isFullNameValid &&
+      isNameValid &&
       isEmailValid &&
-      isSubjectLineValid &&
+      isSubjectValid &&
       isDetailsValid &&
       !!captchaToken.length &&
       isFileAttachmentValid;
     setFormValidationState({
       ...formValidationState,
       inValidationMode: !isFormInValidState,
-      fullName: { ...formValidationState.fullName, isValid: isFullNameValid },
+      name: { ...formValidationState.name, isValid: isNameValid },
       email: { ...formValidationState.email, isValid: isEmailValid },
-      subjectLine: {
-        ...formValidationState.subjectLine,
-        isValid: isSubjectLineValid
+      subject: {
+        ...formValidationState.subject,
+        isValid: isSubjectValid
       },
-      details: { ...formValidationState.details, isValid: isDetailsValid },
+      message: { ...formValidationState.message, isValid: isDetailsValid },
       fileAttachment: {
         ...formValidationState.fileAttachment,
         isValid: isFileAttachmentValid
@@ -188,10 +180,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           setStatus("submitting");
           props
             .submitCallback({
-              fullName,
-              subjectLine,
+              name,
+              subject,
               email,
-              details,
+              message,
               captchaToken,
               attachment: fileAttachment && {
                 name: fileAttachment.name,
@@ -261,16 +253,16 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <Input
           label="Full Name"
           width={50}
-          changeSetState={newFullName => setFullName(newFullName.substr(0, 50))}
-          value={fullName}
+          changeSetState={newName => setName(newName.substr(0, 50))}
+          value={name}
           additionalCss={css`
             margin: ${space[5]}px;
           `}
           inErrorState={
             formValidationState.inValidationMode &&
-            !formValidationState.fullName.isValid
+            !formValidationState.name.isValid
           }
-          errorMessage={formValidationState.fullName.message}
+          errorMessage={formValidationState.name.errorMessage}
         />
         <Input
           label="Email address"
@@ -285,25 +277,23 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             formValidationState.inValidationMode &&
             !formValidationState.email.isValid
           }
-          errorMessage={formValidationState.email.message}
+          errorMessage={formValidationState.email.errorMessage}
         />
-        {props.editableSubjectLine ? (
+        {props.editableSubject ? (
           <Input
             label="Subject of enquiry"
             type="text"
             width={50}
-            changeSetState={newSubjectLine =>
-              setSubjectLine(newSubjectLine.substr(0, 50))
-            }
-            value={subjectLine}
+            changeSetState={newSubject => setSubject(newSubject.substr(0, 50))}
+            value={subject}
             additionalCss={css`
               margin: ${space[5]}px;
             `}
             inErrorState={
               formValidationState.inValidationMode &&
-              !formValidationState.subjectLine.isValid
+              !formValidationState.subject.isValid
             }
-            errorMessage={formValidationState.subjectLine.message}
+            errorMessage={formValidationState.subject.errorMessage}
           />
         ) : (
           <label
@@ -322,7 +312,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
                 font-weight: normal;
               `}
             >
-              {subjectLine}
+              {subject}
             </span>
           </label>
         )}
@@ -337,7 +327,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         >
           Problem details
           {formValidationState.inValidationMode &&
-            !formValidationState.details.isValid && (
+            !formValidationState.message.isValid && (
               <span
                 css={css`
                   display: block;
@@ -352,15 +342,15 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
                 >
                   <ErrorIcon />
                 </i>
-                {formValidationState.details.message}
+                {formValidationState.message.errorMessage}
               </span>
             )}
           <textarea
-            id="contact-us-details"
-            name="details"
+            id="contact-us-message"
+            name="message"
             rows={2}
             maxLength={2500}
-            value={details}
+            value={message}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setDetails(e.target.value);
               setDetailsRemainingCharacters(2500 - e.target.value.length);
@@ -368,7 +358,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             css={css`
               width: 100%;
               border: ${formValidationState.inValidationMode &&
-              !formValidationState.details.isValid
+              !formValidationState.message.isValid
                 ? `4px solid ${palette.news[400]}`
                 : `2px solid ${palette.neutral[60]}`};
               padding: 12px;
@@ -384,7 +374,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               color: ${palette.neutral[46]};
             `}
           >
-            {detailsRemainingCharacters} characters remaining
+            {messageRemainingCharacters} characters remaining
           </span>
         </label>
         <UploadFileInput
@@ -399,7 +389,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             formValidationState.inValidationMode &&
             !formValidationState.fileAttachment.isValid
           }
-          errorMessage={formValidationState.fileAttachment.message}
+          errorMessage={formValidationState.fileAttachment.errorMessage}
           additionalCss={css`
             margin: ${space[5]}px;
           `}
@@ -448,7 +438,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               >
                 <ErrorIcon />
               </i>
-              {formValidationState.captcha.message}
+              {formValidationState.captcha.errorMessage}
             </span>
           )}
         <div id="recaptcha" />
