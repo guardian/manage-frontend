@@ -95,7 +95,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
     },
     email: {
       isValid: true,
-      message: mandatoryFieldMessage
+      message: "Please insert a valid email address."
     },
     subjectLine: {
       isValid: true,
