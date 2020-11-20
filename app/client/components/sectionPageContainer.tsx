@@ -2,14 +2,15 @@ import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import React, { ReactNode } from "react";
-import { minWidth } from "../../styles/breakpoints";
-import { gridBase, gridItemPlacement } from "../../styles/grid";
+import { minWidth } from "../styles/breakpoints";
+import { gridBase, gridItemPlacement } from "../styles/grid";
 
-interface ContactUsPageContainerProps {
+interface SectionPageContainerProps {
+  sectionTitle: string;
   children: ReactNode;
 }
 
-export const ContactUsPageContainer = (props: ContactUsPageContainerProps) => (
+export const SectionPageContainer = (props: SectionPageContainerProps) => (
   <div
     css={{
       maxWidth: `${breakpoints.wide}px`,
@@ -39,14 +40,13 @@ export const ContactUsPageContainer = (props: ContactUsPageContainerProps) => (
           display: "none",
 
           [minWidth.desktop]: {
-            ...gridItemPlacement(1, 4),
+            ...gridItemPlacement(1, 3),
             display: "block",
-            paddingRight: "1.25rem"
+            paddingRight: 0
           },
 
           [minWidth.wide]: {
-            ...gridItemPlacement(1, 5),
-            paddingRight: "0"
+            ...gridItemPlacement(1, 3)
           }
         }}
       >
@@ -58,7 +58,7 @@ export const ContactUsPageContainer = (props: ContactUsPageContainerProps) => (
             border-right: 1px solid ${palette.neutral[86]};
           `}
         >
-          Contact us
+          {props.sectionTitle}
         </h3>
       </div>
       <section
@@ -70,11 +70,11 @@ export const ContactUsPageContainer = (props: ContactUsPageContainerProps) => (
           },
 
           [minWidth.desktop]: {
-            ...gridItemPlacement(5, 8)
+            ...gridItemPlacement(4, 9)
           },
 
           [minWidth.wide]: {
-            ...gridItemPlacement(6, 10)
+            ...gridItemPlacement(4, 13)
           }
         }}
       >
