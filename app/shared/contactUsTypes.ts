@@ -2,7 +2,7 @@ interface BaseTopic {
   id: string;
   name: string;
   selfServiceBox?: SelfServiceBox;
-  editableSubjectLine?: boolean;
+  editableSubject?: boolean;
   noForm?: boolean;
 }
 
@@ -23,12 +23,20 @@ export interface Topic extends BaseTopic {
   subTopicsTitle?: string;
 }
 
-export interface ContactUsReq {
-  topic: string;
-  subtopic?: string;
-  subsubtopic?: string;
+interface BaseContactUsReqPayload {
   name: string;
   email: string;
   subject: string;
   message: string;
+  attachment?: { name: string; contents: string };
+}
+
+export interface ContactUsFormPayload extends BaseContactUsReqPayload {
+  captchaToken: string;
+}
+
+export interface ContactUsReq extends BaseContactUsReqPayload {
+  topic: string;
+  subtopic?: string;
+  subsubtopic?: string;
 }

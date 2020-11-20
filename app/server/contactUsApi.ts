@@ -154,19 +154,29 @@ const validateTopics = (
   return true;
 };
 
-const buildContactUsReqBody = (body: any): ContactUsReq => ({
-  topic: body.topic,
-  ...(body.subtopic && {
-    subtopic: body.subtopic
-  }),
-  ...(body.subsubtopic && {
-    subsubtopic: body.subsubtopic
-  }),
-  name: (body.name as string).substr(0, 50),
-  email: (body.email as string).substr(0, 50),
-  subject: (body.subject as string).substr(0, 50),
-  message: (body.message as string).substr(0, 2500),
-  ...(body.attachment && {
-    attachment: body.attachment
-  })
-});
+const buildContactUsReqBody = (body: any): ContactUsReq => {
+  const attachment =
+    body.attachment.name && body.attachment.contents
+      ? {
+          name: body.attachment?.name,
+          contents: body.attachment?.contents
+        }
+      : undefined;
+
+  return {
+    topic: body.topic,
+    ...(body.subtopic && {
+      subtopic: body.subtopic
+    }),
+    ...(body.subsubtopic && {
+      subsubtopic: body.subsubtopic
+    }),
+    name: (body.name as string).substr(0, 50),
+    email: (body.email as string).substr(0, 50),
+    subject: (body.subject as string).substr(0, 100),
+    message: (body.message as string).substr(0, 2500),
+    ...(attachment && {
+      attachment
+    })
+  };
+};
