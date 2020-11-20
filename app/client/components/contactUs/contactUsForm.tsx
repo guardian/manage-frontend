@@ -62,8 +62,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       window.guardian?.identityDetails?.email) ||
       ""
   );
-  const [message, setDetails] = useState<string>("");
-  const [messageRemainingCharacters, setDetailsRemainingCharacters] = useState<
+  const [message, setMessage] = useState<string>("");
+  const [messageRemainingCharacters, setMessageRemainingCharacters] = useState<
     number
   >(2500);
 
@@ -352,8 +352,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             maxLength={2500}
             value={message}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-              setDetails(e.target.value);
-              setDetailsRemainingCharacters(2500 - e.target.value.length);
+              setMessage(e.target.value);
+              setMessageRemainingCharacters(2500 - e.target.value.length);
             }}
             css={css`
               width: 100%;
