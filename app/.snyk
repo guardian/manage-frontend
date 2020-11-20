@@ -6,6 +6,9 @@ ignore:
     - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.659Z'
+      formik > lodash:
+        reason: No remediation available
+        expires: '2020-12-20T10:37:44.000Z'
     - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.660Z'
@@ -37,7 +40,7 @@ ignore:
   SNYK-JS-UAPARSERJS-610226:
     - formik > create-react-context > fbjs > ua-parser-js:
         reason: No remediation available
-        expires: '2020-11-18T15:43:00.924Z'
+        expires: '2020-12-20T10:37:44.000Z'
     - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
         reason: No remediation available
         expires: '2020-11-18T15:43:00.924Z'
