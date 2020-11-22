@@ -35,6 +35,7 @@ import { DeliveryRecords } from "./delivery/records/deliveryRecords";
 import { DeliveryRecordsProblemConfirmation } from "./delivery/records/deliveryRecordsProblemConfirmation";
 import { DeliveryRecordsProblemReview } from "./delivery/records/deliveryRecordsProblemReview";
 import { Help } from "./help";
+import { HelpCentre } from "./helpCentre/helpCentre";
 import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
@@ -173,6 +174,7 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Settings path="/account-settings" />
 
       <Help path="/help" />
+      <HelpCentre path="/help-centre" />
 
       <ContactUs path="/contact-us" />
       <ContactUs path="/contact-us/:urlTopicId" />
