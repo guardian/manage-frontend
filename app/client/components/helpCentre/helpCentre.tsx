@@ -14,7 +14,7 @@ interface HelpCentreProps extends RouteComponentProps {
 export const HelpCentre = (_: HelpCentreProps) => (
   <>
     <SectionHeader title="Help Centre" />
-    <SectionPageContainer>
+    <SectionPageContainer sectionTitle="Help Centre">
       <div
         css={css`
           margin-bottom: ${space[24]}px;
