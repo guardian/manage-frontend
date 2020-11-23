@@ -74,7 +74,7 @@ export const SectionPageContainer = (props: SectionPageContainerProps) => (
           },
 
           [minWidth.wide]: {
-            ...gridItemPlacement(4, 13)
+            ...gridItemPlacement(4, 12)
           }
         }}
       >

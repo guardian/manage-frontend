@@ -213,6 +213,7 @@ export const ContactUs = (props: ContactUsProps) => {
             css={css`
               margin-top: ${space[5]}px;
               ${textSans.medium()};
+              max-width: 620px;
             `}
           >
             {containerText}
