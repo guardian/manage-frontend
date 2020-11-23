@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { textSans, titlepiece } from "@guardian/src-foundations/typography";
+import Color from "color";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
@@ -14,7 +15,9 @@ interface SectionHeaderProps {
 export const SectionHeader = (props: SectionHeaderProps) => (
   <header
     css={{
-      backgroundColor: palette.neutral[93]
+      backgroundColor: Color(palette.brand[800])
+        .alpha(0.3)
+        .string()
     }}
   >
     <div
