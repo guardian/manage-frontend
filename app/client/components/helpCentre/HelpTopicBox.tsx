@@ -1,0 +1,150 @@
+import { css } from "@emotion/core";
+import { palette, space } from "@guardian/src-foundations";
+import { textSans } from "@guardian/src-foundations/typography";
+import Color from "color";
+import React from "react";
+import { minWidth } from "../../styles/breakpoints";
+import { trackEvent } from "../analytics";
+import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
+import { HelpCentreTopic } from "./helpCentreConfig";
+
+interface HelpTopicBoxProps {
+  topic: HelpCentreTopic;
+}
+
+export const HelpTopicBox = (props: HelpTopicBoxProps) => {
+  return (
+    <div
+      css={css`
+        border: 1px solid ${palette.neutral["86"]};
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: ${space[5]}px;
+        ${minWidth.tablet} {
+          flex-basis: 48%;
+          flex-basis: calc(50% - (${space[5]}px * 0.5));
+        }
+        ${minWidth.desktop} {
+          flex-basis: 30%;
+          flex-basis: calc(33.3% - (${space[5]}px * 0.666));
+        }
+      `}
+    >
+      <h2
+        css={css`
+          ${textSans.medium({ fontWeight: "bold" })};
+          color: #333333;
+          position: relative;
+          margin: 0;
+          padding: 18px 0 18px 60px;
+          border-bottom: 1px solid ${palette.neutral["86"]};
+          width: 100%;
+        `}
+      >
+        <i
+          css={css`
+            position: absolute;
+            top: 11px;
+            left: 11px;
+          `}
+        >
+          {getHelpSectionIcon(props.topic.id)}
+        </i>
+        {props.topic.title}
+      </h2>
+      <ul
+        css={css`
+          list-style: none;
+          margin: 0 0 20px;
+          padding: 0 12px;
+        `}
+      >
+        {props.topic.links.map((faqLink, questionIndex) => (
+          <li
+            key={`${props.topic.id}Question-${questionIndex}`}
+            css={css`
+              padding: 12px 20px 12px 0;
+              border-bottom: 1px solid ${palette.neutral["86"]};
+              position: relative;
+            `}
+          >
+            <a
+              href={faqLink.link}
+              target="_blank"
+              css={css`
+                display: inline-block;
+                width: 100%;
+                ${textSans.medium()};
+                color: ${palette.neutral["7"]};
+                :visited {
+                  color: ${palette.neutral["7"]};
+                }
+              `}
+              onClick={() => {
+                trackEvent({
+                  eventCategory: "href",
+                  eventAction: "click",
+                  eventLabel: faqLink.link
+                });
+              }}
+            >
+              {faqLink.title}
+            </a>
+            <span
+              css={css`
+                display: block;
+                width: 7px;
+                height: 7px;
+                border-top: 2px solid ${palette.neutral["7"]};
+                border-right: 2px solid ${palette.neutral["7"]};
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%) rotate(45deg);
+                right: 7px;
+              `}
+            />
+          </li>
+        ))}
+      </ul>
+      <div
+        css={css`
+          margin: auto 11px 20px 11px;
+        `}
+      >
+        <a
+          href={props.topic.seeAllLink}
+          target={"_blank"}
+          css={css`
+            display: inline-block;
+            ${textSans.small({ fontWeight: "bold" })};
+            line-height: 36px;
+            min-height: 36px;
+            height: 36px;
+            border-radius: 18px;
+            padding: 0 16px;
+            color: ${palette.brand[400]};
+            background-color: ${palette.brand[800]};
+            :hover {
+              background-color: ${Color(palette.brand[800], "hex")
+                .darken(0.1)
+                .string()};
+            }
+            :visited {
+              color: ${palette.brand[400]};
+            }
+          `}
+          onClick={() => {
+            trackEvent({
+              eventCategory: "href",
+              eventAction: "click",
+              eventLabel: props.topic.seeAllLink
+            });
+          }}
+        >
+          See all
+        </a>
+      </div>
+    </div>
+  );
+};
