@@ -156,10 +156,10 @@ const validateTopics = (
 
 const buildContactUsReqBody = (body: any): ContactUsReq => {
   const attachment =
-    body.attachment.name && body.attachment.contents
+    body.attachment?.name && body.attachment?.contents
       ? {
-          name: body.attachment?.name,
-          contents: body.attachment?.contents
+          name: body.attachment.name,
+          contents: body.attachment.contents
         }
       : undefined;
 
