@@ -91,7 +91,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
           "https://www.theguardian.com/help/2020/nov/18/how-can-i-gain-access-to-the-premium-tier-of-your-app"
       },
       {
-        title: "Why am I still seeings ads/banners?",
+        title: "Why am I still seeing ads/banners?",
         link:
           "https://www.theguardian.com/help/2020/nov/19/why-am-i-still-seeing-adsbanners"
       },
