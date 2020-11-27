@@ -8,9 +8,9 @@ import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
+import { SectionHeader } from "../sectionHeader";
+import { SectionPageContainer } from "../sectionPageContainer";
 import { ContactUsForm } from "./contactUsForm";
-import { ContactUsHeader } from "./contactUsHeader";
-import { ContactUsPageContainer } from "./contactUsPageContainer";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
@@ -159,10 +159,38 @@ export const ContactUs = (props: ContactUsProps) => {
     }
   };
 
+  const HeaderTitle = (
+    <span>
+      Need to contact us{" "}
+      <span
+        css={{
+          display: "none",
+          [minWidth.desktop]: {
+            display: "inline"
+          }
+        }}
+      >
+        about something?
+      </span>
+    </span>
+  );
+
   return (
     <>
-      <ContactUsHeader />
-      <ContactUsPageContainer>
+      <SectionHeader
+        breadcrumbs={[
+          {
+            title: "Help centre",
+            link: "https://www.theguardian.com/help"
+          },
+          {
+            title: "Contact us",
+            currentPage: true
+          }
+        ]}
+        title={HeaderTitle}
+      />
+      <SectionPageContainer sectionTitle="Contact us">
         <div
           css={css`
             margin-bottom: ${space[24]}px;
@@ -185,6 +213,7 @@ export const ContactUs = (props: ContactUsProps) => {
             css={css`
               margin-top: ${space[5]}px;
               ${textSans.medium()};
+              max-width: 620px;
             `}
           >
             {containerText}
@@ -250,7 +279,7 @@ export const ContactUs = (props: ContactUsProps) => {
             </>
           )}
         </div>
-      </ContactUsPageContainer>
+      </SectionPageContainer>
     </>
   );
 };

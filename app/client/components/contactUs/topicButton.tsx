@@ -26,7 +26,7 @@ export const TopicButton = (props: TopicButtonProps) => (
       margin-bottom: ${space[3]}px;
       border-radius: 4px;
       background-color: ${props.isSelected ? "#e3f6ff" : "#F6F6F6"};
-      padding: ${space[5]}px;
+      padding: ${space[5]}px ${space[3]}px;
       ${textSans.medium({ fontWeight: "bold" })};
       color: #052962;
       text-align: center;
