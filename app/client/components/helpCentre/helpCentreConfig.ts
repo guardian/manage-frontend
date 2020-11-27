@@ -59,7 +59,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
           "https://www.theguardian.com/help/2020/nov/18/i-want-to-cancel-my-regular-payments-to-you"
       },
       {
-        title: "What payment methods you accept?",
+        title: "What payment methods do you accept?",
         link:
           "https://www.theguardian.com/help/2020/nov/18/what-payment-methods-do-you-accept"
       },
