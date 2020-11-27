@@ -72,7 +72,7 @@ export const HelpCentre = (_: HelpCentreProps) => (
             ${headline.small({ fontWeight: "bold" })};
           `}
         >
-          Can’t find what you’re looking for?
+          Still can’t find what you’re looking for?
         </h2>
         <CallCentreEmailAndNumbers />
         <p
