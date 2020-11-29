@@ -81,10 +81,8 @@ export const HelpCentre = (_: HelpCentreProps) => (
             margin-top: ${space[5]}px;
           `}
         >
-          <strong>
-            Or use our contact form to get in touch and we’ll get back to you as
-            soon as possible.
-          </strong>
+          Or use our contact form to get in touch and we’ll get back to you as
+          soon as possible.
         </p>
         <LinkButton
           colour={palette.brand[800]}
