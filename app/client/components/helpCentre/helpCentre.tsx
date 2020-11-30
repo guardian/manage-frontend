@@ -15,6 +15,35 @@ interface HelpCentreProps extends RouteComponentProps {
   urlSuccess?: string;
 }
 
+const titleStyle = css`
+  ${headline.xxsmall({ fontWeight: "bold" })};
+  margin: 0;
+  border-top: 1px solid ${palette.neutral[86]};
+  ${minWidth.desktop} {
+    font-size: 1.75rem;
+    border-top: 0;
+  }
+`;
+
+const popularTopicsTitleStyle = css`
+  ${headline.xxsmall({ fontWeight: "bold" })};
+  border-top: 1px solid ${palette.neutral[86]};
+  margin-top: ${space[6]}px;
+  padding: ${space[1]}px 0;
+  ${minWidth.desktop} {
+    margin-top: ${space[9]}px;
+  }
+`;
+
+const contactUsTitleStyle = css`
+  border-top: 1px solid ${palette.neutral["86"]};
+  margin-top: 30px;
+  ${minWidth.tablet} {
+    margin-top: 40px;
+  }
+  ${headline.small({ fontWeight: "bold" })};
+`;
+
 export const HelpCentre = (_: HelpCentreProps) => (
   <>
     <SectionHeader title="Help Centre" />
@@ -24,32 +53,8 @@ export const HelpCentre = (_: HelpCentreProps) => (
           margin-bottom: ${space[24]}px;
         `}
       >
-        <h1
-          css={css`
-            ${headline.xxsmall({ fontWeight: "bold" })};
-            margin: 0;
-            border-top: 1px solid ${palette.neutral[86]};
-            ${minWidth.desktop} {
-              font-size: 1.75rem;
-              border-top: 0;
-            }
-          `}
-        >
-          How can we help you?
-        </h1>
-        <h2
-          css={css`
-            ${headline.xxsmall({ fontWeight: "bold" })};
-            border-top: 1px solid ${palette.neutral[86]};
-            margin-top: ${space[6]}px;
-            padding: ${space[1]}px 0;
-            ${minWidth.desktop} {
-              margin-top: ${space[9]}px;
-            }
-          `}
-        >
-          Most popular topics
-        </h2>
+        <h1 css={titleStyle}>How can we help you?</h1>
+        <h2 css={popularTopicsTitleStyle}>Most popular topics</h2>
         <div
           css={css`
             display: flex;
@@ -62,16 +67,7 @@ export const HelpCentre = (_: HelpCentreProps) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
-        <h2
-          css={css`
-            border-top: 1px solid ${palette.neutral["86"]};
-            margin-top: 30px;
-            ${minWidth.tablet} {
-              margin-top: 40px;
-            }
-            ${headline.small({ fontWeight: "bold" })};
-          `}
-        >
+        <h2 css={contactUsTitleStyle}>
           Still can’t find what you’re looking for?
         </h2>
         <CallCentreEmailAndNumbers />
