@@ -59,7 +59,7 @@ export const HelpCentre = (_: HelpCentreProps) => (
           `}
         >
           {helpCentreConfig.map(topic => (
-            <HelpTopicBox key={`topicBox-${topic.id}`} topic={topic} />
+            <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
         <h2
