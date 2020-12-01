@@ -1,7 +1,13 @@
+interface Link {
+  title: string;
+  link: string;
+  id: string;
+}
+
 export interface HelpCentreTopic {
   id: string;
   title: string;
-  links: Array<{ title: string; link: string; id: string }>;
+  links: Link[];
   seeAllLink: string;
 }
 

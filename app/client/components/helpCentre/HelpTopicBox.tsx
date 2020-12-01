@@ -141,7 +141,7 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
           trackEvent({
             eventCategory: "help-centre",
             eventAction: "popular-topic-see-all-click",
-            eventLabel: `${props.topic.id}-see-all`
+            eventLabel: props.topic.id
           });
         }}
       >
