@@ -98,57 +98,55 @@ const seeAllAnchorStyle = css`
   }
 `;
 
-export const HelpTopicBox = (props: HelpTopicBoxProps) => {
-  return (
-    <div css={boxHolderStyle}>
-      <h2 css={boxTitleStyle}>
-        <i css={iconStyle}>{getHelpSectionIcon(props.topic.id)}</i>
-        {props.topic.title}
-      </h2>
-      <ul css={linksListStyle}>
-        {props.topic.links.map((faqLink, questionIndex) => (
-          <li
-            key={`${props.topic.id}Question-${questionIndex}`}
-            css={linkListItemStyle}
-          >
-            <a
-              href={faqLink.link}
-              target="_blank"
-              css={linkAnchorStyle}
-              onClick={() => {
-                trackEvent({
-                  eventCategory: "href",
-                  eventAction: "click",
-                  eventLabel: faqLink.link
-                });
-              }}
-            >
-              {faqLink.title}
-            </a>
-            <span css={linkArrowStyle} />
-          </li>
-        ))}
-      </ul>
-      <div
-        css={css`
-          margin: auto 11px 20px 11px;
-        `}
-      >
-        <a
-          href={props.topic.seeAllLink}
-          target={"_blank"}
-          css={seeAllAnchorStyle}
-          onClick={() => {
-            trackEvent({
-              eventCategory: "href",
-              eventAction: "click",
-              eventLabel: props.topic.seeAllLink
-            });
-          }}
+export const HelpTopicBox = (props: HelpTopicBoxProps) => (
+  <div css={boxHolderStyle}>
+    <h2 css={boxTitleStyle}>
+      <i css={iconStyle}>{getHelpSectionIcon(props.topic.id)}</i>
+      {props.topic.title}
+    </h2>
+    <ul css={linksListStyle}>
+      {props.topic.links.map((question, questionIndex) => (
+        <li
+          key={`${props.topic.id}Question-${questionIndex}`}
+          css={linkListItemStyle}
         >
-          See all
-        </a>
-      </div>
+          <a
+            href={question.link}
+            target="_blank"
+            css={linkAnchorStyle}
+            onClick={() => {
+              trackEvent({
+                eventCategory: "help-centre",
+                eventAction: "popular-topic-q-click",
+                eventLabel: `${props.topic.id}-${question.id}`
+              });
+            }}
+          >
+            {question.title}
+          </a>
+          <span css={linkArrowStyle} />
+        </li>
+      ))}
+    </ul>
+    <div
+      css={css`
+        margin: auto 11px 20px 11px;
+      `}
+    >
+      <a
+        href={props.topic.seeAllLink}
+        target={"_blank"}
+        css={seeAllAnchorStyle}
+        onClick={() => {
+          trackEvent({
+            eventCategory: "help-centre",
+            eventAction: "popular-topic-see-all-click",
+            eventLabel: `${props.topic.id}-see-all`
+          });
+        }}
+      >
+        See all
+      </a>
     </div>
-  );
-};
+  </div>
+);
