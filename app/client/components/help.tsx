@@ -11,7 +11,7 @@ import { Button } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NAV_LINKS, NavItem } from "./nav/navConfig";
 import { PageContainer } from "./page";
-import { HelpSectionIcon } from "./svgs/helpSectionIcon";
+import { getHelpSectionIcon } from "./svgs/helpSectionIcons";
 
 let domain: string;
 if (typeof window !== "undefined" && window.guardian) {
@@ -37,6 +37,7 @@ export type FaqSectionNames =
   | "Account";
 
 interface SectionFaq {
+  id: string;
   links: FaqLink[];
   seeAll: FaqLink;
 }
@@ -46,6 +47,7 @@ type Faqs = {
 };
 const faqs: Faqs = {
   Delivery: {
+    id: "delivery",
     links: [
       {
         title: "Can my delivery be suspended while I'm on holiday?",
@@ -71,6 +73,7 @@ const faqs: Faqs = {
     }
   },
   "Billing and payments": {
+    id: "billing",
     links: [
       {
         title: "How do I update my payment details?",
@@ -95,6 +98,7 @@ const faqs: Faqs = {
     }
   },
   "Print subscriptions": {
+    id: "subscriptions",
     links: [
       {
         title: "My newspaper is missing a section",
@@ -120,6 +124,7 @@ const faqs: Faqs = {
     }
   },
   Account: {
+    id: "signing-in-and-accounts",
     links: [
       {
         title: "How do I reset my password?",
@@ -156,6 +161,7 @@ export const Help = (_: RouteComponentProps) => (
     >
       {Object.keys(faqs).map((faqSectionTitle, sectionIndex) => {
         const faqSectionLinks = faqs[faqSectionTitle as FaqSectionNames].links;
+        const faqSectionId = faqs[faqSectionTitle as FaqSectionNames].id;
         const seeAllNavItem: NavItem =
           faqs[faqSectionTitle as FaqSectionNames].seeAll;
         return (
@@ -187,9 +193,7 @@ export const Help = (_: RouteComponentProps) => (
                   left: 11px;
                 `}
               >
-                <HelpSectionIcon
-                  subsection={faqSectionTitle as FaqSectionNames}
-                />
+                {getHelpSectionIcon(faqSectionId)}
               </i>
               {faqSectionTitle}
             </h2>
@@ -202,7 +206,7 @@ export const Help = (_: RouteComponentProps) => (
             >
               {faqSectionLinks.map((faqLink, questionIndex) => (
                 <li
-                  key={`${faqSectionTitle}Question-${questionIndex}`}
+                  key={`${faqSectionId}Question-${questionIndex}`}
                   css={css`
                     padding: 12px 20px 12px 0;
                     border-bottom: 1px solid ${palette.neutral["86"]};
