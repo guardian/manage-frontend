@@ -4,6 +4,7 @@ import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
+import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { SectionHeader } from "../sectionHeader";
@@ -86,6 +87,12 @@ export const HelpCentre = (_: HelpCentreProps) => (
           fontWeight={"bold"}
           text="Take me to the form"
           to="/contact-us/"
+          onClick={() =>
+            trackEvent({
+              eventCategory: "help-centre",
+              eventAction: "contact-us-cta-click"
+            })
+          }
         />
       </div>{" "}
     </SectionPageContainer>
