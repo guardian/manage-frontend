@@ -1,7 +1,7 @@
 interface Link {
+  id: string;
   title: string;
   link: string;
-  id: string;
 }
 
 export interface HelpCentreTopic {

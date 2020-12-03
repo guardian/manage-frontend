@@ -90,8 +90,7 @@ export const HelpCentre = (_: HelpCentreProps) => (
           onClick={() =>
             trackEvent({
               eventCategory: "help-centre",
-              eventAction: "cta-click",
-              eventLabel: "contact-us-form"
+              eventAction: "contact-us-cta-click"
             })
           }
         />
