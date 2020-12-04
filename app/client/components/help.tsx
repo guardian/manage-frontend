@@ -10,12 +10,6 @@ import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NAV_LINKS } from "./nav/navConfig";
 import { PageContainer } from "./page";
 
-export type FaqSectionNames =
-  | "Delivery"
-  | "Billing and payments"
-  | "Print subscriptions"
-  | "Account";
-
 interface Question {
   id: string;
   title: string;
