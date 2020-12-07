@@ -212,7 +212,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
       },
       {
         id: "q2",
-        title: "I have an Apple/iTunes subscription that I need help with",
+        title: "I have an Apple/Google subscription that I need help with",
         link:
           "https://www.theguardian.com/help/2020/nov/20/using-my-subscription-on-multiple-devices"
       },
