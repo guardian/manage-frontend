@@ -93,7 +93,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
     links: [
       {
         id: "q1",
-        title: "I need to report a bug with your app/website",
+        title: "I've found a bug with your app/website, how can I report it?",
         link:
           "https://www.theguardian.com/help/2020/nov/18/ive-found-a-bug-how-can-i-report-it"
       },
@@ -214,7 +214,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
         id: "q2",
         title: "I have an Apple/iTunes subscription that I need help with",
         link:
-          "https://www.theguardian.com/help/2020/nov/20/using-my-subscription-on-multiple-devices"
+          "https://www.theguardian.com/help/2020/nov/20/i-have-a-googleitunes-subscription-that-i-need-help-with"
       },
       {
         id: "q3",
