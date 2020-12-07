@@ -113,6 +113,14 @@ const callCentreToggleSpanStyle = (isOpen: boolean) => css`
   }
 `;
 
+const pStyle = css`
+  ${textSans.medium()};
+  margin-top: 30px;
+  ${minWidth.tablet} {
+    margin-top: 40px;
+  }
+`;
+
 export const Help = (_: RouteComponentProps) => {
   const [callCentreOpen, setCallCentreOpen] = useState<boolean>(false);
   return (
@@ -148,15 +156,7 @@ export const Help = (_: RouteComponentProps) => {
           })
         }
       />
-      <p
-        css={css`
-          ${textSans.medium()};
-          margin-top: 30px;
-          ${minWidth.tablet} {
-            margin-top: 40px;
-          }
-        `}
-      >
+      <p css={pStyle}>
         If you still can’t find what you need and want to contact us, check{" "}
         <span
           css={callCentreToggleSpanStyle(callCentreOpen)}
@@ -168,15 +168,7 @@ export const Help = (_: RouteComponentProps) => {
       {callCentreOpen && (
         <>
           <CallCentreEmailAndNumbers />
-          <p
-            css={css`
-              ${textSans.medium()};
-              margin-top: 30px;
-              ${minWidth.tablet} {
-                margin-top: 40px;
-              }
-            `}
-          >
+          <p css={pStyle}>
             Or use our contact form to get in touch and we’ll get back to you as
             soon as possible.
           </p>
