@@ -1,4 +1,3 @@
-import { showPrivacyManager } from "@guardian/consent-management-platform";
 import { conf } from "../../../server/config";
 
 let domain: string;
@@ -39,7 +38,9 @@ export const footerLinks: FooterLink[][] = [
     },
     {
       title: "California resident – Do Not Sell",
-      onClick: showPrivacyManager,
+      onClick: () => {
+        return;
+      },
       USAonly: true
     },
     {
