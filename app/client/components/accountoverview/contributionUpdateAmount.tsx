@@ -17,7 +17,7 @@ import { SuccessMessage } from "../delivery/address/deliveryAddressEditConfirmat
 import { Input } from "../input";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 
-interface ContributionUpdateAmountForm {
+interface ContributionUpdateAmountProps {
   subscriptionId: string;
   mainPlan: PaidSubscriptionPlan;
   productType: ProductType;
@@ -145,8 +145,8 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
   }
 };
 
-export const ContributionUpdateAmountForm = (
-  props: ContributionUpdateAmountForm
+export const ContributionUpdateAmount = (
+  props: ContributionUpdateAmountProps
 ) => {
   const currentContributionOptions = (contributionAmountsLookup[
     props.mainPlan.currencyISO

@@ -3,7 +3,7 @@ import { debug, fireEvent, render, screen } from "@testing-library/react";
 import each from "jest-each";
 import { before } from "lodash";
 import * as React from "react";
-import { ContributionUpdateAmountForm } from "../../../components/accountoverview/contributionUpdateAmountForm";
+import { ContributionUpdateAmountProps } from "../../../components/accountoverview/contributionUpdateAmount";
 
 const mainPlan = interval => ({
   start: "2019-10-30",
@@ -30,7 +30,7 @@ each`
   "renders validation error if $interval.interval amount below $expectedMinAmount",
   (params, done) => {
     const { container } = render(
-      <ContributionUpdateAmountForm
+      <ContributionUpdateAmount
         subscriptionId="A-123"
         mainPlan={mainPlan(params.interval)}
         amountUpdateStateChange={jest.fn()}
@@ -72,7 +72,7 @@ each`
   "renders validation error if $interval.interval amount above $expectedMaxAmount",
   (params, done) => {
     const { container } = render(
-      <ContributionUpdateAmountForm
+      <ContributionUpdateAmount
         subscriptionId="A-123"
         mainPlan={mainPlan(params.interval)}
         amountUpdateStateChange={jest.fn()}
@@ -108,7 +108,7 @@ each`
 
 test("renders validation error if blank input is provided", done => {
   const { container } = render(
-    <ContributionUpdateAmountForm
+    <ContributionUpdateAmount
       subscriptionId="A-123"
       mainPlan={mainPlan("month")}
       amountUpdateStateChange={jest.fn()}
@@ -141,7 +141,7 @@ test("renders validation error if blank input is provided", done => {
 
 test("renders validation error if a string is attempted to be input", done => {
   const { container } = render(
-    <ContributionUpdateAmountForm
+    <ContributionUpdateAmount
       subscriptionId="A-123"
       mainPlan={mainPlan("month")}
       amountUpdateStateChange={jest.fn()}
@@ -179,7 +179,7 @@ test("input correct value", done => {
   console.error = mockedError; // tslint:disable-line:no-console
 
   const { container } = render(
-    <ContributionUpdateAmountForm
+    <ContributionUpdateAmount
       subscriptionId="A-123"
       mainPlan={mainPlan("month")}
       amountUpdateStateChange={jest.fn()}

@@ -31,7 +31,7 @@ import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { RouteableStepPropsForGrouped } from "../wizardRouterAdapter";
-import { ContributionUpdateAmountForm } from "./contributionUpdateAmountForm";
+import { ContributionUpdateAmount } from "./contributionUpdateAmount";
 import { NewsletterOptinSection } from "./newsletterOptinSection";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
 
@@ -134,7 +134,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
       )}
 
       {isAmountOveridable && isPaidSubscriptionPlan(mainPlan) ? (
-        <ContributionUpdateAmountForm
+        <ContributionUpdateAmount
           subscriptionId={productDetail.subscription.subscriptionId}
           mainPlan={mainPlan}
           productType={specificProductType}
