@@ -3,7 +3,7 @@ import { debug, fireEvent, render, screen } from "@testing-library/react";
 import each from "jest-each";
 import { before } from "lodash";
 import * as React from "react";
-import { ContributionUpdateAmountProps } from "../../../components/accountoverview/contributionUpdateAmount";
+import { ContributionUpdateAmount } from "../../../components/accountoverview/contributionUpdateAmount";
 
 const mainPlan = interval => ({
   start: "2019-10-30",

@@ -207,7 +207,7 @@ export const ContributionUpdateAmountForm = (
     const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
 
     const chosenOptionNum = Number(chosenOption);
-    if (!chosenOption) {
+    if (!chosenOption && !isOtherAmountSelected) {
       return {
         passed: false,
         message: "Please make a selection",
@@ -218,7 +218,7 @@ export const ContributionUpdateAmountForm = (
         passed: false,
         message: "You have selected the same amount as you currently contribute"
       };
-    } else if (isNaN(chosenOptionNum)) {
+    } else if (!chosenOption || isNaN(chosenOptionNum)) {
       return {
         passed: false,
         message:
