@@ -317,7 +317,7 @@ export const ContributionUpdateAmountForm = (
       >
         <dl
           css={css`
-            padding: ${space[5]}px;
+            padding: ${space[3]}px ${space[5]}px;
             margin: 0;
             border-bottom: 1px solid ${palette.neutral[20]};
             ${textSans.medium()};
@@ -342,7 +342,7 @@ export const ContributionUpdateAmountForm = (
         <div
           css={css`
             ${textSans.medium()};
-            padding: ${space[5]}px;
+            padding: ${space[3]}px ${space[5]}px;
           `}
         >
           {inValidationErrorState && !selectedValue && (
