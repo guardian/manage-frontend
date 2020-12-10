@@ -65,14 +65,19 @@ const server = merge(common, {
     __filename: false
   },
   externals: nodeExternals({
-    whitelist: [/^@guardian\/src-foundations/]
+    whitelist: [/@guardian\//]
   }),
   module: {
     rules: [
       {
         // Include ts, tsx, and js files.
         test: /\.(tsx?)|(js)$/,
-        exclude: /node_modules/,
+        exclude: [
+          {
+            test: /node_modules/,
+            exclude: [/@guardian\//]
+          }
+        ],
         loader: "babel-loader",
         options: {
           plugins: [...babelCommon.plugins, "babel-plugin-source-map-support"],
@@ -107,7 +112,12 @@ const client = merge(common, {
       {
         // Include ts, tsx, and js files.
         test: /\.(tsx?)|(js)$/,
-        exclude: /node_modules/,
+        exclude: [
+          {
+            test: /node_modules/,
+            exclude: [/@guardian\//]
+          }
+        ],
         loader: "babel-loader",
         options: {
           plugins: babelCommon.plugins,
