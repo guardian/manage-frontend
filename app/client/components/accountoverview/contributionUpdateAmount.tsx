@@ -25,24 +25,30 @@ interface ContributionUpdateAmountProps {
 export const ContributionUpdateAmount = (
   props: ContributionUpdateAmountProps
 ) => {
-  const [showForm, setFormDisplayStatus] = useState<boolean>(false);
-  const [showConfirmation, setConfirmationStatus] = useState<boolean>(false);
-  const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+  enum Status {
+    OVERVIEW,
+    EDITING,
+    CONFIRMED
+  }
 
-  if (showForm) {
+  const [status, setStatus] = useState<Status>(Status.OVERVIEW);
+  const [, setConfirmedAmount] = useState<number | null>(null);
+
+  if (status === Status.EDITING) {
     return (
       <ContributionUpdateAmountForm
         {...props}
         onUpdateConfirmed={updatedAmount => {
           setConfirmedAmount(updatedAmount);
-          setFormDisplayStatus(false);
-          setConfirmationStatus(true);
+          setStatus(Status.CONFIRMED);
         }}
       />
     );
-  } else if (showConfirmation && confirmedAmount) {
-    return (
-      <>
+  }
+
+  return (
+    <>
+      {status === Status.CONFIRMED && (
         <SuccessMessage
           message={`We have successfully updated the amount of your contribution. ${props.nextPaymentDate &&
             `This amount will be taken on ${formatDateStr(
@@ -52,34 +58,7 @@ export const ContributionUpdateAmount = (
             margin-bottom: ${space[5]}px;
           `}
         />
-        <ProductDescriptionListTable
-          borderColour={palette.neutral[86]}
-          content={[
-            {
-              title: `${capitalize(
-                augmentInterval(props.mainPlan.interval)
-              )} amount`,
-              value: `${props.mainPlan.currency}${confirmedAmount.toFixed(2)} ${
-                props.mainPlan.currencyISO
-              }`
-            }
-          ]}
-        />
-        <Button
-          colour={palette.brand[800]}
-          textColour={palette.brand[400]}
-          fontWeight="bold"
-          text="Change amount"
-          onClick={() => {
-            setConfirmationStatus(false);
-          }}
-        />
-      </>
-    );
-  }
-
-  return (
-    <>
+      )}
       <ProductDescriptionListTable
         borderColour={palette.neutral[86]}
         content={[
@@ -99,7 +78,7 @@ export const ContributionUpdateAmount = (
         fontWeight="bold"
         text="Change amount"
         onClick={() => {
-          setFormDisplayStatus(true);
+          setStatus(Status.EDITING);
         }}
       />
     </>
