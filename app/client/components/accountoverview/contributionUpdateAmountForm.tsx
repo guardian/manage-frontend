@@ -19,6 +19,8 @@ interface ContributionUpdateAmountFormProps {
   subscriptionId: string;
   mainPlan: PaidSubscriptionPlan;
   productType: ProductType;
+  // we use this over the value in mainPlan as that value isn't updated after the user submits this form
+  currentAmount: number;
   nextPaymentDate: string | null;
   onUpdateConfirmed: (updatedAmount: number) => void;
 }
@@ -207,6 +209,7 @@ export const ContributionUpdateAmountForm = (
       (selectedValue === "other"
         ? otherAmount
         : `${selectedValue}`.replace(props.mainPlan.currency, ""));
+
     const chosenOptionNum = Number(chosenOption);
     if (!chosenOption) {
       return {
@@ -214,7 +217,7 @@ export const ContributionUpdateAmountForm = (
         message: "Please make a selection",
         noSelection: true
       };
-    } else if (chosenOptionNum === props.mainPlan.amount / 100) {
+    } else if (chosenOptionNum === props.currentAmount) {
       return {
         passed: false,
         message: "You have selected the same amount as you currently contribute"
@@ -282,8 +285,7 @@ export const ContributionUpdateAmountForm = (
             eventCategory: "amount_change",
             eventAction: "contributions_amount_change_success",
             eventLabel: `by ${props.mainPlan.currency}${(
-              pendingAmount -
-              props.mainPlan.amount / 100
+              pendingAmount - props.currentAmount
             ).toFixed(2)}${props.mainPlan.currencyISO}`
           });
           setConfirmedAmount(pendingAmount);
@@ -338,9 +340,9 @@ export const ContributionUpdateAmountForm = (
             css={css`
               display: inline-block;
             `}
-          >{`${props.mainPlan.currency}${(props.mainPlan.amount / 100).toFixed(
-            2
-          )} ${props.mainPlan.currencyISO}`}</dd>
+          >{`${props.mainPlan.currency}${props.currentAmount.toFixed(2)} ${
+            props.mainPlan.currencyISO
+          }`}</dd>
         </dl>
         <div
           css={css`

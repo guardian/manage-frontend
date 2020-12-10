@@ -32,12 +32,15 @@ export const ContributionUpdateAmount = (
   }
 
   const [status, setStatus] = useState<Status>(Status.OVERVIEW);
-  const [, setConfirmedAmount] = useState<number | null>(null);
+  const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+
+  const currentAmount = confirmedAmount || props.mainPlan.amount / 100;
 
   if (status === Status.EDITING) {
     return (
       <ContributionUpdateAmountForm
         {...props}
+        currentAmount={currentAmount}
         onUpdateConfirmed={updatedAmount => {
           setConfirmedAmount(updatedAmount);
           setStatus(Status.CONFIRMED);
@@ -66,9 +69,9 @@ export const ContributionUpdateAmount = (
             title: `${capitalize(
               augmentInterval(props.mainPlan.interval)
             )} amount`,
-            value: `${props.mainPlan.currency}${(
-              props.mainPlan.amount / 100
-            ).toFixed(2)} ${props.mainPlan.currencyISO}`
+            value: `${props.mainPlan.currency}${currentAmount.toFixed(2)} ${
+              props.mainPlan.currencyISO
+            }`
           }
         ]}
       />
