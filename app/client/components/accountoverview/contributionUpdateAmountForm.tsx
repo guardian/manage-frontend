@@ -154,13 +154,13 @@ export const ContributionUpdateAmountForm = (
     props.mainPlan.interval as ContributionInterval
   ];
 
-  const [otherAmount, setOtherAmount] = useState<string | number>(
+  const [otherAmount, setOtherAmount] = useState<number | null>(
     currentContributionOptions.otherDefaultAmount
   );
   const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
     false
   );
-  const [selectedValue, setSelectedValue] = useState<string | number>();
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
   const [inValidationErrorState, setValidationErrorState] = useState(false);
   const [validationErrorMessage, setValidationErrorMessage] = useState<string>(
     ""
@@ -204,11 +204,7 @@ export const ContributionUpdateAmountForm = (
   }
 
   const validateChoice = (): ValidationChoice => {
-    const chosenOption =
-      selectedValue &&
-      (selectedValue === "other"
-        ? otherAmount
-        : `${selectedValue}`.replace(props.mainPlan.currency, ""));
+    const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
 
     const chosenOptionNum = Number(chosenOption);
     if (!chosenOption) {
@@ -262,10 +258,9 @@ export const ContributionUpdateAmountForm = (
     };
   };
 
-  const pendingAmount =
-    selectedValue === "other"
-      ? Number(`${otherAmount}`.replace(props.mainPlan.currency, ""))
-      : Number(`${selectedValue}`.replace(props.mainPlan.currency, ""));
+  const pendingAmount = Number(
+    isOtherAmountSelected ? otherAmount : selectedValue
+  );
 
   const amountLabel = (amount: number) => {
     return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.interval}`;
@@ -386,7 +381,7 @@ export const ContributionUpdateAmountForm = (
                   checked={isOtherAmountSelected}
                   onChange={() => {
                     setIsOtherAmountSelected(true);
-                    setSelectedValue("other");
+                    setSelectedValue(null);
                   }}
                 />
               </>
@@ -404,9 +399,12 @@ export const ContributionUpdateAmountForm = (
                   step={1}
                   min={currentContributionOptions.minAmount}
                   max={currentContributionOptions.maxAmount}
-                  value={otherAmount}
-                  onChange={event => setOtherAmount(event.target.value)}
-                  error={validationErrorMessage}
+                  value={otherAmount || ""}
+                  onChange={event =>
+                    setOtherAmount(
+                      event.target.value ? Number(event.target.value) : null
+                    )
+                  }
                 />
               </div>
             )}
