@@ -17,7 +17,7 @@ interface HelpCentreProps extends RouteComponentProps {
 }
 
 const titleStyle = css`
-  ${headline.xxsmall({ fontWeight: "bold" })};
+  ${headline.xsmall({ fontWeight: "bold" })};
   margin: 0;
   border-top: 1px solid ${palette.neutral[86]};
   ${minWidth.desktop} {
