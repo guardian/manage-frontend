@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { ChoiceCard, ChoiceCardGroup } from "@guardian/src-choice-card";
-import { palette, space } from "@guardian/src-foundations";
+import { neutral, palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { InlineError } from "@guardian/src-inline-error";
 import { TextInput } from "@guardian/src-text-input";
@@ -266,6 +266,26 @@ export const ContributionUpdateAmountForm = (
     return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.interval}`;
   };
 
+  const weeklyBreakDown = (): string | null => {
+    const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
+    if (!chosenAmount) {
+      return null;
+    }
+
+    let weeklyAmount: number;
+    if (props.mainPlan.interval === "month") {
+      weeklyAmount = (chosenAmount * 12) / 52;
+    } else {
+      weeklyAmount = chosenAmount / 52;
+    }
+
+    return `Contributing ${
+      props.mainPlan.currency
+    }${chosenAmount} works out as ${
+      props.mainPlan.currency
+    }${weeklyAmount.toFixed(2)} each week`;
+  };
+
   if (showUpdateLoader) {
     return (
       <UpdateAmountLoader
@@ -408,6 +428,16 @@ export const ContributionUpdateAmountForm = (
                 />
               </div>
             )}
+          </div>
+
+          <div
+            css={css`
+              margin-top: ${space[2]}px;
+              color: ${neutral[46]};
+              font-size: 15px;
+            `}
+          >
+            <em>{weeklyBreakDown()}</em>
           </div>
         </div>
       </div>
