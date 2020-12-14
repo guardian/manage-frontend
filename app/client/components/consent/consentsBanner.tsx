@@ -1,8 +1,8 @@
-import React from "react";
+import { useEffect } from "react";
 import { getGeoLocation } from "../../geolocation";
 
-export class ConsentsBanner extends React.Component {
-  public componentDidMount = () => {
+export const ConsentsBanner = () => {
+  useEffect(() => {
     import("@guardian/consent-management-platform").then(({ cmp }) => {
       cmp.init({
         // Default to GB so it works when no geolocation
@@ -10,7 +10,7 @@ export class ConsentsBanner extends React.Component {
         country: getGeoLocation() ?? "GB"
       });
     });
-  };
+  }, []);
 
-  public render = () => null;
-}
+  return null;
+};
