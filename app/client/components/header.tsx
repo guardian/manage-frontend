@@ -1,6 +1,7 @@
 import { breakpoints, palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React, { useEffect, useState } from "react";
+import { requiresSignin } from "../../shared/requiresSignin";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { DropdownNav } from "./nav/dropdownNav";
@@ -10,6 +11,10 @@ type HeaderStatus = "init" | "signedIn" | "signedOut";
 
 const Header = () => {
   const [headerStatus, setHeaderStatus] = useState<HeaderStatus>("init");
+
+  const pageRequiresSignin = requiresSignin(
+    typeof window !== "undefined" ? window.location.pathname : ""
+  );
 
   useEffect(() => {
     const isSignedIn =
@@ -42,29 +47,32 @@ const Header = () => {
       >
         {headerStatus === "signedIn" && (
           <>
-            <h1
-              css={{
-                fontSize: "1.75rem",
-                fontWeight: "bold",
-                color: palette.neutral["100"],
-                display: "none",
-                [minWidth.desktop]: {
-                  display: "block",
-                  ...gridItemPlacement(1, 8)
-                }
-              }}
-            >
-              <Link
-                to={"/"}
+            {pageRequiresSignin && (
+              <h1
                 css={{
-                  textDecoration: "none",
+                  fontSize: "1.75rem",
+                  fontWeight: "bold",
                   color: palette.neutral["100"],
-                  ":visited": { color: "inherit" }
+                  display: "none",
+                  [minWidth.desktop]: {
+                    display: "block",
+                    ...gridItemPlacement(1, 8)
+                  }
                 }}
               >
-                My account
-              </Link>
-            </h1>
+                <Link
+                  to={"/"}
+                  css={{
+                    textDecoration: "none",
+                    color: palette.neutral["100"],
+                    ":visited": { color: "inherit" }
+                  }}
+                >
+                  My account
+                </Link>
+              </h1>
+            )}
+
             <DropdownNav />
           </>
         )}
