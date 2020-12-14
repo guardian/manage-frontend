@@ -6,9 +6,6 @@ ignore:
     - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.659Z'
-      formik > lodash:
-        reason: No remediation available
-        expires: '2020-12-20T10:37:44.000Z'
     - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.660Z'
@@ -27,6 +24,9 @@ ignore:
     - yup > lodash:
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.660Z'
+    - formik > lodash:
+        reason: No remediation available
+        expires: '2020-12-20T10:37:44.000Z'
   SNYK-JS-MINIMIST-559764:
     - node-pre-gyp > mkdirp > minimist:
         reason: no upgrade or patch available
@@ -69,6 +69,20 @@ ignore:
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > isomorphic-fetch > node-fetch:
         reason: no upgrade or patch available
         expires: '2020-12-16T11:03:52.661Z'
+  SNYK-JS-UAPARSERJS-1023599:
+    - formik > create-react-context > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-01-13T10:37:34.660Z'
+    - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-01-13T10:37:34.660Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-01-13T10:37:34.660Z'
+  SNYK-JS-INI-1048974:
+    - node-pre-gyp > rc > ini:
+        reason: None given
+        expires: '2021-01-13T10:37:34.661Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
