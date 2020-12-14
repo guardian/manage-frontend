@@ -520,6 +520,7 @@ exports[`Main renders something 1`] = `
                         "toString": [Function],
                       }
                     }
+                    href="#"
                     onClick={[Function]}
                   >
                     Privacy settings
