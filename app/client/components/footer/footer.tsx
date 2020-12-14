@@ -237,6 +237,7 @@ export const Footer = () => {
                       const extraParams = {
                         ...(cmp
                           ? {
+                              href: "#",
                               onClick: () => {
                                 if (importedCmp) {
                                   importedCmp.showPrivacyManager();
