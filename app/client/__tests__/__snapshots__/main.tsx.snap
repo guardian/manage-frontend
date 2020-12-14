@@ -520,6 +520,42 @@ exports[`Main renders something 1`] = `
                         "toString": [Function],
                       }
                     }
+                    onClick={[Function]}
+                  >
+                    Privacy settings
+                  </a>
+                </li>
+                <li
+                  css={
+                    Object {
+                      "map": undefined,
+                      "name": "66iazq",
+                      "next": undefined,
+                      "styles": "
+  list-style: none;
+",
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <a
+                    css={
+                      Object {
+                        "map": undefined,
+                        "name": "1x52xav",
+                        "next": undefined,
+                        "styles": "
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+  :hover {
+    color: #ffe500;
+    cursor: pointer;
+  }
+",
+                        "toString": [Function],
+                      }
+                    }
                     href="https://thegulocal.com/info/privacy"
                   >
                     Privacy policy
