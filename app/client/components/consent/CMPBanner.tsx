@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getGeoLocation } from "../../geolocation";
 
-export const ConsentsBanner = () => {
+export const CMPBanner = () => {
   useEffect(() => {
     import("@guardian/consent-management-platform").then(({ cmp }) => {
       cmp.init({

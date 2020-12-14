@@ -23,7 +23,7 @@ import { CancellationFlow } from "./cancel/cancellationFlow";
 import { CancellationReason } from "./cancel/cancellationReason";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import { ConsentsBanner } from "./consent/consentsBanner";
+import { CMPBanner } from "./consent/CMPBanner";
 import { ContactUs } from "./contactUs/contactUs";
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
@@ -195,7 +195,7 @@ export const BrowserUser = (
   <>
     <AnalyticsTracker />
     <User />
-    <ConsentsBanner />
+    <CMPBanner />
     <ScrollToTop />
   </>
 );
