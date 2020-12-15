@@ -25,6 +25,14 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     );
   };
 
+  const onReduceClicked = () => {
+    setShowUpdateForm(true);
+  };
+
+  const onCancelClicked = () => {
+    navigate(`mma_financial_circumstances/confirmed`);
+  };
+
   return (
     <MembersDataApiItemContext.Consumer>
       {productDetail => {
@@ -56,9 +64,17 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
                 onUpdateConfirmed={onUpdateConfirmed}
               />
             ) : (
-              <div>
-                <Button onClick={() => setShowUpdateForm(true)}>
-                  Reduce amount
+              <div
+                css={css`
+                  & > * + * {
+                    margin-left: ${space[4]}px;
+                  }
+                `}
+              >
+                <Button onClick={onReduceClicked}>Reduce amount</Button>
+
+                <Button onClick={onCancelClicked} priority="subdued">
+                  I still want to cancel
                 </Button>
               </div>
             )}
