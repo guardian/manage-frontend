@@ -49,9 +49,23 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         <Link css={hrefStyle} to="/contributions">
           manage your account
         </Link>
+        <br />
+        <Link css={hrefStyle} to="saved">
+          saved
+        </Link>
       </>
     ),
-    skipFeedback: true
+    skipFeedback: true,
+    savedBody: (
+      <>
+        <h3>Thank you for updating your contribution</h3>
+        <p>
+          We have successfully updated the amount of your contribution. New
+          amount, £[amount], will be taken on [date of payment]. Thank you for
+          supporting the Guardian.
+        </p>
+      </>
+    )
   },
   {
     reasonId: "mma_value_for_money",

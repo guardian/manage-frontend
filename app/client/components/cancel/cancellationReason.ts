@@ -10,6 +10,7 @@ export interface CancellationReason {
   alternateFeedbackThankYouBody?: string;
   hideContactUs?: boolean;
   skipFeedback?: boolean;
+  savedBody?: JSX.Element;
 }
 
 export type CancellationReasonId =
