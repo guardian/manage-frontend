@@ -1,10 +1,11 @@
-import { css, SerializedStyles } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { css } from "@emotion/core";
+import { ChoiceCard, ChoiceCardGroup } from "@guardian/src-choice-card";
+import { neutral, palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { InlineError } from "@guardian/src-inline-error";
+import { TextInput } from "@guardian/src-text-input";
 import { capitalize } from "lodash";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { formatDateStr } from "../../../shared/dates";
+import React, { useEffect, useState } from "react";
 import {
   augmentInterval,
   PaidSubscriptionPlan
@@ -13,16 +14,15 @@ import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
 import { Button } from "../buttons";
-import { SuccessMessage } from "../delivery/address/deliveryAddressEditConfirmation";
-import { Input } from "../input";
-import { ProductDescriptionListTable } from "../productDescriptionListTable";
 
-interface ContributionUpdateAmountForm {
+interface ContributionUpdateAmountFormProps {
   subscriptionId: string;
   mainPlan: PaidSubscriptionPlan;
   productType: ProductType;
+  // we use this over the value in mainPlan as that value isn't updated after the user submits this form
+  currentAmount: number;
   nextPaymentDate: string | null;
-  amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
+  onUpdateConfirmed: (updatedAmount: number) => void;
 }
 
 type ContributionInterval = "month" | "year";
@@ -146,7 +146,7 @@ const contributionAmountsLookup: ContributionAmountsLookup = {
 };
 
 export const ContributionUpdateAmountForm = (
-  props: ContributionUpdateAmountForm
+  props: ContributionUpdateAmountFormProps
 ) => {
   const currentContributionOptions = (contributionAmountsLookup[
     props.mainPlan.currencyISO
@@ -154,26 +154,19 @@ export const ContributionUpdateAmountForm = (
     props.mainPlan.interval as ContributionInterval
   ];
 
-  const [otherAmount, setOtherAmount] = useState<string | number>(
+  const [otherAmount, setOtherAmount] = useState<number | null>(
     currentContributionOptions.otherDefaultAmount
   );
   const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
     false
   );
-  const [selectedValue, setSelectedValue] = useState<string | number>();
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
   const [inValidationErrorState, setValidationErrorState] = useState(false);
   const [validationErrorMessage, setValidationErrorMessage] = useState<string>(
     ""
   );
-
-  const [showForm, setFormDisplayStatus] = useState<boolean>(false);
-
-  const [showUpdateLoader, setDisplayOfUpdateLoader] = useState<boolean>(false);
-
-  const [showConfirmation, setConfirmationStatus] = useState<boolean>(false);
-
+  const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
   const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
-
   const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -181,10 +174,13 @@ export const ContributionUpdateAmountForm = (
       const validationResult = validateChoice();
       setValidationErrorState(!validationResult.passed);
     }
+  }, [otherAmount, selectedValue]);
+
+  useEffect(() => {
     if (confirmedAmount) {
-      props.amountUpdateStateChange(confirmedAmount);
+      props.onUpdateConfirmed(confirmedAmount);
     }
-  }, [otherAmount, selectedValue, confirmedAmount]);
+  }, [confirmedAmount]);
 
   const getAmountUpdater = (
     newAmount: number,
@@ -201,39 +197,6 @@ export const ContributionUpdateAmountForm = (
       }
     );
 
-  const radioOptionCss: SerializedStyles = css`
-    input {
-      display: none;
-    }
-    input + label {
-      display: block;
-      text-align: center;
-      box-sizing: border-box;
-      border-radius: 4px;
-      border: 1px solid ${palette.neutral[60]};
-      color: ${palette.neutral[46]};
-      font-weight: bold;
-      margin: 0 auto;
-      padding: 0;
-      line-height: 48px;
-      width: 120px;
-      cursor: pointer;
-    }
-    input:checked + label {
-      background-color: ${palette.brand[800]};
-      color: ${palette.brand[400]};
-      border: 0;
-      box-shadow: 0 0 0 4px ${palette.brand[500]};
-    }
-    display: inline-block;
-    margin: 0 ${space[3]}px ${space[3]}px 0;
-  `;
-
-  const otherAmountOnFocus = () => {
-    setIsOtherAmountSelected(true);
-    setSelectedValue("other");
-  };
-
   interface ValidationChoice {
     passed: boolean;
     message?: string;
@@ -241,24 +204,21 @@ export const ContributionUpdateAmountForm = (
   }
 
   const validateChoice = (): ValidationChoice => {
-    const chosenOption =
-      selectedValue &&
-      (selectedValue === "other"
-        ? otherAmount
-        : `${selectedValue}`.replace(props.mainPlan.currency, ""));
+    const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
+
     const chosenOptionNum = Number(chosenOption);
-    if (!chosenOption) {
+    if (!chosenOption && !isOtherAmountSelected) {
       return {
         passed: false,
         message: "Please make a selection",
         noSelection: true
       };
-    } else if (chosenOptionNum === props.mainPlan.amount / 100) {
+    } else if (chosenOptionNum === props.currentAmount) {
       return {
         passed: false,
         message: "You have selected the same amount as you currently contribute"
       };
-    } else if (isNaN(chosenOptionNum)) {
+    } else if (!chosenOption || isNaN(chosenOptionNum)) {
       return {
         passed: false,
         message:
@@ -298,12 +258,35 @@ export const ContributionUpdateAmountForm = (
     };
   };
 
-  const pendingAmount =
-    selectedValue === "other"
-      ? Number(`${otherAmount}`.replace(props.mainPlan.currency, ""))
-      : Number(`${selectedValue}`.replace(props.mainPlan.currency, ""));
+  const pendingAmount = Number(
+    isOtherAmountSelected ? otherAmount : selectedValue
+  );
 
-  if (showUpdateLoader && !showConfirmation) {
+  const amountLabel = (amount: number) => {
+    return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.interval}`;
+  };
+
+  const weeklyBreakDown = (): string | null => {
+    const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
+    if (!chosenAmount) {
+      return null;
+    }
+
+    let weeklyAmount: number;
+    if (props.mainPlan.interval === "month") {
+      weeklyAmount = (chosenAmount * 12) / 52;
+    } else {
+      weeklyAmount = chosenAmount / 52;
+    }
+
+    return `Contributing ${
+      props.mainPlan.currency
+    }${chosenAmount} works out as ${
+      props.mainPlan.currency
+    }${weeklyAmount.toFixed(2)} each week`;
+  };
+
+  if (showUpdateLoader) {
     return (
       <UpdateAmountLoader
         fetch={getAmountUpdater(
@@ -317,14 +300,10 @@ export const ContributionUpdateAmountForm = (
             eventCategory: "amount_change",
             eventAction: "contributions_amount_change_success",
             eventLabel: `by ${props.mainPlan.currency}${(
-              pendingAmount -
-              props.mainPlan.amount / 100
+              pendingAmount - props.currentAmount
             ).toFixed(2)}${props.mainPlan.currencyISO}`
           });
           setConfirmedAmount(pendingAmount);
-          setUpdateFailedStatus(false);
-          setConfirmationStatus(true);
-          setDisplayOfUpdateLoader(false);
           return null;
         }}
         loadingMessage={"Updating..."}
@@ -334,204 +313,147 @@ export const ContributionUpdateAmountForm = (
             eventAction: "contributions_amount_change_failed"
           });
           setUpdateFailedStatus(true);
-          setDisplayOfUpdateLoader(false);
+          setShowUpdateLoader(false);
           return null;
         }}
         spinnerScale={0.7}
         inline
       />
     );
-  } else if (showConfirmation) {
-    return (
-      <>
-        <SuccessMessage
-          message={`We have successfully updated the amount of your contribution. ${props.nextPaymentDate &&
-            `This amount will be taken on ${formatDateStr(
-              props.nextPaymentDate
-            )}. `}Thank you for supporting the Guardian.`}
-          additionalCss={css`
-            margin-bottom: ${space[5]}px;
-          `}
-        />
-        <ProductDescriptionListTable
-          borderColour={palette.neutral[86]}
-          content={[
-            {
-              title: `${capitalize(
-                augmentInterval(props.mainPlan.interval)
-              )} amount`,
-              value: `${props.mainPlan.currency}${pendingAmount.toFixed(2)} ${
-                props.mainPlan.currencyISO
-              }`
-            }
-          ]}
-        />
-        <Button
-          colour={palette.brand[800]}
-          textColour={palette.brand[400]}
-          fontWeight="bold"
-          text="Change amount"
-          onClick={() => {
-            setConfirmationStatus(false);
-            setUpdateFailedStatus(false);
-            setDisplayOfUpdateLoader(false);
-          }}
-        />
-      </>
-    );
-  } else if (showForm) {
-    return (
-      <>
-        {updateFailed && (
-          <InlineError>
-            Updating failed this time. Please try again later...
-          </InlineError>
-        )}
-        <div
+  }
+
+  return (
+    <>
+      {updateFailed && (
+        <InlineError>
+          Updating failed this time. Please try again later...
+        </InlineError>
+      )}
+      <div
+        css={css`
+          border: 1px solid ${palette.neutral[20]};
+          margin-bottom: ${space[5]}px;
+        `}
+      >
+        <dl
           css={css`
-            border: 1px solid ${palette.neutral[20]};
-            margin-bottom: ${space[5]}px;
+            padding: ${space[3]}px ${space[5]}px;
+            margin: 0;
+            border-bottom: 1px solid ${palette.neutral[20]};
+            ${textSans.medium()};
           `}
         >
-          <dl
+          <dt
             css={css`
-              padding: ${space[5]}px;
-              margin: 0;
-              border-bottom: 1px solid ${palette.neutral[20]};
-              ${textSans.medium()};
+              font-weight: bold;
+              display: inline-block;
             `}
           >
-            <dt
-              css={css`
-                font-weight: bold;
-                display: inline-block;
-              `}
-            >
-              {capitalize(augmentInterval(props.mainPlan.interval))} amount
-            </dt>
-            <dd
-              css={css`
-                display: inline-block;
-              `}
-            >{`${props.mainPlan.currency}${(
-              confirmedAmount || props.mainPlan.amount / 100
-            ).toFixed(2)} ${props.mainPlan.currencyISO}`}</dd>
-          </dl>
+            {capitalize(augmentInterval(props.mainPlan.interval))} amount
+          </dt>
+          <dd
+            css={css`
+              display: inline-block;
+            `}
+          >{`${props.mainPlan.currency}${props.currentAmount.toFixed(2)} ${
+            props.mainPlan.currencyISO
+          }`}</dd>
+        </dl>
+        <div
+          css={css`
+            ${textSans.medium()};
+            padding: ${space[3]}px ${space[5]}px;
+          `}
+        >
+          {inValidationErrorState && !selectedValue && (
+            <InlineError>{validationErrorMessage}</InlineError>
+          )}
+
           <div
             css={css`
-              ${textSans.medium()};
-              padding: ${space[5]}px;
+              max-width: 500px;
             `}
           >
-            <h4
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                margin: 0 0 ${inValidationErrorState ? space[3] : 0}px 0;
-              `}
+            <ChoiceCardGroup
+              name="amounts"
+              label="Choose the amount to contribute"
+              columns={2}
             >
-              Choose the amount to contribute
-            </h4>
-            {inValidationErrorState && !selectedValue && (
-              <InlineError>{validationErrorMessage}</InlineError>
-            )}
-            {currentContributionOptions.amounts.map(possibleAmount => (
-              <div css={radioOptionCss} key={`amount-${possibleAmount}`}>
-                <input
-                  type="radio"
-                  id={`amount-${possibleAmount}`}
-                  name="amount"
-                  value={`${props.mainPlan.currency}${possibleAmount}`}
-                  onChange={e => {
-                    setSelectedValue(e.target.value);
-                    setIsOtherAmountSelected(false);
+              <>
+                {currentContributionOptions.amounts.map(amount => (
+                  <ChoiceCard
+                    id={`amount-${amount}`}
+                    key={amount}
+                    value={amount.toString()}
+                    label={amountLabel(amount)}
+                    checked={selectedValue === amount}
+                    onChange={() => {
+                      setSelectedValue(amount);
+                      setIsOtherAmountSelected(false);
+                    }}
+                  />
+                ))}
+
+                <ChoiceCard
+                  id={`amount-other`}
+                  value="Other"
+                  label="Other"
+                  checked={isOtherAmountSelected}
+                  onChange={() => {
+                    setIsOtherAmountSelected(true);
+                    setSelectedValue(null);
                   }}
                 />
-                <label
-                  htmlFor={`amount-${possibleAmount}`}
-                >{`${props.mainPlan.currency}${possibleAmount}`}</label>
-              </div>
-            ))}
-            <div css={radioOptionCss}>
-              <input
-                type="radio"
-                id="amount-other"
-                name="amount"
-                value="other"
-                checked={isOtherAmountSelected}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setIsOtherAmountSelected(e.target.checked);
-                }}
-              />
-              <label htmlFor="amount-other">Other</label>
-            </div>
+              </>
+            </ChoiceCardGroup>
+
             {isOtherAmountSelected && (
               <div
                 css={css`
                   margin-top: ${space[3]}px;
                 `}
               >
-                <Input
+                <TextInput
+                  label={`Other amount (${props.mainPlan.currency})`}
                   type="number"
-                  min={`${currentContributionOptions.minAmount}`}
-                  step="1.00"
-                  label="Other amount"
-                  prefixValue={props.mainPlan.currency}
-                  width={30}
-                  value={otherAmount}
-                  changeSetState={setOtherAmount}
-                  onFocus={otherAmountOnFocus}
-                  setFocus={isOtherAmountSelected}
-                  inErrorState={
-                    inValidationErrorState &&
-                    (!!selectedValue || (isOtherAmountSelected && !otherAmount))
+                  step={1}
+                  min={currentContributionOptions.minAmount}
+                  max={currentContributionOptions.maxAmount}
+                  value={otherAmount || ""}
+                  onChange={event =>
+                    setOtherAmount(
+                      event.target.value ? Number(event.target.value) : null
+                    )
                   }
-                  errorMessage={validationErrorMessage}
                 />
               </div>
             )}
           </div>
-        </div>
-        <Button
-          colour={palette.brand[800]}
-          textColour={palette.brand[400]}
-          fontWeight="bold"
-          text="Change amount"
-          onClick={() => {
-            const validationResult = validateChoice();
-            setValidationErrorState(!validationResult.passed);
-            if (!validationResult.passed) {
-              setValidationErrorMessage(validationResult.message as string);
-              return;
-            }
-            setDisplayOfUpdateLoader(true);
-          }}
-        />
-      </>
-    );
-  }
 
-  return (
-    <>
-      <ProductDescriptionListTable
-        borderColour={palette.neutral[86]}
-        content={[
-          {
-            title: `${capitalize(
-              augmentInterval(props.mainPlan.interval)
-            )} amount`,
-            value: `${props.mainPlan.currency}${(
-              props.mainPlan.amount / 100
-            ).toFixed(2)} ${props.mainPlan.currencyISO}`
-          }
-        ]}
-      />
+          <div
+            css={css`
+              margin-top: ${space[2]}px;
+              color: ${neutral[46]};
+              font-size: 15px;
+            `}
+          >
+            <em>{weeklyBreakDown()}</em>
+          </div>
+        </div>
+      </div>
       <Button
         colour={palette.brand[800]}
         textColour={palette.brand[400]}
         fontWeight="bold"
         text="Change amount"
         onClick={() => {
-          setFormDisplayStatus(true);
+          const validationResult = validateChoice();
+          setValidationErrorState(!validationResult.passed);
+          if (!validationResult.passed) {
+            setValidationErrorMessage(validationResult.message as string);
+            return;
+          }
+          setShowUpdateLoader(true);
         }}
       />
     </>
