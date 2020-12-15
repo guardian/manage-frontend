@@ -8,6 +8,8 @@ import {
 import { CancellationReason } from "../cancellationReason";
 import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
 
+import ContributionsCancellationFlowFinancialSaveAttempt from "./contributionsCancellationFlowFinancialSaveAttempt";
+
 export const contributionsCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_article",
@@ -42,22 +44,10 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_financial_circumstances",
     linkLabel: "I can no longer afford it",
     saveTitle: "You can no longer afford your current contribution",
-    saveBody: (
-      <>
-        We understand that financial circumstances change, and your current
-        contribution might not suit you right now. To change your contribution
-        amount yourself, please go to{" "}
-        <Link css={hrefStyle} to="/contributions">
-          manage your account
-        </Link>
-        <br />
-        <Link css={hrefStyle} to="saved">
-          saved
-        </Link>
-      </>
-    ),
+    saveBody: <ContributionsCancellationFlowFinancialSaveAttempt />,
+    savedBody: <ContributionsCancellationAmountUpdatedSaved />,
     skipFeedback: true,
-    savedBody: <ContributionsCancellationAmountUpdatedSaved />
+    hideContactUs: true
   },
   {
     reasonId: "mma_value_for_money",

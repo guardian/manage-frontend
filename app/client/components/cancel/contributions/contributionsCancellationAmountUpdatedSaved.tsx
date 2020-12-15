@@ -1,3 +1,4 @@
+import { useLocation } from "@reach/router";
 import React from "react";
 import { formatDateStr } from "../../../../shared/dates";
 import {
@@ -6,7 +7,19 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 
+const getUrlParameter = (search: string, name: string): string => {
+  const nameForRegex = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  const regex = new RegExp("[\\?&]" + nameForRegex + "=([^&#]*)");
+  const results = regex.exec(search);
+  return results === null
+    ? ""
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
+};
+
 const ContributionsCancellationAmountUpdatedSaved: React.FC = () => {
+  const location = useLocation();
+  const amount = Number(getUrlParameter(location.search, "updatedAmount"));
+
   return (
     <MembersDataApiItemContext.Consumer>
       {productDetail => {
@@ -30,7 +43,7 @@ const ContributionsCancellationAmountUpdatedSaved: React.FC = () => {
             <p>
               We have successfully updated the amount of your contribution. New
               amount, {mainPlan.currency}
-              {mainPlan.amount / 100}, will be taken on{" "}
+              {amount.toFixed(2)}, will be taken on{" "}
               {formatDateStr(productDetail.subscription.nextPaymentDate)}. Thank
               you for supporting the Guardian.
             </p>
