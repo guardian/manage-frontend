@@ -129,7 +129,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
-    "@guardian/consent-management-platform": "^3.4.8",
+    "@guardian/consent-management-platform": "^6.9.1",
     "@guardian/src-button": "^2.5.0",
     "@guardian/src-checkbox": "^1.8.0",
     "@guardian/src-foundations": "^1.9.1",

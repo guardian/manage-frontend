@@ -1,4 +1,4 @@
-import { _, isInUSA } from "../geolocation";
+import { _, getGeoLocation, isInUSA } from "../geolocation";
 
 let mockGeoCookieValue: string | null = null;
 
@@ -10,6 +10,16 @@ describe("Geolocation", () => {
   beforeEach(() => {
     mockGeoCookieValue = null;
     _.resetModule();
+  });
+
+  it("getGeoLocation returns null when no geo location cookie is set", () => {
+    expect(getGeoLocation()).toBeNull();
+  });
+
+  it("getGeoLocation returns the geolocation when a geo location cookie is set", () => {
+    mockGeoCookieValue = "GB";
+
+    expect(getGeoLocation()).toBe("GB");
   });
 
   it("isInUSA returns true when user geolocation cookie is 'US'", () => {

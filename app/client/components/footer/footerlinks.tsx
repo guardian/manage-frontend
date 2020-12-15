@@ -1,4 +1,3 @@
-import { showPrivacyManager } from "@guardian/consent-management-platform";
 import { conf } from "../../../server/config";
 
 let domain: string;
@@ -10,9 +9,9 @@ if (typeof window !== "undefined" && window.guardian) {
 
 interface FooterLink {
   title: string;
+  titleUSA?: string;
   link?: string;
-  onClick?: () => void;
-  USAonly?: boolean;
+  cmp?: boolean;
 }
 
 export const footerLinks: FooterLink[][] = [
@@ -38,9 +37,9 @@ export const footerLinks: FooterLink[][] = [
       link: `https://workforus.${domain}`
     },
     {
-      title: "California resident – Do Not Sell",
-      onClick: showPrivacyManager,
-      USAonly: true
+      title: "Privacy settings",
+      titleUSA: "California resident – Do Not Sell",
+      cmp: true
     },
     {
       title: "Privacy policy",

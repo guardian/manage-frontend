@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { CMP } from "@guardian/consent-management-platform/dist/types";
 import { from } from "@guardian/src-foundations/mq";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import palette from "../../colours";
@@ -195,6 +196,13 @@ const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
 
 export const Footer = () => {
   const [isInUSA, setIsInUSA] = useState<boolean>(false);
+  const [importedCmp, setImportedCmp] = useState<CMP | null>(null);
+
+  useEffect(() => {
+    import("@guardian/consent-management-platform").then(({ cmp }) => {
+      setImportedCmp(cmp);
+    });
+  }, []);
 
   useEffect(() => {
     setIsInUSA(isUserInUSA());
@@ -224,15 +232,23 @@ export const Footer = () => {
               <div css={footerMenuStyles}>
                 {footerLinks.map((linkList, i) => (
                   <ul key={i} css={footerMenuUlStyles}>
-                    {linkList.map(({ title, link, onClick, USAonly }) => {
-                      return USAonly && !isInUSA ? null : (
-                        <li key={title} css={footerMenuLiStyles}>
-                          <a
-                            href={link}
-                            onClick={onClick}
-                            css={footerLinkStyles}
-                          >
-                            {title}
+                    {linkList.map(({ title, titleUSA, link, cmp }) => {
+                      const actualTitle = cmp && isInUSA ? titleUSA : title;
+                      const extraParams = {
+                        ...(cmp
+                          ? {
+                              href: "#",
+                              onClick: () => {
+                                importedCmp?.showPrivacyManager();
+                              }
+                            }
+                          : { href: link })
+                      };
+
+                      return (
+                        <li key={actualTitle} css={footerMenuLiStyles}>
+                          <a {...extraParams} css={footerLinkStyles}>
+                            {actualTitle}
                           </a>
                         </li>
                       );

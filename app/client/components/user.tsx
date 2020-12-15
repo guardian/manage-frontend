@@ -23,10 +23,7 @@ import { CancellationFlow } from "./cancel/cancellationFlow";
 import { CancellationReason } from "./cancel/cancellationReason";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
-import {
-  ConsentsBanner,
-  SuppressConsentBanner
-} from "./consent/consentsBanner";
+import { CMPBanner } from "./consent/CMPBanner";
 import { ContactUs } from "./contactUs/contactUs";
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
 import { DeliveryAddressForm } from "./delivery/address/deliveryAddressForm";
@@ -185,10 +182,6 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       {/* otherwise redirect to root instead of having a "not found page" */}
       <Redirect default from="/*" to="/" noThrow />
     </Router>
-    <Router primary={false}>
-      <SuppressConsentBanner path="/payment/*" />
-      <ConsentsBanner default />
-    </Router>
   </Main>
 );
 
@@ -202,6 +195,7 @@ export const BrowserUser = (
   <>
     <AnalyticsTracker />
     <User />
+    <CMPBanner />
     <ScrollToTop />
   </>
 );
