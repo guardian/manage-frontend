@@ -239,9 +239,7 @@ export const Footer = () => {
                           ? {
                               href: "#",
                               onClick: () => {
-                                if (importedCmp) {
-                                  importedCmp.showPrivacyManager();
-                                }
+                                importedCmp?.showPrivacyManager();
                               }
                             }
                           : { href: link })
