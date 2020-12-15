@@ -6,6 +6,7 @@ import {
   standardSaveBody
 } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
+import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
 
 export const contributionsCancellationReasons: CancellationReason[] = [
   {
@@ -56,16 +57,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
       </>
     ),
     skipFeedback: true,
-    savedBody: (
-      <>
-        <h3>Thank you for updating your contribution</h3>
-        <p>
-          We have successfully updated the amount of your contribution. New
-          amount, £[amount], will be taken on [date of payment]. Thank you for
-          supporting the Guardian.
-        </p>
-      </>
-    )
+    savedBody: <ContributionsCancellationAmountUpdatedSaved />
   },
   {
     reasonId: "mma_value_for_money",
