@@ -3,6 +3,7 @@ export interface CancellationReason {
   linkLabel: string;
   saveTitle?: string;
   saveBody: string | JSX.Element;
+  hideSaveActions?: boolean;
   escalationSaveBody?: string | JSX.Element;
   alternateCallUsPrefix?: string;
   alternateFeedbackIntro?: string;

@@ -108,6 +108,7 @@ class FeedbackFormAndContactUs extends React.Component<
           />
           <div css={{ height: "20px" }} />
           <ConfirmCancellationAndReturnRow
+            hide={!!this.props.reason.hideSaveActions}
             reasonId={this.props.reason.reasonId}
             productType={this.props.productType}
           />
@@ -153,6 +154,7 @@ class FeedbackFormAndContactUs extends React.Component<
             disabled={this.state.feedback.length === 0}
           />
           <ConfirmCancellationAndReturnRow
+            hide={!!this.props.reason.hideSaveActions}
             reasonId={this.props.reason.reasonId}
             productType={this.props.productType}
             onClick={() => {
@@ -219,45 +221,50 @@ class FeedbackFormAndContactUs extends React.Component<
 interface ConfirmCancellationAndReturnRowProps
   extends WithProductType<ProductTypeWithCancellationFlow> {
   onClick?: () => any;
+  hide?: boolean;
   reasonId: CancellationReasonId;
 }
 
 const ConfirmCancellationAndReturnRow = (
   props: ConfirmCancellationAndReturnRowProps
 ) => (
-  <div
-    css={{
-      display: "flex",
-      justifyContent: "space-between",
-      flexDirection: "row-reverse",
-      marginTop: "10px",
-      textAlign: "left",
-      [maxWidth.mobileLandscape]: {
-        flexDirection: "column"
-      }
-    }}
-  >
-    <div
-      css={{
-        textAlign: "right",
-        marginBottom: "30px"
-      }}
-    >
-      <Button
-        text="Confirm cancellation"
-        onClick={() => {
-          if (props.onClick) {
-            props.onClick();
+  <>
+    {!props.hide && (
+      <div
+        css={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row-reverse",
+          marginTop: "10px",
+          textAlign: "left",
+          [maxWidth.mobileLandscape]: {
+            flexDirection: "column"
           }
-          navigate(props.reasonId + "/confirmed");
         }}
-        right
-      />
-    </div>
-    <div>
-      <ReturnToAccountOverviewButton />
-    </div>
-  </div>
+      >
+        <div
+          css={{
+            textAlign: "right",
+            marginBottom: "30px"
+          }}
+        >
+          <Button
+            text="Confirm cancellation"
+            onClick={() => {
+              if (props.onClick) {
+                props.onClick();
+              }
+              navigate(props.reasonId + "/confirmed");
+            }}
+            right
+          />
+        </div>
+        <div>
+          <ReturnToAccountOverviewButton />
+        </div>
+      </div>
+    )}
+  </>
 );
 
 export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
@@ -328,6 +335,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
               >
                 <ContactUs {...props.reason} />
                 <ConfirmCancellationAndReturnRow
+                  hide={!!props.reason.hideSaveActions}
                   reasonId={props.reason.reasonId}
                   productType={props.productType}
                 />
