@@ -79,7 +79,7 @@ export const applyAnyOptimiseExperiments = () => {
 };
 
 export const AnalyticsTracker = () => {
-  const [cmpInitialised, setCmpInitialised] = useState<boolean>(false);
+  const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);
 
   if (typeof window !== "undefined" && window.ga) {
     const queryParams = parse(window.location.href, true).query;
@@ -138,13 +138,13 @@ export const AnalyticsTracker = () => {
           );
           // @ts-ignore-end
 
-          setCmpInitialised(true);
+          setCmpIsInitialised(true);
         });
       }
     );
   }, []);
 
-  return cmpInitialised ? (
+  return cmpIsInitialised ? (
     <Location>
       {({ location }) => {
         if (location && typeof window !== "undefined") {
