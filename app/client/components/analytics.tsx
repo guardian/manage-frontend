@@ -24,6 +24,7 @@ interface Event {
   eventValue?: number;
 }
 
+const GA_UA = "UA-51507017-5";
 const MMA_AB_TEST_DIMENSION_VALUE = ""; // this can be used for a/b testing
 
 export const trackEvent = (
@@ -106,7 +107,7 @@ export const AnalyticsTracker = () => {
       window.dataLayer = [];
     }
 
-    window.ga("create", "UA-51507017-5", "auto");
+    window.ga("create", GA_UA, "auto");
     window.ga("require", "GTM-M985W29");
     window.ga("set", "transport", "beacon");
     if (INTCMP) {
@@ -131,7 +132,7 @@ export const AnalyticsTracker = () => {
           // Suppressing "Element implicitly has an 'any' type because index expression is not of type 'number'."
           // @ts-ignore-start
           // tslint:disable-next-line:no-object-mutation
-          window["ga-disable-UA-51507017-5"] = !getConsentFor(
+          window[`ga-disable-${GA_UA}`] = !getConsentFor(
             "google-analytics",
             consentState
           );
