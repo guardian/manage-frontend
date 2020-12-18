@@ -1,5 +1,5 @@
 import { Location } from "@reach/router";
-import React, { ReactNode } from "react";
+import React, { useEffect, useState } from "react";
 import parse from "url-parse";
 import { OphanProduct } from "../../shared/ophanTypes";
 import { ProductDetail } from "../../shared/productResponse";
@@ -24,6 +24,7 @@ interface Event {
   eventValue?: number;
 }
 
+const GA_UA = "UA-51507017-5";
 const MMA_AB_TEST_DIMENSION_VALUE = ""; // this can be used for a/b testing
 
 export const trackEvent = (
@@ -77,85 +78,102 @@ export const applyAnyOptimiseExperiments = () => {
   }
 };
 
-export class AnalyticsTracker extends React.PureComponent<{}> {
-  public readonly INTCMP?: string;
+export const AnalyticsTracker = () => {
+  const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);
 
-  constructor(props: {}) {
-    super(props);
-    if (typeof window !== "undefined" && window.ga) {
-      const queryParams = parse(window.location.href, true).query;
+  if (typeof window !== "undefined" && window.ga) {
+    const queryParams = parse(window.location.href, true).query;
 
-      this.INTCMP = queryParams.INTCMP;
+    const INTCMP = queryParams.INTCMP;
 
-      if (window.guardian) {
+    if (window.guardian) {
+      // tslint:disable-next-line:no-object-mutation
+      window.guardian.INTCMP = INTCMP;
+
+      const abName = queryParams.abName;
+      const abVariant = queryParams.abVariant;
+
+      if (abName && abVariant) {
         // tslint:disable-next-line:no-object-mutation
-        window.guardian.INTCMP = this.INTCMP;
-
-        const abName = queryParams.abName;
-        const abVariant = queryParams.abVariant;
-
-        if (abName && abVariant) {
-          window.guardian.abTest = {
-            name: abName,
-            variant: abVariant
-          };
-        }
+        window.guardian.abTest = {
+          name: abName,
+          variant: abVariant
+        };
       }
-
-      if (window.dataLayer === undefined) {
-        window.dataLayer = [];
-      }
-
-      window.ga("create", "UA-51507017-5", "auto");
-      window.ga("require", "GTM-M985W29");
-      window.ga("set", "transport", "beacon");
-      if (this.INTCMP) {
-        window.ga("set", "dimension12", this.INTCMP);
-      }
-      window.ga("set", "dimension29", MMA_AB_TEST_DIMENSION_VALUE);
-
-      new MutationObserver(applyAnyOptimiseExperiments).observe(document.body, {
-        attributes: false,
-        characterData: false,
-        childList: true,
-        subtree: true,
-        attributeOldValue: false,
-        characterDataOldValue: false
-      });
     }
+
+    if (window.dataLayer === undefined) {
+      // tslint:disable-next-line:no-object-mutation
+      window.dataLayer = [];
+    }
+
+    window.ga("create", GA_UA, "auto");
+    window.ga("require", "GTM-M985W29");
+    window.ga("set", "transport", "beacon");
+    if (INTCMP) {
+      window.ga("set", "dimension12", INTCMP);
+    }
+    window.ga("set", "dimension29", MMA_AB_TEST_DIMENSION_VALUE);
+
+    new MutationObserver(applyAnyOptimiseExperiments).observe(document.body, {
+      attributes: false,
+      characterData: false,
+      childList: true,
+      subtree: true,
+      attributeOldValue: false,
+      characterDataOldValue: false
+    });
   }
 
-  public render(): ReactNode {
-    return (
-      <Location>
-        {({ location }) => {
-          if (location && typeof window !== "undefined") {
-            if (
-              window.guardian &&
-              window.guardian.ophan &&
-              window.guardian.ophan.sendInitialEvent
-            ) {
-              if (window.guardian.spaTransition) {
-                window.guardian.ophan.sendInitialEvent(location.href);
-              } else {
-                // tslint:disable-next-line:no-object-mutation
-                window.guardian.spaTransition = true;
-              }
-            }
-            if (window.ga) {
-              window.ga("send", "pageview", {
-                location: location.href,
-                page: location.pathname + location.search,
-                dimension12: this.INTCMP,
-                dimension29: MMA_AB_TEST_DIMENSION_VALUE
-              });
-              // TODO add ophan pageViewId as a GA dimension
-              applyAnyOptimiseExperiments();
+  useEffect(() => {
+    import("@guardian/consent-management-platform").then(
+      ({ onConsentChange, getConsentFor }) => {
+        onConsentChange(consentState => {
+          // Suppressing "Element implicitly has an 'any' type because index expression is not of type 'number'."
+          // @ts-ignore-start
+          // tslint:disable-next-line:no-object-mutation
+          window[`ga-disable-${GA_UA}`] = !getConsentFor(
+            "google-analytics",
+            consentState
+          );
+          // @ts-ignore-end
+
+          setCmpIsInitialised(true);
+        });
+      }
+    );
+  }, []);
+
+  return cmpIsInitialised ? (
+    <Location>
+      {({ location }) => {
+        if (location && typeof window !== "undefined") {
+          if (
+            window.guardian &&
+            window.guardian.ophan &&
+            window.guardian.ophan.sendInitialEvent
+          ) {
+            if (window.guardian.spaTransition) {
+              window.guardian.ophan.sendInitialEvent(location.href);
+            } else {
+              // tslint:disable-next-line:no-object-mutation
+              window.guardian.spaTransition = true;
             }
           }
-          return null; // null is a valid React node type, but void is not.
-        }}
-      </Location>
-    );
-  }
-}
+
+          if (window.ga) {
+            window.ga("send", "pageview", {
+              location: location.href,
+              page: location.pathname + location.search,
+              dimension12: window.guardian.INTCMP,
+              dimension29: MMA_AB_TEST_DIMENSION_VALUE
+            });
+            // TODO add ophan pageViewId as a GA dimension
+            applyAnyOptimiseExperiments();
+          }
+        }
+        return null; // null is a valid React node type, but void is not.
+      }}
+    </Location>
+  ) : null;
+};
