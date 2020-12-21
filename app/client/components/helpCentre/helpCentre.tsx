@@ -11,6 +11,7 @@ import { SectionHeader } from "../sectionHeader";
 import { SectionPageContainer } from "../sectionPageContainer";
 import { helpCentreConfig } from "./helpCentreConfig";
 import { HelpTopicBox } from "./HelpTopicBox";
+import { KnownIssues } from "./knownIssues";
 
 interface HelpCentreProps extends RouteComponentProps {
   urlSuccess?: string;
@@ -48,6 +49,7 @@ const contactUsTitleStyle = css`
 export const HelpCentre = (_: HelpCentreProps) => (
   <>
     <SectionHeader title="Help Centre" />
+    <KnownIssues />
     <SectionPageContainer sectionTitle="Help Centre">
       <div
         css={css`
