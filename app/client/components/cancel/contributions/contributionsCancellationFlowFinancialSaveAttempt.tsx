@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
-import { Button } from "@guardian/src-button";
+import { Button, LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
+import { SvgArrowLeftStraight } from "@guardian/src-icons";
 import { navigate } from "@reach/router";
 import React, { useState } from "react";
 import {
@@ -29,6 +30,13 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 
   const onCancelClicked = () => {
     navigate(`mma_financial_circumstances/confirmed`);
+  };
+
+  const onReturnClicked = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    navigate("/");
   };
 
   return (
@@ -76,6 +84,22 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
                 </Button>
               </div>
             )}
+
+            <div
+              css={css`
+                margin-top: ${space[24]}px;
+              `}
+            >
+              <LinkButton
+                href="/"
+                onClick={onReturnClicked}
+                priority="tertiary"
+                icon={<SvgArrowLeftStraight />}
+                iconSide="left"
+              >
+                Return to your account
+              </LinkButton>
+            </div>
           </div>
         );
       }}
