@@ -1,3 +1,5 @@
+import { SavedBodyProps } from "./stages/savedCancellation";
+
 export interface CancellationReason {
   reasonId: CancellationReasonId;
   linkLabel: string;
@@ -11,7 +13,7 @@ export interface CancellationReason {
   alternateFeedbackThankYouBody?: string;
   hideContactUs?: boolean;
   skipFeedback?: boolean;
-  savedBody?: JSX.Element;
+  savedBody?: React.FC<SavedBodyProps>;
 }
 
 export type CancellationReasonId =

@@ -45,7 +45,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     linkLabel: "I can no longer afford it",
     saveTitle: "You can no longer afford your current contribution",
     saveBody: <ContributionsCancellationFlowFinancialSaveAttempt />,
-    savedBody: <ContributionsCancellationAmountUpdatedSaved />,
+    savedBody: ContributionsCancellationAmountUpdatedSaved,
     hideSaveActions: true,
     skipFeedback: true,
     hideContactUs: true

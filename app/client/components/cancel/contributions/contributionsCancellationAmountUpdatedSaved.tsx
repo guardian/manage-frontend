@@ -1,4 +1,4 @@
-import { useLocation } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import { formatDateStr } from "../../../../shared/dates";
 import {
@@ -6,35 +6,36 @@ import {
   MembersDataApiItemContext
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
+import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
+import { SavedBodyProps } from "../stages/savedCancellation";
 
-const getUrlParameter = (search: string, name: string): string => {
-  const nameForRegex = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  const regex = new RegExp("[\\?&]" + nameForRegex + "=([^&#]*)");
-  const results = regex.exec(search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
-};
-
-const ContributionsCancellationAmountUpdatedSaved: React.FC = () => {
-  const location = useLocation();
-  const amount = Number(getUrlParameter(location.search, "updatedAmount"));
-
+const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
+  amount
+}: SavedBodyProps) => {
   return (
     <MembersDataApiItemContext.Consumer>
       {productDetail => {
         if (!isProduct(productDetail)) {
-          return null;
+          Sentry.captureMessage(
+            "MembersDataApiItem is not a productDetail in ContributionsCancellationAmountUpdateSaved"
+          );
+          return <GenericErrorMessage />;
+        }
+
+        if (!productDetail.subscription.nextPaymentDate) {
+          Sentry.captureMessage(
+            "Subscription does not have a nextPaymentDate in ContributionsCancellationAmountUpdateSaved"
+          );
+          return <GenericErrorMessage />;
         }
 
         const mainPlan = getMainPlan(productDetail.subscription);
 
         if (!isPaidSubscriptionPlan(mainPlan)) {
-          return null;
-        }
-
-        if (!productDetail.subscription.nextPaymentDate) {
-          return null;
+          Sentry.captureMessage(
+            "mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationAmountUpdateSaved"
+          );
+          return <GenericErrorMessage />;
         }
 
         return (

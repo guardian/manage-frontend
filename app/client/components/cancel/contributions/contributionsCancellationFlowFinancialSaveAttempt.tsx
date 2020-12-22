@@ -20,9 +20,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
   const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
   const onUpdateConfirmed = (updatedAmount: number) => {
-    navigate(
-      `mma_financial_circumstances/saved?updatedAmount=${updatedAmount}`
-    );
+    navigate(`mma_financial_circumstances/saved`, { state: { updatedAmount } });
   };
 
   const onReduceClicked = () => {
