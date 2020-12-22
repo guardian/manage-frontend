@@ -3,6 +3,7 @@ import { Button, LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowLeftStraight } from "@guardian/src-icons";
 import { navigate } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import React, { useState } from "react";
 import {
   isPaidSubscriptionPlan,
@@ -11,6 +12,7 @@ import {
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { ContributionUpdateAmountForm } from "../../accountoverview/contributionUpdateAmountForm";
+import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 
 const container = css`
   & > * + * {
@@ -43,13 +45,19 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     <MembersDataApiItemContext.Consumer>
       {productDetail => {
         if (!isProduct(productDetail)) {
-          return null;
+          Sentry.captureMessage(
+            "MembersDataApiItem is not a productDetail in ContributionsCancellationFlowFinancialSaveAttempt"
+          );
+          return <GenericErrorMessage />;
         }
 
         const mainPlan = getMainPlan(productDetail.subscription);
 
         if (!isPaidSubscriptionPlan(mainPlan)) {
-          return null;
+          Sentry.captureMessage(
+            "mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationFlowFinancialSaveAttempt"
+          );
+          return <GenericErrorMessage />;
         }
 
         return (
