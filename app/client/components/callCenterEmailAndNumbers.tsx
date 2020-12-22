@@ -24,6 +24,7 @@ interface PhoneRegion {
   title: string;
   openingHours: string;
   phoneNumbers: Array<{ phoneNumber: string; suffix?: string }>;
+  additionalOpeningHoursInfo?: string;
 }
 
 const EMAIL_ADDRESS: string = "customer.help@theguardian.com";
@@ -33,6 +34,8 @@ const PHONE_DATA: PhoneRegion[] = [
     key: "UK & ROW",
     title: "United Kingdom, Europe and rest of world",
     openingHours: "9am - 6pm Monday - Sunday (GMT/BST)",
+    additionalOpeningHoursInfo:
+      "Closed Christmas Day, Boxing Day and New Years Day",
     phoneNumbers: [
       {
         phoneNumber: "+44 (0) 330 333 6790"
@@ -43,6 +46,7 @@ const PHONE_DATA: PhoneRegion[] = [
     key: "AUS",
     title: "Australia, New Zealand, and Asia Pacific",
     openingHours: "9am - 5pm Monday - Friday (AEDT)",
+    additionalOpeningHoursInfo: "Closed Christmas Day",
     phoneNumbers: [
       {
         phoneNumber: "1800 773 766",
@@ -58,6 +62,7 @@ const PHONE_DATA: PhoneRegion[] = [
     key: "US",
     title: "Canada and USA",
     openingHours: "9am - 5pm on weekdays (EST/EDT)",
+    additionalOpeningHoursInfo: "Closed Christmas Eve and Christmas Day",
     phoneNumbers: [
       {
         phoneNumber: "1-844-632-2010",
@@ -226,6 +231,15 @@ export const CallCentreEmailAndNumbers = (
                   ))}
                   {phoneRegion.openingHours}
                 </p>
+                {phoneRegion.additionalOpeningHoursInfo && (
+                  <p
+                    css={css`
+                      ${innerSectionPCss}
+                    `}
+                  >
+                    {phoneRegion.additionalOpeningHoursInfo}
+                  </p>
+                )}
               </div>
             </div>
           );
