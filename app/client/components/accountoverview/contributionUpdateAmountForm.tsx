@@ -28,7 +28,7 @@ interface ContributionUpdateAmountFormProps {
   onUpdateConfirmed: (updatedAmount: number) => void;
 }
 
-type ContributionInterval = "month" | "year";
+export type ContributionInterval = "month" | "year";
 
 interface ContributionAmountOptions {
   amounts: number[];
@@ -47,7 +47,7 @@ interface ContributionAmountsLookup {
 class UpdateAmountLoader extends AsyncLoader<string> {}
 
 // TODO: make this dynamic (i.e. looks up api/config file agreed/shared by contributions team)
-const contributionAmountsLookup: ContributionAmountsLookup = {
+export const contributionAmountsLookup: ContributionAmountsLookup = {
   GBP: {
     month: {
       amounts: [3, 7, 12],

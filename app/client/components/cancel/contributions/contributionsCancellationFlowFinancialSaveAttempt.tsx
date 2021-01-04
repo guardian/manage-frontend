@@ -11,7 +11,11 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
-import { ContributionUpdateAmountForm } from "../../accountoverview/contributionUpdateAmountForm";
+import {
+  contributionAmountsLookup,
+  ContributionInterval,
+  ContributionUpdateAmountForm
+} from "../../accountoverview/contributionUpdateAmountForm";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 
 const container = css`
@@ -57,38 +61,60 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
           return <GenericErrorMessage />;
         }
 
+        const currentContributionOptions = (contributionAmountsLookup[
+          mainPlan.currencyISO
+        ] || contributionAmountsLookup.international)[
+          mainPlan.interval as ContributionInterval
+        ];
+
+        const isAlreadyPayingMinAmount =
+          mainPlan.amount / 100 <= currentContributionOptions.minAmount;
+
         return (
           <div css={container}>
-            <div>
-              Did you know that you can reduce the size of your contribution
-              rather than cancelling it? Simply select a new amount and we’ll do
-              the rest.
-            </div>
+            {isAlreadyPayingMinAmount ? (
+              <>
+                <div>
+                  We understand that financial circumstances change, and your
+                  current contribution might not suit you right now.
+                </div>
 
-            {showAmountUpdateForm ? (
-              <ContributionUpdateAmountForm
-                currentAmount={mainPlan.amount / 100}
-                subscriptionId={productDetail.subscription.subscriptionId}
-                mainPlan={mainPlan}
-                productType={PRODUCT_TYPES.contributions}
-                nextPaymentDate={productDetail.subscription.nextPaymentDate}
-                mode="CANCELLATION_SAVE"
-                onUpdateConfirmed={onUpdateConfirmed}
-              />
+                <Button onClick={onCancelClicked}>Confirm cancellation</Button>
+              </>
             ) : (
-              <div
-                css={css`
-                  & > * + * {
-                    margin-left: ${space[4]}px;
-                  }
-                `}
-              >
-                <Button onClick={onReduceClicked}>Reduce amount</Button>
+              <>
+                <div>
+                  Did you know that you can reduce the size of your contribution
+                  rather than cancelling it? Simply select a new amount and
+                  we’ll do the rest.
+                </div>
 
-                <Button onClick={onCancelClicked} priority="subdued">
-                  I still want to cancel
-                </Button>
-              </div>
+                {showAmountUpdateForm ? (
+                  <ContributionUpdateAmountForm
+                    currentAmount={mainPlan.amount / 100}
+                    subscriptionId={productDetail.subscription.subscriptionId}
+                    mainPlan={mainPlan}
+                    productType={PRODUCT_TYPES.contributions}
+                    nextPaymentDate={productDetail.subscription.nextPaymentDate}
+                    mode="CANCELLATION_SAVE"
+                    onUpdateConfirmed={onUpdateConfirmed}
+                  />
+                ) : (
+                  <div
+                    css={css`
+                      & > * + * {
+                        margin-left: ${space[4]}px;
+                      }
+                    `}
+                  >
+                    <Button onClick={onReduceClicked}>Reduce amount</Button>
+
+                    <Button onClick={onCancelClicked} priority="subdued">
+                      I still want to cancel
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
 
             <div
