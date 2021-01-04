@@ -41,6 +41,7 @@ export const ContributionUpdateAmount = (
       <ContributionUpdateAmountForm
         {...props}
         currentAmount={currentAmount}
+        mode="MANAGE"
         onUpdateConfirmed={updatedAmount => {
           setConfirmedAmount(updatedAmount);
           setStatus(Status.CONFIRMED);

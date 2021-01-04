@@ -75,6 +75,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
                 mainPlan={mainPlan}
                 productType={PRODUCT_TYPES.contributions}
                 nextPaymentDate={productDetail.subscription.nextPaymentDate}
+                mode="CANCELLATION_SAVE"
                 onUpdateConfirmed={onUpdateConfirmed}
               />
             ) : (
