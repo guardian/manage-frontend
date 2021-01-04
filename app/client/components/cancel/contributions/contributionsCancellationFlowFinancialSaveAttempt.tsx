@@ -26,13 +26,10 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     navigate(`mma_financial_circumstances/saved`, { state: { updatedAmount } });
   };
 
-  const onReduceClicked = () => {
-    setShowUpdateForm(true);
-  };
+  const onReduceClicked = () => setShowUpdateForm(true);
 
-  const onCancelClicked = () => {
+  const onCancelClicked = () =>
     navigate(`mma_financial_circumstances/confirmed`);
-  };
 
   const onReturnClicked = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
