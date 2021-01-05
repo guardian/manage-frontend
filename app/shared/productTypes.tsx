@@ -78,6 +78,7 @@ interface CancellationFlowProperties {
   startPageOfferEffectiveDateOptions?: true;
   hideReasonTitlePrefix?: true;
   alternateSummaryMainPara?: string;
+  shouldHideSummaryMainPara?: true;
   summaryReasonSpecificPara: (
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
@@ -89,6 +90,8 @@ interface CancellationFlowProperties {
     reasonId: OptionalCancellationReasonId
   ) => string | undefined;
   swapFeedbackAndContactUs?: true;
+  shouldShowReminder?: true;
+  shouldHideThrasher?: true;
 }
 
 export interface HolidayStopFlowProperties {
@@ -282,7 +285,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
       reasons: contributionsCancellationReasons,
       sfCaseProduct: "Recurring - Contributions",
       startPageBody: contributionsCancellationFlowStart,
-      alternateSummaryMainPara: "Thank you for your valuable support.",
+      shouldHideSummaryMainPara: true,
       summaryReasonSpecificPara: (reasonId: OptionalCancellationReasonId) => {
         switch (reasonId) {
           case "mma_financial_circumstances":
@@ -313,7 +316,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
         }
       },
       alternateSupportButtonUrlSuffix: () => "/contribute", // TODO tweak the support url to preselect single/monthly/annual once functionality is available
-      swapFeedbackAndContactUs: true
+      swapFeedbackAndContactUs: true,
+      shouldHideThrasher: true,
+      shouldShowReminder: true
     }
   },
   // FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL

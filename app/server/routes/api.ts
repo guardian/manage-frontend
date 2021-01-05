@@ -23,6 +23,7 @@ import { contactUsFormHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
+import { reminderHandler } from "../reminderApi";
 import { stripeSetupIntentHandler } from "../stripeSetupIntentsHandler";
 
 const router = Router();
@@ -225,5 +226,7 @@ router.get("/known-issues", async (_, response) => {
 });
 
 router.post("/contact-us", contactUsFormHandler);
+
+router.post("/reminder", reminderHandler);
 
 export default router;
