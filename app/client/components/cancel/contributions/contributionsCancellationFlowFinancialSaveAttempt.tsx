@@ -84,8 +84,9 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
             ) : (
               <>
                 <div>
-                  Did you know that you can reduce the size of your contribution
-                  rather than cancelling it? Simply select a new amount and
+                  We understand that financial circumstances change. If you can,
+                  we hope you’ll consider reducing the size of your contribution
+                  today rather than cancelling it. Simply pick a new amount and
                   we’ll do the rest.
                 </div>
 
