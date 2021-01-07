@@ -7,43 +7,60 @@ import { allProductsDetailFetcher } from "../../../shared/productTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../../styles/grid";
 import { ErrorIcon } from "../svgs/errorIcon";
-import { knownIssuesConfig } from "./knownIssuesConfig";
 
-interface IdentityDeatilsWithStatus extends IdentityDetails {
+interface IdentityDetailsWithStatus extends IdentityDetails {
   signInStatus?: string;
 }
 
+interface Issue {
+  date: string;
+  message: string;
+  affectedProducts?: string[];
+}
+
 export const KnownIssues = () => {
-  const [usersProducts, setUsersProducts] = useState<string[]>([]);
+  const [issuesData, setIssuesData] = useState<Issue[]>([]);
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const identityDetails: IdentityDeatilsWithStatus =
-        window.guardian?.identityDetails;
-      if (identityDetails?.signInStatus === "signedInRecently") {
-        (async () => {
+    (async () => {
+      const knownIssuesResponse = await fetch("/api/known-issues/");
+      const unfilteredKnownIssues: Issue[] = knownIssuesResponse.ok
+        ? await knownIssuesResponse.json()
+        : [];
+      const unfilteredDateSortedIssues = unfilteredKnownIssues.sort(
+        (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      );
+      const responseContainsProductIssues = unfilteredKnownIssues.some(
+        (issue: Issue) => !!issue.affectedProducts?.length
+      );
+      const globalIssues = unfilteredDateSortedIssues.filter(
+        issue => !issue.affectedProducts
+      );
+      setIssuesData(globalIssues);
+
+      if (responseContainsProductIssues && typeof window !== "undefined") {
+        const identityDetails: IdentityDetailsWithStatus =
+          window.guardian?.identityDetails;
+        if (identityDetails?.signInStatus === "signedInRecently") {
           const productDetailsResponse = await allProductsDetailFetcher();
           const productDetails: ProductDetail[] = await productDetailsResponse.json();
-          setUsersProducts(
-            productDetails.map(productDetail => productDetail.tier)
+          const userProductNames = productDetails.map(
+            productDetail => productDetail.tier
           );
-        })();
+
+          const productIssues = unfilteredDateSortedIssues.filter(issue =>
+            issue.affectedProducts?.some(product =>
+              userProductNames.includes(product)
+            )
+          );
+          setIssuesData(globalIssues.concat(productIssues));
+        }
       }
-    }
+    })();
   }, []);
 
-  const dateSortedIssues = knownIssuesConfig.sort(
-    (a, b) => Date.parse(a.date) - Date.parse(b.date)
-  );
-  const cat1Issues = dateSortedIssues.filter(issue => issue.category === 1);
-  const cat2Issues = dateSortedIssues.filter(
-    issue =>
-      issue.category === 2 &&
-      issue.affectedProducts?.some(product => usersProducts.includes(product))
-  );
-  const categoryAndDateSortedData = cat1Issues.concat(cat2Issues);
   return (
     <>
-      {categoryAndDateSortedData.map((issue, index) => (
+      {issuesData.map((issue, index) => (
         <div
           key={`issue${index}`}
           css={{
