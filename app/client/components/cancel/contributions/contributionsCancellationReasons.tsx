@@ -1,41 +1,41 @@
 import { Link } from "@reach/router";
 import React from "react";
-import {
-  hrefStyle,
-  standardAlternateFeedbackIntro,
-  standardSaveBody
-} from "../cancellationConstants";
+import { hrefStyle } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
+
+const saveBody = <> </>;
+const alternateFeedbackIntro =
+  "Please share any further thoughts you have about cancelling – you can help us improve. Thank you.";
 
 export const contributionsCancellationReasons: CancellationReason[] = [
   {
     reasonId: "mma_article",
     linkLabel: "As a result of a specific article I read",
     saveTitle: "As a result of a specific article you read",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I disagree with some editorial decisions",
     saveTitle: "You disagree with some of The Guardian’s editorial decisions",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveTitle: "You don’t feel that The Guardian values your support",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_support_another_way",
     linkLabel: "I support in another way, e.g. with a subscription",
     saveTitle:
       "You support The Guardian in another way, e.g. with a subscription",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -57,8 +57,8 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_value_for_money",
     linkLabel: "I wasn’t getting value for money",
     saveTitle: "You don’t feel your contribution offers you adequate value",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_payment_issue",
@@ -73,10 +73,9 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           </Link>{" "}
           section, without the need to cancel your contribution.
         </p>
-        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_direct_debit",
@@ -96,10 +95,9 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your monthly or annual contribution, we will show you
           how to make a single contribution quickly and easily.
         </p>
-        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_annual_contribution",
@@ -111,10 +109,9 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your monthly contribution, we will show you how to
           set up an annual contribution quickly and easily.
         </p>
-        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -126,10 +123,9 @@ export const contributionsCancellationReasons: CancellationReason[] = [
           After cancelling your annual contribution, we will show you how to set
           up an monthly contribution quickly and easily.
         </p>
-        <p>{standardSaveBody}</p>
       </>
     ),
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    alternateFeedbackIntro
   },
   {
     reasonId: "mma_health",
@@ -144,7 +140,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_other",
     linkLabel: "None of the above",
     saveTitle: "",
-    saveBody: standardSaveBody,
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    saveBody,
+    alternateFeedbackIntro
   }
 ];
