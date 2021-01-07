@@ -16,6 +16,7 @@ import {
   ContributionInterval,
   ContributionUpdateAmountForm
 } from "../../accountoverview/contributionUpdateAmountForm";
+import { trackEventInOphanOnly } from "../../analytics";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 
 const container = css`
@@ -27,13 +28,34 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
   const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
   const onUpdateConfirmed = (updatedAmount: number) => {
+    trackEventInOphanOnly({
+      eventCategory: "cancellation_flow_financial_circumstances",
+      eventAction: "click",
+      eventLabel: "change"
+    });
+
     navigate(`mma_financial_circumstances/saved`, { state: { updatedAmount } });
   };
 
-  const onReduceClicked = () => setShowUpdateForm(true);
+  const onReduceClicked = () => {
+    trackEventInOphanOnly({
+      eventCategory: "cancellation_flow_financial_circumstances",
+      eventAction: "click",
+      eventLabel: "reduce"
+    });
 
-  const onCancelClicked = () =>
+    setShowUpdateForm(true);
+  };
+
+  const onCancelClicked = () => {
+    trackEventInOphanOnly({
+      eventCategory: "cancellation_flow_financial_circumstances",
+      eventAction: "click",
+      eventLabel: "cancel"
+    });
+
     navigate(`mma_financial_circumstances/confirmed`);
+  };
 
   const onReturnClicked = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
