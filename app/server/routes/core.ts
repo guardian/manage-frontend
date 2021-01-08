@@ -1,4 +1,5 @@
-import { Response, Router } from "express";
+import { Request, Response, Router } from "express";
+import { memoisedApiGatewayAuthForHealthcheck } from "../apiGatewayDiscovery";
 import { withIdentity } from "../middleware/identityMiddleware";
 
 const router = Router();
@@ -6,7 +7,8 @@ const router = Router();
 router.get(
   "/_healthcheck",
   withIdentity(200), // healthcheck needs identity redirect service to be accessible (returns 200 if redirect required)
-  (_, res: Response) => {
+  memoisedApiGatewayAuthForHealthcheck(),
+  (_: Request, res: Response) => {
     res.send("OK - signed in");
   }
 );
