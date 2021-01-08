@@ -231,7 +231,7 @@ export const memoisedApiGatewayAuthForHealthcheck = () => {
   ) => {
     const { host, apiKey } = await memoisedHostKeyPair;
     const errMsg = `Failed to fetch authentication credentials for API Gateway service layer. Healthcheck failed!`;
-    if (!apiKey && host) {
+    if (apiKey && host) {
       next();
     } else {
       log.error(errMsg);
