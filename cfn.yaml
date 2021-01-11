@@ -181,12 +181,6 @@ Resources:
               - Effect: Allow
                 Action: s3:GetObject
                 Resource: !Sub arn:aws:s3:::manage-help-content/${Stage}/*
-        - PolicyName: ReadManageHelpContent
-          PolicyDocument:
-            Statement:
-              - Effect: Allow
-                Action: s3:GetObject
-                Resource: !Sub arn:aws:s3:::manage-help-content/${Stage}/*
         - PolicyName: ReadFulfilmentDateCalculatorOutput
           PolicyDocument:
             Statement:
