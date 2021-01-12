@@ -247,11 +247,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     currentPageEndIndex: number
   ) => index >= currentPageStartIndex && index <= currentPageEndIndex;
 
-  // const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
-  //   props.data.results
-  // );
-
-  const hasExistingDeliveryProblem = false; // TODO re-instate commented code when call-centre has capacity to investigate
+  const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
+    props.data.results
+  );
 
   const filteredData = filterData();
 
