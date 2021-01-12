@@ -8,10 +8,6 @@ import { minWidth } from "../../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../../styles/grid";
 import { ErrorIcon } from "../svgs/errorIcon";
 
-interface IdentityDetailsWithStatus extends IdentityDetails {
-  signInStatus?: string;
-}
-
 interface Issue {
   date: string;
   message: string;
@@ -38,9 +34,9 @@ export const KnownIssues = () => {
       setIssuesData(globalIssues);
 
       if (responseContainsProductIssues && typeof window !== "undefined") {
-        const identityDetails: IdentityDetailsWithStatus =
-          window.guardian?.identityDetails;
-        if (identityDetails?.signInStatus === "signedInRecently") {
+        const signInStatus: string =
+          window.guardian?.identityDetails?.signInStatus || "";
+        if (signInStatus === "signedInRecently") {
           const productDetailsResponse = await allProductsDetailFetcher();
           const productDetails: ProductDetail[] = await productDetailsResponse.json();
           const userProductNames = productDetails.map(
