@@ -7,15 +7,15 @@ Forms that do not require a login to access could be submitted directly to the s
 Benefits of not bypassing the server side:
 
 - Is consistent with manage-frontend’s standard approach
-- Lambda endpoints remains secret
+- Lambda endpoints remain secret
 - Can use API key to validate requests at API Gateway level
 - Cheaper in case of DDoS attack
 - Easier to debug manage-frontend's logs VS API gateway's log
-- Allows for better room to grow in case requirements change
+- Allows for more flexibility in case requirements change
 
 Benefits of bypassing the server-side:
 
-- Simpler to maintain as there are less parts
+- Simpler to maintain as there are fewer parts
 - Less latency due to 1 less hop (relatively negligible)
 
 ## Decision
