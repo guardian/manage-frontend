@@ -5,6 +5,13 @@ interface CommonGlobals {
   dsn: string | null;
 }
 
+export interface IdentityDetails {
+  userId?: string;
+  email?: string;
+  displayName?: string;
+  signInStatus?: string;
+}
+
 export interface Globals extends CommonGlobals {
   spaTransition?: true;
   INTCMP?: string;

@@ -175,6 +175,12 @@ Resources:
               - Effect: Allow
                 Action: s3:GetObject
                 Resource: !Sub arn:aws:s3:::gu-reader-revenue-private/manage-frontend/${Stage}/*
+        - PolicyName: ReadManageHelpContent
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub arn:aws:s3:::manage-help-content/${Stage}/*
         - PolicyName: ReadFulfilmentDateCalculatorOutput
           PolicyDocument:
             Statement:
@@ -391,8 +397,9 @@ Resources:
     Condition: CreateProdResources
     Properties:
       DashboardName: "manage-frontend"
-      DashboardBody: '{
-        "widgets": [
+      DashboardBody: >-
+        {
+          "widgets": [
             {
                 "type": "metric",
                 "x": 12,
@@ -904,5 +911,5 @@ Resources:
                     }
                 }
             }
-        ]
-    }'
+          ]
+        }

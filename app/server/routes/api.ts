@@ -17,6 +17,7 @@ import {
   proxyApiHandler,
   straightThroughBodyHandler
 } from "../apiProxy";
+import { s3FilePromise } from "../awsIntegration";
 import { conf } from "../config";
 import { contactUsFormHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
@@ -215,6 +216,13 @@ router.get(
     "MDA_CANCELLED_SUBSCRIPTIONS"
   )
 );
+
+router.get("/known-issues", async (_, response) => {
+  const bucketName = "manage-help-content";
+  const filePath = `${conf.STAGE}/known-issues/knownIssuesConfig.json`;
+  const data = await s3FilePromise(bucketName, filePath);
+  response.json(data || []);
+});
 
 router.post("/contact-us", contactUsFormHandler);
 
