@@ -23,6 +23,7 @@ import { CancellationFlow } from "./cancel/cancellationFlow";
 import { CancellationReason } from "./cancel/cancellationReason";
 import { ExecuteCancellation } from "./cancel/stages/executeCancellation";
 import { GenericSaveAttempt } from "./cancel/stages/genericSaveAttempt";
+import { SavedCancellation } from "./cancel/stages/savedCancellation";
 import { CMPBanner } from "./consent/CMPBanner";
 import { ContactUs } from "./contactUs/contactUs";
 import { DeliveryAddressEditConfirmation } from "./delivery/address/deliveryAddressEditConfirmation";
@@ -84,6 +85,13 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
                     path="confirmed"
                     productType={productType}
                   />
+                  {!!reason.savedBody && (
+                    <SavedCancellation
+                      path="saved"
+                      reason={reason}
+                      productType={productType}
+                    />
+                  )}
                 </GenericSaveAttempt>
               )
             )}

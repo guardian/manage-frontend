@@ -15,6 +15,8 @@ import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
 import { Button } from "../buttons";
 
+type ContributionUpdateAmountFormMode = "MANAGE" | "CANCELLATION_SAVE";
+
 interface ContributionUpdateAmountFormProps {
   subscriptionId: string;
   mainPlan: PaidSubscriptionPlan;
@@ -22,10 +24,11 @@ interface ContributionUpdateAmountFormProps {
   // we use this over the value in mainPlan as that value isn't updated after the user submits this form
   currentAmount: number;
   nextPaymentDate: string | null;
+  mode: ContributionUpdateAmountFormMode;
   onUpdateConfirmed: (updatedAmount: number) => void;
 }
 
-type ContributionInterval = "month" | "year";
+export type ContributionInterval = "month" | "year";
 
 interface ContributionAmountOptions {
   amounts: number[];
@@ -44,7 +47,7 @@ interface ContributionAmountsLookup {
 class UpdateAmountLoader extends AsyncLoader<string> {}
 
 // TODO: make this dynamic (i.e. looks up api/config file agreed/shared by contributions team)
-const contributionAmountsLookup: ContributionAmountsLookup = {
+export const contributionAmountsLookup: ContributionAmountsLookup = {
   GBP: {
     month: {
       amounts: [3, 7, 12],
@@ -154,26 +157,44 @@ export const ContributionUpdateAmountForm = (
     props.mainPlan.interval as ContributionInterval
   ];
 
+  const getDefaultOtherAmount = (): number | null =>
+    props.mode === "MANAGE"
+      ? currentContributionOptions.otherDefaultAmount
+      : null;
+
+  const getDefaultIsOtherAmountSelected = (): boolean =>
+    props.mode === "CANCELLATION_SAVE";
+
   const [otherAmount, setOtherAmount] = useState<number | null>(
-    currentContributionOptions.otherDefaultAmount
+    getDefaultOtherAmount()
   );
   const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
-    false
+    getDefaultIsOtherAmountSelected()
   );
+  const [
+    hasInteractedWithOtherAmount,
+    setHasInteractedWithOtherAmount
+  ] = useState<boolean>(false);
+
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
-  const [inValidationErrorState, setValidationErrorState] = useState(false);
-  const [validationErrorMessage, setValidationErrorMessage] = useState<string>(
-    ""
-  );
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+
   const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
   const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
   const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
   useEffect(() => {
-    if (inValidationErrorState) {
-      const validationResult = validateChoice();
-      setValidationErrorState(!validationResult.passed);
+    if (otherAmount !== getDefaultOtherAmount()) {
+      setHasInteractedWithOtherAmount(true);
     }
+  }, [otherAmount]);
+
+  useEffect(() => {
+    const newErrorMessage = validateChoice();
+    setErrorMessage(newErrorMessage);
   }, [otherAmount, selectedValue]);
 
   useEffect(() => {
@@ -197,65 +218,40 @@ export const ContributionUpdateAmountForm = (
       }
     );
 
-  interface ValidationChoice {
-    passed: boolean;
-    message?: string;
-    noSelection?: boolean;
-  }
-
-  const validateChoice = (): ValidationChoice => {
+  const validateChoice = (): string | null => {
     const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
 
     const chosenOptionNum = Number(chosenOption);
     if (!chosenOption && !isOtherAmountSelected) {
-      return {
-        passed: false,
-        message: "Please make a selection",
-        noSelection: true
-      };
+      return "Please make a selection";
     } else if (chosenOptionNum === props.currentAmount) {
-      return {
-        passed: false,
-        message: "You have selected the same amount as you currently contribute"
-      };
+      return "You have selected the same amount as you currently contribute";
     } else if (!chosenOption || isNaN(chosenOptionNum)) {
-      return {
-        passed: false,
-        message:
-          "There is a problem with the amount you have selected, please make sure it is a valid amount"
-      };
+      return "There is a problem with the amount you have selected, please make sure it is a valid amount";
     } else if (
       !isNaN(chosenOptionNum) &&
       chosenOptionNum < currentContributionOptions.minAmount
     ) {
-      return {
-        passed: false,
-        message: `There is a minimum ${
-          props.mainPlan.interval
-        }ly contribution amount of ${
-          props.mainPlan.currency
-        }${currentContributionOptions.minAmount.toFixed(2)} ${
-          props.mainPlan.currencyISO
-        }`
-      };
+      return `There is a minimum ${
+        props.mainPlan.interval
+      }ly contribution amount of ${
+        props.mainPlan.currency
+      }${currentContributionOptions.minAmount.toFixed(2)} ${
+        props.mainPlan.currencyISO
+      }`;
     } else if (
       !isNaN(chosenOptionNum) &&
       chosenOptionNum > currentContributionOptions.maxAmount
     ) {
-      return {
-        passed: false,
-        message: `There is a maximum ${
-          props.mainPlan.interval
-        }ly contribution amount of ${
-          props.mainPlan.currency
-        }${currentContributionOptions.maxAmount.toFixed(2)} ${
-          props.mainPlan.currencyISO
-        }`
-      };
+      return `There is a maximum ${
+        props.mainPlan.interval
+      }ly contribution amount of ${
+        props.mainPlan.currency
+      }${currentContributionOptions.maxAmount.toFixed(2)} ${
+        props.mainPlan.currencyISO
+      }`;
     }
-    return {
-      passed: true
-    };
+    return null;
   };
 
   const pendingAmount = Number(
@@ -265,6 +261,19 @@ export const ContributionUpdateAmountForm = (
   const amountLabel = (amount: number) => {
     return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.interval}`;
   };
+
+  const shouldShowChoices = props.mode === "MANAGE";
+
+  const shouldShowSelectedAmountErrorMessage =
+    !isOtherAmountSelected && (selectedValue || hasSubmitted);
+
+  const shouldShowOtherAmountErrorMessage =
+    hasInteractedWithOtherAmount || hasSubmitted;
+
+  const otherAmountLabel =
+    props.mode === "MANAGE"
+      ? `Other amount (${props.mainPlan.currency})`
+      : `Amount (${props.mainPlan.currency})`;
 
   const weeklyBreakDown = (): string | null => {
     const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
@@ -365,8 +374,8 @@ export const ContributionUpdateAmountForm = (
             padding: ${space[3]}px ${space[5]}px;
           `}
         >
-          {inValidationErrorState && !selectedValue && (
-            <InlineError>{validationErrorMessage}</InlineError>
+          {shouldShowSelectedAmountErrorMessage && errorMessage && (
+            <InlineError>{errorMessage}</InlineError>
           )}
 
           <div
@@ -374,38 +383,40 @@ export const ContributionUpdateAmountForm = (
               max-width: 500px;
             `}
           >
-            <ChoiceCardGroup
-              name="amounts"
-              label="Choose the amount to contribute"
-              columns={2}
-            >
-              <>
-                {currentContributionOptions.amounts.map(amount => (
+            {shouldShowChoices && (
+              <ChoiceCardGroup
+                name="amounts"
+                label="Choose the amount to contribute"
+                columns={2}
+              >
+                <>
+                  {currentContributionOptions.amounts.map(amount => (
+                    <ChoiceCard
+                      id={`amount-${amount}`}
+                      key={amount}
+                      value={amount.toString()}
+                      label={amountLabel(amount)}
+                      checked={selectedValue === amount}
+                      onChange={() => {
+                        setSelectedValue(amount);
+                        setIsOtherAmountSelected(false);
+                      }}
+                    />
+                  ))}
+
                   <ChoiceCard
-                    id={`amount-${amount}`}
-                    key={amount}
-                    value={amount.toString()}
-                    label={amountLabel(amount)}
-                    checked={selectedValue === amount}
+                    id={`amount-other`}
+                    value="Other"
+                    label="Other"
+                    checked={isOtherAmountSelected}
                     onChange={() => {
-                      setSelectedValue(amount);
-                      setIsOtherAmountSelected(false);
+                      setIsOtherAmountSelected(true);
+                      setSelectedValue(null);
                     }}
                   />
-                ))}
-
-                <ChoiceCard
-                  id={`amount-other`}
-                  value="Other"
-                  label="Other"
-                  checked={isOtherAmountSelected}
-                  onChange={() => {
-                    setIsOtherAmountSelected(true);
-                    setSelectedValue(null);
-                  }}
-                />
-              </>
-            </ChoiceCardGroup>
+                </>
+              </ChoiceCardGroup>
+            )}
 
             {isOtherAmountSelected && (
               <div
@@ -414,11 +425,13 @@ export const ContributionUpdateAmountForm = (
                 `}
               >
                 <TextInput
-                  label={`Other amount (${props.mainPlan.currency})`}
+                  label={otherAmountLabel}
+                  supporting={`Sorry, we are only able to accept contributions of ${props.mainPlan.currency}${currentContributionOptions.minAmount} or over due to transaction fees`}
+                  error={
+                    (shouldShowOtherAmountErrorMessage && errorMessage) ||
+                    undefined
+                  }
                   type="number"
-                  step={1}
-                  min={currentContributionOptions.minAmount}
-                  max={currentContributionOptions.maxAmount}
                   value={otherAmount || ""}
                   onChange={event =>
                     setOtherAmount(
@@ -447,10 +460,10 @@ export const ContributionUpdateAmountForm = (
         fontWeight="bold"
         text="Change amount"
         onClick={() => {
-          const validationResult = validateChoice();
-          setValidationErrorState(!validationResult.passed);
-          if (!validationResult.passed) {
-            setValidationErrorMessage(validationResult.message as string);
+          setHasSubmitted(true);
+          const newErrorMessage = validateChoice();
+          if (newErrorMessage) {
+            setErrorMessage(newErrorMessage);
             return;
           }
           setShowUpdateLoader(true);

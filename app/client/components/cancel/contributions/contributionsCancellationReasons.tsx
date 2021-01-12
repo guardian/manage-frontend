@@ -2,6 +2,9 @@ import { Link } from "@reach/router";
 import React from "react";
 import { hrefStyle } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
+import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
+
+import ContributionsCancellationFlowFinancialSaveAttempt from "./contributionsCancellationFlowFinancialSaveAttempt";
 
 const saveBody = <> </>;
 const alternateFeedbackIntro =
@@ -41,17 +44,11 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_financial_circumstances",
     linkLabel: "I can no longer afford it",
     saveTitle: "You can no longer afford your current contribution",
-    saveBody: (
-      <>
-        We understand that financial circumstances change, and your current
-        contribution might not suit you right now. To change your contribution
-        amount yourself, please go to{" "}
-        <Link css={hrefStyle} to="/contributions">
-          manage your account
-        </Link>
-      </>
-    ),
-    skipFeedback: true
+    saveBody: <ContributionsCancellationFlowFinancialSaveAttempt />,
+    savedBody: ContributionsCancellationAmountUpdatedSaved,
+    hideSaveActions: true,
+    skipFeedback: true,
+    hideContactUs: true
   },
   {
     reasonId: "mma_value_for_money",
