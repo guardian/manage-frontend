@@ -16,14 +16,11 @@ const insertGlobals = (globals: Globals) => {
   </script>`;
 };
 
-const html: (
-  _: {
-    readonly body: string;
-    readonly title: string;
-    readonly src: string;
-    readonly globals: Globals;
-  }
-) => string = ({ body, title, src, globals }) => `
+const html: (_: {
+  readonly title: string;
+  readonly src: string;
+  readonly globals: Globals;
+}) => string = ({ title, src, globals }) => `
   <!DOCTYPE html>
   <html>
     <head>
@@ -34,7 +31,7 @@ const html: (
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
     </head>
     <body style="margin:0">
-      <div id="app">${body}</div>
+      <div id="app"></div>
       </body>
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
