@@ -93,17 +93,17 @@ ignore:
   SNYK-JS-UAPARSERJS-1023599:
     - formik > create-react-context > fbjs > ua-parser-js:
         reason: None given
-        expires: '2021-01-13T10:37:34.660Z'
+        expires: '2021-02-12T17:53:35.352Z'
     - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
         reason: None given
-        expires: '2021-01-13T10:37:34.660Z'
+        expires: '2021-02-12T17:53:35.352Z'
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
         reason: None given
-        expires: '2021-01-13T10:37:34.660Z'
+        expires: '2021-02-12T17:53:35.352Z'
   SNYK-JS-INI-1048974:
     - node-pre-gyp > rc > ini:
         reason: None given
-        expires: '2021-01-13T10:37:34.661Z'
+        expires: '2021-02-12T17:53:35.352Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
