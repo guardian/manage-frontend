@@ -1,10 +1,9 @@
-import { Link } from "@reach/router";
 import React from "react";
-import { hrefStyle } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
 import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
 
 import ContributionsCancellationFlowFinancialSaveAttempt from "./contributionsCancellationFlowFinancialSaveAttempt";
+import ContributionsCancellationPaymentIssueSaveAttempt from "./contributionsCancellationFlowPaymentIssueSaveAttempt";
 
 const saveBody = <> </>;
 const alternateFeedbackIntro =
@@ -61,18 +60,11 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     reasonId: "mma_payment_issue",
     linkLabel: "A payment issue",
     saveTitle: "You have experienced an issue with your payment",
-    saveBody: (
-      <>
-        <p>
-          You can review your payment method and update your details in the{" "}
-          <Link css={hrefStyle} to={"/contributions"}>
-            manage your account
-          </Link>{" "}
-          section, without the need to cancel your contribution.
-        </p>
-      </>
-    ),
-    alternateFeedbackIntro
+    saveBody: <ContributionsCancellationPaymentIssueSaveAttempt />,
+    savedBody: ContributionsCancellationAmountUpdatedSaved,
+    hideSaveActions: true,
+    skipFeedback: true,
+    hideContactUs: true
   },
   {
     reasonId: "mma_direct_debit",
