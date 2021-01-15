@@ -18,6 +18,8 @@ import {
 } from "../../accountoverview/contributionUpdateAmountForm";
 import { trackEventInOphanOnly } from "../../analytics";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
+import { CancellationCaseIdContext } from "../cancellationContexts";
+import ContributionsFeedbackForm from "./contributionsCancellationFeedbackForm";
 
 const container = css`
   & > * + * {
@@ -175,9 +177,26 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
               </div>
             )}
 
+            <CancellationCaseIdContext.Consumer>
+              {caseId =>
+                caseId && (
+                  <div
+                    css={css`
+                      margin-top: ${space[9]}px;
+                    `}
+                  >
+                    <ContributionsFeedbackForm
+                      isTestUser={productDetail.isTestUser}
+                      caseId={caseId}
+                    />
+                  </div>
+                )
+              }
+            </CancellationCaseIdContext.Consumer>
+
             <div
               css={css`
-                margin-top: ${space[24]}px;
+                margin-top: ${space[12]}px;
               `}
             >
               <LinkButton
