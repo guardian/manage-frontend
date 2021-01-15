@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import bodyParser from "body-parser";
-import { default as express, NextFunction, Response } from "express";
+import { default as express, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from "../shared/fileUploadUtils";
 import { conf } from "./config";
@@ -34,17 +34,32 @@ if (conf.DOMAIN === "thegulocal.com") {
 
 server.use(helmet());
 
+/** static asses are cached by fastly */
 server.use("/static", express.static(__dirname + "/static"));
 
-server.use((_, res: Response, next: NextFunction) => {
-  // this header is VERY IMPORTANT and prevents caching (on both CDN and in browsers)
+/**
+ * WARNING: Because manage-fronted manages personal data make sure to prevent caching
+ * on both CDN (Fastly) and browsers. This Cache-Control header below is VERY IMPORTANT
+ * so mind removing or it! Without it personal data would likely be served to wrong user.
+ * In particular mind the endpoints that proxy to APIs such as IDAPI or MDAPI.
+ *
+ * This middleware has no mount path so it executes for all routes that follow this call.
+ * To enable caching for a route that requires it register it above this middleware, see /static
+ * route as example, or override headers via Response arguments for a particular route later one.
+ * https://stackoverflow.com/a/31661931
+ *
+ * There exists an additional safety net as a VCL condition in Fastly which should force a
+ * PASS (do not cache) on sensitive routes. See https://github.com/guardian/manage-frontend/wiki/Fastly-&-Caching
+ */
+const disableCache = (_: Request, res: Response, next: NextFunction) => {
   res.header(
     "Cache-Control",
     "private, no-cache, no-store, must-revalidate, max-age=0"
   );
   res.header("Access-Control-Allow-Origin", "*." + conf.DOMAIN);
   next();
-});
+};
+server.use(disableCache);
 
 server.use(
   bodyParser.raw({
