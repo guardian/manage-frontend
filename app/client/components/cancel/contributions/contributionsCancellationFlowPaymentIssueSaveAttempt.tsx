@@ -36,7 +36,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
       eventLabel: "manage"
     });
 
-    navigate("/contributions");
+    navigate("/payment/contributions");
   };
 
   const onUpdateConfirmed = (updatedAmount: number) => {
