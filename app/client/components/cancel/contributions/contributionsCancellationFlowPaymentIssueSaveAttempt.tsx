@@ -7,7 +7,8 @@ import * as Sentry from "@sentry/browser";
 import React, { useState } from "react";
 import {
   isPaidSubscriptionPlan,
-  MembersDataApiItemContext
+  MembersDataApiItemContext,
+  ProductDetail
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
@@ -26,7 +27,7 @@ const container = css`
 const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
   const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
-  const onManageClicked = (
+  const onManageClicked = (productDetail: ProductDetail) => (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     event.preventDefault();
@@ -36,7 +37,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
       eventLabel: "manage"
     });
 
-    navigate("/payment/contributions");
+    navigate("/payment/contributions", { state: { productDetail } });
   };
 
   const onUpdateConfirmed = (updatedAmount: number) => {
@@ -118,7 +119,10 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
                   }
                 `}
               >
-                <LinkButton href="/contributions" onClick={onManageClicked}>
+                <LinkButton
+                  href="/payments/contributions"
+                  onClick={onManageClicked(productDetail)}
+                >
                   Manage payment method
                 </LinkButton>
 
