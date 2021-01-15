@@ -144,7 +144,7 @@
     "@sentry/node": "^5.22.3",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.7.0",
-    "aws-sdk": "^2.746.0",
+    "aws-sdk": "2.814.0",
     "aws4": "^1.10.1",
     "base-64": "^0.1.0",
     "color": "^3.0.0",
