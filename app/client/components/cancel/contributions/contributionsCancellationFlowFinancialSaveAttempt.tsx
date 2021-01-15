@@ -11,13 +11,10 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
-import {
-  contributionAmountsLookup,
-  ContributionInterval,
-  ContributionUpdateAmountForm
-} from "../../accountoverview/contributionUpdateAmountForm";
+import { ContributionUpdateAmountForm } from "../../accountoverview/contributionUpdateAmountForm";
 import { trackEventInOphanOnly } from "../../analytics";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
+import { getIsPayingMinAmount } from "./utils";
 
 const container = css`
   & > * + * {
@@ -83,18 +80,11 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
           return <GenericErrorMessage />;
         }
 
-        const currentContributionOptions = (contributionAmountsLookup[
-          mainPlan.currencyISO
-        ] || contributionAmountsLookup.international)[
-          mainPlan.interval as ContributionInterval
-        ];
-
-        const isAlreadyPayingMinAmount =
-          mainPlan.amount / 100 <= currentContributionOptions.minAmount;
+        const isPayingMinAmount = getIsPayingMinAmount(mainPlan);
 
         return (
           <div css={container}>
-            {isAlreadyPayingMinAmount ? (
+            {isPayingMinAmount ? (
               <>
                 <div>
                   We understand that financial circumstances change, and your

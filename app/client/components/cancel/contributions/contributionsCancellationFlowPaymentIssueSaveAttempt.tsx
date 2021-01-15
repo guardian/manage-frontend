@@ -11,15 +11,12 @@ import {
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
-import {
-  contributionAmountsLookup,
-  ContributionInterval,
-  ContributionUpdateAmountForm
-} from "../../accountoverview/contributionUpdateAmountForm";
+import { ContributionUpdateAmountForm } from "../../accountoverview/contributionUpdateAmountForm";
 import { trackEventInOphanOnly } from "../../analytics";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 import { CancellationCaseIdContext } from "../cancellationContexts";
 import ContributionsFeedbackForm from "./contributionsCancellationFeedbackForm";
+import { getIsPayingMinAmount } from "./utils";
 
 const container = css`
   & > * + * {
@@ -98,14 +95,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
           return <GenericErrorMessage />;
         }
 
-        const currentContributionOptions = (contributionAmountsLookup[
-          mainPlan.currencyISO
-        ] || contributionAmountsLookup.international)[
-          mainPlan.interval as ContributionInterval
-        ];
-
-        const isAlreadyPayingMinAmount =
-          mainPlan.amount / 100 <= currentContributionOptions.minAmount;
+        const isPayingMinAmount = getIsPayingMinAmount(mainPlan);
 
         return (
           <div css={container}>
@@ -132,14 +122,14 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
                   Manage payment method
                 </LinkButton>
 
-                {isAlreadyPayingMinAmount && (
+                {isPayingMinAmount && (
                   <Button onClick={onCancelClicked} priority="subdued">
                     I still want to cancel
                   </Button>
                 )}
               </div>
             </div>
-            {!isAlreadyPayingMinAmount && (
+            {!isPayingMinAmount && (
               <div>
                 <p>
                   If your contribution is no longer affordable, please consider
