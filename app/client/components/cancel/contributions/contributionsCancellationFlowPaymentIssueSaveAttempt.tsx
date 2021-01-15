@@ -14,6 +14,8 @@ import { PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { ContributionUpdateAmountForm } from "../../accountoverview/contributionUpdateAmountForm";
 import { trackEventInOphanOnly } from "../../analytics";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
+import { CancellationCaseIdContext } from "../cancellationContexts";
+import ContributionsFeedbackForm from "./contributionsCancellationFeedbackForm";
 import { getIsPayingMinAmount } from "./utils";
 
 const container = css`
@@ -21,22 +23,35 @@ const container = css`
     margin-top: ${space[6]}px;
 `;
 
-const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
+const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
   const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
+
+  const onManageClicked = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    trackEventInOphanOnly({
+      eventCategory: "cancellation_flow_payment_issue",
+      eventAction: "click",
+      eventLabel: "manage"
+    });
+
+    navigate("/contributions");
+  };
 
   const onUpdateConfirmed = (updatedAmount: number) => {
     trackEventInOphanOnly({
-      eventCategory: "cancellation_flow_financial_circumstances",
+      eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
       eventLabel: "change"
     });
 
-    navigate(`mma_financial_circumstances/saved`, { state: { updatedAmount } });
+    navigate(`mma_payment_issue/saved`, { state: { updatedAmount } });
   };
 
   const onReduceClicked = () => {
     trackEventInOphanOnly({
-      eventCategory: "cancellation_flow_financial_circumstances",
+      eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
       eventLabel: "reduce"
     });
@@ -46,12 +61,12 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 
   const onCancelClicked = () => {
     trackEventInOphanOnly({
-      eventCategory: "cancellation_flow_financial_circumstances",
+      eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
       eventLabel: "cancel"
     });
 
-    navigate(`mma_financial_circumstances/confirmed`);
+    navigate(`mma_payment_issue/confirmed`);
   };
 
   const onReturnClicked = (
@@ -66,7 +81,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
       {productDetail => {
         if (!isProduct(productDetail)) {
           Sentry.captureMessage(
-            "MembersDataApiItem is not a productDetail in ContributionsCancellationFlowFinancialSaveAttempt"
+            "MembersDataApiItem is not a productDetail in ContributionsCancellationFlowPaymentIssueSaveAttempt"
           );
           return <GenericErrorMessage />;
         }
@@ -75,7 +90,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 
         if (!isPaidSubscriptionPlan(mainPlan)) {
           Sentry.captureMessage(
-            "mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationFlowFinancialSaveAttempt"
+            "mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationFlowPaymentIssueSaveAttempt"
           );
           return <GenericErrorMessage />;
         }
@@ -84,23 +99,43 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 
         return (
           <div css={container}>
-            {isPayingMinAmount ? (
-              <>
-                <div>
-                  We understand that financial circumstances change, and your
-                  current contribution might not suit you right now.
-                </div>
+            <div
+              css={css`
+                & > * + * {
+                  margin-top: ${space[6]}px;
+                }
+              `}
+            >
+              <p>
+                Before cancelling your contribution, please double-check your
+                payment details. You can update these quickly and easily.
+              </p>
 
-                <Button onClick={onCancelClicked}>Confirm cancellation</Button>
-              </>
-            ) : (
-              <>
-                <div>
-                  We understand that financial circumstances change. If you can,
-                  we hope you’ll consider reducing the size of your contribution
-                  today rather than cancelling it. Simply pick a new amount and
-                  we’ll do the rest.
-                </div>
+              <div
+                css={css`
+                  & > * + * {
+                    margin-left: ${space[4]}px;
+                  }
+                `}
+              >
+                <LinkButton href="/contributions" onClick={onManageClicked}>
+                  Manage payment method
+                </LinkButton>
+
+                {isPayingMinAmount && (
+                  <Button onClick={onCancelClicked} priority="subdued">
+                    I still want to cancel
+                  </Button>
+                )}
+              </div>
+            </div>
+            {!isPayingMinAmount && (
+              <div>
+                <p>
+                  If your contribution is no longer affordable, please consider
+                  reducing its size rather than cancelling it. Simply pick a new
+                  amount and we’ll do the rest.
+                </p>
 
                 {showAmountUpdateForm ? (
                   <ContributionUpdateAmountForm
@@ -120,19 +155,38 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
                       }
                     `}
                   >
-                    <Button onClick={onReduceClicked}>Reduce amount</Button>
+                    <Button onClick={onReduceClicked} priority="secondary">
+                      Reduce amount
+                    </Button>
 
                     <Button onClick={onCancelClicked} priority="subdued">
                       I still want to cancel
                     </Button>
                   </div>
                 )}
-              </>
+              </div>
             )}
+
+            <CancellationCaseIdContext.Consumer>
+              {caseId =>
+                caseId && (
+                  <div
+                    css={css`
+                      margin-top: ${space[9]}px;
+                    `}
+                  >
+                    <ContributionsFeedbackForm
+                      isTestUser={productDetail.isTestUser}
+                      caseId={caseId}
+                    />
+                  </div>
+                )
+              }
+            </CancellationCaseIdContext.Consumer>
 
             <div
               css={css`
-                margin-top: ${space[24]}px;
+                margin-top: ${space[12]}px;
               `}
             >
               <LinkButton
@@ -152,4 +206,4 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
   );
 };
 
-export default ContributionsCancellationFlowFinancialSaveAttempt;
+export default ContributionsCancellationFlowPaymentIssueSaveAttempt;
