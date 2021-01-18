@@ -124,7 +124,7 @@ const pStyle = css`
 export const Help = (_: RouteComponentProps) => {
   const [callCentreOpen, setCallCentreOpen] = useState<boolean>(false);
   return (
-    <PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help centre">
+    <PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help">
       <h2 css={h2Style}>How can we help?</h2>
       <ul css={listStyle}>
         {highlightedQuestions.map(question => (
