@@ -1,7 +1,11 @@
 import React from "react";
+import {
+  getMainPlan,
+  isPaidSubscriptionPlan,
+  ProductDetail
+} from "../../../../shared/productResponse";
 import { CancellationReason } from "../cancellationReason";
 import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
-
 import ContributionsCancellationFlowFinancialSaveAttempt from "./contributionsCancellationFlowFinancialSaveAttempt";
 import ContributionsCancellationPaymentIssueSaveAttempt from "./contributionsCancellationFlowPaymentIssueSaveAttempt";
 
@@ -100,7 +104,14 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
       </>
     ),
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
+    shouldShow: (productDetail: ProductDetail) => {
+      const mainPlan = getMainPlan(productDetail.subscription);
+      if (!isPaidSubscriptionPlan(mainPlan)) {
+        return false;
+      }
+      return mainPlan.interval === "month";
+    }
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -114,7 +125,14 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
       </>
     ),
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
+    shouldShow: (productDetail: ProductDetail) => {
+      const mainPlan = getMainPlan(productDetail.subscription);
+      if (!isPaidSubscriptionPlan(mainPlan)) {
+        return false;
+      }
+      return mainPlan.interval === "year";
+    }
   },
   {
     reasonId: "mma_health",

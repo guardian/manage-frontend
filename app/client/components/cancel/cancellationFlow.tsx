@@ -21,7 +21,6 @@ import { WithStandardTopMargin } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
 import {
-  MultiRouteableProps,
   ReturnToAccountOverviewButton,
   RouteableStepProps,
   WizardStep
@@ -36,7 +35,9 @@ import {
   cancellationDateFetcher,
   CancellationDateResponse
 } from "./cancellationDateResponse";
+import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
+import { GenericSaveAttemptProps } from "./stages/genericSaveAttempt";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -52,6 +53,9 @@ interface ReasonPickerState {
   reasonPath: string;
   cancellationPolicy?: string;
 }
+
+const shouldShow = (reason: CancellationReason, productDetail: ProductDetail) =>
+  reason.shouldShow ? reason.shouldShow(productDetail) : true;
 
 class ReasonPicker extends React.Component<
   ReasonPickerProps,
@@ -75,7 +79,7 @@ class ReasonPicker extends React.Component<
 
     // we extract the options from the children rather than direct from the ProductType to guarantee the routes are setup correctly
     const options = this.props.children.props.children.map(
-      (child: { props: MultiRouteableProps }) => child.props
+      (child: { props: GenericSaveAttemptProps }) => child.props
     );
 
     const innerContent = (
@@ -96,16 +100,19 @@ class ReasonPicker extends React.Component<
         <WithStandardTopMargin>
           <h4>Please select a reason</h4>
           <form css={css({ marginBottom: "30px" })}>
-            {options.map((reason: MultiRouteableProps) => (
-              <RadioButton
-                key={reason.path}
-                value={reason.path}
-                label={reason.linkLabel}
-                checked={reason.path === this.state.reasonPath}
-                groupName="reasons"
-                onChange={() => this.setState({ reasonPath: reason.path })}
-              />
-            ))}
+            {options.map(
+              (reason: GenericSaveAttemptProps) =>
+                shouldShow(reason.reason, this.props.productDetail) && (
+                  <RadioButton
+                    key={reason.path}
+                    value={reason.path}
+                    label={reason.linkLabel}
+                    checked={reason.path === this.state.reasonPath}
+                    groupName="reasons"
+                    onChange={() => this.setState({ reasonPath: reason.path })}
+                  />
+                )
+            )}
           </form>
 
           {shouldOfferEffectiveDateOptions && (
