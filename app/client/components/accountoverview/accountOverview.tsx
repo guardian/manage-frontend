@@ -135,4 +135,10 @@ class AccountOverviewAsyncLoader extends AsyncLoader<
 > {}
 
 const AccountOverviewFetcher = () =>
-  Promise.all([allProductsDetailFetcher(), fetch("/api/cancelled")]);
+  Promise.all([
+    allProductsDetailFetcher(),
+    fetch("/api/cancelled/", {
+      credentials: "include",
+      mode: "same-origin"
+    })
+  ]);

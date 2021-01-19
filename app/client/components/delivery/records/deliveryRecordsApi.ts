@@ -85,6 +85,8 @@ export const createDeliveryRecordsFetcher = (
   isTestUser: boolean
 ) => () =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
+    credentials: "include",
+    mode: "same-origin",
     headers: {
       [MDA_TEST_USER_HEADER]: `${isTestUser}`
     }

@@ -267,4 +267,10 @@ export const Billing = (_: RouteComponentProps) => {
 };
 
 const billingFetcher = () =>
-  Promise.all([allProductsDetailFetcher(), fetch("/api/invoices")]);
+  Promise.all([
+    allProductsDetailFetcher(),
+    fetch("/api/invoices", {
+      credentials: "include",
+      mode: "same-origin"
+    })
+  ]);
