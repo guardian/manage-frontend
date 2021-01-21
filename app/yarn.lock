@@ -1439,10 +1439,15 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@guardian/consent-management-platform@^6.9.1":
-  version "6.9.1"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-6.9.1.tgz#78aaf208dfc25b4f3fb8d6cbc4991d64cf8242db"
-  integrity sha512-52kRmS0u1NJSAyfHOcDiL8/zoQQ8Tii4dQcJ1ENyJ0x6Gn8CE6j+9bNLwc4AGP6Oj80FQdCBd9fx+3Yrhx1vdg==
+"@guardian/consent-management-platform@^6.11.2":
+  version "6.11.2"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-6.11.2.tgz#668d0f911aff5c3bc42cb54c606b07640d18f0b8"
+  integrity sha512-tX+lZZFgn9PP8RUj14MnsYa7ikBAyTWfQJPNls4o2Q5c+o0uRVYHnlgifvspj0k1m05rFEmYjnmj7rxwpnH2Xw==
+
+"@guardian/libs@^1.6.2":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-1.6.3.tgz#71ad9a5160708ae75d3bc182afb3f235b9c4de1f"
+  integrity sha512-CMTvDbIrfvla8OWHdO+tyjUUEp9XGGr2fQ8XDJptSiiJr1gKJsWV6NvFXQi1ypqDRsPYiJ8h1DxvBtyuyWATOA==
 
 "@guardian/src-button@^2.5.0":
   version "2.5.0"
