@@ -8,6 +8,10 @@ module.exports = {
   snapshotSerializers: ["jest-emotion"],
   globals: {
     "ts-jest": {
+      tsConfig: {
+        jsx: "react",
+        module: "commonjs"
+      },
       babelConfig: require("./webpack.common").babelCommon
     }
   },
