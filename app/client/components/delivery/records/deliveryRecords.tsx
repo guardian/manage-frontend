@@ -757,7 +757,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   );
 };
 
-export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
+const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
   return (
     <FlowWrapper
       {...props}
@@ -789,3 +789,5 @@ export const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
     </FlowWrapper>
   );
 };
+
+export default DeliveryRecords;

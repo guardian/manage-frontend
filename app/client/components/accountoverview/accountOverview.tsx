@@ -115,7 +115,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
   );
 };
 
-export const AccountOverview = (_: RouteComponentProps) => {
+const AccountOverview = (_: RouteComponentProps) => {
   return (
     <PageContainer
       selectedNavItem={NAV_LINKS.accountOverview}
@@ -142,3 +142,5 @@ const AccountOverviewFetcher = () =>
       mode: "same-origin"
     })
   ]);
+
+export default AccountOverview;

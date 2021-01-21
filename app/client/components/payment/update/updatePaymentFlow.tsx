@@ -326,7 +326,7 @@ class PaymentUpdaterStep extends React.Component<
   };
 }
 
-export const PaymentUpdateFlow = (props: RouteableStepProps) => {
+const PaymentUpdateFlow = (props: RouteableStepProps) => {
   const navItemReferrer = getNavItemFromFlowReferrer(
     props.location?.state?.flowReferrer?.title
   );
@@ -360,3 +360,5 @@ export const PaymentUpdateFlow = (props: RouteableStepProps) => {
     </FlowReferrerContext.Provider>
   );
 };
+
+export default PaymentUpdateFlow;

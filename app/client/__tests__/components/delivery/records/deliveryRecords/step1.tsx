@@ -7,8 +7,7 @@ import {
   PRODUCT_TYPES
 } from "../../../../../../shared/productTypes";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
-import {
-  DeliveryRecords,
+import DeliveryRecords, {
   DeliveryRecordsFC
 } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";

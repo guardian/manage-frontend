@@ -387,7 +387,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
   );
 };
 
-export const ManageProduct = (props: RouteableStepPropsForGrouped) => (
+const ManageProduct = (props: RouteableStepPropsForGrouped) => (
   <FlowWrapper
     {...props}
     productType={props.groupedProductType}
@@ -413,3 +413,5 @@ export const ManageProduct = (props: RouteableStepPropsForGrouped) => (
     )}
   </FlowWrapper>
 );
+
+export default ManageProduct;

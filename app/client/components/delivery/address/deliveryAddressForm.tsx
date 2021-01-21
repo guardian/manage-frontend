@@ -699,7 +699,7 @@ const Form = (props: FormProps) => {
   );
 };
 
-export const DeliveryAddressForm = (props: RouteableStepProps) => {
+const DeliveryAddressForm = (props: RouteableStepProps) => {
   // const ProductDetailContext = React.createContext(props.location?.state);
   return (
     <PageContainer
@@ -744,3 +744,5 @@ export const DeliveryAddressForm = (props: RouteableStepProps) => {
     </PageContainer>
   );
 };
+
+export default DeliveryAddressForm;

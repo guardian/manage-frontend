@@ -22,7 +22,7 @@ interface ContactUsProps extends RouteComponentProps {
   urlSuccess?: string;
 }
 
-export const ContactUs = (props: ContactUsProps) => {
+const ContactUs = (props: ContactUsProps) => {
   const currentTopic = contactUsConfig.find(
     topic => topic.id === props.urlTopicId
   );
@@ -283,3 +283,5 @@ export const ContactUs = (props: ContactUsProps) => {
     </>
   );
 };
+
+export default ContactUs;

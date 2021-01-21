@@ -15,7 +15,7 @@ import { EmailSettingsSection } from "./EmailSettingsSection";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
 
-export const EmailAndMarketing = (_: { path?: string }) => {
+const EmailAndMarketing = (_: { path?: string }) => {
   const { options, error, subscribe, unsubscribe, unsubscribeAll } = Actions;
   const [email, setEmail] = useState<string>("");
   const [removed, setRemoved] = useState(false);
@@ -134,3 +134,5 @@ export const EmailAndMarketing = (_: { path?: string }) => {
     </PageContainer>
   );
 };
+
+export default EmailAndMarketing;

@@ -216,7 +216,7 @@ const ReasonPickerRenderer = (
   );
 };
 
-export const CancellationFlow = (props: RouteableStepProps) => (
+const CancellationFlow = (props: RouteableStepProps) => (
   <FlowWrapper
     {...props}
     loadingMessagePrefix="Checking the status of your"
@@ -255,3 +255,5 @@ export const CancellationFlow = (props: RouteableStepProps) => (
     }
   </FlowWrapper>
 );
+
+export default CancellationFlow;
