@@ -59,7 +59,6 @@ const User = () => (
   <Main>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
-    {/* replace with a real fallback component */}
     <Suspense fallback={<PageSkeleton />}>
       <Router primary={true} css={{ height: "100%" }}>
         <AccountOverview path="/" />
