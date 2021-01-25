@@ -22,7 +22,7 @@ const loader = (
   </WithStandardTopMargin>
 );
 
-export const Settings = (_: { path?: string }) => {
+const Settings = (_: { path?: string }) => {
   const [user, setUser] = useState<User>();
   const [error, setError] = useState(false);
   const [emailMessage, setEmailMessage] = useState<string | null>(null);
@@ -102,3 +102,5 @@ export const Settings = (_: { path?: string }) => {
     </PageContainer>
   );
 };
+
+export default Settings;

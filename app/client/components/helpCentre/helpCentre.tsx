@@ -46,7 +46,7 @@ const contactUsTitleStyle = css`
   ${headline.small({ fontWeight: "bold" })};
 `;
 
-export const HelpCentre = (_: HelpCentreProps) => (
+const HelpCentre = (_: HelpCentreProps) => (
   <>
     <SectionHeader title="Help Centre" />
     <KnownIssues />
@@ -100,3 +100,5 @@ export const HelpCentre = (_: HelpCentreProps) => (
     </SectionPageContainer>
   </>
 );
+
+export default HelpCentre;

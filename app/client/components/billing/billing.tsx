@@ -254,7 +254,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
   );
 };
 
-export const Billing = (_: RouteComponentProps) => {
+const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
       <BillingDataAsyncLoader
@@ -274,3 +274,5 @@ const billingFetcher = () =>
       mode: "same-origin"
     })
   ]);
+
+export default Billing;

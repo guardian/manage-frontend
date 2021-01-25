@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 import { checkForExistingDeliveryProblem } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordDetail } from "../../../../../components/delivery/records/deliveryRecordsApi";
 

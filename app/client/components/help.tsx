@@ -121,7 +121,7 @@ const pStyle = css`
   }
 `;
 
-export const Help = (_: RouteComponentProps) => {
+const Help = (_: RouteComponentProps) => {
   const [callCentreOpen, setCallCentreOpen] = useState<boolean>(false);
   return (
     <PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help">
@@ -190,3 +190,5 @@ export const Help = (_: RouteComponentProps) => {
     </PageContainer>
   );
 };
+
+export default Help;

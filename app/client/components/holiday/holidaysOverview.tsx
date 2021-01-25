@@ -313,7 +313,7 @@ interface HolidaysOverviewState {
   existingHolidayStopToAmend: HolidayStopRequest | null;
 }
 
-export class HolidaysOverview extends React.Component<
+class HolidaysOverview extends React.Component<
   HolidayStopsRouteableStepProps,
   HolidaysOverviewState
 > {
@@ -370,3 +370,5 @@ export class HolidaysOverview extends React.Component<
     newValue: HolidayStopRequest | null
   ) => this.setState({ existingHolidayStopToAmend: newValue });
 }
+
+export default HolidaysOverview;

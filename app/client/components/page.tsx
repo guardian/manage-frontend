@@ -220,7 +220,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
               `}
           `}
         >
-          {props.title}
+          {props.title || <>&nbsp;</>}
         </h1>
       </div>
     </div>
