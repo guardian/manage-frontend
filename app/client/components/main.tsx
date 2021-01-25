@@ -4,11 +4,7 @@ import { serif } from "../styles/fonts";
 import { Footer } from "./footer/footer";
 import Header from "./header";
 
-export interface WithOptionalServerPathWithQueryParams {
-  serverPathWithQueryParams?: string;
-}
-
-interface MainProps extends WithOptionalServerPathWithQueryParams {
+interface MainProps {
   children: any;
 }
 

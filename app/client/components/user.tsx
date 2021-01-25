@@ -1,5 +1,5 @@
 import { css, Global } from "@emotion/core";
-import { Redirect, Router, ServerLocation } from "@reach/router";
+import { Redirect, Router } from "@reach/router";
 import React from "react";
 import {
   GROUPED_PRODUCT_TYPES,
@@ -41,14 +41,14 @@ import { HolidaysOverview } from "./holiday/holidaysOverview";
 import { EmailAndMarketing } from "./identity/EmailAndMarketing";
 import { PublicProfile } from "./identity/PublicProfile";
 import { Settings } from "./identity/Settings";
-import { Main, WithOptionalServerPathWithQueryParams } from "./main";
+import { Main } from "./main";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { PaymentUpdateFlow } from "./payment/update/updatePaymentFlow";
 import { ScrollToTop } from "./scrollToTop";
 
-const User = (props: WithOptionalServerPathWithQueryParams) => (
-  <Main {...props}>
+const User = () => (
+  <Main>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
 
@@ -191,12 +191,6 @@ const User = (props: WithOptionalServerPathWithQueryParams) => (
       <Redirect default from="/*" to="/" noThrow />
     </Router>
   </Main>
-);
-
-export const ServerUser = (serverPathWithQueryParams: string) => (
-  <ServerLocation url={serverPathWithQueryParams}>
-    <User serverPathWithQueryParams={serverPathWithQueryParams} />
-  </ServerLocation>
 );
 
 export const BrowserUser = (

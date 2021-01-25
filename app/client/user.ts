@@ -15,4 +15,4 @@ if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
 }
 
 const element = document.getElementById("app");
-ReactDOM.hydrate(BrowserUser, element);
+ReactDOM.render(BrowserUser, element);
