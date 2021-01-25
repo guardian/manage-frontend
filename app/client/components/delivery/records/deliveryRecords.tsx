@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
-import { brand, neutral, news } from "@guardian/src-foundations/palette";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
@@ -25,10 +25,10 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { FlowWrapper } from "../../FlowWrapper";
+import { FormError } from "../../FormError";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { ProductDescriptionListKeyValue } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
-import { ErrorIcon } from "../../svgs/errorIcon";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryAddressStep } from "./deliveryAddressStep";
@@ -260,6 +260,28 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
     ...productType.delivery.records.availableProblemTypes,
     ...(hasRecentHolidayStop ? [holidaySuspensionDeliveryProblem] : [])
   ].sort((a, b) => a.label.localeCompare(b.label));
+
+  const formErrorTitle =
+    !step3FormValidationDetails.isValid &&
+    step1FormValidationDetails.isValid &&
+    step2FormValidationDetails.isValid
+      ? "Unfinished changes"
+      : "Some information is missing";
+
+  const formErrorMessages = [
+    ...(!step1FormValidationDetails.isValid &&
+    step1FormValidationDetails.message
+      ? [step1FormValidationDetails.message]
+      : []),
+    ...(!step2FormValidationDetails.isValid &&
+    step2FormValidationDetails.message
+      ? [step2FormValidationDetails.message]
+      : []),
+    ...(!step3FormValidationDetails.isValid &&
+    step3FormValidationDetails.message
+      ? [step3FormValidationDetails.message]
+      : [])
+  ];
 
   return (
     <DeliveryRecordsProblemContext.Provider
@@ -611,61 +633,10 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       step2FormValidationDetails.message) ||
                     (!step3FormValidationDetails.isValid &&
                       step3FormValidationDetails.message)) && (
-                    <dl
-                      css={css`
-                        position: relative;
-                        padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
-                        ${textSans.medium()};
-                        border: 4px solid ${news[400]};
-                      `}
-                    >
-                      <i
-                        css={css`
-                          position: absolute;
-                          top: ${space[5]}px;
-                          left: ${space[5]}px;
-                        `}
-                      >
-                        <ErrorIcon />
-                      </i>
-                      <dt
-                        css={css`
-                          font-weight: bold;
-                        `}
-                      >
-                        {!step3FormValidationDetails.isValid &&
-                        step1FormValidationDetails.isValid &&
-                        step2FormValidationDetails.isValid
-                          ? "Unfinished changes"
-                          : "Some information is missing"}
-                      </dt>
-                      <dd
-                        css={css`
-                          margin: 0;
-                        `}
-                      >
-                        <ul
-                          css={css`
-                            list-style: none;
-                            margin: 0;
-                            padding: 0;
-                          `}
-                        >
-                          {!step1FormValidationDetails.isValid &&
-                            step1FormValidationDetails.message && (
-                              <li>{step1FormValidationDetails.message}</li>
-                            )}
-                          {!step2FormValidationDetails.isValid &&
-                            step2FormValidationDetails.message && (
-                              <li>{step2FormValidationDetails.message}</li>
-                            )}
-                          {!step3FormValidationDetails.isValid &&
-                            step3FormValidationDetails.message && (
-                              <li>{step3FormValidationDetails.message}</li>
-                            )}
-                        </ul>
-                      </dd>
-                    </dl>
+                    <FormError
+                      title={formErrorTitle}
+                      messages={formErrorMessages}
+                    />
                   )}
                 <Button
                   onClick={() => {
