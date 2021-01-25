@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
 import React from "react";
@@ -13,7 +14,7 @@ interface HelpTopicBoxProps {
 }
 
 const boxHolderStyle = css`
-  border: 1px solid ${palette.neutral["86"]};
+  border: 1px solid ${neutral["86"]};
   flex-basis: 100%;
   display: flex;
   flex-direction: column;
@@ -34,7 +35,7 @@ const boxTitleStyle = css`
   position: relative;
   margin: 0;
   padding: 18px 0 18px 60px;
-  border-bottom: 1px solid ${palette.neutral["86"]};
+  border-bottom: 1px solid ${neutral["86"]};
   width: 100%;
 `;
 
@@ -52,7 +53,7 @@ const linksListStyle = css`
 
 const linkListItemStyle = css`
   padding: 12px 20px 12px 0;
-  border-bottom: 1px solid ${palette.neutral["86"]};
+  border-bottom: 1px solid ${neutral["86"]};
   position: relative;
 `;
 
@@ -60,9 +61,9 @@ const linkAnchorStyle = css`
   display: inline-block;
   width: 100%;
   ${textSans.medium()};
-  color: ${palette.neutral["7"]};
+  color: ${neutral["7"]};
   :visited {
-    color: ${palette.neutral["7"]};
+    color: ${neutral["7"]};
   }
 `;
 
@@ -70,8 +71,8 @@ const linkArrowStyle = css`
   display: block;
   width: 7px;
   height: 7px;
-  border-top: 2px solid ${palette.neutral["7"]};
-  border-right: 2px solid ${palette.neutral["7"]};
+  border-top: 2px solid ${neutral["7"]};
+  border-right: 2px solid ${neutral["7"]};
   position: absolute;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
@@ -86,15 +87,15 @@ const seeAllAnchorStyle = css`
   height: 36px;
   border-radius: 18px;
   padding: 0 16px;
-  color: ${palette.brand[400]};
-  background-color: ${palette.brand[800]};
+  color: ${brand[400]};
+  background-color: ${brand[800]};
   :hover {
-    background-color: ${Color(palette.brand[800], "hex")
+    background-color: ${Color(brand[800], "hex")
       .darken(0.1)
       .string()};
   }
   :visited {
-    color: ${palette.brand[400]};
+    color: ${brand[400]};
   }
 `;
 

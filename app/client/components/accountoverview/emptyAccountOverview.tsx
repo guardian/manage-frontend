@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
@@ -23,7 +24,7 @@ export const EmptyAccountOverview = () => {
       <h2
         css={css`
           margin-top: 50px;
-          border-top: 1px solid ${palette.neutral["86"]};
+          border-top: 1px solid ${neutral["86"]};
           ${headline.small()};
           font-weight: bold;
           ${maxWidth.tablet} {
@@ -46,8 +47,8 @@ export const EmptyAccountOverview = () => {
       <dl
         css={css`
             ${textSans.medium()}
-            background-color: ${palette.neutral[97]};
-            border: 1px solid ${palette.neutral[86]};
+            background-color: ${neutral[97]};
+            border: 1px solid ${neutral[86]};
             margin: 30px 0 0 0;
             padding: ${space[5]}px;
           `}
@@ -87,8 +88,8 @@ export const EmptyAccountOverview = () => {
         supportReferer={"account_overview_no_product"}
         fontWeight="bold"
         height="42px"
-        textColour={palette.neutral[100]}
-        colour={palette.brand[400]}
+        textColour={neutral[100]}
+        colour={brand[400]}
         notPrimary
       />
       <div
@@ -105,7 +106,7 @@ export const EmptyAccountOverview = () => {
             left: 0;
           `}
         >
-          <InfoIconDark fillColor={palette.brand[500]} />
+          <InfoIconDark fillColor={brand[500]} />
         </i>
         <p
           css={css`
@@ -120,7 +121,7 @@ export const EmptyAccountOverview = () => {
           <span
             css={css`
               cursor: pointer;
-              color: ${palette.brand[500]};
+              color: ${brand[500]};
               text-decoration: underline;
             `}
             onClick={() =>

@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
@@ -62,7 +63,7 @@ export const AccountOverviewCancelledCard = (
   return (
     <div
       css={css`
-        border: 1px solid ${palette.neutral[86]};
+        border: 1px solid ${neutral[86]};
         margin-bottom: ${space[6]}px;
       `}
     >
@@ -71,7 +72,7 @@ export const AccountOverviewCancelledCard = (
           display: flex;
           justify-content: space-between;
           align-items: start;
-          background-color: ${palette.neutral[97]};
+          background-color: ${neutral[97]};
           ${minWidth.mobileLandscape} {
             align-items: center;
           }
@@ -81,7 +82,7 @@ export const AccountOverviewCancelledCard = (
           css={css`
             margin: 0;
             padding: ${space[3]}px;
-            color: ${palette.neutral[7]};
+            color: ${neutral[7]};
             ${titlepiece.small()};
             font-weight: bold;
             font-size: 17px;
@@ -123,7 +124,7 @@ export const AccountOverviewCancelledCard = (
             `}
           >
             <ErrorIcon
-              fill={palette.brandAlt[200]}
+              fill={brandAlt[200]}
               additionalCss={css`
                 transform: translateY(1px);
               `}
@@ -199,8 +200,8 @@ export const AccountOverviewCancelledCard = (
                 <Button
                   text="Subscribe again"
                   fontWeight="bold"
-                  colour={palette.brand[800]}
-                  textColour={palette.brand[400]}
+                  colour={brand[800]}
+                  textColour={brand[400]}
                   height="36px"
                 />
               </a>
@@ -211,14 +212,14 @@ export const AccountOverviewCancelledCard = (
           css={css`
             margin: ${space[6]}px 0 0 0;
             padding: ${space[6]}px 0 0 0;
-            border-top: 1px solid ${palette.neutral[86]};
+            border-top: 1px solid ${neutral[86]};
             ${minWidth.tablet} {
               flex: 1;
               display: flex;
               flex-flow: column nowrap;
               padding: 0 0 0 ${space[5]}px;
               border-top: none;
-              border-left: 1px solid ${palette.neutral[86]};
+              border-left: 1px solid ${neutral[86]};
               margin: 0;
               padding: 0 0 0 ${space[5]}px;
             }

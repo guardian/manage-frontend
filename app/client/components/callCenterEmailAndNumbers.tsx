@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { CallCentreNumbersProps } from "./callCentreNumbers";
@@ -99,8 +100,8 @@ export const CallCentreEmailAndNumbers = (
       display: block;
       width: 7px;
       height: 7px;
-      border-top: 2px solid ${palette.neutral["7"]};
-      border-right: 2px solid ${palette.neutral["7"]};
+      border-top: 2px solid ${neutral["7"]};
+      border-right: 2px solid ${neutral["7"]};
       position: absolute;
       top: 50%;
       transform: translateY(-50%) ${
@@ -119,13 +120,13 @@ export const CallCentreEmailAndNumbers = (
         left: 12px;
         width: calc(100% - 24px);
         height: 1px;
-        background-color: ${palette.neutral["86"]}
+        background-color: ${neutral["86"]}
       }
     `}
   `;
   const innerSectionCss = (isOpen: boolean) => `
     display: ${isOpen ? "block" : "none"};
-    background-color: ${palette.neutral["97"]};
+    background-color: ${neutral["97"]};
     padding: 12px;
   `;
 
@@ -153,7 +154,7 @@ export const CallCentreEmailAndNumbers = (
       <div
         css={css`
           width: 100%;
-          border: 1px solid ${palette.neutral["86"]};
+          border: 1px solid ${neutral["86"]};
         `}
       >
         {filteredPhoneData.map((phoneRegion, index) => {

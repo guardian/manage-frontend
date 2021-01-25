@@ -1,6 +1,7 @@
 import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral, news } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
@@ -211,7 +212,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           }
         }}
         css={css`
-          border: 1px solid ${palette.neutral["86"]};
+          border: 1px solid ${neutral["86"]};
           margin: 0 0 ${space[5]}px;
           padding: 0;
         `}
@@ -223,8 +224,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             margin: 0;
             padding: ${space[3]}px;
             float: left;
-            background-color: ${palette.neutral["97"]};
-            border-bottom: 1px solid ${palette.neutral["86"]};
+            background-color: ${neutral["97"]};
+            border-bottom: 1px solid ${neutral["86"]};
             ${textSans.medium({ fontWeight: "bold" })};
             ${minWidth.tablet} {
               padding: ${space[3]}px ${space[5]}px;
@@ -299,7 +300,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           <label
             css={css`
               display: block;
-              color: ${palette.neutral["7"]};
+              color: ${neutral["7"]};
               ${textSans.medium({ fontWeight: "bold" })};
               max-width: 50ch;
               margin: ${space[5]}px;
@@ -319,7 +320,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <label
           css={css`
             display: block;
-            color: ${palette.neutral["7"]};
+            color: ${neutral["7"]};
             ${textSans.medium({ fontWeight: "bold" })};
             max-width: 50ch;
             margin: ${space[5]}px;
@@ -331,7 +332,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               <span
                 css={css`
                   display: block;
-                  color: ${palette.news[400]};
+                  color: ${news[400]};
                   font-weight: normal;
                 `}
               >
@@ -359,8 +360,8 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               width: 100%;
               border: ${formValidationState.inValidationMode &&
               !formValidationState.message.isValid
-                ? `4px solid ${palette.news[400]}`
-                : `2px solid ${palette.neutral[60]}`};
+                ? `4px solid ${news[400]}`
+                : `2px solid ${neutral[60]}`};
               padding: 12px;
               resize: vertical;
               ${textSans.medium()};
@@ -371,7 +372,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               display: block;
               text-align: right;
               ${textSans.small()};
-              color: ${palette.neutral[46]};
+              color: ${neutral[46]};
             `}
           >
             {messageRemainingCharacters} characters remaining
@@ -426,7 +427,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             <span
               css={css`
                 display: block;
-                color: ${palette.news[400]};
+                color: ${news[400]};
                 ${textSans.medium({ fontWeight: "bold" })};
                 font-weight: normal;
               `}

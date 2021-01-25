@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
@@ -41,7 +41,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
             {props.region && <li>{props.region}</li>}
             {props.country && (
               <li>
-                {COUNTRIES.find((country) => props.country === country.iso)
+                {COUNTRIES.find(country => props.country === country.iso)
                   ?.name || props.country}
               </li>
             )}
@@ -53,7 +53,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
           display: block;
           text-align: left;
           ${textSans.small({ fontStyle: "italic" })};
-          color: ${palette.brand[500]};
+          color: ${brand[500]};
           font-style: normal;
           text-decoration: underline;
           cursor: pointer;
@@ -70,8 +70,8 @@ export const RecordAddress = (props: DeliveryAddress) => {
             height: 6px;
             margin-left: 6px;
             margin-bottom: ${showAddress ? -1 : 2}px;
-            border-top: 1px solid ${palette.brand[500]};
-            border-right: 1px solid ${palette.brand[500]};
+            border-top: 1px solid ${brand[500]};
+            border-right: 1px solid ${brand[500]};
             transform: rotate(${showAddress ? -45 : 135}deg);
           `}
         />

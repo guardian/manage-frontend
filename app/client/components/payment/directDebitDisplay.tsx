@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import { minWidth } from "../../styles/breakpoints";
@@ -69,7 +69,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
       `}
     >
       <DirectDebitLogo
-        fill={palette.neutral[7]}
+        fill={neutral[7]}
         additionalCss={css`
           margin: 0 10px 0 0;
         `}
@@ -85,7 +85,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
   ) : (
     <>
       <DirectDebitLogo
-        fill={palette.neutral[7]}
+        fill={neutral[7]}
         additionalCss={css`
           margin: 0 10px 0 0;
         `}

@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
 import React from "react";
 import { cancellationFormatDate } from "../../../shared/dates";
@@ -62,10 +62,10 @@ const actuallyCancelled = (
               You can still{" "}
               <Link
                 css={css`
-                  color: ${palette.brand[500]};
+                  color: ${brand[500]};
                   text-decoration: underline;
                   :visited {
-                    color: ${palette.brand[500]};
+                    color: ${brand[500]};
                   }
                 `}
                 to={deliveryRecordsLink}
@@ -76,10 +76,10 @@ const actuallyCancelled = (
               and{" "}
               <Link
                 css={css`
-                  color: ${palette.brand[500]};
+                  color: ${brand[500]};
                   text-decoration: underline;
                   :visited {
-                    color: ${palette.brand[500]};
+                    color: ${brand[500]};
                   }
                 `}
                 to={deliveryRecordsLink}

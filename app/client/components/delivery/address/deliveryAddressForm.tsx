@@ -26,7 +26,7 @@ import { COUNTRIES } from "../../identity/models";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
 import { Button } from "@guardian/src-button";
-import { palette } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import moment from "moment";
@@ -211,7 +211,7 @@ const FormContainer = (props: FormContainerProps) => {
   );
 
   const subHeadingCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
@@ -442,7 +442,7 @@ const Form = (props: FormProps) => {
         )}
         <fieldset
           css={{
-            border: `1px solid ${palette.neutral["86"]}`,
+            border: `1px solid ${neutral["86"]}`,
             padding: "48px 14px 14px",
             position: "relative",
             marginBottom: `${space[5]}px`,
@@ -461,8 +461,8 @@ const Form = (props: FormProps) => {
               ${textSans.medium()};
               font-weight: bold;
               line-height: 48px;
-              background-color: ${palette.neutral["97"]};
-              border-bottom: 1px solid ${palette.neutral["86"]};
+              background-color: ${neutral["97"]};
+              border-bottom: 1px solid ${neutral["86"]};
             `}
           >
             Delivery address
@@ -541,7 +541,7 @@ const Form = (props: FormProps) => {
             <label
               css={css`
                 display: block;
-                color: ${palette.neutral["7"]};
+                color: ${neutral["7"]};
                 ${textSans.medium()};
                 font-weight: bold;
               `}
@@ -571,7 +571,7 @@ const Form = (props: FormProps) => {
                     }}
                     css={css`
                       width: 100%;
-                      border: 2px solid ${palette.neutral["60"]};
+                      border: 2px solid ${neutral["60"]};
                       padding: 12px;
                       resize: vertical;
                       ${textSans.medium()};
@@ -582,7 +582,7 @@ const Form = (props: FormProps) => {
                       display: block;
                       text-align: right;
                       ${textSans.small()};
-                      color: ${palette.neutral[46]};
+                      color: ${neutral[46]};
                     `}
                   >
                     {instructionsRemainingCharacters} characters remaining
@@ -592,7 +592,7 @@ const Form = (props: FormProps) => {
                   css={css`
                     display: block;
                     ${textSans.medium()};
-                    border: 4px solid ${palette.brand[500]};
+                    border: 4px solid ${brand[500]};
                     padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
                     margin: ${space[3]}px 0;
                     position: relative;
@@ -613,7 +613,7 @@ const Form = (props: FormProps) => {
                       left: ${space[5]}px;
                     `}
                   >
-                    <InfoIconDark fillColor={palette.brand[500]} />
+                    <InfoIconDark fillColor={brand[500]} />
                   </i>
                   Delivery instructions are only applicable for newspaper
                   deliveries. They do not apply to Guardian Weekly.
@@ -664,7 +664,7 @@ const Form = (props: FormProps) => {
               ${textSans.medium()};
               font-weight: bold;
               margin-left: 22px;
-              color: ${palette.brand[400]};
+              color: ${brand[400]};
             `}
           >
             Cancel
@@ -675,7 +675,7 @@ const Form = (props: FormProps) => {
         css={css`
           ${textSans.medium()};
           margin-top: ${space[12]}px;
-          color: ${palette.neutral[46]};
+          color: ${neutral[46]};
         `}
       >
         If you need seperate delivery addresses for each of your subscriptions,
@@ -683,7 +683,7 @@ const Form = (props: FormProps) => {
         <span
           css={css`
             cursor: pointer;
-            color: ${palette.brand[500]};
+            color: ${brand[500]};
             text-decoration: underline;
           `}
           onClick={() =>

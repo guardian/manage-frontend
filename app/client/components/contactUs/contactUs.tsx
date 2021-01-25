@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException } from "@sentry/browser";
@@ -200,7 +201,7 @@ export const ContactUs = (props: ContactUsProps) => {
             css={css`
               ${headline.xxsmall({ fontWeight: "bold" })};
               margin: 0;
-              border-top: 1px solid ${palette.neutral[86]};
+              border-top: 1px solid ${neutral[86]};
               ${minWidth.desktop} {
                 font-size: 1.75rem;
                 border-top: 0;

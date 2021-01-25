@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { breakpoints } from "@guardian/src-foundations";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { ReactElement } from "react";
@@ -96,7 +97,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
   return (
     <div
       css={css`
-        border-bottom: 1px solid ${palette.neutral["86"]};
+        border-bottom: 1px solid ${neutral["86"]};
         margin-left: auto;
         margin-right: auto;
         background: #0a1f47;
@@ -114,7 +115,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
           padding-right: ${space[3]}px;
           max-width: calc(${breakpoints.wide}px + 2.5rem);
           margin: auto;
-          color: ${palette.neutral["100"]};
+          color: ${neutral["100"]};
           ${gridBasev2()}
         `}
       >
@@ -144,7 +145,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
                     to={breadcrumbItem.link}
                     css={css`
                       ${textSans.medium()};
-                      color: ${palette.neutral[100]};
+                      color: ${neutral[100]};
                     `}
                   >
                     {breadcrumbItem.title}
@@ -157,7 +158,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
                           ? "bold"
                           : "regular"
                       })};
-                      color: ${palette.neutral[100]};
+                      color: ${neutral[100]};
                     `}
                   >
                     {breadcrumbItem.title}
@@ -173,11 +174,11 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
           css={css`
             max-width: calc(${breakpoints.wide}px + 2.5rem);
             margin: 32px 0 0 0;
-            color: ${palette.neutral["100"]};
+            color: ${neutral["100"]};
             ${headline.medium({ fontWeight: "bold" })};
             font-size: 1.5rem;
             padding: 8px;
-            border: 1px solid ${palette.brand[600]};
+            border: 1px solid ${brand[600]};
             border-bottom: 0;
             ${minWidth.tablet} {
               line-height: 57px;
@@ -200,7 +201,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
                 };
                 ${minWidth.wide} {
                   ${gridItemPlacementv2(2, 1, 6, 10)};
-                };  
+                };
               `
               : `
                 ${gridItemPlacementv2(1, 1, 1, 4)};

@@ -1,4 +1,4 @@
-import { palette } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { RouteComponentProps, Router } from "@reach/router";
 import React from "react";
 import {
@@ -46,8 +46,8 @@ export const ReturnToAccountOverviewButton = () => (
   <LinkButton
     to="/"
     text="Return to your account"
-    colour={palette.neutral[100]}
-    textColour={palette.neutral[0]}
+    colour={neutral[100]}
+    textColour={neutral[0]}
     hollow
     left
   />

@@ -1,5 +1,12 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import {
+  background,
+  brand,
+  neutral,
+  success,
+  text
+} from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -49,7 +56,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   }, []);
 
   const subHeadingCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
@@ -98,7 +105,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
           />
           <section
             css={css`
-              border: 1px solid ${palette.neutral["86"]};
+              border: 1px solid ${neutral["86"]};
               margin-top: ${space[5]}px;
             `}
           >
@@ -106,8 +113,8 @@ const ConfirmationFC = (props: RouteableStepProps) => {
               css={css`
                 margin: 0;
                 padding: ${space[3]}px;
-                background-color: ${palette.neutral["97"]};
-                border-bottom: 1px solid ${palette.neutral["86"]};
+                background-color: ${neutral["97"]};
+                border-bottom: 1px solid ${neutral["86"]};
                 ${textSans.medium({ fontWeight: "bold" })};
                 ${minWidth.tablet} {
                   padding: ${space[3]}px ${space[5]}px;
@@ -208,8 +215,8 @@ const ConfirmationFC = (props: RouteableStepProps) => {
               to={"/subscriptions"}
               text={"Return to subscription"}
               state={props.location?.state}
-              colour={palette.background.ctaPrimary}
-              textColour={palette.text.ctaPrimary}
+              colour={background.ctaPrimary}
+              textColour={text.ctaPrimary}
               fontWeight={"bold"}
               onClick={() =>
                 trackEvent({
@@ -224,7 +231,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             css={css`
               ${textSans.medium()};
               margin-top: ${space[12]}px;
-              color: ${palette.neutral[46]};
+              color: ${neutral[46]};
             `}
           >
             If you need seperate delivery addresses for each of your
@@ -232,7 +239,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             <span
               css={css`
                 cursor: pointer;
-                color: ${palette.brand[500]};
+                color: ${brand[500]};
                 text-decoration: underline;
               `}
               onClick={() =>
@@ -306,7 +313,7 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
       position: relative;
       width: 100%;
       text-align: left;
-      border: 4px solid ${palette.success[400]};
+      border: 4px solid ${success[400]};
       box-sizing: border-box;
       padding: 14px 14px 14px 50px;
       margin-bottom: 50px;

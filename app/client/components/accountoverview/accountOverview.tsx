@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
@@ -58,7 +59,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
   const subHeadingCss = css`
     margin: ${space[12]}px 0 ${space[6]}px;
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     ${headline.small({ fontWeight: "bold" })};
     ${maxWidth.tablet} {
       font-size: 1.25rem;

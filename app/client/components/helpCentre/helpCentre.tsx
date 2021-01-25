@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
@@ -20,7 +21,7 @@ interface HelpCentreProps extends RouteComponentProps {
 const titleStyle = css`
   ${headline.xsmall({ fontWeight: "bold" })};
   margin: 0;
-  border-top: 1px solid ${palette.neutral[86]};
+  border-top: 1px solid ${neutral[86]};
   ${minWidth.desktop} {
     font-size: 1.75rem;
     border-top: 0;
@@ -29,7 +30,7 @@ const titleStyle = css`
 
 const popularTopicsTitleStyle = css`
   ${headline.xxsmall({ fontWeight: "bold" })};
-  border-top: 1px solid ${palette.neutral[86]};
+  border-top: 1px solid ${neutral[86]};
   margin-top: ${space[6]}px;
   padding: ${space[1]}px 0;
   ${minWidth.desktop} {
@@ -38,7 +39,7 @@ const popularTopicsTitleStyle = css`
 `;
 
 const contactUsTitleStyle = css`
-  border-top: 1px solid ${palette.neutral["86"]};
+  border-top: 1px solid ${neutral["86"]};
   margin-top: 30px;
   ${minWidth.tablet} {
     margin-top: 40px;
@@ -84,8 +85,8 @@ export const HelpCentre = (_: HelpCentreProps) => (
           soon as possible.
         </p>
         <LinkButton
-          colour={palette.brand[800]}
-          textColour={palette.brand[400]}
+          colour={brand[800]}
+          textColour={brand[400]}
           fontWeight={"bold"}
           text="Take me to the form"
           to="/contact-us/"

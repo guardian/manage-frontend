@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { minWidth } from "../../../styles/breakpoints";
@@ -33,7 +33,7 @@ export const DeliveryRecordInstructions = (
             : "none"};
           text-align: left;
           ${textSans.small({ fontStyle: "italic" })};
-          color: ${palette.brand[500]};
+          color: ${brand[500]};
           cursor: pointer;
         `}
         onClick={() => {

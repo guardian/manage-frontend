@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import React, { FormEvent, useState } from "react";
@@ -44,7 +45,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
           }
         }}
         css={css`
-          border: 1px solid ${palette.neutral["86"]};
+          border: 1px solid ${neutral["86"]};
           margin: 0 0 ${space[5]}px;
           padding: 0;
         `}
@@ -56,8 +57,8 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
             margin: 0;
             padding: ${space[3]}px;
             float: left;
-            background-color: ${palette.neutral["97"]};
-            border-bottom: 1px solid ${palette.neutral["86"]};
+            background-color: ${neutral["97"]};
+            border-bottom: 1px solid ${neutral["86"]};
             ${textSans.medium({ fontWeight: "bold" })};
             ${minWidth.tablet} {
               padding: ${space[3]}px ${space[5]}px;

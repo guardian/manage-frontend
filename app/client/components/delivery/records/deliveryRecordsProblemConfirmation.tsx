@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
-import { palette } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
@@ -113,7 +113,7 @@ const DeliveryRecordsProblemConfirmationFC = (
         />
         <h2
           css={css`
-            border-top: 1px solid ${palette.neutral["86"]};
+            border-top: 1px solid ${neutral["86"]};
             ${headline.small()};
             font-weight: bold;
             ${maxWidth.tablet} {
@@ -138,7 +138,7 @@ const DeliveryRecordsProblemConfirmationFC = (
             margin: ${space[3]}px 0;
             padding: ${space[3]}px ${space[3]}px ${space[3]}px
               ${space[3] * 2 + 17}px;
-            background-color: ${palette.neutral[97]};
+            background-color: ${neutral[97]};
             ${textSans.small()};
             ${minWidth.tablet} {
               margin: ${space[5]}px 0;
@@ -152,7 +152,7 @@ const DeliveryRecordsProblemConfirmationFC = (
               left: ${space[3]}px;
             `}
           >
-            <InfoIconDark fillColor={palette.brand[500]} />
+            <InfoIconDark fillColor={brand[500]} />
           </i>
           {deliveryProblemCredit?.showCredit
             ? `Thank you for reporting your delivery problem${
@@ -172,7 +172,7 @@ const DeliveryRecordsProblemConfirmationFC = (
         </span>
         <section
           css={css`
-            border: 1px solid ${palette.neutral["86"]};
+            border: 1px solid ${neutral["86"]};
             margin-bottom: ${deliveryAddressContext.address &&
             deliveryAddressContext.productsAffected &&
             deliveryAddressContext.productsAffected?.length > 0
@@ -184,8 +184,8 @@ const DeliveryRecordsProblemConfirmationFC = (
             css={css`
               margin: 0;
               padding: 14px ${space[3]}px;
-              background-color: ${palette.neutral["97"]};
-              border-bottom: 1px solid ${palette.neutral["86"]};
+              background-color: ${neutral["97"]};
+              border-bottom: 1px solid ${neutral["86"]};
               ${textSans.medium({ fontWeight: "bold" })};
               ${minWidth.tablet} {
                 padding: 14px ${space[5]}px;
@@ -297,7 +297,7 @@ const DeliveryRecordsProblemConfirmationFC = (
                 ${textSans.medium()};
                 padding: ${space[5]}px;
                 margin: ${space[5]}px;
-                background-color: ${palette.neutral["97"]};
+                background-color: ${neutral["97"]};
               `}
             >
               <div
@@ -351,7 +351,7 @@ const DeliveryRecordsProblemConfirmationFC = (
           deliveryAddressContext.productsAffected?.length > 0 && (
             <section
               css={css`
-                border: 1px solid ${palette.neutral["86"]};
+                border: 1px solid ${neutral["86"]};
                 margin-bottom: ${space[9]}px;
               `}
             >
@@ -359,8 +359,8 @@ const DeliveryRecordsProblemConfirmationFC = (
                 css={css`
                   margin: 0;
                   padding: 14px ${space[3]}px;
-                  background-color: ${palette.neutral["97"]};
-                  border-bottom: 1px solid ${palette.neutral["86"]};
+                  background-color: ${neutral["97"]};
+                  border-bottom: 1px solid ${neutral["86"]};
                   ${textSans.medium({ fontWeight: "bold" })};
                   ${minWidth.tablet} {
                     padding: 14px ${space[5]}px;

@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
-import { palette } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import React, { useState } from "react";
@@ -90,7 +90,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
   return (
     <div
       css={css`
-        background-color: ${palette.neutral["97"]};
+        background-color: ${neutral["97"]};
         padding: ${space[3]}px;
         margin: ${space[3]}px;
         ${minWidth.tablet} {
@@ -140,7 +140,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                         ${textSans.medium()};
                         text-decoration: underline;
                         cursor: pointer;
-                        color: ${palette.brand[500]};
+                        color: ${brand[500]};
                         margin-left: ${space[3]}px;
                       `}
                       onClick={cancelNumberUpdate(phoneType)}
@@ -166,7 +166,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     </span>
                     <span
                       css={css`
-                        color: ${palette.neutral[46]};
+                        color: ${neutral[46]};
                       `}
                     >
                       {phoneNumber}
@@ -175,7 +175,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                       css={css`
                         text-decoration: underline;
                         cursor: pointer;
-                        color: ${palette.brand[500]};
+                        color: ${brand[500]};
                         margin-left: ${space[3]}px;
                       `}
                       onClick={putNumberInEditState(phoneType)}
@@ -207,7 +207,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     ${textSans.medium()};
                     text-decoration: underline;
                     cursor: pointer;
-                    color: ${palette.brand[500]};
+                    color: ${brand[500]};
                     margin-left: ${space[3]}px;
                   `}
                   onClick={() => {
@@ -255,7 +255,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                 left: 0;
               `}
             >
-              <InfoIconDark fillColor={palette.brand[500]} />
+              <InfoIconDark fillColor={brand[500]} />
             </i>
             Your number will be updated when you submit your report.
           </span>

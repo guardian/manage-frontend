@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
 import { focusHalo } from "@guardian/src-foundations/accessibility";
+import { error, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useRef } from "react";
 import { ErrorIcon } from "./svgs/errorIcon";
@@ -40,7 +40,7 @@ export const Input = (props: InputProps) => {
     <label
       css={css`
         display: block;
-        color: ${palette.neutral["7"]};
+        color: ${neutral["7"]};
         ${textSans.medium()};
         font-weight: bold;
         ${props.additionalCss}
@@ -52,7 +52,7 @@ export const Input = (props: InputProps) => {
           css={css`
             font-style: italic;
             font-weight: normal;
-            color: ${palette.neutral["46"]};
+            color: ${neutral["46"]};
           `}
         >
           {" "}
@@ -64,7 +64,7 @@ export const Input = (props: InputProps) => {
           css={css`
             display: block;
             font-weight: normal;
-            color: ${palette.neutral["46"]};
+            color: ${neutral["46"]};
             max-width: ${props.width}ch;
           `}
         >
@@ -76,7 +76,7 @@ export const Input = (props: InputProps) => {
           css={css`
             display: block;
             font-weight: normal;
-            color: ${palette.error[400]};
+            color: ${error[400]};
           `}
         >
           <ErrorIcon
@@ -126,12 +126,12 @@ export const Input = (props: InputProps) => {
           max-width: ${props.width}ch;
           height: 44px;
           ${textSans.medium()}
-          color: ${palette.neutral["7"]};
+          color: ${neutral["7"]};
           margin-top: 4px;
           padding: 0 8px;
-          background-color: ${palette.neutral["100"]};
+          background-color: ${neutral["100"]};
           border: ${props.inErrorState ? 4 : 2}px solid ${
-            props.inErrorState ? palette.error[400] : palette.neutral["60"]
+            props.inErrorState ? error[400] : neutral["60"]
           };
           ${props.prefixValue &&
             `

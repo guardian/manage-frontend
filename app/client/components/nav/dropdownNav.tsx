@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import React, { useEffect, useRef, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../../styles/grid";
@@ -10,8 +11,8 @@ import { MenuSpecificNavItem, NAV_LINKS } from "./navConfig";
 const dropdownNavCss = (showMenu: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
-    background: palette.brand[400],
-    borderTop: `1px solid ${palette.brand[600]}`,
+    background: brand[400],
+    borderTop: `1px solid ${brand[600]}`,
     position: "absolute",
     top: "50px",
     left: 0,
@@ -37,9 +38,9 @@ const dropdownNavCss = (showMenu: boolean) =>
       marginRight: "-32px",
       bottom: "auto",
       borderTop: "none",
-      background: palette.neutral["100"],
+      background: neutral["100"],
       "li:not(:last-child)": {
-        borderBottom: `1px solid ${palette.neutral["86"]}`
+        borderBottom: `1px solid ${neutral["86"]}`
       },
       ":before": {
         content: "''",
@@ -50,7 +51,7 @@ const dropdownNavCss = (showMenu: boolean) =>
         right: `${space[3]}px`,
         borderLeft: `${space[2]}px solid transparent`,
         borderRight: `${space[2]}px solid transparent`,
-        borderBottom: `${space[2]}px solid ${palette.neutral["100"]}`
+        borderBottom: `${space[2]}px solid ${neutral["100"]}`
       }
     }
   });
@@ -58,14 +59,14 @@ const dropdownNavCss = (showMenu: boolean) =>
 const dropdownNavItemCss = css({
   padding: `9px 30px ${space[2]}px 46px`,
   textDecoration: "none",
-  color: palette.neutral["100"],
+  color: neutral["100"],
   whiteSpace: "nowrap",
   position: "relative",
   marginTop: "-1px",
   display: "flex",
   alignItems: "center",
   ":hover, :focus": {
-    backgroundColor: palette.brand[300],
+    backgroundColor: brand[300],
     textDecoration: "none"
   },
   ":focus": {
@@ -80,19 +81,19 @@ const dropdownNavItemCss = css({
     right: 0,
     width: "calc(100% - 46px)",
     height: "1px",
-    backgroundColor: `${palette.brand[600]}`
+    backgroundColor: `${brand[600]}`
   },
   [minWidth.desktop]: {
     padding: "18px 14px",
-    color: palette.neutral["20"],
+    color: neutral["20"],
     ".icon--fill": {
-      fill: palette.neutral["20"]
+      fill: neutral["20"]
     },
     ":after": {
       content: "none"
     },
     ":hover, :focus": {
-      backgroundColor: palette.neutral["97"]
+      backgroundColor: neutral["97"]
     }
   }
 });
@@ -167,10 +168,7 @@ export const DropdownNav = () => {
       {/* TODO refactor to full use ExpanderButton */}
       <button
         css={{
-          ...expanderButtonCss(
-            palette.neutral["100"],
-            palette.neutral["100"]
-          )(showMenu)
+          ...expanderButtonCss(neutral["100"], neutral["100"])(showMenu)
         }}
         type="button"
         aria-expanded={showMenu}
@@ -221,7 +219,7 @@ export const DropdownNav = () => {
                   }}
                 >
                   <navItem.icon
-                    overrideFillColor={palette.neutral[100]}
+                    overrideFillColor={neutral[100]}
                     overrideWidthAtDesktop={12}
                   />
                 </div>
