@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import { capitalize } from "lodash";
 import React from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
@@ -130,7 +131,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
               left: 0;
             `}
           >
-            <InfoIconDark fillColor={palette.brand[500]} size={22} />
+            <InfoIconDark fillColor={brand[500]} size={22} />
           </i>
           {changesMessage}
         </span>

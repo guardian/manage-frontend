@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { neutral, news } from "@guardian/src-foundations/palette";
 import React from "react";
 import { Inlineable } from "./inlineable";
 
@@ -63,7 +63,7 @@ export const CardDisplay = (props: CardDisplayProps) => (
     {cardTypeToSVG(props.type)}{" "}
     <span
       css={css`
-        color: ${props.inErrorState ? palette.news[400] : palette.neutral[7]};
+        color: ${props.inErrorState ? news[400] : neutral[7]};
       `}
     >
       ending {props.last4}

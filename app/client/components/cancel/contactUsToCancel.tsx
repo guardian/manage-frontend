@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { LinkButton } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { SelfServiceCancellation } from "../../../shared/productResponse";
@@ -26,7 +27,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
     };
   `;
   const subHeadingBorderTopCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     margin: 50px 0 ${space[5]}px;
   `;
   const subHeadingCss = `

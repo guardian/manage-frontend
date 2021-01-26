@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral, news } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
@@ -329,7 +330,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             <>
               <h2
                 css={css`
-                  border-top: 1px solid ${palette.neutral["86"]};
+                  border-top: 1px solid ${neutral["86"]};
                   ${headline.small({ fontWeight: "bold" })};
                   ${maxWidth.tablet} {
                     font-size: 1.25rem;
@@ -367,7 +368,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   <span
                     css={css`
                       cursor: pointer;
-                      color: ${palette.brand[500]};
+                      color: ${brand[500]};
                       text-decoration: underline;
                     `}
                     onClick={() =>
@@ -389,7 +390,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                       margin: ${space[3]}px 0;
                       padding: ${space[3]}px ${space[3]}px ${space[3]}px
                         ${space[3] * 2 + 17}px;
-                      background-color: ${palette.neutral[97]};
+                      background-color: ${neutral[97]};
                       ${textSans.small()};
                       ${minWidth.tablet} {
                         margin: ${space[5]}px 0;
@@ -403,7 +404,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         left: ${space[3]}px;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand[500]} />
+                      <InfoIconDark fillColor={brand[500]} />
                     </i>
                     You don't have any available delivery history to report.
                     Your deliveries may be too far in the past or have already
@@ -455,7 +456,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           )}
           <h2
             css={css`
-              border-top: 1px solid ${palette.neutral["86"]};
+              border-top: 1px solid ${neutral["86"]};
               ${headline.small()};
               font-weight: bold;
               opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1 &&
@@ -464,9 +465,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 : "1"};
               ${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
                 ? `
-              background-color: ${palette.neutral["97"]};
-              border-left: 1px solid ${palette.neutral["86"]};
-              border-right: 1px solid ${palette.neutral["86"]};
+              background-color: ${neutral["97"]};
+              border-left: 1px solid ${neutral["86"]};
+              border-right: 1px solid ${neutral["86"]};
               margin: 0;
               padding: 14px 14px 14px;
               ${textSans.medium({ fontWeight: "bold" })};
@@ -516,7 +517,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   <span
                     css={css`
                       cursor: pointer;
-                      color: ${palette.brand[500]};
+                      color: ${brand[500]};
                       text-decoration: underline;
                     `}
                     onClick={() =>
@@ -568,7 +569,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
             <>
               <section
                 css={css`
-                  border: 1px solid ${palette.neutral["86"]};
+                  border: 1px solid ${neutral["86"]};
                   margin: ${space[5]}px 0 ${space[5]}px;
                   padding: 0;
                 `}
@@ -577,8 +578,8 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   css={css`
                     margin: 0;
                     padding: ${space[3]}px;
-                    background-color: ${palette.neutral["97"]};
-                    border-bottom: 1px solid ${palette.neutral["86"]};
+                    background-color: ${neutral["97"]};
+                    border-bottom: 1px solid ${neutral["86"]};
                     ${textSans.medium({ fontWeight: "bold" })};
                     ${minWidth.tablet} {
                       padding: ${space[3]}px ${space[5]}px;
@@ -615,7 +616,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         position: relative;
                         padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
                         ${textSans.medium()};
-                        border: 4px solid ${palette.news[400]};
+                        border: 4px solid ${news[400]};
                       `}
                     >
                       <i
@@ -711,7 +712,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     font-weight: bold;
                     margin-left: 22px;
                     padding: 0;
-                    color: ${palette.brand[400]};
+                    color: ${brand[400]};
                     :hover {
                       background-color: transparent;
                     }
@@ -725,7 +726,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 <p
                   css={css`
                     ${textSans.medium()};
-                    color: ${palette.neutral[46]};
+                    color: ${neutral[46]};
                     margin-top: ${space[6]}px;
                   `}
                 >
@@ -734,7 +735,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                   <span
                     css={css`
                       cursor: pointer;
-                      color: ${palette.brand[500]};
+                      color: ${brand[500]};
                       text-decoration: underline;
                     `}
                     onClick={() =>

@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
@@ -66,11 +67,11 @@ const calcBackgroundColour = (
   hollow?: true
 ) => {
   if (disabled) {
-    return palette.neutral[60];
+    return neutral[60];
   } else if (primary) {
-    return palette.brandAlt[400];
+    return brandAlt[400];
   } else if (hollow) {
-    return palette.neutral[100];
+    return neutral[100];
   }
   return colour;
 };
@@ -82,20 +83,20 @@ const calcTextColour = (
   hollow?: true
 ) => {
   if (disabled) {
-    return palette.neutral[100];
+    return neutral[100];
   } else if (primary || hollow) {
-    return palette.neutral[7];
+    return neutral[7];
   }
   return textColour;
 };
 
-const defaultColour = palette.neutral[20];
+const defaultColour = neutral[20];
 const buttonCss = ({
   disabled,
   height,
   fontWeight,
   colour = defaultColour,
-  textColour = palette.neutral[100],
+  textColour = neutral[100],
   left,
   right,
   primary,
@@ -192,7 +193,7 @@ export const LinkButton = (props: LinkButtonProps) => (
   >
     {props.alert && (
       <ErrorIcon
-        fill={palette.neutral[100]}
+        fill={neutral[100]}
         additionalCss={css`
           margin-right: ${space[2]}px;
         `}

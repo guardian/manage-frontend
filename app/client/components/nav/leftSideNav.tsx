@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
@@ -36,12 +37,12 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
-    background: palette.neutral["100"],
-    color: palette.brand[400],
+    background: neutral["100"],
+    color: brand[400],
 
     [minWidth.desktop]: {
       borderLeft: `${space[2]}px solid ${
-        isSelected ? palette.brandAlt[400] : palette.neutral["46"]
+        isSelected ? brandAlt[400] : neutral["46"]
       }`,
       boxShadow: isSelected ? "0 1px 0 white" : undefined,
       minHeight: 0,
@@ -54,20 +55,18 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
         right: 0,
         height: "1px",
         width: "calc(100% - 22px)",
-        backgroundColor: palette.neutral["86"]
+        backgroundColor: neutral["86"]
       },
 
       ":hover": {
-        backgroundColor: isSelected
-          ? palette.neutral["100"]
-          : palette.neutral["97"]
+        backgroundColor: isSelected ? neutral["100"] : neutral["97"]
       }
     }
   });
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
   margin: 0,
-  background: isSelected ? palette.neutral["100"] : palette.neutral["86"],
+  background: isSelected ? neutral["100"] : neutral["86"],
   display: "block",
   width: "100%",
   [minWidth.tablet]: {

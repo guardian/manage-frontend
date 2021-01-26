@@ -1,4 +1,4 @@
-import { palette } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import { ProductDetail } from "../../../shared/productResponse";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
@@ -15,7 +15,7 @@ interface PaymentDetailsTableProps {
 }
 export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
   <ProductDescriptionListTable
-    borderColour={palette.neutral[86]}
+    borderColour={neutral[86]}
     alternateRowBgColors
     tableHeading={props.tableHeading}
     content={[

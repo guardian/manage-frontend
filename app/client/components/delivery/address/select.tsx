@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
 import { focusHalo } from "@guardian/src-foundations/accessibility";
+import { error, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { ErrorIcon } from "../../svgs/errorIcon";
@@ -27,7 +27,7 @@ export const Select = (props: SelectProps) => (
   <label
     css={css`
       display: block;
-      color: ${palette.neutral["7"]};
+      color: ${neutral["7"]};
       ${textSans.medium()} ${props.additionalCSS};
       font-weight: bold;
     `}
@@ -37,7 +37,7 @@ export const Select = (props: SelectProps) => (
       <span
         css={css`
           display: block;
-          color: ${palette.error[400]};
+          color: ${error[400]};
         `}
       >
         <ErrorIcon />
@@ -56,12 +56,12 @@ export const Select = (props: SelectProps) => (
           width: 100%;
           max-width: ${props.width}ch;
           ${textSans.medium()}
-          color: ${palette.neutral["7"]};
+          color: ${neutral["7"]};
           box-sizing: border-box;
           margin-top: 4px;
           padding: 8px 0 8px 4px;
           border: ${props.inErrorState ? 4 : 2}px solid ${
-        props.inErrorState ? palette.error[400] : palette.neutral["60"]
+        props.inErrorState ? error[400] : neutral["60"]
       };
           &:focus {
             ${focusHalo};

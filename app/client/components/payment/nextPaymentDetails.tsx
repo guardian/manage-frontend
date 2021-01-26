@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import React from "react";
 import { formatDateStr } from "../../../shared/dates";
 import {
@@ -82,7 +83,7 @@ export const NewPaymentPriceAlert = () => (
         margin-bottom: 4px;
       `}
     >
-      <InfoIconDark fillColor={palette.brand[500]} />
+      <InfoIconDark fillColor={brand[500]} />
     </span>
     <span
       css={css`

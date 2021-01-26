@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
@@ -32,7 +32,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
           left: 4px;
           width: calc(${(currentStep - 1) * 50}% - 8px);
           height: 5px;
-          background-color: ${palette.brand[500]};
+          background-color: ${brand[500]};
           z-index: -1;
         }
         :after {
@@ -43,7 +43,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
           left: calc(4px + ${(currentStep - 1) * 50}%);
           width: calc(${Math.abs(currentStep - 3) * 50}% - 8px);
           height: 2px;
-          background-color: ${palette.neutral[60]};
+          background-color: ${neutral[60]};
           z-index: -1;
         }
         ${props.additionalCSS}
@@ -51,14 +51,14 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
     >
       <div>
         {currentStep > 1 ? (
-          <TickInCircle fill={palette.brand[500]} />
+          <TickInCircle fill={brand[500]} />
         ) : (
           <i
             css={css`
               display: block;
               width: 22px;
               height: 22px;
-              background-color: ${palette.brand[500]};
+              background-color: ${brand[500]};
               border-radius: 50%;
             `}
           />
@@ -73,19 +73,15 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
         `}
       >
         {currentStep > 2 ? (
-          <TickInCircle fill={palette.brand[500]} />
+          <TickInCircle fill={brand[500]} />
         ) : (
           <i
             css={css`
               display: block;
               width: 22px;
               height: 22px;
-              background-color: ${currentStep < 2
-                ? palette.neutral[100]
-                : palette.brand[500]};
-              ${currentStep < 2
-                ? `border: 1px solid ${palette.neutral[60]};`
-                : ""}
+              background-color: ${currentStep < 2 ? neutral[100] : brand[500]};
+              ${currentStep < 2 ? `border: 1px solid ${neutral[60]};` : ""}
               border-radius: 50%;
             `}
           />
@@ -99,15 +95,15 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
         `}
       >
         {currentStep > 2 ? (
-          <TickInCircle fill={palette.brand[500]} />
+          <TickInCircle fill={brand[500]} />
         ) : (
           <i
             css={css`
               display: block;
               width: 22px;
               height: 22px;
-              background-color: ${palette.neutral[100]};
-              border: 1px solid ${palette.neutral[60]};
+              background-color: ${neutral[100]};
+              border: 1px solid ${neutral[60]};
               border-radius: 50%;
             `}
           />

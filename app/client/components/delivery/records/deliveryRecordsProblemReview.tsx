@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
-import { palette } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import moment from "moment";
@@ -195,7 +195,7 @@ const DeliveryRecordsProblemReviewFC = (
             />
             <h2
               css={css`
-                border-top: 1px solid ${palette.neutral["86"]};
+                border-top: 1px solid ${neutral["86"]};
                 ${headline.small({ fontWeight: "bold" })};
                 ${maxWidth.tablet} {
                   font-size: 1.25rem;
@@ -207,15 +207,15 @@ const DeliveryRecordsProblemReviewFC = (
             </h2>
             <section
               css={css`
-                border: 1px solid ${palette.neutral["86"]};
+                border: 1px solid ${neutral["86"]};
               `}
             >
               <h2
                 css={css`
                   margin: 0;
                   padding: ${space[3]}px;
-                  background-color: ${palette.neutral["97"]};
-                  border-bottom: 1px solid ${palette.neutral["86"]};
+                  background-color: ${neutral["97"]};
+                  border-bottom: 1px solid ${neutral["86"]};
                   ${textSans.medium({ fontWeight: "bold" })};
                   ${minWidth.tablet} {
                     padding: ${space[3]}px ${space[5]}px;
@@ -425,7 +425,7 @@ const DeliveryRecordsProblemReviewFC = (
                         left: 0;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand[500]} />
+                      <InfoIconDark fillColor={brand[500]} />
                     </i>
                     We apologise for any inconvenience caused and will credit
                     you the amount shown below once you submit your report. We
@@ -433,7 +433,7 @@ const DeliveryRecordsProblemReviewFC = (
                     service. If you’re not satisfied with this outcome please{" "}
                     <span
                       css={css`
-                        color: ${palette.brand[500]};
+                        color: ${brand[500]};
                         text-decoration: underline;
                         cursor: pointer;
                       `}
@@ -450,7 +450,7 @@ const DeliveryRecordsProblemReviewFC = (
                       ${textSans.medium()};
                       padding: ${space[3]}px;
                       margin: ${space[3]}px;
-                      background-color: ${palette.neutral["97"]};
+                      background-color: ${neutral["97"]};
                       ${minWidth.tablet} {
                         padding: ${space[5]}px;
                         margin: ${space[5]}px;
@@ -542,7 +542,7 @@ const DeliveryRecordsProblemReviewFC = (
                         left: 0;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand[500]} />
+                      <InfoIconDark fillColor={brand[500]} />
                     </i>
                     Once you submit your report, your case will be marked as
                     high priority. Our customer service team will try their best
@@ -582,7 +582,7 @@ const DeliveryRecordsProblemReviewFC = (
                   font-weight: bold;
                   margin-left: 22px;
                   padding: 0;
-                  color: ${palette.brand[400]};
+                  color: ${brand[400]};
                   :hover {
                     background-color: transparent;
                   }
@@ -601,14 +601,14 @@ const DeliveryRecordsProblemReviewFC = (
               css={css`
                 ${textSans.medium()};
                 margin-top: ${space[9]}px;
-                color: ${palette.neutral[46]};
+                color: ${neutral[46]};
               `}
             >
               If your delivery is not shown above, or you’d like to talk to
               someone,{" "}
               <span
                 css={css`
-                  color: ${palette.brand[500]};
+                  color: ${brand[500]};
                   text-decoration: underline;
                   cursor: pointer;
                 `}

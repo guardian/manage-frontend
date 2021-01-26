@@ -1,5 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral, news } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { LinkButton } from "./buttons";
@@ -21,7 +22,7 @@ interface ProblemAlertProps {
 export const ProblemAlert = (props: ProblemAlertProps) => (
   <div
     css={css`
-      border: 4px solid ${palette.news[400]};
+      border: 4px solid ${news[400]};
       padding: ${space["5"]}px ${space["5"]}px ${space["5"]}px 50px;
       position: relative;
       ${props.additionalcss && props.additionalcss}
@@ -58,8 +59,8 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
         state={props.button.state}
         text={props.button.title}
         fontWeight={"bold"}
-        colour={palette.brand[400]}
-        textColour={palette.neutral[100]}
+        colour={brand[400]}
+        textColour={neutral[100]}
       />
     )}
   </div>

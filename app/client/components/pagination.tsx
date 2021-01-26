@@ -1,5 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import {
   SvgChevronLeftSingle,
@@ -98,7 +99,7 @@ export const Pagination = (props: PaginationProps) => {
         css={css`
           display: flex;
           ${textSans.medium()}
-          color: ${palette.neutral[46]};
+          color: ${neutral[46]};
           > span {
             margin-right: ${space[3]}px;
           }
@@ -198,10 +199,10 @@ const PaginationNumberItem = (props: PaginationNumberItemProps) => {
     border: 1px solid transparent;
     transition: border-color 0.2s, background-color 0.2s;
     :hover {
-      border-color: ${palette.neutral[46]};
+      border-color: ${neutral[46]};
     }
-    background-color: ${isSelectedPage ? palette.neutral[46] : "transparent"};
-    color: ${isSelectedPage ? palette.neutral[100] : palette.neutral[46]};
+    background-color: ${isSelectedPage ? neutral[46] : "transparent"};
+    color: ${isSelectedPage ? neutral[100] : neutral[46]};
   `;
 
   return (

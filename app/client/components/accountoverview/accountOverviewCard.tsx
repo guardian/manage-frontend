@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { cancellationFormatDate, formatDateStr } from "../../../shared/dates";
@@ -95,7 +96,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
   return (
     <div
       css={css`
-        border: 1px solid ${palette.neutral[86]};
+        border: 1px solid ${neutral[86]};
         margin-bottom: ${space[6]}px;
       `}
     >
@@ -105,8 +106,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
           justify-content: space-between;
           align-items: start;
           background-color: ${hasCancellationPending
-            ? palette.neutral[97]
-            : palette.brand[400]};
+            ? neutral[97]
+            : brand[400]};
           ${minWidth.mobileLandscape} {
             align-items: center;
           }
@@ -116,9 +117,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
           css={css`
             margin: 0;
             padding: ${space[3]}px;
-            color: ${hasCancellationPending
-              ? palette.neutral[7]
-              : palette.neutral[100]};
+            color: ${hasCancellationPending ? neutral[7] : neutral[100]};
             ${titlepiece.small()};
             font-weight: bold;
             font-size: 17px;
@@ -161,7 +160,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
               `}
             >
               <ErrorIcon
-                fill={palette.brandAlt[200]}
+                fill={brandAlt[200]}
                 additionalCss={css`
                   transform: translateY(1px);
                 `}
@@ -306,8 +305,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                 to={`/${groupedProductType.urlPart}`}
                 text={`Manage ${groupedProductType.friendlyName}`}
                 state={props.productDetail}
-                colour={palette.brand[800]}
-                textColour={palette.brand[400]}
+                colour={brand[800]}
+                textColour={brand[400]}
                 fontWeight={"bold"}
                 onClick={() =>
                   trackEvent({
@@ -325,14 +324,14 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
           css={css`
             margin: ${space[6]}px 0 0 0;
             padding: ${space[6]}px 0 0 0;
-            border-top: 1px solid ${palette.neutral[86]};
+            border-top: 1px solid ${neutral[86]};
             ${minWidth.tablet} {
               flex: 1;
               display: flex;
               flex-flow: column nowrap;
               padding: 0 0 0 ${space[5]}px;
               border-top: none;
-              border-left: 1px solid ${palette.neutral[86]};
+              border-left: 1px solid ${neutral[86]};
               margin: 0;
               padding: 0 0 0 ${space[5]}px;
             }
@@ -408,16 +407,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                     to={`/payment/${specificProductType.urlPart}`}
                     state={props.productDetail}
                     text={"Manage payment method"}
-                    colour={
-                      hasPaymentFailure
-                        ? palette.brand[400]
-                        : palette.brand[800]
-                    }
-                    textColour={
-                      hasPaymentFailure
-                        ? palette.neutral[100]
-                        : palette.brand[400]
-                    }
+                    colour={hasPaymentFailure ? brand[400] : brand[800]}
+                    textColour={hasPaymentFailure ? neutral[100] : brand[400]}
                     fontWeight={"bold"}
                     alert={hasPaymentFailure}
                     onClick={() =>

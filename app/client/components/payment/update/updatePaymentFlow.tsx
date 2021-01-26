@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
-import { palette } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
@@ -62,9 +62,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
       display: "inline-block",
       minWidth: "125px",
       backgroundColor:
-        props.value === props.paymentMethod
-          ? palette.neutral[60]
-          : palette.neutral[86],
+        props.value === props.paymentMethod ? neutral[60] : neutral[86],
       margin: "10px",
       padding: "20px",
       textAlign: "center",
@@ -149,7 +147,7 @@ class PaymentUpdaterStep extends React.Component<
 
   public render(): React.ReactNode {
     const subHeadingCss = `
-      border-top: 1px solid ${palette.neutral["86"]};
+      border-top: 1px solid ${neutral["86"]};
       ${headline.small()};
       font-weight: bold;
       margin-top: 50px;
@@ -231,8 +229,8 @@ class PaymentUpdaterStep extends React.Component<
               this.props.routeableStepProps.location?.state?.flowReferrer?.link
             }
             text="Return to your billing"
-            colour={palette.neutral[100]}
-            textColour={palette.neutral[0]}
+            colour={neutral[100]}
+            textColour={neutral[0]}
             hollow
             left
           />

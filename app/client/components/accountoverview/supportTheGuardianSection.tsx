@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import {
@@ -26,8 +27,8 @@ export const SupportTheGuardianSection = (
     </p>
     <SupportTheGuardianButton
       fontWeight="bold"
-      textColour={palette.neutral[100]}
-      colour={palette.brand[400]}
+      textColour={neutral[100]}
+      colour={brand[400]}
       notPrimary
       {...props}
     />

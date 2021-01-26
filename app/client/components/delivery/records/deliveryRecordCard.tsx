@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { FormEvent } from "react";
@@ -35,7 +36,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         min-width: 10ch;
         ${minWidth.tablet} {
           margin-right: 16px;
-          ${ignoreMinWidthAtNonMobile ? "min-width: 9ch;" : "min-width: 12ch;"} 
+          ${ignoreMinWidthAtNonMobile ? "min-width: 9ch;" : "min-width: 12ch;"}
         }
     `;
 
@@ -52,7 +53,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
   return (
     <dl
       css={css`
-        border: 1px solid ${palette.neutral["86"]};
+        border: 1px solid ${neutral["86"]};
         margin: 0;
         padding: ${space[3]}px;
         ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
@@ -78,7 +79,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             left: 0;
             height: 100%;
             padding: 0 ${space[3]}px;
-            border-right: 1px solid ${palette.neutral["86"]};
+            border-right: 1px solid ${neutral["86"]};
             ${minWidth.tablet} {
               padding: 0 18px;
             }
@@ -245,7 +246,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
               {props.deliveryRecord.credit.invoiceDate && (
                 <p
                   css={css`
-                    color: ${palette.neutral["60"]};
+                    color: ${neutral["60"]};
                     margin: 0;
                     ${minWidth.tablet} {
                       display: inline-block;

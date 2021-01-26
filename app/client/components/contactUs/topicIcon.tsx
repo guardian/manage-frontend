@@ -1,4 +1,4 @@
-import { palette } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import { CommentsIcon } from "../svgs/commentsIcon";
 import { CreditCardIcon } from "../svgs/creditCardIcon";
@@ -16,21 +16,21 @@ interface TopicIconProps {
 export const TopicIcon = (props: TopicIconProps) => {
   switch (props.id) {
     case "delivery":
-      return <DeliveryIcon overrideFillColor={palette.neutral[100]} />;
+      return <DeliveryIcon overrideFillColor={neutral[100]} />;
     case "billing":
-      return <CreditCardIcon overrideFillColor={palette.neutral[100]} />;
+      return <CreditCardIcon overrideFillColor={neutral[100]} />;
     case "vouchers":
-      return <NewspaperVoucherIcon overrideFillColor={palette.neutral[100]} />;
+      return <NewspaperVoucherIcon overrideFillColor={neutral[100]} />;
     case "account":
-      return <ProfileIcon overrideFillColor={palette.neutral[100]} />;
+      return <ProfileIcon overrideFillColor={neutral[100]} />;
     case "tech":
-      return <TechIcon overrideFillColor={palette.neutral[100]} />;
+      return <TechIcon overrideFillColor={neutral[100]} />;
     case "journalism":
-      return <NewspaperIcon overrideFillColor={palette.neutral[100]} />;
+      return <NewspaperIcon overrideFillColor={neutral[100]} />;
     case "comments":
-      return <CommentsIcon overrideFillColor={palette.neutral[100]} />;
+      return <CommentsIcon overrideFillColor={neutral[100]} />;
     case "other":
-      return <OtherIcon overrideFillColor={palette.neutral[100]} />;
+      return <OtherIcon overrideFillColor={neutral[100]} />;
   }
   return <></>;
 };

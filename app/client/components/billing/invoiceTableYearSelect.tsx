@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { SvgChevronDownSingle } from "@guardian/src-icons";
 import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
@@ -16,7 +17,7 @@ interface InvoiceTableYearSelectProps {
 export const InvoiceTableYearSelect = (props: InvoiceTableYearSelectProps) => {
   const selectCss = css`
     ${headline.xxsmall({ fontWeight: "bold" })};
-    color: ${palette.neutral[7]};
+    color: ${neutral[7]};
     display: block;
     padding: 0 ${space[5]}px 0 10px;
     margin: 0;
@@ -39,7 +40,7 @@ export const InvoiceTableYearSelect = (props: InvoiceTableYearSelectProps) => {
       css={css`
         position: relative;
         display: inline-block;
-        border-left: 1px solid ${palette.neutral[86]};
+        border-left: 1px solid ${neutral[86]};
       `}
     >
       <select

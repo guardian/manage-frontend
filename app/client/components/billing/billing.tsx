@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, brandYellow, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
@@ -78,7 +79,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
     };
   `;
   const subHeadingBorderTopCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     margin: 50px 0 ${space[5]}px;
   `;
 
@@ -170,7 +171,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                             ${textSans.medium()};
                           `}
                         >
-                          <ErrorIcon fill={palette.brandYellow[200]} />
+                          <ErrorIcon fill={brandYellow[200]} />
                           <span
                             css={css`
                               margin-left: ${space[2]}px;
@@ -207,14 +208,12 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                         !productDetail.subscription.payPalEmail && (
                           <LinkButton
                             colour={
-                              productDetail.alertText
-                                ? palette.brand[400]
-                                : palette.brand[800]
+                              productDetail.alertText ? brand[400] : brand[800]
                             }
                             textColour={
                               productDetail.alertText
-                                ? palette.neutral[100]
-                                : palette.brand[400]
+                                ? neutral[100]
+                                : brand[400]
                             }
                             fontWeight={"bold"}
                             alert={!!productDetail.alertText}

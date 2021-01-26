@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React, { ReactElement } from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -54,7 +55,7 @@ export const ProductDescriptionListTable = (
     ${headline.xxsmall({ fontWeight: "bold" })};
     margin: 0;
     padding: ${space[3]}px ${space[5]}px;
-    background-color: ${palette.neutral[97]};
+    background-color: ${neutral[97]};
     ${maxWidth.tablet} {
       font-size: 1.0625rem;
       line-height: 1.6;
@@ -111,7 +112,7 @@ export const ProductDescriptionListTable = (
     <div
       css={css`
         ${textSans.medium()};
-        border: 1px solid ${props.borderColour || palette.neutral[20]};
+        border: 1px solid ${props.borderColour || neutral[20]};
         display: flex;
         flex-wrap: wrap;
         margin: ${space[5]}px 0;
@@ -146,14 +147,14 @@ export const ProductDescriptionListTable = (
               margin: 0;
               background-color: ${showAlternativeTableRowBgColours &&
               currentRow % 2 === (props.tableHeading ? 1 : 0)
-                ? palette.neutral[97]
+                ? neutral[97]
                 : "transparent"};
               border-bottom: ${!isLastTableRow && !isFirstCollum
-                  ? `1px solid ${props.borderColour || palette.neutral[20]};`
+                  ? `1px solid ${props.borderColour || neutral[20]};`
                   : "none;"}
                 ${minWidth.tablet} {
                 border-bottom: ${!isLastTableRow
-                  ? `1px solid ${props.borderColour || palette.neutral[20]}`
+                  ? `1px solid ${props.borderColour || neutral[20]}`
                   : "none"};
                 width: ${tableEntry.spanTwoCols ||
                 (isLastEntry && isOddNumberOfEntries)

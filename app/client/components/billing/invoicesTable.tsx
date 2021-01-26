@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useState } from "react";
@@ -86,7 +87,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const tableCss2 = css`
     display: block;
     width: 100%;
-    border: 1px solid ${palette.neutral[86]};
+    border: 1px solid ${neutral[86]};
     ${minWidth.tablet} {
       display: table;
     }
@@ -109,8 +110,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const invoiceYearSelectCss = css`
     display: none;
     padding: ${space[3]}px;
-    background-color: ${palette.neutral[97]};
-    border-bottom: 1px solid ${palette.neutral[86]};
+    background-color: ${neutral[97]};
+    border-bottom: 1px solid ${neutral[86]};
     ${minWidth.tablet} {
       display: table-cell;
       padding: ${space[5]}px ${space[5]}px ${space[5]}px 0;
@@ -121,8 +122,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     display: table-cell;
     ${headline.xxsmall({ fontWeight: "bold" })};
     padding: ${space[5]}px;
-    background-color: ${palette.neutral[97]};
-    border-bottom: 1px solid ${palette.neutral[86]};
+    background-color: ${neutral[97]};
+    border-bottom: 1px solid ${neutral[86]};
     ${maxWidth.tablet} {
       margin: 0;
       padding: ${space[3]}px;
@@ -163,7 +164,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
     padding: ${space[3]}px ${space[3]}px 0;
     :last-of-type {
       ${maxWidth.tablet} {
-        border-bottom: 1px solid ${palette.neutral[86]};
+        border-bottom: 1px solid ${neutral[86]};
       }
       padding: ${space[3]}px;
     }
@@ -179,10 +180,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
       width: auto;
       padding: ${space[5]}px;
       margin: 0;
-      border-top: 1px solid ${palette.neutral[86]};
-      background-color: ${
-        rowIndex % 2 === 0 ? palette.neutral[97] : "transparent"
-      };
+      border-top: 1px solid ${neutral[86]};
+      background-color: ${rowIndex % 2 === 0 ? neutral[97] : "transparent"};
       :before {
         display: none;
         content:"";
@@ -200,7 +199,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   `;
 
   const invoiceLinkCss = css`
-    color: ${palette.brand[400]};
+    color: ${brand[400]};
     font-weight: bold;
   `;
 
@@ -219,8 +218,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
             <div
               css={css`
                 display: none;
-                background-color: ${palette.neutral[97]};
-                border-bottom: 1px solid ${palette.neutral[86]};
+                background-color: ${neutral[97]};
+                border-bottom: 1px solid ${neutral[86]};
                 ${minWidth.tablet} {
                   display: table-cell;
                 }
@@ -229,8 +228,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
             <div
               css={css`
                 display: none;
-                background-color: ${palette.neutral[97]};
-                border-bottom: 1px solid ${palette.neutral[86]};
+                background-color: ${neutral[97]};
+                border-bottom: 1px solid ${neutral[86]};
                 ${minWidth.tablet} {
                   display: table-cell;
                 }

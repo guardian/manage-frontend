@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import {
   augmentInterval,
@@ -99,8 +100,8 @@ const WithSubscriptionRenderer = (
           <LinkButton
             to={flowReferrer?.link}
             text="Return to your billing"
-            colour={palette.neutral[100]}
-            textColour={palette.neutral[0]}
+            colour={neutral[100]}
+            textColour={neutral[0]}
             hollow
             left
           />

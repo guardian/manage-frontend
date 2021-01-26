@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { useState } from "react";
@@ -44,7 +45,7 @@ const subHeadingTitleCss = `
     };
   `;
 const subHeadingBorderTopCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     margin: 50px 0 ${space[5]}px;
   `;
 export const subHeadingCss = `
@@ -116,7 +117,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             ${textSans.medium()};
           `}
         >
-          <ErrorIcon fill={palette.brandAlt[200]} />
+          <ErrorIcon fill={brandAlt[200]} />
           <span
             css={css`
               margin-left: ${space[2]}px;
@@ -174,12 +175,8 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
       />
       {productDetail.isPaidTier && !productDetail.subscription.payPalEmail && (
         <LinkButton
-          colour={
-            productDetail.alertText ? palette.brand[400] : palette.brand[800]
-          }
-          textColour={
-            productDetail.alertText ? palette.neutral[100] : palette.brand[400]
-          }
+          colour={productDetail.alertText ? brand[400] : brand[800]}
+          textColour={productDetail.alertText ? neutral[100] : brand[400]}
           fontWeight={"bold"}
           alert={!!productDetail.alertText}
           text="Update payment method"
@@ -202,7 +199,7 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             </h2>
             <ProductDescriptionListTable
               alternateRowBgColors
-              borderColour={palette.neutral[86]}
+              borderColour={neutral[86]}
               content={[
                 {
                   title: "Address",
@@ -228,8 +225,8 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               ]}
             />
             <LinkButton
-              colour={palette.brand[800]}
-              textColour={palette.brand[400]}
+              colour={brand[800]}
+              textColour={brand[400]}
               fontWeight="bold"
               text="Manage delivery address"
               to={`/delivery/${specificProductType.urlPart}/address`}
@@ -255,8 +252,8 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             Check delivery history and report an issue.
           </p>
           <LinkButton
-            colour={palette.brand[800]}
-            textColour={palette.brand[400]}
+            colour={brand[800]}
+            textColour={brand[400]}
             fontWeight="bold"
             text="Manage delivery history"
             to={`/delivery/${specificProductType.urlPart}/records`}
@@ -287,8 +284,8 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
               after the suspension date.
             </p>
             <LinkButton
-              colour={palette.brand[800]}
-              textColour={palette.brand[400]}
+              colour={brand[800]}
+              textColour={brand[400]}
               fontWeight="bold"
               text="Manage suspensions"
               to={`/suspend/${specificProductType.urlPart}`}
@@ -328,8 +325,8 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
             <SupportTheGuardianButton
               {...specificProductType.renewalMetadata}
               fontWeight="bold"
-              textColour={palette.neutral[100]}
-              colour={palette.brand[400]}
+              textColour={neutral[100]}
+              colour={brand[400]}
               notPrimary
             />
           </>
@@ -367,14 +364,14 @@ const CancellationCTA = (props: CancellationCTAProps) => {
       css={css`
         margin: ${space[24]}px 0 0 auto;
         ${textSans.medium()}
-        color: ${palette.neutral[46]};
+        color: ${neutral[46]};
       `}
     >
       {shouldContactUsToCancel &&
         "Would you like to cancel your subscription? "}
       <Link
         css={css`
-          color: ${palette.brand["500"]};
+          color: ${brand["500"]};
         `}
         to={"/cancel/" + props.specificProductType.urlPart}
         state={props.productDetail}

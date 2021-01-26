@@ -1,7 +1,8 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
 import moment from "moment";
@@ -292,7 +293,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               <label
                 css={css`
                   display: block;
-                  color: ${palette.neutral["7"]};
+                  color: ${neutral["7"]};
                   ${textSans.medium()};
                   font-weight: bold;
                 `}
@@ -325,7 +326,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                       }}
                       css={css`
                         width: 100%;
-                        border: 2px solid ${palette.neutral["60"]};
+                        border: 2px solid ${neutral["60"]};
                         padding: 12px;
                         resize: vertical;
                         ${textSans.medium()};
@@ -336,7 +337,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                         display: block;
                         text-align: right;
                         ${textSans.small()};
-                        color: ${palette.neutral[46]};
+                        color: ${neutral[46]};
                       `}
                     >
                       {instructionsRemainingCharacters} characters remaining
@@ -347,7 +348,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                       display: block;
                       vertical-align: top;
                       ${textSans.medium()};
-                      border: 4px solid ${palette.brand[500]};
+                      border: 4px solid ${brand[500]};
                       padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
                       margin: ${space[3]}px 0;
                       position: relative;
@@ -367,7 +368,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                         left: ${space[5]}px;
                       `}
                     >
-                      <InfoIconDark fillColor={palette.brand[500]} />
+                      <InfoIconDark fillColor={brand[500]} />
                     </i>
                     Delivery instructions are only applicable for newspaper
                     deliveries. They do not apply to Guardian Weekly.
@@ -412,10 +413,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             <Button
               type="submit"
               css={css`
-                color: ${palette.brand[400]};
-                background-color: ${palette.brand[800]};
+                color: ${brand[400]};
+                background-color: ${brand[800]};
                 :hover {
-                  background-color: ${Color(palette.brand[800], "hex")
+                  background-color: ${Color(brand[800], "hex")
                     .darken(0.1)
                     .string()};
                 }
@@ -433,7 +434,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               }}
               css={css`
                 margin-top: ${space[5]}px;
-                color: ${palette.brand[400]};
+                color: ${brand[400]};
                 background-color: transparent;
                 :hover {
                   background-color: transparent;
@@ -448,7 +449,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
           <p
             css={css`
               ${textSans.medium()};
-              background-color: ${palette.neutral[97]};
+              background-color: ${neutral[97]};
               padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
               margin: ${space[5]}px 0 ${space[3]}px;
               position: relative;
@@ -463,14 +464,14 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 left: ${space[5]}px;
               `}
             >
-              <InfoIconDark fillColor={palette.brand[500]} />
+              <InfoIconDark fillColor={brand[500]} />
             </i>
             If you need seperate delivery addresses for each of your
             subscriptions, please{" "}
             <span
               css={css`
                 cursor: pointer;
-                color: ${palette.brand[500]};
+                color: ${brand[500]};
                 text-decoration: underline;
               `}
               onClick={() =>

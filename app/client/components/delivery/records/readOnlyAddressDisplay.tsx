@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
 import React from "react";
@@ -23,7 +24,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
     min-width: 10ch;
     ${minWidth.tablet} {
       margin-right: 16px;
-      ${ignoreMinWidthAtNonMobile ? "min-width: 9ch;" : "min-width: 12ch;"} 
+      ${ignoreMinWidthAtNonMobile ? "min-width: 9ch;" : "min-width: 12ch;"}
     }
 `;
 
@@ -68,10 +69,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
               css={css`
                 display: block;
                 margin-top: ${space[5]}px;
-                color: ${palette.brand[400]};
-                background-color: ${palette.brand[800]};
+                color: ${brand[400]};
+                background-color: ${brand[800]};
                 :hover {
-                  background-color: ${Color(palette.brand[800], "hex")
+                  background-color: ${Color(brand[800], "hex")
                     .darken(0.1)
                     .string()};
                 }
@@ -107,10 +108,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
                 css={css`
                   display: block;
                   margin-top: ${space[5]}px;
-                  color: ${palette.brand[400]};
-                  background-color: ${palette.brand[800]};
+                  color: ${brand[400]};
+                  background-color: ${brand[800]};
                   :hover {
-                    background-color: ${Color(palette.brand[800], "hex")
+                    background-color: ${Color(brand[800], "hex")
                       .darken(0.1)
                       .string()};
                   }

@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
 import React, { useContext, useState } from "react";
@@ -41,7 +42,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
   }
 
   const subHeadingCss = `
-    border-top: 1px solid ${palette.neutral["86"]};
+    border-top: 1px solid ${neutral["86"]};
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
@@ -92,7 +93,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
         )}
         <section
           css={css`
-            border: 1px solid ${palette.neutral["86"]};
+            border: 1px solid ${neutral["86"]};
             margin-top: ${space[5]}px;
           `}
         >
@@ -100,8 +101,8 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
             css={css`
               margin: 0;
               padding: ${space[3]}px;
-              background-color: ${palette.neutral["97"]};
-              border-bottom: 1px solid ${palette.neutral["86"]};
+              background-color: ${neutral["97"]};
+              border-bottom: 1px solid ${neutral["86"]};
               ${textSans.medium({ fontWeight: "bold" })};
               ${minWidth.tablet} {
                 padding: ${space[3]}px ${space[5]}px;
@@ -217,7 +218,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
               ${textSans.medium()};
               font-weight: bold;
               margin-left: 22px;
-              color: ${palette.brand[400]};
+              color: ${brand[400]};
             `}
           >
             Go back
@@ -227,7 +228,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           css={css`
             ${textSans.medium()};
             margin-top: ${space[12]}px;
-            color: ${palette.neutral[46]};
+            color: ${neutral[46]};
           `}
         >
           If you need seperate delivery addresses for each of your
@@ -235,7 +236,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           <span
             css={css`
               cursor: pointer;
-              color: ${palette.brand[500]};
+              color: ${brand[500]};
               text-decoration: underline;
             `}
             onClick={() =>

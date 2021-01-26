@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { capitalize } from "lodash";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { formatDateStr } from "../../../shared/dates";
@@ -64,7 +65,7 @@ export const ContributionUpdateAmount = (
         />
       )}
       <ProductDescriptionListTable
-        borderColour={palette.neutral[86]}
+        borderColour={neutral[86]}
         content={[
           {
             title: `${capitalize(
@@ -77,8 +78,8 @@ export const ContributionUpdateAmount = (
         ]}
       />
       <Button
-        colour={palette.brand[800]}
-        textColour={palette.brand[400]}
+        colour={brand[800]}
+        textColour={brand[400]}
         fontWeight="bold"
         text="Change amount"
         onClick={() => {

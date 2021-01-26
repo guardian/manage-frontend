@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
-import { palette, space } from "@guardian/src-foundations";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React, { useState } from "react";
@@ -70,12 +71,12 @@ const listItemStyle = css`
 
 const listItemAnchorStyle = css`
   ${textSans.medium()};
-  color: ${palette.neutral[20]};
+  color: ${neutral[20]};
   text-decoration: underline;
 `;
 
 const h2Style = css`
-  border-top: 1px solid ${palette.neutral["86"]};
+  border-top: 1px solid ${neutral["86"]};
   margin-top: 30px;
   ${minWidth.tablet} {
     margin-top: 40px;
@@ -94,15 +95,15 @@ const h3Style = css`
 const callCentreToggleSpanStyle = (isOpen: boolean) => css`
   cursor: pointer;
   text-decoration: underline;
-  color: ${palette.brand[500]};
+  color: ${brand[500]};
   position: relative;
   :after {
     content: "";
     display: block;
     width: 7px;
     height: 7px;
-    border-top: 2px solid ${palette.brand["500"]};
-    border-right: 2px solid ${palette.brand["500"]};
+    border-top: 2px solid ${brand["500"]};
+    border-right: 2px solid ${brand["500"]};
     position: absolute;
     top: 50%;
     transform: ${isOpen
@@ -146,8 +147,8 @@ const Help = (_: RouteComponentProps) => {
       <LinkButton
         to={"/help-centre/"}
         text={"Visit Help Centre"}
-        colour={palette.brand[800]}
-        textColour={palette.brand[400]}
+        colour={brand[800]}
+        textColour={brand[400]}
         fontWeight={"bold"}
         onClick={() =>
           trackEvent({
@@ -175,8 +176,8 @@ const Help = (_: RouteComponentProps) => {
           <LinkButton
             to={"/contact-us/"}
             text={"Take me to the form"}
-            colour={palette.brand[800]}
-            textColour={palette.brand[400]}
+            colour={brand[800]}
+            textColour={brand[400]}
             fontWeight={"bold"}
             onClick={() =>
               trackEvent({
