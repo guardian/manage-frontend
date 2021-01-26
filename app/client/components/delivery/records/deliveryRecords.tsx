@@ -269,19 +269,16 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       : "Some information is missing";
 
   const formErrorMessages = [
-    ...(!step1FormValidationDetails.isValid &&
-    step1FormValidationDetails.message
-      ? [step1FormValidationDetails.message]
-      : []),
-    ...(!step2FormValidationDetails.isValid &&
-    step2FormValidationDetails.message
-      ? [step2FormValidationDetails.message]
-      : []),
-    ...(!step3FormValidationDetails.isValid &&
-    step3FormValidationDetails.message
-      ? [step3FormValidationDetails.message]
-      : [])
-  ];
+    step1FormValidationDetails,
+    step2FormValidationDetails,
+    step3FormValidationDetails
+  ].reduce(
+    (acc: string[], validationDetails) =>
+      !validationDetails.isValid && validationDetails.message
+        ? [...acc, validationDetails.message]
+        : acc,
+    []
+  );
 
   return (
     <DeliveryRecordsProblemContext.Provider
