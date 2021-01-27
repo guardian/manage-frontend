@@ -9,6 +9,7 @@ import { requiresSignin } from "../../shared/requiresSignin";
 import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
 import { idapiConfigPromise } from "../idapiConfig";
+import { log } from "../log";
 
 interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
@@ -147,6 +148,7 @@ export const withIdentity: (
   res: express.Response,
   next: express.NextFunction
 ) => {
+  log.info("Running identity healthcheck...");
   const errorHandler = (message: string, detail?: any) => {
     handleAwsRelatedError(message, detail);
     res.sendStatus(500); // TODO maybe server side render a pretty response
@@ -157,6 +159,7 @@ export const withIdentity: (
   idapiConfigPromise
     .then(idapiConfig => {
       if (idapiConfig) {
+        log.info("Running identity healthcheck idapiConfig==true...");
         fetch(
           url.format({
             protocol: "https",
@@ -179,12 +182,15 @@ export const withIdentity: (
               redirectResponse.json() as Promise<RedirectResponseBody>
           )
           .then(redirectResponseBody => {
+            log.info("Running identity healthcheck redirectResponseBody...");
             // tslint:disable-next-line:no-object-mutation
             Object.assign(res.locals, { identity: redirectResponseBody });
 
             if (!requiresSignin(req.originalUrl)) {
+              log.info("Running identity healthcheck !requiresSignin...");
               next();
             } else if (redirectResponseBody.redirect) {
+              log.info("Running identity healthcheck requiresSignin...");
               redirectOrCustomStatusCode(
                 res,
                 augmentRedirectURL(
