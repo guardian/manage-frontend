@@ -77,8 +77,8 @@ const Header = () => {
           </>
         )}
         {headerStatus === "signedOut" && (
-          <Link
-            to={"/"}
+          <a
+            href={"/"}
             css={{
               textDecoration: "none",
               color: palette.neutral["100"],
@@ -97,7 +97,7 @@ const Header = () => {
             }}
           >
             Sign in
-          </Link>
+          </a>
         )}
         <GridRoundel
           fillMain={palette.neutral["100"]}

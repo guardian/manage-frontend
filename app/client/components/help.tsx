@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
@@ -6,7 +7,6 @@ import { RouteComponentProps } from "@reach/router";
 import React, { useState } from "react";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
-import { LinkButton } from "./buttons";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
 import { NAV_LINKS } from "./nav/navConfig";
 import { PageContainer } from "./page";
@@ -145,18 +145,17 @@ const Help = (_: RouteComponentProps) => {
         Visit our Help Centre to find more useful information
       </p>
       <LinkButton
-        to={"/help-centre/"}
-        text={"Visit Help Centre"}
-        colour={brand[800]}
-        textColour={brand[400]}
-        fontWeight={"bold"}
+        href="/help-centre/"
+        priority="secondary"
         onClick={() =>
           trackEvent({
             eventCategory: "help-page",
             eventAction: "help-centre-cta-click"
           })
         }
-      />
+      >
+        Visit Help Centre
+      </LinkButton>
       <p css={pStyle}>
         If you still can’t find what you need and want to contact us, check{" "}
         <span
@@ -174,18 +173,17 @@ const Help = (_: RouteComponentProps) => {
             soon as possible.
           </p>
           <LinkButton
-            to={"/contact-us/"}
-            text={"Take me to the form"}
-            colour={brand[800]}
-            textColour={brand[400]}
-            fontWeight={"bold"}
+            href="/contact-us/"
+            priority="secondary"
             onClick={() =>
               trackEvent({
                 eventCategory: "help-page",
                 eventAction: "contact-us-cta-click"
               })
             }
-          />
+          >
+            Take me to the form
+          </LinkButton>
         </>
       )}
     </PageContainer>

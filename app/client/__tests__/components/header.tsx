@@ -8,7 +8,12 @@ Enzyme.configure({ adapter: new Adapter() });
 describe.only("Header", () => {
   it("renders the header in a signed out state", () => {
     const wrapper = mount(<Header />);
-    expect(wrapper.find("Link").text()).toEqual("Sign in");
+    expect(
+      wrapper
+        .find("a")
+        .at(0)
+        .text()
+    ).toEqual("Sign in");
   });
 
   it("renders the header in a signed in state", () => {
