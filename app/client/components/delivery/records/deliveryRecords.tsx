@@ -624,12 +624,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 {(step1formValidationState ||
                   step2formValidationState ||
                   step3formValidationState) &&
-                  ((!step1FormValidationDetails.isValid &&
-                    step1FormValidationDetails.message) ||
-                    (!step2FormValidationDetails.isValid &&
-                      step2FormValidationDetails.message) ||
-                    (!step3FormValidationDetails.isValid &&
-                      step3FormValidationDetails.message)) && (
+                  formErrorMessages.length > 0 && (
                     <FormError
                       title={formErrorTitle}
                       messages={formErrorMessages}
