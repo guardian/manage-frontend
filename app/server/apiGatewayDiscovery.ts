@@ -222,7 +222,7 @@ export const authKeysAreFetchableMemoisedHealthcheck = () => {
   const memoisedHostKeyPair = getHostAndApiKeyForStack(
     "membership",
     "holiday-stop-api",
-    "PROD"
+    conf.STAGE.toUpperCase()
   );
   return async (
     _: express.Request,
