@@ -218,22 +218,18 @@ export const getContactUsAPIHostAndKey = async () => {
  * Used to fail riff raff deployment. Uses an arbitrarily selected service layer api as a check.
  * Memoised in the sense of credentials fetching happens only once on deployment.
  */
-function tmp(): HostAndApiKey {
-  return {};
-}
-export const memoisedApiGatewayAuthForHealthcheck = () => {
-  // const memoisedHostKeyPair = getHostAndApiKeyForStack(
-  //   "membership",
-  //   "holiday-stop-api",
-  //   "PROD"
-  // );
+export const authKeysAreFetchableMemoisedHealthcheck = () => {
+  const memoisedHostKeyPair = getHostAndApiKeyForStack(
+    "membership",
+    "holiday-stop-api",
+    "PROD"
+  );
   return async (
     _: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) => {
-    // const { host, apiKey } = await memoisedHostKeyPair;
-    const { host, apiKey } = tmp();
+    const { host, apiKey } = await memoisedHostKeyPair;
     const errMsg = `Failed to fetch authentication credentials for API Gateway service layer. Healthcheck failed!`;
     if (apiKey && host) {
       next();
