@@ -11,6 +11,7 @@ import { ErrorIcon } from "../svgs/errorIcon";
 interface Issue {
   date: string;
   message: string;
+  link?: string;
   affectedProducts?: string[];
 }
 
@@ -71,8 +72,10 @@ export const KnownIssues = () => {
           <div
             css={{
               border: `4px solid ${palette.news[400]}`,
-              padding: `${space[3]}px ${space[3]}px ${space[3]}px 42px`,
+              padding: `${space[3]}px ${space[3]}px ${space[3]}px ${space[3]}px`,
               position: "relative",
+              display: "flex",
+              alignItems: "center",
               ...gridItemPlacement(1, 4),
 
               [minWidth.tablet]: {
@@ -90,23 +93,39 @@ export const KnownIssues = () => {
           >
             <i
               css={css`
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                left: ${space[3]}px;
+                margin-right: ${space[3]}px;
               `}
             >
               <ErrorIcon />
             </i>
-            <h4
+            <div
               css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                color: ${palette.news[400]};
-                margin: 0;
+                display: flex;
+                flex-direction: column;
               `}
             >
-              {issue.message}
-            </h4>
+              <h4
+                css={css`
+                  ${textSans.medium({ fontWeight: "bold" })};
+                  color: ${palette.news[400]};
+                  margin: 0;
+                  display: inline;
+                `}
+              >
+                {issue.message}
+              </h4>
+              {issue.link && (
+                <a
+                  css={css`
+                    ${textSans.small({ fontWeight: "regular" })}
+                  `}
+                  href={issue.link}
+                  target="_blank"
+                >
+                  Click here for more information
+                </a>
+              )}
+            </div>
           </div>
         </div>
       ))}
