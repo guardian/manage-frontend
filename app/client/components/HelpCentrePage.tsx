@@ -32,7 +32,7 @@ const HelpCentreRouter = () => {
           <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
 
           {/* otherwise redirect to root instead of having a "not found page" */}
-          <Redirect default from="/*" to="/" noThrow />
+          <Redirect default from="/*" to="/help-centre" noThrow />
         </Router>
       </Suspense>
     </Main>
