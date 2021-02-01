@@ -29,7 +29,7 @@ import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { Main } from "./main";
-import PageSkeleton from "./pageSkeleton";
+import MMAPageSkeleton from "./MMAPageSkeleton";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { ScrollToTop } from "./scrollToTop";
@@ -87,7 +87,7 @@ const MMARouter = () => (
   <Main>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
-    <Suspense fallback={<PageSkeleton />}>
+    <Suspense fallback={<MMAPageSkeleton />}>
       <Router primary={true} css={{ height: "100%" }}>
         <AccountOverview path="/" />
         <Billing path="/billing" />

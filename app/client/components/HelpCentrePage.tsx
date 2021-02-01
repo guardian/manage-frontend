@@ -5,8 +5,8 @@ import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
 import { CMPBanner } from "./consent/CMPBanner";
+import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
 import { Main } from "./main";
-import PageSkeleton from "./pageSkeleton";
 import { ScrollToTop } from "./scrollToTop";
 
 const HelpCentre = lazy(() =>
@@ -21,7 +21,7 @@ const HelpCentreRouter = () => {
     <Main>
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
-      <Suspense fallback={<PageSkeleton />}>
+      <Suspense fallback={<HelpCentrePageSkeleton />}>
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
 
