@@ -72,7 +72,6 @@ server.use(routes.core);
 server.use("/profile/", routes.profile);
 server.use("/api/", routes.api);
 server.use("/idapi", routes.idapi);
-
 server.use(routes.productsProvider("/api/"));
 
 // Help Centre and Contact Us
