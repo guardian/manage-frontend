@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
-import { textSans, titlepiece } from "@guardian/src-foundations/typography";
+import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { minWidth } from "../../../styles/breakpoints";
 import { GiftIcon } from "../../svgs/giftIcon";
@@ -58,8 +58,8 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
     >
       <h2
         css={css`
-          ${titlepiece.small()};
           font-size: 17px;
+          font-weight: bold;
           padding: ${space[3]}px;
           margin: 0;
           background-color: ${brand[400]};

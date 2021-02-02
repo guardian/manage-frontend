@@ -11,7 +11,6 @@ import {
 } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
-import { titlepiece } from "../../styles/fonts";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CardDisplay } from "../payment/cardDisplay";
@@ -115,12 +114,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
       >
         <h2
           css={css`
+            font-size: 17px;
+            font-weight: bold;
             margin: 0;
             padding: ${space[3]}px;
             color: ${hasCancellationPending ? neutral[7] : neutral[100]};
-            ${titlepiece.small()};
-            font-weight: bold;
-            font-size: 17px;
             ${maxWidth.mobileLandscape} {
               padding: ${space[3]}px;
             }
