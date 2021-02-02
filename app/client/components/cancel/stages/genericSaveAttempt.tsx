@@ -18,8 +18,8 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { WithStandardTopMargin } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   MultiRouteableProps,
   ReturnToAccountOverviewButton,

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer, WithStandardTopMargin } from "../../page";
+import { PageContainer } from "../../page";
 import { Spinner } from "../../spinner";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   GenericErrorMessage,
   GenericErrorMessageRef

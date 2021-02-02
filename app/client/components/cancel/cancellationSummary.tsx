@@ -9,9 +9,9 @@ import {
   ProductType
 } from "../../../shared/productTypes";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { WithStandardTopMargin } from "../page";
 import { ResubscribeThrasher } from "../resubscribeThrasher";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
+import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 

@@ -2,7 +2,7 @@ import { Form, FormikProps, withFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { Button } from "../../buttons";
-import { WithStandardTopMargin } from "../../page";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import { FormTextField } from "../Form/FormField";
 import { ErrorTypes, User } from "../models";
 import { PageSection } from "../PageSection";

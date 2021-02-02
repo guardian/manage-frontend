@@ -2,10 +2,10 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Location } from "@reach/router";
 import React from "react";
-import { WithStandardTopMargin } from "./page";
 import { SectionHeader } from "./sectionHeader";
 import { SectionPageContainer } from "./sectionPageContainer";
 import { Spinner } from "./spinner";
+import { WithStandardTopMargin } from "./WithStandardTopMargin";
 
 interface LocationObject {
   title: string;
