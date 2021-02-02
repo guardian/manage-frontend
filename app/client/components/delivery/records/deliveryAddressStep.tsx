@@ -21,10 +21,8 @@ import {
   MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../../../shared/productResponse";
-import {
-  createProductDetailFetcher,
-  GROUPED_PRODUCT_TYPES
-} from "../../../../shared/productTypes";
+import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
+import { createProductDetailFetcher } from "../../../productUtils";
 import { minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import AsyncLoader from "../../asyncLoader";

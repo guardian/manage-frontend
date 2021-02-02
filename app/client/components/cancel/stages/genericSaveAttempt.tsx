@@ -7,10 +7,8 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import {
-  ProductTypeWithCancellationFlow,
-  WithProductType
-} from "../../../../shared/productTypes";
+import { WithProductType } from "../../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";

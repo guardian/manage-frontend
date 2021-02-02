@@ -7,10 +7,8 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import {
-  createProductDetailFetcher,
-  ProductTypeWithCancellationFlow
-} from "../../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../../shared/productTypes";
+import { createProductDetailFetcher } from "../../../productUtils";
 import AsyncLoader from "../../asyncLoader";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { ProgressIndicator } from "../../progressIndicator";

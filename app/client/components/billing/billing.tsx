@@ -17,10 +17,10 @@ import {
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
-  allProductsDetailFetcher,
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";

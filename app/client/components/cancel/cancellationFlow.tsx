@@ -9,10 +9,8 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import {
-  hasCancellationFlow,
-  ProductTypeWithCancellationFlow
-} from "../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
+import { hasCancellationFlow } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowWrapper } from "../FlowWrapper";

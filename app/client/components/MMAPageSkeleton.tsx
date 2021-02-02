@@ -2,9 +2,9 @@ import { Location } from "@reach/router";
 import React from "react";
 import {
   GROUPED_PRODUCT_TYPES,
-  PRODUCT_TYPES,
-  shouldHaveHolidayStopsFlow
+  PRODUCT_TYPES
 } from "../../shared/productTypes";
+import { shouldHaveHolidayStopsFlow } from "../productUtils";
 import { MenuSpecificNavItem, NAV_LINKS } from "./nav/navConfig";
 import { PageContainer } from "./page";
 import { Spinner } from "./spinner";

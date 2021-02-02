@@ -12,11 +12,11 @@ import {
   isPaidSubscriptionPlan,
   ProductDetail
 } from "../../../shared/productResponse";
+import { ProductType } from "../../../shared/productTypes";
 import {
   hasDeliveryRecordsFlow,
-  ProductType,
   shouldHaveHolidayStopsFlow
-} from "../../../shared/productTypes";
+} from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
