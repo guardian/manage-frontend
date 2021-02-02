@@ -34,6 +34,10 @@ import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { ScrollToTop } from "./scrollToTop";
 
+// The code below uses magic comments to instruct Webpack on
+// how to name the chunks these dynamic imports produce
+// More information: https://webpack.js.org/api/module-methods/#magic-comments
+
 const AccountOverview = lazy(() =>
   import(
     /* webpackChunkName: "AccountOverview" */ "./accountoverview/accountOverview"

@@ -9,6 +9,10 @@ import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
 
+// The code below uses magic comments to instruct Webpack on
+// how to name the chunks these dynamic imports produce
+// More information: https://webpack.js.org/api/module-methods/#magic-comments
+
 const HelpCentre = lazy(() =>
   import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
 );
