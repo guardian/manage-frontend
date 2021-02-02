@@ -23,36 +23,34 @@ const nonMMALocationObjectArr: LocationObject[] = [
   }
 ];
 
-const MMAPageSkeleton = () => {
-  return (
-    <Location>
-      {({ location }) => {
-        const selectedNonMMALocationObject = nonMMALocationObjectArr.filter(
-          currentObject => location.pathname.startsWith(currentObject.path)
-        )[0];
+const MMAPageSkeleton = () => (
+  <Location>
+    {({ location }) => {
+      const selectedNonMMALocationObject = nonMMALocationObjectArr.filter(
+        currentObject => location.pathname.startsWith(currentObject.path)
+      )[0];
 
-        if (selectedNonMMALocationObject) {
-          return (
-            <>
-              <SectionHeader title={selectedNonMMALocationObject.title} />
-              <SectionPageContainer sectionTitle="&nbsp;">
-                <div
-                  css={css`
-                    margin-bottom: ${space[24]}px;
-                  `}
-                >
-                  <WithStandardTopMargin>
-                    <Spinner />
-                  </WithStandardTopMargin>
-                  <div style={{ height: "50vh" }} />
-                </div>
-              </SectionPageContainer>
-            </>
-          );
-        }
-      }}
-    </Location>
-  );
-};
+      if (selectedNonMMALocationObject) {
+        return (
+          <>
+            <SectionHeader title={selectedNonMMALocationObject.title} />
+            <SectionPageContainer sectionTitle="&nbsp;">
+              <div
+                css={css`
+                  margin-bottom: ${space[24]}px;
+                `}
+              >
+                <WithStandardTopMargin>
+                  <Spinner />
+                </WithStandardTopMargin>
+                <div style={{ height: "50vh" }} />
+              </div>
+            </SectionPageContainer>
+          </>
+        );
+      }
+    }}
+  </Location>
+);
 
 export default MMAPageSkeleton;

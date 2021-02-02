@@ -109,29 +109,27 @@ const MMALocationObjectArr: LocationObject[] = [
   }
 ];
 
-const MMAPageSkeleton = () => {
-  return (
-    <Location>
-      {({ location }) => {
-        const selectedMMALocationObject = MMALocationObjectArr.filter(
-          currentObject => location.pathname === currentObject.path
-        )[0];
+const MMAPageSkeleton = () => (
+  <Location>
+    {({ location }) => {
+      const selectedMMALocationObject = MMALocationObjectArr.filter(
+        currentObject => location.pathname === currentObject.path
+      )[0];
 
-        if (selectedMMALocationObject) {
-          return (
-            <PageContainer
-              selectedNavItem={selectedMMALocationObject.selectedNavItem}
-              pageTitle={selectedMMALocationObject.title}
-            >
-              <WithStandardTopMargin>
-                <Spinner />
-              </WithStandardTopMargin>
-            </PageContainer>
-          );
-        }
-      }}
-    </Location>
-  );
-};
+      if (selectedMMALocationObject) {
+        return (
+          <PageContainer
+            selectedNavItem={selectedMMALocationObject.selectedNavItem}
+            pageTitle={selectedMMALocationObject.title}
+          >
+            <WithStandardTopMargin>
+              <Spinner />
+            </WithStandardTopMargin>
+          </PageContainer>
+        );
+      }
+    }}
+  </Location>
+);
 
 export default MMAPageSkeleton;
