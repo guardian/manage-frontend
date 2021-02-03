@@ -72,10 +72,8 @@ export const KnownIssues = () => {
           <div
             css={{
               border: `4px solid ${palette.news[400]}`,
-              padding: `${space[3]}px ${space[3]}px ${space[3]}px ${space[3]}px`,
+              padding: `${space[3]}px ${space[3]}px ${space[3]}px 42px`,
               position: "relative",
-              display: "flex",
-              alignItems: "center",
               ...gridItemPlacement(1, 4),
 
               [minWidth.tablet]: {
@@ -93,31 +91,26 @@ export const KnownIssues = () => {
           >
             <i
               css={css`
-                margin-right: ${space[3]}px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: ${space[3]}px;
               `}
             >
               <ErrorIcon />
             </i>
-            <div
+            <h4
               css={css`
-                display: flex;
-                flex-direction: column;
+                ${textSans.medium({ fontWeight: "bold" })};
+                color: ${palette.news[400]};
+                margin: 0;
               `}
             >
-              <h4
-                css={css`
-                  ${textSans.medium({ fontWeight: "bold" })};
-                  color: ${palette.news[400]};
-                  margin: 0;
-                  display: inline;
-                `}
-              >
-                {issue.message}
-              </h4>
+              {issue.message}&nbsp;
               {issue.link && (
                 <a
                   css={css`
-                    ${textSans.small({ fontWeight: "regular" })}
+                    text-decoration: underline;
                   `}
                   href={issue.link}
                   target="_blank"
@@ -125,7 +118,7 @@ export const KnownIssues = () => {
                   Click here for more information
                 </a>
               )}
-            </div>
+            </h4>
           </div>
         </div>
       ))}
