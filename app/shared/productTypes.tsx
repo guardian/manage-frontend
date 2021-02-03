@@ -151,7 +151,6 @@ export interface ProductType {
   ) => OphanProduct | undefined;
   shouldRevealSubscriptionId?: boolean;
   tierLabel?: string;
-  changeTierUrl?: (domain?: string) => string;
   renewalMetadata?: SupportTheGuardianButtonProps;
   noProductSupportUrlSuffix?: string;
   cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
@@ -299,8 +298,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     cancelledCopy:
       "Your membership has been cancelled. You will continue to receive the benefits of your membership until",
     tierLabel: "Membership tier",
-    changeTierUrl: (domain?: string) =>
-      `https://membership.${domain || "theguardian.com"}/tier/change`,
     shouldShowJoinDateNotStartDate: true
   },
   contributions: {
