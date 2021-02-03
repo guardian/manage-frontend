@@ -1,5 +1,4 @@
 import palette from "../colours";
-import { minWidth } from "./breakpoints";
 
 const fontAssetsUrl = "https://assets.guim.co.uk/static/frontend/fonts/";
 
@@ -299,40 +298,6 @@ export const sans = `"Guardian Text Sans Web", "Helvetica Neue", Helvetica, Aria
 export const serif = `"GuardianTextEgyptian", Georgia, serif`;
 export const headline = `GH Guardian Headline, ${serif}`;
 export const titlepiece = "GT Guardian Titlepiece, Georgia, serif";
-
-interface SerifCSS {
-  small: () => string;
-  medium: () => string;
-  large: () => string;
-}
-export const serifStyles: SerifCSS = {
-  small: () => `
-    ${serifBaseProperties}
-    font-size: 17px;
-    ${minWidth.tablet} {
-      font-size: 20px;
-    }
-  `,
-  medium: () => `
-    ${serifBaseProperties}
-    font-size: 20px;
-    ${minWidth.tablet} {
-      font-size: 24px;
-    }
-  `,
-  large: () => `
-    ${serifBaseProperties}
-    font-size: 24px;
-    ${minWidth.tablet} {
-      font-size: 28px;
-    }
-  `
-};
-const serifBaseProperties = `
-  font-family: ${serif};
-  font-weight: bold;
-  color: inherit;
-`;
 
 export const validationWarningCSS = {
   color: palette.red.medium,
