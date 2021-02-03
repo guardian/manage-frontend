@@ -1,5 +1,4 @@
 import { css } from "@emotion/core";
-import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
@@ -149,11 +148,6 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
         />
       )}
 
-      {specificProductType.changeTierUrl && (
-        <a href={specificProductType.changeTierUrl(window?.guardian?.domain)}>
-          <Button priority="secondary">Change tier</Button>
-        </a>
-      )}
       <h2
         css={css`
           ${subHeadingCss}
