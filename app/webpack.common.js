@@ -99,7 +99,8 @@ const server = merge(common, {
 
 const client = merge(common, {
   entry: {
-    user: ["whatwg-fetch", "./client/user"]
+    mma: ["whatwg-fetch", "./client/MMAPage"],
+    helpcentre: ["whatwg-fetch", "./client/HelpCentrePage"]
   },
   output: {
     path: path.resolve(__dirname, "dist", "static"),

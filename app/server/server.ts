@@ -74,7 +74,11 @@ server.use("/api/", routes.api);
 server.use("/idapi", routes.idapi);
 server.use(routes.productsProvider("/api/"));
 
-// ALL OTHER ENDPOINTS CAN BE HANDLED BY CLIENT SIDE REACT ROUTING
+// Help Centre and Contact Us
+server.use("/contact-us", routes.helpcentre);
+server.use("/help-centre", routes.helpcentre);
+
+// ALL OTHER ENDPOINTS CAN BE HANDLED BY MMA CLIENT SIDE REACT ROUTING
 server.use(routes.frontend);
 
 if (conf.SERVER_DSN) {

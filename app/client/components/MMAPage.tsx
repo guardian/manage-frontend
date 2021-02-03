@@ -29,37 +29,69 @@ import { HolidayConfirmed } from "./holiday/holidayConfirmed";
 import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { Main } from "./main";
-import PageSkeleton from "./pageSkeleton";
+import MMAPageSkeleton from "./MMAPageSkeleton";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { ScrollToTop } from "./scrollToTop";
 
-const AccountOverview = lazy(() => import("./accountoverview/accountOverview"));
-const Billing = lazy(() => import("./billing/billing"));
-const ManageProduct = lazy(() => import("./accountoverview/manageProduct"));
-const CancellationFlow = lazy(() => import("./cancel/cancellationFlow"));
-const PaymentUpdateFlow = lazy(() =>
-  import("./payment/update/updatePaymentFlow")
+// The code below uses magic comments to instruct Webpack on
+// how to name the chunks these dynamic imports produce
+// More information: https://webpack.js.org/api/module-methods/#magic-comments
+
+const AccountOverview = lazy(() =>
+  import(
+    /* webpackChunkName: "AccountOverview" */ "./accountoverview/accountOverview"
+  )
 );
-const HolidaysOverview = lazy(() => import("./holiday/holidaysOverview"));
+const Billing = lazy(() =>
+  import(/* webpackChunkName: "Billing" */ "./billing/billing")
+);
+const ManageProduct = lazy(() =>
+  import(
+    /* webpackChunkName: "ManageProduct" */ "./accountoverview/manageProduct"
+  )
+);
+const CancellationFlow = lazy(() =>
+  import(/* webpackChunkName: "CancellationFlow" */ "./cancel/cancellationFlow")
+);
+const PaymentUpdateFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "PaymentUpdateFlow" */ "./payment/update/updatePaymentFlow"
+  )
+);
+const HolidaysOverview = lazy(() =>
+  import(
+    /* HolidaysOverview: "holidaysoverview" */ "./holiday/holidaysOverview"
+  )
+);
 const DeliveryAddressForm = lazy(() =>
-  import("./delivery/address/deliveryAddressForm")
+  import(
+    /* webpackChunkName: "DeliveryAddressForm" */ "./delivery/address/deliveryAddressForm"
+  )
 );
 const DeliveryRecords = lazy(() =>
-  import("./delivery/records/deliveryRecords")
+  import(
+    /* webpackChunkName: "DeliveryRecords" */ "./delivery/records/deliveryRecords"
+  )
 );
-const EmailAndMarketing = lazy(() => import("./identity/EmailAndMarketing"));
-const PublicProfile = lazy(() => import("./identity/PublicProfile"));
-const Settings = lazy(() => import("./identity/Settings"));
-const Help = lazy(() => import("./help"));
-const HelpCentre = lazy(() => import("./helpCentre/helpCentre"));
-const ContactUs = lazy(() => import("./contactUs/contactUs"));
+const EmailAndMarketing = lazy(() =>
+  import(
+    /* webpackChunkName: "EmailAndMarketing" */ "./identity/EmailAndMarketing"
+  )
+);
+const PublicProfile = lazy(() =>
+  import(/* webpackChunkName: "PublicProfile" */ "./identity/PublicProfile")
+);
+const Settings = lazy(() =>
+  import(/* webpackChunkName: "Settings" */ "./identity/Settings")
+);
+const Help = lazy(() => import(/* webpackChunkName: "Help" */ "./help"));
 
-const User = () => (
+const MMARouter = () => (
   <Main>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
-    <Suspense fallback={<PageSkeleton />}>
+    <Suspense fallback={<MMAPageSkeleton />}>
       <Router primary={true} css={{ height: "100%" }}>
         <AccountOverview path="/" />
         <Billing path="/billing" />
@@ -193,25 +225,17 @@ const User = () => (
         <Settings path="/account-settings" />
 
         <Help path="/help" />
-        <HelpCentre path="/help-centre" />
 
-        <ContactUs path="/contact-us" />
-        <ContactUs path="/contact-us/:urlTopicId" />
-        <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId" />
-        <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-        <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
-
-        {/* otherwise redirect to root instead of having a "not found page" */}
         <Redirect default from="/*" to="/" noThrow />
       </Router>
     </Suspense>
   </Main>
 );
 
-export const BrowserUser = (
+export const MMAPage = (
   <>
     <AnalyticsTracker />
-    <User />
+    <MMARouter />
     <CMPBanner />
     <ScrollToTop />
   </>
