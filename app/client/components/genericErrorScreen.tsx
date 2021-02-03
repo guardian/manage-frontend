@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { CallCentreNumbers } from "./callCentreNumbers";
-import { WithStandardTopMargin } from "./page";
+import { WithStandardTopMargin } from "./WithStandardTopMargin";
 
 interface GenericErrorScreenProps {
   loggingMessage: string | false;

@@ -4,14 +4,12 @@ import { Link } from "@reach/router";
 import React from "react";
 import { cancellationFormatDate } from "../../../shared/dates";
 import { ProductDetail, Subscription } from "../../../shared/productResponse";
-import {
-  hasDeliveryRecordsFlow,
-  ProductType
-} from "../../../shared/productTypes";
+import { ProductType } from "../../../shared/productTypes";
+import { hasDeliveryRecordsFlow } from "../../productUtils";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import { WithStandardTopMargin } from "../page";
 import { ResubscribeThrasher } from "../resubscribeThrasher";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
+import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 

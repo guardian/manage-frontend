@@ -4,15 +4,17 @@ import React, { lazy, Suspense } from "react";
 import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductType,
-  hasCancellationFlow,
-  hasDeliveryFlow,
-  hasDeliveryRecordsFlow,
   PRODUCT_TYPES,
   ProductType,
   ProductTypeWithDeliveryRecordsProperties,
-  ProductTypeWithHolidayStopsFlow,
-  shouldHaveHolidayStopsFlow
+  ProductTypeWithHolidayStopsFlow
 } from "../../shared/productTypes";
+import {
+  hasCancellationFlow,
+  hasDeliveryFlow,
+  hasDeliveryRecordsFlow,
+  shouldHaveHolidayStopsFlow
+} from "../productUtils";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";

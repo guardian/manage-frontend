@@ -18,10 +18,10 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import {
-  createProductDetailFetcher,
   GROUPED_PRODUCT_TYPES,
   ProductType
 } from "../../../../shared/productTypes";
+import { createProductDetailFetcher } from "../../../productUtils";
 import { COUNTRIES } from "../../identity/models";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 

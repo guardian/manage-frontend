@@ -3,7 +3,7 @@ import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useState } from "react";
 import { ProductDetail } from "../../../shared/productResponse";
-import { allProductsDetailFetcher } from "../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../productUtils";
 import { minWidth } from "../../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../../styles/grid";
 import { ErrorIcon } from "../svgs/errorIcon";

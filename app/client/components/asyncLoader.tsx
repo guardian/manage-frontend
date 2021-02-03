@@ -2,8 +2,8 @@ import * as Sentry from "@sentry/browser";
 import React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
-import { WithStandardTopMargin } from "./page";
 import { LoadingProps, Spinner } from "./spinner";
+import { WithStandardTopMargin } from "./WithStandardTopMargin";
 
 type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 

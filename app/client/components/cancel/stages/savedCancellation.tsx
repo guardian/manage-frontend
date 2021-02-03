@@ -6,8 +6,8 @@ import { navigate } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React from "react";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
-import { WithStandardTopMargin } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { CancellationReason } from "../cancellationReason";
 

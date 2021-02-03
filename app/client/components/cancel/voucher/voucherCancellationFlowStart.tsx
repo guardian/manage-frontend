@@ -1,7 +1,7 @@
 import React from "react";
 import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
-import { WithStandardTopMargin } from "../../page";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import { hrefStyle } from "../cancellationConstants";
 
 const trackCancellationClickEvent = (eventLabel: string) => () =>

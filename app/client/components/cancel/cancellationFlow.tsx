@@ -9,17 +9,15 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
-import {
-  hasCancellationFlow,
-  ProductTypeWithCancellationFlow
-} from "../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
+import { hasCancellationFlow } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { LinkButton } from "../buttons";
 import { FlowWrapper } from "../FlowWrapper";
 import { NAV_LINKS } from "../nav/navConfig";
-import { WithStandardTopMargin } from "../page";
 import { ProgressIndicator } from "../progressIndicator";
 import { RadioButton } from "../radioButton";
+import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,

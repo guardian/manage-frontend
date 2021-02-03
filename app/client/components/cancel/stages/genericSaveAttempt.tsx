@@ -7,10 +7,8 @@ import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import {
-  ProductTypeWithCancellationFlow,
-  WithProductType
-} from "../../../../shared/productTypes";
+import { WithProductType } from "../../../../shared/productTypes";
+import { ProductTypeWithCancellationFlow } from "../../../../shared/productTypes";
 import palette from "../../../colours";
 import { maxWidth } from "../../../styles/breakpoints";
 import { sans } from "../../../styles/fonts";
@@ -18,8 +16,8 @@ import { trackEvent } from "../../analytics";
 import { Button } from "../../buttons";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { WithStandardTopMargin } from "../../page";
 import { ProgressIndicator } from "../../progressIndicator";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   MultiRouteableProps,
   ReturnToAccountOverviewButton,

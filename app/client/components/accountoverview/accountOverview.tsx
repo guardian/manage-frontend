@@ -12,10 +12,10 @@ import {
   sortByJoinDate
 } from "../../../shared/productResponse";
 import {
-  allProductsDetailFetcher,
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import AsyncLoader from "../asyncLoader";
 import { isCancelled } from "../cancel/cancellationSummary";

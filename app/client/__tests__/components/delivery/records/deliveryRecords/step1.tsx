@@ -2,15 +2,13 @@ import { Button } from "@guardian/src-button";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
-import {
-  hasDeliveryRecordsFlow,
-  PRODUCT_TYPES
-} from "../../../../../../shared/productTypes";
+import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
 import DeliveryRecords, {
   DeliveryRecordsFC
 } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
+import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
 
 Enzyme.configure({ adapter: new Adapter() });
 

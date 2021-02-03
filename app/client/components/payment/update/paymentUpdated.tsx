@@ -13,10 +13,8 @@ import {
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
-import {
-  createProductDetailFetcher,
-  ProductType
-} from "../../../../shared/productTypes";
+import { ProductType } from "../../../../shared/productTypes";
+import { createProductDetailFetcher } from "../../../productUtils";
 import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";

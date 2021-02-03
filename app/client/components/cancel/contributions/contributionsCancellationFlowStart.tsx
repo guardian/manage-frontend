@@ -1,5 +1,5 @@
 import React from "react";
-import { WithStandardTopMargin } from "../../page";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 
 export const contributionsCancellationFlowStart = () => (
   <WithStandardTopMargin>

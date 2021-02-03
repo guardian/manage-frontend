@@ -11,20 +11,6 @@ import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
 import { LeftSideNav, LeftSideNavProps } from "./nav/leftSideNav";
 import { NavItem } from "./nav/navConfig";
 
-interface WithStandardTopMarginProps {
-  children: React.ReactNode;
-}
-export const WithStandardTopMargin = (props: WithStandardTopMarginProps) => (
-  // TODO: could this component with it's funky margin value be replaced with a design systems component/token
-  <div
-    css={css`
-      margin-top: 1.8125rem;
-    `}
-  >
-    {props.children}
-  </div>
-);
-
 export interface PageContainerProps {
   children: React.ReactNode;
   selectedNavItem: NavItem;

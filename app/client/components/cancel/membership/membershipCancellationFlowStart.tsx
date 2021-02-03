@@ -3,7 +3,7 @@ import React from "react";
 import { ProductDetail } from "../../../../shared/productResponse";
 import palette from "../../../colours";
 import { trackEvent } from "../../analytics";
-import { WithStandardTopMargin } from "../../page";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import { hrefStyle } from "../cancellationConstants";
 
 const cssBullet = (flexBasis: string = "50%") =>

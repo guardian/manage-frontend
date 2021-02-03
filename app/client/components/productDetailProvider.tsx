@@ -5,7 +5,7 @@ import {
   MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../shared/productResponse";
-import { createProductDetailFetcher } from "../../shared/productTypes";
+import { createProductDetailFetcher } from "../productUtils";
 import {
   RouteableStepProps,
   visuallyNavigateToParent

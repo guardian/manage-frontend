@@ -19,10 +19,6 @@ import {
 import { voucherCancellationFlowStart } from "../client/components/cancel/voucher/voucherCancellationFlowStart";
 import { voucherCancellationReasons } from "../client/components/cancel/voucher/voucherCancellationReasons";
 import { SupportTheGuardianButtonProps } from "../client/components/supportTheGuardianButton";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "./identity";
 import { OphanProduct } from "./ophanTypes";
 import {
   CancelledProductDetail,
@@ -178,24 +174,12 @@ export interface GroupedProductType extends ProductType {
 export interface ProductTypeWithCancellationFlow extends ProductType {
   cancellation: CancellationFlowProperties;
 }
-export const hasCancellationFlow = (
-  productType: ProductType
-): productType is ProductTypeWithCancellationFlow =>
-  productType.cancellation !== undefined;
-
-export const hasDeliveryFlow = (productType: ProductType) =>
-  productType.delivery?.showAddress;
 
 export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
   delivery: {
     records: DeliveryRecordsProperties;
   };
 }
-
-export const hasDeliveryRecordsFlow = (
-  productType: ProductType
-): productType is ProductTypeWithDeliveryRecordsProperties =>
-  !!productType.delivery?.records;
 
 export interface WithProductType<PT extends ProductType> {
   productType: PT;
@@ -208,40 +192,6 @@ export interface WithGroupedProductType<GPT extends GroupedProductType> {
 export interface ProductTypeWithHolidayStopsFlow extends ProductType {
   holidayStops: HolidayStopFlowProperties;
 }
-export const shouldHaveHolidayStopsFlow = (
-  productType: ProductType
-): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
-
-export const createProductDetailFetcher = (
-  productType: ProductType,
-  subscriptionName?: string
-) => () =>
-  fetch(
-    "/api/me/mma" +
-      (subscriptionName
-        ? `/${subscriptionName}`
-        : `?productType=${productType.allProductsProductTypeFilterString}`),
-    {
-      credentials: "include",
-      mode: "same-origin",
-      headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-          window.location.href
-        )
-      }
-    }
-  );
-
-export const allProductsDetailFetcher = () =>
-  fetch("/api/me/mma", {
-    credentials: "include",
-    mode: "same-origin",
-    headers: {
-      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-        window.location.href
-      )
-    }
-  });
 
 const showDeliveryAddressCheck = (
   subscription: Subscription
