@@ -11,6 +11,7 @@ import { ErrorIcon } from "../svgs/errorIcon";
 interface Issue {
   date: string;
   message: string;
+  link?: string;
   affectedProducts?: string[];
 }
 
@@ -105,7 +106,18 @@ export const KnownIssues = () => {
                 margin: 0;
               `}
             >
-              {issue.message}
+              {issue.message}&nbsp;
+              {issue.link && (
+                <a
+                  css={css`
+                    text-decoration: underline;
+                  `}
+                  href={issue.link}
+                  target="_blank"
+                >
+                  Click here for more information
+                </a>
+              )}
             </h4>
           </div>
         </div>
