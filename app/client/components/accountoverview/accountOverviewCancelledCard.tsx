@@ -10,7 +10,6 @@ import {
 } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
-import { titlepiece } from "../../styles/fonts";
 import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import { ErrorIcon } from "../svgs/errorIcon";
@@ -80,12 +79,11 @@ export const AccountOverviewCancelledCard = (
       >
         <h2
           css={css`
+            font-size: 17px;
+            font-weight: bold;
             margin: 0;
             padding: ${space[3]}px;
             color: ${neutral[7]};
-            ${titlepiece.small()};
-            font-weight: bold;
-            font-size: 17px;
             ${maxWidth.mobileLandscape} {
               padding: ${space[3]}px;
             }
