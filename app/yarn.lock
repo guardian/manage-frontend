@@ -1449,6 +1449,13 @@
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-1.6.3.tgz#71ad9a5160708ae75d3bc182afb3f235b9c4de1f"
   integrity sha512-CMTvDbIrfvla8OWHdO+tyjUUEp9XGGr2fQ8XDJptSiiJr1gKJsWV6NvFXQi1ypqDRsPYiJ8h1DxvBtyuyWATOA==
 
+"@guardian/src-accordion@2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-accordion/-/src-accordion-2.7.1.tgz#da5a6081eaf6a566260139b607d9df95dfa60334"
+  integrity sha512-c64iPA751CaUCHjyDw+2ItnCq+hcDmpMaCUJddv/MWGPALRLjxU4nZA4Zzp/YL57yYcbXJtoMLdHpZrwM5ObmA==
+  dependencies:
+    "@guardian/src-helpers" "^2.7.1"
+
 "@guardian/src-button@^2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-button/-/src-button-2.5.0.tgz#abb08a9e076f8ad6643633c6c6f435bc0fb4d842"

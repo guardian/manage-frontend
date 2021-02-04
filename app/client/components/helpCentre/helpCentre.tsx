@@ -13,6 +13,7 @@ import { SectionPageContainer } from "../sectionPageContainer";
 import { helpCentreConfig } from "./helpCentreConfig";
 import { HelpTopicBox } from "./HelpTopicBox";
 import { KnownIssues } from "./knownIssues";
+import { MoreQuestions } from "./MoreQuestions";
 
 interface HelpCentreProps extends RouteComponentProps {
   urlSuccess?: string;
@@ -71,6 +72,8 @@ const HelpCentre = (_: HelpCentreProps) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
+        <h2 css={popularTopicsTitleStyle}>More questions</h2>
+        <MoreQuestions />
         <h2 css={contactUsTitleStyle}>
           Still can’t find what you’re looking for?
         </h2>

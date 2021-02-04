@@ -131,6 +131,7 @@
     "@emotion/styled": "^10.0.27",
     "@guardian/consent-management-platform": "^6.11.2",
     "@guardian/libs": "^1.6.2",
+    "@guardian/src-accordion": "2.7.1",
     "@guardian/src-button": "^2.5.0",
     "@guardian/src-checkbox": "^1.8.0",
     "@guardian/src-choice-card": "^2.5.0",
