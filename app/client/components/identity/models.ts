@@ -63,6 +63,8 @@ export interface ConsentOption {
   type: ConsentOptionType;
   subscribed: boolean;
   identityName?: string;
+  isProduct?: boolean;
+  isChannel?: boolean;
 }
 
 export interface ConsentOptionCollection {
