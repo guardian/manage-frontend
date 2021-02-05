@@ -150,6 +150,7 @@
     "color": "^3.0.0",
     "cookie-parser": "^1.4.4",
     "csurf": "^1.10.0",
+    "date-fns": "^2.16.1",
     "express": "^4.16.3",
     "formik": "^1.5.8",
     "helmet": "^3.23.3",

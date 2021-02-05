@@ -1,3 +1,4 @@
+import parse from "date-fns/parse";
 import moment from "moment";
 
 export const DATE_INPUT_FORMAT = "YYYY-MM-DD";
@@ -14,4 +15,11 @@ export const cancellationFormatDate = (cancellationEffectiveDate?: string) => {
   return cancellationEffectiveDate === undefined
     ? "today"
     : formatDateStr(cancellationEffectiveDate);
+};
+
+export const dateHelper = (dateStr: string, dateInputFormat: string) => {
+  const dateObject = parse(dateStr, dateInputFormat, new Date());
+  return {
+    year: dateObject.getFullYear()
+  };
 };
