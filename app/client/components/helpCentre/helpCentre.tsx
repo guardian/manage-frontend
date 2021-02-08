@@ -89,7 +89,7 @@ const HelpCentre = (_: HelpCentreProps) => (
           textColour={brand[400]}
           fontWeight={"bold"}
           text="Take me to the form"
-          to="/contact-us/"
+          to="/help-centre/contact-us/"
           onClick={() =>
             trackEvent({
               eventCategory: "help-centre",

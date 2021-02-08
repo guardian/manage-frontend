@@ -173,7 +173,7 @@ const Help = (_: RouteComponentProps) => {
             soon as possible.
           </p>
           <LinkButton
-            href="/contact-us/"
+            href="/help-centre/contact-us/"
             priority="secondary"
             onClick={() =>
               trackEvent({
