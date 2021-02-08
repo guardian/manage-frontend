@@ -80,7 +80,7 @@ const ContactUs = (props: ContactUsProps) => {
       eventLabel: selectedTopic
     });
 
-    navigate(`/contact-us/${selectedTopic}`, { replace: true });
+    navigate(`/help-centre/contact-us/${selectedTopic}`, { replace: true });
   };
 
   const setSubTopic = (selectedSubTopic: string) => {
@@ -90,9 +90,12 @@ const ContactUs = (props: ContactUsProps) => {
       eventLabel: selectedSubTopic
     });
 
-    navigate(`/contact-us/${currentTopic?.id}/${selectedSubTopic}`, {
-      replace: true
-    });
+    navigate(
+      `/help-centre/contact-us/${currentTopic?.id}/${selectedSubTopic}`,
+      {
+        replace: true
+      }
+    );
   };
 
   const setSubSubTopic = (selectedSubSubTopic: string) => {
@@ -103,7 +106,7 @@ const ContactUs = (props: ContactUsProps) => {
     });
 
     navigate(
-      `/contact-us/${currentTopic?.id}/${currentSubTopic?.id}/${selectedSubSubTopic}`,
+      `/help-centre/contact-us/${currentTopic?.id}/${currentSubTopic?.id}/${selectedSubSubTopic}`,
       {
         replace: true
       }
@@ -138,7 +141,7 @@ const ContactUs = (props: ContactUsProps) => {
       });
 
       const urlSections = [
-        "/contact-us",
+        "/help-centre/contact-us",
         currentTopic?.id,
         currentSubTopic?.id || "0",
         currentSubSubTopic?.id || "0",

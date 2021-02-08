@@ -19,7 +19,7 @@ const nonMMALocationObjectArr: LocationObject[] = [
   },
   {
     title: "Need to contact us about something?",
-    path: "/contact-us"
+    path: "/help-centre/contact-us"
   }
 ];
 
