@@ -29,11 +29,11 @@ const HelpCentreRouter = () => {
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
 
-          <ContactUs path="/contact-us" />
-          <ContactUs path="/contact-us/:urlTopicId" />
-          <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId" />
-          <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-          <ContactUs path="/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
+          <ContactUs path="/help-centre/contact-us" />
+          <ContactUs path="/help-centre/contact-us/:urlTopicId" />
+          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
+          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
+          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
 
           {/* otherwise redirect to root instead of having a "not found page" */}
           <Redirect default from="/*" to="/help-centre" noThrow />
