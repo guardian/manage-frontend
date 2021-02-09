@@ -428,6 +428,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
     productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.subscriber_preview,
       SOFT_OPT_IN_IDS.similar_products,
       SOFT_OPT_IN_IDS.supporter_newsletter
     ],
