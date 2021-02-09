@@ -326,9 +326,9 @@ const InnerContent = ({ props, productDetail }: InnerContentProps) => {
           </>
         )}
 
-      {specificProductType.restrictedNewsletterIDs && (
+      {specificProductType.productPageNewsletterIDs && (
         <NewsletterOptinSection
-          activeNewletterIDs={specificProductType.restrictedNewsletterIDs}
+          activeNewletterIDs={specificProductType.productPageNewsletterIDs}
         />
       )}
 
