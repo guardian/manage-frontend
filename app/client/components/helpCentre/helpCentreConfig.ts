@@ -264,7 +264,7 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
         id: "q2",
         title: "Apple/Google subscriptions",
         link:
-          "https://www.theguardian.com/help/2021/jan/15/i-havent-received-my-vouchers"
+          "https://www.theguardian.com/help/2020/nov/20/i-have-a-googleitunes-subscription-that-i-need-help-with"
       },
       {
         id: "q3",
@@ -282,7 +282,7 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
         id: "q5",
         title: "Getting started with your Digital Subscription",
         link:
-          "https://docs.google.com/document/d/12QXZacne67vJcud9CFa4s7eSFSZps6QTfSjVOCRzBjA/edit?usp=sharing"
+          "https://www.theguardian.com/help/2021/feb/08/getting-started-with-your-digital-subscription"
       }
     ]
   },

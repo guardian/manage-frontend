@@ -57,7 +57,7 @@ const linkListItemStyle = css`
   position: relative;
 `;
 
-const linkAnchorStyle = css`
+export const linkAnchorStyle = css`
   display: inline-block;
   width: 100%;
   ${textSans.medium()};
@@ -67,7 +67,7 @@ const linkAnchorStyle = css`
   }
 `;
 
-const linkArrowStyle = css`
+export const linkArrowStyle = css`
   display: block;
   width: 7px;
   height: 7px;
