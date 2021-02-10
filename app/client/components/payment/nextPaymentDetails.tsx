@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand } from "@guardian/src-foundations/palette";
 import React from "react";
-import { formatDateStr } from "../../../shared/dates";
+import { DateHelper } from "../../../shared/dates";
 import {
   augmentInterval,
   isPaidSubscriptionPlan,
@@ -47,11 +47,11 @@ export const getNextPaymentDetails = (
 
     const nextPaymentDateValue =
       !hasPaymentFailure && subscription.nextPaymentDate
-        ? formatDateStr(
+        ? DateHelper(
             subscription.currentPlans.length === 0
               ? mainPlan.start
               : subscription.nextPaymentDate
-          )
+          ).dateStr()
         : undefined;
 
     const isNewPaymentValue =

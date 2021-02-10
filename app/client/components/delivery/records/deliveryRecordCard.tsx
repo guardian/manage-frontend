@@ -5,7 +5,7 @@ import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { FormEvent } from "react";
-import { formatDateStr } from "../../../../shared/dates";
+import { DateHelper } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { DeliveryRecordInstructions } from "./deliveryRecordInstructions";
@@ -135,7 +135,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             ${ddCss}
           `}
         >
-          {formatDateStr(props.deliveryRecord.deliveryDate)}
+          {DateHelper(props.deliveryRecord.deliveryDate).dateStr()}
         </dd>
       </div>
       <div
@@ -252,9 +252,9 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                       display: inline-block;
                     }
                   `}
-                >{`off your ${formatDateStr(
+                >{`off your ${DateHelper(
                   props.deliveryRecord.credit.invoiceDate
-                )} payment`}</p>
+                ).dateStr()} payment`}</p>
               )}
             </dd>
           </div>

@@ -1,10 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import React from "react";
-import {
-  friendlyLongDateFormat,
-  momentiseDateStr
-} from "../../../shared/dates";
+import { DATE_FNS_LONG_OUTPUT_FORMAT, DateHelper } from "../../../shared/dates";
 import {
   MembersDataApiItemContext,
   ProductDetail
@@ -71,8 +68,8 @@ class ReasonPicker extends React.Component<
 
     const chargedThroughDateStr =
       shouldOfferEffectiveDateOptions &&
-      momentiseDateStr(this.props.chargedThroughCancellationDate).format(
-        friendlyLongDateFormat
+      DateHelper(this.props.chargedThroughCancellationDate).dateStr(
+        DATE_FNS_LONG_OUTPUT_FORMAT
       );
 
     // we extract the options from the children rather than direct from the ProductType to guarantee the routes are setup correctly

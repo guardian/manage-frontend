@@ -6,7 +6,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useContext, useState } from "react";
-import { formatDateStr } from "../../../../shared/dates";
+import { DateHelper } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -177,7 +177,8 @@ const DeliveryRecordsProblemReviewFC = (
             }${props.totalCreditAmount.toFixed(2)}`
           }),
           ...(props.creditDate && {
-            creditDate: props.creditDate && formatDateStr(props.creditDate)
+            creditDate:
+              props.creditDate && DateHelper(props.creditDate).dateStr()
           })
         }}
       >
@@ -515,7 +516,8 @@ const DeliveryRecordsProblemReviewFC = (
                           }
                         `}
                       >
-                        {props.creditDate && formatDateStr(props.creditDate)}
+                        {props.creditDate &&
+                          DateHelper(props.creditDate).dateStr()}
                       </dd>
                     </div>
                   </dl>

@@ -4,7 +4,7 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import moment from "moment";
 import React, { useState } from "react";
-import { DATE_INPUT_FORMAT, formatDateStr } from "../../../shared/dates";
+import { DATE_INPUT_FORMAT, DateHelper } from "../../../shared/dates";
 import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -266,7 +266,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
               return (
                 <div css={tableRowCss2} key={tableRow.invoiceId}>
                   <div css={tdCss2(index, tableHeadings[0])}>
-                    {formatDateStr(tableRow.date)}
+                    {DateHelper(tableRow.date).dateStr()}
                   </div>
                   <div css={tdCss2(index, tableHeadings[1])}>
                     <div css={paymentDetailsHolderCss}>
