@@ -6,23 +6,27 @@ interface ConsentAPIResponse {
   description: string;
   name: string;
   isOptOut: boolean;
+  isChannel: boolean;
+  isProduct: boolean;
 }
 
 const consentToConsentOption = (
   response: ConsentAPIResponse
 ): ConsentOption => {
-  const { id, description, name, isOptOut } = response;
+  const { id, description, name, isProduct, isChannel, isOptOut } = response;
   return {
     id,
     description,
     name,
+    isProduct,
+    isChannel,
     type: isOptOut ? ConsentOptionType.OPT_OUT : ConsentOptionType.EMAIL,
     subscribed: false
   };
 };
 
 export const read = async (): Promise<ConsentOption[]> => {
-  const url = "/consents";
+  const url = "/consents?filter=all";
   return (await identityFetch(url)).map(consentToConsentOption);
 };
 

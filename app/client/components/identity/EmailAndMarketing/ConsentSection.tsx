@@ -11,6 +11,10 @@ interface ConsentSectionProps {
   consents: ConsentOption[];
 }
 
+const releaseSoftOptIns = false;
+const softOptInEmailConsents = (consents: ConsentOption[]): ConsentOption[] =>
+  consents.filter(consent => !!consent.isProduct && releaseSoftOptIns);
+
 const otherEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
   const ids = ["supporter", "jobs", "holidays", "events", "offers"];
   return ConsentOptions.findByIds(consents, ids);
@@ -51,6 +55,7 @@ export const ConsentSection: FC<ConsentSectionProps> = props => {
         our products, services and events.
       `}
     >
+      {consentPreferences(softOptInEmailConsents(consents), clickHandler)}
       {consentPreferences(otherEmailConsents(consents), clickHandler)}
       <h2
         css={{

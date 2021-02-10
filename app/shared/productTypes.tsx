@@ -141,6 +141,7 @@ export interface ProductType {
   shortFriendlyName?: string;
   allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
   urlPart: ProductUrlPart;
+  softOptInIDs: string[];
   legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
   getOphanProductType?: (
     productDetail: ProductDetail
@@ -160,7 +161,7 @@ export interface ProductType {
     explicitSingleDayOfWeek?: string;
   };
   shouldShowJoinDateNotStartDate?: true;
-  restrictedNewsletterIDs?: string[];
+  productPageNewsletterIDs?: string[];
 }
 
 export interface GroupedProductType extends ProductType {
@@ -203,6 +204,14 @@ const calculateProductTitle = (baseProductTitle: string) => (
 ) => baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : "");
 
 const FRONT_PAGE_NEWSLETTER_ID = "6009";
+enum SOFT_OPT_IN_IDS {
+  support_onboarding = "your_support_onboarding",
+  similar_products = "similar_guardian_products",
+  supporter_newsletter = "supporter_newsletter",
+  subscriber_preview = "subscriber_preview",
+  digi_subscriber_preview = "digital_subscriber_preview",
+  guardian_weekly_newsletter = "guardian_weekly_newsletter"
+}
 
 type ProductTypeKeys =
   | "membership"
@@ -248,7 +257,12 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     cancelledCopy:
       "Your membership has been cancelled. You will continue to receive the benefits of your membership until",
     tierLabel: "Membership tier",
-    shouldShowJoinDateNotStartDate: true
+    shouldShowJoinDateNotStartDate: true,
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ]
   },
   contributions: {
     productTitle: () => "Recurring contribution",
@@ -258,6 +272,11 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     getOphanProductType: () => "RECURRING_CONTRIBUTION",
     noProductSupportUrlSuffix: "/contribute",
     updateAmountMdaEndpoint: "contribution-update-amount",
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     cancellation: {
       linkOnProductPage: true,
       reasons: contributionsCancellationReasons,
@@ -304,11 +323,17 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Paper",
     urlPart: "paper",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
     delivery: {
       showAddress: showDeliveryAddressCheck,
       enableDeliveryInstructionsUpdate: true
-    }
+    },
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.subscriber_preview,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ]
   },
   homedelivery: {
     productTitle: calculateProductTitle("Newspaper Delivery"),
@@ -317,7 +342,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "HomeDelivery",
     urlPart: "homedelivery",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.subscriber_preview,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     holidayStops: {
       issueKeyword: "paper"
     },
@@ -346,7 +377,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     allProductsProductTypeFilterString: "Voucher",
     urlPart: "voucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.subscriber_preview,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     holidayStops: {
       issueKeyword: "voucher",
       alternateNoticeString: "one day's notice",
@@ -389,7 +426,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     urlPart: "subscriptioncard",
     legacyUrlPart: "digitalvoucher",
     getOphanProductType: () => "PRINT_SUBSCRIPTION",
-    restrictedNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.subscriber_preview,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     holidayStops: {
       issueKeyword: "issue",
       alternateNoticeString: "one day's notice",
@@ -407,6 +450,11 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     shortFriendlyName: "Guardian Weekly",
     allProductsProductTypeFilterString: "Weekly",
     urlPart: "guardianweekly",
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.guardian_weekly_newsletter,
+      SOFT_OPT_IN_IDS.similar_products
+    ],
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
     renewalMetadata: {
       alternateButtonText: "Subscribe here",
@@ -456,6 +504,12 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     legacyUrlPart: "digitalpack",
     getOphanProductType: () => "DIGITAL_SUBSCRIPTION",
     showTrialRemainingIfApplicable: true,
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.support_onboarding,
+      SOFT_OPT_IN_IDS.digi_subscriber_preview,
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     cancellation: {
       linkOnProductPage: true,
       reasons: digipackCancellationReasons,
@@ -505,6 +559,10 @@ export const GROUPED_PRODUCT_TYPES: {
     groupFriendlyName: "subscriptions",
     allProductsProductTypeFilterString: "ContentSubscription",
     urlPart: "subscriptions",
+    softOptInIDs: [
+      SOFT_OPT_IN_IDS.similar_products,
+      SOFT_OPT_IN_IDS.supporter_newsletter
+    ],
     mapGroupedToSpecific: (
       productDetail: ProductDetail | CancelledProductDetail
     ) => {

@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { ProductDetail } from "../../../../shared/productResponse";
+import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../../productUtils";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
 import { Spinner } from "../../spinner";
@@ -10,6 +13,7 @@ import {
 import { ConsentOptions, Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
+import { ConsentOption } from "../models";
 import { Actions, useConsentOptions } from "../useConsentOptions";
 import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
@@ -58,9 +62,25 @@ const EmailAndMarketing = (_: { path?: string }) => {
           window.location.assign(IdentityLocations.VERIFY_EMAIL);
           return;
         }
+        const productDetailsResponse = await allProductsDetailFetcher();
+        const productDetails: ProductDetail[] = await productDetailsResponse.json();
         const consentOptions = await ConsentOptions.getAll();
+        const consentsWithFilteredSoftOptIns = consentOptions.filter(
+          (consent: ConsentOption) =>
+            consent.isProduct
+              ? productDetails.some(productDetail => {
+                  const groupedProductType =
+                    GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+                  const specificProductType = groupedProductType.mapGroupedToSpecific(
+                    productDetail
+                  );
+                  return specificProductType.softOptInIDs.includes(consent.id);
+                })
+              : true
+        );
+
         setEmail(user.primaryEmailAddress);
-        dispatch(options(consentOptions));
+        dispatch(options(consentsWithFilteredSoftOptIns));
       } catch (e) {
         dispatch(error(e));
       }
