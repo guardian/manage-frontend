@@ -453,8 +453,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
     softOptInIDs: [
       SOFT_OPT_IN_IDS.support_onboarding,
       SOFT_OPT_IN_IDS.guardian_weekly_newsletter,
-      SOFT_OPT_IN_IDS.similar_products,
-      SOFT_OPT_IN_IDS.supporter_newsletter
+      SOFT_OPT_IN_IDS.similar_products
     ],
     getOphanProductType: () => "PRINT_SUBSCRIPTION", // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
     renewalMetadata: {
