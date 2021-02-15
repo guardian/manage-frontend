@@ -8,6 +8,7 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
 import { HelpCentreTopic } from "./helpCentreConfig";
+import { linkAnchorStyle, linkArrowStyle } from "./helpCentreStyles";
 
 interface HelpTopicBoxProps {
   topic: HelpCentreTopic;
@@ -55,28 +56,6 @@ const linkListItemStyle = css`
   padding: 12px 20px 12px 0;
   border-bottom: 1px solid ${neutral["86"]};
   position: relative;
-`;
-
-export const linkAnchorStyle = css`
-  display: inline-block;
-  width: 100%;
-  ${textSans.medium()};
-  color: ${neutral["7"]};
-  :visited {
-    color: ${neutral["7"]};
-  }
-`;
-
-export const linkArrowStyle = css`
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid ${neutral["7"]};
-  border-right: 2px solid ${neutral["7"]};
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  right: 7px;
 `;
 
 const seeAllAnchorStyle = css`

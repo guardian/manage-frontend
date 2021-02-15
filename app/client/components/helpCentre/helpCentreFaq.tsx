@@ -5,7 +5,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { trackEvent } from "../analytics";
 import { helpCentreMoreQuestionsConfig } from "./helpCentreConfig";
-import { linkAnchorStyle, linkArrowStyle } from "./HelpTopicBox";
+import { linkAnchorStyle, linkArrowStyle } from "./helpCentreStyles";
 
 const faqStyles = css({
   marginBottom: "10px",
@@ -75,8 +75,8 @@ export const HelpCentreFaq = () => {
   const innerSectionDivCss = `
     ${textSans.medium()};
     margin-bottom: 0;
-    padding: 12px 20px 12px 0;
-    margin: 0 12px;
+    padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
+    margin: 0 ${space[3]}px;
     position: relative;
   `;
 
