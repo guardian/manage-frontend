@@ -104,6 +104,16 @@ ignore:
     - node-pre-gyp > rc > ini:
         reason: None given
         expires: '2021-03-10T11:42:04.829Z'
+  SNYK-JS-UAPARSERJS-1072471:
+    - formik > create-react-context > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-03-10T11:42:04.829Z'
+    - react-daterange-picker > create-react-class > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-03-10T11:42:04.829Z'
+    - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
+        reason: None given
+        expires: '2021-03-10T11:42:04.829Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
