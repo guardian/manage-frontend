@@ -114,6 +114,44 @@ ignore:
     - react-daterange-picker > react-addons-pure-render-mixin > fbjs > ua-parser-js:
         reason: None given
         expires: '2021-03-10T11:42:04.829Z'
+  SNYK-JS-LODASH-1018905:
+    - formik > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.872Z'
+    - yup > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - winston > async > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.874Z'
+  SNYK-JS-LODASH-1040724:
+    - formik > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - yup > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - winston > async > lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - '@emotion/styled > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: None given
+        expires: '2021-03-17T14:30:44.873Z'
+    - '@emotion/core > @emotion/css > babel-plugin-emotion > @babel/helper-module-imports > @babel/types > lodash':
+        reason: None given
+        expires: '2021-03-17T14:30:44.874Z'
+    - lodash:
+        reason: None given
+        expires: '2021-03-17T14:30:44.874Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-LODASH-450202:
