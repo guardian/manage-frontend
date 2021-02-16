@@ -10,14 +10,14 @@ export const getHelpSectionIcon = (sectionId: string) => {
       return <DeliveryIcon />;
     case "billing":
       return <BillingIcon />;
-    case "apps-and-website":
-      return <AppsAndWebsiteIcon />;
-    case "signing-in-and-accounts":
-      return <AccountIcon />;
+    case "accounts-and-sign-in":
+      return <AccountsAndSignInIcon />;
+    case "the-guardian-website":
+      return <TheGuardianWebsiteIcon />;
     case "journalism":
       return <JournalismIcon />;
-    case "subscriptions":
-      return <SubscriptionsIcon />;
+    case "print-subscriptions":
+      return <PrintSubscriptionsIcon />;
     default:
       return <SvgWrapper />;
   }
@@ -41,7 +41,7 @@ const SvgWrapper = (props: SvgWrapperProps) => (
   </svg>
 );
 
-export const AppsAndWebsiteIcon = (props: HelpSectionIconProps) => (
+export const AccountsAndSignInIcon = (props: HelpSectionIconProps) => (
   <SvgWrapper size={props.size || 39}>
     <g>
       <path
@@ -154,7 +154,7 @@ export const BillingIcon = (props: HelpSectionIconProps) => (
   </SvgWrapper>
 );
 
-export const SubscriptionsIcon = (props: HelpSectionIconProps) => (
+export const PrintSubscriptionsIcon = (props: HelpSectionIconProps) => (
   <SvgWrapper size={props.size || 39}>
     <g>
       <path
@@ -250,7 +250,7 @@ export const SubscriptionsIcon = (props: HelpSectionIconProps) => (
   </SvgWrapper>
 );
 
-export const AccountIcon = (props: HelpSectionIconProps) => (
+export const TheGuardianWebsiteIcon = (props: HelpSectionIconProps) => (
   <SvgWrapper size={props.size || 39}>
     <path
       d="M19.5 17.0952C21.2236 17.0952 23.2542 15.1428 23.2542 12.7619C23.2542 10.381 21.8611 9 19.5 9C17.1389 9 15.7694 10.381 15.7694 12.7619C15.7694 15.1428 17.9653 17.0952 19.5 17.0952ZM13.8333 19.9286L12.8653 20.9047L11 28.0476L11.9208 29H27.032L28 28.0476L26.1111 20.9047L25.1667 19.9286C23.2778 19.3333 21.5542 19 19.5 19C17.4222 19 15.7222 19.2857 13.8333 19.9286Z"

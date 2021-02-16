@@ -11,6 +11,7 @@ import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { SectionHeader } from "../sectionHeader";
 import { SectionPageContainer } from "../sectionPageContainer";
 import { helpCentreConfig } from "./helpCentreConfig";
+import { HelpCentreFaq } from "./helpCentreFaq";
 import { HelpTopicBox } from "./HelpTopicBox";
 import { KnownIssues } from "./knownIssues";
 
@@ -38,7 +39,7 @@ const popularTopicsTitleStyle = css`
   }
 `;
 
-const contactUsTitleStyle = css`
+const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
   margin-top: 30px;
   ${minWidth.tablet} {
@@ -71,9 +72,9 @@ const HelpCentre = (_: HelpCentreProps) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
-        <h2 css={contactUsTitleStyle}>
-          Still can’t find what you’re looking for?
-        </h2>
+        <h2 css={subtitleStyles}>FAQ</h2>
+        <HelpCentreFaq />
+        <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
         <CallCentreEmailAndNumbers />
         <p
           css={css`
