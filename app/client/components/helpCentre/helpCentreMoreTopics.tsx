@@ -7,7 +7,7 @@ import { trackEvent } from "../analytics";
 import { helpCentreMoreQuestionsConfig } from "./helpCentreConfig";
 import { linkAnchorStyle, linkArrowStyle } from "./helpCentreStyles";
 
-const faqStyles = css({
+const moreTopicsStyles = css({
   marginBottom: "10px",
   display: "flex",
   flexWrap: "wrap",
@@ -15,7 +15,7 @@ const faqStyles = css({
   fontWeight: "normal"
 });
 
-export const HelpCentreFaq = () => {
+export const HelpCentreMoreTopics = () => {
   const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>();
 
   const containterCss = `
@@ -92,7 +92,7 @@ export const HelpCentreFaq = () => {
     setIndexOfOpenSection(indexOfOpenSection === sectionNum ? -1 : sectionNum);
   };
   return (
-    <div css={faqStyles}>
+    <div css={moreTopicsStyles}>
       <div
         css={css`
           ${containterCss}
@@ -139,7 +139,7 @@ export const HelpCentreFaq = () => {
                       onClick={() => {
                         trackEvent({
                           eventCategory: "help-centre",
-                          eventAction: "faq-q-click",
+                          eventAction: "more-topics-q-click",
                           eventLabel: `${topic.id}-${question.id}`
                         });
                       }}
