@@ -2,9 +2,8 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import moment from "moment";
 import React, { useState } from "react";
-import { DATE_INPUT_FORMAT, DateHelper } from "../../../shared/dates";
+import { parseDate } from "../../../shared/dates";
 import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -18,7 +17,7 @@ import { InvoiceTableYearSelect } from "./invoiceTableYearSelect";
 const invoicePaymentMethods = {
   CARD: "card",
   DIRECT_DEBIT: "directdebit",
-  PAYPAL: "paypal"
+  PAYPAL: "paypal",
 };
 
 interface InvoiceInfo extends InvoiceDataApiItem {
@@ -35,7 +34,7 @@ interface InvoicesTableProps {
 export const InvoicesTable = (props: InvoicesTableProps) => {
   const [
     trackingPaginationInteractionCount,
-    setTrackingPaginationInteractionCount
+    setTrackingPaginationInteractionCount,
   ] = useState<number>(1);
   const initialPage = 1;
 
@@ -45,9 +44,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const invoiceYears = [
     ...new Set(
       [...props.invoiceData].map(
-        invoice => `${moment(invoice.date, DATE_INPUT_FORMAT).year()}`
+        (invoice) => `${parseDate(invoice.date).date.getFullYear()}`
       )
-    )
+    ),
   ];
   const [currentInvoiceYear, setCurrentInvoiceYear] = useState<string>(
     invoiceYears[0]
@@ -58,17 +57,16 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   );
 
   const directPaginationUpdate = (newPageNumber: number) => {
-    const targetInvoiceYear = `${moment(
-      props.invoiceData[(newPageNumber - 1) * props.resultsPerPage].date,
-      DATE_INPUT_FORMAT
-    ).year()}`;
+    const targetInvoiceYear = `${parseDate(
+      props.invoiceData[(newPageNumber - 1) * props.resultsPerPage].date
+    ).date.getFullYear()}`;
     setCurrentInvoiceYear(targetInvoiceYear);
     setCurrentPage(newPageNumber);
     trackEvent({
       eventCategory: "invoice",
       eventAction: "click",
       eventLabel: "invoice_pagination_select",
-      eventValue: trackingPaginationInteractionCount
+      eventValue: trackingPaginationInteractionCount,
     });
     setTrackingPaginationInteractionCount(
       trackingPaginationInteractionCount + 1
@@ -77,7 +75,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
   const directYearUpdate = (newYear: string) => {
     const invoiceIndex = props.invoiceData.findIndex(
-      invoice => `${moment(invoice.date, DATE_INPUT_FORMAT).year()}` === newYear
+      (invoice) =>
+        `${parseDate(invoice.date).date.getFullYear()}` === newYear
     );
     const targetPage = Math.ceil((invoiceIndex + 1) / props.resultsPerPage);
     setCurrentPaginationPage(targetPage);
@@ -266,7 +265,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
               return (
                 <div css={tableRowCss2} key={tableRow.invoiceId}>
                   <div css={tdCss2(index, tableHeadings[0])}>
-                    {DateHelper(tableRow.date).dateStr()}
+                    {parseDate(tableRow.date).dateStr()}
                   </div>
                   <div css={tdCss2(index, tableHeadings[1])}>
                     <div css={paymentDetailsHolderCss}>
@@ -313,7 +312,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`
+                          eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`,
                         })
                       }
                     >
@@ -321,15 +320,15 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     </a>
                     <a
                       css={invoiceDownloadLinkCss}
-                      download={`invoice_${tableRow.subscriptionName}_${moment(
+                      download={`invoice_${tableRow.subscriptionName}_${parseDate(
                         tableRow.date
-                      ).format("YYYY-MM-DD")}.pdf`}
+                      ).dateStr("yyyy-MM-dd")}.pdf`}
                       href={tableRow.pdfPath}
                       onClick={() =>
                         trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`
+                          eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`,
                         })
                       }
                     >

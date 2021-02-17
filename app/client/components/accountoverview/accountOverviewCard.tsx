@@ -3,7 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import { cancellationFormatDate, DateHelper } from "../../../shared/dates";
+import { cancellationFormatDate, parseDate } from "../../../shared/dates";
 import {
   getMainPlan,
   isGift,
@@ -258,7 +258,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Start date</li>
               <li css={valueCss}>
-                {DateHelper(subscriptionStartDate).dateStr()}
+                {parseDate(subscriptionStartDate).dateStr()}
               </li>
             </ul>
           )}
@@ -266,22 +266,20 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Join date</li>
               <li css={valueCss}>
-                {DateHelper(props.productDetail.joinDate).dateStr()}
+                {parseDate(props.productDetail.joinDate).dateStr()}
               </li>
             </ul>
           )}
           {userIsGifter && giftPurchaseDate && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>Purchase date</li>
-              <li css={valueCss}>{DateHelper(giftPurchaseDate).dateStr()}</li>
+              <li css={valueCss}>{parseDate(giftPurchaseDate).dateStr()}</li>
             </ul>
           )}
           {isGifted && !userIsGifter && (
             <ul css={keyValuePairCss}>
               <li css={keyCss}>End date</li>
-              <li css={valueCss}>
-                {DateHelper(subscriptionEndDate).dateStr()}
-              </li>
+              <li css={valueCss}>{parseDate(subscriptionEndDate).dateStr()}</li>
             </ul>
           )}
           {specificProductType.showTrialRemainingIfApplicable &&

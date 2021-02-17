@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import React from "react";
-import { DATE_FNS_LONG_OUTPUT_FORMAT, DateHelper } from "../../../shared/dates";
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from "../../../shared/dates";
 import {
   MembersDataApiItemContext,
   ProductDetail
@@ -68,7 +68,7 @@ class ReasonPicker extends React.Component<
 
     const chargedThroughDateStr =
       shouldOfferEffectiveDateOptions &&
-      DateHelper(this.props.chargedThroughCancellationDate).dateStr(
+      parseDate(this.props.chargedThroughCancellationDate).dateStr(
         DATE_FNS_LONG_OUTPUT_FORMAT
       );
 

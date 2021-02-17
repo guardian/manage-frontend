@@ -29,7 +29,7 @@ import { Button } from "@guardian/src-button";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
-import moment from "moment";
+import {parseDate} from "../../../../shared/dates";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -109,7 +109,7 @@ export const addressChangeAffectedInfo = (
       ).trim();
       const effectiveDate = productDetail.subscription
         .deliveryAddressChangeEffectiveDate
-        ? moment(productDetail.subscription.deliveryAddressChangeEffectiveDate)
+        ? parseDate(productDetail.subscription.deliveryAddressChangeEffectiveDate).date
         : undefined;
       return {
         friendlyProductName,

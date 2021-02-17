@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import { DATE_FNS_INPUT_FORMAT, DateHelper } from "../../../shared/dates";
+import { DATE_FNS_INPUT_FORMAT, parseDate } from "../../../shared/dates";
 import {
   MDA_TEST_USER_HEADER,
   ProductDetail
@@ -31,8 +31,8 @@ const getOutstandingCreditsFetcher = (
   const effectiveCancellationDate =
     !productDetail.subscription.chargedThroughDate ||
     cancellationPolicy === cancellationEffectiveToday
-      ? DateHelper()
-      : DateHelper(productDetail.subscription.chargedThroughDate);
+      ? parseDate()
+      : parseDate(productDetail.subscription.chargedThroughDate);
 
   const outstandingHolidayStopsPromise = fetch(
     `/api/holidays/${

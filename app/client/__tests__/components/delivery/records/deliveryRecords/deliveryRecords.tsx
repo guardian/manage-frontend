@@ -1,4 +1,4 @@
-import moment from "moment";
+import {dateAddDays, dateString} from "../../../../../../shared/dates";
 import { checkForExistingDeliveryProblem } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordDetail } from "../../../../../components/delivery/records/deliveryRecordsApi";
 
@@ -11,16 +11,14 @@ describe("delivery records unit tests", () => {
     addressCountry: "addressCountry",
     addressPostcode: "addressPostcode",
     hasHolidayStop: false,
-    deliveryDate: moment().format("D MMM YYYY")
+    deliveryDate: dateString(new Date(), "d MMM yyyy")
   };
 
   test("checkForExistingDeliveryProblem returns true if ", () => {
     const deliverRecords = [
       {
         ...baseMockDeliveryRecord,
-        deliveryDate: moment()
-          .subtract(7, "d")
-          .format("D MMM YYYY"),
+        deliveryDate: dateString(dateAddDays(new Date(), -7), "d MMM yyyy"),
         problemCaseId: "123"
       }
     ];

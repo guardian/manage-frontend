@@ -5,21 +5,21 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
-import moment from "moment";
 import React, {
   ChangeEvent,
   Dispatch,
   FormEvent,
   SetStateAction,
   useContext,
-  useState
+  useState,
 } from "react";
+import { dateString } from "../../../../shared/dates";
 import {
   DeliveryAddress,
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { createProductDetailFetcher } from "../../../productUtils";
@@ -32,14 +32,14 @@ import { InfoSection } from "../../infoSection";
 import { Input } from "../../input";
 import {
   ProductDescriptionListKeyValue,
-  ProductDescriptionListTable
+  ProductDescriptionListTable,
 } from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
 import {
   addressChangeAffectedInfo,
-  getValidDeliveryAddressChangeEffectiveDates
+  getValidDeliveryAddressChangeEffectiveDates,
 } from "../address/deliveryAddressForm";
 import { convertToDescriptionListData } from "../address/deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "../address/formValidation";
@@ -60,7 +60,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     VALIDATION_ERROR,
     PENDING,
     CONFIRMATION,
-    ERROR
+    ERROR,
   }
 
   const [status, setStatus] = useState(Status.READ_ONLY);
@@ -73,13 +73,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
   const [
     instructionsRemainingCharacters,
-    setInstructionsRemainingCharacters
+    setInstructionsRemainingCharacters,
   ] = useState<number>(250 - (newAddress.instructions?.length || 0));
   const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
     false
   );
   const [formErrors, setFormErrors] = useState<FormValidationResponse>({
-    isValid: false
+    isValid: false,
   });
 
   const [showCallCentreNumbers, setCallCentreNumbersVisibility] = useState<
@@ -106,7 +106,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       addressLine1: isFormValidResponse.addressLine1,
       town: isFormValidResponse.town,
       postcode: isFormValidResponse.postcode,
-      country: isFormValidResponse.country
+      country: isFormValidResponse.country,
     } as FormValidationResponse);
 
     if (isFormValidResponse.isValid && acknowledgementChecked) {
@@ -123,7 +123,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
         .filter(isProduct)
-        .filter(product => product.subscription.readerType !== "Gift")
+        .filter((product) => product.subscription.readerType !== "Gift")
     );
 
     const addressChangeAffectedInfoArray = addressChangeAffectedInfo(
@@ -133,21 +133,23 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     setAddressChangeInformation(
       [
         ...addressChangeAffectedInfoArray.map(
-          element =>
+          (element) =>
             `${element.friendlyProductName} subscription (${
               element.subscriptionId
             })${
               element.effectiveDate
-                ? ` as of front cover dated ${element.effectiveDate.format(
-                    "dddd Do MMMM YYYY"
+                ? ` as of front cover dated ${dateString(
+                    element.effectiveDate,
+                    "EEEE do MMMM yyyy"
                   )}`
                 : ""
             }`
         ),
         "",
-        `(as displayed on confirmation page at ${moment().format(
-          "H:mm:ss zz [on] Do MMMM YYYY"
-        )})`
+        `(as displayed on confirmation page at ${dateString(
+          new Date(),
+          "HH:mm:ss x 'on' do MMMM yyyy"
+        )})`,
       ].join("\n")
     );
 
@@ -195,7 +197,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  addressLine1: value
+                  addressLine1: value,
                 })
               }
               inErrorState={
@@ -211,7 +213,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  addressLine2: value
+                  addressLine2: value,
                 })
               }
               optional={true}
@@ -223,7 +225,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  town: value
+                  town: value,
                 })
               }
               inErrorState={
@@ -239,7 +241,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  region: value
+                  region: value,
                 })
               }
             />
@@ -250,7 +252,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  postcode: value
+                  postcode: value,
                 })
               }
               inErrorState={
@@ -261,10 +263,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             />
             <Select
               label={"Country"}
-              options={COUNTRIES.map(country => {
+              options={COUNTRIES.map((country) => {
                 return {
                   name: country.name,
-                  value: country.name
+                  value: country.name,
                 };
               })}
               width={30}
@@ -272,13 +274,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 margin-top: 14px;
               `}
               value={
-                COUNTRIES.find(country => newAddress.country === country.iso)
+                COUNTRIES.find((country) => newAddress.country === country.iso)
                   ?.name || newAddress.country
               }
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  country: value
+                  country: value,
                 })
               }
               inErrorState={
@@ -316,7 +318,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                       onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
                         deliveryAddressContext.setAddress?.({
                           ...newAddress,
-                          instructions: e.target.value
+                          instructions: e.target.value,
                         });
                         setInstructionsRemainingCharacters(
                           250 - e.target.value.length
@@ -549,7 +551,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
         fetch={updateAddressFetcher(
           {
             ...newAddress,
-            addressChangeInformation
+            addressChangeInformation,
           },
           props.productDetail.subscription.contactId
         )}

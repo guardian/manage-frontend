@@ -1,6 +1,5 @@
-import { Moment } from "moment";
 import { createContext } from "react";
-import { friendlyLongDateFormat } from "../../../../shared/dates";
+import {DATE_FNS_LONG_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { flattenEquivalent } from "../../../utils";
 
@@ -12,7 +11,7 @@ interface NewDeliveryAddressContextInterface {
 export interface SubscriptionEffectiveData {
   friendlyProductName: string;
   subscriptionId: string;
-  effectiveDate?: Moment;
+  effectiveDate?: Date;
 }
 
 export const NewDeliveryAddressContext = createContext<
@@ -41,7 +40,7 @@ export const convertToDescriptionListData = (
       {
         title: "Front cover date",
         value: element.effectiveDate
-          ? element.effectiveDate.format(friendlyLongDateFormat)
+          ? dateString(element.effectiveDate, DATE_FNS_LONG_OUTPUT_FORMAT)
           : "-"
       }
     ])

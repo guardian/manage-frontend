@@ -1,9 +1,8 @@
 import { css } from "@emotion/core";
 import React from "react";
+import { OnSelectCallbackParam } from "react-daterange-picker";
 import {
-  dateAddDays,
   dateClone,
-  dateIsLeapYear,
   dateIsSame,
   DateRange,
   dateRange
@@ -135,7 +134,7 @@ interface DatePickerProps {
   selectedRange?: DateRange;
   maybeLockedStartDate: Date | null;
   selectionInfo?: React.ReactElement;
-  onChange: (range: {startDate: Date, endDate:Date}) => void;
+  onSelect: (range: OnSelectCallbackParam) => void;
   dateToAsterisk?: Date;
 }
 
@@ -165,13 +164,13 @@ export const DatePicker = (props: DatePickerProps) => (
       }}
     >
       <div css={{ flexGrow: 1 }}>
-
+        {/*
         <WrappedDateRangePicker
           minimumDate={props.firstAvailableDate}
-          maximumDate={dateAddDays(props.firstAvailableDate, dateIsLeapYear(props.firstAvailableDate) ? 366 : 365)}
+          maximumDate={dateAddDays(props.firstAvailableDate, daysInYear(props.firstAvailableDate))}
           value={props.selectedRange}
           maybeLockedStartDate={props.maybeLockedStartDate}
-          onChange={props.onChange}
+          onSelect={props.onSelect}
           singleDateRange={true}
           showLegend={false}
           stateDefinitions={stateDefinitions}
@@ -198,6 +197,7 @@ export const DatePicker = (props: DatePickerProps) => (
           daysOfWeekToIconify={props.issueDaysOfWeek}
           dateToAsterisk={props.dateToAsterisk}
         />
+        */}
       </div>
 
       <div
