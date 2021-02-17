@@ -11,7 +11,7 @@ import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { SectionHeader } from "../sectionHeader";
 import { SectionPageContainer } from "../sectionPageContainer";
 import { helpCentreConfig } from "./helpCentreConfig";
-import { HelpCentreFaq } from "./helpCentreFaq";
+import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpTopicBox } from "./HelpTopicBox";
 import { KnownIssues } from "./knownIssues";
 
@@ -72,8 +72,8 @@ const HelpCentre = (_: HelpCentreProps) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
-        <h2 css={subtitleStyles}>FAQ</h2>
-        <HelpCentreFaq />
+        <h2 css={subtitleStyles}>More Topics</h2>
+        <HelpCentreMoreTopics />
         <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
         <CallCentreEmailAndNumbers />
         <p
