@@ -8,7 +8,7 @@ import { expanderButtonCss } from "../expanderButton";
 import { ProfileIcon } from "../svgs/profileIcon";
 import { MenuSpecificNavItem, NAV_LINKS } from "./navConfig";
 
-const dropdownNavCss = (showMenu: boolean) =>
+const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
   css({
     display: `${showMenu ? "block" : "none"}`,
     background: brand[400],
@@ -34,7 +34,7 @@ const dropdownNavCss = (showMenu: boolean) =>
       maxWidth: "none",
       top: `${space[9]}px`,
       left: "auto",
-      right: "16px",
+      right: `${isHelpCentre ? "" : "16px"}`,
       marginRight: "-32px",
       bottom: "auto",
       borderTop: "none",
@@ -48,7 +48,7 @@ const dropdownNavCss = (showMenu: boolean) =>
         height: 0,
         position: "absolute",
         top: `-${space[2]}px`,
-        right: `${space[3]}px`,
+        right: `${isHelpCentre ? "85px" : space[3] + "px"}`,
         borderLeft: `${space[2]}px solid transparent`,
         borderRight: `${space[2]}px solid transparent`,
         borderBottom: `${space[2]}px solid ${neutral["100"]}`
@@ -109,6 +109,10 @@ export const DropdownNav = () => {
       removeListeners();
     };
   });
+
+  const isHelpCentre = window.location.pathname.startsWith("/help-centre")
+    ? true
+    : false;
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === "Escape" && showMenu) {
@@ -202,7 +206,7 @@ export const DropdownNav = () => {
         My account
       </button>
 
-      <ul role="tablist" css={dropdownNavCss(showMenu)}>
+      <ul role="tablist" css={dropdownNavCss(showMenu, isHelpCentre)}>
         {Object.values(NAV_LINKS).map((navItem: MenuSpecificNavItem) => (
           <li key={navItem.title}>
             <a href={navItem.link} css={dropdownNavItemCss}>

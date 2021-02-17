@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { requiresSignin } from "../../shared/requiresSignin";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
+import HelpCentreHeader from "./helpCentre/helpCentreHeader";
 import { DropdownNav } from "./nav/dropdownNav";
 import { GridRoundel } from "./svgs/gridRoundel";
 
-type HeaderStatus = "init" | "signedIn" | "signedOut";
+export type HeaderStatus = "init" | "signedIn" | "signedOut";
 
 const Header = () => {
   const [headerStatus, setHeaderStatus] = useState<HeaderStatus>("init");
@@ -22,6 +23,16 @@ const Header = () => {
       !!window.guardian?.identityDetails?.userId;
     setHeaderStatus(isSignedIn ? "signedIn" : "signedOut");
   }, []);
+
+  if (window.location.pathname.startsWith("/help-centre")) {
+    return (
+      <HelpCentreHeader
+        headerStatus={headerStatus}
+        pageRequiresSignin={pageRequiresSignin}
+      />
+    );
+  }
+
   return (
     <header
       css={{
