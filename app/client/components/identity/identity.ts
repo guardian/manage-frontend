@@ -2,6 +2,7 @@ import * as ConsentsAPI from "./idapi/consents";
 import * as NewslettersAPI from "./idapi/newsletters";
 import * as NewslettersSubscriptionsAPI from "./idapi/newsletterSubscriptions";
 import * as RemoveSubscriptionsAPI from "./idapi/removeSubscriptions";
+import * as SupportRemindersApi from "./idapi/supportReminders";
 import * as UserAPI from "./idapi/user";
 
 import {
@@ -16,6 +17,8 @@ const isNewsletter = (option: ConsentOption): boolean =>
   option.type === ConsentOptionType.NEWSLETTER;
 const isConsent = (option: ConsentOption): boolean =>
   option.type !== ConsentOptionType.NEWSLETTER;
+const isSupportReminderConsent = (option: ConsentOption): boolean =>
+  option.type === ConsentOptionType.SUPPORT_REMINDER;
 
 const mapSubscriptions = (
   subscriptions: string[],
@@ -77,14 +80,18 @@ export const ConsentOptions: ConsentOptionCollection = {
       ConsentsAPI.read(),
       UserAPI.read()
     ]);
+    const supportReminders = await SupportRemindersApi.read();
+
     return mapSubscriptions(
       [...subscriptions, ...user.consents],
-      [...newsletters, ...consents]
+      [...newsletters, ...consents, ...supportReminders]
     );
   },
   async subscribe(option: ConsentOption): Promise<void> {
     if (isNewsletter(option)) {
       return NewslettersAPI.update(option.id, true);
+    } else if (isSupportReminderConsent(option)) {
+      return SupportRemindersApi.update(option.id, true);
     } else {
       return ConsentsAPI.update(option.id, true);
     }
@@ -92,6 +99,8 @@ export const ConsentOptions: ConsentOptionCollection = {
   async unsubscribe(option: ConsentOption): Promise<void> {
     if (isNewsletter(option)) {
       return NewslettersAPI.update(option.id, false);
+    } else if (isSupportReminderConsent(option)) {
+      return SupportRemindersApi.update(option.id, false);
     } else {
       return ConsentsAPI.update(option.id, false);
     }
