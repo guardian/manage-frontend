@@ -12,29 +12,31 @@ interface LocationObject {
   path: string;
 }
 
-const nonMMALocationObjectArr: LocationObject[] = [
+const helpCentreLocationObjectArr: LocationObject[] = [
   {
-    title: "Help Centre",
+    title: "How can we help you?",
     path: "/help-centre"
   },
   {
-    title: "Need to contact us about something?",
+    title: "Need to contact us?",
     path: "/help-centre/contact-us"
   }
 ];
 
-const MMAPageSkeleton = () => (
+const HelpCentrePageSkeleton = () => (
   <Location>
     {({ location }) => {
-      const selectedNonMMALocationObject = nonMMALocationObjectArr.filter(
-        currentObject => location.pathname.startsWith(currentObject.path)
+      const selectedhelpCentreLocationObject = helpCentreLocationObjectArr.filter(
+        currentObject =>
+          location.pathname === currentObject.path ||
+          location.pathname === currentObject.path + "/"
       )[0];
 
-      if (selectedNonMMALocationObject) {
+      if (selectedhelpCentreLocationObject) {
         return (
           <>
-            <SectionHeader title={selectedNonMMALocationObject.title} />
-            <SectionPageContainer sectionTitle="&nbsp;">
+            <SectionHeader title={selectedhelpCentreLocationObject.title} />
+            <SectionPageContainer>
               <div
                 css={css`
                   margin-bottom: ${space[24]}px;
@@ -53,4 +55,4 @@ const MMAPageSkeleton = () => (
   </Location>
 );
 
-export default MMAPageSkeleton;
+export default HelpCentrePageSkeleton;
