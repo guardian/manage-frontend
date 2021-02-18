@@ -110,9 +110,7 @@ export const DropdownNav = () => {
     };
   });
 
-  const isHelpCentre = window.location.pathname.startsWith("/help-centre")
-    ? true
-    : false;
+  const isHelpCentre = window.location.pathname.startsWith("/help-centre");
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === "Escape" && showMenu) {
