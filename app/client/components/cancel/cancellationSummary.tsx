@@ -12,6 +12,7 @@ import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
+import { CancellationContributionReminder } from "./cancellationContributionReminder";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -19,120 +20,130 @@ const actuallyCancelled = (
 ) => {
   const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
   const subscription = productDetail.subscription;
+
   return (
     <>
       <WithStandardTopMargin>
         <h3>Your {productType.friendlyName} is cancelled.</h3>
-        {productType.cancellation && (
-          <p>
-            {productType.cancellation?.alternateSummaryMainPara ||
-              (subscription.end ? (
-                <>
-                  You will continue to receive the benefits of your{" "}
-                  {productType.friendlyName} until{" "}
-                  <b>
-                    {cancellationFormatDate(
-                      subscription.cancellationEffectiveDate
-                    )}
-                  </b>
-                  . You will not be charged again. If you think you’re owed a
-                  refund, please contact us at{" "}
-                  <a
-                    css={hrefStyle}
-                    href="mailto:customer.help@theguardian.com"
-                  >
-                    customer.help@theguardian.com
-                  </a>
-                  .
-                </>
-              ) : (
-                "Your cancellation is effective immediately."
-              ))}
-          </p>
-        )}
-      </WithStandardTopMargin>
-      <ResubscribeThrasher
-        usageContext={`${productType.urlPart}_cancellation_summary`}
-      >
-        <WithStandardTopMargin>
-          {hasDeliveryRecordsFlow(productType) && (
+        {productType.cancellation &&
+          !productType.cancellation.shouldHideSummaryMainPara && (
             <p>
-              You can still{" "}
-              <Link
-                css={css`
-                  color: ${brand[500]};
-                  text-decoration: underline;
-                  :visited {
-                    color: ${brand[500]};
-                  }
-                `}
-                to={deliveryRecordsLink}
-                state={productDetail}
-              >
-                view your previous deliveries
-              </Link>{" "}
-              and{" "}
-              <Link
-                css={css`
-                  color: ${brand[500]};
-                  text-decoration: underline;
-                  :visited {
-                    color: ${brand[500]};
-                  }
-                `}
-                to={deliveryRecordsLink}
-                state={productDetail}
-              >
-                report a delivery problem
-              </Link>
-              .
+              {productType.cancellation?.alternateSummaryMainPara ||
+                (subscription.end ? (
+                  <>
+                    You will continue to receive the benefits of your{" "}
+                    {productType.friendlyName} until{" "}
+                    <b>
+                      {cancellationFormatDate(
+                        subscription.cancellationEffectiveDate
+                      )}
+                    </b>
+                    . You will not be charged again. If you think you’re owed a
+                    refund, please contact us at{" "}
+                    <a
+                      css={hrefStyle}
+                      href="mailto:customer.help@theguardian.com"
+                    >
+                      customer.help@theguardian.com
+                    </a>
+                    .
+                  </>
+                ) : (
+                  "Your cancellation is effective immediately."
+                ))}
             </p>
           )}
-          <CancellationReasonContext.Consumer>
-            {reason =>
-              (!productType.cancellation ||
-                !productType.cancellation
-                  .onlyShowSupportSectionIfAlternateText ||
-                productType.cancellation.summaryReasonSpecificPara(reason)) && (
-                <>
-                  <p>
-                    {productType.cancellation &&
-                    productType.cancellation.summaryReasonSpecificPara &&
-                    productType.cancellation.summaryReasonSpecificPara(reason)
-                      ? productType.cancellation.summaryReasonSpecificPara(
-                          reason
-                        )
-                      : "If you are interested in supporting our journalism in other ways, " +
-                        "please consider either a contribution or a subscription."}
-                  </p>
-                  <div css={{ marginBottom: "30px" }}>
-                    <SupportTheGuardianButton
-                      urlSuffix={
-                        productType.cancellation &&
-                        productType.cancellation
-                          .alternateSupportButtonUrlSuffix &&
-                        productType.cancellation.alternateSupportButtonUrlSuffix(
-                          reason
-                        )
-                      }
-                      alternateButtonText={
-                        productType.cancellation &&
-                        productType.cancellation.alternateSupportButtonText &&
-                        productType.cancellation.alternateSupportButtonText(
-                          reason
-                        )
-                      }
-                      supportReferer={
-                        productType.urlPart + "_cancellation_summary"
-                      }
-                    />
-                  </div>
-                </>
-              )
-            }
-          </CancellationReasonContext.Consumer>
-        </WithStandardTopMargin>
-      </ResubscribeThrasher>
+      </WithStandardTopMargin>
+      {productType.cancellation?.shouldShowReminder && (
+        <CancellationContributionReminder />
+      )}
+
+      {!productType.cancellation?.shouldHideThrasher && (
+        <ResubscribeThrasher
+          usageContext={`${productType.urlPart}_cancellation_summary`}
+        >
+          <WithStandardTopMargin>
+            {hasDeliveryRecordsFlow(productType) && (
+              <p>
+                You can still{" "}
+                <Link
+                  css={css`
+                    color: ${brand[500]};
+                    text-decoration: underline;
+                    :visited {
+                      color: ${brand[500]};
+                    }
+                  `}
+                  to={deliveryRecordsLink}
+                  state={productDetail}
+                >
+                  view your previous deliveries
+                </Link>{" "}
+                and{" "}
+                <Link
+                  css={css`
+                    color: ${brand[500]};
+                    text-decoration: underline;
+                    :visited {
+                      color: ${brand[500]};
+                    }
+                  `}
+                  to={deliveryRecordsLink}
+                  state={productDetail}
+                >
+                  report a delivery problem
+                </Link>
+                .
+              </p>
+            )}
+            <CancellationReasonContext.Consumer>
+              {reason =>
+                (!productType.cancellation ||
+                  !productType.cancellation
+                    .onlyShowSupportSectionIfAlternateText ||
+                  productType.cancellation.summaryReasonSpecificPara(
+                    reason
+                  )) && (
+                  <>
+                    <p>
+                      {productType.cancellation &&
+                      productType.cancellation.summaryReasonSpecificPara &&
+                      productType.cancellation.summaryReasonSpecificPara(reason)
+                        ? productType.cancellation.summaryReasonSpecificPara(
+                            reason
+                          )
+                        : "If you are interested in supporting our journalism in other ways, " +
+                          "please consider either a contribution or a subscription."}
+                    </p>
+                    <div css={{ marginBottom: "30px" }}>
+                      <SupportTheGuardianButton
+                        urlSuffix={
+                          productType.cancellation &&
+                          productType.cancellation
+                            .alternateSupportButtonUrlSuffix &&
+                          productType.cancellation.alternateSupportButtonUrlSuffix(
+                            reason
+                          )
+                        }
+                        alternateButtonText={
+                          productType.cancellation &&
+                          productType.cancellation.alternateSupportButtonText &&
+                          productType.cancellation.alternateSupportButtonText(
+                            reason
+                          )
+                        }
+                        supportReferer={
+                          productType.urlPart + "_cancellation_summary"
+                        }
+                      />
+                    </div>
+                  </>
+                )
+              }
+            </CancellationReasonContext.Consumer>
+          </WithStandardTopMargin>
+        </ResubscribeThrasher>
+      )}
     </>
   );
 };

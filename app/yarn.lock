@@ -1492,6 +1492,11 @@
   resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-2.7.1.tgz#d245a5ebedd520bf3be1b10ff7c5a0b5962a0a03"
   integrity sha512-U0XVJWugB6vXoORZPcfvnISAhwaIM5/Pz5uGj628+OcqF3vwm0dBUt1UTesVqOsG7tVUQvGG/n96wXWjGwmVmQ==
 
+"@guardian/src-foundations@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-foundations/-/src-foundations-2.8.1.tgz#f684927187006e80988cc617fa110cf2b2d2a962"
+  integrity sha512-CFpmL8ZGYfBp0YdFR9MaZRL+PfbbZFTwV2k4r/0+9KXh4U/mhmQWjJ/75GvtuLc5K2HQK42kf0SMnqRnHL/s1A==
+
 "@guardian/src-helpers@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-helpers/-/src-helpers-1.8.0.tgz#8c4ad4689cf1725e758aec66da1fc2252f3127a3"
@@ -1520,6 +1525,13 @@
   dependencies:
     "@guardian/src-foundations" "^2.7.1"
 
+"@guardian/src-helpers@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-helpers/-/src-helpers-2.8.1.tgz#5ec0708c9ca027917b39cdef74da4e9f97f5313a"
+  integrity sha512-OHUbYfXu3NQBlxHMjPFQyKATDz9ZX1VDJDL5sJTjUqtoE7xeBmKevU3RG19lqv+Y4xtiN5HDw4h5dWf35fy3SA==
+  dependencies:
+    "@guardian/src-foundations" "^2.8.1"
+
 "@guardian/src-icons@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/src-icons/-/src-icons-1.8.0.tgz#fdfc1d8164c74f0586198a11c8b64ad1f545c602"
@@ -1535,6 +1547,11 @@
   resolved "https://registry.yarnpkg.com/@guardian/src-icons/-/src-icons-2.7.1.tgz#600ba5a16fd3857657360632caac1b2f38740829"
   integrity sha512-gQ7XrH3R++kZOXSK4e5ajRrUxNMgzQH7LiQ4HSYH51mJceh3YWtsc4934O5sCpJjJjhFiWGYubbg4BG14smUPg==
 
+"@guardian/src-icons@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-icons/-/src-icons-2.8.1.tgz#e9e0e5a44f6f2b01f54fc80a76f3afd6d68a1a49"
+  integrity sha512-vpVoU6YFF2jnYG6+95spyNGVK+gzTwr9SBU9/7jrBBNuzRaDMVGDBV8QgqNojcfTSiMVXYtfChYahyDGWFtAAQ==
+
 "@guardian/src-inline-error@^1.9.1":
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/@guardian/src-inline-error/-/src-inline-error-1.9.1.tgz#2be05aec7371f97122689f44cfb47df501330056"
@@ -1543,13 +1560,21 @@
     "@guardian/src-helpers" "^1.9.1"
     "@guardian/src-icons" "^1.9.1"
 
-"@guardian/src-radio@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@guardian/src-radio/-/src-radio-1.8.0.tgz#20255a824949cf516106b73638ae48a4e0b30f60"
-  integrity sha512-dnMOSEcOpXsTv1zB7OddBeLxh+RbgCKt07liM2b6528q2m8mCdT9HwtlHV6gxgQ3i/2jzvNagDrLfg2yQMwczg==
+"@guardian/src-label@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-label/-/src-label-2.8.1.tgz#afd689ab6abfb48c9072b83054f61683b710ef38"
+  integrity sha512-9vNAuWNq4rl1Im32TS5bW7tbAcOxWv7P5lJoPKXVtQWTosp+DyIhlBmn9Fkx/2EkUF0FlUOkIn3N2DlpwU10Kg==
   dependencies:
-    "@guardian/src-helpers" "^1.8.0"
-    "@guardian/src-user-feedback" "^1.8.0"
+    "@guardian/src-helpers" "^2.8.1"
+
+"@guardian/src-radio@^2.5.0":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-radio/-/src-radio-2.8.1.tgz#a57a5baa2e0efbfe2c9b9215a7a72fa79092a9d9"
+  integrity sha512-61yqGw80jyQ+Ei614kWmCzZOwU+KY5sDsAtAxCS584EBCvYA6rY+xf9a1aC4rYlT3bwBmrFECqNh5n8u0P/BYQ==
+  dependencies:
+    "@guardian/src-helpers" "^2.8.1"
+    "@guardian/src-label" "^2.8.1"
+    "@guardian/src-user-feedback" "^2.8.1"
 
 "@guardian/src-svgs@^1.8.0":
   version "1.8.0"
@@ -1579,6 +1604,14 @@
   dependencies:
     "@guardian/src-helpers" "^2.7.1"
     "@guardian/src-icons" "^2.7.1"
+
+"@guardian/src-user-feedback@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@guardian/src-user-feedback/-/src-user-feedback-2.8.1.tgz#80f7413f64d93c3767cf4417696f2c6c22889001"
+  integrity sha512-uXJa6z1fqN82Xgo1yyIk2Lrel5Hy/QilEHnGyPHnS4ZTy3wnM22ZhmFtntbM91hiyhdbfTBa3HVYVb44RdDDRw==
+  dependencies:
+    "@guardian/src-helpers" "^2.8.1"
+    "@guardian/src-icons" "^2.8.1"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
