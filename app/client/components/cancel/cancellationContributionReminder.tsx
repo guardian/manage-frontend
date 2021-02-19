@@ -4,6 +4,7 @@ import { space } from "@guardian/src-foundations";
 import { SvgArrowRightStraight } from "@guardian/src-icons";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import React, { useState } from "react";
+import { getGeoLocation } from "../../geolocation";
 import { trackEventInOphanOnly } from "../analytics";
 
 const containerStyles = css`
@@ -96,6 +97,7 @@ export const CancellationContributionReminder: React.FC = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
+        country: getGeoLocation(),
         reminderPlatform: REMINDER_PLATFORM,
         reminderComponent: REMINDER_COMPONENT,
         reminderStage: REMINDER_STAGE,
