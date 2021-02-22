@@ -82,6 +82,13 @@ Resources:
         - Key: Stage
           Value: !Ref Stage
           PropagateAtLaunch: true
+        - Key: Name
+          Value: !Join
+            - '-'
+            - - !Ref Stack
+              - !Ref Stage
+              - !Ref App
+          PropagateAtLaunch: 'true'
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
