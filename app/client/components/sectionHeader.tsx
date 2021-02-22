@@ -16,7 +16,6 @@ interface SectionHeaderProps {
 }
 
 const chevronCss = css`
-  display: block;
   width: 7px;
   height: 7px;
   border-top: 2px solid ${neutral["7"]};
@@ -57,7 +56,6 @@ export const SectionHeader = (props: SectionHeaderProps) => (
     >
       <div
         css={{
-          display: "block",
           marginTop: `${space[3]}px`,
           ...gridItemPlacement(1, 12)
         }}
@@ -80,10 +78,10 @@ export const SectionHeader = (props: SectionHeaderProps) => (
               Help Centre
             </span>
           ) : (
-            <>
+            <span css={{ marginLeft: "1rem" }}>
               <span css={chevronCss} />
-              &nbsp; &nbsp; Back to Help centre
-            </>
+              Back to Help centre
+            </span>
           )}
         </a>
       </div>
