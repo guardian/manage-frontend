@@ -19,26 +19,6 @@ interface HelpCentreProps extends RouteComponentProps {
   urlSuccess?: string;
 }
 
-const titleStyle = css`
-  ${headline.xsmall({ fontWeight: "bold" })};
-  margin: 0;
-  border-top: 1px solid ${neutral[86]};
-  ${minWidth.desktop} {
-    font-size: 1.75rem;
-    border-top: 0;
-  }
-`;
-
-const popularTopicsTitleStyle = css`
-  ${headline.xxsmall({ fontWeight: "bold" })};
-  border-top: 1px solid ${neutral[86]};
-  margin-top: ${space[6]}px;
-  padding: ${space[1]}px 0;
-  ${minWidth.desktop} {
-    margin-top: ${space[9]}px;
-  }
-`;
-
 const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
   margin-top: 30px;
@@ -50,16 +30,15 @@ const subtitleStyles = css`
 
 const HelpCentre = (_: HelpCentreProps) => (
   <>
-    <SectionHeader title="Help Centre" />
+    <SectionHeader title="How can we help you?" />
     <KnownIssues />
-    <SectionPageContainer sectionTitle="Help Centre">
+    <SectionPageContainer>
       <div
         css={css`
           margin-bottom: ${space[24]}px;
         `}
       >
-        <h1 css={titleStyle}>How can we help you?</h1>
-        <h2 css={popularTopicsTitleStyle}>Most popular topics</h2>
+        <h2 css={subtitleStyles}>Most popular topics</h2>
         <div
           css={css`
             display: flex;

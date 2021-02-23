@@ -114,7 +114,9 @@ const MMAPageSkeleton = () => (
   <Location>
     {({ location }) => {
       const selectedMMALocationObject = MMALocationObjectArr.filter(
-        currentObject => location.pathname === currentObject.path
+        currentObject =>
+          location.pathname === currentObject.path ||
+          location.pathname === currentObject.path + "/"
       )[0];
 
       if (selectedMMALocationObject) {

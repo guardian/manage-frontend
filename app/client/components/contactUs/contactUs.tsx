@@ -163,38 +163,12 @@ const ContactUs = (props: ContactUsProps) => {
     }
   };
 
-  const HeaderTitle = (
-    <span>
-      Need to contact us{" "}
-      <span
-        css={{
-          display: "none",
-          [minWidth.desktop]: {
-            display: "inline"
-          }
-        }}
-      >
-        about something?
-      </span>
-    </span>
-  );
+  const HeaderTitle = <span>Need to contact us?</span>;
 
   return (
     <>
-      <SectionHeader
-        breadcrumbs={[
-          {
-            title: "Help centre",
-            link: "https://www.theguardian.com/help"
-          },
-          {
-            title: "Contact us",
-            currentPage: true
-          }
-        ]}
-        title={HeaderTitle}
-      />
-      <SectionPageContainer sectionTitle="Contact us">
+      <SectionHeader title={HeaderTitle} />
+      <SectionPageContainer>
         <div
           css={css`
             margin-bottom: ${space[24]}px;

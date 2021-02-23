@@ -81,11 +81,11 @@ export const KnownIssues = () => {
               },
 
               [minWidth.desktop]: {
-                ...gridItemPlacement(4, 9)
+                ...gridItemPlacement(3, 9)
               },
 
               [minWidth.wide]: {
-                ...gridItemPlacement(4, 12)
+                ...gridItemPlacement(3, 12)
               }
             }}
           >
