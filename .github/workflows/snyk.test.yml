@@ -1,11 +1,11 @@
-# Snyk Vulnerability Check on branches other than main will not report results to snyk.io
-name: Snyk Vulnerability Check
+# Run snyk test, which will not report results to snyk.io
+name: Snyk
 on:
   push:
-    branches:
-      - "!main"
+    branches-ignore:
+      - main
 jobs:
-  security:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -13,3 +13,5 @@ jobs:
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --debug --file=./app/yarn.lock

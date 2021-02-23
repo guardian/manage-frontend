@@ -1,11 +1,11 @@
-# Snyk Vulnerability Check on main branches will report results to snyk.io
-name: Snyk Vulnerability Check
+# Run snyk monitor, which will report results to snyk.io
+name: Snyk
 on:
   push:
     branches:
       - main
 jobs:
-  security:
+  monitor:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -14,5 +14,5 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --org=the-guardian-cuu --project-name=guardian/manage-frontend
+          args: --org=the-guardian-cuu --project-name=guardian/manage-frontend --debug --file=./app/yarn.lock
           command: monitor
