@@ -14,7 +14,7 @@
     "bundle-check-client-if-changed": "((git diff --name-only --cached | grep 'yarn.lock') && yarn bundle-check-client) || true",
     "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --public manage.thegulocal.com",
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
-    "test": "snyk test && jest --coverage && yarn type-check && yarn lint ",
+    "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
     "updateSnapshot": "jest -u",
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
