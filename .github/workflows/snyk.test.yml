@@ -1,5 +1,5 @@
 # Run snyk test, which will not report results to snyk.io
-name: Snyk
+name: Snyk Test
 on:
   push:
     branches-ignore:
