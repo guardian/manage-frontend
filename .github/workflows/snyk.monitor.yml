@@ -1,5 +1,5 @@
 # Run snyk monitor, which will report results to snyk.io
-name: Snyk
+name: Snyk Monitor
 on:
   push:
     branches:
