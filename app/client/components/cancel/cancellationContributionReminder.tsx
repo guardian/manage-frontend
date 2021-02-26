@@ -34,7 +34,7 @@ interface ReminderChoice {
   thankYouMessage: string;
 }
 
-const REMINDER_ENDPOINT = "/api/reminder";
+const REMINDER_ENDPOINT = "/api/reminders";
 const REMINDER_PLATFORM = "MMA";
 const REMINDER_STAGE = "WINBACK";
 const REMINDER_COMPONENT = "CANCELLATION";
