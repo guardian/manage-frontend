@@ -3,7 +3,7 @@ import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowRightStraight } from "@guardian/src-icons";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getGeoLocation } from "../../geolocation";
 import { trackEventInOphanOnly } from "../analytics";
 
@@ -115,6 +115,14 @@ export const CancellationContributionReminder: React.FC = () => {
     setReminder();
     setHasSetReminder(true);
   };
+
+  useEffect(() => {
+    trackEventInOphanOnly({
+      eventCategory: "cancellation_flow",
+      eventAction: "view",
+      eventLabel: `set_reminder`
+    });
+  }, []);
 
   return (
     <div css={containerStyles}>
