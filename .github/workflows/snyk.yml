@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run snyk test to check for vulnerabilities
-        if: github.ref != 'ref/head/main'
+        if: github.ref != 'refs/heads/main'
         uses: snyk/actions/node@0.3.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -25,7 +25,7 @@ jobs:
           args: --file=./app/yarn.lock
 
       - name: Run snyk monitor and report vunerabilites to snyk.io
-        if: github.ref == 'ref/head/main'
+        if: github.ref == 'refs/heads/main'
         uses: snyk/actions/node@0.3.0
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
