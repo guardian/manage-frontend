@@ -3,7 +3,10 @@ import { ConsentOption, ConsentOptionType } from "../models";
 
 interface ReminderStatusApiResponse {
   recurringStatus: "NotSet" | "Active" | "Cancelled";
+  recurringReminderCode: string;
 }
+
+let recurringReminderCode = "";
 
 const REMINDERS_STATUS_ENDPOINT = "/api/reminders/status";
 const CANCEL_REMINDERS_ENDPOINT = "/api/reminders/cancel";
@@ -25,37 +28,38 @@ export const read = async (): Promise<ConsentOption[]> => {
     return [];
   }
 
+  recurringReminderCode = reminderStatus.recurringReminderCode;
+
   return [getConsent(reminderStatus.recurringStatus === "Active")];
 };
 
 export const update = async (id: string, subscribed: boolean = true) => {
-  const email = window.guardian.identityDetails.email;
-  if (!email) {
-    Sentry.captureMessage(`No email address to update consent: ${id}`);
+  if (!recurringReminderCode) {
+    Sentry.captureMessage(`No recurringReminderCode to update consent: ${id}`);
     return;
   }
 
   if (!subscribed) {
-    await cancelReminder(email);
+    await cancelReminder(recurringReminderCode);
   } else {
-    await reactivateReminder(email);
+    await reactivateReminder(recurringReminderCode);
   }
 };
 
-const cancelReminder = (email: string) =>
+const cancelReminder = (reminderCode: string) =>
   fetch(CANCEL_REMINDERS_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ reminderCode })
   });
 
-const reactivateReminder = (email: string) =>
+const reactivateReminder = (reminderCode: string) =>
   fetch(REACTIVATE_REMINDERS_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ reminderCode })
   });
