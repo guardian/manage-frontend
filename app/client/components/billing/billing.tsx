@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import { brand, brandYellow, neutral } from "@guardian/src-foundations/palette";
+import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
@@ -171,7 +171,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                             ${textSans.medium()};
                           `}
                         >
-                          <ErrorIcon fill={brandYellow[200]} />
+                          <ErrorIcon fill={brandAlt[200]} />
                           <span
                             css={css`
                               margin-left: ${space[2]}px;
