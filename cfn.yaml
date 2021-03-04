@@ -56,7 +56,7 @@ Mappings:
     PROD:
       MaxInstances: 6
       MinInstances: 3
-      InstanceType: t3.small
+      InstanceType: t4g.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       ApiDomainEnvVariable: guardianapis.com
       DomainEnvVariable: theguardian.com
@@ -84,11 +84,11 @@ Resources:
           PropagateAtLaunch: true
         - Key: Name
           Value: !Join
-            - '-'
+            - "-"
             - - !Ref Stack
               - !Ref Stage
               - !Ref App
-          PropagateAtLaunch: 'true'
+          PropagateAtLaunch: "true"
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
