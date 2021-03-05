@@ -49,7 +49,14 @@ const CancelReminders = (props: RouteComponentProps) => {
         this may take 24/48 hours to take effect.
       </div>
       <div css={linkStyle}>
-        <a href="/email-prefs">Manage your email preferences</a>
+        <a
+          css={css`
+            text-decoration: underline;
+          `}
+          href="/email-prefs"
+        >
+          Manage your email preferences
+        </a>
       </div>
     </div>
   );
