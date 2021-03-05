@@ -35,7 +35,7 @@ const CancelReminders = (props: RouteComponentProps) => {
       const queryParams = parse(props.location.href, true).query;
       if (queryParams.reminderCode) {
         cancelReminder(queryParams.reminderCode).then(response => {
-          if (response.ok) {
+          if (!response.ok) {
             setCancelStatus("FAILURE");
             Sentry.captureMessage(
               `Failed to cancel reminders for code: ${queryParams.reminderCode}`
