@@ -88,6 +88,9 @@ const Settings = lazy(() =>
   import(/* webpackChunkName: "Settings" */ "./identity/Settings")
 );
 const Help = lazy(() => import(/* webpackChunkName: "Help" */ "./help"));
+const CancelReminders = lazy(() =>
+  import(/* webpackChunkName: "CancelReminders" */ "./cancelReminders")
+);
 
 const MMARouter = () => (
   <Main>
@@ -97,6 +100,8 @@ const MMARouter = () => (
       <Router primary={true} css={{ height: "100%" }}>
         <AccountOverview path="/" />
         <Billing path="/billing" />
+
+        <CancelReminders path="/cancel-reminders" />
 
         {Object.values(GROUPED_PRODUCT_TYPES).map(
           (groupedProductType: GroupedProductType) => (
