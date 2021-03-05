@@ -1,9 +1,9 @@
 import { css } from "@emotion/core";
 import { RouteComponentProps } from "@reach/router";
+import * as Sentry from "@sentry/browser";
 import React, { useEffect } from "react";
 import parse from "url-parse";
 import { cancelReminder } from "./identity/idapi/supportReminders";
-import * as Sentry from "@sentry/browser";
 
 const containerStyle = css`
   width: 100%;
