@@ -2,6 +2,8 @@ import { css } from "@emotion/core";
 import { RouteComponentProps } from "@reach/router";
 import React, { useEffect } from "react";
 import parse from "url-parse";
+import { cancelReminder } from "./identity/idapi/supportReminders";
+import * as Sentry from "@sentry/browser";
 
 const containerStyle = css`
   width: 100%;
@@ -9,18 +11,14 @@ const containerStyle = css`
 
   max-width: 400px;
   display: flex;
-  // align-items: center;
   flex-direction: column;
   margin-bottom: 80px;
-
-  > * {
-    // margin: auto;
-  }
 `;
 const headingStyle = css`
   border-bottom: 1px solid #c4c4c4;
   font-size: 28px;
   margin-bottom: 0;
+  margin-top: 10px;
   padding-bottom: 10px;
 `;
 const linkStyle = css`
@@ -29,10 +27,16 @@ const linkStyle = css`
 
 const CancelReminders = (props: RouteComponentProps) => {
   useEffect(() => {
-    console.log(props);
     if (props.location?.href) {
       const queryParams = parse(props.location.href, true).query;
       if (queryParams.reminderCode) {
+        cancelReminder(queryParams.reminderCode).then(response => {
+          if (!response.ok) {
+            Sentry.captureMessage(
+              `Failed to cancel reminders for code: ${queryParams.reminderCode}`
+            );
+          }
+        });
       }
     }
   });
@@ -45,7 +49,7 @@ const CancelReminders = (props: RouteComponentProps) => {
         this may take 24/48 hours to take effect.
       </div>
       <div css={linkStyle}>
-        <a href="">Manage your email preferences</a>
+        <a href="/email-prefs">Manage your email preferences</a>
       </div>
     </div>
   );

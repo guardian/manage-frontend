@@ -46,7 +46,7 @@ export const update = async (id: string, subscribed: boolean = true) => {
   }
 };
 
-const cancelReminder = (reminderCode: string) =>
+export const cancelReminder = (reminderCode: string) =>
   fetch(CANCEL_REMINDERS_ENDPOINT, {
     method: "POST",
     headers: {
