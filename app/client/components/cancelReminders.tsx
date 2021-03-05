@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { RouteComponentProps } from "@reach/router";
 import { css } from "@emotion/core";
+import { RouteComponentProps } from "@reach/router";
+import React, { useEffect } from "react";
 import parse from "url-parse";
 
 const containerStyle = css`
