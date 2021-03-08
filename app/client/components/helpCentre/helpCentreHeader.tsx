@@ -32,7 +32,10 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
     height: 100%;
     max-width: calc(${breakpoints.wide}px + 2.5rem);
     margin: auto;
-    padding: 0px ${space[5]}px;
+    padding: 0px ${space[3]}px;
+    ${minWidth.tablet} {
+      padding: 0px ${space[5]}px;
+    }
   `;
 
   const h1Css = css`
@@ -54,7 +57,7 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
   `;
 
   const divCss = css`
-    margin: ${space[3]}px;
+    margin: ${space[3]}px ${space[3]}px 0 0;
     align-self: flex-start;
   `;
 
