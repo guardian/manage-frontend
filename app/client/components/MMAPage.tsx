@@ -234,7 +234,7 @@ const MMARouter = () => (
         <Redirect default from="/*" to="/" noThrow />
 
         {/*Does not require sign in*/}
-        <CancelReminders path="/cancel-reminders" />
+        <CancelReminders path="/cancel-reminders/*reminderCode" />
       </Router>
     </Suspense>
   </Main>

@@ -2,7 +2,6 @@ import { css } from "@emotion/core";
 import { RouteComponentProps } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import parse from "url-parse";
 import { cancelReminder } from "./identity/idapi/supportReminders";
 
 const containerStyle = css`
@@ -27,24 +26,27 @@ const linkStyle = css`
 
 type CancelStatus = "PENDING" | "SUCCESS" | "FAILURE";
 
-const CancelReminders = (props: RouteComponentProps) => {
+interface CancelRemindersProps extends RouteComponentProps {
+  reminderCode?: string;
+}
+
+const CancelReminders = (props: CancelRemindersProps) => {
   const [cancelStatus, setCancelStatus] = useState<CancelStatus>("PENDING");
 
   useEffect(() => {
-    if (props.location?.href) {
-      const queryParams = parse(props.location.href, true).query;
-      if (queryParams.reminderCode) {
-        cancelReminder(queryParams.reminderCode).then(response => {
-          if (!response.ok) {
-            setCancelStatus("FAILURE");
-            Sentry.captureMessage(
-              `Failed to cancel reminders for code: ${queryParams.reminderCode}`
-            );
-          } else {
-            setCancelStatus("SUCCESS");
-          }
-        });
-      }
+    if (props.reminderCode) {
+      cancelReminder(props.reminderCode).then(response => {
+        if (!response.ok) {
+          setCancelStatus("FAILURE");
+          Sentry.captureMessage(
+            `Failed to cancel reminders for code: ${props.reminderCode}`
+          );
+        } else {
+          setCancelStatus("SUCCESS");
+        }
+      });
+    } else {
+      setCancelStatus("FAILURE");
     }
   });
 
