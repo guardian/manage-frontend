@@ -1,0 +1,34 @@
+# Run snyk monitor at 6 AM every day (reports vulnerabilities to snyk.io)
+# Run snyk monitor on every push into main branch (reports vulnerabilities to snyk.io)
+# Run snyk test on every push into branches that are not main
+name: Snyk
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  push:
+  workflow_dispatch:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Run snyk test to check for vulnerabilities
+        if: github.ref != 'refs/heads/main'
+        uses: snyk/actions/node@0.3.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --file=./app/yarn.lock
+
+      - name: Run snyk monitor and report vunerabilites to snyk.io
+        if: github.ref == 'refs/heads/main'
+        uses: snyk/actions/node@0.3.0
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --org=the-guardian-cuu --project-name=${{ github.repository }} --file=./app/yarn.lock
+          command: monitor

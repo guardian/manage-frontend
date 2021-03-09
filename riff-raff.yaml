@@ -1,7 +1,7 @@
 regions:
-- eu-west-1
+  - eu-west-1
 stacks:
-- support
+  - support
 deployments:
   manage-frontend-cloudformation:
     type: cloud-formation
@@ -9,7 +9,7 @@ deployments:
     parameters:
       templatePath: cloudformation/cfn.yaml
       amiTags:
-        Recipe: manage-frontend
+        Recipe: manage-frontend-arm
         AmigoStage: PROD
       amiEncrypted: true
   manage-frontend:

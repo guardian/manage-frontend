@@ -3,7 +3,7 @@ import { ConsentOption, ConsentOptionType } from "../models";
 
 interface ReminderStatusApiResponse {
   recurringStatus: "NotSet" | "Active" | "Cancelled";
-  recurringReminderCode: string;
+  recurringReminderCode?: string;
 }
 
 let recurringReminderCode = "";
@@ -28,7 +28,7 @@ export const read = async (): Promise<ConsentOption[]> => {
     return [];
   }
 
-  recurringReminderCode = reminderStatus.recurringReminderCode;
+  recurringReminderCode = reminderStatus.recurringReminderCode ?? "";
 
   return [getConsent(reminderStatus.recurringStatus === "Active")];
 };

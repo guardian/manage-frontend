@@ -49,14 +49,14 @@ Mappings:
     CODE:
       MaxInstances: 2
       MinInstances: 1
-      InstanceType: t3.small
+      InstanceType: t4g.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/2c2a72a2-a0d6-4ffa-b8a1-8a7916000515
       ApiDomainEnvVariable: code.dev-guardianapis.com
       DomainEnvVariable: code.dev-theguardian.com
     PROD:
       MaxInstances: 6
       MinInstances: 3
-      InstanceType: t3.small
+      InstanceType: t4g.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
       ApiDomainEnvVariable: guardianapis.com
       DomainEnvVariable: theguardian.com
@@ -84,17 +84,18 @@ Resources:
           PropagateAtLaunch: true
         - Key: Name
           Value: !Join
-            - '-'
+            - "-"
             - - !Ref Stack
               - !Ref Stage
               - !Ref App
-          PropagateAtLaunch: 'true'
+          PropagateAtLaunch: "true"
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       ImageId: !Ref AMI
       SecurityGroups:
         - !Ref InstanceSecurityGroup
+        - !Ref WazuhSecurityGroup 
       InstanceType: !FindInMap [StageVariables, !Ref Stage, InstanceType]
       IamInstanceProfile: !Ref InstanceProfile
       AssociatePublicIpAddress: false
@@ -222,6 +223,22 @@ Resources:
                   - !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/CODE/*
                   - !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/${Stage}/* # avoids PROD resources being available to lower environments
 
+  DescribeEC2Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: describe-ec2-policy
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Resource: "*"
+          Action:
+          - ec2:DescribeTags
+          - ec2:DescribeInstances
+          - autoscaling:DescribeAutoScalingGroups
+          - autoscaling:DescribeAutoScalingInstances
+      Roles:
+      - !Ref AppRole
+
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
@@ -315,6 +332,18 @@ Resources:
           FromPort: 443
           ToPort: 443
           CidrIp: 0.0.0.0/0
+
+  WazuhSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow outbound traffic from wazuh agent to manager
+      VpcId:
+        Ref: VpcId
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 1514
+        ToPort: 1515
+        CidrIp: 0.0.0.0/0
 
   ManageFrontendLogGroup:
     Type: "AWS::Logs::LogGroup"
