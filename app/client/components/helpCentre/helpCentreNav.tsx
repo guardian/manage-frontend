@@ -19,7 +19,7 @@ interface HelpCentreNavProps {
   selectedTopicObject?: HelpCentreNavConfig;
 }
 
-const ulCss = css`
+const desktopUlCss = css`
   list-style: none;
   margin: 0 0 ${space[6]}px 0;
   padding: 0;
@@ -28,7 +28,7 @@ const ulCss = css`
   }
 `;
 
-const liCss = (isSelectedTopic: boolean, isFirstTopic: boolean) => css`
+const desktopLiCss = (isSelectedTopic: boolean, isFirstTopic: boolean) => css`
   ${textSans.medium()};
   color: ${neutral["7"]};
   border-left: ${isSelectedTopic
@@ -48,6 +48,25 @@ const liCss = (isSelectedTopic: boolean, isFirstTopic: boolean) => css`
   }
 `;
 
+const mobileLiCss = (topicIndex: number) => css`
+  ${innerSectionDivCss};
+  border-bottom: ${topicIndex < helpCentreNavConfig.length - 1
+    ? "1px solid #dcdcdc"
+    : ""};
+  cursor: pointer;
+  ${minWidth.tablet} {
+    padding-left: ${space[3]}px;
+  }
+`;
+
+const divCss = css`
+  ${containterCss};
+  ${minWidth.desktop} {
+    display: none;
+  }
+  margin-bottom: ${space[6]}px;
+`;
+
 const pCss = css`
   padding: ${space[4]}px ${space[3]}px;
   margin: 0;
@@ -56,17 +75,32 @@ const pCss = css`
 const HelpCentreNav = (props: HelpCentreNavProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleSectionClick = () => () => {
+  const handleSectionClick = () => {
     setOpen(!open);
   };
 
+  const h2Css = css`
+    ${sectionTitleCss(open, false)};
+    ${textSans.large({ fontWeight: "bold" })};
+    ${minWidth.tablet} {
+      padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[5]}px;
+    }
+  `;
+
+  const spanCss = (topicId: string) => css`
+    ${linkAnchorStyle};
+    font-weight: ${topicId === props.selectedTopicObject?.id
+      ? "bold"
+      : "normal"};
+  `;
+
   return (
     <>
-      <ul css={ulCss}>
+      <ul css={desktopUlCss}>
         {helpCentreNavConfig.map((topic, topicIndex) => (
           <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>
             <li
-              css={liCss(
+              css={desktopLiCss(
                 props.selectedTopicObject?.id === topic.id,
                 topicIndex === 0
               )}
@@ -77,26 +111,8 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
         ))}
       </ul>
 
-      <div
-        css={css`
-          ${containterCss};
-          ${minWidth.desktop} {
-            display: none;
-          }
-          margin-bottom: ${space[6]}px;
-        `}
-      >
-        <h2
-          css={css`
-            ${sectionTitleCss(open, false)};
-            ${textSans.large({ fontWeight: "bold" })};
-            ${minWidth.tablet} {
-              padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px
-                ${space[5]}px;
-            }
-          `}
-          onClick={handleSectionClick()}
-        >
+      <div css={divCss}>
+        <h2 css={h2Css} onClick={handleSectionClick}>
           Topics
         </h2>
         <ul
@@ -107,29 +123,8 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
           {helpCentreNavConfig.map((topic, topicIndex) => {
             return (
               <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>
-                <li
-                  key={topic.id}
-                  css={css`
-                    ${innerSectionDivCss};
-                    border-bottom: ${topicIndex < helpCentreNavConfig.length - 1
-                      ? "1px solid #dcdcdc"
-                      : ""};
-                    cursor: pointer;
-                    ${minWidth.tablet} {
-                      padding-left: ${space[3]}px;
-                    }
-                  `}
-                >
-                  <span
-                    css={css`
-                      ${linkAnchorStyle};
-                      font-weight: ${topic.id === props.selectedTopicObject?.id
-                        ? "bold"
-                        : "normal"};
-                    `}
-                  >
-                    {topic.title}
-                  </span>
+                <li key={topic.id} css={mobileLiCss(topicIndex)}>
+                  <span css={spanCss(topic.id)}>{topic.title}</span>
                   <span css={linkArrowStyle} />
                 </li>
               </Link>
