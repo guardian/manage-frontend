@@ -2,8 +2,8 @@ import { css } from "@emotion/core";
 import { ChoiceCard, ChoiceCardGroup } from "@guardian/src-choice-card";
 import { neutral, palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import { InlineError } from "@guardian/src-inline-error";
 import { TextInput } from "@guardian/src-text-input";
+import { InlineError } from "@guardian/src-user-feedback";
 import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
 import {
