@@ -1,11 +1,17 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
 import { trackEvent } from "../analytics";
 import { helpCentreMoreQuestionsConfig } from "./helpCentreConfig";
-import { linkAnchorStyle, linkArrowStyle } from "./helpCentreStyles";
+import {
+  containterCss,
+  innerSectionCss,
+  innerSectionDivCss,
+  linkAnchorStyle,
+  linkArrowStyle,
+  sectionTitleCss
+} from "./helpCentreStyles";
 
 const moreTopicsStyles = css({
   marginBottom: "10px",
@@ -17,68 +23,6 @@ const moreTopicsStyles = css({
 
 export const HelpCentreMoreTopics = () => {
   const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>();
-
-  const containterCss = `
-    width: 100%;
-    border: 1px solid ${neutral["86"]};
-  `;
-
-  const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: ${neutral["7"]};
-    ${textSans.medium()};
-    margin: 0;
-    padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
-    position: relative;
-    cursor: pointer;
-    :after {
-      content: "";
-      display: block;
-      width: 7px;
-      height: 7px;
-      border-top: 2px solid ${neutral["7"]};
-      border-right: 2px solid ${neutral["7"]};
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%) ${
-        isOpen ? "rotate(-45deg)" : "rotate(135deg)"
-      };
-      transition: transform 0.4s;
-      right: 17px;
-    }
-    ${isNotFirstOption &&
-      `
-      :before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0px;
-        width: 100%;
-        height: 1px;
-        background-color: ${neutral["86"]}
-      }
-    `}
-  `;
-
-  const innerSectionCss = (isOpen: boolean) => `
-    display: ${isOpen ? "block" : "none"};
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background-color: rgba(193, 216, 252, 0.3);
-    border-top: 1px solid #DCDCDC;
-  `;
-
-  const innerSectionDivCss = `
-    ${textSans.medium()};
-    margin-bottom: 0;
-    padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
-    margin: 0 ${space[3]}px;
-    position: relative;
-  `;
 
   const showHideCss = `
     ${textSans.xsmall()};
