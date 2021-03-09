@@ -4,10 +4,10 @@ import parse from "url-parse";
 // To avoid security vulnerabilities do not add public paths that do not end in a slash
 const publicPaths = [
   "/api/contact-us/",
-  "/help-centre/",
   "/api/known-issues/",
+  "/api/reminders/cancel/",
   "/cancel-reminders/",
-  "/api/reminders/cancel/"
+  "/help-centre/"
 ];
 
 export const requiresSignin = (path: string) => {
