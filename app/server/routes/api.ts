@@ -23,7 +23,11 @@ import { contactUsFormHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
-import { reminderHandler } from "../reminderApi";
+import {
+  cancelReminderHandler,
+  createReminderHandler,
+  reactivateReminderHandler
+} from "../reminderApi";
 import { stripeSetupIntentHandler } from "../stripeSetupIntentsHandler";
 
 const router = Router();
@@ -227,6 +231,12 @@ router.get("/known-issues", async (_, response) => {
 
 router.post("/contact-us", contactUsFormHandler);
 
-router.post("/reminder", reminderHandler);
+router.post("/reminders", createReminderHandler);
+router.get(
+  "/reminders/status",
+  membersDataApiHandler("user-attributes/me/reminders", "MDA_REMINDERS_STATUS")
+);
+router.post("/reminders/cancel", cancelReminderHandler);
+router.post("/reminders/reactivate", reactivateReminderHandler);
 
 export default router;

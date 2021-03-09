@@ -18,7 +18,8 @@ export enum ErrorTypes {
 export enum ConsentOptionType {
   EMAIL = "EMAIL",
   NEWSLETTER = "NEWSLETTER",
-  OPT_OUT = "OPT_OUT"
+  OPT_OUT = "OPT_OUT",
+  SUPPORT_REMINDER = "SUPPORT_REMINDER"
 }
 
 export interface User {
