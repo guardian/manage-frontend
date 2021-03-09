@@ -101,8 +101,6 @@ const MMARouter = () => (
         <AccountOverview path="/" />
         <Billing path="/billing" />
 
-        <CancelReminders path="/cancel-reminders" />
-
         {Object.values(GROUPED_PRODUCT_TYPES).map(
           (groupedProductType: GroupedProductType) => (
             <ManageProduct
@@ -234,6 +232,9 @@ const MMARouter = () => (
         <Help path="/help" />
 
         <Redirect default from="/*" to="/" noThrow />
+
+        {/*Does not require sign in*/}
+        <CancelReminders path="/cancel-reminders" />
       </Router>
     </Suspense>
   </Main>
