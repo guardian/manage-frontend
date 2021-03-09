@@ -40,13 +40,13 @@ export const update = async (id: string, subscribed: boolean = true) => {
   }
 
   if (!subscribed) {
-    await cancelReminder(recurringReminderCode);
+    await sendReminderCancellation(recurringReminderCode);
   } else {
-    await reactivateReminder(recurringReminderCode);
+    await sendReminderReactivation(recurringReminderCode);
   }
 };
 
-export const cancelReminder = (reminderCode: string) =>
+export const sendReminderCancellation = (reminderCode: string) =>
   fetch(CANCEL_REMINDERS_ENDPOINT, {
     method: "POST",
     headers: {
@@ -55,7 +55,7 @@ export const cancelReminder = (reminderCode: string) =>
     body: JSON.stringify({ reminderCode })
   });
 
-const reactivateReminder = (reminderCode: string) =>
+const sendReminderReactivation = (reminderCode: string) =>
   fetch(REACTIVATE_REMINDERS_ENDPOINT, {
     method: "POST",
     headers: {

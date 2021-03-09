@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { RouteComponentProps } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import { cancelReminder } from "./identity/idapi/supportReminders";
+import { sendReminderCancellation } from "./identity/idapi/supportReminders";
 
 const containerStyle = css`
   width: 100%;
@@ -35,7 +35,7 @@ const CancelReminders = (props: CancelRemindersProps) => {
 
   useEffect(() => {
     if (props.reminderCode) {
-      cancelReminder(props.reminderCode).then(response => {
+      sendReminderCancellation(props.reminderCode).then(response => {
         if (!response.ok) {
           setCancelStatus("FAILURE");
           Sentry.captureMessage(
