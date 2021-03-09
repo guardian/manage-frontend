@@ -88,6 +88,9 @@ const Settings = lazy(() =>
   import(/* webpackChunkName: "Settings" */ "./identity/Settings")
 );
 const Help = lazy(() => import(/* webpackChunkName: "Help" */ "./help"));
+const CancelReminders = lazy(() =>
+  import(/* webpackChunkName: "CancelReminders" */ "./cancelReminders")
+);
 
 const MMARouter = () => (
   <Main>
@@ -229,6 +232,9 @@ const MMARouter = () => (
         <Help path="/help" />
 
         <Redirect default from="/*" to="/" noThrow />
+
+        {/*Does not require sign in*/}
+        <CancelReminders path="/cancel-reminders/*reminderCode" />
       </Router>
     </Suspense>
   </Main>
