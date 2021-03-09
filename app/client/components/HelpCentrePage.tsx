@@ -16,6 +16,14 @@ import { ScrollToTop } from "./scrollToTop";
 const HelpCentre = lazy(() =>
   import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
 );
+
+// placeholder import for the help centre see all topics page
+// const HelpCentreSeeAllTopics = lazy(() =>
+//   import(
+//     /* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentreSeeAllTopics"
+//   )
+// );
+
 const ContactUs = lazy(() =>
   import(/* webpackChunkName: "ContactUs" */ "./contactUs/contactUs")
 );
@@ -28,6 +36,8 @@ const HelpCentreRouter = () => {
       <Suspense fallback={<HelpCentrePageSkeleton />}>
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
+
+          {/* <HelpCentreSeeAllTopics path="/help-centre/topic/:topicCode" /> */}
 
           <ContactUs path="/help-centre/contact-us" />
           <ContactUs path="/help-centre/contact-us/:urlTopicId" />
