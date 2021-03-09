@@ -8,7 +8,12 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
 import { HelpCentreTopic } from "./helpCentreConfig";
-import { linkAnchorStyle, linkArrowStyle } from "./helpCentreStyles";
+import {
+  linkAnchorStyle,
+  linkArrowStyle,
+  linkListItemStyle,
+  linksListStyle
+} from "./helpCentreStyles";
 
 interface HelpTopicBoxProps {
   topic: HelpCentreTopic;
@@ -44,18 +49,6 @@ const iconStyle = css`
   position: absolute;
   top: 11px;
   left: 11px;
-`;
-
-const linksListStyle = css`
-  list-style: none;
-  margin: 0 0 20px;
-  padding: 0 12px;
-`;
-
-const linkListItemStyle = css`
-  padding: 12px 20px 12px 0;
-  border-bottom: 1px solid ${neutral["86"]};
-  position: relative;
 `;
 
 const seeAllAnchorStyle = css`
