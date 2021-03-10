@@ -1,3 +1,4 @@
+import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import React, { ReactNode } from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -38,37 +39,35 @@ const sectionCss = (hasNav: boolean, isNavSection: boolean) => ({
   }
 });
 
+const containerCss = css`
+  max-width: ${breakpoints.wide}px;
+  margin: 0 auto;
+  padding-top: ${space[12]}px;
+  border-left: 1px solid ${palette.neutral[86]};
+  border-right: 1px solid ${palette.neutral[86]};
+  height: 100%;
+  ${maxWidth.desktop} {
+    padding-top: 0;
+  }
+`;
+
+const divCss = (hasNav: boolean | undefined) => css`
+  ${{ ...gridBase }};
+  padding-bottom: 1rem;
+  ${minWidth.desktop} {
+    ${{ ...(gridBase[minWidth.desktop] as object) }};
+    padding-bottom: 0;
+    border-top: ${hasNav ? "none" : `1px solid ${palette.neutral[86]}`};
+  }
+  ${minWidth.wide} {
+    ${{ ...(gridBase[minWidth.wide] as object) }}
+  }
+`;
+
 export const SectionPageContainer = (props: SectionPageContainerProps) => {
   return (
-    <div
-      css={{
-        maxWidth: `${breakpoints.wide}px`,
-        margin: "0 auto",
-        paddingTop: `${space[12]}px`,
-        borderLeft: `1px solid ${palette.neutral[86]}`,
-        borderRight: `1px solid ${palette.neutral[86]}`,
-        height: "100%",
-        [maxWidth.desktop]: {
-          paddingTop: 0
-        }
-      }}
-    >
-      <div
-        css={{
-          ...gridBase,
-          paddingBottom: "1rem",
-          [minWidth.desktop]: {
-            ...(gridBase[minWidth.desktop] as object),
-            paddingBottom: 0,
-            borderTop: `${
-              props.hasNav ? "none" : `1px solid ${palette.neutral[86]}`
-            }`
-          },
-          [minWidth.wide]: {
-            ...(gridBase[minWidth.wide] as object)
-          }
-        }}
-      >
+    <div css={containerCss}>
+      <div css={divCss(props.hasNav)}>
         {props.hasNav && (
           <section css={sectionCss(props.hasNav || false, true)}>
             <HelpCentreNav selectedTopicObject={props.selectedTopicObject} />
