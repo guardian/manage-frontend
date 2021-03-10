@@ -53,7 +53,7 @@ const HelpCentreSeeAll = (props: HelpCentreProps) => {
 
   return (
     <>
-      <SectionHeader title="How can we help you?" isArticlePage={true} />
+      <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionPageContainer
         hasNav={true}
         selectedTopicObject={selectedTopicObject}
