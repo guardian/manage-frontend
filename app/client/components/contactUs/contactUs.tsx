@@ -10,7 +10,7 @@ import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { SectionHeader } from "../sectionHeader";
-import { SectionPageContainer } from "../sectionPageContainer";
+import { SectionContent } from "../sectionContent";
 import { ContactUsForm } from "./contactUsForm";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
@@ -168,7 +168,7 @@ const ContactUs = (props: ContactUsProps) => {
   return (
     <>
       <SectionHeader title={HeaderTitle} />
-      <SectionPageContainer>
+      <SectionContent>
         <div
           css={css`
             margin-bottom: ${space[24]}px;
@@ -257,7 +257,7 @@ const ContactUs = (props: ContactUsProps) => {
             </>
           )}
         </div>
-      </SectionPageContainer>
+      </SectionContent>
     </>
   );
 };

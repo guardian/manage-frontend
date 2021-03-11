@@ -2,8 +2,8 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Location } from "@reach/router";
 import React from "react";
+import { SectionContent } from "./sectionContent";
 import { SectionHeader } from "./sectionHeader";
-import { SectionPageContainer } from "./sectionPageContainer";
 import { Spinner } from "./spinner";
 import { WithStandardTopMargin } from "./WithStandardTopMargin";
 
@@ -36,7 +36,7 @@ const HelpCentrePageSkeleton = () => (
         return (
           <>
             <SectionHeader title={selectedhelpCentreLocationObject.title} />
-            <SectionPageContainer>
+            <SectionContent>
               <div
                 css={css`
                   margin-bottom: ${space[24]}px;
@@ -47,7 +47,7 @@ const HelpCentrePageSkeleton = () => (
                 </WithStandardTopMargin>
                 <div style={{ height: "50vh" }} />
               </div>
-            </SectionPageContainer>
+            </SectionContent>
           </>
         );
       }

@@ -6,7 +6,7 @@ import { gridBase, gridItemPlacement } from "../styles/grid";
 import { HelpCentreNavConfig } from "./helpCentre/helpCentreConfig";
 import HelpCentreNav from "./helpCentre/helpCentreNav";
 
-interface SectionPageContainerProps {
+interface SectionContentProps {
   children: ReactNode;
   hasNav?: boolean;
   selectedTopicObject?: HelpCentreNavConfig;
@@ -64,7 +64,7 @@ const divCss = (hasNav: boolean | undefined) => css`
   }
 `;
 
-export const SectionPageContainer = (props: SectionPageContainerProps) => {
+export const SectionContent = (props: SectionContentProps) => {
   return (
     <div css={containerCss}>
       <div css={divCss(props.hasNav)}>
