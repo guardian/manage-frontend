@@ -18,9 +18,9 @@ const HelpCentre = lazy(() =>
 );
 
 // placeholder import for the help centre see all topics page
-// const HelpCentreSeeAllTopics = lazy(() =>
+// const HelpCentreTopic = lazy(() =>
 //   import(
-//     /* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentreSeeAllTopics"
+//     /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
 //   )
 // );
 
@@ -37,7 +37,7 @@ const HelpCentreRouter = () => {
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
 
-          {/* <HelpCentreSeeAllTopics path="/help-centre/topic/:topicCode" /> */}
+          {/* <HelpCentreTopic path="/help-centre/topic/:topicCode" /> */}
 
           <ContactUs path="/help-centre/contact-us" />
           <ContactUs path="/help-centre/contact-us/:urlTopicId" />
