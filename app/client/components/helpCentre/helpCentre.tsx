@@ -8,8 +8,8 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
-import { SectionPageContainer } from "../sectionPageContainer";
 import { helpCentreConfig } from "./helpCentreConfig";
 import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpTopicBox } from "./HelpTopicBox";
@@ -32,7 +32,7 @@ const HelpCentre = (_: HelpCentreProps) => (
   <>
     <SectionHeader title="How can we help you?" />
     <KnownIssues />
-    <SectionPageContainer>
+    <SectionContent>
       <div
         css={css`
           margin-bottom: ${space[24]}px;
@@ -78,7 +78,7 @@ const HelpCentre = (_: HelpCentreProps) => (
           }
         />
       </div>{" "}
-    </SectionPageContainer>
+    </SectionContent>
   </>
 );
 

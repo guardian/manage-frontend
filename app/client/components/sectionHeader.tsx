@@ -13,6 +13,7 @@ import { gridBase, gridItemPlacement } from "../styles/grid";
 
 interface SectionHeaderProps {
   title: string | JSX.Element;
+  pageHasNav?: boolean;
 }
 
 const chevronCss = css`
@@ -26,93 +27,99 @@ const chevronCss = css`
   left: ${space[1]}px;
 `;
 
-const isLandingPage =
-  window.location.pathname === "/help-centre" ||
-  window.location.pathname === "/help-centre/";
+const headerCss = css`
+  background-color: ${Color(palette.brand[800])
+    .alpha(0.3)
+    .string()};
+`;
 
-export const SectionHeader = (props: SectionHeaderProps) => (
-  <header
-    css={{
-      backgroundColor: Color(palette.brand[800])
-        .alpha(0.3)
-        .string()
-    }}
-  >
-    <div
-      css={{
-        ...gridBase,
-        maxWidth: `${breakpoints.wide}px`,
-        margin: "0 auto",
-        borderLeft: `1px solid ${palette.neutral[86]}`,
-        borderRight: `1px solid ${palette.neutral[86]}`,
+const containerCss = css`
+  ${{ ...gridBase }};
+  max-width: ${breakpoints.wide}px;
+  margin: 0 auto;
+  border-left: 1px solid ${palette.neutral[86]};
+  border-right: 1px solid ${palette.neutral[86]};
 
-        [minWidth.desktop]: {
-          ...(gridBase[minWidth.desktop] as object)
-        },
-        [minWidth.wide]: {
-          ...(gridBase[minWidth.wide] as object)
-        }
-      }}
-    >
-      <div
-        css={{
-          marginTop: `${space[3]}px`,
-          ...gridItemPlacement(1, 12)
-        }}
-      >
-        <a
-          href="/help-centre"
-          css={css`
-            ${textSans.medium()};
-            color: ${palette.neutral[0]};
-            position: relative;
-          `}
-        >
-          {isLandingPage ? (
-            <span
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                color: ${palette.neutral[0]};
-              `}
-            >
-              Help Centre
-            </span>
-          ) : (
-            <span css={{ marginLeft: "1rem" }}>
-              <span css={chevronCss} />
-              Back to Help centre
-            </span>
-          )}
-        </a>
+  ${minWidth.desktop} {
+    ${{ ...(gridBase[minWidth.desktop] as object) }};
+  }
+  ${minWidth.wide} {
+    ${{ ...(gridBase[minWidth.wide] as object) }};
+  }
+`;
+
+const divCss = css`
+  margin-top: ${space[3]}px;
+  ${{ ...gridItemPlacement(1, 12) }}
+`;
+
+const aCss = css`
+  ${textSans.medium()};
+  color: ${palette.neutral[0]};
+  position: relative;
+`;
+
+const spanCss = css`
+  ${textSans.medium({ fontWeight: "bold" })};
+  color: ${palette.neutral[0]};
+`;
+
+export const SectionHeader = (props: SectionHeaderProps) => {
+  const gridPlacementDesktop = props.pageHasNav
+    ? gridItemPlacement(5, 9)
+    : gridItemPlacement(3, 10);
+
+  const gridPlacementWide = props.pageHasNav
+    ? gridItemPlacement(5, 16)
+    : gridItemPlacement(3, 14);
+
+  const h1Css = (pageHasNav: boolean | undefined) => css`
+    font: ${titlepiece.small()};
+    font-size: 2rem;
+    ${{ ...gridItemPlacement(1, 12) }};
+    margin: ${space[9]}px 0 0 0;
+    padding: ${space[3]}px 0;
+
+    ${minWidth.tablet} {
+      ${{ ...gridItemPlacement(1, 12) }}
+    }
+
+    ${minWidth.desktop} {
+      ${{ ...gridPlacementDesktop }};
+      font-size: 2.625rem;
+      padding-left: ${space[5]}px;
+      margin-top: ${space[24]}px;
+      margin-left: -${space[5]}px;
+      border-left: 1px solid ${palette.neutral[86]};
+      border-top: 1px solid ${palette.neutral[86]};
+    }
+    ${minWidth.wide} {
+      ${{ ...gridPlacementWide }};
+      margin-left: ${pageHasNav ? "0px" : `-${space[5]}px`};
+    }
+  `;
+
+  const isLandingPage =
+    window.location.pathname === "/help-centre" ||
+    window.location.pathname === "/help-centre/";
+
+  return (
+    <header css={headerCss}>
+      <div css={containerCss}>
+        <div css={divCss}>
+          <a href="/help-centre" css={aCss}>
+            {isLandingPage ? (
+              <span css={spanCss}>Help Centre</span>
+            ) : (
+              <span css={{ marginLeft: "1rem" }}>
+                <span css={chevronCss} />
+                Back to Help Centre
+              </span>
+            )}
+          </a>
+        </div>
+        <h1 css={h1Css(props.pageHasNav)}>{props.title}</h1>
       </div>
-      <h1
-        css={{
-          font: titlepiece.small(),
-          fontSize: "2rem",
-          ...gridItemPlacement(1, 4),
-          margin: `${space[9]}px 0 0 0`,
-          padding: `${space[3]}px 0`,
-
-          [minWidth.tablet]: {
-            ...gridItemPlacement(1, 12)
-          },
-
-          [minWidth.desktop]: {
-            ...gridItemPlacement(3, 10),
-            fontSize: "2.625rem",
-            paddingLeft: `${space[5]}px`,
-            marginTop: `${space[24]}px`,
-            marginLeft: `-${space[5]}px`,
-            borderLeft: `1px solid ${palette.neutral[86]}`,
-            borderTop: `1px solid ${palette.neutral[86]}`
-          },
-          [minWidth.wide]: {
-            ...gridItemPlacement(3, 14)
-          }
-        }}
-      >
-        {props.title}
-      </h1>
-    </div>
-  </header>
-);
+    </header>
+  );
+};
