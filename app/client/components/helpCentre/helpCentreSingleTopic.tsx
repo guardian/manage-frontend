@@ -10,7 +10,7 @@ import {
 } from "./helpCentreStyles";
 
 interface HelpCentreSingleTopicProps {
-  selectedHelpCentreConfigTopic: HelpCentreTopic;
+  topic: HelpCentreTopic;
 }
 
 const liCss = (questionIndex: number) => css`
@@ -21,30 +21,28 @@ const liCss = (questionIndex: number) => css`
 const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
   return (
     <ul css={linksListStyle}>
-      {props.selectedHelpCentreConfigTopic.links.map(
-        (question, questionIndex) => (
-          <li
-            key={`${props.selectedHelpCentreConfigTopic.id}Question-${questionIndex}`}
-            css={liCss(questionIndex)}
+      {props.topic.links.map((question, questionIndex) => (
+        <li
+          key={`${props.topic.id}Question-${questionIndex}`}
+          css={liCss(questionIndex)}
+        >
+          <a
+            href={question.link}
+            target="_blank"
+            css={linkAnchorStyle}
+            onClick={() => {
+              trackEvent({
+                eventCategory: "help-centre",
+                eventAction: "popular-topic-q-click",
+                eventLabel: `${props.topic.id}-${question.id}`
+              });
+            }}
           >
-            <a
-              href={question.link}
-              target="_blank"
-              css={linkAnchorStyle}
-              onClick={() => {
-                trackEvent({
-                  eventCategory: "help-centre",
-                  eventAction: "popular-topic-q-click",
-                  eventLabel: `${props.selectedHelpCentreConfigTopic.id}-${question.id}`
-                });
-              }}
-            >
-              {question.title}
-            </a>
-            <span css={linkArrowStyle} />
-          </li>
-        )
-      )}
+            {question.title}
+          </a>
+          <span css={linkArrowStyle} />
+        </li>
+      ))}
     </ul>
   );
 };

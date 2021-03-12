@@ -36,7 +36,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     topic => topic.id === props.topicCode
   );
 
-  const selectedHelpCentreConfigTopic = helpCentreConfig.find(
+  const selectedTopic = helpCentreConfig.find(
     topic => topic.id === selectedNavTopic?.id
   );
 
@@ -46,13 +46,9 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
   if (props.topicCode === "more-topics") {
     helpCentreTopicTitle = "More Topics";
     helpCentreTopicContent = <HelpCentreMoreTopics />;
-  } else if (selectedHelpCentreConfigTopic !== undefined) {
-    helpCentreTopicTitle = selectedHelpCentreConfigTopic.title;
-    helpCentreTopicContent = (
-      <HelpCentreSingleTopic
-        selectedHelpCentreConfigTopic={selectedHelpCentreConfigTopic}
-      />
-    );
+  } else if (selectedTopic !== undefined) {
+    helpCentreTopicTitle = selectedTopic.title;
+    helpCentreTopicContent = <HelpCentreSingleTopic topic={selectedTopic} />;
   } else {
     helpCentreTopicTitle = "";
     helpCentreTopicContent = <div />;
