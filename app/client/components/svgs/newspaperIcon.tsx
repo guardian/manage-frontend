@@ -6,7 +6,13 @@ interface NewspaperIconProps {
 }
 
 export const NewspaperIcon = (props: NewspaperIconProps) => (
-  <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+  <svg
+    width="20"
+    height="16"
+    viewBox="0 0 20 16"
+    fill="none"
+    css={{ marginTop: "2px" }}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

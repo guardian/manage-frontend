@@ -6,7 +6,13 @@ interface CommentsIconProps {
 }
 
 export const CommentsIcon = (props: CommentsIconProps) => (
-  <svg width="18" height="17" viewBox="0 0 18 17" fill="none">
+  <svg
+    width="18"
+    height="17"
+    viewBox="0 0 18 17"
+    fill="none"
+    css={{ marginTop: "4px" }}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

@@ -6,7 +6,7 @@ interface NewspaperVoucherIconProps {
 }
 
 export const NewspaperVoucherIcon = (props: NewspaperVoucherIconProps) => (
-  <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
+  <svg width="16" height="18" viewBox="0 0 15 18" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
