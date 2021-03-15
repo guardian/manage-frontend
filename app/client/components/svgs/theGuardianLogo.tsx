@@ -1,4 +1,3 @@
-import { space } from "@guardian/src-foundations";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 
@@ -12,7 +11,6 @@ export const TheGuardianLogo = (props: TheGuardianLogoProps) => (
   <a
     css={{
       display: "block",
-      margin: `${space[3]}px`,
       width: `${props.width || 121}px`,
       height: `${props.height || 39}px`,
       textAlign: "right",
