@@ -6,7 +6,7 @@ interface TechIconProps {
 }
 
 export const TechIcon = (props: TechIconProps) => (
-  <svg width="19" height="19" viewBox="0 0 23 23" fill="none">
+  <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
