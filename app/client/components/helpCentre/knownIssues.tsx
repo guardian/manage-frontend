@@ -55,66 +55,70 @@ export const KnownIssues = () => {
     })();
   }, []);
 
+  const containerCss = css`
+    border-left: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
+    max-width: ${breakpoints.wide}px;
+    margin: 0 auto;
+    padding-top: ${space[4]}px;
+    ${minWidth.tablet} {
+      padding-top: ${space[5]}px;
+    }
+  `;
+
+  const issuesContainerCss = css`
+    padding-top: ${space[3]}px;
+    ${{ ...gridBase }};
+  `;
+
+  const divCss = css`
+    border: 4px solid ${palette.news[400]};
+    padding: ${space[3]}px ${space[3]}px ${space[3]}px 42px;
+    position: relative;
+    ${{ ...gridItemPlacement(1, 4) }}
+
+    ${minWidth.tablet} {
+      ${{ ...gridItemPlacement(1, 12) }}
+    }
+
+    ${minWidth.desktop} {
+      ${{ ...gridItemPlacement(3, 9) }}
+    }
+
+    ${minWidth.wide} {
+      ${{ ...gridItemPlacement(3, 12) }}
+    }
+  `;
+
+  const iconCss = css`
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: ${space[3]}px;
+  `;
+
+  const h4Css = css`
+    ${textSans.medium({ fontWeight: "bold" })};
+    color: ${palette.news[400]};
+    margin: 0;
+  `;
+
+  const aCss = css`
+    text-decoration: underline;
+  `;
+
   return (
-    <>
+    <div css={containerCss}>
       {issuesData.map((issue, index) => (
-        <div
-          key={`issue${index}`}
-          css={{
-            maxWidth: `${breakpoints.wide}px`,
-            margin: "0 auto",
-            borderLeft: `1px solid ${palette.neutral[86]}`,
-            borderRight: `1px solid ${palette.neutral[86]}`,
-            paddingTop: `${space[3]}px`,
-            ...gridBase
-          }}
-        >
-          <div
-            css={{
-              border: `4px solid ${palette.news[400]}`,
-              padding: `${space[3]}px ${space[3]}px ${space[3]}px 42px`,
-              position: "relative",
-              ...gridItemPlacement(1, 4),
-
-              [minWidth.tablet]: {
-                ...gridItemPlacement(1, 12)
-              },
-
-              [minWidth.desktop]: {
-                ...gridItemPlacement(3, 9)
-              },
-
-              [minWidth.wide]: {
-                ...gridItemPlacement(3, 12)
-              }
-            }}
-          >
-            <i
-              css={css`
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                left: ${space[3]}px;
-              `}
-            >
+        <div key={`issue${index}`} css={issuesContainerCss}>
+          <div css={divCss}>
+            <i css={iconCss}>
               <ErrorIcon />
             </i>
-            <h4
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                color: ${palette.news[400]};
-                margin: 0;
-              `}
-            >
+            <h4 css={h4Css}>
               {issue.message}&nbsp;
               {issue.link && (
-                <a
-                  css={css`
-                    text-decoration: underline;
-                  `}
-                  href={issue.link}
-                  target="_blank"
-                >
+                <a css={aCss} href={issue.link} target="_blank">
                   Click here for more information
                 </a>
               )}
@@ -122,6 +126,6 @@ export const KnownIssues = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
