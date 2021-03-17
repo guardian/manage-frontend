@@ -409,7 +409,7 @@ export interface HelpCentreNavConfig {
 export const helpCentreNavConfig = [
   { id: "delivery", title: "Delivery" },
   { id: "billing", title: "Billing" },
-  { id: "accounts-and-sign-in", title: "Accounts & Sign in" },
+  { id: "accounts", title: "Accounts & Sign in" },
   { id: "the-guardian-website", title: "The Guardian Website" },
   { id: "journalism", title: "Journalism" },
   { id: "print-subscriptions", title: "Print Subscriptions" },

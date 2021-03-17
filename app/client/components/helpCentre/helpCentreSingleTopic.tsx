@@ -1,16 +1,16 @@
 import { css } from "@emotion/core";
 import React from "react";
 import { trackEvent } from "../analytics";
-import { HelpCentreTopic } from "./helpCentreConfig";
 import {
   linkAnchorStyle,
   linkArrowStyle,
   linkListItemStyle,
   linksListStyle
 } from "./helpCentreStyles";
+import { SingleTopic } from "./helpCentreTopic";
 
 interface HelpCentreSingleTopicProps {
-  topic: HelpCentreTopic;
+  topic: SingleTopic | undefined;
 }
 
 const liCss = (questionIndex: number) => css`
@@ -21,20 +21,21 @@ const liCss = (questionIndex: number) => css`
 const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
   return (
     <ul css={linksListStyle}>
-      {props.topic.links.map((question, questionIndex) => (
+      {props.topic?.articles?.map((question, questionIndex) => (
         <li
-          key={`${props.topic.id}Question-${questionIndex}`}
+          key={`${props.topic?.title}Question-${questionIndex}`}
           css={liCss(questionIndex)}
         >
           <a
-            href={question.link}
+            // add path to article page here
+            // href={question.path}
             target="_blank"
             css={linkAnchorStyle}
             onClick={() => {
               trackEvent({
                 eventCategory: "help-centre",
                 eventAction: "popular-topic-q-click",
-                eventLabel: `${props.topic.id}-${question.id}`
+                eventLabel: `${props.topic?.title}-${question.title}`
               });
             }}
           >
