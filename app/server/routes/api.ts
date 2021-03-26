@@ -230,7 +230,7 @@ router.get("/known-issues", async (_, response) => {
   response.json(data || []);
 });
 
-router.get("/help-centre/topics/:topic", getTopicHandler);
+router.get("/help-centre/topic/:topic", getTopicHandler);
 
 router.post("/contact-us", contactUsFormHandler);
 

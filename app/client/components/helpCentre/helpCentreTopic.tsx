@@ -1,52 +1,20 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import { brand, neutral } from "@guardian/src-foundations/palette";
-import { headline } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import { Button } from "../buttons";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
+import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
 import { helpCentreNavConfig } from "./helpCentreConfig";
 import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
-import HelpCentreSingleTopic from "./helpCentreSingleTopic";
+import { HelpCentreSingleTopic } from "./helpCentreSingleTopic";
+import { MoreTopics, SingleTopic } from "./HelpCentreTypes";
 
 interface HelpCentreTopicProps extends RouteComponentProps {
   topicCode?: string;
-}
-
-const h2Css = css`
-  margin: 0 ${space[3]}px ${space[9]}px ${space[3]}px;
-  border-top: 1px solid ${neutral["86"]};
-  ${headline.small({ fontWeight: "bold" })}
-`;
-
-const divCss = css`
-  margin: 67px ${space[3]}px 0 ${space[3]}px;
-`;
-
-const buttonDivCss = css`
-  margin-top: ${space[4]}px;
-  padding-top: ${space[4]}px;
-  border-top: 1px solid ${neutral["86"]};
-`;
-
-interface Article {
-  path: string;
-  title: string;
-}
-
-export interface SingleTopic {
-  title: string;
-  articles: Article[];
-}
-
-interface MoreTopics {
-  title: string;
-  topics: SingleTopic[];
 }
 
 const HelpCentreTopic = (props: HelpCentreTopicProps) => {
@@ -57,41 +25,35 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     undefined
   );
 
-  const navTopics = helpCentreNavConfig.map(topic => topic.id);
-
-  if (props.topicCode && !navTopics.includes(props.topicCode)) {
-    navigate("/help-centre");
-  }
-
   useEffect(() => {
-    fetch(`/api/help-centre/topics/${props.topicCode}`)
-      .then(response => response.ok && response.json())
+    setSingleTopic(undefined);
+    setMoreTopics(undefined);
+    fetch(`/api/help-centre/topic/${props.topicCode}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          Sentry.captureMessage(
+            `Fetching topic ${props.topicCode} returned ${response.status}.`
+          );
+          navigate("/help-centre");
+        }
+      })
       .then(topicData => {
-        props.topicCode === "more-topics"
+        topicData.topics
           ? setMoreTopics(topicData as MoreTopics)
           : setSingleTopic(topicData as SingleTopic);
       })
       .catch(error =>
-        Sentry.captureException(`Failed to fetch topic, error: ${error}`)
+        Sentry.captureException(
+          `Failed to fetch topic ${props.topicCode}. Error: ${error}`
+        )
       );
   }, [props.topicCode]);
 
   const selectedNavTopic = helpCentreNavConfig.find(
     topic => topic.id === props.topicCode
   );
-
-  const Loading = () => (
-    <WithStandardTopMargin>
-      <Spinner loadingMessage={"Fetching topic..."} />
-    </WithStandardTopMargin>
-  );
-
-  const selectedTopic =
-    props.topicCode === "more-topics" ? (
-      <HelpCentreMoreTopics />
-    ) : (
-      <HelpCentreSingleTopic topic={singleTopic} />
-    );
 
   return (
     <>
@@ -102,34 +64,33 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
             margin-bottom: ${space[24]}px;
           `}
         >
-          <h2 css={h2Css}>
-            {props.topicCode === "more-topics"
-              ? "More Topics"
-              : singleTopic?.title}
-          </h2>
-          {!singleTopic && !moreTopics ? (
-            <Loading />
-          ) : (
-            <>
-              {selectedTopic}
-              <div css={divCss}>
-                <div css={buttonDivCss}>
-                  <a href="/help-centre">
-                    <Button
-                      text={"Back to Help Centre"}
-                      fontWeight={"bold"}
-                      textColour={`${brand["400"]}`}
-                      colour={`${brand["800"]}`}
-                      left={true}
-                    />
-                  </a>
-                </div>
-              </div>
-            </>
-          )}
+          {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
+          <BackToHelpCentreButton />
         </div>
       </SectionContent>
     </>
+  );
+};
+
+const getTopicComponent = (
+  topicCode: string | undefined,
+  singleTopic: SingleTopic | undefined,
+  moreTopics: MoreTopics | undefined
+) => {
+  if (singleTopic) {
+    return <HelpCentreSingleTopic id={topicCode ?? ""} topic={singleTopic} />;
+  }
+
+  if (moreTopics) {
+    return (
+      <HelpCentreMoreTopics id={topicCode ?? ""} moreTopics={moreTopics} />
+    );
+  }
+
+  return (
+    <WithStandardTopMargin>
+      <Spinner loadingMessage={"Fetching topic..."} />
+    </WithStandardTopMargin>
   );
 };
 

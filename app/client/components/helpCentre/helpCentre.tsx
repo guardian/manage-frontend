@@ -11,13 +11,9 @@ import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { helpCentreConfig } from "./helpCentreConfig";
-import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
+import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpTopicBox } from "./HelpTopicBox";
 import { KnownIssues } from "./knownIssues";
-
-interface HelpCentreProps extends RouteComponentProps {
-  urlSuccess?: string;
-}
 
 const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
@@ -28,7 +24,7 @@ const subtitleStyles = css`
   ${headline.small({ fontWeight: "bold" })};
 `;
 
-const HelpCentre = (_: HelpCentreProps) => (
+const HelpCentre = (_: RouteComponentProps) => (
   <>
     <SectionHeader title="How can we help you?" />
     <KnownIssues />
@@ -52,7 +48,9 @@ const HelpCentre = (_: HelpCentreProps) => (
           ))}
         </div>
         <h2 css={subtitleStyles}>More Topics</h2>
-        <HelpCentreMoreTopics />
+        {/* HelpCentreMoreTopics will replace HelpCentreLandingMoreTopics
+        once we convert the landing page to loading dynamic content */}
+        <HelpCentreLandingMoreTopics />
         <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
         <CallCentreEmailAndNumbers />
         <p

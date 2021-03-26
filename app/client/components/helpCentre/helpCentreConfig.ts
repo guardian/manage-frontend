@@ -406,7 +406,7 @@ export interface HelpCentreNavConfig {
   title: string;
 }
 
-export const helpCentreNavConfig = [
+export const helpCentreNavConfig: HelpCentreNavConfig[] = [
   { id: "delivery", title: "Delivery" },
   { id: "billing", title: "Billing" },
   { id: "accounts", title: "Accounts & Sign in" },

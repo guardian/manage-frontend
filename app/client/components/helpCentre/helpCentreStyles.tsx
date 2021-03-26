@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
-import { textSans } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 
 export const linkAnchorStyle = css`
   display: inline-block;
@@ -38,47 +38,46 @@ export const linkListItemStyle = css`
 `;
 
 export const containterCss = `
-width: 100%;
-border: 1px solid ${neutral["86"]};
+  width: 100%;
+  border: 1px solid ${neutral["86"]};
 `;
 
 export const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
-display: flex;
-justify-content: space-between;
-align-items: center;
-color: ${neutral["7"]};
-${textSans.medium()};
-margin: 0;
-padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
-position: relative;
-cursor: pointer;
-:after {
-  content: "";
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid ${neutral["7"]};
-  border-right: 2px solid ${neutral["7"]};
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%) ${isOpen ? "rotate(-45deg)" : "rotate(135deg)"};
-  transition: transform 0.4s;
-  right: 17px;
-}
-${isNotFirstOption &&
-  `
-  :before {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: ${neutral["7"]};
+  ${textSans.medium()};
+  margin: 0;
+  padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
+  position: relative;
+  cursor: pointer;
+  :after {
     content: "";
     display: block;
+    width: 7px;
+    height: 7px;
+    border-top: 2px solid ${neutral["7"]};
+    border-right: 2px solid ${neutral["7"]};
     position: absolute;
-    top: 0;
-    left: 0px;
-    width: 100%;
-    height: 1px;
-    background-color: ${neutral["86"]}
+    top: 50%;
+    transform: translateY(-50%) ${isOpen ? "rotate(-45deg)" : "rotate(135deg)"};
+    transition: transform 0.4s;
+    right: 17px;
   }
-`}
-`;
+  ${isNotFirstOption &&
+    `
+    :before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0px;
+      width: 100%;
+      height: 1px;
+      background-color: ${neutral["86"]}
+    }
+`}`;
 
 export const innerSectionDivCss = `
   ${textSans.medium()};
@@ -95,4 +94,10 @@ export const innerSectionCss = (isOpen: boolean) => `
   list-style: none;
   background-color: rgba(193, 216, 252, 0.3);
   border-top: 1px solid #DCDCDC;
+`;
+
+export const h2Css = css`
+  margin: 0 ${space[3]}px ${space[9]}px ${space[3]}px;
+  border-top: 1px solid ${neutral["86"]};
+  ${headline.small({ fontWeight: "bold" })}
 `;
