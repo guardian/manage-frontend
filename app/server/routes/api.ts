@@ -21,7 +21,7 @@ import { s3FilePromise } from "../awsIntegration";
 import { conf } from "../config";
 import { contactUsFormHandler } from "../contactUsApi";
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from "../fulfilmentDateCalculatorReader";
-import { getTopicHandler } from "../helpCentreApi";
+import { getArticleHandler, getTopicHandler } from "../helpCentreApi";
 import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
 import {
@@ -230,6 +230,7 @@ router.get("/known-issues", async (_, response) => {
   response.json(data || []);
 });
 
+router.get("/help-centre/article/:article", getArticleHandler);
 router.get("/help-centre/topic/:topic", getTopicHandler);
 
 router.post("/contact-us", contactUsFormHandler);
