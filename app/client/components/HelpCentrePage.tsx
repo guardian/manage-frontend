@@ -17,7 +17,12 @@ const HelpCentre = lazy(() =>
   import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
 );
 
-// placeholder import for the help centre see all topics page
+const HelpCentreArticle = lazy(() =>
+  import(
+    /* webpackChunkName: "HelpCentreArticle" */ "./helpCentre/helpCentreArticle"
+  )
+);
+
 const HelpCentreTopic = lazy(() =>
   import(
     /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
@@ -37,6 +42,7 @@ const HelpCentreRouter = () => {
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
 
+          <HelpCentreArticle path="/help-centre/article/:articleCode" />
           <HelpCentreTopic path="/help-centre/topic/:topicCode" />
 
           <ContactUs path="/help-centre/contact-us" />

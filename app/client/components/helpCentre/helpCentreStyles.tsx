@@ -28,7 +28,7 @@ export const linkArrowStyle = css`
 export const linksListStyle = css`
   list-style: none;
   margin: 0 0 20px;
-  padding: 0 12px;
+  padding: 0;
 `;
 
 export const linkListItemStyle = css`
@@ -97,7 +97,7 @@ export const innerSectionCss = (isOpen: boolean) => `
 `;
 
 export const h2Css = css`
-  margin: 0 ${space[3]}px ${space[9]}px ${space[3]}px;
+  margin-bottom: ${space[9]}px;
   border-top: 1px solid ${neutral["86"]};
   ${headline.small({ fontWeight: "bold" })}
 `;

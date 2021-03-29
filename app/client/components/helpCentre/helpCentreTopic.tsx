@@ -61,7 +61,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <div
           css={css`
-            margin-bottom: ${space[24]}px;
+            margin: 0 ${space[3]}px ${space[24]}px ${space[3]}px;
           `}
         >
           {getTopicComponent(props.topicCode, singleTopic, moreTopics)}

@@ -1,18 +1,47 @@
-export interface Article {
-  path: string;
+interface BaseArticle {
   title: string;
 }
 
-export interface SingleTopic {
+interface ArticleWithPath extends BaseArticle {
+  path: string;
+}
+
+interface BaseTopic {
   title: string;
-  articles: Article[];
+}
+
+interface TopicWithPath extends BaseTopic {
+  path: string;
+}
+
+export interface SingleTopic extends BaseTopic {
+  articles: ArticleWithPath[];
 }
 
 export interface SingleTopicWithPath extends SingleTopic {
   path: string;
 }
 
-export interface MoreTopics {
-  title: string;
+export interface MoreTopics extends BaseTopic {
   topics: SingleTopicWithPath[];
+}
+
+export interface Article extends BaseArticle {
+  body: BaseNode[];
+  topics: TopicWithPath[];
+}
+
+export interface BaseNode {
+  element: string;
+}
+export interface TextNode extends BaseNode {
+  content: string;
+}
+
+export interface ElementNode extends BaseNode {
+  content: BaseNode[];
+}
+
+export interface LinkNode extends ElementNode {
+  href: string;
 }
