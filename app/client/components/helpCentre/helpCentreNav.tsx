@@ -115,11 +115,7 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
         <h2 css={h2Css} onClick={handleSectionClick}>
           Topics
         </h2>
-        <ul
-          css={css`
-            ${innerSectionCss(open)};
-          `}
-        >
+        <ul css={innerSectionCss(open)}>
           {helpCentreNavConfig.map((topic, topicIndex) => {
             return (
               <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>

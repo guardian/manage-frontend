@@ -37,11 +37,7 @@ export const HelpCentreLandingMoreTopics = () => {
   };
   return (
     <div css={moreTopicsStyles}>
-      <div
-        css={css`
-          ${containterCss}
-        `}
-      >
+      <div css={containterCss}>
         {helpCentreMoreQuestionsConfig.map((topic, topicIndex) => {
           const isOpen = topicIndex === indexOfOpenSection;
           const isNotFirstOption = topicIndex > 0;
@@ -62,11 +58,7 @@ export const HelpCentreLandingMoreTopics = () => {
                   {isOpen ? "Hide" : "Show"}
                 </span>
               </h2>
-              <ul
-                css={css`
-                  ${innerSectionCss(isOpen)};
-                `}
-              >
+              <ul css={innerSectionCss(isOpen)}>
                 {topic.links.map((question, questionIndex) => (
                   <li
                     key={`${topic.id}Question-${questionIndex}`}

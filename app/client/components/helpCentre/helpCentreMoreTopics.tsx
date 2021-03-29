@@ -43,11 +43,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
     <>
       <h2 css={h2Css}>{props.moreTopics.title}</h2>
       <div css={moreTopicsStyles}>
-        <div
-          css={css`
-            ${containterCss}
-          `}
-        >
+        <div css={containterCss}>
           {props.moreTopics.topics.map((topic, topicIndex) => {
             const isOpen = topicIndex === openSection;
             const isNotFirstOption = topicIndex > 0;
@@ -65,11 +61,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
                   {topic.title}
                   <span css={showHideCss}>{isOpen ? "Hide" : "Show"}</span>
                 </h2>
-                <ul
-                  css={css`
-                    ${innerSectionCss(isOpen)};
-                  `}
-                >
+                <ul css={innerSectionCss(isOpen)}>
                   {topic.articles.map((article, articleIndex) => (
                     <li
                       key={article.path}

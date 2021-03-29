@@ -1,5 +1,3 @@
-import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
 import { navigate, RouteComponentProps } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React, { useEffect, useState } from "react";
@@ -54,15 +52,9 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
     <>
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
-        <div
-          css={css`
-            margin: 0 ${space[3]}px ${space[24]}px ${space[3]}px;
-          `}
-        >
-          <h2 css={h2Css}>{article?.title}</h2>
-          {article ? <ArticleBody article={article} /> : <Loading />}
-          <BackToHelpCentreButton />
-        </div>
+        <h2 css={h2Css}>{article?.title}</h2>
+        {article ? <ArticleBody article={article} /> : <Loading />}
+        <BackToHelpCentreButton />
       </SectionContent>
     </>
   );

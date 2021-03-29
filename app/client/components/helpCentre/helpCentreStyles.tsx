@@ -37,7 +37,7 @@ export const linkListItemStyle = css`
   position: relative;
 `;
 
-export const containterCss = `
+export const containterCss = css`
   width: 100%;
   border: 1px solid ${neutral["86"]};
 `;
@@ -87,17 +87,22 @@ export const innerSectionDivCss = `
   position: relative;
 `;
 
-export const innerSectionCss = (isOpen: boolean) => `
+export const innerSectionCss = (isOpen: boolean) => css`
   display: ${isOpen ? "block" : "none"};
   margin: 0;
   padding: 0;
   list-style: none;
   background-color: rgba(193, 216, 252, 0.3);
-  border-top: 1px solid #DCDCDC;
+  border-top: 1px solid #dcdcdc;
 `;
 
 export const h2Css = css`
+  margin-top: 0;
   margin-bottom: ${space[9]}px;
   border-top: 1px solid ${neutral["86"]};
   ${headline.small({ fontWeight: "bold" })}
+`;
+
+export const contentDivStyles = css`
+  margin: 0 ${space[3]}px ${space[24]}px ${space[3]}px;
 `;

@@ -52,6 +52,7 @@ const containerCss = css`
 `;
 
 const divCss = (hasNav: boolean | undefined) => css`
+  margin-bottom: ${space[24]}px;
   ${{ ...gridBase }};
   padding-bottom: 1rem;
   ${minWidth.desktop} {
