@@ -27,12 +27,12 @@ export const linkArrowStyle = css`
 
 export const linksListStyle = css`
   list-style: none;
-  margin: 0 0 20px;
+  margin: 0 0 ${space[5]}px 0;
   padding: 0;
 `;
 
 export const linkListItemStyle = css`
-  padding: 12px 20px 12px 0;
+  padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
   border-bottom: 1px solid ${neutral["86"]};
   position: relative;
 `;
