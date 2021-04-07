@@ -33,6 +33,11 @@ const showHideCss = css`
   }
 `;
 
+const liStyles = (index: number, length: number) => css`
+  ${innerSectionDivCss};
+  ${index < length - 1 && `border-bottom: 1px solid ${neutral[86]}`};
+`;
+
 interface HelpCentreMoreTopicsProps {
   id: string;
   moreTopics: MoreTopics;
@@ -53,9 +58,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
             return (
               <div key={topic.path}>
                 <h2
-                  css={css`
-                    ${sectionTitleCss(isOpen, isNotFirstOption)};
-                  `}
+                  css={sectionTitleCss(isOpen, isNotFirstOption)}
                   onClick={() =>
                     setOpenSection(openSection === topicIndex ? -1 : topicIndex)
                   }
@@ -67,11 +70,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
                   {topic.articles.map((article, articleIndex) => (
                     <li
                       key={article.path}
-                      css={css`
-                        ${innerSectionDivCss};
-                        ${articleIndex < topic.articles.length - 1 &&
-                          `border-bottom: 1px solid ${neutral[86]}`};
-                      `}
+                      css={liStyles(articleIndex, topic.articles.length)}
                     >
                       <Link
                         css={linkAnchorStyle}

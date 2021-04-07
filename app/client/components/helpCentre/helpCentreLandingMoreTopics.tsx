@@ -23,17 +23,21 @@ const moreTopicsStyles = css({
   fontWeight: "normal"
 });
 
+const showHideCss = css`
+  ${textSans.xsmall()};
+  margin-left: ${space[3]}px;
+  ${maxWidth.mobileMedium} {
+    display: none;
+  }
+`;
+
+const liStyles = (index: number, length: number) => css`
+  ${innerSectionDivCss};
+  ${index < length - 1 && `border-bottom: 1px solid ${neutral[86]}`};
+`;
+
 export const HelpCentreLandingMoreTopics = () => {
   const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>();
-
-  const showHideCss = `
-    ${textSans.xsmall()};
-    margin-left: ${space[3]}px;
-    ${maxWidth.mobileMedium} {
-      display: none;
-    }
-  }
-  `;
 
   const handleSectionClick = (sectionNum: number) => () => {
     setIndexOfOpenSection(indexOfOpenSection === sectionNum ? -1 : sectionNum);
@@ -47,29 +51,17 @@ export const HelpCentreLandingMoreTopics = () => {
           return (
             <div key={topic.id}>
               <h2
-                css={css`
-                  ${sectionTitleCss(isOpen, isNotFirstOption)};
-                `}
+                css={sectionTitleCss(isOpen, isNotFirstOption)}
                 onClick={handleSectionClick(topicIndex)}
               >
                 {topic.title}
-                <span
-                  css={css`
-                    ${showHideCss};
-                  `}
-                >
-                  {isOpen ? "Hide" : "Show"}
-                </span>
+                <span css={showHideCss}>{isOpen ? "Hide" : "Show"}</span>
               </h2>
               <ul css={innerSectionCss(isOpen)}>
                 {topic.links.map((question, questionIndex) => (
                   <li
                     key={`${topic.id}Question-${questionIndex}`}
-                    css={css`
-                      ${innerSectionDivCss};
-                      ${questionIndex < topic.links.length - 1 &&
-                        `border-bottom: 1px solid ${neutral[86]}`};
-                    `}
+                    css={liStyles(questionIndex, topic.links.length)}
                   >
                     <a
                       href={question.link}

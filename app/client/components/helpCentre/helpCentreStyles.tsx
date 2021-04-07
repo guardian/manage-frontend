@@ -42,7 +42,10 @@ export const containterCss = css`
   border: 1px solid ${neutral["86"]};
 `;
 
-export const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
+export const sectionTitleCss = (
+  isOpen: boolean,
+  isNotFirstOption: boolean
+) => css`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,9 +80,10 @@ export const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
       height: 1px;
       background-color: ${neutral["86"]}
     }
-`}`;
+`}
+`;
 
-export const innerSectionDivCss = `
+export const innerSectionDivCss = css`
   ${textSans.medium()};
   margin-bottom: 0;
   padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
