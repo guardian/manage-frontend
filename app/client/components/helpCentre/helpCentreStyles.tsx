@@ -93,7 +93,7 @@ export const innerSectionCss = (isOpen: boolean) => css`
   padding: 0;
   list-style: none;
   background-color: rgba(193, 216, 252, 0.3);
-  border-top: 1px solid #dcdcdc;
+  border-top: 1px solid ${neutral[86]};
 `;
 
 export const h2Css = css`

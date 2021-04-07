@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { useState } from "react";
@@ -68,7 +69,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
                       css={css`
                         ${innerSectionDivCss};
                         ${articleIndex < topic.articles.length - 1 &&
-                          "border-bottom: 1px solid #DCDCDC"};
+                          `border-bottom: 1px solid ${neutral[86]}`};
                       `}
                     >
                       <Link
