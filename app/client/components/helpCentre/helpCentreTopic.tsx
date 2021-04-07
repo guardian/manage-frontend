@@ -1,5 +1,5 @@
 import { navigate, RouteComponentProps } from "@reach/router";
-import * as Sentry from "@sentry/browser";
+import { captureMessage, captureException } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
@@ -31,7 +31,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
         if (response.ok) {
           return response.json();
         } else {
-          Sentry.captureMessage(
+          captureMessage(
             `Fetching topic ${props.topicCode} returned ${response.status}.`
           );
           navigate("/help-centre");
@@ -43,7 +43,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
           : setSingleTopic(topicData as SingleTopic);
       })
       .catch(error =>
-        Sentry.captureException(
+        captureException(
           `Failed to fetch topic ${props.topicCode}. Error: ${error}`
         )
       );

@@ -1,5 +1,5 @@
 import { navigate, RouteComponentProps } from "@reach/router";
-import * as Sentry from "@sentry/browser";
+import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
@@ -30,7 +30,7 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
         if (response.ok) {
           return response.json();
         } else {
-          Sentry.captureMessage(
+          captureMessage(
             `Fetching article ${props.articleCode} returned ${response.status}.`
           );
           navigate("/help-centre");
@@ -38,7 +38,7 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
       })
       .then(articleData => setArticle(articleData as Article))
       .catch(error =>
-        Sentry.captureException(
+        captureException(
           `Failed to fetch article ${props.articleCode}. Error: ${error}`
         )
       );
@@ -122,7 +122,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
           );
         }
         default: {
-          Sentry.captureMessage(`Found unexpected element (${body.element}).`);
+          captureMessage(`Found unexpected element (${body.element}).`);
           return null;
         }
       }
