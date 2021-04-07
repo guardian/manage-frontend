@@ -53,7 +53,14 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <h2 css={h2Css}>{article?.title}</h2>
-        {article ? <ArticleBody article={article} /> : <Loading />}
+        {article ? (
+          <ArticleBody
+            article={article}
+            articleCode={props.articleCode ?? ""}
+          />
+        ) : (
+          <Loading />
+        )}
         <BackToHelpCentreButton />
       </SectionContent>
     </>
@@ -66,24 +73,21 @@ const Loading = () => (
   </WithStandardTopMargin>
 );
 
-// This is to appease React's "Lists need a unique key" error
-// A 5 character random string should be safe enough (no collisions)
-const getRandomKey = () =>
-  Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, "")
-    .substr(0, 5);
-
 interface ArticleBodyProps {
   article: Article;
+  articleCode: string;
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
+  // This is to appease React's "Lists need a unique key" error
+  let keyCounter = 0;
+  const getKey = () => props.articleCode + keyCounter++;
+
   const parseBody = (body: BaseNode[] | BaseNode): React.ReactNode => {
     if (Array.isArray(body)) {
       return body.map(parseBody);
     } else {
-      const key = getRandomKey();
+      const key = getKey();
       switch (body.element) {
         case "text": {
           return (body as TextNode).content;
