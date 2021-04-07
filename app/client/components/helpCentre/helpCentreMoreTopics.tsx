@@ -4,6 +4,7 @@ import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { useState } from "react";
+import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import {
   containterCss,
@@ -27,7 +28,7 @@ const moreTopicsStyles = css`
 const showHideCss = css`
   ${textSans.xsmall()};
   margin-left: ${space[3]}px;
-  @media only screen and (max-width: 375px) {
+  ${maxWidth.mobileMedium} {
     display: none;
   }
 `;

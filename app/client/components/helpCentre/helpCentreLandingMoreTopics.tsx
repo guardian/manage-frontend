@@ -3,6 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
+import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { helpCentreMoreQuestionsConfig } from "./helpCentreConfig";
 import {
@@ -28,8 +29,9 @@ export const HelpCentreLandingMoreTopics = () => {
   const showHideCss = `
     ${textSans.xsmall()};
     margin-left: ${space[3]}px;
-    @media only screen and (max-width: 375px) {
-    display: none;
+    ${maxWidth.mobileMedium} {
+      display: none;
+    }
   }
   `;
 

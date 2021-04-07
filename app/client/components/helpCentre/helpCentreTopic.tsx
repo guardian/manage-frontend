@@ -1,5 +1,5 @@
 import { navigate, RouteComponentProps } from "@reach/router";
-import { captureMessage, captureException } from "@sentry/browser";
+import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
