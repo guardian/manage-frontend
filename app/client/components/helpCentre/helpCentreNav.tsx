@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { HelpCentreNavConfig, helpCentreNavConfig } from "./helpCentreConfig";
 import {
-  containterCss,
   innerSectionCss,
   innerSectionDivCss,
   linkAnchorStyle,
@@ -60,7 +59,8 @@ const mobileLiCss = (topicIndex: number) => css`
 `;
 
 const divCss = css`
-  ${containterCss};
+  width: 100%;
+  border: 1px solid ${neutral["86"]};
   ${minWidth.desktop} {
     display: none;
   }
@@ -115,11 +115,7 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
         <h2 css={h2Css} onClick={handleSectionClick}>
           Topics
         </h2>
-        <ul
-          css={css`
-            ${innerSectionCss(open)};
-          `}
-        >
+        <ul css={innerSectionCss(open)}>
           {helpCentreNavConfig.map((topic, topicIndex) => {
             return (
               <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>

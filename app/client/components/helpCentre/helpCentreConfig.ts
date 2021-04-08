@@ -406,10 +406,10 @@ export interface HelpCentreNavConfig {
   title: string;
 }
 
-export const helpCentreNavConfig = [
+export const helpCentreNavConfig: HelpCentreNavConfig[] = [
   { id: "delivery", title: "Delivery" },
   { id: "billing", title: "Billing" },
-  { id: "accounts-and-sign-in", title: "Accounts & Sign in" },
+  { id: "accounts", title: "Accounts & Sign in" },
   { id: "the-guardian-website", title: "The Guardian Website" },
   { id: "journalism", title: "Journalism" },
   { id: "print-subscriptions", title: "Print Subscriptions" },

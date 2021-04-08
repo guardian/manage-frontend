@@ -1,103 +1,100 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import React, { useState } from "react";
+import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import { helpCentreMoreQuestionsConfig } from "./helpCentreConfig";
 import {
   containterCss,
+  h2Css,
   innerSectionCss,
   innerSectionDivCss,
   linkAnchorStyle,
   linkArrowStyle,
   sectionTitleCss
 } from "./helpCentreStyles";
+import { MoreTopics } from "./HelpCentreTypes";
 
-const moreTopicsStyles = css({
-  marginBottom: "10px",
-  display: "flex",
-  flexWrap: "wrap",
-  textAlign: "left",
-  fontWeight: "normal"
-});
+const moreTopicsStyles = css`
+  margin-bottom: "10px";
+  display: "flex";
+  flex-wrap: "wrap";
+  text-align: "left";
+  font-weight: "normal";
+`;
 
-export const HelpCentreMoreTopics = () => {
-  const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>();
-
-  const showHideCss = `
-    ${textSans.xsmall()};
-    margin-left: ${space[3]}px;
-    @media only screen and (max-width: 375px) {
+const showHideCss = css`
+  ${textSans.xsmall()};
+  margin-left: ${space[3]}px;
+  ${maxWidth.mobileMedium} {
     display: none;
   }
-  `;
+`;
 
-  const handleSectionClick = (sectionNum: number) => () => {
-    setIndexOfOpenSection(indexOfOpenSection === sectionNum ? -1 : sectionNum);
-  };
+const liStyles = (index: number, length: number) => css`
+  ${innerSectionDivCss};
+  ${index < length - 1 && `border-bottom: 1px solid ${neutral[86]}`};
+`;
+
+interface HelpCentreMoreTopicsProps {
+  id: string;
+  moreTopics: MoreTopics;
+}
+
+export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
+  const [openSection, setOpenSection] = useState<number>();
+
   return (
-    <div css={moreTopicsStyles}>
-      <div
-        css={css`
-          ${containterCss}
-        `}
-      >
-        {helpCentreMoreQuestionsConfig.map((topic, topicIndex) => {
-          const isOpen = topicIndex === indexOfOpenSection;
-          const isNotFirstOption = topicIndex > 0;
-          return (
-            <div key={topic.id}>
-              <h2
-                css={css`
-                  ${sectionTitleCss(isOpen, isNotFirstOption)};
-                `}
-                onClick={handleSectionClick(topicIndex)}
-              >
-                {topic.title}
-                <span
-                  css={css`
-                    ${showHideCss};
-                  `}
+    <>
+      <h2 css={h2Css}>{props.moreTopics.title}</h2>
+      <div css={moreTopicsStyles}>
+        <div css={containterCss}>
+          {props.moreTopics.topics.map((topic, topicIndex) => {
+            const isOpen = topicIndex === openSection;
+            const isNotFirstOption = topicIndex > 0;
+
+            return (
+              <div key={topic.path}>
+                <h2
+                  css={sectionTitleCss(isOpen, isNotFirstOption)}
+                  onClick={() =>
+                    setOpenSection(openSection === topicIndex ? -1 : topicIndex)
+                  }
                 >
-                  {isOpen ? "Hide" : "Show"}
-                </span>
-              </h2>
-              <ul
-                css={css`
-                  ${innerSectionCss(isOpen)};
-                `}
-              >
-                {topic.links.map((question, questionIndex) => (
-                  <li
-                    key={`${topic.id}Question-${questionIndex}`}
-                    css={css`
-                      ${innerSectionDivCss};
-                      ${questionIndex < topic.links.length - 1 &&
-                        "border-bottom: 1px solid #DCDCDC"};
-                    `}
-                  >
-                    <a
-                      href={question.link}
-                      target="_blank"
-                      css={linkAnchorStyle}
-                      onClick={() => {
-                        trackEvent({
-                          eventCategory: "help-centre",
-                          eventAction: "more-topics-q-click",
-                          eventLabel: `${topic.id}-${question.id}`
-                        });
-                      }}
+                  {topic.title}
+                  <span css={showHideCss}>{isOpen ? "Hide" : "Show"}</span>
+                </h2>
+                <ul css={innerSectionCss(isOpen)}>
+                  {topic.articles.map((article, articleIndex) => (
+                    <li
+                      key={article.path}
+                      css={liStyles(articleIndex, topic.articles.length)}
                     >
-                      {question.title}
-                    </a>
-                    <span css={linkArrowStyle} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
+                      <Link
+                        css={linkAnchorStyle}
+                        to={`/help-centre/article/${article.path}`}
+                        replace={false}
+                        onClick={() => {
+                          trackEvent({
+                            eventCategory: "help-centre",
+                            eventAction: "article-click",
+                            eventLabel: `${topic.path}:${article.path}`
+                          });
+                        }}
+                      >
+                        {article.title}
+                      </Link>
+                      <span css={linkArrowStyle} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -1,50 +1,54 @@
 import { css } from "@emotion/core";
+import { Link } from "@reach/router";
 import React from "react";
 import { trackEvent } from "../analytics";
-import { HelpCentreTopic } from "./helpCentreConfig";
 import {
+  h2Css,
   linkAnchorStyle,
   linkArrowStyle,
   linkListItemStyle,
   linksListStyle
 } from "./helpCentreStyles";
+import { SingleTopic } from "./HelpCentreTypes";
 
 interface HelpCentreSingleTopicProps {
-  topic: HelpCentreTopic;
+  id: string;
+  topic: SingleTopic;
 }
 
-const liCss = (questionIndex: number) => css`
+const liCss = (index: number) => css`
   ${linkListItemStyle};
-  border-top: ${questionIndex === 0 ? "1px solid #DCDCDC" : "none"};
+  border-top: ${index === 0 ? "1px solid #DCDCDC" : "none"};
 `;
 
-const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
+export const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
   return (
-    <ul css={linksListStyle}>
-      {props.topic.links.map((question, questionIndex) => (
-        <li
-          key={`${props.topic.id}Question-${questionIndex}`}
-          css={liCss(questionIndex)}
-        >
-          <a
-            href={question.link}
-            target="_blank"
-            css={linkAnchorStyle}
-            onClick={() => {
-              trackEvent({
-                eventCategory: "help-centre",
-                eventAction: "popular-topic-q-click",
-                eventLabel: `${props.topic.id}-${question.id}`
-              });
-            }}
+    <>
+      <h2 css={h2Css}>{props.topic.title}</h2>
+      <ul css={linksListStyle}>
+        {props.topic.articles.map((article, articleIndex) => (
+          <li
+            key={`${props.id}Article-${articleIndex}`}
+            css={liCss(articleIndex)}
           >
-            {question.title}
-          </a>
-          <span css={linkArrowStyle} />
-        </li>
-      ))}
-    </ul>
+            <Link
+              css={linkAnchorStyle}
+              to={`/help-centre/article/${article.path}`}
+              replace={false}
+              onClick={() => {
+                trackEvent({
+                  eventCategory: "help-centre",
+                  eventAction: "article-click",
+                  eventLabel: `${props.id}:${article.path}`
+                });
+              }}
+            >
+              {article.title}
+            </Link>
+            <span css={linkArrowStyle} />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
-
-export default HelpCentreSingleTopic;

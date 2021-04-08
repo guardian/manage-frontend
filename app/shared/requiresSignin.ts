@@ -5,6 +5,7 @@ const publicPaths = [
   "/api/contact-us/",
   "/api/known-issues/",
   "/api/reminders/cancel/",
+  "/api/help-centre/",
   "/cancel-reminders/",
   "/help-centre/"
 ];

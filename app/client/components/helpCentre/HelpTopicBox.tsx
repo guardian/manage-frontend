@@ -71,13 +71,18 @@ const seeAllAnchorStyle = css`
   }
 `;
 
+const linksLisWithMargintStyle = css`
+  ${linksListStyle};
+  padding: 0 ${space[3]}px;
+`;
+
 export const HelpTopicBox = (props: HelpTopicBoxProps) => (
   <div css={boxHolderStyle}>
     <h2 css={boxTitleStyle}>
       <i css={iconStyle}>{getHelpSectionIcon(props.topic.id)}</i>
       {props.topic.title}
     </h2>
-    <ul css={linksListStyle}>
+    <ul css={linksLisWithMargintStyle}>
       {props.topic.links.map((question, questionIndex) => (
         <li
           key={`${props.topic.id}Question-${questionIndex}`}
