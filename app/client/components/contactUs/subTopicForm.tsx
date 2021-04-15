@@ -4,7 +4,7 @@ import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { SubTopic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 
@@ -37,13 +37,6 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
       `}
     >
       <fieldset
-        onChange={(event: FormEvent<HTMLFieldSetElement>) => {
-          const target: HTMLInputElement = event.target as HTMLInputElement;
-          setSelectedId(target.value);
-          if (!requiresSubmitButton) {
-            props.submitCallback(target.value);
-          }
-        }}
         css={css`
           border: 1px solid ${neutral["86"]};
           margin: 0 0 ${space[5]}px;
@@ -103,6 +96,12 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
                       font-weight: bold;
                     }
                   `}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    setSelectedId(event.target.value);
+                    if (!requiresSubmitButton) {
+                      props.submitCallback(event.target.value);
+                    }
+                  }}
                 />
               </li>
             ))}
