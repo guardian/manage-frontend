@@ -239,6 +239,19 @@ Resources:
       Roles:
       - !Ref AppRole
 
+  ReadFromDistBucketPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: read-from-dist-bucket-policy
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Action: s3:GetObject
+          Resource:
+          - arn:aws:s3::*:membership-dist/*
+      Roles:
+      - !Ref AppRole
+        
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
