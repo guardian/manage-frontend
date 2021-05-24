@@ -3,7 +3,8 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import React from "react";
+import React, { useEffect } from "react";
+import { initLiveChat } from "../../liveChat";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
@@ -24,60 +25,83 @@ const subtitleStyles = css`
   ${headline.small({ fontWeight: "bold" })};
 `;
 
-const HelpCentre = (_: RouteComponentProps) => (
-  <>
-    <SectionHeader title="How can we help you?" />
-    <KnownIssues />
-    <SectionContent>
-      <div
-        css={css`
-          margin-bottom: ${space[24]}px;
-        `}
-      >
-        <h2 css={subtitleStyles}>Most popular topics</h2>
+const HelpCentre = (_: RouteComponentProps) => {
+  useEffect(() => {
+    const queryString = window.location.search.slice(1);
+
+    const liveChatRegex = /liveChat.+?(?=\&|$)/g;
+    const match = queryString.match(liveChatRegex);
+
+    if (match) {
+      const liveChatKeyValueArray = match[0].split("=");
+      window.sessionStorage.setItem(
+        liveChatKeyValueArray[0],
+        liveChatKeyValueArray[1]
+      );
+    }
+
+    if (window.sessionStorage.getItem("liveChat") === "1") {
+      initLiveChat();
+    }
+  }, []);
+
+  return (
+    <>
+      <SectionHeader title="How can we help you?" />
+      <KnownIssues />
+      <SectionContent>
         <div
           css={css`
-            display: flex;
-            flex-wrap: wrap;
-            align-items: stretch;
-            justify-content: space-between;
+            margin-bottom: ${space[24]}px;
           `}
         >
-          {helpCentreConfig.map(topic => (
-            <HelpTopicBox key={topic.id} topic={topic} />
-          ))}
-        </div>
-        <h2 css={subtitleStyles}>More Topics</h2>
-        {/* HelpCentreMoreTopics will replace HelpCentreLandingMoreTopics
+          <h2 css={subtitleStyles}>Most popular topics</h2>
+          <div
+            css={css`
+              display: flex;
+              flex-wrap: wrap;
+              align-items: stretch;
+              justify-content: space-between;
+            `}
+          >
+            {helpCentreConfig.map(topic => (
+              <HelpTopicBox key={topic.id} topic={topic} />
+            ))}
+          </div>
+          <h2 css={subtitleStyles}>More Topics</h2>
+          {/* HelpCentreMoreTopics will replace HelpCentreLandingMoreTopics
         once we convert the landing page to loading dynamic content */}
-        <HelpCentreLandingMoreTopics />
-        <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
-        <CallCentreEmailAndNumbers />
-        <p
-          css={css`
-            ${textSans.medium()};
-            margin-top: ${space[5]}px;
-          `}
-        >
-          Or use our contact form to get in touch and we’ll get back to you as
-          soon as possible.
-        </p>
-        <LinkButton
-          colour={brand[800]}
-          textColour={brand[400]}
-          fontWeight={"bold"}
-          text="Take me to the form"
-          to="/help-centre/contact-us/"
-          onClick={() =>
-            trackEvent({
-              eventCategory: "help-centre",
-              eventAction: "contact-us-cta-click"
-            })
-          }
-        />
-      </div>{" "}
-    </SectionContent>
-  </>
-);
+          <HelpCentreLandingMoreTopics />
+          <h2 css={subtitleStyles}>
+            Still can’t find what you’re looking for?
+          </h2>
+          <CallCentreEmailAndNumbers />
+          <p
+            css={css`
+              ${textSans.medium()};
+              margin-top: ${space[5]}px;
+            `}
+          >
+            Or use our contact form to get in touch and we’ll get back to you as
+            soon as possible.
+          </p>
+          <LinkButton
+            colour={brand[800]}
+            textColour={brand[400]}
+            fontWeight={"bold"}
+            text="Take me to the form"
+            to="/help-centre/contact-us/"
+            onClick={() =>
+              trackEvent({
+                eventCategory: "help-centre",
+                eventAction: "contact-us-cta-click"
+              })
+            }
+          />
+        </div>{" "}
+      </SectionContent>
+    </>
+  );
+};
 
 export default HelpCentre;
