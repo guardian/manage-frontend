@@ -8,10 +8,11 @@
 //     }
 // </style>
 
-// tslint:disable:variable-name
-// tslint:disable:no-object-mutation
+// tslint:disable-next-line:variable-name
 const initESW = (gslbBaseUrl: string | null, embedded_svc: any) => {
+  // tslint:disable-next-line:no-object-mutation
   embedded_svc.settings.displayHelpButton = true; // Or false
+  // tslint:disable-next-line:no-object-mutation
   embedded_svc.settings.language = ""; // For example, enter 'en' or 'en-US'
 
   // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
@@ -29,7 +30,9 @@ const initESW = (gslbBaseUrl: string | null, embedded_svc: any) => {
   // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
   // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
 
+  // tslint:disable-next-line:no-object-mutation
   embedded_svc.settings.enabledFeatures = ["LiveAgent"];
+  // tslint:disable-next-line:no-object-mutation
   embedded_svc.settings.entryFeature = "LiveAgent";
 
   embedded_svc.init(
@@ -58,6 +61,7 @@ export const initLiveChat = () => {
       "src",
       "https://gnmtouchpoint.my.salesforce.com/embeddedservice/5.0/esw.min.js"
     );
+    // tslint:disable-next-line:no-object-mutation
     s.onload = () => {
       initESW(null, window.embedded_svc);
     };
