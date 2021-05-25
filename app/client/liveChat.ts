@@ -8,34 +8,33 @@
 //     }
 // </style>
 
-// tslint:disable-next-line:variable-name
-const initESW = (gslbBaseUrl: string | null, embedded_svc: any) => {
+const initESW = (gslbBaseUrl: string | null, liveChatAPI: any) => {
   // tslint:disable-next-line:no-object-mutation
-  embedded_svc.settings.displayHelpButton = true; // Or false
+  liveChatAPI.settings.displayHelpButton = true; // Or false
   // tslint:disable-next-line:no-object-mutation
-  embedded_svc.settings.language = ""; // For example, enter 'en' or 'en-US'
+  liveChatAPI.settings.language = ""; // For example, enter 'en' or 'en-US'
 
-  // embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
-  // embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+  // liveChatAPI.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+  // liveChatAPI.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
 
-  // embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
-  // embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+  // liveChatAPI.settings.loadingText = ''; //(Defaults to Loading)
+  // liveChatAPI.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
 
   // Settings for Chat
-  // embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+  // liveChatAPI.settings.directToButtonRouting = function(prechatFormData) {
   // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
   // Returns a valid button ID.
   // };
-  // embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
-  // embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
-  // embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+  // liveChatAPI.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+  // liveChatAPI.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+  // liveChatAPI.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
 
   // tslint:disable-next-line:no-object-mutation
-  embedded_svc.settings.enabledFeatures = ["LiveAgent"];
+  liveChatAPI.settings.enabledFeatures = ["LiveAgent"];
   // tslint:disable-next-line:no-object-mutation
-  embedded_svc.settings.entryFeature = "LiveAgent";
+  liveChatAPI.settings.entryFeature = "LiveAgent";
 
-  embedded_svc.init(
+  liveChatAPI.init(
     "https://gnmtouchpoint.my.salesforce.com",
     "https://guardiansurveys.secure.force.com",
     gslbBaseUrl,
