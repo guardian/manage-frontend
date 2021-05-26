@@ -7,6 +7,7 @@ import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
 import { helpCentreNavConfig } from "./helpCentreConfig";
+import { PageTitle } from "./helpCentrePageTitle";
 import { h2Css } from "./helpCentreStyles";
 import {
   Article,
@@ -50,6 +51,7 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
 
   return (
     <>
+      <PageTitle title={article?.title} />
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <h2 css={h2Css}>{article?.title}</h2>

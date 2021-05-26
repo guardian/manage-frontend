@@ -5,6 +5,7 @@ import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
 import { CMPBanner } from "./consent/CMPBanner";
+import { PageTitle } from "./helpCentre/helpCentrePageTitle";
 import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
@@ -61,6 +62,7 @@ const HelpCentreRouter = () => {
 
 export const HelpCentrePage = (
   <>
+    <PageTitle />
     <AnalyticsTracker />
     <HelpCentreRouter />
     <CMPBanner />
