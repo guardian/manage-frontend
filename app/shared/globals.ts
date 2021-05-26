@@ -28,6 +28,7 @@ export interface Globals extends CommonGlobals {
 declare global {
   interface Window {
     guardian: Globals;
+    embedded_svc: any;
   }
 }
 
