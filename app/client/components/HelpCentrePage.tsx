@@ -5,7 +5,7 @@ import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
 import { CMPBanner } from "./consent/CMPBanner";
-import { PageTitle } from "./helpCentre/helpCentrePageTitle";
+import { PageTitle } from "./helpCentre/pageTitle";
 import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";

@@ -7,7 +7,6 @@ import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
 import { helpCentreNavConfig } from "./helpCentreConfig";
-import { PageTitle } from "./helpCentrePageTitle";
 import { h2Css } from "./helpCentreStyles";
 import {
   Article,
@@ -16,6 +15,7 @@ import {
   LinkNode,
   TextNode
 } from "./HelpCentreTypes";
+import { PageTitle } from "./pageTitle";
 
 interface HelpCentreArticleProps extends RouteComponentProps {
   articleCode?: string;
