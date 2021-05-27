@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { defaultPageTitle } from "../../client/components/helpCentre/helpCentrePageTitle";
+import { DEFAULT_PAGE_TITLE } from "../../shared/helpCentreConfig";
 import { conf } from "../config";
 import html from "../html";
 import { withIdentity } from "../middleware/identityMiddleware";
@@ -8,7 +8,7 @@ import { clientDSN, getRecaptchaPublicKey } from "./frontendCommon";
 const router = Router();
 
 router.use(withIdentity(), async (_: Request, res: Response) => {
-  const title = defaultPageTitle;
+  const title = DEFAULT_PAGE_TITLE;
   const src = "/static/helpcentre.js";
 
   res.send(
