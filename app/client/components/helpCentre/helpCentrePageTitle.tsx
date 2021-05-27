@@ -12,6 +12,7 @@ export const PageTitle = (props: PageTitleProps) => (
         const pageTitle =
           defaultPageTitle + (props.title ? " | " + props.title : "");
         if (document.title !== pageTitle) {
+          // tslint:disable-next-line:no-object-mutation
           document.title = pageTitle;
         }
       }
