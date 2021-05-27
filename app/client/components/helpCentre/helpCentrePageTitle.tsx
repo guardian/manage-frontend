@@ -8,8 +8,8 @@ interface PageTitleProps {
 
 export const PageTitle = (props: PageTitleProps) => (
   <Location>
-    {({ location }) => {
-      if (location && document) {
+    {() => {
+      if (document) {
         const pageTitle =
           DEFAULT_PAGE_TITLE + (props.title ? " | " + props.title : "");
         if (document.title !== pageTitle) {
