@@ -15,6 +15,7 @@ import {
   LinkNode,
   TextNode
 } from "./HelpCentreTypes";
+import { PageTitle } from "./pageTitle";
 
 interface HelpCentreArticleProps extends RouteComponentProps {
   articleCode?: string;
@@ -50,6 +51,7 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
 
   return (
     <>
+      <PageTitle title={article?.title} />
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <h2 css={h2Css}>{article?.title}</h2>
