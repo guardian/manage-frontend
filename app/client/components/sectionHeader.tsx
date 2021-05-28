@@ -6,6 +6,7 @@ import {
   space
 } from "@guardian/src-foundations";
 import { textSans, titlepiece } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
 import { minWidth } from "../styles/breakpoints";
@@ -53,7 +54,7 @@ const divCss = css`
   ${{ ...gridItemPlacement(1, 12) }}
 `;
 
-const aCss = css`
+const linkCss = css`
   ${textSans.medium()};
   color: ${palette.neutral[0]};
   position: relative;
@@ -107,7 +108,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
     <header css={headerCss}>
       <div css={containerCss}>
         <div css={divCss}>
-          <a href="/help-centre" css={aCss}>
+          <Link to="/help-centre" css={linkCss}>
             {isLandingPage ? (
               <span css={spanCss}>Help Centre</span>
             ) : (
@@ -116,7 +117,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
                 Back to Help Centre
               </span>
             )}
-          </a>
+          </Link>
         </div>
         <h1 css={h1Css(props.pageHasNav)}>{props.title}</h1>
       </div>
