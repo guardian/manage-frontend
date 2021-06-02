@@ -1,5 +1,10 @@
 import { css } from "@emotion/core";
-import { breakpoints, palette, space } from "@guardian/src-foundations";
+import {
+  breakpoints,
+  neutral,
+  palette,
+  space
+} from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useState } from "react";
 import { ProductDetail } from "../../../shared/productResponse";
@@ -105,7 +110,7 @@ export const KnownIssues = () => {
   const aCss = css`
     ${textSans.medium()};
     text-decoration: underline;
-    color: black;
+    color: ${neutral[0]};
   `;
 
   return (
