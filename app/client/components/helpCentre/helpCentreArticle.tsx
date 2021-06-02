@@ -16,6 +16,7 @@ import {
   TextNode
 } from "./HelpCentreTypes";
 import { PageTitle } from "./pageTitle";
+import { SeoData } from "./seoData";
 
 interface HelpCentreArticleProps extends RouteComponentProps {
   articleCode?: string;
@@ -52,6 +53,7 @@ const HelpCentreTopic = (props: HelpCentreArticleProps) => {
   return (
     <>
       <PageTitle title={article?.title} />
+      <SeoData article={article} />
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <h2 css={h2Css}>{article?.title}</h2>
