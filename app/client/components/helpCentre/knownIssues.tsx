@@ -1,5 +1,10 @@
 import { css } from "@emotion/core";
-import { breakpoints, palette, space } from "@guardian/src-foundations";
+import {
+  breakpoints,
+  neutral,
+  palette,
+  space
+} from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useState } from "react";
 import { ProductDetail } from "../../../shared/productResponse";
@@ -92,8 +97,7 @@ export const KnownIssues = () => {
 
   const iconCss = css`
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: ${space[4]}px;
     left: ${space[3]}px;
   `;
 
@@ -104,7 +108,9 @@ export const KnownIssues = () => {
   `;
 
   const aCss = css`
+    ${textSans.medium()};
     text-decoration: underline;
+    color: ${neutral[0]};
   `;
 
   return (
@@ -115,14 +121,12 @@ export const KnownIssues = () => {
             <i css={iconCss}>
               <ErrorIcon />
             </i>
-            <h4 css={h4Css}>
-              {issue.message}&nbsp;
-              {issue.link && (
-                <a css={aCss} href={issue.link} target="_blank">
-                  Click here for more information
-                </a>
-              )}
-            </h4>
+            <h4 css={h4Css}>{issue.message}</h4>
+            {issue.link && (
+              <a css={aCss} href={issue.link} target="_blank">
+                Click here for more information
+              </a>
+            )}
           </div>
         </div>
       ))}
