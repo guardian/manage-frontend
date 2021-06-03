@@ -22,7 +22,7 @@ interface HelpCentreArticleProps extends RouteComponentProps {
   articleCode?: string;
 }
 
-const HelpCentreTopic = (props: HelpCentreArticleProps) => {
+const HelpCentreArticle = (props: HelpCentreArticleProps) => {
   const [article, setArticle] = useState<Article | undefined>(undefined);
 
   useEffect(() => {
@@ -136,4 +136,4 @@ const ArticleBody = (props: ArticleBodyProps) => {
   return <div>{parseBody(props.article.body)}</div>;
 };
 
-export default HelpCentreTopic;
+export default HelpCentreArticle;
