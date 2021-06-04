@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { authKeysAreFetchableMemoisedHealthcheck } from "../apiGatewayDiscovery";
-import { Environments } from "../config";
+import { conf, Environments } from "../config";
 import { withIdentity } from "../middleware/identityMiddleware";
 
 const router = Router();
@@ -35,9 +35,10 @@ router.get("/robots.txt", (_, res: Response) => {
     "Disallow: /\n\n";
   const prodAccessList = allowHelpCentre + disallowGoogleAdsBots;
   const preProdAccessList = disallowAll;
-  const accessList = Environments.PRODUCTION
-    ? prodAccessList
-    : preProdAccessList;
+  const accessList =
+    conf.ENVIRONMENT === Environments.PRODUCTION
+      ? prodAccessList
+      : preProdAccessList;
   res.contentType("text/plain").send(accessList);
 });
 
