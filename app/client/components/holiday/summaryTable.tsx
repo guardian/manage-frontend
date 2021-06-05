@@ -72,7 +72,6 @@ const formattedCreditIfAvailable = (
 
 const SummaryTableRow = (props: SummaryTableRowProps) => {
   const dateRangeStr = formatDateRangeAsFriendly(props.dateRange);
-
   const detailPart = (
     <ExpanderButton
       buttonLabel={
@@ -84,8 +83,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
     >
       {props.publicationsImpacted.map((detail, index) => (
         <div key={index}>
-          -{" "}
-          {detail.publicationDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
+          - {detail.publicationDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
           {formattedCreditIfAvailable(detail, props.currency)}
         </div>
       ))}

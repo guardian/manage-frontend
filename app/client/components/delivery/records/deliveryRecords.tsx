@@ -6,7 +6,11 @@ import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
 import React, { useEffect, useState } from "react";
-import {dateAddDays, dateIsSameBefore, parseDate} from "../../../../shared/dates";
+import {
+  dateAddDays,
+  dateIsSameOrBefore,
+  parseDate
+} from "../../../../shared/dates";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -103,7 +107,9 @@ export const checkForExistingDeliveryProblem = (
   records: DeliveryRecordDetail[]
 ) =>
   records.findIndex(deliveryRecord => {
-    const recordDateEpoch = parseDate(deliveryRecord.deliveryDate).date.valueOf();
+    const recordDateEpoch = parseDate(
+      deliveryRecord.deliveryDate
+    ).date.valueOf();
     const now = new Date();
     const startOfToday = new Date(now.setHours(0, 0, 0, 0));
     const fourteenDaysAgoEpoch = dateAddDays(startOfToday, -14).valueOf();
@@ -221,15 +227,17 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       const numOfReportableRecords =
         productType.delivery.records.numberOfProblemRecordsToShow;
 
-      const startOfToday = new Date(new Date().setHours(0,0,0,0));
+      const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
 
       const isNotHolidayProblem =
         choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
 
       return props.data.results
         .filter(_ => {
-          const startOfDeliveryDateDay = new Date(parseDate(_.deliveryDate).date.setHours(0,0,0,0));
-          return dateIsSameBefore(startOfDeliveryDateDay, startOfToday);
+          const startOfDeliveryDateDay = new Date(
+            parseDate(_.deliveryDate).date.setHours(0, 0, 0, 0)
+          );
+          return dateIsSameOrBefore(startOfDeliveryDateDay, startOfToday);
         })
         .slice(0, numOfReportableRecords)
         .filter(_ => isNotHolidayProblem || _.hasHolidayStop)

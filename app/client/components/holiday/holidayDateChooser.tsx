@@ -12,25 +12,25 @@ import {
   DateRange,
   dateRange,
   dateString,
-  parseDate,
+  parseDate
 } from "../../../shared/dates";
 import {
   isProduct,
-  MembersDataApiItemContext,
+  MembersDataApiItemContext
 } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import { trackEvent } from "../analytics";
-import {Button} from "../buttons";
+import { Button } from "../buttons";
 import { DatePicker } from "../datePicker";
 import { GenericErrorScreen } from "../genericErrorScreen";
 import { ProgressIndicator } from "../progressIndicator";
 import { InfoIcon } from "../svgs/infoIcon";
 import { visuallyNavigateToParent, WizardStep } from "../wizardRouterAdapter";
-import {HolidayAnniversaryDateExplainerModal} from "./holidayAnniversaryDateExplainerModal";
+import { HolidayAnniversaryDateExplainerModal } from "./holidayAnniversaryDateExplainerModal";
 import {
   creditExplainerSentence,
-  HolidayQuestionsModal,
+  HolidayQuestionsModal
 } from "./holidayQuestionsModal";
 import { HolidaySelectionInfo } from "./holidaySelectionInfo";
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
@@ -45,7 +45,7 @@ import {
   isNotWithdrawn,
   IssuesImpactedPerYear,
   PotentialHolidayStopsResponse,
-  ReloadableGetHolidayStopsResponse,
+  ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 
 export const cancelLinkCss = {
@@ -54,25 +54,25 @@ export const cancelLinkCss = {
   fontWeight: "bold" as FontWeightProperty,
   textDecoration: "underline",
   fontSize: "16px",
-  color: `${neutral["7"]}`,
+  color: `${neutral["7"]}`
 };
 
 export const buttonBarCss = {
   display: "flex",
   alignItems: "center",
   marginTop: "40px",
-  flexWrap: "wrap" as FlexWrapProperty,
+  flexWrap: "wrap" as FlexWrapProperty
 };
 
 const oneAtATimeStyles = {
   fontFamily: sans,
   fontSize: "14px",
-  marginBottom: "27px",
+  marginBottom: "27px"
 };
 
 const fixedButtonFooterCss = {
   [maxWidth.mobileLandscape]: {
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   [maxWidth.phablet]: {
     position: "fixed",
@@ -82,8 +82,8 @@ const fixedButtonFooterCss = {
     right: 0,
     background: neutral[100],
     padding: "10px",
-    boxShadow: "0 0 5px" + neutral[60],
-  },
+    boxShadow: "0 0 5px" + neutral[60]
+  }
 };
 
 interface HolidayDateChooserProps extends HolidayStopsRouteableStepProps {
@@ -107,6 +107,12 @@ const extractMaybeLockedStartDate = (
     ? holidayStopsResponse.existingHolidayStopToAmend.dateRange.start
     : null;
 
+export function isSharedHolidayDateChooserState(
+  state: any
+): state is SharedHolidayDateChooserState {
+  return !!state && state.selectedRange && state.publicationsImpacted;
+}
+
 const validateIssuesSelected = (
   renewalDate: Date,
   annualIssueLimit: number,
@@ -115,43 +121,42 @@ const validateIssuesSelected = (
   numPotentialIssuesNextYear: number,
   issuesRemainingNextYear: number,
   issueKeyword: string
-):React.ReactNode => {
-    const dateElement = <>{dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}*</>;
-    if (numPotentialIssuesThisYear > issuesRemainingThisYear) {
-      return (
-        <>
-          Exceeded {issueKeyword} limit of{" "}
-          {annualIssueLimit} before {dateElement}{" "}
-          <HolidayAnniversaryDateExplainerModal
-            dateElement={dateElement}
-            issueKeyword={issueKeyword}
-          />
-          <br />
-          Please choose fewer/different days...
-        </>
-      );
-    } else if (numPotentialIssuesNextYear > issuesRemainingNextYear) {
-      return (
-        <>
-          Exceeded {issueKeyword} limit of{" "}
-          {annualIssueLimit} between {dateElement} and{" "}
-          {dateString(dateAddYears(renewalDate, 1), DATE_FNS_LONG_OUTPUT_FORMAT)}{"* "}
-          <HolidayAnniversaryDateExplainerModal
-            dateElement={dateElement}
-            issueKeyword={issueKeyword}
-          />
-          <br />
-          Please choose fewer/different days...
-        </>
-      );
-    } else if (
-      numPotentialIssuesThisYear < 1 &&
-      numPotentialIssuesNextYear < 1
-    ) {
-      return `No ${issueKeyword}s occur during selected period`;
-    }
-    return null; // important don't remove
-}
+): React.ReactNode => {
+  const dateElement = (
+    <>{dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}*</>
+  );
+  if (numPotentialIssuesThisYear > issuesRemainingThisYear) {
+    return (
+      <>
+        Exceeded {issueKeyword} limit of {annualIssueLimit} before {dateElement}{" "}
+        <HolidayAnniversaryDateExplainerModal
+          dateElement={dateElement}
+          issueKeyword={issueKeyword}
+        />
+        <br />
+        Please choose fewer/different days...
+      </>
+    );
+  } else if (numPotentialIssuesNextYear > issuesRemainingNextYear) {
+    return (
+      <>
+        Exceeded {issueKeyword} limit of {annualIssueLimit} between{" "}
+        {dateElement} and{" "}
+        {dateString(dateAddYears(renewalDate, 1), DATE_FNS_LONG_OUTPUT_FORMAT)}
+        {"* "}
+        <HolidayAnniversaryDateExplainerModal
+          dateElement={dateElement}
+          issueKeyword={issueKeyword}
+        />
+        <br />
+        Please choose fewer/different days...
+      </>
+    );
+  } else if (numPotentialIssuesThisYear < 1 && numPotentialIssuesNextYear < 1) {
+    return `No ${issueKeyword}s occur during selected period`;
+  }
+  return null; // important don't remove
+};
 
 export const HolidayDateChooserStateContext = createContext<
   SharedHolidayDateChooserState | {}
@@ -172,14 +177,15 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
   >([]);
   const [
     issuesImpactedPerYearBySelection,
-    setIssuesImpactedPerYearBySelection,
+    setIssuesImpactedPerYearBySelection
   ] = useState<IssuesImpactedPerYear | null>(null);
   const [
     validationErrorMessage,
-    setValidationErrorMessage,
+    setValidationErrorMessage
   ] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
+    console.log("holidayStopsResponse = ", holidayStopsResponse);
     if (
       isHolidayStopsResponse(holidayStopsResponse) &&
       holidayStopsResponse.existingHolidayStopToAmend
@@ -208,76 +214,77 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
     allIssuesImpactedPerYear: IssuesImpactedPerYear,
     annualIssueLimit: number,
     isTestUser: boolean
-  ) => ({ startDate, endDate }:{startDate:Date, endDate:Date}) => {
+  ) => ({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
+    console.log("on change called!!!!!!!!!!!!!!!!");
     setSelectedRange(dateRange(startDate, endDate));
     setIssuesImpactedPerYearBySelection(null);
     setValidationErrorMessage(null);
 
     getPotentialHolidayStopsFetcher(
-          subscriptionName,
-          startDate,
-          endDate,
-          isTestUser
-        )()
-          .then((response) => {
-            const locationHeader = response.headers.get("Location");
-            if (
-              response.status === 401 &&
-              locationHeader &&
-              window !== undefined
-            ) {
-              window.location.replace(locationHeader);
-              return Promise.resolve([]);
-            } else if (response.ok) {
-              return response.json();
-            }
-            return Promise.reject(`${response.status} from holiday-stop-api`);
-          })
-          .then(({ potentials }: PotentialHolidayStopsResponse) => {
+      subscriptionName,
+      startDate,
+      endDate,
+      isTestUser
+    )()
+      .then(response => {
+        const locationHeader = response.headers.get("Location");
+        if (response.status === 401 && locationHeader && window !== undefined) {
+          window.location.replace(locationHeader);
+          return Promise.resolve([]);
+        } else if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`${response.status} from holiday-stop-api`);
+      })
+      .then(({ potentials }: PotentialHolidayStopsResponse) => {
+        const updatePublicationsImpacted: HolidayStopDetail[] = potentials.map(
+          convertRawPotentialHolidayStopDetail
+        );
 
+        const updateIssuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
+          updatePublicationsImpacted,
+          renewalDate
+        );
 
-            const updatePublicationsImpacted:HolidayStopDetail[] = potentials.map(
-              convertRawPotentialHolidayStopDetail
-            );
+        const issuesRemainingThisYear =
+          Math.max(
+            annualIssueLimit,
+            allIssuesImpactedPerYear.issuesThisYear.length
+          ) - combinedIssuesImpactedPerYear.issuesThisYear.length;
 
-            const updateIssuesImpactedPerYearBySelection = calculateIssuesImpactedPerYear(
-              updatePublicationsImpacted,
-              renewalDate
-            );
+        const issuesRemainingNextYear =
+          Math.max(
+            annualIssueLimit,
+            allIssuesImpactedPerYear.issuesNextYear.length
+          ) - combinedIssuesImpactedPerYear.issuesNextYear.length;
 
-            const issuesRemainingThisYear =
-              Math.max(
-                annualIssueLimit,
-                allIssuesImpactedPerYear.issuesThisYear.length
-              ) - combinedIssuesImpactedPerYear.issuesThisYear.length;
-
-            const issuesRemainingNextYear =
-              Math.max(
-                annualIssueLimit,
-                allIssuesImpactedPerYear.issuesNextYear.length
-              ) - combinedIssuesImpactedPerYear.issuesNextYear.length;
-
-            setPublicationsImpacted(updatePublicationsImpacted);
-            setIssuesImpactedPerYearBySelection(updateIssuesImpactedPerYearBySelection);
-            setValidationErrorMessage(validateIssuesSelected(
-              renewalDate,
-              annualIssueLimit,
-              updateIssuesImpactedPerYearBySelection.issuesThisYear.length,
-              issuesRemainingThisYear,
-              updateIssuesImpactedPerYearBySelection.issuesNextYear.length,
-              issuesRemainingNextYear,
-              props.productType.holidayStops.issueKeyword
-            ));
-          })
-          .catch((error) => {
-            setValidationErrorMessage(`Failed to calculate ${props.productType.holidayStops.issueKeyword}s impacted by selected dates. Please try again later...`);
-            trackEvent({
-              eventCategory: "holidayDateChooser",
-              eventAction: "error",
-              eventLabel: error ? error.toString() : undefined,
-            });
-            Sentry.captureException(error);
-          })
+        setPublicationsImpacted(updatePublicationsImpacted);
+        setIssuesImpactedPerYearBySelection(
+          updateIssuesImpactedPerYearBySelection
+        );
+        setValidationErrorMessage(
+          validateIssuesSelected(
+            renewalDate,
+            annualIssueLimit,
+            updateIssuesImpactedPerYearBySelection.issuesThisYear.length,
+            issuesRemainingThisYear,
+            updateIssuesImpactedPerYearBySelection.issuesNextYear.length,
+            issuesRemainingNextYear,
+            props.productType.holidayStops.issueKeyword
+          )
+        );
+      })
+      .catch(error => {
+        setValidationErrorMessage(
+          `Failed to calculate ${props.productType.holidayStops.issueKeyword}s impacted by selected dates. Please try again later...`
+        );
+        trackEvent({
+          eventCategory: "holidayDateChooser",
+          eventAction: "error",
+          eventLabel: error ? error.toString() : undefined
+        });
+        Sentry.captureException(error);
+      });
   };
 
   const holidayStopResponseIsValid = isHolidayStopsResponse(
@@ -297,8 +304,8 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
         holidayStopsResponse.existing
           .filter(isNotWithdrawn)
           .filter(isNotBulkSuspension)
-          .filter((_) => _.id !== existingHolidayStopToAmendId)
-          .flatMap((_) => _.publicationsImpacted),
+          .filter(_ => _.id !== existingHolidayStopToAmendId)
+          .flatMap(_ => _.publicationsImpacted),
         anniversaryDate
       );
 
@@ -306,7 +313,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
         holidayStopsResponse.existing
           .filter(isNotWithdrawn)
           .filter(isNotBulkSuspension)
-          .flatMap((_) => _.publicationsImpacted),
+          .flatMap(_ => _.publicationsImpacted),
         anniversaryDate
       );
 
@@ -319,7 +326,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
               steps={[
                 { title: "Choose dates", isCurrentStep: true },
                 { title: "Review" },
-                { title: "Confirmation" },
+                { title: "Confirmation" }
               ]}
               additionalCSS={css`
                 margin: ${space[5]}px 0 ${space[12]}px;
@@ -359,7 +366,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
               </div>
               <div
                 css={{
-                  [minWidth.mobileLandscape]: { display: "none" },
+                  [minWidth.mobileLandscape]: { display: "none" }
                 }}
               >
                 <HolidayQuestionsModal
@@ -381,10 +388,10 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
               existingDates={holidayStopsResponse.existing
                 .filter(isNotWithdrawn)
                 .filter(
-                  (holidayStopRequest) =>
+                  holidayStopRequest =>
                     holidayStopRequest.id !== existingHolidayStopToAmendId
                 )
-                .map((hsr) => hsr.dateRange)}
+                .map(hsr => hsr.dateRange)}
               amendableDateRange={
                 holidayStopsResponse.existingHolidayStopToAmend &&
                 holidayStopsResponse.existingHolidayStopToAmend.dateRange
@@ -421,15 +428,15 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
               css={{
                 ...buttonBarCss,
                 justifyContent: "flex-end",
-                ...fixedButtonFooterCss,
+                ...fixedButtonFooterCss
               }}
             >
               <div
                 css={{
                   marginRight: "30px",
                   [maxWidth.mobileLandscape]: {
-                    display: "none",
-                  },
+                    display: "none"
+                  }
                 }}
               >
                 <HolidayQuestionsModal
@@ -444,7 +451,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
                   fontWeight: "bold",
                   textDecoration: "underline",
                   fontSize: "16px",
-                  color: neutral[20],
+                  color: neutral[20]
                 }}
                 to=".."
                 replace={true}

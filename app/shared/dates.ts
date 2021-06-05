@@ -53,7 +53,7 @@ export const dateString = (
 export const dateIsBefore = (inputDate: Date, comparisonDate: Date) =>
   inputDate.valueOf() < comparisonDate.valueOf();
 
-export const dateIsSameBefore = (inputDate: Date, comparisonDate: Date) =>
+export const dateIsSameOrBefore = (inputDate: Date, comparisonDate: Date) =>
   inputDate.valueOf() <= comparisonDate.valueOf();
 
 export const dateIsAfter = (inputDate: Date, comparisonDate: Date) =>
@@ -72,17 +72,29 @@ export const dateIsLeapYear = (inputDate: Date) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
-export const dateAddDays = (inputDate:Date, daysModifier:number) => {
+export const dateAddDays = (inputDate: Date, daysModifier: number) => {
   const modifiedDate = new Date(inputDate.valueOf());
   modifiedDate.setDate(modifiedDate.getDate() + daysModifier);
   return modifiedDate;
-}
+};
 
-export const dateAddYears = (inputDate:Date, yearsModifier:number) => {
+export const dateAddMonths = (inputDate: Date, monthsModifier: number) => {
+  const modifiedDate = new Date(inputDate.valueOf());
+  modifiedDate.setMonth(modifiedDate.getMonth() + monthsModifier);
+  return modifiedDate;
+};
+
+export const dateAddYears = (inputDate: Date, yearsModifier: number) => {
   const modifiedDate = new Date(inputDate.valueOf());
   modifiedDate.setFullYear(modifiedDate.getFullYear() + yearsModifier);
   return modifiedDate;
-}
+};
+
+export const numberOfDaysInMonth = (inputDate: Date) =>
+  new Date(inputDate.getFullYear(), inputDate.getMonth() + 1, 0).getDate();
+
+export const getWeekDay = (inputDate: Date) =>
+  new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(inputDate);
 
 export interface DateRange {
   start: Date;
@@ -106,6 +118,19 @@ export const dateRange = (
     end
   };
 };
+
+export interface DateStates {
+  state: string;
+  range: DateRange;
+}
+
+export const isDateBetweenRange = (
+  date: Date,
+  rangeStart: Date,
+  rangeEnd: Date
+) =>
+  date.valueOf() >= rangeStart.valueOf() &&
+  date.valueOf() <= rangeEnd.valueOf();
 
 export const getOldestDate = (dates: Date[]) =>
   dates.reduce((dateA: Date, dateB: Date) =>

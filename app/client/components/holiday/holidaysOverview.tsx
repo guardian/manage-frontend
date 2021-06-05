@@ -3,18 +3,18 @@ import React from "react";
 import {
   DATE_FNS_LONG_OUTPUT_FORMAT,
   dateString,
-  parseDate,
+  parseDate
 } from "../../../shared/dates";
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
   MDA_TEST_USER_HEADER,
   MembersDataApiItemContext,
-  ProductDetail,
+  ProductDetail
 } from "../../../shared/productResponse";
 import {
   ProductTypeWithHolidayStopsFlow,
-  WithProductType,
+  WithProductType
 } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -28,12 +28,12 @@ import { InfoIcon } from "../svgs/infoIcon";
 import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
-  WizardStep,
+  WizardStep
 } from "../wizardRouterAdapter";
 import { CollatedCredits } from "./collatedCredits";
 import {
   creditExplainerSentence,
-  HolidayQuestionsModal,
+  HolidayQuestionsModal
 } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
@@ -43,7 +43,7 @@ import {
   HolidayStopRequest,
   HolidayStopsResponseContext,
   isNotBulkSuspension,
-  isNotWithdrawn,
+  isNotWithdrawn
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
@@ -61,7 +61,7 @@ const OverviewRow = (props: OverviewRowProps) => (
       display: "flex",
       flexWrap: "wrap",
       alignItems: "top",
-      marginBottom: "20px",
+      marginBottom: "20px"
     }}
   >
     <div css={{ flex: "1 1 180px" }}>
@@ -69,7 +69,7 @@ const OverviewRow = (props: OverviewRowProps) => (
     </div>
     <div
       css={{
-        flex: "4 4 350px",
+        flex: "4 4 350px"
       }}
     >
       {props.children}
@@ -82,14 +82,40 @@ const renderHolidayStopsOverview = (
   props: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
-) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
+) => (holidayStopsResponseYo: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDate = parseDate(productDetail.subscription.renewalDate).date;
-
+  const holidayStopsResponse = {
+    ...holidayStopsResponseYo,
+    existing: [
+      {
+        id: "123",
+        subscriptionName: "A-S00102355",
+        publicationsImpacted: [
+          {
+            publicationDate: parseDate("2021-06-15"),
+            estimatedPrice: -2.04,
+            invoiceDate: parseDate("2021-06-20"),
+            isActioned: false
+          }
+        ],
+        mutabilityFlags: {
+          isFullyMutable: false,
+          isEndDateEditable: false
+        },
+        dateRange: {
+          start: new Date("June 15 2021 00:00"),
+          end: new Date("June 15 2021 00:00")
+        }
+      }
+    ]
+  };
+  console.log("existingHolidayStopToAmend = ", existingHolidayStopToAmend);
+  console.log("REMOVE THIS MOCK DATA!!!");
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
     holidayStopsResponse.existing
       .filter(isNotWithdrawn)
       .filter(isNotBulkSuspension)
-      .flatMap((existing) => existing.publicationsImpacted),
+      .flatMap(existing => existing.publicationsImpacted),
     renewalDate
   );
 
@@ -152,7 +178,7 @@ const renderHolidayStopsOverview = (
                 fontSize: "14px",
                 margin: "10px",
                 display: "flex",
-                alignItems: "top",
+                alignItems: "top"
               }}
             >
               <InfoIcon />
@@ -226,8 +252,8 @@ const renderHolidayStopsOverview = (
                   textAlign: "right",
                   marginTop: "10px",
                   [minWidth.phablet]: {
-                    display: "none",
-                  },
+                    display: "none"
+                  }
                 }}
               >
                 {productDetail.subscription.autoRenew && createSuspensionButton}
@@ -239,7 +265,7 @@ const renderHolidayStopsOverview = (
               <CollatedCredits
                 publicationsImpacted={holidayStopsResponse.existing
                   .filter(isNotWithdrawn)
-                  .flatMap((_) => _.publicationsImpacted)}
+                  .flatMap(_ => _.publicationsImpacted)}
                 currency={currency}
               />
             </OverviewRow>
@@ -267,8 +293,8 @@ const renderHolidayStopsOverview = (
           alignItems: "center",
           marginTop: "30px",
           [maxWidth.phablet]: {
-            flexDirection: "column-reverse",
-          },
+            flexDirection: "column-reverse"
+          }
         }}
       >
         <div css={{ marginTop: "10px", alignSelf: "flex-start" }}>
@@ -286,7 +312,7 @@ const renderHolidayStopsOverview = (
       value={{
         ...holidayStopsResponse,
         reload: reloadWhichAlsoClearsAnyExistingHolidayStopToAmend,
-        existingHolidayStopToAmend: existingHolidayStopToAmend || undefined,
+        existingHolidayStopToAmend: existingHolidayStopToAmend || undefined
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
@@ -304,8 +330,8 @@ const createGetHolidayStopsFetcher = (
 ) => () =>
   fetch(`/api/holidays/${subscriptionName}`, {
     headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`,
-    },
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
   });
 
 interface HolidaysOverviewState {
@@ -317,7 +343,7 @@ class HolidaysOverview extends React.Component<
   HolidaysOverviewState
 > {
   public state: HolidaysOverviewState = {
-    existingHolidayStopToAmend: null,
+    existingHolidayStopToAmend: null
   };
 
   public render = () => (
@@ -329,15 +355,15 @@ class HolidaysOverview extends React.Component<
       breadcrumbs={[
         {
           title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link,
+          link: NAV_LINKS.accountOverview.link
         },
         {
           title: "Manage suspensions",
-          currentPage: true,
-        },
+          currentPage: true
+        }
       ]}
     >
-      {(productDetail) => (
+      {productDetail => (
         <MembersDataApiItemContext.Provider value={productDetail}>
           <NavigateFnContext.Provider value={{ navigate: this.props.navigate }}>
             {" "}

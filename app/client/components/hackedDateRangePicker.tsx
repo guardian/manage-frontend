@@ -1,176 +1,287 @@
-import React, {useState} from "react";
-import { dateAddDays, DateRange } from "../../shared/dates";
-import palette from "../colours";
+import { css } from "@emotion/core";
+import { neutral, space } from "@guardian/src-foundations";
+import React, { useState } from "react";
+import {
+  dateAddDays,
+  dateAddMonths,
+  dateIsSameOrAfter,
+  dateIsSameOrBefore,
+  DateRange,
+  DateStates
+} from "../../shared/dates";
 import { maxWidth, minWidth } from "../styles/breakpoints";
-import { sans } from "../styles/fonts";
-import {css} from "@emotion/core";
-const gridBorderCssValue = `1px solid ${palette.neutral["5"]} !important;`;
-
-const iconDayPseudoAfterCss = (dayOfWeek: number) => `
-.DateRangePicker__Week .DateRangePicker__Date:nth-of-type(${dayOfWeek})::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background-color: ${palette.blue.dark};
-  transform: rotate(45deg);
-  top: -7px;
-  left: -7px;
-}
-`;
-
-const classNameForAddingAsterisk = "day-asterisk";
-
-/*
-const afterRenderActions = (props: WrappedDateRangePickerProps) => {
-  emboldenTodaysDate();
-  asteriskDate(props.dateToAsterisk);
-};
-
-class HackedDateRangePicker extends DateRangePicker {
-  constructor(props: Props) {
-    super(props);
-    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
-      // this prevents jumping to the selection when in 'infinite mode' (i.e. loads of vertically stacked cals)
-      // @ts-ignore - required because this function is internal and typescript doesn't know about it
-      super.isStartOrEndVisible = () => true;
-    }
-
-    // this casting is required because this class extends 'DateRangePicker' from a library so the 'props' type is fixed
-    // however, the 'maybeLockedStartDate' prop IS being passed in, so with a cast we can retrieve it without compilation error
-    const lockedStartDate = (this.props as WrappedDateRangePickerProps)
-      .maybeLockedStartDate;
-    if (lockedStartDate) {
-      // overriding https://github.com/onefinestay/react-daterange-picker/blob/c73c9/src/DateRangePicker.jsx#L269-L288
-      // @ts-ignore - required because these functions are internal and typescript doesn't know about them
-      super.onSelectDate = (endDate: Moment) => {
-        // @ts-ignore
-        if (!this.isDateDisabled(endDate) && this.isDateSelectable(endDate)) {
-          // @ts-ignore
-          this.highlightRange(new DateRange(lockedStartDate, endDate));
-          // @ts-ignore
-          this.completeRangeSelection();
-        }
-      };
-    }
-  }
-
-  public componentDidMount(): void {
-    if (super.componentDidMount) {
-      super.componentDidMount();
-    }
-    afterRenderActions(this.props as WrappedDateRangePickerProps);
-    // this prevents jumping to the selection when returning from review stage in 'infinite mode'
-    if (this.props.numberOfCalendars && this.props.numberOfCalendars > 12) {
-      const today = new Date();
-      this.setState({
-        year: today.getFullYear(),
-        month: today.getMonth()
-      });
-    }
-  }
-
-  public componentDidUpdate(
-    prevProps: Readonly<Props<DateRangePicker>>,
-    prevState: Readonly<{}>,
-    snapshot?: any
-  ): void {
-    if (super.componentDidUpdate) {
-      super.componentDidUpdate(prevProps, prevState, snapshot);
-    }
-    afterRenderActions(this.props as WrappedDateRangePickerProps);
-  }
-}
-*/
+import { CalendarTable, CalendarTableDate } from "./holiday/calendarTable";
+import { SelectHeaderInput } from "./holiday/selectHeaderInput";
 
 interface WrappedDateRangePickerProps {
   minimumDate: Date;
-  maximumDate:Date;
+  maximumDate: Date;
   value?: DateRange;
   dateToAsterisk?: Date;
   daysOfWeekToIconify: number[];
   maybeLockedStartDate: Date | null;
-  onChange: (range: {startDate: Date, endDate:Date}) => void;
+  onChange: (range: { startDate: Date; endDate: Date }) => void;
   singleDateRange?: true;
   showLegend: boolean;
   stateDefinitions: any;
-  dateStates: any;
+  dateStates: DateStates[];
   defaultState: string;
   firstOfWeek: number;
 }
 
-
-export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
-  <>
-    <div css={{ [maxWidth.phablet]: { display: "none" }}}>
-      <DateRangePicker numberOfCalendars={2} direction="horizontal" />
-    </div>
-    <div
-      css={{ [minWidth.phablet]: { display: "none" } }}
-      onTouchStartCapture={e => e.stopPropagation()}
-    >
-      <DateRangePicker numberOfCalendars={11} direction="vertical" />
-    </div>
-  </>
-);
-
-
-interface DateRangePickerProps {
-    numberOfCalendars: number;
-    direction: "vertical" | "horizontal";
-}
-const DateRangePicker = (props:DateRangePickerProps) => {
-  const [calendars, setCalendars] = useState<number[]>(Array.from({length: props.numberOfCalendars}, (_, i) => i + 1));
-  return (<div css={css`
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between
-    `}>
-    {calendars.map(calendarMonth => (
-      <div css={css`
-        width: ${props.direction === "horizontal" ? "calc(50% - 12px)" : "100%"};
-        height: 100px;
-        background-color: red;
-        `}>{calendarMonth}</div>
-    ))}
-  </div>);
-};
-
-/*
 export const WrappedDateRangePicker = (props: WrappedDateRangePickerProps) => (
   <>
     <div css={{ [maxWidth.phablet]: { display: "none" } }}>
       <DateRangePicker
-        onChange={item => console.log("date range changed", item)}
-        showSelectionPreview={true}
-        moveRangeOnFirstSelection={false}
-        months={2}
-        ranges={testRange}
+        minimumDate={props.minimumDate}
+        maximumDate={props.maximumDate}
+        daysOfWeekToIconify={props.daysOfWeekToIconify}
+        numberOfVisibleCalendars={2}
         direction="horizontal"
-      />;
-      {
-      <HackedDateRangePicker
-        {...props}
-        numberOfCalendars={2}
-        paginationArrowComponent={CustomArrow}
-        ref={undefined}
+        onChange={props.onChange}
+        dateStates={props.dateStates}
+        {...(props.maybeLockedStartDate && {
+          startDate: props.maybeLockedStartDate
+        })}
       />
-      }
     </div>
     <div
       css={{ [minWidth.phablet]: { display: "none" } }}
       onTouchStartCapture={e => e.stopPropagation()}
     >
-      {
-      <HackedDateRangePicker
-        {...props}
-        numberOfCalendars={13}
-        paginationArrowComponent={() => null}
-        disableNavigation={true}
-        ref={undefined}
+      <DateRangePicker
+        minimumDate={props.minimumDate}
+        maximumDate={props.maximumDate}
+        daysOfWeekToIconify={props.daysOfWeekToIconify}
+        numberOfVisibleCalendars={11}
+        direction="vertical"
+        onChange={props.onChange}
+        dateStates={props.dateStates}
+        {...(props.maybeLockedStartDate && {
+          maybeLockedStartDate: props.maybeLockedStartDate
+        })}
       />
-      }
     </div>
+  </>
 );
-*/
 
+interface DateRangePickerProps {
+  numberOfVisibleCalendars: number;
+  direction: "vertical" | "horizontal";
+  minimumDate: Date;
+  maximumDate: Date;
+  daysOfWeekToIconify: number[];
+  onChange: (range: { startDate: Date; endDate: Date }) => void;
+  dateStates?: DateStates[];
+  maybeLockedStartDate?: Date;
+}
+interface CalendarsState {
+  calendarMonth: Date;
+  minimumDate: Date;
+  maximumDate: Date;
+}
+const DateRangePicker = (props: DateRangePickerProps) => {
+  const startOfMonthOfMinDate = new Date(
+    props.minimumDate.getFullYear(),
+    props.minimumDate.getMonth(),
+    1
+  );
+
+  const monthsBetweenMimAndMax =
+    (props.maximumDate.getFullYear() - props.minimumDate.getFullYear()) * 12 -
+    props.minimumDate.getMonth() +
+    props.maximumDate.getMonth() +
+    1;
+
+  const [calendar, setCalendar] = useState<CalendarsState[]>(
+    Array.from({ length: monthsBetweenMimAndMax }, (_, i) => {
+      const calendarMonth = dateAddMonths(startOfMonthOfMinDate, i);
+      return {
+        calendarMonth,
+        minimumDate: props.minimumDate,
+        maximumDate: props.maximumDate
+      };
+    })
+  );
+
+  const onStartSelectingDates = (selectionStartDate: Date) => {
+    setSelectedStartDate(selectionStartDate);
+  };
+
+  const onSelectingDates = (
+    calendarDates: CalendarTableDate[],
+    currentlySelectedDate: CalendarTableDate
+  ) => {
+    if (selectedStartDate) {
+      const calendarSelectedDates = calendarDates.filter(
+        calendarDate => calendarDate.isSelected
+      );
+      const latestCalendarSelectedDate =
+        calendarSelectedDates[calendarSelectedDates.length - 1].date;
+      const earliestCalendarSelectedDate = calendarSelectedDates[0].date;
+      const additionalSelectedDatesToMark: CalendarTableDate[] = [];
+      // check if currentlySelectedDate day is not adjacent to the start of the end of the selected range, if not we need to fill in the blanks
+      if (
+        currentlySelectedDate.date > dateAddDays(latestCalendarSelectedDate, 1)
+      ) {
+        const from =
+          calendarSelectedDates[calendarSelectedDates.length - 1].date;
+        const to = currentlySelectedDate.date;
+        for (const day = from; day <= to; day.setDate(day.getDate() + 1)) {
+          // is this day already an existing holiday stop?
+          const isDayExistingHolidayStop = props.dateStates?.some(
+            dateState =>
+              day >= dateState.range.start &&
+              day <= dateState.range.end &&
+              dateState.state === "existing"
+          );
+          if (isDayExistingHolidayStop) {
+            break;
+          }
+          additionalSelectedDatesToMark.push({
+            date: new Date(day),
+            isActive:
+              dateIsSameOrAfter(day, props.minimumDate) &&
+              dateIsSameOrBefore(day, props.maximumDate),
+            isDeliveryDay: !!props.daysOfWeekToIconify?.some(
+              iconDay => iconDay === (day.getDay() || 7)
+            ),
+            isSelected: true,
+            isExisting: false
+          });
+        }
+      } else if (
+        currentlySelectedDate.date <
+        dateAddDays(earliestCalendarSelectedDate, -1)
+      ) {
+        const from = calendarSelectedDates[0].date;
+        const to = currentlySelectedDate.date;
+        for (const day = from; day >= to; day.setDate(day.getDate() - 1)) {
+          // is this day already an existing holiday stop?
+          const isDayExistingHolidayStop = props.dateStates?.some(
+            dateState =>
+              day >= dateState.range.start &&
+              day <= dateState.range.end &&
+              dateState.state === "existing"
+          );
+          if (isDayExistingHolidayStop) {
+            break;
+          }
+          additionalSelectedDatesToMark.push({
+            date: new Date(day),
+            isActive:
+              dateIsSameOrAfter(day, props.minimumDate) &&
+              dateIsSameOrBefore(day, props.maximumDate),
+            isDeliveryDay: !!props.daysOfWeekToIconify?.some(
+              iconDay => iconDay === (day.getDay() || 7)
+            ),
+            isSelected: true,
+            isExisting: false
+          });
+        }
+      }
+      setSelectedDates([
+        ...calendarSelectedDates,
+        ...additionalSelectedDatesToMark
+      ]);
+    }
+  };
+
+  const onFinishedSelectingDates = (selectionEndDate: Date) => {
+    setSelectedEndDate(selectionEndDate);
+  };
+
+  const [selectedStartDate, setSelectedStartDate] = useState<Date>();
+  const [selectedEndDate, setSelectedEndDate] = useState<Date>();
+  const [selectedDates, setSelectedDates] = useState<CalendarTableDate[]>([]);
+
+  const [monthsInFocus, setMonthsInFocus] = useState<number[]>([
+    ...Array(props.numberOfVisibleCalendars).keys()
+  ]);
+  const selectableMonths = [...new Array(monthsBetweenMimAndMax)].map(
+    (_, monthIndex) => {
+      const month = dateAddMonths(startOfMonthOfMinDate, monthIndex);
+      return `${month.toLocaleString("default", {
+        month: "long"
+      })} ${month.getFullYear()}`;
+    }
+  );
+
+  return (
+    <div
+      css={css`
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      `}
+    >
+      {monthsInFocus.map((focussedMonthIndex, focussedCalendarMonthIndex) => (
+        <div
+          css={css`
+            width: ${props.direction === "horizontal"
+              ? `calc(50% - ${space[5] / 2}px)`
+              : "100%"};
+          `}
+          key={`calendar${focussedCalendarMonthIndex}`}
+        >
+          <div
+            css={css`
+              display: flex;
+              justify-content: center;
+              border: 1px solid ${neutral[86]};
+              border-bottom: none;
+              padding: ${space[2]}px 0 ${space[1]}px;
+            `}
+          >
+            <SelectHeaderInput
+              options={selectableMonths}
+              preSelectedOption={`${calendar[
+                focussedMonthIndex
+              ].calendarMonth.toLocaleString("default", {
+                month: "long"
+              })} ${calendar[focussedMonthIndex].calendarMonth.getFullYear()}`}
+              onChangeHandler={((whichCalendar: number) => (
+                e: React.ChangeEvent<HTMLSelectElement>
+              ) => {
+                const newMonthIndex = e.target.selectedIndex;
+
+                let monthOffset = 0;
+                if (whichCalendar > 0) {
+                  monthOffset =
+                    newMonthIndex < whichCalendar
+                      ? whichCalendar - newMonthIndex
+                      : -whichCalendar;
+                } else if (
+                  newMonthIndex >
+                  e.target.options.length - props.numberOfVisibleCalendars
+                ) {
+                  monthOffset = -(e.target.options.length - newMonthIndex);
+                }
+
+                const newFocussedMonths = Array.from(
+                  { length: props.numberOfVisibleCalendars },
+                  (_, i) => i + newMonthIndex + monthOffset
+                );
+                setMonthsInFocus(newFocussedMonths);
+              })(focussedCalendarMonthIndex)}
+            />
+          </div>
+          <CalendarTable
+            key={`${monthsInFocus.toString()}-${focussedCalendarMonthIndex}`}
+            selectedMonth={calendar[focussedMonthIndex].calendarMonth}
+            daysOfWeekToIconify={props.daysOfWeekToIconify}
+            minimumDate={props.minimumDate}
+            maximumDate={props.maximumDate}
+            dateStates={props.dateStates}
+            startSelectingDatesHandler={onStartSelectingDates}
+            upOnHighSelectionStartDate={selectedStartDate}
+            finishedSelectingDatesHandler={onFinishedSelectingDates}
+            upOnHighSelectionFinishedDate={selectedEndDate}
+            selectingDatesHandler={onSelectingDates}
+            upOnHighSelectingDates={selectedDates}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};

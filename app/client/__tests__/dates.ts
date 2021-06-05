@@ -1,12 +1,12 @@
 import {
   DATE_FNS_LONG_OUTPUT_FORMAT,
-  dateIsLeapYear,
-  getOldestDate,
-  parseDate,
+  dateAddDays,
   dateIsBefore,
+  dateIsLeapYear,
   dateIsSame,
   dateIsSameOrAfter,
-  dateAddDays,
+  getOldestDate,
+  parseDate
 } from "../../shared/dates";
 
 // formatting date-fns strings documentation here:
@@ -63,11 +63,9 @@ describe("dateIsLeapYear", () => {
       new Date(2036, 2),
       new Date(2040, 2),
       new Date(2228, 2),
-      new Date(2636, 2),
+      new Date(2636, 2)
     ];
-    expect(
-      confirmedLeapYears.every((date) => dateIsLeapYear(date))
-    ).toBeTruthy();
+    expect(confirmedLeapYears.every(date => dateIsLeapYear(date))).toBeTruthy();
   });
   it("returns false for non-leap years in the past and future", () => {
     const confirmedNONLeapYears = [
@@ -84,9 +82,9 @@ describe("dateIsLeapYear", () => {
       new Date(2037, 2),
       new Date(2041, 2),
       new Date(2229, 2),
-      new Date(2637, 2),
+      new Date(2637, 2)
     ];
-    const result = confirmedNONLeapYears.every((date) => !dateIsLeapYear(date));
+    const result = confirmedNONLeapYears.every(date => !dateIsLeapYear(date));
     expect(result).toBeTruthy();
   });
 });
@@ -113,8 +111,8 @@ describe("dateIsSame", () => {
     expect(dateIsSame(new Date(), new Date())).toBeTruthy();
   });
   it("returns false if the 2 dates do not match", () => {
-    expect(dateIsSame(new Date(), new Date(1969, 6, 16))).toBeFalsy()
-  })
+    expect(dateIsSame(new Date(), new Date(1969, 6, 16))).toBeFalsy();
+  });
 });
 
 describe("dateIsSameOrAfter", () => {
@@ -136,10 +134,14 @@ describe("dateIsSameOrAfter", () => {
 describe("dateAddDays", () => {
   it("returns modified date with the additional days subtracted from it", () => {
     const inputDate = new Date(1985, 9, 26);
-    expect(dateAddDays(inputDate, -10941).toLocaleDateString()).toEqual("11/12/1955");
+    expect(dateAddDays(inputDate, -10941).toLocaleDateString()).toEqual(
+      "11/12/1955"
+    );
   });
   it("returns modified date with the additional days added to it", () => {
     const inputDate = new Date(1985, 9, 26);
-    expect(dateAddDays(inputDate, 10952).toLocaleDateString()).toEqual("10/21/2015");
+    expect(dateAddDays(inputDate, 10952).toLocaleDateString()).toEqual(
+      "10/21/2015"
+    );
   });
-})
+});
