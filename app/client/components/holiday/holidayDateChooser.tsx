@@ -185,7 +185,6 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
   ] = useState<React.ReactNode | null>(null);
 
   useEffect(() => {
-    console.log("holidayStopsResponse = ", holidayStopsResponse);
     if (
       isHolidayStopsResponse(holidayStopsResponse) &&
       holidayStopsResponse.existingHolidayStopToAmend
@@ -215,7 +214,6 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
     annualIssueLimit: number,
     isTestUser: boolean
   ) => ({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
-    console.log("on change called!!!!!!!!!!!!!!!!");
     setSelectedRange(dateRange(startDate, endDate));
     setIssuesImpactedPerYearBySelection(null);
     setValidationErrorMessage(null);

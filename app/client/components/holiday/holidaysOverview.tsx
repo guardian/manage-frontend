@@ -82,35 +82,8 @@ const renderHolidayStopsOverview = (
   props: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
-) => (holidayStopsResponseYo: GetHolidayStopsResponse, reload: ReFetch) => {
+) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
   const renewalDate = parseDate(productDetail.subscription.renewalDate).date;
-  const holidayStopsResponse = {
-    ...holidayStopsResponseYo,
-    existing: [
-      {
-        id: "123",
-        subscriptionName: "A-S00102355",
-        publicationsImpacted: [
-          {
-            publicationDate: parseDate("2021-06-15"),
-            estimatedPrice: -2.04,
-            invoiceDate: parseDate("2021-06-20"),
-            isActioned: false
-          }
-        ],
-        mutabilityFlags: {
-          isFullyMutable: false,
-          isEndDateEditable: false
-        },
-        dateRange: {
-          start: new Date("June 15 2021 00:00"),
-          end: new Date("June 15 2021 00:00")
-        }
-      }
-    ]
-  };
-  console.log("existingHolidayStopToAmend = ", existingHolidayStopToAmend);
-  console.log("REMOVE THIS MOCK DATA!!!");
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
     holidayStopsResponse.existing
       .filter(isNotWithdrawn)

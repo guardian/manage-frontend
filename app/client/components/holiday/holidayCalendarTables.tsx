@@ -5,7 +5,7 @@ import {
   SvgArrowLeftStraight,
   SvgArrowRightStraight
 } from "@guardian/src-icons";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   dateAddDays,
   dateAddMonths,
@@ -15,6 +15,10 @@ import {
 } from "../../../shared/dates";
 import { minWidth } from "../../styles/breakpoints";
 import { HolidayCalendarTable } from "./holidayCalendarTable";
+import {
+  HolidayDateChooserStateContext,
+  SharedHolidayDateChooserState
+} from "./holidayDateChooser";
 
 interface HolidayCalendarTablesProps {
   minimumDate: Date;
@@ -73,6 +77,10 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     }
   `;
 
+  const holidayDateChooserStateContext = useContext(
+    HolidayDateChooserStateContext
+  ) as SharedHolidayDateChooserState;
+
   const returnHolidayDateState = (date: Date): CalendarTableDate => ({
     date,
     isActive:
@@ -83,12 +91,15 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     isDeliveryDay: !!props.daysOfWeekToIconify?.some(
       iconDay => iconDay === (date.getDay() || 7)
     ),
-    isSelected: props.dateStates?.some(
-      dateState =>
-        date >= dateState.range.start &&
-        date <= dateState.range.end &&
-        dateState.state === "amend"
-    ),
+    isSelected: holidayDateChooserStateContext.selectedRange
+      ? date >= holidayDateChooserStateContext.selectedRange.start &&
+        date <= holidayDateChooserStateContext.selectedRange.end
+      : props.dateStates?.some(
+          dateState =>
+            date >= dateState.range.start &&
+            date <= dateState.range.end &&
+            dateState.state === "amend"
+        ),
     isExisting: props.dateStates?.some(
       dateState =>
         date >= dateState.range.start &&

@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  DATE_FNS_LONG_OUTPUT_FORMAT,
-  friendlyLongDateFormat
-} from "../../../shared/dates";
+import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 import { Button, LinkButton } from "../buttons";
