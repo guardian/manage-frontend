@@ -6,6 +6,7 @@ import { CardDisplay } from "./cardDisplay";
 import { DirectDebitDisplay } from "./directDebitDisplay";
 import { NewPaymentPriceAlert, NextPaymentDetails } from "./nextPaymentDetails";
 import { PayPalDisplay } from "./paypalDisplay";
+import { SepaDisplay } from "./sepaDisplay";
 
 interface PaymentDetailsTableProps {
   productDetail: ProductDetail;
@@ -64,6 +65,9 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
                 inErrorState={!!props.productDetail.alertText}
                 {...props.productDetail.subscription.mandate}
               />
+            )}
+            {props.productDetail.subscription.sepaMandate && (
+              <SepaDisplay {...props.productDetail.subscription.sepaMandate} />
             )}
             {props.productDetail.subscription
               .stripePublicKeyForCardAddition && <span>No Payment Method</span>}

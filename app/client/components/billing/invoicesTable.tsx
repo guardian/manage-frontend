@@ -12,13 +12,15 @@ import { Pagination } from "../pagination";
 import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import { PayPalDisplay } from "../payment/paypalDisplay";
+import { SepaDisplay } from "../payment/sepaDisplay";
 import { DownloadIcon } from "../svgs/downloadIcon";
 import { InvoiceTableYearSelect } from "./invoiceTableYearSelect";
 
 const invoicePaymentMethods = {
   CARD: "card",
   DIRECT_DEBIT: "directdebit",
-  PAYPAL: "paypal"
+  PAYPAL: "paypal",
+  SEPA: "sepa"
 };
 
 interface InvoiceInfo extends InvoiceDataApiItem {
@@ -289,11 +291,17 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                             onlyAccountEnding
                           />
                         )}
+                      {paymentMethodLowercase === invoicePaymentMethods.SEPA &&
+                        tableRow.last4 && (
+                          <SepaDisplay accountName="" iban={tableRow.last4} />
+                        )}
                       {paymentMethodLowercase !== invoicePaymentMethods.CARD &&
                         paymentMethodLowercase !==
                           invoicePaymentMethods.PAYPAL &&
                         paymentMethodLowercase !==
-                          invoicePaymentMethods.DIRECT_DEBIT && (
+                          invoicePaymentMethods.DIRECT_DEBIT &&
+                        paymentMethodLowercase !==
+                          invoicePaymentMethods.SEPA && (
                           <span>No Payment Method</span>
                         )}
                     </div>
