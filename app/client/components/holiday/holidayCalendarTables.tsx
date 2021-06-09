@@ -197,7 +197,10 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
         );
       }
     }
-    return day.valueOf() + 42;
+  };
+
+  const dayTouchStart = (day: Date) => {
+    dayMouseEnter(day);
   };
 
   const dayMouseUp = () => {
@@ -271,6 +274,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
           targetMonthStartDate={monthStartDate}
           handleDayMouseDown={dayMouseDown}
           handleDayMouseUp={dayMouseUp}
+          handleTouchStart={dayTouchStart}
           handleDayMouseEnter={dayMouseEnter}
           hideAtDesktop={
             !visableMonths.some(

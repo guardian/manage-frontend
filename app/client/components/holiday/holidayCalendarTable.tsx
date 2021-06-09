@@ -21,6 +21,7 @@ interface HolidayCalendarTableProps {
   targetMonthStartDate: Date;
   handleDayMouseDown: (day: Date) => void;
   handleDayMouseUp: () => void;
+  handleTouchStart: (day: Date) => void;
   handleDayMouseEnter: (day: Date) => void;
   hideAtDesktop: boolean;
   daysOfWeekToIconify?: number[];
@@ -201,7 +202,8 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
               onMouseDown={((targetDate: Date) => () =>
                 props.handleDayMouseDown(targetDate))(date)}
               onMouseUp={() => props.handleDayMouseUp()}
-              onTouchStart={() => true}
+              onTouchStart={((targetDate: Date) => () =>
+                props.handleTouchStart(targetDate))(date)}
               onMouseEnter={((targetDate: Date) => () =>
                 props.handleDayMouseEnter(targetDate))(date)}
             >
