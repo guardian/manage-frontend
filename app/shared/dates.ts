@@ -1,15 +1,11 @@
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 
-export const DATE_INPUT_FORMAT = "YYYY-MM-DD"; // remove!! example: 1969-07-16
 export const DATE_FNS_INPUT_FORMAT = "yyyy-MM-dd"; // example: 1969-07-16
 
 export const DATE_FNS_LONG_OUTPUT_FORMAT = "d MMMM yyyy"; // example: 1 July 2021
 export const DATE_FNS_SHORT_OUTPUT_FORMAT = "d MMM yyyy"; // example: 5 Jan 2019
 export const friendlyLongDateFormat = "D\xa0MMMM\xa0YYYY"; // example: 8 December 1937
-
-// export const momentiseDateStr = (dateStr: string) =>
-//    moment(dateStr, DATE_INPUT_FORMAT);
 
 export const cancellationFormatDate = (cancellationEffectiveDate?: string) => {
   return cancellationEffectiveDate === undefined
