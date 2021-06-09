@@ -12,7 +12,7 @@ export const cancellationFormatDate = (cancellationEffectiveDate?: string) => {
     : parseDate(cancellationEffectiveDate).dateStr();
 };
 
-export interface ParseDate {
+export interface ParsedDate {
   date: Date;
   dateStr: (outputFormat?: string) => string;
   isBefore: (comparisonDate: Date) => boolean;
@@ -24,7 +24,7 @@ export interface ParseDate {
 export const parseDate = (
   inputDateStr?: string,
   dateInputFormat: string = DATE_FNS_INPUT_FORMAT
-): ParseDate => {
+): ParsedDate => {
   const dateObject = inputDateStr
     ? parse(inputDateStr, dateInputFormat, new Date())
     : new Date();

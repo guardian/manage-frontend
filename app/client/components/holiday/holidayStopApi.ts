@@ -7,7 +7,7 @@ import {
   dateString,
   getOldestDate,
   parseDate,
-  ParseDate
+  ParsedDate
 } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
@@ -23,8 +23,8 @@ interface RawHolidayStopDetail extends CommonCreditProperties {
 }
 
 export interface HolidayStopDetail extends CommonCreditProperties {
-  publicationDate: ParseDate;
-  invoiceDate?: ParseDate;
+  publicationDate: ParsedDate;
+  invoiceDate?: ParsedDate;
 }
 
 interface MutabilityFlags {
@@ -66,7 +66,7 @@ export interface MinimalHolidayStopRequest {
   publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
   mutabilityFlags?: MutabilityFlags;
-  withdrawnDate?: ParseDate;
+  withdrawnDate?: ParsedDate;
   bulkSuspensionReason?: string;
 }
 
@@ -124,7 +124,10 @@ export const getPotentialHolidayStopsFetcher = (
   isTestUser: boolean
 ) => () =>
   fetch(
-    `/api/holidays/${subscriptionName}/potential?startDate=${dateString(startDate, DATE_FNS_INPUT_FORMAT)}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
+    `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
+      startDate,
+      DATE_FNS_INPUT_FORMAT
+    )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
     {
       headers: {
         [MDA_TEST_USER_HEADER]: `${isTestUser}`
@@ -211,9 +214,7 @@ export const calculateIssuesImpactedPerYear = (
     issuesThisYear: publicationsImpacted.filter(
       issue =>
         issue.publicationDate.isBefore(anniversaryDate) &&
-        issue.publicationDate.isSameOrAfter(
-          dateAddYears(anniversaryDate, -1)
-        )
+        issue.publicationDate.isSameOrAfter(dateAddYears(anniversaryDate, -1))
     ),
     issuesNextYear: publicationsImpacted.filter(
       issue =>
