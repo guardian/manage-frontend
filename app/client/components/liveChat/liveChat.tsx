@@ -152,10 +152,6 @@ const withLiveChatContainerCss = css`
     color: ${brand[400]};
   }
 
-  .embeddedServiceHelpButton .embeddedServiceIcon::before {
-    content: url("https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/75184/speech-balloon-clipart-xl.png");
-  }
-
   .embeddedServiceSidebarMinimizedDefaultUI .embeddedServiceIcon {
     display: none;
   }
@@ -171,14 +167,6 @@ const withLiveChatContainerCss = css`
     top: 6px;
     margin-right: ${space[1]}px;
   }
-
-  /* .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message::before {
-    visibility: visible;
-    content: "Live Chat";
-    text-indent: 0;
-    display: block;
-    line-height: initial;
-  } */
 
   /* Waiting to chat */
   .embeddedServiceLiveAgentStateWaiting .waitingStateContent {
@@ -200,11 +188,8 @@ const withLiveChatContainerCss = css`
   }
 
   .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
-    align-self: flex-start;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
     padding-top: 0;
+    align-self: flex-start;
   }
 
   .embeddedServiceLiveAgentStateWaiting .loadingBall,
@@ -244,7 +229,7 @@ const withLiveChatContainerCss = css`
   }
 
   .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
-    background: #052962;
+    background: ${brand[400]};
   }
 `;
 
