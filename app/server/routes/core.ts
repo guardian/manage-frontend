@@ -1,6 +1,9 @@
+import { captureMessage } from "@sentry/node";
 import { Request, Response, Router } from "express";
 import { authKeysAreFetchableMemoisedHealthcheck } from "../apiGatewayDiscovery";
+import { s3TextFilePromise } from "../awsIntegration";
 import { conf, Environments } from "../config";
+import { log } from "../log";
 import { withIdentity } from "../middleware/identityMiddleware";
 
 const router = Router();
@@ -40,6 +43,30 @@ router.get("/robots.txt", (_, res: Response) => {
       ? prodAccessList
       : preProdAccessList;
   res.contentType("text/plain").send(accessList);
+});
+
+router.get("/help-centre/sitemap.txt", async (_, res: Response) => {
+  const bucketName = "manage-help-content";
+  const filePath = `${conf.STAGE}/sitemap.txt`;
+  s3TextFilePromise(bucketName, filePath)
+    .then(data => {
+      if (!data) {
+        const errorMessage = `File ${filePath} was empty`;
+        log.error(errorMessage);
+        captureMessage(errorMessage);
+      }
+      const statusCode = data ? 200 : 404;
+      res
+        .status(statusCode)
+        .contentType("text/plain")
+        .send(data || []);
+    })
+    .catch(error => {
+      const errorMessage = `File ${filePath} not found`;
+      log.error(errorMessage, error);
+      captureMessage(errorMessage);
+      res.status(404).send();
+    });
 });
 
 export default router;
