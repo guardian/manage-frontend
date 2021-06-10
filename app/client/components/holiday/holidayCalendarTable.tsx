@@ -44,6 +44,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
       display: ${props.hideAtDesktop ? "none" : "block"};
     }
   `;
+
   const tableHolderCss = css`
     border-left: 1px solid ${neutral[86]};
     border-bottom: 1px solid ${neutral[86]};
