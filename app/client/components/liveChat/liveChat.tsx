@@ -72,7 +72,7 @@ const initESW = (
   //     }
   //   );
 
-  // Initialise live chat API for test environment
+  // Initialise live chat API for DEV1 test sandbox
   liveChatAPI.init(
     "https://gnmtouchpoint--dev1.my.salesforce.com",
     "https://dev1-guardiansurveys.cs88.force.com",
@@ -94,12 +94,6 @@ const initESW = (
 
 const initLiveChat = (targetElement: HTMLElement) => {
   if (!window.embedded_svc) {
-    // adding the custom styles directly to the body to ensure they win over the default styles loaded by the salesforce script
-    // unfortunately the salesforce script doesn't provide a way to specify the ID of the element, so this is used to override styles
-    // const customStyleElement = document.createElement("style");
-    // customStyleElement.innerText = customLiveChatCSS;
-    // document.body.appendChild(customStyleElement);
-
     const s = document.createElement("script");
     s.setAttribute(
       "src",
