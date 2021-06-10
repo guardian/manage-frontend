@@ -1,14 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { brand, neutral, space } from "@guardian/src-foundations";
-import React, {
-  //   createContext,
-  PropsWithChildren,
-  //   useContext,
-  useEffect,
-  useRef
-  //   useState,
-} from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import { sans } from "../../styles/fonts";
 import {
   avatarImg,
@@ -16,13 +9,6 @@ import {
   minimisedChatSpeechBubble,
   prechatBackgroundImg
 } from "./liveChatBase64Images";
-
-// const ShouldStartLiveChatContext = createContext<
-//   (shouldStartChat: boolean) => void
-// >(() => {
-//   // TODO: add a sentry error
-//   console.error("ShouldStartLiveChatContext provider not present");
-// });
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -49,6 +35,7 @@ const initESW = (
   // liveChatAPI.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
   // liveChatAPI.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
   // liveChatAPI.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
   // tslint:disable-next-line:no-object-mutation
   liveChatAPI.settings.enabledFeatures = ["LiveAgent"];
   // tslint:disable-next-line:no-object-mutation
@@ -286,7 +273,6 @@ export const WithLiveChatContainer = ({ children }: PropsWithChildren<{}>) => {
 
     if (
       window.sessionStorage.getItem("liveChat") === "1" &&
-      //   shouldStartChat &&
       liveChatContainerRef.current
     ) {
       initLiveChat(liveChatContainerRef.current);
@@ -294,7 +280,6 @@ export const WithLiveChatContainer = ({ children }: PropsWithChildren<{}>) => {
   }, []);
 
   return (
-    //  <ShouldStartLiveChatContext.Provider value={setShouldStartChat}>
     <>
       {children}
       <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />
@@ -307,7 +292,6 @@ export const StartLiveChatButton = () => {
     window.embedded_svc.bootstrapEmbeddedService();
   }
 
-  //   const setShouldStartChat = useContext(ShouldStartLiveChatContext);
   return (
     <Button priority="secondary" onClick={() => bootstrapChat()}>
       Start live chat
