@@ -3,12 +3,12 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import React, { useEffect } from "react";
-import { initLiveChat } from "../../liveChat";
+import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { StartLiveChatButton } from "../liveChat";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { helpCentreConfig } from "./helpCentreConfig";
@@ -26,25 +26,6 @@ const subtitleStyles = css`
 `;
 
 const HelpCentre = (_: RouteComponentProps) => {
-  useEffect(() => {
-    const queryString = window.location.search.slice(1);
-
-    const liveChatRegex = /liveChat.+?(?=\&|$)/g;
-    const match = queryString.match(liveChatRegex);
-
-    if (match) {
-      const liveChatKeyValueArray = match[0].split("=");
-      window.sessionStorage.setItem(
-        liveChatKeyValueArray[0],
-        liveChatKeyValueArray[1]
-      );
-    }
-
-    if (window.sessionStorage.getItem("liveChat") === "1") {
-      initLiveChat();
-    }
-  }, []);
-
   return (
     <>
       <SectionHeader title="How can we help you?" />
@@ -99,6 +80,7 @@ const HelpCentre = (_: RouteComponentProps) => {
             }
           />
         </div>{" "}
+        <StartLiveChatButton />
       </SectionContent>
     </>
   );

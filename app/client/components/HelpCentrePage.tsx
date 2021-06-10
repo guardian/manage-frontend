@@ -8,6 +8,7 @@ import { CMPBanner } from "./consent/CMPBanner";
 import { PageTitle } from "./helpCentre/pageTitle";
 import { SeoData } from "./helpCentre/seoData";
 import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
+import { WithLiveChatContainer } from "./liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
 
@@ -40,23 +41,25 @@ const HelpCentreRouter = () => {
     <Main>
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
-      <Suspense fallback={<HelpCentrePageSkeleton />}>
-        <Router primary={true} css={{ height: "100%" }}>
-          <HelpCentre path="/help-centre" />
+      <WithLiveChatContainer>
+        <Suspense fallback={<HelpCentrePageSkeleton />}>
+          <Router primary={true} css={{ height: "100%" }}>
+            <HelpCentre path="/help-centre" />
 
-          <HelpCentreArticle path="/help-centre/article/:articleCode" />
-          <HelpCentreTopic path="/help-centre/topic/:topicCode" />
+            <HelpCentreArticle path="/help-centre/article/:articleCode" />
+            <HelpCentreTopic path="/help-centre/topic/:topicCode" />
 
-          <ContactUs path="/help-centre/contact-us" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
+            <ContactUs path="/help-centre/contact-us" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
 
-          {/* otherwise redirect to root instead of having a "not found page" */}
-          <Redirect default from="/*" to="/help-centre" noThrow />
-        </Router>
-      </Suspense>
+            {/* otherwise redirect to root instead of having a "not found page" */}
+            <Redirect default from="/*" to="/help-centre" noThrow />
+          </Router>
+        </Suspense>
+      </WithLiveChatContainer>
     </Main>
   );
 };
