@@ -8,7 +8,7 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
-import { StartLiveChatButton } from "../liveChat";
+import { StartLiveChatButton } from "../liveChat/liveChat";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { helpCentreConfig } from "./helpCentreConfig";

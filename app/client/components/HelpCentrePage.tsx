@@ -8,7 +8,7 @@ import { CMPBanner } from "./consent/CMPBanner";
 import { PageTitle } from "./helpCentre/pageTitle";
 import { SeoData } from "./helpCentre/seoData";
 import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
-import { WithLiveChatContainer } from "./liveChat";
+import { WithLiveChatContainer } from "./liveChat/liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
 

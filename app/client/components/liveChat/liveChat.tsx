@@ -9,7 +9,13 @@ import React, {
   useRef
   //   useState,
 } from "react";
-import { sans } from "../styles/fonts";
+import { sans } from "../../styles/fonts";
+import {
+  avatarImg,
+  chatHeaderIcon,
+  minimisedChatSpeechBubble,
+  prechatBackgroundImg
+} from "./liveChatBase64Images";
 
 // const ShouldStartLiveChatContext = createContext<
 //   (shouldStartChat: boolean) => void
@@ -50,14 +56,10 @@ const initESW = (
 
   // [PLACEHOLDER] Chat images
   // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.avatarImgURL =
-    "https://avatars.githubusercontent.com/u/164318?s=200&v=4"; // recommended size 40x40 pixels
+  liveChatAPI.settings.avatarImgURL = avatarImg; // recommended size 40x40 pixels
   // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.smallCompanyLogoImgURL =
-    "https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/75184/speech-balloon-clipart-xl.png"; // recommended size 36x36 pixels
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.prechatBackgroundImgURL =
-    "https://contilnetnoticias.com.br/wp-content/uploads/2020/06/320x100.png"; // recommended size 320x100 pixels
+  liveChatAPI.settings.prechatBackgroundImgURL = prechatBackgroundImg; // recommended size 320x100 pixels
+  // liveChatAPI.settings.smallCompanyLogoImgURL = ""; // recommended size 36x36 pixels
 
   // Target DOM Element
   // tslint:disable-next-line:no-object-mutation
@@ -127,6 +129,11 @@ const initLiveChat = (targetElement: HTMLElement) => {
 };
 
 const withLiveChatContainerCss = css`
+  /* Container */
+  .embeddedServiceSidebar.layout-docked .dockableContainer {
+    border-radius: 0;
+  }
+
   /* Minimised chat button */
   .embeddedServiceHelpButton .helpButton .uiButton {
     background-color: ${brand[400]};
@@ -136,7 +143,7 @@ const withLiveChatContainerCss = css`
   @media only screen and (min-width: 48em) {
     .embeddedServiceHelpButton .helpButton .uiButton,
     .embeddedServiceSidebarMinimizedDefaultUI {
-      border-radius: 23px;
+      border-radius: 0;
     }
   }
 
@@ -144,30 +151,53 @@ const withLiveChatContainerCss = css`
     outline: 1px solid ${brand[400]};
   }
 
-  .embeddedServiceHelpButton .helpButton,
   .embeddedServiceSidebarMinimizedDefaultUI {
+    box-shadow: none;
+  }
+
+  .embeddedServiceSidebarMinimizedDefaultUI,
+  .embeddedServiceSidebarMinimizedDefaultUI:hover,
+  .embeddedServiceSidebarMinimizedDefaultUI:focus,
+  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer,
+  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:hover,
+  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:focus {
     bottom: ${space[3]}px;
-    border-radius: 23px;
+    border-radius: 0;
+    background: ${neutral[100]};
+    border: 2px solid ${brand[400]};
+  }
+
+  .embeddedServiceSidebarMinimizedDefaultUI .content {
+    color: ${brand[400]};
   }
 
   .embeddedServiceHelpButton .embeddedServiceIcon::before {
-    /* content: url(""); */
+    content: url("https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/75184/speech-balloon-clipart-xl.png");
+  }
+
+  .embeddedServiceSidebarMinimizedDefaultUI .embeddedServiceIcon {
+    display: none;
   }
 
   .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message {
-    visibility: hidden;
-    text-indent: -9999px;
-    line-height: 0;
-    text-decoration: none;
+    margin-bottom: ${space[1]}px;
+    overflow: visible;
   }
 
   .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message::before {
+    content: url(${minimisedChatSpeechBubble});
+    position: relative;
+    top: 6px;
+    margin-right: ${space[1]}px;
+  }
+
+  /* .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message::before {
     visibility: visible;
     content: "Live Chat";
     text-indent: 0;
     display: block;
     line-height: initial;
-  }
+  } */
 
   /* Waiting to chat */
   .embeddedServiceLiveAgentStateWaiting .waitingStateContent {
@@ -184,6 +214,10 @@ const withLiveChatContainerCss = css`
     margin: ${space[5]}px 0;
   }
 
+  .embeddedServiceLiveAgentStateWaiting .waitingGreeting {
+    font-size: 17px;
+  }
+
   .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
     align-self: flex-start;
   }
@@ -192,7 +226,8 @@ const withLiveChatContainerCss = css`
     padding-top: 0;
   }
 
-  .embeddedServiceLiveAgentStateWaiting .loadingBall {
+  .embeddedServiceLiveAgentStateWaiting .loadingBall,
+  .embeddedServiceLoadingBalls.tiny .loadingBall {
     background-color: #c4c4c4;
   }
 
@@ -203,19 +238,23 @@ const withLiveChatContainerCss = css`
 
   /* Chat header */
   h2[embeddedService-chatHeader_chatHeader] {
-    visibility: hidden;
+    overflow: visible;
   }
 
   h2[embeddedService-chatHeader_chatHeader]::before {
-    content: "Live Chat";
-    visibility: visible;
-    font-weight: bold;
-    font-family: ${sans};
+    content: url(${chatHeaderIcon});
+    position: relative;
+    top: ${space[2]}px;
+    margin-right: ${space[2]}px;
   }
 
   /* Chat body */
   .embeddedServiceSidebar .sidebarBody {
     font-family: ${sans};
+  }
+
+  .embeddedServiceSidebarButton:focus {
+    text-decoration: none;
   }
 
   /* Chat messages */
@@ -260,7 +299,6 @@ export const WithLiveChatContainer = ({ children }: PropsWithChildren<{}>) => {
       {children}
       <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />
     </>
-    //  </ShouldStartLiveChatContext.Provider>
   );
 };
 
