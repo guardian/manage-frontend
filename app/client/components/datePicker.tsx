@@ -53,7 +53,7 @@ const legendItems = (
     border-style: solid;
     border-width: 0 14px 14px 14px;
     border-color: transparent transparent ${palette.blue.header} transparent;
-    rotate: -45deg;
+    transform: rotate(-45deg);
   }
   `,
     label: `${issueKeyword} day`

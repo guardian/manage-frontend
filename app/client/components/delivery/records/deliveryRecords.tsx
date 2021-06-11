@@ -110,8 +110,7 @@ export const checkForExistingDeliveryProblem = (
     const recordDateEpoch = parseDate(
       deliveryRecord.deliveryDate
     ).date.valueOf();
-    const now = new Date();
-    const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+    const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
     const fourteenDaysAgoEpoch = dateAddDays(startOfToday, -14).valueOf();
     return (
       deliveryRecord.problemCaseId && recordDateEpoch >= fourteenDaysAgoEpoch

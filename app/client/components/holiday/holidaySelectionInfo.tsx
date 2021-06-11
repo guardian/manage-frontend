@@ -1,10 +1,14 @@
-import {error} from "@guardian/src-foundations/palette";
+import { error } from "@guardian/src-foundations/palette";
 import React from "react";
-import {DATE_FNS_LONG_OUTPUT_FORMAT, DateRange, dateString} from "../../../shared/dates";
-import {ProductTypeWithHolidayStopsFlow} from "../../../shared/productTypes";
-import {maxWidth, queries} from "../../styles/breakpoints";
-import {Spinner} from "../spinner";
-import {HolidayAnniversaryDateExplainerModal} from "./holidayAnniversaryDateExplainerModal";
+import {
+  DATE_FNS_LONG_OUTPUT_FORMAT,
+  DateRange,
+  dateString
+} from "../../../shared/dates";
+import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
+import { maxWidth, queries } from "../../styles/breakpoints";
+import { Spinner } from "../spinner";
+import { HolidayAnniversaryDateExplainerModal } from "./holidayAnniversaryDateExplainerModal";
 import { HolidayStopDetail, IssuesImpactedPerYear } from "./holidayStopApi";
 
 interface HolidaySelectionInfoPros {
@@ -39,16 +43,13 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
         css={{
           color: error["400"],
           fontWeight: "bold",
-          marginTop: "10px",
+          marginTop: "10px"
         }}
       >
         {props.validationErrorMessage}
       </div>
     );
-  } else if (
-    !props.selectedRange ||
-    props.issuesImpactedPerYearBySelection
-  ) {
+  } else if (!props.selectedRange || props.issuesImpactedPerYearBySelection) {
     return (
       <>
         <div
@@ -56,8 +57,8 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
             marginTop: "10px",
             fontSize: "16px",
             [maxWidth.desktop]: {
-              marginRight: "20px",
-            },
+              marginRight: "20px"
+            }
           }}
         >
           Suspending{" "}
@@ -69,11 +70,11 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
         <div
           css={{
             [queries.maxHeight(600)]: {
-              display: "none",
+              display: "none"
             },
             [maxWidth.desktop]: {
-              marginTop: "10px",
-            },
+              marginTop: "10px"
+            }
           }}
         >
           <hr css={{ [maxWidth.desktop]: { display: "none" } }} />
@@ -85,16 +86,16 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
           available to suspend before{" "}
           {anniversaryDateToElement(props.renewalDate)}
           {props.issuesImpactedPerYearBySelection?.issuesNextYear.length && (
-              <>
-                {" "}
-                and{" "}
-                {displayNumberOfIssuesAsText(
-                  issuesRemainingNextYear,
-                  props.productType.holidayStops.issueKeyword
-                )}{" "}
-                available the following year
-              </>
-            )}{" "}
+            <>
+              {" "}
+              and{" "}
+              {displayNumberOfIssuesAsText(
+                issuesRemainingNextYear,
+                props.productType.holidayStops.issueKeyword
+              )}{" "}
+              available the following year
+            </>
+          )}{" "}
           <HolidayAnniversaryDateExplainerModal
             dateElement={anniversaryDateToElement(props.renewalDate)}
             issueKeyword={props.productType.holidayStops.issueKeyword}
@@ -111,16 +112,15 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
   }
 };
 
-
 const displayNumberOfIssuesAsText = (
   numberOfIssues: number,
   issueKeyword: string
 ) => (
-    <strong>
-      {numberOfIssues}&nbsp;{issueKeyword}
-      {numberOfIssues !== 1 ? "s" : ""}
-    </strong>
-  );
+  <strong>
+    {numberOfIssues}&nbsp;{issueKeyword}
+    {numberOfIssues !== 1 ? "s" : ""}
+  </strong>
+);
 
 const anniversaryDateToElement = (renewalDate: Date) => (
   <>{dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}*</>

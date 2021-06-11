@@ -1,5 +1,8 @@
 import { createContext } from "react";
-import {DATE_FNS_LONG_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
+import {
+  DATE_FNS_LONG_OUTPUT_FORMAT,
+  dateString
+} from "../../../../shared/dates";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { flattenEquivalent } from "../../../utils";
 

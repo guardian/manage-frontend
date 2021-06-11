@@ -39,9 +39,15 @@ const days: Array<{ day: string; abbr: string }> = [
 
 export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
   const holderCss = css`
+    & + div {
+      margin-top: ${space[3]}px;
+    }
     ${minWidth.tablet} {
       width: calc(50% - ${space[2]}px);
       display: ${props.hideAtDesktop ? "none" : "block"};
+      & + div {
+        margin-top: 0;
+      }
     }
   `;
 
@@ -104,7 +110,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
           position: absolute;
           top: 0;
           left: -4px;
-          rotate: -45deg;
+          transform: rotate(-45deg);
           opacity: ${isActive ? "1" : "0.5"};
         }
       `

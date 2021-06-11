@@ -5,7 +5,7 @@ import {
   brand,
   neutral,
   success,
-  text,
+  text
 } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import React, { useContext, useEffect, useState } from "react";
@@ -21,7 +21,7 @@ import { TickInCircle } from "../../svgs/tickInCircle";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
-  WizardStep,
+  WizardStep
 } from "../../wizardRouterAdapter";
 import { updateAddressFetcher } from "./deliveryAddressApi";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
@@ -30,7 +30,7 @@ import {
   ContactIdContext,
   convertToDescriptionListData,
   isAddress,
-  NewDeliveryAddressContext,
+  NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 
 const renderConfirmation = (props: RouteableStepProps) => () => (
@@ -46,7 +46,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 
   const [
     showTopCallCentreNumbers,
-    setTopCallCentreNumbersVisibility,
+    setTopCallCentreNumbersVisibility
   ] = useState<boolean>(false);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
             steps={[
               { title: "Update" },
               { title: "Review" },
-              { title: "Confirmation", isCurrentStep: true },
+              { title: "Confirmation", isCurrentStep: true }
             ]}
             additionalCSS={css`
               margin-top: ${space[5]}px;
@@ -222,7 +222,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
                 trackEvent({
                   eventCategory: "delivery_address_update_confirmation",
                   eventAction: "click",
-                  eventLabel: `manage_${props.productType.urlPart}`,
+                  eventLabel: `manage_${props.productType.urlPart}`
                 })
               }
             />
@@ -268,12 +268,15 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
 
   const addressChangeInformationCopy = [
     ...addressChangedInformationContext.map(
-      (element) =>
+      element =>
         `${element.friendlyProductName} subscription (${
           element.subscriptionId
         })${
           element.effectiveDate
-            ? ` as of front cover dated ${dateString(element.effectiveDate, "iiii do MMMM yyyy")}`
+            ? ` as of front cover dated ${dateString(
+                element.effectiveDate,
+                "iiii do MMMM yyyy"
+              )}`
             : ""
         }`
     ),
@@ -281,7 +284,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     `(as displayed on confirmation page at ${dateString(
       new Date(),
       "HH:mm:ss x 'on' do MMMM yyyy"
-    )} )`,
+    )} )`
   ].join("\n");
 
   return addressContext.newDeliveryAddress ? (
@@ -290,7 +293,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
       fetch={updateAddressFetcher(
         {
           ...addressContext.newDeliveryAddress,
-          addressChangeInformation: addressChangeInformationCopy,
+          addressChangeInformation: addressChangeInformationCopy
         },
         contactIdContext
       )}
