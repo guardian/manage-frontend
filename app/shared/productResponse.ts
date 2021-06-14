@@ -83,6 +83,11 @@ export interface DirectDebitDetails {
   sortCode: string;
 }
 
+export interface SepaDetails {
+  accountName: string;
+  iban: string;
+}
+
 export interface SubscriptionPlan {
   name: string | null;
   start?: string;
@@ -148,6 +153,7 @@ export interface Subscription {
   card?: Card;
   payPalEmail?: string;
   mandate?: DirectDebitDetails;
+  sepaMandate?: SepaDetails;
   autoRenew: boolean;
   currentPlans: SubscriptionPlan[];
   futurePlans: SubscriptionPlan[];
