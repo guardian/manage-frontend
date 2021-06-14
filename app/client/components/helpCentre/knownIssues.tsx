@@ -114,22 +114,26 @@ export const KnownIssues = () => {
   `;
 
   return (
-    <div css={containerCss}>
-      {issuesData.map((issue, index) => (
-        <div key={`issue${index}`} css={issuesContainerCss}>
-          <div css={divCss}>
-            <i css={iconCss}>
-              <ErrorIcon />
-            </i>
-            <h4 css={h4Css}>{issue.message}</h4>
-            {issue.link && (
-              <a css={aCss} href={issue.link} target="_blank">
-                Click here for more information
-              </a>
-            )}
-          </div>
+    <>
+      {!!issuesData.length && (
+        <div css={containerCss}>
+          {issuesData.map((issue, index) => (
+            <div key={`issue${index}`} css={issuesContainerCss}>
+              <div css={divCss}>
+                <i css={iconCss}>
+                  <ErrorIcon />
+                </i>
+                <h4 css={h4Css}>{issue.message}</h4>
+                {issue.link && (
+                  <a css={aCss} href={issue.link} target="_blank">
+                    Click here for more information
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 };
