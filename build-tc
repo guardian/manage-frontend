@@ -33,6 +33,4 @@ yarn bundle
 
 # push to riffraff
 
-export TEAMCITY_BRANCH=${TEAMCITY_BRANCH/\/merge/PR merge} # workaround for .split("/").slice(-1)[0] in 'node-riffraff-artefact'
-
-yarn riffraff
+yarn node-riffraff-artifact
