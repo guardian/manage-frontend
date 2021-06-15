@@ -1,8 +1,4 @@
-import {
-  DATE_FNS_INPUT_FORMAT,
-  dateAddDays,
-  dateString
-} from "../../../../../../shared/dates";
+import moment from "moment";
 import { checkForExistingDeliveryProblem } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordDetail } from "../../../../../components/delivery/records/deliveryRecordsApi";
 
@@ -15,17 +11,16 @@ describe("delivery records unit tests", () => {
     addressCountry: "addressCountry",
     addressPostcode: "addressPostcode",
     hasHolidayStop: false,
-    deliveryDate: dateString(new Date(), DATE_FNS_INPUT_FORMAT)
+    deliveryDate: moment().format("D MMM YYYY")
   };
 
   test("checkForExistingDeliveryProblem returns true if ", () => {
     const deliverRecords = [
       {
         ...baseMockDeliveryRecord,
-        deliveryDate: dateString(
-          dateAddDays(new Date(), -7),
-          DATE_FNS_INPUT_FORMAT
-        ),
+        deliveryDate: moment()
+          .subtract(7, "d")
+          .format("D MMM YYYY"),
         problemCaseId: "123"
       }
     ];

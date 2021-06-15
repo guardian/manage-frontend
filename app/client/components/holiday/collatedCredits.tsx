@@ -1,5 +1,5 @@
 import React from "react";
-import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
+import { friendlyLongDateFormat } from "../../../shared/dates";
 import { HolidayStopDetail } from "./holidayStopApi";
 
 interface CollatedCreditByInvoiceDate {
@@ -12,12 +12,12 @@ const reduceCreditCallback = (
 ) => {
   const credit = currentValue.actualPrice || currentValue.estimatedPrice;
   if (accumulator && currentValue.invoiceDate && credit) {
-    const invoiceDateAsString = currentValue.invoiceDate.dateStr(
-      DATE_FNS_LONG_OUTPUT_FORMAT
+    const invoiceDateAsString = currentValue.invoiceDate.format(
+      friendlyLongDateFormat
     );
     return {
       ...accumulator,
-      [invoiceDateAsString]: credit + (accumulator[invoiceDateAsString] || 0),
+      [invoiceDateAsString]: credit + (accumulator[invoiceDateAsString] || 0)
     };
   }
   return null; // if we don't have credits and dates for EVERY entry we shouldn't show anything

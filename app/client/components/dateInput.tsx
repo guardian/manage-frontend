@@ -1,4 +1,5 @@
 import { AppearanceProperty, TextAlignProperty } from "csstype";
+import { Moment } from "moment";
 import React from "react";
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
@@ -27,15 +28,11 @@ const dividerCss = {
   margin: 0
 };
 
-const adjustZeroIndexedMonth = (date: Date) => {
-  const modifiedDate = new Date(date.valueOf());
-  modifiedDate.setMonth(modifiedDate.getMonth() + 1);
-  return modifiedDate;
-}
+const adjustZeroIndexedMonth = (date: Moment) => date.month() + 1;
 
 interface DateInputProps {
-  selectedDate?: Date;
-  defaultDate: Date;
+  selectedDate?: Moment;
+  defaultDate: Moment;
   labelText: string;
   disabled?: boolean;
   // onChange: (newValue: DateInputState) => void; // TODO: UNCOMMENT WHEN INPUT ACTIVATED
@@ -50,9 +47,9 @@ interface DateInputState {
 
 export class DateInput extends React.Component<DateInputProps, DateInputState> {
   public state: DateInputState = {
-    day: this.props.defaultDate.getDate(),
-    month: adjustZeroIndexedMonth(this.props.defaultDate).getMonth(),
-    year: this.props.defaultDate.getFullYear(),
+    day: this.props.defaultDate.date(),
+    month: adjustZeroIndexedMonth(this.props.defaultDate),
+    year: this.props.defaultDate.year(),
     dateVisible: false
   };
 
@@ -63,9 +60,10 @@ export class DateInput extends React.Component<DateInputProps, DateInputState> {
       prevProps.selectedDate !== this.props.selectedDate
     ) {
       this.setState({
-        day: this.props.selectedDate.getDate(),
-        month: adjustZeroIndexedMonth(this.props.selectedDate).getMonth(),
-        year: this.props.selectedDate.getFullYear(),
+        day: this.props.selectedDate.date(),
+        month: adjustZeroIndexedMonth(this.props.selectedDate),
+        // month: this.props.selectedDate.month(),
+        year: this.props.selectedDate.year(),
         dateVisible: true
       });
     }

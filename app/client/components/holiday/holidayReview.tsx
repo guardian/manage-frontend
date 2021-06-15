@@ -1,12 +1,9 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Link, navigate, NavigateFn } from "@reach/router";
+import { DateRange } from "moment-range";
 import React from "react";
-import {
-  DATE_FNS_INPUT_FORMAT,
-  DateRange,
-  dateString
-} from "../../../shared/dates";
+import { DATE_INPUT_FORMAT } from "../../../shared/dates";
 import {
   isProduct,
   MDA_TEST_USER_HEADER,
@@ -66,8 +63,8 @@ const getPerformCreateOrAmendFetcher = (
       method: existingHolidayStopToAmend ? "PATCH" : "POST",
       mode: "same-origin",
       body: JSON.stringify({
-        startDate: dateString(selectedRange.start, DATE_FNS_INPUT_FORMAT),
-        endDate: dateString(selectedRange.end, DATE_FNS_INPUT_FORMAT),
+        startDate: selectedRange.start.format(DATE_INPUT_FORMAT),
+        endDate: selectedRange.end.format(DATE_INPUT_FORMAT),
         subscriptionName
       }),
       headers: {

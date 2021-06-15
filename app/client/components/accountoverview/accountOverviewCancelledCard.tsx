@@ -3,7 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
-import { parseDate } from "../../../shared/dates";
+import { formatDateStr } from "../../../shared/dates";
 import {
   CancelledProductDetail,
   isGift
@@ -232,14 +232,14 @@ export const AccountOverviewCancelledCard = (
                 {shouldShowJoinDateNotStartDate ? "Join" : "Start"} date
               </li>
               <li css={valueCss}>
-                {parseDate(props.product.subscription.start).dateStr()}
+                {formatDateStr(props.product.subscription.start)}
               </li>
             </ul>
           )}
           <ul css={keyValuePairCss}>
             <li css={keyCss}>End date</li>
             <li css={valueCss}>
-              {parseDate(props.product.subscription.end).dateStr()}
+              {formatDateStr(props.product.subscription.end)}
             </li>
           </ul>
         </div>

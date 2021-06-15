@@ -4,7 +4,7 @@ import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
 import React from "react";
-import { parseDate } from "../../../shared/dates";
+import { formatDateStr } from "../../../shared/dates";
 import {
   getMainPlan,
   InvoiceDataApiItem,
@@ -179,9 +179,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                           >
                             {cancelledCopy}{" "}
                             <strong>
-                              {parseDate(
-                                productDetail.subscription.end
-                              ).dateStr()}
+                              {formatDateStr(productDetail.subscription.end)}
                             </strong>
                           </span>
                           .
