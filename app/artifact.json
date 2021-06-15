@@ -10,7 +10,7 @@
     {
       "action": "manage-frontend",
       "path": "dist",
-      "compress": "tar"
+      "compress": "zip"
     }
   ]
 }

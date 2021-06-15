@@ -95,7 +95,7 @@ Resources:
       ImageId: !Ref AMI
       SecurityGroups:
         - !Ref InstanceSecurityGroup
-        - !Ref WazuhSecurityGroup 
+        - !Ref WazuhSecurityGroup
       InstanceType: !FindInMap [StageVariables, !Ref Stage, InstanceType]
       IamInstanceProfile: !Ref InstanceProfile
       AssociatePublicIpAddress: false
@@ -105,9 +105,9 @@ Resources:
             #!/bin/bash -ev
 
             # get runnable tar from S3
-            aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/manage-frontend.tgz /tmp
+            aws --region ${AWS::Region} s3 cp s3://membership-dist/${Stack}/${Stage}/${App}/manage-frontend.zip /tmp
             mkdir /etc/gu
-            tar -xvzf /tmp/manage-frontend.tgz --directory /etc/gu/
+            unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
 
             # add user
             groupadd manage-frontend
@@ -229,15 +229,15 @@ Resources:
       PolicyName: describe-ec2-policy
       PolicyDocument:
         Statement:
-        - Effect: Allow
-          Resource: "*"
-          Action:
-          - ec2:DescribeTags
-          - ec2:DescribeInstances
-          - autoscaling:DescribeAutoScalingGroups
-          - autoscaling:DescribeAutoScalingInstances
+          - Effect: Allow
+            Resource: "*"
+            Action:
+              - ec2:DescribeTags
+              - ec2:DescribeInstances
+              - autoscaling:DescribeAutoScalingGroups
+              - autoscaling:DescribeAutoScalingInstances
       Roles:
-      - !Ref AppRole
+        - !Ref AppRole
 
   ReadFromDistBucketPolicy:
     Type: AWS::IAM::Policy
@@ -245,13 +245,13 @@ Resources:
       PolicyName: read-from-dist-bucket-policy
       PolicyDocument:
         Statement:
-        - Effect: Allow
-          Action: s3:GetObject
-          Resource:
-          - arn:aws:s3::*:membership-dist/*
+          - Effect: Allow
+            Action: s3:GetObject
+            Resource:
+              - arn:aws:s3::*:membership-dist/*
       Roles:
-      - !Ref AppRole
-        
+        - !Ref AppRole
+
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
@@ -353,10 +353,10 @@ Resources:
       VpcId:
         Ref: VpcId
       SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: 1514
-        ToPort: 1515
-        CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 1514
+          ToPort: 1515
+          CidrIp: 0.0.0.0/0
 
   ManageFrontendLogGroup:
     Type: "AWS::Logs::LogGroup"
