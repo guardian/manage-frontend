@@ -20,6 +20,7 @@ import {
   NewPaymentPriceAlert
 } from "../payment/nextPaymentDetails";
 import { PayPalDisplay } from "../payment/paypalDisplay";
+import { SepaDisplay } from "../payment/sepaDisplay";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { SixForSixExplainerIfApplicable } from "./sixForSixExplainer";
@@ -383,6 +384,14 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   {props.productDetail.subscription.payPalEmail && (
                     <PayPalDisplay
                       payPalId={props.productDetail.subscription.payPalEmail}
+                    />
+                  )}
+                  {props.productDetail.subscription.sepaMandate && (
+                    <SepaDisplay
+                      accountName={
+                        props.productDetail.subscription.sepaMandate.accountName
+                      }
+                      iban={props.productDetail.subscription.sepaMandate.iban}
                     />
                   )}
                   {props.productDetail.subscription.mandate && (

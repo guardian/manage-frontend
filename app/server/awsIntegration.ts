@@ -99,6 +99,25 @@ export const s3FilePromise = <ConfigInterface>(
     );
   })();
 
+export const s3TextFilePromise = (
+  bucket: string,
+  fileKey: string
+): Promise<string | undefined> =>
+  (async () => {
+    const filePath: GetObjectRequest = {
+      Bucket: bucket,
+      Key: fileKey
+    };
+    const s3PromiseResult = await S3.getObject(filePath).promise();
+    if (s3PromiseResult.Body && s3PromiseResult.ContentType === "text/plain") {
+      return s3PromiseResult.Body.toString();
+    }
+    handleAwsRelatedError(
+      `S3 error fetching ${fileKey} in '${bucket}'`,
+      s3PromiseResult
+    );
+  })();
+
 interface MetricDimensions {
   [name: string]: string;
 }
