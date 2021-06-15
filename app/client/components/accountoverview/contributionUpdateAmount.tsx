@@ -3,7 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { capitalize } from "lodash";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { formatDateStr } from "../../../shared/dates";
+import { parseDate } from "../../../shared/dates";
 import {
   augmentInterval,
   PaidSubscriptionPlan
@@ -56,9 +56,9 @@ export const ContributionUpdateAmount = (
       {status === Status.CONFIRMED && (
         <SuccessMessage
           message={`We have successfully updated the amount of your contribution. ${props.nextPaymentDate &&
-            `This amount will be taken on ${formatDateStr(
+            `This amount will be taken on ${parseDate(
               props.nextPaymentDate
-            )}. `}Thank you for supporting the Guardian.`}
+            ).dateStr()}. `}Thank you for supporting the Guardian.`}
           additionalCss={css`
             margin-bottom: ${space[5]}px;
           `}

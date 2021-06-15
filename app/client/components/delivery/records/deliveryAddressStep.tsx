@@ -5,7 +5,6 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
-import moment from "moment";
 import React, {
   ChangeEvent,
   Dispatch,
@@ -14,6 +13,7 @@ import React, {
   useContext,
   useState
 } from "react";
+import { dateString } from "../../../../shared/dates";
 import {
   DeliveryAddress,
   isProduct,
@@ -138,15 +138,17 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               element.subscriptionId
             })${
               element.effectiveDate
-                ? ` as of front cover dated ${element.effectiveDate.format(
-                    "dddd Do MMMM YYYY"
+                ? ` as of front cover dated ${dateString(
+                    element.effectiveDate,
+                    "EEEE do MMMM yyyy"
                   )}`
                 : ""
             }`
         ),
         "",
-        `(as displayed on confirmation page at ${moment().format(
-          "H:mm:ss zz [on] Do MMMM YYYY"
+        `(as displayed on confirmation page at ${dateString(
+          new Date(),
+          "HH:mm:ss x 'on' do MMMM yyyy"
         )})`
       ].join("\n")
     );
