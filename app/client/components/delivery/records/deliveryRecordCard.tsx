@@ -3,8 +3,9 @@ import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
+import moment from "moment";
 import React, { FormEvent } from "react";
-import { dateIsAfter, parseDate } from "../../../../shared/dates";
+import { formatDateStr } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { DeliveryRecordInstructions } from "./deliveryRecordInstructions";
@@ -134,7 +135,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             ${ddCss}
           `}
         >
-          {parseDate(props.deliveryRecord.deliveryDate).dateStr()}
+          {formatDateStr(props.deliveryRecord.deliveryDate)}
         </dd>
       </div>
       <div
@@ -202,9 +203,9 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
             isChangedDeliveryInstruction={
               !!props.deliveryRecord.isChangedDeliveryInstruction
             }
-            isFutureRecord={dateIsAfter(
-              parseDate(props.deliveryRecord.deliveryDate).date,
-              new Date(new Date().setHours(23, 59, 59, 999))
+            isFutureRecord={moment(props.deliveryRecord.deliveryDate).isAfter(
+              moment(),
+              "day"
             )}
             deliveryProblem={
               (props.deliveryRecord.problemCaseId &&
@@ -251,9 +252,9 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
                       display: inline-block;
                     }
                   `}
-                >{`off your ${parseDate(
+                >{`off your ${formatDateStr(
                   props.deliveryRecord.credit.invoiceDate
-                ).dateStr()} payment`}</p>
+                )} payment`}</p>
               )}
             </dd>
           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { parseDate } from "../../shared/dates";
+import { formatDateStr } from "../../shared/dates";
 import { ProductDetail } from "../../shared/productResponse";
 import { GroupedProductType } from "../../shared/productTypes";
 import { ProductDescriptionListTable } from "./productDescriptionListTable";
@@ -32,14 +32,14 @@ export const BasicProductInfoTable = (props: BasicProductInfoTableProps) => {
           ? [
               {
                 title: "Join date",
-                value: parseDate(props.productDetail.joinDate).dateStr()
+                value: formatDateStr(props.productDetail.joinDate)
               }
             ]
           : [
               {
                 title: "Start date",
                 value: props.productDetail.subscription.start
-                  ? parseDate(props.productDetail.subscription.start).dateStr()
+                  ? formatDateStr(props.productDetail.subscription.start)
                   : "-"
               }
             ])

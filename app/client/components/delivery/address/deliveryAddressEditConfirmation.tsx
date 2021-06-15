@@ -8,8 +8,8 @@ import {
   text
 } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
+import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
-import { dateString } from "../../../../shared/dates";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
 import AsyncLoader from "../../asyncLoader";
@@ -273,18 +273,16 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
           element.subscriptionId
         })${
           element.effectiveDate
-            ? ` as of front cover dated ${dateString(
-                element.effectiveDate,
-                "iiii do MMMM yyyy"
+            ? ` as of front cover dated ${element.effectiveDate.format(
+                "dddd Do MMMM YYYY"
               )}`
             : ""
         }`
     ),
     "",
-    `(as displayed on confirmation page at ${dateString(
-      new Date(),
-      "HH:mm:ss x 'on' do MMMM yyyy"
-    )} )`
+    `(as displayed on confirmation page at ${moment().format(
+      "H:mm:ss zz [on] Do MMMM YYYY"
+    )})`
   ].join("\n");
 
   return addressContext.newDeliveryAddress ? (

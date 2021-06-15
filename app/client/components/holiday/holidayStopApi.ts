@@ -1,14 +1,7 @@
+import moment, { Moment } from "moment";
+import { DateRange } from "moment-range";
 import React from "react";
-import {
-  DATE_FNS_INPUT_FORMAT,
-  dateAddYears,
-  DateRange,
-  dateRange,
-  dateString,
-  getOldestDate,
-  parseDate,
-  ParsedDate
-} from "../../../shared/dates";
+import { DATE_INPUT_FORMAT, momentiseDateStr } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 
@@ -23,8 +16,8 @@ interface RawHolidayStopDetail extends CommonCreditProperties {
 }
 
 export interface HolidayStopDetail extends CommonCreditProperties {
-  publicationDate: ParsedDate;
-  invoiceDate?: ParsedDate;
+  publicationDate: Moment;
+  invoiceDate?: Moment;
 }
 
 interface MutabilityFlags {
@@ -66,7 +59,7 @@ export interface MinimalHolidayStopRequest {
   publicationsImpacted: HolidayStopDetail[];
   dateRange: DateRange;
   mutabilityFlags?: MutabilityFlags;
-  withdrawnDate?: ParsedDate;
+  withdrawnDate?: Moment;
   bulkSuspensionReason?: string;
 }
 
@@ -78,7 +71,7 @@ export interface HolidayStopRequest extends MinimalHolidayStopRequest {
 
 export interface GetHolidayStopsResponse {
   productSpecifics: {
-    firstAvailableDate: Date;
+    firstAvailableDate: Moment;
     issueDaysOfWeek: number[];
   };
   annualIssueLimit: number;
@@ -104,8 +97,8 @@ export const convertRawPotentialHolidayStopDetail = (
   raw: RawPotentialHolidayStopDetail
 ) => ({
   estimatedPrice: raw.credit,
-  invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
-  publicationDate: parseDate(raw.publicationDate)
+  invoiceDate: raw.invoiceDate ? momentiseDateStr(raw.invoiceDate) : undefined,
+  publicationDate: momentiseDateStr(raw.publicationDate)
 });
 
 export class GetHolidayStopsAsyncLoader extends AsyncLoader<
@@ -119,15 +112,14 @@ export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
 
 export const getPotentialHolidayStopsFetcher = (
   subscriptionName: string,
-  startDate: Date,
-  endDate: Date,
+  startDate: Moment,
+  endDate: Moment,
   isTestUser: boolean
 ) => () =>
   fetch(
-    `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
-      startDate,
-      DATE_FNS_INPUT_FORMAT
-    )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
+    `/api/holidays/${subscriptionName}/potential?startDate=${startDate.format(
+      DATE_INPUT_FORMAT
+    )}&endDate=${endDate.format(DATE_INPUT_FORMAT)}`,
     {
       headers: {
         [MDA_TEST_USER_HEADER]: `${isTestUser}`
@@ -168,17 +160,19 @@ const embellishRawHolidayStop = (
   ({
     ...rawHolidayStopRequest,
     withdrawnDate: rawHolidayStopRequest.withdrawnTime
-      ? parseDate(rawHolidayStopRequest.withdrawnTime)
+      ? momentiseDateStr(rawHolidayStopRequest.withdrawnTime)
       : undefined,
-    dateRange: dateRange(
-      rawHolidayStopRequest.startDate,
-      rawHolidayStopRequest.endDate
+    dateRange: new DateRange(
+      momentiseDateStr(rawHolidayStopRequest.startDate),
+      momentiseDateStr(rawHolidayStopRequest.endDate)
     ),
     publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
       raw => ({
         ...raw,
-        publicationDate: parseDate(raw.publicationDate),
-        invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined
+        publicationDate: momentiseDateStr(raw.publicationDate),
+        invoiceDate: raw.invoiceDate
+          ? momentiseDateStr(raw.invoiceDate)
+          : undefined
       })
     )
   } as HolidayStopRequest);
@@ -188,16 +182,16 @@ export const embellishExistingHolidayStops = async (response: Response) => {
   return {
     ...raw,
     productSpecifics: {
-      // taking the oldest date here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
+      // taking the min here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
       // it will need to re-visited for Home Delivery
-      firstAvailableDate: getOldestDate(
-        raw.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
+      firstAvailableDate: moment.min(
+        raw.issueSpecifics.map(_ => momentiseDateStr(_.firstAvailableDate))
       ),
       issueDaysOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)
     },
     existing: raw.existing
       .map(embellishRawHolidayStop)
-      .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
+      .sort((a, b) => a.dateRange.start.unix() - b.dateRange.start.unix())
   } as GetHolidayStopsResponse;
 };
 
@@ -208,18 +202,20 @@ export interface IssuesImpactedPerYear {
 
 export const calculateIssuesImpactedPerYear = (
   publicationsImpacted: HolidayStopDetail[],
-  anniversaryDate: Date
+  anniversaryDate: Moment
 ) => {
   return {
     issuesThisYear: publicationsImpacted.filter(
       issue =>
         issue.publicationDate.isBefore(anniversaryDate) &&
-        issue.publicationDate.isSameOrAfter(dateAddYears(anniversaryDate, -1))
+        issue.publicationDate.isSameOrAfter(
+          anniversaryDate.clone().subtract(1, "year")
+        )
     ),
     issuesNextYear: publicationsImpacted.filter(
       issue =>
         issue.publicationDate.isSameOrAfter(anniversaryDate) &&
-        issue.publicationDate.isBefore(dateAddYears(anniversaryDate, 1))
+        issue.publicationDate.isBefore(anniversaryDate.clone().add(1, "year"))
     )
   } as IssuesImpactedPerYear;
 };

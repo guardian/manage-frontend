@@ -1,9 +1,8 @@
 import { navigate } from "@reach/router";
 import React from "react";
 import {
-  DATE_FNS_LONG_OUTPUT_FORMAT,
-  dateString,
-  parseDate
+  friendlyLongDateFormat,
+  momentiseDateStr
 } from "../../../shared/dates";
 import {
   getMainPlan,
@@ -83,13 +82,16 @@ const renderHolidayStopsOverview = (
   existingHolidayStopToAmend: HolidayStopRequest | null,
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
-  const renewalDate = parseDate(productDetail.subscription.renewalDate).date;
+  const renewalDateMoment = momentiseDateStr(
+    productDetail.subscription.renewalDate
+  );
+
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
     holidayStopsResponse.existing
       .filter(isNotWithdrawn)
       .filter(isNotBulkSuspension)
       .flatMap(existing => existing.publicationsImpacted),
-    renewalDate
+    renewalDateMoment
   );
 
   const mainPlan = getMainPlan(productDetail.subscription);
@@ -157,7 +159,7 @@ const renderHolidayStopsOverview = (
               <InfoIcon />
               <div>
                 <strong>
-                  {dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}
+                  {renewalDateMoment.format(friendlyLongDateFormat)}
                 </strong>{" "}
                 is the next anniversary of your subscription.
                 <br />
@@ -194,7 +196,7 @@ const renderHolidayStopsOverview = (
                       {holidayStopsResponse.annualIssueLimit}
                     </strong>{" "}
                     {props.productType.holidayStops.issueKeyword}s until{" "}
-                    {dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}
+                    {renewalDateMoment.format(friendlyLongDateFormat)}
                     {combinedIssuesImpactedPerYear.issuesNextYear.length >
                       0 && (
                       <span>
@@ -217,7 +219,7 @@ const renderHolidayStopsOverview = (
                   <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
                   {props.productType.holidayStops.issueKeyword}s available to
                   suspend until{" "}
-                  {dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}
+                  {renewalDateMoment.format(friendlyLongDateFormat)}.
                 </div>
               )}
               <div

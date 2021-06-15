@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
-import { parseDate } from "../../../../shared/dates";
+import { formatDateStr } from "../../../../shared/dates";
 import {
   isPaidSubscriptionPlan,
   MembersDataApiItemContext
@@ -45,8 +45,8 @@ const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
               We have successfully updated the amount of your contribution. New
               amount, {mainPlan.currency}
               {amount.toFixed(2)}, will be taken on{" "}
-              {parseDate(productDetail.subscription.nextPaymentDate).dateStr()}.
-              Thank you for supporting the Guardian.
+              {formatDateStr(productDetail.subscription.nextPaymentDate)}. Thank
+              you for supporting the Guardian.
             </p>
           </>
         );

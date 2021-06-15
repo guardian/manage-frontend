@@ -2,8 +2,9 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
+import moment from "moment";
 import React, { useState } from "react";
-import { parseDate } from "../../../shared/dates";
+import { DATE_INPUT_FORMAT, formatDateStr } from "../../../shared/dates";
 import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -46,7 +47,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const invoiceYears = [
     ...new Set(
       [...props.invoiceData].map(
-        invoice => `${parseDate(invoice.date).date.getFullYear()}`
+        invoice => `${moment(invoice.date, DATE_INPUT_FORMAT).year()}`
       )
     )
   ];
@@ -59,9 +60,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   );
 
   const directPaginationUpdate = (newPageNumber: number) => {
-    const targetInvoiceYear = `${parseDate(
-      props.invoiceData[(newPageNumber - 1) * props.resultsPerPage].date
-    ).date.getFullYear()}`;
+    const targetInvoiceYear = `${moment(
+      props.invoiceData[(newPageNumber - 1) * props.resultsPerPage].date,
+      DATE_INPUT_FORMAT
+    ).year()}`;
     setCurrentInvoiceYear(targetInvoiceYear);
     setCurrentPage(newPageNumber);
     trackEvent({
@@ -77,7 +79,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
   const directYearUpdate = (newYear: string) => {
     const invoiceIndex = props.invoiceData.findIndex(
-      invoice => `${parseDate(invoice.date).date.getFullYear()}` === newYear
+      invoice => `${moment(invoice.date, DATE_INPUT_FORMAT).year()}` === newYear
     );
     const targetPage = Math.ceil((invoiceIndex + 1) / props.resultsPerPage);
     setCurrentPaginationPage(targetPage);
@@ -266,7 +268,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
               return (
                 <div css={tableRowCss2} key={tableRow.invoiceId}>
                   <div css={tdCss2(index, tableHeadings[0])}>
-                    {parseDate(tableRow.date).dateStr()}
+                    {formatDateStr(tableRow.date)}
                   </div>
                   <div css={tdCss2(index, tableHeadings[1])}>
                     <div css={paymentDetailsHolderCss}>
@@ -327,9 +329,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     </a>
                     <a
                       css={invoiceDownloadLinkCss}
-                      download={`invoice_${
-                        tableRow.subscriptionName
-                      }_${parseDate(tableRow.date).dateStr("yyyy-MM-dd")}.pdf`}
+                      download={`invoice_${tableRow.subscriptionName}_${moment(
+                        tableRow.date
+                      ).format("YYYY-MM-DD")}.pdf`}
                       href={tableRow.pdfPath}
                       onClick={() =>
                         trackEvent({
