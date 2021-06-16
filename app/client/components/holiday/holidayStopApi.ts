@@ -168,7 +168,10 @@ const embellishRawHolidayStop = (
   ({
     ...rawHolidayStopRequest,
     withdrawnDate: rawHolidayStopRequest.withdrawnTime
-      ? parseDate(rawHolidayStopRequest.withdrawnTime)
+      ? parseDate(
+          rawHolidayStopRequest.withdrawnTime,
+          "yyyy-MM-dd'T'kk:mm:ss.SSS'Z'"
+        ) // 2021-06-16T13:24:49.000Z
       : undefined,
     dateRange: dateRange(
       rawHolidayStopRequest.startDate,

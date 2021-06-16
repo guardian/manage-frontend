@@ -163,7 +163,6 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
       !inSelectionMode &&
       targetStateDayIndex > -1 &&
       holidayDates[targetStateDayIndex].isActive &&
-      holidayDates[targetStateDayIndex].isDeliveryDay &&
       !holidayDates[targetStateDayIndex].isExisting
     ) {
       setStartOfSelectionDateIndex(targetStateDayIndex);
