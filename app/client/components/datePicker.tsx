@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { brandAlt } from "@guardian/src-foundations/palette";
 import React from "react";
 import {
   dateAddDays,
@@ -27,7 +28,7 @@ const stateDefinitions = {
   },
   amend: {
     selectable: true,
-    color: palette.orange.light,
+    color: brandAlt[400],
     label: "Suspension you're amending"
   }
 };

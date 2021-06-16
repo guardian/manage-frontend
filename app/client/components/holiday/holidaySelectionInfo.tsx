@@ -85,7 +85,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
           )}{" "}
           available to suspend before{" "}
           {anniversaryDateToElement(props.renewalDate)}
-          {props.issuesImpactedPerYearBySelection?.issuesNextYear.length && (
+          {!!props.issuesImpactedPerYearBySelection?.issuesNextYear.length && (
             <>
               {" "}
               and{" "}

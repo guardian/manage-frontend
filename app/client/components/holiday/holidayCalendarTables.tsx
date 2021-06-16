@@ -127,6 +127,10 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     number
   >(-1);
 
+  const [mouseDownStartDate, setMouseDownStartDate] = useState<Date | null>(
+    null
+  );
+
   const [visableMonths, setVisableMonths] = useState<number[]>([0, 1]);
 
   const startOfMonthOfMinDate = new Date(
@@ -170,6 +174,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     } else if (inSelectionMode) {
       setSelectionModeTo(false);
     }
+    setMouseDownStartDate(day);
   };
 
   const dayMouseEnter = (day: Date) => {
@@ -203,21 +208,27 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     dayMouseEnter(day);
   };
 
-  const dayMouseUp = () => {
-    if (!inSelectionMode) {
+  const dayMouseUp = (day: Date) => {
+    const inDraggingMode =
+      !!mouseDownStartDate && mouseDownStartDate.valueOf() !== day.valueOf();
+    if (!inSelectionMode || inDraggingMode) {
       const selectedDatesRange = holidayDates.filter(
         holidayDate => holidayDate.isSelected
       );
-      const selecteRangeStartDate = selectedDatesRange[0].date;
-      const selecteRangeEndDate =
-        selectedDatesRange[selectedDatesRange.length - 1].date;
+      if (selectedDatesRange.length > 0) {
+        const selecteRangeStartDate = selectedDatesRange[0].date;
+        const selecteRangeEndDate =
+          selectedDatesRange[selectedDatesRange.length - 1].date;
 
-      if (selectedDatesRange) {
         props.handleRangeChoosen({
           startDate: selecteRangeStartDate,
           endDate: selecteRangeEndDate
         });
       }
+    }
+    if (inDraggingMode) {
+      setSelectionModeTo(false);
+      setMouseDownStartDate(null);
     }
   };
 
