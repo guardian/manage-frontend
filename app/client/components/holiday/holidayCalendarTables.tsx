@@ -27,6 +27,7 @@ interface HolidayCalendarTablesProps {
   dateStates: DateStates[];
   handleRangeChoosen: (range: { startDate: Date; endDate: Date }) => void;
   daysOfWeekToIconify?: number[];
+  dateToAsterisk?: Date;
 }
 
 export interface CalendarTableDate {
@@ -35,6 +36,7 @@ export interface CalendarTableDate {
   isDeliveryDay: boolean;
   isSelected: boolean;
   isExisting: boolean;
+  showAsterisk: boolean;
 }
 
 export const selectDatesFromRange = (
@@ -105,7 +107,8 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
         date >= dateState.range.start &&
         date <= dateState.range.end &&
         dateState.state === "existing"
-    )
+    ),
+    showAsterisk: date.valueOf() === props.dateToAsterisk?.valueOf()
   });
 
   const holidayDatesInitFill: CalendarTableDate[] = [];

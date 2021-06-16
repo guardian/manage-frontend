@@ -163,6 +163,7 @@ export const DatePicker = (props: DatePickerProps) => (
             dateIsLeapYear(props.firstAvailableDate) ? 366 : 365
           )}
           daysOfWeekToIconify={props.issueDaysOfWeek}
+          dateToAsterisk={props.dateToAsterisk}
           maybeLockedStartDate={props.maybeLockedStartDate}
           dateStates={[
             ...props.existingDates

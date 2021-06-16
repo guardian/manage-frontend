@@ -13,42 +13,48 @@ describe("calendarTables", () => {
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 1),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 2),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: true
+        isExisting: true,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 3),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: true
+        isExisting: true,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 4),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 5),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       }
     ];
     expect(JSON.stringify(selectDatesFromRange(mockAllDates, 5, 1))).toEqual(
@@ -64,42 +70,48 @@ describe("calendarTables", () => {
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 1),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 2),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: true
+        isExisting: true,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 3),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: true
+        isExisting: true,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 4),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       },
       {
         date: dateAddDays(allDatesStart, 5),
         isActive: true,
         isDeliveryDay: true,
         isSelected: false,
-        isExisting: false
+        isExisting: false,
+        showAsterisk: false
       }
     ];
     expect(JSON.stringify(selectDatesFromRange(mockAllDates, 1, 5))).toEqual(

@@ -149,8 +149,10 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
         }
       `
         : ""}
-
-        :hover {
+      & sup {
+        vertical-align: top;
+      }
+      &:hover {
         outline: 2px solid ${brandAlt[400]};
         outline-offset: -8px;
       }
@@ -238,6 +240,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
                 props.handleDayMouseEnter(targetDate))(date)}
             >
               {date.getDate()}
+              {matchingDate?.showAsterisk ? <sup>*</sup> : ""}
             </div>
           );
         })}
