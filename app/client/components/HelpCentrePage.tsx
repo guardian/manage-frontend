@@ -8,6 +8,7 @@ import { CMPBanner } from "./consent/CMPBanner";
 import { PageTitle } from "./helpCentre/pageTitle";
 import { SeoData } from "./helpCentre/seoData";
 import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
+import { WithLiveChatContainer } from "./liveChat/liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
 
@@ -40,6 +41,7 @@ const HelpCentreRouter = () => {
     <Main>
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
+      <WithLiveChatContainer />
       <Suspense fallback={<HelpCentrePageSkeleton />}>
         <Router primary={true} css={{ height: "100%" }}>
           <HelpCentre path="/help-centre" />
