@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { brand, neutral, space } from "@guardian/src-foundations";
-import React, { PropsWithChildren, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { sans } from "../../styles/fonts";
 import {
   avatarImg,
@@ -233,7 +233,7 @@ const withLiveChatContainerCss = css`
   }
 `;
 
-export const WithLiveChatContainer = ({ children }: PropsWithChildren<{}>) => {
+export const WithLiveChatContainer = () => {
   const liveChatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -258,12 +258,7 @@ export const WithLiveChatContainer = ({ children }: PropsWithChildren<{}>) => {
     }
   }, []);
 
-  return (
-    <>
-      {children}
-      <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />
-    </>
-  );
+  return <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />;
 };
 
 export const StartLiveChatButton = () => {
