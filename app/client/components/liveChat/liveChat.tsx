@@ -109,7 +109,7 @@ const initLiveChat = (targetElement: HTMLElement) => {
   }
 };
 
-const withLiveChatContainerCss = css`
+const liveChatCss = css`
   /* Container */
   .embeddedServiceSidebar.layout-docked .dockableContainer {
     border-radius: 0;
@@ -233,7 +233,7 @@ const withLiveChatContainerCss = css`
   }
 `;
 
-export const WithLiveChatContainer = () => {
+export const LiveChat = () => {
   const liveChatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -258,7 +258,7 @@ export const WithLiveChatContainer = () => {
     }
   }, []);
 
-  return <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />;
+  return <div ref={liveChatContainerRef} css={liveChatCss} />;
 };
 
 export const StartLiveChatButton = () => {
