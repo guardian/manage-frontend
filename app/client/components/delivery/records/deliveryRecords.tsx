@@ -5,8 +5,12 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
+import {
+  dateAddDays,
+  dateIsSameOrBefore,
+  parseDate
+} from "../../../../shared/dates";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
@@ -103,11 +107,11 @@ export const checkForExistingDeliveryProblem = (
   records: DeliveryRecordDetail[]
 ) =>
   records.findIndex(deliveryRecord => {
-    const recordDateEpoch = moment(deliveryRecord.deliveryDate).unix();
-    const fourteenDaysAgoEpoch = moment()
-      .startOf("day")
-      .subtract(14, "days")
-      .unix();
+    const recordDateEpoch = parseDate(
+      deliveryRecord.deliveryDate
+    ).date.valueOf();
+    const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
+    const fourteenDaysAgoEpoch = dateAddDays(startOfToday, -14).valueOf();
     return (
       deliveryRecord.problemCaseId && recordDateEpoch >= fourteenDaysAgoEpoch
     );
@@ -222,13 +226,18 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
       const numOfReportableRecords =
         productType.delivery.records.numberOfProblemRecordsToShow;
 
-      const today = moment();
+      const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
 
       const isNotHolidayProblem =
         choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
 
       return props.data.results
-        .filter(_ => moment(_.deliveryDate).isSameOrBefore(today, "day"))
+        .filter(_ => {
+          const startOfDeliveryDateDay = new Date(
+            parseDate(_.deliveryDate).date.setHours(0, 0, 0, 0)
+          );
+          return dateIsSameOrBefore(startOfDeliveryDateDay, startOfToday);
+        })
         .slice(0, numOfReportableRecords)
         .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
         .filter(_ => !_.problemCaseId);

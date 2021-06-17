@@ -1,6 +1,10 @@
 import { BorderCollapseProperty, TextAlignProperty } from "csstype";
-import { DateRange } from "moment-range";
 import React from "react";
+import {
+  DATE_FNS_LONG_OUTPUT_FORMAT,
+  DateRange,
+  dateString
+} from "../../../shared/dates";
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
@@ -38,17 +42,13 @@ interface SummaryTableProps {
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
-const friendlyDateFormatPrefix = "D\xa0MMMM"; // non-breaking space
-
-const friendlyDateFormatSuffix = "\xa0YYYY"; // non-breaking space
-
 export const formatDateRangeAsFriendly = (range: DateRange) =>
-  range.start.format(
-    friendlyDateFormatPrefix +
-      (range.start.year() !== range.end.year() ? friendlyDateFormatSuffix : "")
-  ) +
-  " - " +
-  range.end.format(friendlyDateFormatPrefix + friendlyDateFormatSuffix);
+  `${dateString(
+    range.start,
+    range.start.getFullYear() !== range.end.getFullYear()
+      ? DATE_FNS_LONG_OUTPUT_FORMAT
+      : "d MMMM"
+  )} - ${dateString(range.end, DATE_FNS_LONG_OUTPUT_FORMAT)}`;
 
 interface SummaryTableRowProps extends MinimalHolidayStopRequest {
   issueKeyword: string;
@@ -72,7 +72,6 @@ const formattedCreditIfAvailable = (
 
 const SummaryTableRow = (props: SummaryTableRowProps) => {
   const dateRangeStr = formatDateRangeAsFriendly(props.dateRange);
-
   const detailPart = (
     <ExpanderButton
       buttonLabel={
@@ -84,10 +83,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
     >
       {props.publicationsImpacted.map((detail, index) => (
         <div key={index}>
-          -{" "}
-          {detail.publicationDate.format(
-            friendlyDateFormatPrefix + friendlyDateFormatSuffix
-          )}
+          - {detail.publicationDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
           {formattedCreditIfAvailable(detail, props.currency)}
         </div>
       ))}

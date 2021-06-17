@@ -1,13 +1,18 @@
 import { css } from "@emotion/core";
-import { Moment } from "moment";
-import { DateRange } from "moment-range";
 import React from "react";
-import { OnSelectCallbackParam } from "react-daterange-picker";
+import {
+  dateAddDays,
+  dateClone,
+  dateIsLeapYear,
+  dateIsSame,
+  DateRange,
+  dateRange
+} from "../../shared/dates";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
 import { DateInput } from "./dateInput";
-import { WrappedDateRangePicker } from "./hackedDateRangePicker";
+import { HolidayCalendarTables } from "./holiday/holidayCalendarTables";
 
 const stateDefinitions = {
   available: {
@@ -42,13 +47,13 @@ const legendItems = (
     extraCss: `
   ::after {
     content: "";
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    background-color: ${palette.blue.header};
-    transform: rotate(45deg);
-    top: -14px;
-    left: -14px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 14px 14px 14px;
+    border-color: transparent transparent ${palette.blue.header} transparent;
+    transform: rotate(-45deg);
   }
   `,
     label: `${issueKeyword} day`
@@ -56,12 +61,6 @@ const legendItems = (
   ...(includeExisting ? [stateDefinitions.existing] : []),
   ...(includeAmend ? [stateDefinitions.amend] : [])
 ];
-
-const adjustDateRangeToOvercomeHalfDateStates = (range: DateRange) =>
-  new DateRange(
-    range.start.clone().subtract(1, "day"),
-    range.end.clone().add(1, "day")
-  );
 
 const mergeAdjacentDateRanges = (
   accumulator: DateRange[],
@@ -71,13 +70,10 @@ const mergeAdjacentDateRanges = (
     const indexOfLast = accumulator.length - 1;
     const allButTheLast = accumulator.slice(0, indexOfLast);
     const last = accumulator[indexOfLast];
-    if (
-      last.end
-        .clone()
-        .add(1, "day")
-        .isSame(currentValue.start) // i.e. they're adjacent
-    ) {
-      return [...allButTheLast, new DateRange(last.start, currentValue.end)];
+    const lastEndDatePlus1Day = dateClone(last.end);
+    lastEndDatePlus1Day.setDate(lastEndDatePlus1Day.getDate() + 1);
+    if (dateIsSame(lastEndDatePlus1Day, currentValue.start)) {
+      return [...allButTheLast, dateRange(last.start, currentValue.end)];
     } else {
       return [...accumulator, currentValue];
     }
@@ -85,8 +81,6 @@ const mergeAdjacentDateRanges = (
     return [currentValue];
   }
 };
-
-const daysInYear = (firstDate: Moment) => (firstDate.isLeapYear() ? 366 : 365);
 
 const LegendItem = (props: LegendItemProps) => (
   <div
@@ -123,16 +117,16 @@ const LegendItem = (props: LegendItemProps) => (
 );
 
 interface DatePickerProps {
-  firstAvailableDate: Moment;
+  firstAvailableDate: Date;
   issueDaysOfWeek: number[];
   issueKeyword: string;
   existingDates: DateRange[];
   amendableDateRange?: DateRange;
   selectedRange?: DateRange;
-  maybeLockedStartDate: Moment | null;
+  maybeLockedStartDate: Date | null;
   selectionInfo?: React.ReactElement;
-  onSelect: (range: OnSelectCallbackParam) => void;
-  dateToAsterisk?: Moment;
+  onChange: (range: { startDate: Date; endDate: Date }) => void;
+  dateToAsterisk?: Date;
 }
 
 export const DatePicker = (props: DatePickerProps) => (
@@ -161,40 +155,31 @@ export const DatePicker = (props: DatePickerProps) => (
       }}
     >
       <div css={{ flexGrow: 1 }}>
-        <WrappedDateRangePicker
-          minimumDate={props.firstAvailableDate.toDate()}
-          maximumDate={props.firstAvailableDate
-            .clone()
-            .add(daysInYear(props.firstAvailableDate.clone()), "days")
-            .toDate()}
-          value={props.selectedRange}
+        <HolidayCalendarTables
+          minimumDate={props.firstAvailableDate}
+          maximumDate={dateAddDays(
+            props.firstAvailableDate,
+            dateIsLeapYear(props.firstAvailableDate) ? 366 : 365
+          )}
+          daysOfWeekToIconify={props.issueDaysOfWeek}
           maybeLockedStartDate={props.maybeLockedStartDate}
-          onSelect={props.onSelect}
-          singleDateRange={true}
-          showLegend={false}
-          stateDefinitions={stateDefinitions}
           dateStates={[
             ...props.existingDates
               .reduce(mergeAdjacentDateRanges, []) // TODO check if they need to be merged across different types of 'date state'
               .map(range => ({
                 state: "existing",
-                range: adjustDateRangeToOvercomeHalfDateStates(range)
+                range
               })),
             ...(props.amendableDateRange
               ? [
                   {
                     state: "amend",
-                    range: adjustDateRangeToOvercomeHalfDateStates(
-                      props.amendableDateRange
-                    )
+                    range: props.amendableDateRange
                   }
                 ]
               : [])
-          ].sort((a, b) => a.range.start.unix() - b.range.start.unix())}
-          defaultState="available"
-          firstOfWeek={1}
-          daysOfWeekToIconify={props.issueDaysOfWeek}
-          dateToAsterisk={props.dateToAsterisk}
+          ].sort((a, b) => a.range.start.valueOf() - b.range.start.valueOf())}
+          handleRangeChoosen={props.onChange}
         />
       </div>
 
