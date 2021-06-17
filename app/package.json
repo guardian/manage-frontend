@@ -19,7 +19,6 @@
     "updateSnapshot": "jest -u",
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && tslint --fix -p .",
-    "riffraff": "VERBOSE=true ARTEFACT_PATH=$(pwd) riffraff-artefact",
     "snyk-protect": "snyk protect",
     "prepublish": "yarn run snyk-protect"
   },
@@ -28,11 +27,6 @@
       "pre-commit": "yarn fix && GIT_DIR=../.git && yarn type-check && yarn lint && yarn bundle-check-client-if-changed"
     }
   },
-  "cloudformation": "../cfn.yaml",
-  "riffraffFile": "../riff-raff.yaml",
-  "uploadArtefact": true,
-  "buildDir": "dist",
-  "projectName": "support:manage-frontend",
   "main": "./dist/server",
   "browserslist": [
     ">0.25%",
@@ -58,6 +52,7 @@
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
     "@emotion/babel-preset-css-prop": "^10.0.27",
+    "@guardian/node-riffraff-artifact": "^0.2.1",
     "@testing-library/react": "^11.1.0",
     "@types/assets-webpack-plugin": "^3.9.0",
     "@types/aws4": "^1.5.1",
@@ -103,7 +98,6 @@
     "jest-each": "^26.6.2",
     "jest-emotion": "^10.0.32",
     "jest-teamcity-reporter": "^0.9.0",
-    "node-riffraff-artefact": "^2.0.1",
     "nodemon": "^1.17.5",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.6.0",

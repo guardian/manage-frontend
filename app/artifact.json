@@ -1,0 +1,16 @@
+{
+  "projectName": "support:manage-frontend",
+  "vcsURL": "https://github.com/guardian/manage-frontend",
+  "actions": [
+    {
+      "action": "manage-frontend-cloudformation",
+      "path": "../cfn.yaml",
+      "compress": false
+    },
+    {
+      "action": "manage-frontend",
+      "path": "dist",
+      "compress": "zip"
+    }
+  ]
+}
