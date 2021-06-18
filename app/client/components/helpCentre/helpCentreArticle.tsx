@@ -208,8 +208,8 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
               onClick={() => {
                 setFeedBackButtonClicked(true);
                 trackEvent({
-                  eventCategory: "help-centre-article-page",
-                  eventAction: "article-feedback-widget-click",
+                  eventCategory: "help-centre",
+                  eventAction: "article-feedback",
                   eventLabel: props.articleCode,
                   eventValue: 1
                 });
@@ -229,8 +229,8 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
               onClick={() => {
                 setFeedBackButtonClicked(true);
                 trackEvent({
-                  eventCategory: "help-centre-article-page",
-                  eventAction: "article-feedback-widget-click",
+                  eventCategory: "help-centre",
+                  eventAction: "article-feedback",
                   eventLabel: props.articleCode,
                   eventValue: 0
                 });
