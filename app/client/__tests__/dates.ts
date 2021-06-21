@@ -22,6 +22,9 @@ import {
 // formatting date-fns strings documentation here:
 // https://date-fns.org/v2.17.0/docs/format
 
+const judgementDay = new Date(1997, 7, 29);
+const backToTheFutureDay = new Date(1985, 9, 26);
+
 describe("parseDate", () => {
   it("parses date strings correctly", () => {
     const pd = parseDate("2020-11-30");
@@ -53,11 +56,10 @@ describe("dateString", () => {
 });
 
 describe("dateIsBefore", () => {
-  const inputDate = new Date();
-  const comparisonDate = new Date();
+  const inputDate = judgementDay;
+  const comparisonDate = judgementDay;
   it("returns true if input date is before comparison date", () => {
-    comparisonDate.setMinutes(comparisonDate.getMinutes() + 5);
-    expect(dateIsBefore(inputDate, comparisonDate)).toBeTruthy();
+    expect(dateIsBefore(inputDate, new Date())).toBeTruthy();
   });
   it("returns false if input date is after comparison date", () => {
     comparisonDate.setMinutes(comparisonDate.getMinutes() - 10);
@@ -71,18 +73,18 @@ describe("dateIsBefore", () => {
 
 describe("dateIsSameOrBefore", () => {
   it("returns true if date is the same as comparison date", () => {
-    const inputDate = new Date();
-    const comparisonDate = new Date();
+    const inputDate = judgementDay;
+    const comparisonDate = judgementDay;
     expect(dateIsSameOrBefore(inputDate, comparisonDate)).toBe(true);
   });
   it("returns true if date is the before comparison date", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     const comparisonDate = new Date();
     expect(dateIsSameOrBefore(inputDate, comparisonDate)).toBe(true);
   });
   it("returns false if date is the after comparison date", () => {
     const inputDate = new Date();
-    const comparisonDate = new Date(1985, 9, 26);
+    const comparisonDate = backToTheFutureDay;
     expect(dateIsSameOrBefore(inputDate, comparisonDate)).toBe(false);
   });
 });
@@ -90,19 +92,19 @@ describe("dateIsSameOrBefore", () => {
 describe("dateIsAfter", () => {
   it("returns true if date is after comparison date", () => {
     const inputDate = new Date();
-    const comparisonDate = new Date(1985, 9, 26);
+    const comparisonDate = backToTheFutureDay;
     expect(dateIsAfter(inputDate, comparisonDate)).toBe(true);
   });
   it("returns false if date is not after comparison date", () => {
-    const inputDate = new Date();
-    const comparisonDate = new Date();
+    const inputDate = judgementDay;
+    const comparisonDate = judgementDay;
     expect(dateIsAfter(inputDate, comparisonDate)).toBe(false);
   });
 });
 
 describe("dateIsSameOrAfter", () => {
   it("returns true if dates match", () => {
-    expect(dateIsSameOrAfter(new Date(), new Date())).toBeTruthy();
+    expect(dateIsSameOrAfter(judgementDay, judgementDay)).toBeTruthy();
   });
   it("returns true if input date is after comparison date", () => {
     const futureInputDate = new Date();
@@ -118,7 +120,7 @@ describe("dateIsSameOrAfter", () => {
 
 describe("dateIsSame", () => {
   it("returns true if 2 dates match", () => {
-    expect(dateIsSame(new Date(), new Date())).toBeTruthy();
+    expect(dateIsSame(judgementDay, judgementDay)).toBeTruthy();
   });
   it("returns false if the 2 dates do not match", () => {
     expect(dateIsSame(new Date(), new Date(1969, 6, 16))).toBeFalsy();
@@ -177,13 +179,13 @@ describe("dateIsLeapYear", () => {
 
 describe("dateAddDays", () => {
   it("returns modified date with the additional days subtracted from it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddDays(inputDate, -10941).toLocaleDateString()).toEqual(
       "11/12/1955"
     );
   });
   it("returns modified date with the additional days added to it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddDays(inputDate, 10952).toLocaleDateString()).toEqual(
       "10/21/2015"
     );
@@ -192,13 +194,13 @@ describe("dateAddDays", () => {
 
 describe("dateAddMonths", () => {
   it("returns modified date with months subtracted from it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddMonths(inputDate, -1).toLocaleDateString()).toEqual(
       "9/26/1985"
     );
   });
   it("returns modified date with months added to it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddMonths(inputDate, 1).toLocaleDateString()).toEqual(
       "11/26/1985"
     );
@@ -207,13 +209,13 @@ describe("dateAddMonths", () => {
 
 describe("dateAddYears", () => {
   it("returns modified date with years subtracted from it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddYears(inputDate, -1).toLocaleDateString()).toEqual(
       "10/26/1984"
     );
   });
   it("returns modified date with years added to it", () => {
-    const inputDate = new Date(1985, 9, 26);
+    const inputDate = backToTheFutureDay;
     expect(dateAddYears(inputDate, 1).toLocaleDateString()).toEqual(
       "10/26/1986"
     );
@@ -236,7 +238,7 @@ describe("numberOfDaysInMonth", () => {
 describe("getWeekDay", () => {
   it("returns the weekday in long string form from an input date", () => {
     // Saturday 26th Oct 1985
-    expect(getWeekDay(new Date(1985, 9, 26))).toEqual("Saturday");
+    expect(getWeekDay(backToTheFutureDay)).toEqual("Saturday");
   });
 });
 
