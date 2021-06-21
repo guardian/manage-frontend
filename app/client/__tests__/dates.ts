@@ -59,8 +59,7 @@ describe("dateIsBefore", () => {
   const inputDate = judgementDay;
   const comparisonDate = judgementDay;
   it("returns true if input date is before comparison date", () => {
-    comparisonDate.setMinutes(comparisonDate.getMinutes() + 5);
-    expect(dateIsBefore(inputDate, comparisonDate)).toBeTruthy();
+    expect(dateIsBefore(inputDate, new Date())).toBeTruthy();
   });
   it("returns false if input date is after comparison date", () => {
     comparisonDate.setMinutes(comparisonDate.getMinutes() - 10);
