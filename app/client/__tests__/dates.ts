@@ -53,8 +53,8 @@ describe("dateString", () => {
 });
 
 describe("dateIsBefore", () => {
-  const inputDate = new Date();
-  const comparisonDate = new Date();
+  const inputDate = new Date(1997, 7, 29);
+  const comparisonDate = new Date(1997, 7, 29);
   it("returns true if input date is before comparison date", () => {
     comparisonDate.setMinutes(comparisonDate.getMinutes() + 5);
     expect(dateIsBefore(inputDate, comparisonDate)).toBeTruthy();
@@ -71,8 +71,8 @@ describe("dateIsBefore", () => {
 
 describe("dateIsSameOrBefore", () => {
   it("returns true if date is the same as comparison date", () => {
-    const inputDate = new Date();
-    const comparisonDate = new Date();
+    const inputDate = new Date(1997, 7, 29);
+    const comparisonDate = new Date(1997, 7, 29);
     expect(dateIsSameOrBefore(inputDate, comparisonDate)).toBe(true);
   });
   it("returns true if date is the before comparison date", () => {
@@ -94,15 +94,17 @@ describe("dateIsAfter", () => {
     expect(dateIsAfter(inputDate, comparisonDate)).toBe(true);
   });
   it("returns false if date is not after comparison date", () => {
-    const inputDate = new Date();
-    const comparisonDate = new Date();
+    const inputDate = new Date(1997, 7, 29);
+    const comparisonDate = new Date(1997, 7, 29);
     expect(dateIsAfter(inputDate, comparisonDate)).toBe(false);
   });
 });
 
 describe("dateIsSameOrAfter", () => {
   it("returns true if dates match", () => {
-    expect(dateIsSameOrAfter(new Date(), new Date())).toBeTruthy();
+    expect(
+      dateIsSameOrAfter(new Date(1997, 7, 29), new Date(1997, 7, 29))
+    ).toBeTruthy();
   });
   it("returns true if input date is after comparison date", () => {
     const futureInputDate = new Date();
@@ -118,7 +120,9 @@ describe("dateIsSameOrAfter", () => {
 
 describe("dateIsSame", () => {
   it("returns true if 2 dates match", () => {
-    expect(dateIsSame(new Date(), new Date())).toBeTruthy();
+    expect(
+      dateIsSame(new Date(1997, 7, 29), new Date(1997, 7, 29))
+    ).toBeTruthy();
   });
   it("returns false if the 2 dates do not match", () => {
     expect(dateIsSame(new Date(), new Date(1969, 6, 16))).toBeFalsy();
