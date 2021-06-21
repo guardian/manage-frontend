@@ -1,5 +1,5 @@
 import React from "react";
-import { friendlyLongDateFormat } from "../../../shared/dates";
+import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
 import { Button, LinkButton } from "../buttons";
@@ -37,7 +37,8 @@ export class ExistingHolidayStopActions extends React.Component<
         <em>
           Deleted{" "}
           <small>
-            on&nbsp;{this.props.withdrawnDate.format(friendlyLongDateFormat)}
+            on&nbsp;
+            {this.props.withdrawnDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
           </small>
         </em>
       );

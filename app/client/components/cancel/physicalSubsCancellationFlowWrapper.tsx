@@ -1,6 +1,5 @@
-import moment from "moment";
 import React, { ReactNode, ReactNodeArray } from "react";
-import { DATE_INPUT_FORMAT, momentiseDateStr } from "../../../shared/dates";
+import { DATE_FNS_INPUT_FORMAT, parseDate } from "../../../shared/dates";
 import {
   MDA_TEST_USER_HEADER,
   ProductDetail
@@ -32,14 +31,14 @@ const getOutstandingCreditsFetcher = (
   const effectiveCancellationDate =
     !productDetail.subscription.chargedThroughDate ||
     cancellationPolicy === cancellationEffectiveToday
-      ? moment()
-      : momentiseDateStr(productDetail.subscription.chargedThroughDate);
+      ? parseDate()
+      : parseDate(productDetail.subscription.chargedThroughDate);
 
   const outstandingHolidayStopsPromise = fetch(
     `/api/holidays/${
       productDetail.subscription.subscriptionId
-    }/cancel?effectiveCancellationDate=${effectiveCancellationDate.format(
-      DATE_INPUT_FORMAT
+    }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
+      DATE_FNS_INPUT_FORMAT
     )}`,
     {
       headers: {
@@ -53,8 +52,8 @@ const getOutstandingCreditsFetcher = (
     fetch(
       `/api/delivery-records/${
         productDetail.subscription.subscriptionId
-      }/cancel?effectiveCancellationDate=${effectiveCancellationDate.format(
-        DATE_INPUT_FORMAT
+      }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
+        DATE_FNS_INPUT_FORMAT
       )}`,
       {
         headers: {

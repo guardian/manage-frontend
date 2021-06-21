@@ -4,8 +4,8 @@ import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
-import moment from "moment";
 import React, { useContext } from "react";
+import {DATE_FNS_SHORT_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
@@ -220,7 +220,7 @@ const DeliveryRecordsProblemConfirmationFC = (
             </div>
             <div>
               <dt css={dtCss}>Date reported:</dt>
-              <dd css={ddCss}>{moment().format("D MMM YYYY")}</dd>
+              <dd css={ddCss}>{dateString(new Date(), DATE_FNS_SHORT_OUTPUT_FORMAT)}</dd>
             </div>
             <div>
               <dt css={dtCss}>Subscription ID:</dt>
