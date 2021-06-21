@@ -1,9 +1,16 @@
+import css from "@emotion/css";
+import { Button } from "@guardian/src-button";
+import { neutral, space } from "@guardian/src-foundations";
+import { textSans } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
+import { minWidth } from "../../styles/breakpoints";
+import { trackEvent } from "../analytics";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { Spinner } from "../spinner";
+import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
 import { helpCentreNavConfig } from "./helpCentreConfig";
@@ -58,10 +65,13 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
       <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
         <h2 css={h2Css}>{article?.title}</h2>
         {article ? (
-          <ArticleBody
-            article={article}
-            articleCode={props.articleCode ?? ""}
-          />
+          <>
+            <ArticleBody
+              article={article}
+              articleCode={props.articleCode ?? ""}
+            />
+            <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
+          </>
         ) : (
           <Loading />
         )}
@@ -134,6 +144,105 @@ const ArticleBody = (props: ArticleBodyProps) => {
   };
 
   return <div>{parseBody(props.article.body)}</div>;
+};
+
+const articleFeedbackWidgetCss = css`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${neutral[86]};
+  padding: ${space[4]}px ${space[3]}px;
+  margin: 66px 0;
+  ${minWidth.mobileLandscape} {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  & p {
+    margin: 0;
+    ${textSans.medium({ fontWeight: "bold" })}
+  }
+  & .buttonDiv {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    margin-top: ${space[4]}px;
+    ${minWidth.mobileLandscape} {
+      margin-top: 0;
+    }
+    & > * {
+      margin-right: ${space[2]}px;
+      ${minWidth.mobileLandscape} {
+        margin-right: ${space[3]}px;
+      }
+    }
+    & p {
+      ${textSans.small({ fontWeight: "regular" })}
+    }
+  }
+`;
+
+interface ArticleFeedbackWidgetProps {
+  articleCode: string;
+}
+
+export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
+  const [feedBackButtonClicked, setFeedBackButtonClicked] = useState(false);
+
+  return (
+    <div css={articleFeedbackWidgetCss}>
+      <p>Did you find the information you need?</p>
+      <div className="buttonDiv">
+        {feedBackButtonClicked ? (
+          <p>Thank you!</p>
+        ) : (
+          <>
+            <Button
+              icon={<ThumbsUpIcon />}
+              hideLabel={true}
+              size="small"
+              cssOverrides={css`
+                svg {
+                  width: initial;
+                }
+              `}
+              onClick={() => {
+                setFeedBackButtonClicked(true);
+                trackEvent({
+                  eventCategory: "help-centre",
+                  eventAction: "article-feedback",
+                  eventLabel: props.articleCode,
+                  eventValue: 1
+                });
+              }}
+            >
+              Yes
+            </Button>
+            <Button
+              icon={<ThumbsUpIcon invertIcon={true} />}
+              hideLabel={true}
+              size="small"
+              cssOverrides={css`
+                svg {
+                  width: initial;
+                }
+              `}
+              onClick={() => {
+                setFeedBackButtonClicked(true);
+                trackEvent({
+                  eventCategory: "help-centre",
+                  eventAction: "article-feedback",
+                  eventLabel: props.articleCode,
+                  eventValue: 0
+                });
+              }}
+            >
+              No
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default HelpCentreArticle;
