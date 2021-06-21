@@ -1,6 +1,6 @@
 import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
-import React, { ReactNode } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
 import { HelpCentreNavConfig } from "./helpCentre/helpCentreConfig";
@@ -65,18 +65,28 @@ const divCss = (hasNav: boolean | undefined) => css`
   }
 `;
 
+export const SelectedTopicObjectContext = React.createContext<
+  Dispatch<SetStateAction<HelpCentreNavConfig | undefined>>
+>(undefined!);
+
 export const SectionContent = (props: SectionContentProps) => {
+  const [selectedTopicObject, setSelectedTopicObject] = useState<
+    HelpCentreNavConfig | undefined
+  >(props.selectedTopicObject);
+
   return (
     <div css={containerCss}>
       <div css={divCss(props.hasNav)}>
         {props.hasNav && (
           <section css={sectionCss(props.hasNav || false, true)}>
-            <HelpCentreNav selectedTopicObject={props.selectedTopicObject} />
+            <HelpCentreNav selectedTopicObject={selectedTopicObject} />
           </section>
         )}
-        <section css={sectionCss(props.hasNav || false, false)}>
-          {props.children}
-        </section>
+        <SelectedTopicObjectContext.Provider value={setSelectedTopicObject}>
+          <section css={sectionCss(props.hasNav || false, false)}>
+            {props.children}
+          </section>
+        </SelectedTopicObjectContext.Provider>
       </div>
     </div>
   );

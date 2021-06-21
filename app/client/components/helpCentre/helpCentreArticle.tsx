@@ -7,8 +7,7 @@ import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import { SectionContent } from "../sectionContent";
-import { SectionHeader } from "../sectionHeader";
+import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
@@ -57,12 +56,14 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
     topic => topic.id === article?.topics[0].path
   );
 
+  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+  setSelectedTopicObject(selectedNavTopic);
+
   return (
     <>
       <PageTitle title={article?.title} />
       <SeoData article={article} />
-      <SectionHeader title="How can we help you?" pageHasNav={true} />
-      <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
+      <>
         <h2 css={h2Css}>{article?.title}</h2>
         {article ? (
           <>
@@ -76,7 +77,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
           <Loading />
         )}
         <BackToHelpCentreButton />
-      </SectionContent>
+      </>
     </>
   );
 };

@@ -9,8 +9,6 @@ import { contactUsConfig } from "../../../shared/contactUsConfig";
 import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
-import { SectionContent } from "../sectionContent";
-import { SectionHeader } from "../sectionHeader";
 import { ContactUsForm } from "./contactUsForm";
 import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
@@ -163,101 +161,96 @@ const ContactUs = (props: ContactUsProps) => {
     }
   };
 
-  const HeaderTitle = <span>Need to contact us?</span>;
-
   return (
     <>
-      <SectionHeader title={HeaderTitle} />
-      <SectionContent>
-        <div
+      <div
+        css={css`
+          margin-bottom: ${space[24]}px;
+        `}
+      >
+        <h1
           css={css`
-            margin-bottom: ${space[24]}px;
+            ${headline.xxsmall({ fontWeight: "bold" })};
+            margin: 0;
+            border-top: 1px solid ${neutral[86]};
+            ${minWidth.desktop} {
+              font-size: 1.75rem;
+              border-top: 0;
+            }
           `}
         >
-          <h1
-            css={css`
-              ${headline.xxsmall({ fontWeight: "bold" })};
-              margin: 0;
-              border-top: 1px solid ${neutral[86]};
-              ${minWidth.desktop} {
-                font-size: 1.75rem;
-                border-top: 0;
-              }
-            `}
-          >
-            {headerText}
-          </h1>
-          <p
-            css={css`
-              margin-top: ${space[5]}px;
-              ${textSans.medium()};
-              max-width: 620px;
-            `}
-          >
-            {containerText}
-          </p>
-          {!success && (
-            <>
-              <TopicForm
-                data={contactUsConfig}
-                preSelectedId={currentTopic?.id}
-                submitCallback={setTopic}
+          {headerText}
+        </h1>
+        <p
+          css={css`
+            margin-top: ${space[5]}px;
+            ${textSans.medium()};
+            max-width: 620px;
+          `}
+        >
+          {containerText}
+        </p>
+        {!success && (
+          <>
+            <TopicForm
+              data={contactUsConfig}
+              preSelectedId={currentTopic?.id}
+              submitCallback={setTopic}
+            />
+            {subTopics && (
+              <SubTopicForm
+                key={`subtopic-${currentTopic?.id}`}
+                title={subTopicsTitle}
+                submitButonText="Continue to step 2"
+                data={subTopics}
+                preSelectedId={currentSubTopic?.id}
+                submitCallback={setSubTopic}
               />
-              {subTopics && (
-                <SubTopicForm
-                  key={`subtopic-${currentTopic?.id}`}
-                  title={subTopicsTitle}
-                  submitButonText="Continue to step 2"
-                  data={subTopics}
-                  preSelectedId={currentSubTopic?.id}
-                  submitCallback={setSubTopic}
-                />
-              )}
-              {subSubTopics && (
-                <SubTopicForm
-                  key={`subsubtopic-${currentSubTopic?.id}`}
-                  title={subSubTopicsTitle}
-                  submitButonText="Continue to step 3"
-                  data={subSubTopics}
-                  preSelectedId={currentSubSubTopic?.id}
-                  submitCallback={setSubSubTopic}
-                />
-              )}
-              {selfServiceBox && (
-                <SelfServicePrompt
-                  copy={selfServiceBox.text}
-                  linkCopy={selfServiceBox.linkText}
-                  linkHref={selfServiceBox.href}
-                  linkAsButton={!showForm}
-                  showContacts={!showForm}
-                  topicReferer={
-                    `${currentTopic?.id} - ` +
-                    `${currentSubSubTopic?.id || "N/A"} - ` +
-                    `${currentSubSubTopic?.id || "N/A"}`
-                  }
-                  additionalCss={css`
-                    margin: ${space[9]}px 0 ${space[6]}px;
-                  `}
-                />
-              )}
+            )}
+            {subSubTopics && (
+              <SubTopicForm
+                key={`subsubtopic-${currentSubTopic?.id}`}
+                title={subSubTopicsTitle}
+                submitButonText="Continue to step 3"
+                data={subSubTopics}
+                preSelectedId={currentSubSubTopic?.id}
+                submitCallback={setSubSubTopic}
+              />
+            )}
+            {selfServiceBox && (
+              <SelfServicePrompt
+                copy={selfServiceBox.text}
+                linkCopy={selfServiceBox.linkText}
+                linkHref={selfServiceBox.href}
+                linkAsButton={!showForm}
+                showContacts={!showForm}
+                topicReferer={
+                  `${currentTopic?.id} - ` +
+                  `${currentSubSubTopic?.id || "N/A"} - ` +
+                  `${currentSubSubTopic?.id || "N/A"}`
+                }
+                additionalCss={css`
+                  margin: ${space[9]}px 0 ${space[6]}px;
+                `}
+              />
+            )}
 
-              {showForm && (
-                <ContactUsForm
-                  key={`${currentTopic?.id}-${currentSubTopic?.id}-${currentSubSubTopic?.id}`}
-                  submitCallback={submitForm}
-                  title={`${
-                    subTopics || subSubTopics
-                      ? `Step ${subSubTopics ? "3" : "2"}:`
-                      : ""
-                  } Tell us more`}
-                  subject={subject}
-                  editableSubject={isSubjectEditable}
-                />
-              )}
-            </>
-          )}
-        </div>
-      </SectionContent>
+            {showForm && (
+              <ContactUsForm
+                key={`${currentTopic?.id}-${currentSubTopic?.id}-${currentSubSubTopic?.id}`}
+                submitCallback={submitForm}
+                title={`${
+                  subTopics || subSubTopics
+                    ? `Step ${subSubTopics ? "3" : "2"}:`
+                    : ""
+                } Tell us more`}
+                subject={subject}
+                editableSubject={isSubjectEditable}
+              />
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };

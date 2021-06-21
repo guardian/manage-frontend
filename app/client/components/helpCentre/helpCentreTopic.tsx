@@ -1,8 +1,7 @@
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import { SectionContent } from "../sectionContent";
-import { SectionHeader } from "../sectionHeader";
+import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
@@ -53,13 +52,13 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     topic => topic.id === props.topicCode
   );
 
+  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+  setSelectedTopicObject(selectedNavTopic);
+
   return (
     <>
-      <SectionHeader title="How can we help you?" pageHasNav={true} />
-      <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
-        {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
-        <BackToHelpCentreButton />
-      </SectionContent>
+      {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
+      <BackToHelpCentreButton />
     </>
   );
 };
