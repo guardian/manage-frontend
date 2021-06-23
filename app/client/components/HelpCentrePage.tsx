@@ -5,9 +5,10 @@ import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
 import { CMPBanner } from "./consent/CMPBanner";
+import { HelpCenterContentWrapper } from "./HelpCenterContentWrapper";
 import { PageTitle } from "./helpCentre/pageTitle";
 import { SeoData } from "./helpCentre/seoData";
-import HelpCentrePageSkeleton from "./HelpCentrePageSkeleton";
+import HelpCentreLoadingContent from "./HelpCentreLoadingContent";
 import { WithLiveChatContainer } from "./liveChat/liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
@@ -42,23 +43,25 @@ const HelpCentreRouter = () => {
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
       <WithLiveChatContainer />
-      <Suspense fallback={<HelpCentrePageSkeleton />}>
-        <Router primary={true} css={{ height: "100%" }}>
-          <HelpCentre path="/help-centre" />
+      <HelpCenterContentWrapper>
+        <Suspense fallback={<HelpCentreLoadingContent />}>
+          <Router primary={true} css={{ height: "100%" }}>
+            <HelpCentre path="/help-centre" />
 
-          <HelpCentreArticle path="/help-centre/article/:articleCode" />
-          <HelpCentreTopic path="/help-centre/topic/:topicCode" />
+            <HelpCentreArticle path="/help-centre/article/:articleCode" />
+            <HelpCentreTopic path="/help-centre/topic/:topicCode" />
 
-          <ContactUs path="/help-centre/contact-us" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-          <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
+            <ContactUs path="/help-centre/contact-us" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
+            <ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
 
-          {/* otherwise redirect to root instead of having a "not found page" */}
-          <Redirect default from="/*" to="/help-centre" noThrow />
-        </Router>
-      </Suspense>
+            {/* otherwise redirect to root instead of having a "not found page" */}
+            <Redirect default from="/*" to="/help-centre" noThrow />
+          </Router>
+        </Suspense>
+      </HelpCenterContentWrapper>
     </Main>
   );
 };

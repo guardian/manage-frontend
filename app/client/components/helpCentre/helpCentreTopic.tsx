@@ -1,12 +1,10 @@
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
-import { SectionContent } from "../sectionContent";
-import { SectionHeader } from "../sectionHeader";
+import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
-import { helpCentreNavConfig } from "./helpCentreConfig";
 import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpCentreSingleTopic } from "./helpCentreSingleTopic";
 import { MoreTopics, SingleTopic } from "./HelpCentreTypes";
@@ -49,17 +47,15 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
       );
   }, [props.topicCode]);
 
-  const selectedNavTopic = helpCentreNavConfig.find(
-    topic => topic.id === props.topicCode
-  );
+  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+  useEffect(() => {
+    setSelectedTopicObject(props.topicCode);
+  }, []);
 
   return (
     <>
-      <SectionHeader title="How can we help you?" pageHasNav={true} />
-      <SectionContent hasNav={true} selectedTopicObject={selectedNavTopic}>
-        {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
-        <BackToHelpCentreButton />
-      </SectionContent>
+      {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
+      <BackToHelpCentreButton />
     </>
   );
 };
