@@ -12,7 +12,6 @@ import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
-import { helpCentreNavConfig } from "./helpCentreConfig";
 import { h2Css } from "./helpCentreStyles";
 import {
   Article,
@@ -52,13 +51,9 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
       );
   }, [props.articleCode]);
 
-  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+  const setSelectedTopicId = React.useContext(SelectedTopicObjectContext);
   useEffect(() => {
-    const selectedNavTopic = helpCentreNavConfig.find(
-      topic => topic.id === article?.topics[0].path
-    );
-
-    setSelectedTopicObject(selectedNavTopic?.id);
+    setSelectedTopicId(article?.topics[0].path);
   }, [article]);
 
   return (

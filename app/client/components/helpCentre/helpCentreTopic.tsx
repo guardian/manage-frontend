@@ -5,7 +5,6 @@ import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
-import { helpCentreNavConfig } from "./helpCentreConfig";
 import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpCentreSingleTopic } from "./helpCentreSingleTopic";
 import { MoreTopics, SingleTopic } from "./HelpCentreTypes";
@@ -50,11 +49,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
 
   const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
   useEffect(() => {
-    const selectedNavTopic = helpCentreNavConfig.find(
-      topic => topic.id === props.topicCode
-    );
-
-    setSelectedTopicObject(selectedNavTopic?.id);
+    setSelectedTopicObject(props.topicCode);
   }, []);
 
   return (
