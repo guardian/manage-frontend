@@ -48,12 +48,14 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
       );
   }, [props.topicCode]);
 
-  const selectedNavTopic = helpCentreNavConfig.find(
-    topic => topic.id === props.topicCode
-  );
-
   const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
-  setSelectedTopicObject(selectedNavTopic);
+  useEffect(() => {
+    const selectedNavTopic = helpCentreNavConfig.find(
+      topic => topic.id === props.topicCode
+    );
+
+    setSelectedTopicObject(selectedNavTopic?.id);
+  }, []);
 
   return (
     <>

@@ -5,7 +5,7 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import React, { useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
-import { HelpCentreNavConfig, helpCentreNavConfig } from "./helpCentreConfig";
+import { helpCentreNavConfig } from "./helpCentreConfig";
 import {
   innerSectionCss,
   innerSectionDivCss,
@@ -15,7 +15,7 @@ import {
 } from "./helpCentreStyles";
 
 interface HelpCentreNavProps {
-  selectedTopicObject?: HelpCentreNavConfig;
+  selectedTopicId?: string;
 }
 
 const desktopUlCss = css`
@@ -89,9 +89,7 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
 
   const spanCss = (topicId: string) => css`
     ${linkAnchorStyle};
-    font-weight: ${topicId === props.selectedTopicObject?.id
-      ? "bold"
-      : "normal"};
+    font-weight: ${topicId === props.selectedTopicId ? "bold" : "normal"};
   `;
 
   return (
@@ -101,7 +99,7 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
           <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>
             <li
               css={desktopLiCss(
-                props.selectedTopicObject?.id === topic.id,
+                props.selectedTopicId === topic.id,
                 topicIndex === 0
               )}
             >

@@ -3,13 +3,11 @@ import { breakpoints, palette, space } from "@guardian/src-foundations";
 import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
-import { HelpCentreNavConfig } from "./helpCentre/helpCentreConfig";
 import HelpCentreNav from "./helpCentre/helpCentreNav";
 
 interface SectionContentProps {
   children: ReactNode;
   hasNav?: boolean;
-  selectedTopicObject?: HelpCentreNavConfig;
 }
 
 const sectionCss = (hasNav: boolean, isNavSection: boolean) => ({
@@ -66,23 +64,23 @@ const divCss = (hasNav: boolean | undefined) => css`
 `;
 
 export const SelectedTopicObjectContext = React.createContext<
-  Dispatch<SetStateAction<HelpCentreNavConfig | undefined>>
+  Dispatch<SetStateAction<string | undefined>>
 >(undefined!);
 
 export const SectionContent = (props: SectionContentProps) => {
-  const [selectedTopicObject, setSelectedTopicObject] = useState<
-    HelpCentreNavConfig | undefined
-  >(props.selectedTopicObject);
+  const [selectedTopicId, setSelectedTopicId] = useState<string | undefined>(
+    undefined
+  );
 
   return (
     <div css={containerCss}>
       <div css={divCss(props.hasNav)}>
         {props.hasNav && (
           <section css={sectionCss(props.hasNav || false, true)}>
-            <HelpCentreNav selectedTopicObject={selectedTopicObject} />
+            <HelpCentreNav selectedTopicId={selectedTopicId} />
           </section>
         )}
-        <SelectedTopicObjectContext.Provider value={setSelectedTopicObject}>
+        <SelectedTopicObjectContext.Provider value={setSelectedTopicId}>
           <section css={sectionCss(props.hasNav || false, false)}>
             {props.children}
           </section>
