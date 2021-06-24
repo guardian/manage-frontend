@@ -231,6 +231,14 @@ const liveChatCss = css`
   .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
     background: ${brand[400]};
   }
+
+  /* Pre chat form */
+
+  /* Hide the identity field */
+  .inputText.embeddedServiceSidebarFormField
+    .uiInput.uiInputText.uiInput--default.uiInput--input {
+    display: none;
+  }
 `;
 
 export const LiveChat = () => {
