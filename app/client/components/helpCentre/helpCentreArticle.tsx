@@ -1,6 +1,6 @@
 import css from "@emotion/css";
 import { Button } from "@guardian/src-button";
-import { neutral, space } from "@guardian/src-foundations";
+import { brand, neutral, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
@@ -91,6 +91,11 @@ interface ArticleBodyProps {
 }
 
 const ArticleBody = (props: ArticleBodyProps) => {
+  const aCss = css`
+    color: ${brand[500]};
+    text-decoration: underline;
+  `;
+
   // This is to appease React's "Lists need a unique key" error
   let keyCounter = 0;
   const getKey = () => props.articleCode + keyCounter++;
@@ -128,7 +133,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
         case "a": {
           const node = body as LinkNode;
           return (
-            <a key={key} href={node.href}>
+            <a key={key} href={node.href} css={aCss}>
               {parseBody(node.content)}
             </a>
           );
