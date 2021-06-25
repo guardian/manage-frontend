@@ -13,7 +13,8 @@ import {
 const initESW = (
   gslbBaseUrl: string | null,
   liveChatAPI: any,
-  targetElement: HTMLElement
+  targetElement: HTMLElement,
+  identityID: string
 ) => {
   // tslint:disable-next-line:no-object-mutation
   liveChatAPI.settings.displayHelpButton = false; // Or false
@@ -90,9 +91,78 @@ const initESW = (
       isOfflineSupportEnabled: false
     }
   );
+
+  // tslint:disable-next-line:no-object-mutation
+  liveChatAPI.settings.extraPrechatFormDetails = [
+    {
+      label: "Origin Channel",
+      value: "Live Chat"
+    },
+    {
+      label: "Identity ID",
+      value: identityID
+    },
+    {
+      label: "Contact First Name",
+      value: "<firstNameEnteredToForm>",
+      transcriptFields: ["Contact_First_Name__c"]
+    },
+    {
+      label: "Contact Last Name",
+      value: "<lastNameEnteredToForm>",
+      transcriptFields: ["Contact_Last_Name__c"]
+    },
+    {
+      label: "Contact Email",
+      value: "<EmailEnteredToForm>",
+      transcriptFields: ["Contact_Email__c"]
+    }
+  ];
+
+  // tslint:disable-next-line:no-object-mutation
+  liveChatAPI.settings.extraPrechatInfo = [
+    {
+      entityFieldMaps: [
+        {
+          doCreate: false,
+          doFind: false,
+          fieldName: "LastName",
+          isExactMatch: true,
+          label: "Last Name"
+        },
+        {
+          doCreate: false,
+          doFind: false,
+          fieldName: "FirstName",
+          isExactMatch: true,
+          label: "First Name"
+        },
+        {
+          doCreate: false,
+          doFind: true,
+          fieldName: "IdentityID__c",
+          isExactMatch: true,
+          label: "Identity ID"
+        }
+      ],
+      entityName: "Contact"
+    },
+    {
+      entityFieldMaps: [
+        {
+          doCreate: true,
+          doFind: false,
+          fieldName: "Origin_Channel__c",
+          isExactMatch: true,
+          label: "Origin Channel"
+        }
+      ],
+      entityName: "Case"
+    }
+  ];
 };
 
-const initLiveChat = (targetElement: HTMLElement) => {
+const initLiveChat = (targetElement: HTMLElement, identityID: string) => {
   if (!window.embedded_svc) {
     const s = document.createElement("script");
     s.setAttribute(
@@ -101,11 +171,16 @@ const initLiveChat = (targetElement: HTMLElement) => {
     );
     // tslint:disable-next-line:no-object-mutation
     s.onload = () => {
-      initESW(null, window.embedded_svc, targetElement);
+      initESW(null, window.embedded_svc, targetElement, identityID);
     };
     document.body.appendChild(s);
   } else {
-    initESW("https://service.force.com", window.embedded_svc, targetElement);
+    initESW(
+      "https://service.force.com",
+      window.embedded_svc,
+      targetElement,
+      identityID
+    );
   }
 };
 
@@ -231,14 +306,6 @@ const liveChatCss = css`
   .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
     background: ${brand[400]};
   }
-
-  /* Pre chat form */
-
-  /* Hide the identity field */
-  .inputText.embeddedServiceSidebarFormField
-    .uiInput.uiInputText.uiInput--default.uiInput--input {
-    display: none;
-  }
 `;
 
 export const LiveChat = () => {
@@ -262,7 +329,14 @@ export const LiveChat = () => {
       window.sessionStorage.getItem("liveChat") === "1" &&
       liveChatContainerRef.current
     ) {
-      initLiveChat(liveChatContainerRef.current);
+      if (window.guardian && window.guardian.identityDetails.userId) {
+        initLiveChat(
+          liveChatContainerRef.current,
+          window.guardian.identityDetails.userId
+        );
+      } else {
+        initLiveChat(liveChatContainerRef.current, "");
+      }
     }
   }, []);
 
