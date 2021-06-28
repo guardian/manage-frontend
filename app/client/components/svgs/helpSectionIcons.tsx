@@ -12,11 +12,11 @@ export const getHelpSectionIcon = (sectionId: string) => {
       return <BillingIcon />;
     case "accounts-and-sign-in":
       return <AccountsAndSignInIcon />;
-    case "the-guardian-website":
+    case "website":
       return <TheGuardianWebsiteIcon />;
     case "journalism":
       return <JournalismIcon />;
-    case "print-subscriptions":
+    case "subscriptions":
       return <PrintSubscriptionsIcon />;
     default:
       return <SvgWrapper />;

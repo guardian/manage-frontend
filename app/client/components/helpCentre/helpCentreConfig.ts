@@ -127,7 +127,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
       "https://www.theguardian.com/help/2021/feb/03/all-accounts-sign-in-topics"
   },
   {
-    id: "the-guardian-website",
+    id: "website",
     title: "The Guardian Website",
     links: [
       {
@@ -203,7 +203,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
       "https://www.theguardian.com/help/2021/feb/03/all-journalism-topics"
   },
   {
-    id: "print-subscriptions",
+    id: "subscriptions",
     title: "Print Subscriptions",
     links: [
       {
@@ -410,8 +410,8 @@ export const helpCentreNavConfig: HelpCentreNavConfig[] = [
   { id: "delivery", title: "Delivery" },
   { id: "billing", title: "Billing" },
   { id: "accounts", title: "Accounts & Sign in" },
-  { id: "the-guardian-website", title: "The Guardian Website" },
+  { id: "website", title: "The Guardian Website" },
   { id: "journalism", title: "Journalism" },
-  { id: "print-subscriptions", title: "Print Subscriptions" },
+  { id: "subscriptions", title: "Print Subscriptions" },
   { id: "more-topics", title: "More Topics" }
 ];

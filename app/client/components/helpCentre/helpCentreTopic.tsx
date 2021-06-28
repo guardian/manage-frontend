@@ -21,6 +21,8 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     undefined
   );
 
+  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+
   useEffect(() => {
     setSingleTopic(undefined);
     setMoreTopics(undefined);
@@ -45,12 +47,8 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
           `Failed to fetch topic ${props.topicCode}. Error: ${error}`
         )
       );
-  }, [props.topicCode]);
-
-  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
-  useEffect(() => {
     setSelectedTopicObject(props.topicCode);
-  }, []);
+  }, [props.topicCode]);
 
   return (
     <>
