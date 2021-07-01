@@ -7,6 +7,7 @@ import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
@@ -69,6 +70,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
               articleCode={props.articleCode ?? ""}
             />
             <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
+            <CallCentreEmailAndNumbers />
           </>
         ) : (
           <Loading />
