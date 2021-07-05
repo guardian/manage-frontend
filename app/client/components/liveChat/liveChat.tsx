@@ -103,18 +103,20 @@ const initESW = (
       value: identityID
     },
     {
-      label: "Contact First Name",
-      value: "<firstNameEnteredToForm>",
+      label: "Contact Identity Id",
+      value: identityID,
+      transcriptFields: ["Contact_Identity_Id__c"]
+    },
+    {
+      label: "First Name",
       transcriptFields: ["Contact_First_Name__c"]
     },
     {
-      label: "Contact Last Name",
-      value: "<lastNameEnteredToForm>",
+      label: "Last Name",
       transcriptFields: ["Contact_Last_Name__c"]
     },
     {
-      label: "Contact Email",
-      value: "<EmailEnteredToForm>",
+      label: "Web Email",
       transcriptFields: ["Contact_Email__c"]
     }
   ];
