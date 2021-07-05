@@ -308,6 +308,11 @@ const liveChatCss = css`
   .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
     background: ${brand[400]};
   }
+
+  /* Pre chat form */
+  .disabledField {
+    color: ${neutral[46]} !important;
+  }
 `;
 
 export const LiveChat = () => {
@@ -346,8 +351,32 @@ export const LiveChat = () => {
 };
 
 export const StartLiveChatButton = () => {
-  function bootstrapChat(): void {
-    window.embedded_svc.bootstrapEmbeddedService();
+  function updatePreChatEmailField(): void {
+    const preChatEmailField = document.getElementById(
+      "SuppliedEmail"
+    ) as HTMLInputElement;
+    if (window.guardian.identityDetails.email && preChatEmailField) {
+      // tslint:disable-next-line:no-object-mutation
+      preChatEmailField.value = window.guardian.identityDetails.email;
+      const event = new Event("change");
+      // Dispatch change event that salesforce is likely listening for before validating input fields
+      // tslint:disable-next-line:no-object-mutation
+      preChatEmailField.dispatchEvent(event);
+      // tslint:disable-next-line:no-object-mutation
+      preChatEmailField.disabled = true;
+      preChatEmailField.classList.add("disabledField");
+    }
+
+    const preChatEmailFieldLabel = document.querySelectorAll(
+      '[data-aura-rendered-by="401:0"]'
+    )[0];
+    // tslint:disable-next-line:no-object-mutation
+    preChatEmailFieldLabel.textContent = "Email";
+  }
+
+  async function bootstrapChat(): Promise<void> {
+    await window.embedded_svc.bootstrapEmbeddedService();
+    updatePreChatEmailField();
   }
 
   return (
