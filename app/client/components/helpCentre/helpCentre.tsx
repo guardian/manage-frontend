@@ -42,7 +42,7 @@ const HelpCentre = (_: RouteComponentProps) => {
             justify-content: space-between;
           `}
         >
-          {helpCentreConfig.map(topic => (
+          {helpCentreConfig.map((topic) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
@@ -59,7 +59,6 @@ const HelpCentre = (_: RouteComponentProps) => {
         ) : (
           <CallCentreEmailAndNumbers />
         )}
-
         <p
           css={css`
             ${textSans.medium()};
@@ -78,7 +77,7 @@ const HelpCentre = (_: RouteComponentProps) => {
           onClick={() =>
             trackEvent({
               eventCategory: "help-centre",
-              eventAction: "contact-us-cta-click"
+              eventAction: "contact-us-cta-click",
             })
           }
         />
