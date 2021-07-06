@@ -9,6 +9,7 @@ import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { helpCentreConfig } from "./helpCentreConfig";
+// import HelpCentreEmailAndLiveChat from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpTopicBox } from "./HelpTopicBox";
 
@@ -47,6 +48,8 @@ const HelpCentre = (_: RouteComponentProps) => {
         once we convert the landing page to loading dynamic content */}
         <HelpCentreLandingMoreTopics />
         <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
+        {/* HelpCentreEmailAndLiveChat to be added upon the release of the live chat */}
+        {/* <HelpCentreEmailAndLiveChat /> */}
         <CallCentreEmailAndNumbers />
         <p
           css={css`

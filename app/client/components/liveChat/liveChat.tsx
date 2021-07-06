@@ -212,6 +212,10 @@ export const LiveChat = () => {
   return <div ref={liveChatContainerRef} css={liveChatCss} />;
 };
 
+const liveChatButtonCss = css`
+  margin-bottom: ${space[5]}px;
+`;
+
 export const StartLiveChatButton = () => {
   const bootstrapChat = async () => {
     await window.embedded_svc.bootstrapEmbeddedService();
@@ -226,7 +230,11 @@ export const StartLiveChatButton = () => {
   };
 
   return (
-    <Button priority="secondary" onClick={() => bootstrapChat()}>
+    <Button
+      priority="secondary"
+      onClick={() => bootstrapChat()}
+      css={liveChatButtonCss}
+    >
       Start live chat
     </Button>
   );
