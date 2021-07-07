@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { neutral } from "@guardian/src-foundations/palette";
 import React, { useEffect, useRef } from "react";
@@ -29,7 +29,7 @@ const initESW = (
     defaultMinimizedText: "Live chat",
     disabledMinimizedText: "Live chat",
     prepopulatedPrechatFields: {
-      SuppliedEmail: loginEmail
+      SuppliedEmail: loginEmail,
     },
     enabledFeatures: ["LiveAgent"],
     entryFeature: "LiveAgent",
@@ -39,29 +39,29 @@ const initESW = (
     extraPrechatFormDetails: [
       {
         label: "Origin Channel",
-        value: "Live Chat"
+        value: "Live Chat",
       },
       {
         label: "Identity ID",
-        value: identityID
+        value: identityID,
       },
       {
         label: "Contact Identity Id",
         value: identityID,
-        transcriptFields: ["Contact_Identity_Id__c"]
+        transcriptFields: ["Contact_Identity_Id__c"],
       },
       {
         label: "First Name",
-        transcriptFields: ["Contact_First_Name__c"]
+        transcriptFields: ["Contact_First_Name__c"],
       },
       {
         label: "Last Name",
-        transcriptFields: ["Contact_Last_Name__c"]
+        transcriptFields: ["Contact_Last_Name__c"],
       },
       {
         label: "Web Email",
-        transcriptFields: ["Contact_Email__c"]
-      }
+        transcriptFields: ["Contact_Email__c"],
+      },
     ],
     extraPrechatInfo: [
       {
@@ -71,24 +71,24 @@ const initESW = (
             doFind: false,
             fieldName: "LastName",
             isExactMatch: true,
-            label: "Last Name"
+            label: "Last Name",
           },
           {
             doCreate: false,
             doFind: false,
             fieldName: "FirstName",
             isExactMatch: true,
-            label: "First Name"
+            label: "First Name",
           },
           {
             doCreate: false,
             doFind: true,
             fieldName: "IdentityID__c",
             isExactMatch: true,
-            label: "Identity ID"
-          }
+            label: "Identity ID",
+          },
         ],
-        entityName: "Contact"
+        entityName: "Contact",
       },
       {
         entityFieldMaps: [
@@ -97,12 +97,12 @@ const initESW = (
             doFind: false,
             fieldName: "Origin_Channel__c",
             isExactMatch: true,
-            label: "Origin Channel"
-          }
+            label: "Origin Channel",
+          },
         ],
-        entityName: "Case"
-      }
-    ]
+        entityName: "Case",
+      },
+    ],
   };
 
   // tslint:disable-next-line:no-object-mutation
@@ -143,7 +143,7 @@ const initESW = (
       baseLiveAgentURL: "https://d.la2-c1cs-fra.salesforceliveagent.com/chat",
       eswLiveAgentDevName:
         "EmbeddedServiceLiveAgent_Parent04I9E0000008OxDUAU_1797a576c18",
-      isOfflineSupportEnabled: false
+      isOfflineSupportEnabled: false,
     }
   );
 };
@@ -212,13 +212,14 @@ export const LiveChat = () => {
   return <div ref={liveChatContainerRef} css={liveChatCss} />;
 };
 
-const liveChatButtonCss = css`
-  margin-bottom: ${space[5]}px;
-`;
+interface StartLiveChatButtonProps {
+  liveChatButtonCss: SerializedStyles;
+}
 
-export const StartLiveChatButton = () => {
+export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
   const bootstrapChat = async () => {
     await window.embedded_svc.bootstrapEmbeddedService();
+
     const preChatEmailField = document.getElementById(
       "SuppliedEmail"
     ) as HTMLInputElement;
@@ -233,7 +234,7 @@ export const StartLiveChatButton = () => {
     <Button
       priority="secondary"
       onClick={() => bootstrapChat()}
-      css={liveChatButtonCss}
+      css={props.liveChatButtonCss}
     >
       Start live chat
     </Button>
