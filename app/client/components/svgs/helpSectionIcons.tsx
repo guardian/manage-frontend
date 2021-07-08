@@ -22,6 +22,8 @@ export const getHelpSectionIcon = (sectionId: string) => {
       return <EmailUsIcon />;
     case "chat-with-us":
       return <ChatWithUsIcon />;
+    case "call-us":
+      return <CallUsIcon />;
     default:
       return <SvgWrapper />;
   }
@@ -287,8 +289,8 @@ export const ChatWithUsIcon = (props: HelpSectionIconProps) => (
   <SvgWrapper size={props.size || 39}>
     <g>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M29.3242 14.688L27.6992 13.063H11.4492L9.82422 14.688V24.4379L11.4221 26.0629H14.1575V31.4796H15.2138L18.4909 26.0629H27.6992L29.3242 24.4379V14.688Z"
         fill="white"
       />
@@ -296,5 +298,15 @@ export const ChatWithUsIcon = (props: HelpSectionIconProps) => (
       <circle cx="19.5748" cy="19.5523" r="1.23884" fill="#052962" />
       <circle cx="24.5299" cy="19.5523" r="1.23884" fill="#052962" />
     </g>
+  </SvgWrapper>
+);
+
+const CallUsIcon = () => (
+  <SvgWrapper size={39}>
+    <circle cx="19.5" cy="19.65" r="19.5" fill="#052962" />
+    <path
+      d="M28.917 23.844c-.518-.236-3.05-1.436-3.527-1.593-.477-.157-.809-.236-1.162.236-.352.492-1.327 1.593-1.639 1.907-.29.335-.601.374-1.12.118-.519-.236-2.178-.767-4.15-2.418-1.535-1.298-2.572-2.89-2.862-3.382-.312-.492-.042-.747.228-1.003.228-.216.518-.57.767-.865.25-.295.353-.492.519-.826.166-.334.083-.61-.041-.865-.125-.236-1.162-2.655-1.598-3.638-.415-.963-.85-.826-1.162-.845-.29-.02-.643-.02-.996-.02a1.88 1.88 0 00-1.369.61C10.349 11.75 9 12.93 9 15.35c0 2.398 1.847 4.738 2.116 5.053.25.334 3.631 5.27 8.818 7.393 1.224.511 2.199.806 2.946 1.023 1.245.373 2.365.314 3.257.196.996-.138 3.05-1.18 3.486-2.32.435-1.14.435-2.124.29-2.32-.124-.158-.477-.276-.996-.531z"
+      fill="#fff"
+    />
   </SvgWrapper>
 );

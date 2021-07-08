@@ -3,6 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useState } from "react";
+import { minWidth } from "../styles/breakpoints";
 import { CallCentreNumbersProps } from "./callCentreNumbers";
 
 const contactUsStyles = {
@@ -92,9 +93,18 @@ export const CallCentreEmailAndNumbers = (
   const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
     ${textSans.medium()};
     margin: 0;
-    padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
+    padding: ${space[4]}px ${space[4] * 2 + 15}px ${space[4]}px ${space[4]}px;
     position: relative;
     cursor: pointer;
+    ${
+      isOpen
+        ? `
+        font-weight: bold;
+        background-color: ${neutral["97"]};
+        border-bottom: 1px solid ${neutral["86"]};
+      `
+        : ""
+    }
     :after {
       content: "";
       display: block;
@@ -104,8 +114,10 @@ export const CallCentreEmailAndNumbers = (
       border-right: 2px solid ${neutral["7"]};
       position: absolute;
       top: 50%;
-      transform: translateY(-50%) ${
-        isOpen ? "rotate(-45deg)" : "rotate(135deg)"
+      transform: ${
+        isOpen
+          ? "translateY(-1px) rotate(-45deg)"
+          : "translateY(-3.5px) rotate(135deg)"
       };
       transition: transform 0.4s;
       right: 17px;
@@ -117,21 +129,40 @@ export const CallCentreEmailAndNumbers = (
         display: block;
         position: absolute;
         top: 0;
-        left: 12px;
-        width: calc(100% - 24px);
+        left: 0;
+        width: 100%;
         height: 1px;
         background-color: ${neutral["86"]}
       }
     `}
   `;
+
+  const showHideSpanCss = css`
+    display: none;
+    user-select: none;
+    ${minWidth.desktop} {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  `;
+
   const innerSectionCss = (isOpen: boolean) => `
     display: ${isOpen ? "block" : "none"};
     background-color: ${neutral["97"]};
-    padding: 12px;
+    padding: ${space[4]}px;
   `;
 
   const innerSectionPCss = `
     ${textSans.medium()};
+    margin-bottom: 0;
+    & + p {
+      margin-top: ${space[4]}px;
+    }
   `;
 
   const innerSectionBlockSpanCss = `
@@ -169,6 +200,9 @@ export const CallCentreEmailAndNumbers = (
                 onClick={handleSectionClick(index)}
               >
                 {phoneRegion.title}
+                <span css={showHideSpanCss} aria-hidden="true">
+                  {isOpen ? "Hide" : "Show"}
+                </span>
               </h2>
               <div
                 css={css`
@@ -194,13 +228,15 @@ export const CallCentreEmailAndNumbers = (
                     </span>
                   </>
                 )}
-                <h4
-                  css={css`
-                    ${innerSectionTitleCss}
-                  `}
-                >
-                  Phone:
-                </h4>
+                {!props.hideEmailAddress && (
+                  <h4
+                    css={css`
+                      ${innerSectionTitleCss}
+                    `}
+                  >
+                    Phone:
+                  </h4>
+                )}
                 <p
                   css={css`
                     ${innerSectionPCss}
