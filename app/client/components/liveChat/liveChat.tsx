@@ -14,7 +14,8 @@ const initESW = (
   gslbBaseUrl: string | null,
   liveChatAPI: any,
   targetElement: HTMLElement,
-  identityID: string
+  identityID: string,
+  identityEmail: string
 ) => {
   // tslint:disable-next-line:no-object-mutation
   liveChatAPI.settings.displayHelpButton = false; // Or false
@@ -33,7 +34,10 @@ const initESW = (
   // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
   // Returns a valid button ID.
   // };
-  // liveChatAPI.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+  // tslint:disable-next-line:no-object-mutation
+  liveChatAPI.settings.prepopulatedPrechatFields = {
+    SuppliedEmail: identityEmail
+  }; // Sets the auto-population of pre-chat form fields
   // liveChatAPI.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
   // liveChatAPI.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
 
@@ -164,7 +168,11 @@ const initESW = (
   ];
 };
 
-const initLiveChat = (targetElement: HTMLElement, identityID: string) => {
+const initLiveChat = (
+  targetElement: HTMLElement,
+  identityID: string,
+  identityEmail: string
+) => {
   if (!window.embedded_svc) {
     const s = document.createElement("script");
     s.setAttribute(
@@ -173,7 +181,13 @@ const initLiveChat = (targetElement: HTMLElement, identityID: string) => {
     );
     // tslint:disable-next-line:no-object-mutation
     s.onload = () => {
-      initESW(null, window.embedded_svc, targetElement, identityID);
+      initESW(
+        null,
+        window.embedded_svc,
+        targetElement,
+        identityID,
+        identityEmail
+      );
     };
     document.body.appendChild(s);
   } else {
@@ -181,7 +195,8 @@ const initLiveChat = (targetElement: HTMLElement, identityID: string) => {
       "https://service.force.com",
       window.embedded_svc,
       targetElement,
-      identityID
+      identityID,
+      identityEmail
     );
   }
 };
@@ -336,13 +351,18 @@ export const LiveChat = () => {
       window.sessionStorage.getItem("liveChat") === "1" &&
       liveChatContainerRef.current
     ) {
-      if (window.guardian && window.guardian.identityDetails.userId) {
+      if (
+        window.guardian &&
+        window.guardian.identityDetails.userId &&
+        window.guardian.identityDetails.email
+      ) {
         initLiveChat(
           liveChatContainerRef.current,
-          window.guardian.identityDetails.userId
+          window.guardian.identityDetails.userId,
+          window.guardian.identityDetails.email
         );
       } else {
-        initLiveChat(liveChatContainerRef.current, "");
+        initLiveChat(liveChatContainerRef.current, "", "");
       }
     }
   }, []);
@@ -356,12 +376,6 @@ export const StartLiveChatButton = () => {
       "SuppliedEmail"
     ) as HTMLInputElement;
     if (window.guardian.identityDetails.email && preChatEmailField) {
-      // tslint:disable-next-line:no-object-mutation
-      preChatEmailField.value = window.guardian.identityDetails.email;
-      const event = new Event("change");
-      // Dispatch change event that salesforce is likely listening for before validating input fields
-      // tslint:disable-next-line:no-object-mutation
-      preChatEmailField.dispatchEvent(event);
       // tslint:disable-next-line:no-object-mutation
       preChatEmailField.disabled = true;
       preChatEmailField.classList.add("disabledField");
