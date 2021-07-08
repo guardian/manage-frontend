@@ -380,12 +380,6 @@ export const StartLiveChatButton = () => {
       preChatEmailField.disabled = true;
       preChatEmailField.classList.add("disabledField");
     }
-
-    const preChatEmailFieldLabel = document.querySelectorAll(
-      '[data-aura-rendered-by="401:0"]'
-    )[0];
-    // tslint:disable-next-line:no-object-mutation
-    preChatEmailFieldLabel.textContent = "Email";
   }
 
   async function bootstrapChat(): Promise<void> {
