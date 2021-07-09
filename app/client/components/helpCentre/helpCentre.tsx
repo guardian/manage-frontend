@@ -11,10 +11,10 @@ import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { helpCentreConfig } from "./helpCentreConfig";
 import HelpCentreEmailAndLiveChat from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
-import { HelpTopicBox } from "./HelpTopicBox";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
+import { HelpTopicBox } from "./HelpTopicBox";
 
-const isLiveChatReleased = true;
+const isLiveChatReleased = false;
 
 const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
