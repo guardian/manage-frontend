@@ -1,14 +1,7 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { brand, neutral, space } from "@guardian/src-foundations";
 import React, { useEffect, useRef } from "react";
-import { sans } from "../../styles/fonts";
-import {
-  avatarImg,
-  chatHeaderIcon,
-  minimisedChatSpeechBubble,
-  prechatBackgroundImg
-} from "./liveChatBase64Images";
+import { avatarImg, prechatBackgroundImg } from "./liveChatBase64Images";
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -189,6 +182,10 @@ const initLiveChat = (
         identityEmail
       );
     };
+    // tslint:disable-next-line:no-object-mutation
+    s.onerror = () => {
+      // Perhaps the user is in an incognito session and the script loading has been blocked
+    };
     document.body.appendChild(s);
   } else {
     initESW(
@@ -205,128 +202,6 @@ const liveChatCss = css`
   /* Container */
   .embeddedServiceSidebar.layout-docked .dockableContainer {
     border-radius: 0;
-  }
-
-  /* Minimised chat button */
-  .embeddedServiceHelpButton .helpButton .uiButton {
-    background-color: ${brand[400]};
-    font-family: ${sans};
-  }
-
-  @media only screen and (min-width: 48em) {
-    .embeddedServiceHelpButton .helpButton .uiButton,
-    .embeddedServiceSidebarMinimizedDefaultUI {
-      border-radius: 0;
-    }
-  }
-
-  .embeddedServiceHelpButton .helpButton .uiButton:focus {
-    outline: 1px solid ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI {
-    box-shadow: none;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI,
-  .embeddedServiceSidebarMinimizedDefaultUI:hover,
-  .embeddedServiceSidebarMinimizedDefaultUI:focus,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:hover,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:focus {
-    bottom: ${space[3]}px;
-    border-radius: 0;
-    background: ${neutral[100]};
-    border: 2px solid ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .content {
-    color: ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .embeddedServiceIcon {
-    display: none;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message {
-    margin-bottom: ${space[1]}px;
-    overflow: visible;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message::before {
-    content: url(${minimisedChatSpeechBubble});
-    position: relative;
-    top: 6px;
-    margin-right: ${space[1]}px;
-  }
-
-  /* Waiting to chat */
-  .embeddedServiceLiveAgentStateWaiting .waitingStateContent {
-    text-align: initial;
-    justify-content: flex-start;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingMessage {
-    padding: 0;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingGreetingContent {
-    color: ${neutral[46]};
-    margin: ${space[5]}px 0;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingGreeting {
-    font-size: 17px;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
-    padding-top: 0;
-    align-self: flex-start;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .loadingBall,
-  .embeddedServiceLoadingBalls.tiny .loadingBall {
-    background-color: #c4c4c4;
-  }
-
-  .embeddedServiceSidebarButton {
-    background: ${brand[400]};
-    border: 1px solid ${neutral[46]};
-  }
-
-  /* Chat header */
-  h2[embeddedService-chatHeader_chatHeader] {
-    overflow: visible;
-  }
-
-  h2[embeddedService-chatHeader_chatHeader]::before {
-    content: url(${chatHeaderIcon});
-    position: relative;
-    top: ${space[2]}px;
-    margin-right: ${space[2]}px;
-  }
-
-  /* Chat body */
-  .embeddedServiceSidebar .sidebarBody {
-    font-family: ${sans};
-  }
-
-  .embeddedServiceSidebarButton:focus {
-    text-decoration: none;
-  }
-
-  /* Chat messages */
-  .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.agent.plaintextContent {
-    background: #ededed;
-  }
-
-  .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
-    background: ${brand[400]};
-  }
-
-  /* Pre chat form */
-  .disabledField {
-    color: ${neutral[46]} !important;
   }
 `;
 
