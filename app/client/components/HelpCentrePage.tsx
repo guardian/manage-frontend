@@ -42,7 +42,6 @@ const HelpCentreRouter = () => {
     <Main>
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
-      <LiveChat />
       <HelpCenterContentWrapper>
         <Suspense fallback={<HelpCentreLoadingContent />}>
           <Router primary={true} css={{ height: "100%" }}>
@@ -62,6 +61,7 @@ const HelpCentreRouter = () => {
           </Router>
         </Suspense>
       </HelpCenterContentWrapper>
+      <LiveChat />
     </Main>
   );
 };
