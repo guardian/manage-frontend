@@ -1,14 +1,18 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
+import { neutral } from "@guardian/src-foundations/palette";
 import React, { useEffect, useRef } from "react";
 import { avatarImg, prechatBackgroundImg } from "./liveChatBase64Images";
 
 const liveChatParamName = "liveChat";
 
 const liveChatCss = css`
-  /* Container */
   .embeddedServiceSidebar.layout-docked .dockableContainer {
     border-radius: 0;
+  }
+
+  .disabledField {
+    color: ${neutral[46]} !important;
   }
 `;
 
@@ -208,11 +212,22 @@ export const LiveChat = () => {
   return <div ref={liveChatContainerRef} css={liveChatCss} />;
 };
 
-export const StartLiveChatButton = () => (
-  <Button
-    priority="secondary"
-    onClick={() => window.embedded_svc.bootstrapEmbeddedService()}
-  >
-    Start live chat
-  </Button>
-);
+export const StartLiveChatButton = () => {
+  const bootstrapChat = async () => {
+    await window.embedded_svc.bootstrapEmbeddedService();
+    const preChatEmailField = document.getElementById(
+      "SuppliedEmail"
+    ) as HTMLInputElement;
+    if (window.guardian?.identityDetails.email && preChatEmailField) {
+      // tslint:disable-next-line:no-object-mutation
+      preChatEmailField.disabled = true;
+      preChatEmailField.classList.add("disabledField");
+    }
+  };
+
+  return (
+    <Button priority="secondary" onClick={() => bootstrapChat()}>
+      Start live chat
+    </Button>
+  );
+};
