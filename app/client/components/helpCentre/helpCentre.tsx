@@ -9,7 +9,7 @@ import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { helpCentreConfig } from "./helpCentreConfig";
-import HelpCentreEmailAndLiveChat from "./helpCentreEmailAndLiveChat";
+import { HelpCentreEmailAndLiveChat } from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
 import { HelpTopicBox } from "./HelpTopicBox";
@@ -42,7 +42,7 @@ const HelpCentre = (_: RouteComponentProps) => {
             justify-content: space-between;
           `}
         >
-          {helpCentreConfig.map((topic) => (
+          {helpCentreConfig.map(topic => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>
@@ -77,7 +77,7 @@ const HelpCentre = (_: RouteComponentProps) => {
           onClick={() =>
             trackEvent({
               eventCategory: "help-centre",
-              eventAction: "contact-us-cta-click",
+              eventAction: "contact-us-cta-click"
             })
           }
         />

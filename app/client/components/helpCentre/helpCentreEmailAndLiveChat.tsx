@@ -124,7 +124,7 @@ const emailAndLiveChatButtonCss = css`
   margin-top: ${space[1]}px;
 `;
 
-const HelpCentreEmailAndLiveChat = () => (
+export const HelpCentreEmailAndLiveChat = () => (
   <>
     <p css={emailAndLiveChatSubheadingCss}>
       Get in touch with one of our customer service agents.
@@ -155,5 +155,3 @@ const HelpCentreEmailAndLiveChat = () => (
     </div>
   </>
 );
-
-export default HelpCentreEmailAndLiveChat;
