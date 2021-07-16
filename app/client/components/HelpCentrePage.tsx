@@ -9,7 +9,7 @@ import { HelpCenterContentWrapper } from "./HelpCenterContentWrapper";
 import { PageTitle } from "./helpCentre/pageTitle";
 import { SeoData } from "./helpCentre/seoData";
 import HelpCentreLoadingContent from "./HelpCentreLoadingContent";
-import { WithLiveChatContainer } from "./liveChat/liveChat";
+import { LiveChat } from "./liveChat/liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
 
@@ -42,7 +42,6 @@ const HelpCentreRouter = () => {
     <Main>
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
-      <WithLiveChatContainer />
       <HelpCenterContentWrapper>
         <Suspense fallback={<HelpCentreLoadingContent />}>
           <Router primary={true} css={{ height: "100%" }}>
@@ -62,6 +61,7 @@ const HelpCentreRouter = () => {
           </Router>
         </Suspense>
       </HelpCenterContentWrapper>
+      <LiveChat />
     </Main>
   );
 };

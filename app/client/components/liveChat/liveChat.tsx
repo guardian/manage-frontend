@@ -1,56 +1,112 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { brand, neutral, space } from "@guardian/src-foundations";
+import { neutral } from "@guardian/src-foundations/palette";
 import React, { useEffect, useRef } from "react";
-import { sans } from "../../styles/fonts";
-import {
-  avatarImg,
-  chatHeaderIcon,
-  minimisedChatSpeechBubble,
-  prechatBackgroundImg
-} from "./liveChatBase64Images";
+import { avatarImg, prechatBackgroundImg } from "./liveChatBase64Images";
+
+const liveChatParamName = "liveChat";
+
+const liveChatCss = css`
+  .embeddedServiceSidebar.layout-docked .dockableContainer {
+    border-radius: 0;
+  }
+
+  .disabledField {
+    color: ${neutral[46]} !important;
+  }
+`;
 
 const initESW = (
   gslbBaseUrl: string | null,
   liveChatAPI: any,
-  targetElement: HTMLElement
+  targetElement: HTMLElement,
+  identityID: string,
+  loginEmail: string
 ) => {
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.displayHelpButton = false; // Or false
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.language = ""; // For example, enter 'en' or 'en-US'
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.defaultMinimizedText = "Live chat"; // (Defaults to Chat with an Expert)
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.disabledMinimizedText = "Live chat"; // (Defaults to Agent Offline)
+  const liveChatConfig = {
+    displayHelpButton: false,
+    language: "",
+    defaultMinimizedText: "Live chat",
+    disabledMinimizedText: "Live chat",
+    prepopulatedPrechatFields: {
+      SuppliedEmail: loginEmail
+    },
+    enabledFeatures: ["LiveAgent"],
+    entryFeature: "LiveAgent",
+    avatarImgURL: avatarImg,
+    prechatBackgroundImgURL: prechatBackgroundImg,
+    targetElement,
+    extraPrechatFormDetails: [
+      {
+        label: "Origin Channel",
+        value: "Live Chat"
+      },
+      {
+        label: "Identity ID",
+        value: identityID
+      },
+      {
+        label: "Contact Identity Id",
+        value: identityID,
+        transcriptFields: ["Contact_Identity_Id__c"]
+      },
+      {
+        label: "First Name",
+        transcriptFields: ["Contact_First_Name__c"]
+      },
+      {
+        label: "Last Name",
+        transcriptFields: ["Contact_Last_Name__c"]
+      },
+      {
+        label: "Web Email",
+        transcriptFields: ["Contact_Email__c"]
+      }
+    ],
+    extraPrechatInfo: [
+      {
+        entityFieldMaps: [
+          {
+            doCreate: false,
+            doFind: false,
+            fieldName: "LastName",
+            isExactMatch: true,
+            label: "Last Name"
+          },
+          {
+            doCreate: false,
+            doFind: false,
+            fieldName: "FirstName",
+            isExactMatch: true,
+            label: "First Name"
+          },
+          {
+            doCreate: false,
+            doFind: true,
+            fieldName: "IdentityID__c",
+            isExactMatch: true,
+            label: "Identity ID"
+          }
+        ],
+        entityName: "Contact"
+      },
+      {
+        entityFieldMaps: [
+          {
+            doCreate: true,
+            doFind: false,
+            fieldName: "Origin_Channel__c",
+            isExactMatch: true,
+            label: "Origin Channel"
+          }
+        ],
+        entityName: "Case"
+      }
+    ]
+  };
 
-  // liveChatAPI.settings.loadingText = ''; //(Defaults to Loading)
-  // liveChatAPI.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
-
-  // Settings for Chat
-  // liveChatAPI.settings.directToButtonRouting = function(prechatFormData) {
-  // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
-  // Returns a valid button ID.
-  // };
-  // liveChatAPI.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
-  // liveChatAPI.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
-  // liveChatAPI.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
-
   // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.enabledFeatures = ["LiveAgent"];
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.entryFeature = "LiveAgent";
-
-  // [PLACEHOLDER] Chat images
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.avatarImgURL = avatarImg; // recommended size 40x40 pixels
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.prechatBackgroundImgURL = prechatBackgroundImg; // recommended size 320x100 pixels
-  // liveChatAPI.settings.smallCompanyLogoImgURL = ""; // recommended size 36x36 pixels
-
-  // Target DOM Element
-  // tslint:disable-next-line:no-object-mutation
-  liveChatAPI.settings.targetElement = targetElement;
+  liveChatAPI.settings = { ...liveChatAPI.settings, ...liveChatConfig };
 
   // Initialise live chat API in production
   //   liveChatAPI.init(
@@ -92,179 +148,82 @@ const initESW = (
   );
 };
 
-const initLiveChat = (targetElement: HTMLElement) => {
+const initLiveChat = (
+  targetElement: HTMLElement,
+  identityID: string,
+  loginEmail: string
+) => {
   if (!window.embedded_svc) {
-    const s = document.createElement("script");
-    s.setAttribute(
+    const liveChatScript = document.createElement("script");
+
+    liveChatScript.setAttribute(
       "src",
       "https://gnmtouchpoint.my.salesforce.com/embeddedservice/5.0/esw.min.js"
     );
+
     // tslint:disable-next-line:no-object-mutation
-    s.onload = () => {
-      initESW(null, window.embedded_svc, targetElement);
+    liveChatScript.onload = () => {
+      initESW(null, window.embedded_svc, targetElement, identityID, loginEmail);
     };
-    document.body.appendChild(s);
+
+    // tslint:disable-next-line:no-object-mutation
+    liveChatScript.onerror = () => {
+      // Perhaps the user is in an incognito session and the script loading has been blocked
+    };
+
+    document.body.appendChild(liveChatScript);
   } else {
-    initESW("https://service.force.com", window.embedded_svc, targetElement);
+    initESW(
+      "https://service.force.com",
+      window.embedded_svc,
+      targetElement,
+      identityID,
+      loginEmail
+    );
   }
 };
 
-const withLiveChatContainerCss = css`
-  /* Container */
-  .embeddedServiceSidebar.layout-docked .dockableContainer {
-    border-radius: 0;
-  }
-
-  /* Minimised chat button */
-  .embeddedServiceHelpButton .helpButton .uiButton {
-    background-color: ${brand[400]};
-    font-family: ${sans};
-  }
-
-  @media only screen and (min-width: 48em) {
-    .embeddedServiceHelpButton .helpButton .uiButton,
-    .embeddedServiceSidebarMinimizedDefaultUI {
-      border-radius: 0;
-    }
-  }
-
-  .embeddedServiceHelpButton .helpButton .uiButton:focus {
-    outline: 1px solid ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI {
-    box-shadow: none;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI,
-  .embeddedServiceSidebarMinimizedDefaultUI:hover,
-  .embeddedServiceSidebarMinimizedDefaultUI:focus,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:hover,
-  .embeddedServiceSidebarMinimizedDefaultUI.minimizedContainer:focus {
-    bottom: ${space[3]}px;
-    border-radius: 0;
-    background: ${neutral[100]};
-    border: 2px solid ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .content {
-    color: ${brand[400]};
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .embeddedServiceIcon {
-    display: none;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message {
-    margin-bottom: ${space[1]}px;
-    overflow: visible;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .minimizedText > .message::before {
-    content: url(${minimisedChatSpeechBubble});
-    position: relative;
-    top: 6px;
-    margin-right: ${space[1]}px;
-  }
-
-  /* Waiting to chat */
-  .embeddedServiceLiveAgentStateWaiting .waitingStateContent {
-    text-align: initial;
-    justify-content: flex-start;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingMessage {
-    padding: 0;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingGreetingContent {
-    color: ${neutral[46]};
-    margin: ${space[5]}px 0;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .waitingGreeting {
-    font-size: 17px;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
-    padding-top: 0;
-    align-self: flex-start;
-  }
-
-  .embeddedServiceLiveAgentStateWaiting .loadingBall,
-  .embeddedServiceLoadingBalls.tiny .loadingBall {
-    background-color: #c4c4c4;
-  }
-
-  .embeddedServiceSidebarButton {
-    background: ${brand[400]};
-    border: 1px solid ${neutral[46]};
-  }
-
-  /* Chat header */
-  h2[embeddedService-chatHeader_chatHeader] {
-    overflow: visible;
-  }
-
-  h2[embeddedService-chatHeader_chatHeader]::before {
-    content: url(${chatHeaderIcon});
-    position: relative;
-    top: ${space[2]}px;
-    margin-right: ${space[2]}px;
-  }
-
-  /* Chat body */
-  .embeddedServiceSidebar .sidebarBody {
-    font-family: ${sans};
-  }
-
-  .embeddedServiceSidebarButton:focus {
-    text-decoration: none;
-  }
-
-  /* Chat messages */
-  .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.agent.plaintextContent {
-    background: #ededed;
-  }
-
-  .embeddedServiceLiveAgentStateChatPlaintextMessageDefaultUI.chasitor.plaintextContent {
-    background: ${brand[400]};
-  }
-`;
-
-export const WithLiveChatContainer = () => {
+export const LiveChat = () => {
   const liveChatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const queryString = window.location.search.slice(1);
 
-    const liveChatRegex = /liveChat.+?(?=\&|$)/g;
+    const liveChatRegex = new RegExp(`${liveChatParamName}.+?(?=\&|$)`, "g");
     const match = queryString.match(liveChatRegex);
 
     if (match) {
-      const liveChatKeyValueArray = match[0].split("=");
-      window.sessionStorage.setItem(
-        liveChatKeyValueArray[0],
-        liveChatKeyValueArray[1]
-      );
+      const liveChatParamValue = match[0].split("=")[1];
+      window.sessionStorage.setItem(liveChatParamName, liveChatParamValue);
     }
 
     if (
-      window.sessionStorage.getItem("liveChat") === "1" &&
+      window.sessionStorage.getItem(liveChatParamName) === "1" &&
       liveChatContainerRef.current
     ) {
-      initLiveChat(liveChatContainerRef.current);
+      initLiveChat(
+        liveChatContainerRef.current,
+        window.guardian?.identityDetails.userId ?? "",
+        window.guardian?.identityDetails.email ?? ""
+      );
     }
   }, []);
 
-  return <div ref={liveChatContainerRef} css={withLiveChatContainerCss} />;
+  return <div ref={liveChatContainerRef} css={liveChatCss} />;
 };
 
 export const StartLiveChatButton = () => {
-  function bootstrapChat(): void {
-    window.embedded_svc.bootstrapEmbeddedService();
-  }
+  const bootstrapChat = async () => {
+    await window.embedded_svc.bootstrapEmbeddedService();
+    const preChatEmailField = document.getElementById(
+      "SuppliedEmail"
+    ) as HTMLInputElement;
+    if (window.guardian?.identityDetails.email && preChatEmailField) {
+      // tslint:disable-next-line:no-object-mutation
+      preChatEmailField.disabled = true;
+      preChatEmailField.classList.add("disabledField");
+    }
+  };
 
   return (
     <Button priority="secondary" onClick={() => bootstrapChat()}>
