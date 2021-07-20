@@ -66,11 +66,6 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
     color: ${palette.neutral["100"]};
     white-space: nowrap;
     margin: auto 0;
-    ${minWidth.desktop} {
-      position: relative;
-      left: 0.5rem;
-      margin-left: auto;
-    }
   `;
 
   return (
@@ -85,7 +80,6 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
                 </Link>
               </h1>
             )}
-
             <DropdownNav />
           </div>
         )}
