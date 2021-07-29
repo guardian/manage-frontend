@@ -111,9 +111,8 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
         margin: auto 11px 20px 11px;
       `}
     >
-      <a
-        href={props.topic.seeAllLink}
-        target={"_blank"}
+      <Link
+        to={props.topic.seeAllLink}
         css={seeAllAnchorStyle}
         onClick={() => {
           trackEvent({
@@ -124,7 +123,7 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
         }}
       >
         See all
-      </a>
+      </Link>
     </div>
   </div>
 );
