@@ -83,7 +83,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
       {
         id: "q1",
         title: "I need help signing in",
-        link: "/help-centre/article/i-need-help-signing-in-on-your-website"
+        link: "/help-centre/article/i-need-help-signing-in"
       },
       {
         id: "q2",
@@ -182,8 +182,8 @@ export const helpCentreConfig: HelpCentreTopic[] = [
     links: [
       {
         id: "q1",
-        title: "Where do you deliver and when?",
-        link: "/help-centre/article/where-and-when-we-deliver"
+        title: "When we deliver and where",
+        link: "/help-centre/article/when-we-deliver-and-where"
       },
       {
         id: "q2",
