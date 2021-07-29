@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import Color from "color";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
@@ -88,9 +89,8 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
           key={`${props.topic.id}Question-${questionIndex}`}
           css={linkListItemStyle}
         >
-          <a
-            href={question.link}
-            target="_blank"
+          <Link
+            to={question.link}
             css={linkAnchorStyle}
             onClick={() => {
               trackEvent({
@@ -101,7 +101,7 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
             }}
           >
             {question.title}
-          </a>
+          </Link>
           <span css={linkArrowStyle} />
         </li>
       ))}
