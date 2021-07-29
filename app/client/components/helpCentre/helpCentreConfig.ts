@@ -153,27 +153,25 @@ export const helpCentreConfig: HelpCentreTopic[] = [
       },
       {
         id: "q2",
-        title: "I want to make a complaint about your journalism",
+        title: "How to make a complaint about Guardian or Observer content",
         link:
-          "https://www.theguardian.com/info/2014/sep/12/-sp-how-to-make-a-complaint-about-guardian-or-observer-content"
+          "/help-centre/article/how-to-make-a-complaint-about-guardian-or-observer"
       },
       {
         id: "q3",
         title: "I'd like to offer you a contribution as a freelancer",
         link:
-          "https://www.theguardian.com/info/1999/nov/22/contributors-guide-and-contacts"
+          "/help-centre/article/i-d-like-to-offer-you-a-contribution-as-a-freelancer"
       },
       {
         id: "q4",
-        title: "I'd like to submit an idea for a story",
-        link:
-          "https://www.theguardian.com/community/2015/sep/02/guardianwitness-send-us-a-story"
+        title: "Submit an idea for a story",
+        link: "/help-centre/article/submit-an-idea-for-a-story"
       },
       {
         id: "q5",
-        title:
-          "I'd like to contact one of your journalists or desks for another reason",
-        link: "/help-centre/contact-us"
+        title: "Contact a journalist or editorial desk",
+        link: "/help-centre/article/contact-a-journalist-or-editorial-desk"
       }
     ],
     seeAllLink: "/help-centre/topic/journalism"
