@@ -74,7 +74,10 @@ router.get("/sitemap.txt", async (_, res: Response) => {
 
 /*
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * Google Search Console verification files
+ * Google Search Console ownership verification files.
+ *
+ * The current owners are listed below.
+ * For each owner, please add github name and verification file.
  */
 
 // kelvin-chappell
