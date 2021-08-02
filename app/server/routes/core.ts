@@ -72,4 +72,21 @@ router.get("/sitemap.txt", async (_, res: Response) => {
     });
 });
 
+/*
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * Google Search Console verification files
+ */
+
+// kelvin-chappell
+router.get("/google6e3510e8603d6b4c.html", (_, res: Response) => {
+  res
+    .contentType("text/html")
+    .send("google-site-verification: google6e3510e8603d6b4c.html");
+});
+
+/*
+ * end of Google Search Console verification files
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ */
+
 export default router;
