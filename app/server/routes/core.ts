@@ -30,6 +30,7 @@ router.get("/robots.txt", (_, res: Response) => {
   const allowHelpCentre =
     "User-agent: *\n" +
     "Allow: /sitemap.txt\n" +
+    "Allow: /static/\n" +
     "Allow: /help-centre\n" +
     "Allow: /help-centre/\n" +
     "Disallow: /\n\n";
