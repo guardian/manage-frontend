@@ -26,9 +26,10 @@ router.get("/_prout", (_, res: Response) => {
 });
 
 router.get("/robots.txt", (_, res: Response) => {
-  const disallowAll = "UserAgent: *\n" + "Disallow: /\n\n";
+  const disallowAll = "User-agent: *\n" + "Disallow: /\n\n";
   const allowHelpCentre =
-    "UserAgent: *\n" +
+    "User-agent: *\n" +
+    "Allow: /sitemap.txt\n" +
     "Allow: /help-centre\n" +
     "Allow: /help-centre/\n" +
     "Disallow: /\n\n";
