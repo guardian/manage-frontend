@@ -69,7 +69,7 @@ export const footerLinks: FooterLink[][] = [
     },
     {
       title: "Modern Slavery Act",
-      link: `https://${domain}/info/2016/jul/27/modern-slavery-and-our-supply-chains?INTCMP=NGW_FOOTER_UK_GU_MODERN_SLAVERY_ACT`
+      link: `https://uploads.guim.co.uk/2021/07/27/STL_&_GMG_Modern_Slavery_Act_Statement_2021.pdf`
     },
     {
       title: "Digital newspaper archive",
