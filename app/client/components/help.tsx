@@ -22,37 +22,37 @@ const highlightedQuestions: Question[] = [
     id: "q1",
     title: "Can my delivery be suspended while I'm on holiday?",
     link:
-      "https://www.theguardian.com/help/2020/nov/17/i-need-to-pause-my-delivery"
+      "https://manage.theguardian.com/help-centre/article/i-need-to-pause-my-delivery"
   },
   {
     id: "q2",
     title: "How do I change my delivery address?",
     link:
-      "https://www.theguardian.com/help/2020/nov/17/i-need-to-change-my-delivery-address"
+      "https://manage.theguardian.com/help-centre/article/i-need-to-change-my-delivery-address"
   },
   {
     id: "q3",
     title: "My delivery is late or missing",
     link:
-      "https://www.theguardian.com/help/2020/nov/17/my-delivery-is-late-or-missing"
+      "https://manage.theguardian.com/help-centre/article/my-delivery-is-late-or-missing"
   },
   {
     id: "q4",
     title: "Where can I use my Subscription Card or vouchers?",
     link:
-      "https://www.theguardian.com/help/2020/nov/20/im-a-print-subscriber-where-can-i-pick-up-my-papers"
+      "https://manage.theguardian.com/help-centre/article/im-a-print-subscriber-where-can-i-pick-up-my-papers"
   },
   {
     id: "q5",
     title: "How do I update my payment details?",
     link:
-      "https://www.theguardian.com/help/2020/nov/17/how-do-i-update-my-payment-details"
+      "https://manage.theguardian.com/help-centre/article/how-do-i-update-my-payment-details"
   },
   {
     id: "q6",
     title: "How do I reset my password?",
     link:
-      "https://www.theguardian.com/help/2020/nov/19/ive-forgotten-my-password"
+      "https://manage.theguardian.com/help-centre/article/ive-forgotten-my-password"
   }
 ];
 
