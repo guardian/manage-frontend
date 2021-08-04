@@ -31,6 +31,7 @@ router.get("/robots.txt", (_, res: Response) => {
     "User-agent: *\n" +
     "Allow: /sitemap.txt\n" +
     "Allow: /static/\n" +
+    "Allow: /api/\n" +
     "Allow: /help-centre\n" +
     "Allow: /help-centre/\n" +
     "Disallow: /\n\n";
