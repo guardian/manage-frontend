@@ -1,5 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
+import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useRef } from "react";
 import { avatarImg } from "./liveChatBase64Images";
 
@@ -31,6 +32,7 @@ const liveChatCss = css`
   .waitingGreetingContent .waitingMessage,
   .dialogTextContainer #dialogTextTitle,
   .dialogTextContainer #dialogTextBody {
+    ${textSans.medium()};
     text-align: left;
     color: #767676;
     font-size: 14px;
