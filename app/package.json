@@ -156,7 +156,7 @@
     "react-dom": "^16.13.1",
     "source-map-support": "^0.5.19",
     "stylis-pxtorem": "^0.0.2",
-    "url-parse": "^1.5.1",
+    "url-parse": "^1.5.3",
     "webpack-node-externals": "^1.7.2",
     "winston": "^3.2.1",
     "yup": "^0.28.2"
