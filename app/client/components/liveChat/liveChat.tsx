@@ -1,51 +1,10 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { textSans } from "@guardian/src-foundations/typography";
 import React, { useEffect, useRef } from "react";
 import { avatarImg } from "./liveChatBase64Images";
+import { liveChatCss } from "./liveChatCssOverrides";
 
 const liveChatParamName = "liveChat";
-
-const liveChatCss = css`
-  .embeddedServiceSidebar.layout-docked .dockableContainer {
-    border-radius: 0;
-  }
-  .waitingStateButtonContainer .waitingCancelChat {
-    border-radius: 0;
-    border: 1px solid #007abc;
-    background-color: #ffffff;
-    font-weight: bold;
-  }
-  .waitingStateButtonContainer .waitingCancelChat:focus {
-    text-decoration: none;
-  }
-  .waitingStateContainer .waitingStateContent,
-  .waitingGreetingContent .dialogTextContainer {
-    justify-content: normal;
-  }
-  .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
-    align-self: normal;
-    justify-content: normal;
-    padding-top: 0;
-  }
-  .waitingGreetingContent .waitingGreeting,
-  .waitingGreetingContent .waitingMessage,
-  .dialogTextContainer #dialogTextTitle,
-  .dialogTextContainer #dialogTextBody {
-    ${textSans.medium()};
-    text-align: left;
-    color: #767676;
-    font-size: 14px;
-    padding: 0;
-  }
-  .waitingStateContent .waitingGreetingContent,
-  .dialogTextContainer {
-    margin: 24px 0;
-  }
-  .dialogTextContainer #dialogTextBody {
-    padding: 0;
-  }
-`;
 
 const initESW = (
   gslbBaseUrl: string | null,
