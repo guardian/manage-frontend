@@ -3,8 +3,7 @@ import { Button } from "@guardian/src-button";
 import React, { useEffect, useRef } from "react";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
-
-const liveChatParamName = "liveChat";
+import { isLiveChatFeatureEnabled } from "./liveChatFeatureSwitch";
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -176,20 +175,7 @@ export const LiveChat = () => {
   const liveChatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const queryString = window.location.search.slice(1);
-
-    const liveChatRegex = new RegExp(`${liveChatParamName}.+?(?=\&|$)`, "g");
-    const match = queryString.match(liveChatRegex);
-
-    if (match) {
-      const liveChatParamValue = match[0].split("=")[1];
-      window.sessionStorage.setItem(liveChatParamName, liveChatParamValue);
-    }
-
-    if (
-      window.sessionStorage.getItem(liveChatParamName) === "1" &&
-      liveChatContainerRef.current
-    ) {
+    if (isLiveChatFeatureEnabled() && liveChatContainerRef.current) {
       initLiveChat(
         liveChatContainerRef.current,
         window.guardian?.identityDetails.userId ?? "",

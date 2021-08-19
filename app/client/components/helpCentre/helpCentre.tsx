@@ -8,13 +8,12 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { isLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
 import { helpCentreConfig } from "./helpCentreConfig";
 import { HelpCentreEmailAndLiveChat } from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
 import { HelpTopicBox } from "./HelpTopicBox";
-
-const isLiveChatReleased = false;
 
 const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
@@ -51,7 +50,7 @@ const HelpCentre = (_: RouteComponentProps) => {
         once we convert the landing page to loading dynamic content */}
         <HelpCentreLandingMoreTopics />
         <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
-        {isLiveChatReleased ? (
+        {isLiveChatFeatureEnabled() ? (
           <>
             <HelpCentreEmailAndLiveChat />
             <HelpCentrePhoneNumbers />
