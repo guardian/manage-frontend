@@ -1,20 +1,10 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { neutral } from "@guardian/src-foundations/palette";
 import React, { useEffect, useRef } from "react";
-import { avatarImg, prechatBackgroundImg } from "./liveChatBase64Images";
+import { avatarImg } from "./liveChatBase64Images";
+import { liveChatCss } from "./liveChatCssOverrides";
 
 const liveChatParamName = "liveChat";
-
-const liveChatCss = css`
-  .embeddedServiceSidebar.layout-docked .dockableContainer {
-    border-radius: 0;
-  }
-
-  .disabledField {
-    color: ${neutral[46]} !important;
-  }
-`;
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -34,7 +24,6 @@ const initESW = (
     enabledFeatures: ["LiveAgent"],
     entryFeature: "LiveAgent",
     avatarImgURL: avatarImg,
-    prechatBackgroundImgURL: prechatBackgroundImg,
     targetElement,
     extraPrechatFormDetails: [
       {
