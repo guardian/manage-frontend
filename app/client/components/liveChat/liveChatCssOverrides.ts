@@ -63,6 +63,7 @@ export const liveChatCss = css`
   }
   .dialogButtonContainer button:last-of-type {
     border: 1px solid ${brand["500"]};
+    background: ${neutral["100"]};
   }
   .dialogButtonContainer button:last-of-type span {
     color: ${brand["500"]};
