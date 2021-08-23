@@ -1,8 +1,9 @@
 {
   "presets": [
+    "@babel/env",
     "@babel/typescript",
     "@babel/react",
-    "@emotion/babel-preset-css-prop"
+    "@emotion/babel-preset-css-prop",
   ],
   "plugins": [
     "@babel/proposal-class-properties",
