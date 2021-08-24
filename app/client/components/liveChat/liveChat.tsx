@@ -1,9 +1,11 @@
-import { SerializedStyles } from "@emotion/core";
+import { SerializedStyles, css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import React, { useEffect, useRef } from "react";
+import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+import React, { useEffect, useRef, useState } from "react";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
 import { isLiveChatFeatureEnabled } from "./liveChatFeatureSwitch";
+import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -192,7 +194,10 @@ interface StartLiveChatButtonProps {
 }
 
 export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
+  const [liveChatIsLoading, setLiveChatIsLoading] = useState<boolean>(false);
+
   const bootstrapChat = async () => {
+    setLiveChatIsLoading(true);
     await window.embedded_svc.bootstrapEmbeddedService();
 
     const preChatEmailField = document.getElementById(
@@ -203,6 +208,8 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
       preChatEmailField.disabled = true;
       preChatEmailField.classList.add("disabledField");
     }
+
+    setLiveChatIsLoading(false);
   };
 
   return (
@@ -210,6 +217,18 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
       priority="secondary"
       onClick={() => bootstrapChat()}
       css={props.liveChatButtonCss}
+      icon={
+        liveChatIsLoading ? (
+          <LoadingCircleIcon
+            additionalCss={css`
+              padding: 3px;
+            `}
+          />
+        ) : (
+          <SvgArrowRightStraight />
+        )
+      }
+      iconSide="right"
     >
       Start live chat
     </Button>
