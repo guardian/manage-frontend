@@ -20,7 +20,9 @@
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && tslint --fix -p .",
     "snyk-protect": "snyk protect",
-    "prepublish": "yarn run snyk-protect"
+    "prepublish": "yarn run snyk-protect",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "husky": {
     "hooks": {
@@ -53,6 +55,10 @@
     "@babel/preset-typescript": "^7.10.4",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@guardian/node-riffraff-artifact": "^0.2.1",
+    "@storybook/addon-actions": "^6.3.7",
+    "@storybook/addon-essentials": "^6.3.7",
+    "@storybook/addon-links": "^6.3.7",
+    "@storybook/react": "^6.3.7",
     "@testing-library/react": "^11.1.0",
     "@types/assets-webpack-plugin": "^3.9.0",
     "@types/aws4": "^1.5.1",
