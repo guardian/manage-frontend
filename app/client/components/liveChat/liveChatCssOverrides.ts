@@ -111,4 +111,8 @@ export const liveChatCss = css`
   .dialogTextContainer h3#dialogTextTitle {
     font-weight: bold;
   }
+  .embeddedServiceLiveAgentStateChatEventMessage .eventMessage,
+  .messageArea .chatSessionStartTime {
+    font-size: 13px;
+  }
 `;
