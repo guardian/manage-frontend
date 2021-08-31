@@ -13,20 +13,22 @@ export const liveChatCss = css`
       top: 0;
       width: 100%;
       max-width: 100%;
-      height: 100vh;
-      max-height: 100vh;
+      min-height: 100vh;
       margin-top: 0;
     }
     .embeddedServiceLiveAgentSidebarFeature
       .embeddedServiceSidebarState
       [c-prechatform_prechatform-host]
-      > div {
+      > div:not(.prechat--hide) {
       display: flex;
       flex-direction: column;
       min-height: 100%;
     }
     .prechat--button-holder[c-prechatForm_prechatForm] {
       margin-top: auto;
+    }
+    .stateBody {
+      overflow-y: scroll;
     }
   }
   .embeddedServiceSidebar.layout-docked .dockableContainer {
