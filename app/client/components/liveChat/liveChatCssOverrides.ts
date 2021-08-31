@@ -5,7 +5,6 @@ import { textSans } from "@guardian/src-foundations/typography";
 import { maxWidth } from "../../styles/breakpoints";
 
 export const liveChatCss = css`
-
   ${maxWidth.desktop} {
     .embeddedServiceSidebar.layout-docked .dockableContainer,
     .embeddedServiceSidebar.layout-float .dockableContainer {
@@ -18,7 +17,10 @@ export const liveChatCss = css`
       max-height: 100vh;
       margin-top: 0;
     }
-    .embeddedServiceLiveAgentSidebarFeature .embeddedServiceSidebarState [c-prechatform_prechatform-host] > div {
+    .embeddedServiceLiveAgentSidebarFeature
+      .embeddedServiceSidebarState
+      [c-prechatform_prechatform-host]
+      > div {
       display: flex;
       flex-direction: column;
       min-height: 100%;
@@ -37,7 +39,7 @@ export const liveChatCss = css`
     font-weight: bold;
   }
   .waitingStateButtonContainer .waitingCancelChat .label {
-    color:${brand["500"]};
+    color: ${brand["500"]};
   }
   .waitingStateButtonContainer .waitingCancelChat:focus {
     text-decoration: none;
@@ -93,7 +95,7 @@ export const liveChatCss = css`
   .endChatContainer button {
     font-weight: bold;
   }
-  .endChatContainer button + button{
+  .endChatContainer button + button {
     margin-top: ${space[3]}px;
   }
   .endChatContainer button:is(:last-of-type) .label {
@@ -103,4 +105,8 @@ export const liveChatCss = css`
   .endChatContainer .endChatButton:focus {
     background: ${brand["500"]};
     text-decoration: none;
+  }
+  .dialogTextContainer h3#dialogTextTitle {
+    font-weight: bold;
+  }
 `;

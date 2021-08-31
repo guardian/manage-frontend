@@ -1,16 +1,18 @@
 import { css } from "@emotion/core";
-import { brand, neutral, space } from "@guardian/src-foundations";
+import { brand, neutral, space, text } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { StartLiveChatButton } from "../liveChat/liveChat";
+import { ErrorIcon } from "../svgs/errorIcon";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
 
 interface HelpCentreContactBoxProps {
   iconId: string;
   title: string;
   subtitle: string;
+  subTitleIsWarning?: boolean;
   children: ReactNode;
 }
 
@@ -56,8 +58,17 @@ const contactBoxSubtitleCss = css`
   }
 `;
 
-const contactBoxDetailsCss = css`
-  border-top: 1px solid ${neutral[86]};
+const contactBoxSubtitleWarningCss = css`
+  color: ${text.error};
+  font-weight: bold;
+  margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
+  @media screen and (min-width: 740px) and (max-width: 1270px) {
+    min-height: 3em;
+  }
+`;
+
+const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
+  border-top: ${includeTopBorder ? `1px solid ${neutral[86]}` : "0"};
   padding-top: ${space[3]}px;
   margin: 0 ${space[4]}px ${space[4]}px ${space[4]}px;
   flex-grow: 1;
@@ -66,6 +77,7 @@ const contactBoxDetailsCss = css`
   justify-content: space-between;
   align-items: flex-start;
   & p {
+    margin-top: auto;
     margin-bottom: 0;
   }
   ${maxWidth.desktop} {
@@ -82,9 +94,28 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
           <i css={contactBoxIconCss}>{getHelpSectionIcon(props.iconId)}</i>
           {props.title}
         </h2>
-        <p css={contactBoxSubtitleCss}>{props.subtitle}</p>
+        <p
+          css={
+            props.subTitleIsWarning
+              ? contactBoxSubtitleWarningCss
+              : contactBoxSubtitleCss
+          }
+        >
+          {props.subTitleIsWarning && (
+            <i
+              css={css`
+                margin-right: 8px;
+              `}
+            >
+              <ErrorIcon />
+            </i>
+          )}
+          {props.subtitle}
+        </p>
       </div>
-      <div css={contactBoxDetailsCss}>{props.children}</div>
+      <div css={contactBoxDetailsCss(!props.subTitleIsWarning)}>
+        {props.children}
+      </div>
     </div>
   );
 };
@@ -124,34 +155,47 @@ const emailAndLiveChatButtonCss = css`
   margin-top: ${space[1]}px;
 `;
 
-export const HelpCentreEmailAndLiveChat = () => (
-  <>
-    <p css={emailAndLiveChatSubheadingCss}>
-      Get in touch with one of our customer service agents.
-    </p>
-    <div css={emailAndLiveChatFlexContainerCss}>
-      <HelpCentreContactBox
-        iconId="email-us"
-        title="Email us"
-        subtitle="Send a message to one of our customer service agents."
-      >
-        <p css={emailAndLiveChatPCss}>customers@theguardian.com</p>
-        <p>
-          Use our{" "}
-          <Link to="/help-centre/contact-us/" css={emailAndLiveChatLinkCss}>
-            contact form
-          </Link>{" "}
-          to send us a message.
-        </p>
-      </HelpCentreContactBox>
-      <HelpCentreContactBox
-        title="Chat with us"
-        subtitle="Chat with one of our customer service agents."
-        iconId="chat-with-us"
-      >
-        <StartLiveChatButton liveChatButtonCss={emailAndLiveChatButtonCss} />
-        <p>9am - 6pm, Monday - Sunday (GMT/BST)</p>
-      </HelpCentreContactBox>
-    </div>
-  </>
-);
+export const HelpCentreEmailAndLiveChat = () => {
+  const [isLiveChatAvailable, setIsLiveChatAvailable] = useState<boolean>(true);
+  return (
+    <>
+      <p css={emailAndLiveChatSubheadingCss}>
+        Get in touch with one of our customer service agents.
+      </p>
+      <div css={emailAndLiveChatFlexContainerCss}>
+        <HelpCentreContactBox
+          iconId="email-us"
+          title="Email us"
+          subtitle="Send a message to one of our customer service agents."
+        >
+          <p css={emailAndLiveChatPCss}>customers@theguardian.com</p>
+          <p>
+            Use our{" "}
+            <Link to="/help-centre/contact-us/" css={emailAndLiveChatLinkCss}>
+              contact form
+            </Link>{" "}
+            to send us a message.
+          </p>
+        </HelpCentreContactBox>
+        <HelpCentreContactBox
+          title="Chat with us"
+          subtitle={
+            isLiveChatAvailable
+              ? "Chat with one of our customer service agents."
+              : "We’re sorry but we are unable to load Live chat. Please try again later."
+          }
+          subTitleIsWarning={!isLiveChatAvailable}
+          iconId="chat-with-us"
+        >
+          {isLiveChatAvailable && (
+            <StartLiveChatButton
+              liveChatButtonCss={emailAndLiveChatButtonCss}
+              setIsLiveChatAvailable={setIsLiveChatAvailable}
+            />
+          )}
+          <p>9am - 6pm, Monday - Sunday (GMT/BST)</p>
+        </HelpCentreContactBox>
+      </div>
+    </>
+  );
+};
