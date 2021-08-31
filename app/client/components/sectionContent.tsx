@@ -10,7 +10,11 @@ interface SectionContentProps {
   hasNav?: boolean;
 }
 
-const sectionCss = (hasNav: boolean, isNavSection: boolean) => ({
+const sectionCss = (
+  hasNav: boolean,
+  isNavSection: boolean,
+  isStickyOnMobile?: boolean
+) => ({
   ...gridItemPlacement(1, 4),
   ...(isNavSection && { marginRight: "-13px", marginLeft: "-13px" }),
 
@@ -34,7 +38,15 @@ const sectionCss = (hasNav: boolean, isNavSection: boolean) => ({
       : hasNav
       ? gridItemPlacement(5, 9)
       : gridItemPlacement(3, 12))
-  }
+  },
+  ...(isStickyOnMobile && {
+    [maxWidth.tablet]: {
+      position: "sticky",
+      top: 0,
+      backgroundColor: palette.neutral[100],
+      zIndex: 2
+    }
+  })
 });
 
 const containerCss = css`
@@ -76,7 +88,7 @@ export const SectionContent = (props: SectionContentProps) => {
     <div css={containerCss}>
       <div css={divCss(props.hasNav)}>
         {props.hasNav && (
-          <section css={sectionCss(props.hasNav || false, true)}>
+          <section css={sectionCss(props.hasNav || false, true, true)}>
             <HelpCentreNav selectedTopicId={selectedTopicId} />
           </section>
         )}
