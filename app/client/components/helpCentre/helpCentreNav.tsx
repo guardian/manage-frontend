@@ -22,6 +22,8 @@ const desktopUlCss = css`
   list-style: none;
   margin: 0 0 ${space[6]}px 0;
   padding: 0;
+  position: sticky;
+  top: 1rem;
   ${maxWidth.desktop} {
     display: none;
   }
@@ -35,6 +37,9 @@ const desktopLiCss = (isSelectedTopic: boolean, isFirstTopic: boolean) => css`
     : `${space[2]}px solid #dcdcdc`};
   font-weight: ${isSelectedTopic ? "700" : "normal"};
   cursor: pointer;
+  :hover {
+    background-color: ${isSelectedTopic ? "transparent" : neutral["93"]};
+  }
   ::after {
     content: "";
     display: block;
@@ -116,7 +121,11 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
         <ul css={innerSectionCss(open)}>
           {helpCentreNavConfig.map((topic, topicIndex) => {
             return (
-              <Link to={`/help-centre/topic/${topic.id}`} key={topic.id}>
+              <Link
+                to={`/help-centre/topic/${topic.id}`}
+                key={topic.id}
+                onClick={() => setOpen(false)}
+              >
                 <li key={topic.id} css={mobileLiCss(topicIndex)}>
                   <span css={spanCss(topic.id)}>{topic.title}</span>
                   <span css={linkArrowStyle} />
