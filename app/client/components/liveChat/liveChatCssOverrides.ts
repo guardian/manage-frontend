@@ -50,6 +50,37 @@ export const liveChatCss = css`
   .dialogState .dialogTextContainer {
     justify-content: normal;
   }
+  .waitingStateContainer .queuePositionContent .queuePositionChatIcon .icon {
+    display: none;
+  }
+  .embeddedServiceLiveAgentQueuePosition
+    .queuePositionChatIcon
+    .embeddedServiceLoadingBalls {
+    left: 0;
+    transform: translate(0, -50%);
+  }
+  .waitingStateContainer .queuePositionContent {
+    justify-content: start;
+    align-self: start;
+  }
+  .embeddedServiceLiveAgentQueuePosition.queuePositionWaiting
+    .queuePositionNumber,
+  .embeddedServiceLiveAgentQueuePosition.queuePositionWaiting
+    .youAreNextMessage {
+    color: #767676;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .embeddedServiceLiveAgentQueuePosition .queuePositionMessage p {
+    color: #767676;
+    text-align: left;
+  }
+  .embeddedServiceLiveAgentStateWaiting
+    .waitingStateContent
+    .reconnectingContent {
+    margin-top: ${space[6]}px;
+  }
   .embeddedServiceSidebarButton {
     border-radius: 0;
   }
