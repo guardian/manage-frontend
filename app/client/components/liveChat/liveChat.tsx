@@ -186,7 +186,7 @@ const initLiveChat = (
     } else {
       resolve(
         initESW(
-          "https://service.force.com",
+          null,
           window.embedded_svc,
           targetElement,
           identityID,
