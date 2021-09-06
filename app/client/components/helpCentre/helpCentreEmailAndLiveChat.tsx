@@ -59,9 +59,11 @@ const contactBoxSubtitleCss = css`
 `;
 
 const contactBoxSubtitleWarningCss = css`
+  position: relative;
   color: ${text.error};
   font-weight: bold;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
+  padding-left: ${space[5] + space[2]}px;
   @media screen and (min-width: 740px) and (max-width: 1270px) {
     min-height: 3em;
   }
@@ -104,7 +106,9 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
           {props.subTitleIsWarning && (
             <i
               css={css`
-                margin-right: 8px;
+                position: absolute;
+                top: 0;
+                left: 0;
               `}
             >
               <ErrorIcon />
@@ -182,7 +186,7 @@ export const HelpCentreEmailAndLiveChat = () => {
           subtitle={
             isLiveChatAvailable
               ? "Chat with one of our customer service agents."
-              : "We’re sorry but we are unable to load Live chat. Please try again later."
+              : "Something went wrong. Please refresh or switch browsers."
           }
           subTitleIsWarning={!isLiveChatAvailable}
           iconId="chat-with-us"
