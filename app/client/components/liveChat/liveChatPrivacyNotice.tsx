@@ -3,6 +3,7 @@ import { brand, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { conf } from "../../../server/config";
+import { minWidth } from "../../styles/breakpoints";
 
 export const LiveChatPrivacyNotice = () => {
   let domain: string;
@@ -14,7 +15,10 @@ export const LiveChatPrivacyNotice = () => {
 
   const containerCss = css`
     margin-top: ${space[9]}px;
-    padding: ${space[6]}px;
+    padding: ${space[3]}px;
+    ${minWidth.desktop} {
+      padding: ${space[6]}px;
+    }
     background-color: #ecf3fe;
   `;
   const titleCss = css`
@@ -23,6 +27,7 @@ export const LiveChatPrivacyNotice = () => {
   `;
   const paragraphCss = css`
     ${textSans.small()};
+    max-width: 830px;
     margin: 0;
     a {
       color: ${brand[500]};

@@ -12,15 +12,20 @@ import {
   LiveChatPrivacyNoticeLink
 } from "../liveChat/liveChatPrivacyNotice";
 import { helpCentreConfig } from "./helpCentreConfig";
-import { HelpCentreEmailAndLiveChat } from "./helpCentreEmailAndLiveChat";
+import {
+  EmailAndLiveChatSubHeading,
+  HelpCentreEmailAndLiveChat
+} from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
 import { HelpTopicBox } from "./HelpTopicBox";
 
 const subtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
+  margin-bottom: ${isLiveChatFeatureEnabled() ? space[3] : space[6]}px;
   margin-top: 30px;
   ${minWidth.tablet} {
+    margin-bottom: ${space[6]}px;
     margin-top: 40px;
   }
   ${headline.small({ fontWeight: "bold" })};
@@ -54,6 +59,7 @@ const HelpCentre = (_: RouteComponentProps) => {
         <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
         {isLiveChatFeatureEnabled() ? (
           <>
+            <EmailAndLiveChatSubHeading />
             <LiveChatPrivacyNoticeLink />
             <HelpCentreEmailAndLiveChat />
             <HelpCentrePhoneNumbers />

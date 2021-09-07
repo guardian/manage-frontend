@@ -155,13 +155,16 @@ const emailAndLiveChatButtonCss = css`
   margin-top: ${space[1]}px;
 `;
 
+export const EmailAndLiveChatSubHeading = () => (
+  <p css={emailAndLiveChatSubheadingCss}>
+    Get in touch with one of our customer service agents.
+  </p>
+);
+
 export const HelpCentreEmailAndLiveChat = () => {
   const [isLiveChatAvailable, setIsLiveChatAvailable] = useState<boolean>(true);
   return (
     <>
-      <p css={emailAndLiveChatSubheadingCss}>
-        Get in touch with one of our customer service agents.
-      </p>
       <div css={emailAndLiveChatFlexContainerCss}>
         <HelpCentreContactBox
           iconId="email-us"
