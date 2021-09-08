@@ -38,7 +38,7 @@ export const LiveChatPrivacyNotice = () => {
     <div css={containerCss} id="livechatPrivacyNotice">
       <h2 css={titleCss}>Data privacy note</h2>
       <p css={paragraphCss}>
-        We use a type of cookie technology called an SDK(Software Development
+        We use a type of cookie technology called an SDK (Software Development
         Kit) to ensure that our live chat services work correctly and meet your
         expectations. It cannot be switched off but it is removed at the end of
         the chat. If you do not wish for this cookie to be dropped on your
