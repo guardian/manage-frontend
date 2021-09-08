@@ -38,16 +38,16 @@ export const LiveChatPrivacyNotice = () => {
     <div css={containerCss} id="livechatPrivacyNotice">
       <h2 css={titleCss}>Data privacy note</h2>
       <p css={paragraphCss}>
-        We use a type of cookie technology, called an SDK (Software Development
-        Kit), to ensure that our live chat services work correctly and meet your
+        We use a type of cookie technology called an SDK(Software Development
+        Kit) to ensure that our live chat services work correctly and meet your
         expectations. It cannot be switched off but it is removed at the end of
         the chat. If you do not wish for this cookie to be dropped on your
-        device, please email us or phone us instead. Live chats and phone calls
-        will be recorded for monitoring and training purposes. Please do not
+        device, please email or phone us instead. Live chats and phone calls
+        will be recorded for monitoring and training purposes. Please do not
         disclose personal data of a sensitive nature in the live chat, such as
-        health or financial information. You can choose to receive a transcript
-        of the chat by the 'Download transcript of the conversation' link. Click
-        to find out more in our{" "}
+        health or financial information. A copy of the chat transcript will be
+        emailed to you unless the chat contains payment card information, in
+        which case no transcript will be sent. Click to find out more in our{" "}
         <a href={`https://${domain}/info/privacy`}>privacy policy</a> and{" "}
         <a href={`https://${domain}/info/cookies`}>cookie policy</a>.
       </p>
