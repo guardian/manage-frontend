@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
+import { minWidth } from "../../styles/breakpoints";
 
 export const linkAnchorStyle = css`
   display: inline-block;
@@ -102,9 +103,13 @@ export const innerSectionCss = (isOpen: boolean) => css`
 
 export const h2Css = css`
   margin-top: 0;
-  margin-bottom: ${space[9]}px;
+  margin-bottom: ${space[6]}px;
+  padding-top: 2px;
   border-top: 1px solid ${neutral["86"]};
-  ${headline.small({ fontWeight: "bold" })}
+  ${headline.small({ fontWeight: "bold" })};
+  ${minWidth.desktop} {
+    font-size: 32px;
+  }
 `;
 
 export const contentDivStyles = css`

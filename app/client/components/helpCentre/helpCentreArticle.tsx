@@ -1,7 +1,7 @@
 import css from "@emotion/css";
 import { Button } from "@guardian/src-button";
 import { brand, neutral, space } from "@guardian/src-foundations";
-import { textSans } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
@@ -58,11 +58,16 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
     setSelectedTopicId(article?.topics[0].path);
   }, [article]);
 
+  const articleContainerCss = css`
+    max-width: 620px;
+    color: ${neutral["7"]};
+  `;
+
   return (
     <>
       <PageTitle title={article?.title} />
       <SeoData article={article} />
-      <>
+      <div css={articleContainerCss}>
         <h2 css={h2Css}>{article?.title}</h2>
         {article ? (
           <>
@@ -89,7 +94,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
           <Loading />
         )}
         <BackToHelpCentreButton />
-      </>
+      </div>
     </>
   );
 };
@@ -110,6 +115,35 @@ const ArticleBody = (props: ArticleBodyProps) => {
     color: ${brand[500]};
     text-decoration: underline;
   `;
+  const ulCss = css`
+    padding-left: 0;
+  `;
+  const liCss = css`
+    list-style: none;
+    padding-left: ${space[3] + space[2]}px;
+    position: relative;
+    :before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #c4c4c4;
+    }
+  `;
+  const articleBodyH2Css = css`
+    ${headline.xxsmall({ fontWeight: "bold" })};
+    margin: ${space[6]}px 0 ${space[2]}px;
+    b {
+      font-weight: 700;
+    }
+  `;
+  const articleBodyPCss = css`
+    margin: 0 0 ${space[4]}px;
+    font-size: 17px;
+  `;
 
   // This is to appease React's "Lists need a unique key" error
   let keyCounter = 0;
@@ -125,19 +159,35 @@ const ArticleBody = (props: ArticleBodyProps) => {
           return (body as TextNode).content;
         }
         case "h2": {
-          return <h2 key={key}>{parseBody((body as ElementNode).content)}</h2>;
+          return (
+            <h2 key={key} css={articleBodyH2Css}>
+              {parseBody((body as ElementNode).content)}
+            </h2>
+          );
         }
         case "p": {
-          return <p key={key}>{parseBody((body as ElementNode).content)}</p>;
+          return (
+            <p key={key} css={articleBodyPCss}>
+              {parseBody((body as ElementNode).content)}
+            </p>
+          );
         }
         case "ol": {
           return <ol key={key}>{parseBody((body as ElementNode).content)}</ol>;
         }
         case "ul": {
-          return <ul key={key}>{parseBody((body as ElementNode).content)}</ul>;
+          return (
+            <ul key={key} css={ulCss}>
+              {parseBody((body as ElementNode).content)}
+            </ul>
+          );
         }
         case "li": {
-          return <li key={key}>{parseBody((body as ElementNode).content)}</li>;
+          return (
+            <li key={key} css={liCss}>
+              {parseBody((body as ElementNode).content)}
+            </li>
+          );
         }
         case "b": {
           return <b key={key}>{parseBody((body as ElementNode).content)}</b>;
@@ -169,7 +219,10 @@ const articleFeedbackWidgetCss = css`
   flex-direction: column;
   border: 1px solid ${neutral[86]};
   padding: ${space[4]}px ${space[3]}px;
-  margin: 66px 0;
+  margin: 36px 0 48px;
+  ${minWidth.desktop} {
+    margin: 54px 0 66px;
+  }
   ${minWidth.mobileLandscape} {
     flex-direction: row;
     align-items: center;
