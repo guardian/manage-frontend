@@ -104,6 +104,7 @@ export const innerSectionCss = (isOpen: boolean) => css`
 export const h2Css = css`
   margin-top: 0;
   margin-bottom: ${space[6]}px;
+  padding-top: 2px;
   border-top: 1px solid ${neutral["86"]};
   ${headline.small({ fontWeight: "bold" })};
   ${minWidth.desktop} {

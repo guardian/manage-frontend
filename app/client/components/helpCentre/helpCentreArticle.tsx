@@ -125,7 +125,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
     :before {
       content: "";
       position: absolute;
-      top: 6px;
+      top: 8px;
       left: 0;
       width: 12px;
       height: 12px;
@@ -142,6 +142,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
   `;
   const articleBodyPCss = css`
     margin: 0 0 ${space[4]}px;
+    font-size: 17px;
   `;
 
   // This is to appease React's "Lists need a unique key" error
