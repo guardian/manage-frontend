@@ -36,7 +36,7 @@ export const LiveChatPrivacyNotice = () => {
   `;
   return (
     <div css={containerCss} id="livechatPrivacyNotice">
-      <h2 css={titleCss}>Data privacy note</h2>
+      <h2 css={titleCss}>Data privacy notice</h2>
       <p css={paragraphCss}>
         We use a type of cookie technology called an SDK (Software Development
         Kit) to ensure that our live chat services work correctly and meet your
@@ -67,7 +67,7 @@ export const LiveChatPrivacyNoticeLink = () => {
   `;
   return (
     <div css={privacyNoticeLinkCss}>
-      <a href="#livechatPrivacyNotice">data privacy note</a>
+      <a href="#livechatPrivacyNotice">data privacy notice</a>
     </div>
   );
 };
