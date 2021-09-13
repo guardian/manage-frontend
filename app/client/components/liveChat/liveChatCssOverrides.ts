@@ -84,23 +84,23 @@ export const liveChatCss = css`
   .embeddedServiceSidebarButton {
     border-radius: 0;
   }
-  .dialogButtonContainer button:not(:last-of-type) {
+  .dialogButtonContainer button:nth-of-type(odd) {
     background: ${brand["500"]};
   }
   .dialogButtonContainer button .label {
     font-weight: bold;
   }
-  .dialogButtonContainer button:not(:last-of-type) .label {
+  .dialogButtonContainer button:nth-of-type(odd) .label {
     color: ${neutral["100"]};
   }
-  .dialogButtonContainer button:not(:last-of-type):focus {
+  .dialogButtonContainer button:nth-of-type(odd):focus {
     text-decoration: none;
   }
-  .dialogButtonContainer button:last-of-type {
+  .dialogButtonContainer button:nth-of-type(even) {
     border: 1px solid ${brand["500"]};
     background: ${neutral["100"]};
   }
-  .dialogButtonContainer button:last-of-type span {
+  .dialogButtonContainer button:nth-of-type(even) span {
     color: ${brand["500"]};
   }
   .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
@@ -131,7 +131,7 @@ export const liveChatCss = css`
   .endChatContainer button + button {
     margin-top: ${space[3]}px;
   }
-  .endChatContainer button:is(:last-of-type) .label {
+  .endChatContainer button:nth-of-type(even) .label {
     color: ${brand["500"]};
     text-decoration: underline;
   }
