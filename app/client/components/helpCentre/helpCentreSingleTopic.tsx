@@ -1,4 +1,5 @@
 import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
 import { trackEvent } from "../analytics";
@@ -16,8 +17,14 @@ interface HelpCentreSingleTopicProps {
   topic: SingleTopic;
 }
 
+const ulCss = css`
+  ${linksListStyle};
+  margin: ${space[9]}px 0 60px;
+`;
+
 const liCss = (index: number) => css`
   ${linkListItemStyle};
+  padding: 15px ${space[5]}px 15px 0;
   border-top: ${index === 0 ? "1px solid #DCDCDC" : "none"};
 `;
 
@@ -25,7 +32,7 @@ export const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
   return (
     <>
       <h2 css={h2Css}>{props.topic.title}</h2>
-      <ul css={linksListStyle}>
+      <ul css={ulCss}>
         {props.topic.articles.map((article, articleIndex) => (
           <li
             key={`${props.id}Article-${articleIndex}`}
