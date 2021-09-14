@@ -146,4 +146,8 @@ export const liveChatCss = css`
   .messageArea .chatSessionStartTime {
     font-size: 13px;
   }
+  .chatContent .chat-content.agent a {
+    color: ${neutral["100"]};
+    text-decoration: underline;
+  }
 `;
