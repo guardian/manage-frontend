@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import {
-  containterCss,
   h2Css,
   innerSectionCss,
   innerSectionDivCss,
@@ -45,20 +44,28 @@ interface HelpCentreMoreTopicsProps {
 
 export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
   const [openSection, setOpenSection] = useState<number>();
-
+  const moreTopicContainterCss = css`
+    width: 100%;
+    border-top: 1px solid ${neutral["86"]};
+    border-bottom: 1px solid ${neutral["86"]};
+  `;
   return (
     <>
       <h2 css={h2Css}>{props.moreTopics.title}</h2>
       <div css={moreTopicsStyles}>
-        <div css={containterCss}>
+        <div css={moreTopicContainterCss}>
           {props.moreTopics.topics.map((topic, topicIndex) => {
             const isOpen = topicIndex === openSection;
             const isNotFirstOption = topicIndex > 0;
+            const moreTopicSectionTitleCss = css`
+              ${sectionTitleCss(isOpen, isNotFirstOption)};
+              padding-left: 0;
+            `;
 
             return (
               <div key={topic.path}>
                 <h2
-                  css={sectionTitleCss(isOpen, isNotFirstOption)}
+                  css={moreTopicSectionTitleCss}
                   onClick={() =>
                     setOpenSection(openSection === topicIndex ? -1 : topicIndex)
                   }
