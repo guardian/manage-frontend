@@ -298,10 +298,6 @@ export const contactUsConfig: Topic[] = [
         ]
       },
       {
-        id: "s18",
-        name: "I’d like to report a suspected vulnerability"
-      },
-      {
         id: "s19",
         name: "I’d like to feedback about the advertisements you’re using"
       },
