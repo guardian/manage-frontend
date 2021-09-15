@@ -98,16 +98,8 @@ export const footerLinks: FooterLink[][] = [
       link: `https://jobs.${domain}/?INTCMP=NGW_FOOTER_UK_GU_JOBS`
     },
     {
-      title: "Dating",
-      link: `https://soulmates.${domain}/?INTCMP=NGW_FOOTER_UK_GU_SOULMATES`
-    },
-    {
       title: "Patrons",
       link: `https://patrons.${domain}/?INTCMP=footer_patrons`
-    },
-    {
-      title: "Discount Codes",
-      link: `https://discountcode.${domain}/uk?INTCMP=guardian_footer`
     }
   ]
 ];
