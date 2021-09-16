@@ -42,18 +42,25 @@ export const HelpCentreLandingMoreTopics = () => {
   const handleSectionClick = (sectionNum: number) => () => {
     setIndexOfOpenSection(indexOfOpenSection === sectionNum ? -1 : sectionNum);
   };
+
   return (
     <div css={moreTopicsStyles}>
       <div css={containterCss}>
         {helpCentreMoreQuestionsConfig.map((topic, topicIndex) => {
           const isOpen = topicIndex === indexOfOpenSection;
           const isNotFirstOption = topicIndex > 0;
+          const titleCss = css`
+            ${sectionTitleCss(isOpen, isNotFirstOption)};
+            ${maxWidth.desktop} {
+              :after {
+                right: 17px;
+              }
+              padding-right: 31px;
+            }
+          `;
           return (
             <div key={topic.id}>
-              <h2
-                css={sectionTitleCss(isOpen, isNotFirstOption)}
-                onClick={handleSectionClick(topicIndex)}
-              >
+              <h2 css={titleCss} onClick={handleSectionClick(topicIndex)}>
                 {topic.title}
                 <span css={showHideCss}>{isOpen ? "Hide" : "Show"}</span>
               </h2>

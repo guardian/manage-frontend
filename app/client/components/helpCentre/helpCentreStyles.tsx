@@ -53,7 +53,10 @@ export const sectionTitleCss = (
   color: ${neutral["7"]};
   ${textSans.medium()};
   margin: 0;
-  padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px ${space[3]}px;
+  padding: ${space[4]}px 14px ${space[4]}px ${space[3]}px;
+  ${minWidth.desktop} {
+    padding: ${space[4]}px 31px ${space[4]}px ${space[3]}px;
+  }
   position: relative;
   cursor: pointer;
   :after {
@@ -65,9 +68,13 @@ export const sectionTitleCss = (
     border-right: 2px solid ${neutral["7"]};
     position: absolute;
     top: 50%;
-    transform: translateY(-50%) ${isOpen ? "rotate(-45deg)" : "rotate(135deg)"};
+    transform: translateY(${isOpen ? "-10%" : "-50%"})
+      ${isOpen ? "rotate(-45deg)" : "rotate(135deg)"};
     transition: transform 0.4s;
-    right: 17px;
+    right: 0;
+    ${minWidth.desktop} {
+      right: 17px;
+    }
   }
   ${isNotFirstOption &&
     `
@@ -81,13 +88,13 @@ export const sectionTitleCss = (
       height: 1px;
       background-color: ${neutral["86"]}
     }
-`}
+  `}
 `;
 
 export const innerSectionDivCss = css`
   ${textSans.medium()};
   margin-bottom: 0;
-  padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
+  padding: ${space[4]}px ${space[5]}px ${space[4]}px 0;
   margin: 0 ${space[3]}px;
   position: relative;
 `;

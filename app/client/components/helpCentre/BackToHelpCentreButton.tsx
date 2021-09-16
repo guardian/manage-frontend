@@ -5,7 +5,7 @@ import React from "react";
 import { LinkButton } from "../buttons";
 
 const buttonDivCss = css`
-  margin-top: ${space[12]}px;
+  margin-top: 60px;
   padding-top: ${space[4]}px;
   border-top: 1px solid ${neutral["86"]};
 `;
