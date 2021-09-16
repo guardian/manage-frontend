@@ -2,9 +2,17 @@ import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import React, { Dispatch, SetStateAction, useState } from "react";
+import { conf } from "../../../server/config";
 import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
+
+let domain: string;
+if (typeof window !== "undefined" && window.guardian) {
+  domain = window.guardian.domain;
+} else {
+  domain = conf.DOMAIN;
+}
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -97,7 +105,12 @@ const initESW = (
 
     const timeoutTimer = setTimeout(() => {
       reject(new Error("Promise timed out."));
-    }, 15000);
+    }, 120000);
+
+    liveChatAPI.addEventHandler("onSettingsCallCompleted", () => {
+      clearTimeout(timeoutTimer);
+      resolve();
+    });
 
     // tslint:disable-next-line:no-object-mutation
     liveChatAPI.settings = { ...liveChatAPI.settings, ...liveChatConfig };
@@ -111,43 +124,45 @@ const initESW = (
       resolve();
     });
 
-    //   liveChatAPI.init(
-    //     "https://gnmtouchpoint.my.salesforce.com",
-    //     "https://guardiansurveys.secure.force.com/liveagent",
-    //     gslbBaseUrl,
-    //     "00D20000000nq5g",
-    //     "Chat_Team",
-    //     {
-    //       baseLiveAgentContentURL:
-    //         "https://c.la2-c2-cdg.salesforceliveagent.com/content",
-    //       deploymentId: "5725I0000004RYv",
-    //       buttonId: "5735I0000004Rj7",
-    //       baseLiveAgentURL: "https://d.la2-c2-cdg.salesforceliveagent.com/chat",
-    //       eswLiveAgentDevName:
-    //         "EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2",
-    //       isOfflineSupportEnabled: false,
-    //       myCustomClassname: "greenChat",
-    //     }
-    //   );
-
-    // Initialise live chat API for DEV1 test sandbox
-    liveChatAPI.init(
-      "https://gnmtouchpoint--dev1.my.salesforce.com",
-      "https://dev1-guardiansurveys.cs88.force.com/liveagent",
-      gslbBaseUrl,
-      "00D9E0000004jvh",
-      "Chat_Team",
-      {
-        baseLiveAgentContentURL:
-          "https://c.la2-c1cs-fra.salesforceliveagent.com/content",
-        deploymentId: "5729E000000CbOY",
-        buttonId: "5739E0000008QCo",
-        baseLiveAgentURL: "https://d.la2-c1cs-fra.salesforceliveagent.com/chat",
-        eswLiveAgentDevName:
-          "EmbeddedServiceLiveAgent_Parent04I9E0000008OxDUAU_1797a576c18",
-        isOfflineSupportEnabled: false
-      }
-    );
+    if (domain === "theguardian.com") {
+      liveChatAPI.init(
+        "https://gnmtouchpoint.my.salesforce.com",
+        "https://guardiansurveys.secure.force.com/liveagent",
+        gslbBaseUrl,
+        "00D20000000nq5g",
+        "Chat_Team",
+        {
+          baseLiveAgentContentURL:
+            "https://c.la2-c2-cdg.salesforceliveagent.com/content",
+          deploymentId: "5725I0000004RYv",
+          buttonId: "5735I0000004Rj7",
+          baseLiveAgentURL: "https://d.la2-c2-cdg.salesforceliveagent.com/chat",
+          eswLiveAgentDevName:
+            "EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2",
+          isOfflineSupportEnabled: false
+        }
+      );
+    } else {
+      // Initialise live chat API for DEV1 test sandbox
+      liveChatAPI.init(
+        "https://gnmtouchpoint--dev1.my.salesforce.com",
+        "https://dev1-guardiansurveys.cs88.force.com/liveagent",
+        gslbBaseUrl,
+        "00D9E0000004jvh",
+        "Chat_Team",
+        {
+          baseLiveAgentContentURL:
+            "https://c.la2-c1cs-fra.salesforceliveagent.com/content",
+          deploymentId: "5729E000000CbOY",
+          buttonId: "5739E0000008QCo",
+          baseLiveAgentURL:
+            "https://d.la2-c1cs-fra.salesforceliveagent.com/chat",
+          eswLiveAgentDevName:
+            "EmbeddedServiceLiveAgent_Parent04I9E0000008OxDUAU_1797a576c18",
+          isOfflineSupportEnabled: false
+        }
+      );
+    }
   });
 };
 
