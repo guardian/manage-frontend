@@ -2,17 +2,9 @@ import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { conf } from "../../../server/config";
 import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
-
-let domain: string;
-if (typeof window !== "undefined" && window.guardian) {
-  domain = window.guardian.domain;
-} else {
-  domain = conf.DOMAIN;
-}
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -124,7 +116,7 @@ const initESW = (
       resolve();
     });
 
-    if (domain === "theguardian.com") {
+    if (window.guardian.domain === "theguardian.com") {
       liveChatAPI.init(
         "https://gnmtouchpoint.my.salesforce.com",
         "https://guardiansurveys.secure.force.com/liveagent",
