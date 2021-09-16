@@ -105,7 +105,7 @@ const initESW = (
 
     const timeoutTimer = setTimeout(() => {
       reject(new Error("Promise timed out."));
-    }, 120000);
+    }, 15000);
 
     liveChatAPI.addEventHandler("onSettingsCallCompleted", () => {
       clearTimeout(timeoutTimer);
