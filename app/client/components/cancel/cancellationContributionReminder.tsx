@@ -144,6 +144,7 @@ export const CancellationContributionReminder: React.FC = () => {
             <RadioGroup name="reminder" label="I'd like to be reminded in:">
               {reminderChoices.map((choice, index) => (
                 <Radio
+                  key={`reminderRadio${index}`}
                   value={`${index}`}
                   label={choice.label}
                   checked={selectedChoiceIndex === index}

@@ -1,6 +1,6 @@
 import { Globals } from "../shared/globals";
 
-declare var WEBPACK_BUILD: string;
+declare let WEBPACK_BUILD: string;
 
 /**
  * https://medium.com/styled-components/the-simple-guide-to-server-side-rendering-react-with-styled-components-d31c6b2b8fbf

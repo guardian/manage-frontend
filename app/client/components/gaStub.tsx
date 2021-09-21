@@ -1,8 +1,7 @@
-// @ts-nocheck
-// Ignoring next few lines to maintain GA's code snippet
+// @ts-nocheck : Ignoring next few lines to maintain GA's code snippet
 
 export const runGaStub = () => {
-  /* tslint:disable */
+  /* eslint-disable */
   (function(i, s, o, g, r, a, m) {
     i["GoogleAnalyticsObject"] = r;
     (i[r] =
@@ -22,5 +21,5 @@ export const runGaStub = () => {
     "https://www.google-analytics.com/analytics.js",
     "ga"
   );
-  /* tslint:enable */
+  /* eslint-enable */
 };

@@ -143,11 +143,8 @@ export const AnalyticsTracker = () => {
             consentState
           );
 
-          // Suppressing "Element implicitly has an 'any' type because index expression is not of type 'number'."
-          // @ts-ignore-start
-          // tslint:disable-next-line:no-object-mutation
+          // @ts-ignore: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
           window[`ga-disable-${GA_UA}`] = !gaConsentState;
-          // @ts-ignore-end
 
           if (gaConsentState && !gaIsInitialised) {
             initialiseGa();

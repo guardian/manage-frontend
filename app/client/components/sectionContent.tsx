@@ -75,9 +75,10 @@ const divCss = (hasNav: boolean | undefined) => css`
   }
 `;
 
+// TODO: refactor this var to remove need for disabling eslint rule
 export const SelectedTopicObjectContext = React.createContext<
   Dispatch<SetStateAction<string | undefined>>
->(undefined!);
+>(undefined!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
 export const SectionContent = (props: SectionContentProps) => {
   const [selectedTopicId, setSelectedTopicId] = useState<string | undefined>(

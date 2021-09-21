@@ -79,7 +79,7 @@ const OverviewRow = (props: OverviewRowProps) => (
 
 const renderHolidayStopsOverview = (
   productDetail: ProductDetail,
-  props: HolidayStopsRouteableStepProps,
+  holidaysOverviewProps: HolidayStopsRouteableStepProps,
   existingHolidayStopToAmend: HolidayStopRequest | null,
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void
 ) => (holidayStopsResponse: GetHolidayStopsResponse, reload: ReFetch) => {
@@ -104,7 +104,7 @@ const renderHolidayStopsOverview = (
       primary
       onClick={() => {
         setExistingHolidayStopToAmend(null);
-        (props.navigate || navigate)("create");
+        (holidaysOverviewProps.navigate || navigate)("create");
       }}
     />
   );
@@ -116,7 +116,7 @@ const renderHolidayStopsOverview = (
 
   const InnerContent = () => (
     <>
-      <h1>Suspend {props.productType.friendlyName}</h1>
+      <h1>Suspend {holidaysOverviewProps.productType.friendlyName}</h1>
       {productDetail.subscription.autoRenew ? (
         <OverviewRow heading="How">
           <>
@@ -124,26 +124,36 @@ const renderHolidayStopsOverview = (
               You can suspend up to{" "}
               <strong>
                 {holidayStopsResponse.annualIssueLimit}{" "}
-                {props.productType.holidayStops.issueKeyword}s
+                {holidaysOverviewProps.productType.holidayStops.issueKeyword}s
               </strong>{" "}
               per year of your subscription. <br />
             </div>
-            {props.productType.holidayStops.alternateNoticeString && (
+            {holidaysOverviewProps.productType.holidayStops
+              .alternateNoticeString && (
               <div>
                 Please provide{" "}
                 <strong>
-                  {props.productType.holidayStops.alternateNoticeString}
+                  {
+                    holidaysOverviewProps.productType.holidayStops
+                      .alternateNoticeString
+                  }
                 </strong>
                 .
               </div>
             )}
             <div>
               {creditExplainerSentence(
-                props.productType.holidayStops.issueKeyword
+                holidaysOverviewProps.productType.holidayStops.issueKeyword
               )}
             </div>
-            {props.productType.holidayStops.additionalHowAdvice && (
-              <div>{props.productType.holidayStops.additionalHowAdvice}</div>
+            {holidaysOverviewProps.productType.holidayStops
+              .additionalHowAdvice && (
+              <div>
+                {
+                  holidaysOverviewProps.productType.holidayStops
+                    .additionalHowAdvice
+                }
+              </div>
             )}
             <div
               css={{
@@ -161,13 +171,16 @@ const renderHolidayStopsOverview = (
                 </strong>{" "}
                 is the next anniversary of your subscription.
                 <br />
-                The number of {props.productType.holidayStops.issueKeyword}s you
-                can suspend per year is reset on this date.
+                The number of{" "}
+                {holidaysOverviewProps.productType.holidayStops.issueKeyword}s
+                you can suspend per year is reset on this date.
               </div>
             </div>
             <HolidayQuestionsModal
               annualIssueLimit={holidayStopsResponse.annualIssueLimit}
-              holidayStopFlowProperties={props.productType.holidayStops}
+              holidayStopFlowProperties={
+                holidaysOverviewProps.productType.holidayStops
+              }
             />
           </>
         </OverviewRow>
@@ -193,7 +206,11 @@ const renderHolidayStopsOverview = (
                       {combinedIssuesImpactedPerYear.issuesThisYear.length}/
                       {holidayStopsResponse.annualIssueLimit}
                     </strong>{" "}
-                    {props.productType.holidayStops.issueKeyword}s until{" "}
+                    {
+                      holidaysOverviewProps.productType.holidayStops
+                        .issueKeyword
+                    }
+                    s until{" "}
                     {dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}
                     {combinedIssuesImpactedPerYear.issuesNextYear.length >
                       0 && (
@@ -204,8 +221,11 @@ const renderHolidayStopsOverview = (
                           {combinedIssuesImpactedPerYear.issuesNextYear.length}/
                           {holidayStopsResponse.annualIssueLimit}
                         </strong>{" "}
-                        {props.productType.holidayStops.issueKeyword}s the
-                        following year
+                        {
+                          holidaysOverviewProps.productType.holidayStops
+                            .issueKeyword
+                        }
+                        s the following year
                       </span>
                     )}
                     .
@@ -215,8 +235,8 @@ const renderHolidayStopsOverview = (
                 <div>
                   You have{" "}
                   <strong>{holidayStopsResponse.annualIssueLimit}</strong>{" "}
-                  {props.productType.holidayStops.issueKeyword}s available to
-                  suspend until{" "}
+                  {holidaysOverviewProps.productType.holidayStops.issueKeyword}s
+                  available to suspend until{" "}
                   {dateString(renewalDate, DATE_FNS_LONG_OUTPUT_FORMAT)}
                 </div>
               )}
@@ -249,7 +269,9 @@ const renderHolidayStopsOverview = (
                 data={holidayStopsResponse.existing}
                 isTestUser={productDetail.isTestUser}
                 subscription={productDetail.subscription}
-                issueKeyword={props.productType.holidayStops.issueKeyword}
+                issueKeyword={
+                  holidaysOverviewProps.productType.holidayStops.issueKeyword
+                }
                 reloadParent={reload}
                 setExistingHolidayStopToAmend={setExistingHolidayStopToAmend}
               />
@@ -289,7 +311,7 @@ const renderHolidayStopsOverview = (
       }}
     >
       <MembersDataApiItemContext.Provider value={productDetail}>
-        <WizardStep routeableStepProps={props}>
+        <WizardStep routeableStepProps={holidaysOverviewProps}>
           <InnerContent />
         </WizardStep>
       </MembersDataApiItemContext.Provider>

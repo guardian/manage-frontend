@@ -4,7 +4,7 @@ import "ophan-tracker-js/build/ophan.manage-my-account";
 import ReactDOM from "react-dom";
 import { MMAPage } from "./components/MMAPage";
 
-declare var WEBPACK_BUILD: string;
+declare let WEBPACK_BUILD: string;
 
 if (typeof window !== "undefined" && window.guardian && window.guardian.dsn) {
   Sentry.init({

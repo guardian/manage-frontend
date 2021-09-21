@@ -38,7 +38,7 @@ class ExistingPaymentOptionsAsyncLoader extends AsyncLoader<
   ExistingPaymentOption[]
 > {}
 
-const getThrasher = (props: ResubscribeThrasherProps) => (
+const getThrasher = (args: ResubscribeThrasherProps) => (
   existingPaymentOptions: ExistingPaymentOption[]
 ) => {
   const eligiblePaymentOptionsIfNoActiveExistingContribution = existingPaymentOptions.find(
@@ -54,7 +54,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
     trackEvent({
       eventCategory: "impression",
       eventAction: "resubscribe_thrasher",
-      eventLabel: props.usageContext
+      eventLabel: args.usageContext
     });
     return (
       <div
@@ -83,7 +83,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
             takes a minute.
           </p>
           <SupportTheGuardianButton
-            supportReferer={`resubscribe_thrasher_${props.usageContext}`}
+            supportReferer={`resubscribe_thrasher_${args.usageContext}`}
             alternateButtonText="Make a recurring contribution"
             urlSuffix="contribute"
             fontWeight="bold"
@@ -94,7 +94,7 @@ const getThrasher = (props: ResubscribeThrasherProps) => (
       </div>
     );
   }
-  return props.children;
+  return args.children;
 };
 
 interface ResubscribeThrasherProps {

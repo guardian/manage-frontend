@@ -43,10 +43,10 @@ export const LiveChatPrivacyNotice = () => {
         expectations. It cannot be switched off but it is removed at the end of
         the chat. If you do not wish for this cookie to be dropped on your
         device, please email or phone us instead. Live chats and phone calls
-        will be recorded for monitoring and training purposes. Please do not
+        will be recorded for monitoring and training purposes. Please do not
         disclose personal data of a sensitive nature in the live chat, such as
         health or financial information. A copy of the chat transcript will be
-        emailed to you unless the chat contains payment card information, in
+        emailed to you unless the chat contains payment card information, in
         which case no transcript will be sent. Click to find out more in our{" "}
         <a href={`https://${domain}/info/privacy`}>privacy policy</a> and{" "}
         <a href={`https://${domain}/info/cookies`}>cookie policy</a>.

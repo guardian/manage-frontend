@@ -11,7 +11,7 @@ const port = 9233;
 
 const server = express();
 
-declare var WEBPACK_BUILD: string;
+declare let WEBPACK_BUILD: string;
 if (conf.SERVER_DSN) {
   Sentry.init({
     dsn: conf.SERVER_DSN,

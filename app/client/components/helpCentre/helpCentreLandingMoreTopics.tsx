@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
+import { Link } from "@reach/router";
 import React, { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
@@ -70,9 +71,8 @@ export const HelpCentreLandingMoreTopics = () => {
                     key={`${topic.id}Question-${questionIndex}`}
                     css={liStyles(questionIndex, topic.links.length)}
                   >
-                    <a
-                      href={question.link}
-                      target="_blank"
+                    <Link
+                      to={question.link}
                       css={linkAnchorStyle}
                       onClick={() => {
                         trackEvent({
@@ -83,7 +83,7 @@ export const HelpCentreLandingMoreTopics = () => {
                       }}
                     >
                       {question.title}
-                    </a>
+                    </Link>
                     <span css={linkArrowStyle} />
                   </li>
                 ))}

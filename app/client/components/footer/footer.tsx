@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { CMP } from "@guardian/consent-management-platform/dist/types";
 import { from } from "@guardian/src-foundations/mq";
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { useEffect, useState, SyntheticEvent } from "react";
 import palette from "../../colours";
 import { isInUSA as isUserInUSA } from "../../geolocation";
 import { headline } from "../../styles/fonts";
