@@ -22,7 +22,7 @@ module.exports = {
   rules: {
     "no-prototype-builtins": ["off"],
     "react/no-unescaped-entities": ["off"],
-    "react/display-name": ["off"],
+    "react/display-name": ["off"], // TODO: remove this rule and fix in code
     "@typescript-eslint/ban-types": ["off"],
     "@typescript-eslint/explicit-module-boundary-types": ["off"],
     "@typescript-eslint/no-inferrable-types": ["off"],
