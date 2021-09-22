@@ -53,13 +53,16 @@ export const subHeadingCss = `
   `;
 
 interface InnerContentProps {
-  props: RouteableStepPropsForGrouped;
+  manageProductProps: RouteableStepPropsForGrouped;
   productDetail: ProductDetail;
 }
-const InnerContent = ({ props, productDetail }: InnerContentProps) => {
+const InnerContent = ({
+  manageProductProps,
+  productDetail
+}: InnerContentProps) => {
   const mainPlan = getMainPlan(productDetail.subscription);
 
-  const groupedProductType = props.groupedProductType;
+  const groupedProductType = manageProductProps.groupedProductType;
 
   const specificProductType = groupedProductType.mapGroupedToSpecific(
     productDetail
@@ -400,7 +403,7 @@ const ManageProduct = (props: RouteableStepPropsForGrouped) => (
     ]}
   >
     {productDetail => (
-      <InnerContent props={props} productDetail={productDetail} />
+      <InnerContent manageProductProps={props} productDetail={productDetail} />
     )}
   </FlowWrapper>
 );

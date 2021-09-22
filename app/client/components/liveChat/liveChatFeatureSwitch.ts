@@ -2,7 +2,7 @@ const liveChatParamName = "liveChat";
 
 export const isLiveChatFeatureEnabled = () => {
   const queryString = window.location.search.slice(1);
-  const liveChatRegex = new RegExp(`${liveChatParamName}.+?(?=\&|$)`, "g");
+  const liveChatRegex = new RegExp(`${liveChatParamName}=[0,1]`, "g");
   const match = queryString.match(liveChatRegex);
 
   if (match) {

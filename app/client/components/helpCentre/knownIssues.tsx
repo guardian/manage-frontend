@@ -125,7 +125,12 @@ export const KnownIssues = () => {
                 </i>
                 <h4 css={h4Css}>{issue.message}</h4>
                 {issue.link && (
-                  <a css={aCss} href={issue.link} target="_blank">
+                  <a
+                    css={aCss}
+                    href={issue.link}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     Click here for more information
                   </a>
                 )}

@@ -144,6 +144,7 @@ export const CardInputForm = (props: CardInputFormProps) => {
         to their{" "}
         <a
           href="https://policies.google.com/terms"
+          rel="noreferrer"
           target="_blank"
           css={hrefStyle}
         >
@@ -152,6 +153,7 @@ export const CardInputForm = (props: CardInputFormProps) => {
         and{" "}
         <a
           href="https://policies.google.com/privacy"
+          rel="noreferrer"
           target="_blank"
           css={hrefStyle}
         >

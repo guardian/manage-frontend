@@ -8,7 +8,7 @@ interface Config {
   readonly SERVER_DSN: string | null;
 }
 
-declare var process: {
+declare let process: {
   env: {
     [key: string]: string | undefined;
   };

@@ -11,7 +11,7 @@ export interface ProductDescriptionListKeyValue {
   spanTwoCols?: boolean;
 }
 
-interface ProductDescriptionListTable {
+interface ProductDescriptionListTableProps {
   borderColour?: string;
   tableHeading?: string;
   alternateRowBgColors?: true;
@@ -20,7 +20,7 @@ interface ProductDescriptionListTable {
 }
 
 export const ProductDescriptionListTable = (
-  props: ProductDescriptionListTable
+  props: ProductDescriptionListTableProps
 ) => {
   const tableEntryTitleCss = (isTwoColWidth: boolean) => {
     return css`

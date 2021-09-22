@@ -222,6 +222,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
                     <>
                       <a
                         href="https://stripe.com/"
+                        rel="noreferrer"
                         target="_blank"
                         css={{ marginBottom: "5px" }}
                       >

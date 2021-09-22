@@ -1,1 +1,1 @@
-declare var GIT_COMMIT_HASH: string;
+declare let GIT_COMMIT_HASH: string;

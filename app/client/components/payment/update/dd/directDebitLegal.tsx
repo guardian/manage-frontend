@@ -101,6 +101,7 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
       Payments by GoCardless. Read the{" "}
       <a
         href="https://gocardless.com/legal/privacy"
+        rel="noreferrer"
         css={hrefStyle}
         target="_blank"
       >
