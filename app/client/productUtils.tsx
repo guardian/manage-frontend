@@ -8,6 +8,7 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow
 } from "../shared/productTypes";
+import { fetchWithDefaultParameters } from "./fetch";
 
 export const shouldHaveHolidayStopsFlow = (
   productType: ProductType
@@ -34,9 +35,7 @@ export const createProductDetailFetcher = (
   );
 
 export const allProductsDetailFetcher = () =>
-  fetch("/api/me/mma", {
-    credentials: "include",
-    mode: "same-origin",
+  fetchWithDefaultParameters("/api/me/mma", {
     headers: {
       [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
         window.location.href

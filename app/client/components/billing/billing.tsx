@@ -35,6 +35,7 @@ import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertI
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
@@ -270,10 +271,7 @@ const Billing = (_: RouteComponentProps) => {
 const billingFetcher = () =>
   Promise.all([
     allProductsDetailFetcher(),
-    fetch("/api/invoices", {
-      credentials: "include",
-      mode: "same-origin"
-    })
+    fetchWithDefaultParameters("/api/invoices")
   ]);
 
 export default Billing;
