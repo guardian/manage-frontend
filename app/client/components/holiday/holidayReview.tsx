@@ -48,6 +48,7 @@ import {
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 const getPerformCreateOrAmendFetcher = (
   selectedRange: DateRange,
@@ -55,16 +56,14 @@ const getPerformCreateOrAmendFetcher = (
   isTestUser: boolean,
   existingHolidayStopToAmend?: HolidayStopRequest
 ) => () =>
-  fetch(
+  fetchWithDefaultParameters(
     `/api/holidays${
       existingHolidayStopToAmend
         ? `/${subscriptionName}/${existingHolidayStopToAmend.id}`
         : ""
     }`,
     {
-      credentials: "include",
       method: existingHolidayStopToAmend ? "PATCH" : "POST",
-      mode: "same-origin",
       body: JSON.stringify({
         startDate: dateString(selectedRange.start, DATE_FNS_INPUT_FORMAT),
         endDate: dateString(selectedRange.end, DATE_FNS_INPUT_FORMAT),

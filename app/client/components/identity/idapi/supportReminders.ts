@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { ConsentOption, ConsentOptionType } from "../models";
+import { fetchWithDefaultParameters } from "../../../fetch";
 
 interface ReminderStatusApiResponse {
   recurringStatus: "NotSet" | "Active" | "Cancelled";
@@ -22,10 +23,7 @@ const getConsent = (isActive: boolean): ConsentOption => ({
 });
 
 export const read = async (): Promise<ConsentOption[]> => {
-  const response = await fetch(REMINDERS_STATUS_ENDPOINT, {
-    credentials: "include",
-    mode: "same-origin"
-  });
+  const response = await fetchWithDefaultParameters(REMINDERS_STATUS_ENDPOINT);
   const reminderStatus = (await response.json()) as ReminderStatusApiResponse;
   if (reminderStatus.recurringStatus === "NotSet") {
     return [];

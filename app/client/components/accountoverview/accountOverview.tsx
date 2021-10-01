@@ -26,6 +26,7 @@ import { AccountOverviewCancelledCard } from "./accountOverviewCancelledCard";
 import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
 import { SupportTheGuardianSection } from "./supportTheGuardianSection";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
   MembersDataApiItem[],
@@ -138,10 +139,7 @@ class AccountOverviewAsyncLoader extends AsyncLoader<
 const AccountOverviewFetcher = () =>
   Promise.all([
     allProductsDetailFetcher(),
-    fetch("/api/cancelled/", {
-      credentials: "include",
-      mode: "same-origin"
-    })
+    fetchWithDefaultParameters("/api/cancelled/")
   ]);
 
 export default AccountOverview;

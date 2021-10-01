@@ -1,6 +1,7 @@
 import { LOGGING_CODE_SUFFIX_HEADER } from "../../../shared/globals";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader from "../asyncLoader";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 interface CaseUpdateResponse {
   message: string;
@@ -14,10 +15,8 @@ export const getUpdateCasePromise = (
   caseId: string,
   body: object
 ) =>
-  fetch("/api/case/" + caseId, {
-    credentials: "include",
+  fetchWithDefaultParameters("/api/case/" + caseId, {
     method: "PATCH",
-    mode: "same-origin",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",

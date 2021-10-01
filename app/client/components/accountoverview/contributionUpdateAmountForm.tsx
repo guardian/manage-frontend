@@ -14,6 +14,7 @@ import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
 import AsyncLoader from "../asyncLoader";
 import { Button } from "../buttons";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 type ContributionUpdateAmountFormMode = "MANAGE" | "CANCELLATION_SAVE";
 
@@ -208,12 +209,10 @@ export const ContributionUpdateAmountForm = (
     productType: ProductType,
     subscriptionName: string
   ) => async () =>
-    await fetch(
+    await fetchWithDefaultParameters(
       `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
       {
-        credentials: "include",
         method: "POST",
-        mode: "same-origin",
         body: JSON.stringify({ newPaymentAmount: newAmount })
       }
     );

@@ -3,6 +3,7 @@ import {
   X_GU_ID_FORWARDED_SCOPE
 } from "../../../shared/identity";
 import AsyncLoader from "../asyncLoader";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 export interface CancellationDateResponse {
   cancellationEffectiveDate: string;
@@ -13,9 +14,7 @@ export class CancellationDateAsyncLoader extends AsyncLoader<
 > {}
 
 export const cancellationDateFetcher = (subscriptionName: string) => () =>
-  fetch("/api/cancellation-date/" + subscriptionName, {
-    credentials: "include",
-    mode: "same-origin",
+  fetchWithDefaultParameters("/api/cancellation-date/" + subscriptionName, {
     headers: {
       [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
         window.location.href
