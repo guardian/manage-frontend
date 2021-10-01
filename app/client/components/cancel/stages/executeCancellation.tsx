@@ -25,6 +25,7 @@ import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCh
 import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import { fetchWithDefaultParameters } from "../../../fetch";
 
 class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
@@ -33,10 +34,8 @@ const getCancelFunc = (
   reason: OptionalCancellationReasonId,
   withSubscriptionResponseFetcher: () => Promise<Response>
 ) => async () => {
-  await fetch("/api/cancel/" + subscriptionName, {
-    credentials: "include",
+  await fetchWithDefaultParameters("/api/cancel/" + subscriptionName, {
     method: "POST",
-    mode: "same-origin",
     body: JSON.stringify({ reason }),
     headers: { "Content-Type": "application/json" }
   }); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...

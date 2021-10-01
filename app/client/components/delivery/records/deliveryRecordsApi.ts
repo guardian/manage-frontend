@@ -4,6 +4,7 @@ import {
   Subscription
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
+import { fetchWithDefaultParameters } from "../../../fetch";
 
 interface DeliveryProblem {
   problemType: string;
@@ -84,9 +85,7 @@ export const createDeliveryRecordsFetcher = (
   subscriptionId: string,
   isTestUser: boolean
 ) => () =>
-  fetch(`/api/delivery-records/${subscriptionId}`, {
-    credentials: "include",
-    mode: "same-origin",
+  fetchWithDefaultParameters(`/api/delivery-records/${subscriptionId}`, {
     headers: {
       [MDA_TEST_USER_HEADER]: `${isTestUser}`
     }

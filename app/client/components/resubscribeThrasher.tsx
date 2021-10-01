@@ -8,11 +8,10 @@ import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import AsyncLoader from "./asyncLoader";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
+import { fetchWithDefaultParameters } from "../fetch";
 
 const fetchExistingPaymentOptions = () =>
-  fetch("/api/existing-payment-options", {
-    credentials: "include",
-    mode: "same-origin",
+  fetchWithDefaultParameters("/api/existing-payment-options", {
     headers: {
       [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
         window.location.href

@@ -7,6 +7,7 @@ import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { OptionalCancellationReasonId } from "./cancellationReason";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 interface CaseCreationResponse {
   id: string;
@@ -17,10 +18,8 @@ const getCreateCaseFunc = (
   sfCaseProduct: string,
   productDetail: ProductDetail
 ) => async () =>
-  await fetch("/api/case", {
-    credentials: "include",
+  await fetchWithDefaultParameters("/api/case", {
     method: "POST",
-    mode: "same-origin",
     body: JSON.stringify({
       reason,
       product: sfCaseProduct,

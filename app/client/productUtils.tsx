@@ -18,14 +18,12 @@ export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
 ) => () =>
-  fetch(
+  fetchWithDefaultParameters(
     "/api/me/mma" +
       (subscriptionName
         ? `/${subscriptionName}`
         : `?productType=${productType.allProductsProductTypeFilterString}`),
     {
-      credentials: "include",
-      mode: "same-origin",
       headers: {
         [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
           window.location.href
