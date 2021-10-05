@@ -5,7 +5,7 @@ import { Footer } from "./footer/footer";
 import Header from "./header";
 
 interface MainProps {
-  children: any;
+  children: JSX.Element | JSX.Element[];
 }
 
 export const Main = ({ children }: MainProps) => {

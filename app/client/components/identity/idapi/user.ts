@@ -49,6 +49,8 @@ interface UserAPIResponse {
   };
 }
 
+type UserFromAPIResponse = UserAPIResponse["user"];
+
 interface UserAPIRequest {
   publicFields: UserPublicFields;
   privateFields: UserPrivateFields;
@@ -64,7 +66,8 @@ interface UserAPIErrorResponse {
   }>;
 }
 
-const getOrEmpty = (object: any) => (path: string) => get(object, path, "");
+const getOrEmpty = (user: UserFromAPIResponse) => (path: string) =>
+  get(user, path, "");
 
 export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
   return error.status && error.status === "error";

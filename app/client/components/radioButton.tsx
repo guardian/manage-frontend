@@ -3,7 +3,7 @@ import React, { ChangeEvent } from "react";
 import palette from "../colours";
 
 interface RadioButtonProps {
-  value: any;
+  value: string;
   label: string;
   checked: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;

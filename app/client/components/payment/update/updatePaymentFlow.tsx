@@ -76,8 +76,8 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
       css={{ display: "none" }}
       value={props.paymentMethod}
       checked={props.value === props.paymentMethod}
-      onChange={(changeEvent: any) =>
-        props.updatePaymentMethod(changeEvent.target.value)
+      onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
+        props.updatePaymentMethod(changeEvent.target.value as PaymentMethod)
       }
     />
     {props.paymentMethod}

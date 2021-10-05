@@ -121,7 +121,7 @@ export const DropdownNav = () => {
     }
   };
 
-  const handleDismissiveClick = (event: any) => {
+  const handleDismissiveClick = (event: any): void => {
     if (
       wrapperRef.current &&
       event.target &&

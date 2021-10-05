@@ -21,12 +21,12 @@ interface State {
   options: ConsentOption[];
 }
 
-const initialState = {
+const initialState: State = {
   error: false,
   options: []
 };
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   const {
     ERROR,
     OPTIONS,
@@ -41,7 +41,7 @@ const reducer = (state: State, action: Action) => {
       trackEvent({
         eventCategory: "emailPrefError",
         eventAction: "error",
-        eventLabel: payload.toString()
+        eventLabel: (payload as string).toString()
       });
       return {
         ...state,

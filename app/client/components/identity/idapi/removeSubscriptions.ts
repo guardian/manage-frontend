@@ -8,5 +8,5 @@ export const execute = async () => {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
-  return identityFetch(url, APIUseCredentials(options));
+  return identityFetch<void>(url, APIUseCredentials(options));
 };

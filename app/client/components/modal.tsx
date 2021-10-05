@@ -7,7 +7,7 @@ export type HideFunction = () => void;
 interface ModalProps {
   instigator: React.ReactNode;
   title: string;
-  children: any;
+  children: React.ReactNode;
   additionalButton?: (hideFunction: HideFunction) => React.ReactElement;
   alternateOkText?: string;
   extraOnHideFunctionality?: () => void;

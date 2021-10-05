@@ -33,7 +33,7 @@ interface AsyncLoaderState<T> {
 }
 
 export default class AsyncLoader<
-  T extends NonNullable<any>
+  T extends NonNullable<unknown>
 > extends React.Component<AsyncLoaderProps<T>, AsyncLoaderState<T>> {
   public state: AsyncLoaderState<T> = { loadingState: LoadingState.loading };
   private readerOnOK =

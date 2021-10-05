@@ -27,7 +27,9 @@ const consentToConsentOption = (
 
 export const read = async (): Promise<ConsentOption[]> => {
   const url = "/consents?filter=all";
-  return (await identityFetch(url)).map(consentToConsentOption);
+  return (await identityFetch<ConsentAPIResponse[]>(url)).map(
+    consentToConsentOption
+  );
 };
 
 export const update = async (id: string, consented: boolean = true) => {
