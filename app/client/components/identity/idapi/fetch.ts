@@ -1,7 +1,9 @@
 import Cookies from "js-cookie";
 import { IdentityLocations } from "../IdentityLocations";
 
-const handleResponseFailure = async (response: Response) => {
+const handleResponseFailure = async <T extends unknown>(
+  response: Response
+): Promise<T> => {
   let err;
   const raw = await response.text();
   try {
@@ -12,7 +14,9 @@ const handleResponseFailure = async (response: Response) => {
   throw err;
 };
 
-const handleResponseSuccess = async <T>(response: Response): Promise<T> => {
+const handleResponseSuccess = async <T extends unknown>(
+  response: Response
+): Promise<T> => {
   try {
     return await response.json();
   } catch (e) {
@@ -36,11 +40,11 @@ export const APIFetch = (baseUrl: string) => async <T extends unknown>(
 ): Promise<T> => {
   const response = await fetch(baseUrl + url, options);
   if (!response.ok) {
-    return await handleResponseFailure(response);
+    return await handleResponseFailure<T>(response);
   } else if (response.status === 204) {
     return null as any;
   } else {
-    return await handleResponseSuccess(response);
+    return await handleResponseSuccess<T>(response);
   }
 };
 
