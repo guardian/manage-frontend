@@ -1,9 +1,7 @@
 import Cookies from "js-cookie";
 import { IdentityLocations } from "../IdentityLocations";
 
-const handleResponseFailure = async <T extends unknown>(
-  response: Response
-): Promise<T> => {
+const handleResponseFailure = async (response: Response) => {
   let err;
   const raw = await response.text();
   try {
@@ -40,7 +38,7 @@ export const APIFetch = (baseUrl: string) => async <T extends unknown>(
 ): Promise<T> => {
   const response = await fetch(baseUrl + url, options);
   if (!response.ok) {
-    return await handleResponseFailure<T>(response);
+    return await handleResponseFailure(response);
   } else if (response.status === 204) {
     return null as any;
   } else {
