@@ -41,7 +41,7 @@ const reducer = (state: State, action: Action): State => {
       trackEvent({
         eventCategory: "emailPrefError",
         eventAction: "error",
-        eventLabel: (payload as string).toString()
+        eventLabel: payload.toString()
       });
       return {
         ...state,

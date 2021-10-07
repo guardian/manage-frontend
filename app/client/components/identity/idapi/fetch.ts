@@ -40,7 +40,7 @@ export const APIFetch = (baseUrl: string) => async <T extends unknown>(
   if (!response.ok) {
     return await handleResponseFailure(response);
   } else if (response.status === 204) {
-    return null as any;
+    return null as T;
   } else {
     return await handleResponseSuccess<T>(response);
   }
