@@ -128,8 +128,8 @@ const toUser = (response: UserAPIResponse): User => {
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
     return response.user.consents
-      .filter((consent: any) => consent.consented)
-      .map((consent: any) => consent.id);
+      .filter(consent => consent.consented)
+      .map(consent => consent.id);
   } else {
     return [];
   }
