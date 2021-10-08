@@ -87,6 +87,9 @@ export const liveChatCss = css`
   .dialogButtonContainer button:nth-of-type(odd) {
     background: ${brand["500"]};
   }
+  .dialogButtonContainer button:nth-of-type(odd):hover {
+    background: ${brand["400"]};
+  }
   .dialogButtonContainer button .label {
     font-weight: bold;
   }
@@ -100,8 +103,18 @@ export const liveChatCss = css`
     border: 1px solid ${brand["500"]};
     background: ${neutral["100"]};
   }
+  .embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):focus,
+  .embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):hover {
+    background: ${neutral["100"]};
+  }
+  .dialogButtonContainer button:nth-of-type(even):hover {
+    border: 1px solid ${brand["400"]};
+  }
   .dialogButtonContainer button:nth-of-type(even) span {
     color: ${brand["500"]};
+  }
+  .dialogButtonContainer button:nth-of-type(even):hover span {
+    color: ${brand["400"]};
   }
   .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
     align-self: normal;
@@ -138,9 +151,6 @@ export const liveChatCss = css`
   .endChatContainer .endChatButton:focus {
     background: ${brand["500"]};
     text-decoration: none;
-  }
-  .dialogTextContainer h3#dialogTextTitle {
-    font-weight: bold;
   }
   .embeddedServiceLiveAgentStateChatEventMessage .eventMessage,
   .messageArea .chatSessionStartTime {
