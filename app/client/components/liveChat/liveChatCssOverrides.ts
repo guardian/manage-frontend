@@ -123,6 +123,7 @@ export const liveChatCss = css`
   }
   .waitingGreetingContent .waitingGreeting,
   .waitingGreetingContent .waitingMessage,
+  .waitingGreetingContent .queuePositionMessage,
   .dialogTextContainer #dialogTextTitle,
   .dialogTextContainer #dialogTextBody {
     ${textSans.medium()};
@@ -135,8 +136,21 @@ export const liveChatCss = css`
   .dialogTextContainer {
     margin: 24px 0;
   }
+  .queuePositionCounter {
+    display: none;
+  }
+  .waitingStateContent .waitingGreetingContent,
+  .waitingStateContent .queuePositionChatIcon {
+    margin-bottom: ${space[2]}px;
+  }
   .dialogTextContainer #dialogTextBody {
     padding: 0;
+  }
+  .reconnectingText {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+    color: ${neutral["46"]};
   }
   .endChatContainer button {
     font-weight: bold;
