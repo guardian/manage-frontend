@@ -20,7 +20,8 @@ const Header = () => {
   useEffect(() => {
     const isSignedIn =
       typeof window !== "undefined" &&
-      !!window.guardian?.identityDetails?.userId;
+      window.guardian?.identityDetails?.signInStatus === "signedInRecently";
+
     setHeaderStatus(isSignedIn ? "signedIn" : "signedOut");
   }, []);
 
