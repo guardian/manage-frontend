@@ -155,7 +155,9 @@ export const liveChatCss = css`
   .embeddedServiceLiveAgentStateChatEventMessage .eventMessage,
   .messageArea .chatSessionStartTime {
     font-size: 13px;
+    color: ${neutral["46"]};
   }
+
   .chatContent .chat-content.agent a {
     color: ${neutral["100"]};
     text-decoration: underline;
