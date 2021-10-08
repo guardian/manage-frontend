@@ -20,7 +20,7 @@ describe.only("Header", () => {
     Object.defineProperty(global, "guardian", {
       value: {
         identityDetails: {
-          userId: "123"
+          signInStatus: "signedInRecently"
         }
       }
     });
