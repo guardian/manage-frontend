@@ -12,7 +12,9 @@ const handleResponseFailure = async (response: Response) => {
   throw err;
 };
 
-const handleResponseSuccess = async (response: Response) => {
+const handleResponseSuccess = async <T extends unknown>(
+  response: Response
+): Promise<T> => {
   try {
     return await response.json();
   } catch (e) {
@@ -30,17 +32,17 @@ const getAPIOptionsForMethod = (method: string) => (
   body: JSON.stringify(payload)
 });
 
-export const APIFetch = (baseUrl: string) => async (
+export const APIFetch = (baseUrl: string) => async <T extends unknown>(
   url: string,
   options?: RequestInit
-): Promise<any> => {
+): Promise<T> => {
   const response = await fetch(baseUrl + url, options);
   if (!response.ok) {
     return await handleResponseFailure(response);
   } else if (response.status === 204) {
-    return null;
+    return null as T;
   } else {
-    return await handleResponseSuccess(response);
+    return await handleResponseSuccess<T>(response);
   }
 };
 

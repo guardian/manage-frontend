@@ -36,14 +36,14 @@ const newsletterToConsentOption = (
 
 export const read = async (): Promise<ConsentOption[]> => {
   const url = "/newsletters";
-  return ((await identityFetch(url)) as NewsletterAPIResponse[]).map(
+  return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
   );
 };
 
 export const readRestricted = async (): Promise<ConsentOption[]> => {
   const url = "/newsletters/restricted";
-  return ((await identityFetch(url)) as NewsletterAPIResponse[]).map(
+  return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
   );
 };

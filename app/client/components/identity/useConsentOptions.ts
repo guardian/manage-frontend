@@ -21,12 +21,12 @@ interface State {
   options: ConsentOption[];
 }
 
-const initialState = {
+const initialState: State = {
   error: false,
   options: []
 };
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   const {
     ERROR,
     OPTIONS,

@@ -32,9 +32,9 @@ const getCreateCaseFunc = (
     }
   });
 
-const renderWithCaseIdContextProvider = (children: any) => (
-  caseCreationResponse?: CaseCreationResponse
-) =>
+const renderWithCaseIdContextProvider = (
+  children: React.ReactChildren | JSX.Element
+) => (caseCreationResponse?: CaseCreationResponse) =>
   caseCreationResponse ? (
     <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
       {children}
@@ -46,7 +46,7 @@ const renderWithCaseIdContextProvider = (children: any) => (
 class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
 
 interface CaseCreationWrapperProps {
-  children: any;
+  children: JSX.Element;
   sfCaseProduct: string;
   productDetail: ProductDetail;
 }

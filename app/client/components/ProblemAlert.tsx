@@ -5,11 +5,12 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { LinkButton } from "./buttons";
 import { ErrorIcon } from "./svgs/errorIcon";
+import { ProductDetail } from "../../shared/productResponse";
 
 interface AlertButtonProps {
   title: string;
   link: string;
-  state?: any;
+  state?: ProductDetail;
 }
 
 interface ProblemAlertProps {

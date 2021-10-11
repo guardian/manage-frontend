@@ -10,7 +10,7 @@ import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { StripeCardInputForm } from "./stripeCardInputForm";
 
 declare let window: Window & {
-  Stripe: any;
+  Stripe: Stripe;
   grecaptcha: any;
   v2ReCaptchaOnLoadCallback: () => void;
 };

@@ -13,11 +13,12 @@ import {
 } from "./middleware/identityMiddleware";
 
 type BodyHandler = (res: Response, body: Buffer) => void;
+type JsonString = Buffer | string | undefined;
 
 export const straightThroughBodyHandler: BodyHandler = (res, body) =>
   res.send(body);
 
-function safeJsonParse(jsonStr: Buffer | string | undefined): any {
+function safeJsonParse(jsonStr: JsonString): object | JsonString {
   try {
     if (jsonStr) {
       return JSON.parse(jsonStr.toString());

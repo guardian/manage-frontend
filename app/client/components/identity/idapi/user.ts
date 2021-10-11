@@ -32,20 +32,22 @@ type UserPrivateFields = Partial<
 };
 
 interface UserAPIResponse {
-  user: {
-    id: string;
-    consents: [
-      {
-        id: string;
-        consented: boolean;
-      }
-    ];
-    publicFields: UserPublicFields;
-    privateFields: UserPrivateFields;
-    primaryEmailAddress: User["primaryEmailAddress"];
-    statusFields: {
-      userEmailValidated: boolean;
-    };
+  user: IdapiUserDetails;
+}
+
+interface IdapiUserDetails {
+  id: string;
+  consents: [
+    {
+      id: string;
+      consented: boolean;
+    }
+  ];
+  publicFields: UserPublicFields;
+  privateFields: UserPrivateFields;
+  primaryEmailAddress: User["primaryEmailAddress"];
+  statusFields: {
+    userEmailValidated: boolean;
   };
 }
 
@@ -64,7 +66,8 @@ interface UserAPIErrorResponse {
   }>;
 }
 
-const getOrEmpty = (object: any) => (path: string) => get(object, path, "");
+const getOrEmpty = (user: IdapiUserDetails) => (path: string) =>
+  get(user, path, "");
 
 export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
   return error.status && error.status === "error";
@@ -125,8 +128,8 @@ const toUser = (response: UserAPIResponse): User => {
 const getConsentedTo = (response: UserAPIResponse) => {
   if ("consents" in response.user) {
     return response.user.consents
-      .filter((consent: any) => consent.consented)
-      .map((consent: any) => consent.id);
+      .filter(consent => consent.consented)
+      .map(consent => consent.id);
   } else {
     return [];
   }

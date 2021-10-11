@@ -9,7 +9,7 @@ import { runGaStub } from "./gaStub";
 declare global {
   interface Window {
     ga?: any;
-    gaData?: any;
+    gaData?: string;
     dataLayer?: any;
   }
 }

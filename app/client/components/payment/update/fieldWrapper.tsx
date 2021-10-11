@@ -6,8 +6,8 @@ import { sans } from "../../../styles/fonts";
 interface FieldWrapperProps {
   label: string;
   width: string;
-  children: any;
-  onChange?: (event: any) => void;
+  children: JSX.Element;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface FieldWrapperState {
