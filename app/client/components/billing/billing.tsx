@@ -3,7 +3,7 @@ import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import React from "react";
+import React, { Suspense } from "react";
 import { parseDate } from "../../../shared/dates";
 import {
   getMainPlan,
@@ -24,7 +24,6 @@ import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
-import AsyncLoader from "../asyncLoader";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
 import { NAV_LINKS } from "../nav/navConfig";
@@ -36,19 +35,30 @@ import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
 import { fetchWithDefaultParameters } from "../../fetch";
+import SpinLoader from "../SpinLoader";
+import { useSuspense } from "../suspense";
+import { ErrorBoundary } from "react-error-boundary";
+import { GenericErrorScreen } from "../genericErrorScreen";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
-
-class BillingDataAsyncLoader extends AsyncLoader<
-  [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
-> {}
-
-const BillingRenderer = ([mdaResponse, invoiceResponse]: [
+type BillingDataResponse = [
   MembersDataApiItem[],
   { invoices: InvoiceDataApiItem[] }
-]) => {
+];
+
+const fetchBillingData = Promise.all([
+  allProductsDetailFetcher(),
+  fetchWithDefaultParameters("/api/invoices")
+]);
+const startSuspense = useSuspense<BillingDataResponse>(fetchBillingData);
+
+export const BillingRenderer = ({
+  fetchData
+}: Promise<unknown>): JSX.Element => {
+  const [mdaResponse, invoiceResponse] = startSuspense();
+
   const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
   const invoiceData = invoiceResponse.invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
@@ -259,19 +269,29 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-      <BillingDataAsyncLoader
-        fetch={billingFetcher}
-        render={BillingRenderer}
-        loadingMessage={`Loading your billing details...`}
-      />
+      <BetterAsyncLoader loadingMessage="Loading your billing details...">
+        <BillingRenderer fetchData={fetchBillingData} />
+      </BetterAsyncLoader>
     </PageContainer>
   );
 };
 
-const billingFetcher = () =>
-  Promise.all([
-    allProductsDetailFetcher(),
-    fetchWithDefaultParameters("/api/invoices")
-  ]);
+interface MyAsyncLoaderProps {
+  loadingMessage: string;
+  children: JSX.Element | JSX.Element[];
+}
+
+const BetterAsyncLoader = ({
+  loadingMessage,
+  children
+}: MyAsyncLoaderProps): JSX.Element => (
+  <ErrorBoundary
+    FallbackComponent={() => <GenericErrorScreen loggingMessage={false} />}
+  >
+    <Suspense fallback={<SpinLoader loadingMessage={loadingMessage} />}>
+      {children}
+    </Suspense>
+  </ErrorBoundary>
+);
 
 export default Billing;
