@@ -87,6 +87,9 @@ export const liveChatCss = css`
   .dialogButtonContainer button:nth-of-type(odd) {
     background: ${brand["500"]};
   }
+  .dialogButtonContainer button:nth-of-type(odd):hover {
+    background: ${brand["400"]};
+  }
   .dialogButtonContainer button .label {
     font-weight: bold;
   }
@@ -100,8 +103,18 @@ export const liveChatCss = css`
     border: 1px solid ${brand["500"]};
     background: ${neutral["100"]};
   }
+  .embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):focus,
+  .embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):hover {
+    background: ${neutral["100"]};
+  }
+  .dialogButtonContainer button:nth-of-type(even):hover {
+    border: 1px solid ${brand["400"]};
+  }
   .dialogButtonContainer button:nth-of-type(even) span {
     color: ${brand["500"]};
+  }
+  .dialogButtonContainer button:nth-of-type(even):hover span {
+    color: ${brand["400"]};
   }
   .embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
     align-self: normal;
@@ -110,6 +123,7 @@ export const liveChatCss = css`
   }
   .waitingGreetingContent .waitingGreeting,
   .waitingGreetingContent .waitingMessage,
+  .waitingGreetingContent .queuePositionMessage,
   .dialogTextContainer #dialogTextTitle,
   .dialogTextContainer #dialogTextBody {
     ${textSans.medium()};
@@ -122,8 +136,21 @@ export const liveChatCss = css`
   .dialogTextContainer {
     margin: 24px 0;
   }
+  .queuePositionCounter {
+    display: none;
+  }
+  .waitingStateContent .waitingGreetingContent,
+  .waitingStateContent .queuePositionChatIcon {
+    margin-bottom: ${space[2]}px;
+  }
   .dialogTextContainer #dialogTextBody {
     padding: 0;
+  }
+  .reconnectingText {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+    color: ${neutral["46"]};
   }
   .endChatContainer button {
     font-weight: bold;
@@ -139,13 +166,12 @@ export const liveChatCss = css`
     background: ${brand["500"]};
     text-decoration: none;
   }
-  .dialogTextContainer h3#dialogTextTitle {
-    font-weight: bold;
-  }
   .embeddedServiceLiveAgentStateChatEventMessage .eventMessage,
   .messageArea .chatSessionStartTime {
     font-size: 13px;
+    color: ${neutral["46"]};
   }
+
   .chatContent .chat-content.agent a {
     color: ${neutral["100"]};
     text-decoration: underline;
