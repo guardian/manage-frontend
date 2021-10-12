@@ -53,211 +53,215 @@ export const BillingRenderer = (): JSX.Element => {
   const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload;
   const invoiceResponse = useSuspenseQuery(fetchInvoices).payload;
 
-  const allProductDetails = (mdaResponse as any).filter(isProduct).sort(sortByJoinDate);
-  const invoiceData = (invoiceResponse as any).invoices.sort(
-    (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
-      b.date.localeCompare(a.date)
-  );
+  if(mdaResponse && invoiceResponse) {
+    const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
+    const invoiceData = invoiceResponse.invoices.sort(
+        (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
+            b.date.localeCompare(a.date)
+    );
 
-  const mmaCategoryToProductDetails = allProductDetails.reduce(
-    (accumulator, productDetail) => ({
-      ...accumulator,
-      [productDetail.mmaCategory]: [
-        ...(accumulator[productDetail.mmaCategory] || []),
-        productDetail
-      ]
-    }),
-    {} as MMACategoryToProductDetails
-  );
+    const mmaCategoryToProductDetails = allProductDetails.reduce(
+        (accumulator, productDetail) => ({
+          ...accumulator,
+          [productDetail.mmaCategory]: [
+            ...(accumulator[productDetail.mmaCategory] || []),
+            productDetail
+          ]
+        }),
+        {} as MMACategoryToProductDetails
+    );
 
-  const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
+    const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
 
-  if (allProductDetails.length === 0) {
-    return <EmptyAccountOverview />;
-  }
+    if (allProductDetails.length === 0) {
+      return <EmptyAccountOverview/>;
+    }
 
-  const subHeadingTitleCss = `
-    ${headline.small({ fontWeight: "bold" })};
+    const subHeadingTitleCss = `
+    ${headline.small({fontWeight: "bold"})};
     ${maxWidth.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };
   `;
-  const subHeadingBorderTopCss = `
+    const subHeadingBorderTopCss = `
     border-top: 1px solid ${neutral["86"]};
     margin: 50px 0 ${space[5]}px;
   `;
 
-  return (
-    <>
-      <PaymentFailureAlertIfApplicable
-        productDetail={maybeFirstPaymentFailure}
-      />
-      {Object.entries(mmaCategoryToProductDetails).map(
-        ([mmaCategory, productDetails]) => {
-          return (
-            productDetails.length > 0 && (
-              <React.Fragment key={mmaCategory}>
-                {productDetails.map(productDetail => {
-                  const mainPlan = getMainPlan(productDetail.subscription);
-                  const groupedProductType =
-                    GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-                  const specificProductType = groupedProductType.mapGroupedToSpecific(
-                    productDetail
-                  );
-                  const hasCancellationPending =
-                    productDetail.subscription.cancelledAt;
-                  const cancelledCopy =
-                    specificProductType.cancelledCopy ||
-                    groupedProductType.cancelledCopy;
-                  const isAmountOveridable =
-                    specificProductType.updateAmountMdaEndpoint;
-                  const isContribution =
-                    isAmountOveridable && isPaidSubscriptionPlan(mainPlan);
-                  const nextPaymentDetails = getNextPaymentDetails(
-                    mainPlan,
-                    productDetail.subscription,
-                    null,
-                    !!productDetail.alertText
-                  );
-                  const paidPlan = getMainPlan(
-                    productDetail.subscription
-                  ) as PaidSubscriptionPlan;
-                  const productInvoiceData = invoiceData
-                    .filter(
-                      invoice =>
-                        invoice.subscriptionName ===
-                        productDetail.subscription.subscriptionId
-                    )
-                    .map(invoice => ({
-                      ...invoice,
-                      pdfPath: `/api/${invoice.pdfPath}`,
-                      currency: paidPlan.currency,
-                      currencyISO: paidPlan.currencyISO,
-                      productUrlPart: specificProductType.urlPart
-                    }));
-                  const resultsPerPage = paidPlan.interval?.includes("year")
-                    ? productInvoiceData.length
-                    : 6;
-                  return (
-                    <React.Fragment
-                      key={productDetail.subscription.subscriptionId}
-                    >
-                      <div
-                        css={css`
-                          ${subHeadingBorderTopCss}
-                          display: flex;
-                          align-items: start;
-                          justify-content: space-between;
-                        `}
-                      >
-                        <h2
-                          css={css`
-                            ${subHeadingTitleCss}
-                            margin: 0;
-                          `}
-                        >
-                          {specificProductType.productTitle(mainPlan)}
-                        </h2>
-                        {isGift(productDetail.subscription) && (
-                          <i
-                            css={css`
-                              margin: 4px 0 0 ${space[3]}px;
-                            `}
-                          >
-                            <GiftIcon alignArrowToThisSide={"left"} />
-                          </i>
-                        )}
-                      </div>
+    return (
+        <>
+          <PaymentFailureAlertIfApplicable
+              productDetail={maybeFirstPaymentFailure}
+          />
+          {Object.entries(mmaCategoryToProductDetails).map(
+              ([mmaCategory, productDetails]) => {
+                return (
+                    productDetails.length > 0 && (
+                        <React.Fragment key={mmaCategory}>
+                          {productDetails.map(productDetail => {
+                            const mainPlan = getMainPlan(productDetail.subscription);
+                            const groupedProductType =
+                                GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+                            const specificProductType = groupedProductType.mapGroupedToSpecific(
+                                productDetail
+                            );
+                            const hasCancellationPending =
+                                productDetail.subscription.cancelledAt;
+                            const cancelledCopy =
+                                specificProductType.cancelledCopy ||
+                                groupedProductType.cancelledCopy;
+                            const isAmountOveridable =
+                                specificProductType.updateAmountMdaEndpoint;
+                            const isContribution =
+                                isAmountOveridable && isPaidSubscriptionPlan(mainPlan);
+                            const nextPaymentDetails = getNextPaymentDetails(
+                                mainPlan,
+                                productDetail.subscription,
+                                null,
+                                !!productDetail.alertText
+                            );
+                            const paidPlan = getMainPlan(
+                                productDetail.subscription
+                            ) as PaidSubscriptionPlan;
+                            const productInvoiceData = invoiceData
+                                .filter(
+                                    invoice =>
+                                        invoice.subscriptionName ===
+                                        productDetail.subscription.subscriptionId
+                                )
+                                .map(invoice => ({
+                                  ...invoice,
+                                  pdfPath: `/api/${invoice.pdfPath}`,
+                                  currency: paidPlan.currency,
+                                  currencyISO: paidPlan.currencyISO,
+                                  productUrlPart: specificProductType.urlPart
+                                }));
+                            const resultsPerPage = paidPlan.interval?.includes("year")
+                                ? productInvoiceData.length
+                                : 6;
+                            return (
+                                <React.Fragment
+                                    key={productDetail.subscription.subscriptionId}
+                                >
+                                  <div
+                                      css={css`
+                                        ${subHeadingBorderTopCss}
+                                        display: flex;
+                                        align-items: start;
+                                        justify-content: space-between;
+                                      `}
+                                  >
+                                    <h2
+                                        css={css`
+                                          ${subHeadingTitleCss}
+                                          margin: 0;
+                                        `}
+                                    >
+                                      {specificProductType.productTitle(mainPlan)}
+                                    </h2>
+                                    {isGift(productDetail.subscription) && (
+                                        <i
+                                            css={css`
+                                              margin: 4px 0 0 ${space[3]}px;
+                                            `}
+                                        >
+                                          <GiftIcon alignArrowToThisSide={"left"}/>
+                                        </i>
+                                    )}
+                                  </div>
 
-                      {hasCancellationPending && (
-                        <p
-                          css={css`
-                            ${textSans.medium()};
-                          `}
-                        >
-                          <ErrorIcon fill={brandAlt[200]} />
-                          <span
-                            css={css`
-                              margin-left: ${space[2]}px;
-                            `}
-                          >
+                                  {hasCancellationPending && (
+                                      <p
+                                          css={css`
+                                            ${textSans.medium()};
+                                          `}
+                                      >
+                                        <ErrorIcon fill={brandAlt[200]}/>
+                                        <span
+                                            css={css`
+                                              margin-left: ${space[2]}px;
+                                            `}
+                                        >
                             {cancelledCopy}{" "}
-                            <strong>
+                                          <strong>
                               {parseDate(
-                                productDetail.subscription.end
+                                  productDetail.subscription.end
                               ).dateStr()}
                             </strong>
                           </span>
-                          .
-                        </p>
-                      )}
-                      {!isContribution && (
-                        <BasicProductInfoTable
-                          groupedProductType={groupedProductType}
-                          productDetail={productDetail}
-                        />
-                      )}
-                      <SixForSixExplainerIfApplicable
-                        additionalCss={css`
-                          ${textSans.medium()};
-                        `}
-                        mainPlan={mainPlan}
-                        hasCancellationPending={hasCancellationPending}
-                      />
-                      <PaymentDetailsTable
-                        productDetail={productDetail}
-                        nextPaymentDetails={nextPaymentDetails}
-                        hasCancellationPending={hasCancellationPending}
-                        tableHeading="Payment"
-                      />
-                      {productDetail.isPaidTier &&
-                        !productDetail.subscription.payPalEmail && (
-                          <LinkButton
-                            colour={
-                              productDetail.alertText ? brand[400] : brand[800]
-                            }
-                            textColour={
-                              productDetail.alertText
-                                ? neutral[100]
-                                : brand[400]
-                            }
-                            fontWeight={"bold"}
-                            alert={!!productDetail.alertText}
-                            text="Update payment method"
-                            to={`/payment/${specificProductType.urlPart}`}
-                            state={{
-                              productDetail,
-                              flowReferrer: {
-                                title: NAV_LINKS.billing.title,
-                                link: NAV_LINKS.billing.link
-                              }
-                            }}
-                          />
-                        )}
-                      {productInvoiceData.length > 0 && (
-                        <div
-                          css={css`
-                            margin-top: ${space[12]}px;
-                            margin-bottom: ${space[3]}px;
-                          `}
-                        >
-                          <InvoicesTable
-                            resultsPerPage={resultsPerPage}
-                            invoiceData={productInvoiceData}
-                          />
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </React.Fragment>
-            )
-          );
-        }
-      )}
-    </>
-  );
+                                        .
+                                      </p>
+                                  )}
+                                  {!isContribution && (
+                                      <BasicProductInfoTable
+                                          groupedProductType={groupedProductType}
+                                          productDetail={productDetail}
+                                      />
+                                  )}
+                                  <SixForSixExplainerIfApplicable
+                                      additionalCss={css`
+                                        ${textSans.medium()};
+                                      `}
+                                      mainPlan={mainPlan}
+                                      hasCancellationPending={hasCancellationPending}
+                                  />
+                                  <PaymentDetailsTable
+                                      productDetail={productDetail}
+                                      nextPaymentDetails={nextPaymentDetails}
+                                      hasCancellationPending={hasCancellationPending}
+                                      tableHeading="Payment"
+                                  />
+                                  {productDetail.isPaidTier &&
+                                  !productDetail.subscription.payPalEmail && (
+                                      <LinkButton
+                                          colour={
+                                            productDetail.alertText ? brand[400] : brand[800]
+                                          }
+                                          textColour={
+                                            productDetail.alertText
+                                                ? neutral[100]
+                                                : brand[400]
+                                          }
+                                          fontWeight={"bold"}
+                                          alert={!!productDetail.alertText}
+                                          text="Update payment method"
+                                          to={`/payment/${specificProductType.urlPart}`}
+                                          state={{
+                                            productDetail,
+                                            flowReferrer: {
+                                              title: NAV_LINKS.billing.title,
+                                              link: NAV_LINKS.billing.link
+                                            }
+                                          }}
+                                      />
+                                  )}
+                                  {productInvoiceData.length > 0 && (
+                                      <div
+                                          css={css`
+                                            margin-top: ${space[12]}px;
+                                            margin-bottom: ${space[3]}px;
+                                          `}
+                                      >
+                                        <InvoicesTable
+                                            resultsPerPage={resultsPerPage}
+                                            invoiceData={productInvoiceData}
+                                        />
+                                      </div>
+                                  )}
+                                </React.Fragment>
+                            );
+                          })}
+                        </React.Fragment>
+                    )
+                );
+              }
+          )}
+        </>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 const Billing = (_: RouteComponentProps) => {
