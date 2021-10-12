@@ -19,8 +19,6 @@
     "updateSnapshot": "jest -u",
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && eslint --fix 'client/**' 'server/**' 'shared/**'",
-    "snyk-protect": "snyk protect",
-    "prepublish": "yarn run snyk-protect",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -114,7 +112,6 @@
     "raw-loader": "^2.0.0",
     "react-test-renderer": "^16.13.1",
     "react-testing-library": "^3.1.7",
-    "snyk": "^1.587.0",
     "sonar-scanner": "^3.1.0",
     "ts-jest": "^26.2.0",
     "typescript": "^3.9.7",
@@ -167,6 +164,5 @@
     "winston": "^3.2.1",
     "yup": "^0.28.2"
   },
-  "license": "UNLICENSED",
-  "snyk": true
+  "license": "UNLICENSED"
 }
