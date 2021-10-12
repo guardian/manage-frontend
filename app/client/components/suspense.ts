@@ -60,5 +60,6 @@ export function useSuspense<T>(promise: Promise<unknown>): () => T | void {
       ? Promise.all(resp.map(processResponse))
       : processResponse(resp)
   );
+
   return suspender<T>(toSuspend);
 }
