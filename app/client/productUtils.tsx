@@ -50,7 +50,7 @@ export const allProductsDetailEndpoint: Action<MembersDataApiItem[]> = {
         [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
             window.location.href
         )
-    }
+    },
 };
 
 export const hasCancellationFlow = (
