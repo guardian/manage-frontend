@@ -11,7 +11,6 @@ import {
   isGift,
   isPaidSubscriptionPlan,
   isProduct,
-  MembersDataApiItem,
   PaidSubscriptionPlan,
   ProductDetail,
   sortByJoinDate
@@ -20,7 +19,7 @@ import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
-import { allProductsDetailFetcher } from "../../productUtils";
+import {allProductsDetailEndpoint} from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
@@ -34,33 +33,28 @@ import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertI
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
-import { fetchWithDefaultParameters } from "../../fetch";
 import SpinLoader from "../SpinLoader";
-import { useSuspense } from "../suspense";
 import { ErrorBoundary } from "react-error-boundary";
 import { GenericErrorScreen } from "../genericErrorScreen";
+import {Action, useSuspenseQuery} from 'react-fetching-library';
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
-type BillingDataResponse = [
-  MembersDataApiItem[],
-  { invoices: InvoiceDataApiItem[] }
-];
 
-const fetchBillingData = Promise.all([
-  allProductsDetailFetcher(),
-  fetchWithDefaultParameters("/api/invoices")
-]);
-const startSuspense = useSuspense<BillingDataResponse>(fetchBillingData);
+type FetchInvoiceResponse = { invoices: InvoiceDataApiItem[] };
 
-export const BillingRenderer = ({
-  fetchData
-}: Promise<unknown>): JSX.Element => {
-  const [mdaResponse, invoiceResponse] = startSuspense();
+const fetchInvoices: Action<FetchInvoiceResponse> = {
+  method: 'GET',
+  endpoint: '/api/invoices'
+}
 
-  const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
-  const invoiceData = invoiceResponse.invoices.sort(
+export const BillingRenderer = (): JSX.Element => {
+  const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload;
+  const invoiceResponse = useSuspenseQuery(fetchInvoices).payload;
+
+  const allProductDetails = (mdaResponse as any).filter(isProduct).sort(sortByJoinDate);
+  const invoiceData = (invoiceResponse as any).invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
       b.date.localeCompare(a.date)
   );
@@ -270,7 +264,7 @@ const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
       <BetterAsyncLoader loadingMessage="Loading your billing details...">
-        <BillingRenderer fetchData={fetchBillingData} />
+        <BillingRenderer  />
       </BetterAsyncLoader>
     </PageContainer>
   );
@@ -281,13 +275,13 @@ interface MyAsyncLoaderProps {
   children: JSX.Element | JSX.Element[];
 }
 
+// const allStatusCodes = [400, 401, 402, 403, 404, 500, 501, 502, 503, 504];
+
 const BetterAsyncLoader = ({
   loadingMessage,
   children
 }: MyAsyncLoaderProps): JSX.Element => (
-  <ErrorBoundary
-    FallbackComponent={() => <GenericErrorScreen loggingMessage={false} />}
-  >
+  <ErrorBoundary FallbackComponent={() => <GenericErrorScreen loggingMessage={false} />}>
     <Suspense fallback={<SpinLoader loadingMessage={loadingMessage} />}>
       {children}
     </Suspense>

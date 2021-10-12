@@ -9,6 +9,8 @@ import {
   ProductTypeWithHolidayStopsFlow
 } from "../shared/productTypes";
 import { fetchWithDefaultParameters } from "./fetch";
+import {MembersDataApiItem} from "../shared/productResponse";
+import { Action } from 'react-fetching-library';
 
 export const shouldHaveHolidayStopsFlow = (
   productType: ProductType
@@ -40,6 +42,16 @@ export const allProductsDetailFetcher = () =>
       )
     }
   });
+
+export const allProductsDetailEndpoint: Action<MembersDataApiItem[]> = {
+    method: 'GET',
+    endpoint: '/api/me/mma',
+    headers: {
+        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+            window.location.href
+        )
+    }
+};
 
 export const hasCancellationFlow = (
   productType: ProductType
