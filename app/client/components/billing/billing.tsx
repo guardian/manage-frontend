@@ -34,9 +34,9 @@ import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
 import SpinLoader from "../SpinLoader";
-import { ErrorBoundary } from "react-error-boundary";
 import { GenericErrorScreen } from "../genericErrorScreen";
-import {Action, useSuspenseQuery} from 'react-fetching-library';
+import {Action, QueryErrorBoundary, useSuspenseQuery} from 'react-fetching-library';
+import {allErrorStatuses} from "../../fetchClient";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
@@ -46,7 +46,10 @@ type FetchInvoiceResponse = { invoices: InvoiceDataApiItem[] };
 
 const fetchInvoices: Action<FetchInvoiceResponse> = {
   method: 'GET',
-  endpoint: '/api/invoices'
+  endpoint: '/api/invoices',
+  config: {
+    emitErrorForStatuses: allErrorStatuses
+  }
 }
 
 export const BillingRenderer = (): JSX.Element => {
@@ -267,29 +270,27 @@ export const BillingRenderer = (): JSX.Element => {
 const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-      <BetterAsyncLoader loadingMessage="Loading your billing details...">
+      <DataFetcher loadingMessage="Loading your billing details...">
         <BillingRenderer  />
-      </BetterAsyncLoader>
+      </DataFetcher>
     </PageContainer>
   );
 };
 
-interface MyAsyncLoaderProps {
+interface DataFetcherProps {
   loadingMessage: string;
   children: JSX.Element | JSX.Element[];
 }
 
-// const allStatusCodes = [400, 401, 402, 403, 404, 500, 501, 502, 503, 504];
-
-const BetterAsyncLoader = ({
+export const DataFetcher = ({
   loadingMessage,
   children
-}: MyAsyncLoaderProps): JSX.Element => (
-  <ErrorBoundary FallbackComponent={() => <GenericErrorScreen loggingMessage={false} />}>
+}: DataFetcherProps): JSX.Element => (
+  <QueryErrorBoundary statuses={allErrorStatuses} fallback={() => <GenericErrorScreen loggingMessage={false} />}>
     <Suspense fallback={<SpinLoader loadingMessage={loadingMessage} />}>
       {children}
     </Suspense>
-  </ErrorBoundary>
+  </QueryErrorBoundary>
 );
 
 export default Billing;

@@ -1,25 +1,19 @@
-import React, {Suspense} from "react";
+import React from "react";
 import { render } from "@testing-library/react";
-import { BillingRenderer } from "../../../components/billing/billing";
+import {BillingRenderer, DataFetcher} from "../../../components/billing/billing";
 import "@testing-library/jest-dom/extend-expect";
-import {GenericErrorScreen} from "../../../components/genericErrorScreen";
-import SpinLoader from "../../../components/SpinLoader";
-import {ErrorBoundary} from "react-error-boundary";
 import {ClientContextProvider} from 'react-fetching-library';
 
-/*
-const mockedPromise = jest.fn(() => Promise.reject({}));
-
-describe("billingRenderer", () => {
-  test("error message renders when promise throws error", () => {
-    const { getByText } = render(
-      <BillingRenderer promiseToFetch={mockedPromise} />
-    );
-
-    expect(getByText("Oops")).toBeTruthy();
-  });
-});
- */
+function renderBillingRoute(mockedFetchClient: any) {
+  return render(
+      // @ts-ignore
+      <ClientContextProvider client={mockedFetchClient}>
+        <DataFetcher loadingMessage="Loading your billing details...">
+          <BillingRenderer />
+        </DataFetcher>
+      </ClientContextProvider>
+  );
+}
 
 describe("Billing Route", () => {
   test("error message renders when fetching error occurs", () => {
@@ -31,17 +25,18 @@ describe("Billing Route", () => {
       }),
     };
 
-    const { getByText } = render(
-        // @ts-ignore
-        <ClientContextProvider client={mockedFetchClient}>
-          <ErrorBoundary FallbackComponent={() => <GenericErrorScreen loggingMessage={false} />}>
-            <Suspense fallback={<SpinLoader loadingMessage="Loading your billing details..." />}>
-              <BillingRenderer />
-            </Suspense>
-          </ErrorBoundary>
-        </ClientContextProvider>
-    );
+    const { getByText } = renderBillingRoute(mockedFetchClient);
 
     expect(getByText("Oops")).toBeTruthy();
   });
+
+  test("Loading message appears when fetching", () => {
+    const mockedFetchClient = {
+
+    }
+
+    const { getByText } = renderBillingRoute(mockedFetchClient);
+
+    expect(getByText("Loading your billing details...")).toBeTruthy();
+  })
 });
