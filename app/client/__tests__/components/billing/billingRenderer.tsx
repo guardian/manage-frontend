@@ -21,13 +21,13 @@ describe("billingRenderer", () => {
 });
  */
 
-describe("billingRenderer", () => {
+describe("Billing Route", () => {
   test("error message renders when fetching error occurs", () => {
     const mockedFetchClient = {
       query: async () => ({
         error: Error(),
         status: 401,
-        payload: null,
+        payload: {},
       }),
     };
 
