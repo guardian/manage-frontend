@@ -22,7 +22,7 @@ const contactBoxContainerCss = css`
   border: 1px solid ${neutral[86]};
   ${textSans.medium()};
   ${minWidth.tablet} {
-    width: calc(50% - ${space[2]}px);
+    width: calc(50% - ${space[5] / 2}px);
   }
 `;
 
@@ -50,7 +50,7 @@ const contactBoxIconCss = css`
 const contactBoxSubtitleCss = css`
   display: none;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
-  ${minWidth.desktop} {
+  ${minWidth.wide} {
     display: block;
   }
   @media screen and (min-width: 740px) and (max-width: 1270px) {
@@ -79,7 +79,6 @@ const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
   justify-content: space-between;
   align-items: flex-start;
   & p {
-    margin-top: auto;
     margin-bottom: 0;
   }
   ${maxWidth.desktop} {
@@ -126,7 +125,11 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
 
 const emailAndLiveChatSubheadingCss = css`
   ${textSans.medium()};
-  margin-bottom: ${space[6]}px;
+  margin-bottom: ${space[1]}px;
+  max-width: 320px;
+  ${minWidth.tablet} {
+    max-width: none;
+  }
   ${minWidth.desktop} {
     display: none;
   }
@@ -138,7 +141,6 @@ const emailAndLiveChatFlexContainerCss = css`
   ${minWidth.tablet} {
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: ${space[5]}px;
   }
   & > * {
     margin-bottom: ${space[5]}px;
@@ -157,6 +159,9 @@ const emailAndLiveChatLinkCss = css`
 const emailAndLiveChatButtonCss = css`
   margin-bottom: ${space[5]}px;
   margin-top: ${space[1]}px;
+  ${minWidth.tablet} {
+    margin-bottom: ${space[9]}px;
+  }
 `;
 
 export const EmailAndLiveChatSubHeading = () => (

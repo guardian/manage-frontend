@@ -287,16 +287,16 @@ export const EmailUsIcon = (props: HelpSectionIconProps) => (
 
 export const ChatWithUsIcon = (props: HelpSectionIconProps) => (
   <SvgWrapper size={props.size || 39}>
-    <g>
+    <g transform="matrix(-1,0,0,1,39.14842,0)">
       <path
-        fillRule="evenodd"
+        fill="#ffffff"
+        d="m 29.3242,14.688 -1.625,-1.625 h -16.25 l -1.62498,1.625 v 9.7499 l 1.59788,1.625 h 2.7354 v 5.4167 h 1.0563 l 3.2771,-5.4167 h 9.2083 l 1.625,-1.625 z"
         clipRule="evenodd"
-        d="M29.3242 14.688L27.6992 13.063H11.4492L9.82422 14.688V24.4379L11.4221 26.0629H14.1575V31.4796H15.2138L18.4909 26.0629H27.6992L29.3242 24.4379V14.688Z"
-        fill="white"
+        fillRule="evenodd"
       />
-      <circle cx="14.6187" cy="19.5523" r="1.23884" fill="#052962" />
-      <circle cx="19.5748" cy="19.5523" r="1.23884" fill="#052962" />
-      <circle cx="24.5299" cy="19.5523" r="1.23884" fill="#052962" />
+      <circle fill="#052962" r="1.23884" cy="19.552299" cx="14.6187" />
+      <circle fill="#052962" r="1.23884" cy="19.552299" cx="19.5748" />
+      <circle fill="#052962" r="1.23884" cy="19.552299" cx="24.5299" />
     </g>
   </SvgWrapper>
 );
