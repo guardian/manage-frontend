@@ -2,9 +2,9 @@ import {createClient} from "react-fetching-library";
 import {trackEvent} from "./components/analytics";
 import * as Sentry from "@sentry/browser";
 import type {Action} from "react-fetching-library";
+import {getScopeFromRequestPathOrEmptyString, X_GU_ID_FORWARDED_SCOPE} from "../shared/identity";
 
 export const errorInterceptor = (client) => async (action: Action, response) => {
-    console.log(response);
     // if (response.status in allErrorStatuses) {
     if(response.error) {
         const locationHeader = response.headers.get("Location");
@@ -38,3 +38,9 @@ export const credentialHeaders = {
 export const emitErrorForAllStatuses = {
     emitErrorForStatuses: allErrorStatuses
 };
+
+export const defaultScopeHeader = {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+    )
+}

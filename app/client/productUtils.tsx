@@ -11,6 +11,8 @@ import {
 import { fetchWithDefaultParameters } from "./fetch";
 import {MembersDataApiItem} from "../shared/productResponse";
 import { Action } from 'react-fetching-library';
+import {method} from "lodash";
+import {defaultScopeHeader} from "./fetchClient";
 
 export const shouldHaveHolidayStopsFlow = (
   productType: ProductType
@@ -33,6 +35,19 @@ export const createProductDetailFetcher = (
       }
     }
   );
+
+export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string): Action<MembersDataApiItem[]> => {
+    return {
+        method: 'GET',
+        endpoint: "/api/me/mma" +
+            (subscriptionName
+                ? `/${subscriptionName}`
+                : `?productType=${productType.allProductsProductTypeFilterString}`),
+        headers: {
+            ...defaultScopeHeader
+        }
+    }
+}
 
 export const allProductsDetailFetcher = () =>
   fetchWithDefaultParameters("/api/me/mma", {
