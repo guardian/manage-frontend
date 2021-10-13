@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import {BillingRenderer, DataFetcher} from "../../../components/billing/billing";
-import "@testing-library/jest-dom/extend-expect";
+import {BillingRenderer} from "../../../components/billing/billing";
 import {ClientContextProvider} from 'react-fetching-library';
+import DataFetcher from "../../../components/DataFetcher";
 
 function renderBillingRoute(mockedFetchClient: any) {
   return render(
