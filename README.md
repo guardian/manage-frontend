@@ -40,7 +40,6 @@ NOTE nginx proxies CODE instances of [`identity-frontend`](https://github.com/gu
 1. In `./app`...
    1. run `nvm use`
    1. run `yarn`
-   1. authenticate snyk [with your token](https://support.snyk.io/hc/en-us/articles/360004008258-Authenticate-the-CLI-with-your-account) `npx snyk config set api=XXXXXXXX`
 
 #### Running locally (each day you need use it)
 
@@ -78,11 +77,11 @@ NOTE nginx proxies CODE instances of [`identity-frontend`](https://github.com/gu
 You must ssh via the bastion, e.g. using [ssm-scala](https://github.com/guardian/ssm-scala):
 `ssm ssh --profile membership --bastion-tags contributions-store-bastion,support,PROD --tags manage-frontend,support,CODE -a -x --newest`
 
-| Description           | Command |
-| --------------------- | --------------------- |
-| application directory | `/etc/gu/dist` |
-| application logs | `/var/log/manage-frontend.log` |
-| service config | `/etc/systemd/system/manage-frontend.service` |
-| service logs | `journalctl -u manage-frontend` |
-| service status | `systemctl status manage-frontend` |
-| healthcheck | `curl http://127.0.0.1:9233/_healthcheck` |
+| Description           | Command                                       |
+| --------------------- | --------------------------------------------- |
+| application directory | `/etc/gu/dist`                                |
+| application logs      | `/var/log/manage-frontend.log`                |
+| service config        | `/etc/systemd/system/manage-frontend.service` |
+| service logs          | `journalctl -u manage-frontend`               |
+| service status        | `systemctl status manage-frontend`            |
+| healthcheck           | `curl http://127.0.0.1:9233/_healthcheck`     |
