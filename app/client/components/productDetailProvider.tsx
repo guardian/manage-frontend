@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   isProduct,
-  MembersDataApiItem,
-  MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../shared/productResponse";
-import { createProductDetailFetcher } from "../productUtils";
+import {createProductDetailEndpoint} from "../productUtils";
 import {
   RouteableStepProps,
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
+import DataFetcher from "./DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 export interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
@@ -53,39 +53,43 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
     return props.forceRedirectToAccountOverviewIfNoBrowserHistoryState ? (
       visuallyNavigateToParent(props, true)
     ) : (
-      <MembersDatApiAsyncLoader
-        fetch={createProductDetailFetcher(props.productType)}
-        render={renderSingleProductOrReturnToAccountOverview(
-          props,
-          setSelectedProductDetail
-        )}
+      <DataFetcher
         loadingMessage={
           props.loadingMessagePrefix +
           " " +
           props.productType.friendlyName +
           "..."
-        }
-      />
+        }>
+          {renderSingleProductOrReturnToAccountOverview(
+            props,
+            setSelectedProductDetail
+          )}
+      </DataFetcher>
     );
   }
   return null;
 };
 
-const renderSingleProductOrReturnToAccountOverview = (
-  props: ProductDetailProviderProps,
-  setSelectedProductDetail: (productDetail: ProductDetail) => void
-) => (data: MembersDataApiItem[]) => {
-  const filteredProductDetails = data
-    .filter(isProduct)
-    .filter(
-      productDetail =>
-        props.allowCancelledSubscription ||
-        !productDetail.subscription.cancelledAt
-    );
+type SetSelectedProductDetail = (productDetail: ProductDetail) => void;
 
-  if (filteredProductDetails.length === 1) {
-    setSelectedProductDetail(filteredProductDetails[0]);
+const renderSingleProductOrReturnToAccountOverview = (props: ProductDetailProviderProps, setSelectedProductDetail: SetSelectedProductDetail): JSX.Element | null => {
+  const data = useSuspenseQuery(createProductDetailEndpoint(props.productType)).payload;
+
+  if(data) {
+    const filteredProductDetails = data
+        .filter(isProduct)
+        .filter(
+            productDetail =>
+                props.allowCancelledSubscription ||
+                !productDetail.subscription.cancelledAt
+        );
+
+    if (filteredProductDetails.length === 1) {
+      setSelectedProductDetail(filteredProductDetails[0]);
+      return null;
+    }
+    return visuallyNavigateToParent(props, true);
+  } else {
     return null;
   }
-  return visuallyNavigateToParent(props, true);
 };

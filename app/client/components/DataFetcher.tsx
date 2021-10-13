@@ -6,7 +6,7 @@ import {allErrorStatuses} from "../fetchClient";
 
 interface DataFetcherProps {
   loadingMessage: string;
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | null;
 }
 
 export const DataFetcher = ({
