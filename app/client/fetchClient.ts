@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser";
 import type {Action} from "react-fetching-library";
 import {getScopeFromRequestPathOrEmptyString, X_GU_ID_FORWARDED_SCOPE} from "../shared/identity";
 
-export const errorInterceptor = (client) => async (action: Action, response) => {
+export const errorInterceptor = (_: any) => async (_: Action, response: any) => {
     // if (response.status in allErrorStatuses) {
     if(response.error) {
         const locationHeader = response.headers.get("Location");
