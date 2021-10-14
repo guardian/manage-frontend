@@ -20,15 +20,28 @@ import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
 import { HelpTopicBox } from "./HelpTopicBox";
 
-const subtitleStyles = css`
+const baseSubtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
-  margin-bottom: ${isLiveChatFeatureEnabled() ? space[3] : space[6]}px;
   margin-top: 30px;
+  ${headline.small({ fontWeight: "bold" })};
+`;
+
+const subtitleStyles = css`
+  ${baseSubtitleStyles}
+  margin-bottom: ${space[6]}px;
   ${minWidth.tablet} {
     margin-bottom: ${space[6]}px;
     margin-top: 40px;
   }
-  ${headline.small({ fontWeight: "bold" })};
+`;
+
+const liveChatSubtitleStyles = css`
+  ${baseSubtitleStyles}
+  margin-bottom: ${space[1]}px;
+  ${minWidth.tablet} {
+    margin-bottom: 0;
+    margin-top: 40px;
+  }
 `;
 
 const HelpCentre = (_: RouteComponentProps) => {
@@ -56,7 +69,13 @@ const HelpCentre = (_: RouteComponentProps) => {
         {/* HelpCentreMoreTopics will replace HelpCentreLandingMoreTopics
         once we convert the landing page to loading dynamic content */}
         <HelpCentreLandingMoreTopics />
-        <h2 css={subtitleStyles}>Still can’t find what you’re looking for?</h2>
+        <h2
+          css={
+            isLiveChatFeatureEnabled() ? liveChatSubtitleStyles : subtitleStyles
+          }
+        >
+          Still can’t find what you’re looking for?
+        </h2>
         {isLiveChatFeatureEnabled() ? (
           <>
             <EmailAndLiveChatSubHeading />
