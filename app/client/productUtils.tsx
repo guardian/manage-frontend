@@ -11,7 +11,6 @@ import {
 import { fetchWithDefaultParameters } from "./fetch";
 import {MembersDataApiItem} from "../shared/productResponse";
 import { Action } from 'react-fetching-library';
-import {method} from "lodash";
 import {defaultScopeHeader} from "./fetchClient";
 
 export const shouldHaveHolidayStopsFlow = (
