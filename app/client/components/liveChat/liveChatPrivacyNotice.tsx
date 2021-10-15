@@ -67,7 +67,18 @@ export const LiveChatPrivacyNoticeLink = () => {
   `;
   return (
     <div css={privacyNoticeLinkCss}>
-      <a href="#livechatPrivacyNotice">data privacy notice</a>
+      <a
+        href="#livechatPrivacyNotice"
+        onClick={e => {
+          e.preventDefault();
+          const privacyNoticeElement = document.getElementById(
+            "livechatPrivacyNotice"
+          );
+          privacyNoticeElement && privacyNoticeElement.scrollIntoView();
+        }}
+      >
+        data privacy notice
+      </a>
     </div>
   );
 };
