@@ -12,8 +12,6 @@ import React, {
 import {
   DeliveryAddress,
   isProduct,
-  MembersDataApiItem,
-  MembersDatApiAsyncLoader,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
@@ -21,7 +19,7 @@ import {
   GROUPED_PRODUCT_TYPES,
   ProductType
 } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
+import {createProductDetailEndpoint} from "../../../productUtils";
 import { COUNTRIES } from "../../identity/models";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
@@ -53,6 +51,8 @@ import {
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
@@ -137,20 +137,25 @@ const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
-  allProductDetails: MembersDataApiItem[]
-) => {
-  return (
-    <FormContainer
-      contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-        allProductDetails
-          .filter(isProduct)
-          .filter(_ => _.subscription.readerType !== "Gift")
-      )}
-      routeableStepProps={routeableStepProps}
-    />
-  );
+const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps): JSX.Element | null => {
+  const allProductDetails = useSuspenseQuery(createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions)).payload;
+
+  if (allProductDetails) {
+    return (
+        <FormContainer
+            contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
+                allProductDetails
+                    .filter(isProduct)
+                    .filter(_ => _.subscription.readerType !== "Gift")
+            )}
+            routeableStepProps={routeableStepProps}
+        />
+    );
+  } else {
+    return null;
+  }
 };
+
 const clearState = (
   setFormStatus: Dispatch<SetStateAction<string>>,
   setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
@@ -738,11 +743,9 @@ const DeliveryAddressForm = (props: RouteableStepProps) => {
         }
       ]}
     >
-      <MembersDatApiAsyncLoader
-        render={renderDeliveryAddressForm(props)}
-        fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
-        loadingMessage={"Loading delivery details..."}
-      />
+      <DataFetcher loadingMessage="Loading delivery details...">
+        {renderDeliveryAddressForm(props)}
+      </DataFetcher>
     </PageContainer>
   );
 };
