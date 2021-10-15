@@ -29,7 +29,6 @@ import {
 } from "./deliveryRecords";
 import {
   createDeliveryRecordsProblemPost,
-  DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import {
@@ -39,21 +38,33 @@ import {
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 const renderDeliveryRecordsConfirmation = (
   props: DeliveryRecordsRouteableStepProps,
   subscription: Subscription
-) => (data: DeliveryRecordsResponse) => {
+) => {
+  const data = useSuspenseQuery(createDeliveryRecordsProblemPost(
+      deliveryRecordsProblemContext.subscription.subscriptionId,
+      deliveryRecordsProblemContext.isTestUser,
+      deliveryIssuePostPayload
+  )).payload;
+
   const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
-  return (
-    <DeliveryRecordsProblemConfirmationFC
-      data={data}
-      routeableStepProps={props}
-      subscriptionId={subscription.subscriptionId}
-      subscriptionCurrency={mainPlan.currency}
-    />
-  );
+  if(data) {
+    return (
+        <DeliveryRecordsProblemConfirmationFC
+            data={data}
+            routeableStepProps={props}
+            subscriptionId={subscription.subscriptionId}
+            subscriptionCurrency={mainPlan.currency}
+        />
+    );
+  } else {
+    return null;
+  }
 };
 
 interface DeliveryRecordsProblemConfirmationFCProps {
@@ -434,17 +445,11 @@ export const DeliveryRecordsProblemConfirmation = (
   }
 
   return (
-    <DeliveryRecordsApiAsyncLoader
-      render={renderDeliveryRecordsConfirmation(
-        props,
-        deliveryRecordsProblemContext.subscription
-      )}
-      fetch={createDeliveryRecordsProblemPost(
-        deliveryRecordsProblemContext.subscription.subscriptionId,
-        deliveryRecordsProblemContext.isTestUser,
-        deliveryIssuePostPayload
-      )}
-      loadingMessage={"Reporting problem..."}
-    />
+      <DataFetcher loadingMessage={"Reporting problem..."}>
+        {renderDeliveryRecordsConfirmation(
+            props,
+            deliveryRecordsProblemContext.subscription
+        )}
+      </DataFetcher>
   );
 };
