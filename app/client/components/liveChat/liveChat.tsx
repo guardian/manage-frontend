@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
+import { trackEvent } from "../analytics";
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -247,7 +248,14 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
   return (
     <Button
       priority="secondary"
-      onClick={() => bootstrapChat()}
+      onClick={() => {
+        trackEvent({
+          eventCategory: "livechat",
+          eventAction: "click",
+          eventLabel: "start_live_chat"
+        });
+        bootstrapChat();
+      }}
       css={props.liveChatButtonCss}
       icon={
         liveChatIsLoading ? (
