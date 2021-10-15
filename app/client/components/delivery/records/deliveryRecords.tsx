@@ -38,9 +38,8 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryAddressStep } from "./deliveryAddressStep";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
-  createDeliveryRecordsFetcher,
+  createDeliveryRecordsEndpoint,
   DeliveryRecordDetail,
-  DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
@@ -51,6 +50,8 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
+import {Action, useSuspenseQuery} from "react-fetching-library";
+import DataFetcher from "../../DataFetcher";
 
 interface IdentityDetails {
   userId: string;
@@ -88,19 +89,25 @@ interface Step1FormValidationDetails {
 const renderDeliveryRecords = (
   props: DeliveryRecordsRouteableStepProps,
   productDetail: ProductDetail
-) => (data: DeliveryRecordsResponse) => {
-  const mainPlan = getMainPlan(
-    productDetail.subscription
-  ) as PaidSubscriptionPlan;
+): JSX.Element | null => {
+  const data = useSuspenseQuery(productDetail ? createDeliveryRecordsEndpoint(productDetail.subscription.subscriptionId, productDetail.isTestUser) : null).payload;
 
-  return (
-    <DeliveryRecordsFC
-      data={data}
-      routeableStepProps={props}
-      productDetail={productDetail}
-      subscriptionCurrency={mainPlan.currency}
-    />
-  );
+  if (data) {
+    const mainPlan = getMainPlan(
+        productDetail.subscription
+    ) as PaidSubscriptionPlan;
+
+    return (
+        <DeliveryRecordsFC
+            data={data}
+            routeableStepProps={props}
+            productDetail={productDetail}
+            subscriptionCurrency={mainPlan.currency}
+        />
+    );
+  } else {
+    return null;
+  }
 };
 
 export const checkForExistingDeliveryProblem = (
@@ -750,14 +757,9 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       ]}
     >
       {productDetail => (
-        <DeliveryRecordsApiAsyncLoader
-          render={renderDeliveryRecords(props, productDetail)}
-          fetch={createDeliveryRecordsFetcher(
-            productDetail.subscription.subscriptionId,
-            productDetail.isTestUser
-          )}
-          loadingMessage={"Loading delivery history..."}
-        />
+          <DataFetcher loadingMessage={"Loading delivery history..."}>
+            {renderDeliveryRecords(props, productDetail)}
+          </DataFetcher>
       )}
     </FlowWrapper>
   );

@@ -9,7 +9,7 @@ interface DataFetcherProps {
   children: JSX.Element | JSX.Element[] | null;
 }
 
-export const DataFetcher = ({
+const DataFetcher = ({
   loadingMessage,
   children
 }: DataFetcherProps): JSX.Element => (
