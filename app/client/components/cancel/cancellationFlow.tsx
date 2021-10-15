@@ -25,14 +25,12 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
-import {
-  CancellationDateAsyncLoader,
-  cancellationDateFetcher,
-  CancellationDateResponse
-} from "./cancellationDateResponse";
+import { cancellationDateEndpoint } from "./cancellationDateResponse";
 import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
 import { GenericSaveAttemptProps } from "./stages/genericSaveAttempt";
+import DataFetcher from "../DataFetcher";
+import { useSuspenseQuery } from "react-fetching-library";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -200,15 +198,23 @@ const ReasonPickerRenderer = (
   props: RouteableStepProps,
   productType: ProductTypeWithCancellationFlow,
   productDetail: ProductDetail
-) => (apiResponse: CancellationDateResponse) => {
-  return (
-    <ReasonPicker
-      {...props}
-      productType={productType}
-      productDetail={productDetail}
-      chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
-    />
-  );
+): JSX.Element | null => {
+  const apiResponse = useSuspenseQuery(
+    cancellationDateEndpoint(productDetail.subscription.subscriptionId)
+  ).payload;
+
+  if (apiResponse) {
+    return (
+      <ReasonPicker
+        {...props}
+        productType={productType}
+        productDetail={productDetail}
+        chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
+      />
+    );
+  } else {
+    return null;
+  }
 };
 
 const CancellationFlow = (props: RouteableStepProps) => (
@@ -232,14 +238,12 @@ const CancellationFlow = (props: RouteableStepProps) => (
     {productDetail =>
       productDetail.selfServiceCancellation.isAllowed &&
       hasCancellationFlow(props.productType) ? (
-        <CancellationDateAsyncLoader
-          fetch={cancellationDateFetcher(
-            productDetail.subscription.subscriptionId
-          )}
-          render={ReasonPickerRenderer(props, props.productType, productDetail)}
+        <DataFetcher
           loadingMessage={`Checking your ${props.productType
             .shortFriendlyName || props.productType.friendlyName} details...`}
-        />
+        >
+          {ReasonPickerRenderer(props, props.productType, productDetail)}
+        </DataFetcher>
       ) : (
         <ContactUsToCancel
           selfServiceCancellation={productDetail.selfServiceCancellation}
