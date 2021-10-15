@@ -9,8 +9,9 @@ import {
   parseDate,
   ParsedDate
 } from "../../../shared/dates";
-import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
+import {MDA_TEST_USER_HEADER} from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
+import {Action} from "react-fetching-library";
 
 interface CommonCreditProperties {
   estimatedPrice?: number;
@@ -134,6 +135,25 @@ export const getPotentialHolidayStopsFetcher = (
       }
     }
   );
+
+
+export const getPotentialHolidayStopsEndpoint = (
+    subscriptionName: string,
+    startDate: Date,
+    endDate: Date,
+    isTestUser: boolean
+): Action<PotentialHolidayStopsResponse> => {
+  return {
+    method: 'GET',
+    endpoint: `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
+        startDate,
+        DATE_FNS_INPUT_FORMAT
+    )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  }
+}
 
 export interface CreateOrAmendHolidayStopsResponse {
   success: string;
