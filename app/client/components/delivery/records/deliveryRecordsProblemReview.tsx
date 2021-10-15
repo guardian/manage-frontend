@@ -11,10 +11,8 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
-  getPotentialHolidayStopsFetcher,
-  PotentialHolidayStopsAsyncLoader,
-  PotentialHolidayStopsResponse,
-  RawPotentialHolidayStopDetail
+    getPotentialHolidayStopsEndpoint,
+    RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -34,6 +32,8 @@ import {
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 import { UserPhoneNumber } from "./userPhoneNumber";
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
@@ -51,28 +51,37 @@ export const DeliveryRecordsProblemReview = (
   const problemEndDate =
     deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
-  const renderReviewDetails = (
-    potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
-  ) => {
-    const totalCreditAmount: number =
-      potentialHolidayStopsResponseWithCredits.potentials.length &&
-      potentialHolidayStopsResponseWithCredits.potentials
-        .flatMap(x => [Math.abs(x.credit || 0)])
-        .reduce((accumulator, currentValue) => accumulator + currentValue);
+  const renderReviewDetails = (): JSX.Element | null => {
+      const potentialHolidayStopsResponseWithCredits = useSuspenseQuery(getPotentialHolidayStopsEndpoint(
+          deliveryProblemContext?.subscription.subscriptionId,
+          parseDate(problemStartDate).date,
+          parseDate(problemEndDate).date,
+          deliveryProblemContext.isTestUser
+      )).payload;
 
-    return (
-      <DeliveryRecordsProblemReviewFC
-        {...props}
-        showCredit
-        creditDate={
-          potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
-        }
-        relatedPublications={
-          potentialHolidayStopsResponseWithCredits.potentials
-        }
-        totalCreditAmount={totalCreditAmount}
-      />
-    );
+      if(potentialHolidayStopsResponseWithCredits) {
+          const totalCreditAmount: number =
+              potentialHolidayStopsResponseWithCredits.potentials.length &&
+              potentialHolidayStopsResponseWithCredits.potentials
+                  .flatMap(x => [Math.abs(x.credit || 0)])
+                  .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+          return (
+              <DeliveryRecordsProblemReviewFC
+                  {...props}
+                  showCredit
+                  creditDate={
+                      potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
+                  }
+                  relatedPublications={
+                      potentialHolidayStopsResponseWithCredits.potentials
+                  }
+                  totalCreditAmount={totalCreditAmount}
+              />
+          );
+      } else {
+          return null;
+      }
   };
 
   if (!deliveryProblemContext) {
@@ -86,16 +95,9 @@ export const DeliveryRecordsProblemReview = (
   }
 
   return deliveryProblemContext.showProblemCredit ? (
-    <PotentialHolidayStopsAsyncLoader
-      fetch={getPotentialHolidayStopsFetcher(
-        deliveryProblemContext?.subscription.subscriptionId,
-        parseDate(problemStartDate).date,
-        parseDate(problemEndDate).date,
-        deliveryProblemContext.isTestUser
-      )}
-      render={renderReviewDetails}
-      loadingMessage="Generating your report"
-    />
+      <DataFetcher loadingMessage="Generating your report">
+          {renderReviewDetails()}
+      </DataFetcher>
   ) : (
     <DeliveryRecordsProblemReviewFC {...props} />
   );
