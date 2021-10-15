@@ -5,6 +5,7 @@ import {
 } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 import { fetchWithDefaultParameters } from "../../../fetch";
+import type {Action} from "react-fetching-library";
 
 interface DeliveryProblem {
   problemType: string;
@@ -91,6 +92,27 @@ export const createDeliveryRecordsFetcher = (
     }
   });
 
+export const createDeliveryRecordsEndpoint = (subscriptionId: string, isTestUser: boolean): Action<DeliveryRecordsResponse> => {
+  return {
+    method: 'GET',
+    endpoint:`/api/delivery-records/${subscriptionId}`,
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  }
+}
+
+
+export const createDeliveryRecordsConf = (subscriptionId: string, isTestUser: boolean) => {
+  return {
+    method: 'GET',
+    endpoint:`/api/delivery-records/${subscriptionId}`,
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  }
+}
+
 export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
   isTestUser: boolean,
@@ -105,3 +127,15 @@ export const createDeliveryRecordsProblemPost = (
       [MDA_TEST_USER_HEADER]: `${isTestUser}`
     }
   });
+
+export const createDeliveryRecordsProblemPostEndpoint = (subscriptionId: string, isTestUser: boolean, payload: DeliveryRecordsPostPayload): Action<DeliveryRecordsResponse> => {
+  return {
+    method: 'POST',
+    endpoint: `/api/delivery-records/${subscriptionId}`,
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    }
+  }
+}

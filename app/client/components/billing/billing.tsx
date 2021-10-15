@@ -35,7 +35,7 @@ import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
 import { Action, useSuspenseQuery } from "react-fetching-library";
 import { allErrorStatuses } from "../../fetchClient";
-import { DataFetcher } from "../DataFetcher";
+import DataFetcher from "../DataFetcher";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
