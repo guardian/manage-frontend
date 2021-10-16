@@ -50,7 +50,7 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
-import {Action, useSuspenseQuery} from "react-fetching-library";
+import {useSuspenseQuery} from "react-fetching-library";
 import DataFetcher from "../../DataFetcher";
 
 interface IdentityDetails {
@@ -86,13 +86,14 @@ interface Step1FormValidationDetails {
   message?: string;
 }
 
-const renderDeliveryRecords = (
-  props: DeliveryRecordsRouteableStepProps,
-  productDetail: ProductDetail
-): JSX.Element | null => {
-  const data = useSuspenseQuery(productDetail ? createDeliveryRecordsEndpoint(productDetail.subscription.subscriptionId, productDetail.isTestUser) : null).payload;
+interface RenderDeliveryRecordsProps {
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
+  productDetail: ProductDetail;
+}
 
-  if (data) {
+const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeliveryRecordsProps): JSX.Element => {
+  const data = useSuspenseQuery(createDeliveryRecordsEndpoint(productDetail.subscription.subscriptionId, productDetail.isTestUser)).payload as DeliveryRecordsResponse;
+
     const mainPlan = getMainPlan(
         productDetail.subscription
     ) as PaidSubscriptionPlan;
@@ -100,14 +101,11 @@ const renderDeliveryRecords = (
     return (
         <DeliveryRecordsFC
             data={data}
-            routeableStepProps={props}
+            routeableStepProps={routeableStepProps}
             productDetail={productDetail}
             subscriptionCurrency={mainPlan.currency}
         />
     );
-  } else {
-    return null;
-  }
 };
 
 export const checkForExistingDeliveryProblem = (
@@ -758,7 +756,7 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
     >
       {productDetail => (
           <DataFetcher loadingMessage={"Loading delivery history..."}>
-            {renderDeliveryRecords(props, productDetail)}
+            <RenderDeliveryRecords routeableStepProps={props} productDetail={productDetail} />
           </DataFetcher>
       )}
     </FlowWrapper>

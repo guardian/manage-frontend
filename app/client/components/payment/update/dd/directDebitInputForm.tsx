@@ -207,6 +207,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
                   }}
                 >
                   {isValidating ? (
+
                     <DirectDebitValidationLoader
                       fetch={validateDirectDebitDetails}
                       shouldPreventRender={handleValidationResponse(

@@ -51,7 +51,7 @@ export const DeliveryRecordsProblemReview = (
   const problemEndDate =
     deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
-  const renderReviewDetails = (): JSX.Element | null => {
+  const RenderReviewDetails = (): JSX.Element | null => {
       const potentialHolidayStopsResponseWithCredits = useSuspenseQuery(getPotentialHolidayStopsEndpoint(
           deliveryProblemContext?.subscription.subscriptionId,
           parseDate(problemStartDate).date,
@@ -96,7 +96,7 @@ export const DeliveryRecordsProblemReview = (
 
   return deliveryProblemContext.showProblemCredit ? (
       <DataFetcher loadingMessage="Generating your report">
-          {renderReviewDetails()}
+          <RenderReviewDetails />
       </DataFetcher>
   ) : (
     <DeliveryRecordsProblemReviewFC {...props} />
