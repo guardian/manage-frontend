@@ -46,6 +46,7 @@ import { FormValidationResponse, isFormValid } from "../address/formValidation";
 import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
+import DataFetcher from "../../DataFetcher";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
@@ -539,6 +540,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
           )}
           loadingMessage={"Loading delivery details..."}
         />
+        <DataFetcher loadingMessage={"Loading delivery details..."}>
+
+        </DataFetcher>
       </div>
     );
   } else if (

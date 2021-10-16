@@ -56,294 +56,291 @@ interface InnerContentProps {
   manageProductProps: RouteableStepPropsForGrouped;
   productDetail: ProductDetail;
 }
-const InnerContent = ({
-  manageProductProps,
-  productDetail
-}: InnerContentProps) => {
-  const mainPlan = getMainPlan(productDetail.subscription);
+const InnerContent = ({manageProductProps, productDetail}: InnerContentProps): JSX.Element | null => {
+    const [overiddenAmount, setOveriddenAmount] = useState<number | null>(null);
 
-  const groupedProductType = manageProductProps.groupedProductType;
+    if(productDetail) {
+        const mainPlan = getMainPlan(productDetail.subscription);
 
-  const specificProductType = groupedProductType.mapGroupedToSpecific(
-    productDetail
-  );
+        const groupedProductType = manageProductProps.groupedProductType;
+        const specificProductType = groupedProductType.mapGroupedToSpecific(productDetail);
 
-  const hasCancellationPending = productDetail.subscription.cancelledAt;
+        const hasCancellationPending = productDetail.subscription.cancelledAt;
+        const cancelledCopy = specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
-  const cancelledCopy =
-    specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
+        const isAmountOveridable = specificProductType.updateAmountMdaEndpoint;
 
-  const [overiddenAmount, setOveriddenAmount] = useState<number | null>(null);
-  const isAmountOveridable = specificProductType.updateAmountMdaEndpoint;
+        const nextPaymentDetails = getNextPaymentDetails(
+            mainPlan,
+            productDetail.subscription,
+            overiddenAmount,
+            !!productDetail.alertText
+        );
 
-  const nextPaymentDetails = getNextPaymentDetails(
-    mainPlan,
-    productDetail.subscription,
-    overiddenAmount,
-    !!productDetail.alertText
-  );
+        return (
+            <>
+                <PaymentFailureAlertIfApplicable productDetail={productDetail}/>
+                <div
+                    css={css`
+                      ${subHeadingBorderTopCss}
+                      display: flex;
+                      align-items: start;
+                      justify-content: space-between;
+                    `}
+                >
+                    <h2
+                        css={css`
+                          ${subHeadingTitleCss}
+                          margin: 0;
+                        `}
+                    >
+                        {specificProductType.productTitle(mainPlan)}
+                    </h2>
+                    {isGift(productDetail.subscription) && (
+                        <i
+                            css={css`
+                              margin: 4px 0 0 ${space[3]}px;
+                            `}
+                        >
+                            <GiftIcon alignArrowToThisSide={"left"}/>
+                        </i>
+                    )}
+                </div>
 
-  return (
-    <>
-      <PaymentFailureAlertIfApplicable productDetail={productDetail} />
-      <div
-        css={css`
-          ${subHeadingBorderTopCss}
-          display: flex;
-          align-items: start;
-          justify-content: space-between;
-        `}
-      >
-        <h2
-          css={css`
-            ${subHeadingTitleCss}
-            margin: 0;
-          `}
-        >
-          {specificProductType.productTitle(mainPlan)}
-        </h2>
-        {isGift(productDetail.subscription) && (
-          <i
-            css={css`
-              margin: 4px 0 0 ${space[3]}px;
-            `}
-          >
-            <GiftIcon alignArrowToThisSide={"left"} />
-          </i>
-        )}
-      </div>
-
-      {hasCancellationPending && (
-        <p
-          css={css`
-            ${textSans.medium()};
-          `}
-        >
-          <ErrorIcon fill={brandAlt[200]} />
-          <span
-            css={css`
-              margin-left: ${space[2]}px;
-            `}
-          >
+                {hasCancellationPending && (
+                    <p
+                        css={css`
+                          ${textSans.medium()};
+                        `}
+                    >
+                        <ErrorIcon fill={brandAlt[200]}/>
+                        <span
+                            css={css`
+                              margin-left: ${space[2]}px;
+                            `}
+                        >
             {cancelledCopy}{" "}
-            <strong>
+                            <strong>
               {cancellationFormatDate(
-                productDetail.subscription.cancellationEffectiveDate
+                  productDetail.subscription.cancellationEffectiveDate
               )}
             </strong>
           </span>
-          .
-        </p>
-      )}
+                        .
+                    </p>
+                )}
 
-      {isAmountOveridable && isPaidSubscriptionPlan(mainPlan) ? (
-        <ContributionUpdateAmount
-          subscriptionId={productDetail.subscription.subscriptionId}
-          mainPlan={mainPlan}
-          productType={specificProductType}
-          nextPaymentDate={productDetail.subscription.nextPaymentDate}
-          amountUpdateStateChange={setOveriddenAmount}
-        />
-      ) : (
-        <BasicProductInfoTable
-          groupedProductType={groupedProductType}
-          productDetail={productDetail}
-        />
-      )}
-
-      <h2
-        css={css`
-          ${subHeadingCss}
-        `}
-      >
-        Payment
-      </h2>
-      <SixForSixExplainerIfApplicable
-        additionalCss={css`
-          ${textSans.medium()};
-        `}
-        mainPlan={mainPlan}
-        hasCancellationPending={hasCancellationPending}
-      />
-      <PaymentDetailsTable
-        productDetail={productDetail}
-        nextPaymentDetails={nextPaymentDetails}
-        hasCancellationPending={hasCancellationPending}
-      />
-      {productDetail.isPaidTier && !productDetail.subscription.payPalEmail && (
-        <LinkButton
-          colour={productDetail.alertText ? brand[400] : brand[800]}
-          textColour={productDetail.alertText ? neutral[100] : brand[400]}
-          fontWeight={"bold"}
-          alert={!!productDetail.alertText}
-          text="Update payment method"
-          to={`/payment/${specificProductType.urlPart}`}
-          state={productDetail}
-        />
-      )}
-
-      {specificProductType.delivery?.showAddress?.(
-        productDetail.subscription
-      ) &&
-        productDetail.subscription.deliveryAddress && (
-          <>
-            <h2
-              css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Delivery address
-            </h2>
-            <ProductDescriptionListTable
-              alternateRowBgColors
-              borderColour={neutral[86]}
-              content={[
-                {
-                  title: "Address",
-                  value: (
-                    <DeliveryAddressDisplay
-                      {...productDetail.subscription.deliveryAddress}
+                {isAmountOveridable && isPaidSubscriptionPlan(mainPlan) ? (
+                    <ContributionUpdateAmount
+                        subscriptionId={productDetail.subscription.subscriptionId}
+                        mainPlan={mainPlan}
+                        productType={specificProductType}
+                        nextPaymentDate={productDetail.subscription.nextPaymentDate}
+                        amountUpdateStateChange={setOveriddenAmount}
                     />
-                  ),
-                  spanTwoCols: true
-                },
-                ...(specificProductType.delivery
-                  ?.enableDeliveryInstructionsUpdate
-                  ? [
-                      {
-                        title: "Instructions",
-                        value:
-                          productDetail.subscription.deliveryAddress
-                            .instructions,
-                        spanTwoCols: true
-                      }
-                    ]
-                  : [])
-              ]}
-            />
-            <LinkButton
-              colour={brand[800]}
-              textColour={brand[400]}
-              fontWeight="bold"
-              text="Manage delivery address"
-              to={`/delivery/${specificProductType.urlPart}/address`}
-              state={productDetail}
-            />
-          </>
-        )}
+                ) : (
+                    <BasicProductInfoTable
+                        groupedProductType={groupedProductType}
+                        productDetail={productDetail}
+                    />
+                )}
 
-      {hasDeliveryRecordsFlow(specificProductType) && (
-        <>
-          <h2
-            css={css`
-              ${subHeadingCss}
-            `}
-          >
-            Delivery history
-          </h2>
-          <p
-            css={css`
-              ${textSans.medium()}
-            `}
-          >
-            Check delivery history and report an issue.
-          </p>
-          <LinkButton
-            colour={brand[800]}
-            textColour={brand[400]}
-            fontWeight="bold"
-            text="Manage delivery history"
-            to={`/delivery/${specificProductType.urlPart}/records`}
-            state={productDetail}
-          />
-        </>
-      )}
+                <h2
+                    css={css`
+                      ${subHeadingCss}
+                    `}
+                >
+                    Payment
+                </h2>
+                <SixForSixExplainerIfApplicable
+                    additionalCss={css`
+                      ${textSans.medium()};
+                    `}
+                    mainPlan={mainPlan}
+                    hasCancellationPending={hasCancellationPending}
+                />
+                <PaymentDetailsTable
+                    productDetail={productDetail}
+                    nextPaymentDetails={nextPaymentDetails}
+                    hasCancellationPending={hasCancellationPending}
+                />
+                {productDetail.isPaidTier && !productDetail.subscription.payPalEmail && (
+                    <LinkButton
+                        colour={productDetail.alertText ? brand[400] : brand[800]}
+                        textColour={productDetail.alertText ? neutral[100] : brand[400]}
+                        fontWeight={"bold"}
+                        alert={!!productDetail.alertText}
+                        text="Update payment method"
+                        to={`/payment/${specificProductType.urlPart}`}
+                        state={productDetail}
+                    />
+                )}
 
-      {shouldHaveHolidayStopsFlow(specificProductType) &&
-        productDetail.subscription.autoRenew &&
-        !hasCancellationPending && (
-          <>
-            <h2
-              css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Going on holiday?
-            </h2>
-            <p
-              css={css`
-                ${textSans.medium()}
-              `}
-            >
-              Don’t fret - you can manage your suspensions by clicking the
-              button below. You will be credited for each suspended{" "}
-              {specificProductType.holidayStops.issueKeyword} on the first bill
-              after the suspension date.
-            </p>
-            <LinkButton
-              colour={brand[800]}
-              textColour={brand[400]}
-              fontWeight="bold"
-              text="Manage suspensions"
-              to={`/suspend/${specificProductType.urlPart}`}
-              state={productDetail}
-            />
-          </>
-        )}
+                {specificProductType.delivery?.showAddress?.(
+                    productDetail.subscription
+                ) &&
+                productDetail.subscription.deliveryAddress && (
+                    <>
+                        <h2
+                            css={css`
+                              ${subHeadingCss}
+                            `}
+                        >
+                            Delivery address
+                        </h2>
+                        <ProductDescriptionListTable
+                            alternateRowBgColors
+                            borderColour={neutral[86]}
+                            content={[
+                                {
+                                    title: "Address",
+                                    value: (
+                                        <DeliveryAddressDisplay
+                                            {...productDetail.subscription.deliveryAddress}
+                                        />
+                                    ),
+                                    spanTwoCols: true
+                                },
+                                ...(specificProductType.delivery
+                                    ?.enableDeliveryInstructionsUpdate
+                                    ? [
+                                        {
+                                            title: "Instructions",
+                                            value:
+                                            productDetail.subscription.deliveryAddress
+                                                .instructions,
+                                            spanTwoCols: true
+                                        }
+                                    ]
+                                    : [])
+                            ]}
+                        />
+                        <LinkButton
+                            colour={brand[800]}
+                            textColour={brand[400]}
+                            fontWeight="bold"
+                            text="Manage delivery address"
+                            to={`/delivery/${specificProductType.urlPart}/address`}
+                            state={productDetail}
+                        />
+                    </>
+                )}
 
-      {!productDetail.subscription.autoRenew &&
-        specificProductType.renewalMetadata && (
-          <>
-            <h2
-              css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Renewal
-            </h2>
-            <p
-              css={css`
-                ${textSans.medium()}
-              `}
-            >
-              To renew this one-off {specificProductType.friendlyName}, please
-              contact us.
-            </p>
-            <CallCentreEmailAndNumbers />
-            <p
-              css={css`
-                ${textSans.medium()}
-              `}
-            >
-              Alternatively, if you would prefer to start a recurring{" "}
-              {specificProductType.friendlyName} you can explore payment options
-              and subscribe online by clicking the button below.
-            </p>
-            <SupportTheGuardianButton
-              {...specificProductType.renewalMetadata}
-              fontWeight="bold"
-              textColour={neutral[100]}
-              colour={brand[400]}
-              notPrimary
-            />
-          </>
-        )}
+                {hasDeliveryRecordsFlow(specificProductType) && (
+                    <>
+                        <h2
+                            css={css`
+                              ${subHeadingCss}
+                            `}
+                        >
+                            Delivery history
+                        </h2>
+                        <p
+                            css={css`
+                              ${textSans.medium()}
+                            `}
+                        >
+                            Check delivery history and report an issue.
+                        </p>
+                        <LinkButton
+                            colour={brand[800]}
+                            textColour={brand[400]}
+                            fontWeight="bold"
+                            text="Manage delivery history"
+                            to={`/delivery/${specificProductType.urlPart}/records`}
+                            state={productDetail}
+                        />
+                    </>
+                )}
 
-      {specificProductType.productPageNewsletterIDs && (
-        <NewsletterOptinSection
-          activeNewletterIDs={specificProductType.productPageNewsletterIDs}
-        />
-      )}
+                {shouldHaveHolidayStopsFlow(specificProductType) &&
+                productDetail.subscription.autoRenew &&
+                !hasCancellationPending && (
+                    <>
+                        <h2
+                            css={css`
+                              ${subHeadingCss}
+                            `}
+                        >
+                            Going on holiday?
+                        </h2>
+                        <p
+                            css={css`
+                              ${textSans.medium()}
+                            `}
+                        >
+                            Don’t fret - you can manage your suspensions by clicking the
+                            button below. You will be credited for each suspended{" "}
+                            {specificProductType.holidayStops.issueKeyword} on the first bill
+                            after the suspension date.
+                        </p>
+                        <LinkButton
+                            colour={brand[800]}
+                            textColour={brand[400]}
+                            fontWeight="bold"
+                            text="Manage suspensions"
+                            to={`/suspend/${specificProductType.urlPart}`}
+                            state={productDetail}
+                        />
+                    </>
+                )}
 
-      {!hasCancellationPending && (
-        <CancellationCTA
-          productDetail={productDetail}
-          friendlyName={groupedProductType.friendlyName}
-          specificProductType={specificProductType}
-        />
-      )}
-    </>
-  );
+                {!productDetail.subscription.autoRenew &&
+                specificProductType.renewalMetadata && (
+                    <>
+                        <h2
+                            css={css`
+                              ${subHeadingCss}
+                            `}
+                        >
+                            Renewal
+                        </h2>
+                        <p
+                            css={css`
+                              ${textSans.medium()}
+                            `}
+                        >
+                            To renew this one-off {specificProductType.friendlyName}, please
+                            contact us.
+                        </p>
+                        <CallCentreEmailAndNumbers/>
+                        <p
+                            css={css`
+                              ${textSans.medium()}
+                            `}
+                        >
+                            Alternatively, if you would prefer to start a recurring{" "}
+                            {specificProductType.friendlyName} you can explore payment options
+                            and subscribe online by clicking the button below.
+                        </p>
+                        <SupportTheGuardianButton
+                            {...specificProductType.renewalMetadata}
+                            fontWeight="bold"
+                            textColour={neutral[100]}
+                            colour={brand[400]}
+                            notPrimary
+                        />
+                    </>
+                )}
+
+                {specificProductType.productPageNewsletterIDs && (
+                    <NewsletterOptinSection
+                        activeNewletterIDs={specificProductType.productPageNewsletterIDs}
+                    />
+                )}
+
+                {!hasCancellationPending && (
+                    <CancellationCTA
+                        productDetail={productDetail}
+                        friendlyName={groupedProductType.friendlyName}
+                        specificProductType={specificProductType}
+                    />
+                )}
+            </>
+        );
+    } else {
+        return null;
+    }
 };
 
 interface CancellationCTAProps {

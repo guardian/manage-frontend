@@ -3,7 +3,6 @@ import {
   MDA_TEST_USER_HEADER,
   Subscription
 } from "../../../../shared/productResponse";
-import AsyncLoader from "../../asyncLoader";
 import { fetchWithDefaultParameters } from "../../../fetch";
 import type {Action} from "react-fetching-library";
 
@@ -77,10 +76,6 @@ export interface DeliveryRecordsPostPayload {
   deliveryRecords?: DeliveryRecordsPostObj[] | null;
   newContactPhoneNumbers?: ContactPhoneNumbers;
 }
-
-export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
-  DeliveryRecordsResponse
-> {}
 
 export const createDeliveryRecordsFetcher = (
   subscriptionId: string,

@@ -10,7 +10,7 @@ import {
   InvoiceDataApiItem,
   isGift,
   isPaidSubscriptionPlan,
-  isProduct,
+  isProduct, MembersDataApiItem,
   PaidSubscriptionPlan,
   ProductDetail,
   sortByJoinDate
@@ -52,10 +52,9 @@ const fetchInvoices: Action<FetchInvoiceResponse> = {
 };
 
 export const BillingRenderer = (): JSX.Element => {
-  const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload;
-  const invoiceResponse = useSuspenseQuery(fetchInvoices).payload;
+  const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload as MembersDataApiItem[];
+  const invoiceResponse = useSuspenseQuery(fetchInvoices).payload as FetchInvoiceResponse;
 
-  if (mdaResponse && invoiceResponse) {
     const allProductDetails = mdaResponse
       .filter(isProduct)
       .sort(sortByJoinDate);
@@ -265,9 +264,6 @@ export const BillingRenderer = (): JSX.Element => {
         )}
       </>
     );
-  } else {
-    return <></>;
-  }
 };
 
 const Billing = (_: RouteComponentProps) => {

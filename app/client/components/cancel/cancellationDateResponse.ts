@@ -2,16 +2,13 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../../shared/identity";
-import AsyncLoader from "../asyncLoader";
 import { fetchWithDefaultParameters } from "../../fetch";
+import {Action} from "react-fetching-library";
+import {credentialHeaders, defaultScopeHeader} from "../../fetchClient";
 
 export interface CancellationDateResponse {
   cancellationEffectiveDate: string;
 }
-
-export class CancellationDateAsyncLoader extends AsyncLoader<
-  CancellationDateResponse
-> {}
 
 export const cancellationDateFetcher = (subscriptionName: string) => () =>
   fetchWithDefaultParameters("/api/cancellation-date/" + subscriptionName, {
@@ -21,3 +18,13 @@ export const cancellationDateFetcher = (subscriptionName: string) => () =>
       )
     }
   });
+
+export const cancellationDateEndpoint = (subscriptionName: string): Action<CancellationDateResponse> => {
+    return {
+        method: 'GET',
+        endpoint: "/api/cancellation-date/" + subscriptionName,
+        headers: {
+           ...defaultScopeHeader
+        },
+    }
+}
