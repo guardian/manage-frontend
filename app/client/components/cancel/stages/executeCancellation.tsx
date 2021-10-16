@@ -24,8 +24,10 @@ import { RouteableStepPropsWithCancellationFlow } from "../cancellationFlow";
 import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import { OptionalCancellationReasonId } from "../cancellationReason";
 import { getCancellationSummary, isCancelled } from "../cancellationSummary";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import {CaseUpdateAsyncLoader, getUpdateCaseEndpoint, getUpdateCasePromise} from "../caseUpdate";
 import { fetchWithDefaultParameters } from "../../../fetch";
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery, Action} from "react-fetching-library";
 
 class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
@@ -63,6 +65,22 @@ const getCaseUpdateWithCancelOutcomeFunc = (
         }
   );
 
+const getCaseUpdateWithCancelOutcome = (caseId: string, productDetail: ProductDetail):Action <ProductDetail[]> => getUpdateCaseEndpoint(
+  productDetail.isTestUser,
+  isCancelled(productDetail.subscription) ? "_CANCELLED" : "_ERROR",
+  caseId,
+  isCancelled(productDetail.subscription)
+    ? {
+      Journey__c: "SV - Cancellation - MB",
+      Subject: "Online Cancellation Completed"
+    }
+    : {
+      Subject: "Online Cancellation Error",
+      Status: "New",
+      Priority: "High"
+    }
+);
+
 const getCaseUpdateFuncForEscalation = (
   caseId: string,
   escalationCauses: string[],
@@ -90,9 +108,11 @@ const getCaseUpdatingCancellationSummary = (
   productType: ProductTypeWithCancellationFlow
 ) => (productDetails: ProductDetail[]) => {
   const productDetail = productDetails[0] || { subscription: {} };
+
   const render = getCancellationSummaryWithReturnButton(
     getCancellationSummary(productType)(productDetail)
   );
+
   return caseId ? (
     <CaseUpdateAsyncLoader
       fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}

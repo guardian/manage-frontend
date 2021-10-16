@@ -239,8 +239,7 @@ const CancellationFlow = (props: RouteableStepProps) => (
       productDetail.selfServiceCancellation.isAllowed &&
       hasCancellationFlow(props.productType) ? (
         <DataFetcher
-          loadingMessage={`Checking your ${props.productType
-            .shortFriendlyName || props.productType.friendlyName} details...`}
+          loadingMessage={`Checking your ${props.productType.shortFriendlyName || props.productType.friendlyName} details...`}
         >
           {ReasonPickerRenderer(props, props.productType, productDetail)}
         </DataFetcher>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-  isProduct,
+  isProduct, MembersDataApiItem,
   ProductDetail
 } from "../../shared/productResponse";
 import {createProductDetailEndpoint} from "../productUtils";
@@ -18,7 +18,7 @@ export interface ProductDetailProviderProps extends RouteableStepProps {
   forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
 }
 
-export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.Element => {
+export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.Element | null => {
   // NOTE: this react state is required so that any productDetail in the
   // 'browser history state' at the beginning of the flow is available
   // throughout the flow when re-renders occur based on route changes.
@@ -43,35 +43,41 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.El
     );
   }, []); // Equivalent to componentDidMount (ie only happens on the client)
 
-  if (selectedProductDetail === null) {
-    <DataFetcher
+  if(selectedProductDetail) {
+    return props.children(selectedProductDetail);
+  }
+  else if (selectedProductDetail === null) {
+    return (
+      <DataFetcher
         loadingMessage={
           props.loadingMessagePrefix +
           " " +
           props.productType.friendlyName +
           "..."
         }>
-      {renderSingleProductOrReturnToAccountOverview(
-          props,
-          setSelectedProductDetail
-      )}
-    </DataFetcher>
+        <RenderSingleProductOrReturnToAccountOverview productDetailProviderProps={props} setSelectedProductDetail={setSelectedProductDetail} />
+      </DataFetcher>
+    );
   }
 
-  return props.children(selectedProductDetail);
+  return null;
 };
 
 type SetSelectedProductDetail = (productDetail: ProductDetail) => void;
 
-export const renderSingleProductOrReturnToAccountOverview = (props: ProductDetailProviderProps, setSelectedProductDetail: SetSelectedProductDetail): JSX.Element | null => {
-  const data = useSuspenseQuery(createProductDetailEndpoint(props.productType)).payload;
+interface RenderSingleProductProps {
+  productDetailProviderProps: ProductDetailProviderProps;
+  setSelectedProductDetail: SetSelectedProductDetail;
+}
 
-  if(data) {
+export const RenderSingleProductOrReturnToAccountOverview = ({ productDetailProviderProps, setSelectedProductDetail }: RenderSingleProductProps): JSX.Element | null => {
+  const data = useSuspenseQuery(createProductDetailEndpoint(productDetailProviderProps.productType)).payload as MembersDataApiItem[];
+
     const filteredProductDetails = data
         .filter(isProduct)
         .filter(
             productDetail =>
-                props.allowCancelledSubscription ||
+              productDetailProviderProps.allowCancelledSubscription ||
                 !productDetail.subscription.cancelledAt
         );
 
@@ -79,8 +85,6 @@ export const renderSingleProductOrReturnToAccountOverview = (props: ProductDetai
       setSelectedProductDetail(filteredProductDetails[0]);
       return null;
     }
-    return visuallyNavigateToParent(props, true);
-  } else {
-    return null;
-  }
-};
+    return visuallyNavigateToParent(productDetailProviderProps, true);
+}
+
