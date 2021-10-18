@@ -34,22 +34,35 @@ const newsletterToConsentOption = (
   };
 };
 
+const addTrackingQueryParams = (path: string): string => {
+  const params = new URLSearchParams({
+    ref: window.location.href,
+    refViewId:
+      (window.guardian &&
+        window.guardian.ophan &&
+        window.guardian.ophan.viewId) ||
+      ""
+  });
+  return `${path}?${params.toString()}`;
+};
+
 export const read = async (): Promise<ConsentOption[]> => {
-  const url = "/newsletters";
+  const url = addTrackingQueryParams("/newsletters");
+
   return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
   );
 };
 
 export const readRestricted = async (): Promise<ConsentOption[]> => {
-  const url = "/newsletters/restricted";
+  const url = addTrackingQueryParams("/newsletters/restricted");
   return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
   );
 };
 
 export const update = async (id: string, subscribed: boolean = true) => {
-  const url = "/users/me/newsletters";
+  const url = addTrackingQueryParams("/users/me/newsletters");
   const payload = {
     id,
     subscribed
