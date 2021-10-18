@@ -2,6 +2,8 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
+import {useSuspenseQuery} from "react-fetching-library";
+import {getPatchUpdateCaseEndpoint} from "./contributionsCancellationFeedbackForm";
 
 const containerStyles = css`
   margin-left: ${space[4]}px;
@@ -9,7 +11,15 @@ const containerStyles = css`
   border-left: 1px solid ${neutral[7]};
 `;
 
-const ContributionsFeedbackFormThankYou: React.FC = () => {
+interface ContributionsFeedbackFormThankYouProps {
+  isTestUser: boolean,
+  caseId: string,
+  feedback: string
+}
+
+const ContributionsFeedbackFormThankYou = ({ isTestUser, caseId, feedback }: ContributionsFeedbackFormThankYouProps ) => {
+  useSuspenseQuery(getPatchUpdateCaseEndpoint(isTestUser, caseId, feedback));
+
   return (
     <div css={containerStyles}>
       <p
