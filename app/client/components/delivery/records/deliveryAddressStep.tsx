@@ -18,14 +18,12 @@ import {
   DeliveryAddress,
   isProduct,
   MembersDataApiItem,
-  MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
+import {createProductDetailEndpoint} from "../../../productUtils";
 import { minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
-import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { COUNTRIES } from "../../identity/models";
 import { InfoSection } from "../../infoSection";
@@ -35,7 +33,7 @@ import {
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import { updateAddressFetcher } from "../address/deliveryAddressApi";
+import {updateAddressEndpoint} from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
 import {
   addressChangeAffectedInfo,
@@ -47,6 +45,7 @@ import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
@@ -118,9 +117,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     }
   };
 
-  const renderDeliveryAddressForm = (
-    allProductDetails: MembersDataApiItem[]
-  ) => {
+  const RenderDeliveryAddressForm = () => {
+    const allProductDetails = useSuspenseQuery(createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions)).payload as MembersDataApiItem[];
+
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
         .filter(isProduct)
@@ -489,7 +488,15 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     );
   };
 
-  const renderConfirmation = () => (
+  interface RenderConfirmationProps {
+    formData: DeliveryAddress,
+    contactId: string
+  }
+
+  const RenderConfirmation = ({ formData, contactId }: RenderConfirmationProps) => {
+    useSuspenseQuery(updateAddressEndpoint(formData, contactId));
+
+    return (
     <>
       <div
         css={css`
@@ -517,7 +524,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
         }
       />
     </>
-  );
+    );
+  }
 
   if (
     status === Status.EDIT ||
@@ -533,15 +541,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
           }
         `}
       >
-        <MembersDatApiAsyncLoader
-          render={renderDeliveryAddressForm}
-          fetch={createProductDetailFetcher(
-            GROUPED_PRODUCT_TYPES.subscriptions
-          )}
-          loadingMessage={"Loading delivery details..."}
-        />
-        <DataFetcher loadingMessage={"Loading delivery details..."}>
-
+        <DataFetcher loadingMessage="Loading delivery details...">
+          <RenderDeliveryAddressForm />
         </DataFetcher>
       </div>
     );
@@ -550,18 +551,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     props.productDetail.subscription.contactId
   ) {
     return (
-      <AsyncLoader
-        render={renderConfirmation}
-        fetch={updateAddressFetcher(
-          {
-            ...newAddress,
-            addressChangeInformation
-          },
-          props.productDetail.subscription.contactId
-        )}
-        readerOnOK={(resp: Response) => resp.text()}
-        loadingMessage={"Updating delivery address details..."}
-      />
+      <DataFetcher loadingMessage="Updating delivery address details...">
+        <RenderConfirmation formData={{...newAddress, addressChangeInformation}} contactId={props.productDetail.subscription.contactId} />
+      </DataFetcher >
     );
   }
   return (
