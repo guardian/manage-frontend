@@ -1,8 +1,9 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import React, { useState } from "react";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import {getUpdateCaseEndpoint} from "../caseUpdate";
 import ContributionsCancellationFeedbackFormThankYou from "./contributionsCancellationFeedbackFormThankYou";
+import DataFetcher from "../../DataFetcher";
 
 const textAreaStyles = css`
   width: 100%;
@@ -25,12 +26,12 @@ type Status = "EDITING" | "SUBMITTED";
 const CHARACTER_LIMIT = 2_500;
 const NUM_ROWS = 8;
 
-const getPatchUpdateCaseFunc = (
+export const getPatchUpdateCaseEndpoint = (
   isTestUser: boolean,
   caseId: string,
   feedback: string
-) => async () =>
-  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+) =>
+  getUpdateCaseEndpoint(isTestUser, "_FEEDBACK", caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query"
   });
@@ -51,11 +52,9 @@ const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
 
   return status === "SUBMITTED" ? (
     <div>
-      <CaseUpdateAsyncLoader
-        loadingMessage="Storing your feedback..."
-        fetch={getPatchUpdateCaseFunc(isTestUser, caseId, feedback)}
-        render={() => <ContributionsCancellationFeedbackFormThankYou />}
-      />
+      <DataFetcher loadingMessage="Storing your feedback">
+        <ContributionsCancellationFeedbackFormThankYou isTestUser={isTestUser} caseId={caseId} feedback={feedback} />
+      </DataFetcher>
     </div>
   ) : (
     <div>
