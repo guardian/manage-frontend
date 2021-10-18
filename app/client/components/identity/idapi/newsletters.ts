@@ -34,20 +34,8 @@ const newsletterToConsentOption = (
   };
 };
 
-const addTrackingQueryParams = (path: string): string => {
-  const params = new URLSearchParams({
-    ref: window.location.href,
-    refViewId:
-      (window.guardian &&
-        window.guardian.ophan &&
-        window.guardian.ophan.viewId) ||
-      ""
-  });
-  return `${path}?${params.toString()}`;
-};
-
 export const read = async (): Promise<ConsentOption[]> => {
-  const url = addTrackingQueryParams("/newsletters");
+  const url = "/newsletters";
 
   return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
@@ -55,17 +43,25 @@ export const read = async (): Promise<ConsentOption[]> => {
 };
 
 export const readRestricted = async (): Promise<ConsentOption[]> => {
-  const url = addTrackingQueryParams("/newsletters/restricted");
+  const url = "/newsletters/restricted";
   return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
     newsletterToConsentOption
   );
 };
 
 export const update = async (id: string, subscribed: boolean = true) => {
-  const url = addTrackingQueryParams("/users/me/newsletters");
+  const ref = window.location.href;
+  const refViewId =
+    (window.guardian &&
+      window.guardian.ophan &&
+      window.guardian.ophan.viewId) ||
+    "";
+  const url = "/users/me/newsletters";
   const payload = {
     id,
-    subscribed
+    subscribed,
+    ref,
+    refViewId
   };
   identityFetch(url, APIUseCredentials(APIPatchOptions(payload)));
 };
