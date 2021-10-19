@@ -16,7 +16,6 @@ exports[`MarketingPreference component renders correctly and displays marketing 
       },
     ]
   }
-  data-link-name="mma-switch : Test-13 : untick"
   onClick={[Function]}
 >
   <div
@@ -193,7 +192,6 @@ exports[`MarketingPreference component will omit the frequency information if it
       },
     ]
   }
-  data-link-name="mma-switch : Test-13 : tick"
   onClick={[Function]}
 >
   <div
@@ -474,7 +472,6 @@ exports[`MarketingPreference component will select the checkbox when the selecte
       },
     ]
   }
-  data-link-name="mma-switch : Test-13 : tick"
   onClick={[Function]}
 >
   <div
