@@ -12,7 +12,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { dateString } from "../../../../shared/dates";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
-import AsyncLoader from "../../asyncLoader";
 import { LinkButton } from "../../buttons";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
@@ -23,7 +22,7 @@ import {
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
-import { updateAddressFetcher } from "./deliveryAddressApi";
+import {updateAddressEndpoint} from "./deliveryAddressApi";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
@@ -32,10 +31,21 @@ import {
   isAddress,
   NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
+import DataFetcher from "../../DataFetcher";
+import {DeliveryAddress} from "../../../../shared/productResponse";
+import {useSuspenseQuery} from "react-fetching-library";
 
-const renderConfirmation = (props: RouteableStepProps) => () => (
-  <ConfirmationFC {...props} />
-);
+interface RenderConfirmationProps {
+  updateAddressFormData: DeliveryAddress;
+  contactId: string;
+  routeableStepProps: RouteableStepProps;
+}
+
+const RenderConfirmation = ({ updateAddressFormData, contactId, routeableStepProps }: RenderConfirmationProps) => {
+  useSuspenseQuery(updateAddressEndpoint(updateAddressFormData, contactId));
+
+  return <ConfirmationFC {...routeableStepProps} />
+};
 
 const ConfirmationFC = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
@@ -287,19 +297,15 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     )} )`
   ].join("\n");
 
+  const formData = {
+    ...addressContext.newDeliveryAddress,
+    addressChangeInformation: addressChangeInformationCopy
+  };
+
   return addressContext.newDeliveryAddress ? (
-    <AsyncLoader
-      render={renderConfirmation(props)}
-      fetch={updateAddressFetcher(
-        {
-          ...addressContext.newDeliveryAddress,
-          addressChangeInformation: addressChangeInformationCopy
-        },
-        contactIdContext
-      )}
-      readerOnOK={(resp: Response) => resp.text()}
-      loadingMessage={"Updating delivery address details..."}
-    />
+    <DataFetcher loadingMessage="Updating delivery address details...">
+      <RenderConfirmation updateAddressFormData={formData} contactId={contactIdContext} routeableStepProps={props} />
+    </DataFetcher>
   ) : (
     visuallyNavigateToParent(props)
   );
