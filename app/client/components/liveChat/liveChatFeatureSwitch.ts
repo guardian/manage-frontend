@@ -1,3 +1,4 @@
+/*
 const liveChatParamName = "liveChat";
 
 export const isLiveChatFeatureEnabled = () => {
@@ -16,3 +17,6 @@ const setLiveChatSessionStorage = (queryStringMatch: string[]) => {
   const liveChatParamValue = queryStringMatch[0].split("=")[1];
   window.sessionStorage.setItem(liveChatParamName, liveChatParamValue);
 };
+*/
+
+export const isLiveChatFeatureEnabled = () => true;
