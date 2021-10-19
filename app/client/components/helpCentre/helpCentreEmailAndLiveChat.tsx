@@ -180,7 +180,7 @@ export const HelpCentreEmailAndLiveChat = () => {
           title="Email us"
           subtitle="Send a message to one of our customer service agents."
         >
-          <p css={emailAndLiveChatPCss}>customers@theguardian.com</p>
+          <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
           <p>
             Use our{" "}
             <Link to="/help-centre/contact-us/" css={emailAndLiveChatLinkCss}>
