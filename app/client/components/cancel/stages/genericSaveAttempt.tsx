@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { navigate } from "@reach/router";
-import React, { ChangeEvent, ReactNode } from "react";
+import React, { ChangeEvent } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
@@ -33,8 +33,12 @@ import {
   CancellationReasonId
 } from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import { getUpdateCasePromise } from "../caseUpdate";
 import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
+import {getPatchUpdateCaseEndpoint} from "../contributions/contributionsCancellationFeedbackForm";
+import type {ContributionsFeedbackFormThankYouProps} from "../contributions/contributionsCancellationFeedbackFormThankYou";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
@@ -79,7 +83,36 @@ const ContactUs = (reason: CancellationReason) =>
     />
   );
 
-class FeedbackFormAndContactUs extends React.Component<
+const GetFeedbackThankYouRenderer = (props: ContributionsFeedbackFormThankYouProps & { reason: CancellationReason }) => {
+  useSuspenseQuery(getPatchUpdateCaseEndpoint(props.isTestUser, props.caseId, props.feedback));
+
+  return (
+    <div
+      css={{
+        marginLeft: "15px",
+        marginTop: "30px",
+        paddingLeft: "15px",
+        borderLeft: "1px solid " + palette.neutral["4"]
+      }}
+    >
+      <p
+        css={{
+          fontSize: "1rem",
+          fontWeight: 500
+        }}
+      >
+        {props.reason.alternateFeedbackThankYouTitle ||
+        "Thank you for your feedback."}
+      </p>
+      <span>
+          {props.reason.alternateFeedbackThankYouBody ||
+          "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
+        </span>
+    </div>
+  );
+}
+
+  class FeedbackFormAndContactUs extends React.Component<
   FeedbackFormProps,
   FeedbackFormState
 > {
@@ -92,18 +125,14 @@ class FeedbackFormAndContactUs extends React.Component<
   }
 
   public render(): React.ReactNode {
+    const { isTestUser, caseId, reason } = this.props;
+
     if (this.state.hasHitSubmit) {
       return (
         <>
-          <CaseUpdateAsyncLoader
-            loadingMessage="Storing your feedback..."
-            fetch={getPatchUpdateCaseFunc(
-              this.props.isTestUser,
-              this.props.caseId,
-              this.state.feedback
-            )}
-            render={this.getFeedbackThankYouRenderer(this.props.reason)}
-          />
+          <DataFetcher loadingMessage="Storing your feedback...">
+            <GetFeedbackThankYouRenderer reason={reason} isTestUser={isTestUser} caseId={caseId} feedback={this.state.feedback} />
+          </DataFetcher>
           <div css={{ height: "20px" }} />
           <ConfirmCancellationAndReturnRow
             hide={!!this.props.reason.hideSaveActions}
@@ -185,35 +214,6 @@ class FeedbackFormAndContactUs extends React.Component<
     this.setState({ hasHitSubmit: true });
     gaTrackFeedback("submitted");
   };
-
-  private getFeedbackThankYouRenderer(
-    reason: CancellationReason
-  ): () => ReactNode {
-    return () => (
-      <div
-        css={{
-          marginLeft: "15px",
-          marginTop: "30px",
-          paddingLeft: "15px",
-          borderLeft: "1px solid " + palette.neutral["4"]
-        }}
-      >
-        <p
-          css={{
-            fontSize: "1rem",
-            fontWeight: 500
-          }}
-        >
-          {reason.alternateFeedbackThankYouTitle ||
-            "Thank you for your feedback."}
-        </p>
-        <span>
-          {reason.alternateFeedbackThankYouBody ||
-            "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
-        </span>
-      </div>
-    );
-  }
 }
 
 interface ConfirmCancellationAndReturnRowProps
