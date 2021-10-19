@@ -1,11 +1,10 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import { DATE_FNS_INPUT_FORMAT, parseDate } from "../../../shared/dates";
+import {DATE_FNS_INPUT_FORMAT, parseDate, ParsedDate} from "../../../shared/dates";
 import {
   MDA_TEST_USER_HEADER,
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
-import AsyncLoader from "../asyncLoader";
 import { DeliveryRecordsResponse } from "../delivery/records/deliveryRecordsApi";
 import { OutstandingHolidayStopsResponse } from "../holiday/holidayStopApi";
 import {
@@ -13,80 +12,73 @@ import {
   CancellationOutstandingCreditsContext,
   CancellationPolicyContext
 } from "./cancellationContexts";
+import type {Action} from 'react-fetching-library';
+import {useSuspenseQuery} from "react-fetching-library";
+import DataFetcher from "../DataFetcher";
 
-type CombinedOutstandingCreditsResponse = [
-  OutstandingHolidayStopsResponse,
-  DeliveryRecordsResponse | undefined
-];
+function getCancellationDate(productDetail: ProductDetail, cancellationPolicy: string | undefined): ParsedDate {
+ return !productDetail.subscription.chargedThroughDate ||
+ cancellationPolicy === cancellationEffectiveToday
+   ? parseDate()
+   : parseDate(productDetail.subscription.chargedThroughDate);
+}
 
-class OutstandingHolidayStopsAsyncLoader extends AsyncLoader<
-  CombinedOutstandingCreditsResponse
-> {}
+export function outstandingHolidayStopsEndpoint(productDetail: ProductDetail, cancellationPolicy: string | undefined): Action<OutstandingHolidayStopsResponse> {
+  const effectiveCancellationDate = getCancellationDate(productDetail, cancellationPolicy);
 
-const getOutstandingCreditsFetcher = (
-  productDetail: ProductDetail,
-  productType: ProductType,
-  cancellationPolicy: string | undefined
-) => async () => {
-  const effectiveCancellationDate =
-    !productDetail.subscription.chargedThroughDate ||
-    cancellationPolicy === cancellationEffectiveToday
-      ? parseDate()
-      : parseDate(productDetail.subscription.chargedThroughDate);
-
-  const outstandingHolidayStopsPromise = fetch(
-    `/api/holidays/${
+  return {
+    method: "GET",
+    endpoint: `/api/holidays/${
       productDetail.subscription.subscriptionId
     }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
       DATE_FNS_INPUT_FORMAT
     )}`,
-    {
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-      }
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
     }
-  );
+  }
+}
 
-  const optionalOutstandingDeliveryProblemCreditsPromise =
-    productType.delivery?.records &&
-    fetch(
-      `/api/delivery-records/${
-        productDetail.subscription.subscriptionId
-      }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
-        DATE_FNS_INPUT_FORMAT
-      )}`,
-      {
-        headers: {
-          [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-        }
-      }
-    );
+export function optionalOutstandingDeliveryProblemCredits(productDetail: ProductDetail, cancellationPolicy: string | undefined): Action<DeliveryRecordsResponse> {
+  const effectiveCancellationDate = getCancellationDate(productDetail, cancellationPolicy);
 
-  return Promise.all([
-    outstandingHolidayStopsPromise,
-    ...(optionalOutstandingDeliveryProblemCreditsPromise
-      ? [optionalOutstandingDeliveryProblemCreditsPromise]
-      : [])
-  ]);
-};
+  return {
+    method: "GET",
+    endpoint: `/api/delivery-records/${
+      productDetail.subscription.subscriptionId
+    }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
+      DATE_FNS_INPUT_FORMAT
+    )}`,
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    }
+  }
+}
 
 export type RestOfCancellationFlow = ReactNode | ReactNodeArray;
 
-const getContextualRestOfFlowRenderer = (
-  restOfFlow: RestOfCancellationFlow
-) => ([
-  outstandingHolidayStops,
-  outstandingDeliveryProblemCredits
-]: CombinedOutstandingCreditsResponse) => (
+interface ContextualRestOfFlowRendererProps {
+  restOfFlow: RestOfCancellationFlow;
+  productDetail: ProductDetail;
+  productType: ProductType;
+  cancellationPolicy?: string | undefined;
+}
+
+const GetContextualRestOfFlowRenderer = (props: ContextualRestOfFlowRendererProps) => {
+  const outstandingHolidayStops = useSuspenseQuery(outstandingHolidayStopsEndpoint(props.productDetail, props.cancellationPolicy)).payload as OutstandingHolidayStopsResponse;
+  const outstandingDeliveryProblemCredits = useSuspenseQuery(props.productType.delivery?.records ? optionalOutstandingDeliveryProblemCredits(props.productDetail, props.cancellationPolicy) : null as unknown as Action<unknown>).payload;
+
+  return (
   <CancellationOutstandingCreditsContext.Provider
     value={{
       holidayStops: outstandingHolidayStops.publicationsToRefund,
       deliveryCredits: outstandingDeliveryProblemCredits?.results
     }}
   >
-    {restOfFlow}
+    {props.restOfFlow}
   </CancellationOutstandingCreditsContext.Provider>
-);
+  )
+}
 
 export const physicalSubsCancellationFlowWrapper = (
   productDetail: ProductDetail,
@@ -94,15 +86,9 @@ export const physicalSubsCancellationFlowWrapper = (
 ) => (restOfFlow: RestOfCancellationFlow) => (
   <CancellationPolicyContext.Consumer>
     {cancellationPolicy => (
-      <OutstandingHolidayStopsAsyncLoader
-        fetch={getOutstandingCreditsFetcher(
-          productDetail,
-          productType,
-          cancellationPolicy
-        )}
-        render={getContextualRestOfFlowRenderer(restOfFlow)}
-        loadingMessage="Checking for outstanding credits owed to you..."
-      />
+      <DataFetcher loadingMessage="Checking for outstanding credits owed to you...">
+        <GetContextualRestOfFlowRenderer restOfFlow={restOfFlow} productDetail={productDetail} productType={productType} cancellationPolicy={cancellationPolicy} />
+      </DataFetcher>
     )}
   </CancellationPolicyContext.Consumer>
 );
