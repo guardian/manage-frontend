@@ -103,7 +103,7 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
         // If we have an identityName id then this is a newsletter subscription event
         // and we want to log it in Ophan
         if (identityName) {
-          window.guardian.ophan?.record({
+          window?.guardian?.ophan?.record({
             componentEvent: {
               component: {
                 componentType: "NEWSLETTER_SUBSCRIPTION",
