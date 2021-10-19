@@ -91,9 +91,6 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
     identityName,
     onClick
   } = props;
-  const linkName = `mma-switch : ${identityName} : ${
-    selected ? "tick" : "untick"
-  }`;
   return (
     <div
       onClick={e => {
@@ -103,6 +100,19 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           return;
         }
         onClick(id);
+        // If we have an identityName id then this subscription event in Ophan
+        if (identityName) {
+          window.guardian.ophan?.record({
+            componentEvent: {
+              component: {
+                componentType: "NEWSLETTER_SUBSCRIPTION",
+                id: identityName
+              },
+              action: "CLICK",
+              value: selected ? "untick" : "tick"
+            }
+          });
+        }
       }}
       css={[
         standardText,
@@ -113,7 +123,6 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           position: "relative"
         }
       ]}
-      data-link-name={identityName ? linkName : undefined}
     >
       <div css={{ position: "absolute", left: 0 }}>
         <Checkbox
