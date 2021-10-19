@@ -100,7 +100,8 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           return;
         }
         onClick(id);
-        // If we have an identityName id then this subscription event in Ophan
+        // If we have an identityName id then this is a newsletter subscription event
+        // and we want to log it in Ophan
         if (identityName) {
           window.guardian.ophan?.record({
             componentEvent: {
