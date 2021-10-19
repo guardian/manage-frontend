@@ -6,6 +6,9 @@ import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 import { avatarImg } from "./liveChatBase64Images";
 import { liveChatCss } from "./liveChatCssOverrides";
 import { trackEvent } from "../analytics";
+import { conf } from "../../../server/config";
+
+let areAgentsAvailable = false;
 
 const initESW = (
   gslbBaseUrl: string | null,
@@ -100,22 +103,56 @@ const initESW = (
       reject(new Error("Promise timed out."));
     }, 15000);
 
-    liveChatAPI.addEventHandler("onSettingsCallCompleted", () => {
-      clearTimeout(timeoutTimer);
-      resolve();
-    });
+    liveChatAPI.addEventHandler(
+      "onSettingsCallCompleted",
+      (data: { isAgentAvailable: boolean }) => {
+        const domain =
+          typeof window !== "undefined" && window.guardian
+            ? window.guardian.domain
+            : conf.DOMAIN;
+        areAgentsAvailable = data.isAgentAvailable;
+        postMessage(
+          `postAgentsAvailable:${data.isAgentAvailable}`,
+          `https://manage.${domain}`
+        );
 
-    // tslint:disable-next-line:no-object-mutation
-    liveChatAPI.settings = { ...liveChatAPI.settings, ...liveChatConfig };
+        const postMessageListener = (event: MessageEvent) => {
+          if (
+            event.origin !== "https://manage.theguardian.com" &&
+            event.origin !== "https://manage.thegulocal.com"
+          ) {
+            return;
+          }
+
+          if (event.data === "requestAgentsAvailable") {
+            postMessage(
+              `postAgentsAvailable:${areAgentsAvailable}`,
+              `https://manage.${domain}`
+            );
+          }
+        };
+
+        window.addEventListener("message", postMessageListener, false);
+
+        clearTimeout(timeoutTimer);
+        resolve();
+      }
+    );
 
     if (liveChatAPI.isIframeReady) {
       clearTimeout(timeoutTimer);
       resolve();
     }
-    liveChatAPI.addEventHandler("onAvailability", () => {
-      clearTimeout(timeoutTimer);
-      resolve();
-    });
+
+    liveChatAPI.addEventHandler(
+      "onAvailability",
+      (data: { isAgentAvailable: boolean }) => {
+        areAgentsAvailable = data.isAgentAvailable;
+      }
+    );
+
+    // tslint:disable-next-line:no-object-mutation
+    liveChatAPI.settings = { ...liveChatAPI.settings, ...liveChatConfig };
 
     if (window.guardian.domain === "theguardian.com") {
       liveChatAPI.init(
@@ -248,7 +285,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
   return (
     <Button
       priority="secondary"
-      onClick={() => {
+      onClick={async () => {
         trackEvent({
           eventCategory: "livechat",
           eventAction: "click",

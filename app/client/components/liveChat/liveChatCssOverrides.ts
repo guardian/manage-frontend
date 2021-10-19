@@ -125,12 +125,16 @@ export const liveChatCss = css`
   .waitingGreetingContent .waitingMessage,
   .waitingGreetingContent .queuePositionMessage,
   .dialogTextContainer #dialogTextTitle,
-  .dialogTextContainer #dialogTextBody {
+  .dialogTextContainer #dialogTextBody,
+  .prechat--no-agents-msg-holder p {
     ${textSans.medium()};
     text-align: left;
     color: ${neutral["46"]};
     font-size: 14px;
     padding: 0;
+  }
+  .prechat--no-agents-msg-holder p a {
+    color: ${brand["500"]};
   }
   .waitingStateContent .waitingGreetingContent,
   .dialogTextContainer {
