@@ -1,7 +1,6 @@
 import React from "react";
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
-import AsyncLoader, { ReFetch } from "../asyncLoader";
 import { Button, LinkButton } from "../buttons";
 import { HideFunction, Modal } from "../modal";
 import {
@@ -9,45 +8,64 @@ import {
   MinimalHolidayStopRequest
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
+import type {Action} from 'react-fetching-library';
+import {useMutation} from "react-fetching-library";
+import SpinLoader from "../SpinLoader";
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
-  reloadParent?: ReFetch;
+  reloadParent?: () => void;
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
-interface ExistingHolidayStopActionsState {
-  isDeleting: boolean;
-}
-
-class WithdrawHolidayStopAsyncLoader extends AsyncLoader<object> {}
-
 // tslint:disable-next-line:max-classes-per-file
-export class ExistingHolidayStopActions extends React.Component<
-  ExistingHolidayStopActionsProps,
-  ExistingHolidayStopActionsState
-> {
-  public state = {
-    isDeleting: false
-  };
+export default function ExistingHolidayStopActions(props: ExistingHolidayStopActionsProps): JSX.Element {
+  const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
-  public render = () => {
-    if (this.props.withdrawnDate) {
+  const withdrawHolidayStopEndpoint: Action<unknown> = {
+    method: "DELETE",
+    endpoint: `/api/holidays/${props.subscriptionName}/${props.id}`,
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${props.isTestUser}`
+    }
+  }
+
+  const { mutate, loading, error, payload } = useMutation(withdrawHolidayStopEndpoint);
+
+  if(error) {
+    return (
+    <Modal
+      title="Sorry"
+      instigator={null}
+      extraOnHideFunctionality={props.reloadParent}
+    >
+      Deleting your <strong>{friendlyDateRange}</strong> suspension
+      failed, please try again later...
+    </Modal>
+    );
+  }
+
+  if(payload) {
+    props.reloadParent && props.reloadParent();
+    return null;
+  }
+
+    if (props.withdrawnDate) {
       return (
         <em>
           Deleted{" "}
           <small>
             on&nbsp;
-            {this.props.withdrawnDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
+            {props.withdrawnDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
           </small>
         </em>
       );
     }
 
-    if (this.props.bulkSuspensionReason) {
+    if (props.bulkSuspensionReason) {
       return (
         <span css={{ maxWidth: "225px" }}>
-          Imposed suspension ({this.props.bulkSuspensionReason})
+          Imposed suspension ({props.bulkSuspensionReason})
           <br />
           <small>
             This does not count towards your annual limit, but you will still
@@ -58,23 +76,21 @@ export class ExistingHolidayStopActions extends React.Component<
     }
 
     if (
-      this.props.reloadParent &&
-      this.props.mutabilityFlags &&
-      (this.props.mutabilityFlags.isFullyMutable ||
-        this.props.mutabilityFlags.isEndDateEditable)
+      props.reloadParent &&
+      props.mutabilityFlags &&
+      (props.mutabilityFlags.isFullyMutable ||
+        props.mutabilityFlags.isEndDateEditable)
     ) {
-      const shouldShowAmendButton = this.props.mutabilityFlags
+      const shouldShowAmendButton = props.mutabilityFlags
         .isEndDateEditable;
-      const shouldShowDeleteButton = this.props.mutabilityFlags.isFullyMutable;
+      const shouldShowDeleteButton = props.mutabilityFlags.isFullyMutable;
 
       const shouldBeOnlyAmendEndDate =
-        this.props.mutabilityFlags.isEndDateEditable &&
-        !this.props.mutabilityFlags.isFullyMutable;
+        props.mutabilityFlags.isEndDateEditable &&
+        !props.mutabilityFlags.isFullyMutable;
 
-      const setExistingHolidayStopToAmend = this.props
+      const setExistingHolidayStopToAmend = props
         .setExistingHolidayStopToAmend;
-
-      const reloadParent: ReFetch = this.props.reloadParent;
 
       const yesButton = (hideFunction: HideFunction) => (
         <div
@@ -87,36 +103,16 @@ export class ExistingHolidayStopActions extends React.Component<
           <Button
             text="Yes"
             onClick={() => {
-              this.setState({ isDeleting: true });
+              mutate;
               hideFunction();
             }}
           />
         </div>
       );
 
-      const friendlyDateRange = formatDateRangeAsFriendly(this.props.dateRange);
 
-      return this.state.isDeleting ? (
-        <WithdrawHolidayStopAsyncLoader
-          fetch={this.withdrawHolidayStopFetch}
-          loadingMessage="Deleting..."
-          inline
-          spinnerScale={0.6}
-          render={() => {
-            reloadParent();
-            return null;
-          }}
-          errorRender={() => (
-            <Modal
-              title="Sorry"
-              instigator={null}
-              extraOnHideFunctionality={reloadParent}
-            >
-              Deleting your <strong>{friendlyDateRange}</strong> suspension
-              failed, please try again later...
-            </Modal>
-          )}
-        />
+      return loading ? (
+        <SpinLoader loadingMessage="Deleting..." spinnerScale={0.6} inline />
       ) : (
         <>
           {shouldShowAmendButton && setExistingHolidayStopToAmend && (
@@ -128,7 +124,7 @@ export class ExistingHolidayStopActions extends React.Component<
                 to="amend"
                 onClick={() =>
                   setExistingHolidayStopToAmend(
-                    this.props as HolidayStopRequest
+                    props as HolidayStopRequest
                   )
                 }
               />
@@ -149,14 +145,6 @@ export class ExistingHolidayStopActions extends React.Component<
       );
     }
 
-    return "No longer amendable.";
-  };
+    return <>"No longer amendable."</>;
+  }
 
-  private withdrawHolidayStopFetch = () =>
-    fetch(`/api/holidays/${this.props.subscriptionName}/${this.props.id}`, {
-      method: "DELETE",
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${this.props.isTestUser}`
-      }
-    });
-}
