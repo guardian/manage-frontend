@@ -25,9 +25,11 @@ import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
   NewPaymentMethodDetail,
-  PaymentUpdateAsyncLoader
 } from "./newPaymentMethodDetail";
 import { PaymentMethod } from "./updatePaymentFlow";
+import {useMutation} from "react-fetching-library";
+import type {Action} from "react-fetching-library";
+import SpinLoader from "../../SpinLoader";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
@@ -36,115 +38,107 @@ interface ExecutePaymentUpdateProps extends RouteableStepProps {
   productDetail: ProductDetail;
 }
 
-interface ExecutePaymentUpdateState {
-  hasHitComplete: boolean;
-}
 
-class ExecutePaymentUpdate extends React.Component<
-  ExecutePaymentUpdateProps,
-  ExecutePaymentUpdateState
-> {
-  public state = {
-    hasHitComplete: false
-  };
-
-  private paymentMethodChangeType: string =
-    this.props.productDetail.subscription.paymentMethod ===
-    PaymentMethod.resetRequired
-      ? "reset"
-      : "update";
-
-  public render(): React.ReactNode {
-    return this.state.hasHitComplete ? (
-      <PaymentUpdateAsyncLoader
-        fetch={this.executePaymentUpdate}
-        render={this.renderUpdateResponse}
-        errorRender={this.PaymentUpdateFailed}
-        loadingMessage={`Updating ${this.props.newPaymentMethodDetail.friendlyName} details...`}
-        spinnerScale={0.7}
-        inline
-      />
-    ) : (
-      <Button
-        text={CONFIRM_BUTTON_TEXT}
-        onClick={() => this.setState({ hasHitComplete: true })}
-        primary
-        right
-      />
-    );
-  }
-
-  private executePaymentUpdate: () => Promise<Response> = async () =>
-    await fetch(
-      `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${this.props.productDetail.subscription.subscriptionId}`,
-      {
-        credentials: "include",
-        method: "POST",
-        body: JSON.stringify(
-          this.props.newPaymentMethodDetail.detailToPayloadObject()
-        ),
-        headers: {
-          "Content-Type": "application/json",
-          [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-            window.location.href
-          )
-        }
-      }
-    );
-
-  private renderUpdateResponse = (response: object) => {
-    if (
-      this.props.navigate &&
-      this.props.newPaymentMethodDetail.matchesResponse(response)
-    ) {
-      trackEvent({
-        eventCategory: "payment",
-        eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_success`,
-        product: {
-          productType: this.props.productType,
-          productDetail: this.props.productDetail
-        },
-        eventLabel: this.props.productType.urlPart
-      });
-      this.props.navigate("updated", {
-        replace: true,
-        state: this.props.location?.state
-      });
-      return null;
+function ExecutePaymentUpdate(props: ExecutePaymentUpdateProps) {
+  const executePaymentUpdate = (): Action<unknown> => ({
+    endpoint: `/api/payment/${props.newPaymentMethodDetail.apiUrlPart}/${props.productDetail.subscription.subscriptionId}`,
+    credentials: "include",
+    method: "POST",
+    body: JSON.stringify(
+      props.newPaymentMethodDetail.detailToPayloadObject()
+    ),
+    headers: {
+      "Content-Type": "application/json",
+      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+        window.location.href
+      )
     }
+  });
 
-    return this.PaymentUpdateFailed();
-  };
-
-  private PaymentUpdateFailed = () => {
+  const PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_failed`,
+      eventAction: `${props.newPaymentMethodDetail.name}_${paymentMethodChangeType}_failed`,
       product: {
-        productType: this.props.productType,
-        productDetail: this.props.productDetail
+        productType: props.productType,
+        productDetail: props.productDetail
       },
-      eventLabel: this.props.productType.urlPart
+      eventLabel: props.productType.urlPart
     });
 
     Sentry.captureException(
-      this.props.newPaymentMethodDetail.friendlyName + "payment update failed"
+      props.newPaymentMethodDetail.friendlyName + "payment update failed"
     );
 
     return (
       <div css={{ textAlign: "left", marginTop: "10px" }}>
         <h2>
-          Sorry, the {this.props.newPaymentMethodDetail.friendlyName} update
+          Sorry, the {props.newPaymentMethodDetail.friendlyName} update
           failed.
         </h2>
         <p>
           To try again please go back and re-enter your new{" "}
-          {this.props.newPaymentMethodDetail.friendlyName} details.
+          {props.newPaymentMethodDetail.friendlyName} details.
         </p>
         <CallCentreNumbers prefixText="Alternatively, to contact us" />
       </div>
     );
   };
+
+  const RenderUpdateResponse = (response: object) => {
+    if (
+      props.navigate &&
+      props.newPaymentMethodDetail.matchesResponse(response)
+    ) {
+      trackEvent({
+        eventCategory: "payment",
+        eventAction: `${props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_success`,
+        product: {
+          productType: props.productType,
+          productDetail: props.productDetail
+        },
+        eventLabel: props.productType.urlPart
+      });
+      props.navigate("updated", {
+        replace: true,
+        state: props.location?.state
+      });
+      return null;
+    }
+
+    return <PaymentUpdateFailed />
+  };
+
+  const { mutate, error, payload, loading } = useMutation(executePaymentUpdate);
+
+  const paymentMethodChangeType: string =
+    props.productDetail.subscription.paymentMethod ===
+    PaymentMethod.resetRequired
+      ? "reset"
+      : "update";
+
+  if(error) {
+    return <PaymentUpdateFailed />
+  }
+
+  if(payload) {
+    return <RenderUpdateResponse />
+  }
+
+  return loading ? (
+    <SpinLoader
+      loadingMessage={`Updating ${props.newPaymentMethodDetail.friendlyName} details...`}
+      spinnerScale={0.7}
+      inline
+    />
+  ) : (
+    <Button
+      text={CONFIRM_BUTTON_TEXT}
+      onClick={() => mutate}
+      primary
+      right
+    />
+  );
 }
 
 interface InnerContentProps {
@@ -152,6 +146,7 @@ interface InnerContentProps {
   newPaymentMethodDetail: NewPaymentMethodDetail;
   routeableStepProps: RouteableStepProps;
 }
+
 const InnerContent = (props: InnerContentProps) => (
   <>
     <ProgressIndicator
@@ -182,7 +177,7 @@ const InnerContent = (props: InnerContentProps) => (
   </>
 );
 
-export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
+const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
   <NewPaymentMethodContext.Consumer>
     {newPaymentMethodDetail => (
       <MembersDataApiItemContext.Consumer>
@@ -205,3 +200,5 @@ export const ConfirmPaymentUpdate = (props: RouteableStepProps) => (
     )}
   </NewPaymentMethodContext.Consumer>
 );
+
+export default ConfirmPaymentUpdate;
