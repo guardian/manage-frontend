@@ -25,29 +25,34 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.El
   // Without this, flows would have to pass the productDetail in the
   // browser history state in every page navigation, otherwise users
   // end up stuck on the first step they were on
-  const [selectedProductDetail, setSelectedProductDetail] = useState<ProductDetail | null | undefined>(null);
+  const [selectedProductDetail, setSelectedProductDetail] = useState<
+    ProductDetail | null | undefined
+    >();
 
   // Browser history state is inspected inside this hook to avoid race condition with server side rendering
   useEffect(() => {
     const productDetailNestedFromBrowserHistoryState =
-        isProduct(props.location?.state?.productDetail) &&
-        props.location?.state?.productDetail;
+      isProduct(props.location?.state?.productDetail) &&
+      props.location?.state?.productDetail;
 
     const productDetailDirectFromBrowserHistoryState =
-        isProduct(props.location?.state) && props.location?.state;
+      isProduct(props.location?.state) && props.location?.state;
 
     setSelectedProductDetail(
-        productDetailNestedFromBrowserHistoryState ||
-        productDetailDirectFromBrowserHistoryState ||
-        null
+      productDetailNestedFromBrowserHistoryState ||
+      productDetailDirectFromBrowserHistoryState ||
+      null
     );
   }, []); // Equivalent to componentDidMount (ie only happens on the client)
 
-  if(selectedProductDetail) {
+  if (selectedProductDetail) {
     return props.children(selectedProductDetail);
   }
+
   else if (selectedProductDetail === null) {
-    return (
+    return props.forceRedirectToAccountOverviewIfNoBrowserHistoryState ? (
+      visuallyNavigateToParent(props, true)
+    ) : (
       <DataFetcher
         loadingMessage={
           props.loadingMessagePrefix +
@@ -85,6 +90,7 @@ export const RenderSingleProductOrReturnToAccountOverview = ({ productDetailProv
       setSelectedProductDetail(filteredProductDetails[0]);
       return null;
     }
+
     return visuallyNavigateToParent(productDetailProviderProps, true);
 }
 
