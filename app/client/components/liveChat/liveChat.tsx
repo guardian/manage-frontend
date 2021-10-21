@@ -285,7 +285,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
   return (
     <Button
       priority="secondary"
-      onClick={async () => {
+      onClick={() => {
         trackEvent({
           eventCategory: "livechat",
           eventAction: "click",
