@@ -119,6 +119,7 @@ const initESW = (
         const postMessageListener = (event: MessageEvent) => {
           if (
             event.origin !== "https://manage.theguardian.com" &&
+            event.origin !== "https://manage.code.dev-theguardian.com" &&
             event.origin !== "https://manage.thegulocal.com"
           ) {
             return;
