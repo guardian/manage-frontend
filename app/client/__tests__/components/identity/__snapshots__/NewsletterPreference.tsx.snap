@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MarketingPreference component renders correctly and displays marketing information 1`] = `
+exports[`NewsletterPreference component renders correctly and displays marketing information 1`] = `
 <div
   css={
     Array [
@@ -137,10 +137,46 @@ exports[`MarketingPreference component renders correctly and displays marketing 
   >
     Test description
   </p>
+  <p
+    css={
+      Object {
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "margin": "3px 0 0 0",
+        "opacity": 0.75,
+      }
+    }
+  >
+    <span
+      css={
+        Object {
+          "display": "inline-block",
+          "marginRight": "8px",
+          "verticalAlign": "middle",
+        }
+      }
+    >
+      <svg
+        css={
+          Object {
+            "fill": "#dcdcdc",
+          }
+        }
+        height="11px"
+        viewBox="0 0 11 11"
+        width="11px"
+      >
+        <path
+          d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+        />
+      </svg>
+    </span>
+    Test frequency
+  </p>
 </div>
 `;
 
-exports[`MarketingPreference component will select the checkbox when the selected prop is passed 1`] = `
+exports[`NewsletterPreference component will select the checkbox when the selected prop is passed 1`] = `
 <div
   css={
     Array [
@@ -276,6 +312,42 @@ exports[`MarketingPreference component will select the checkbox when the selecte
     }
   >
     Test description
+  </p>
+  <p
+    css={
+      Object {
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "margin": "3px 0 0 0",
+        "opacity": 0.75,
+      }
+    }
+  >
+    <span
+      css={
+        Object {
+          "display": "inline-block",
+          "marginRight": "8px",
+          "verticalAlign": "middle",
+        }
+      }
+    >
+      <svg
+        css={
+          Object {
+            "fill": "#dcdcdc",
+          }
+        }
+        height="11px"
+        viewBox="0 0 11 11"
+        width="11px"
+      >
+        <path
+          d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+        />
+      </svg>
+    </span>
+    Test frequency
   </p>
 </div>
 `;

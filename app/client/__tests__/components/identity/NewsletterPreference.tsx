@@ -1,22 +1,26 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import React from "react";
 import { create } from "react-test-renderer";
-import { MarketingPreference } from "../../../components/identity/MarketingPreference";
+import { NewsletterPreference } from "../../../components/identity/NewsletterPreference";
 
 afterEach(cleanup);
 
-describe("MarketingPreference component", () => {
+describe("NewsletterPreference component", () => {
   const input = {
     id: "13",
     description: "Test description",
+    frequency: "Test frequency",
     title: "Test title",
-    clickHandler: jest.fn()
+    clickHandler: jest.fn(),
+    identityName: "Test-13"
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(
-      <MarketingPreference
+      <NewsletterPreference
         id={input.id}
         description={input.description}
+        frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         onClick={input.clickHandler}
       />
@@ -26,9 +30,11 @@ describe("MarketingPreference component", () => {
 
   it("will select the checkbox when the selected prop is passed", () => {
     const rendered = create(
-      <MarketingPreference
+      <NewsletterPreference
         id={input.id}
         description={input.description}
+        frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         selected={true}
         onClick={input.clickHandler}
@@ -39,9 +45,11 @@ describe("MarketingPreference component", () => {
 
   it("will call the click handler when it is clicked", () => {
     const { getByText } = render(
-      <MarketingPreference
+      <NewsletterPreference
         id={input.id}
         description={input.description}
+        frequency={input.frequency}
+        identityName={input.identityName}
         title={input.title}
         onClick={input.clickHandler}
       />

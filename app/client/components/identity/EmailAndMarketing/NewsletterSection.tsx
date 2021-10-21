@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import palette from "../../../colours";
 import { DropMenu } from "../DropMenu";
-import { MarketingPreference } from "../MarketingPreference";
+import { NewsletterPreference } from "../NewsletterPreference";
 import { ConsentOption, Theme } from "../models";
 import { PageSection } from "../PageSection";
 
@@ -36,13 +36,16 @@ const newsletterPreference = (
     identityName
   } = newsletter;
   return (
-    <MarketingPreference
+    <NewsletterPreference
       id={id}
       key={id}
       title={name}
-      identityName={identityName}
+      // A newsletter always has identityName & frequency (see interface NewsletterAPIResponse)
+      // but ConsentOption has these as optional so we need to keep ts happy by falling back to
+      // "" here
+      identityName={identityName || ""}
+      frequency={frequency || ""}
       description={description}
-      frequency={frequency}
       selected={subscribed}
       onClick={clickHandler}
     />
