@@ -14,8 +14,7 @@ import {
   WithSubscription
 } from "../../../../shared/productResponse";
 import { ProductType } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
-import AsyncLoader from "../../asyncLoader";
+import {createProductDetailEndpoint} from "../../../productUtils";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
@@ -31,8 +30,8 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-
-class WithSubscriptionAsyncLoader extends AsyncLoader<WithSubscription[]> {}
+import DataFetcher from "../../DataFetcher";
+import {useSuspenseQuery} from "react-fetching-library";
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
@@ -78,13 +77,26 @@ const ConfirmedNewPaymentDetailsRenderer = ({
   return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
-const WithSubscriptionRenderer = (
+interface WithSubscriptionRenderedProps {
   productType: ProductType,
   newPaymentMethodDetail: NewPaymentMethodDetail,
   previousProductDetail: ProductDetail,
   flowReferrer?: { title: string; link: string }
-) => (subs: WithSubscription[]) =>
-  subs && subs.length === 1 ? (
+}
+
+const WithSubscriptionRenderer = ({
+  productType,
+  newPaymentMethodDetail,
+  previousProductDetail,
+  flowReferrer
+}: WithSubscriptionRenderedProps) => {
+  const subs = useSuspenseQuery(createProductDetailEndpoint(
+    productType,
+    previousProductDetail.subscription.subscriptionId
+  )).payload as WithSubscription[];
+  // the endpoint does not return WithSubscription[] ?????
+
+  return subs && subs.length === 1 ? (
     <>
       <h1>Your payment details were updated successfully</h1>
       <ConfirmedNewPaymentDetailsRenderer
@@ -112,9 +124,9 @@ const WithSubscriptionRenderer = (
           />
         )}
       </div>
-      <div css={{ marginTop: "20px" }}>
+      <div css={{marginTop: "20px"}}>
         <a href="https://www.theguardian.com">
-          <Button text="Explore The Guardian" primary right />
+          <Button text="Explore The Guardian" primary right/>
         </a>
       </div>
     </>
@@ -123,9 +135,10 @@ const WithSubscriptionRenderer = (
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      <ReturnToAccountOverviewButton />
+      <ReturnToAccountOverviewButton/>
     </>
   );
+}
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
   const innerContent = (
@@ -143,19 +156,9 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
           margin: ${space[5]}px 0 ${space[12]}px;
         `}
       />
-      <WithSubscriptionAsyncLoader
-        fetch={createProductDetailFetcher(
-          props.productType,
-          previousProductDetail.subscription.subscriptionId
-        )}
-        render={WithSubscriptionRenderer(
-          props.productType,
-          newPaymentMethodDetail,
-          previousProductDetail,
-          props.location?.state?.flowReferrer
-        )}
-        loadingMessage="Looks good so far. Just checking everything is done..."
-      />
+      <DataFetcher loadingMessage="Looks good so far. Just checking everything is done...">
+        <WithSubscriptionRenderer productType={props.productType} newPaymentMethodDetail={newPaymentMethodDetail} previousProductDetail={previousProductDetail} flowReferrer={props.location?.state?.flowReferrer} />
+      </DataFetcher>
     </>
   );
   return (

@@ -127,7 +127,7 @@ export const createDeliveryRecordsProblemPostEndpoint = (subscriptionId: string,
   return {
     method: 'POST',
     endpoint: `/api/delivery-records/${subscriptionId}`,
-    body: JSON.stringify(payload),
+    body: payload,
     headers: {
       "Content-Type": "application/json",
       [MDA_TEST_USER_HEADER]: `${isTestUser}`

@@ -11,7 +11,7 @@ const containerStyles = css`
   border-left: 1px solid ${neutral[7]};
 `;
 
-interface ContributionsFeedbackFormThankYouProps {
+export interface ContributionsFeedbackFormThankYouProps {
   isTestUser: boolean,
   caseId: string,
   feedback: string

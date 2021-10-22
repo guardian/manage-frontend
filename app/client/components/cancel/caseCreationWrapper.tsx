@@ -3,47 +3,60 @@ import {
   MDA_TEST_USER_HEADER,
   ProductDetail
 } from "../../../shared/productResponse";
-import AsyncLoader from "../asyncLoader";
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { OptionalCancellationReasonId } from "./cancellationReason";
-import { fetchWithDefaultParameters } from "../../fetch";
+import {Action, useSuspenseQuery} from "react-fetching-library";
+import DataFetcher from "../DataFetcher";
+import {allErrorStatuses, credentialHeaders} from "../../fetchClient";
 
 interface CaseCreationResponse {
   id: string;
 }
 
-const getCreateCaseFunc = (
+const getCreateCaseEndpoint = (
   reason: OptionalCancellationReasonId,
   sfCaseProduct: string,
   productDetail: ProductDetail
-) => async () =>
-  await fetchWithDefaultParameters("/api/case", {
+): Action<CaseCreationResponse> => ({
     method: "POST",
-    body: JSON.stringify({
+    endpoint: "/api/case",
+    body: {
       reason,
       product: sfCaseProduct,
       subscriptionName: productDetail.subscription.subscriptionId,
       gaData: "" + JSON.stringify(window.gaData)
-    }),
+    },
     headers: {
       "Content-Type": "application/json",
       [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    },
+    ...credentialHeaders,
+    config: {
+      emitErrorForStatuses: allErrorStatuses
     }
-  });
+})
 
-const renderWithCaseIdContextProvider = (
-  children: React.ReactChildren | JSX.Element
-) => (caseCreationResponse?: CaseCreationResponse) =>
-  caseCreationResponse ? (
+interface RenderWithCaseIdContextProviderProps {
+  reason: OptionalCancellationReasonId;
+  caseCreationProps: CaseCreationWrapperProps;
+}
+
+const RenderWithCaseIdContextProvider = ({ reason, caseCreationProps}: RenderWithCaseIdContextProviderProps) => {
+  const caseCreationResponse = useSuspenseQuery(getCreateCaseEndpoint(
+    reason,
+    caseCreationProps.sfCaseProduct,
+    caseCreationProps.productDetail
+  )).payload;
+
+  return caseCreationResponse ? (
     <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
-      {children}
+      {caseCreationProps.children}
     </CancellationCaseIdContext.Provider>
   ) : (
-    children
+    caseCreationProps.children
   );
-
-class CaseCreationAsyncLoader extends AsyncLoader<CaseCreationResponse> {}
+}
 
 interface CaseCreationWrapperProps {
   children: JSX.Element;
@@ -54,16 +67,9 @@ interface CaseCreationWrapperProps {
 export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
   <CancellationReasonContext.Consumer>
     {reason => (
-      <CaseCreationAsyncLoader
-        fetch={getCreateCaseFunc(
-          reason,
-          props.sfCaseProduct,
-          props.productDetail
-        )}
-        render={renderWithCaseIdContextProvider(props.children)}
-        errorRender={renderWithCaseIdContextProvider(props.children)}
-        loadingMessage="Capturing your cancellation reason..."
-      />
+      <DataFetcher loadingMessage="Capturing your cancellation reason...">
+        <RenderWithCaseIdContextProvider reason={reason} caseCreationProps={props} />
+      </DataFetcher>
     )}
   </CancellationReasonContext.Consumer>
 );

@@ -1,23 +1,20 @@
-import React, { ReactNode } from "react";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../shared/identity";
+import React from "react";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
-import AsyncLoader from "./asyncLoader";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
-import { fetchWithDefaultParameters } from "../fetch";
+import {credentialHeaders, defaultScopeHeader} from "../fetchClient";
+import DataFetcher from "./DataFetcher";
+import {Action, useSuspenseQuery} from "react-fetching-library";
 
-const fetchExistingPaymentOptions = () =>
-  fetchWithDefaultParameters("/api/existing-payment-options", {
-    headers: {
-      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-        window.location.href
-      )
-    }
-  });
+const fetchExistingPaymentOptions: Action<ExistingPaymentOption[]> = {
+  method: 'GET',
+  endpoint: "/api/existing-payment-options",
+  headers: {
+    ...defaultScopeHeader
+  },
+  ...credentialHeaders
+}
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -33,13 +30,13 @@ interface ExistingPaymentOption {
   mandate?: string;
 }
 
-class ExistingPaymentOptionsAsyncLoader extends AsyncLoader<
-  ExistingPaymentOption[]
-> {}
+interface GetThrasherProps {
+  args: ResubscribeThrasherProps;
+}
 
-const getThrasher = (args: ResubscribeThrasherProps) => (
-  existingPaymentOptions: ExistingPaymentOption[]
-) => {
+const GetThrasher = ({ args }: GetThrasherProps) => {
+  const existingPaymentOptions = useSuspenseQuery(fetchExistingPaymentOptions).payload as ExistingPaymentOption[]
+
   const eligiblePaymentOptionsIfNoActiveExistingContribution = existingPaymentOptions.find(
     option =>
       !!option.subscriptions.find(
@@ -93,18 +90,17 @@ const getThrasher = (args: ResubscribeThrasherProps) => (
       </div>
     );
   }
+
   return args.children;
-};
+}
 
 interface ResubscribeThrasherProps {
-  children: ReactNode;
+  children: JSX.Element;
   usageContext: string;
 }
 
 export const ResubscribeThrasher = (props: ResubscribeThrasherProps) => (
-  <ExistingPaymentOptionsAsyncLoader
-    fetch={fetchExistingPaymentOptions}
-    render={getThrasher(props)}
-    loadingMessage={"Loading..."}
-  />
+  <DataFetcher loadingMessage="Loading...">
+    <GetThrasher args={props} />
+  </DataFetcher>
 );

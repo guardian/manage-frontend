@@ -32,7 +32,7 @@ const fetchCancelledProducts: Action<CancelledProductDetail[]> = {
   endpoint: "/api/cancelled"
 };
 
-const AccountOverviewRenderer = (): JSX.Element => {
+const AccountOverviewRenderer = () => {
   const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload;
   const cancelledProductsResponse = useSuspenseQuery(fetchCancelledProducts)
     .payload;
