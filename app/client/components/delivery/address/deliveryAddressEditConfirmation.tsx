@@ -304,7 +304,7 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
 
   return addressContext.newDeliveryAddress ? (
     <DataFetcher loadingMessage="Updating delivery address details...">
-      <RenderConfirmation updateAddressFormData={formData} contactId={contactIdContext} routeableStepProps={props} />
+      <RenderConfirmation updateAddressFormData={formData as DeliveryAddress} contactId={contactIdContext} routeableStepProps={props} />
     </DataFetcher>
   ) : (
     visuallyNavigateToParent(props)

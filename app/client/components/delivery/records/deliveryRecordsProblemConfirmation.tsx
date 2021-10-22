@@ -8,8 +8,7 @@ import React, { useContext } from "react";
 import {DATE_FNS_SHORT_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
-  PaidSubscriptionPlan,
-  Subscription
+  PaidSubscriptionPlan
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
@@ -28,43 +27,44 @@ import {
   PageStatus
 } from "./deliveryRecords";
 import {
-  createDeliveryRecordsProblemPost,
+  createDeliveryRecordsProblemPostEndpoint, DeliveryRecordsPostPayload,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
   DeliveryRecordsAddressContext,
-  DeliveryRecordsProblemContext,
+  DeliveryRecordsProblemContext, DeliveryRecordsProblemContextInterface,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery} from "react-fetching-library";
 
-const renderDeliveryRecordsConfirmation = (
-  props: DeliveryRecordsRouteableStepProps,
-  subscription: Subscription
-) => {
-  const data = useSuspenseQuery(createDeliveryRecordsProblemPost(
-      deliveryRecordsProblemContext.subscription.subscriptionId,
+interface RenderDeliveryRecordsConfirmationProps {
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
+  deliveryRecordsProblemContext: DeliveryRecordsProblemContextInterface;
+  deliveryIssuePostPayload: DeliveryRecordsPostPayload;
+}
+
+const RenderDeliveryRecordsConfirmation = ({ routeableStepProps, deliveryRecordsProblemContext, deliveryIssuePostPayload }: RenderDeliveryRecordsConfirmationProps): JSX.Element => {
+  const { subscription } = deliveryRecordsProblemContext;
+
+  const data = useSuspenseQuery(createDeliveryRecordsProblemPostEndpoint(
+      subscription.subscriptionId,
       deliveryRecordsProblemContext.isTestUser,
       deliveryIssuePostPayload
-  )).payload;
+  )).payload as DeliveryRecordsResponse;
 
   const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
-  if(data) {
     return (
         <DeliveryRecordsProblemConfirmationFC
             data={data}
-            routeableStepProps={props}
+            routeableStepProps={routeableStepProps}
             subscriptionId={subscription.subscriptionId}
             subscriptionCurrency={mainPlan.currency}
         />
     );
-  } else {
-    return null;
-  }
 };
 
 interface DeliveryRecordsProblemConfirmationFCProps {
@@ -446,10 +446,7 @@ export const DeliveryRecordsProblemConfirmation = (
 
   return (
       <DataFetcher loadingMessage={"Reporting problem..."}>
-        {renderDeliveryRecordsConfirmation(
-            props,
-            deliveryRecordsProblemContext.subscription
-        )}
+        <RenderDeliveryRecordsConfirmation routeableStepProps={props} deliveryRecordsProblemContext={deliveryRecordsProblemContext} deliveryIssuePostPayload={deliveryIssuePostPayload} />
       </DataFetcher>
   );
 };

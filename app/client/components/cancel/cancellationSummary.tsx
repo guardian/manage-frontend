@@ -13,6 +13,8 @@ import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { CancellationContributionReminder } from "./cancellationContributionReminder";
+import {Action, useSuspenseQuery} from "react-fetching-library";
+import {getCaseUpdateWithCancelOutcome} from "./stages/executeCancellation";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -151,10 +153,20 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
   Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary = (productType: ProductType) => (
-  productDetail: ProductDetail
-) =>
-  isCancelled(productDetail.subscription) ? (
+interface CancellationSummaryProps {
+  productType: ProductType;
+  productDetail: ProductDetail;
+  caseId: string | "";
+  fetch?: boolean;
+}
+
+export const CancellationSummary = (props: CancellationSummaryProps) => {
+  const { productDetail, productType, caseId, fetch } = props;
+
+  // we don't always call the patch endpoint so using this hook conditionally
+  useSuspenseQuery(fetch ? getCaseUpdateWithCancelOutcome(caseId, productDetail) : null as unknown as Action<unknown>);
+
+  return isCancelled(productDetail.subscription) ? (
     actuallyCancelled(productType, productDetail)
   ) : (
     <GenericErrorScreen
@@ -164,3 +176,4 @@ export const getCancellationSummary = (productType: ProductType) => (
       }
     />
   );
+}

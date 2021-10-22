@@ -25,7 +25,7 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
-import { cancellationDateEndpoint } from "./cancellationDateResponse";
+import {cancellationDateEndpoint, CancellationDateResponse} from "./cancellationDateResponse";
 import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
 import { GenericSaveAttemptProps } from "./stages/genericSaveAttempt";
@@ -194,27 +194,25 @@ class ReasonPicker extends React.Component<
   }
 }
 
-const ReasonPickerRenderer = (
-  props: RouteableStepProps,
+interface ReasonPickerRenderer {
+  routeableStepProps: RouteableStepProps;
   productType: ProductTypeWithCancellationFlow,
   productDetail: ProductDetail
-): JSX.Element | null => {
+}
+
+const ReasonPickerRenderer = ({ routeableStepProps, productType, productDetail }: ReasonPickerRenderer) => {
   const apiResponse = useSuspenseQuery(
     cancellationDateEndpoint(productDetail.subscription.subscriptionId)
-  ).payload;
+  ).payload as CancellationDateResponse;
 
-  if (apiResponse) {
     return (
       <ReasonPicker
-        {...props}
+        {...routeableStepProps}
         productType={productType}
         productDetail={productDetail}
         chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
       />
     );
-  } else {
-    return null;
-  }
 };
 
 const CancellationFlow = (props: RouteableStepProps) => (
@@ -241,7 +239,7 @@ const CancellationFlow = (props: RouteableStepProps) => (
         <DataFetcher
           loadingMessage={`Checking your ${props.productType.shortFriendlyName || props.productType.friendlyName} details...`}
         >
-          {ReasonPickerRenderer(props, props.productType, productDetail)}
+          <ReasonPickerRenderer routeableStepProps={props} productType={props.productType} productDetail={productDetail} />
         </DataFetcher>
       ) : (
         <ContactUsToCancel

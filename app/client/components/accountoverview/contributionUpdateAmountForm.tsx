@@ -12,9 +12,11 @@ import {
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
-import AsyncLoader from "../asyncLoader";
 import { Button } from "../buttons";
-import { fetchWithDefaultParameters } from "../../fetch";
+import {useMutation} from "react-fetching-library";
+import type {Action} from 'react-fetching-library';
+import {credentialHeaders} from "../../fetchClient";
+import SpinLoader from "../SpinLoader";
 
 type ContributionUpdateAmountFormMode = "MANAGE" | "CANCELLATION_SAVE";
 
@@ -44,8 +46,6 @@ interface ContributionAmountsLookup {
     year: ContributionAmountOptions;
   };
 }
-
-class UpdateAmountLoader extends AsyncLoader<string> {}
 
 // TODO: make this dynamic (i.e. looks up api/config file agreed/shared by contributions team)
 export const contributionAmountsLookup: ContributionAmountsLookup = {
@@ -183,9 +183,17 @@ export const ContributionUpdateAmountForm = (
 
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
-  const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
+  const updateAmount = ({ newAmount, productType, subscriptionName }: UpdateAmountParameters): Action<unknown> => ({
+    endpoint: `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+    method: "POST",
+    body: {newPaymentAmount: newAmount},
+    ...credentialHeaders
+  });
+
+  const { mutate, error, loading } = useMutation(updateAmount);
+
   const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
-  const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+  const [confirmedAmount] = useState<number | null>(null);
 
   useEffect(() => {
     if (otherAmount !== getDefaultOtherAmount()) {
@@ -204,18 +212,12 @@ export const ContributionUpdateAmountForm = (
     }
   }, [confirmedAmount]);
 
-  const getAmountUpdater = (
-    newAmount: number,
-    productType: ProductType,
-    subscriptionName: string
-  ) => async () =>
-    await fetchWithDefaultParameters(
-      `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-      {
-        method: "POST",
-        body: JSON.stringify({ newPaymentAmount: newAmount })
-      }
-    );
+  interface UpdateAmountParameters {
+    newAmount: number;
+    productType: ProductType;
+    subscriptionName: string;
+  }
+
 
   const validateChoice = (): string | null => {
     const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
@@ -294,40 +296,19 @@ export const ContributionUpdateAmountForm = (
     }${weeklyAmount.toFixed(2)} each week`;
   };
 
-  if (showUpdateLoader) {
+  if(loading) {
     return (
-      <UpdateAmountLoader
-        fetch={getAmountUpdater(
-          pendingAmount,
-          props.productType,
-          props.subscriptionId
-        )}
-        readerOnOK={(resp: Response) => resp.text()}
-        render={() => {
-          trackEvent({
-            eventCategory: "amount_change",
-            eventAction: "contributions_amount_change_success",
-            eventLabel: `by ${props.mainPlan.currency}${(
-              pendingAmount - props.currentAmount
-            ).toFixed(2)}${props.mainPlan.currencyISO}`
-          });
-          setConfirmedAmount(pendingAmount);
-          return null;
-        }}
-        loadingMessage={"Updating..."}
-        errorRender={() => {
-          trackEvent({
-            eventCategory: "amount_change",
-            eventAction: "contributions_amount_change_failed"
-          });
-          setUpdateFailedStatus(true);
-          setShowUpdateLoader(false);
-          return null;
-        }}
-        spinnerScale={0.7}
-        inline
-      />
-    );
+      <SpinLoader loadingMessage="Updating..." spinnerScale={0.7} inline />
+    )
+  }
+
+  if(error) {
+    trackEvent({
+      eventCategory: "amount_change",
+      eventAction: "contributions_amount_change_failed"
+    });
+    setUpdateFailedStatus(true);
+    return null;
   }
 
   return (
@@ -465,7 +446,14 @@ export const ContributionUpdateAmountForm = (
             setErrorMessage(newErrorMessage);
             return;
           }
-          setShowUpdateLoader(true);
+
+          const params = {
+            newAmount: pendingAmount,
+            productType: props.productType,
+            subscriptionName: props.subscriptionId
+          }
+
+          mutate(params);
         }}
       />
     </>

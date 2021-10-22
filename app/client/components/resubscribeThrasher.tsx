@@ -33,11 +33,6 @@ interface ExistingPaymentOption {
   mandate?: string;
 }
 
-<<<<<<< HEAD
-class ExistingPaymentOptionsAsyncLoader extends AsyncLoader<
-  ExistingPaymentOption[]
-> {}
-=======
 interface GetThrasherProps {
   args: ResubscribeThrasherProps;
 }
@@ -56,7 +51,6 @@ const GetThrasher = ({ args }: GetThrasherProps) => {
     url => fetcher(url, headers),
     { suspense: true }
   ).data as ExistingPaymentOption[];
->>>>>>> 7f602b3e (swr headers removed from cache keys)
 
 const getThrasher = (args: ResubscribeThrasherProps) => (
   existingPaymentOptions: ExistingPaymentOption[]

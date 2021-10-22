@@ -1,13 +1,18 @@
 import { DeliveryAddress } from "../../../../shared/productResponse";
+import type {Action} from 'react-fetching-library';
+import {allErrorStatuses} from "../../../fetchClient";
 
-export const updateAddressFetcher = (
+export const updateAddressEndpoint = (
   formData: DeliveryAddress,
   contactId: string
-) => () =>
-  fetch(`/api/delivery/address/update/${contactId}`, {
-    method: "PUT",
+): Action<unknown> => ({
+    endpoint: `/api/delivery/address/update/${contactId}`,
+    method: 'PUT',
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(formData)
+    body: formData,
+    config: {
+      emitErrorForStatuses: allErrorStatuses
+    }
   });

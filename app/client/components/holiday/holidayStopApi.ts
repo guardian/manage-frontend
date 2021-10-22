@@ -10,7 +10,7 @@ import {
   ParsedDate
 } from "../../../shared/dates";
 import {MDA_TEST_USER_HEADER} from "../../../shared/productResponse";
-import AsyncLoader, { ReFetch } from "../asyncLoader";
+import { ReFetch } from "../asyncLoader";
 import {Action} from "react-fetching-library";
 
 interface CommonCreditProperties {
@@ -92,7 +92,7 @@ export interface ReloadableGetHolidayStopsResponse
   existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
-interface RawGetHolidayStopsResponse {
+export interface RawGetHolidayStopsResponse {
   issueSpecifics: Array<{
     issueDayOfWeek: number;
     firstAvailableDate: string;
@@ -108,15 +108,6 @@ export const convertRawPotentialHolidayStopDetail = (
   invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
   publicationDate: parseDate(raw.publicationDate)
 });
-
-export class GetHolidayStopsAsyncLoader extends AsyncLoader<
-  GetHolidayStopsResponse
-> {}
-
-// tslint:disable-next-line:max-classes-per-file
-export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
-  PotentialHolidayStopsResponse
-> {}
 
 export const getPotentialHolidayStopsFetcher = (
   subscriptionName: string,
@@ -158,11 +149,6 @@ export const getPotentialHolidayStopsEndpoint = (
 export interface CreateOrAmendHolidayStopsResponse {
   success: string;
 }
-
-// tslint:disable-next-line:max-classes-per-file
-export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<
-  CreateOrAmendHolidayStopsResponse
-> {}
 
 export const HolidayStopsResponseContext: React.Context<
   ReloadableGetHolidayStopsResponse | {}
@@ -223,6 +209,23 @@ export const embellishExistingHolidayStops = async (response: Response) => {
       .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
   } as GetHolidayStopsResponse;
 };
+
+export function embellishExistingHolidayStops2(payload: RawGetHolidayStopsResponse): GetHolidayStopsResponse {
+  return {
+    ...payload,
+    productSpecifics: {
+      // taking the oldest date here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
+      // it will need to re-visited for Home Delivery
+      firstAvailableDate: getOldestDate(
+        payload.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
+      ),
+      issueDaysOfWeek: payload.issueSpecifics.map(_ => _.issueDayOfWeek)
+    },
+    existing: payload.existing
+      .map(embellishRawHolidayStop)
+      .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
+  }
+}
 
 export interface IssuesImpactedPerYear {
   issuesThisYear: HolidayStopDetail[];
