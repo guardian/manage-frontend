@@ -16,7 +16,7 @@ import { sans } from "../../styles/fonts";
 import { ReFetch } from "../asyncLoader";
 import { ExpanderButton } from "../expanderButton";
 import { CollatedCredits } from "./collatedCredits";
-import { ExistingHolidayStopActions } from "./existingHolidayStopActions";
+import ExistingHolidayStopActions from "./existingHolidayStopActions";
 import {
   isSharedHolidayDateChooserState,
   SharedHolidayDateChooserState

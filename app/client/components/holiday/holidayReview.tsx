@@ -64,11 +64,11 @@ const PerformCreateOrAmendHoliday = (params: CreateOrAmendHolidayParams): Action
         : ""
     }`,
     method: params.existingHolidayStopToAmend ? "PATCH" : "POST",
-    body: JSON.stringify({
+    body: {
       startDate: dateString(params.selectedRange.start, DATE_FNS_INPUT_FORMAT),
       endDate: dateString(params.selectedRange.end, DATE_FNS_INPUT_FORMAT),
       subscriptionName: params.subscriptionName
-    }),
+    },
     headers: {
       "Content-Type": "application/json",
       [MDA_TEST_USER_HEADER]: `${params.isTestUser}`
@@ -91,37 +91,9 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
   </div>
 );
 
-export default function HolidayReview (props: HolidayStopsRouteableStepProps) {
+export function HolidayReview (props: HolidayStopsRouteableStepProps) {
   const { mutate, error, loading, payload } = useMutation(PerformCreateOrAmendHoliday);
   const [isCheckboxConfirmed, setIsCheckboxConfirmed] = useState<boolean>(false);
-
-
-  return (
-    <HolidayStopsResponseContext.Consumer>
-      {holidayStopsResponse =>
-        isHolidayStopsResponse(holidayStopsResponse) ? (
-          <MembersDataApiItemContext.Consumer>
-            {productDetail => (
-              <HolidayDateChooserStateContext.Consumer>
-                {dateChooserState =>
-                  isSharedHolidayDateChooserState(dateChooserState) &&
-                  isProduct(productDetail) ? (
-                    <DataFetcher loadingMessage="Calculating expected credit...">
-                      <HolidayReviewRenderer holidayStopsResponse={holidayStopsResponse} productDetail={productDetail} dateChooserState={dateChooserState} />
-                    </DataFetcher>
-                  ) : (
-                    visuallyNavigateToParent(props)
-                  )
-                }
-              </HolidayDateChooserStateContext.Consumer>
-            )}
-          </MembersDataApiItemContext.Consumer>
-        ) : (
-          <GenericErrorScreen loggingMessage="No holiday stop response" />
-        )
-      }
-    </HolidayStopsResponseContext.Consumer>
-  );
 
   interface HolidayReviewRendererProps {
     holidayStopsResponse: ReloadableGetHolidayStopsResponse;
@@ -305,5 +277,32 @@ export default function HolidayReview (props: HolidayStopsRouteableStepProps) {
       visuallyNavigateToParent(props)
     );
   };
+
+  return (
+    <HolidayStopsResponseContext.Consumer>
+      {holidayStopsResponse =>
+        isHolidayStopsResponse(holidayStopsResponse) ? (
+          <MembersDataApiItemContext.Consumer>
+            {productDetail => (
+              <HolidayDateChooserStateContext.Consumer>
+                {dateChooserState =>
+                  isSharedHolidayDateChooserState(dateChooserState) &&
+                  isProduct(productDetail) ? (
+                    <DataFetcher loadingMessage="Calculating expected credit...">
+                      <HolidayReviewRenderer holidayStopsResponse={holidayStopsResponse} productDetail={productDetail} dateChooserState={dateChooserState} />
+                    </DataFetcher>
+                  ) : (
+                    visuallyNavigateToParent(props)
+                  )
+                }
+              </HolidayDateChooserStateContext.Consumer>
+            )}
+          </MembersDataApiItemContext.Consumer>
+        ) : (
+          <GenericErrorScreen loggingMessage="No holiday stop response" />
+        )
+      }
+    </HolidayStopsResponseContext.Consumer>
+  );
 }
 

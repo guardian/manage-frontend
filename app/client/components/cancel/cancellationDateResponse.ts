@@ -19,12 +19,11 @@ export const cancellationDateFetcher = (subscriptionName: string) => () =>
     }
   });
 
-export const cancellationDateEndpoint = (subscriptionName: string): Action<CancellationDateResponse> => {
-    return {
-        method: 'GET',
-        endpoint: "/api/cancellation-date/" + subscriptionName,
-        headers: {
-           ...defaultScopeHeader
-        },
-    }
-}
+export const cancellationDateEndpoint = (subscriptionName: string): Action<CancellationDateResponse> => ({
+  method: 'GET',
+  endpoint: "/api/cancellation-date/" + subscriptionName,
+  headers: {
+    ...defaultScopeHeader
+  },
+  ...credentialHeaders
+})

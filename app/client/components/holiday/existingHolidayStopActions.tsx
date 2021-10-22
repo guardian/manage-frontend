@@ -18,19 +18,25 @@ interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
+interface withdrawHolidayParams {
+  subscriptionName?: string;
+  id?: string;
+  isTestUser: boolean;
+}
+
+const withdrawHolidayEndpoint = (params: withdrawHolidayParams): Action<unknown> => ({
+  method: "DELETE",
+  endpoint: `/api/holidays/${params.subscriptionName}/${params.id}`,
+  headers: {
+    [MDA_TEST_USER_HEADER]: `${params.isTestUser}`
+  }
+});
+
 // tslint:disable-next-line:max-classes-per-file
 export default function ExistingHolidayStopActions(props: ExistingHolidayStopActionsProps): JSX.Element {
   const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
-  const withdrawHolidayStopEndpoint: Action<unknown> = {
-    method: "DELETE",
-    endpoint: `/api/holidays/${props.subscriptionName}/${props.id}`,
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${props.isTestUser}`
-    }
-  }
-
-  const { mutate, loading, error, payload } = useMutation(withdrawHolidayStopEndpoint);
+  const { mutate, loading, error, payload } = useMutation(withdrawHolidayEndpoint);
 
   if(error) {
     return (
@@ -47,7 +53,7 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
 
   if(payload) {
     props.reloadParent && props.reloadParent();
-    return null;
+    return <></>;
   }
 
     if (props.withdrawnDate) {
@@ -103,7 +109,13 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
           <Button
             text="Yes"
             onClick={() => {
-              mutate;
+              const params = {
+                subscriptionName: props.subscriptionName,
+                id: props.id,
+                isTestUser: props.isTestUser
+              }
+
+              mutate(params);
               hideFunction();
             }}
           />

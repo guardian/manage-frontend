@@ -1,6 +1,5 @@
 import React from "react";
 import { Subscription } from "../../../../shared/productResponse";
-import AsyncLoader from "../../asyncLoader";
 
 type PaymentUpdateTypeName = "card" | "direct_debit";
 type PaymentUpdateTypeApiUrlPart = "card" | "dd";
@@ -32,5 +31,3 @@ export function isNewPaymentMethodDetail(
 export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> = React.createContext(
   {}
 );
-
-export class PaymentUpdateAsyncLoader extends AsyncLoader<object> {}

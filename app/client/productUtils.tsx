@@ -8,9 +8,9 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow
 } from "../shared/productTypes";
-import { fetchWithDefaultParameters } from "./fetch";
+import {fetchWithDefaultParameters} from "./fetch";
 import {MembersDataApiItem} from "../shared/productResponse";
-import { Action } from 'react-fetching-library';
+import {Action} from 'react-fetching-library';
 import {defaultScopeHeader} from "./fetchClient";
 
 export const shouldHaveHolidayStopsFlow = (
@@ -23,9 +23,9 @@ export const createProductDetailFetcher = (
 ) => () =>
   fetchWithDefaultParameters(
     "/api/me/mma" +
-      (subscriptionName
-        ? `/${subscriptionName}`
-        : `?productType=${productType.allProductsProductTypeFilterString}`),
+    (subscriptionName
+      ? `/${subscriptionName}`
+      : `?productType=${productType.allProductsProductTypeFilterString}`),
     {
       headers: {
         [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
@@ -35,18 +35,16 @@ export const createProductDetailFetcher = (
     }
   );
 
-export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string): Action<MembersDataApiItem[]> => {
-    return {
-        method: 'GET',
-        endpoint: "/api/me/mma" +
-            (subscriptionName
-                ? `/${subscriptionName}`
-                : `?productType=${productType.allProductsProductTypeFilterString}`),
-        headers: {
-            ...defaultScopeHeader
-        }
-    }
-}
+export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string): Action<MembersDataApiItem[]> => ({
+  method: 'GET',
+  endpoint: "/api/me/mma" +
+    (subscriptionName
+      ? `/${subscriptionName}`
+      : `?productType=${productType.allProductsProductTypeFilterString}`),
+  headers: {
+    ...defaultScopeHeader
+  }
+})
 
 export const allProductsDetailFetcher = () =>
   fetchWithDefaultParameters("/api/me/mma", {
@@ -58,13 +56,13 @@ export const allProductsDetailFetcher = () =>
   });
 
 export const allProductsDetailEndpoint: Action<MembersDataApiItem[]> = {
-    method: 'GET',
-    endpoint: '/api/me/mma',
-    headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-            window.location.href
-        )
-    },
+  method: 'GET',
+  endpoint: '/api/me/mma',
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  },
 };
 
 export const hasCancellationFlow = (
