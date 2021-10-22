@@ -25,14 +25,17 @@ import { CancellationSummary, isCancelled } from "../cancellationSummary";
 import {getUpdateCaseEndpoint} from "../caseUpdate";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery, Action} from "react-fetching-library";
-import {credentialHeaders} from "../../../fetchClient";
+import {allErrorStatuses, credentialHeaders} from "../../../fetchClient";
 
 const cancelSubscriptionEndpoint = (subscriptionName: string, reason: OptionalCancellationReasonId): Action<unknown> => ({
   endpoint: "/api/cancel/" + subscriptionName,
     method: "POST",
     body: JSON.stringify({ reason }),
     headers: { "Content-Type": "application/json" },
-    ...credentialHeaders
+    ...credentialHeaders,
+    config: {
+      emitErrorForStatuses: allErrorStatuses
+    }
   })
 
 export const getCaseUpdateWithCancelOutcome = (caseId: string, productDetail: ProductDetail):Action<unknown> => getUpdateCaseEndpoint(
