@@ -2,7 +2,10 @@ import {createClient} from "react-fetching-library";
 import {trackEvent} from "./components/analytics";
 import * as Sentry from "@sentry/browser";
 import type {Action} from "react-fetching-library";
+import {MDA_TEST_USER_HEADER} from "../shared/productResponse";
 // import {getScopeFromRequestPathOrEmptyString, X_GU_ID_FORWARDED_SCOPE} from "../shared/identity";
+
+export const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then(res => res.json());
 
 export const errorInterceptor = (_: any) => async (_: Action, response: any) => {
     if(response.error) {
@@ -44,5 +47,9 @@ export const emitErrorForAllStatuses = {
 };
 
 export const defaultScopeHeader = {
-    // [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(window.location.href)
+    /*
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+       window.location.href
+    )
+    */
 }

@@ -87,7 +87,7 @@ export const createDeliveryRecordsFetcher = (
     }
   });
 
-export const createDeliveryRecordsEndpoint = (subscriptionId: string, isTestUser: boolean): Action<DeliveryRecordsResponse> => {
+export const createDeliveryRecordsEndpoint = (subscriptionId: string, isTestUser: boolean) => {
   return {
     method: 'GET',
     endpoint:`/api/delivery-records/${subscriptionId}`,

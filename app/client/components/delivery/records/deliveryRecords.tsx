@@ -5,7 +5,7 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {
   dateAddDays,
   dateIsSameOrBefore,
@@ -14,7 +14,7 @@ import {
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
-  isGift,
+  isGift, MDA_TEST_USER_HEADER,
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -38,7 +38,6 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryAddressStep } from "./deliveryAddressStep";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
-  createDeliveryRecordsEndpoint,
   DeliveryRecordDetail,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
@@ -50,8 +49,9 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
-import {useSuspenseQuery} from "react-fetching-library";
 import DataFetcher from "../../DataFetcher";
+import useSWR from "swr";
+import {fetcher} from "../../../fetchClient";
 
 interface IdentityDetails {
   userId: string;
@@ -91,8 +91,17 @@ interface RenderDeliveryRecordsProps {
   productDetail: ProductDetail;
 }
 
-const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeliveryRecordsProps): JSX.Element => {
-  const data = useSuspenseQuery(createDeliveryRecordsEndpoint(productDetail.subscription.subscriptionId, productDetail.isTestUser)).payload as DeliveryRecordsResponse;
+const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeliveryRecordsProps) => {
+  const fetchHeaders = useMemo(
+    () => ({
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+      },
+    }),
+    [productDetail]
+  );
+
+  const data = useSWR([`/api/delivery-records/${productDetail.subscription.subscriptionId}`, fetchHeaders], fetcher, { suspense: true }).data as DeliveryRecordsResponse;
 
     const mainPlan = getMainPlan(
         productDetail.subscription

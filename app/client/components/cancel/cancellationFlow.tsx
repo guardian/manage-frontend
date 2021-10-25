@@ -25,12 +25,13 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
-import {cancellationDateEndpoint, CancellationDateResponse} from "./cancellationDateResponse";
+import {CancellationDateResponse} from "./cancellationDateResponse";
 import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
 import { GenericSaveAttemptProps } from "./stages/genericSaveAttempt";
 import DataFetcher from "../DataFetcher";
-import { useSuspenseQuery } from "react-fetching-library";
+import {credentialHeaders, defaultScopeHeader, fetcher} from "../../fetchClient";
+import useSWR from "swr";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -201,9 +202,8 @@ interface ReasonPickerRenderer {
 }
 
 const ReasonPickerRenderer = ({ routeableStepProps, productType, productDetail }: ReasonPickerRenderer) => {
-  const apiResponse = useSuspenseQuery(
-    cancellationDateEndpoint(productDetail.subscription.subscriptionId)
-  ).payload as CancellationDateResponse;
+  const fetchHeaders = { ...credentialHeaders, ...defaultScopeHeader };
+  const apiResponse = useSWR(["/api/cancellation-date/" + productDetail.subscription.subscriptionId, fetchHeaders], fetcher).data as CancellationDateResponse;
 
     return (
       <ReasonPicker

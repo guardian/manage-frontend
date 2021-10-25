@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import {
   DeliveryAddress,
-  isProduct,
+  isProduct, MembersDataApiItem,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
@@ -19,7 +19,6 @@ import {
   GROUPED_PRODUCT_TYPES,
   ProductType
 } from "../../../../shared/productTypes";
-import {createProductDetailEndpoint} from "../../../productUtils";
 import { COUNTRIES } from "../../identity/models";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
@@ -52,7 +51,8 @@ import {
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
+import useSWR from "swr";
+import {defaultScopeHeader, fetcher} from "../../../fetchClient";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
@@ -138,7 +138,9 @@ const formStates: FormStates = {
 };
 
 const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps): JSX.Element | null => {
-  const allProductDetails = useSuspenseQuery(createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions)).payload;
+  const url = "/api/me/mma" + `?productType=${GROUPED_PRODUCT_TYPES.subscriptions.allProductsProductTypeFilterString}`;
+
+  const allProductDetails = useSWR([url, defaultScopeHeader], fetcher).data as MembersDataApiItem[];
 
   if (allProductDetails) {
     return (

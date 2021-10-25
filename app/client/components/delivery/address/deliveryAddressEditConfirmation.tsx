@@ -34,6 +34,7 @@ import {
 import DataFetcher from "../../DataFetcher";
 import {DeliveryAddress} from "../../../../shared/productResponse";
 import {useSuspenseQuery} from "react-fetching-library";
+import useSWR from "swr";
 
 interface RenderConfirmationProps {
   updateAddressFormData: DeliveryAddress;
@@ -42,7 +43,7 @@ interface RenderConfirmationProps {
 }
 
 const RenderConfirmation = ({ updateAddressFormData, contactId, routeableStepProps }: RenderConfirmationProps) => {
-  useSuspenseQuery(updateAddressEndpoint(updateAddressFormData, contactId));
+  useSWR(updateAddressEndpoint(updateAddressFormData, contactId));
 
   return <ConfirmationFC {...routeableStepProps} />
 };

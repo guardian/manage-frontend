@@ -133,15 +133,16 @@ export const getPotentialHolidayStopsEndpoint = (
     startDate: Date,
     endDate: Date,
     isTestUser: boolean
-): Action<PotentialHolidayStopsResponse> => {
+) => {
   return {
-    method: 'GET',
     endpoint: `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
         startDate,
         DATE_FNS_INPUT_FORMAT
     )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
+    config: {
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${isTestUser}`
+      }
     }
   }
 }

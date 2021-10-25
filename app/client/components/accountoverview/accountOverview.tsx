@@ -6,7 +6,7 @@ import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import {
   CancelledProductDetail,
-  isProduct,
+  isProduct, MembersDataApiItem,
   ProductDetail,
   sortByJoinDate
 } from "../../../shared/productResponse";
@@ -14,7 +14,6 @@ import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
-import { allProductsDetailEndpoint } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { isCancelled } from "../cancel/cancellationSummary";
 import { NAV_LINKS } from "../nav/navConfig";
@@ -24,18 +23,13 @@ import { AccountOverviewCancelledCard } from "./accountOverviewCancelledCard";
 import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
 import { SupportTheGuardianSection } from "./supportTheGuardianSection";
-import { Action, useSuspenseQuery } from "react-fetching-library";
 import DataFetcher from "../DataFetcher";
-
-const fetchCancelledProducts: Action<CancelledProductDetail[]> = {
-  method: "GET",
-  endpoint: "/api/cancelled"
-};
+import useSWR from "swr";
+import {fetcher} from "../../fetchClient";
 
 const AccountOverviewRenderer = () => {
-  const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload;
-  const cancelledProductsResponse = useSuspenseQuery(fetchCancelledProducts)
-    .payload;
+  const mdaResponse = useSWR('/api/me/mma', fetcher, { suspense: true} ).data as MembersDataApiItem[];
+  const cancelledProductsResponse = useSWR('/api/cancelled', fetcher, { suspense: true} ).data as CancelledProductDetail[];
 
   if (mdaResponse && cancelledProductsResponse) {
     const allActiveProductDetails = mdaResponse

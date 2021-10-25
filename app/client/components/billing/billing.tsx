@@ -19,7 +19,6 @@ import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
-import { allProductsDetailEndpoint } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
@@ -33,8 +32,8 @@ import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertI
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
-import { Action, useSuspenseQuery } from "react-fetching-library";
-import { allErrorStatuses } from "../../fetchClient";
+import {fetcher} from "../../fetchClient";
+import useSWR from 'swr';
 import DataFetcher from "../DataFetcher";
 
 type MMACategoryToProductDetails = {
@@ -43,17 +42,9 @@ type MMACategoryToProductDetails = {
 
 type FetchInvoiceResponse = { invoices: InvoiceDataApiItem[] };
 
-const fetchInvoices: Action<FetchInvoiceResponse> = {
-  method: "GET",
-  endpoint: "/api/invoices",
-  config: {
-    emitErrorForStatuses: allErrorStatuses
-  }
-};
-
-export const BillingRenderer = (): JSX.Element => {
-  const mdaResponse = useSuspenseQuery(allProductsDetailEndpoint).payload as MembersDataApiItem[];
-  const invoiceResponse = useSuspenseQuery(fetchInvoices).payload as FetchInvoiceResponse;
+export const BillingRenderer = () => {
+  const mdaResponse = useSWR('/api/me/mma', fetcher, { suspense: true }).data as MembersDataApiItem[];
+  const invoiceResponse = useSWR('/api/invoices', fetcher, { suspense: true }).data as FetchInvoiceResponse;
 
     const allProductDetails = mdaResponse
       .filter(isProduct)
