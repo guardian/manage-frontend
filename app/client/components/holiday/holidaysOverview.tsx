@@ -44,8 +44,8 @@ import {
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 import DataFetcher from "../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
-import type {Action} from "react-fetching-library";
+import useSWR from "swr";
+import {fetcher} from "../../fetchClient";
 
 export type HolidayStopsRouteableStepProps = RouteableStepProps &
   WithProductType<ProductTypeWithHolidayStopsFlow>;
@@ -89,12 +89,16 @@ const RenderHolidayStopsOverview = ({ productDetail,
   existingHolidayStopToAmend,
   setExistingHolidayStopToAmend }: RenderHolidayStopsOverviewProps
 ) => {
-  const holidayStopsQuery = useSuspenseQuery(createGetHolidayStopsEndpoint(
-    productDetail.subscription.subscriptionId,
-    productDetail.isTestUser
-  ));
-  const rawHolidayStopsResponse = holidayStopsQuery.payload as RawGetHolidayStopsResponse;
-  const refetchHolidayStops = holidayStopsQuery.query;
+  const fetchHeaders = {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    }
+  }
+
+  const holidayStopsQuery = useSWR([`/api/holidays/${productDetail.subscription.subscriptionId}`, fetchHeaders], fetcher, { suspense: true });
+
+  const rawHolidayStopsResponse = holidayStopsQuery.data as RawGetHolidayStopsResponse;
+  // const refetchHolidayStops = holidayStopsQuery.query;
 
   const holidayStopsResponse = embellishExistingHolidayStops2(rawHolidayStopsResponse);
 
@@ -126,7 +130,7 @@ const RenderHolidayStopsOverview = ({ productDetail,
 
   const reloadWhichAlsoClearsAnyExistingHolidayStopToAmend = () => {
     setExistingHolidayStopToAmend(null);
-    refetchHolidayStops;
+    // refetchHolidayStops;
   };
 
   const InnerContent = () => (
@@ -287,7 +291,7 @@ const RenderHolidayStopsOverview = ({ productDetail,
                 issueKeyword={
                   holidaysOverviewProps.productType.holidayStops.issueKeyword
                 }
-                reloadParent={refetchHolidayStops}
+                // reloadParent={refetchHolidayStops}
                 setExistingHolidayStopToAmend={setExistingHolidayStopToAmend}
               />
             ) : (
@@ -333,17 +337,6 @@ const RenderHolidayStopsOverview = ({ productDetail,
     </HolidayStopsResponseContext.Provider>
   );
 };
-
-const createGetHolidayStopsEndpoint = (
-  subscriptionName: string,
-  isTestUser: boolean
-): Action<RawGetHolidayStopsResponse> => ({
-  method: "GET",
-  endpoint: `/api/holidays/${subscriptionName}`,
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
-    }
-  });
 
 interface HolidaysOverviewState {
   existingHolidayStopToAmend: HolidayStopRequest | null;

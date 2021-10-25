@@ -46,6 +46,8 @@ import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery} from "react-fetching-library";
+import useSWR from "swr";
+import {fetcher} from "../../../fetchClient";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
@@ -118,7 +120,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   };
 
   const RenderDeliveryAddressForm = () => {
-    const allProductDetails = useSuspenseQuery(createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions)).payload as MembersDataApiItem[];
+    const { endpoint, config } = createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions);
+
+    const allProductDetails = useSWR([endpoint, config], fetcher).data as MembersDataApiItem[];
 
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails

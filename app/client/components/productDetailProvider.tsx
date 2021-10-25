@@ -10,6 +10,8 @@ import {
 } from "./wizardRouterAdapter";
 import {useSuspenseQuery} from "react-fetching-library";
 import DataFetcher from "./DataFetcher";
+import useSWR from "swr";
+import {fetcher} from "../fetchClient";
 
 export interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
@@ -76,7 +78,9 @@ interface RenderSingleProductProps {
 }
 
 export const RenderSingleProductOrReturnToAccountOverview = ({ productDetailProviderProps, setSelectedProductDetail }: RenderSingleProductProps): JSX.Element | null => {
-  const data = useSuspenseQuery(createProductDetailEndpoint(productDetailProviderProps.productType)).payload as MembersDataApiItem[];
+  const { endpoint, config } = createProductDetailEndpoint(productDetailProviderProps.productType);
+
+  const data = useSWR([endpoint, config], fetcher).data as MembersDataApiItem[];
 
     const filteredProductDetails = data
         .filter(isProduct)

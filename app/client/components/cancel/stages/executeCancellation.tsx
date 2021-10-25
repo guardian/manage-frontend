@@ -25,7 +25,8 @@ import { CancellationSummary, isCancelled } from "../cancellationSummary";
 import {getUpdateCaseEndpoint} from "../caseUpdate";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery, Action} from "react-fetching-library";
-import {allErrorStatuses, credentialHeaders} from "../../../fetchClient";
+import {allErrorStatuses, credentialHeaders, fetcher} from "../../../fetchClient";
+import useSWR from "swr";
 
 const cancelSubscriptionEndpoint = (subscriptionName: string, reason: OptionalCancellationReasonId): Action<unknown> => ({
   endpoint: "/api/cancel/" + subscriptionName,
@@ -104,7 +105,9 @@ const GetCaseUpdatingCancellationSummary = (props: GetCaseUpdatingCancellationSu
   useSuspenseQuery(cancelSubscriptionEndpoint(productDetail.subscription.subscriptionId, reason));
   // response is either empty or 404 from cancelSubscriptionEndpoint - neither is useful so fetch subscription after to determine cancellation result...
 
-  const productDetails = useSuspenseQuery(createProductDetailEndpoint(productType)).payload as ProductDetail[];
+  const { endpoint, config } = createProductDetailEndpoint(productType);
+
+  const productDetails = useSWR([endpoint, config], fetcher).data as ProductDetail[];
 
   const productDetailRefetched = productDetails[0] || { subscription: {} };
 
