@@ -35,14 +35,15 @@ export const createProductDetailFetcher = (
     }
   );
 
-export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string): Action<MembersDataApiItem[]> => ({
-  method: 'GET',
+export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string) => ({
   endpoint: "/api/me/mma" +
     (subscriptionName
       ? `/${subscriptionName}`
       : `?productType=${productType.allProductsProductTypeFilterString}`),
-  headers: {
-    ...defaultScopeHeader
+  config: {
+    headers: {
+      ...defaultScopeHeader
+    }
   }
 })
 

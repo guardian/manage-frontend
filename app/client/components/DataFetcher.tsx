@@ -1,8 +1,7 @@
 import { GenericErrorScreen } from "./genericErrorScreen";
 import React, { Suspense } from "react";
 import SpinLoader from "./SpinLoader";
-import {QueryErrorBoundary} from "react-fetching-library";
-import {allErrorStatuses} from "../fetchClient";
+import {ErrorBoundary} from "react-error-boundary";
 
 interface DataFetcherProps {
   loadingMessage: string;
@@ -25,11 +24,11 @@ const DataFetcher = ({
   children,
   spinnerScale
 }: DataFetcherProps) => (
-  <QueryErrorBoundary statuses={allErrorStatuses} fallback={renderErrorComponent(ErrorComponent)}>
+  <ErrorBoundary FallbackComponent={renderErrorComponent(ErrorComponent)}>
     <Suspense fallback={<SpinLoader spinnerScale={spinnerScale} loadingMessage={loadingMessage} />}>
       {children}
     </Suspense>
-  </QueryErrorBoundary>
+  </ErrorBoundary>
 );
 
 export default DataFetcher;

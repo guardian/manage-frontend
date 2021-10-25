@@ -11,8 +11,8 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
-    getPotentialHolidayStopsEndpoint,
-    RawPotentialHolidayStopDetail
+  getPotentialHolidayStopsEndpoint, PotentialHolidayStopsResponse,
+  RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -33,7 +33,8 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { UserPhoneNumber } from "./userPhoneNumber";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
+import useSWR from "swr";
+import {fetcher} from "../../../fetchClient";
 
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
@@ -51,15 +52,16 @@ export const DeliveryRecordsProblemReview = (
   const problemEndDate =
     deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
-  const RenderReviewDetails = (): JSX.Element | null => {
-      const potentialHolidayStopsResponseWithCredits = useSuspenseQuery(getPotentialHolidayStopsEndpoint(
-          deliveryProblemContext?.subscription.subscriptionId,
-          parseDate(problemStartDate).date,
-          parseDate(problemEndDate).date,
-          deliveryProblemContext.isTestUser
-      )).payload;
+  const RenderReviewDetails = () => {
+    const { endpoint, config } = getPotentialHolidayStopsEndpoint(
+      deliveryProblemContext?.subscription.subscriptionId,
+      parseDate(problemStartDate).date,
+      parseDate(problemEndDate).date,
+      deliveryProblemContext.isTestUser
+    );
 
-      if(potentialHolidayStopsResponseWithCredits) {
+      const potentialHolidayStopsResponseWithCredits = useSWR([endpoint, config], fetcher).data as PotentialHolidayStopsResponse;
+
           const totalCreditAmount: number =
               potentialHolidayStopsResponseWithCredits.potentials.length &&
               potentialHolidayStopsResponseWithCredits.potentials
@@ -79,9 +81,6 @@ export const DeliveryRecordsProblemReview = (
                   totalCreditAmount={totalCreditAmount}
               />
           );
-      } else {
-          return null;
-      }
   };
 
   if (!deliveryProblemContext) {

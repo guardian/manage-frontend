@@ -37,7 +37,7 @@ import {
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   convertRawPotentialHolidayStopDetail,
-  CreateOrAmendHolidayStopsResponse, getPotentialHolidayStopsEndpoint,
+  CreateOrAmendHolidayStopsResponse,
   HolidayStopRequest,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
@@ -45,10 +45,11 @@ import {
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
-import {credentialHeaders} from "../../fetchClient";
-import {Action, useMutation, useSuspenseQuery} from 'react-fetching-library';
+import {credentialHeaders, fetcher} from "../../fetchClient";
+import {Action, useMutation} from 'react-fetching-library';
 import DataFetcher from "../DataFetcher";
 import SpinLoader from "../SpinLoader";
+import useSWR from "swr";
 
 interface CreateOrAmendHolidayParams {
   selectedRange: DateRange,
@@ -103,7 +104,17 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
 
   const HolidayReviewRenderer = ({ holidayStopsResponse, productDetail, dateChooserState  }: HolidayReviewRendererProps) => {
     const { start, end } = dateChooserState.selectedRange;
-    const potentialHolidayStopsResponseWithCredits = useSuspenseQuery(getPotentialHolidayStopsEndpoint(productDetail.subscription.subscriptionId, start, end, productDetail.isTestUser)).payload as PotentialHolidayStopsResponse;
+    const url = `/api/holidays/${productDetail.subscription.subscriptionId}/potential?startDate=${dateString(
+      start,
+      DATE_FNS_INPUT_FORMAT
+    )}&endDate=${dateString(end, DATE_FNS_INPUT_FORMAT)}`;
+    const fetchHeaders = {
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+      }
+    }
+
+    const potentialHolidayStopsResponseWithCredits = useSWR([url, fetchHeaders], fetcher, { suspense: true }).data as PotentialHolidayStopsResponse;
 
     if(error) {
       getRenderCreateOrAmendError(
