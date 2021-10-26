@@ -120,9 +120,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   };
 
   const RenderDeliveryAddressForm = () => {
-    const { endpoint, config } = createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions);
+    const { endpoint } = createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions);
 
-    const allProductDetails = useSWR([endpoint, config], fetcher).data as MembersDataApiItem[];
+    const allProductDetails = useSWR(endpoint, fetcher).data as MembersDataApiItem[];
 
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails

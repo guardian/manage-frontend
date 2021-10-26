@@ -11,8 +11,6 @@ import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { FlowReferrerContext, NavigateFnContext } from "../updatePaymentFlow";
 import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
-import {useMutation} from "react-fetching-library";
-import type {Action} from "react-fetching-library";
 import SpinLoader from "../../../SpinLoader";
 
 const inputBoxBaseStyle = {
@@ -39,16 +37,19 @@ interface DirectDebitUpdateFormProps {
 }
 
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
-  const validateDirectDebitDetailsEndpoint = (): Action<DirectDebitValidationResponse> => ({
-    endpoint: `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
-    credentials: "include",
-    method: "POST",
-    body: JSON.stringify({
-      accountNumber,
-      sortCode: cleanSortCode(sortCode)
-    }),
-    headers: {"Content-Type": "application/json"}
-  });
+  const validateDirectDebitDetails = () =>
+    fetch(
+      `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
+      {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({
+          accountNumber,
+          sortCode: cleanSortCode(sortCode)
+        }),
+        headers: { "Content-Type": "application/json" }
+      }
+    );
 
   const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] = useState<
     boolean
@@ -58,12 +59,22 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
   const [sortCode, setSortCode] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-  const validationMutation = useMutation(validateDirectDebitDetailsEndpoint);
+  const [validating, setValidating] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<boolean>(false);
+  const [validationResponse, setValidationResponse] = useState<DirectDebitValidationResponse | undefined>();
 
-  const validating = validationMutation.loading;
-  const validationError = validationMutation.error;
-  const performValidation = validationMutation.mutate;
-  const validationResponse = validationMutation.payload;
+  async function performValidation() {
+    setValidating(true);
+
+    try {
+      const res = await validateDirectDebitDetails();
+      const resPayload = await res.json();
+
+      setValidationResponse(resPayload);
+    } catch(e) {
+      setValidationError(true);
+    }
+  }
 
   if(validationError) {
     setErrorMessage(
@@ -102,7 +113,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
     if (accountName.length < 3) {
       setErrorMessage("Please enter a valid account name"); // TODO add field highlighting
     } else if (soleAccountHolderConfirmed) {
-      performValidation(validateDirectDebitDetailsEndpoint())
+      performValidation()
     } else {
       setErrorMessage("You need to confirm that you are the account holder"); // TODO highlight checkbox
     }
