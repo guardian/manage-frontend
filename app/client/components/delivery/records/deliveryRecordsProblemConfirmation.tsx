@@ -39,6 +39,7 @@ import {
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery} from "react-fetching-library";
+import {useSWRConfig} from "swr";
 
 interface RenderDeliveryRecordsConfirmationProps {
   routeableStepProps: DeliveryRecordsRouteableStepProps;
@@ -54,6 +55,9 @@ const RenderDeliveryRecordsConfirmation = ({ routeableStepProps, deliveryRecords
       deliveryRecordsProblemContext.isTestUser,
       deliveryIssuePostPayload
   )).payload as DeliveryRecordsResponse;
+
+  const { mutate } = useSWRConfig();
+  mutate("/api/delivery-records/");
 
   const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 

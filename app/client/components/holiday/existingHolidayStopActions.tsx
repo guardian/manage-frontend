@@ -8,9 +8,9 @@ import {
   MinimalHolidayStopRequest
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
-import type {Action} from 'react-fetching-library';
-import {useMutation} from "react-fetching-library";
 import SpinLoader from "../SpinLoader";
+import useSWR from "swr";
+import {fetcher} from "../../fetchClient";
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
@@ -24,9 +24,9 @@ interface withdrawHolidayParams {
   isTestUser: boolean;
 }
 
-const withdrawHolidayEndpoint = (params: withdrawHolidayParams): Action<unknown> => ({
+const withdrawHolidayFetch = (params: withdrawHolidayParams) =>
+  fetch(`/api/holidays/${params.subscriptionName}/${params.id}`, {
   method: "DELETE",
-  endpoint: `/api/holidays/${params.subscriptionName}/${params.id}`,
   headers: {
     [MDA_TEST_USER_HEADER]: `${params.isTestUser}`
   }
@@ -34,9 +34,9 @@ const withdrawHolidayEndpoint = (params: withdrawHolidayParams): Action<unknown>
 
 // tslint:disable-next-line:max-classes-per-file
 export default function ExistingHolidayStopActions(props: ExistingHolidayStopActionsProps): JSX.Element {
-  const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
+  const { data, mutate, error } = useSWR('/api/holidays', fetcher);
 
-  const { mutate, loading, error, payload } = useMutation(withdrawHolidayEndpoint);
+  const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
   if(error) {
     return (
@@ -51,7 +51,7 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
     );
   }
 
-  if(payload) {
+  if(data) {
     props.reloadParent && props.reloadParent();
     return <></>;
   }
@@ -115,7 +115,7 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
                 isTestUser: props.isTestUser
               }
 
-              mutate(params);
+              mutate(withdrawHolidayFetch(params));
               hideFunction();
             }}
           />
@@ -123,7 +123,7 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
       );
 
 
-      return loading ? (
+      return !data ? (
         <SpinLoader loadingMessage="Deleting..." spinnerScale={0.6} inline />
       ) : (
         <>
