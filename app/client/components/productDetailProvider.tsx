@@ -79,7 +79,9 @@ interface RenderSingleProductProps {
 export const RenderSingleProductOrReturnToAccountOverview = ({ productDetailProviderProps, setSelectedProductDetail }: RenderSingleProductProps): JSX.Element | null => {
   const { endpoint, config } = createProductDetailEndpoint(productDetailProviderProps.productType);
 
-  const data = useSWR([endpoint, config], fetcher).data as MembersDataApiItem[];
+  const res = useSWR([endpoint, config], fetcher, { suspense: true });
+  const data = res.data as MembersDataApiItem[];
+  console.log(data);
 
     const filteredProductDetails = data
         .filter(isProduct)
