@@ -26,7 +26,7 @@ import {getUpdateCaseEndpoint} from "../caseUpdate";
 import DataFetcher from "../../DataFetcher";
 import {useSuspenseQuery, Action} from "react-fetching-library";
 import {allErrorStatuses, credentialHeaders, fetcher} from "../../../fetchClient";
-import useSWR from "swr";
+import useSWR, {useSWRConfig} from "swr";
 
 const cancelSubscriptionEndpoint = (subscriptionName: string, reason: OptionalCancellationReasonId): Action<unknown> => ({
   endpoint: "/api/cancel/" + subscriptionName,
@@ -77,11 +77,14 @@ interface GetCancellationSummaryWithReturnButtonProps {
 }
 
 const GetCancellationSummaryWithReturnButton = (props: GetCancellationSummaryWithReturnButtonProps) => {
+  const { mutate } = useSWRConfig();
   useSuspenseQuery(getCaseUpdateFuncForEscalation(
     props.caseId,
     props.escalationCauses,
     props.isTestUser
   ));
+
+  mutate("/api/case/")
 
   return (
   <div>

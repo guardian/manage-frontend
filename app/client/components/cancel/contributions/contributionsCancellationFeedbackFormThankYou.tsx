@@ -4,6 +4,7 @@ import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import {useSuspenseQuery} from "react-fetching-library";
 import {getPatchUpdateCaseEndpoint} from "./contributionsCancellationFeedbackForm";
+import {useSWRConfig} from "swr";
 
 const containerStyles = css`
   margin-left: ${space[4]}px;
@@ -19,6 +20,9 @@ export interface ContributionsFeedbackFormThankYouProps {
 
 const ContributionsFeedbackFormThankYou = ({ isTestUser, caseId, feedback }: ContributionsFeedbackFormThankYouProps ) => {
   useSuspenseQuery(getPatchUpdateCaseEndpoint(isTestUser, caseId, feedback));
+
+  const { mutate } = useSWRConfig();
+  mutate('/api/case/')
 
   return (
     <div css={containerStyles}>

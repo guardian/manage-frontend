@@ -15,6 +15,7 @@ import { CancellationReasonContext } from "./cancellationContexts";
 import { CancellationContributionReminder } from "./cancellationContributionReminder";
 import {Action, useSuspenseQuery} from "react-fetching-library";
 import {getCaseUpdateWithCancelOutcome} from "./stages/executeCancellation";
+import {useSWRConfig} from "swr";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -165,6 +166,11 @@ export const CancellationSummary = (props: CancellationSummaryProps) => {
 
   // we don't always call the patch endpoint so using this hook conditionally
   useSuspenseQuery(fetch ? getCaseUpdateWithCancelOutcome(caseId, productDetail) : null as unknown as Action<unknown>);
+  const { mutate } = useSWRConfig();
+
+  if(fetch) {
+    mutate('/api/case/')
+  }
 
   return isCancelled(productDetail.subscription) ? (
     actuallyCancelled(productType, productDetail)
