@@ -8,7 +8,6 @@ import {
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
-  MDA_TEST_USER_HEADER,
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
@@ -89,13 +88,15 @@ const RenderHolidayStopsOverview = ({ productDetail,
   existingHolidayStopToAmend,
   setExistingHolidayStopToAmend }: RenderHolidayStopsOverviewProps
 ) => {
+  /*
   const fetchHeaders = {
     headers: {
       [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
     }
   }
+  */
 
-  const holidayStopsQuery = useSWR([`/api/holidays/${productDetail.subscription.subscriptionId}`, fetchHeaders], fetcher, { suspense: true });
+  const holidayStopsQuery = useSWR(`/api/holidays/${productDetail.subscription.subscriptionId}`, fetcher, { suspense: true });
 
   const rawHolidayStopsResponse = holidayStopsQuery.data as RawGetHolidayStopsResponse;
   // const refetchHolidayStops = holidayStopsQuery.query;

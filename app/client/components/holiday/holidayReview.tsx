@@ -37,7 +37,6 @@ import {
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   convertRawPotentialHolidayStopDetail,
-  CreateOrAmendHolidayStopsResponse,
   HolidayStopRequest,
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
@@ -45,11 +44,11 @@ import {
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
-import {credentialHeaders, fetcher} from "../../fetchClient";
-import {Action, useMutation} from 'react-fetching-library';
+import {fetcher} from "../../fetchClient";
 import DataFetcher from "../DataFetcher";
 import SpinLoader from "../SpinLoader";
 import useSWR from "swr";
+import {fetchWithDefaultParameters} from "../../fetch";
 
 interface CreateOrAmendHolidayParams {
   selectedRange: DateRange,
@@ -58,24 +57,26 @@ interface CreateOrAmendHolidayParams {
   existingHolidayStopToAmend?: HolidayStopRequest
 }
 
-const PerformCreateOrAmendHoliday = (params: CreateOrAmendHolidayParams): Action<CreateOrAmendHolidayStopsResponse> => ({
-    endpoint: `/api/holidays${
+const getPerformCreateOrAmendFetcher = (params: CreateOrAmendHolidayParams) =>
+  fetchWithDefaultParameters(
+    `/api/holidays${
       params.existingHolidayStopToAmend
         ? `/${params.subscriptionName}/${params.existingHolidayStopToAmend.id}`
         : ""
     }`,
-    method: params.existingHolidayStopToAmend ? "PATCH" : "POST",
-    body: {
-      startDate: dateString(params.selectedRange.start, DATE_FNS_INPUT_FORMAT),
-      endDate: dateString(params.selectedRange.end, DATE_FNS_INPUT_FORMAT),
-      subscriptionName: params.subscriptionName
-    },
-    headers: {
-      "Content-Type": "application/json",
-      [MDA_TEST_USER_HEADER]: `${params.isTestUser}`
-    },
-    ...credentialHeaders
-  })
+    {
+      method: params.existingHolidayStopToAmend ? "PATCH" : "POST",
+      body: JSON.stringify({
+        startDate: dateString(params.selectedRange.start, DATE_FNS_INPUT_FORMAT),
+        endDate: dateString(params.selectedRange.end, DATE_FNS_INPUT_FORMAT),
+        subscriptionName: params.subscriptionName
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        [MDA_TEST_USER_HEADER]: `${params.isTestUser}`
+      }
+    }
+  );
 
 const getRenderCreateOrAmendSuccess = (nav: NavigateFn) => {
   // TODO should probably check the 'success' string within this (even thought status code should catch failure)
@@ -93,8 +94,8 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
 );
 
 export function HolidayReview (props: HolidayStopsRouteableStepProps) {
-  const { mutate, error, loading, payload } = useMutation(PerformCreateOrAmendHoliday);
   const [isCheckboxConfirmed, setIsCheckboxConfirmed] = useState<boolean>(false);
+  const [isExecuting, setIsExecuting] = useState<boolean>(false);
 
   interface HolidayReviewRendererProps {
     holidayStopsResponse: ReloadableGetHolidayStopsResponse;
@@ -108,20 +109,21 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
       start,
       DATE_FNS_INPUT_FORMAT
     )}&endDate=${dateString(end, DATE_FNS_INPUT_FORMAT)}`;
-    const fetchHeaders = {
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+
+    const potentialHolidayStopsResponseWithCredits = useSWR(url, fetcher, { suspense: true }).data as PotentialHolidayStopsResponse;
+
+    async function handleMutation(params: CreateOrAmendHolidayParams) {
+      try {
+        await getPerformCreateOrAmendFetcher(params);
+
+        getRenderCreateOrAmendSuccess(props.navigate || navigate);
+      } catch(e) {
+        getRenderCreateOrAmendError(
+          holidayStopsResponse.existingHolidayStopToAmend
+            ? "amending"
+            : "creating"
+        )
       }
-    }
-
-    const potentialHolidayStopsResponseWithCredits = useSWR([url, fetchHeaders], fetcher, { suspense: true }).data as PotentialHolidayStopsResponse;
-
-    if(error) {
-      getRenderCreateOrAmendError(
-        holidayStopsResponse.existingHolidayStopToAmend
-          ? "amending"
-          : "creating"
-      )
     }
 
     const dateChooserStateWithCredits: SharedHolidayDateChooserState = {
@@ -196,8 +198,7 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
             </>
           )}
         </div>
-        {payload && getRenderCreateOrAmendSuccess(props.navigate || navigate)}
-        {loading ? (
+        {isExecuting ? (
           <div css={{ marginTop: "40px", textAlign: "right" }}>
             <SpinLoader loadingMessage={`${
               holidayStopsResponse.existingHolidayStopToAmend
@@ -255,7 +256,8 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
                     existingHolidayStopToAmend: holidayStopsResponse.existingHolidayStopToAmend
                   }
 
-                  mutate(params);
+                  setIsExecuting(true);
+                  handleMutation(params);
                 }}
                 right
                 primary

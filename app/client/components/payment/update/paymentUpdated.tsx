@@ -91,9 +91,9 @@ const WithSubscriptionRenderer = ({
   previousProductDetail,
   flowReferrer
 }: WithSubscriptionRenderedProps) => {
-  const { endpoint, config } = createProductDetailEndpoint( productType, previousProductDetail.subscription.subscriptionId);
+  const { endpoint } = createProductDetailEndpoint( productType, previousProductDetail.subscription.subscriptionId);
 
-  const subs = useSWR([endpoint, config], fetcher).data as WithSubscription[];
+  const subs = useSWR(endpoint, fetcher, { suspense: true }).data as WithSubscription[];
 
   return subs && subs.length === 1 ? (
     <>

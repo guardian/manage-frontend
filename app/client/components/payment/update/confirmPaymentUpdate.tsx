@@ -1,7 +1,7 @@
 import {css} from "@emotion/core";
 import {space} from "@guardian/src-foundations";
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import React, {useState} from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -27,8 +27,6 @@ import {
   NewPaymentMethodDetail,
 } from "./newPaymentMethodDetail";
 import {PaymentMethod} from "./updatePaymentFlow";
-import {useMutation} from "react-fetching-library";
-import type {Action} from "react-fetching-library";
 import SpinLoader from "../../SpinLoader";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
@@ -38,22 +36,27 @@ interface NewPaymentMethod {
   productDetail: ProductDetail;
 }
 
-const executePaymentUpdate = (params: NewPaymentMethod): Action<unknown> => ({
-  endpoint: `/api/payment/${params.newPaymentMethodDetail.apiUrlPart}/${params.productDetail.subscription.subscriptionId}`,
-  credentials: "include",
-  method: "POST",
-  body: params.newPaymentMethodDetail.detailToPayloadObject(),
-  headers: {
-    "Content-Type": "application/json",
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-      window.location.href
-    )
-  }
-});
-
-
 function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
   const {productDetail, productType, newPaymentMethodDetail} = props;
+  const [hasHitComplete, setHasHitComplete] = useState<boolean>(false);
+  const [paymentUpdateSuccess, setPaymentUpdateSuccess] = useState<object | null>(null);
+  const [paymentUpdateFailed, setPaymentUpdateFailed] = useState<boolean>(false);
+
+  const executePaymentUpdate = () =>
+     fetch(
+      `/api/payment/${props.newPaymentMethodDetail.apiUrlPart}/${props.productDetail.subscription.subscriptionId}`,
+      {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify(props.newPaymentMethodDetail.detailToPayloadObject()),
+        headers: {
+          "Content-Type": "application/json",
+          [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+            window.location.href
+          )
+        }
+      }
+    );
 
   const paymentMethodChangeType: string =
     productDetail.subscription.paymentMethod ===
@@ -93,11 +96,9 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
   };
 
   const PaymentUpdateResponse = () => {
-    const response = payload;
-
     if (
       props.navigate &&
-      newPaymentMethodDetail.matchesResponse(response)
+      newPaymentMethodDetail.matchesResponse(paymentUpdateSuccess)
     ) {
 
       trackEvent({
@@ -121,17 +122,15 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
     return <PaymentUpdateFailed/>
   };
 
-  const {mutate, error, payload, loading} = useMutation(executePaymentUpdate);
-
-  if (error) {
-    return <PaymentUpdateFailed/>
+  if(paymentUpdateFailed) {
+    return <PaymentUpdateFailed />
   }
 
-  if (payload) {
+  if(paymentUpdateSuccess) {
     return <PaymentUpdateResponse />
   }
 
-  return loading ? (
+  return hasHitComplete ? (
     <SpinLoader
       loadingMessage={`Updating ${newPaymentMethodDetail.friendlyName} details...`}
       spinnerScale={0.7}
@@ -140,10 +139,18 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
   ) : (
     <Button
       text={CONFIRM_BUTTON_TEXT}
-      onClick={() => mutate({
-        newPaymentMethodDetail: props.newPaymentMethodDetail,
-        productDetail: productDetail
-      })}
+      onClick={async () => {
+        setHasHitComplete(true);
+
+        try {
+          const res = await executePaymentUpdate();
+          const resPayload = await res.json();
+
+          setPaymentUpdateSuccess(resPayload);
+        } catch(error) {
+          setPaymentUpdateFailed(true);
+        }
+      }}
       primary
       right
     />

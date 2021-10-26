@@ -44,7 +44,7 @@ export const createProductDetailEndpoint = (productType: ProductType, subscripti
     headers: {
       ...defaultScopeHeader
     }
-  }
+ }
 
    */
 })
