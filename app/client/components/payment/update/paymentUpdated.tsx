@@ -31,7 +31,6 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
 import useSWR from "swr";
 import {fetcher} from "../../../fetchClient";
 
@@ -92,7 +91,6 @@ const WithSubscriptionRenderer = ({
   previousProductDetail,
   flowReferrer
 }: WithSubscriptionRenderedProps) => {
-  // the endpoint does not return WithSubscription[] ?????
   const { endpoint, config } = createProductDetailEndpoint( productType, previousProductDetail.subscription.subscriptionId);
 
   const subs = useSWR([endpoint, config], fetcher).data as WithSubscription[];

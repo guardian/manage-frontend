@@ -11,7 +11,6 @@ import {
 } from "../../../shared/dates";
 import {MDA_TEST_USER_HEADER} from "../../../shared/productResponse";
 import { ReFetch } from "../asyncLoader";
-import {Action} from "react-fetching-library";
 
 interface CommonCreditProperties {
   estimatedPrice?: number;

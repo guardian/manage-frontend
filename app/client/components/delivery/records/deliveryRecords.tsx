@@ -103,6 +103,7 @@ const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeli
 
   const data = useSWR([`/api/delivery-records/${productDetail.subscription.subscriptionId}`, fetchHeaders], fetcher, { suspense: true }).data as DeliveryRecordsResponse;
 
+  console.log(data);
     const mainPlan = getMainPlan(
         productDetail.subscription
     ) as PaidSubscriptionPlan;
