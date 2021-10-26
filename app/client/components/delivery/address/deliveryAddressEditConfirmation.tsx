@@ -33,7 +33,6 @@ import {
 } from "./deliveryAddressFormContext";
 import DataFetcher from "../../DataFetcher";
 import {DeliveryAddress} from "../../../../shared/productResponse";
-import {useSuspenseQuery} from "react-fetching-library";
 import useSWR from "swr";
 
 interface RenderConfirmationProps {
