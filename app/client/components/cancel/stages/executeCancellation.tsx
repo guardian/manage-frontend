@@ -108,9 +108,9 @@ const GetCaseUpdatingCancellationSummary = (props: GetCaseUpdatingCancellationSu
   useSuspenseQuery(cancelSubscriptionEndpoint(productDetail.subscription.subscriptionId, reason));
   // response is either empty or 404 from cancelSubscriptionEndpoint - neither is useful so fetch subscription after to determine cancellation result...
 
-  const { endpoint, config } = createProductDetailEndpoint(productType);
+  const { endpoint } = createProductDetailEndpoint(productType);
 
-  const productDetails = useSWR([endpoint, config], fetcher).data as ProductDetail[];
+  const productDetails = useSWR(endpoint, fetcher).data as ProductDetail[];
 
   const productDetailRefetched = productDetails[0] || { subscription: {} };
 
