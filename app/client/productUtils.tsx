@@ -11,7 +11,6 @@ import {
 import {fetchWithDefaultParameters} from "./fetch";
 import {MembersDataApiItem} from "../shared/productResponse";
 import {Action} from 'react-fetching-library';
-import {defaultScopeHeader} from "./fetchClient";
 
 export const shouldHaveHolidayStopsFlow = (
   productType: ProductType
@@ -39,12 +38,15 @@ export const createProductDetailEndpoint = (productType: ProductType, subscripti
   endpoint: "/api/me/mma" +
     (subscriptionName
       ? `/${subscriptionName}`
-      : `?productType=${productType.allProductsProductTypeFilterString}`),
+      : `?productType=${productType.allProductsProductTypeFilterString}`)
+  /*,
   config: {
     headers: {
       ...defaultScopeHeader
     }
   }
+
+   */
 })
 
 export const allProductsDetailFetcher = () =>
