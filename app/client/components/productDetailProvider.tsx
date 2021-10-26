@@ -8,7 +8,6 @@ import {
   RouteableStepProps,
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
-import {useSuspenseQuery} from "react-fetching-library";
 import DataFetcher from "./DataFetcher";
 import useSWR from "swr";
 import {fetcher} from "../fetchClient";
