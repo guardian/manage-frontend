@@ -52,7 +52,7 @@ import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {defaultScopeHeader, fetcher} from "../../../fetchClient";
+import {fetcher} from "../../../fetchClient";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
@@ -140,9 +140,9 @@ const formStates: FormStates = {
 const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps): JSX.Element | null => {
   const url = "/api/me/mma" + `?productType=${GROUPED_PRODUCT_TYPES.subscriptions.allProductsProductTypeFilterString}`;
 
-  const allProductDetails = useSWR([url, defaultScopeHeader], fetcher).data as MembersDataApiItem[];
+  // const allProductDetails = useSWR([url, defaultScopeHeader], fetcher).data as MembersDataApiItem[];
+  const allProductDetails = useSWR(url, fetcher, { suspense: true }).data as MembersDataApiItem[];
 
-  if (allProductDetails) {
     return (
         <FormContainer
             contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
@@ -153,9 +153,6 @@ const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps): JSX.
             routeableStepProps={routeableStepProps}
         />
     );
-  } else {
-    return null;
-  }
 };
 
 const clearState = (

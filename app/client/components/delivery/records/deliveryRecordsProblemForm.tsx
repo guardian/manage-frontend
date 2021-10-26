@@ -67,6 +67,7 @@ export const DeliveryRecordProblemForm = (
   };
   return (
     <form
+      className="deliveryRecordProblemForm"
       onSubmit={(event: FormEvent) => {
         event.preventDefault();
         props.onFormSubmit?.(

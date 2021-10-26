@@ -5,7 +5,7 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   dateAddDays,
   dateIsSameOrBefore,
@@ -14,7 +14,7 @@ import {
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
-  isGift, MDA_TEST_USER_HEADER,
+  isGift,
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -92,16 +92,7 @@ interface RenderDeliveryRecordsProps {
 }
 
 const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeliveryRecordsProps) => {
-  const fetchHeaders = useMemo(
-    () => ({
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-      },
-    }),
-    [productDetail]
-  );
-
-  const data = useSWR([`/api/delivery-records/${productDetail.subscription.subscriptionId}`, fetchHeaders], fetcher, { suspense: true }).data as DeliveryRecordsResponse;
+  const data = useSWR(`/api/delivery-records/${productDetail.subscription.subscriptionId}`, fetcher, { suspense: true }).data as DeliveryRecordsResponse;
 
   console.log(data);
     const mainPlan = getMainPlan(

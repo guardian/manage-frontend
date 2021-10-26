@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import { Button, LinkButton } from "../buttons";
@@ -9,8 +9,6 @@ import {
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
 import SpinLoader from "../SpinLoader";
-import useSWR from "swr";
-import {fetcher} from "../../fetchClient";
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
@@ -34,7 +32,18 @@ const withdrawHolidayFetch = (params: withdrawHolidayParams) =>
 
 // tslint:disable-next-line:max-classes-per-file
 export default function ExistingHolidayStopActions(props: ExistingHolidayStopActionsProps): JSX.Element {
-  const { data, mutate, error } = useSWR('/api/holidays', fetcher);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function handleMutation(params: withdrawHolidayParams) {
+    try {
+      await withdrawHolidayFetch(params);
+
+      props.reloadParent && props.reloadParent();
+    } catch(e) {
+      setError(true);
+    }
+  }
 
   const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
@@ -49,11 +58,6 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
       failed, please try again later...
     </Modal>
     );
-  }
-
-  if(data) {
-    props.reloadParent && props.reloadParent();
-    return <></>;
   }
 
     if (props.withdrawnDate) {
@@ -115,7 +119,8 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
                 isTestUser: props.isTestUser
               }
 
-              mutate(withdrawHolidayFetch(params));
+              setLoading(true);
+              handleMutation(params);
               hideFunction();
             }}
           />
@@ -123,7 +128,7 @@ export default function ExistingHolidayStopActions(props: ExistingHolidayStopAct
       );
 
 
-      return !data ? (
+      return loading ? (
         <SpinLoader loadingMessage="Deleting..." spinnerScale={0.6} inline />
       ) : (
         <>
