@@ -8,6 +8,7 @@ import {
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
+  MDA_TEST_USER_HEADER,
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../shared/productResponse";
@@ -45,7 +46,7 @@ import {
 import { SummaryTable } from "./summaryTable";
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
-import { fetcher } from "../../fetchClient";
+import serialize, { fetcher } from "../../fetchClient";
 
 export type HolidayStopsRouteableStepProps = RouteableStepProps &
   WithProductType<ProductTypeWithHolidayStopsFlow>;
@@ -90,16 +91,17 @@ const RenderHolidayStopsOverview = ({
   existingHolidayStopToAmend,
   setExistingHolidayStopToAmend
 }: RenderHolidayStopsOverviewProps) => {
-  /*
   const fetchHeaders = {
     headers: {
       [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
     }
-  }
-  */
+  };
 
   const holidayStopsQuery = useSWR(
-    `/api/holidays/${productDetail.subscription.subscriptionId}`,
+    serialize(
+      `/api/holidays/${productDetail.subscription.subscriptionId}`,
+      fetchHeaders
+    ),
     fetcher,
     { suspense: true }
   );

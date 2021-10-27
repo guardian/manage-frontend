@@ -23,7 +23,14 @@ const fetchExistingPaymentOptions = () =>
 import { fetcher } from "../fetchClient";
 import DataFetcher from "./DataFetcher";
 import useSWR from "swr";
+<<<<<<< HEAD
 >>>>>>> 2106fd23 (componetized address form)
+=======
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../shared/identity";
+>>>>>>> 91cfa81b (formatting and spacings)
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -44,19 +51,29 @@ interface GetThrasherProps {
 }
 
 const headers = {
+<<<<<<< HEAD
   headers: {
     [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
       window.location.href
     )
   }
+=======
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+>>>>>>> 91cfa81b (formatting and spacings)
 };
 
 const GetThrasher = ({ args }: GetThrasherProps) => {
   const existingPaymentOptions = useSWR(
+<<<<<<< HEAD
     "/api/existing-payment-options",
 <<<<<<< HEAD
     url => fetcher(url, headers),
 =======
+=======
+    ["/api/existing-payment-options", headers],
+>>>>>>> 91cfa81b (formatting and spacings)
     fetcher,
 >>>>>>> 2106fd23 (componetized address form)
     { suspense: true }
