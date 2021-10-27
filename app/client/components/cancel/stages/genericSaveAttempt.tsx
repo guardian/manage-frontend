@@ -36,9 +36,7 @@ import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { getUpdateCasePromise } from "../caseUpdate";
 import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
-import {getPatchUpdateCaseEndpoint} from "../contributions/contributionsCancellationFeedbackForm";
-import type {ContributionsFeedbackFormThankYouProps} from "../contributions/contributionsCancellationFeedbackFormThankYou";
+import {useSuspense} from "../../suspense";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
@@ -62,8 +60,8 @@ const getPatchUpdateCaseFunc = (
   isTestUser: boolean,
   caseId: string,
   feedback: string
-) => async () =>
-  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+) =>
+  getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query"
   });
@@ -83,8 +81,8 @@ const ContactUs = (reason: CancellationReason) =>
     />
   );
 
-const GetFeedbackThankYouRenderer = (props: ContributionsFeedbackFormThankYouProps & { reason: CancellationReason }) => {
-  useSuspenseQuery(getPatchUpdateCaseEndpoint(props.isTestUser, props.caseId, props.feedback));
+const GetFeedbackThankYouRenderer = (props: { startFetch: () => unknown, reason: CancellationReason }) => {
+  props.startFetch();
 
   return (
     <div
@@ -128,10 +126,12 @@ const GetFeedbackThankYouRenderer = (props: ContributionsFeedbackFormThankYouPro
     const { isTestUser, caseId, reason } = this.props;
 
     if (this.state.hasHitSubmit) {
+      const startFetch = useSuspense(getPatchUpdateCaseFunc(isTestUser, caseId, this.state.feedback));
+
       return (
         <>
           <DataFetcher loadingMessage="Storing your feedback...">
-            <GetFeedbackThankYouRenderer reason={reason} isTestUser={isTestUser} caseId={caseId} feedback={this.state.feedback} />
+            <GetFeedbackThankYouRenderer reason={reason} startFetch={startFetch} />
           </DataFetcher>
           <div css={{ height: "20px" }} />
           <ConfirmCancellationAndReturnRow
@@ -184,13 +184,13 @@ const GetFeedbackThankYouRenderer = (props: ContributionsFeedbackFormThankYouPro
             hide={!!this.props.reason.hideSaveActions}
             reasonId={this.props.reason.reasonId}
             productType={this.props.productType}
-            onClick={() => {
+            onClick={async () => {
               if (this.state.feedback.length > 0) {
-                getPatchUpdateCaseFunc(
+                await getPatchUpdateCaseFunc(
                   this.props.isTestUser,
                   this.props.caseId,
                   this.state.feedback
-                )();
+                );
                 gaTrackFeedback("submitted silently");
               }
             }}
