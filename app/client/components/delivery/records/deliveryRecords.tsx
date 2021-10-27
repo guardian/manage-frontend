@@ -5,7 +5,7 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   dateAddDays,
   dateIsSameOrBefore,
@@ -51,7 +51,7 @@ import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../../fetchClient";
+import { fetcher } from "../../../fetchClient";
 
 interface IdentityDetails {
   userId: string;
@@ -91,22 +91,28 @@ interface RenderDeliveryRecordsProps {
   productDetail: ProductDetail;
 }
 
-const RenderDeliveryRecords = ({ routeableStepProps, productDetail }: RenderDeliveryRecordsProps) => {
-  const data = useSWR(`/api/delivery-records/${productDetail.subscription.subscriptionId}`, fetcher, { suspense: true }).data as DeliveryRecordsResponse;
+const RenderDeliveryRecords = ({
+  routeableStepProps,
+  productDetail
+}: RenderDeliveryRecordsProps) => {
+  const data = useSWR(
+    `/api/delivery-records/${productDetail.subscription.subscriptionId}`,
+    fetcher,
+    { suspense: true }
+  ).data as DeliveryRecordsResponse;
 
-  console.log(data);
-    const mainPlan = getMainPlan(
-        productDetail.subscription
-    ) as PaidSubscriptionPlan;
+  const mainPlan = getMainPlan(
+    productDetail.subscription
+  ) as PaidSubscriptionPlan;
 
-    return (
-        <DeliveryRecordsFC
-            data={data}
-            routeableStepProps={routeableStepProps}
-            productDetail={productDetail}
-            subscriptionCurrency={mainPlan.currency}
-        />
-    );
+  return (
+    <DeliveryRecordsFC
+      data={data}
+      routeableStepProps={routeableStepProps}
+      productDetail={productDetail}
+      subscriptionCurrency={mainPlan.currency}
+    />
+  );
 };
 
 export const checkForExistingDeliveryProblem = (
@@ -756,9 +762,12 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       ]}
     >
       {productDetail => (
-          <DataFetcher loadingMessage={"Loading delivery history..."}>
-            <RenderDeliveryRecords routeableStepProps={props} productDetail={productDetail} />
-          </DataFetcher>
+        <DataFetcher loadingMessage={"Loading delivery history..."}>
+          <RenderDeliveryRecords
+            routeableStepProps={props}
+            productDetail={productDetail}
+          />
+        </DataFetcher>
       )}
     </FlowWrapper>
   );

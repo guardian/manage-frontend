@@ -6,6 +6,10 @@ import { SupportTheGuardianButton } from "./supportTheGuardianButton";
 import { fetcher } from "../fetchClient";
 import DataFetcher from "./DataFetcher";
 import useSWR from "swr";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../shared/identity";
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -25,9 +29,15 @@ interface GetThrasherProps {
   args: ResubscribeThrasherProps;
 }
 
+const headers = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
+
 const GetThrasher = ({ args }: GetThrasherProps) => {
   const existingPaymentOptions = useSWR(
-    "/api/existing-payment-options",
+    ["/api/existing-payment-options", headers],
     fetcher,
     { suspense: true }
   ).data as ExistingPaymentOption[];
