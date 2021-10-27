@@ -6,48 +6,40 @@ import {
 import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { OptionalCancellationReasonId } from "./cancellationReason";
-import {Action, useSuspenseQuery} from "react-fetching-library";
 import DataFetcher from "../DataFetcher";
-import {allErrorStatuses, credentialHeaders} from "../../fetchClient";
+import {useSuspense} from "../suspense";
+import {fetchWithDefaultParameters} from "../../fetch";
 
 interface CaseCreationResponse {
   id: string;
 }
 
-const getCreateCaseEndpoint = (
+const getCreateCaseFunc = (
   reason: OptionalCancellationReasonId,
   sfCaseProduct: string,
   productDetail: ProductDetail
-): Action<CaseCreationResponse> => ({
+) =>
+  fetchWithDefaultParameters("/api/case", {
     method: "POST",
-    endpoint: "/api/case",
-    body: {
+    body: JSON.stringify({
       reason,
       product: sfCaseProduct,
       subscriptionName: productDetail.subscription.subscriptionId,
       gaData: "" + JSON.stringify(window.gaData)
-    },
+    }),
     headers: {
       "Content-Type": "application/json",
       [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-    },
-    ...credentialHeaders,
-    config: {
-      emitErrorForStatuses: allErrorStatuses
     }
-})
+  });
 
 interface RenderWithCaseIdContextProviderProps {
-  reason: OptionalCancellationReasonId;
   caseCreationProps: CaseCreationWrapperProps;
+  startFetch: () => void | CaseCreationResponse;
 }
 
-const RenderWithCaseIdContextProvider = ({ reason, caseCreationProps}: RenderWithCaseIdContextProviderProps) => {
-  const caseCreationResponse = useSuspenseQuery(getCreateCaseEndpoint(
-    reason,
-    caseCreationProps.sfCaseProduct,
-    caseCreationProps.productDetail
-  )).payload;
+const RenderWithCaseIdContextProvider = ({ caseCreationProps, startFetch }: RenderWithCaseIdContextProviderProps) => {
+  const caseCreationResponse = startFetch();
 
   return caseCreationResponse ? (
     <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
@@ -68,7 +60,11 @@ export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
   <CancellationReasonContext.Consumer>
     {reason => (
       <DataFetcher loadingMessage="Capturing your cancellation reason...">
-        <RenderWithCaseIdContextProvider reason={reason} caseCreationProps={props} />
+        <RenderWithCaseIdContextProvider startFetch={useSuspense<CaseCreationResponse>(getCreateCaseFunc(
+          reason,
+          props.sfCaseProduct,
+          props.productDetail
+        ), true)} caseCreationProps={props} />
       </DataFetcher>
     )}
   </CancellationReasonContext.Consumer>

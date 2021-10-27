@@ -33,7 +33,7 @@ import {
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import {updateAddressEndpoint} from "../address/deliveryAddressApi";
+import {updateAddressFetcher} from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
 import {
   addressChangeAffectedInfo,
@@ -45,9 +45,9 @@ import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
 import useSWR from "swr";
 import {fetcher} from "../../../fetchClient";
+import {useSuspense} from "../../suspense";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
@@ -493,12 +493,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   };
 
   interface RenderConfirmationProps {
-    formData: DeliveryAddress,
-    contactId: string
+    startFetch: () => unknown;
   }
 
-  const RenderConfirmation = ({ formData, contactId }: RenderConfirmationProps) => {
-    useSuspenseQuery(updateAddressEndpoint(formData, contactId));
+  const RenderConfirmation = ({ startFetch }: RenderConfirmationProps) => {
+    startFetch();
 
     return (
     <>
@@ -554,9 +553,17 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     status === Status.CONFIRMATION &&
     props.productDetail.subscription.contactId
   ) {
+    const startFetch = useSuspense(updateAddressFetcher(
+      {
+        ...newAddress,
+        addressChangeInformation
+      },
+      props.productDetail.subscription.contactId
+    ));
+
     return (
       <DataFetcher loadingMessage="Updating delivery address details...">
-        <RenderConfirmation formData={{...newAddress, addressChangeInformation}} contactId={props.productDetail.subscription.contactId} />
+        <RenderConfirmation startFetch={startFetch} />
       </DataFetcher >
     );
   }

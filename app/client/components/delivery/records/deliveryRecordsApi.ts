@@ -112,7 +112,7 @@ export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
   isTestUser: boolean,
   payload: DeliveryRecordsPostPayload
-) => () =>
+) =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
     credentials: "include",
     method: "POST",

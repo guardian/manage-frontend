@@ -9,6 +9,7 @@ import DeliveryRecords, {
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
 import {fireEvent, render} from "@testing-library/react";
+import fetchMock from "fetch-mock";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -147,25 +148,7 @@ const nextNTicks = (n: number, callback: () => void) => {
 };
 
 describe("DeliveryRecords", () => {
-  beforeEach(() => {
-    // tslint:disable-next-line: no-object-mutation
-    global.fetch = jest.fn().mockImplementation(url => {
-      return new Promise(resolve => {
-        resolve({
-          ok: true,
-          status: 200,
-          headers: {
-            get: () => "pass"
-          },
-          json: () => {
-            return url.includes("/api/me/mma")
-              ? apiMeMmaResponse
-              : deliveryRecordsResponse;
-          }
-        });
-      });
-    });
-  });
+  fetchMock.get(/api\/delivery-records/, deliveryRecordsResponse).get(/api\/me\/mma/, apiMeMmaResponse)
 
   it("renders without crashing", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
@@ -226,31 +209,12 @@ describe("DeliveryRecords", () => {
 
       expect(document.querySelectorAll(".deliveryRecordProblemForm")[0].querySelectorAll("li")).toHaveLength(guardianWeeklyProblemArr.length);
 
-      /*
-      guardianWeeklyProblemArr.map((problemCopy, index) =>
-        expect(
-          problemForm
-            .find("li")
-            .at(index)
-            .text()
-        ).toEqual(problemCopy)
+      guardianWeeklyProblemArr.map(problemCopy =>
+        getByText(problemCopy)
       );
 
-      expect(
-        problemForm
-          .find("li")
-          .find("label")
-          .at(0)
-          .text()
-      ).toEqual("Damaged paper");
-
-      expect(
-        problemForm
-          .find("button")
-          .at(0)
-          .text()
-      ).toEqual("Continue to Step 2 & 3");
-*/
+      getByText("Damaged paper");
+      getByText("Continue to Step 2 & 3");
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");

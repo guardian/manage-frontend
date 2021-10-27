@@ -19,7 +19,7 @@ export const shouldHaveHolidayStopsFlow = (
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
-) => () =>
+) =>() =>
   fetchWithDefaultParameters(
     "/api/me/mma" +
     (subscriptionName

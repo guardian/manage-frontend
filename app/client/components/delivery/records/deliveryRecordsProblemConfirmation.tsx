@@ -27,7 +27,7 @@ import {
   PageStatus
 } from "./deliveryRecords";
 import {
-  createDeliveryRecordsProblemPostEndpoint, DeliveryRecordsPostPayload,
+  createDeliveryRecordsProblemPost,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import {
@@ -38,37 +38,37 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
-import {useSuspenseQuery} from "react-fetching-library";
 import {useSWRConfig} from "swr";
+import {useSuspense} from "../../suspense";
 
 interface RenderDeliveryRecordsConfirmationProps {
   routeableStepProps: DeliveryRecordsRouteableStepProps;
   deliveryRecordsProblemContext: DeliveryRecordsProblemContextInterface;
-  deliveryIssuePostPayload: DeliveryRecordsPostPayload;
+  startFetch: () => void | DeliveryRecordsResponse;
 }
 
-const RenderDeliveryRecordsConfirmation = ({ routeableStepProps, deliveryRecordsProblemContext, deliveryIssuePostPayload }: RenderDeliveryRecordsConfirmationProps): JSX.Element => {
+const RenderDeliveryRecordsConfirmation = ({ routeableStepProps, deliveryRecordsProblemContext, startFetch }: RenderDeliveryRecordsConfirmationProps): JSX.Element => {
   const { subscription } = deliveryRecordsProblemContext;
 
-  const data = useSuspenseQuery(createDeliveryRecordsProblemPostEndpoint(
-      subscription.subscriptionId,
-      deliveryRecordsProblemContext.isTestUser,
-      deliveryIssuePostPayload
-  )).payload as DeliveryRecordsResponse;
+  const data = startFetch();
 
-  const { mutate } = useSWRConfig();
-  mutate("/api/delivery-records/");
+  if(data) {
+    const {mutate} = useSWRConfig();
+    mutate("/api/delivery-records/");
 
-  const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
+    const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
     return (
-        <DeliveryRecordsProblemConfirmationFC
-            data={data}
-            routeableStepProps={routeableStepProps}
-            subscriptionId={subscription.subscriptionId}
-            subscriptionCurrency={mainPlan.currency}
-        />
+      <DeliveryRecordsProblemConfirmationFC
+        data={data}
+        routeableStepProps={routeableStepProps}
+        subscriptionId={subscription.subscriptionId}
+        subscriptionCurrency={mainPlan.currency}
+      />
     );
+  } else {
+    return <></>
+  }
 };
 
 interface DeliveryRecordsProblemConfirmationFCProps {
@@ -448,9 +448,15 @@ export const DeliveryRecordsProblemConfirmation = (
     return visuallyNavigateToParent(props);
   }
 
+  const startFetch = useSuspense<DeliveryRecordsResponse>(createDeliveryRecordsProblemPost(
+    deliveryRecordsProblemContext.subscription.subscriptionId,
+    deliveryRecordsProblemContext.isTestUser,
+    deliveryIssuePostPayload
+  ), true);
+
   return (
       <DataFetcher loadingMessage={"Reporting problem..."}>
-        <RenderDeliveryRecordsConfirmation routeableStepProps={props} deliveryRecordsProblemContext={deliveryRecordsProblemContext} deliveryIssuePostPayload={deliveryIssuePostPayload} />
+        <RenderDeliveryRecordsConfirmation routeableStepProps={props} deliveryRecordsProblemContext={deliveryRecordsProblemContext} startFetch={startFetch} />
       </DataFetcher>
   );
 };
