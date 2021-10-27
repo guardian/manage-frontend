@@ -21,7 +21,7 @@ import {
   ProductDetail
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
-import {createProductDetailEndpoint} from "../../../productUtils";
+import { createProductDetailEndpoint } from "../../../productUtils";
 import { minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
@@ -33,7 +33,7 @@ import {
   ProductDescriptionListTable
 } from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
-import {updateAddressFetcher} from "../address/deliveryAddressApi";
+import { updateAddressFetcher } from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
 import {
   addressChangeAffectedInfo,
@@ -46,14 +46,24 @@ import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../../fetchClient";
-import {useSuspense} from "../../suspense";
+import { fetcher } from "../../../fetchClient";
+import { useSuspense } from "../../suspense";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
   enableDeliveryInstructions: boolean;
   setAddressValidationState: Dispatch<SetStateAction<boolean>>;
 }
+
+const headers = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   enum Status {
@@ -120,9 +130,12 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   };
 
   const RenderDeliveryAddressForm = () => {
-    const { endpoint } = createProductDetailEndpoint(GROUPED_PRODUCT_TYPES.subscriptions);
+    const { endpoint } = createProductDetailEndpoint(
+      GROUPED_PRODUCT_TYPES.subscriptions
+    );
 
-    const allProductDetails = useSWR(endpoint, fetcher).data as MembersDataApiItem[];
+    const allProductDetails = useSWR([endpoint, headers], fetcher)
+      .data as MembersDataApiItem[];
 
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
@@ -500,35 +513,35 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     startFetch();
 
     return (
-    <>
-      <div
-        css={css`
-          padding: ${space[3]}px;
-          ${minWidth.tablet} {
-            padding: ${space[5]}px;
-          }
-        `}
-      >
-        <SuccessMessage
-          additionalCss={css`
-            margin-bottom: 0;
+      <>
+        <div
+          css={css`
+            padding: ${space[3]}px;
+            ${minWidth.tablet} {
+              padding: ${space[5]}px;
+            }
           `}
-          message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
-            deliveryAddressContext.productsAffected.length > 1 &&
-            "s"}. You will shortly receive a confirmation email.`}
+        >
+          <SuccessMessage
+            additionalCss={css`
+              margin-bottom: 0;
+            `}
+            message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
+              deliveryAddressContext.productsAffected.length > 1 &&
+              "s"}. You will shortly receive a confirmation email.`}
+          />
+        </div>
+        <ReadOnlyAddressDisplay
+          address={newAddress}
+          instructions={
+            (props.enableDeliveryInstructions &&
+              deliveryAddressContext.address?.instructions) ||
+            undefined
+          }
         />
-      </div>
-      <ReadOnlyAddressDisplay
-        address={newAddress}
-        instructions={
-          (props.enableDeliveryInstructions &&
-            deliveryAddressContext.address?.instructions) ||
-          undefined
-        }
-      />
-    </>
+      </>
     );
-  }
+  };
 
   if (
     status === Status.EDIT ||
@@ -553,18 +566,20 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     status === Status.CONFIRMATION &&
     props.productDetail.subscription.contactId
   ) {
-    const startFetch = useSuspense(updateAddressFetcher(
-      {
-        ...newAddress,
-        addressChangeInformation
-      },
-      props.productDetail.subscription.contactId
-    ));
+    const startFetch = useSuspense(
+      updateAddressFetcher(
+        {
+          ...newAddress,
+          addressChangeInformation
+        },
+        props.productDetail.subscription.contactId
+      )
+    );
 
     return (
       <DataFetcher loadingMessage="Updating delivery address details...">
         <RenderConfirmation startFetch={startFetch} />
-      </DataFetcher >
+      </DataFetcher>
     );
   }
   return (

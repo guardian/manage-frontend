@@ -13,7 +13,6 @@ import {
 import palette from "../../colours";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
-import { ReFetch } from "../asyncLoader";
 import { ExpanderButton } from "../expanderButton";
 import { CollatedCredits } from "./collatedCredits";
 import ExistingHolidayStopActions from "./existingHolidayStopActions";
@@ -38,7 +37,6 @@ interface SummaryTableProps {
   subscription: Subscription;
   issueKeyword: string;
   alternateSuspendedColumnHeading?: string;
-  reloadParent?: ReFetch;
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
@@ -54,7 +52,6 @@ interface SummaryTableRowProps extends MinimalHolidayStopRequest {
   issueKeyword: string;
   isTestUser: boolean;
   isOperatingOnNewHolidayStop: boolean;
-  reloadParent?: ReFetch;
   currency?: string;
   asTD?: true;
 }

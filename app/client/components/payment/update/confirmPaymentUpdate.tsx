@@ -1,32 +1,32 @@
-import {css} from "@emotion/core";
-import {space} from "@guardian/src-foundations";
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import * as Sentry from "@sentry/browser";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../../../shared/identity";
-import {isProduct} from "../../../../shared/productResponse";
+import { isProduct } from "../../../../shared/productResponse";
 import {
   MembersDataApiItemContext,
   ProductDetail
 } from "../../../../shared/productResponse";
-import {trackEvent} from "../../analytics";
-import {Button} from "../../buttons";
-import {CallCentreNumbers} from "../../callCentreNumbers";
-import {ProgressIndicator} from "../../progressIndicator";
+import { trackEvent } from "../../analytics";
+import { Button } from "../../buttons";
+import { CallCentreNumbers } from "../../callCentreNumbers";
+import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
-import {CurrentPaymentDetails} from "./currentPaymentDetails";
+import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
-  NewPaymentMethodDetail,
+  NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-import {PaymentMethod} from "./updatePaymentFlow";
+import { PaymentMethod } from "./updatePaymentFlow";
 import SpinLoader from "../../SpinLoader";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
@@ -37,18 +37,24 @@ interface NewPaymentMethod {
 }
 
 function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
-  const {productDetail, productType, newPaymentMethodDetail} = props;
+  const { productDetail, productType, newPaymentMethodDetail } = props;
   const [hasHitComplete, setHasHitComplete] = useState<boolean>(false);
-  const [paymentUpdateSuccess, setPaymentUpdateSuccess] = useState<object | null>(null);
-  const [paymentUpdateFailed, setPaymentUpdateFailed] = useState<boolean>(false);
+  const [paymentUpdateSuccess, setPaymentUpdateSuccess] = useState<
+    object | null
+  >(null);
+  const [paymentUpdateFailed, setPaymentUpdateFailed] = useState<boolean>(
+    false
+  );
 
   const executePaymentUpdate = () =>
-     fetch(
+    fetch(
       `/api/payment/${props.newPaymentMethodDetail.apiUrlPart}/${props.productDetail.subscription.subscriptionId}`,
       {
         credentials: "include",
         method: "POST",
-        body: JSON.stringify(props.newPaymentMethodDetail.detailToPayloadObject()),
+        body: JSON.stringify(
+          props.newPaymentMethodDetail.detailToPayloadObject()
+        ),
         headers: {
           "Content-Type": "application/json",
           [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
@@ -59,11 +65,9 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
     );
 
   const paymentMethodChangeType: string =
-    productDetail.subscription.paymentMethod ===
-    PaymentMethod.resetRequired
+    productDetail.subscription.paymentMethod === PaymentMethod.resetRequired
       ? "reset"
       : "update";
-
 
   const PaymentUpdateFailed = () => {
     trackEvent({
@@ -73,6 +77,7 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
         productType: productType,
         productDetail: productDetail
       },
+      // eslint-disable-next-line react/prop-types
       eventLabel: productType.urlPart
     });
 
@@ -81,26 +86,23 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
     );
 
     return (
-      <div css={{textAlign: "left", marginTop: "10px"}}>
-        <h2>
-          Sorry, the {newPaymentMethodDetail.friendlyName} update
-          failed.
-        </h2>
+      <div css={{ textAlign: "left", marginTop: "10px" }}>
+        <h2>Sorry, the {newPaymentMethodDetail.friendlyName} update failed.</h2>
         <p>
           To try again please go back and re-enter your new{" "}
           {newPaymentMethodDetail.friendlyName} details.
         </p>
-        <CallCentreNumbers prefixText="Alternatively, to contact us"/>
+        <CallCentreNumbers prefixText="Alternatively, to contact us" />
       </div>
     );
   };
 
   const PaymentUpdateResponse = () => {
     if (
+      // eslint-disable-next-line react/prop-types
       props.navigate &&
       newPaymentMethodDetail.matchesResponse(paymentUpdateSuccess)
     ) {
-
       trackEvent({
         eventCategory: "payment",
         eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
@@ -108,26 +110,29 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
           productType: productType,
           productDetail: productDetail
         },
+        // eslint-disable-next-line react/prop-types
         eventLabel: productType.urlPart
       });
 
+      // eslint-disable-next-line react/prop-types
       props.navigate("updated", {
         replace: true,
+        // eslint-disable-next-line react/prop-types
         state: props.location?.state
       });
 
       return null;
     }
 
-    return <PaymentUpdateFailed/>
+    return <PaymentUpdateFailed />;
   };
 
-  if(paymentUpdateFailed) {
-    return <PaymentUpdateFailed />
+  if (paymentUpdateFailed) {
+    return <PaymentUpdateFailed />;
   }
 
-  if(paymentUpdateSuccess) {
-    return <PaymentUpdateResponse />
+  if (paymentUpdateSuccess) {
+    return <PaymentUpdateResponse />;
   }
 
   return hasHitComplete ? (
@@ -147,7 +152,7 @@ function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
           const resPayload = await res.json();
 
           setPaymentUpdateSuccess(resPayload);
-        } catch(error) {
+        } catch (error) {
           setPaymentUpdateFailed(true);
         }
       }}
@@ -167,9 +172,9 @@ const InnerContent = (props: InnerContentProps) => (
   <>
     <ProgressIndicator
       steps={[
-        {title: "New details"},
-        {title: "Review", isCurrentStep: true},
-        {title: "Confirmation"}
+        { title: "New details" },
+        { title: "Review", isCurrentStep: true },
+        { title: "Confirmation" }
       ]}
       additionalCSS={css`
         margin: ${space[5]}px 0 ${space[12]}px;
@@ -179,9 +184,9 @@ const InnerContent = (props: InnerContentProps) => (
     <CurrentPaymentDetails {...props.productDetail.subscription} />
     <h3>...to...</h3>
     {props.newPaymentMethodDetail.render()}
-    <div css={{margin: "20px 0", textAlign: "right"}}>
+    <div css={{ margin: "20px 0", textAlign: "right" }}>
       {props.newPaymentMethodDetail.confirmButtonWrapper(
-        <div css={{marginTop: "20px", textAlign: "right"}}>
+        <div css={{ marginTop: "20px", textAlign: "right" }}>
           <ExecutePaymentUpdate
             {...props.routeableStepProps}
             productDetail={props.productDetail}

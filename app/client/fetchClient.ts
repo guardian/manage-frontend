@@ -1,54 +1,62 @@
-import {createClient} from "react-fetching-library";
-import {trackEvent} from "./components/analytics";
+import { trackEvent } from "./components/analytics";
 import * as Sentry from "@sentry/browser";
-import type {Action} from "react-fetching-library";
-// import {getScopeFromRequestPathOrEmptyString, X_GU_ID_FORWARDED_SCOPE} from "../shared/identity";
+import qs from "qs";
 
-export const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then(res => res.json());
+function handleError(error: Error | ErrorEvent | string): void {
+  trackEvent({
+    eventCategory: "asyncLoader-SWR",
+    eventAction: "error",
+    eventLabel: error ? error.toString() : undefined
+  });
 
-export const errorInterceptor = (_: any) => async (_: Action, response: any) => {
-    if(response.error) {
-        const locationHeader = response.headers.get("Location");
+  Sentry.captureException(error);
+}
 
-        if (response.status === 401 && locationHeader && window !== undefined) {
-            window.location.replace(locationHeader);
+export const fetcher = (...args: Parameters<typeof fetch>) =>
+  fetch(...args)
+    .then(res => {
+      if (!res.ok) {
+        const locationHeader = res.headers.get("Location");
+
+        if (res.status === 401 && locationHeader && window !== undefined) {
+          window.location.replace(locationHeader);
         }
+      }
 
-        trackEvent({
-            eventCategory: "asyncLoader",
-            eventAction: "error",
-            eventLabel: response.error ? response.error.toString() : undefined
-        });
-        Sentry.captureException(response.error);
+      return res.json();
+    })
+    .catch(e => {
+      handleError(e);
+    });
+
+// https://github.com/vercel/swr/issues/345
+export default function serialize(
+  url: string,
+  params?: object | any[]
+): string {
+  if (typeof params === "object" || Array.isArray(params)) {
+    const matches = url.match(/^(.+?)(\?(.*))?$/);
+    const urlWithoutQueryString: string = (matches && matches[1]) || url;
+    const queryStringDataFromUrl: object =
+      matches && matches[3] ? qs.parse(matches[3]) : {};
+    const queryString: string = qs.stringify(
+      { ...queryStringDataFromUrl, ...params },
+      { arrayFormat: "indices" }
+    );
+    if (queryString) {
+      return `${urlWithoutQueryString}?${queryString}`;
     }
-
-    return response;
-};
-
-export const fetchClient = createClient({
-    responseInterceptors: [errorInterceptor]
-});
-
-export const allErrorStatuses = [400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 422, 425, 426, 428, 429, 431, 451, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511];
+    return url;
+  }
+  return url;
+}
 
 interface CredentialHeaders {
-    credentials: RequestCredentials;
-    mode: RequestMode;
+  credentials: RequestCredentials;
+  mode: RequestMode;
 }
 
 export const credentialHeaders: CredentialHeaders = {
-    credentials: "include",
-    mode: "same-origin"
+  credentials: "include",
+  mode: "same-origin"
 };
-
-export const emitErrorForAllStatuses = {
-    emitErrorForStatuses: allErrorStatuses
-};
-
-export const defaultScopeHeader = {
-    /*
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-       window.location.href
-    )
-    */
-}

@@ -11,7 +11,8 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
-  getPotentialHolidayStopsEndpoint, PotentialHolidayStopsResponse,
+  getPotentialHolidayStopsEndpoint,
+  PotentialHolidayStopsResponse,
   RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
 import { ProgressIndicator } from "../../progressIndicator";
@@ -34,7 +35,7 @@ import {
 import { UserPhoneNumber } from "./userPhoneNumber";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../../fetchClient";
+import serialize, { fetcher } from "../../../fetchClient";
 
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
@@ -60,27 +61,30 @@ export const DeliveryRecordsProblemReview = (
       deliveryProblemContext.isTestUser
     );
 
-      const potentialHolidayStopsResponseWithCredits = useSWR([endpoint, config], fetcher).data as PotentialHolidayStopsResponse;
+    const potentialHolidayStopsResponseWithCredits = useSWR(
+      serialize(endpoint, config),
+      fetcher
+    ).data as PotentialHolidayStopsResponse;
 
-          const totalCreditAmount: number =
-              potentialHolidayStopsResponseWithCredits.potentials.length &&
-              potentialHolidayStopsResponseWithCredits.potentials
-                  .flatMap(x => [Math.abs(x.credit || 0)])
-                  .reduce((accumulator, currentValue) => accumulator + currentValue);
+    const totalCreditAmount: number =
+      potentialHolidayStopsResponseWithCredits.potentials.length &&
+      potentialHolidayStopsResponseWithCredits.potentials
+        .flatMap(x => [Math.abs(x.credit || 0)])
+        .reduce((accumulator, currentValue) => accumulator + currentValue);
 
-          return (
-              <DeliveryRecordsProblemReviewFC
-                  {...props}
-                  showCredit
-                  creditDate={
-                      potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
-                  }
-                  relatedPublications={
-                      potentialHolidayStopsResponseWithCredits.potentials
-                  }
-                  totalCreditAmount={totalCreditAmount}
-              />
-          );
+    return (
+      <DeliveryRecordsProblemReviewFC
+        {...props}
+        showCredit
+        creditDate={
+          potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
+        }
+        relatedPublications={
+          potentialHolidayStopsResponseWithCredits.potentials
+        }
+        totalCreditAmount={totalCreditAmount}
+      />
+    );
   };
 
   if (!deliveryProblemContext) {
@@ -94,9 +98,9 @@ export const DeliveryRecordsProblemReview = (
   }
 
   return deliveryProblemContext.showProblemCredit ? (
-      <DataFetcher loadingMessage="Generating your report">
-          <RenderReviewDetails />
-      </DataFetcher>
+    <DataFetcher loadingMessage="Generating your report">
+      <RenderReviewDetails />
+    </DataFetcher>
   ) : (
     <DeliveryRecordsProblemReviewFC {...props} />
   );

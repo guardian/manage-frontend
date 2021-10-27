@@ -3,18 +3,9 @@ import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
-import {credentialHeaders, defaultScopeHeader} from "../fetchClient";
+import { fetcher } from "../fetchClient";
 import DataFetcher from "./DataFetcher";
-import {Action, useSuspenseQuery} from "react-fetching-library";
-
-const fetchExistingPaymentOptions: Action<ExistingPaymentOption[]> = {
-  method: 'GET',
-  endpoint: "/api/existing-payment-options",
-  headers: {
-    ...defaultScopeHeader
-  },
-  ...credentialHeaders
-}
+import useSWR from "swr";
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -35,7 +26,11 @@ interface GetThrasherProps {
 }
 
 const GetThrasher = ({ args }: GetThrasherProps) => {
-  const existingPaymentOptions = useSuspenseQuery(fetchExistingPaymentOptions).payload as ExistingPaymentOption[]
+  const existingPaymentOptions = useSWR(
+    "/api/existing-payment-options",
+    fetcher,
+    { suspense: true }
+  ).data as ExistingPaymentOption[];
 
   const eligiblePaymentOptionsIfNoActiveExistingContribution = existingPaymentOptions.find(
     option =>
@@ -92,7 +87,7 @@ const GetThrasher = ({ args }: GetThrasherProps) => {
   }
 
   return args.children;
-}
+};
 
 interface ResubscribeThrasherProps {
   children: JSX.Element;

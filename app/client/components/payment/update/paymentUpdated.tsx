@@ -14,7 +14,7 @@ import {
   WithSubscription
 } from "../../../../shared/productResponse";
 import { ProductType } from "../../../../shared/productTypes";
-import {createProductDetailEndpoint} from "../../../productUtils";
+import { createProductDetailEndpoint } from "../../../productUtils";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
@@ -32,7 +32,11 @@ import {
 } from "./newPaymentMethodDetail";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../../fetchClient";
+import { fetcher } from "../../../fetchClient";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
@@ -79,11 +83,17 @@ const ConfirmedNewPaymentDetailsRenderer = ({
 };
 
 interface WithSubscriptionRenderedProps {
-  productType: ProductType,
-  newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail,
-  flowReferrer?: { title: string; link: string }
+  productType: ProductType;
+  newPaymentMethodDetail: NewPaymentMethodDetail;
+  previousProductDetail: ProductDetail;
+  flowReferrer?: { title: string; link: string };
 }
+
+const headers = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
 
 const WithSubscriptionRenderer = ({
   productType,
@@ -91,9 +101,13 @@ const WithSubscriptionRenderer = ({
   previousProductDetail,
   flowReferrer
 }: WithSubscriptionRenderedProps) => {
-  const { endpoint } = createProductDetailEndpoint( productType, previousProductDetail.subscription.subscriptionId);
+  const { endpoint } = createProductDetailEndpoint(
+    productType,
+    previousProductDetail.subscription.subscriptionId
+  );
 
-  const subs = useSWR(endpoint, fetcher, { suspense: true }).data as WithSubscription[];
+  const subs = useSWR([endpoint, headers], fetcher, { suspense: true })
+    .data as WithSubscription[];
 
   return subs && subs.length === 1 ? (
     <>
@@ -123,9 +137,9 @@ const WithSubscriptionRenderer = ({
           />
         )}
       </div>
-      <div css={{marginTop: "20px"}}>
+      <div css={{ marginTop: "20px" }}>
         <a href="https://www.theguardian.com">
-          <Button text="Explore The Guardian" primary right/>
+          <Button text="Explore The Guardian" primary right />
         </a>
       </div>
     </>
@@ -134,10 +148,10 @@ const WithSubscriptionRenderer = ({
       <GenericErrorScreen
         loggingMessage={`${subs.length} subs returned when one was expected`}
       />
-      <ReturnToAccountOverviewButton/>
+      <ReturnToAccountOverviewButton />
     </>
   );
-}
+};
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
   const innerContent = (
@@ -156,7 +170,12 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
         `}
       />
       <DataFetcher loadingMessage="Looks good so far. Just checking everything is done...">
-        <WithSubscriptionRenderer productType={props.productType} newPaymentMethodDetail={newPaymentMethodDetail} previousProductDetail={previousProductDetail} flowReferrer={props.location?.state?.flowReferrer} />
+        <WithSubscriptionRenderer
+          productType={props.productType}
+          newPaymentMethodDetail={newPaymentMethodDetail}
+          previousProductDetail={previousProductDetail}
+          flowReferrer={props.location?.state?.flowReferrer}
+        />
       </DataFetcher>
     </>
   );

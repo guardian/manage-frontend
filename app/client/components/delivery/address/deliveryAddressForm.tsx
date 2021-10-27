@@ -11,7 +11,8 @@ import React, {
 } from "react";
 import {
   DeliveryAddress,
-  isProduct, MembersDataApiItem,
+  isProduct,
+  MembersDataApiItem,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
@@ -52,7 +53,11 @@ import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../../fetchClient";
+import { fetcher } from "../../../fetchClient";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
@@ -137,22 +142,35 @@ const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps): JSX.Element | null => {
-  const url = "/api/me/mma" + `?productType=${GROUPED_PRODUCT_TYPES.subscriptions.allProductsProductTypeFilterString}`;
+const productDetailsHeaders = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
 
-  // const allProductDetails = useSWR([url, defaultScopeHeader], fetcher).data as MembersDataApiItem[];
-  const allProductDetails = useSWR(url, fetcher, { suspense: true }).data as MembersDataApiItem[];
+const RenderDeliveryAddressForm = ({
+  routeableStepProps
+}: {
+  routeableStepProps: RouteableStepProps;
+}): JSX.Element | null => {
+  const url =
+    "/api/me/mma" +
+    `?productType=${GROUPED_PRODUCT_TYPES.subscriptions.allProductsProductTypeFilterString}`;
 
-    return (
-        <FormContainer
-            contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-                allProductDetails
-                    .filter(isProduct)
-                    .filter(_ => _.subscription.readerType !== "Gift")
-            )}
-            routeableStepProps={routeableStepProps}
-        />
-    );
+  const allProductDetails = useSWR([url, productDetailsHeaders], fetcher, {
+    suspense: true
+  }).data as MembersDataApiItem[];
+
+  return (
+    <FormContainer
+      contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
+        allProductDetails
+          .filter(isProduct)
+          .filter(_ => _.subscription.readerType !== "Gift")
+      )}
+      routeableStepProps={routeableStepProps}
+    />
+  );
 };
 
 const clearState = (
@@ -743,7 +761,7 @@ const DeliveryAddressForm = (props: RouteableStepProps) => {
       ]}
     >
       <DataFetcher loadingMessage="Loading delivery details...">
-        {renderDeliveryAddressForm(props)}
+        <RenderDeliveryAddressForm routeableStepProps={props} />
       </DataFetcher>
     </PageContainer>
   );

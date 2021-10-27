@@ -8,9 +8,7 @@ import {
   ProductTypeWithDeliveryRecordsProperties,
   ProductTypeWithHolidayStopsFlow
 } from "../shared/productTypes";
-import {fetchWithDefaultParameters} from "./fetch";
-import {MembersDataApiItem} from "../shared/productResponse";
-import {Action} from 'react-fetching-library';
+import { fetchWithDefaultParameters } from "./fetch";
 
 export const shouldHaveHolidayStopsFlow = (
   productType: ProductType
@@ -19,12 +17,12 @@ export const shouldHaveHolidayStopsFlow = (
 export const createProductDetailFetcher = (
   productType: ProductType,
   subscriptionName?: string
-) =>() =>
+) => () =>
   fetchWithDefaultParameters(
     "/api/me/mma" +
-    (subscriptionName
-      ? `/${subscriptionName}`
-      : `?productType=${productType.allProductsProductTypeFilterString}`),
+      (subscriptionName
+        ? `/${subscriptionName}`
+        : `?productType=${productType.allProductsProductTypeFilterString}`),
     {
       headers: {
         [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
@@ -34,20 +32,16 @@ export const createProductDetailFetcher = (
     }
   );
 
-export const createProductDetailEndpoint = (productType: ProductType, subscriptionName?: string) => ({
-  endpoint: "/api/me/mma" +
+export const createProductDetailEndpoint = (
+  productType: ProductType,
+  subscriptionName?: string
+) => ({
+  endpoint:
+    "/api/me/mma" +
     (subscriptionName
       ? `/${subscriptionName}`
       : `?productType=${productType.allProductsProductTypeFilterString}`)
-  /*,
-  config: {
-    headers: {
-      ...defaultScopeHeader
-    }
- }
-
-   */
-})
+});
 
 export const allProductsDetailFetcher = () =>
   fetchWithDefaultParameters("/api/me/mma", {
@@ -57,16 +51,6 @@ export const allProductsDetailFetcher = () =>
       )
     }
   });
-
-export const allProductsDetailEndpoint: Action<MembersDataApiItem[]> = {
-  method: 'GET',
-  endpoint: '/api/me/mma',
-  headers: {
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-      window.location.href
-    )
-  },
-};
 
 export const hasCancellationFlow = (
   productType: ProductType
