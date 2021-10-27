@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { Link, navigate, NavigateFn } from "@reach/router";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   DATE_FNS_INPUT_FORMAT,
   DateRange,
@@ -44,17 +44,17 @@ import {
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
-import {fetcher} from "../../fetchClient";
+import serialize, { fetcher } from "../../fetchClient";
 import DataFetcher from "../DataFetcher";
 import SpinLoader from "../SpinLoader";
-import useSWR from "swr";
-import {fetchWithDefaultParameters} from "../../fetch";
+import useSWR, { useSWRConfig } from "swr";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 interface CreateOrAmendHolidayParams {
-  selectedRange: DateRange,
-  subscriptionName: string,
-  isTestUser: boolean,
-  existingHolidayStopToAmend?: HolidayStopRequest
+  selectedRange: DateRange;
+  subscriptionName: string;
+  isTestUser: boolean;
+  existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
 const getPerformCreateOrAmendFetcher = (params: CreateOrAmendHolidayParams) =>
@@ -67,7 +67,10 @@ const getPerformCreateOrAmendFetcher = (params: CreateOrAmendHolidayParams) =>
     {
       method: params.existingHolidayStopToAmend ? "PATCH" : "POST",
       body: JSON.stringify({
-        startDate: dateString(params.selectedRange.start, DATE_FNS_INPUT_FORMAT),
+        startDate: dateString(
+          params.selectedRange.start,
+          DATE_FNS_INPUT_FORMAT
+        ),
         endDate: dateString(params.selectedRange.end, DATE_FNS_INPUT_FORMAT),
         subscriptionName: params.subscriptionName
       }),
@@ -93,8 +96,10 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () => (
   </div>
 );
 
-export function HolidayReview (props: HolidayStopsRouteableStepProps) {
-  const [isCheckboxConfirmed, setIsCheckboxConfirmed] = useState<boolean>(false);
+export function HolidayReview(props: HolidayStopsRouteableStepProps) {
+  const [isCheckboxConfirmed, setIsCheckboxConfirmed] = useState<boolean>(
+    false
+  );
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
 
   interface HolidayReviewRendererProps {
@@ -103,26 +108,44 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
     dateChooserState: SharedHolidayDateChooserState;
   }
 
-  const HolidayReviewRenderer = ({ holidayStopsResponse, productDetail, dateChooserState  }: HolidayReviewRendererProps) => {
+  const HolidayReviewRenderer = ({
+    holidayStopsResponse,
+    productDetail,
+    dateChooserState
+  }: HolidayReviewRendererProps) => {
+    const { mutate } = useSWRConfig();
+
     const { start, end } = dateChooserState.selectedRange;
-    const url = `/api/holidays/${productDetail.subscription.subscriptionId}/potential?startDate=${dateString(
+    const url = `/api/holidays/${
+      productDetail.subscription.subscriptionId
+    }/potential?startDate=${dateString(
       start,
       DATE_FNS_INPUT_FORMAT
     )}&endDate=${dateString(end, DATE_FNS_INPUT_FORMAT)}`;
+    const headers = {
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    };
 
-    const potentialHolidayStopsResponseWithCredits = useSWR(url, fetcher, { suspense: true }).data as PotentialHolidayStopsResponse;
+    const potentialHolidayStopsResponseWithCredits = useSWR(
+      serialize(url, headers),
+      fetcher,
+      { suspense: true }
+    ).data as PotentialHolidayStopsResponse;
 
     async function handleMutation(params: CreateOrAmendHolidayParams) {
       try {
         await getPerformCreateOrAmendFetcher(params);
 
+        mutate(
+          `/api/holidays/${productDetail.subscription.subscriptionId}/potential`
+        );
         getRenderCreateOrAmendSuccess(props.navigate || navigate);
-      } catch(e) {
+      } catch (e) {
         getRenderCreateOrAmendError(
           holidayStopsResponse.existingHolidayStopToAmend
             ? "amending"
             : "creating"
-        )
+        );
       }
     }
 
@@ -163,8 +186,8 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
                   checked={isCheckboxConfirmed}
                   onChange={newValue => setIsCheckboxConfirmed(newValue)}
                   label={
-                    props.productType.holidayStops
-                      .explicitConfirmationRequired.checkboxLabel
+                    props.productType.holidayStops.explicitConfirmationRequired
+                      .checkboxLabel
                   }
                 />
               </div>
@@ -184,14 +207,14 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
                   </a>
                 }
                 title={
-                  props.productType.holidayStops
-                    .explicitConfirmationRequired.explainerModalTitle
+                  props.productType.holidayStops.explicitConfirmationRequired
+                    .explainerModalTitle
                 }
               >
                 <p>
                   {
-                    props.productType.holidayStops
-                      .explicitConfirmationRequired.explainerModalBody
+                    props.productType.holidayStops.explicitConfirmationRequired
+                      .explainerModalBody
                   }
                 </p>
               </Modal>
@@ -200,11 +223,15 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
         </div>
         {isExecuting ? (
           <div css={{ marginTop: "40px", textAlign: "right" }}>
-            <SpinLoader loadingMessage={`${
-              holidayStopsResponse.existingHolidayStopToAmend
-                ? "Amending"
-                : "Creating"
-            } your suspension...`} spinnerScale={0.7} inline />
+            <SpinLoader
+              loadingMessage={`${
+                holidayStopsResponse.existingHolidayStopToAmend
+                  ? "Amending"
+                  : "Creating"
+              } your suspension...`}
+              spinnerScale={0.7}
+              inline
+            />
           </div>
         ) : (
           <div
@@ -245,16 +272,16 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
                 text="Confirm"
                 disabled={
                   !!props.productType.holidayStops
-                    .explicitConfirmationRequired &&
-                  !isCheckboxConfirmed
+                    .explicitConfirmationRequired && !isCheckboxConfirmed
                 }
                 onClick={() => {
                   const params = {
                     selectedRange: dateChooserState.selectedRange,
                     subscriptionName: productDetail.subscription.subscriptionId,
                     isTestUser: productDetail.isTestUser,
-                    existingHolidayStopToAmend: holidayStopsResponse.existingHolidayStopToAmend
-                  }
+                    existingHolidayStopToAmend:
+                      holidayStopsResponse.existingHolidayStopToAmend
+                  };
 
                   setIsExecuting(true);
                   handleMutation(params);
@@ -302,7 +329,11 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
                   isSharedHolidayDateChooserState(dateChooserState) &&
                   isProduct(productDetail) ? (
                     <DataFetcher loadingMessage="Calculating expected credit...">
-                      <HolidayReviewRenderer holidayStopsResponse={holidayStopsResponse} productDetail={productDetail} dateChooserState={dateChooserState} />
+                      <HolidayReviewRenderer
+                        holidayStopsResponse={holidayStopsResponse}
+                        productDetail={productDetail}
+                        dateChooserState={dateChooserState}
+                      />
                     </DataFetcher>
                   ) : (
                     visuallyNavigateToParent(props)
@@ -318,4 +349,3 @@ export function HolidayReview (props: HolidayStopsRouteableStepProps) {
     </HolidayStopsResponseContext.Consumer>
   );
 }
-

@@ -1,12 +1,8 @@
-import { Button } from "@guardian/src-button";
-import Enzyme, { mount } from "enzyme";
+import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
-import DeliveryRecords, {
-  DeliveryRecordsFC
-} from "../../../../../components/delivery/records/deliveryRecords";
-import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
+import DeliveryRecords from "../../../../../components/delivery/records/deliveryRecords";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
 import { act, fireEvent, render } from "@testing-library/react";
 import fetchMock from "fetch-mock";
@@ -244,7 +240,9 @@ describe("DeliveryRecords", () => {
 
   it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const wrapper = mount(
+      jest.useFakeTimers();
+
+      const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -252,29 +250,27 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.update();
+      fireEvent(
+        getByText("Report a problem"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        })
+      );
 
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(Button)
-        .at(0)
-        .simulate("click");
+      fireEvent(
+        getByText("Continue to Step 2 & 3"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        })
+      );
 
-      const problemForm = wrapper
-        .find(DeliveryRecordsFC)
-        .find(DeliveryRecordProblemForm);
-
-      const continueToStep2Btn = problemForm.find("button").at(0);
-      continueToStep2Btn.simulate("submit");
-
-      expect(
-        wrapper
-          .find("form")
-          .find("span")
-          .text()
-      ).toEqual("Please select the type of problem");
-
+      getByText("Please select the type of problem");
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
