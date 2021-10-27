@@ -29,7 +29,7 @@ import { CancellationSummary, isCancelled } from "../cancellationSummary";
 import { getUpdateCasePromise } from "../caseUpdate";
 import DataFetcher from "../../DataFetcher";
 import { fetcher } from "../../../fetchClient";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { fetchWithDefaultParameters } from "../../../fetch";
 import { useSuspense } from "../../suspense";
 import {
@@ -94,9 +94,6 @@ const GetCancellationSummaryWithReturnButton = (
   props: GetCancellationSummaryWithReturnButtonProps
 ) => {
   props.startFetch();
-
-  const { mutate } = useSWRConfig();
-  mutate("/api/case/");
 
   return (
     <div>

@@ -2,7 +2,6 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
-import {useSWRConfig} from "swr";
 
 const containerStyles = css`
   margin-left: ${space[4]}px;
@@ -14,11 +13,10 @@ export interface ContributionsFeedbackFormThankYouProps {
   startFetch: () => unknown;
 }
 
-const ContributionsFeedbackFormThankYou = ({ startFetch }: ContributionsFeedbackFormThankYouProps ) => {
+const ContributionsFeedbackFormThankYou = ({
+  startFetch
+}: ContributionsFeedbackFormThankYouProps) => {
   startFetch();
-
-  const { mutate } = useSWRConfig();
-  mutate('/api/case/')
 
   return (
     <div css={containerStyles}>

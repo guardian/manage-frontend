@@ -13,7 +13,6 @@ import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { CancellationContributionReminder } from "./cancellationContributionReminder";
-import { useSWRConfig } from "swr";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -164,11 +163,6 @@ export const CancellationSummary = (props: CancellationSummaryProps) => {
 
   startFetch && startFetch();
   // we don't always call the patch endpoint so using this hook conditionally
-  const { mutate } = useSWRConfig();
-
-  if (startFetch) {
-    mutate("/api/case/");
-  }
 
   return isCancelled(productDetail.subscription) ? (
     actuallyCancelled(productType, productDetail)
