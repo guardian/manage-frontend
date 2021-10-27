@@ -13,10 +13,8 @@ import {
 import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
-import {useMutation} from "react-fetching-library";
-import type {Action} from 'react-fetching-library';
-import {credentialHeaders} from "../../fetchClient";
 import SpinLoader from "../SpinLoader";
+import {fetchWithDefaultParameters} from "../../fetch";
 
 type ContributionUpdateAmountFormMode = "MANAGE" | "CANCELLATION_SAVE";
 
@@ -183,17 +181,29 @@ export const ContributionUpdateAmountForm = (
 
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
-  const updateAmount = ({ newAmount, productType, subscriptionName }: UpdateAmountParameters): Action<unknown> => ({
-    endpoint: `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-    method: "POST",
-    body: {newPaymentAmount: newAmount},
-    ...credentialHeaders
-  });
-
-  const { mutate, error, loading } = useMutation(updateAmount);
-
+  const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
   const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
-  const [confirmedAmount] = useState<number | null>(null);
+  const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+
+  const [error, setError] = useState<boolean>(false);
+
+  async function handleMutation(newAmount: number, productType: ProductType, subscriptionName: string) {
+    try {
+      await getAmountUpdater(newAmount, productType, subscriptionName);
+
+      trackEvent({
+        eventCategory: "amount_change",
+        eventAction: "contributions_amount_change_success",
+        eventLabel: `by ${props.mainPlan.currency}${(
+          pendingAmount - props.currentAmount
+        ).toFixed(2)}${props.mainPlan.currencyISO}`
+      });
+      setConfirmedAmount(pendingAmount);
+      return null;
+    } catch (e) {
+      setError(true);
+    }
+  }
 
   useEffect(() => {
     if (otherAmount !== getDefaultOtherAmount()) {
@@ -212,12 +222,18 @@ export const ContributionUpdateAmountForm = (
     }
   }, [confirmedAmount]);
 
-  interface UpdateAmountParameters {
-    newAmount: number;
-    productType: ProductType;
-    subscriptionName: string;
-  }
-
+  const getAmountUpdater = (
+    newAmount: number,
+    productType: ProductType,
+    subscriptionName: string
+  ) =>
+    fetchWithDefaultParameters(
+      `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ newPaymentAmount: newAmount })
+      }
+    );
 
   const validateChoice = (): string | null => {
     const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
@@ -296,7 +312,7 @@ export const ContributionUpdateAmountForm = (
     }${weeklyAmount.toFixed(2)} each week`;
   };
 
-  if(loading) {
+  if(showUpdateLoader) {
     return (
       <SpinLoader loadingMessage="Updating..." spinnerScale={0.7} inline />
     )
@@ -308,6 +324,7 @@ export const ContributionUpdateAmountForm = (
       eventAction: "contributions_amount_change_failed"
     });
     setUpdateFailedStatus(true);
+    setShowUpdateLoader(false);
     return null;
   }
 
@@ -447,13 +464,8 @@ export const ContributionUpdateAmountForm = (
             return;
           }
 
-          const params = {
-            newAmount: pendingAmount,
-            productType: props.productType,
-            subscriptionName: props.subscriptionId
-          }
-
-          mutate(params);
+          setShowUpdateLoader(true);
+          handleMutation(pendingAmount, props.productType, props.subscriptionId);
         }}
       />
     </>

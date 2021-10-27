@@ -4,7 +4,8 @@ import * as Sentry from "@sentry/browser";
 const processResponse = (
   resp: Response,
   _?: number, // index
-  allResponses?: Response[]
+  allResponses?: Response[],
+  returnJson?: boolean,
 ) => {
   const locationHeader = resp.headers.get("Location");
   const allResponsesAreOK =
@@ -13,7 +14,11 @@ const processResponse = (
     window.location.replace(locationHeader);
     return Promise.resolve(null);
   } else if (allResponsesAreOK) {
-    return resp.json();
+    if(returnJson) {
+      return resp.json();
+    } else {
+      return resp.text();
+    }
   }
   throw new Error(`${resp.status} (${resp.statusText})`);
 };
@@ -34,6 +39,8 @@ function suspender<T>(promise: Promise<unknown>): () => T {
   const suspender = promise.then(
     r => {
       status = "success";
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       result = r;
     },
     e => {
@@ -56,11 +63,11 @@ function suspender<T>(promise: Promise<unknown>): () => T {
   };
 }
 
-export function useSuspense<T>(promise: Promise<unknown>): () => T | void {
+export function useSuspense<T>(promise: Promise<unknown>, returnJson?: boolean): () => T | void {
   const toSuspend = promise.then(resp =>
     Array.isArray(resp)
-      ? Promise.all(resp.map(processResponse))
-      : processResponse(resp)
+      ? Promise.all(resp.map(processResponse, returnJson))
+      : processResponse(resp as Response, 0, undefined, returnJson)
   );
   return suspender<T>(toSuspend);
 }

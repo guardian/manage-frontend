@@ -2,8 +2,6 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
-import {useSuspenseQuery} from "react-fetching-library";
-import {getPatchUpdateCaseEndpoint} from "./contributionsCancellationFeedbackForm";
 import {useSWRConfig} from "swr";
 
 const containerStyles = css`
@@ -13,13 +11,11 @@ const containerStyles = css`
 `;
 
 export interface ContributionsFeedbackFormThankYouProps {
-  isTestUser: boolean,
-  caseId: string,
-  feedback: string
+  startFetch: () => unknown;
 }
 
-const ContributionsFeedbackFormThankYou = ({ isTestUser, caseId, feedback }: ContributionsFeedbackFormThankYouProps ) => {
-  useSuspenseQuery(getPatchUpdateCaseEndpoint(isTestUser, caseId, feedback));
+const ContributionsFeedbackFormThankYou = ({ startFetch }: ContributionsFeedbackFormThankYouProps ) => {
+  startFetch();
 
   const { mutate } = useSWRConfig();
   mutate('/api/case/')

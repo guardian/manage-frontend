@@ -22,7 +22,7 @@ import {
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
-import {updateAddressEndpoint} from "./deliveryAddressApi";
+import {updateAddressFetcher} from "./deliveryAddressApi";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
@@ -32,17 +32,16 @@ import {
   NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 import DataFetcher from "../../DataFetcher";
+import {useSuspense} from "../../suspense";
 import {DeliveryAddress} from "../../../../shared/productResponse";
-import {useSuspenseQuery} from "react-fetching-library";
 
 interface RenderConfirmationProps {
-  updateAddressFormData: DeliveryAddress;
-  contactId: string;
+  startFetch: () => unknown
   routeableStepProps: RouteableStepProps;
 }
 
-const RenderConfirmation = ({ updateAddressFormData, contactId, routeableStepProps }: RenderConfirmationProps) => {
-  useSuspenseQuery(updateAddressEndpoint(updateAddressFormData, contactId));
+const RenderConfirmation = ({ startFetch, routeableStepProps }: RenderConfirmationProps) => {
+  startFetch();
 
   return <ConfirmationFC {...routeableStepProps} />
 };
@@ -297,14 +296,17 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     )} )`
   ].join("\n");
 
-  const formData = {
-    ...addressContext.newDeliveryAddress,
-    addressChangeInformation: addressChangeInformationCopy
-  };
+  const startFetch = useSuspense(updateAddressFetcher(
+    {
+      ...addressContext.newDeliveryAddress,
+      addressChangeInformation: addressChangeInformationCopy
+    } as DeliveryAddress,
+    contactIdContext
+  ));
 
   return addressContext.newDeliveryAddress ? (
     <DataFetcher loadingMessage="Updating delivery address details...">
-      <RenderConfirmation updateAddressFormData={formData as DeliveryAddress} contactId={contactIdContext} routeableStepProps={props} />
+      <RenderConfirmation startFetch={startFetch} routeableStepProps={props} />
     </DataFetcher>
   ) : (
     visuallyNavigateToParent(props)
