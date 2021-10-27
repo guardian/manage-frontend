@@ -55,7 +55,7 @@ const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
 
   return status === "SUBMITTED" ? (
     <div>
-      <DataFetcher loadingMessage="Storing your feedback">
+      <DataFetcher loadingMessage="Storing your feedback...">
         <ContributionsCancellationFeedbackFormThankYou startFetch={startFetch} />
       </DataFetcher>
     </div>
