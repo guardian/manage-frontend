@@ -39,12 +39,13 @@ import {
   HolidayStopRequest,
   HolidayStopsResponseContext,
   isNotBulkSuspension,
-  isNotWithdrawn, RawGetHolidayStopsResponse
+  isNotWithdrawn,
+  RawGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../fetchClient";
+import { fetcher } from "../../fetchClient";
 
 export type HolidayStopsRouteableStepProps = RouteableStepProps &
   WithProductType<ProductTypeWithHolidayStopsFlow>;
@@ -83,11 +84,12 @@ interface RenderHolidayStopsOverviewProps {
   setExistingHolidayStopToAmend: (newValue: HolidayStopRequest | null) => void;
 }
 
-const RenderHolidayStopsOverview = ({ productDetail,
+const RenderHolidayStopsOverview = ({
+  productDetail,
   holidaysOverviewProps,
   existingHolidayStopToAmend,
-  setExistingHolidayStopToAmend }: RenderHolidayStopsOverviewProps
-) => {
+  setExistingHolidayStopToAmend
+}: RenderHolidayStopsOverviewProps) => {
   /*
   const fetchHeaders = {
     headers: {
@@ -96,12 +98,17 @@ const RenderHolidayStopsOverview = ({ productDetail,
   }
   */
 
-  const holidayStopsQuery = useSWR(`/api/holidays/${productDetail.subscription.subscriptionId}`, fetcher, { suspense: true });
+  const holidayStopsQuery = useSWR(
+    `/api/holidays/${productDetail.subscription.subscriptionId}`,
+    fetcher,
+    { suspense: true }
+  );
 
   const rawHolidayStopsResponse = holidayStopsQuery.data as RawGetHolidayStopsResponse;
-  // const refetchHolidayStops = holidayStopsQuery.query;
 
-  const holidayStopsResponse = embellishExistingHolidayStops2(rawHolidayStopsResponse);
+  const holidayStopsResponse = embellishExistingHolidayStops2(
+    rawHolidayStopsResponse
+  );
 
   const renewalDate = parseDate(productDetail.subscription.renewalDate).date;
   const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
@@ -131,7 +138,6 @@ const RenderHolidayStopsOverview = ({ productDetail,
 
   const reloadWhichAlsoClearsAnyExistingHolidayStopToAmend = () => {
     setExistingHolidayStopToAmend(null);
-    // refetchHolidayStops;
   };
 
   const InnerContent = () => (
@@ -292,7 +298,6 @@ const RenderHolidayStopsOverview = ({ productDetail,
                 issueKeyword={
                   holidaysOverviewProps.productType.holidayStops.issueKeyword
                 }
-                // reloadParent={refetchHolidayStops}
                 setExistingHolidayStopToAmend={setExistingHolidayStopToAmend}
               />
             ) : (
@@ -374,7 +379,16 @@ class HolidaysOverview extends React.Component<
             {" "}
             {productDetail.subscription.start ? (
               <DataFetcher loadingMessage="Loading existing suspensions...">
-                <RenderHolidayStopsOverview productDetail={productDetail} holidaysOverviewProps={this.props} existingHolidayStopToAmend={this.state.existingHolidayStopToAmend} setExistingHolidayStopToAmend={this.setExistingHolidayStopToAmend} />
+                <RenderHolidayStopsOverview
+                  productDetail={productDetail}
+                  holidaysOverviewProps={this.props}
+                  existingHolidayStopToAmend={
+                    this.state.existingHolidayStopToAmend
+                  }
+                  setExistingHolidayStopToAmend={
+                    this.setExistingHolidayStopToAmend
+                  }
+                />
               </DataFetcher>
             ) : (
               <GenericErrorScreen loggingMessage="Subscription had no start date" />

@@ -35,8 +35,6 @@ import MMAPageSkeleton from "./MMAPageSkeleton";
 import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import { ScrollToTop } from "./scrollToTop";
-import { ClientContextProvider } from "react-fetching-library";
-import { fetchClient} from "../fetchClient";
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
@@ -94,7 +92,6 @@ const CancelReminders = lazy(() =>
 );
 
 const MMARouter = () => (
-    <ClientContextProvider client={fetchClient}>
   <Main>
     <Global styles={css(`${global}`)} />
     <Global styles={css(`${fonts}`)} />
@@ -240,7 +237,6 @@ const MMARouter = () => (
       </Router>
     </Suspense>
   </Main>
-    </ClientContextProvider>
 );
 
 export const MMAPage = (

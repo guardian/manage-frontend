@@ -9,8 +9,7 @@ import {
   parseDate,
   ParsedDate
 } from "../../../shared/dates";
-import {MDA_TEST_USER_HEADER} from "../../../shared/productResponse";
-import { ReFetch } from "../asyncLoader";
+import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 
 interface CommonCreditProperties {
   estimatedPrice?: number;
@@ -87,7 +86,6 @@ export interface GetHolidayStopsResponse {
 
 export interface ReloadableGetHolidayStopsResponse
   extends GetHolidayStopsResponse {
-  reload: ReFetch;
   existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
@@ -126,25 +124,24 @@ export const getPotentialHolidayStopsFetcher = (
     }
   );
 
-
 export const getPotentialHolidayStopsEndpoint = (
-    subscriptionName: string,
-    startDate: Date,
-    endDate: Date,
-    isTestUser: boolean
+  subscriptionName: string,
+  startDate: Date,
+  endDate: Date,
+  isTestUser: boolean
 ) => {
   return {
     endpoint: `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
-        startDate,
-        DATE_FNS_INPUT_FORMAT
+      startDate,
+      DATE_FNS_INPUT_FORMAT
     )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
     config: {
       headers: {
         [MDA_TEST_USER_HEADER]: `${isTestUser}`
       }
     }
-  }
-}
+  };
+};
 
 export interface CreateOrAmendHolidayStopsResponse {
   success: string;
@@ -210,7 +207,9 @@ export const embellishExistingHolidayStops = async (response: Response) => {
   } as GetHolidayStopsResponse;
 };
 
-export function embellishExistingHolidayStops2(payload: RawGetHolidayStopsResponse): GetHolidayStopsResponse {
+export function embellishExistingHolidayStops2(
+  payload: RawGetHolidayStopsResponse
+): GetHolidayStopsResponse {
   return {
     ...payload,
     productSpecifics: {
@@ -224,7 +223,7 @@ export function embellishExistingHolidayStops2(payload: RawGetHolidayStopsRespon
     existing: payload.existing
       .map(embellishRawHolidayStop)
       .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
-  }
+  };
 }
 
 export interface IssuesImpactedPerYear {

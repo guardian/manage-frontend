@@ -8,6 +8,7 @@ import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import AsyncLoader from "./asyncLoader";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
+<<<<<<< HEAD
 import { fetchWithDefaultParameters } from "../fetch";
 
 const fetchExistingPaymentOptions = () =>
@@ -18,6 +19,11 @@ const fetchExistingPaymentOptions = () =>
       )
     }
   });
+=======
+import { fetcher } from "../fetchClient";
+import DataFetcher from "./DataFetcher";
+import useSWR from "swr";
+>>>>>>> 2106fd23 (componetized address form)
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -48,7 +54,11 @@ const headers = {
 const GetThrasher = ({ args }: GetThrasherProps) => {
   const existingPaymentOptions = useSWR(
     "/api/existing-payment-options",
+<<<<<<< HEAD
     url => fetcher(url, headers),
+=======
+    fetcher,
+>>>>>>> 2106fd23 (componetized address form)
     { suspense: true }
   ).data as ExistingPaymentOption[];
 
