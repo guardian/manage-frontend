@@ -199,7 +199,7 @@ class ReasonPicker extends React.Component<
   }
 }
 
-interface ReasonPickerRenderer {
+interface ReasonPickerRendererProps {
   routeableStepProps: RouteableStepProps;
   productType: ProductTypeWithCancellationFlow;
   productDetail: ProductDetail;
@@ -217,7 +217,7 @@ const ReasonPickerRenderer = ({
   routeableStepProps,
   productType,
   productDetail
-}: ReasonPickerRenderer) => {
+}: ReasonPickerRendererProps) => {
   const apiResponse = useSWR(
     [
       "/api/cancellation-date/" + productDetail.subscription.subscriptionId,
