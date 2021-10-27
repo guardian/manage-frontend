@@ -1,16 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
-  isProduct, MembersDataApiItem,
+  isProduct,
+  MembersDataApiItem,
   ProductDetail
 } from "../../shared/productResponse";
-import {createProductDetailEndpoint} from "../productUtils";
+import { createProductDetailEndpoint } from "../productUtils";
 import {
   RouteableStepProps,
   visuallyNavigateToParent
 } from "./wizardRouterAdapter";
 import DataFetcher from "./DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../fetchClient";
+import { fetcher } from "../fetchClient";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../shared/identity";
 
 export interface ProductDetailProviderProps extends RouteableStepProps {
   children: (productDetail: ProductDetail) => JSX.Element;
@@ -19,7 +24,9 @@ export interface ProductDetailProviderProps extends RouteableStepProps {
   forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
 }
 
-export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.Element | null => {
+export const ProductDetailProvider = (
+  props: ProductDetailProviderProps
+): JSX.Element | null => {
   // NOTE: this react state is required so that any productDetail in the
   // 'browser history state' at the beginning of the flow is available
   // throughout the flow when re-renders occur based on route changes.
@@ -28,7 +35,7 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.El
   // end up stuck on the first step they were on
   const [selectedProductDetail, setSelectedProductDetail] = useState<
     ProductDetail | null | undefined
-    >();
+  >();
 
   // Browser history state is inspected inside this hook to avoid race condition with server side rendering
   useEffect(() => {
@@ -41,16 +48,14 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.El
 
     setSelectedProductDetail(
       productDetailNestedFromBrowserHistoryState ||
-      productDetailDirectFromBrowserHistoryState ||
-      null
+        productDetailDirectFromBrowserHistoryState ||
+        null
     );
   }, []); // Equivalent to componentDidMount (ie only happens on the client)
 
   if (selectedProductDetail) {
     return props.children(selectedProductDetail);
-  }
-
-  else if (selectedProductDetail === null) {
+  } else if (selectedProductDetail === null) {
     return props.forceRedirectToAccountOverviewIfNoBrowserHistoryState ? (
       visuallyNavigateToParent(props, true)
     ) : (
@@ -60,8 +65,12 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps): JSX.El
           " " +
           props.productType.friendlyName +
           "..."
-        }>
-        <RenderSingleProductOrReturnToAccountOverview productDetailProviderProps={props} setSelectedProductDetail={setSelectedProductDetail} />
+        }
+      >
+        <RenderSingleProductOrReturnToAccountOverview
+          productDetailProviderProps={props}
+          setSelectedProductDetail={setSelectedProductDetail}
+        />
       </DataFetcher>
     );
   }
@@ -76,26 +85,35 @@ interface RenderSingleProductProps {
   setSelectedProductDetail: SetSelectedProductDetail;
 }
 
-export const RenderSingleProductOrReturnToAccountOverview = ({ productDetailProviderProps, setSelectedProductDetail }: RenderSingleProductProps): JSX.Element | null => {
-  const { endpoint } = createProductDetailEndpoint(productDetailProviderProps.productType);
+const headers = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
 
-  const res = useSWR(endpoint, fetcher, { suspense: true });
+export const RenderSingleProductOrReturnToAccountOverview = ({
+  productDetailProviderProps,
+  setSelectedProductDetail
+}: RenderSingleProductProps): JSX.Element | null => {
+  const { endpoint } = createProductDetailEndpoint(
+    productDetailProviderProps.productType
+  );
+
+  const res = useSWR([endpoint, headers], fetcher, { suspense: true });
   const data = res.data as MembersDataApiItem[];
-  console.log(data);
 
-    const filteredProductDetails = data
-        .filter(isProduct)
-        .filter(
-            productDetail =>
-              productDetailProviderProps.allowCancelledSubscription ||
-                !productDetail.subscription.cancelledAt
-        );
+  const filteredProductDetails = data
+    .filter(isProduct)
+    .filter(
+      productDetail =>
+        productDetailProviderProps.allowCancelledSubscription ||
+        !productDetail.subscription.cancelledAt
+    );
 
-    if (filteredProductDetails.length === 1) {
-      setSelectedProductDetail(filteredProductDetails[0]);
-      return null;
-    }
+  if (filteredProductDetails.length === 1) {
+    setSelectedProductDetail(filteredProductDetails[0]);
+    return null;
+  }
 
-    return visuallyNavigateToParent(productDetailProviderProps, true);
-}
-
+  return visuallyNavigateToParent(productDetailProviderProps, true);
+};

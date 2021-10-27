@@ -5,7 +5,7 @@ const processResponse = (
   resp: Response,
   _?: number, // index
   allResponses?: Response[],
-  returnJson?: boolean,
+  returnJson?: boolean
 ) => {
   const locationHeader = resp.headers.get("Location");
   const allResponsesAreOK =
@@ -14,7 +14,7 @@ const processResponse = (
     window.location.replace(locationHeader);
     return Promise.resolve(null);
   } else if (allResponsesAreOK) {
-    if(returnJson) {
+    if (returnJson) {
       return resp.json();
     } else {
       return resp.text();
@@ -25,7 +25,7 @@ const processResponse = (
 
 function handleError(error: Error | ErrorEvent | string): void {
   trackEvent({
-    eventCategory: "asyncLoader",
+    eventCategory: "asyncLoader-customSuspense",
     eventAction: "error",
     eventLabel: error ? error.toString() : undefined
   });
@@ -63,7 +63,10 @@ function suspender<T>(promise: Promise<unknown>): () => T {
   };
 }
 
-export function useSuspense<T>(promise: Promise<unknown>, returnJson?: boolean): () => T | void {
+export function useSuspense<T>(
+  promise: Promise<unknown>,
+  returnJson?: boolean
+): () => T | void {
   const toSuspend = promise.then(resp =>
     Array.isArray(resp)
       ? Promise.all(resp.map(processResponse, returnJson))

@@ -6,7 +6,8 @@ import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import {
   CancelledProductDetail,
-  isProduct, MembersDataApiItem,
+  isProduct,
+  MembersDataApiItem,
   ProductDetail,
   sortByJoinDate
 } from "../../../shared/productResponse";
@@ -25,11 +26,28 @@ import { EmptyAccountOverview } from "./emptyAccountOverview";
 import { SupportTheGuardianSection } from "./supportTheGuardianSection";
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
-import {fetcher} from "../../fetchClient";
+import { credentialHeaders, fetcher } from "../../fetchClient";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../shared/identity";
+
+const mdaHeaders = { ...credentialHeaders };
+const cancelledProductsHeaders = {
+  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+    window.location.href
+  )
+};
 
 const AccountOverviewRenderer = () => {
-  const mdaResponse = useSWR('/api/me/mma', fetcher, { suspense: true} ).data as MembersDataApiItem[];
-  const cancelledProductsResponse = useSWR('/api/cancelled', fetcher, { suspense: true} ).data as CancelledProductDetail[];
+  const mdaResponse = useSWR(["/api/me/mma", mdaHeaders], fetcher, {
+    suspense: true
+  }).data as MembersDataApiItem[];
+  const cancelledProductsResponse = useSWR(
+    ["/api/cancelled", cancelledProductsHeaders],
+    fetcher,
+    { suspense: true }
+  ).data as CancelledProductDetail[];
 
   if (mdaResponse && cancelledProductsResponse) {
     const allActiveProductDetails = mdaResponse
