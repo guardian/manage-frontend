@@ -208,9 +208,11 @@ interface ReasonPickerRendererProps {
 const headers = {
   method: "GET",
   ...credentialHeaders,
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const ReasonPickerRenderer = ({

@@ -52,7 +52,7 @@ import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import serialize, { fetcher } from "../../../fetchClient";
+import { fetcher } from "../../../fetchClient";
 
 interface IdentityDetails {
   userId: string;
@@ -102,14 +102,10 @@ const RenderDeliveryRecords = ({
     }
   };
 
-  const data = useSWR(
-    serialize(
-      `/api/delivery-records/${productDetail.subscription.subscriptionId}`,
-      headers
-    ),
-    fetcher,
-    { suspense: true }
-  ).data as DeliveryRecordsResponse;
+  const url = `/api/delivery-records/${productDetail.subscription.subscriptionId}`;
+
+  const data = useSWR(url, () => fetcher(url, headers), { suspense: true })
+    .data as DeliveryRecordsResponse;
 
   const mainPlan = getMainPlan(
     productDetail.subscription

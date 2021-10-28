@@ -52,16 +52,22 @@ interface GetThrasherProps {
 
 const headers = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cc3d22a6 (swr headers removed from cache keys)
   headers: {
     [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
       window.location.href
     )
   }
+<<<<<<< HEAD
 =======
   [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
     window.location.href
   )
 >>>>>>> 91cfa81b (formatting and spacings)
+=======
+>>>>>>> cc3d22a6 (swr headers removed from cache keys)
 };
 
 const GetThrasher = ({ args }: GetThrasherProps) => {

@@ -45,7 +45,7 @@ import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "../../../fetchClient";
 import { useSuspense } from "../../suspense";
 import {
@@ -60,9 +60,11 @@ interface DeliveryAddressStepProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
@@ -134,9 +136,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       GROUPED_PRODUCT_TYPES.subscriptions
     );
 
-    const allProductDetails = useSWR([endpoint, headers], fetcher, {
-      suspense: true
-    }).data as MembersDataApiItem[];
+    const allProductDetails = useSWR(
+      endpoint,
+      () => fetcher(endpoint, headers),
+      {
+        suspense: true
+      }
+    ).data as MembersDataApiItem[];
 
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
@@ -512,6 +518,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
   const RenderConfirmation = ({ fetchSuspense }: RenderConfirmationProps) => {
     fetchSuspense();
+
+    const { mutate } = useSWRConfig();
+    mutate("/api/me/mma");
 
     return (
       <>

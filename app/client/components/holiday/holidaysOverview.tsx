@@ -46,7 +46,7 @@ import {
 import { SummaryTable } from "./summaryTable";
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
-import serialize, { fetcher } from "../../fetchClient";
+import { fetcher } from "../../fetchClient";
 
 export type HolidayStopsRouteableStepProps = RouteableStepProps &
   WithProductType<ProductTypeWithHolidayStopsFlow>;
@@ -91,20 +91,17 @@ const RenderHolidayStopsOverview = ({
   existingHolidayStopToAmend,
   setExistingHolidayStopToAmend
 }: RenderHolidayStopsOverviewProps) => {
-  const fetchHeaders = {
+  const headers = {
     headers: {
       [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
     }
   };
 
-  const holidayStopsQuery = useSWR(
-    serialize(
-      `/api/holidays/${productDetail.subscription.subscriptionId}`,
-      fetchHeaders
-    ),
-    fetcher,
-    { suspense: true }
-  );
+  const url = `/api/holidays/${productDetail.subscription.subscriptionId}`;
+
+  const holidayStopsQuery = useSWR(url, () => fetcher(url, headers), {
+    suspense: true
+  });
 
   const rawHolidayStopsResponse = holidayStopsQuery.data as RawGetHolidayStopsResponse;
 
