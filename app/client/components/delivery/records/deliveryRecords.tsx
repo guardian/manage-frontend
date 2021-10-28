@@ -15,6 +15,7 @@ import {
   DeliveryAddress,
   DeliveryRecordApiItem,
   isGift,
+  MDA_TEST_USER_HEADER,
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -51,7 +52,7 @@ import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import { fetcher } from "../../../fetchClient";
+import serialize, { fetcher } from "../../../fetchClient";
 
 interface IdentityDetails {
   userId: string;
@@ -95,8 +96,17 @@ const RenderDeliveryRecords = ({
   routeableStepProps,
   productDetail
 }: RenderDeliveryRecordsProps) => {
+  const headers = {
+    headers: {
+      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+    }
+  };
+
   const data = useSWR(
-    `/api/delivery-records/${productDetail.subscription.subscriptionId}`,
+    serialize(
+      `/api/delivery-records/${productDetail.subscription.subscriptionId}`,
+      headers
+    ),
     fetcher,
     { suspense: true }
   ).data as DeliveryRecordsResponse;

@@ -109,7 +109,7 @@ const WithSubscriptionRenderer = ({
   const subs = useSWR([endpoint, headers], fetcher, { suspense: true })
     .data as WithSubscription[];
 
-  return subs && subs.length === 1 ? (
+  return subs?.length === 1 ? (
     <>
       <h1>Your payment details were updated successfully</h1>
       <ConfirmedNewPaymentDetailsRenderer

@@ -48,35 +48,31 @@ import { useSuspense } from "../../suspense";
 interface RenderDeliveryRecordsConfirmationProps {
   routeableStepProps: DeliveryRecordsRouteableStepProps;
   deliveryRecordsProblemContext: DeliveryRecordsProblemContextInterface;
-  startFetch: () => void | DeliveryRecordsResponse;
+  fetchSuspense: () => DeliveryRecordsResponse;
 }
 
 const RenderDeliveryRecordsConfirmation = ({
   routeableStepProps,
   deliveryRecordsProblemContext,
-  startFetch
-}: RenderDeliveryRecordsConfirmationProps): JSX.Element => {
+  fetchSuspense
+}: RenderDeliveryRecordsConfirmationProps) => {
   const { subscription } = deliveryRecordsProblemContext;
 
-  const data = startFetch();
+  const data = fetchSuspense();
 
-  if (data) {
-    const { mutate } = useSWRConfig();
-    mutate(`/api/delivery-records/${subscription.subscriptionId}`);
+  const { mutate } = useSWRConfig();
+  mutate(`/api/delivery-records/${subscription.subscriptionId}`);
 
-    const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
+  const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
-    return (
-      <DeliveryRecordsProblemConfirmationFC
-        data={data}
-        routeableStepProps={routeableStepProps}
-        subscriptionId={subscription.subscriptionId}
-        subscriptionCurrency={mainPlan.currency}
-      />
-    );
-  } else {
-    return <></>;
-  }
+  return (
+    <DeliveryRecordsProblemConfirmationFC
+      data={data}
+      routeableStepProps={routeableStepProps}
+      subscriptionId={subscription.subscriptionId}
+      subscriptionCurrency={mainPlan.currency}
+    />
+  );
 };
 
 interface DeliveryRecordsProblemConfirmationFCProps {
@@ -458,7 +454,7 @@ export const DeliveryRecordsProblemConfirmation = (
     return visuallyNavigateToParent(props);
   }
 
-  const startFetch = useSuspense<DeliveryRecordsResponse>(
+  const fetchSuspense = useSuspense<DeliveryRecordsResponse>(
     createDeliveryRecordsProblemPost(
       deliveryRecordsProblemContext.subscription.subscriptionId,
       deliveryRecordsProblemContext.isTestUser,
@@ -472,7 +468,7 @@ export const DeliveryRecordsProblemConfirmation = (
       <RenderDeliveryRecordsConfirmation
         routeableStepProps={props}
         deliveryRecordsProblemContext={deliveryRecordsProblemContext}
-        startFetch={startFetch}
+        fetchSuspense={fetchSuspense}
       />
     </DataFetcher>
   );

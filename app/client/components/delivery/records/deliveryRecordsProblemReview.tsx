@@ -63,7 +63,8 @@ export const DeliveryRecordsProblemReview = (
 
     const potentialHolidayStopsResponseWithCredits = useSWR(
       serialize(endpoint, config),
-      fetcher
+      fetcher,
+      { suspense: true }
     ).data as PotentialHolidayStopsResponse;
 
     const totalCreditAmount: number =
