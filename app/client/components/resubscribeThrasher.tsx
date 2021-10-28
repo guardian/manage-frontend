@@ -33,9 +33,30 @@ interface ExistingPaymentOption {
   mandate?: string;
 }
 
+<<<<<<< HEAD
 class ExistingPaymentOptionsAsyncLoader extends AsyncLoader<
   ExistingPaymentOption[]
 > {}
+=======
+interface GetThrasherProps {
+  args: ResubscribeThrasherProps;
+}
+
+const headers = {
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
+};
+
+const GetThrasher = ({ args }: GetThrasherProps) => {
+  const existingPaymentOptions = useSWR(
+    "/api/existing-payment-options",
+    url => fetcher(url, headers),
+    { suspense: true }
+  ).data as ExistingPaymentOption[];
+>>>>>>> 7f602b3e (swr headers removed from cache keys)
 
 const getThrasher = (args: ResubscribeThrasherProps) => (
   existingPaymentOptions: ExistingPaymentOption[]
