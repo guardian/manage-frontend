@@ -86,9 +86,11 @@ interface RenderSingleProductProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 export const RenderSingleProductOrReturnToAccountOverview = ({
@@ -99,7 +101,9 @@ export const RenderSingleProductOrReturnToAccountOverview = ({
     productDetailProviderProps.productType
   );
 
-  const res = useSWR([endpoint, headers], fetcher, { suspense: true });
+  const res = useSWR(endpoint, () => fetcher(endpoint, headers), {
+    suspense: true
+  });
   const data = res.data as MembersDataApiItem[];
 
   const filteredProductDetails = data

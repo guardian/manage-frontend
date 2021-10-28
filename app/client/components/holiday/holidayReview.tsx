@@ -44,7 +44,7 @@ import {
   ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
-import serialize, { fetcher } from "../../fetchClient";
+import { fetcher } from "../../fetchClient";
 import DataFetcher from "../DataFetcher";
 import SpinLoader from "../SpinLoader";
 import useSWR, { useSWRConfig } from "swr";
@@ -122,13 +122,16 @@ export function HolidayReview(props: HolidayStopsRouteableStepProps) {
       start,
       DATE_FNS_INPUT_FORMAT
     )}&endDate=${dateString(end, DATE_FNS_INPUT_FORMAT)}`;
+
     const headers = {
-      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
+      }
     };
 
     const potentialHolidayStopsResponseWithCredits = useSWR(
-      serialize(url, headers),
-      fetcher,
+      url,
+      () => fetcher(url, headers),
       { suspense: true }
     ).data as PotentialHolidayStopsResponse;
 
@@ -136,9 +139,8 @@ export function HolidayReview(props: HolidayStopsRouteableStepProps) {
       try {
         await getPerformCreateOrAmendFetcher(params);
 
-        mutate(
-          `/api/holidays/${productDetail.subscription.subscriptionId}/potential`
-        );
+        mutate(`/api/holidays/${productDetail.subscription.subscriptionId}`);
+
         getRenderCreateOrAmendSuccess(props.navigate || navigate);
       } catch (e) {
         getRenderCreateOrAmendError(

@@ -34,6 +34,7 @@ import {
 import DataFetcher from "../../DataFetcher";
 import { useSuspense } from "../../suspense";
 import { DeliveryAddress } from "../../../../shared/productResponse";
+import { useSWRConfig } from "swr";
 
 interface RenderConfirmationProps {
   fetchSuspense: () => unknown;
@@ -45,7 +46,9 @@ const RenderConfirmation = ({
   routeableStepProps
 }: RenderConfirmationProps) => {
   fetchSuspense();
-  // add mutations here
+
+  const { mutate } = useSWRConfig();
+  mutate("/api/me/mma");
 
   return <ConfirmationFC {...routeableStepProps} />;
 };

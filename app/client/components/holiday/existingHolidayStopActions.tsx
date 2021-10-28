@@ -9,6 +9,7 @@ import {
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
 import SpinLoader from "../SpinLoader";
+import { useSWRConfig } from "swr";
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
@@ -32,16 +33,17 @@ const withdrawHolidayFetch = (params: withdrawHolidayParams) =>
 // tslint:disable-next-line:max-classes-per-file
 export default function ExistingHolidayStopActions(
   props: ExistingHolidayStopActionsProps
-): JSX.Element {
+) {
+  const { mutate } = useSWRConfig();
+
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handleMutation(params: withdrawHolidayParams) {
     try {
       await withdrawHolidayFetch(params);
-      mutate(
-        `/api/holidays/${productDetail.subscription.subscriptionId}/potential`
-      );
+
+      mutate(`/api/holidays/${props.subscriptionName}`);
     } catch (e) {
       setError(true);
     }

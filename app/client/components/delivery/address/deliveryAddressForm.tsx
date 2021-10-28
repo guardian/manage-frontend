@@ -148,9 +148,11 @@ interface RenderDeliveryAddressFormProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const RenderDeliveryAddressForm = ({
@@ -160,7 +162,7 @@ const RenderDeliveryAddressForm = ({
     GROUPED_PRODUCT_TYPES.subscriptions
   );
 
-  const allProductDetails = useSWR([endpoint, headers], fetcher, {
+  const allProductDetails = useSWR(endpoint, () => fetcher(endpoint, headers), {
     suspense: true
   }).data as MembersDataApiItem[];
 
