@@ -48,19 +48,27 @@ type MMACategoryToProductDetails = {
 type FetchInvoiceResponse = { invoices: InvoiceDataApiItem[] };
 
 const mdaHeaders = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
+
 const invoiceHeaders = { ...credentialHeaders };
 
 export const BillingRenderer = () => {
-  const mdaResponse = useSWR(["/api/me/mma", mdaHeaders], fetcher, {
+  const mdaResponse = useSWR("/api/me/mma", url => fetcher(url, mdaHeaders), {
     suspense: true
   }).data as MembersDataApiItem[];
-  const invoiceResponse = useSWR(["/api/invoices", invoiceHeaders], fetcher, {
-    suspense: true
-  }).data as FetchInvoiceResponse;
+
+  const invoiceResponse = useSWR(
+    "/api/invoices",
+    url => fetcher(url, invoiceHeaders),
+    {
+      suspense: true
+    }
+  ).data as FetchInvoiceResponse;
 
   const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
   const invoiceData = invoiceResponse.invoices.sort(

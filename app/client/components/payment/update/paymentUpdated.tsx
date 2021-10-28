@@ -31,7 +31,7 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 import DataFetcher from "../../DataFetcher";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "../../../fetchClient";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -90,9 +90,11 @@ interface WithSubscriptionRenderedProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const WithSubscriptionRenderer = ({
@@ -106,8 +108,12 @@ const WithSubscriptionRenderer = ({
     previousProductDetail.subscription.subscriptionId
   );
 
-  const subs = useSWR([endpoint, headers], fetcher, { suspense: true })
-    .data as WithSubscription[];
+  const subs = useSWR(endpoint, () => fetcher(endpoint, headers), {
+    suspense: true
+  }).data as WithSubscription[];
+
+  const { mutate } = useSWRConfig();
+  mutate("/api/me/mma");
 
   return subs?.length === 1 ? (
     <>
@@ -179,6 +185,7 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
       </DataFetcher>
     </>
   );
+
   return (
     <MembersDataApiItemContext.Consumer>
       {previousProductDetail => (

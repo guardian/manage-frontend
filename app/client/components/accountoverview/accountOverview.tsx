@@ -34,18 +34,20 @@ import {
 
 const mdaHeaders = { ...credentialHeaders };
 const cancelledProductsHeaders = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const AccountOverviewRenderer = () => {
-  const mdaResponse = useSWR(["/api/me/mma", mdaHeaders], fetcher, {
+  const mdaResponse = useSWR("/api/me/mma", url => fetcher(url, mdaHeaders), {
     suspense: true
   }).data as MembersDataApiItem[];
   const cancelledProductsResponse = useSWR(
-    ["/api/cancelled", cancelledProductsHeaders],
-    fetcher,
+    "/api/cancelled",
+    url => fetcher(url, cancelledProductsHeaders),
     { suspense: true }
   ).data as CancelledProductDetail[];
 

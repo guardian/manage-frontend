@@ -30,9 +30,11 @@ interface GetThrasherProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const GetThrasher = ({ args }: GetThrasherProps) => {

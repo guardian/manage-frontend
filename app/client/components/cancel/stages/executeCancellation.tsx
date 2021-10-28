@@ -112,9 +112,11 @@ interface GetCaseUpdatingCancellationSummaryProps {
 }
 
 const headers = {
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
 };
 
 const GetCaseUpdatingCancellationSummary = (
@@ -126,7 +128,7 @@ const GetCaseUpdatingCancellationSummary = (
   // response is either empty or 404 from cancelSubscriptionEndpoint - neither is useful so fetch subscription after to determine cancellation result...
 
   const { endpoint } = createProductDetailEndpoint(productType);
-  const productDetails = useSWR([endpoint, headers], fetcher, {
+  const productDetails = useSWR(endpoint, () => fetcher(endpoint, headers), {
     suspense: true
   }).data as ProductDetail[];
 
