@@ -39,8 +39,8 @@ const headers = {
 
 const GetThrasher = ({ args }: GetThrasherProps) => {
   const existingPaymentOptions = useSWR(
-    ["/api/existing-payment-options", headers],
-    fetcher,
+    "/api/existing-payment-options",
+    url => fetcher(url, headers),
     { suspense: true }
   ).data as ExistingPaymentOption[];
 
