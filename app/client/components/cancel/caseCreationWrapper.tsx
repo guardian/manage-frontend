@@ -7,8 +7,8 @@ import { CancellationCaseIdContext } from "./cancellationContexts";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { OptionalCancellationReasonId } from "./cancellationReason";
 import DataFetcher from "../DataFetcher";
-import {useSuspense} from "../suspense";
-import {fetchWithDefaultParameters} from "../../fetch";
+import { useSuspense } from "../suspense";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 interface CaseCreationResponse {
   id: string;
@@ -34,21 +34,24 @@ const getCreateCaseFunc = (
   });
 
 interface RenderWithCaseIdContextProviderProps {
-  caseCreationProps: CaseCreationWrapperProps;
-  startFetch: () => void | CaseCreationResponse;
+  fetchSuspense: () => CaseCreationResponse;
+  children: JSX.Element;
 }
 
-const RenderWithCaseIdContextProvider = ({ caseCreationProps, startFetch }: RenderWithCaseIdContextProviderProps) => {
-  const caseCreationResponse = startFetch();
+const RenderWithCaseIdContextProvider = ({
+  fetchSuspense,
+  children
+}: RenderWithCaseIdContextProviderProps) => {
+  const caseCreationResponse = fetchSuspense();
 
   return caseCreationResponse ? (
     <CancellationCaseIdContext.Provider value={caseCreationResponse.id}>
-      {caseCreationProps.children}
+      {children}
     </CancellationCaseIdContext.Provider>
   ) : (
-    caseCreationProps.children
+    children
   );
-}
+};
 
 interface CaseCreationWrapperProps {
   children: JSX.Element;
@@ -58,14 +61,19 @@ interface CaseCreationWrapperProps {
 
 export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
   <CancellationReasonContext.Consumer>
-    {reason => (
-      <DataFetcher loadingMessage="Capturing your cancellation reason...">
-        <RenderWithCaseIdContextProvider startFetch={useSuspense<CaseCreationResponse>(getCreateCaseFunc(
-          reason,
-          props.sfCaseProduct,
-          props.productDetail
-        ), true)} caseCreationProps={props} />
-      </DataFetcher>
-    )}
+    {reason => {
+      const fetchSuspense = useSuspense<CaseCreationResponse>(
+        getCreateCaseFunc(reason, props.sfCaseProduct, props.productDetail),
+        true
+      );
+
+      return (
+        <DataFetcher loadingMessage="Capturing your cancellation reason...">
+          <RenderWithCaseIdContextProvider fetchSuspense={fetchSuspense}>
+            {props.children}
+          </RenderWithCaseIdContextProvider>
+        </DataFetcher>
+      );
+    }}
   </CancellationReasonContext.Consumer>
 );

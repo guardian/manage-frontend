@@ -155,13 +155,13 @@ interface CancellationSummaryProps {
   productType: ProductType;
   productDetail: ProductDetail;
   caseId: string | "";
-  startFetch?: () => unknown;
+  fetchSuspense?: () => unknown;
 }
 
 export const CancellationSummary = (props: CancellationSummaryProps) => {
-  const { productDetail, productType, startFetch } = props;
+  const { productDetail, productType, fetchSuspense } = props;
 
-  startFetch && startFetch();
+  fetchSuspense && fetchSuspense();
   // we don't always call the patch endpoint so using this hook conditionally
 
   return isCancelled(productDetail.subscription) ? (

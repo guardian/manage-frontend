@@ -134,8 +134,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
       GROUPED_PRODUCT_TYPES.subscriptions
     );
 
-    const allProductDetails = useSWR([endpoint, headers], fetcher)
-      .data as MembersDataApiItem[];
+    const allProductDetails = useSWR([endpoint, headers], fetcher, {
+      suspense: true
+    }).data as MembersDataApiItem[];
 
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
@@ -506,11 +507,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   };
 
   interface RenderConfirmationProps {
-    startFetch: () => unknown;
+    fetchSuspense: () => unknown;
   }
 
-  const RenderConfirmation = ({ startFetch }: RenderConfirmationProps) => {
-    startFetch();
+  const RenderConfirmation = ({ fetchSuspense }: RenderConfirmationProps) => {
+    fetchSuspense();
 
     return (
       <>
@@ -566,7 +567,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     status === Status.CONFIRMATION &&
     props.productDetail.subscription.contactId
   ) {
-    const startFetch = useSuspense(
+    const fetchSuspense = useSuspense(
       updateAddressFetcher(
         {
           ...newAddress,
@@ -578,7 +579,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
     return (
       <DataFetcher loadingMessage="Updating delivery address details...">
-        <RenderConfirmation startFetch={startFetch} />
+        <RenderConfirmation fetchSuspense={fetchSuspense} />
       </DataFetcher>
     );
   }

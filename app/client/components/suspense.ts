@@ -35,12 +35,10 @@ function handleError(error: Error | ErrorEvent | string): void {
 
 function suspender<T>(promise: Promise<unknown>): () => T {
   let status = "pending";
-  let result: T;
+  let result: T | unknown;
   const suspender = promise.then(
     r => {
       status = "success";
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       result = r;
     },
     e => {
@@ -66,7 +64,7 @@ function suspender<T>(promise: Promise<unknown>): () => T {
 export function useSuspense<T>(
   promise: Promise<unknown>,
   returnJson?: boolean
-): () => T | void {
+): () => T {
   const toSuspend = promise.then(resp =>
     Array.isArray(resp)
       ? Promise.all(resp.map(processResponse, returnJson))

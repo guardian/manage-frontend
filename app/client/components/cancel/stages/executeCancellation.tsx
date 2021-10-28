@@ -86,14 +86,14 @@ const getCaseUpdateFuncForEscalation = (
   });
 
 interface GetCancellationSummaryWithReturnButtonProps {
-  startFetch: () => unknown;
+  fetchSuspense: () => unknown;
   body: ReactNode;
 }
 
 const GetCancellationSummaryWithReturnButton = (
   props: GetCancellationSummaryWithReturnButtonProps
 ) => {
-  props.startFetch();
+  props.fetchSuspense();
 
   return (
     <div>
@@ -105,7 +105,7 @@ const GetCancellationSummaryWithReturnButton = (
 };
 
 interface GetCaseUpdatingCancellationSummaryProps {
-  startFetch: () => unknown;
+  fetchSuspense: () => unknown;
   caseId: string | "";
   productType: ProductTypeWithCancellationFlow;
   productDetail: ProductDetail;
@@ -120,9 +120,9 @@ const headers = {
 const GetCaseUpdatingCancellationSummary = (
   props: GetCaseUpdatingCancellationSummaryProps
 ) => {
-  const { productType, caseId, productDetail, startFetch } = props;
+  const { productType, caseId, productDetail, fetchSuspense } = props;
 
-  startFetch();
+  fetchSuspense();
   // response is either empty or 404 from cancelSubscriptionEndpoint - neither is useful so fetch subscription after to determine cancellation result...
 
   const { endpoint } = createProductDetailEndpoint(productType);
@@ -133,7 +133,7 @@ const GetCaseUpdatingCancellationSummary = (
   const productDetailRefetched = productDetails[0] || { subscription: {} };
 
   if (caseId) {
-    const startFetch = useSuspense(
+    const fetchSuspense = useSuspense(
       getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)
     );
 
@@ -143,7 +143,7 @@ const GetCaseUpdatingCancellationSummary = (
           caseId={caseId}
           productDetail={productDetailRefetched}
           productType={productType}
-          startFetch={startFetch}
+          fetchSuspense={fetchSuspense}
         />
       </DataFetcher>
     );
@@ -190,7 +190,7 @@ const innerContent = (
           escalationCauses.length > 0 ? (
             <DataFetcher loadingMessage="Requesting your cancellation">
               <GetCancellationSummaryWithReturnButton
-                startFetch={useSuspense(
+                fetchSuspense={useSuspense(
                   getCaseUpdateFuncForEscalation(
                     caseId,
                     escalationCauses,
@@ -203,7 +203,7 @@ const innerContent = (
           ) : (
             <DataFetcher loadingMessage="Performing your cancellation...">
               <GetCaseUpdatingCancellationSummary
-                startFetch={useSuspense(
+                fetchSuspense={useSuspense(
                   getCancelFunc(
                     productDetail.subscription.subscriptionId,
                     reason,

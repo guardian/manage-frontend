@@ -54,6 +54,7 @@ import { Select } from "./select";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
 import { fetcher } from "../../../fetchClient";
+import { createProductDetailEndpoint } from "../../../productUtils";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -142,7 +143,11 @@ const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const productDetailsHeaders = {
+interface RenderDeliveryAddressFormProps {
+  routeableStepProps: RouteableStepProps;
+}
+
+const headers = {
   [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
     window.location.href
   )
@@ -150,14 +155,12 @@ const productDetailsHeaders = {
 
 const RenderDeliveryAddressForm = ({
   routeableStepProps
-}: {
-  routeableStepProps: RouteableStepProps;
-}): JSX.Element | null => {
-  const url =
-    "/api/me/mma" +
-    `?productType=${GROUPED_PRODUCT_TYPES.subscriptions.allProductsProductTypeFilterString}`;
+}: RenderDeliveryAddressFormProps) => {
+  const { endpoint } = createProductDetailEndpoint(
+    GROUPED_PRODUCT_TYPES.subscriptions
+  );
 
-  const allProductDetails = useSWR([url, productDetailsHeaders], fetcher, {
+  const allProductDetails = useSWR([endpoint, headers], fetcher, {
     suspense: true
   }).data as MembersDataApiItem[];
 
