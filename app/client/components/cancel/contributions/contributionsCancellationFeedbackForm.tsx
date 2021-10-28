@@ -1,10 +1,10 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import React, { useState } from "react";
-import {getUpdateCasePromise} from "../caseUpdate";
+import { getUpdateCasePromise } from "../caseUpdate";
 import ContributionsCancellationFeedbackFormThankYou from "./contributionsCancellationFeedbackFormThankYou";
 import DataFetcher from "../../DataFetcher";
-import {useSuspense} from "../../suspense";
+import { useSuspense } from "../../suspense";
 
 const textAreaStyles = css`
   width: 100%;
@@ -51,12 +51,16 @@ const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
     setStatus("SUBMITTED");
   };
 
-  const startFetch = useSuspense(getPatchUpdateCaseFunc(isTestUser, caseId, feedback))
+  const fetchSuspense = useSuspense(
+    getPatchUpdateCaseFunc(isTestUser, caseId, feedback)
+  );
 
   return status === "SUBMITTED" ? (
     <div>
       <DataFetcher loadingMessage="Storing your feedback...">
-        <ContributionsCancellationFeedbackFormThankYou startFetch={startFetch} />
+        <ContributionsCancellationFeedbackFormThankYou
+          fetchSuspense={fetchSuspense}
+        />
       </DataFetcher>
     </div>
   ) : (

@@ -36,7 +36,7 @@ import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { getUpdateCasePromise } from "../caseUpdate";
 import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
 import DataFetcher from "../../DataFetcher";
-import {useSuspense} from "../../suspense";
+import { useSuspense } from "../../suspense";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
@@ -81,8 +81,15 @@ const ContactUs = (reason: CancellationReason) =>
     />
   );
 
-const GetFeedbackThankYouRenderer = (props: { startFetch: () => unknown, reason: CancellationReason }) => {
-  props.startFetch();
+interface GetFeedbackThankYouRenderedProps {
+  fetchSuspense: () => unknown;
+  reason: CancellationReason;
+}
+
+const GetFeedbackThankYouRenderer = (
+  props: GetFeedbackThankYouRenderedProps
+) => {
+  props.fetchSuspense();
 
   return (
     <div
@@ -100,17 +107,17 @@ const GetFeedbackThankYouRenderer = (props: { startFetch: () => unknown, reason:
         }}
       >
         {props.reason.alternateFeedbackThankYouTitle ||
-        "Thank you for your feedback."}
+          "Thank you for your feedback."}
       </p>
       <span>
-          {props.reason.alternateFeedbackThankYouBody ||
+        {props.reason.alternateFeedbackThankYouBody ||
           "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
-        </span>
+      </span>
     </div>
   );
-}
+};
 
-  class FeedbackFormAndContactUs extends React.Component<
+class FeedbackFormAndContactUs extends React.Component<
   FeedbackFormProps,
   FeedbackFormState
 > {
@@ -126,12 +133,17 @@ const GetFeedbackThankYouRenderer = (props: { startFetch: () => unknown, reason:
     const { isTestUser, caseId, reason } = this.props;
 
     if (this.state.hasHitSubmit) {
-      const startFetch = useSuspense(getPatchUpdateCaseFunc(isTestUser, caseId, this.state.feedback));
+      const fetchSuspense = useSuspense(
+        getPatchUpdateCaseFunc(isTestUser, caseId, this.state.feedback)
+      );
 
       return (
         <>
           <DataFetcher loadingMessage="Storing your feedback...">
-            <GetFeedbackThankYouRenderer reason={reason} startFetch={startFetch} />
+            <GetFeedbackThankYouRenderer
+              reason={reason}
+              fetchSuspense={fetchSuspense}
+            />
           </DataFetcher>
           <div css={{ height: "20px" }} />
           <ConfirmCancellationAndReturnRow

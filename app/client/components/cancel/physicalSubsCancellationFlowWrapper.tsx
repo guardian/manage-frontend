@@ -18,6 +18,7 @@ import {
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
 import serialize, { fetcher } from "../../fetchClient";
+import { DeliveryRecordsResponse } from "../delivery/records/deliveryRecordsApi";
 
 function getCancellationDate(
   productDetail: ProductDetail,
@@ -87,7 +88,7 @@ interface ContextualRestOfFlowRendererProps {
 const GetContextualRestOfFlowRenderer = (
   props: ContextualRestOfFlowRendererProps
 ) => {
-  const { endpoint, config } = outstandingHolidayStopsEndpoint(
+  const holidayStops = outstandingHolidayStopsEndpoint(
     props.productDetail,
     props.cancellationPolicy
   );
@@ -97,30 +98,31 @@ const GetContextualRestOfFlowRenderer = (
   );
 
   const outstandingHolidayStops = useSWR(
-    props.productType.delivery?.records ? serialize(endpoint, config) : null,
-    fetcher
+    props.productType.delivery?.records
+      ? serialize(holidayStops.endpoint, holidayStops.config)
+      : null,
+    fetcher,
+    { suspense: true }
   ).data as OutstandingHolidayStopsResponse;
+
   const outstandingDeliveryProblemCredits = useSWR(
     props.productType.delivery?.records
       ? serialize(credits.endpoint, credits.config)
       : null,
-    fetcher
-  ).data;
+    fetcher,
+    { suspense: true }
+  ).data as DeliveryRecordsResponse | undefined;
 
-  if (outstandingHolidayStops) {
-    return (
-      <CancellationOutstandingCreditsContext.Provider
-        value={{
-          holidayStops: outstandingHolidayStops.publicationsToRefund,
-          deliveryCredits: outstandingDeliveryProblemCredits?.results
-        }}
-      >
-        {props.restOfFlow}
-      </CancellationOutstandingCreditsContext.Provider>
-    );
-  } else {
-    return <></>;
-  }
+  return (
+    <CancellationOutstandingCreditsContext.Provider
+      value={{
+        holidayStops: outstandingHolidayStops.publicationsToRefund,
+        deliveryCredits: outstandingDeliveryProblemCredits?.results
+      }}
+    >
+      {props.restOfFlow}
+    </CancellationOutstandingCreditsContext.Provider>
+  );
 };
 
 export const physicalSubsCancellationFlowWrapper = (

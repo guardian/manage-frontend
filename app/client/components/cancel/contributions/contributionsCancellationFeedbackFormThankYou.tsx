@@ -10,13 +10,13 @@ const containerStyles = css`
 `;
 
 export interface ContributionsFeedbackFormThankYouProps {
-  startFetch: () => unknown;
+  fetchSuspense: () => unknown;
 }
 
 const ContributionsFeedbackFormThankYou = ({
-  startFetch
+  fetchSuspense
 }: ContributionsFeedbackFormThankYouProps) => {
-  startFetch();
+  fetchSuspense();
 
   return (
     <div css={containerStyles}>

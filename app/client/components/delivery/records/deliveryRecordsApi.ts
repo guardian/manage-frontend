@@ -86,32 +86,6 @@ export const createDeliveryRecordsFetcher = (
     }
   });
 
-export const createDeliveryRecordsEndpoint = (
-  subscriptionId: string,
-  isTestUser: boolean
-) => {
-  return {
-    method: "GET",
-    endpoint: `/api/delivery-records/${subscriptionId}`,
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
-    }
-  };
-};
-
-export const createDeliveryRecordsConf = (
-  subscriptionId: string,
-  isTestUser: boolean
-) => {
-  return {
-    method: "GET",
-    endpoint: `/api/delivery-records/${subscriptionId}`,
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${isTestUser}`
-    }
-  };
-};
-
 export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
   isTestUser: boolean,

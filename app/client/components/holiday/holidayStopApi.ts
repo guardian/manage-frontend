@@ -189,25 +189,7 @@ const embellishRawHolidayStop = (
     )
   } as HolidayStopRequest);
 
-export const embellishExistingHolidayStops = async (response: Response) => {
-  const raw = (await response.json()) as RawGetHolidayStopsResponse;
-  return {
-    ...raw,
-    productSpecifics: {
-      // taking the oldest date here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
-      // it will need to re-visited for Home Delivery
-      firstAvailableDate: getOldestDate(
-        raw.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
-      ),
-      issueDaysOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)
-    },
-    existing: raw.existing
-      .map(embellishRawHolidayStop)
-      .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
-  } as GetHolidayStopsResponse;
-};
-
-export function embellishExistingHolidayStops2(
+export function embellishExistingHolidayStops(
   payload: RawGetHolidayStopsResponse
 ): GetHolidayStopsResponse {
   return {

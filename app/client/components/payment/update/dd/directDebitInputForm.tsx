@@ -38,18 +38,15 @@ interface DirectDebitUpdateFormProps {
 
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
   const validateDirectDebitDetails = () =>
-    fetch(
-      `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
-      {
-        credentials: "include",
-        method: "POST",
-        body: JSON.stringify({
-          accountNumber,
-          sortCode: cleanSortCode(sortCode)
-        }),
-        headers: { "Content-Type": "application/json" }
-      }
-    );
+    fetch(`/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`, {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({
+        accountNumber,
+        sortCode: cleanSortCode(sortCode)
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
 
   const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] = useState<
     boolean
@@ -61,7 +58,9 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 
   const [validating, setValidating] = useState<boolean>(false);
   const [validationError, setValidationError] = useState<boolean>(false);
-  const [validationResponse, setValidationResponse] = useState<DirectDebitValidationResponse | undefined>();
+  const [validationResponse, setValidationResponse] = useState<
+    DirectDebitValidationResponse | undefined
+  >();
 
   async function performValidation() {
     setValidating(true);
@@ -71,15 +70,15 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
       const resPayload = await res.json();
 
       setValidationResponse(resPayload);
-    } catch(e) {
+    } catch (e) {
       setValidationError(true);
     }
   }
 
-  if(validationError) {
+  if (validationError) {
     setErrorMessage(
       "Could not validate your bank details, please check them and try again."
-    )
+    );
   }
 
   function handleValidationResponse(navigate: NavigateFn) {
@@ -87,11 +86,16 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
       navigate("confirm", {
         state: flowReferrerContext
       });
-    } else if (validationResponse && validationResponse.data.goCardlessStatusCode === 429) {
+    } else if (
+      validationResponse &&
+      validationResponse.data.goCardlessStatusCode === 429
+    ) {
+      setValidating(false);
       setErrorMessage(
         "We cannot currently validate your bank details. Please try again later."
       );
     } else {
+      setValidating(false);
       setErrorMessage(
         "Your bank details are invalid. Please check them and try again."
       );
@@ -99,7 +103,6 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
   }
 
   const flowReferrerContext = useContext(FlowReferrerContext);
-
 
   const startDirectDebitUpdate = () => {
     props.newPaymentMethodDetailUpdater(
@@ -113,7 +116,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
     if (accountName.length < 3) {
       setErrorMessage("Please enter a valid account name"); // TODO add field highlighting
     } else if (soleAccountHolderConfirmed) {
-      performValidation()
+      performValidation();
     } else {
       setErrorMessage("You need to confirm that you are the account holder"); // TODO highlight checkbox
     }
@@ -220,9 +223,14 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
                     }
                   }}
                 >
-                  {validationResponse && handleValidationResponse(nav.navigate) }
-                  {validating ? <SpinLoader loadingMessage="Validating direct debit details..." spinnerScale={0.7} inline />
-                    : (
+                  {validationResponse && handleValidationResponse(nav.navigate)}
+                  {validating ? (
+                    <SpinLoader
+                      loadingMessage="Validating direct debit details..."
+                      spinnerScale={0.7}
+                      inline
+                    />
+                  ) : (
                     <>
                       <Button
                         text="Review payment update"

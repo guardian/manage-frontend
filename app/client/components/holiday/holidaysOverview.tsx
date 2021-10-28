@@ -36,7 +36,7 @@ import {
 } from "./holidayQuestionsModal";
 import {
   calculateIssuesImpactedPerYear,
-  embellishExistingHolidayStops2,
+  embellishExistingHolidayStops,
   HolidayStopRequest,
   HolidayStopsResponseContext,
   isNotBulkSuspension,
@@ -108,7 +108,7 @@ const RenderHolidayStopsOverview = ({
 
   const rawHolidayStopsResponse = holidayStopsQuery.data as RawGetHolidayStopsResponse;
 
-  const holidayStopsResponse = embellishExistingHolidayStops2(
+  const holidayStopsResponse = embellishExistingHolidayStops(
     rawHolidayStopsResponse
   );
 

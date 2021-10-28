@@ -22,7 +22,7 @@ import {
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
-import {updateAddressFetcher} from "./deliveryAddressApi";
+import { updateAddressFetcher } from "./deliveryAddressApi";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
@@ -32,18 +32,22 @@ import {
   NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
 import DataFetcher from "../../DataFetcher";
-import {useSuspense} from "../../suspense";
-import {DeliveryAddress} from "../../../../shared/productResponse";
+import { useSuspense } from "../../suspense";
+import { DeliveryAddress } from "../../../../shared/productResponse";
 
 interface RenderConfirmationProps {
-  startFetch: () => unknown
+  fetchSuspense: () => unknown;
   routeableStepProps: RouteableStepProps;
 }
 
-const RenderConfirmation = ({ startFetch, routeableStepProps }: RenderConfirmationProps) => {
-  startFetch();
+const RenderConfirmation = ({
+  fetchSuspense,
+  routeableStepProps
+}: RenderConfirmationProps) => {
+  fetchSuspense();
+  // add mutations here
 
-  return <ConfirmationFC {...routeableStepProps} />
+  return <ConfirmationFC {...routeableStepProps} />;
 };
 
 const ConfirmationFC = (props: RouteableStepProps) => {
@@ -296,17 +300,22 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     )} )`
   ].join("\n");
 
-  const startFetch = useSuspense(updateAddressFetcher(
-    {
-      ...addressContext.newDeliveryAddress,
-      addressChangeInformation: addressChangeInformationCopy
-    } as DeliveryAddress,
-    contactIdContext
-  ));
+  const fetchSuspense = useSuspense(
+    updateAddressFetcher(
+      {
+        ...addressContext.newDeliveryAddress,
+        addressChangeInformation: addressChangeInformationCopy
+      } as DeliveryAddress,
+      contactIdContext
+    )
+  );
 
   return addressContext.newDeliveryAddress ? (
     <DataFetcher loadingMessage="Updating delivery address details...">
-      <RenderConfirmation startFetch={startFetch} routeableStepProps={props} />
+      <RenderConfirmation
+        fetchSuspense={fetchSuspense}
+        routeableStepProps={props}
+      />
     </DataFetcher>
   ) : (
     visuallyNavigateToParent(props)
