@@ -12,7 +12,6 @@ import SpinLoader from "../SpinLoader";
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
   isTestUser: boolean;
-  reloadParent?: () => void;
   setExistingHolidayStopToAmend?: (newValue: HolidayStopRequest | null) => void;
 }
 
@@ -40,8 +39,9 @@ export default function ExistingHolidayStopActions(
   async function handleMutation(params: withdrawHolidayParams) {
     try {
       await withdrawHolidayFetch(params);
-
-      props.reloadParent && props.reloadParent();
+      mutate(
+        `/api/holidays/${productDetail.subscription.subscriptionId}/potential`
+      );
     } catch (e) {
       setError(true);
     }
@@ -51,11 +51,7 @@ export default function ExistingHolidayStopActions(
 
   if (error) {
     return (
-      <Modal
-        title="Sorry"
-        instigator={null}
-        extraOnHideFunctionality={props.reloadParent}
-      >
+      <Modal title="Sorry" instigator={null}>
         Deleting your <strong>{friendlyDateRange}</strong> suspension failed,
         please try again later...
       </Modal>
