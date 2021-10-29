@@ -11,8 +11,7 @@ import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import {
-  getPotentialHolidayStopsFetcher,
-  PotentialHolidayStopsAsyncLoader,
+  getPotentialHolidayStopsEndpoint,
   PotentialHolidayStopsResponse,
   RawPotentialHolidayStopDetail
 } from "../../holiday/holidayStopApi";
@@ -34,6 +33,9 @@ import {
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 import { UserPhoneNumber } from "./userPhoneNumber";
+import DataFetcher from "../../DataFetcher";
+import useSWR from "swr";
+import serialize, { fetcher } from "../../../fetchClient";
 
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
@@ -51,9 +53,20 @@ export const DeliveryRecordsProblemReview = (
   const problemEndDate =
     deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
-  const renderReviewDetails = (
-    potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse
-  ) => {
+  const RenderReviewDetails = () => {
+    const { endpoint, config } = getPotentialHolidayStopsEndpoint(
+      deliveryProblemContext?.subscription.subscriptionId,
+      parseDate(problemStartDate).date,
+      parseDate(problemEndDate).date,
+      deliveryProblemContext.isTestUser
+    );
+
+    const potentialHolidayStopsResponseWithCredits = useSWR(
+      serialize(endpoint, config),
+      fetcher,
+      { suspense: true }
+    ).data as PotentialHolidayStopsResponse;
+
     const totalCreditAmount: number =
       potentialHolidayStopsResponseWithCredits.potentials.length &&
       potentialHolidayStopsResponseWithCredits.potentials
@@ -86,16 +99,9 @@ export const DeliveryRecordsProblemReview = (
   }
 
   return deliveryProblemContext.showProblemCredit ? (
-    <PotentialHolidayStopsAsyncLoader
-      fetch={getPotentialHolidayStopsFetcher(
-        deliveryProblemContext?.subscription.subscriptionId,
-        parseDate(problemStartDate).date,
-        parseDate(problemEndDate).date,
-        deliveryProblemContext.isTestUser
-      )}
-      render={renderReviewDetails}
-      loadingMessage="Generating your report"
-    />
+    <DataFetcher loadingMessage="Generating your report">
+      <RenderReviewDetails />
+    </DataFetcher>
   ) : (
     <DeliveryRecordsProblemReviewFC {...props} />
   );

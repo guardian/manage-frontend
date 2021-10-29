@@ -1,92 +1,129 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import { DATE_FNS_INPUT_FORMAT, parseDate } from "../../../shared/dates";
+import {
+  DATE_FNS_INPUT_FORMAT,
+  parseDate,
+  ParsedDate
+} from "../../../shared/dates";
 import {
   MDA_TEST_USER_HEADER,
   ProductDetail
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
-import AsyncLoader from "../asyncLoader";
-import { DeliveryRecordsResponse } from "../delivery/records/deliveryRecordsApi";
 import { OutstandingHolidayStopsResponse } from "../holiday/holidayStopApi";
 import {
   cancellationEffectiveToday,
   CancellationOutstandingCreditsContext,
   CancellationPolicyContext
 } from "./cancellationContexts";
+import DataFetcher from "../DataFetcher";
+import useSWR from "swr";
+import serialize, { fetcher } from "../../fetchClient";
+import { DeliveryRecordsResponse } from "../delivery/records/deliveryRecordsApi";
 
-type CombinedOutstandingCreditsResponse = [
-  OutstandingHolidayStopsResponse,
-  DeliveryRecordsResponse | undefined
-];
-
-class OutstandingHolidayStopsAsyncLoader extends AsyncLoader<
-  CombinedOutstandingCreditsResponse
-> {}
-
-const getOutstandingCreditsFetcher = (
+function getCancellationDate(
   productDetail: ProductDetail,
-  productType: ProductType,
   cancellationPolicy: string | undefined
-) => async () => {
-  const effectiveCancellationDate =
-    !productDetail.subscription.chargedThroughDate ||
+): ParsedDate {
+  return !productDetail.subscription.chargedThroughDate ||
     cancellationPolicy === cancellationEffectiveToday
-      ? parseDate()
-      : parseDate(productDetail.subscription.chargedThroughDate);
+    ? parseDate()
+    : parseDate(productDetail.subscription.chargedThroughDate);
+}
 
-  const outstandingHolidayStopsPromise = fetch(
-    `/api/holidays/${
+export function outstandingHolidayStopsEndpoint(
+  productDetail: ProductDetail,
+  cancellationPolicy: string | undefined
+) {
+  const effectiveCancellationDate = getCancellationDate(
+    productDetail,
+    cancellationPolicy
+  );
+
+  return {
+    endpoint: `/api/holidays/${
       productDetail.subscription.subscriptionId
     }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
       DATE_FNS_INPUT_FORMAT
     )}`,
-    {
+    config: {
       headers: {
         [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
       }
     }
+  };
+}
+
+export function optionalOutstandingDeliveryProblemCredits(
+  productDetail: ProductDetail,
+  cancellationPolicy: string | undefined
+) {
+  const effectiveCancellationDate = getCancellationDate(
+    productDetail,
+    cancellationPolicy
   );
 
-  const optionalOutstandingDeliveryProblemCreditsPromise =
-    productType.delivery?.records &&
-    fetch(
-      `/api/delivery-records/${
-        productDetail.subscription.subscriptionId
-      }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
-        DATE_FNS_INPUT_FORMAT
-      )}`,
-      {
-        headers: {
-          [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-        }
+  return {
+    endpoint: `/api/delivery-records/${
+      productDetail.subscription.subscriptionId
+    }/cancel?effectiveCancellationDate=${effectiveCancellationDate.dateStr(
+      DATE_FNS_INPUT_FORMAT
+    )}`,
+    config: {
+      headers: {
+        [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
       }
-    );
-
-  return Promise.all([
-    outstandingHolidayStopsPromise,
-    ...(optionalOutstandingDeliveryProblemCreditsPromise
-      ? [optionalOutstandingDeliveryProblemCreditsPromise]
-      : [])
-  ]);
-};
+    }
+  };
+}
 
 export type RestOfCancellationFlow = ReactNode | ReactNodeArray;
 
-const getContextualRestOfFlowRenderer = (
-  restOfFlow: RestOfCancellationFlow
-) => ([
-  outstandingHolidayStops,
-  outstandingDeliveryProblemCredits
-]: CombinedOutstandingCreditsResponse) => (
-  <CancellationOutstandingCreditsContext.Provider
-    value={{
-      holidayStops: outstandingHolidayStops.publicationsToRefund,
-      deliveryCredits: outstandingDeliveryProblemCredits?.results
-    }}
-  >
-    {restOfFlow}
-  </CancellationOutstandingCreditsContext.Provider>
-);
+interface ContextualRestOfFlowRendererProps {
+  restOfFlow: RestOfCancellationFlow;
+  productDetail: ProductDetail;
+  productType: ProductType;
+  cancellationPolicy?: string | undefined;
+}
+
+const GetContextualRestOfFlowRenderer = (
+  props: ContextualRestOfFlowRendererProps
+) => {
+  const holidayStops = outstandingHolidayStopsEndpoint(
+    props.productDetail,
+    props.cancellationPolicy
+  );
+  const credits = optionalOutstandingDeliveryProblemCredits(
+    props.productDetail,
+    props.cancellationPolicy
+  );
+
+  const outstandingHolidayStops = useSWR(
+    props.productType.delivery?.records
+      ? serialize(holidayStops.endpoint, holidayStops.config)
+      : null,
+    fetcher,
+    { suspense: true }
+  ).data as OutstandingHolidayStopsResponse;
+
+  const outstandingDeliveryProblemCredits = useSWR(
+    props.productType.delivery?.records
+      ? serialize(credits.endpoint, credits.config)
+      : null,
+    fetcher,
+    { suspense: true }
+  ).data as DeliveryRecordsResponse | undefined;
+
+  return (
+    <CancellationOutstandingCreditsContext.Provider
+      value={{
+        holidayStops: outstandingHolidayStops.publicationsToRefund,
+        deliveryCredits: outstandingDeliveryProblemCredits?.results
+      }}
+    >
+      {props.restOfFlow}
+    </CancellationOutstandingCreditsContext.Provider>
+  );
+};
 
 export const physicalSubsCancellationFlowWrapper = (
   productDetail: ProductDetail,
@@ -94,15 +131,14 @@ export const physicalSubsCancellationFlowWrapper = (
 ) => (restOfFlow: RestOfCancellationFlow) => (
   <CancellationPolicyContext.Consumer>
     {cancellationPolicy => (
-      <OutstandingHolidayStopsAsyncLoader
-        fetch={getOutstandingCreditsFetcher(
-          productDetail,
-          productType,
-          cancellationPolicy
-        )}
-        render={getContextualRestOfFlowRenderer(restOfFlow)}
-        loadingMessage="Checking for outstanding credits owed to you..."
-      />
+      <DataFetcher loadingMessage="Checking for outstanding credits owed to you...">
+        <GetContextualRestOfFlowRenderer
+          restOfFlow={restOfFlow}
+          productDetail={productDetail}
+          productType={productType}
+          cancellationPolicy={cancellationPolicy}
+        />
+      </DataFetcher>
     )}
   </CancellationPolicyContext.Consumer>
 );

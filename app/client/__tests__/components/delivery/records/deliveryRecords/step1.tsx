@@ -1,14 +1,11 @@
-import { Button } from "@guardian/src-button";
-import Enzyme, { mount } from "enzyme";
+import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
-import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
-import DeliveryRecords, {
-  DeliveryRecordsFC
-} from "../../../../../components/delivery/records/deliveryRecords";
-import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
+import DeliveryRecords from "../../../../../components/delivery/records/deliveryRecords";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
+import { act, fireEvent, render } from "@testing-library/react";
+import fetchMock from "fetch-mock";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -147,29 +144,15 @@ const nextNTicks = (n: number, callback: () => void) => {
 };
 
 describe("DeliveryRecords", () => {
-  beforeEach(() => {
-    // tslint:disable-next-line: no-object-mutation
-    global.fetch = jest.fn().mockImplementation(url => {
-      return new Promise(resolve => {
-        resolve({
-          ok: true,
-          status: 200,
-          headers: {
-            get: () => "pass"
-          },
-          json: () => {
-            return url.includes("/api/me/mma")
-              ? apiMeMmaResponse
-              : deliveryRecordsResponse;
-          }
-        });
-      });
-    });
-  });
+  fetchMock
+    .get(/api\/delivery-records/, deliveryRecordsResponse)
+    .get(/api\/me\/mma/, apiMeMmaResponse);
 
   it("renders without crashing", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const wrapper = mount(
+      jest.useFakeTimers();
+
+      render(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -177,15 +160,13 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.update();
-
-      expect(
-        wrapper
-          .find("h1")
-          .at(0)
-          .text()
-      ).toEqual("Delivery history");
+      expect(document.querySelectorAll("h1")[0].textContent).toEqual(
+        "Delivery history"
+      );
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
@@ -194,7 +175,9 @@ describe("DeliveryRecords", () => {
 
   it("renders in 'read only' mode initially", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const wrapper = mount(
+      jest.useFakeTimers();
+
+      const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -202,19 +185,13 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.update();
+      getByText("Report a problem");
 
-      expect(
-        wrapper
-          .find(DeliveryRecordsFC)
-          .find(Button)
-          .at(0)
-          .text()
-      ).toEqual("Report a problem");
-
-      expect(wrapper.find(DeliveryRecordCard)).toHaveLength(2);
-
+      expect(document.querySelectorAll(".deliveryRecordCard")).toHaveLength(2);
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
@@ -223,7 +200,9 @@ describe("DeliveryRecords", () => {
 
   it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const wrapper = mount(
+      jest.useFakeTimers();
+
+      const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -231,47 +210,28 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.update();
-
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(Button)
-        .at(0)
-        .simulate("click");
-
-      const problemForm = wrapper
-        .find(DeliveryRecordsFC)
-        .find(DeliveryRecordProblemForm);
-
-      expect(problemForm.find("li")).toHaveLength(
-        guardianWeeklyProblemArr.length
-      );
-
-      guardianWeeklyProblemArr.map((problemCopy, index) =>
-        expect(
-          problemForm
-            .find("li")
-            .at(index)
-            .text()
-        ).toEqual(problemCopy)
+      fireEvent(
+        getByText("Report a problem"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        })
       );
 
       expect(
-        problemForm
-          .find("li")
-          .find("label")
-          .at(0)
-          .text()
-      ).toEqual("Damaged paper");
+        document
+          .querySelectorAll(".deliveryRecordProblemForm")[0]
+          .querySelectorAll("li")
+      ).toHaveLength(guardianWeeklyProblemArr.length);
 
-      expect(
-        problemForm
-          .find("button")
-          .at(0)
-          .text()
-      ).toEqual("Continue to Step 2 & 3");
+      guardianWeeklyProblemArr.map(problemCopy => getByText(problemCopy));
 
+      getByText("Damaged paper");
+      getByText("Continue to Step 2 & 3");
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
@@ -280,7 +240,9 @@ describe("DeliveryRecords", () => {
 
   it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const wrapper = mount(
+      jest.useFakeTimers();
+
+      const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -288,29 +250,27 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.update();
+      fireEvent(
+        getByText("Report a problem"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        })
+      );
 
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(Button)
-        .at(0)
-        .simulate("click");
+      fireEvent(
+        getByText("Continue to Step 2 & 3"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true
+        })
+      );
 
-      const problemForm = wrapper
-        .find(DeliveryRecordsFC)
-        .find(DeliveryRecordProblemForm);
-
-      const continueToStep2Btn = problemForm.find("button").at(0);
-      continueToStep2Btn.simulate("submit");
-
-      expect(
-        wrapper
-          .find("form")
-          .find("span")
-          .text()
-      ).toEqual("Please select the type of problem");
-
+      getByText("Please select the type of problem");
       done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");

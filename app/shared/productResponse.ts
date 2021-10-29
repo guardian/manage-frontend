@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
-import AsyncLoader from "../client/components/asyncLoader";
 import { PhoneRegionKey } from "../client/components/callCenterEmailAndNumbers";
 import { DeliveryRecordDetail } from "../client/components/delivery/records/deliveryRecordsApi";
 import { CardProps } from "../client/components/payment/cardDisplay";
@@ -21,10 +20,6 @@ export interface InvoiceDataApiItem {
   last4?: string;
   cardType?: string;
 }
-
-export class MembersDatApiAsyncLoader extends AsyncLoader<
-  MembersDataApiItem[]
-> {}
 
 export const MembersDataApiItemContext: React.Context<MembersDataApiItem> = React.createContext(
   {}

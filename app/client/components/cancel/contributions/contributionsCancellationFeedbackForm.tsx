@@ -1,8 +1,10 @@
 import { css } from "@emotion/core";
 import { Button } from "@guardian/src-button";
 import React, { useState } from "react";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import { getUpdateCasePromise } from "../caseUpdate";
 import ContributionsCancellationFeedbackFormThankYou from "./contributionsCancellationFeedbackFormThankYou";
+import DataFetcher from "../../DataFetcher";
+import { useSuspense } from "../../suspense";
 
 const textAreaStyles = css`
   width: 100%;
@@ -29,8 +31,8 @@ const getPatchUpdateCaseFunc = (
   isTestUser: boolean,
   caseId: string,
   feedback: string
-) => async () =>
-  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+) =>
+  getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query"
   });
@@ -49,13 +51,17 @@ const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
     setStatus("SUBMITTED");
   };
 
+  const fetchSuspense = useSuspense(
+    getPatchUpdateCaseFunc(isTestUser, caseId, feedback)
+  );
+
   return status === "SUBMITTED" ? (
     <div>
-      <CaseUpdateAsyncLoader
-        loadingMessage="Storing your feedback..."
-        fetch={getPatchUpdateCaseFunc(isTestUser, caseId, feedback)}
-        render={() => <ContributionsCancellationFeedbackFormThankYou />}
-      />
+      <DataFetcher loadingMessage="Storing your feedback...">
+        <ContributionsCancellationFeedbackFormThankYou
+          fetchSuspense={fetchSuspense}
+        />
+      </DataFetcher>
     </div>
   ) : (
     <div>
