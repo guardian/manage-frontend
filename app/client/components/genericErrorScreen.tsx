@@ -8,7 +8,9 @@ interface GenericErrorScreenProps {
   loggingMessage: string | false;
 }
 
-export const GenericErrorScreen = ({ loggingMessage }: GenericErrorScreenProps) => {
+export const GenericErrorScreen = ({
+  loggingMessage
+}: GenericErrorScreenProps) => {
   if (loggingMessage) {
     Sentry.captureException(loggingMessage);
     trackEvent({

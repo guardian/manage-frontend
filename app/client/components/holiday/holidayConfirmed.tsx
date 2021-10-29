@@ -21,14 +21,16 @@ import { creditExplainerSentence } from "./holidayQuestionsModal";
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   HolidayStopsResponseContext,
-  isHolidayStopsResponse
+  isHolidayStopsResponse,
+  ReloadableGetHolidayStopsResponse
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
 const innerContent = (
   productType: ProductTypeWithHolidayStopsFlow,
   productDetail: ProductDetail,
-  dateChooserState: SharedHolidayDateChooserState
+  dateChooserState: SharedHolidayDateChooserState,
+  holidayStopsResponse: ReloadableGetHolidayStopsResponse
 ) => (
   <>
     <h1>Your schedule has been set</h1>
@@ -47,6 +49,7 @@ const innerContent = (
       <div css={{ marginBottom: "10px" }}>
         <LinkButton
           to={"/suspend/" + productType.urlPart + "/create"}
+          onClick={holidayStopsResponse.reload}
           text="Schedule another suspension"
           right
         />
@@ -90,7 +93,8 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                     {innerContent(
                       props.productType,
                       productDetail,
-                      dateChooserState
+                      dateChooserState,
+                      holidayStopsResponse
                     )}
                   </WizardStep>
                 ) : (

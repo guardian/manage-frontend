@@ -51,7 +51,6 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
     `;
   return (
     <dl
-      className="deliveryRecordCard"
       css={css`
         border: 1px solid ${neutral["86"]};
         margin: 0;
