@@ -10,6 +10,7 @@ import {
   ParsedDate
 } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
+import AsyncLoader, { ReFetch } from "../asyncLoader";
 
 interface CommonCreditProperties {
   estimatedPrice?: number;
@@ -86,10 +87,11 @@ export interface GetHolidayStopsResponse {
 
 export interface ReloadableGetHolidayStopsResponse
   extends GetHolidayStopsResponse {
+  reload: ReFetch;
   existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
-export interface RawGetHolidayStopsResponse {
+interface RawGetHolidayStopsResponse {
   issueSpecifics: Array<{
     issueDayOfWeek: number;
     firstAvailableDate: string;
@@ -105,6 +107,15 @@ export const convertRawPotentialHolidayStopDetail = (
   invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
   publicationDate: parseDate(raw.publicationDate)
 });
+
+export class GetHolidayStopsAsyncLoader extends AsyncLoader<
+  GetHolidayStopsResponse
+> {}
+
+// tslint:disable-next-line:max-classes-per-file
+export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
+  PotentialHolidayStopsResponse
+> {}
 
 export const getPotentialHolidayStopsFetcher = (
   subscriptionName: string,
@@ -124,28 +135,14 @@ export const getPotentialHolidayStopsFetcher = (
     }
   );
 
-export const getPotentialHolidayStopsEndpoint = (
-  subscriptionName: string,
-  startDate: Date,
-  endDate: Date,
-  isTestUser: boolean
-) => {
-  return {
-    endpoint: `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
-      startDate,
-      DATE_FNS_INPUT_FORMAT
-    )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
-    config: {
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${isTestUser}`
-      }
-    }
-  };
-};
-
 export interface CreateOrAmendHolidayStopsResponse {
   success: string;
 }
+
+// tslint:disable-next-line:max-classes-per-file
+export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<
+  CreateOrAmendHolidayStopsResponse
+> {}
 
 export const HolidayStopsResponseContext: React.Context<
   ReloadableGetHolidayStopsResponse | {}
@@ -189,24 +186,23 @@ const embellishRawHolidayStop = (
     )
   } as HolidayStopRequest);
 
-export function embellishExistingHolidayStops(
-  payload: RawGetHolidayStopsResponse
-): GetHolidayStopsResponse {
+export const embellishExistingHolidayStops = async (response: Response) => {
+  const raw = (await response.json()) as RawGetHolidayStopsResponse;
   return {
-    ...payload,
+    ...raw,
     productSpecifics: {
       // taking the oldest date here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
       // it will need to re-visited for Home Delivery
       firstAvailableDate: getOldestDate(
-        payload.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
+        raw.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
       ),
-      issueDaysOfWeek: payload.issueSpecifics.map(_ => _.issueDayOfWeek)
+      issueDaysOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)
     },
-    existing: payload.existing
+    existing: raw.existing
       .map(embellishRawHolidayStop)
       .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
-  };
-}
+  } as GetHolidayStopsResponse;
+};
 
 export interface IssuesImpactedPerYear {
   issuesThisYear: HolidayStopDetail[];

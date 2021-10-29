@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { navigate } from "@reach/router";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, ReactNode } from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
@@ -33,10 +33,8 @@ import {
   CancellationReasonId
 } from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
-import { getUpdateCasePromise } from "../caseUpdate";
+import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 import { RestOfCancellationFlow } from "../physicalSubsCancellationFlowWrapper";
-import DataFetcher from "../../DataFetcher";
-import { useSuspense } from "../../suspense";
 
 export interface GenericSaveAttemptProps extends MultiRouteableProps {
   reason: CancellationReason;
@@ -60,8 +58,8 @@ const getPatchUpdateCaseFunc = (
   isTestUser: boolean,
   caseId: string,
   feedback: string
-) =>
-  getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+) => async () =>
+  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
     Description: feedback,
     Subject: "Online Cancellation Query"
   });
@@ -81,42 +79,6 @@ const ContactUs = (reason: CancellationReason) =>
     />
   );
 
-interface GetFeedbackThankYouRenderedProps {
-  fetchSuspense: () => unknown;
-  reason: CancellationReason;
-}
-
-const GetFeedbackThankYouRenderer = (
-  props: GetFeedbackThankYouRenderedProps
-) => {
-  props.fetchSuspense();
-
-  return (
-    <div
-      css={{
-        marginLeft: "15px",
-        marginTop: "30px",
-        paddingLeft: "15px",
-        borderLeft: "1px solid " + palette.neutral["4"]
-      }}
-    >
-      <p
-        css={{
-          fontSize: "1rem",
-          fontWeight: 500
-        }}
-      >
-        {props.reason.alternateFeedbackThankYouTitle ||
-          "Thank you for your feedback."}
-      </p>
-      <span>
-        {props.reason.alternateFeedbackThankYouBody ||
-          "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
-      </span>
-    </div>
-  );
-};
-
 class FeedbackFormAndContactUs extends React.Component<
   FeedbackFormProps,
   FeedbackFormState
@@ -130,21 +92,18 @@ class FeedbackFormAndContactUs extends React.Component<
   }
 
   public render(): React.ReactNode {
-    const { isTestUser, caseId, reason } = this.props;
-
     if (this.state.hasHitSubmit) {
-      const fetchSuspense = useSuspense(
-        getPatchUpdateCaseFunc(isTestUser, caseId, this.state.feedback)
-      );
-
       return (
         <>
-          <DataFetcher loadingMessage="Storing your feedback...">
-            <GetFeedbackThankYouRenderer
-              reason={reason}
-              fetchSuspense={fetchSuspense}
-            />
-          </DataFetcher>
+          <CaseUpdateAsyncLoader
+            loadingMessage="Storing your feedback..."
+            fetch={getPatchUpdateCaseFunc(
+              this.props.isTestUser,
+              this.props.caseId,
+              this.state.feedback
+            )}
+            render={this.getFeedbackThankYouRenderer(this.props.reason)}
+          />
           <div css={{ height: "20px" }} />
           <ConfirmCancellationAndReturnRow
             hide={!!this.props.reason.hideSaveActions}
@@ -196,13 +155,13 @@ class FeedbackFormAndContactUs extends React.Component<
             hide={!!this.props.reason.hideSaveActions}
             reasonId={this.props.reason.reasonId}
             productType={this.props.productType}
-            onClick={async () => {
+            onClick={() => {
               if (this.state.feedback.length > 0) {
-                await getPatchUpdateCaseFunc(
+                getPatchUpdateCaseFunc(
                   this.props.isTestUser,
                   this.props.caseId,
                   this.state.feedback
-                );
+                )();
                 gaTrackFeedback("submitted silently");
               }
             }}
@@ -226,6 +185,35 @@ class FeedbackFormAndContactUs extends React.Component<
     this.setState({ hasHitSubmit: true });
     gaTrackFeedback("submitted");
   };
+
+  private getFeedbackThankYouRenderer(
+    reason: CancellationReason
+  ): () => ReactNode {
+    return () => (
+      <div
+        css={{
+          marginLeft: "15px",
+          marginTop: "30px",
+          paddingLeft: "15px",
+          borderLeft: "1px solid " + palette.neutral["4"]
+        }}
+      >
+        <p
+          css={{
+            fontSize: "1rem",
+            fontWeight: 500
+          }}
+        >
+          {reason.alternateFeedbackThankYouTitle ||
+            "Thank you for your feedback."}
+        </p>
+        <span>
+          {reason.alternateFeedbackThankYouBody ||
+            "The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service."}
+        </span>
+      </div>
+    );
+  }
 }
 
 interface ConfirmCancellationAndReturnRowProps

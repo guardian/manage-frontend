@@ -18,12 +18,14 @@ import {
   DeliveryAddress,
   isProduct,
   MembersDataApiItem,
+  MembersDatApiAsyncLoader,
   ProductDetail
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
-import { createProductDetailEndpoint } from "../../../productUtils";
+import { createProductDetailFetcher } from "../../../productUtils";
 import { minWidth } from "../../../styles/breakpoints";
 import { flattenEquivalent } from "../../../utils";
+import AsyncLoader from "../../asyncLoader";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { COUNTRIES } from "../../identity/models";
 import { InfoSection } from "../../infoSection";
@@ -44,28 +46,12 @@ import { FormValidationResponse, isFormValid } from "../address/formValidation";
 import { Select } from "../address/select";
 import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
-import DataFetcher from "../../DataFetcher";
-import useSWR, { useSWRConfig } from "swr";
-import { fetcher } from "../../../fetchClient";
-import { useSuspense } from "../../suspense";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../../../shared/identity";
 
 interface DeliveryAddressStepProps {
   productDetail: ProductDetail;
   enableDeliveryInstructions: boolean;
   setAddressValidationState: Dispatch<SetStateAction<boolean>>;
 }
-
-const headers = {
-  headers: {
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-      window.location.href
-    )
-  }
-};
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   enum Status {
@@ -131,19 +117,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     }
   };
 
-  const RenderDeliveryAddressForm = () => {
-    const { endpoint } = createProductDetailEndpoint(
-      GROUPED_PRODUCT_TYPES.subscriptions
-    );
-
-    const allProductDetails = useSWR(
-      endpoint,
-      () => fetcher(endpoint, headers),
-      {
-        suspense: true
-      }
-    ).data as MembersDataApiItem[];
-
+  const renderDeliveryAddressForm = (
+    allProductDetails: MembersDataApiItem[]
+  ) => {
     const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
       allProductDetails
         .filter(isProduct)
@@ -512,46 +488,35 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     );
   };
 
-  interface RenderConfirmationProps {
-    fetchSuspense: () => unknown;
-  }
-
-  const RenderConfirmation = ({ fetchSuspense }: RenderConfirmationProps) => {
-    fetchSuspense();
-
-    const { mutate } = useSWRConfig();
-    mutate("/api/me/mma");
-
-    return (
-      <>
-        <div
-          css={css`
-            padding: ${space[3]}px;
-            ${minWidth.tablet} {
-              padding: ${space[5]}px;
-            }
-          `}
-        >
-          <SuccessMessage
-            additionalCss={css`
-              margin-bottom: 0;
-            `}
-            message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
-              deliveryAddressContext.productsAffected.length > 1 &&
-              "s"}. You will shortly receive a confirmation email.`}
-          />
-        </div>
-        <ReadOnlyAddressDisplay
-          address={newAddress}
-          instructions={
-            (props.enableDeliveryInstructions &&
-              deliveryAddressContext.address?.instructions) ||
-            undefined
+  const renderConfirmation = () => (
+    <>
+      <div
+        css={css`
+          padding: ${space[3]}px;
+          ${minWidth.tablet} {
+            padding: ${space[5]}px;
           }
+        `}
+      >
+        <SuccessMessage
+          additionalCss={css`
+            margin-bottom: 0;
+          `}
+          message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
+            deliveryAddressContext.productsAffected.length > 1 &&
+            "s"}. You will shortly receive a confirmation email.`}
         />
-      </>
-    );
-  };
+      </div>
+      <ReadOnlyAddressDisplay
+        address={newAddress}
+        instructions={
+          (props.enableDeliveryInstructions &&
+            deliveryAddressContext.address?.instructions) ||
+          undefined
+        }
+      />
+    </>
+  );
 
   if (
     status === Status.EDIT ||
@@ -567,29 +532,32 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
           }
         `}
       >
-        <DataFetcher loadingMessage="Loading delivery details...">
-          <RenderDeliveryAddressForm />
-        </DataFetcher>
+        <MembersDatApiAsyncLoader
+          render={renderDeliveryAddressForm}
+          fetch={createProductDetailFetcher(
+            GROUPED_PRODUCT_TYPES.subscriptions
+          )}
+          loadingMessage={"Loading delivery details..."}
+        />
       </div>
     );
   } else if (
     status === Status.CONFIRMATION &&
     props.productDetail.subscription.contactId
   ) {
-    const fetchSuspense = useSuspense(
-      updateAddressFetcher(
-        {
-          ...newAddress,
-          addressChangeInformation
-        },
-        props.productDetail.subscription.contactId
-      )
-    );
-
     return (
-      <DataFetcher loadingMessage="Updating delivery address details...">
-        <RenderConfirmation fetchSuspense={fetchSuspense} />
-      </DataFetcher>
+      <AsyncLoader
+        render={renderConfirmation}
+        fetch={updateAddressFetcher(
+          {
+            ...newAddress,
+            addressChangeInformation
+          },
+          props.productDetail.subscription.contactId
+        )}
+        readerOnOK={(resp: Response) => resp.text()}
+        loadingMessage={"Updating delivery address details..."}
+      />
     );
   }
   return (

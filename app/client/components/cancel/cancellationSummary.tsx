@@ -13,7 +13,6 @@ import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { CancellationContributionReminder } from "./cancellationContributionReminder";
-import { useSWRConfig } from "swr";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -152,23 +151,10 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
   Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-interface CancellationSummaryProps {
-  productType: ProductType;
-  productDetail: ProductDetail;
-  caseId: string | "";
-  fetchSuspense?: () => unknown;
-}
-
-export const CancellationSummary = (props: CancellationSummaryProps) => {
-  const { productDetail, productType, fetchSuspense } = props;
-
-  const { mutate } = useSWRConfig();
-
-  fetchSuspense && fetchSuspense();
-  mutate("/api/me/mma");
-  // we don't always call the patch endpoint so using this hook conditionally
-
-  return isCancelled(productDetail.subscription) ? (
+export const getCancellationSummary = (productType: ProductType) => (
+  productDetail: ProductDetail
+) =>
+  isCancelled(productDetail.subscription) ? (
     actuallyCancelled(productType, productDetail)
   ) : (
     <GenericErrorScreen
@@ -178,4 +164,3 @@ export const CancellationSummary = (props: CancellationSummaryProps) => {
       }
     />
   );
-};
