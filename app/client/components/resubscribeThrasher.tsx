@@ -1,36 +1,15 @@
-import React, { ReactNode } from "react";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../shared/identity";
+import React from "react";
 import palette from "../colours";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
-import AsyncLoader from "./asyncLoader";
 import { SupportTheGuardianButton } from "./supportTheGuardianButton";
-<<<<<<< HEAD
-import { fetchWithDefaultParameters } from "../fetch";
-
-const fetchExistingPaymentOptions = () =>
-  fetchWithDefaultParameters("/api/existing-payment-options", {
-    headers: {
-      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-        window.location.href
-      )
-    }
-  });
-=======
 import { fetcher } from "../fetchClient";
 import DataFetcher from "./DataFetcher";
 import useSWR from "swr";
-<<<<<<< HEAD
->>>>>>> 2106fd23 (componetized address form)
-=======
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
 } from "../../shared/identity";
->>>>>>> 91cfa81b (formatting and spacings)
 
 interface ExistingPaymentSubscriptionInfo {
   name: string;
@@ -51,43 +30,20 @@ interface GetThrasherProps {
 }
 
 const headers = {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> cc3d22a6 (swr headers removed from cache keys)
   headers: {
     [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
       window.location.href
     )
   }
-<<<<<<< HEAD
-=======
-  [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-    window.location.href
-  )
->>>>>>> 91cfa81b (formatting and spacings)
-=======
->>>>>>> cc3d22a6 (swr headers removed from cache keys)
 };
 
 const GetThrasher = ({ args }: GetThrasherProps) => {
   const existingPaymentOptions = useSWR(
-<<<<<<< HEAD
     "/api/existing-payment-options",
-<<<<<<< HEAD
     url => fetcher(url, headers),
-=======
-=======
-    ["/api/existing-payment-options", headers],
->>>>>>> 91cfa81b (formatting and spacings)
-    fetcher,
->>>>>>> 2106fd23 (componetized address form)
     { suspense: true }
   ).data as ExistingPaymentOption[];
 
-const getThrasher = (args: ResubscribeThrasherProps) => (
-  existingPaymentOptions: ExistingPaymentOption[]
-) => {
   const eligiblePaymentOptionsIfNoActiveExistingContribution = existingPaymentOptions.find(
     option =>
       !!option.subscriptions.find(
@@ -141,18 +97,17 @@ const getThrasher = (args: ResubscribeThrasherProps) => (
       </div>
     );
   }
+
   return args.children;
 };
 
 interface ResubscribeThrasherProps {
-  children: ReactNode;
+  children: JSX.Element;
   usageContext: string;
 }
 
 export const ResubscribeThrasher = (props: ResubscribeThrasherProps) => (
-  <ExistingPaymentOptionsAsyncLoader
-    fetch={fetchExistingPaymentOptions}
-    render={getThrasher(props)}
-    loadingMessage={"Loading..."}
-  />
+  <DataFetcher loadingMessage="Loading...">
+    <GetThrasher args={props} />
+  </DataFetcher>
 );
