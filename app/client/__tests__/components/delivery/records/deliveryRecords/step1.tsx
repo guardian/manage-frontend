@@ -10,8 +10,8 @@ import fetchMock from "fetch-mock";
 Enzyme.configure({ adapter: new Adapter() });
 
 /* *************************************************
-    NOTE: there are 2 process.nextTick calls 
-    throughout the tests here to handle the updates 
+    NOTE: there are 2 process.nextTick calls
+    throughout the tests here to handle the updates
     to the component after the 2 fetch calls :
     /api/me/mma and
     /api/delivery-records/{subscriptionId}
@@ -133,7 +133,7 @@ const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 const promisifyNextNTicks = (n: number) =>
   new Promise(resolve => nextNTicks(n, resolve));
 
-const nextNTicks = (n: number, callback: () => void) => {
+const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
   process.nextTick(() => {
     if (n < 1) {
       callback();
