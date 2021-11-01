@@ -1,6 +1,5 @@
 import { trackEvent } from "./components/analytics";
 import * as Sentry from "@sentry/browser";
-import qs from "qs";
 
 function handleError(error: Error | ErrorEvent | string): void {
   trackEvent({
@@ -49,28 +48,6 @@ export const fetcherWithParams = (
     .catch(e => {
       handleError(e);
     });
-
-// https://github.com/vercel/swr/issues/345
-export default function serialize(
-  url: string,
-  params?: object | any[]
-): string {
-  if (typeof params === "object" || Array.isArray(params)) {
-    const matches = url.match(/^(.+?)(\?(.*))?$/);
-    const urlWithoutQueryString: string = (matches && matches[1]) || url;
-    const queryStringDataFromUrl: object =
-      matches && matches[3] ? qs.parse(matches[3]) : {};
-    const queryString: string = qs.stringify(
-      { ...queryStringDataFromUrl, ...params },
-      { arrayFormat: "indices" }
-    );
-    if (queryString) {
-      return `${urlWithoutQueryString}?${queryString}`;
-    }
-    return url;
-  }
-  return url;
-}
 
 interface CredentialHeaders {
   credentials: RequestCredentials;
