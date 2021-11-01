@@ -35,7 +35,7 @@ import {
 import { UserPhoneNumber } from "./userPhoneNumber";
 import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
-import serialize, { fetcher } from "../../../fetchClient";
+import { fetcher } from "../../../fetchClient";
 
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
@@ -62,8 +62,8 @@ export const DeliveryRecordsProblemReview = (
     );
 
     const potentialHolidayStopsResponseWithCredits = useSWR(
-      serialize(endpoint, config),
-      fetcher,
+      endpoint,
+      endpoint => fetcher(endpoint, config),
       { suspense: true }
     ).data as PotentialHolidayStopsResponse;
 

@@ -17,7 +17,7 @@ import {
 } from "./cancellationContexts";
 import DataFetcher from "../DataFetcher";
 import useSWR from "swr";
-import serialize, { fetcher } from "../../fetchClient";
+import { fetcher } from "../../fetchClient";
 import { DeliveryRecordsResponse } from "../delivery/records/deliveryRecordsApi";
 
 function getCancellationDate(
@@ -97,19 +97,22 @@ const GetContextualRestOfFlowRenderer = (
     props.cancellationPolicy
   );
 
+  const deliveryEndpoint = props.productType.delivery?.records
+    ? holidayStops.endpoint
+    : null;
+  const creditsEndpoint = props.productType.delivery?.records
+    ? credits.endpoint
+    : null;
+
   const outstandingHolidayStops = useSWR(
-    props.productType.delivery?.records
-      ? serialize(holidayStops.endpoint, holidayStops.config)
-      : null,
-    fetcher,
+    deliveryEndpoint,
+    deliveryEndpoint => fetcher(deliveryEndpoint, holidayStops.config),
     { suspense: true }
   ).data as OutstandingHolidayStopsResponse;
 
   const outstandingDeliveryProblemCredits = useSWR(
-    props.productType.delivery?.records
-      ? serialize(credits.endpoint, credits.config)
-      : null,
-    fetcher,
+    creditsEndpoint,
+    creditsEndpoint => fetcher(creditsEndpoint, credits.config),
     { suspense: true }
   ).data as DeliveryRecordsResponse | undefined;
 
