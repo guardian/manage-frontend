@@ -165,7 +165,8 @@ export const CancellationSummary = (props: CancellationSummaryProps) => {
   const { mutate } = useSWRConfig();
 
   fetchSuspense && fetchSuspense();
-  mutate("/api/me/mma");
+
+  fetchSuspense && mutate("/api/me/mma");
   // we don't always call the patch endpoint so using this hook conditionally
 
   return isCancelled(productDetail.subscription) ? (
