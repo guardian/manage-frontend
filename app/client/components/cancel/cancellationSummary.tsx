@@ -14,6 +14,7 @@ import { hrefStyle } from "./cancellationConstants";
 import { CancellationReasonContext } from "./cancellationContexts";
 import { CancellationContributionReminder } from "./cancellationContributionReminder";
 import { useSWRConfig } from "swr";
+import { credentialHeaders, fetcher } from "../../fetchClient";
 
 const actuallyCancelled = (
   productType: ProductType,
@@ -159,6 +160,8 @@ interface CancellationSummaryProps {
   fetchSuspense?: () => unknown;
 }
 
+const mdaHeaders = { ...credentialHeaders };
+
 export const CancellationSummary = (props: CancellationSummaryProps) => {
   const { productDetail, productType, fetchSuspense } = props;
 
@@ -166,7 +169,7 @@ export const CancellationSummary = (props: CancellationSummaryProps) => {
 
   fetchSuspense && fetchSuspense();
 
-  fetchSuspense && mutate("/api/me/mma");
+  fetchSuspense && mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
   // we don't always call the patch endpoint so using this hook conditionally
 
   return isCancelled(productDetail.subscription) ? (

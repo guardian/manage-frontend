@@ -32,7 +32,7 @@ import {
 } from "./newPaymentMethodDetail";
 import DataFetcher from "../../DataFetcher";
 import useSWR, { useSWRConfig } from "swr";
-import { fetcher } from "../../../fetchClient";
+import { fetcher, credentialHeaders } from "../../../fetchClient";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -97,6 +97,8 @@ const headers = {
   }
 };
 
+const mdaHeaders = { ...credentialHeaders };
+
 const WithSubscriptionRenderer = ({
   productType,
   newPaymentMethodDetail,
@@ -113,7 +115,7 @@ const WithSubscriptionRenderer = ({
   }).data as WithSubscription[];
 
   const { mutate } = useSWRConfig();
-  mutate("/api/me/mma");
+  mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
 
   return subs?.length === 1 ? (
     <>

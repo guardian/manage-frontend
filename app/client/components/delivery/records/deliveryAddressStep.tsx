@@ -46,7 +46,7 @@ import { DeliveryRecordsAddressContext } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
 import useSWR, { useSWRConfig } from "swr";
-import { fetcher } from "../../../fetchClient";
+import { fetcher, credentialHeaders } from "../../../fetchClient";
 import { useSuspense } from "../../suspense";
 import {
   getScopeFromRequestPathOrEmptyString,
@@ -66,6 +66,8 @@ const headers = {
     )
   }
 };
+
+const mdaHeaders = { ...credentialHeaders };
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
   enum Status {
@@ -520,7 +522,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     fetchSuspense();
 
     const { mutate } = useSWRConfig();
-    mutate("/api/me/mma");
+    mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
 
     return (
       <>
