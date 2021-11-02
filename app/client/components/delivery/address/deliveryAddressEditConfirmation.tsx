@@ -35,11 +35,14 @@ import DataFetcher from "../../DataFetcher";
 import { useSuspense } from "../../suspense";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { useSWRConfig } from "swr";
+import { fetcher, credentialHeaders } from "../../../fetchClient";
 
 interface RenderConfirmationProps {
   fetchSuspense: () => unknown;
   routeableStepProps: RouteableStepProps;
 }
+
+const mdaHeaders = { ...credentialHeaders };
 
 const RenderConfirmation = ({
   fetchSuspense,
@@ -48,7 +51,7 @@ const RenderConfirmation = ({
   fetchSuspense();
 
   const { mutate } = useSWRConfig();
-  mutate("/api/me/mma");
+  mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
 
   return <ConfirmationFC {...routeableStepProps} />;
 };
