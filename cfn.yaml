@@ -404,8 +404,8 @@ Resources:
         - - Impact - we're serving errors to too many people
           - !FindInMap [Constants, Alarm, Process]
       ComparisonOperator: GreaterThanOrEqualToThreshold
-      Threshold: 3
-      EvaluationPeriods: 2
+      Threshold: 10
+      EvaluationPeriods: 20
       TreatMissingData: notBreaching
       Metrics:
         - Id: total5xx
