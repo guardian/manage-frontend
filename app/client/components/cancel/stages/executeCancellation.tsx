@@ -8,8 +8,10 @@ import {
   ProductDetail
 } from "../../../../shared/productResponse";
 import { ProductTypeWithCancellationFlow } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
-import AsyncLoader from "../../asyncLoader";
+import {
+  createProductDetailEndpoint,
+  createProductDetailFetcher
+} from "../../../productUtils";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { ProgressIndicator } from "../../progressIndicator";
 import {
@@ -23,17 +25,23 @@ import {
 import { RouteableStepPropsWithCancellationFlow } from "../cancellationFlow";
 import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import { OptionalCancellationReasonId } from "../cancellationReason";
-import { getCancellationSummary, isCancelled } from "../cancellationSummary";
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
+import { CancellationSummary, isCancelled } from "../cancellationSummary";
+import { getUpdateCasePromise } from "../caseUpdate";
+import DataFetcher from "../../DataFetcher";
+import { fetcher } from "../../../fetchClient";
+import useSWR from "swr";
 import { fetchWithDefaultParameters } from "../../../fetch";
+import { useSuspense } from "../../suspense";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
-class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
-
-const getCancelFunc = (
+const getCancelFunc = async (
   subscriptionName: string,
   reason: OptionalCancellationReasonId,
   withSubscriptionResponseFetcher: () => Promise<Response>
-) => async () => {
+) => {
   await fetchWithDefaultParameters("/api/cancel/" + subscriptionName, {
     method: "POST",
     body: JSON.stringify({ reason }),
@@ -43,10 +51,10 @@ const getCancelFunc = (
   return await withSubscriptionResponseFetcher();
 };
 
-const getCaseUpdateWithCancelOutcomeFunc = (
+export const getCaseUpdateWithCancelOutcomeFunc = (
   caseId: string,
   productDetail: ProductDetail
-) => () =>
+) =>
   getUpdateCasePromise(
     productDetail.isTestUser,
     isCancelled(productDetail.subscription) ? "_CANCELLED" : "_ERROR",
@@ -67,7 +75,7 @@ const getCaseUpdateFuncForEscalation = (
   caseId: string,
   escalationCauses: string[],
   isTestUser: boolean
-) => () =>
+) =>
   getUpdateCasePromise(isTestUser, "_ESCALATED", caseId, {
     Journey__c: "SV - Cancellation - MB",
     Subject: `Online Cancellation MANUAL INTERVENTION REQUIRED - ${escalationCauses.join(
@@ -77,31 +85,79 @@ const getCaseUpdateFuncForEscalation = (
     Priority: "High"
   });
 
-const getCancellationSummaryWithReturnButton = (body: ReactNode) => () => (
-  <div>
-    {body}
-    <div css={{ height: "20px" }} />
-    <ReturnToAccountOverviewButton />
-  </div>
-);
+interface GetCancellationSummaryWithReturnButtonProps {
+  fetchSuspense: () => unknown;
+  body: ReactNode;
+}
 
-const getCaseUpdatingCancellationSummary = (
-  caseId: string | "",
-  productType: ProductTypeWithCancellationFlow
-) => (productDetails: ProductDetail[]) => {
-  const productDetail = productDetails[0] || { subscription: {} };
-  const render = getCancellationSummaryWithReturnButton(
-    getCancellationSummary(productType)(productDetail)
+const GetCancellationSummaryWithReturnButton = (
+  props: GetCancellationSummaryWithReturnButtonProps
+) => {
+  props.fetchSuspense();
+
+  return (
+    <div>
+      {props.body}
+      <div css={{ height: "20px" }} />
+      <ReturnToAccountOverviewButton />
+    </div>
   );
-  return caseId ? (
-    <CaseUpdateAsyncLoader
-      fetch={getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)}
-      render={render}
-      loadingMessage="Finalising your cancellation..."
-    />
-  ) : (
-    render()
-  );
+};
+
+interface GetCaseUpdatingCancellationSummaryProps {
+  fetchSuspense: () => unknown;
+  caseId: string | "";
+  productType: ProductTypeWithCancellationFlow;
+  productDetail: ProductDetail;
+}
+
+const headers = {
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
+};
+
+const GetCaseUpdatingCancellationSummary = (
+  props: GetCaseUpdatingCancellationSummaryProps
+) => {
+  const { productType, caseId, productDetail, fetchSuspense } = props;
+
+  fetchSuspense();
+  // response is either empty or 404 from cancelSubscriptionEndpoint - neither is useful so fetch subscription after to determine cancellation result...
+
+  const { endpoint } = createProductDetailEndpoint(productType);
+  const productDetails = useSWR(endpoint, () => fetcher(endpoint, headers), {
+    suspense: true
+  }).data as ProductDetail[];
+
+  const productDetailRefetched = productDetails[0] || { subscription: {} };
+
+  if (caseId) {
+    const fetchSuspense = useSuspense(
+      getCaseUpdateWithCancelOutcomeFunc(caseId, productDetail)
+    );
+
+    return (
+      <DataFetcher loadingMessage="Finalising your cancellation...">
+        <CancellationSummary
+          caseId={caseId}
+          productDetail={productDetailRefetched}
+          productType={productType}
+          fetchSuspense={fetchSuspense}
+        />
+      </DataFetcher>
+    );
+  } else {
+    return (
+      <CancellationSummary
+        caseId={caseId}
+        productDetail={productDetail}
+        productType={productType}
+      />
+    );
+  }
 };
 
 // TODO consider returning case number from API and displaying
@@ -134,33 +190,36 @@ const innerContent = (
       <CancellationFlowEscalationCheck {...props}>
         {escalationCauses =>
           escalationCauses.length > 0 ? (
-            <CaseUpdateAsyncLoader
-              fetch={getCaseUpdateFuncForEscalation(
-                caseId,
-                escalationCauses,
-                productDetail.isTestUser
-              )}
-              render={getCancellationSummaryWithReturnButton(
-                escalatedConfirmationBody
-              )}
-              loadingMessage="Requesting your cancellation..."
-            />
+            <DataFetcher loadingMessage="Requesting your cancellation">
+              <GetCancellationSummaryWithReturnButton
+                fetchSuspense={useSuspense(
+                  getCaseUpdateFuncForEscalation(
+                    caseId,
+                    escalationCauses,
+                    productDetail.isTestUser
+                  )
+                )}
+                body={escalatedConfirmationBody}
+              />
+            </DataFetcher>
           ) : (
-            <PerformCancelAsyncLoader
-              fetch={getCancelFunc(
-                productDetail.subscription.subscriptionId,
-                reason,
-                createProductDetailFetcher(
-                  props.productType,
-                  productDetail.subscription.subscriptionId
-                )
-              )}
-              render={getCaseUpdatingCancellationSummary(
-                caseId,
-                props.productType
-              )}
-              loadingMessage="Performing your cancellation..."
-            />
+            <DataFetcher loadingMessage="Performing your cancellation...">
+              <GetCaseUpdatingCancellationSummary
+                fetchSuspense={useSuspense(
+                  getCancelFunc(
+                    productDetail.subscription.subscriptionId,
+                    reason,
+                    createProductDetailFetcher(
+                      props.productType,
+                      productDetail.subscription.subscriptionId
+                    )
+                  )
+                )}
+                caseId={caseId}
+                productType={props.productType}
+                productDetail={productDetail}
+              />
+            </DataFetcher>
           )
         }
       </CancellationFlowEscalationCheck>

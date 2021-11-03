@@ -14,8 +14,7 @@ import {
   WithSubscription
 } from "../../../../shared/productResponse";
 import { ProductType } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
-import AsyncLoader from "../../asyncLoader";
+import { createProductDetailEndpoint } from "../../../productUtils";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
@@ -31,8 +30,13 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-
-class WithSubscriptionAsyncLoader extends AsyncLoader<WithSubscription[]> {}
+import DataFetcher from "../../DataFetcher";
+import useSWR, { useSWRConfig } from "swr";
+import { fetcher, credentialHeaders } from "../../../fetchClient";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
@@ -78,13 +82,42 @@ const ConfirmedNewPaymentDetailsRenderer = ({
   return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
-const WithSubscriptionRenderer = (
-  productType: ProductType,
-  newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail,
-  flowReferrer?: { title: string; link: string }
-) => (subs: WithSubscription[]) =>
-  subs && subs.length === 1 ? (
+interface WithSubscriptionRenderedProps {
+  productType: ProductType;
+  newPaymentMethodDetail: NewPaymentMethodDetail;
+  previousProductDetail: ProductDetail;
+  flowReferrer?: { title: string; link: string };
+}
+
+const headers = {
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
+};
+
+const mdaHeaders = { ...credentialHeaders };
+
+const WithSubscriptionRenderer = ({
+  productType,
+  newPaymentMethodDetail,
+  previousProductDetail,
+  flowReferrer
+}: WithSubscriptionRenderedProps) => {
+  const { endpoint } = createProductDetailEndpoint(
+    productType,
+    previousProductDetail.subscription.subscriptionId
+  );
+
+  const subs = useSWR(endpoint, () => fetcher(endpoint, headers), {
+    suspense: true
+  }).data as WithSubscription[];
+
+  const { mutate } = useSWRConfig();
+  mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
+
+  return subs?.length === 1 ? (
     <>
       <h1>Your payment details were updated successfully</h1>
       <ConfirmedNewPaymentDetailsRenderer
@@ -126,6 +159,7 @@ const WithSubscriptionRenderer = (
       <ReturnToAccountOverviewButton />
     </>
   );
+};
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
   const innerContent = (
@@ -143,21 +177,17 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
           margin: ${space[5]}px 0 ${space[12]}px;
         `}
       />
-      <WithSubscriptionAsyncLoader
-        fetch={createProductDetailFetcher(
-          props.productType,
-          previousProductDetail.subscription.subscriptionId
-        )}
-        render={WithSubscriptionRenderer(
-          props.productType,
-          newPaymentMethodDetail,
-          previousProductDetail,
-          props.location?.state?.flowReferrer
-        )}
-        loadingMessage="Looks good so far. Just checking everything is done..."
-      />
+      <DataFetcher loadingMessage="Looks good so far. Just checking everything is done...">
+        <WithSubscriptionRenderer
+          productType={props.productType}
+          newPaymentMethodDetail={newPaymentMethodDetail}
+          previousProductDetail={previousProductDetail}
+          flowReferrer={props.location?.state?.flowReferrer}
+        />
+      </DataFetcher>
     </>
   );
+
   return (
     <MembersDataApiItemContext.Consumer>
       {previousProductDetail => (
