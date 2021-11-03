@@ -14,7 +14,9 @@ import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
 import { Button } from "../buttons";
 import SpinLoader from "../SpinLoader";
-import {fetchWithDefaultParameters} from "../../fetch";
+import { fetchWithDefaultParameters } from "../../fetch";
+import { useSWRConfig } from "swr";
+import { fetcher, credentialHeaders } from "../../fetchClient";
 
 type ContributionUpdateAmountFormMode = "MANAGE" | "CANCELLATION_SAVE";
 
@@ -147,9 +149,13 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
   }
 };
 
+const mdaHeaders = { ...credentialHeaders };
+
 export const ContributionUpdateAmountForm = (
   props: ContributionUpdateAmountFormProps
 ) => {
+  const { mutate } = useSWRConfig();
+
   const currentContributionOptions = (contributionAmountsLookup[
     props.mainPlan.currencyISO
   ] || contributionAmountsLookup.international)[
@@ -187,7 +193,11 @@ export const ContributionUpdateAmountForm = (
 
   const [error, setError] = useState<boolean>(false);
 
-  async function handleMutation(newAmount: number, productType: ProductType, subscriptionName: string) {
+  async function handleMutation(
+    newAmount: number,
+    productType: ProductType,
+    subscriptionName: string
+  ) {
     try {
       await getAmountUpdater(newAmount, productType, subscriptionName);
 
@@ -199,6 +209,9 @@ export const ContributionUpdateAmountForm = (
         ).toFixed(2)}${props.mainPlan.currencyISO}`
       });
       setConfirmedAmount(pendingAmount);
+
+      mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
+
       return null;
     } catch (e) {
       setError(true);
@@ -312,13 +325,13 @@ export const ContributionUpdateAmountForm = (
     }${weeklyAmount.toFixed(2)} each week`;
   };
 
-  if(showUpdateLoader) {
+  if (showUpdateLoader) {
     return (
       <SpinLoader loadingMessage="Updating..." spinnerScale={0.7} inline />
-    )
+    );
   }
 
-  if(error) {
+  if (error) {
     trackEvent({
       eventCategory: "amount_change",
       eventAction: "contributions_amount_change_failed"
@@ -465,7 +478,11 @@ export const ContributionUpdateAmountForm = (
           }
 
           setShowUpdateLoader(true);
-          handleMutation(pendingAmount, props.productType, props.subscriptionId);
+          handleMutation(
+            pendingAmount,
+            props.productType,
+            props.subscriptionId
+          );
         }}
       />
     </>
