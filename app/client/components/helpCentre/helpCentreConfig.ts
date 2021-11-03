@@ -114,7 +114,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
     links: [
       {
         id: "q1",
-        title: "Why am I still seeings ads/banners?",
+        title: "Why am I still seeing ads/banners?",
         link: "/help-centre/article/why-am-i-still-seeing-adsbanners"
       },
       {
