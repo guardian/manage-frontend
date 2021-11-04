@@ -2,6 +2,7 @@ import { NavigateFn } from "@reach/router";
 import React, { useContext, useState } from "react";
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { sans, validationWarningCSS } from "../../../../styles/fonts";
+import AsyncLoader from "../../../asyncLoader";
 import { Button } from "../../../buttons";
 import { Checkbox } from "../../../checkbox";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
@@ -11,7 +12,6 @@ import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { FlowReferrerContext, NavigateFnContext } from "../updatePaymentFlow";
 import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
-import SpinLoader from "../../../SpinLoader";
 
 const inputBoxBaseStyle = {
   width: "100%",
@@ -31,78 +31,61 @@ interface DirectDebitValidationResponse {
   };
 }
 
+class DirectDebitValidationLoader extends AsyncLoader<
+  DirectDebitValidationResponse
+> {}
+
 interface DirectDebitUpdateFormProps {
   newPaymentMethodDetailUpdater: (ddDetails: NewPaymentMethodDetail) => void;
   testUser: boolean;
 }
 
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
-  const validateDirectDebitDetails = () =>
-    fetch(`/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`, {
-      credentials: "include",
-      method: "POST",
-      body: JSON.stringify({
-        accountNumber,
-        sortCode: cleanSortCode(sortCode)
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-
   const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] = useState<
     boolean
   >(false);
   const [accountName, setAccountName] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [sortCode, setSortCode] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [isValidating, setIsValidating] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
 
-  const [validating, setValidating] = useState<boolean>(false);
-  const [validationError, setValidationError] = useState<boolean>(false);
-  const [validationResponse, setValidationResponse] = useState<
-    DirectDebitValidationResponse | undefined
-  >();
+  const flowReferrerContext = useContext(FlowReferrerContext);
 
-  async function performValidation() {
-    setValidating(true);
-
-    try {
-      const res = await validateDirectDebitDetails();
-      const resPayload = await res.json();
-
-      setValidationResponse(resPayload);
-    } catch (e) {
-      setValidationError(true);
-    }
-  }
-
-  if (validationError) {
-    setErrorMessage(
-      "Could not validate your bank details, please check them and try again."
-    );
-  }
-
-  function handleValidationResponse(navigate: NavigateFn) {
-    if (validationResponse && validationResponse.data.accountValid) {
+  const handleValidationResponse = (navigate: NavigateFn) => (
+    response: DirectDebitValidationResponse
+  ) => {
+    if (response && response.data.accountValid) {
       navigate("confirm", {
         state: flowReferrerContext
       });
-    } else if (
-      validationResponse &&
-      validationResponse.data.goCardlessStatusCode === 429
-    ) {
-      setValidating(false);
-      setErrorMessage(
+    } else if (response && response.data.goCardlessStatusCode === 429) {
+      setIsValidating(false);
+      setError(
         "We cannot currently validate your bank details. Please try again later."
       );
     } else {
-      setValidating(false);
-      setErrorMessage(
+      setIsValidating(false);
+      setError(
         "Your bank details are invalid. Please check them and try again."
       );
     }
-  }
+    return true;
+  };
 
-  const flowReferrerContext = useContext(FlowReferrerContext);
+  const validateDirectDebitDetails: () => Promise<Response> = async () =>
+    await fetch(
+      `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
+      {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({
+          accountNumber,
+          sortCode: cleanSortCode(sortCode)
+        }),
+        headers: { "Content-Type": "application/json" }
+      }
+    );
 
   const startDirectDebitUpdate = () => {
     props.newPaymentMethodDetailUpdater(
@@ -112,13 +95,13 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         sortCode
       })
     );
-    setErrorMessage(undefined);
+    setError(undefined);
     if (accountName.length < 3) {
-      setErrorMessage("Please enter a valid account name"); // TODO add field highlighting
+      setError("Please enter a valid account name"); // TODO add field highlighting
     } else if (soleAccountHolderConfirmed) {
-      performValidation();
+      setIsValidating(true);
     } else {
-      setErrorMessage("You need to confirm that you are the account holder"); // TODO highlight checkbox
+      setError("You need to confirm that you are the account holder"); // TODO highlight checkbox
     }
   };
 
@@ -223,9 +206,21 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
                     }
                   }}
                 >
-                  {validationResponse && handleValidationResponse(nav.navigate)}
-                  {validating ? (
-                    <SpinLoader
+                  {isValidating ? (
+                    <DirectDebitValidationLoader
+                      fetch={validateDirectDebitDetails}
+                      shouldPreventRender={handleValidationResponse(
+                        nav.navigate
+                      )}
+                      render={() => null}
+                      shouldPreventErrorRender={() => {
+                        setIsValidating(false);
+                        setError(
+                          "Could not validate your bank details, please check them and try again."
+                        );
+                        return true;
+                      }}
+                      errorRender={() => null}
                       loadingMessage="Validating direct debit details..."
                       spinnerScale={0.7}
                       inline
@@ -238,14 +233,14 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
                         primary
                         right
                       />
-                      {errorMessage ? (
+                      {error ? (
                         <div
                           css={{
                             ...validationWarningCSS,
                             marginTop: "5px"
                           }}
                         >
-                          {errorMessage}
+                          {error}
                         </div>
                       ) : (
                         undefined

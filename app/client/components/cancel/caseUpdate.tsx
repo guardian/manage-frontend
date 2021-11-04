@@ -1,6 +1,13 @@
 import { LOGGING_CODE_SUFFIX_HEADER } from "../../../shared/globals";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
+import AsyncLoader from "../asyncLoader";
 import { fetchWithDefaultParameters } from "../../fetch";
+
+interface CaseUpdateResponse {
+  message: string;
+}
+
+export class CaseUpdateAsyncLoader extends AsyncLoader<CaseUpdateResponse> {}
 
 export const getUpdateCasePromise = (
   isTestUser: boolean,

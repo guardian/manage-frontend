@@ -3,6 +3,7 @@ import {
   MDA_TEST_USER_HEADER,
   Subscription
 } from "../../../../shared/productResponse";
+import AsyncLoader from "../../asyncLoader";
 import { fetchWithDefaultParameters } from "../../../fetch";
 
 interface DeliveryProblem {
@@ -76,6 +77,10 @@ export interface DeliveryRecordsPostPayload {
   newContactPhoneNumbers?: ContactPhoneNumbers;
 }
 
+export class DeliveryRecordsApiAsyncLoader extends AsyncLoader<
+  DeliveryRecordsResponse
+> {}
+
 export const createDeliveryRecordsFetcher = (
   subscriptionId: string,
   isTestUser: boolean
@@ -90,7 +95,7 @@ export const createDeliveryRecordsProblemPost = (
   subscriptionId: string,
   isTestUser: boolean,
   payload: DeliveryRecordsPostPayload
-) =>
+) => () =>
   fetch(`/api/delivery-records/${subscriptionId}`, {
     credentials: "include",
     method: "POST",
