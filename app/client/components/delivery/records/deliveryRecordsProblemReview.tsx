@@ -37,6 +37,52 @@ import DataFetcher from "../../DataFetcher";
 import useSWR from "swr";
 import { fetcher } from "../../../fetchClient";
 
+interface RenderReviewDetailsProps {
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
+  startDate: any;
+  endDate: any;
+  deliveryProblemContext?: any;
+}
+
+const RenderReviewDetails = ({
+  routeableStepProps,
+  startDate,
+  endDate,
+  deliveryProblemContext
+}: RenderReviewDetailsProps) => {
+  console.log("re render review details");
+  const { endpoint } = getPotentialHolidayStopsEndpoint(
+    deliveryProblemContext?.subscription.subscriptionId,
+    parseDate(startDate).date,
+    parseDate(endDate).date,
+    deliveryProblemContext.isTestUser
+  );
+
+  const potentialHolidayStopsResponseWithCredits = useSWR(
+    endpoint,
+    endpoint => fetcher(endpoint),
+    { suspense: true }
+  ).data as PotentialHolidayStopsResponse;
+
+  const totalCreditAmount: number =
+    potentialHolidayStopsResponseWithCredits.potentials.length &&
+    potentialHolidayStopsResponseWithCredits.potentials
+      .flatMap(x => [Math.abs(x.credit || 0)])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+  return (
+    <DeliveryRecordsProblemReviewFC
+      {...routeableStepProps}
+      showCredit
+      creditDate={
+        potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
+      }
+      relatedPublications={potentialHolidayStopsResponseWithCredits.potentials}
+      totalCreditAmount={totalCreditAmount}
+    />
+  );
+};
+
 export const DeliveryRecordsProblemReview = (
   props: DeliveryRecordsRouteableStepProps
 ) => {
@@ -53,41 +99,6 @@ export const DeliveryRecordsProblemReview = (
   const problemEndDate =
     deliveryProblemContext?.affectedRecords[0].deliveryDate;
 
-  const RenderReviewDetails = () => {
-    const { endpoint, config } = getPotentialHolidayStopsEndpoint(
-      deliveryProblemContext?.subscription.subscriptionId,
-      parseDate(problemStartDate).date,
-      parseDate(problemEndDate).date,
-      deliveryProblemContext.isTestUser
-    );
-
-    const potentialHolidayStopsResponseWithCredits = useSWR(
-      endpoint,
-      endpoint => fetcher(endpoint, config),
-      { suspense: true }
-    ).data as PotentialHolidayStopsResponse;
-
-    const totalCreditAmount: number =
-      potentialHolidayStopsResponseWithCredits.potentials.length &&
-      potentialHolidayStopsResponseWithCredits.potentials
-        .flatMap(x => [Math.abs(x.credit || 0)])
-        .reduce((accumulator, currentValue) => accumulator + currentValue);
-
-    return (
-      <DeliveryRecordsProblemReviewFC
-        {...props}
-        showCredit
-        creditDate={
-          potentialHolidayStopsResponseWithCredits.nextInvoiceDateAfterToday
-        }
-        relatedPublications={
-          potentialHolidayStopsResponseWithCredits.potentials
-        }
-        totalCreditAmount={totalCreditAmount}
-      />
-    );
-  };
-
   if (!deliveryProblemContext) {
     return (
       <GenericErrorScreen
@@ -100,7 +111,12 @@ export const DeliveryRecordsProblemReview = (
 
   return deliveryProblemContext.showProblemCredit ? (
     <DataFetcher loadingMessage="Generating your report">
-      <RenderReviewDetails />
+      <RenderReviewDetails
+        routeableStepProps={props}
+        startDate={problemStartDate}
+        endDate={problemEndDate}
+        deliveryProblemContext={deliveryProblemContext}
+      />
     </DataFetcher>
   ) : (
     <DeliveryRecordsProblemReviewFC {...props} />
