@@ -9,15 +9,7 @@ const containerStyles = css`
   border-left: 1px solid ${neutral[7]};
 `;
 
-export interface ContributionsFeedbackFormThankYouProps {
-  fetchSuspense: () => unknown;
-}
-
-const ContributionsFeedbackFormThankYou = ({
-  fetchSuspense
-}: ContributionsFeedbackFormThankYouProps) => {
-  fetchSuspense();
-
+const ContributionsFeedbackFormThankYou: React.FC = () => {
   return (
     <div css={containerStyles}>
       <p

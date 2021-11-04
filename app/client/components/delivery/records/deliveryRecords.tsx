@@ -15,7 +15,6 @@ import {
   DeliveryAddress,
   DeliveryRecordApiItem,
   isGift,
-  MDA_TEST_USER_HEADER,
   PaidSubscriptionPlan,
   ProductDetail
 } from "../../../../shared/productResponse";
@@ -39,7 +38,9 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryAddressStep } from "./deliveryAddressStep";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
+  createDeliveryRecordsFetcher,
   DeliveryRecordDetail,
+  DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
@@ -50,9 +51,6 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
-import DataFetcher from "../../DataFetcher";
-import useSWR from "swr";
-import { fetcher } from "../../../fetchClient";
 
 interface IdentityDetails {
   userId: string;
@@ -87,26 +85,10 @@ interface Step1FormValidationDetails {
   message?: string;
 }
 
-interface RenderDeliveryRecordsProps {
-  routeableStepProps: DeliveryRecordsRouteableStepProps;
-  productDetail: ProductDetail;
-}
-
-const RenderDeliveryRecords = ({
-  routeableStepProps,
-  productDetail
-}: RenderDeliveryRecordsProps) => {
-  const headers = {
-    headers: {
-      [MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`
-    }
-  };
-
-  const url = `/api/delivery-records/${productDetail.subscription.subscriptionId}`;
-
-  const data = useSWR(url, () => fetcher(url, headers), { suspense: true })
-    .data as DeliveryRecordsResponse;
-
+const renderDeliveryRecords = (
+  props: DeliveryRecordsRouteableStepProps,
+  productDetail: ProductDetail
+) => (data: DeliveryRecordsResponse) => {
   const mainPlan = getMainPlan(
     productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -114,7 +96,7 @@ const RenderDeliveryRecords = ({
   return (
     <DeliveryRecordsFC
       data={data}
-      routeableStepProps={routeableStepProps}
+      routeableStepProps={props}
       productDetail={productDetail}
       subscriptionCurrency={mainPlan.currency}
     />
@@ -768,12 +750,14 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       ]}
     >
       {productDetail => (
-        <DataFetcher loadingMessage={"Loading delivery history..."}>
-          <RenderDeliveryRecords
-            routeableStepProps={props}
-            productDetail={productDetail}
-          />
-        </DataFetcher>
+        <DeliveryRecordsApiAsyncLoader
+          render={renderDeliveryRecords(props, productDetail)}
+          fetch={createDeliveryRecordsFetcher(
+            productDetail.subscription.subscriptionId,
+            productDetail.isTestUser
+          )}
+          loadingMessage={"Loading delivery history..."}
+        />
       )}
     </FlowWrapper>
   );
