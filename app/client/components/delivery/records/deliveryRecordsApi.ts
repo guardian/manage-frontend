@@ -79,7 +79,7 @@ export interface DeliveryRecordsPostPayload {
 export const createDeliveryRecordsFetcher = (
   subscriptionId: string,
   isTestUser: boolean
-) => () =>
+) =>
   fetchWithDefaultParameters(`/api/delivery-records/${subscriptionId}`, {
     headers: {
       [MDA_TEST_USER_HEADER]: `${isTestUser}`

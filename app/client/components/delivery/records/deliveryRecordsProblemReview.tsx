@@ -50,7 +50,6 @@ const RenderReviewDetails = ({
   endDate,
   deliveryProblemContext
 }: RenderReviewDetailsProps) => {
-  console.log("re render review details");
   const { endpoint } = getPotentialHolidayStopsEndpoint(
     deliveryProblemContext?.subscription.subscriptionId,
     parseDate(startDate).date,
