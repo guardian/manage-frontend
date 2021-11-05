@@ -42,7 +42,6 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 import DataFetcher from "../../DataFetcher";
-import { useSWRConfig } from "swr";
 import { useSuspense } from "../../suspense";
 
 interface RenderDeliveryRecordsConfirmationProps {
@@ -59,9 +58,6 @@ const RenderDeliveryRecordsConfirmation = ({
   const { subscription } = deliveryRecordsProblemContext;
 
   const data = fetchSuspense();
-
-  const { mutate } = useSWRConfig();
-  mutate(`/api/delivery-records/${subscription.subscriptionId}`);
 
   const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
