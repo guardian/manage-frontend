@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import React, { useState } from "react";
 import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE
@@ -24,64 +24,36 @@ import { CurrentPaymentDetails } from "./currentPaymentDetails";
 import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
-  NewPaymentMethodDetail,
-  PaymentUpdateAsyncLoader
+  NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 import { PaymentMethod } from "./updatePaymentFlow";
+import SpinLoader from "../../SpinLoader";
 
 export const CONFIRM_BUTTON_TEXT = "Complete payment update";
 
-interface ExecutePaymentUpdateProps extends RouteableStepProps {
+interface NewPaymentMethod {
   newPaymentMethodDetail: NewPaymentMethodDetail;
   productDetail: ProductDetail;
 }
 
-interface ExecutePaymentUpdateState {
-  hasHitComplete: boolean;
-}
+function ExecutePaymentUpdate(props: RouteableStepProps & NewPaymentMethod) {
+  const { productDetail, productType, newPaymentMethodDetail } = props;
+  const [hasHitComplete, setHasHitComplete] = useState<boolean>(false);
+  const [paymentUpdateSuccess, setPaymentUpdateSuccess] = useState<
+    object | null
+  >(null);
+  const [paymentUpdateFailed, setPaymentUpdateFailed] = useState<boolean>(
+    false
+  );
 
-class ExecutePaymentUpdate extends React.Component<
-  ExecutePaymentUpdateProps,
-  ExecutePaymentUpdateState
-> {
-  public state = {
-    hasHitComplete: false
-  };
-
-  private paymentMethodChangeType: string =
-    this.props.productDetail.subscription.paymentMethod ===
-    PaymentMethod.resetRequired
-      ? "reset"
-      : "update";
-
-  public render(): React.ReactNode {
-    return this.state.hasHitComplete ? (
-      <PaymentUpdateAsyncLoader
-        fetch={this.executePaymentUpdate}
-        render={this.renderUpdateResponse}
-        errorRender={this.PaymentUpdateFailed}
-        loadingMessage={`Updating ${this.props.newPaymentMethodDetail.friendlyName} details...`}
-        spinnerScale={0.7}
-        inline
-      />
-    ) : (
-      <Button
-        text={CONFIRM_BUTTON_TEXT}
-        onClick={() => this.setState({ hasHitComplete: true })}
-        primary
-        right
-      />
-    );
-  }
-
-  private executePaymentUpdate: () => Promise<Response> = async () =>
-    await fetch(
-      `/api/payment/${this.props.newPaymentMethodDetail.apiUrlPart}/${this.props.productDetail.subscription.subscriptionId}`,
+  const executePaymentUpdate = () =>
+    fetch(
+      `/api/payment/${props.newPaymentMethodDetail.apiUrlPart}/${props.productDetail.subscription.subscriptionId}`,
       {
         credentials: "include",
         method: "POST",
         body: JSON.stringify(
-          this.props.newPaymentMethodDetail.detailToPayloadObject()
+          props.newPaymentMethodDetail.detailToPayloadObject()
         ),
         headers: {
           "Content-Type": "application/json",
@@ -92,59 +64,102 @@ class ExecutePaymentUpdate extends React.Component<
       }
     );
 
-  private renderUpdateResponse = (response: object) => {
-    if (
-      this.props.navigate &&
-      this.props.newPaymentMethodDetail.matchesResponse(response)
-    ) {
-      trackEvent({
-        eventCategory: "payment",
-        eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_success`,
-        product: {
-          productType: this.props.productType,
-          productDetail: this.props.productDetail
-        },
-        eventLabel: this.props.productType.urlPart
-      });
-      this.props.navigate("updated", {
-        replace: true,
-        state: this.props.location?.state
-      });
-      return null;
-    }
+  const paymentMethodChangeType: string =
+    productDetail.subscription.paymentMethod === PaymentMethod.resetRequired
+      ? "reset"
+      : "update";
 
-    return this.PaymentUpdateFailed();
-  };
-
-  private PaymentUpdateFailed = () => {
+  const PaymentUpdateFailed = () => {
     trackEvent({
       eventCategory: "payment",
-      eventAction: `${this.props.newPaymentMethodDetail.name}_${this.paymentMethodChangeType}_failed`,
+      eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_failed`,
       product: {
-        productType: this.props.productType,
-        productDetail: this.props.productDetail
+        productType: productType,
+        productDetail: productDetail
       },
-      eventLabel: this.props.productType.urlPart
+      // eslint-disable-next-line react/prop-types
+      eventLabel: productType.urlPart
     });
 
     Sentry.captureException(
-      this.props.newPaymentMethodDetail.friendlyName + "payment update failed"
+      newPaymentMethodDetail.friendlyName + "payment update failed"
     );
 
     return (
       <div css={{ textAlign: "left", marginTop: "10px" }}>
-        <h2>
-          Sorry, the {this.props.newPaymentMethodDetail.friendlyName} update
-          failed.
-        </h2>
+        <h2>Sorry, the {newPaymentMethodDetail.friendlyName} update failed.</h2>
         <p>
           To try again please go back and re-enter your new{" "}
-          {this.props.newPaymentMethodDetail.friendlyName} details.
+          {newPaymentMethodDetail.friendlyName} details.
         </p>
         <CallCentreNumbers prefixText="Alternatively, to contact us" />
       </div>
     );
   };
+
+  const PaymentUpdateResponse = () => {
+    if (
+      // eslint-disable-next-line react/prop-types
+      props.navigate &&
+      newPaymentMethodDetail.matchesResponse(paymentUpdateSuccess)
+    ) {
+      trackEvent({
+        eventCategory: "payment",
+        eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
+        product: {
+          productType: productType,
+          productDetail: productDetail
+        },
+        // eslint-disable-next-line react/prop-types
+        eventLabel: productType.urlPart
+      });
+
+      // eslint-disable-next-line react/prop-types
+      props.navigate("updated", {
+        replace: true,
+        // eslint-disable-next-line react/prop-types
+        state: props.location?.state
+      });
+
+      return null;
+    }
+
+    return <PaymentUpdateFailed />;
+  };
+
+  if (paymentUpdateFailed) {
+    return <PaymentUpdateFailed />;
+  }
+
+  if (paymentUpdateSuccess) {
+    return <PaymentUpdateResponse />;
+  }
+
+  return hasHitComplete ? (
+    <SpinLoader
+      loadingMessage={`Updating ${newPaymentMethodDetail.friendlyName} details...`}
+      spinnerScale={0.7}
+      inline
+    />
+  ) : (
+    <Button
+      text={CONFIRM_BUTTON_TEXT}
+      onClick={async () => {
+        setHasHitComplete(true);
+
+        try {
+          const res = await executePaymentUpdate();
+          const resPayload = await res.json();
+
+          setPaymentUpdateSuccess(resPayload);
+        } catch (error) {
+          setPaymentUpdateFailed(true);
+        }
+      }}
+      primary
+      right
+    />
+  );
 }
 
 interface InnerContentProps {
@@ -152,6 +167,7 @@ interface InnerContentProps {
   newPaymentMethodDetail: NewPaymentMethodDetail;
   routeableStepProps: RouteableStepProps;
 }
+
 const InnerContent = (props: InnerContentProps) => (
   <>
     <ProgressIndicator

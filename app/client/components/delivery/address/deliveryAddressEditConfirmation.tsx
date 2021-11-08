@@ -12,7 +12,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { dateString } from "../../../../shared/dates";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
-import AsyncLoader from "../../asyncLoader";
 import { LinkButton } from "../../buttons";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { ProductDescriptionListTable } from "../../productDescriptionListTable";
@@ -32,10 +31,30 @@ import {
   isAddress,
   NewDeliveryAddressContext
 } from "./deliveryAddressFormContext";
+import DataFetcher from "../../DataFetcher";
+import { useSuspense } from "../../suspense";
+import { DeliveryAddress } from "../../../../shared/productResponse";
+import { useSWRConfig } from "swr";
+import { fetcher, credentialHeaders } from "../../../fetchClient";
 
-const renderConfirmation = (props: RouteableStepProps) => () => (
-  <ConfirmationFC {...props} />
-);
+interface RenderConfirmationProps {
+  fetchSuspense: () => unknown;
+  routeableStepProps: RouteableStepProps;
+}
+
+const mdaHeaders = { ...credentialHeaders };
+
+const RenderConfirmation = ({
+  fetchSuspense,
+  routeableStepProps
+}: RenderConfirmationProps) => {
+  fetchSuspense();
+
+  const { mutate } = useSWRConfig();
+  mutate("/api/me/mma", fetcher("/api/me/mma", mdaHeaders));
+
+  return <ConfirmationFC {...routeableStepProps} />;
+};
 
 const ConfirmationFC = (props: RouteableStepProps) => {
   const addressContext = useContext(NewDeliveryAddressContext);
@@ -287,19 +306,23 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
     )} )`
   ].join("\n");
 
+  const fetchSuspense = useSuspense(
+    updateAddressFetcher(
+      {
+        ...addressContext.newDeliveryAddress,
+        addressChangeInformation: addressChangeInformationCopy
+      } as DeliveryAddress,
+      contactIdContext
+    )
+  );
+
   return addressContext.newDeliveryAddress ? (
-    <AsyncLoader
-      render={renderConfirmation(props)}
-      fetch={updateAddressFetcher(
-        {
-          ...addressContext.newDeliveryAddress,
-          addressChangeInformation: addressChangeInformationCopy
-        },
-        contactIdContext
-      )}
-      readerOnOK={(resp: Response) => resp.text()}
-      loadingMessage={"Updating delivery address details..."}
-    />
+    <DataFetcher loadingMessage="Updating delivery address details...">
+      <RenderConfirmation
+        fetchSuspense={fetchSuspense}
+        routeableStepProps={props}
+      />
+    </DataFetcher>
   ) : (
     visuallyNavigateToParent(props)
   );

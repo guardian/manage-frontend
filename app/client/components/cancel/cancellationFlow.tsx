@@ -25,14 +25,17 @@ import {
   cancellationEffectiveToday,
   CancellationPolicyContext
 } from "./cancellationContexts";
-import {
-  CancellationDateAsyncLoader,
-  cancellationDateFetcher,
-  CancellationDateResponse
-} from "./cancellationDateResponse";
+import { CancellationDateResponse } from "./cancellationDateResponse";
 import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
 import { GenericSaveAttemptProps } from "./stages/genericSaveAttempt";
+import DataFetcher from "../DataFetcher";
+import { credentialHeaders, fetcher } from "../../fetchClient";
+import useSWR from "swr";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../shared/identity";
 
 export interface RouteableStepPropsWithCancellationFlow
   extends RouteableStepProps {
@@ -196,14 +199,39 @@ class ReasonPicker extends React.Component<
   }
 }
 
-const ReasonPickerRenderer = (
-  props: RouteableStepProps,
-  productType: ProductTypeWithCancellationFlow,
-  productDetail: ProductDetail
-) => (apiResponse: CancellationDateResponse) => {
+interface ReasonPickerRendererProps {
+  routeableStepProps: RouteableStepProps;
+  productType: ProductTypeWithCancellationFlow;
+  productDetail: ProductDetail;
+}
+
+const headers = {
+  method: "GET",
+  ...credentialHeaders,
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
+};
+
+const ReasonPickerRenderer = ({
+  routeableStepProps,
+  productType,
+  productDetail
+}: ReasonPickerRendererProps) => {
+  const apiResponse = useSWR(
+    [
+      "/api/cancellation-date/" + productDetail.subscription.subscriptionId,
+      headers
+    ],
+    fetcher,
+    { suspense: true }
+  ).data as CancellationDateResponse;
+
   return (
     <ReasonPicker
-      {...props}
+      {...routeableStepProps}
       productType={productType}
       productDetail={productDetail}
       chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
@@ -232,14 +260,16 @@ const CancellationFlow = (props: RouteableStepProps) => (
     {productDetail =>
       productDetail.selfServiceCancellation.isAllowed &&
       hasCancellationFlow(props.productType) ? (
-        <CancellationDateAsyncLoader
-          fetch={cancellationDateFetcher(
-            productDetail.subscription.subscriptionId
-          )}
-          render={ReasonPickerRenderer(props, props.productType, productDetail)}
+        <DataFetcher
           loadingMessage={`Checking your ${props.productType
             .shortFriendlyName || props.productType.friendlyName} details...`}
-        />
+        >
+          <ReasonPickerRenderer
+            routeableStepProps={props}
+            productType={props.productType}
+            productDetail={productDetail}
+          />
+        </DataFetcher>
       ) : (
         <ContactUsToCancel
           selfServiceCancellation={productDetail.selfServiceCancellation}

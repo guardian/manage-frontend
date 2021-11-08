@@ -13,7 +13,6 @@ import {
   DeliveryAddress,
   isProduct,
   MembersDataApiItem,
-  MembersDatApiAsyncLoader,
   ProductDetail,
   Subscription
 } from "../../../../shared/productResponse";
@@ -21,7 +20,6 @@ import {
   GROUPED_PRODUCT_TYPES,
   ProductType
 } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
 import { COUNTRIES } from "../../identity/models";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 
@@ -53,6 +51,14 @@ import {
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
+import DataFetcher from "../../DataFetcher";
+import useSWR from "swr";
+import { fetcher } from "../../../fetchClient";
+import { createProductDetailEndpoint } from "../../../productUtils";
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 
 interface ProductDetailAndProductType {
   productDetail: ProductDetail;
@@ -137,9 +143,29 @@ const formStates: FormStates = {
   POST_ERROR: "postError"
 };
 
-const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
-  allProductDetails: MembersDataApiItem[]
-) => {
+interface RenderDeliveryAddressFormProps {
+  routeableStepProps: RouteableStepProps;
+}
+
+const headers = {
+  headers: {
+    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+      window.location.href
+    )
+  }
+};
+
+const RenderDeliveryAddressForm = ({
+  routeableStepProps
+}: RenderDeliveryAddressFormProps) => {
+  const { endpoint } = createProductDetailEndpoint(
+    GROUPED_PRODUCT_TYPES.subscriptions
+  );
+
+  const allProductDetails = useSWR(endpoint, () => fetcher(endpoint, headers), {
+    suspense: true
+  }).data as MembersDataApiItem[];
+
   return (
     <FormContainer
       contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
@@ -151,6 +177,7 @@ const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
     />
   );
 };
+
 const clearState = (
   setFormStatus: Dispatch<SetStateAction<string>>,
   setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
@@ -738,11 +765,9 @@ const DeliveryAddressForm = (props: RouteableStepProps) => {
         }
       ]}
     >
-      <MembersDatApiAsyncLoader
-        render={renderDeliveryAddressForm(props)}
-        fetch={createProductDetailFetcher(GROUPED_PRODUCT_TYPES.subscriptions)}
-        loadingMessage={"Loading delivery details..."}
-      />
+      <DataFetcher loadingMessage="Loading delivery details...">
+        <RenderDeliveryAddressForm routeableStepProps={props} />
+      </DataFetcher>
     </PageContainer>
   );
 };

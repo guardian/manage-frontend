@@ -38,10 +38,9 @@ import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { DeliveryAddressStep } from "./deliveryAddressStep";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
-  createDeliveryRecordsFetcher,
   DeliveryRecordDetail,
-  DeliveryRecordsApiAsyncLoader,
-  DeliveryRecordsResponse
+  DeliveryRecordsResponse,
+  createDeliveryRecordsFetcher
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import {
@@ -51,6 +50,8 @@ import {
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
+import DataFetcher from "../../DataFetcher";
+import { useSuspense } from "../../suspense";
 
 interface IdentityDetails {
   userId: string;
@@ -85,10 +86,19 @@ interface Step1FormValidationDetails {
   message?: string;
 }
 
-const renderDeliveryRecords = (
-  props: DeliveryRecordsRouteableStepProps,
-  productDetail: ProductDetail
-) => (data: DeliveryRecordsResponse) => {
+interface RenderDeliveryRecordsProps {
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
+  productDetail: ProductDetail;
+  fetchSuspense: () => DeliveryRecordsResponse;
+}
+
+const RenderDeliveryRecords = ({
+  routeableStepProps,
+  productDetail,
+  fetchSuspense
+}: RenderDeliveryRecordsProps) => {
+  const data = fetchSuspense();
+
   const mainPlan = getMainPlan(
     productDetail.subscription
   ) as PaidSubscriptionPlan;
@@ -96,7 +106,7 @@ const renderDeliveryRecords = (
   return (
     <DeliveryRecordsFC
       data={data}
-      routeableStepProps={props}
+      routeableStepProps={routeableStepProps}
       productDetail={productDetail}
       subscriptionCurrency={mainPlan.currency}
     />
@@ -749,16 +759,25 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
         }
       ]}
     >
-      {productDetail => (
-        <DeliveryRecordsApiAsyncLoader
-          render={renderDeliveryRecords(props, productDetail)}
-          fetch={createDeliveryRecordsFetcher(
+      {productDetail => {
+        const fetchSuspense = useSuspense<DeliveryRecordsResponse>(
+          createDeliveryRecordsFetcher(
             productDetail.subscription.subscriptionId,
             productDetail.isTestUser
-          )}
-          loadingMessage={"Loading delivery history..."}
-        />
-      )}
+          ),
+          true
+        );
+
+        return (
+          <DataFetcher loadingMessage={"Loading delivery history..."}>
+            <RenderDeliveryRecords
+              routeableStepProps={props}
+              productDetail={productDetail}
+              fetchSuspense={fetchSuspense}
+            />
+          </DataFetcher>
+        );
+      }}
     </FlowWrapper>
   );
 };

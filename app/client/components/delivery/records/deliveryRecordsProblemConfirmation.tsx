@@ -5,11 +5,13 @@ import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { useContext } from "react";
-import {DATE_FNS_SHORT_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
+import {
+  DATE_FNS_SHORT_OUTPUT_FORMAT,
+  dateString
+} from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
-  PaidSubscriptionPlan,
-  Subscription
+  PaidSubscriptionPlan
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
@@ -29,27 +31,40 @@ import {
 } from "./deliveryRecords";
 import {
   createDeliveryRecordsProblemPost,
-  DeliveryRecordsApiAsyncLoader,
   DeliveryRecordsResponse
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
   DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
+  DeliveryRecordsProblemContextInterface,
   DeliveryRecordsProblemPostPayloadContext
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
+import DataFetcher from "../../DataFetcher";
+import { useSuspense } from "../../suspense";
 
-const renderDeliveryRecordsConfirmation = (
-  props: DeliveryRecordsRouteableStepProps,
-  subscription: Subscription
-) => (data: DeliveryRecordsResponse) => {
+interface RenderDeliveryRecordsConfirmationProps {
+  routeableStepProps: DeliveryRecordsRouteableStepProps;
+  deliveryRecordsProblemContext: DeliveryRecordsProblemContextInterface;
+  fetchSuspense: () => DeliveryRecordsResponse;
+}
+
+const RenderDeliveryRecordsConfirmation = ({
+  routeableStepProps,
+  deliveryRecordsProblemContext,
+  fetchSuspense
+}: RenderDeliveryRecordsConfirmationProps) => {
+  const { subscription } = deliveryRecordsProblemContext;
+
+  const data = fetchSuspense();
+
   const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
   return (
     <DeliveryRecordsProblemConfirmationFC
       data={data}
-      routeableStepProps={props}
+      routeableStepProps={routeableStepProps}
       subscriptionId={subscription.subscriptionId}
       subscriptionCurrency={mainPlan.currency}
     />
@@ -220,7 +235,9 @@ const DeliveryRecordsProblemConfirmationFC = (
             </div>
             <div>
               <dt css={dtCss}>Date reported:</dt>
-              <dd css={ddCss}>{dateString(new Date(), DATE_FNS_SHORT_OUTPUT_FORMAT)}</dd>
+              <dd css={ddCss}>
+                {dateString(new Date(), DATE_FNS_SHORT_OUTPUT_FORMAT)}
+              </dd>
             </div>
             <div>
               <dt css={dtCss}>Subscription ID:</dt>
@@ -433,18 +450,22 @@ export const DeliveryRecordsProblemConfirmation = (
     return visuallyNavigateToParent(props);
   }
 
+  const fetchSuspense = useSuspense<DeliveryRecordsResponse>(
+    createDeliveryRecordsProblemPost(
+      deliveryRecordsProblemContext.subscription.subscriptionId,
+      deliveryRecordsProblemContext.isTestUser,
+      deliveryIssuePostPayload
+    ),
+    true
+  );
+
   return (
-    <DeliveryRecordsApiAsyncLoader
-      render={renderDeliveryRecordsConfirmation(
-        props,
-        deliveryRecordsProblemContext.subscription
-      )}
-      fetch={createDeliveryRecordsProblemPost(
-        deliveryRecordsProblemContext.subscription.subscriptionId,
-        deliveryRecordsProblemContext.isTestUser,
-        deliveryIssuePostPayload
-      )}
-      loadingMessage={"Reporting problem..."}
-    />
+    <DataFetcher loadingMessage={"Reporting problem..."}>
+      <RenderDeliveryRecordsConfirmation
+        routeableStepProps={props}
+        deliveryRecordsProblemContext={deliveryRecordsProblemContext}
+        fetchSuspense={fetchSuspense}
+      />
+    </DataFetcher>
   );
 };
