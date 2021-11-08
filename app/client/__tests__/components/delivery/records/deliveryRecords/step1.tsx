@@ -193,7 +193,7 @@ describe("DeliveryRecords", () => {
         />
       );
 
-      await promisifyNextNTicks(2);
+      await waitFor(() => expect(getByText("Report a problem")));
 
       fireEvent(
         getByText("Report a problem"),
@@ -227,7 +227,7 @@ describe("DeliveryRecords", () => {
         />
       );
 
-      await promisifyNextNTicks(2);
+      await waitFor(() => expect(getByText("Report a problem")));
 
       fireEvent(
         getByText("Report a problem"),
