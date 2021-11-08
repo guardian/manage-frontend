@@ -24,7 +24,7 @@ interface ContributionsFeedbackFormProps {
 
 type Status = "EDITING" | "SUBMITTED";
 
-const CHARACTER_LIMIT = 2_500;
+const CHARACTER_LIMIT = 2500;
 const NUM_ROWS = 8;
 
 const getPatchUpdateCaseFunc = (

@@ -4,14 +4,14 @@ import React from "react";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
 import DeliveryRecords from "../../../../../components/delivery/records/deliveryRecords";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
-import { act, fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import fetchMock from "fetch-mock";
 
 Enzyme.configure({ adapter: new Adapter() });
 
 /* *************************************************
-    NOTE: there are 2 process.nextTick calls 
-    throughout the tests here to handle the updates 
+    NOTE: there are 2 process.nextTick calls
+    throughout the tests here to handle the updates
     to the component after the 2 fetch calls :
     /api/me/mma and
     /api/delivery-records/{subscriptionId}
@@ -133,7 +133,7 @@ const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 const promisifyNextNTicks = (n: number) =>
   new Promise(resolve => nextNTicks(n, resolve));
 
-const nextNTicks = (n: number, callback: () => void) => {
+const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
   process.nextTick(() => {
     if (n < 1) {
       callback();
@@ -148,10 +148,8 @@ describe("DeliveryRecords", () => {
     .get(/api\/delivery-records/, deliveryRecordsResponse)
     .get(/api\/me\/mma/, apiMeMmaResponse);
 
-  it("renders without crashing", async done => {
+  it("renders without crashing", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      jest.useFakeTimers();
-
       render(
         <DeliveryRecords
           path="fakepath"
@@ -160,23 +158,17 @@ describe("DeliveryRecords", () => {
       );
 
       await promisifyNextNTicks(2);
-      act(() => {
-        jest.runAllTimers();
-      });
 
       expect(document.querySelectorAll("h1")[0].textContent).toEqual(
         "Delivery history"
       );
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("renders in 'read only' mode initially", async done => {
+  it("renders in 'read only' mode initially", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      jest.useFakeTimers();
-
       const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
@@ -184,24 +176,16 @@ describe("DeliveryRecords", () => {
         />
       );
 
-      await promisifyNextNTicks(2);
-      act(() => {
-        jest.runAllTimers();
-      });
-
-      getByText("Report a problem");
+      await waitFor(() => expect(getByText("Report a problem")));
 
       expect(document.querySelectorAll(".deliveryRecordCard")).toHaveLength(2);
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async done => {
+  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      jest.useFakeTimers();
-
       const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
@@ -209,10 +193,7 @@ describe("DeliveryRecords", () => {
         />
       );
 
-      await promisifyNextNTicks(2);
-      act(() => {
-        jest.runAllTimers();
-      });
+      await waitFor(() => expect(getByText("Report a problem")));
 
       fireEvent(
         getByText("Report a problem"),
@@ -232,16 +213,13 @@ describe("DeliveryRecords", () => {
 
       getByText("Damaged paper");
       getByText("Continue to Step 2 & 3");
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
+  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      jest.useFakeTimers();
-
       const { getByText } = render(
         <DeliveryRecords
           path="fakepath"
@@ -249,10 +227,7 @@ describe("DeliveryRecords", () => {
         />
       );
 
-      await promisifyNextNTicks(2);
-      act(() => {
-        jest.runAllTimers();
-      });
+      await waitFor(() => expect(getByText("Report a problem")));
 
       fireEvent(
         getByText("Report a problem"),
@@ -271,7 +246,6 @@ describe("DeliveryRecords", () => {
       );
 
       getByText("Please select the type of problem");
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
