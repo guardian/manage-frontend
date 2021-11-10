@@ -1,33 +1,22 @@
 module.exports = {
+  transform: {
+    "^.+\\.tsx?$": "ts-jest"
+  },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  moduleFileExtensions: ["js", "json", "jsx", "node", "ts", "tsx"],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   testResultsProcessor: "jest-teamcity-reporter",
   snapshotSerializers: ["jest-emotion"],
   globals: {
     "ts-jest": {
-      tsconfig: {
+      tsConfig: {
         jsx: "react",
         module: "commonjs"
       },
-      babelConfig: {
-        presets: [
-          "@babel/typescript",
-          "@babel/react",
-          "@emotion/babel-preset-css-prop"
-        ],
-        plugins: [
-          "@babel/proposal-class-properties",
-          "@babel/proposal-object-rest-spread",
-          "@babel/plugin-proposal-optional-chaining",
-          "lodash"
-        ]
-      }
+      babelConfig: require("./webpack.common").babelCommon
     }
   },
   moduleNameMapper: {
     "^@guardian/src-foundations/(.*)(?<!cjs)$":
       "@guardian/src-foundations/$1/cjs"
-  },
-  preset: "ts-jest",
-  testEnvironment: "jsdom"
+  }
 };

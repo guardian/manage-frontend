@@ -78,7 +78,7 @@ export const useAsyncSource = (
       const response = await getter(...args);
       dispatch(ActionSuccess(response));
     } catch (e) {
-      dispatch(ActionError(e as string));
+      dispatch(ActionError(e));
       if (errorHandler) {
         errorHandler(e);
       }

@@ -16,7 +16,7 @@ const guardianWeeklyProblemArr: DeliveryProblemType[] = [
 ];
 
 describe("DeliveryRecordsProblemForm", () => {
-  it("renders the correct problem options", () => {
+  it("renders the correct problem options", async done => {
     const onFormSubmitSpy = jest.fn();
     const updateValidationStatusCallback = jest.fn();
 
@@ -39,9 +39,11 @@ describe("DeliveryRecordsProblemForm", () => {
           .text()
       ).toEqual(guardianWeeklyProblemArr[a].label);
     }
+
+    done();
   });
 
-  it("shows vlidation warning if form is submitted without selecting option", () => {
+  it("shows vlidation warning if form is submitted without selecting option", async done => {
     const onFormSubmitSpy = jest.fn();
     const updateValidationStatusCallback = jest.fn();
 
@@ -69,5 +71,7 @@ describe("DeliveryRecordsProblemForm", () => {
         .at(0)
         .text()
     ).toEqual("Please select the type of problem");
+
+    done();
   });
 });

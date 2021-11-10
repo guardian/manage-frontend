@@ -15,7 +15,9 @@ import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
+import AsyncLoader from "../asyncLoader";
 import { isCancelled } from "../cancel/cancellationSummary";
 import { NAV_LINKS } from "../nav/navConfig";
 import { PageContainer } from "../page";
@@ -24,33 +26,12 @@ import { AccountOverviewCancelledCard } from "./accountOverviewCancelledCard";
 import { AccountOverviewCard } from "./accountOverviewCard";
 import { EmptyAccountOverview } from "./emptyAccountOverview";
 import { SupportTheGuardianSection } from "./supportTheGuardianSection";
-import DataFetcher from "../DataFetcher";
-import useSWR from "swr";
-import { credentialHeaders, fetcher } from "../../fetchClient";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../../shared/identity";
+import { fetchWithDefaultParameters } from "../../fetch";
 
-const mdaHeaders = { ...credentialHeaders };
-const cancelledProductsHeaders = {
-  headers: {
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-      window.location.href
-    )
-  }
-};
-
-const AccountOverviewRenderer = () => {
-  const mdaResponse = useSWR("/api/me/mma", url => fetcher(url, mdaHeaders), {
-    suspense: true
-  }).data as MembersDataApiItem[];
-  const cancelledProductsResponse = useSWR(
-    "/api/cancelled",
-    url => fetcher(url, cancelledProductsHeaders),
-    { suspense: true }
-  ).data as CancelledProductDetail[];
-
+const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
+  MembersDataApiItem[],
+  CancelledProductDetail[]
+]) => {
   const allActiveProductDetails = mdaResponse
     .filter(isProduct)
     .sort(sortByJoinDate);
@@ -81,7 +62,6 @@ const AccountOverviewRenderer = () => {
     margin: ${space[12]}px 0 ${space[6]}px;
     border-top: 1px solid ${neutral["86"]};
     ${headline.small({ fontWeight: "bold" })};
-
     ${maxWidth.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
@@ -143,11 +123,23 @@ const AccountOverview = (_: RouteComponentProps) => {
       selectedNavItem={NAV_LINKS.accountOverview}
       pageTitle="Account overview"
     >
-      <DataFetcher loadingMessage={`Loading your account details...`}>
-        <AccountOverviewRenderer />
-      </DataFetcher>
+      <AccountOverviewAsyncLoader
+        fetch={AccountOverviewFetcher}
+        render={AccountOverviewRenderer}
+        loadingMessage={`Loading your account details...`}
+      />
     </PageContainer>
   );
 };
+
+class AccountOverviewAsyncLoader extends AsyncLoader<
+  [MembersDataApiItem[], CancelledProductDetail[]]
+> {}
+
+const AccountOverviewFetcher = () =>
+  Promise.all([
+    allProductsDetailFetcher(),
+    fetchWithDefaultParameters("/api/cancelled/")
+  ]);
 
 export default AccountOverview;

@@ -1,5 +1,4 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+import "@babel/polyfill";
 import * as Sentry from "@sentry/browser";
 import "ophan-tracker-js/build/ophan.manage-my-account";
 import ReactDOM from "react-dom";

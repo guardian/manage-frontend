@@ -20,9 +20,11 @@ import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductTypeKeys
 } from "../../../shared/productTypes";
+import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { EmptyAccountOverview } from "../accountoverview/emptyAccountOverview";
 import { SixForSixExplainerIfApplicable } from "../accountoverview/sixForSixExplainer";
+import AsyncLoader from "../asyncLoader";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
 import { LinkButton } from "../buttons";
 import { NAV_LINKS } from "../nav/navConfig";
@@ -33,43 +35,20 @@ import { PaymentFailureAlertIfApplicable } from "../payment/paymentFailureAlertI
 import { ErrorIcon } from "../svgs/errorIcon";
 import { GiftIcon } from "../svgs/giftIcon";
 import { InvoicesTable } from "./invoicesTable";
-import { credentialHeaders, fetcher } from "../../fetchClient";
-import useSWR from "swr";
-import DataFetcher from "../DataFetcher";
-import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../../../shared/identity";
+import { fetchWithDefaultParameters } from "../../fetch";
 
 type MMACategoryToProductDetails = {
   [mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
 
-type FetchInvoiceResponse = { invoices: InvoiceDataApiItem[] };
+class BillingDataAsyncLoader extends AsyncLoader<
+  [MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
+> {}
 
-const mdaHeaders = {
-  headers: {
-    [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-      window.location.href
-    )
-  }
-};
-
-const invoiceHeaders = { ...credentialHeaders };
-
-export const BillingRenderer = () => {
-  const mdaResponse = useSWR("/api/me/mma", url => fetcher(url, mdaHeaders), {
-    suspense: true
-  }).data as MembersDataApiItem[];
-
-  const invoiceResponse = useSWR(
-    "/api/invoices",
-    url => fetcher(url, invoiceHeaders),
-    {
-      suspense: true
-    }
-  ).data as FetchInvoiceResponse;
-
+const BillingRenderer = ([mdaResponse, invoiceResponse]: [
+  MembersDataApiItem[],
+  { invoices: InvoiceDataApiItem[] }
+]) => {
   const allProductDetails = mdaResponse.filter(isProduct).sort(sortByJoinDate);
   const invoiceData = invoiceResponse.invoices.sort(
     (a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
@@ -280,11 +259,19 @@ export const BillingRenderer = () => {
 const Billing = (_: RouteComponentProps) => {
   return (
     <PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-      <DataFetcher loadingMessage="Loading your billing details...">
-        <BillingRenderer />
-      </DataFetcher>
+      <BillingDataAsyncLoader
+        fetch={billingFetcher}
+        render={BillingRenderer}
+        loadingMessage={`Loading your billing details...`}
+      />
     </PageContainer>
   );
 };
+
+const billingFetcher = () =>
+  Promise.all([
+    allProductsDetailFetcher(),
+    fetchWithDefaultParameters("/api/invoices")
+  ]);
 
 export default Billing;
