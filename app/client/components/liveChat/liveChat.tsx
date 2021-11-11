@@ -136,13 +136,13 @@ const initESW = (
         window.addEventListener("message", postMessageListener, false);
 
         clearTimeout(timeoutTimer);
-        resolve(true);
+        resolve();
       }
     );
 
     if (liveChatAPI.isIframeReady) {
       clearTimeout(timeoutTimer);
-      resolve(true);
+      resolve();
     }
 
     liveChatAPI.addEventHandler(
@@ -220,7 +220,7 @@ const initLiveChat = (
           identityID,
           loginEmail
         ).catch(() => reject());
-        resolve(true);
+        resolve();
       };
 
       // tslint:disable-next-line:no-object-mutation

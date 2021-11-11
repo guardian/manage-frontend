@@ -16,7 +16,7 @@ export interface DeliveryRecordsProblemType {
   message?: string;
 }
 
-export interface DeliveryRecordsProblemContextInterface {
+interface DeliveryRecordsProblemContextInterface {
   subscription: Subscription;
   subscriptionCurrency: string;
   productName: string;

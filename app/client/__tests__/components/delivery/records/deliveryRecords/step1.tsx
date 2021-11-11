@@ -1,17 +1,20 @@
-import Enzyme from "enzyme";
+import { Button } from "@guardian/src-button";
+import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
-import DeliveryRecords from "../../../../../components/delivery/records/deliveryRecords";
+import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
+import DeliveryRecords, {
+  DeliveryRecordsFC
+} from "../../../../../components/delivery/records/deliveryRecords";
+import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
-import { fireEvent, render, waitFor } from "@testing-library/react";
-import fetchMock from "fetch-mock";
 
 Enzyme.configure({ adapter: new Adapter() });
 
 /* *************************************************
-    NOTE: there are 2 process.nextTick calls
-    throughout the tests here to handle the updates
+    NOTE: there are 2 process.nextTick calls 
+    throughout the tests here to handle the updates 
     to the component after the 2 fetch calls :
     /api/me/mma and
     /api/delivery-records/{subscriptionId}
@@ -133,7 +136,7 @@ const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 const promisifyNextNTicks = (n: number) =>
   new Promise(resolve => nextNTicks(n, resolve));
 
-const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
+const nextNTicks = (n: number, callback: () => void) => {
   process.nextTick(() => {
     if (n < 1) {
       callback();
@@ -144,13 +147,29 @@ const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
 };
 
 describe("DeliveryRecords", () => {
-  fetchMock
-    .get(/api\/delivery-records/, deliveryRecordsResponse)
-    .get(/api\/me\/mma/, apiMeMmaResponse);
+  beforeEach(() => {
+    // tslint:disable-next-line: no-object-mutation
+    global.fetch = jest.fn().mockImplementation(url => {
+      return new Promise(resolve => {
+        resolve({
+          ok: true,
+          status: 200,
+          headers: {
+            get: () => "pass"
+          },
+          json: () => {
+            return url.includes("/api/me/mma")
+              ? apiMeMmaResponse
+              : deliveryRecordsResponse;
+          }
+        });
+      });
+    });
+  });
 
-  it("renders without crashing", async () => {
+  it("renders without crashing", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      render(
+      const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
@@ -159,93 +178,140 @@ describe("DeliveryRecords", () => {
 
       await promisifyNextNTicks(2);
 
-      expect(document.querySelectorAll("h1")[0].textContent).toEqual(
-        "Delivery history"
-      );
+      wrapper.update();
+
+      expect(
+        wrapper
+          .find("h1")
+          .at(0)
+          .text()
+      ).toEqual("Delivery history");
+      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("renders in 'read only' mode initially", async () => {
+  it("renders in 'read only' mode initially", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const { getByText } = render(
+      const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
         />
       );
 
-      await waitFor(() => expect(getByText("Report a problem")));
+      await promisifyNextNTicks(2);
 
-      expect(document.querySelectorAll(".deliveryRecordCard")).toHaveLength(2);
+      wrapper.update();
+
+      expect(
+        wrapper
+          .find(DeliveryRecordsFC)
+          .find(Button)
+          .at(0)
+          .text()
+      ).toEqual("Report a problem");
+
+      expect(wrapper.find(DeliveryRecordCard)).toHaveLength(2);
+
+      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async () => {
+  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const { getByText } = render(
+      const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
         />
       );
 
-      await waitFor(() => expect(getByText("Report a problem")));
+      await promisifyNextNTicks(2);
 
-      fireEvent(
-        getByText("Report a problem"),
-        new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true
-        })
+      wrapper.update();
+
+      wrapper
+        .find(DeliveryRecordsFC)
+        .find(Button)
+        .at(0)
+        .simulate("click");
+
+      const problemForm = wrapper
+        .find(DeliveryRecordsFC)
+        .find(DeliveryRecordProblemForm);
+
+      expect(problemForm.find("li")).toHaveLength(
+        guardianWeeklyProblemArr.length
+      );
+
+      guardianWeeklyProblemArr.map((problemCopy, index) =>
+        expect(
+          problemForm
+            .find("li")
+            .at(index)
+            .text()
+        ).toEqual(problemCopy)
       );
 
       expect(
-        document
-          .querySelectorAll(".deliveryRecordProblemForm")[0]
-          .querySelectorAll("li")
-      ).toHaveLength(guardianWeeklyProblemArr.length);
+        problemForm
+          .find("li")
+          .find("label")
+          .at(0)
+          .text()
+      ).toEqual("Damaged paper");
 
-      guardianWeeklyProblemArr.map(problemCopy => getByText(problemCopy));
+      expect(
+        problemForm
+          .find("button")
+          .at(0)
+          .text()
+      ).toEqual("Continue to Step 2 & 3");
 
-      getByText("Damaged paper");
-      getByText("Continue to Step 2 & 3");
+      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async () => {
+  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
-      const { getByText } = render(
+      const wrapper = mount(
         <DeliveryRecords
           path="fakepath"
           productType={PRODUCT_TYPES.guardianweekly}
         />
       );
 
-      await waitFor(() => expect(getByText("Report a problem")));
+      await promisifyNextNTicks(2);
 
-      fireEvent(
-        getByText("Report a problem"),
-        new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true
-        })
-      );
+      wrapper.update();
 
-      fireEvent(
-        getByText("Continue to Step 2 & 3"),
-        new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true
-        })
-      );
+      wrapper
+        .find(DeliveryRecordsFC)
+        .find(Button)
+        .at(0)
+        .simulate("click");
 
-      getByText("Please select the type of problem");
+      const problemForm = wrapper
+        .find(DeliveryRecordsFC)
+        .find(DeliveryRecordProblemForm);
+
+      const continueToStep2Btn = problemForm.find("button").at(0);
+      continueToStep2Btn.simulate("submit");
+
+      expect(
+        wrapper
+          .find("form")
+          .find("span")
+          .text()
+      ).toEqual("Please select the type of problem");
+
+      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
