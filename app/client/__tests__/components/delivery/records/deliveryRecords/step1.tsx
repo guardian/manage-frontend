@@ -13,8 +13,8 @@ import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
 Enzyme.configure({ adapter: new Adapter() });
 
 /* *************************************************
-    NOTE: there are 2 process.nextTick calls 
-    throughout the tests here to handle the updates 
+    NOTE: there are 2 process.nextTick calls
+    throughout the tests here to handle the updates
     to the component after the 2 fetch calls :
     /api/me/mma and
     /api/delivery-records/{subscriptionId}
@@ -136,7 +136,7 @@ const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 const promisifyNextNTicks = (n: number) =>
   new Promise(resolve => nextNTicks(n, resolve));
 
-const nextNTicks = (n: number, callback: () => void) => {
+const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
   process.nextTick(() => {
     if (n < 1) {
       callback();
@@ -167,7 +167,7 @@ describe("DeliveryRecords", () => {
     });
   });
 
-  it("renders without crashing", async done => {
+  it("renders without crashing", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
@@ -186,13 +186,12 @@ describe("DeliveryRecords", () => {
           .at(0)
           .text()
       ).toEqual("Delivery history");
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("renders in 'read only' mode initially", async done => {
+  it("renders in 'read only' mode initially", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
@@ -214,14 +213,12 @@ describe("DeliveryRecords", () => {
       ).toEqual("Report a problem");
 
       expect(wrapper.find(DeliveryRecordCard)).toHaveLength(2);
-
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async done => {
+  it("clicking on 'Report a problem' button shows delivery problem radio list (Guardian weekly sub)", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
@@ -271,14 +268,12 @@ describe("DeliveryRecords", () => {
           .at(0)
           .text()
       ).toEqual("Continue to Step 2 & 3");
-
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
   });
 
-  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async done => {
+  it("clicking on 'Continue to Step 2 & 3' button WITHOUT selecting problem shows validation error", async () => {
     if (hasDeliveryRecordsFlow(PRODUCT_TYPES.guardianweekly)) {
       const wrapper = mount(
         <DeliveryRecords
@@ -310,8 +305,6 @@ describe("DeliveryRecords", () => {
           .find("span")
           .text()
       ).toEqual("Please select the type of problem");
-
-      done();
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }

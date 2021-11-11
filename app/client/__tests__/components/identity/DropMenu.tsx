@@ -2,7 +2,7 @@ import {
   cleanup,
   fireEvent,
   render,
-  waitForElement,
+  waitFor,
   waitForElementToBeRemoved
 } from "@testing-library/react";
 import serializer from "jest-emotion";
@@ -32,13 +32,13 @@ describe("DropMenu", () => {
   it("if closed, opens and shows children on click", async () => {
     const { container, getByText } = render(element);
     fireEvent.click(getByText(ELEMENT_TEXT.TITLE));
-    await waitForElement(() => getByText(ELEMENT_TEXT.CONTENT));
+    await waitFor(() => getByText(ELEMENT_TEXT.CONTENT));
     expect(container).toMatchSnapshot();
   });
   it("if open, closes and hides children on click", async () => {
     const { container, getByText } = render(element);
     fireEvent.click(getByText(ELEMENT_TEXT.TITLE));
-    await waitForElement(() => getByText(ELEMENT_TEXT.CONTENT));
+    await waitFor(() => getByText(ELEMENT_TEXT.CONTENT));
     const promise = waitForElementToBeRemoved(() =>
       getByText(ELEMENT_TEXT.CONTENT)
     ).then(() => {
