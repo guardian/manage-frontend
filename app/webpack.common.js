@@ -4,8 +4,8 @@ const AssetsPlugin = require("assets-webpack-plugin");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const babelLoaderExcludeNodeModulesExcept = require("babel-loader-exclude-node-modules-except");
 
 const assetsPluginInstance = new AssetsPlugin({
   path: path.resolve(__dirname, "./dist/")
@@ -66,37 +66,32 @@ const server = merge(common, {
     __dirname: false,
     __filename: false
   },
-  externals: nodeExternals({
-    allowlist: [/@guardian\//]
-  }),
   module: {
     rules: [
       {
         test: /\.(tsx?)|(js)$/,
-        dependency: { not: /node_modules\/(?!(@guardian)\/).*/ },
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              plugins: [
-                ...babelCommon.plugins,
-                "babel-plugin-source-map-support"
+        exclude: babelLoaderExcludeNodeModulesExcept(["@guardian/*"]),
+        use: {
+          loader: "babel-loader",
+          options: {
+            plugins: [
+              ...babelCommon.plugins,
+              "babel-plugin-source-map-support"
+            ],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: { node: "12.22.7" },
+                  ignoreBrowserslistConfig: true,
+                  useBuiltIns: "entry",
+                  corejs: 3
+                }
               ],
-              presets: [
-                [
-                  "@babel/preset-env",
-                  {
-                    targets: { node: "12.22.7" },
-                    ignoreBrowserslistConfig: true,
-                    useBuiltIns: "entry",
-                    corejs: 3
-                  }
-                ],
-                ...babelCommon.presets
-              ]
-            }
+              ...babelCommon.presets
+            ]
           }
-        ]
+        }
       }
     ]
   }
@@ -117,25 +112,23 @@ const client = merge(common, {
     rules: [
       {
         test: /\.(tsx?)|(js)$/,
-        dependency: { not: /node_modules\/(?!(@guardian)\/).*/ },
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              plugins: babelCommon.plugins,
-              presets: [
-                [
-                  "@babel/env",
-                  {
-                    useBuiltIns: "entry",
-                    corejs: 3.16
-                  }
-                ],
-                ...babelCommon.presets
-              ]
-            }
+        exclude: babelLoaderExcludeNodeModulesExcept(["@guardian/*"]),
+        use: {
+          loader: "babel-loader",
+          options: {
+            plugins: babelCommon.plugins,
+            presets: [
+              [
+                "@babel/env",
+                {
+                  useBuiltIns: "entry",
+                  corejs: 3.16
+                }
+              ],
+              ...babelCommon.presets
+            ]
           }
-        ]
+        }
       },
       {
         test: /\.css$/i,
