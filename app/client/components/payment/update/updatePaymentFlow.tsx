@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
-import { headline } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React from "react";
@@ -25,7 +25,7 @@ import {
 import { augmentPaymentFailureAlertText } from "../paymentFailureAlertIfApplicable";
 import { PayPalDisplay } from "../paypalDisplay";
 import { CardInputForm } from "./card/cardInputForm";
-import { CurrentPaymentDetails } from "./currentPaymentDetails";
+import CurrentPaymentDetails from "./CurrentPaymentDetails";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
 import {
   NewPaymentMethodContext,
@@ -186,14 +186,6 @@ class PaymentUpdaterStep extends React.Component<
                 margin: ${space[5]}px 0 ${space[12]}px;
               `}
             />
-            <h2
-              css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Update payment for your{" "}
-              {this.props.routeableStepProps.productType.friendlyName}
-            </h2>
             {this.props.productDetail.alertText && (
               <div>
                 <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
@@ -205,10 +197,14 @@ class PaymentUpdaterStep extends React.Component<
               </div>
             )}
             <div css={{ minWidth: "260px" }}>
-              <h3>Current Payment Details</h3>
-              <CurrentPaymentDetails
-                {...this.props.productDetail.subscription}
-              />
+              <h3
+                css={css`
+                  ${textSans.large({ fontWeight: "bold" })};
+                `}
+              >
+                Your current payment method
+              </h3>
+              <CurrentPaymentDetails {...this.props.productDetail} />
             </div>
             <PaymentMethodBar
               updatePaymentMethod={this.updatePaymentMethod}

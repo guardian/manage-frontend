@@ -20,7 +20,7 @@ import {
   visuallyNavigateToParent,
   WizardStep
 } from "../../wizardRouterAdapter";
-import { CurrentPaymentDetails } from "./currentPaymentDetails";
+import CurrentPaymentDetails from "./CurrentPaymentDetails";
 import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
@@ -165,7 +165,7 @@ const InnerContent = (props: InnerContentProps) => (
       `}
     />
     <h3>Please confirm your change from...</h3>
-    <CurrentPaymentDetails {...props.productDetail.subscription} />
+    <CurrentPaymentDetails {...props.productDetail} />
     <h3>...to...</h3>
     {props.newPaymentMethodDetail.render()}
     <div css={{ margin: "20px 0", textAlign: "right" }}>
