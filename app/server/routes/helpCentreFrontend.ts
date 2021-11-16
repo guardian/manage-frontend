@@ -9,7 +9,7 @@ const router = Router();
 
 router.use(withIdentity(), async (_: Request, res: Response) => {
   const title = DEFAULT_PAGE_TITLE;
-  const src = "/static/helpcentre.js";
+  const src = "/static/help-centre.js";
 
   res.send(
     html({
