@@ -205,8 +205,6 @@ export const HelpCentreEmailAndLiveChat = () => {
               setIsLiveChatAvailable={setIsLiveChatAvailable}
             />
           )}
-          <p>9am - 10pm, Monday - Friday (GMT/BST)</p>
-          <p>9am - 6pm, Saturday - Sunday (GMT/BST)</p>
         </HelpCentreContactBox>
       </div>
     </>
