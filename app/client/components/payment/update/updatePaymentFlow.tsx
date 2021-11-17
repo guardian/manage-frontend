@@ -73,7 +73,6 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
     <input
       type="radio"
       name="payment_method"
-      css={{ display: "none" }}
       value={props.paymentMethod}
       checked={props.value === props.paymentMethod}
       onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
@@ -84,16 +83,11 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
   </label>
 );
 
-const PaymentMethodBar = (props: PaymentMethodProps) => (
-  <form
-    css={{
-      display: "none" // TODO show when we want to test appetite for switching payment method
-    }}
-  >
+export const SelectPaymentMethod = (props: PaymentMethodProps & { currentPaymentMethod: string | undefined }) => (
+  <form>
     <h3>New Payment Method</h3>
     <PaymentMethodRadioButton paymentMethod={PaymentMethod.card} {...props} />
-    <PaymentMethodRadioButton paymentMethod={PaymentMethod.payPal} {...props} />
-    <PaymentMethodRadioButton paymentMethod={PaymentMethod.dd} {...props} />
+    {props.currentPaymentMethod === "DirectDebit" && (<PaymentMethodRadioButton paymentMethod={PaymentMethod.dd} {...props} />)}
   </form>
 );
 
@@ -206,9 +200,10 @@ class PaymentUpdaterStep extends React.Component<
               </h3>
               <CurrentPaymentDetails {...this.props.productDetail} />
             </div>
-            <PaymentMethodBar
+            <SelectPaymentMethod
               updatePaymentMethod={this.updatePaymentMethod}
               value={this.state.selectedPaymentMethod}
+              currentPaymentMethod={this.props.productDetail.subscription.paymentMethod}
             />
             <h3>New Payment Details</h3>
             {this.getInputForm(
@@ -261,11 +256,13 @@ class PaymentUpdaterStep extends React.Component<
     this.setState({ selectedPaymentMethod: newPaymentMethod });
 
   private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
+    console.log(this.state.selectedPaymentMethod)
+    console.log(window.guardian)
     switch (this.state.selectedPaymentMethod) {
       case PaymentMethod.resetRequired:
-        return subscription.stripePublicKeyForCardAddition ? (
+        return window.guardian.stripePublicKey ? (
           <CardInputForm
-            stripeApiKey={subscription.stripePublicKeyForCardAddition}
+            stripeApiKey={window.guardian.stripePublicKey} 
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
             userEmail={window.guardian.identityDetails.email}
           />
@@ -273,14 +270,11 @@ class PaymentUpdaterStep extends React.Component<
           <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
         );
       case PaymentMethod.card:
-        return subscription.card &&
-          subscription.card.stripePublicKeyForUpdate ? (
+        return window.guardian.stripePublicKey ? (
           <CardInputForm
-            stripeApiKey={subscription.card.stripePublicKeyForUpdate}
+            stripeApiKey={window.guardian.stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={
-              subscription.card.email || window.guardian.identityDetails.email
-            }
+            userEmail={window.guardian.identityDetails.email}
           />
         ) : (
           <GenericErrorScreen loggingMessage="No existing card information to update from" />
