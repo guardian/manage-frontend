@@ -9,7 +9,7 @@ deployments:
     parameters:
       templatePath: cfn.yaml
       amiTags:
-        Recipe: manage-frontend-arm
+        Recipe: manage-frontend-arm-node12
         AmigoStage: PROD
       amiEncrypted: true
   manage-frontend:
