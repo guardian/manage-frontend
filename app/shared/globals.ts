@@ -1,5 +1,5 @@
 import { AbTest, OphanComponentEvent } from "./ophanTypes";
-
+import { StripePublicKeySet } from "../server/stripeSetupIntentConfig";
 interface CommonGlobals {
   domain: string;
   dsn: string | null;
@@ -11,7 +11,6 @@ export interface IdentityDetails {
   displayName?: string;
   signInStatus?: string;
 }
-
 export interface Globals extends CommonGlobals {
   spaTransition?: true;
   INTCMP?: string;
@@ -23,9 +22,9 @@ export interface Globals extends CommonGlobals {
   abTest?: AbTest;
   identityDetails: IdentityDetails;
   recaptchaPublicKey?: string;
-  stripePublicKey?: string;
+  stripeKeyAustralia: StripePublicKeySet;
+  stripeKeyDefaultCurrencies: StripePublicKeySet;
 }
-
 declare global {
   interface Window {
     guardian: Globals;

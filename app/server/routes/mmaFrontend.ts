@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import { conf } from "../config";
 import html from "../html";
 import { withIdentity } from "../middleware/identityMiddleware";
-import { clientDSN, getRecaptchaPublicKey, getStripePublicKey } from "./frontendCommon";
+import { clientDSN, getRecaptchaPublicKey, getStripePublicKeys } from "./frontendCommon";
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.use(withIdentity(), async (_: Request, res: Response) => {
         dsn: clientDSN,
         identityDetails: res.locals.identity,
         recaptchaPublicKey: await getRecaptchaPublicKey(),
-        stripePublicKey: await getStripePublicKey()
+        ...await getStripePublicKeys()
       }
     })
   );

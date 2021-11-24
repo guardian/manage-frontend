@@ -3,7 +3,7 @@ import { conf, Environments } from "../config";
 import { log } from "../log";
 import { recaptchaConfigPromise } from "../recaptchaConfig";
 import {
-  stripeSetupIntentConfigPromise
+  stripePublicKeysPromise
 } from "../stripeSetupIntentConfig";
 
 export const clientDSN =
@@ -33,16 +33,15 @@ export const getRecaptchaPublicKey = async () => {
   }
 };
 
-export const getStripePublicKey = async () => {
+export const getStripePublicKeys = async () => {
   try {
-    const stripeConfig = await stripeSetupIntentConfigPromise;
-    const stripePublicKey = stripeConfig && Object.keys(stripeConfig)[0];
+    const stripePublicKeys = await stripePublicKeysPromise;
 
-    if (!stripePublicKey) {
-      throw new Error(`stripe public key is '${stripePublicKey}'`);
+    if (!stripePublicKeys) {
+      throw new Error(`stripe public key is '${stripePublicKeys}'`);
     }
 
-    return stripePublicKey;
+    return stripePublicKeys;
   } catch (err) {
     log.error(
       "could not provide stripe public key to client, client-side errors may ensue when attempting to switch to card payment method",
