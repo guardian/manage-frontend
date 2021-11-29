@@ -73,7 +73,7 @@ export const DateInput = (props: DateInputProps) => (
       <div css={dividerCss}>/</div>
       <input
         css={inputBoxCss}
-        arial-label="year"
+        aria-label="year"
         value={props.date.getFullYear()}
         readOnly // TODO: remove and replace with onChange when input boxes become active
       />
