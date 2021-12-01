@@ -5,11 +5,11 @@ import {
 } from "../../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { cleanSortCode, DirectDebitDisplay } from "../../directDebitDisplay";
-import { CONFIRM_BUTTON_TEXT } from "../confirmPaymentUpdate";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { ddFormWidth } from "./directDebitInputForm";
 import { DirectDebitLegal, GoCardlessGuarantee } from "./directDebitLegal";
 
+const CONFIRM_BUTTON_TEXT = "Complete payment update";
 interface SubscriptionWithMandate extends Subscription {
   mandate: DirectDebitDetails;
 }

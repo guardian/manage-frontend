@@ -230,7 +230,7 @@ class PaymentUpdaterStep extends React.Component<
     this.setState({ selectedPaymentMethod: newPaymentMethod });
 
   private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-    let stripePublicKey: string;
+    let stripePublicKey: string | undefined;
 
     if (subscription.card) {
       stripePublicKey = subscription.card.stripePublicKeyForUpdate;
@@ -254,11 +254,13 @@ class PaymentUpdaterStep extends React.Component<
           <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
         );
       case PaymentMethod.card:
-        return stripePublicKey ? (
+        return subscription.card && stripePublicKey ? (
           <CardInputForm
             stripeApiKey={stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
+            userEmail={
+              subscription.card.email || window.guardian.identityDetails.email
+            }
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
