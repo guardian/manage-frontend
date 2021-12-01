@@ -31,7 +31,6 @@ export interface CardInputFormProps {
 export const CardInputForm = (props: CardInputFormProps) => {
   const stripePromise = useStripeSDK(props.stripeApiKey);
 
-  console.log(stripePromise);
   const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
     undefined
   );
