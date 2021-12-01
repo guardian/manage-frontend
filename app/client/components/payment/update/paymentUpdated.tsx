@@ -1,5 +1,3 @@
-import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import {
@@ -14,12 +12,9 @@ import {
   WithSubscription
 } from "../../../../shared/productResponse";
 import { ProductType } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
-import AsyncLoader from "../../asyncLoader";
 import { Button, LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { NAV_LINKS } from "../../nav/navConfig";
-import { ProgressIndicator } from "../../progressIndicator";
 import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
@@ -31,8 +26,7 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
-
-class WithSubscriptionAsyncLoader extends AsyncLoader<WithSubscription[]> {}
+import { NewSubscriptionContext } from "./newSubscriptionDetail";
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
@@ -78,13 +72,22 @@ const ConfirmedNewPaymentDetailsRenderer = ({
   return <GenericErrorScreen loggingMessage="Unsupported new payment method" />; // unsupported operation currently
 };
 
-const WithSubscriptionRenderer = (
-  productType: ProductType,
-  newPaymentMethodDetail: NewPaymentMethodDetail,
-  previousProductDetail: ProductDetail,
-  flowReferrer?: { title: string; link: string }
-) => (subs: WithSubscription[]) =>
-  subs && subs.length === 1 ? (
+interface PaymentMethodUpdatedProps {
+  subs: WithSubscription[] | {};
+  productType: ProductType;
+  newPaymentMethodDetail: NewPaymentMethodDetail;
+  previousProductDetail: ProductDetail;
+  flowReferrer?: { title: string; link: string };
+}
+
+const PaymentMethodUpdated = ({
+  subs,
+  productType,
+  newPaymentMethodDetail,
+  previousProductDetail,
+  flowReferrer
+}: PaymentMethodUpdatedProps) =>
+  Array.isArray(subs) && subs.length === 1 ? (
     <>
       <h1>Your payment details were updated successfully</h1>
       <ConfirmedNewPaymentDetailsRenderer
@@ -121,43 +124,14 @@ const WithSubscriptionRenderer = (
   ) : (
     <>
       <GenericErrorScreen
-        loggingMessage={`${subs.length} subs returned when one was expected`}
+        loggingMessage={`${Array.isArray(subs) &&
+          subs.length} subs returned when one was expected`}
       />
       <ReturnToAccountOverviewButton />
     </>
   );
 
 export const PaymentUpdated = (props: RouteableStepProps) => {
-  const innerContent = (
-    previousProductDetail: ProductDetail,
-    newPaymentMethodDetail: NewPaymentMethodDetail
-  ) => (
-    <>
-      <ProgressIndicator
-        steps={[
-          { title: "New details" },
-          { title: "Review" },
-          { title: "Confirmation", isCurrentStep: true }
-        ]}
-        additionalCSS={css`
-          margin: ${space[5]}px 0 ${space[12]}px;
-        `}
-      />
-      <WithSubscriptionAsyncLoader
-        fetch={createProductDetailFetcher(
-          props.productType,
-          previousProductDetail.subscription.subscriptionId
-        )}
-        render={WithSubscriptionRenderer(
-          props.productType,
-          newPaymentMethodDetail,
-          previousProductDetail,
-          props.location?.state?.flowReferrer
-        )}
-        loadingMessage="Looks good so far. Just checking everything is done..."
-      />
-    </>
-  );
   return (
     <MembersDataApiItemContext.Consumer>
       {previousProductDetail => (
@@ -165,9 +139,19 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
           {newPaymentMethodDetail =>
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
-              <WizardStep routeableStepProps={props}>
-                {innerContent(previousProductDetail, newPaymentMethodDetail)}
-              </WizardStep>
+              <NewSubscriptionContext.Consumer>
+                {newSubscriptionData => (
+                  <WizardStep routeableStepProps={props}>
+                    <PaymentMethodUpdated
+                      subs={newSubscriptionData}
+                      productType={props.productType}
+                      newPaymentMethodDetail={newPaymentMethodDetail}
+                      previousProductDetail={previousProductDetail}
+                      flowReferrer={props.location?.state?.flowReferrer}
+                    />
+                  </WizardStep>
+                )}
+              </NewSubscriptionContext.Consumer>
             ) : (
               visuallyNavigateToParent(props)
             )

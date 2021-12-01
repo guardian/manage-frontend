@@ -1,17 +1,14 @@
-import { NavigateFn } from "@reach/router";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { sans, validationWarningCSS } from "../../../../styles/fonts";
-import AsyncLoader from "../../../asyncLoader";
 import { Button } from "../../../buttons";
 import { Checkbox } from "../../../checkbox";
-import { GenericErrorScreen } from "../../../genericErrorScreen";
 import { cleanSortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-import { FlowReferrerContext, NavigateFnContext } from "../updatePaymentFlow";
 import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
+import { processResponse } from "../../../../utils";
 
 const inputBoxBaseStyle = {
   width: "100%",
@@ -30,79 +27,88 @@ interface DirectDebitValidationResponse {
     goCardlessStatusCode: null | number;
   };
 }
-
-class DirectDebitValidationLoader extends AsyncLoader<
-  DirectDebitValidationResponse
-> {}
-
 interface DirectDebitUpdateFormProps {
   newPaymentMethodDetailUpdater: (ddDetails: NewPaymentMethodDetail) => void;
   testUser: boolean;
+  executePaymentUpdate: (
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => Promise<unknown>;
 }
 
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
+  const [isValidating, setIsValidating] = useState<boolean>(false);
+
   const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] = useState<
     boolean
   >(false);
   const [accountName, setAccountName] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [sortCode, setSortCode] = useState<string>("");
-  const [isValidating, setIsValidating] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
 
-  const flowReferrerContext = useContext(FlowReferrerContext);
-
-  const handleValidationResponse = (navigate: NavigateFn) => (
-    response: DirectDebitValidationResponse
-  ) => {
-    if (response && response.data.accountValid) {
-      navigate("confirm", {
-        state: flowReferrerContext
-      });
-    } else if (response && response.data.goCardlessStatusCode === 429) {
-      setIsValidating(false);
-      setError(
-        "We cannot currently validate your bank details. Please try again later."
+  async function validateDirectDebitDetails(
+    newPaymentMethod: NewPaymentMethodDetail
+  ) {
+    try {
+      const validateDirectDebitDetailsFetch = await fetch(
+        `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
+        {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify({
+            accountNumber,
+            sortCode: cleanSortCode(sortCode)
+          }),
+          headers: { "Content-Type": "application/json" }
+        }
       );
-    } else {
+      const response = await processResponse<DirectDebitValidationResponse>(
+        validateDirectDebitDetailsFetch
+      );
+
+      if (response && response.data.accountValid) {
+        setIsValidating(false);
+        props.executePaymentUpdate(newPaymentMethod);
+      } else if (response && response.data.goCardlessStatusCode === 429) {
+        setIsValidating(false);
+        setError(
+          "We cannot currently validate your bank details. Please try again later."
+        );
+      } else {
+        setIsValidating(false);
+        setError(
+          "Your bank details are invalid. Please check them and try again."
+        );
+      }
+    } catch {
       setIsValidating(false);
       setError(
-        "Your bank details are invalid. Please check them and try again."
+        "Could not validate your bank details, please check them and try again."
       );
     }
-    return true;
-  };
+  }
 
-  const validateDirectDebitDetails: () => Promise<Response> = async () =>
-    await fetch(
-      `/api/validate/payment/dd?mode=${props.testUser ? "test" : "live"}`,
-      {
-        credentials: "include",
-        method: "POST",
-        body: JSON.stringify({
-          accountNumber,
-          sortCode: cleanSortCode(sortCode)
-        }),
-        headers: { "Content-Type": "application/json" }
-      }
-    );
+  const startDirectDebitUpdate = async () => {
+    const newPaymentMethod = new NewDirectDebitPaymentMethodDetail({
+      accountName,
+      accountNumber,
+      sortCode
+    });
 
-  const startDirectDebitUpdate = () => {
-    props.newPaymentMethodDetailUpdater(
-      new NewDirectDebitPaymentMethodDetail({
-        accountName,
-        accountNumber,
-        sortCode
-      })
-    );
+    props.newPaymentMethodDetailUpdater(newPaymentMethod);
+
     setError(undefined);
     if (accountName.length < 3) {
       setError("Please enter a valid account name"); // TODO add field highlighting
+      return;
     } else if (soleAccountHolderConfirmed) {
       setIsValidating(true);
     } else {
       setError("You need to confirm that you are the account holder"); // TODO highlight checkbox
+      return;
     }
+
+    validateDirectDebitDetails(newPaymentMethod);
   };
 
   return (
@@ -111,7 +117,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         marginBottom: "20px"
       }}
     >
-      <form
+      <div
         css={{
           display: "flex",
           [minWidth.desktop]: {
@@ -193,69 +199,43 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             maxWidth={ddFormWidth}
             required
           />
-          <NavigateFnContext.Consumer>
-            {nav =>
-              nav.navigate ? (
-                <div
-                  css={{
-                    marginTop: "20px",
-                    textAlign: "right",
-                    width: ddFormWidth,
-                    [maxWidth.desktop]: {
-                      width: "100%"
-                    }
-                  }}
-                >
-                  {isValidating ? (
-                    <DirectDebitValidationLoader
-                      fetch={validateDirectDebitDetails}
-                      shouldPreventRender={handleValidationResponse(
-                        nav.navigate
-                      )}
-                      render={() => null}
-                      shouldPreventErrorRender={() => {
-                        setIsValidating(false);
-                        setError(
-                          "Could not validate your bank details, please check them and try again."
-                        );
-                        return true;
-                      }}
-                      errorRender={() => null}
-                      loadingMessage="Validating direct debit details..."
-                      spinnerScale={0.7}
-                      inline
-                    />
-                  ) : (
-                    <>
-                      <Button
-                        text="Review payment update"
-                        onClick={startDirectDebitUpdate}
-                        primary
-                        right
-                      />
-                      {error ? (
-                        <div
-                          css={{
-                            ...validationWarningCSS,
-                            marginTop: "5px"
-                          }}
-                        >
-                          {error}
-                        </div>
-                      ) : (
-                        undefined
-                      )}
-                    </>
-                  )}
-                </div>
-              ) : (
-                <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-              )
-            }
-          </NavigateFnContext.Consumer>
+
+          <div
+            css={{
+              marginTop: "20px",
+              textAlign: "right",
+              width: ddFormWidth,
+              [maxWidth.desktop]: {
+                width: "100%"
+              }
+            }}
+          >
+            {!isValidating && (
+              <>
+                <Button
+                  text="Update payment method"
+                  onClick={startDirectDebitUpdate}
+                  primary
+                  right
+                />
+                {error ? (
+                  <div
+                    css={{
+                      ...validationWarningCSS,
+                      marginTop: "5px"
+                    }}
+                  >
+                    {error}
+                  </div>
+                ) : (
+                  undefined
+                )}
+              </>
+            )}
+          </div>
         </div>
         <DirectDebitLegal />
-      </form>
+      </div>
     </div>
   );
 };
