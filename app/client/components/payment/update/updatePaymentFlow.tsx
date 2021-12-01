@@ -1,5 +1,8 @@
+import {
+  getScopeFromRequestPathOrEmptyString,
+  X_GU_ID_FORWARDED_SCOPE
+} from "../../../../shared/identity";
 import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
@@ -8,14 +11,14 @@ import React from "react";
 import {
   MembersDataApiItemContext,
   ProductDetail,
-  Subscription
+  Subscription,
+  WithSubscription
 } from "../../../../shared/productResponse";
 import { maxWidth } from "../../../styles/breakpoints";
 import { LinkButton } from "../../buttons";
 import { FlowWrapper } from "../../FlowWrapper";
 import { GenericErrorScreen } from "../../genericErrorScreen";
 import { getNavItemFromFlowReferrer, NAV_LINKS } from "../../nav/navConfig";
-import { ProgressIndicator } from "../../progressIndicator";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import {
   ReturnToAccountOverviewButton,
@@ -31,6 +34,12 @@ import {
   NewPaymentMethodContext,
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
+import { getStripeKey } from "../../../stripe";
+import OverlayLoader from "../../OverlayLoader";
+import { createProductDetailFetch } from "../../../productUtils";
+import { NewSubscriptionContext } from "./newSubscriptionDetail";
+import { processResponse } from "../../../utils";
+import { trackEvent } from "../../analytics";
 
 export enum PaymentMethod {
   card = "Card",
@@ -83,11 +92,15 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => (
   </label>
 );
 
-export const SelectPaymentMethod = (props: PaymentMethodProps & { currentPaymentMethod: string | undefined }) => (
+export const SelectPaymentMethod = (
+  props: PaymentMethodProps & { currentPaymentMethod: string | undefined }
+) => (
   <form>
     <h3>New Payment Method</h3>
     <PaymentMethodRadioButton paymentMethod={PaymentMethod.card} {...props} />
-    {props.currentPaymentMethod === "DirectDebit" && (<PaymentMethodRadioButton paymentMethod={PaymentMethod.dd} {...props} />)}
+    {props.currentPaymentMethod === "DirectDebit" && (
+      <PaymentMethodRadioButton paymentMethod={PaymentMethod.dd} {...props} />
+    )}
   </form>
 );
 
@@ -123,8 +136,10 @@ interface PaymentUpdaterStepProps {
 }
 
 interface PaymentUpdaterStepState {
+  executingPaymentUpdate: boolean;
   selectedPaymentMethod: PaymentMethod;
   newPaymentMethodDetail?: NewPaymentMethodDetail;
+  newSubscriptionData?: WithSubscription[];
 }
 
 class PaymentUpdaterStep extends React.Component<
@@ -135,8 +150,153 @@ class PaymentUpdaterStep extends React.Component<
     this.props.productDetail
   );
   public state = {
+    executingPaymentUpdate: false,
     newPaymentMethodDetail: undefined,
+    newSubscriptionData: undefined,
     selectedPaymentMethod: this.currentPaymentMethod
+  };
+
+  private executePaymentUpdate = async (
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => {
+    this.setState({ executingPaymentUpdate: true });
+
+    try {
+      const executePaymentUpdate = await fetch(
+        `/api/payment/${newPaymentMethodDetail.apiUrlPart}/${this.props.productDetail.subscription.subscriptionId}`,
+        {
+          credentials: "include",
+          method: "POST",
+          body: JSON.stringify(newPaymentMethodDetail.detailToPayloadObject()),
+          headers: {
+            "Content-Type": "application/json",
+            [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+              window.location.href
+            )
+          }
+        }
+      );
+
+      const response = await processResponse<NewPaymentMethodDetail>(
+        executePaymentUpdate
+      );
+
+      if (
+        this.props.routeableStepProps.navigate &&
+        newPaymentMethodDetail.matchesResponse(response)
+      ) {
+        const paymentMethodChangeType: string =
+          this.props.productDetail.subscription.paymentMethod ===
+          PaymentMethod.resetRequired
+            ? "reset"
+            : "update";
+
+        trackEvent({
+          eventCategory: "payment",
+          eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
+          product: {
+            productType: this.props.routeableStepProps.productType,
+            productDetail: this.props.productDetail
+          },
+          eventLabel: this.props.routeableStepProps.productType.urlPart
+        });
+
+        // refetch subscription from members data api
+        const newSubscriptionData = await createProductDetailFetch(
+          this.props.routeableStepProps.productType,
+          this.props.productDetail.subscription.subscriptionId
+        );
+        this.setState({ newSubscriptionData });
+
+        this.props.routeableStepProps.navigate("updated", {
+          state: this.props.routeableStepProps.location?.state
+        });
+      }
+    } catch {
+      this.props.routeableStepProps.navigate &&
+        this.props.routeableStepProps.navigate("failed", {
+          state: this.props.routeableStepProps.location?.state
+        });
+    }
+
+    this.setState({ executingPaymentUpdate: false });
+  };
+
+  private newPaymentMethodDetailUpdater = (
+    newPaymentMethodDetail: NewPaymentMethodDetail
+  ) => this.setState({ newPaymentMethodDetail });
+
+  private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
+    this.setState({ selectedPaymentMethod: newPaymentMethod });
+
+  private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
+    let stripePublicKey: string;
+
+    if (subscription.card) {
+      stripePublicKey = subscription.card.stripePublicKeyForUpdate;
+    } else {
+      stripePublicKey = getStripeKey(
+        subscription.deliveryAddress?.country,
+        isTestUser
+      );
+    }
+
+    switch (this.state.selectedPaymentMethod) {
+      case PaymentMethod.resetRequired:
+        return stripePublicKey ? (
+          <CardInputForm
+            stripeApiKey={stripePublicKey}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            userEmail={window.guardian.identityDetails.email}
+            executePaymentUpdate={this.executePaymentUpdate}
+          />
+        ) : (
+          <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
+        );
+      case PaymentMethod.card:
+        return stripePublicKey ? (
+          <CardInputForm
+            stripeApiKey={stripePublicKey}
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            userEmail={window.guardian.identityDetails.email}
+            executePaymentUpdate={this.executePaymentUpdate}
+          />
+        ) : (
+          <GenericErrorScreen loggingMessage="No existing card information to update from" />
+        );
+      case PaymentMethod.free:
+        return (
+          <div>
+            <p>
+              If you are interested in supporting our journalism in other ways,
+              please consider either a contribution or a subscription.
+            </p>
+            <SupportTheGuardianButton supportReferer="payment_flow" />
+          </div>
+        );
+      case PaymentMethod.payPal:
+        return (
+          <p>
+            Updating your PayPal payment details is not possible here. Please
+            login to PayPal to change your payment details.
+          </p>
+        );
+      case PaymentMethod.dd:
+        return (
+          <DirectDebitInputForm
+            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
+            testUser={isTestUser}
+            executePaymentUpdate={this.executePaymentUpdate}
+          />
+        );
+      default:
+        Sentry.captureException("user cannot update their payment online");
+        return (
+          <span>
+            It is not currently possible to update your payment method online.
+          </span>
+        );
+    }
   };
 
   public render(): React.ReactNode {
@@ -170,16 +330,6 @@ class PaymentUpdaterStep extends React.Component<
           </>
         ) : (
           <>
-            <ProgressIndicator
-              steps={[
-                { title: "New details", isCurrentStep: true },
-                { title: "Review" },
-                { title: "Confirmation" }
-              ]}
-              additionalCSS={css`
-                margin: ${space[5]}px 0 ${space[12]}px;
-              `}
-            />
             {this.props.productDetail.alertText && (
               <div>
                 <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
@@ -203,7 +353,9 @@ class PaymentUpdaterStep extends React.Component<
             <SelectPaymentMethod
               updatePaymentMethod={this.updatePaymentMethod}
               value={this.state.selectedPaymentMethod}
-              currentPaymentMethod={this.props.productDetail.subscription.paymentMethod}
+              currentPaymentMethod={
+                this.props.productDetail.subscription.paymentMethod
+              }
             />
             <h3>New Payment Details</h3>
             {this.getInputForm(
@@ -236,82 +388,24 @@ class PaymentUpdaterStep extends React.Component<
         <NewPaymentMethodContext.Provider
           value={this.state.newPaymentMethodDetail || {}}
         >
-          <NavigateFnContext.Provider
-            value={{ navigate: this.props.routeableStepProps.navigate }}
+          <NewSubscriptionContext.Provider
+            value={this.state.newSubscriptionData || {}}
           >
-            <WizardStep routeableStepProps={this.props.routeableStepProps}>
-              {innerContent}
-            </WizardStep>
-          </NavigateFnContext.Provider>
+            <NavigateFnContext.Provider
+              value={{ navigate: this.props.routeableStepProps.navigate }}
+            >
+              <WizardStep routeableStepProps={this.props.routeableStepProps}>
+                {this.state.executingPaymentUpdate && (
+                  <OverlayLoader message={`Updating payment details...`} />
+                )}
+                {innerContent}
+              </WizardStep>
+            </NavigateFnContext.Provider>
+          </NewSubscriptionContext.Provider>
         </NewPaymentMethodContext.Provider>
       </MembersDataApiItemContext.Provider>
     );
   }
-
-  private newPaymentMethodDetailUpdater = (
-    newPaymentMethodDetail: NewPaymentMethodDetail
-  ) => this.setState({ newPaymentMethodDetail });
-
-  private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
-    this.setState({ selectedPaymentMethod: newPaymentMethod });
-
-  private getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-    console.log(this.state.selectedPaymentMethod)
-    console.log(window.guardian)
-    switch (this.state.selectedPaymentMethod) {
-      case PaymentMethod.resetRequired:
-        return window.guardian.stripePublicKey ? (
-          <CardInputForm
-            stripeApiKey={window.guardian.stripePublicKey} 
-            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
-          />
-        ) : (
-          <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
-        );
-      case PaymentMethod.card:
-        return window.guardian.stripePublicKey ? (
-          <CardInputForm
-            stripeApiKey={window.guardian.stripePublicKey}
-            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
-          />
-        ) : (
-          <GenericErrorScreen loggingMessage="No existing card information to update from" />
-        );
-      case PaymentMethod.free:
-        return (
-          <div>
-            <p>
-              If you are interested in supporting our journalism in other ways,
-              please consider either a contribution or a subscription.
-            </p>
-            <SupportTheGuardianButton supportReferer="payment_flow" />
-          </div>
-        );
-      case PaymentMethod.payPal:
-        return (
-          <p>
-            Updating your PayPal payment details is not possible here. Please
-            login to PayPal to change your payment details.
-          </p>
-        );
-      case PaymentMethod.dd:
-        return (
-          <DirectDebitInputForm
-            newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            testUser={isTestUser}
-          />
-        );
-      default:
-        Sentry.captureException("user cannot update their payment online");
-        return (
-          <span>
-            It is not currently possible to update your payment method online.
-          </span>
-        );
-    }
-  };
 }
 
 const PaymentUpdateFlow = (props: RouteableStepProps) => {

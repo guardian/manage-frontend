@@ -22,8 +22,8 @@ export interface Globals extends CommonGlobals {
   abTest?: AbTest;
   identityDetails: IdentityDetails;
   recaptchaPublicKey?: string;
-  stripeKeyAustralia: StripePublicKeySet;
-  stripeKeyDefaultCurrencies: StripePublicKeySet;
+  stripeKeyAustralia?: StripePublicKeySet;
+  stripeKeyDefaultCurrencies?: StripePublicKeySet;
 }
 declare global {
   interface Window {
