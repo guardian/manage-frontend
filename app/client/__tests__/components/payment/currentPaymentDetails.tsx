@@ -55,7 +55,6 @@ const cardProductDetail: ProductDetail = {
       }
     ],
     readerType: "Direct",
-    cancellationEffectiveDate: undefined,
     deliveryAddressChangeEffectiveDate: "2021-11-26"
   },
   isTestUser: false
