@@ -25,6 +25,9 @@ import {
 const judgementDay = new Date(1997, 7, 29);
 const backToTheFutureDay = new Date(1985, 9, 26);
 
+const localiseDate = (date: Date) =>
+  new Intl.DateTimeFormat("en-GB").format(date);
+
 describe("parseDate", () => {
   it("parses date strings correctly", () => {
     const pd = parseDate("2020-11-30");
@@ -180,49 +183,44 @@ describe("dateIsLeapYear", () => {
 describe("dateAddDays", () => {
   it("returns modified date with the additional days subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddDays(inputDate, -10941).toLocaleDateString()).toEqual(
-      "11/12/1955"
-    );
+    const outputDate = dateAddDays(inputDate, -10941);
+    expect(localiseDate(outputDate)).toEqual("12/11/1955");
   });
   it("returns modified date with the additional days added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddDays(inputDate, 10952).toLocaleDateString()).toEqual(
-      "10/21/2015"
-    );
+    const outputDate = dateAddDays(inputDate, 10952);
+    expect(localiseDate(outputDate)).toEqual("21/10/2015");
   });
 });
 
 describe("dateAddMonths", () => {
   it("returns modified date with months subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddMonths(inputDate, -1).toLocaleDateString()).toEqual(
-      "9/26/1985"
-    );
+    const outputDate = dateAddMonths(inputDate, -1);
+    expect(localiseDate(outputDate)).toEqual("26/09/1985");
   });
   it("returns modified date with months added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddMonths(inputDate, 1).toLocaleDateString()).toEqual(
-      "11/26/1985"
-    );
+    const outputDate = dateAddMonths(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("26/11/1985");
   });
 });
 
 describe("dateAddYears", () => {
   it("returns modified date with years subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddYears(inputDate, -1).toLocaleDateString()).toEqual(
-      "10/26/1984"
-    );
+    const outputDate = dateAddYears(inputDate, -1);
+    expect(localiseDate(outputDate)).toEqual("26/10/1984");
   });
   it("returns modified date with years added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddYears(inputDate, 1).toLocaleDateString()).toEqual(
-      "10/26/1986"
-    );
+    const outputDate = dateAddYears(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("26/10/1986");
   });
   it("returns modified date with years added to it (even in sneaky leap year)", () => {
     const inputDate = new Date(2020, 1, 29);
-    expect(dateAddYears(inputDate, 1).toLocaleDateString()).toEqual("3/1/2021");
+    const outputDate = dateAddYears(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("01/03/2021");
   });
 });
 
