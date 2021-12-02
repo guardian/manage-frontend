@@ -75,9 +75,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
   newPaymentMethodDetail,
   previousProductDetail
 }: ConfirmedNewPaymentDetailsRendererProps) => {
-  console.log(subscription);
-  console.log(newPaymentMethodDetail);
-  console.log(previousProductDetail);
   const mainPlan = getMainPlan(subscription);
   const groupedProductType =
     GROUPED_PRODUCT_TYPES[previousProductDetail.mmaCategory];
