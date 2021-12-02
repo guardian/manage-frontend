@@ -1,7 +1,9 @@
-import { neutral } from "@guardian/src-foundations/palette";
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral, news } from "@guardian/src-foundations/palette";
+import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import React from "react";
 import {
-  augmentInterval,
   formatDate,
   getMainPlan,
   isPaidSubscriptionPlan,
@@ -11,10 +13,9 @@ import {
   Subscription,
   WithSubscription
 } from "../../../../shared/productResponse";
-import { ProductType } from "../../../../shared/productTypes";
-import { Button, LinkButton } from "../../buttons";
+import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
+import { LinkButton } from "../../buttons";
 import { GenericErrorScreen } from "../../genericErrorScreen";
-import { NAV_LINKS } from "../../nav/navConfig";
 import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
@@ -27,6 +28,11 @@ import {
   NewPaymentMethodDetail
 } from "./newPaymentMethodDetail";
 import { NewSubscriptionContext } from "./newSubscriptionDetail";
+import { textSans } from "@guardian/src-foundations/typography";
+import { CardDisplay } from "../cardDisplay";
+import { DirectDebitDisplay } from "../directDebitDisplay";
+import { PayPalDisplay } from "../paypalDisplay";
+import { SepaDisplay } from "../sepaDisplay";
 
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
@@ -34,38 +40,262 @@ interface ConfirmedNewPaymentDetailsRendererProps {
   previousProductDetail: ProductDetail;
 }
 
-const ConfirmedNewPaymentDetailsRenderer = ({
+const keyValuePairCss = css`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+
+const keyCss = css`
+  ${textSans.medium({ fontWeight: "bold" })};
+  padding: 0 ${space[2]}px 0 0;
+  display: inline-block;
+  vertical-align: top;
+  width: 14ch;
+`;
+
+const valueCss = css`
+  ${textSans.medium()};
+  padding: 0;
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 15ch);
+`;
+
+function getPaymentInterval(interval: string) {
+  if (interval === "year") {
+    return "annual";
+  } else if (interval === "month") {
+    return "monthly";
+  }
+}
+
+export const ConfirmedNewPaymentDetailsRenderer = ({
   subscription,
   newPaymentMethodDetail,
   previousProductDetail
 }: ConfirmedNewPaymentDetailsRendererProps) => {
+  console.log(subscription);
+  console.log(newPaymentMethodDetail);
+  console.log(previousProductDetail);
   const mainPlan = getMainPlan(subscription);
+  const groupedProductType =
+    GROUPED_PRODUCT_TYPES[previousProductDetail.mmaCategory];
+  const specificProductType = groupedProductType.mapGroupedToSpecific(
+    previousProductDetail
+  );
+
+  const hasPaymentFailure: boolean = !!previousProductDetail.alertText;
+
   if (
     newPaymentMethodDetail.subHasExpectedPaymentType(subscription) &&
     isPaidSubscriptionPlan(mainPlan)
   ) {
     return (
-      <>
-        {newPaymentMethodDetail.render(subscription)}
-        {previousProductDetail.alertText &&
-        newPaymentMethodDetail.paymentFailureRecoveryMessage ? (
-          <div>{newPaymentMethodDetail.paymentFailureRecoveryMessage}</div>
-        ) : (
-          <>
-            {subscription.nextPaymentPrice && subscription.nextPaymentDate && (
-              <div>
-                <b>Next Payment:</b> {mainPlan.currency}
-                {(subscription.nextPaymentPrice / 100.0).toFixed(2)} on{" "}
-                {formatDate(subscription.nextPaymentDate)}
-              </div>
+      <div
+        css={css`
+          border: 1px solid ${neutral[86]};
+          margin-bottom: ${space[6]}px;
+        `}
+      >
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            background-color: ${brand[400]};
+            ${minWidth.mobileLandscape} {
+              align-items: center;
+            }
+          `}
+        >
+          <h2
+            css={css`
+              font-size: 17px;
+              font-weight: bold;
+              margin: 0;
+              padding: ${space[3]}px;
+              color: ${neutral[100]};
+              ${maxWidth.mobileLandscape} {
+                padding: ${space[3]}px;
+              }
+              ${minWidth.tablet} {
+                font-size: 20px;
+                padding: ${space[3]}px ${space[5]}px;
+              }
+            `}
+          >
+            {specificProductType.productTitle(mainPlan)}
+          </h2>
+        </div>
+        <div
+          css={css`
+            padding: ${space[5]}px ${space[3]}px;
+            ${minWidth.tablet} {
+              padding: ${space[5]}px;
+              display: flex;
+            }
+          `}
+        >
+          <div
+            css={css`
+              ${minWidth.tablet} {
+                margin: ${space[6]}px 0 0 0;
+                padding: ${space[6]}px 0 0 0;
+                flex: 1;
+                display: flex;
+                flex-flow: column nowrap;
+                padding: 0;
+                margin: 0;
+              }
+            `}
+          >
+            {previousProductDetail.isPaidTier && (
+              <>
+                <ul css={keyValuePairCss}>
+                  <li css={keyCss}>Payment method</li>
+                  <li css={valueCss}>
+                    {subscription.card && (
+                      <CardDisplay
+                        inErrorState={false}
+                        margin="0"
+                        {...subscription.card}
+                      />
+                    )}
+                    {subscription.payPalEmail && (
+                      <PayPalDisplay payPalId={subscription.payPalEmail} />
+                    )}
+                    {subscription.sepaMandate && (
+                      <SepaDisplay
+                        accountName={subscription.sepaMandate.accountName}
+                        iban={subscription.sepaMandate.iban}
+                      />
+                    )}
+                    {subscription.mandate && (
+                      <DirectDebitDisplay
+                        inErrorState={false}
+                        {...subscription.mandate}
+                      />
+                    )}
+                    {subscription.stripePublicKeyForCardAddition && (
+                      <span>No Payment Method</span>
+                    )}
+                  </li>
+                </ul>
+              </>
             )}
-            <div>
-              <b>Payment Frequency:</b> {augmentInterval(mainPlan.interval)}
+          </div>
+          {subscription.card && (
+            <div
+              css={css`
+                padding: ${space[6]}px 0 0 0;
+                ${minWidth.tablet} {
+                  margin: ${space[6]}px 0 0 0;
+                  flex: 1;
+                  display: inline-block;
+                  flex-flow: column nowrap;
+                  padding: 0 0 0 ${space[5]}px;
+                  margin: 0;
+                  padding: 0 0 0 ${space[5]}px;
+                }
+                ul:last-of-type {
+                  margin-bottom: ${space[5]}px;
+                }
+              `}
+            >
+              {subscription.card.expiry && (
+                <>
+                  <span
+                    css={css`
+                      ${keyCss};
+                      ${minWidth.tablet} {
+                        text-align: right;
+                      }
+                    `}
+                  >
+                    Expiry
+                  </span>
+                  <span
+                    css={css`
+                      ${valueCss};
+                      color: ${hasPaymentFailure ? news[400] : neutral[7]};
+                    `}
+                  >
+                    {subscription.card.expiry.month} /{" "}
+                    {subscription.card.expiry.year}
+                  </span>
+                </>
+              )}
             </div>
-          </>
+          )}
+        </div>
+
+        {subscription.nextPaymentPrice && subscription.nextPaymentDate && (
+          <div
+            css={css`
+              padding: ${space[5]}px ${space[3]}px;
+              border-top: 1px solid ${neutral[86]};
+              ${minWidth.tablet} {
+                padding: ${space[5]}px;
+                display: flex;
+              }
+            `}
+          >
+            <div
+              css={css`
+                ${minWidth.tablet} {
+                  margin: ${space[6]}px 0 0 0;
+                  padding: ${space[6]}px 0 0 0;
+                  flex: 1;
+                  display: flex;
+                  flex-flow: column nowrap;
+                  padding: 0;
+                  margin: 0;
+                }
+              `}
+            >
+              <>
+                <ul css={keyValuePairCss}>
+                  <li css={keyCss}>Next Payment</li>
+                  <li css={valueCss}>
+                    {mainPlan.currency}
+                    {(subscription.nextPaymentPrice / 100.0).toFixed(2)} /{" "}
+                    {getPaymentInterval(subscription.plan?.interval)}
+                    {subscription.stripePublicKeyForCardAddition && (
+                      <span>No Payment Method</span>
+                    )}
+                  </li>
+                </ul>
+              </>
+            </div>
+
+            <div
+              css={css`
+                padding: ${space[6]}px 0 0 0;
+                ${minWidth.tablet} {
+                  margin: ${space[6]}px 0 0 0;
+                  flex: 1;
+                  display: inline-block;
+                  flex-flow: column nowrap;
+                  padding: 0 0 0 ${space[5]}px;
+                  margin: 0;
+                  padding: 0 0 0 ${space[5]}px;
+                }
+                ul:last-of-type {
+                  margin-bottom: ${space[5]}px;
+                }
+              `}
+            >
+              <>
+                <span css={keyCss}>Next payment date</span>
+                <span css={valueCss}>
+                  {formatDate(subscription.nextPaymentDate)}
+                </span>
+              </>
+            </div>
+          </div>
         )}
-        <div>{newPaymentMethodDetail.updatedSuccessExtras}</div>
-      </>
+      </div>
     );
   }
 
@@ -74,51 +304,49 @@ const ConfirmedNewPaymentDetailsRenderer = ({
 
 interface PaymentMethodUpdatedProps {
   subs: WithSubscription[] | {};
-  productType: ProductType;
   newPaymentMethodDetail: NewPaymentMethodDetail;
   previousProductDetail: ProductDetail;
-  flowReferrer?: { title: string; link: string };
 }
 
 const PaymentMethodUpdated = ({
   subs,
-  productType,
   newPaymentMethodDetail,
-  previousProductDetail,
-  flowReferrer
+  previousProductDetail
 }: PaymentMethodUpdatedProps) =>
   Array.isArray(subs) && subs.length === 1 ? (
     <>
-      <h1>Your payment details were updated successfully</h1>
+      <h1
+        css={css`
+          margin: ${space[9]}px 0 ${space[5]}px 0;
+          ${textSans.large({ fontWeight: "bold" })};
+        `}
+      >
+        Your payment details were updated successfully
+      </h1>
       <ConfirmedNewPaymentDetailsRenderer
         subscription={subs[0].subscription}
         newPaymentMethodDetail={newPaymentMethodDetail}
         previousProductDetail={previousProductDetail}
       />
-      <h2>Thank you. You are helping to support independent journalism.</h2>
-      <div>
-        {flowReferrer?.title === NAV_LINKS.billing.title ? (
-          <LinkButton
-            to={flowReferrer?.link}
-            text="Return to your billing"
-            colour={neutral[100]}
-            textColour={neutral[0]}
-            hollow
-            left
-          />
-        ) : (
-          <LinkButton
-            to={"/" + productType.urlPart}
-            text={"Manage your " + productType.friendlyName}
-            primary
-            right
-          />
-        )}
-      </div>
+      <h2
+        css={css`
+          margin-bottom: 0;
+
+          ${textSans.large({ fontWeight: "bold" })};
+        `}
+      >
+        Thank you
+      </h2>
+      <span> You are helping to support independent journalism.</span>
       <div css={{ marginTop: "20px" }}>
-        <a href="https://www.theguardian.com">
-          <Button text="Explore The Guardian" primary right />
-        </a>
+        <LinkButton
+          to="/"
+          text="Back to Account overview"
+          colour={brand[400]}
+          textColour={neutral[100]}
+          fontWeight="bold"
+          right
+        />
       </div>
     </>
   ) : (
@@ -144,10 +372,8 @@ export const PaymentUpdated = (props: RouteableStepProps) => {
                   <WizardStep routeableStepProps={props}>
                     <PaymentMethodUpdated
                       subs={newSubscriptionData}
-                      productType={props.productType}
                       newPaymentMethodDetail={newPaymentMethodDetail}
                       previousProductDetail={previousProductDetail}
-                      flowReferrer={props.location?.state?.flowReferrer}
                     />
                   </WizardStep>
                 )}
