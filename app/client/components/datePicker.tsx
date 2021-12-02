@@ -225,8 +225,11 @@ export const DatePicker = (props: DatePickerProps) => (
         >
           <div>
             <DateInput
-              selectedDate={props.selectedRange && props.selectedRange.start}
-              defaultDate={props.firstAvailableDate}
+              date={
+                props.selectedRange
+                  ? props.selectedRange.start
+                  : props.firstAvailableDate
+              }
               labelText="From"
               disabled={!!props.maybeLockedStartDate}
             />
@@ -238,8 +241,11 @@ export const DatePicker = (props: DatePickerProps) => (
           </span>
           <div css={{ [minWidth.desktop]: { marginTop: "8px" } }}>
             <DateInput
-              selectedDate={props.selectedRange && props.selectedRange.end}
-              defaultDate={props.firstAvailableDate}
+              date={
+                props.selectedRange
+                  ? props.selectedRange.end
+                  : props.firstAvailableDate
+              }
               labelText="To"
             />
           </div>
