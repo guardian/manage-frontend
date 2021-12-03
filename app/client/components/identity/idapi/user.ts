@@ -76,7 +76,9 @@ export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
 const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
   const { countryCode: countryCode, localNumber: localNumber } = user;
   const telephoneNumber =
-    countryCode && localNumber ? { countryCode, localNumber } : undefined;
+    countryCode && localNumber
+      ? { countryCode, localNumber: `${localNumber}` }
+      : undefined;
 
   return {
     publicFields: {
