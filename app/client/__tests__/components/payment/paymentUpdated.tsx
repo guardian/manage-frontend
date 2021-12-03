@@ -9,7 +9,6 @@ import { NewPaymentMethodDetail } from "../../../components/payment/update/newPa
 
 // mock functions for NewPaymentMethodDetail type
 const matchesResponse = (_: any) => true;
-const subHasExpectedPaymentType = (_?: Subscription) => true;
 const detailToPayloadObject = () => {
   return {};
 };
@@ -83,7 +82,7 @@ const newPaymentMethodDetailCard: NewPaymentMethodDetail = {
   paymentFailureRecoveryMessage:
     "We will take the outstanding payment within 24 hours, using your new card details.",
   matchesResponse,
-  subHasExpectedPaymentType,
+  subHasExpectedPaymentType: jest.fn((_?: Subscription) => true),
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
   confirmButtonWrapper
@@ -281,7 +280,7 @@ const newPaymentMethodDetailDD: NewPaymentMethodDetail = {
     },
     */
   matchesResponse,
-  subHasExpectedPaymentType,
+  subHasExpectedPaymentType: jest.fn((_?: Subscription) => true),
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
   confirmButtonWrapper
@@ -401,7 +400,13 @@ describe("ConfirmedNewPaymentDetailsRenderer component in paymentMethodUpdated.t
         />
       );
 
-      expectations.map(toTest => getByText(toTest));
+      // @ts-ignore
+      expect(
+        // @ts-ignore
+        data.newPaymentMethodDetail.subHasExpectedPaymentType.mock.calls.length
+      ).toBe(1);
+
+      expectations.forEach(toTest => getByText(toTest));
     }
   );
 });
