@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { neutral } from "@guardian/src-foundations/palette";
+import { brand } from "@guardian/src-foundations/palette";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import { minWidth } from "../../styles/breakpoints";
@@ -11,7 +11,7 @@ const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 export const cleanSortCode = (sortCode: string) =>
   sortCode.replace(/[^0-9]/g, "");
 
-const dashifySortCode = (sortCode: string) => {
+export const dashifySortCode = (sortCode: string) => {
   if (!sortCode) {
     return sortCode;
   }
@@ -28,7 +28,7 @@ const dashifySortCode = (sortCode: string) => {
   );
 };
 
-const sanitiseAccountNumber = (
+export const sanitiseAccountNumber = (
   accountNumber: string,
   shortVersion?: boolean
 ) => {
@@ -69,7 +69,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
       `}
     >
       <DirectDebitLogo
-        fill={neutral[7]}
+        fill={brand[400]}
         additionalCss={css`
           margin: 0 10px 0 0;
         `}
@@ -85,7 +85,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
   ) : (
     <>
       <DirectDebitLogo
-        fill={neutral[7]}
+        fill={brand[400]}
         additionalCss={css`
           margin: 0 10px 0 0;
         `}
