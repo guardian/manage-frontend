@@ -5,7 +5,7 @@ import {
 import { css } from "@emotion/core";
 import { neutral } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
-import { headline, textSans } from "@guardian/src-foundations/typography";
+import { headline } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React from "react";
@@ -345,7 +345,13 @@ class PaymentUpdaterStep extends React.Component<
               )}
               <h3
                 css={css`
-                  ${textSans.large({ fontWeight: "bold" })};
+                  margin: ${space[12]}px 0 ${space[6]}px;
+                  border-top: 1px solid ${neutral["86"]};
+                  ${headline.small({ fontWeight: "bold" })};
+                  ${maxWidth.tablet} {
+                    font-size: 1.25rem;
+                    line-height: 1.6;
+                  }
                 `}
               >
                 Your current payment method

@@ -6,27 +6,14 @@ import { InlineError } from "@guardian/src-user-feedback";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { CardDisplay } from "../cardDisplay";
-import { dashifySortCode, sanitiseAccountNumber } from "../directDebitDisplay";
-import { DirectDebitLogo } from "../directDebitLogo";
+import {
+  DirectDebitDisplay,
+  sanitiseAccountNumber
+} from "../directDebitDisplay";
 import { PayPalDisplay } from "../paypalDisplay";
 import { SepaDisplay } from "../sepaDisplay";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { textSans } from "@guardian/src-foundations/typography";
-
-/*
-function renderPaymentMethodDisplay(subscription: Subscription) {
-  if (subscription.card) {
-    return <CardDisplay {...subscription.card} />;
-  } else if (subscription.payPalEmail) {
-    return <PayPalDisplay payPalId={subscription.payPalEmail} />;
-  } else if (subscription.mandate) {
-    return <DirectDebitDisplay {...subscription.mandate} />;
-  } else if (subscription.sepaMandate) {
-    return <SepaDisplay {...subscription.sepaMandate} />;
-  }
-  return <span>No Payment Method</span>;
-};
-*/
 
 export function cardExpired(year: number, month: number) {
   const expiryTimestamp = new Date(year, month);
@@ -130,6 +117,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
       >
         <div
           css={css`
+            padding-bottom: ${subscription.card || subscription.mandate
+              ? space[3]
+              : 0}px;
             ${minWidth.tablet} {
               margin: ${space[6]}px 0 0 0;
               padding: ${space[6]}px 0 0 0;
@@ -163,13 +153,10 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                     />
                   )}
                   {subscription.mandate && (
-                    <span
-                      css={css`
-                        margin-right: 10px;
-                      `}
-                    >
-                      {dashifySortCode(subscription.mandate.sortCode)}
-                    </span>
+                    <DirectDebitDisplay
+                      {...subscription.mandate}
+                      onlySortCode
+                    />
                   )}
                   {subscription.stripePublicKeyForCardAddition && (
                     <span>No Payment Method</span>
@@ -182,7 +169,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
         {subscription.card && (
           <div
             css={css`
-              padding: ${space[6]}px 0 0 0;
+              padding: ${space[3]}px 0 0 0;
+              border-top: 1px solid ${neutral[86]};
               ${minWidth.tablet} {
                 margin: ${space[6]}px 0 0 0;
                 flex: 1;
@@ -191,6 +179,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                 padding: 0 0 0 ${space[5]}px;
                 margin: 0;
                 padding: 0 0 0 ${space[5]}px;
+                border-top: none;
               }
               ul:last-of-type {
                 margin-bottom: ${space[5]}px;
@@ -233,7 +222,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
         {subscription.mandate && (
           <div
             css={css`
-              padding: ${space[6]}px 0 0 0;
+              padding: ${space[3]}px 0 0 0;
+              border-top: 1px solid ${neutral[86]};
+              text-align: right;
               ${minWidth.tablet} {
                 margin: ${space[6]}px 0 0 0;
                 flex: 1;
@@ -242,6 +233,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                 padding: 0 0 0 ${space[5]}px;
                 margin: 0;
                 padding: 0 0 0 ${space[5]}px;
+                border-top: none;
               }
               ul:last-of-type {
                 margin-bottom: ${space[5]}px;
@@ -250,28 +242,12 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
           >
             <span
               css={css`
-                ${keyCss};
-                ${minWidth.tablet} {
-                  text-align: right;
-                }
-              `}
-            >
-              <DirectDebitLogo
-                fill={brand[400]}
-                additionalCss={css`
-                  margin: 0 10px 0 0;
-                  vertical-align: text-top;
-                `}
-              />
-            </span>
-            <span
-              css={css`
                 ${valueCss};
+                text-align: left;
                 color: ${hasPaymentFailure ? news[400] : neutral[7]};
               `}
             >
-              account{" "}
-              {sanitiseAccountNumber(subscription.mandate.accountNumber, true)}
+              {sanitiseAccountNumber(subscription.mandate.accountNumber, false)}
             </span>
           </div>
         )}
