@@ -332,23 +332,15 @@ class PaymentUpdaterStep extends React.Component<
           </>
         ) : (
           <>
-            {this.props.productDetail.alertText && (
-              <div>
-                <h3 css={{ marginBottom: "7px" }}>Why am I here?</h3>
-                <span>
-                  {augmentPaymentFailureAlertText(
-                    this.props.productDetail.alertText
-                  )}
-                </span>
-              </div>
-            )}
             <div css={{ minWidth: "260px" }}>
               {this.props.productDetail.alertText && (
                 <ErrorSummary
                   cssOverrides={css`
                     margin-top: ${space[9]}px;
                   `}
-                  message={this.props.productDetail.alertText}
+                  message={augmentPaymentFailureAlertText(
+                    this.props.productDetail.alertText
+                  )}
                 />
               )}
               <h3
