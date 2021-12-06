@@ -2,10 +2,12 @@ import React from "react";
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral, news } from "@guardian/src-foundations/palette";
+import { InlineError } from "@guardian/src-user-feedback";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { CardDisplay } from "../cardDisplay";
-import { DirectDebitDisplay } from "../directDebitDisplay";
+import { dashifySortCode, sanitiseAccountNumber } from "../directDebitDisplay";
+import { DirectDebitLogo } from "../directDebitLogo";
 import { PayPalDisplay } from "../paypalDisplay";
 import { SepaDisplay } from "../sepaDisplay";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
@@ -25,6 +27,13 @@ function renderPaymentMethodDisplay(subscription: Subscription) {
   return <span>No Payment Method</span>;
 };
 */
+
+export function cardExpired(year: number, month: number) {
+  const expiryTimestamp = new Date(year, month);
+  const now = new Date();
+
+  return expiryTimestamp < now;
+}
 
 const CurrentPaymentDetails = (props: ProductDetail) => {
   const { subscription } = props;
@@ -121,9 +130,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
       >
         <div
           css={css`
-            margin: ${space[6]}px 0 0 0;
-            padding: ${space[6]}px 0 0 0;
             ${minWidth.tablet} {
+              margin: ${space[6]}px 0 0 0;
+              padding: ${space[6]}px 0 0 0;
               flex: 1;
               display: flex;
               flex-flow: column nowrap;
@@ -154,10 +163,13 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                     />
                   )}
                   {subscription.mandate && (
-                    <DirectDebitDisplay
-                      inErrorState={hasPaymentFailure}
-                      {...subscription.mandate}
-                    />
+                    <span
+                      css={css`
+                        margin-right: 10px;
+                      `}
+                    >
+                      {dashifySortCode(subscription.mandate.sortCode)}
+                    </span>
                   )}
                   {subscription.stripePublicKeyForCardAddition && (
                     <span>No Payment Method</span>
@@ -170,9 +182,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
         {subscription.card && (
           <div
             css={css`
-              margin: ${space[6]}px 0 0 0;
               padding: ${space[6]}px 0 0 0;
               ${minWidth.tablet} {
+                margin: ${space[6]}px 0 0 0;
                 flex: 1;
                 display: inline-block;
                 flex-flow: column nowrap;
@@ -187,9 +199,26 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
           >
             {subscription.card.expiry && (
               <>
-                <span css={keyCss}>Expiry</span>
                 <span
                   css={css`
+                    ${keyCss};
+                    ${minWidth.tablet} {
+                      text-align: right;
+                    }
+                  `}
+                >
+                  {cardExpired(
+                    subscription.card.expiry.year,
+                    subscription.card.expiry.month
+                  ) ? (
+                    <InlineError>Expired</InlineError>
+                  ) : (
+                    <>Expiry</>
+                  )}
+                </span>
+                <span
+                  css={css`
+                    ${valueCss};
                     color: ${hasPaymentFailure ? news[400] : neutral[7]};
                   `}
                 >
@@ -198,6 +227,52 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                 </span>
               </>
             )}
+          </div>
+        )}
+
+        {subscription.mandate && (
+          <div
+            css={css`
+              padding: ${space[6]}px 0 0 0;
+              ${minWidth.tablet} {
+                margin: ${space[6]}px 0 0 0;
+                flex: 1;
+                display: inline-block;
+                flex-flow: column nowrap;
+                padding: 0 0 0 ${space[5]}px;
+                margin: 0;
+                padding: 0 0 0 ${space[5]}px;
+              }
+              ul:last-of-type {
+                margin-bottom: ${space[5]}px;
+              }
+            `}
+          >
+            <span
+              css={css`
+                ${keyCss};
+                ${minWidth.tablet} {
+                  text-align: right;
+                }
+              `}
+            >
+              <DirectDebitLogo
+                fill={brand[400]}
+                additionalCss={css`
+                  margin: 0 10px 0 0;
+                  vertical-align: text-top;
+                `}
+              />
+            </span>
+            <span
+              css={css`
+                ${valueCss};
+                color: ${hasPaymentFailure ? news[400] : neutral[7]};
+              `}
+            >
+              account{" "}
+              {sanitiseAccountNumber(subscription.mandate.accountNumber, true)}
+            </span>
           </div>
         )}
       </div>

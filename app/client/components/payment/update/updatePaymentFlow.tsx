@@ -4,6 +4,7 @@ import {
 } from "../../../../shared/identity";
 import { css } from "@emotion/core";
 import { neutral } from "@guardian/src-foundations/palette";
+import { space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
@@ -40,6 +41,7 @@ import { createProductDetailFetch } from "../../../productUtils";
 import { NewSubscriptionContext } from "./newSubscriptionDetail";
 import { processResponse } from "../../../utils";
 import { trackEvent } from "../../analytics";
+import ErrorSummary from "./ErrorSummary";
 
 export enum PaymentMethod {
   card = "Card",
@@ -341,6 +343,14 @@ class PaymentUpdaterStep extends React.Component<
               </div>
             )}
             <div css={{ minWidth: "260px" }}>
+              {this.props.productDetail.alertText && (
+                <ErrorSummary
+                  cssOverrides={css`
+                    margin-top: ${space[9]}px;
+                  `}
+                  message={this.props.productDetail.alertText}
+                />
+              )}
               <h3
                 css={css`
                   ${textSans.large({ fontWeight: "bold" })};
