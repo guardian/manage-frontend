@@ -38,7 +38,7 @@ export interface User {
   postcode: string;
   country: string;
   countryCode: string;
-  localNumber: string;
+  localNumber: number;
 }
 
 export interface UserError {
