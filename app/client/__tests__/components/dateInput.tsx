@@ -8,19 +8,19 @@ Enzyme.configure({ adapter: new Adapter() });
 describe("DateInput", () => {
   it.each([
     {
-      givenDate: "10 Jan 2022",
+      givenDate: "2022-01-10",
       expectedDay: 10,
       expectedMonth: 1,
       expectedYear: 2022
     },
     {
-      givenDate: "16 Mar 2022",
+      givenDate: "2022-03-16",
       expectedDay: 16,
       expectedMonth: 3,
       expectedYear: 2022
     },
     {
-      givenDate: "4 Dec 2023",
+      givenDate: "2023-12-04",
       expectedDay: 4,
       expectedMonth: 12,
       expectedYear: 2023

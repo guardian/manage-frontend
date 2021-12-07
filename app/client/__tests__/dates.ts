@@ -22,8 +22,11 @@ import {
 // formatting date-fns strings documentation here:
 // https://date-fns.org/v2.17.0/docs/format
 
-const judgementDay = new Date(1997, 7, 29);
-const backToTheFutureDay = new Date(1985, 9, 26);
+const judgementDay = new Date("1997-08-29");
+const backToTheFutureDay = new Date("1985-10-26");
+
+const localiseDate = (date: Date) =>
+  new Intl.DateTimeFormat("en-GB").format(date);
 
 describe("parseDate", () => {
   it("parses date strings correctly", () => {
@@ -123,7 +126,7 @@ describe("dateIsSame", () => {
     expect(dateIsSame(judgementDay, judgementDay)).toBeTruthy();
   });
   it("returns false if the 2 dates do not match", () => {
-    expect(dateIsSame(new Date(), new Date(1969, 6, 16))).toBeFalsy();
+    expect(dateIsSame(new Date(), new Date("1969-07-16"))).toBeFalsy();
   });
 });
 
@@ -138,39 +141,39 @@ describe("dateClone", () => {
 describe("dateIsLeapYear", () => {
   it("returns true for leap years in the past and future", () => {
     const confirmedLeapYears = [
-      new Date(1952, 2),
-      new Date(1956, 2),
-      new Date(1976, 2),
-      new Date(1980, 2),
-      new Date(1984, 2),
-      new Date(2008, 2),
-      new Date(2016, 2),
-      new Date(2024, 2),
-      new Date(2028, 2),
-      new Date(2032, 2),
-      new Date(2036, 2),
-      new Date(2040, 2),
-      new Date(2228, 2),
-      new Date(2636, 2)
+      new Date("1952-01-01"),
+      new Date("1956-01-01"),
+      new Date("1976-01-01"),
+      new Date("1980-01-01"),
+      new Date("1984-01-01"),
+      new Date("2008-01-01"),
+      new Date("2016-01-01"),
+      new Date("2024-01-01"),
+      new Date("2028-01-01"),
+      new Date("2032-01-01"),
+      new Date("2036-01-01"),
+      new Date("2040-01-01"),
+      new Date("2228-01-01"),
+      new Date("2636-01-01")
     ];
     expect(confirmedLeapYears.every(date => dateIsLeapYear(date))).toBeTruthy();
   });
   it("returns false for non-leap years in the past and future", () => {
     const confirmedNONLeapYears = [
-      new Date(1953, 2),
-      new Date(1957, 2),
-      new Date(1977, 2),
-      new Date(1981, 2),
-      new Date(1985, 2),
-      new Date(2009, 2),
-      new Date(2017, 2),
-      new Date(2025, 2),
-      new Date(2029, 2),
-      new Date(2033, 2),
-      new Date(2037, 2),
-      new Date(2041, 2),
-      new Date(2229, 2),
-      new Date(2637, 2)
+      new Date("1953-01-01"),
+      new Date("1957-01-01"),
+      new Date("1977-01-01"),
+      new Date("1981-01-01"),
+      new Date("1985-01-01"),
+      new Date("2009-01-01"),
+      new Date("2017-01-01"),
+      new Date("2025-01-01"),
+      new Date("2029-01-01"),
+      new Date("2033-01-01"),
+      new Date("2037-01-01"),
+      new Date("2041-01-01"),
+      new Date("2229-01-01"),
+      new Date("2637-01-01")
     ];
     const result = confirmedNONLeapYears.every(date => !dateIsLeapYear(date));
     expect(result).toBeTruthy();
@@ -180,58 +183,53 @@ describe("dateIsLeapYear", () => {
 describe("dateAddDays", () => {
   it("returns modified date with the additional days subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddDays(inputDate, -10941).toLocaleDateString()).toEqual(
-      "11/12/1955"
-    );
+    const outputDate = dateAddDays(inputDate, -10941);
+    expect(localiseDate(outputDate)).toEqual("12/11/1955");
   });
   it("returns modified date with the additional days added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddDays(inputDate, 10952).toLocaleDateString()).toEqual(
-      "10/21/2015"
-    );
+    const outputDate = dateAddDays(inputDate, 10952);
+    expect(localiseDate(outputDate)).toEqual("21/10/2015");
   });
 });
 
 describe("dateAddMonths", () => {
   it("returns modified date with months subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddMonths(inputDate, -1).toLocaleDateString()).toEqual(
-      "9/26/1985"
-    );
+    const outputDate = dateAddMonths(inputDate, -1);
+    expect(localiseDate(outputDate)).toEqual("26/09/1985");
   });
   it("returns modified date with months added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddMonths(inputDate, 1).toLocaleDateString()).toEqual(
-      "11/26/1985"
-    );
+    const outputDate = dateAddMonths(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("26/11/1985");
   });
 });
 
 describe("dateAddYears", () => {
   it("returns modified date with years subtracted from it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddYears(inputDate, -1).toLocaleDateString()).toEqual(
-      "10/26/1984"
-    );
+    const outputDate = dateAddYears(inputDate, -1);
+    expect(localiseDate(outputDate)).toEqual("26/10/1984");
   });
   it("returns modified date with years added to it", () => {
     const inputDate = backToTheFutureDay;
-    expect(dateAddYears(inputDate, 1).toLocaleDateString()).toEqual(
-      "10/26/1986"
-    );
+    const outputDate = dateAddYears(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("26/10/1986");
   });
   it("returns modified date with years added to it (even in sneaky leap year)", () => {
-    const inputDate = new Date(2020, 1, 29);
-    expect(dateAddYears(inputDate, 1).toLocaleDateString()).toEqual("3/1/2021");
+    const inputDate = new Date("2020-02-29");
+    const outputDate = dateAddYears(inputDate, 1);
+    expect(localiseDate(outputDate)).toEqual("01/03/2021");
   });
 });
 
 describe("numberOfDaysInMonth", () => {
   it("returns the number of days in a month from an input date", () => {
-    expect(numberOfDaysInMonth(new Date(2020, 0, 1))).toEqual(31);
+    expect(numberOfDaysInMonth(new Date("2020-01-01"))).toEqual(31);
   });
   it("returns the number of days in a month in a Feburary leap year", () => {
-    expect(numberOfDaysInMonth(new Date(2020, 1, 1))).toEqual(29);
+    expect(numberOfDaysInMonth(new Date("2020-02-01"))).toEqual(29);
   });
 });
 
@@ -257,18 +255,18 @@ describe("isDateBetweenRange", () => {
   it("returns true if input date is between input date range", () => {
     expect(
       isDateBetweenRange(
-        new Date(1985, 9, 26),
-        new Date(1985, 9, 25),
-        new Date(1985, 9, 27)
+        new Date("1985-10-26"),
+        new Date("1985-10-25"),
+        new Date("1985-10-27")
       )
     ).toEqual(true);
   });
   it("returns false if input date is between input date range", () => {
     expect(
       isDateBetweenRange(
-        new Date(1985, 9, 20),
-        new Date(1985, 9, 25),
-        new Date(1985, 9, 27)
+        new Date("1985-10-20"),
+        new Date("1985-10-25"),
+        new Date("1985-10-27")
       )
     ).toEqual(false);
   });
