@@ -1,7 +1,10 @@
 import { StripeError } from "@stripe/stripe-js";
 import React from "react";
+import { css } from "@emotion/core";
 import palette from "../../../colours";
+import { textSans } from "@guardian/src-foundations/typography";
 import { sans } from "../../../styles/fonts";
+import { neutral } from "@guardian/src-foundations/palette";
 
 interface FieldWrapperProps {
   label: string;
@@ -53,24 +56,22 @@ export class FieldWrapper extends React.Component<
         }}
       >
         <label
-          css={{
-            fontFamily: sans,
-            fontSize: "14px",
-            marginBottom: "5px"
-          }}
+          css={css`
+            ${textSans.medium({ fontWeight: "bold" })};
+            color: ${neutral[7]};
+          `}
         >
           {this.props.label}
         </label>
         <div
           css={{
-            border: `1px solid ${
-              this.state.error?.message
-                ? palette.red.medium
-                : palette.neutral["5"]
+            border: `2px solid ${
+              this.state.error?.message ? palette.red.medium : neutral[60]
             }`,
             display: "block",
             fontWeight: 400,
-            height: "42px",
+            height: "44px",
+            marginTop: "4px",
             lineHeight: "20px",
             padding: "10px",
             width: "100%",

@@ -5,6 +5,9 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
 import React, { Dispatch, SetStateAction } from "react";
+import { css } from "@emotion/core";
+import { minWidth } from "../../../../styles/breakpoints";
+import { space } from "@guardian/src-foundations";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
 
@@ -18,7 +21,10 @@ interface FlexCardElementProps {
 const baseStyle = {
   base: {
     fontSize: "18px",
-    fontFamily: sans
+    fontFamily: sans,
+    "::placeholder": {
+      color: "white"
+    }
   }
 };
 
@@ -30,34 +36,39 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
         textAlign: "left"
       }}
     >
-      <FieldWrapper width="500px" label="Card Number">
+      <FieldWrapper width="100%" label="Card Number">
         <CardNumberElement
           options={{
             style: baseStyle,
-            placeholder: "Card Number"
+            placeholder: "●●●● ●●●● ●●●● ●●●●"
           }}
           onReady={props.setCardNumberElement}
         />
       </FieldWrapper>
       <div
-        css={{
-          display: "flex",
-          justifyContent: "flex-start",
-          marginBottom: "12px"
-        }}
+        css={css`
+          display: flex;
+          justify-content: flex-start;
+
+          ${minWidth.tablet} {
+            margin-top: ${space[4]}px;
+          }
+        `}
       >
-        <FieldWrapper width="240px" label="Expiry Date">
+        <FieldWrapper width="50%" label="Expiry Date">
           <CardExpiryElement
             options={{
-              style: baseStyle
+              style: baseStyle,
+              placeholder: "MM/YY"
             }}
             onReady={props.setCardExpiryElement}
           />
         </FieldWrapper>
-        <FieldWrapper width="240px" label="CVC">
+        <FieldWrapper width="50%" label="CVC">
           <CardCvcElement
             options={{
-              style: baseStyle
+              style: baseStyle,
+              placeholder: "123"
             }}
             onReady={props.setCardCVCElement}
           />

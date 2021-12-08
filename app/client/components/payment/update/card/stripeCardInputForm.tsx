@@ -6,6 +6,8 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
+import { space } from "@guardian/src-foundations";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
@@ -234,6 +236,8 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
     <>
       <div
         css={{
+          marginTop: `${space[9]}px`,
+          marginBottom: `${space[9]}px`,
           textAlign: "right"
         }}
       >
@@ -278,6 +282,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
                     disabled={!cardFormIsLoaded}
                     text="Update payment method"
                     onClick={startCardUpdate}
+                    colour={brand[400]}
+                    textColour={neutral[100]}
+                    fontWeight="bold"
                     primary
                     right
                   />

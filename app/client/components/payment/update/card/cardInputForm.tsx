@@ -1,5 +1,8 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { Stripe } from "@stripe/stripe-js";
+import { css } from "@emotion/core";
+import { textSans } from "@guardian/src-foundations/typography";
+import { space } from "@guardian/src-foundations";
 import React, { useEffect, useState } from "react";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { StripeCardInputForm } from "./stripeCardInputForm";
@@ -76,18 +79,31 @@ export const CardInputForm = (props: CardInputFormProps) => {
         <StripeCardInputForm {...props} recaptchaToken={recaptchaToken} />
       </Elements>
       <div css={{ marginBottom: "30px" }}>
-        <p>
-          Before entering new card details please confirm you're not a robot
-          below to help us prevent card fraud. By ticking this box, you agree to
-          let Google perform a security check to confirm you are a human. Please
-          refer to their{" "}
+        <span
+          css={css`
+            margin-bottom: ${space[3]}px;
+            ${textSans.medium({ fontWeight: "bold" })};
+          `}
+        >
+          Security check
+        </span>
+        <div id="recaptcha" />
+        <p
+          css={css`
+            width: 300px;
+            margin-top: ${space[3]}px;
+            ${textSans.xsmall()}
+          `}
+        >
+          By ticking this box, you agree to let Google perform a security check
+          to confirm you are a human. Please refer to their{" "}
           <a
             href="https://policies.google.com/terms"
             rel="noreferrer"
             target="_blank"
             css={hrefStyle}
           >
-            Terms
+            terms
           </a>{" "}
           and{" "}
           <a
@@ -96,11 +112,10 @@ export const CardInputForm = (props: CardInputFormProps) => {
             target="_blank"
             css={hrefStyle}
           >
-            Privacy
+            privacy
           </a>{" "}
           policies.
         </p>
-        <div id="recaptcha" />
       </div>
     </>
   );

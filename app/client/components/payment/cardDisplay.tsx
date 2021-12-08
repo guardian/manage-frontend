@@ -19,7 +19,7 @@ interface CardDisplayProps extends CardProps, Inlineable {
   inErrorState?: boolean;
 }
 
-const cardTypeToSVG = (cardType: string) => {
+export const cardTypeToSVG = (cardType: string) => {
   const backgroundImage: string | undefined = (() => {
     switch (cardType.toLowerCase().replace(/\s/g, "")) {
       case "mastercard":
