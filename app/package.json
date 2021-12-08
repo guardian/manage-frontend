@@ -12,7 +12,7 @@
     "bundle-dev-client": "webpack --config webpack.dev.client.js",
     "bundle-check-client": "webpack --config webpack.prod.client.bundle-check.js",
     "bundle-check-client-if-changed": "((git diff --name-only --cached | grep 'yarn.lock') && yarn bundle-check-client) || true",
-    "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --client-web-socket-url https://manage.thegulocal.com --open https://manage.thegulocal.com/",
+    "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --client-web-socket-url https://manage.thegulocal.com/ws --open https://manage.thegulocal.com/",
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
