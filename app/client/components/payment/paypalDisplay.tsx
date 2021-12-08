@@ -6,16 +6,35 @@ interface PayPalProps {
   shouldIncludePrefixCopy?: true;
 }
 
+// Regex to split a PayPal ID into 3 groups:
+//
+// 1: (.)        First character
+// 2: (.*?)      Zero or more remaining characters, lazily matched [1]
+// 3: (.?|.?@.+) Zero or one character, or
+//               zero or one character followed by an 'at' symbol and
+//               one or more characters.
+//
+// [1] The 2nd group is lazily matched so it doesn't capture the final character
+//     allowing it to be captured by the 3rd group instead.
+//
+// Examples:
+//
+// ID           | 1 | 2   | 3
+// -------------|---|-----|---------
+// james        | j | ame | s
+// james@gu.com | j | ame | s@gu.com
+// jim@gu.com   | j | i   | m@gu.com
+// jm@gu.com    | j |     | m@gu.com
+// j@gu.com     | j |     | @gu.com
+
+const SPLIT_PAYPAL_ID_REGEX = /^(.)(.*?)(.?|.?@.+)$/;
+
 export const getObfuscatedPayPalId = (rawId: string) => {
-  const indexOfAtSymbol = rawId.indexOf("@");
-  if (indexOfAtSymbol > -1) {
-    return `${rawId.charAt(0)}${"*".repeat(indexOfAtSymbol - 2)}${rawId.charAt(
-      indexOfAtSymbol - 1
-    )}${rawId.substring(indexOfAtSymbol)}`;
-  }
-  return `${rawId.charAt(0)}${"*".repeat(rawId.length - 2)}${rawId.charAt(
-    rawId.length - 1
-  )}`;
+  return rawId.replace(
+    SPLIT_PAYPAL_ID_REGEX,
+    (_, firstChar, remainingChars, lastChar) =>
+      `${firstChar}${remainingChars.replace(/./g, "*")}${lastChar}`
+  );
 };
 
 export const PayPalDisplay = (props: PayPalProps) => (
