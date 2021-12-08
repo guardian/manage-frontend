@@ -449,8 +449,8 @@ class PaymentUpdaterStep extends React.Component<
               `}
             >
               {this.state.selectedPaymentMethod === PaymentMethod.unknown
-                ? "Update your payment method"
-                : "Choose your payment method"}
+                ? "Choose your payment method"
+                : "Update your payment method"}
             </h3>
 
             <SelectPaymentMethod

@@ -5,25 +5,28 @@ import {
   useStripe
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { css } from "@emotion/core";
+import { textSans } from "@guardian/src-foundations/typography";
+import { neutral } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
-import { brand, neutral } from "@guardian/src-foundations/palette";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
 } from "../../../../../shared/stripeSetupIntent";
-import { maxWidth } from "../../../../styles/breakpoints";
+import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { validationWarningCSS } from "../../../../styles/fonts";
-import { Button } from "../../../buttons";
+import { Button } from "@guardian/src-button";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
-import { Spinner } from "../../../spinner";
 import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
 import {
   NewCardPaymentMethodDetail,
   StripePaymentMethod
 } from "./newCardPaymentMethodDetail";
-
+import Recaptcha from "./Recaptcha";
+import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
@@ -31,9 +34,7 @@ export interface StripeSetupIntentDetails {
 
 interface StripeCardInputFormProps
   extends CardInputFormProps,
-    StripeSetupIntentDetails {
-  recaptchaToken?: string;
-}
+    StripeSetupIntentDetails {}
 
 interface StripeInputFormError {
   code?: string;
@@ -63,9 +64,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const elements = useElements();
   const stripe = useStripe();
 
-  useEffect(() => {
-    setStripeSetupIntent(null);
-  }, [props.recaptchaToken]);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   const cardFormIsLoaded = () => {
     return stripe && cardNumberElement && cardExpiryElement && cardCVCElement;
@@ -105,7 +106,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       headers: {
         [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey
       },
-      body: props.recaptchaToken
+      body: recaptchaToken
     })
       .then(async response => {
         if (response.ok) {
@@ -145,7 +146,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       return;
     }
 
-    if (!props.recaptchaToken) {
+    if (!recaptchaToken) {
       setIsValidating(false);
       setError({ message: "Recaptcha has not been completed" });
       return;
@@ -234,67 +235,76 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
     <GenericErrorScreen loggingMessage={"error loading SetupIntent"} />
   ) : (
     <>
+      <FlexCardElement
+        setCardNumberElement={setCardNumberElement}
+        setCardExpiryElement={setCardExpiryElement}
+        setCardCVCElement={setCardCVCElement}
+      />
+
+      <Recaptcha
+        setRecaptchaToken={setRecaptchaToken}
+        setStripeSetupIntent={setStripeSetupIntent}
+      />
+
       <div
         css={{
-          marginTop: `${space[9]}px`,
-          marginBottom: `${space[9]}px`,
-          textAlign: "right"
+          marginBottom: `${space[12]}px`,
+          width: "500px",
+          maxWidth: "100%"
         }}
       >
-        <FlexCardElement
-          setCardNumberElement={setCardNumberElement}
-          setCardExpiryElement={setCardExpiryElement}
-          setCardCVCElement={setCardCVCElement}
-        />
         <div
           css={{
-            marginBottom: "40px",
-            width: "500px",
-            maxWidth: "100%"
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between"
           }}
         >
           <div
             css={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between"
+              [maxWidth.mobileLandscape]: {
+                width: "100%"
+              }
             }}
           >
-            {isValidating ? (
-              <>
-                <Spinner
-                  loadingMessage="Validating your card details..."
-                  scale={0.7}
-                  inline
-                />
-              </>
-            ) : (
-              <>
-                <div
-                  css={{
-                    textAlign: "right",
-                    [maxWidth.mobileLandscape]: {
-                      width: "100%"
-                    }
-                  }}
-                >
-                  <Button
-                    disabled={!cardFormIsLoaded}
-                    text="Update payment method"
-                    onClick={startCardUpdate}
-                    colour={brand[400]}
-                    textColour={neutral[100]}
-                    fontWeight="bold"
-                    primary
-                    right
+            <Button
+              disabled={!cardFormIsLoaded}
+              priority="primary"
+              onClick={startCardUpdate}
+              icon={
+                isValidating ? (
+                  <LoadingCircleIcon
+                    additionalCss={css`
+                      padding: 3px;
+                    `}
                   />
-                </div>
-                {renderError()}
-              </>
-            )}
+                ) : (
+                  <SvgArrowRightStraight />
+                )
+              }
+              iconSide="right"
+            >
+              Update payment method
+            </Button>
           </div>
+          {renderError()}
         </div>
       </div>
+
+      <p
+        css={css`
+          width: 100%;
+          border-top: 1px solid ${neutral[86]};
+          ${textSans.medium()};
+          color: ${neutral[46]};
+
+          ${minWidth.tablet} {
+            padding-top: ${space[9]}px;
+          }
+        `}
+      >
+        Are you experiencing difficulties switching your payment method?{" "}
+      </p>
     </>
   );
 };

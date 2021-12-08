@@ -21,10 +21,7 @@ interface FlexCardElementProps {
 const baseStyle = {
   base: {
     fontSize: "18px",
-    fontFamily: sans,
-    "::placeholder": {
-      color: "white"
-    }
+    fontFamily: sans
   }
 };
 
@@ -33,6 +30,8 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
   <>
     <div
       css={{
+        marginTop: `${space[9]}px`,
+        marginBottom: `${space[9]}px`,
         textAlign: "left"
       }}
     >
