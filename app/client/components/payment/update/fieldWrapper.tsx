@@ -10,6 +10,7 @@ interface FieldWrapperProps {
   label: string;
   width: string;
   children: JSX.Element;
+  cornerHint?: JSX.Element;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -55,14 +56,26 @@ export class FieldWrapper extends React.Component<
           }
         }}
       >
-        <label
-          css={css`
-            ${textSans.medium({ fontWeight: "bold" })};
-            color: ${neutral[7]};
-          `}
+        <div
+          css={
+            this.props.cornerHint
+              ? css`
+                  display: flex;
+                  justify-content: space-between;
+                `
+              : ``
+          }
         >
-          {this.props.label}
-        </label>
+          <label
+            css={css`
+              ${textSans.medium({ fontWeight: "bold" })};
+              color: ${neutral[7]};
+            `}
+          >
+            {this.props.label}
+          </label>
+          {this.props.cornerHint && this.props.cornerHint}
+        </div>
         <div
           css={{
             border: `2px solid ${

@@ -75,25 +75,20 @@ export const NavigateFnContext: React.Context<{
 
 export const FlowReferrerContext = React.createContext({});
 
-function getLogos(paymentMethod: PaymentMethod) {
+export function getLogos(paymentMethod: PaymentMethod) {
   if (paymentMethod === PaymentMethod.card) {
     return (
-      <div
-        css={css`
-          display: flex;
-        `}
-      >
+      <>
         {cardTypeToSVG("visa")}
         {cardTypeToSVG("mastercard")}
         {cardTypeToSVG("americanexpress")}
-      </div>
+      </>
     );
   } else if (paymentMethod === PaymentMethod.dd) {
     return (
       <DirectDebitLogo
         fill={brand[400]}
         additionalCss={css`
-          margin: 0 10px 0 0;
           width: 47px;
           height: 16px;
         `}
@@ -155,6 +150,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
         }
         cssOverrides={css`
           box-shadow: none !important;
+          line-height: 1;
         `}
         value={props.paymentMethod}
       />
@@ -167,7 +163,13 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
           }
         `}
       >
-        {getLogos(props.paymentMethod)}
+        <div
+          css={css`
+            display: flex;
+          `}
+        >
+          {getLogos(props.paymentMethod)}
+        </div>
       </div>
     </div>
 

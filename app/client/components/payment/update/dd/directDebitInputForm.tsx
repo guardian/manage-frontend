@@ -13,14 +13,30 @@ import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethod
 import { processResponse } from "../../../../utils";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import ContactUs from "../ContactUs";
+import { minWidth } from "../../../../styles/breakpoints";
 
 const inputBoxBaseStyle = {
   width: "100%",
   height: "100%",
   fontFamily: sans,
-  fontSize: "18px",
+  fontSize: "17px",
   border: "none",
-  outline: "none"
+  outline: "none",
+  "::placeholder": {
+    color: "#c4c4c4"
+  },
+  ":-ms-input-placeholder": {
+    color: "#c4c4c4"
+  }
+};
+
+const bulletsStyling = {
+  "::placeholder": {
+    fontSize: "14px"
+  },
+  ":-ms-input-placeholder": {
+    fontSize: "14px"
+  }
 };
 
 interface DirectDebitValidationResponse {
@@ -137,11 +153,15 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         />
       </FieldWrapper>
       <div
-        css={{
-          display: "flex",
-          justifyContent: "flex-start",
-          marginBottom: "12px"
-        }}
+        css={css`
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: ${space[3]}px;
+
+          ${minWidth.tablet} {
+            margin-top: ${space[4]}px;
+          }
+        `}
       >
         <FieldWrapper
           width="220px"
@@ -154,7 +174,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             type="text"
             pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
             title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
-            css={inputBoxBaseStyle}
+            css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
             placeholder="●● ●● ●●"
             required
           />
@@ -169,7 +189,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           <input
             type="text"
             pattern="[0-9]{7,}"
-            css={inputBoxBaseStyle}
+            css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
             placeholder="●●●● ●●●●"
             title="Account Number should typically be 8 digits"
             required

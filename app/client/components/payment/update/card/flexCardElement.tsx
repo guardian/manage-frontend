@@ -10,6 +10,7 @@ import { minWidth } from "../../../../styles/breakpoints";
 import { space } from "@guardian/src-foundations";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
+import { getLogos, PaymentMethod } from "../updatePaymentFlow";
 
 interface FlexCardElementProps {
   disabled?: boolean;
@@ -21,10 +22,25 @@ interface FlexCardElementProps {
 const baseStyle = {
   base: {
     fontSize: "18px",
-    fontFamily: sans
+    fontFamily: sans,
+    "::placeholder": {
+      color: "#c4c4c4"
+    },
+    ":-ms-input-placeholder": {
+      color: "#c4c4c4"
+    }
   }
 };
 
+const numberCornerHint = () => (
+  <div
+    css={css`
+      display: flex;
+    `}
+  >
+    {getLogos(PaymentMethod.card)}
+  </div>
+);
 /*TODO find some way to lock these based on this.props.disabled*/
 export const FlexCardElement = (props: FlexCardElementProps) => (
   <>
@@ -35,7 +51,11 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
         textAlign: "left"
       }}
     >
-      <FieldWrapper width="100%" label="Card Number">
+      <FieldWrapper
+        width="100%"
+        label="Card Number"
+        cornerHint={numberCornerHint()}
+      >
         <CardNumberElement
           options={{
             style: baseStyle,
