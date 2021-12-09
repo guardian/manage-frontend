@@ -370,7 +370,7 @@ const tests = [
       "ending 4242",
       "4 / 2024",
       "£135.00 / annual",
-      "December 10, 2021"
+      "10 December 2021"
     ]
   },
   {
@@ -384,7 +384,7 @@ const tests = [
       "ending 911",
       "20-00-00",
       "£99.00 / annual",
-      "December 18, 2021"
+      "18 December 2021"
     ]
   }
 ];
