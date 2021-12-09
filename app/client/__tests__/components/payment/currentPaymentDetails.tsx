@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { ProductDetail } from "../../../../shared/productResponse";
-import CurrentPaymentDetails from "../../../components/payment/update/CurrentPaymentDetails";
+import CurrentPaymentDetails from "../../../components/payment/update/CurrentPaymentDetail";
 
 const cardProductDetail: ProductDetail = {
   mmaCategory: "subscriptions",

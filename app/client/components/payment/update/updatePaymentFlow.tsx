@@ -28,7 +28,7 @@ import {
 import { augmentPaymentFailureAlertText } from "../paymentFailureAlertIfApplicable";
 import { PayPalDisplay } from "../paypalDisplay";
 import { CardInputForm } from "./card/cardInputForm";
-import CurrentPaymentDetails from "./CurrentPaymentDetails";
+import CurrentPaymentDetails from "./CurrentPaymentDetail";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
 import {
   NewPaymentMethodContext,
