@@ -129,9 +129,6 @@ const emailAndLiveChatSubheadingCss = css`
   ${minWidth.tablet} {
     max-width: none;
   }
-  ${minWidth.desktop} {
-    display: none;
-  }
 `;
 
 const emailAndLiveChatFlexContainerCss = css`
