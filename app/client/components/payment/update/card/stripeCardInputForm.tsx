@@ -7,14 +7,12 @@ import {
 import { StripeElementBase } from "@stripe/stripe-js";
 import React, { useState } from "react";
 import { css } from "@emotion/core";
-import { textSans } from "@guardian/src-foundations/typography";
-import { neutral } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
 } from "../../../../../shared/stripeSetupIntent";
-import { maxWidth, minWidth } from "../../../../styles/breakpoints";
+import { maxWidth } from "../../../../styles/breakpoints";
 import { validationWarningCSS } from "../../../../styles/fonts";
 import { Button } from "@guardian/src-button";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
@@ -27,6 +25,7 @@ import {
 import Recaptcha from "./Recaptcha";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
+import ContactUs from "../ContactUs";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
@@ -291,20 +290,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         </div>
       </div>
 
-      <p
-        css={css`
-          width: 100%;
-          border-top: 1px solid ${neutral[86]};
-          ${textSans.medium()};
-          color: ${neutral[46]};
-
-          ${minWidth.tablet} {
-            padding-top: ${space[9]}px;
-          }
-        `}
-      >
-        Are you experiencing difficulties switching your payment method?{" "}
-      </p>
+      <ContactUs />
     </>
   );
 };

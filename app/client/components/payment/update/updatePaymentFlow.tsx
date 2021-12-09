@@ -94,6 +94,8 @@ function getLogos(paymentMethod: PaymentMethod) {
         fill={brand[400]}
         additionalCss={css`
           margin: 0 10px 0 0;
+          width: 47px;
+          height: 16px;
         `}
       />
     );
@@ -151,6 +153,9 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
         onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
           props.updatePaymentMethod(changeEvent.target.value as PaymentMethod)
         }
+        cssOverrides={css`
+          box-shadow: none !important;
+        `}
         value={props.paymentMethod}
       />
       <div

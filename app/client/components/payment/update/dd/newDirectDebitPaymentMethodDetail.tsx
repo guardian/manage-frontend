@@ -6,7 +6,6 @@ import {
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { cleanSortCode, DirectDebitDisplay } from "../../directDebitDisplay";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
-import { ddFormWidth } from "./directDebitInputForm";
 import { DirectDebitLegal, GoCardlessGuarantee } from "./directDebitLegal";
 
 const CONFIRM_BUTTON_TEXT = "Complete payment update";
@@ -60,16 +59,14 @@ export class NewDirectDebitPaymentMethodDetail
         flexDirection: "row",
         textAlign: "left",
         [maxWidth.desktop]: {
-          flexDirection: "column",
-          maxWidth: ddFormWidth
+          flexDirection: "column"
         }
       }}
     >
       <div
         css={{
           [minWidth.desktop]: {
-            marginRight: "20px",
-            maxWidth: ddFormWidth
+            marginRight: "20px"
           }
         }}
       >
