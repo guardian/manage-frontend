@@ -5,6 +5,7 @@ export interface LoadingProps {
   loadingMessage?: string;
   scale?: number;
   inline?: true;
+  alignCenter?: true;
 }
 
 const scaledPx = (original: number, scale: number = 1) =>
@@ -14,7 +15,8 @@ export const Spinner = (props: LoadingProps) => (
   <div
     css={{
       alignItems: "center",
-      display: props.inline ? "inline-flex" : "flex"
+      display: props.inline ? "inline-flex" : "flex",
+      justifyContent: props.alignCenter ? "center" : ""
     }}
   >
     <Global
@@ -38,6 +40,7 @@ export const Spinner = (props: LoadingProps) => (
         height: scaledPx(40, props.scale),
         animation: "spin 2s linear infinite",
         margin: scaledPx(10, props.scale),
+        marginTop: props.alignCenter ? "center" : "",
         flexShrink: 0
       }}
     />
