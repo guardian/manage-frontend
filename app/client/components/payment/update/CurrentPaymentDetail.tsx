@@ -226,11 +226,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
               border-top: 1px solid ${neutral[86]};
               text-align: right;
               ${minWidth.tablet} {
-                margin: ${space[6]}px 0 0 0;
                 flex: 1;
                 display: inline-block;
                 flex-flow: column nowrap;
-                padding: 0 0 0 ${space[5]}px;
                 margin: 0;
                 padding: 0 0 0 ${space[5]}px;
                 border-top: none;
