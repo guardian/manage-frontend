@@ -52,6 +52,12 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
     display: inline-block;
     vertical-align: top;
     width: calc(100% - 15ch);
+
+    text-align: right;
+
+    ${minWidth.tablet} {
+      text-align: left;
+    }
   `;
 
   const hasPaymentFailure: boolean = !!props.alertText;
@@ -139,7 +145,15 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                   {subscription.card && (
                     <CardDisplay
                       inErrorState={hasPaymentFailure}
-                      margin="0"
+                      cssOverrides={css`
+                        margin: 0;
+
+                        justify-content: flex-end;
+
+                        ${minWidth.tablet} {
+                          justify-content: left;
+                        }
+                      `}
                       {...subscription.card}
                     />
                   )}
@@ -153,10 +167,19 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                     />
                   )}
                   {subscription.mandate && (
-                    <DirectDebitDisplay
-                      {...subscription.mandate}
-                      onlySortCode
-                    />
+                    <span
+                      css={css`
+                        text-align: right;
+                        ${minWidth.tablet} {
+                          text-align: left;
+                        }
+                      `}
+                    >
+                      {sanitiseAccountNumber(
+                        subscription.mandate.accountNumber,
+                        false
+                      )}
+                    </span>
                   )}
                   {subscription.stripePublicKeyForCardAddition && (
                     <span>No Payment Method</span>
@@ -224,7 +247,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             css={css`
               padding: ${space[3]}px 0 0 0;
               border-top: 1px solid ${neutral[86]};
-              text-align: right;
+
               ${minWidth.tablet} {
                 flex: 1;
                 display: inline-block;
@@ -241,11 +264,10 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             <span
               css={css`
                 ${valueCss};
-                text-align: left;
                 color: ${hasPaymentFailure ? news[400] : neutral[7]};
               `}
             >
-              {sanitiseAccountNumber(subscription.mandate.accountNumber, false)}
+              <DirectDebitDisplay {...subscription.mandate} onlySortCode />
             </span>
           </div>
         )}

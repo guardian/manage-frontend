@@ -155,7 +155,15 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
                     {subscription.card && (
                       <CardDisplay
                         inErrorState={false}
-                        margin="0"
+                        cssOverrides={css`
+                          margin: 0;
+
+                          justify-content: flex-end;
+
+                          ${minWidth.tablet} {
+                            justify-content: left;
+                          }
+                        `}
                         {...subscription.card}
                       />
                     )}

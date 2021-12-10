@@ -1,5 +1,6 @@
 import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
+import { css } from "@emotion/core";
 import { ProductDetail } from "../../../shared/productResponse";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { CardDisplay } from "./cardDisplay";
@@ -49,7 +50,9 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
           <>
             {props.productDetail.subscription.card && (
               <CardDisplay
-                margin="0"
+                cssOverrides={css`
+                  margin: 0;
+                `}
                 inErrorState={!!props.productDetail.alertText}
                 {...props.productDetail.subscription.card}
               />

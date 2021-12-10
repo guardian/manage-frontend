@@ -7,6 +7,8 @@ import { neutral, brand } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { Radio } from "@guardian/src-radio";
+import { Button } from "@guardian/src-button";
+import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React from "react";
@@ -40,6 +42,7 @@ import { trackEvent } from "../../analytics";
 import ErrorSummary from "./ErrorSummary";
 import { DirectDebitLogo } from "../directDebitLogo";
 import { cardTypeToSVG } from "../cardDisplay";
+import ContactUs from "./ContactUs";
 
 export enum PaymentMethod {
   card = "Card",
@@ -81,7 +84,12 @@ export function getLogos(paymentMethod: PaymentMethod) {
       <>
         {cardTypeToSVG("visa")}
         {cardTypeToSVG("mastercard")}
-        {cardTypeToSVG("americanexpress")}
+        {cardTypeToSVG(
+          "americanexpress",
+          css`
+            margin-right: 0;
+          `
+        )}
       </>
     );
   } else if (paymentMethod === PaymentMethod.dd) {
@@ -139,6 +147,10 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
             font-weight: bold;
           }
         }
+
+        .src-radio-label-text {
+          line-height: 1;
+        }
       `}
     >
       <Radio
@@ -172,33 +184,6 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
         </div>
       </div>
     </div>
-
-    /*
-  <label
-    css={{
-      display: "inline-block",
-      minWidth: "125px",
-      backgroundColor:
-        props.value === props.paymentMethod ? neutral[60] : neutral[86],
-      margin: "10px",
-      padding: "20px",
-      textAlign: "center",
-      borderRadius: "5px",
-      cursor: "pointer"
-    }}
-  >
-    <input
-      type="radio"
-      name="payment_method"
-      value={props.paymentMethod}
-      checked={props.value === props.paymentMethod}
-      onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
-        props.updatePaymentMethod(changeEvent.target.value as PaymentMethod)
-      }
-    />
-    {props.paymentMethod}
-  </label>
-    */
   );
 };
 
@@ -467,10 +452,43 @@ class PaymentUpdaterStep extends React.Component<
                 this.props.productDetail.subscription.paymentMethod
               }
             />
+
             {this.getInputForm(
               this.props.productDetail.subscription,
               this.props.productDetail.isTestUser
             )}
+
+            {/* Dummy button when user has not selected a payment method */
+            this.state.selectedPaymentMethod === PaymentMethod.unknown ? (
+              <div
+                css={css`
+                  margin-top: ${space[9]}px;
+                  margin-bottom: ${space[9]}px;
+                `}
+              >
+                <Button
+                  disabled
+                  priority="secondary"
+                  icon={<SvgArrowRightStraight />}
+                  iconSide="right"
+                  cssOverrides={css`
+                    background-color: ${neutral[86]};
+                    color: ${neutral[46]};
+
+                    :hover {
+                      background-color: ${neutral[86]};
+                      color: ${neutral[46]};
+                    }
+
+                    cursor: not-allowed;
+                  `}
+                >
+                  Update payment method
+                </Button>
+              </div>
+            ) : null}
+
+            <ContactUs />
           </>
         )}
         <div css={{ height: "10px" }} />

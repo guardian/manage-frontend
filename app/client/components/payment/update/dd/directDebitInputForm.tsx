@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { css } from "@emotion/core";
 import { maxWidth } from "../../../../styles/breakpoints";
 import { space } from "@guardian/src-foundations";
-import { sans, validationWarningCSS } from "../../../../styles/fonts";
+import { sans } from "../../../../styles/fonts";
 import { Button } from "@guardian/src-button";
 import { Checkbox } from "../../../checkbox";
 import { cleanSortCode } from "../../directDebitDisplay";
@@ -12,8 +12,8 @@ import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
 import { processResponse } from "../../../../utils";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
-import ContactUs from "../ContactUs";
 import { minWidth } from "../../../../styles/breakpoints";
+import ErrorSummary from "../ErrorSummary";
 
 const inputBoxBaseStyle = {
   width: "100%",
@@ -175,7 +175,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
             title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
             css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
-            placeholder="●● ●● ●●"
+            placeholder="•• •• ••"
             required
           />
         </FieldWrapper>
@@ -190,7 +190,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             type="text"
             pattern="[0-9]{7,}"
             css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
-            placeholder="●●●● ●●●●"
+            placeholder="•••• ••••"
             title="Account Number should typically be 8 digits"
             required
           />
@@ -228,18 +228,16 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         {error ? (
           <div
             css={{
-              ...validationWarningCSS,
-              marginTop: "5px"
+              marginTop: `${space[9]}px`,
+              marginBottom: `${space[9]}px`
             }}
           >
-            {error}
+            <ErrorSummary message={error} />
           </div>
         ) : (
           undefined
         )}
       </div>
-
-      <ContactUs />
     </div>
   );
 };

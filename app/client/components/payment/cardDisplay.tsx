@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/core";
 import { neutral, news } from "@guardian/src-foundations/palette";
 import React from "react";
 import { Inlineable } from "./inlineable";
@@ -15,7 +15,7 @@ export interface CardProps {
 }
 
 interface CardDisplayProps extends CardProps, Inlineable {
-  margin?: string;
+  cssOverrides?: SerializedStyles;
   inErrorState?: boolean;
 }
 
@@ -23,19 +23,25 @@ const svgStyles = css`
   display: inline-block;
   width: 35px;
   height: 22px;
-  margin-right: 4px;
+  margin-right: 3px;
 
   svg:last-of-type {
     margin-right: 0;
   }
 `;
 
-export const cardTypeToSVG = (cardType: string) => {
+export const cardTypeToSVG = (
+  cardType: string,
+  styleOverrides?: SerializedStyles
+) => {
+  const styles = { ...svgStyles, ...styleOverrides };
+
   const backgroundImage: JSX.Element | undefined | null = (() => {
     switch (cardType.toLowerCase().replace(/\s/g, "")) {
       case "mastercard":
         return (
           <svg
+            css={styles}
             width="37"
             height="23"
             viewBox="0 0 37 23"
@@ -75,7 +81,7 @@ export const cardTypeToSVG = (cardType: string) => {
       case "visa":
         return (
           <svg
-            css={svgStyles}
+            css={styles}
             width="37"
             height="23"
             viewBox="0 0 37 23"
@@ -100,6 +106,7 @@ export const cardTypeToSVG = (cardType: string) => {
       case "americanexpress":
         return (
           <svg
+            css={styles}
             width="37"
             height="23"
             viewBox="0 0 37 23"
@@ -129,22 +136,29 @@ export const cardTypeToSVG = (cardType: string) => {
   return null;
 };
 
-export const CardDisplay = (props: CardDisplayProps) => (
-  <div
-    css={{
-      display: props.inline ? "inline-flex" : "flex",
-      flexWrap: "wrap",
-      alignItems: "center",
-      margin: props.margin || "10px"
-    }}
-  >
-    {cardTypeToSVG(props.type)}{" "}
-    <span
+export const CardDisplay = (props: CardDisplayProps) => {
+  const styles = css`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 10px;
+  `;
+
+  return (
+    <div
       css={css`
-        color: ${props.inErrorState ? news[400] : neutral[7]};
+        ${styles}
+        ${props.cssOverrides}
       `}
     >
-      ending {props.last4}
-    </span>
-  </div>
-);
+      {cardTypeToSVG(props.type)}{" "}
+      <span
+        css={css`
+          color: ${props.inErrorState ? news[400] : neutral[7]};
+        `}
+      >
+        ending {props.last4}
+      </span>
+    </div>
+  );
+};

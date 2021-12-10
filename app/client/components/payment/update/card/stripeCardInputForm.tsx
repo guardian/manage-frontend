@@ -13,7 +13,6 @@ import {
   StripeSetupIntent
 } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
-import { validationWarningCSS } from "../../../../styles/fonts";
 import { Button } from "@guardian/src-button";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
 import { CardInputFormProps } from "./cardInputForm";
@@ -25,7 +24,7 @@ import {
 import Recaptcha from "./Recaptcha";
 import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
-import ContactUs from "../ContactUs";
+import ErrorSummary from "../ErrorSummary";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
@@ -73,26 +72,18 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 
   const renderError = () => {
     if (error && error.message) {
-      return (
-        <div
-          css={{
-            ...validationWarningCSS,
-            marginTop: "5px",
-            width: "100%",
-            textAlign: "right"
-          }}
-        >
-          {error.message
-            .split(".")
-            .filter(_ => _.trim().length)
-            .map((sentence, index) => (
-              <div key={index}>
-                {sentence}
-                {sentence.includes(".") ? "" : "."}
-              </div>
-            ))}
-        </div>
-      );
+      return error.message
+        .split(".")
+        .filter(_ => _.trim().length)
+        .map((sentence, index) => {
+          const sentenceEnd = sentence.includes(".") ? "" : ".";
+
+          return (
+            <div key={index}>
+              <ErrorSummary message={sentence + sentenceEnd} />
+            </div>
+          );
+        });
     } else {
       return null;
     }
@@ -286,11 +277,17 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
               Update payment method
             </Button>
           </div>
-          {renderError()}
         </div>
       </div>
 
-      <ContactUs />
+      <div
+        css={css`
+          margin-top: ${space[9]}px;
+          margin-bottom: ${space[9]}px;
+        `}
+      >
+        {renderError()}
+      </div>
     </>
   );
 };

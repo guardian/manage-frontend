@@ -3,8 +3,8 @@ import React from "react";
 import { css } from "@emotion/core";
 import palette from "../../../colours";
 import { textSans } from "@guardian/src-foundations/typography";
-import { sans } from "../../../styles/fonts";
-import { neutral } from "@guardian/src-foundations/palette";
+import { neutral, error } from "@guardian/src-foundations/palette";
+import { InlineError } from "@guardian/src-user-feedback";
 
 interface FieldWrapperProps {
   label: string;
@@ -62,57 +62,55 @@ export class FieldWrapper extends React.Component<
               ? css`
                   display: flex;
                   justify-content: space-between;
+                  align-items: end;
                 `
               : ``
           }
         >
-          <label
-            css={css`
-              ${textSans.medium({ fontWeight: "bold" })};
-              color: ${neutral[7]};
-            `}
-          >
-            {this.props.label}
-          </label>
+          <div>
+            <label
+              css={css`
+                ${textSans.medium({ fontWeight: "bold" })};
+                color: ${neutral[7]};
+              `}
+            >
+              {this.props.label}
+            </label>
+            {this.state.error?.message && (
+              <InlineError
+                cssOverrides={css`
+                  margin-bottom: -5px;
+                  margin-top: 3px;
+                `}
+              >
+                {this.state.error.message}
+              </InlineError>
+            )}
+          </div>
           {this.props.cornerHint && this.props.cornerHint}
         </div>
+
         <div
           css={{
-            border: `2px solid ${
-              this.state.error?.message ? palette.red.medium : neutral[60]
+            border: `4px solid ${
+              this.state.error?.message ? error[400] : neutral[60]
             }`,
             display: "block",
             fontWeight: 400,
             height: "44px",
-            marginTop: "4px",
+            marginTop: "3px",
             lineHeight: "20px",
-            padding: "10px",
+            padding: "8px",
             width: "100%",
             transition: "all .2s ease-in-out",
             "&:hover": {
-              boxShadow: `0 0 0 3px ${
-                this.state.focus ? palette.yellow.medium : palette.neutral["6"]
-              }`
+              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`
             },
-            outline: 0,
-            boxShadow: this.state.focus
-              ? `0 0 0 3px ${palette.yellow.medium}`
-              : undefined
+            outline: 0
           }}
         >
           {hydratedChildren}
         </div>
-        {this.state.error?.message && (
-          <span
-            css={{
-              color: palette.red.medium,
-              fontFamily: sans,
-              fontSize: "0.8rem"
-            }}
-          >
-            {this.state.error.message}
-          </span>
-        )}
       </div>
     );
   }

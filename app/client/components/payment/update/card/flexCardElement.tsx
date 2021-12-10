@@ -21,7 +21,7 @@ interface FlexCardElementProps {
 
 const baseStyle = {
   base: {
-    fontSize: "18px",
+    fontSize: "17px",
     fontFamily: sans,
     "::placeholder": {
       color: "#c4c4c4"
@@ -59,7 +59,7 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
         <CardNumberElement
           options={{
             style: baseStyle,
-            placeholder: "●●●● ●●●● ●●●● ●●●●"
+            placeholder: "•••• •••• •••• ••••"
           }}
           onReady={props.setCardNumberElement}
         />
