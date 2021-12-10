@@ -2,29 +2,25 @@ import React from "react";
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral, news } from "@guardian/src-foundations/palette";
+import { InlineError } from "@guardian/src-user-feedback";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { CardDisplay } from "../cardDisplay";
-import { DirectDebitDisplay } from "../directDebitDisplay";
+import {
+  DirectDebitDisplay,
+  sanitiseAccountNumber
+} from "../directDebitDisplay";
 import { PayPalDisplay } from "../paypalDisplay";
 import { SepaDisplay } from "../sepaDisplay";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { textSans } from "@guardian/src-foundations/typography";
 
-/*
-function renderPaymentMethodDisplay(subscription: Subscription) {
-  if (subscription.card) {
-    return <CardDisplay {...subscription.card} />;
-  } else if (subscription.payPalEmail) {
-    return <PayPalDisplay payPalId={subscription.payPalEmail} />;
-  } else if (subscription.mandate) {
-    return <DirectDebitDisplay {...subscription.mandate} />;
-  } else if (subscription.sepaMandate) {
-    return <SepaDisplay {...subscription.sepaMandate} />;
-  }
-  return <span>No Payment Method</span>;
-};
-*/
+export function cardExpired(year: number, month: number) {
+  const expiryTimestamp = new Date(year, month);
+  const now = new Date();
+
+  return expiryTimestamp < now;
+}
 
 const CurrentPaymentDetails = (props: ProductDetail) => {
   const { subscription } = props;
@@ -121,9 +117,12 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
       >
         <div
           css={css`
-            margin: ${space[6]}px 0 0 0;
-            padding: ${space[6]}px 0 0 0;
+            padding-bottom: ${subscription.card || subscription.mandate
+              ? space[3]
+              : 0}px;
             ${minWidth.tablet} {
+              margin: ${space[6]}px 0 0 0;
+              padding: ${space[6]}px 0 0 0;
               flex: 1;
               display: flex;
               flex-flow: column nowrap;
@@ -155,8 +154,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                   )}
                   {subscription.mandate && (
                     <DirectDebitDisplay
-                      inErrorState={hasPaymentFailure}
                       {...subscription.mandate}
+                      onlySortCode
                     />
                   )}
                   {subscription.stripePublicKeyForCardAddition && (
@@ -170,15 +169,17 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
         {subscription.card && (
           <div
             css={css`
-              margin: ${space[6]}px 0 0 0;
-              padding: ${space[6]}px 0 0 0;
+              padding: ${space[3]}px 0 0 0;
+              border-top: 1px solid ${neutral[86]};
               ${minWidth.tablet} {
+                margin: ${space[6]}px 0 0 0;
                 flex: 1;
                 display: inline-block;
                 flex-flow: column nowrap;
                 padding: 0 0 0 ${space[5]}px;
                 margin: 0;
                 padding: 0 0 0 ${space[5]}px;
+                border-top: none;
               }
               ul:last-of-type {
                 margin-bottom: ${space[5]}px;
@@ -187,9 +188,26 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
           >
             {subscription.card.expiry && (
               <>
-                <span css={keyCss}>Expiry</span>
                 <span
                   css={css`
+                    ${keyCss};
+                    ${minWidth.tablet} {
+                      text-align: right;
+                    }
+                  `}
+                >
+                  {cardExpired(
+                    subscription.card.expiry.year,
+                    subscription.card.expiry.month
+                  ) ? (
+                    <InlineError>Expired</InlineError>
+                  ) : (
+                    <>Expiry</>
+                  )}
+                </span>
+                <span
+                  css={css`
+                    ${valueCss};
                     color: ${hasPaymentFailure ? news[400] : neutral[7]};
                   `}
                 >
@@ -198,6 +216,37 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                 </span>
               </>
             )}
+          </div>
+        )}
+
+        {subscription.mandate && (
+          <div
+            css={css`
+              padding: ${space[3]}px 0 0 0;
+              border-top: 1px solid ${neutral[86]};
+              text-align: right;
+              ${minWidth.tablet} {
+                flex: 1;
+                display: inline-block;
+                flex-flow: column nowrap;
+                margin: 0;
+                padding: 0 0 0 ${space[5]}px;
+                border-top: none;
+              }
+              ul:last-of-type {
+                margin-bottom: ${space[5]}px;
+              }
+            `}
+          >
+            <span
+              css={css`
+                ${valueCss};
+                text-align: left;
+                color: ${hasPaymentFailure ? news[400] : neutral[7]};
+              `}
+            >
+              {sanitiseAccountNumber(subscription.mandate.accountNumber, false)}
+            </span>
           </div>
         )}
       </div>
