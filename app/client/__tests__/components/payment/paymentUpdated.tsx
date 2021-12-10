@@ -8,7 +8,7 @@ import {
   guardianWeeklySubscriptionCard,
   digitalDD,
   digitalSubscriptionDD
-} from "../../testData";
+} from "../../../testData";
 
 // mock functions for NewPaymentMethodDetail type
 const matchesResponse = (_: any) => true;

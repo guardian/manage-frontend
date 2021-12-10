@@ -5,7 +5,7 @@ import {
   guardianWeeklyCard,
   guardianWeeklyExpiredCard,
   digitalDD
-} from "../../testData";
+} from "../../../testData";
 
 describe("currentPaymentDetails.tsx", () => {
   it("Shows product name", () => {

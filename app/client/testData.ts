@@ -1,4 +1,4 @@
-import { ProductDetail, Subscription } from "../../shared/productResponse";
+import { ProductDetail, Subscription } from "../shared/productResponse";
 
 /************* ProductDetails *************/
 export const guardianWeeklyCard: ProductDetail = {
