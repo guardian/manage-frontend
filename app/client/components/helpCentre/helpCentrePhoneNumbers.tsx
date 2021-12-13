@@ -32,7 +32,7 @@ const subtitleCss = css`
   ${textSans.medium()};
   padding: 0 ${space[4]}px ${space[4]}px ${space[4]}px;
   margin: 0;
-  ${minWidth.tablet} {
+  ${minWidth.wide} {
     display: block;
   }
 `;
