@@ -138,7 +138,7 @@ const emailAndLiveChatFlexContainerCss = css`
   display: flex;
   flex-direction: column;
   ${minWidth.tablet} {
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
   }
   & > * {
@@ -171,13 +171,6 @@ export const HelpCentreEmailAndLiveChat = () => {
     <>
       <div css={emailAndLiveChatFlexContainerCss}>
         <HelpCentreContactBox
-          iconId="email-us"
-          title="Email us"
-          subtitle="Send a message to one of our customer service agents."
-        >
-          <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
-        </HelpCentreContactBox>
-        <HelpCentreContactBox
           title="Chat with us"
           subtitle={
             isLiveChatAvailable
@@ -193,6 +186,13 @@ export const HelpCentreEmailAndLiveChat = () => {
               setIsLiveChatAvailable={setIsLiveChatAvailable}
             />
           )}
+        </HelpCentreContactBox>
+        <HelpCentreContactBox
+          iconId="email-us"
+          title="Email us"
+          subtitle="Send a message to one of our customer service agents."
+        >
+          <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
         </HelpCentreContactBox>
       </div>
     </>
