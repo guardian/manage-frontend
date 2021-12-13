@@ -20,3 +20,4 @@ const setLiveChatSessionStorage = (queryStringMatch: string[]) => {
 */
 
 export const isLiveChatFeatureEnabled = () => true;
+export const isArticleLiveChatFeatureEnabled = () => true;

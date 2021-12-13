@@ -7,6 +7,9 @@ import { captureException, captureMessage } from "@sentry/browser";
 import React, { useEffect, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
+import { LinkButton } from "../buttons";
+import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { isArticleLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
 import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
@@ -75,7 +78,25 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
               articleCode={props.articleCode ?? ""}
             />
             <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
-            <HelpCentreContactOptions />
+            {isArticleLiveChatFeatureEnabled() ? (
+              <HelpCentreContactOptions />
+            ) : (
+              <>
+                <h2 css={h2Css}>Still can’t find what you’re looking for?</h2>
+                <CallCentreEmailAndNumbers />
+                <p>
+                  Or use our contact form to get in touch and we’ll get back to
+                  you as soon as possible.
+                </p>
+                <LinkButton
+                  to="/help-centre/contact-us"
+                  text={"Contact us"}
+                  fontWeight={"bold"}
+                  textColour={`${brand["400"]}`}
+                  colour={`${brand["800"]}`}
+                />
+              </>
+            )}
           </>
         ) : (
           <Loading />
