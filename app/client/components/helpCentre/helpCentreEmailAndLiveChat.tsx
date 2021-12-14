@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { neutral, space, text } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ReactNode, useState } from "react";
-import { maxWidth, minWidth } from "../../styles/breakpoints";
+import { minWidth } from "../../styles/breakpoints";
 import { StartLiveChatButton } from "../liveChat/liveChat";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
@@ -12,6 +12,7 @@ interface HelpCentreContactBoxProps {
   title: string;
   subtitle: string;
   subTitleIsWarning?: boolean;
+  compactLayout?: boolean;
   children: ReactNode;
 }
 
@@ -25,36 +26,42 @@ const contactBoxContainerCss = css`
   }
 `;
 
-const contactBoxH2Css = css`
+const contactBoxH2Css = (compactLayout: boolean = false) => css`
   ${textSans.large({ fontWeight: "bold" })};
   color: ${neutral[20]};
   position: relative;
   margin: 0;
-  padding: 22px 0 22px 64px;
-  ${maxWidth.desktop} {
-    padding: 18px 0 18px 60px;
-  }
+  padding: 18px 0 18px 60px;
+  ${!compactLayout &&
+    `
+    ${minWidth.desktop} {
+      padding: 22px 0 22px 64px;
+    }
+  `}
 `;
 
-const contactBoxIconCss = css`
+const contactBoxIconCss = (compactLayout: boolean = false) => css`
   position: absolute;
-  top: ${space[4]}px;
-  left: ${space[4]}px;
-  ${maxWidth.desktop} {
-    top: ${space[3]}px;
-    left: ${space[3]}px;
-  }
+  top: ${space[3]}px;
+  left: ${space[3]}px;
+  ${!compactLayout &&
+    `
+    ${minWidth.desktop} {
+      top: ${space[4]}px;
+      left: ${space[4]}px;
+    }
+  `}
 `;
 
-const contactBoxSubtitleCss = css`
+const contactBoxSubtitleCss = (compactLayout: boolean = false) => css`
   display: none;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
-  ${minWidth.wide} {
-    display: block;
-  }
-  @media screen and (min-width: 740px) and (max-width: 1270px) {
-    min-height: 3em;
-  }
+  ${!compactLayout &&
+    `
+    ${minWidth.wide} {
+      display: block;
+    }
+  `}
 `;
 
 const contactBoxSubtitleWarningCss = css`
@@ -63,15 +70,14 @@ const contactBoxSubtitleWarningCss = css`
   font-weight: bold;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
   padding-left: ${space[5] + space[2]}px;
-  @media screen and (min-width: 740px) and (max-width: 1270px) {
-    min-height: 3em;
-  }
 `;
 
-const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
+const contactBoxDetailsCss = (
+  includeTopBorder: boolean = true,
+  compactLayout: boolean = false
+) => css`
   border-top: ${includeTopBorder ? `1px solid ${neutral[86]}` : "0"};
-  padding-top: ${space[3]}px;
-  margin: 0 ${space[4]}px ${space[4]}px ${space[4]}px;
+  padding: ${space[3]}px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -80,25 +86,30 @@ const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
   & p {
     margin-bottom: 0;
   }
-  ${maxWidth.desktop} {
-    padding: ${space[3]}px;
-    margin: 0;
-  }
+  ${!compactLayout &&
+    `
+    ${minWidth.desktop} {
+      padding: ${space[3]}px 0 0;
+      margin: 0 ${space[4]}px ${space[4]}px;
+    }
+  `}
 `;
 
 const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
   return (
     <div css={contactBoxContainerCss}>
       <div>
-        <h2 css={contactBoxH2Css}>
-          <i css={contactBoxIconCss}>{getHelpSectionIcon(props.iconId)}</i>
+        <h2 css={contactBoxH2Css(props.compactLayout)}>
+          <i css={contactBoxIconCss(props.compactLayout)}>
+            {getHelpSectionIcon(props.iconId)}
+          </i>
           {props.title}
         </h2>
         <p
           css={
             props.subTitleIsWarning
               ? contactBoxSubtitleWarningCss
-              : contactBoxSubtitleCss
+              : contactBoxSubtitleCss(props.compactLayout)
           }
         >
           {props.subTitleIsWarning && (
@@ -115,7 +126,12 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
           {props.subtitle}
         </p>
       </div>
-      <div css={contactBoxDetailsCss(!props.subTitleIsWarning)}>
+      <div
+        css={contactBoxDetailsCss(
+          !props.subTitleIsWarning,
+          props.compactLayout
+        )}
+      >
         {props.children}
       </div>
     </div>
