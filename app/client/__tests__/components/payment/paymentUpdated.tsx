@@ -3,11 +3,12 @@ import { render } from "@testing-library/react";
 import { Subscription } from "../../../../shared/productResponse";
 import { ConfirmedNewPaymentDetailsRenderer } from "../../../components/payment/update/paymentUpdated";
 import { NewPaymentMethodDetail } from "../../../components/payment/update/newPaymentMethodDetail";
-import { guardianWeeklyCard, digitalDD } from "../../../testData";
-
-jest.mock("../../../../shared/productResponse", () => ({
-  isPaidSubscriptionPlan: jest.fn(() => true)
-}));
+import {
+  guardianWeeklyCard,
+  guardianWeeklySubscriptionCard,
+  digitalDD,
+  digitalSubscriptionDD
+} from "../../../testData";
 
 // mock functions for NewPaymentMethodDetail type
 const matchesResponse = (_: any) => true;
@@ -102,7 +103,7 @@ const newPaymentMethodDetailDD: NewPaymentMethodDetail = {
 const tests = [
   {
     data: {
-      subscription: guardianWeeklyCard.subscription,
+      subscription: guardianWeeklySubscriptionCard,
       newPaymentMethodDetail: newPaymentMethodDetailCard,
       previousProductDetail: guardianWeeklyCard
     },
@@ -116,7 +117,7 @@ const tests = [
   },
   {
     data: {
-      subscription: digitalDD.subscription,
+      subscription: digitalSubscriptionDD,
       newPaymentMethodDetail: newPaymentMethodDetailDD,
       previousProductDetail: digitalDD
     },
