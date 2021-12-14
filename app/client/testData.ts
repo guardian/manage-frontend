@@ -1,4 +1,4 @@
-import { ProductDetail, Subscription } from "../shared/productResponse";
+import { Subscription, ProductDetail } from "../shared/productResponse";
 
 /************* ProductDetails *************/
 export const guardianWeeklyCard: ProductDetail = {
@@ -183,6 +183,79 @@ export const digitalDD: ProductDetail = {
     readerType: "Direct"
   },
   isTestUser: false
+};
+
+export const NewspaperVoucherPaypal: ProductDetail = {
+  mmaCategory: "subscriptions",
+  tier: "Newspaper Digital Voucher",
+  isPaidTier: true,
+  selfServiceCancellation: {
+    isAllowed: false,
+    shouldDisplayEmail: false,
+    phoneRegionsToDisplay: ["UK & ROW"]
+  },
+  joinDate: "2021-11-26",
+  optIn: true,
+  subscription: {
+    paymentMethod: "PayPal",
+    payPalEmail: "sb-ltpuy8454870@personal.example.com",
+    contactId: "0039E00001KA26BQAT",
+    deliveryAddress: {
+      addressLine1: "71 Valnay Street",
+      addressLine2: "",
+      town: "London",
+      postcode: "SW17 8PS",
+      country: "United Kingdom"
+    },
+    safeToUpdatePaymentMethod: true,
+    start: "2021-12-06",
+    end: "2022-11-26",
+    nextPaymentPrice: 5299,
+    nextPaymentDate: "2021-12-06",
+    lastPaymentDate: null,
+    chargedThroughDate: null,
+    renewalDate: "2022-11-26",
+    anniversaryDate: "2022-12-06",
+    cancelledAt: false,
+    subscriberId: "A-S00285104",
+    subscriptionId: "A-S00285104",
+    trialLength: -7,
+    autoRenew: true,
+    plan: {
+      name: "Newspaper Digital Voucher",
+      amount: 5299,
+      currency: "£",
+      currencyISO: "GBP",
+      interval: "month"
+    },
+    currentPlans: [
+      {
+        name: "Everyday",
+        start: "2021-12-06",
+        end: "2022-11-26",
+        shouldBeVisible: true,
+        chargedThrough: null,
+        amount: 5299,
+        currency: "£",
+        currencyISO: "GBP",
+        interval: "month",
+        daysOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ]
+      }
+    ],
+    futurePlans: [],
+    readerType: "Direct",
+    accountId: "8ad0824e7d584341017d5bc38c0d52dc"
+  },
+  isTestUser: false,
+  key: "1639394814906"
 };
 
 /************* Subscriptions *************/

@@ -207,30 +207,27 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                         hasCancellationPending={hasCancellationPending}
                         tableHeading="Payment"
                       />
-                      {productDetail.isPaidTier &&
-                        !productDetail.subscription.payPalEmail && (
-                          <LinkButton
-                            colour={
-                              productDetail.alertText ? brand[400] : brand[800]
+                      {productDetail.isPaidTier && (
+                        <LinkButton
+                          colour={
+                            productDetail.alertText ? brand[400] : brand[800]
+                          }
+                          textColour={
+                            productDetail.alertText ? neutral[100] : brand[400]
+                          }
+                          fontWeight={"bold"}
+                          alert={!!productDetail.alertText}
+                          text="Update payment method"
+                          to={`/payment/${specificProductType.urlPart}`}
+                          state={{
+                            productDetail,
+                            flowReferrer: {
+                              title: NAV_LINKS.billing.title,
+                              link: NAV_LINKS.billing.link
                             }
-                            textColour={
-                              productDetail.alertText
-                                ? neutral[100]
-                                : brand[400]
-                            }
-                            fontWeight={"bold"}
-                            alert={!!productDetail.alertText}
-                            text="Update payment method"
-                            to={`/payment/${specificProductType.urlPart}`}
-                            state={{
-                              productDetail,
-                              flowReferrer: {
-                                title: NAV_LINKS.billing.title,
-                                link: NAV_LINKS.billing.link
-                              }
-                            }}
-                          />
-                        )}
+                          }}
+                        />
+                      )}
                       {productInvoiceData.length > 0 && (
                         <div
                           css={css`

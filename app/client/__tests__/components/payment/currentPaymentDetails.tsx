@@ -4,7 +4,8 @@ import CurrentPaymentDetails from "../../../components/payment/update/CurrentPay
 import {
   guardianWeeklyCard,
   guardianWeeklyExpiredCard,
-  digitalDD
+  digitalDD,
+  NewspaperVoucherPaypal
 } from "../../../testData";
 
 describe("currentPaymentDetails.tsx", () => {
@@ -41,6 +42,16 @@ describe("currentPaymentDetails.tsx", () => {
 
       getByText("ending 911");
       getByText("20-00-00");
+    });
+  });
+
+  describe("For Paypal", () => {
+    test("shows masked email", () => {
+      const { getByText } = render(
+        <CurrentPaymentDetails {...NewspaperVoucherPaypal} />
+      );
+
+      getByText("s*************0@personal.example.com");
     });
   });
 });

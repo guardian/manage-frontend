@@ -10,38 +10,38 @@ describe("updatePaymentFlow.tsx", () => {
     const { getByText, queryByText } = render(
       <SelectPaymentMethod
         value={PaymentMethod.card}
-        currentPaymentMethod="Card"
+        currentPaymentMethod={PaymentMethod.card}
         updatePaymentMethod={() => null}
       />
     );
 
-    getByText("Card");
-    expect(queryByText("Direct Debit")).toBeNull();
+    getByText(PaymentMethod.card);
+    expect(queryByText(PaymentMethod.dd)).toBeNull();
   });
 
   it("Shows both card and direct debit when sub/crontrib is using direct debit", () => {
     const { getByText } = render(
       <SelectPaymentMethod
         value={PaymentMethod.dd}
-        currentPaymentMethod="DirectDebit"
+        currentPaymentMethod={PaymentMethod.dd}
         updatePaymentMethod={() => null}
       />
     );
 
-    getByText("Card");
-    getByText("Direct Debit");
+    getByText(PaymentMethod.card);
+    getByText(PaymentMethod.dd);
   });
 
   it("Shows only card when sub/crontrib is using Paypal", () => {
     const { getByText, queryByText } = render(
       <SelectPaymentMethod
         value={PaymentMethod.payPal}
-        currentPaymentMethod="PayPal"
+        currentPaymentMethod={PaymentMethod.payPal}
         updatePaymentMethod={() => null}
       />
     );
 
-    getByText("Card");
-    expect(queryByText("Direct Debit")).toBeNull();
+    getByText(PaymentMethod.card);
+    expect(queryByText(PaymentMethod.dd)).toBeNull();
   });
 });

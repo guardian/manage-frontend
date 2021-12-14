@@ -5,23 +5,26 @@ import {
   useStripe
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
   StripeSetupIntent
 } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
-import { validationWarningCSS } from "../../../../styles/fonts";
-import { Button } from "../../../buttons";
+import { Button } from "@guardian/src-button";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
-import { Spinner } from "../../../spinner";
 import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
 import {
   NewCardPaymentMethodDetail,
   StripePaymentMethod
 } from "./newCardPaymentMethodDetail";
-
+import Recaptcha from "./Recaptcha";
+// import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
+import ErrorSummary from "../ErrorSummary";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
@@ -29,9 +32,7 @@ export interface StripeSetupIntentDetails {
 
 interface StripeCardInputFormProps
   extends CardInputFormProps,
-    StripeSetupIntentDetails {
-  recaptchaToken?: string;
-}
+    StripeSetupIntentDetails {}
 
 interface StripeInputFormError {
   code?: string;
@@ -61,9 +62,9 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const elements = useElements();
   const stripe = useStripe();
 
-  useEffect(() => {
-    setStripeSetupIntent(null);
-  }, [props.recaptchaToken]);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   const cardFormIsLoaded = () => {
     return stripe && cardNumberElement && cardExpiryElement && cardCVCElement;
@@ -71,26 +72,18 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 
   const renderError = () => {
     if (error && error.message) {
-      return (
-        <div
-          css={{
-            ...validationWarningCSS,
-            marginTop: "5px",
-            width: "100%",
-            textAlign: "right"
-          }}
-        >
-          {error.message
-            .split(".")
-            .filter(_ => _.trim().length)
-            .map((sentence, index) => (
-              <div key={index}>
-                {sentence}
-                {sentence.includes(".") ? "" : "."}
-              </div>
-            ))}
-        </div>
-      );
+      return error.message
+        .split(".")
+        .filter(_ => _.trim().length)
+        .map((sentence, index) => {
+          const sentenceEnd = sentence.includes(".") ? "" : ".";
+
+          return (
+            <div key={index}>
+              <ErrorSummary message={sentence + sentenceEnd} />
+            </div>
+          );
+        });
     } else {
       return null;
     }
@@ -103,7 +96,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       headers: {
         [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey
       },
-      body: props.recaptchaToken
+      body: recaptchaToken
     })
       .then(async response => {
         if (response.ok) {
@@ -143,7 +136,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       return;
     }
 
-    if (!props.recaptchaToken) {
+    if (!recaptchaToken) {
       setIsValidating(false);
       setError({ message: "Recaptcha has not been completed" });
       return;
@@ -232,61 +225,74 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
     <GenericErrorScreen loggingMessage={"error loading SetupIntent"} />
   ) : (
     <>
+      <FlexCardElement
+        setCardNumberElement={setCardNumberElement}
+        setCardExpiryElement={setCardExpiryElement}
+        setCardCVCElement={setCardCVCElement}
+      />
+
+      <Recaptcha
+        setRecaptchaToken={setRecaptchaToken}
+        setStripeSetupIntent={setStripeSetupIntent}
+      />
+
       <div
         css={{
-          textAlign: "right"
+          marginBottom: `${space[12]}px`,
+          width: "500px",
+          maxWidth: "100%"
         }}
       >
-        <FlexCardElement
-          setCardNumberElement={setCardNumberElement}
-          setCardExpiryElement={setCardExpiryElement}
-          setCardCVCElement={setCardCVCElement}
-        />
         <div
           css={{
-            marginBottom: "40px",
-            width: "500px",
-            maxWidth: "100%"
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between"
           }}
         >
           <div
             css={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between"
+              [maxWidth.mobileLandscape]: {
+                width: "100%"
+              }
             }}
           >
-            {isValidating ? (
-              <>
-                <Spinner
-                  loadingMessage="Validating your card details..."
-                  scale={0.7}
-                  inline
-                />
-              </>
-            ) : (
-              <>
-                <div
-                  css={{
-                    textAlign: "right",
-                    [maxWidth.mobileLandscape]: {
-                      width: "100%"
-                    }
-                  }}
-                >
-                  <Button
-                    disabled={!cardFormIsLoaded}
-                    text="Update payment method"
-                    onClick={startCardUpdate}
-                    primary
-                    right
+            <Button
+              disabled={!cardFormIsLoaded}
+              priority="primary"
+              onClick={startCardUpdate}
+              icon={
+                isValidating ? (
+                  <LoadingCircleIcon
+                    additionalCss={css`
+                      padding: 3px;
+                    `}
                   />
-                </div>
-                {renderError()}
-              </>
-            )}
+                ) : (
+                  <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                    />
+                  </svg>
+                )
+              }
+              iconSide="right"
+            >
+              Update payment method
+            </Button>
           </div>
         </div>
+      </div>
+
+      <div
+        css={css`
+          margin-top: ${space[9]}px;
+          margin-bottom: ${space[9]}px;
+        `}
+      >
+        {renderError()}
       </div>
     </>
   );

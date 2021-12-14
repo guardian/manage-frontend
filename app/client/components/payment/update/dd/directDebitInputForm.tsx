@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { maxWidth, minWidth } from "../../../../styles/breakpoints";
-import { sans, validationWarningCSS } from "../../../../styles/fonts";
-import { Button } from "../../../buttons";
+import { css } from "@emotion/core";
+import { maxWidth } from "../../../../styles/breakpoints";
+import { space } from "@guardian/src-foundations";
+import { sans } from "../../../../styles/fonts";
+import { Button } from "@guardian/src-button";
 import { Checkbox } from "../../../checkbox";
 import { cleanSortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
@@ -9,17 +11,33 @@ import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { DirectDebitLegal } from "./directDebitLegal";
 import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethodDetail";
 import { processResponse } from "../../../../utils";
+// import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+import { minWidth } from "../../../../styles/breakpoints";
+import ErrorSummary from "../ErrorSummary";
 
 const inputBoxBaseStyle = {
   width: "100%",
   height: "100%",
   fontFamily: sans,
-  fontSize: "18px",
+  fontSize: "17px",
   border: "none",
-  outline: "none"
+  outline: "none",
+  "::placeholder": {
+    color: "#c4c4c4"
+  },
+  ":-ms-input-placeholder": {
+    color: "#c4c4c4"
+  }
 };
 
-export const ddFormWidth = "450px";
+const bulletsStyling = {
+  "::placeholder": {
+    fontSize: "14px"
+  },
+  ":-ms-input-placeholder": {
+    fontSize: "14px"
+  }
+};
 
 interface DirectDebitValidationResponse {
   data: {
@@ -113,128 +131,121 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 
   return (
     <div
-      css={{
-        marginBottom: "20px"
-      }}
+      css={css`
+        margin-top: ${space[9]}px;
+        margin-bottom: ${space[9]}px;
+      `}
     >
-      <div
-        css={{
-          display: "flex",
-          [minWidth.desktop]: {
-            flexDirection: "row"
-          },
-          [maxWidth.desktop]: {
-            flexDirection: "column",
-            maxWidth: ddFormWidth
-          }
-        }}
+      <FieldWrapper
+        width="100%"
+        label="Account holder name"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setAccountName(event.target.value)
+        }
       >
-        <div
-          css={{
-            maxWidth: ddFormWidth,
-            [minWidth.desktop]: {
-              marginRight: "20px"
-            }
-          }}
+        <input
+          type="text"
+          css={inputBoxBaseStyle}
+          placeholder="First Name Surname"
+          pattern="[A-Za-z\s]{3,}"
+          title="The name of the account holder must have at least 3 letters."
+          required
+        />
+      </FieldWrapper>
+      <div
+        css={css`
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: ${space[3]}px;
+
+          ${minWidth.tablet} {
+            margin-top: ${space[4]}px;
+          }
+        `}
+      >
+        <FieldWrapper
+          width="220px"
+          label="Sort Code"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setSortCode(cleanSortCode(event.target.value))
+          }
         >
-          <FieldWrapper
-            width={ddFormWidth}
-            label="Account Name"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setAccountName(event.target.value)
-            }
-          >
-            <input
-              type="text"
-              css={inputBoxBaseStyle}
-              pattern="[A-Za-z\s]{3,}"
-              title="The name of the account holder must have at least 3 letters."
-              required
-            />
-          </FieldWrapper>
-          <div
-            css={{
-              display: "flex",
-              justifyContent: "flex-start",
-              marginBottom: "12px"
-            }}
-          >
-            <FieldWrapper
-              width="170px"
-              label="Sort Code"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setSortCode(cleanSortCode(event.target.value))
-              }
-            >
-              <input
-                type="text"
-                pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
-                title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
-                css={inputBoxBaseStyle}
-                placeholder="e.g. 10-20-30"
-                required
-              />
-            </FieldWrapper>
-            <FieldWrapper
-              width="260px"
-              label="Account Number"
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setAccountNumber(event.target.value)
-              }
-            >
-              <input
-                type="text"
-                pattern="[0-9]{7,}"
-                css={inputBoxBaseStyle}
-                placeholder="e.g. 12345678"
-                title="Account Number should typically be 8 digits"
-                required
-              />
-            </FieldWrapper>{" "}
-          </div>
-          <Checkbox
-            onChange={newValue => setSoleAccountHolderConfirmed(newValue)}
-            checked={soleAccountHolderConfirmed}
-            label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
-            maxWidth={ddFormWidth}
+          <input
+            type="text"
+            pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
+            title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
+            css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
+            placeholder="•• •• ••"
             required
           />
+        </FieldWrapper>
+        <FieldWrapper
+          width="100%"
+          label="Account Number"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setAccountNumber(event.target.value)
+          }
+        >
+          <input
+            type="text"
+            pattern="[0-9]{7,}"
+            css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
+            placeholder="•••• ••••"
+            title="Account Number should typically be 8 digits"
+            required
+          />
+        </FieldWrapper>{" "}
+      </div>
+      <Checkbox
+        onChange={newValue => setSoleAccountHolderConfirmed(newValue)}
+        checked={soleAccountHolderConfirmed}
+        label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+        required
+      />
 
+      <DirectDebitLegal />
+
+      <div
+        css={css`
+          margin-top: ${space[9]}px;
+          margin-bottom: ${space[9]}px;
+
+          ${maxWidth.desktop} {
+            width: 100%;
+          }
+        `}
+      >
+        <Button
+          disabled={isValidating}
+          priority="primary"
+          onClick={startDirectDebitUpdate}
+          // icon={<SvgArrowRightStraight />}
+          icon={
+            <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+              />
+            </svg>
+          }
+          iconSide="right"
+        >
+          Update payment method
+        </Button>
+
+        {error ? (
           <div
             css={{
-              marginTop: "20px",
-              textAlign: "right",
-              width: ddFormWidth,
-              [maxWidth.desktop]: {
-                width: "100%"
-              }
+              marginTop: `${space[9]}px`,
+              marginBottom: `${space[9]}px`
             }}
           >
-            {!isValidating && (
-              <>
-                <Button
-                  text="Update payment method"
-                  onClick={startDirectDebitUpdate}
-                  primary
-                  right
-                />
-                {error ? (
-                  <div
-                    css={{
-                      ...validationWarningCSS,
-                      marginTop: "5px"
-                    }}
-                  >
-                    {error}
-                  </div>
-                ) : (
-                  undefined
-                )}
-              </>
-            )}
+            <ErrorSummary message={error} />
           </div>
-        </div>
-        <DirectDebitLegal />
+        ) : (
+          undefined
+        )}
       </div>
     </div>
   );

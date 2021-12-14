@@ -10,13 +10,13 @@ export function getStripeKey(
   switch (country) {
     case "Australia":
       return isTestUser
-        ? window.guardian.stripeKeyAustralia?.uat
-        : window.guardian.stripeKeyAustralia?.default;
+        ? window.guardian?.stripeKeyAustralia?.uat
+        : window.guardian?.stripeKeyAustralia?.default;
 
     default:
       return isTestUser
-        ? window.guardian.stripeKeyDefaultCurrencies?.uat
-        : window.guardian.stripeKeyDefaultCurrencies?.default;
+        ? window.guardian?.stripeKeyDefaultCurrencies?.uat
+        : window.guardian?.stripeKeyDefaultCurrencies?.default;
   }
 }
 

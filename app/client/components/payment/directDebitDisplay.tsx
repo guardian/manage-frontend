@@ -102,6 +102,8 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
           fill={brand[400]}
           additionalCss={css`
             margin: auto 10px auto 0;
+            width: 47px;
+            height: 16px;
           `}
         />
         <span
