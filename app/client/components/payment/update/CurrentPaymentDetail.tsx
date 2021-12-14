@@ -146,9 +146,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                       inErrorState={hasPaymentFailure}
                       cssOverrides={css`
                         margin: 0;
-
                         justify-content: flex-end;
-
                         ${minWidth.tablet} {
                           justify-content: left;
                         }
@@ -188,13 +186,11 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             ${subscription.mandate ? "text-align: right;" : ""}
 
             ${minWidth.tablet} {
-              margin: ${space[6]}px 0 0 0;
               flex: 1;
               display: inline-block;
               flex-flow: column nowrap;
               padding: 0 0 0 ${space[5]}px;
               margin: 0;
-              padding: 0 0 0 ${space[5]}px;
               text-align: center;
               border-top: none;
             }

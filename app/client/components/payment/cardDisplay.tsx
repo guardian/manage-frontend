@@ -130,10 +130,7 @@ export const cardTypeToSVG = (
     }
   })();
 
-  if (backgroundImage) {
-    return backgroundImage;
-  }
-  return null;
+  return backgroundImage || null;
 };
 
 export const CardDisplay = (props: CardDisplayProps) => {
