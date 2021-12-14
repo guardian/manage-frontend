@@ -14,7 +14,7 @@ import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
-import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
+import { BackToHelpCentreLink } from "./BackToHelpCentreLink";
 import HelpCentreContactOptions from "./helpCentreContactOptions";
 import { h2Css } from "./helpCentreStyles";
 import {
@@ -101,7 +101,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
         ) : (
           <Loading />
         )}
-        <BackToHelpCentreButton />
+        <BackToHelpCentreLink />
       </div>
     </>
   );

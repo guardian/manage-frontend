@@ -1853,6 +1853,13 @@
   dependencies:
     "@guardian/src-helpers" "^2.8.2"
 
+"@guardian/src-link@^2.8.2":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@guardian/src-link/-/src-link-2.8.2.tgz#dad228a4dfc5c0a8e3a7ae48563a939a95d8794f"
+  integrity sha512-ZsSF/vMJj6IawWd1xLtyG7FQwp+bfrWakpA+szPjWWTY6pyd+XTwz4YQoPWDf+8uJcySDUKa7k8lhpo973raLA==
+  dependencies:
+    "@guardian/src-helpers" "^2.8.2"
+
 "@guardian/src-radio@^2.8.2":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@guardian/src-radio/-/src-radio-2.8.2.tgz#f096d430e2bccb3fb8d1f2fb0013dc734c11dc57"
