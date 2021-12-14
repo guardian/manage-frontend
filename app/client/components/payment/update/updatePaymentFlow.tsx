@@ -8,7 +8,7 @@ import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { Radio } from "@guardian/src-radio";
 import { Button } from "@guardian/src-button";
-import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+// import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import React from "react";
@@ -463,7 +463,16 @@ export class PaymentUpdaterStep extends React.Component<
               <Button
                 disabled
                 priority="secondary"
-                icon={<SvgArrowRightStraight />}
+                // icon={<SvgArrowRightStraight />}
+                icon={
+                  <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                    />
+                  </svg>
+                }
                 iconSide="right"
                 cssOverrides={css`
                   background-color: ${neutral[86]};
