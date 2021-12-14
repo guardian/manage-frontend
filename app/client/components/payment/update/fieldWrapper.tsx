@@ -92,15 +92,16 @@ export class FieldWrapper extends React.Component<
 
         <div
           css={{
-            border: `4px solid ${
-              this.state.error?.message ? error[400] : neutral[60]
+            border: `${
+              this.state.error?.message
+                ? "4px solid " + error[400]
+                : "2px solid " + neutral[60]
             }`,
             display: "block",
             fontWeight: 400,
-            height: "44px",
             marginTop: "3px",
             lineHeight: "20px",
-            padding: "8px",
+            padding: "10px",
             width: "100%",
             transition: "all .2s ease-in-out",
             "&:hover": {

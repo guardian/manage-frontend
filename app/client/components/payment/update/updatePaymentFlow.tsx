@@ -25,7 +25,6 @@ import { getNavItemFromFlowReferrer } from "../../nav/navConfig";
 import { SupportTheGuardianButton } from "../../supportTheGuardianButton";
 import { RouteableStepProps, WizardStep } from "../../wizardRouterAdapter";
 import { augmentPaymentFailureAlertText } from "../paymentFailureAlertIfApplicable";
-import { PayPalDisplay } from "../paypalDisplay";
 import { CardInputForm } from "./card/cardInputForm";
 import CurrentPaymentDetails from "./CurrentPaymentDetail";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
@@ -45,9 +44,9 @@ import { cardTypeToSVG } from "../cardDisplay";
 import ContactUs from "./ContactUs";
 
 export enum PaymentMethod {
-  card = "Card",
+  card = "Credit card / debit card",
   payPal = "PayPal",
-  dd = "Direct Debit",
+  dd = "Direct debit",
   resetRequired = "ResetRequired",
   free = "FREE",
   unknown = "Unknown"
@@ -169,7 +168,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
       <div
         css={css`
           display: none;
-          ${minWidth.mobile} {
+          ${minWidth.mobileMedium} {
             display: block;
             margin: auto;
           }
@@ -192,7 +191,7 @@ export const SelectPaymentMethod = (
 ) => (
   <form>
     <PaymentMethodRadioButton paymentMethod={PaymentMethod.card} {...props} />
-    {props.currentPaymentMethod === "DirectDebit" && (
+    {props.currentPaymentMethod === PaymentMethod.dd && (
       <PaymentMethodRadioButton paymentMethod={PaymentMethod.dd} {...props} />
     )}
   </form>
@@ -235,7 +234,7 @@ interface PaymentUpdaterStepState {
   newSubscriptionData?: WithSubscription[];
 }
 
-class PaymentUpdaterStep extends React.Component<
+export class PaymentUpdaterStep extends React.Component<
   PaymentUpdaterStepProps,
   PaymentUpdaterStepState
 > {
@@ -246,7 +245,10 @@ class PaymentUpdaterStep extends React.Component<
     executingPaymentUpdate: false,
     newPaymentMethodDetail: undefined,
     newSubscriptionData: undefined,
-    selectedPaymentMethod: PaymentMethod.unknown
+    selectedPaymentMethod:
+      this.currentPaymentMethod === PaymentMethod.dd
+        ? PaymentMethod.unknown
+        : PaymentMethod.card
   };
 
   private executePaymentUpdate = async (
@@ -397,100 +399,91 @@ class PaymentUpdaterStep extends React.Component<
   public render(): React.ReactNode {
     const innerContent = (
       <>
-        {this.props.productDetail.subscription.payPalEmail ? (
-          <>
-            <h2
-              css={css`
-                ${subHeadingCss}
-              `}
-            >
-              Payment method for{" "}
-              {this.props.routeableStepProps.productType.friendlyName}
-            </h2>
-            <PayPalDisplay
-              payPalId={this.props.productDetail.subscription.payPalEmail}
-              shouldIncludePrefixCopy
-            />
-          </>
-        ) : (
-          <>
-            <div css={{ minWidth: "260px" }}>
-              {this.props.productDetail.alertText && (
-                <ErrorSummary
-                  cssOverrides={css`
-                    margin-top: ${space[9]}px;
-                  `}
-                  message={augmentPaymentFailureAlertText(
-                    this.props.productDetail.alertText
-                  )}
-                />
-              )}
-              <h3
-                css={css`
-                  ${subHeadingCss}
+        <>
+          <div css={{ minWidth: "260px" }}>
+            {this.props.productDetail.alertText && (
+              <ErrorSummary
+                cssOverrides={css`
+                  margin-top: ${space[9]}px;
                 `}
-              >
-                Your current payment method
-              </h3>
-              <CurrentPaymentDetails {...this.props.productDetail} />
-            </div>
-
+                message={augmentPaymentFailureAlertText(
+                  this.props.productDetail.alertText
+                )}
+              />
+            )}
             <h3
               css={css`
-                ${subHeadingCss}
+                  ${subHeadingCss}
+                  margin-top: ${space[9]}px;
+                `}
+            >
+              Your current payment method
+            </h3>
+            <CurrentPaymentDetails {...this.props.productDetail} />
+            <p>
+              {this.props.productDetail.subscription.payPalEmail && (
+                <>
+                  To update your payment details, please login to your PayPal
+                  account. Alternatively, you can switch to a card based payment
+                  method below.
+                </>
+              )}
+            </p>
+          </div>
+
+          <h3
+            css={css`
+              ${subHeadingCss}
+            `}
+          >
+            {this.state.selectedPaymentMethod === PaymentMethod.unknown
+              ? "Choose your payment method"
+              : "Update your payment method"}
+          </h3>
+
+          <SelectPaymentMethod
+            updatePaymentMethod={this.updatePaymentMethod}
+            value={this.state.selectedPaymentMethod}
+            currentPaymentMethod={this.currentPaymentMethod}
+          />
+
+          {this.getInputForm(
+            this.props.productDetail.subscription,
+            this.props.productDetail.isTestUser
+          )}
+
+          {/* Dummy button when user has not selected a payment method */
+          this.state.selectedPaymentMethod === PaymentMethod.unknown ? (
+            <div
+              css={css`
+                margin-top: ${space[9]}px;
+                margin-bottom: ${space[9]}px;
               `}
             >
-              {this.state.selectedPaymentMethod === PaymentMethod.unknown
-                ? "Choose your payment method"
-                : "Update your payment method"}
-            </h3>
+              <Button
+                disabled
+                priority="secondary"
+                icon={<SvgArrowRightStraight />}
+                iconSide="right"
+                cssOverrides={css`
+                  background-color: ${neutral[86]};
+                  color: ${neutral[46]};
 
-            <SelectPaymentMethod
-              updatePaymentMethod={this.updatePaymentMethod}
-              value={this.state.selectedPaymentMethod}
-              currentPaymentMethod={
-                this.props.productDetail.subscription.paymentMethod
-              }
-            />
-
-            {this.getInputForm(
-              this.props.productDetail.subscription,
-              this.props.productDetail.isTestUser
-            )}
-
-            {/* Dummy button when user has not selected a payment method */
-            this.state.selectedPaymentMethod === PaymentMethod.unknown ? (
-              <div
-                css={css`
-                  margin-top: ${space[9]}px;
-                  margin-bottom: ${space[9]}px;
-                `}
-              >
-                <Button
-                  disabled
-                  priority="secondary"
-                  icon={<SvgArrowRightStraight />}
-                  iconSide="right"
-                  cssOverrides={css`
+                  :hover {
                     background-color: ${neutral[86]};
                     color: ${neutral[46]};
+                  }
 
-                    :hover {
-                      background-color: ${neutral[86]};
-                      color: ${neutral[46]};
-                    }
+                  cursor: not-allowed;
+                `}
+              >
+                Update payment method
+              </Button>
+            </div>
+          ) : null}
 
-                    cursor: not-allowed;
-                  `}
-                >
-                  Update payment method
-                </Button>
-              </div>
-            ) : null}
-
-            <ContactUs />
-          </>
-        )}
+          <ContactUs />
+        </>
         <div css={{ height: "10px" }} />
       </>
     );

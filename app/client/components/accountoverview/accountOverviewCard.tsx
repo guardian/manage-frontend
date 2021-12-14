@@ -408,7 +408,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   )}
                 </li>
               </ul>
-              {!props.productDetail.subscription.payPalEmail && !isGifted && (
+              {!isGifted && (
                 <div
                   css={css`
                     margin-top: auto;

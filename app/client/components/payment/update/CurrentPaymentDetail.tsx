@@ -10,10 +10,10 @@ import {
   DirectDebitDisplay,
   sanitiseAccountNumber
 } from "../directDebitDisplay";
-import { PayPalDisplay } from "../paypalDisplay";
-import { SepaDisplay } from "../sepaDisplay";
+import { getObfuscatedPayPalId } from "../paypalDisplay";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { textSans } from "@guardian/src-foundations/typography";
+import { PaypalLogo } from "../paypalLogo";
 
 export function cardExpired(year: number, month: number) {
   const expiryTimestamp = new Date(year, month);
@@ -123,9 +123,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
       >
         <div
           css={css`
-            padding-bottom: ${subscription.card || subscription.mandate
-              ? space[3]
-              : 0}px;
+            padding-bottom: ${space[3]}px;
+
             ${minWidth.tablet} {
               margin: ${space[6]}px 0 0 0;
               padding: ${space[6]}px 0 0 0;
@@ -157,15 +156,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
                       {...subscription.card}
                     />
                   )}
-                  {subscription.payPalEmail && (
-                    <PayPalDisplay payPalId={subscription.payPalEmail} />
-                  )}
-                  {subscription.sepaMandate && (
-                    <SepaDisplay
-                      accountName={subscription.sepaMandate.accountName}
-                      iban={subscription.sepaMandate.iban}
-                    />
-                  )}
+                  {subscription.payPalEmail && <PaypalLogo />}
+                  {subscription.sepaMandate && <div>SEPA</div>}
                   {subscription.mandate && (
                     <span
                       css={css`
@@ -189,78 +181,74 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             </>
           )}
         </div>
-        {subscription.card && (
-          <div
-            css={css`
-              padding: ${space[3]}px 0 0 0;
-              border-top: 1px solid ${neutral[86]};
-              ${minWidth.tablet} {
-                margin: ${space[6]}px 0 0 0;
-                flex: 1;
-                display: inline-block;
-                flex-flow: column nowrap;
-                padding: 0 0 0 ${space[5]}px;
-                margin: 0;
-                padding: 0 0 0 ${space[5]}px;
-                border-top: none;
-              }
-              ul:last-of-type {
-                margin-bottom: ${space[5]}px;
-              }
-            `}
-          >
-            {subscription.card.expiry && (
-              <>
-                <span
-                  css={css`
-                    ${keyCss};
-                    ${minWidth.tablet} {
-                      text-align: right;
-                    }
-                  `}
-                >
-                  {cardExpired(
-                    subscription.card.expiry.year,
-                    subscription.card.expiry.month
-                  ) ? (
-                    <InlineError>Expired</InlineError>
-                  ) : (
-                    <>Expiry</>
-                  )}
-                </span>
-                <span
-                  css={css`
-                    ${valueCss};
-                    color: ${hasPaymentFailure ? news[400] : neutral[7]};
-                  `}
-                >
-                  {subscription.card.expiry.month} /{" "}
-                  {subscription.card.expiry.year}
-                </span>
-              </>
-            )}
-          </div>
-        )}
+        <div
+          css={css`
+            padding: ${space[3]}px 0 0 0;
+            border-top: 1px solid ${neutral[86]};
+            ${subscription.mandate ? "text-align: right;" : ""}
 
-        {subscription.mandate && (
-          <div
-            css={css`
-              padding: ${space[3]}px 0 0 0;
-              border-top: 1px solid ${neutral[86]};
+            ${minWidth.tablet} {
+              margin: ${space[6]}px 0 0 0;
+              flex: 1;
+              display: inline-block;
+              flex-flow: column nowrap;
+              padding: 0 0 0 ${space[5]}px;
+              margin: 0;
+              padding: 0 0 0 ${space[5]}px;
+              text-align: center;
+              border-top: none;
+            }
+            ul:last-of-type {
+              margin-bottom: ${space[5]}px;
+            }
+          `}
+        >
+          {subscription.card && subscription.card.expiry && (
+            <>
+              <span
+                css={css`
+                  ${keyCss};
+                  ${minWidth.tablet} {
+                    text-align: right;
+                  }
+                `}
+              >
+                {cardExpired(
+                  subscription.card.expiry.year,
+                  subscription.card.expiry.month
+                ) ? (
+                  <InlineError>Expired</InlineError>
+                ) : (
+                  <>Expiry</>
+                )}
+              </span>
+              <span
+                css={css`
+                  ${valueCss};
+                  color: ${hasPaymentFailure ? news[400] : neutral[7]};
+                `}
+              >
+                {subscription.card.expiry.month} /{" "}
+                {subscription.card.expiry.year}
+              </span>
+            </>
+          )}
 
-              ${minWidth.tablet} {
-                flex: 1;
-                display: inline-block;
-                flex-flow: column nowrap;
-                margin: 0;
-                padding: 0 0 0 ${space[5]}px;
-                border-top: none;
-              }
-              ul:last-of-type {
-                margin-bottom: ${space[5]}px;
-              }
-            `}
-          >
+          {subscription.sepaMandate && (
+            <span
+              css={css`
+                ${valueCss};
+              `}
+            >
+              <div>
+                {subscription.sepaMandate.accountName}
+                <br />
+                {subscription.sepaMandate.iban}
+              </div>
+            </span>
+          )}
+
+          {subscription.mandate && (
             <span
               css={css`
                 ${valueCss};
@@ -269,8 +257,18 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             >
               <DirectDebitDisplay {...subscription.mandate} onlySortCode />
             </span>
-          </div>
-        )}
+          )}
+
+          {subscription.payPalEmail && (
+            <span
+              css={css`
+                ${valueCss};
+              `}
+            >
+              {getObfuscatedPayPalId(subscription.payPalEmail)}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

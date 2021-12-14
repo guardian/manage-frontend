@@ -6,8 +6,8 @@ import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { CardDisplay } from "./cardDisplay";
 import { DirectDebitDisplay } from "./directDebitDisplay";
 import { NewPaymentPriceAlert, NextPaymentDetails } from "./nextPaymentDetails";
-import { PayPalDisplay } from "./paypalDisplay";
 import { SepaDisplay } from "./sepaDisplay";
+import { PaypalLogo } from "./paypalLogo";
 
 interface PaymentDetailsTableProps {
   productDetail: ProductDetail;
@@ -57,12 +57,7 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
                 {...props.productDetail.subscription.card}
               />
             )}
-            {props.productDetail.subscription.payPalEmail && (
-              <PayPalDisplay
-                payPalId={props.productDetail.subscription.payPalEmail}
-                shouldIncludePrefixCopy
-              />
-            )}
+            {props.productDetail.subscription.payPalEmail && <PaypalLogo />}
             {props.productDetail.subscription.mandate && (
               <DirectDebitDisplay
                 inErrorState={!!props.productDetail.alertText}
