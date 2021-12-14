@@ -5,10 +5,6 @@ import {
   SelectPaymentMethod
 } from "../../../components/payment/update/updatePaymentFlow";
 
-jest.mock("@reach/router", () => ({
-  navigate: jest.fn()
-}));
-
 describe("updatePaymentFlow.tsx", () => {
   it("Shows only card when sub/crontrib is already using card", () => {
     const { getByText, queryByText } = render(
