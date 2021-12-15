@@ -1,7 +1,6 @@
 import { css } from "@emotion/core";
-import { brand, neutral, space, text } from "@guardian/src-foundations";
+import { neutral, space, text } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import { Link } from "@reach/router";
 import React, { ReactNode, useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { StartLiveChatButton } from "../liveChat/liveChat";
@@ -152,10 +151,6 @@ const emailAndLiveChatPCss = css`
   margin-bottom: ${space[9]}px !important;
 `;
 
-const emailAndLiveChatLinkCss = css`
-  color: ${brand[500]};
-`;
-
 const emailAndLiveChatButtonCss = css`
   margin-bottom: ${space[5]}px;
   margin-top: ${space[1]}px;
@@ -181,13 +176,6 @@ export const HelpCentreEmailAndLiveChat = () => {
           subtitle="Send a message to one of our customer service agents."
         >
           <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
-          <p>
-            Use our{" "}
-            <Link to="/help-centre/contact-us/" css={emailAndLiveChatLinkCss}>
-              contact form
-            </Link>{" "}
-            to send us a message.
-          </p>
         </HelpCentreContactBox>
         <HelpCentreContactBox
           title="Chat with us"
