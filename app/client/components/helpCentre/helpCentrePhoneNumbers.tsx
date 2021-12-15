@@ -70,6 +70,9 @@ export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
         Speak with one of our customer service agents.
       </p>
     </div>
-    <CallCentreEmailAndNumbers hideEmailAddress={true} />
+    <CallCentreEmailAndNumbers
+      hideEmailAddress={true}
+      compactLayout={props.compactLayout}
+    />
   </>
 );
