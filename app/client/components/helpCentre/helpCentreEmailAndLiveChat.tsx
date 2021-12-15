@@ -26,42 +26,42 @@ const contactBoxContainerCss = css`
   }
 `;
 
-const contactBoxH2Css = (compactLayout: boolean = false) => css`
+const contactBoxHeadingCss = css`
   ${textSans.large({ fontWeight: "bold" })};
   color: ${neutral[20]};
   position: relative;
   margin: 0;
   padding: 18px 0 18px 60px;
-  ${!compactLayout &&
-    `
-    ${minWidth.desktop} {
-      padding: 22px 0 22px 64px;
-    }
-  `}
 `;
 
-const contactBoxIconCss = (compactLayout: boolean = false) => css`
+const contactBoxHeadingWideCss = css`
+  ${minWidth.desktop} {
+    padding: 22px 0 22px 64px;
+  }
+`;
+
+const contactBoxIconCss = css`
   position: absolute;
   top: ${space[3]}px;
   left: ${space[3]}px;
-  ${!compactLayout &&
-    `
-    ${minWidth.desktop} {
-      top: ${space[4]}px;
-      left: ${space[4]}px;
-    }
-  `}
 `;
 
-const contactBoxSubtitleCss = (compactLayout: boolean = false) => css`
+const contactBoxIconWideCss = css`
+  ${minWidth.desktop} {
+    top: ${space[4]}px;
+    left: ${space[4]}px;
+  }
+`;
+
+const contactBoxSubtitleCss = css`
   display: none;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
-  ${!compactLayout &&
-    `
-    ${minWidth.wide} {
-      display: block;
-    }
-  `}
+`;
+
+const contactBoxSubtitleWideCss = css`
+  ${minWidth.wide} {
+    display: block;
+  }
 `;
 
 const contactBoxSubtitleWarningCss = css`
@@ -72,10 +72,7 @@ const contactBoxSubtitleWarningCss = css`
   padding-left: ${space[5] + space[2]}px;
 `;
 
-const contactBoxDetailsCss = (
-  includeTopBorder: boolean = true,
-  compactLayout: boolean = false
-) => css`
+const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
   border-top: ${includeTopBorder ? `1px solid ${neutral[86]}` : "0"};
   padding: ${space[3]}px;
   flex-grow: 1;
@@ -86,21 +83,31 @@ const contactBoxDetailsCss = (
   & p {
     margin-bottom: 0;
   }
-  ${!compactLayout &&
-    `
-    ${minWidth.desktop} {
-      padding: ${space[3]}px 0 0;
-      margin: 0 ${space[4]}px ${space[4]}px;
-    }
-  `}
+`;
+
+const contactBoxDetailsWideCss = css`
+  ${minWidth.desktop} {
+    padding: ${space[3]}px 0 0;
+    margin: 0 ${space[4]}px ${space[4]}px;
+  }
 `;
 
 const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
   return (
     <div css={contactBoxContainerCss}>
       <div>
-        <h2 css={contactBoxH2Css(props.compactLayout)}>
-          <i css={contactBoxIconCss(props.compactLayout)}>
+        <h2
+          css={[
+            contactBoxHeadingCss,
+            !props.compactLayout && contactBoxHeadingWideCss
+          ]}
+        >
+          <i
+            css={[
+              contactBoxIconCss,
+              !props.compactLayout && contactBoxIconWideCss
+            ]}
+          >
             {getHelpSectionIcon(props.iconId)}
           </i>
           {props.title}
@@ -109,7 +116,10 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
           css={
             props.subTitleIsWarning
               ? contactBoxSubtitleWarningCss
-              : contactBoxSubtitleCss(props.compactLayout)
+              : [
+                  contactBoxSubtitleCss,
+                  !props.compactLayout && contactBoxSubtitleWideCss
+                ]
           }
         >
           {props.subTitleIsWarning && (
@@ -127,10 +137,10 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
         </p>
       </div>
       <div
-        css={contactBoxDetailsCss(
-          !props.subTitleIsWarning,
-          props.compactLayout
-        )}
+        css={[
+          contactBoxDetailsCss(!props.subTitleIsWarning),
+          !props.compactLayout && contactBoxDetailsWideCss
+        ]}
       >
         {props.children}
       </div>
