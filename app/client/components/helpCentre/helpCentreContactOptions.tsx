@@ -8,7 +8,7 @@ import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { isLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
 import {
   LiveChatPrivacyNotice,
-  LiveChatPrivacyNoticeLink
+  LiveChatPrivacyNoticeLink,
 } from "../liveChat/liveChatPrivacyNotice";
 import { HelpCentreEmailAndLiveChat } from "./helpCentreEmailAndLiveChat";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
@@ -71,14 +71,14 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
           <p
             css={[
               emailAndLiveChatSubheadingCss,
-              !props.compactLayout && emailAndLiveChatSubheadingWideCss
+              !props.compactLayout && emailAndLiveChatSubheadingWideCss,
             ]}
           >
             Get in touch with one of our customer service agents.
           </p>
           <LiveChatPrivacyNoticeLink />
           <HelpCentreEmailAndLiveChat compactLayout={props.compactLayout} />
-          <HelpCentrePhoneNumbers />
+          <HelpCentrePhoneNumbers compactLayout={props.compactLayout} />
           <LiveChatPrivacyNotice />
         </>
       ) : (
