@@ -148,17 +148,9 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
   );
 };
 
-const emailAndLiveChatSubheadingCss = css`
-  ${textSans.medium()};
-  margin-bottom: ${space[1]}px;
-  max-width: 320px;
-  ${minWidth.tablet} {
-    max-width: none;
-  }
-  ${minWidth.desktop} {
-    display: none;
-  }
-`;
+interface HelpCentreEmailAndLiveChatProps {
+  compactLayout?: boolean;
+}
 
 const emailAndLiveChatFlexContainerCss = css`
   display: flex;
@@ -185,13 +177,9 @@ const emailAndLiveChatButtonCss = css`
   }
 `;
 
-export const EmailAndLiveChatSubHeading = () => (
-  <p css={emailAndLiveChatSubheadingCss}>
-    Get in touch with one of our customer service agents.
-  </p>
-);
-
-export const HelpCentreEmailAndLiveChat = () => {
+export const HelpCentreEmailAndLiveChat = (
+  props: HelpCentreEmailAndLiveChatProps
+) => {
   const [isLiveChatAvailable, setIsLiveChatAvailable] = useState<boolean>(true);
   return (
     <>
@@ -205,6 +193,7 @@ export const HelpCentreEmailAndLiveChat = () => {
           }
           subTitleIsWarning={!isLiveChatAvailable}
           iconId="chat-with-us"
+          compactLayout={props.compactLayout}
         >
           {isLiveChatAvailable && (
             <StartLiveChatButton
@@ -217,6 +206,7 @@ export const HelpCentreEmailAndLiveChat = () => {
           iconId="email-us"
           title="Email us"
           subtitle="Send a message to one of our customer service agents."
+          compactLayout={props.compactLayout}
         >
           <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
         </HelpCentreContactBox>

@@ -79,7 +79,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
             />
             <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
             {isArticleLiveChatFeatureEnabled() ? (
-              <HelpCentreContactOptions />
+              <HelpCentreContactOptions compactLayout={true} />
             ) : (
               <>
                 <h2 css={h2Css}>Still can’t find what you’re looking for?</h2>

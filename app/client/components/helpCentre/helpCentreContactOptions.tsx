@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
-import { headline } from "@guardian/src-foundations/typography";
+import { headline, textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
@@ -10,11 +10,12 @@ import {
   LiveChatPrivacyNotice,
   LiveChatPrivacyNoticeLink
 } from "../liveChat/liveChatPrivacyNotice";
-import {
-  EmailAndLiveChatSubHeading,
-  HelpCentreEmailAndLiveChat
-} from "./helpCentreEmailAndLiveChat";
+import { HelpCentreEmailAndLiveChat } from "./helpCentreEmailAndLiveChat";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
+
+interface HelpCentreContactOptionsProps {
+  compactLayout?: boolean;
+}
 
 const baseSubtitleStyles = css`
   border-top: 1px solid ${neutral["86"]};
@@ -40,7 +41,22 @@ const liveChatSubtitleStyles = css`
   }
 `;
 
-const HelpCentreContactOptions = () => {
+const emailAndLiveChatSubheadingCss = css`
+  ${textSans.medium()};
+  margin-bottom: ${space[1]}px;
+  max-width: 320px;
+  ${minWidth.tablet} {
+    max-width: none;
+  }
+`;
+
+const emailAndLiveChatSubheadingWideCss = css`
+  ${minWidth.desktop} {
+    display: none;
+  }
+`;
+
+const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
   return (
     <>
       <h2
@@ -52,16 +68,22 @@ const HelpCentreContactOptions = () => {
       </h2>
       {isLiveChatFeatureEnabled() ? (
         <>
-          <EmailAndLiveChatSubHeading />
+          <p
+            css={[
+              emailAndLiveChatSubheadingCss,
+              !props.compactLayout && emailAndLiveChatSubheadingWideCss
+            ]}
+          >
+            Get in touch with one of our customer service agents.
+          </p>
           <LiveChatPrivacyNoticeLink />
-          <HelpCentreEmailAndLiveChat />
+          <HelpCentreEmailAndLiveChat compactLayout={props.compactLayout} />
           <HelpCentrePhoneNumbers />
+          <LiveChatPrivacyNotice />
         </>
       ) : (
         <CallCentreEmailAndNumbers />
       )}
-
-      {isLiveChatFeatureEnabled() && <LiveChatPrivacyNotice />}
     </>
   );
 };
