@@ -22,7 +22,6 @@ import {
   StripePaymentMethod
 } from "./newCardPaymentMethodDetail";
 import Recaptcha from "./Recaptcha";
-// import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
 import ErrorSummary from "../ErrorSummary";
 export interface StripeSetupIntentDetails {

@@ -201,7 +201,7 @@ export const NewspaperVoucherPaypal: ProductDetail = {
     payPalEmail: "sb-ltpuy8454870@personal.example.com",
     contactId: "0039E00001KA26BQAT",
     deliveryAddress: {
-      addressLine1: "71 Valnay Street",
+      addressLine1: "11 Valnay Street",
       addressLine2: "",
       town: "London",
       postcode: "SW17 8PS",
@@ -317,6 +317,67 @@ export const guardianWeeklySubscriptionCard: Subscription = {
   readerType: "Direct",
   accountId: "8ad0965d7d585497017d6ce786026089",
   deliveryAddressChangeEffectiveDate: "2021-12-10"
+};
+
+export const guardianWeeklySubscriptionAustralia: Subscription = {
+  paymentMethod: "Card",
+  card: {
+    last4: "4242",
+    expiry: {
+      month: 3,
+      year: 2033
+    },
+    type: "Visa",
+    stripePublicKeyForUpdate: "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f",
+    email: "jon.flynn+code@guardian.co.uk"
+  },
+  contactId: "0039E00001KA26BQAT",
+  deliveryAddress: {
+    addressLine1: "11 Valnay Street",
+    addressLine2: "",
+    town: "Canberra",
+    region: "ACT",
+    postcode: "2601",
+    country: "Australia"
+  },
+  safeToUpdatePaymentMethod: true,
+  start: "2021-12-24",
+  end: "2022-12-15",
+  nextPaymentPrice: 3250,
+  nextPaymentDate: "2021-12-24",
+  lastPaymentDate: null,
+  chargedThroughDate: null,
+  renewalDate: "2022-12-15",
+  anniversaryDate: "2022-12-24",
+  cancelledAt: false,
+  subscriberId: "A-S00293857",
+  subscriptionId: "A-S00293857",
+  trialLength: 9,
+  autoRenew: true,
+  plan: {
+    name: "Guardian Weekly - Domestic",
+    amount: 3250,
+    currency: "$",
+    currencyISO: "AUD",
+    interval: "month"
+  },
+  currentPlans: [],
+  futurePlans: [
+    {
+      name: null,
+      start: "2021-12-24",
+      end: "2022-12-15",
+      shouldBeVisible: true,
+      chargedThrough: null,
+      amount: 3250,
+      currency: "$",
+      currencyISO: "AUD",
+      interval: "month"
+    }
+  ],
+  readerType: "Direct",
+  accountId: "8ad0965d7dbcc507017dbe20afd33ac4",
+  deliveryAddressChangeEffectiveDate: "2021-12-24"
 };
 
 export const digitalSubscriptionDD: Subscription = {

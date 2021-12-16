@@ -16,7 +16,7 @@ const hrefStyle = {
   ":visited": { color: "inherit" }
 };
 
-interface RecaptchaProps {
+export interface RecaptchaProps {
   setStripeSetupIntent: (_: null) => void;
   setRecaptchaToken: (_: string) => void;
 }
