@@ -1,8 +1,9 @@
 import { css } from "@emotion/core";
+import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import React from "react";
+import React, { useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { isLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
@@ -56,7 +57,20 @@ const emailAndLiveChatSubheadingWideCss = css`
   }
 `;
 
+const contactButtonCss = css`
+  margin-top: ${space[4]}px;
+  margin-bottom: ${space[9]}px;
+  ${minWidth.desktop} {
+    margin-top: ${space[6]}px;
+    margin-bottom: ${space[12]}px;
+  }
+`;
+
 const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
+  const [contactOptionsVisible, setContactOptionsVisible] = useState(
+    !props.compactLayout
+  );
+
   return (
     <>
       <h2
@@ -66,6 +80,7 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
       >
         Still can’t find what you’re looking for?
       </h2>
+
       {isLiveChatFeatureEnabled() ? (
         <>
           <p
@@ -76,10 +91,30 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
           >
             Get in touch with one of our customer service agents.
           </p>
-          <LiveChatPrivacyNoticeLink />
-          <HelpCentreEmailAndLiveChat compactLayout={props.compactLayout} />
-          <HelpCentrePhoneNumbers compactLayout={props.compactLayout} />
-          <LiveChatPrivacyNotice />
+
+          <div aria-live="polite">
+            {contactOptionsVisible && (
+              <>
+                <LiveChatPrivacyNoticeLink />
+                <HelpCentreEmailAndLiveChat
+                  compactLayout={props.compactLayout}
+                />
+                <HelpCentrePhoneNumbers compactLayout={props.compactLayout} />
+                <LiveChatPrivacyNotice />
+              </>
+            )}
+
+            {!contactOptionsVisible && (
+              <div css={contactButtonCss}>
+                <Button
+                  priority="secondary"
+                  onClick={() => setContactOptionsVisible(true)}
+                >
+                  Contact Us
+                </Button>
+              </div>
+            )}
+          </div>
         </>
       ) : (
         <CallCentreEmailAndNumbers />
