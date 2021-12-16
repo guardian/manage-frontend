@@ -51,7 +51,11 @@ const keyCss = css`
   padding: 0 ${space[2]}px 0 0;
   display: inline-block;
   vertical-align: top;
-  width: 14ch;
+  width: 50%;
+
+  ${minWidth.tablet} {
+    width: 14ch;
+  }
 `;
 
 const valueCss = css`
@@ -59,7 +63,11 @@ const valueCss = css`
   padding: 0;
   display: inline-block;
   vertical-align: top;
-  width: calc(100% - 15ch);
+  width: 50%;
+
+  ${minWidth.tablet} {
+    width: calc(100% - 15ch);
+  }
 `;
 
 function getPaymentInterval(interval: string) {
@@ -127,7 +135,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
         </div>
         <div
           css={css`
-            padding: ${space[5]}px ${space[3]}px;
+            padding: ${space[3]}px;
             ${minWidth.tablet} {
               padding: ${space[5]}px;
               display: flex;
@@ -137,13 +145,9 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
           <div
             css={css`
               ${minWidth.tablet} {
-                margin: ${space[6]}px 0 0 0;
-                padding: ${space[6]}px 0 0 0;
                 flex: 1;
                 display: flex;
                 flex-flow: column nowrap;
-                padding: 0;
-                margin: 0;
               }
             `}
           >
@@ -157,12 +161,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
                         inErrorState={false}
                         cssOverrides={css`
                           margin: 0;
-
-                          justify-content: flex-end;
-
-                          ${minWidth.tablet} {
-                            justify-content: left;
-                          }
                         `}
                         {...subscription.card}
                       />
@@ -193,13 +191,11 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
           {subscription.card && (
             <div
               css={css`
-                padding: ${space[6]}px 0 0 0;
+                padding: ${space[3]}px 0 0 0;
                 ${minWidth.tablet} {
-                  margin: ${space[6]}px 0 0 0;
                   flex: 1;
                   display: inline-block;
                   flex-flow: column nowrap;
-                  padding: 0 0 0 ${space[5]}px;
                   margin: 0;
                   padding: 0 0 0 ${space[5]}px;
                 }
@@ -238,7 +234,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
         {subscription.nextPaymentPrice && subscription.nextPaymentDate && (
           <div
             css={css`
-              padding: ${space[5]}px ${space[3]}px;
+              padding: ${space[3]}px;
               border-top: 1px solid ${neutral[86]};
               ${minWidth.tablet} {
                 padding: ${space[5]}px;
@@ -276,7 +272,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 
             <div
               css={css`
-                padding: ${space[6]}px 0 0 0;
+                padding: ${space[3]}px 0 0 0;
                 ${minWidth.tablet} {
                   margin: ${space[6]}px 0 0 0;
                   flex: 1;
