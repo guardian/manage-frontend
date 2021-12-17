@@ -1,4 +1,3 @@
-import { Button } from "@guardian/src-button";
 import { Radio } from "@guardian/src-radio";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
@@ -12,7 +11,7 @@ const guardianWeeklyProblemArr: DeliveryProblemType[] = [
   { label: "Damaged paper", messageIsMandatory: true },
   { label: "Delivered despite holiday", messageIsMandatory: false },
   { label: "No delivery", messageIsMandatory: false },
-  { label: "Other", messageIsMandatory: true }
+  { label: "Other", messageIsMandatory: true },
 ];
 
 describe("DeliveryRecordsProblemForm", () => {
@@ -32,12 +31,9 @@ describe("DeliveryRecordsProblemForm", () => {
     );
 
     for (let a = 0; a < guardianWeeklyProblemArr.length; a++) {
-      expect(
-        wrapper
-          .find(Radio)
-          .at(a)
-          .text()
-      ).toEqual(guardianWeeklyProblemArr[a].label);
+      expect(wrapper.find(Radio).at(a).text()).toEqual(
+        guardianWeeklyProblemArr[a].label
+      );
     }
   });
 
@@ -56,18 +52,12 @@ describe("DeliveryRecordsProblemForm", () => {
       />
     );
 
-    wrapper
-      .find(Button)
-      .at(0)
-      .simulate("click");
+    wrapper.find("button").at(0).simulate("click");
 
     wrapper.update();
 
-    expect(
-      wrapper
-        .find("span")
-        .at(0)
-        .text()
-    ).toEqual("Please select the type of problem");
+    expect(wrapper.find("span").at(0).text()).toEqual(
+      "Please select the type of problem"
+    );
   });
 });

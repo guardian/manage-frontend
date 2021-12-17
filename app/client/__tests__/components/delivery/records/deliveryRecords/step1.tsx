@@ -1,11 +1,10 @@
-import { Button } from "@guardian/src-button";
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
 import DeliveryRecords, {
-  DeliveryRecordsFC
+  DeliveryRecordsFC,
 } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
 import { hasDeliveryRecordsFlow } from "../../../../../productUtils";
@@ -50,8 +49,8 @@ const deliveryRecordsResponse = {
       credit: {
         amount: -2.89,
         invoiceDate: "2020-03-06",
-        isActioned: true
-      }
+        isActioned: true,
+      },
     },
     {
       id: "b0A0A000000A000AAA",
@@ -71,9 +70,9 @@ const deliveryRecordsResponse = {
       credit: {
         amount: -2.89,
         invoiceDate: "2020-03-06",
-        isActioned: true
-      }
-    }
+        isActioned: true,
+      },
+    },
   ],
   deliveryProblemMap: {
     "0000A00000AaAAAAA0": {
@@ -82,16 +81,16 @@ const deliveryRecordsResponse = {
       subject:
         "[Self Service] Delivery Problem : Damaged Paper (Guardian Weekly - A-S0000000000)",
       description: "Hi there",
-      problemType: "Damaged Paper"
-    }
+      problemType: "Damaged Paper",
+    },
   },
   contactPhoneNumbers: {
     Id: "000000000000000AAA",
     Phone: null,
     HomePhone: null,
     MobilePhone: null,
-    OtherPhone: null
-  }
+    OtherPhone: null,
+  },
 };
 
 const apiMeMmaResponse = [
@@ -108,8 +107,8 @@ const apiMeMmaResponse = [
         {
           shouldBeVisible: true,
           name: null,
-          currency: "£"
-        }
+          currency: "£",
+        },
       ],
       renewalDate: "2020-11-26",
       safeToUpdatePaymentMethod: false,
@@ -120,21 +119,21 @@ const apiMeMmaResponse = [
         addressLine2: "Kings cross",
         town: "London",
         postcode: "N1 9GU",
-        country: "GB"
+        country: "GB",
       },
       autoRenew: true,
       end: "2020-03-06",
       subscriptionId: "A-S0000000000",
-      nextPaymentPrice: 3750
+      nextPaymentPrice: 3750,
     },
-    isTestUser: false
-  }
+    isTestUser: false,
+  },
 ];
 
 const guardianWeeklyProblemArr = ["Damaged paper", "No delivery", "Other"];
 
 const promisifyNextNTicks = (n: number) =>
-  new Promise(resolve => nextNTicks(n, resolve));
+  new Promise((resolve) => nextNTicks(n, resolve));
 
 const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
   process.nextTick(() => {
@@ -149,19 +148,19 @@ const nextNTicks = (n: number, callback: (value?: unknown) => void) => {
 describe("DeliveryRecords", () => {
   beforeEach(() => {
     // tslint:disable-next-line: no-object-mutation
-    global.fetch = jest.fn().mockImplementation(url => {
-      return new Promise(resolve => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      return new Promise((resolve) => {
         resolve({
           ok: true,
           status: 200,
           headers: {
-            get: () => "pass"
+            get: () => "pass",
           },
           json: () => {
             return url.includes("/api/me/mma")
               ? apiMeMmaResponse
               : deliveryRecordsResponse;
-          }
+          },
         });
       });
     });
@@ -180,12 +179,7 @@ describe("DeliveryRecords", () => {
 
       wrapper.update();
 
-      expect(
-        wrapper
-          .find("h1")
-          .at(0)
-          .text()
-      ).toEqual("Delivery history");
+      expect(wrapper.find("h1").at(0).text()).toEqual("Delivery history");
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
@@ -205,11 +199,7 @@ describe("DeliveryRecords", () => {
       wrapper.update();
 
       expect(
-        wrapper
-          .find(DeliveryRecordsFC)
-          .find(Button)
-          .at(0)
-          .text()
+        wrapper.find(DeliveryRecordsFC).find("button").at(0).text()
       ).toEqual("Report a problem");
 
       expect(wrapper.find(DeliveryRecordCard)).toHaveLength(2);
@@ -231,11 +221,7 @@ describe("DeliveryRecords", () => {
 
       wrapper.update();
 
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(Button)
-        .at(0)
-        .simulate("click");
+      wrapper.find(DeliveryRecordsFC).find("button").at(0).simulate("click");
 
       const problemForm = wrapper
         .find(DeliveryRecordsFC)
@@ -246,28 +232,16 @@ describe("DeliveryRecords", () => {
       );
 
       guardianWeeklyProblemArr.map((problemCopy, index) =>
-        expect(
-          problemForm
-            .find("li")
-            .at(index)
-            .text()
-        ).toEqual(problemCopy)
+        expect(problemForm.find("li").at(index).text()).toEqual(problemCopy)
       );
 
-      expect(
-        problemForm
-          .find("li")
-          .find("label")
-          .at(0)
-          .text()
-      ).toEqual("Damaged paper");
+      expect(problemForm.find("li").find("label").at(0).text()).toEqual(
+        "Damaged paper"
+      );
 
-      expect(
-        problemForm
-          .find("button")
-          .at(0)
-          .text()
-      ).toEqual("Continue to Step 2 & 3");
+      expect(problemForm.find("button").at(0).text()).toEqual(
+        "Continue to Step 2 & 3"
+      );
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
@@ -286,11 +260,7 @@ describe("DeliveryRecords", () => {
 
       wrapper.update();
 
-      wrapper
-        .find(DeliveryRecordsFC)
-        .find(Button)
-        .at(0)
-        .simulate("click");
+      wrapper.find(DeliveryRecordsFC).find("button").at(0).simulate("click");
 
       const problemForm = wrapper
         .find(DeliveryRecordsFC)
@@ -299,12 +269,9 @@ describe("DeliveryRecords", () => {
       const continueToStep2Btn = problemForm.find("button").at(0);
       continueToStep2Btn.simulate("submit");
 
-      expect(
-        wrapper
-          .find("form")
-          .find("span")
-          .text()
-      ).toEqual("Please select the type of problem");
+      expect(wrapper.find("form").find("span").text()).toEqual(
+        "Please select the type of problem"
+      );
     } else {
       throw new Error("Guardian weekly missing DeliveryRecordsProperties");
     }
