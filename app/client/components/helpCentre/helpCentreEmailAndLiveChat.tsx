@@ -21,13 +21,7 @@ const contactBoxContainerCss = css`
   flex-direction: column;
   border: 1px solid ${neutral[86]};
   ${textSans.medium()};
-  ${minWidth.desktop} {
-    width: calc(50% - ${space[5] / 2}px);
-  }
-`;
-
-const contactBoxContainerWideCss = css`
-  ${minWidth.tablet} {
+  ${minWidth.phablet} {
     width: calc(50% - ${space[5] / 2}px);
   }
 `;
@@ -92,7 +86,7 @@ const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
 `;
 
 const contactBoxDetailsWideCss = css`
-  ${minWidth.desktop} {
+  ${minWidth.wide} {
     padding: ${space[3]}px 0 0;
     margin: 0 ${space[4]}px ${space[4]}px;
   }
@@ -100,12 +94,7 @@ const contactBoxDetailsWideCss = css`
 
 const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
   return (
-    <div
-      css={[
-        contactBoxContainerCss,
-        !props.compactLayout && contactBoxContainerWideCss,
-      ]}
-    >
+    <div css={contactBoxContainerCss}>
       <div>
         <h2
           css={[
@@ -166,19 +155,12 @@ interface HelpCentreEmailAndLiveChatProps {
 const emailAndLiveChatFlexContainerCss = css`
   display: flex;
   flex-direction: column;
-  ${minWidth.desktop} {
+  ${minWidth.phablet} {
     flex-direction: row-reverse;
     justify-content: space-between;
   }
   & > * {
     margin-bottom: ${space[5]}px;
-  }
-`;
-
-const emailAndLiveChatFlexContainerWideCss = css`
-  ${minWidth.tablet} {
-    flex-direction: row-reverse;
-    justify-content: space-between;
   }
 `;
 
@@ -201,12 +183,7 @@ export const HelpCentreEmailAndLiveChat = (
   const [isLiveChatAvailable, setIsLiveChatAvailable] = useState<boolean>(true);
   return (
     <>
-      <div
-        css={[
-          emailAndLiveChatFlexContainerCss,
-          !props.compactLayout && emailAndLiveChatFlexContainerWideCss,
-        ]}
-      >
+      <div css={emailAndLiveChatFlexContainerCss}>
         <HelpCentreContactBox
           title="Chat with us"
           subtitle={

@@ -52,7 +52,7 @@ const emailAndLiveChatSubheadingCss = css`
 `;
 
 const emailAndLiveChatSubheadingWideCss = css`
-  ${minWidth.desktop} {
+  ${minWidth.wide} {
     display: none;
   }
 `;
