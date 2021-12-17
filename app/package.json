@@ -50,7 +50,7 @@
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@emotion/babel-preset-css-prop": "^10.0.27",
+    "@emotion/babel-preset-css-prop": "^10.2.1",
     "@guardian/node-riffraff-artifact": "^0.2.1",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
@@ -98,6 +98,7 @@
     "copy-webpack-plugin": "^9.1.0",
     "core-js": "^3.19.1",
     "dom-testing-library": "^2.3.2",
+    "emotion-theming": "10.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^7.32.0",
@@ -126,8 +127,8 @@
     "whatwg-fetch": "^2.0.4"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.35",
-    "@emotion/styled": "^10.0.27",
+    "@emotion/core": "^10.3.0",
+    "@emotion/styled": "^10.3.0",
     "@guardian/consent-management-platform": "^6.11.3",
     "@guardian/libs": "^1.7.1",
     "@guardian/src-button": "^2.8.2",
