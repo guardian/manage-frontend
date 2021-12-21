@@ -38,33 +38,11 @@ test("Stripe Elements has not been loaded yet", async () => {
     getByText("Update payment method"),
     new MouseEvent("click", {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     })
   );
 
   getByText("Something went wrong, please check the details and try again.");
 });
 
-// testing our custom wrapper component
-/*
-describe("fieldWrapper.tsx with Stripe Elements",  () => {
-  test("Real-time error messages are shown when using stripe elements", async () => {
-      const { getByText, findByLabelText, getByLabelText } = render(returnCardInputForm());
-      await waitFor(() => findByLabelText('Credit or debit card number'));
-      const cardNumberInput = getByLabelText("Credit or debit card number")
-      fireEvent.change(cardNumberInput, {target: {value: 1111}})
-
-      // @ts-ignore
-      expect(cardNumberInput.value).toBe(1111)
-
-      // note: incomplete error messages are not shown in real-time when filling out the form, they appear when the input has been unfocused
-      cardNumberInput.blur()
-
-      getByText("Your card number is incomplete.")
-
-      fireEvent.change(cardNumberInput, { target: {value: 9999999999999999 }})
-
-      getByText('Your card number is invalid')
-  });
-})
-*/
+// fieldWrapper.tsx component should have integration testing, but StripeElements do not load when running tests, so we would have to mock StripeElements, job for the future.

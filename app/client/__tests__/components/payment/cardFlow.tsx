@@ -10,7 +10,7 @@ const stripePublicKey = "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f";
 const userEmail = "myemail@email.com";
 const stripeSetupIntent: StripeSetupIntent = {
   id: "setupIntentId",
-  client_secret: "setupIntentSecret"
+  client_secret: "setupIntentSecret",
 };
 
 const newPaymentMethodDetailUpdater = jest.fn((_: NewPaymentMethodDetail) => 1);
@@ -30,8 +30,8 @@ const stripePaymentMethod: PaymentMethod | unknown = {
     checks: null,
     three_d_secure_usage: null,
     funding: "",
-    wallet: null
-  }
+    wallet: null,
+  },
 };
 
 const mockStripe = () => ({
@@ -42,7 +42,7 @@ const mockStripe = () => ({
   confirmCardPayment: jest.fn(),
   confirmCardSetup: jest.fn(),
   paymentRequest: jest.fn(),
-  _registerWrapper: jest.fn()
+  _registerWrapper: jest.fn(),
 });
 
 const Recaptcha = ({ setRecaptchaToken }: RecaptchaProps) => (
@@ -60,18 +60,18 @@ jest.mock("@stripe/react-stripe-js", () => {
     ...stripe,
     useElements: () => {
       return {
-        getElement: jest.fn(() => true)
+        getElement: jest.fn(() => true),
       };
     },
     useStripe: () => {
       return mockStripe;
-    }
+    },
   };
 });
 
 jest.mock("../../../components/payment/update/card/Recaptcha", () => ({
   __esModule: true,
-  default: Recaptcha
+  default: Recaptcha,
 }));
 
 function returnCardInputForm() {
@@ -88,19 +88,19 @@ function returnCardInputForm() {
 describe("cardInputForm.tsx and stripeCardInputForm.tsx", () => {
   beforeEach(() => {
     // tslint:disable-next-line: no-object-mutation
-    global.fetch = jest.fn().mockImplementation(url => {
-      return new Promise(resolve => {
+    global.fetch = jest.fn().mockImplementation((url) => {
+      return new Promise((resolve) => {
         resolve({
           ok: true,
           status: 200,
           headers: {
-            get: () => "pass"
+            get: () => "pass",
           },
           json: () => {
             if (url.includes("/api/payment/card")) {
               return stripeSetupIntent;
             }
-          }
+          },
         });
       });
     });
@@ -113,28 +113,10 @@ describe("cardInputForm.tsx and stripeCardInputForm.tsx", () => {
       getByText("Update payment method"),
       new MouseEvent("click", {
         bubbles: true,
-        cancelable: true
+        cancelable: true,
       })
     );
 
     getByText("Recaptcha has not been completed.");
   });
-
-  /*
-  test("Button loader shown when calling stripe API to validate card", async () => {
-    const { getByText } = render(returnCardInputForm()); 
-
-    const recaptcha = document.querySelector('#mockGrecaptcha');
-
-    fireEvent(
-      recaptcha!, 
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true
-      })
-    );
-
-    getByText('Validating your card details...')
-  });
-  */
 });
