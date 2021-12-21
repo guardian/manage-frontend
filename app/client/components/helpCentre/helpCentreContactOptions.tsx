@@ -110,7 +110,7 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
                   priority="secondary"
                   onClick={() => setContactOptionsVisible(true)}
                 >
-                  Contact Us
+                  Contact us
                 </Button>
               </div>
             )}
