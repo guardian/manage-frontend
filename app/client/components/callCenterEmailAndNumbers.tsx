@@ -8,7 +8,7 @@ import { CallCentreNumbersProps } from "./callCentreNumbers";
 
 const contactUsStyles = {
   margin: "0 0 10px",
-  paddingRight: "5px"
+  paddingRight: "5px",
 };
 
 const callCenterStyles = css({
@@ -16,7 +16,7 @@ const callCenterStyles = css({
   display: "flex",
   flexWrap: "wrap",
   textAlign: "left",
-  fontWeight: "normal"
+  fontWeight: "normal",
 });
 
 export type PhoneRegionKey = "US" | "AUS" | "UK & ROW";
@@ -24,7 +24,7 @@ export type PhoneRegionKey = "US" | "AUS" | "UK & ROW";
 interface PhoneRegion {
   key: PhoneRegionKey;
   title: string;
-  openingHours: string;
+  openingHours: string[];
   phoneNumbers: Array<{ phoneNumber: string; suffix?: string }>;
   additionalOpeningHoursInfo?: string;
 }
@@ -35,43 +35,46 @@ const PHONE_DATA: PhoneRegion[] = [
   {
     key: "UK & ROW",
     title: "United Kingdom, Europe and rest of world",
-    openingHours: "9am - 6pm Monday - Sunday (GMT/BST)",
+    openingHours: [
+      "8am - 6pm Monday - Friday (GMT/BST)",
+      "9am - 6pm Saturday - Sunday (GMT/BST)",
+    ],
     phoneNumbers: [
       {
-        phoneNumber: "+44 (0) 330 333 6790"
-      }
-    ]
+        phoneNumber: "+44 (0) 330 333 6790",
+      },
+    ],
   },
   {
     key: "AUS",
     title: "Australia, New Zealand, and Asia Pacific",
-    openingHours: "9am - 5pm Monday - Friday (AEDT)",
+    openingHours: ["9am - 5pm Monday - Friday (AEDT)"],
     phoneNumbers: [
       {
         phoneNumber: "1800 773 766",
-        suffix: "(within Australia)"
+        suffix: "(within Australia)",
       },
       {
         phoneNumber: "+61 28076 8599",
-        suffix: "(outside Australia)"
-      }
-    ]
+        suffix: "(outside Australia)",
+      },
+    ],
   },
   {
     key: "US",
     title: "Canada and USA",
-    openingHours: "9am - 5pm on weekdays (EST/EDT)",
+    openingHours: ["9am - 5pm on weekdays (EST/EDT)"],
     phoneNumbers: [
       {
         phoneNumber: "1-844-632-2010",
-        suffix: "(toll free USA)"
+        suffix: "(toll free USA)",
       },
       {
         phoneNumber: "+1 917-900-4663",
-        suffix: "(outside USA)"
-      }
-    ]
-  }
+        suffix: "(outside USA)",
+      },
+    ],
+  },
 ];
 
 interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
@@ -85,7 +88,7 @@ export const CallCentreEmailAndNumbers = (
   const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>(0);
 
   const filteredPhoneData = PHONE_DATA.filter(
-    phoneRegion =>
+    (phoneRegion) =>
       !props.phoneRegionFilterKeys ||
       props.phoneRegionFilterKeys.includes(phoneRegion.key)
   );
@@ -122,7 +125,8 @@ export const CallCentreEmailAndNumbers = (
       transition: transform 0.4s;
       right: 17px;
     }
-    ${isNotFirstOption &&
+    ${
+      isNotFirstOption &&
       `
       :before {
         content: "";
@@ -134,7 +138,8 @@ export const CallCentreEmailAndNumbers = (
         height: 1px;
         background-color: ${neutral["86"]}
       }
-    `}
+    `
+    }
   `;
 
   const showHideSpanCss = css`
@@ -262,7 +267,18 @@ export const CallCentreEmailAndNumbers = (
                       )}
                     </span>
                   ))}
-                  {phoneRegion.openingHours}
+                  {phoneRegion.openingHours.map(
+                    (openingHourLine, openingHoursLineKey) => (
+                      <span
+                        key={openingHoursLineKey}
+                        css={css`
+                          display: block;
+                        `}
+                      >
+                        {openingHourLine}
+                      </span>
+                    )
+                  )}
                 </p>
                 {phoneRegion.additionalOpeningHoursInfo && (
                   <p
