@@ -4,6 +4,7 @@ import { NewPaymentMethodDetail } from "../../../components/payment/update/newPa
 import { CardInputForm } from "../../../components/payment/update/card/cardInputForm";
 import { RecaptchaProps } from "../../../components/payment/update/card/Recaptcha";
 import { StripeSetupIntent } from "../../../../shared/stripeSetupIntent";
+import { PaymentMethod } from "@stripe/stripe-js";
 
 const stripePublicKey = "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f";
 const userEmail = "myemail@email.com";
@@ -16,6 +17,33 @@ const newPaymentMethodDetailUpdater = jest.fn((_: NewPaymentMethodDetail) => 1);
 const executePaymentUpdate = jest.fn((_: NewPaymentMethodDetail) =>
   Promise.resolve(null)
 );
+
+const stripePaymentMethod: PaymentMethod | unknown = {
+  id: "stripePaymentMethodId",
+  created: 0,
+  card: {
+    brand: "brand",
+    last4: "4242",
+    exp_month: 12,
+    exp_year: 25,
+    country: "GB",
+    checks: null,
+    three_d_secure_usage: null,
+    funding: "",
+    wallet: null
+  }
+};
+
+const mockStripe = () => ({
+  elements: jest.fn(),
+  createToken: jest.fn(),
+  createSource: jest.fn(),
+  createPaymentMethod: jest.fn(() => stripePaymentMethod),
+  confirmCardPayment: jest.fn(),
+  confirmCardSetup: jest.fn(),
+  paymentRequest: jest.fn(),
+  _registerWrapper: jest.fn()
+});
 
 const Recaptcha = ({ setRecaptchaToken }: RecaptchaProps) => (
   <input
@@ -34,6 +62,9 @@ jest.mock("@stripe/react-stripe-js", () => {
       return {
         getElement: jest.fn(() => true)
       };
+    },
+    useStripe: () => {
+      return mockStripe;
     }
   };
 });
