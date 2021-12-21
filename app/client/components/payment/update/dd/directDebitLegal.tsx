@@ -1,7 +1,7 @@
 import React from "react";
 import palette from "../../../../colours";
 import { sans } from "../../../../styles/fonts";
-import { neutral } from "@guardian/src-foundations/palette";
+import { DirectDebitLogo } from "../../directDebitLogo";
 
 const hrefStyle = {
   color: palette.neutral["3"],
@@ -10,7 +10,9 @@ const hrefStyle = {
 };
 
 const baseStyle = {
-  color: neutral[46],
+  background: palette.neutral["6"],
+  padding: "11px",
+  color: palette.neutral["3"],
   fontSize: "12px",
   fontFamily: sans,
   flexGrow: 1,
@@ -92,24 +94,19 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
   <div
     css={{
       ...baseStyle,
-      maxWidth: "590px"
+      maxWidth: "470px"
     }}
   >
     <p>
-      <strong>Payments by GoCardless </strong>
-      <br />
+      Payments by GoCardless. Read the{" "}
       <a
         href="https://gocardless.com/legal/privacy"
         rel="noreferrer"
         css={hrefStyle}
         target="_blank"
       >
-        Read the GoCardless privacy notice.
+        GoCardless privacy notice.
       </a>
-    </p>
-
-    <p>
-      <strong>Advance notice</strong>
       <br />
       {props.newDirectDebit
         ? "The details of your Direct Debit instruction including payment schedule, due date, frequency and amount " +
@@ -118,17 +115,23 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
       All the normal Direct Debit safeguards and guarantees apply.
     </p>
     <p>
-      <strong>Direct Debit</strong>
+      Direct Debit, The Guardian, Unit 16, Coalfield Way, Ashby Park,
+      Ashby-De-La-Zouch
       <br />
-      The Guardian, Unit 16, Coalfield Way, Ashby Park, Ashby-De-La-Zouch, LE65
-      1JT United Kingdom.
+      LE65 1JT, United Kingdom
+    </p>
+    <p>
+      Tel: 0330 333 6767 (within UK).
       <br />
-      Tel: 0330 333 6767 (within UK). Lines are open 8am-8pm on weekdays,
-      8am-6pm at weekends (GMT/BST)
-      <br />
-      <a css={hrefStyle} href="mailto:contribution.support@theguardian.com">
-        contribution.support@theguardian.com
+      Lines are open 8am-8pm on weekdays, 8am-6pm at weekends (GMT/BST)
+    </p>
+    <p>
+      <a css={hrefStyle} href="mailto:customer.help@theguardian.com">
+        customer.help@theguardian.com
       </a>
     </p>
+    <DirectDebitLogo fill={palette.neutral["4"]} />
+    <br />
+    <GoCardlessGuarantee inner />
   </div>
 );

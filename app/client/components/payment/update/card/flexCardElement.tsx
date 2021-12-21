@@ -5,12 +5,8 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
 import React, { Dispatch, SetStateAction } from "react";
-import { css } from "@emotion/core";
-import { minWidth } from "../../../../styles/breakpoints";
-import { space } from "@guardian/src-foundations";
 import { sans } from "../../../../styles/fonts";
 import { FieldWrapper } from "../fieldWrapper";
-import { getLogos, PaymentMethod } from "../updatePaymentFlow";
 
 interface FlexCardElementProps {
   disabled?: boolean;
@@ -21,73 +17,47 @@ interface FlexCardElementProps {
 
 const baseStyle = {
   base: {
-    fontSize: "17px",
-    fontFamily: sans,
-    "::placeholder": {
-      color: "#c4c4c4"
-    },
-    ":-ms-input-placeholder": {
-      color: "#c4c4c4"
-    }
+    fontSize: "18px",
+    fontFamily: sans
   }
 };
 
-const numberCornerHint = () => (
-  <div
-    css={css`
-      display: flex;
-    `}
-  >
-    {getLogos(PaymentMethod.card)}
-  </div>
-);
 /*TODO find some way to lock these based on this.props.disabled*/
 export const FlexCardElement = (props: FlexCardElementProps) => (
   <>
     <div
       css={{
-        marginTop: `${space[9]}px`,
-        marginBottom: `${space[9]}px`,
         textAlign: "left"
       }}
     >
-      <FieldWrapper
-        width="100%"
-        label="Card Number"
-        cornerHint={numberCornerHint()}
-      >
+      <FieldWrapper width="500px" label="Card Number">
         <CardNumberElement
           options={{
             style: baseStyle,
-            placeholder: "•••• •••• •••• ••••"
+            placeholder: "Card Number"
           }}
           onReady={props.setCardNumberElement}
         />
       </FieldWrapper>
       <div
-        css={css`
-          display: flex;
-          justify-content: flex-start;
-
-          ${minWidth.tablet} {
-            margin-top: ${space[4]}px;
-          }
-        `}
+        css={{
+          display: "flex",
+          justifyContent: "flex-start",
+          marginBottom: "12px"
+        }}
       >
-        <FieldWrapper width="50%" label="Expiry Date">
+        <FieldWrapper width="240px" label="Expiry Date">
           <CardExpiryElement
             options={{
-              style: baseStyle,
-              placeholder: "MM/YY"
+              style: baseStyle
             }}
             onReady={props.setCardExpiryElement}
           />
         </FieldWrapper>
-        <FieldWrapper width="50%" label="CVC">
+        <FieldWrapper width="240px" label="CVC">
           <CardCvcElement
             options={{
-              style: baseStyle,
-              placeholder: "123"
+              style: baseStyle
             }}
             onReady={props.setCardCVCElement}
           />
