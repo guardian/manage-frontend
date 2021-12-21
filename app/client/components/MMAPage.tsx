@@ -32,8 +32,8 @@ import { HolidayDateChooser } from "./holiday/holidayDateChooser";
 import { HolidayReview } from "./holiday/holidayReview";
 import { Main } from "./main";
 import MMAPageSkeleton from "./MMAPageSkeleton";
-import { ConfirmPaymentUpdate } from "./payment/update/confirmPaymentUpdate";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
+import PaymentFailed from "./payment/update/PaymentFailed";
 import { ScrollToTop } from "./scrollToTop";
 
 // The code below uses magic comments to instruct Webpack on
@@ -149,9 +149,8 @@ const MMARouter = () => (
             path={"/payment/" + productType.urlPart}
             productType={productType}
           >
-            <ConfirmPaymentUpdate path="confirm" productType={productType}>
-              <PaymentUpdated path="updated" productType={productType} />
-            </ConfirmPaymentUpdate>
+            <PaymentUpdated path="updated" productType={productType} />
+            <PaymentFailed path="failed" productType={productType} />
           </PaymentUpdateFlow>
         ))}
 

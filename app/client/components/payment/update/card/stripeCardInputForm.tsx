@@ -1,4 +1,3 @@
-import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
 import {
   CardNumberElement,
@@ -6,22 +5,25 @@ import {
   useStripe
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
-import React, { useContext, useState } from "react";
-import { StripeSetupIntent } from "../../../../../shared/stripeSetupIntent";
+import React, { useState } from "react";
+import { css } from "@emotion/core";
+import { space } from "@guardian/src-foundations";
+import {
+  STRIPE_PUBLIC_KEY_HEADER,
+  StripeSetupIntent
+} from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
-import { validationWarningCSS } from "../../../../styles/fonts";
-import { Button } from "../../../buttons";
+import { Button } from "@guardian/src-button";
 import { GenericErrorScreen } from "../../../genericErrorScreen";
-import { Spinner } from "../../../spinner";
-import { FlowReferrerContext, NavigateFnContext } from "../updatePaymentFlow";
 import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
 import {
   NewCardPaymentMethodDetail,
   StripePaymentMethod
 } from "./newCardPaymentMethodDetail";
-import { StripeLogo } from "./stripeLogo";
-
+import Recaptcha from "./Recaptcha";
+import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
+import ErrorSummary from "../ErrorSummary";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
@@ -39,6 +41,12 @@ interface StripeInputFormError {
 
 export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const [isValidating, setIsValidating] = useState<boolean>(false);
+  const [
+    stripeSetupIntent,
+    setStripeSetupIntent
+  ] = useState<StripeSetupIntent | null>();
+  const [stripeSetupIntentError, setStripeSetupIntentError] = useState<Error>();
+
   const [cardNumberElement, setCardNumberElement] = useState<
     undefined | StripeElementBase
   >();
@@ -48,52 +56,76 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const [cardCVCElement, setCardCVCElement] = useState<
     undefined | StripeElementBase
   >();
+
   const [error, setError] = useState<StripeInputFormError>({});
   const elements = useElements();
   const stripe = useStripe();
 
-  const flowReferrerContext = useContext(FlowReferrerContext);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
-  const isLoaded = () => {
-    return (
-      stripe &&
-      cardNumberElement &&
-      cardExpiryElement &&
-      cardCVCElement &&
-      props.stripeSetupIntent
-    );
+  const cardFormIsLoaded = () => {
+    return stripe && cardNumberElement && cardExpiryElement && cardCVCElement;
   };
 
   const renderError = () => {
     if (error && error.message) {
-      return (
-        <div
-          css={{
-            ...validationWarningCSS,
-            marginTop: "5px",
-            width: "100%",
-            textAlign: "right"
-          }}
-        >
-          {error.message
-            .split(".")
-            .filter(_ => _.trim().length)
-            .map((sentence, index) => (
-              <div key={index}>
-                {sentence}
-                {sentence.includes(".") ? "" : "."}
-              </div>
-            ))}
-        </div>
-      );
+      return error.message
+        .split(".")
+        .filter(_ => _.trim().length)
+        .map((sentence, index) => {
+          const sentenceEnd = sentence.includes(".") ? "" : ".";
+
+          return (
+            <div key={index}>
+              <ErrorSummary message={sentence + sentenceEnd} />
+            </div>
+          );
+        });
     } else {
       return null;
     }
   };
 
-  const startCardUpdate = (navigate: NavigateFn) => async () => {
+  const loadSetupIntent = (): Promise<StripeSetupIntent | null> =>
+    fetch("/api/payment/card", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey
+      },
+      body: recaptchaToken
+    })
+      .then(async response => {
+        if (response.ok) {
+          return await response.json();
+        }
+
+        const locationHeaderValue = response.headers.get("Location");
+        if (response.status === 401 && locationHeaderValue) {
+          window.location.replace(locationHeaderValue);
+          return null;
+        } else {
+          throw new Error(
+            `Failed to load SetupIntent : ${response.status} ${
+              response.statusText
+            } : ${await response.text()}`
+          );
+        }
+      })
+      .then((setupIntent: StripeSetupIntent) => setupIntent)
+      .catch(error => {
+        Sentry.captureException(error);
+        setStripeSetupIntentError(error);
+        return null;
+      });
+
+  async function startCardUpdate() {
     setIsValidating(true);
+
     const cardElement = elements?.getElement(CardNumberElement);
+
     if (!cardElement) {
       Sentry.captureException("StripeElements returning null");
       setError({
@@ -102,7 +134,24 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       setIsValidating(false);
       return;
     }
-    if (stripe && props.stripeSetupIntent) {
+
+    if (!recaptchaToken) {
+      setIsValidating(false);
+      setError({ message: "Recaptcha has not been completed" });
+      return;
+    }
+
+    // new recaptcha token needed with each call to create a setup intent
+    let setupIntent;
+
+    if (!stripeSetupIntent) {
+      setupIntent = await loadSetupIntent();
+      setStripeSetupIntent(setupIntent);
+    } else {
+      setupIntent = stripeSetupIntent;
+    }
+
+    if (stripe && setupIntent) {
       const createPaymentMethodResult = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
@@ -137,23 +186,24 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       }
 
       const intentResult = await stripe.confirmCardSetup(
-        props.stripeSetupIntent.client_secret,
+        setupIntent.client_secret,
         { payment_method: createPaymentMethodResult.paymentMethod.id }
       );
+
       if (
         intentResult.setupIntent &&
         intentResult.setupIntent.status &&
         intentResult.setupIntent.status === "succeeded"
       ) {
-        props.newPaymentMethodDetailUpdater(
-          new NewCardPaymentMethodDetail(
-            createPaymentMethodResult.paymentMethod as StripePaymentMethod,
-            props.stripeApiKey
-          )
+        setIsValidating(false);
+
+        const newPaymentMethodDetail = new NewCardPaymentMethodDetail(
+          createPaymentMethodResult.paymentMethod as StripePaymentMethod,
+          props.stripeApiKey
         );
-        navigate("confirm", {
-          state: flowReferrerContext
-        });
+
+        props.newPaymentMethodDetailUpdater(newPaymentMethodDetail);
+        props.executePaymentUpdate(newPaymentMethodDetail);
       } else {
         Sentry.captureException(
           intentResult.error ||
@@ -168,92 +218,80 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         setIsValidating(false);
       }
     }
-  };
-  return props.stripeSetupIntentError ? (
+  }
+
+  return stripeSetupIntentError ? (
     <GenericErrorScreen loggingMessage={"error loading SetupIntent"} />
   ) : (
     <>
+      <FlexCardElement
+        setCardNumberElement={setCardNumberElement}
+        setCardExpiryElement={setCardExpiryElement}
+        setCardCVCElement={setCardCVCElement}
+      />
+
+      <Recaptcha
+        setRecaptchaToken={setRecaptchaToken}
+        setStripeSetupIntent={setStripeSetupIntent}
+      />
+
       <div
         css={{
-          display: isLoaded() ? "none" : "block"
+          marginBottom: `${space[12]}px`,
+          width: "500px",
+          maxWidth: "100%"
         }}
       >
-        <Spinner loadingMessage="Preparing card details form..." />
-      </div>
-      <div
-        css={{
-          textAlign: "right",
-          display: isLoaded() ? "block" : "none"
-        }}
-      >
-        <FlexCardElement
-          disabled={isValidating}
-          setCardNumberElement={setCardNumberElement}
-          setCardExpiryElement={setCardExpiryElement}
-          setCardCVCElement={setCardCVCElement}
-        />
         <div
           css={{
-            marginBottom: "40px",
-            width: "500px",
-            maxWidth: "100%"
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between"
           }}
         >
           <div
             css={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between"
+              [maxWidth.mobileLandscape]: {
+                width: "100%"
+              }
             }}
           >
-            {isValidating ? (
-              <>
-                <StripeLogo />
-                <Spinner
-                  loadingMessage="Validating your card details..."
-                  scale={0.7}
-                  inline
-                />
-              </>
-            ) : (
-              <NavigateFnContext.Consumer>
-                {nav =>
-                  nav.navigate ? (
-                    <>
-                      <a
-                        href="https://stripe.com/"
-                        rel="noreferrer"
-                        target="_blank"
-                        css={{ marginBottom: "5px" }}
-                      >
-                        <StripeLogo />
-                      </a>
-                      <div
-                        css={{
-                          textAlign: "right",
-                          [maxWidth.mobileLandscape]: {
-                            width: "100%"
-                          }
-                        }}
-                      >
-                        <Button
-                          disabled={!(stripe && props.stripeSetupIntent)}
-                          text="Review payment update"
-                          onClick={startCardUpdate(nav.navigate)}
-                          primary
-                          right
-                        />
-                      </div>
-                      {renderError()}
-                    </>
-                  ) : (
-                    <GenericErrorScreen loggingMessage="No navigate function - very odd" />
-                  )
-                }
-              </NavigateFnContext.Consumer>
-            )}
+            <Button
+              disabled={!cardFormIsLoaded}
+              priority="primary"
+              onClick={startCardUpdate}
+              icon={
+                isValidating ? (
+                  <LoadingCircleIcon
+                    additionalCss={css`
+                      padding: 3px;
+                    `}
+                  />
+                ) : (
+                  <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                    />
+                  </svg>
+                )
+              }
+              iconSide="right"
+            >
+              Update payment method
+            </Button>
           </div>
         </div>
+      </div>
+
+      <div
+        css={css`
+          margin-top: ${space[9]}px;
+          margin-bottom: ${space[9]}px;
+        `}
+      >
+        {renderError()}
       </div>
     </>
   );
