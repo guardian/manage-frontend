@@ -1,5 +1,4 @@
 import React from "react";
-// import { render, fireEvent, waitFor } from "@testing-library/react";
 import { render, fireEvent } from "@testing-library/react";
 import { NewPaymentMethodDetail } from "../../../components/payment/update/newPaymentMethodDetail";
 import { CardInputForm } from "../../../components/payment/update/card/cardInputForm";
@@ -15,10 +14,6 @@ const executePaymentUpdate = jest.fn((_: NewPaymentMethodDetail) =>
 // unfortunately Stripe Elements is buggy with both RTl and Enzyme and does not render, ive posted a question here on their github: https://github.com/stripe/react-stripe-js/issues/243
 // as of now, the tests are commented out
 // we can mock stripes setupIntents, createPaymentMethod and confirmCardSetup APIs, but mocking their Elements library is time-consuming and seems pointless if we can just use it as is
-
-// const testCardNumber = "4242424242424242";
-// const testExpiryDate = "424";
-// const testCVC = "424";
 
 function returnCardInputForm() {
   return (
