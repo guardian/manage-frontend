@@ -1,16 +1,12 @@
 import { StripeError } from "@stripe/stripe-js";
 import React from "react";
-import { css } from "@emotion/core";
 import palette from "../../../colours";
-import { textSans } from "@guardian/src-foundations/typography";
-import { neutral, error } from "@guardian/src-foundations/palette";
-import { InlineError } from "@guardian/src-user-feedback";
+import { sans } from "../../../styles/fonts";
 
 interface FieldWrapperProps {
   label: string;
   width: string;
   children: JSX.Element;
-  cornerHint?: JSX.Element;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -56,62 +52,53 @@ export class FieldWrapper extends React.Component<
           }
         }}
       >
-        <div
-          css={
-            this.props.cornerHint
-              ? css`
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: end;
-                `
-              : ``
-          }
+        <label
+          css={{
+            fontFamily: sans,
+            fontSize: "14px",
+            marginBottom: "5px"
+          }}
         >
-          <div>
-            <label
-              css={css`
-                ${textSans.medium({ fontWeight: "bold" })};
-                color: ${neutral[7]};
-              `}
-            >
-              {this.props.label}
-            </label>
-            {this.state.error?.message && (
-              <InlineError
-                cssOverrides={css`
-                  margin-bottom: -5px;
-                  margin-top: 3px;
-                `}
-              >
-                {this.state.error.message}
-              </InlineError>
-            )}
-          </div>
-          {this.props.cornerHint && this.props.cornerHint}
-        </div>
-
+          {this.props.label}
+        </label>
         <div
           css={{
-            border: `${
+            border: `1px solid ${
               this.state.error?.message
-                ? "4px solid " + error[400]
-                : "2px solid " + neutral[60]
+                ? palette.red.medium
+                : palette.neutral["5"]
             }`,
             display: "block",
             fontWeight: 400,
-            marginTop: "3px",
+            height: "42px",
             lineHeight: "20px",
             padding: "10px",
             width: "100%",
             transition: "all .2s ease-in-out",
             "&:hover": {
-              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`
+              boxShadow: `0 0 0 3px ${
+                this.state.focus ? palette.yellow.medium : palette.neutral["6"]
+              }`
             },
-            outline: 0
+            outline: 0,
+            boxShadow: this.state.focus
+              ? `0 0 0 3px ${palette.yellow.medium}`
+              : undefined
           }}
         >
           {hydratedChildren}
         </div>
+        {this.state.error?.message && (
+          <span
+            css={{
+              color: palette.red.medium,
+              fontFamily: sans,
+              fontSize: "0.8rem"
+            }}
+          >
+            {this.state.error.message}
+          </span>
+        )}
       </div>
     );
   }

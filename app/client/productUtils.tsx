@@ -32,24 +32,6 @@ export const createProductDetailFetcher = (
     }
   );
 
-export const createProductDetailFetch = (
-  productType: ProductType,
-  subscriptionName?: string
-) =>
-  fetchWithDefaultParameters(
-    "/api/me/mma" +
-      (subscriptionName
-        ? `/${subscriptionName}`
-        : `?productType=${productType.allProductsProductTypeFilterString}`),
-    {
-      headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-          window.location.href
-        )
-      }
-    }
-  ).then(res => res.json());
-
 export const allProductsDetailFetcher = () =>
   fetchWithDefaultParameters("/api/me/mma", {
     headers: {

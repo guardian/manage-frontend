@@ -1,5 +1,5 @@
 import { css } from "@emotion/core";
-import { brand } from "@guardian/src-foundations/palette";
+import { neutral } from "@guardian/src-foundations/palette";
 import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import { minWidth } from "../../styles/breakpoints";
@@ -11,7 +11,7 @@ const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 export const cleanSortCode = (sortCode: string) =>
   sortCode.replace(/[^0-9]/g, "");
 
-export const dashifySortCode = (sortCode: string) => {
+const dashifySortCode = (sortCode: string) => {
   if (!sortCode) {
     return sortCode;
   }
@@ -28,7 +28,7 @@ export const dashifySortCode = (sortCode: string) => {
   );
 };
 
-export const sanitiseAccountNumber = (
+const sanitiseAccountNumber = (
   accountNumber: string,
   shortVersion?: boolean
 ) => {
@@ -59,68 +59,33 @@ interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
   showAccountName?: true;
   inErrorState?: boolean;
   onlyAccountEnding?: true;
-  onlySortCode?: true;
 }
 
-export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
-  if (props.onlyAccountEnding) {
-    return (
-      <div
+export const DirectDebitDisplay = (props: DirectDebitDisplayProps) =>
+  props.onlyAccountEnding ? (
+    <div
+      css={css`
+        display: flex;
+      `}
+    >
+      <DirectDebitLogo
+        fill={neutral[7]}
+        additionalCss={css`
+          margin: 0 10px 0 0;
+        `}
+      />
+      <span
         css={css`
-          display: flex;
+          margin-right: 10px;
         `}
       >
-        <DirectDebitLogo
-          fill={brand[400]}
-          additionalCss={css`
-            margin: 0 10px 0 0;
-          `}
-        />
-        <span
-          css={css`
-            margin-right: 10px;
-          `}
-        >
-          {sanitiseAccountNumber(props.accountNumber, true)}
-        </span>
-      </div>
-    );
-  }
-
-  if (props.onlySortCode) {
-    return (
-      <div
-        css={css`
-          display: flex;
-          justify-content: right;
-          ${minWidth.tablet} {
-            justify-content: left;
-          }
-        `}
-      >
-        <DirectDebitLogo
-          fill={brand[400]}
-          additionalCss={css`
-            margin: auto 10px auto 0;
-            width: 47px;
-            height: 16px;
-          `}
-        />
-        <span
-          css={css`
-            margin-right: 10px;
-          `}
-        >
-          {dashifySortCode(props.sortCode)}
-        </span>
-      </div>
-    );
-  }
-
-  return (
+        {sanitiseAccountNumber(props.accountNumber, true)}
+      </span>
+    </div>
+  ) : (
     <>
       <DirectDebitLogo
-        fill={brand[400]}
+        fill={neutral[7]}
         additionalCss={css`
           margin: 0 10px 0 0;
         `}
@@ -148,4 +113,3 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
       </div>
     </>
   );
-};

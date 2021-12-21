@@ -377,9 +377,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   {props.productDetail.subscription.card && (
                     <CardDisplay
                       inErrorState={hasPaymentFailure}
-                      cssOverrides={css`
-                        margin: 0;
-                      `}
+                      margin="0"
                       {...props.productDetail.subscription.card}
                     />
                   )}
@@ -408,7 +406,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   )}
                 </li>
               </ul>
-              {!isGifted && (
+              {!props.productDetail.subscription.payPalEmail && !isGifted && (
                 <div
                   css={css`
                     margin-top: auto;
