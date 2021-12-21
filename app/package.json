@@ -169,7 +169,6 @@
     "yup": "^0.28.2"
   },
   "resolutions": {
-    "chokidar": "^3.5.2",
     "micromatch": "^4.0.4"
   },
   "license": "UNLICENSED"
