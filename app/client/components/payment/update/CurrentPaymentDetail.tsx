@@ -8,7 +8,7 @@ import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { CardDisplay } from "../cardDisplay";
 import {
   DirectDebitDisplay,
-  sanitiseAccountNumber
+  sanitiseAccountNumber,
 } from "../directDebitDisplay";
 import { getObfuscatedPayPalId } from "../paypalDisplay";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
@@ -126,8 +126,6 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
             padding-bottom: ${space[3]}px;
 
             ${minWidth.tablet} {
-              margin: ${space[6]}px 0 0 0;
-              padding: ${space[6]}px 0 0 0;
               flex: 1;
               display: flex;
               flex-flow: column nowrap;
