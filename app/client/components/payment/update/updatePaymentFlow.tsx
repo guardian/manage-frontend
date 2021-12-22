@@ -345,9 +345,7 @@ export class PaymentUpdaterStep extends React.Component<
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
-          <GenericErrorScreen
-            loggingMessage={JSON.stringify(window.guardian)}
-          />
+          <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
         );
       case PaymentMethod.card:
         return stripePublicKey ? (
@@ -358,9 +356,7 @@ export class PaymentUpdaterStep extends React.Component<
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
-          <GenericErrorScreen
-            loggingMessage={JSON.stringify(window.guardian)}
-          />
+          <GenericErrorScreen loggingMessage="No existing card information to update from" />
         );
       case PaymentMethod.free:
         return (
