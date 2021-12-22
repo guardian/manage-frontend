@@ -23,7 +23,7 @@ router.use(withIdentity(), async (_: Request, res: Response) => {
         dsn: clientDSN,
         identityDetails: res.locals.identity,
         recaptchaPublicKey: await getRecaptchaPublicKey(),
-        ...(await getStripePublicKeys()),
+        ...(await getStripePublicKeys())
       },
     })
   );

@@ -52,6 +52,8 @@ export interface ProductDetail extends WithSubscription {
   isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
   isPaidTier: boolean;
   regNumber?: string;
+  optIn?: boolean;
+  key?: string;
   tier: string;
   joinDate: string;
   mmaCategory: GroupedProductTypeKeys;
@@ -113,7 +115,7 @@ export interface PaidSubscriptionPlan
     CurrencyAndIntervalDetail {
   start: string;
   end: string;
-  chargedThrough?: string;
+  chargedThrough?: string | null;
   amount: number;
 }
 
@@ -137,6 +139,8 @@ export interface DeliveryAddress {
 type ReaderType = "Gift" | "Direct" | "Agent" | "Complementary";
 
 export interface Subscription {
+  accountId?: string;
+  subscriberId?: string; // this has not been removed from the backend yet
   subscriptionId: string;
   start?: string;
   end: string;
@@ -155,12 +159,16 @@ export interface Subscription {
   mandate?: DirectDebitDetails;
   sepaMandate?: SepaDetails;
   autoRenew: boolean;
-  currentPlans: SubscriptionPlan[];
-  futurePlans: SubscriptionPlan[];
+  plan?: any;
+  currentPlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
+  futurePlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
   trialLength: number;
   readerType: ReaderType;
   deliveryAddress?: DeliveryAddress;
   contactId?: string;
+  account?: {
+    accountName: string;
+  };
   // THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
   deliveryAddressChangeEffectiveDate?: string;
   cancellationEffectiveDate?: string;

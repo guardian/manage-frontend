@@ -18,5 +18,6 @@ export const stripeSetupIntentConfigPromise: Promise<
   "stripe-public-to-private-key-mapping"
 );
 
-export const stripePublicKeysPromise: Promise<StripePublicKeys | undefined> =
-  s3ConfigPromise<StripePublicKeys>()("stripe-public-keys");
+export const stripePublicKeysPromise: Promise<
+  StripePublicKeys | undefined
+> = s3ConfigPromise<StripePublicKeys>()("stripe-public-keys");

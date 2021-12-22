@@ -272,7 +272,9 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     <div css={paymentDetailsHolderCss}>
                       {tableRow.cardType && tableRow.last4 && (
                         <CardDisplay
-                          margin="0"
+                          cssOverrides={css`
+                            margin: 0;
+                          `}
                           last4={tableRow.last4}
                           type={tableRow.cardType}
                         />
