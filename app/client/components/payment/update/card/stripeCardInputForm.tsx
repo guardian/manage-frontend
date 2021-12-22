@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 import {
   CardNumberElement,
   useElements,
-  useStripe
+  useStripe,
 } from "@stripe/react-stripe-js";
 import { StripeElementBase } from "@stripe/stripe-js";
 import React, { useState } from "react";
@@ -10,7 +10,7 @@ import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
 import {
   STRIPE_PUBLIC_KEY_HEADER,
-  StripeSetupIntent
+  StripeSetupIntent,
 } from "../../../../../shared/stripeSetupIntent";
 import { maxWidth } from "../../../../styles/breakpoints";
 import { Button } from "@guardian/src-button";
@@ -19,7 +19,7 @@ import { CardInputFormProps } from "./cardInputForm";
 import { FlexCardElement } from "./flexCardElement";
 import {
   NewCardPaymentMethodDetail,
-  StripePaymentMethod
+  StripePaymentMethod,
 } from "./newCardPaymentMethodDetail";
 import Recaptcha from "./Recaptcha";
 import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
@@ -41,10 +41,8 @@ interface StripeInputFormError {
 
 export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
   const [isValidating, setIsValidating] = useState<boolean>(false);
-  const [
-    stripeSetupIntent,
-    setStripeSetupIntent
-  ] = useState<StripeSetupIntent | null>();
+  const [stripeSetupIntent, setStripeSetupIntent] =
+    useState<StripeSetupIntent | null>();
   const [stripeSetupIntentError, setStripeSetupIntentError] = useState<Error>();
 
   const [cardNumberElement, setCardNumberElement] = useState<
@@ -73,7 +71,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
     if (error && error.message) {
       return error.message
         .split(".")
-        .filter(_ => _.trim().length)
+        .filter((_) => _.trim().length)
         .map((sentence, index) => {
           const sentenceEnd = sentence.includes(".") ? "" : ".";
 
@@ -93,11 +91,11 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
       method: "POST",
       credentials: "include",
       headers: {
-        [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey
+        [STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
       },
-      body: recaptchaToken
+      body: recaptchaToken,
     })
-      .then(async response => {
+      .then(async (response) => {
         if (response.ok) {
           return await response.json();
         }
@@ -115,7 +113,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         }
       })
       .then((setupIntent: StripeSetupIntent) => setupIntent)
-      .catch(error => {
+      .catch((error) => {
         Sentry.captureException(error);
         setStripeSetupIntentError(error);
         return null;
@@ -129,7 +127,8 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
     if (!cardElement) {
       Sentry.captureException("StripeElements returning null");
       setError({
-        message: "Something went wrong, please check the details and try again."
+        message:
+          "Something went wrong, please check the details and try again.",
       });
       setIsValidating(false);
       return;
@@ -157,8 +156,8 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         card: cardElement,
         billing_details: {
           name: props.userEmail,
-          email: props.userEmail
-        }
+          email: props.userEmail,
+        },
       });
 
       if (
@@ -178,7 +177,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         setError(
           createPaymentMethodResult.error || {
             message:
-              "Something went wrong, please check the details and try again."
+              "Something went wrong, please check the details and try again.",
           }
         );
         setIsValidating(false);
@@ -212,7 +211,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         setError(
           intentResult.error || {
             message:
-              "Something went wrong, please check the details and try again."
+              "Something went wrong, please check the details and try again.",
           }
         );
         setIsValidating(false);
@@ -239,25 +238,25 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
         css={{
           marginBottom: `${space[12]}px`,
           width: "500px",
-          maxWidth: "100%"
+          maxWidth: "100%",
         }}
       >
         <div
           css={{
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
           }}
         >
           <div
             css={{
               [maxWidth.mobileLandscape]: {
-                width: "100%"
-              }
+                width: "100%",
+              },
             }}
           >
             <Button
-              disabled={!cardFormIsLoaded}
+              disabled={isValidating || !cardFormIsLoaded}
               priority="primary"
               onClick={startCardUpdate}
               icon={
