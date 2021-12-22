@@ -6,6 +6,7 @@ import {
   stripePublicKeysPromise
 } from "../stripeSetupIntentConfig";
 
+
 export const clientDSN =
   conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
     ? conf.CLIENT_DSN
