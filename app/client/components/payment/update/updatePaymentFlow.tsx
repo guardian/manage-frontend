@@ -1,6 +1,6 @@
 import {
   getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
+  X_GU_ID_FORWARDED_SCOPE,
 } from "../../../../shared/identity";
 import { css } from "@emotion/core";
 import { neutral, brand } from "@guardian/src-foundations/palette";
@@ -15,7 +15,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail,
   Subscription,
-  WithSubscription
+  WithSubscription,
 } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { FlowWrapper } from "../../FlowWrapper";
@@ -29,7 +29,7 @@ import CurrentPaymentDetails from "./CurrentPaymentDetail";
 import { DirectDebitInputForm } from "./dd/directDebitInputForm";
 import {
   NewPaymentMethodContext,
-  NewPaymentMethodDetail
+  NewPaymentMethodDetail,
 } from "./newPaymentMethodDetail";
 import { getStripeKey } from "../../../stripe";
 import OverlayLoader from "../../OverlayLoader";
@@ -48,7 +48,7 @@ export enum PaymentMethod {
   dd = "Direct debit",
   resetRequired = "ResetRequired",
   free = "FREE",
-  unknown = "Unknown"
+  unknown = "Unknown",
 }
 
 const subHeadingCss = `
@@ -247,7 +247,7 @@ export class PaymentUpdaterStep extends React.Component<
     selectedPaymentMethod:
       this.currentPaymentMethod === PaymentMethod.dd
         ? PaymentMethod.unknown
-        : PaymentMethod.card
+        : PaymentMethod.card,
   };
 
   private executePaymentUpdate = async (
@@ -266,8 +266,8 @@ export class PaymentUpdaterStep extends React.Component<
             "Content-Type": "application/json",
             [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
               window.location.href
-            )
-          }
+            ),
+          },
         }
       );
 
@@ -290,9 +290,9 @@ export class PaymentUpdaterStep extends React.Component<
           eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
           product: {
             productType: this.props.routeableStepProps.productType,
-            productDetail: this.props.productDetail
+            productDetail: this.props.productDetail,
           },
-          eventLabel: this.props.routeableStepProps.productType.urlPart
+          eventLabel: this.props.routeableStepProps.productType.urlPart,
         });
 
         // refetch subscription from members data api
@@ -303,13 +303,13 @@ export class PaymentUpdaterStep extends React.Component<
         this.setState({ newSubscriptionData });
 
         this.props.routeableStepProps.navigate("updated", {
-          state: this.props.routeableStepProps.location?.state
+          state: this.props.routeableStepProps.location?.state,
         });
       }
     } catch {
       this.props.routeableStepProps.navigate &&
         this.props.routeableStepProps.navigate("failed", {
-          state: this.props.routeableStepProps.location?.state
+          state: this.props.routeableStepProps.location?.state,
         });
     }
 
@@ -345,7 +345,9 @@ export class PaymentUpdaterStep extends React.Component<
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
-          <GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
+          <GenericErrorScreen
+            loggingMessage={JSON.stringify(window.guardian)}
+          />
         );
       case PaymentMethod.card:
         return stripePublicKey ? (
@@ -356,7 +358,9 @@ export class PaymentUpdaterStep extends React.Component<
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
-          <GenericErrorScreen loggingMessage="No existing card information to update from" />
+          <GenericErrorScreen
+            loggingMessage={JSON.stringify(window.guardian)}
+          />
         );
       case PaymentMethod.free:
         return (
@@ -412,9 +416,9 @@ export class PaymentUpdaterStep extends React.Component<
             )}
             <h3
               css={css`
-                  ${subHeadingCss}
-                  margin-top: ${space[9]}px;
-                `}
+                ${subHeadingCss}
+                margin-top: ${space[9]}px;
+              `}
             >
               Your current payment method
             </h3>
@@ -451,43 +455,45 @@ export class PaymentUpdaterStep extends React.Component<
             this.props.productDetail.isTestUser
           )}
 
-          {/* Dummy button when user has not selected a payment method */
-          this.state.selectedPaymentMethod === PaymentMethod.unknown ? (
-            <div
-              css={css`
-                margin-top: ${space[9]}px;
-                margin-bottom: ${space[9]}px;
-              `}
-            >
-              <Button
-                disabled
-                priority="secondary"
-                icon={
-                  <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
-                    />
-                  </svg>
-                }
-                iconSide="right"
-                cssOverrides={css`
-                  background-color: ${neutral[86]};
-                  color: ${neutral[46]};
-
-                  :hover {
-                    background-color: ${neutral[86]};
-                    color: ${neutral[46]};
-                  }
-
-                  cursor: not-allowed;
+          {
+            /* Dummy button when user has not selected a payment method */
+            this.state.selectedPaymentMethod === PaymentMethod.unknown ? (
+              <div
+                css={css`
+                  margin-top: ${space[9]}px;
+                  margin-bottom: ${space[9]}px;
                 `}
               >
-                Update payment method
-              </Button>
-            </div>
-          ) : null}
+                <Button
+                  disabled
+                  priority="secondary"
+                  icon={
+                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                      />
+                    </svg>
+                  }
+                  iconSide="right"
+                  cssOverrides={css`
+                    background-color: ${neutral[86]};
+                    color: ${neutral[46]};
+
+                    :hover {
+                      background-color: ${neutral[86]};
+                      color: ${neutral[46]};
+                    }
+
+                    cursor: not-allowed;
+                  `}
+                >
+                  Update payment method
+                </Button>
+              </div>
+            ) : null
+          }
 
           <ContactUs />
         </>
@@ -536,15 +542,15 @@ const PaymentUpdateFlow = (props: RouteableStepProps) => {
         breadcrumbs={[
           {
             title: navItemReferrer.title,
-            link: navItemReferrer.link
+            link: navItemReferrer.link,
           },
           {
             title: "Manage payment method",
-            currentPage: true
-          }
+            currentPage: true,
+          },
         ]}
       >
-        {productDetail => (
+        {(productDetail) => (
           <PaymentUpdaterStep
             routeableStepProps={props}
             productDetail={productDetail}
