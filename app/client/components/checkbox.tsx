@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import palette from "../colours";
 
 interface CheckboxProps {
@@ -18,8 +18,8 @@ export const Checkbox = (props: CheckboxProps) => (
       cursor: "pointer",
       userSelect: "none",
       ":hover .checkbox": {
-        boxShadow: `0 0 0 3px ${palette.neutral["6"]}`
-      }
+        boxShadow: `0 0 0 3px ${palette.neutral["6"]}`,
+      },
     }}
   >
     <div
@@ -38,8 +38,8 @@ export const Checkbox = (props: CheckboxProps) => (
         position: "relative",
         outline: 0,
         ":focus": {
-          boxShadow: `0 0 0 3px ${palette.yellow.medium}`
-        }
+          boxShadow: `0 0 0 3px ${palette.yellow.medium}`,
+        },
       }}
       // accessibility props below
       role="checkbox"
@@ -53,7 +53,7 @@ export const Checkbox = (props: CheckboxProps) => (
           position: "absolute",
           zIndex: -999999,
           overflow: "hidden",
-          opacity: 0
+          opacity: 0,
         }}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           props.onChange(event.target.checked)
@@ -70,7 +70,7 @@ export const Checkbox = (props: CheckboxProps) => (
           width: "12px",
           height: "6px",
           transform: "rotate(-45deg)",
-          textAlign: "right"
+          textAlign: "right",
         }}
       >
         <div
@@ -81,7 +81,7 @@ export const Checkbox = (props: CheckboxProps) => (
             borderWidth: "0 0 2px 2px",
             borderStyle: "solid",
             transition: "all .2s ease-in-out",
-            transitionDelay: ".1s"
+            transitionDelay: ".1s",
           }}
         />
       </div>

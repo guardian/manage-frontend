@@ -1,7 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { brand, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { conf } from "../../../server/config";
 import { minWidth } from "../../styles/breakpoints";
 
@@ -69,7 +68,7 @@ export const LiveChatPrivacyNoticeLink = () => {
     <div css={privacyNoticeLinkCss}>
       <a
         href="#livechatPrivacyNotice"
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           const privacyNoticeElement = document.getElementById(
             "livechatPrivacyNotice"

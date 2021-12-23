@@ -1,8 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral, news } from "@guardian/src-foundations/palette";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
-import React from "react";
 import {
   formatDate,
   getMainPlan,
@@ -11,7 +10,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail,
   Subscription,
-  WithSubscription
+  WithSubscription,
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { LinkButton } from "../../buttons";
@@ -20,12 +19,12 @@ import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
   visuallyNavigateToParent,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
-  NewPaymentMethodDetail
+  NewPaymentMethodDetail,
 } from "./newPaymentMethodDetail";
 import { NewSubscriptionContext } from "./newSubscriptionDetail";
 import { textSans } from "@guardian/src-foundations/typography";
@@ -81,7 +80,7 @@ function getPaymentInterval(interval: string) {
 export const ConfirmedNewPaymentDetailsRenderer = ({
   subscription,
   newPaymentMethodDetail,
-  previousProductDetail
+  previousProductDetail,
 }: ConfirmedNewPaymentDetailsRendererProps) => {
   const mainPlan = getMainPlan(subscription);
   const groupedProductType =
@@ -312,7 +311,7 @@ interface PaymentMethodUpdatedProps {
 const PaymentMethodUpdated = ({
   subs,
   newPaymentMethodDetail,
-  previousProductDetail
+  previousProductDetail,
 }: PaymentMethodUpdatedProps) =>
   Array.isArray(subs) && subs.length === 1 ? (
     <>
@@ -353,8 +352,9 @@ const PaymentMethodUpdated = ({
   ) : (
     <>
       <GenericErrorScreen
-        loggingMessage={`${Array.isArray(subs) &&
-          subs.length} subs returned when one was expected`}
+        loggingMessage={`${
+          Array.isArray(subs) && subs.length
+        } subs returned when one was expected`}
       />
       <ReturnToAccountOverviewButton />
     </>
@@ -363,13 +363,13 @@ const PaymentMethodUpdated = ({
 export const PaymentUpdated = (props: RouteableStepProps) => {
   return (
     <MembersDataApiItemContext.Consumer>
-      {previousProductDetail => (
+      {(previousProductDetail) => (
         <NewPaymentMethodContext.Consumer>
-          {newPaymentMethodDetail =>
+          {(newPaymentMethodDetail) =>
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
               <NewSubscriptionContext.Consumer>
-                {newSubscriptionData => (
+                {(newSubscriptionData) => (
                   <WizardStep routeableStepProps={props}>
                     <PaymentMethodUpdated
                       subs={newSubscriptionData}

@@ -1,7 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { brand } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
 import { COUNTRIES } from "../../identity/models";
@@ -41,7 +41,7 @@ export const RecordAddress = (props: DeliveryAddress) => {
             {props.region && <li>{props.region}</li>}
             {props.country && (
               <li>
-                {COUNTRIES.find(country => props.country === country.iso)
+                {COUNTRIES.find((country) => props.country === country.iso)
                   ?.name || props.country}
               </li>
             )}

@@ -1,13 +1,13 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Form, FormikProps, FormikState, withFormik } from "formik";
-import React, { FC } from "react";
+import { FC } from "react";
 import palette from "../../../colours";
 import { Button } from "../../buttons";
 import {
   FormEmailField,
   FormNumberField,
   FormSelectField,
-  FormTextField
+  FormTextField,
 } from "../Form/FormField";
 import * as PhoneNumber from "../idapi/phonenumber";
 import { Users } from "../identity";
@@ -18,7 +18,7 @@ import {
   ErrorTypes,
   PHONE_CALLING_CODES,
   Titles,
-  User
+  User,
 } from "../models";
 import { PageSection } from "../PageSection";
 import { aCss, textSmall } from "../sharedStyles";
@@ -47,7 +47,7 @@ const EmailMessage = (email: string) => (
     css={{
       ...textSmall,
       padding: "6px 14px",
-      backgroundColor: palette.neutral[7]
+      backgroundColor: palette.neutral[7],
     }}
   >
     To verify your new email address <strong>{email}</strong> please check your
@@ -58,14 +58,16 @@ const EmailMessage = (email: string) => (
 
 const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
   const validationNotification = (status: FormikState<User>) => {
-    const errors = Object.entries(status).map(s => <li key={s[0]}>{s[1]}</li>);
+    const errors = Object.entries(status).map((s) => (
+      <li key={s[0]}>{s[1]}</li>
+    ));
     return (
       <div
         css={{
           color: palette.red.medium,
           backgroundColor: "#ffe1e1",
           padding: "20px 15px",
-          ...textSmall
+          ...textSmall,
         }}
       >
         There were some problems submitting your form. Your information has not
@@ -188,7 +190,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
         <FormSelectField
           name="country"
           label="Country"
-          options={COUNTRIES.flatMap(country => country.name)}
+          options={COUNTRIES.flatMap((country) => country.name)}
           formikProps={props}
         />
       </PageSection>
@@ -230,9 +232,9 @@ const FormikForm = withFormik({
     }
     onDone();
     setSubmitting(false);
-  }
+  },
 })(BaseForm);
 
-export const SettingsFormSection: FC<SettingsFormSectionProps> = props => {
+export const SettingsFormSection: FC<SettingsFormSectionProps> = (props) => {
   return <FormikForm {...props} />;
 };

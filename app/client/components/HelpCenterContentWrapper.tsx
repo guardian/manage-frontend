@@ -1,5 +1,5 @@
 import { Location } from "@reach/router";
-import React from "react";
+import * as React from "react";
 import { KnownIssues } from "./helpCentre/knownIssues";
 import { SectionContent } from "./sectionContent";
 import { SectionHeader } from "./sectionHeader";
@@ -20,7 +20,7 @@ export const HelpCenterContentWrapper = (
       )
         ? "Need to contact us?"
         : "How can we help you?";
-      if (pathsWithNav.some(path => location.pathname.startsWith(path))) {
+      if (pathsWithNav.some((path) => location.pathname.startsWith(path))) {
         return (
           <>
             <SectionHeader title={headerTitle} pageHasNav={true} />

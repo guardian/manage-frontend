@@ -1,10 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import Color from "color";
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
@@ -13,7 +12,7 @@ import {
   linkAnchorStyle,
   linkArrowStyle,
   linkListItemStyle,
-  linksListStyle
+  linksListStyle,
 } from "./helpCentreStyles";
 
 interface HelpTopicBoxProps {
@@ -63,9 +62,7 @@ const seeAllAnchorStyle = css`
   color: ${brand[400]};
   background-color: ${brand[800]};
   :hover {
-    background-color: ${Color(brand[800], "hex")
-      .darken(0.1)
-      .string()};
+    background-color: ${Color(brand[800], "hex").darken(0.1).string()};
   }
   :visited {
     color: ${brand[400]};
@@ -96,7 +93,7 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
               trackEvent({
                 eventCategory: "help-centre",
                 eventAction: "popular-topic-q-click",
-                eventLabel: `${props.topic.id}-${question.id}`
+                eventLabel: `${props.topic.id}-${question.id}`,
               });
             }}
           >
@@ -118,7 +115,7 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => (
           trackEvent({
             eventCategory: "help-centre",
             eventAction: "popular-topic-see-all-click",
-            eventLabel: props.topic.id
+            eventLabel: props.topic.id,
           });
         }}
       >

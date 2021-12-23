@@ -1,17 +1,17 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import Color from "color";
-import React, {
+import {
   ChangeEvent,
   Dispatch,
   FormEvent,
   SetStateAction,
   useContext,
-  useState
+  useState,
 } from "react";
 import { dateString } from "../../../../shared/dates";
 import {
@@ -19,7 +19,7 @@ import {
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { createProductDetailFetcher } from "../../../productUtils";
@@ -32,14 +32,14 @@ import { InfoSection } from "../../infoSection";
 import { Input } from "../../input";
 import {
   ProductDescriptionListKeyValue,
-  ProductDescriptionListTable
+  ProductDescriptionListTable,
 } from "../../productDescriptionListTable";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import { updateAddressFetcher } from "../address/deliveryAddressApi";
 import { SuccessMessage } from "../address/deliveryAddressEditConfirmation";
 import {
   addressChangeAffectedInfo,
-  getValidDeliveryAddressChangeEffectiveDates
+  getValidDeliveryAddressChangeEffectiveDates,
 } from "../address/deliveryAddressForm";
 import { convertToDescriptionListData } from "../address/deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "../address/formValidation";
@@ -60,7 +60,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     VALIDATION_ERROR,
     PENDING,
     CONFIRMATION,
-    ERROR
+    ERROR,
   }
 
   const [status, setStatus] = useState(Status.READ_ONLY);
@@ -71,60 +71,58 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     deliveryAddressContext.address ||
     (props.productDetail.subscription.deliveryAddress as DeliveryAddress);
 
-  const [
-    instructionsRemainingCharacters,
-    setInstructionsRemainingCharacters
-  ] = useState<number>(250 - (newAddress.instructions?.length || 0));
-  const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
-    false
-  );
+  const [instructionsRemainingCharacters, setInstructionsRemainingCharacters] =
+    useState<number>(250 - (newAddress.instructions?.length || 0));
+  const [acknowledgementChecked, setAcknowledgementState] =
+    useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<FormValidationResponse>({
-    isValid: false
+    isValid: false,
   });
 
-  const [showCallCentreNumbers, setCallCentreNumbersVisibility] = useState<
-    boolean
-  >(false);
+  const [showCallCentreNumbers, setCallCentreNumbersVisibility] =
+    useState<boolean>(false);
 
-  const [addressChangeInformation, setAddressChangeInformation] = useState<
-    string
-  >();
+  const [addressChangeInformation, setAddressChangeInformation] =
+    useState<string>();
 
-  const handleFormSubmit = (
-    subscriptionsNames: string[],
-    productsAffected: ProductDescriptionListKeyValue[]
-  ) => (e: FormEvent) => {
-    e.preventDefault();
+  const handleFormSubmit =
+    (
+      subscriptionsNames: string[],
+      productsAffected: ProductDescriptionListKeyValue[]
+    ) =>
+    (e: FormEvent) => {
+      e.preventDefault();
 
-    deliveryAddressContext.setProductsAffected?.(productsAffected);
+      deliveryAddressContext.setProductsAffected?.(productsAffected);
 
-    setStatus(Status.PENDING);
+      setStatus(Status.PENDING);
 
-    const isFormValidResponse = isFormValid(newAddress, subscriptionsNames);
+      const isFormValidResponse = isFormValid(newAddress, subscriptionsNames);
 
-    setFormErrors({
-      addressLine1: isFormValidResponse.addressLine1,
-      town: isFormValidResponse.town,
-      postcode: isFormValidResponse.postcode,
-      country: isFormValidResponse.country
-    } as FormValidationResponse);
+      setFormErrors({
+        addressLine1: isFormValidResponse.addressLine1,
+        town: isFormValidResponse.town,
+        postcode: isFormValidResponse.postcode,
+        country: isFormValidResponse.country,
+      } as FormValidationResponse);
 
-    if (isFormValidResponse.isValid && acknowledgementChecked) {
-      props.setAddressValidationState(true);
-      setStatus(Status.CONFIRMATION);
-    } else {
-      setStatus(Status.VALIDATION_ERROR);
-    }
-  };
+      if (isFormValidResponse.isValid && acknowledgementChecked) {
+        props.setAddressValidationState(true);
+        setStatus(Status.CONFIRMATION);
+      } else {
+        setStatus(Status.VALIDATION_ERROR);
+      }
+    };
 
   const renderDeliveryAddressForm = (
     allProductDetails: MembersDataApiItem[]
   ) => {
-    const contactIdToArrayOfProductDetailAndProductType = getValidDeliveryAddressChangeEffectiveDates(
-      allProductDetails
-        .filter(isProduct)
-        .filter(product => product.subscription.readerType !== "Gift")
-    );
+    const contactIdToArrayOfProductDetailAndProductType =
+      getValidDeliveryAddressChangeEffectiveDates(
+        allProductDetails
+          .filter(isProduct)
+          .filter((product) => product.subscription.readerType !== "Gift")
+      );
 
     const addressChangeAffectedInfoArray = addressChangeAffectedInfo(
       contactIdToArrayOfProductDetailAndProductType
@@ -133,7 +131,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
     setAddressChangeInformation(
       [
         ...addressChangeAffectedInfoArray.map(
-          element =>
+          (element) =>
             `${element.friendlyProductName} subscription (${
               element.subscriptionId
             })${
@@ -149,22 +147,22 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
         `(as displayed on confirmation page at ${dateString(
           new Date(),
           "HH:mm:ss x 'on' do MMMM yyyy"
-        )})`
+        )})`,
       ].join("\n")
     );
 
-    const productsAffected: ProductDescriptionListKeyValue[] = convertToDescriptionListData(
-      addressChangeAffectedInfoArray
-    );
+    const productsAffected: ProductDescriptionListKeyValue[] =
+      convertToDescriptionListData(addressChangeAffectedInfoArray);
 
     const subscriptionNames = Object.values(
       contactIdToArrayOfProductDetailAndProductType
     )
       .flatMap(flattenEquivalent)
       .map(({ productDetail }) => {
-        const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-          productDetail
-        ).friendlyName;
+        const friendlyProductName =
+          GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
+            productDetail
+          ).friendlyName;
         return `${friendlyProductName}`;
       });
 
@@ -197,7 +195,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  addressLine1: value
+                  addressLine1: value,
                 })
               }
               inErrorState={
@@ -213,7 +211,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  addressLine2: value
+                  addressLine2: value,
                 })
               }
               optional={true}
@@ -225,7 +223,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  town: value
+                  town: value,
                 })
               }
               inErrorState={
@@ -241,7 +239,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  region: value
+                  region: value,
                 })
               }
             />
@@ -252,7 +250,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  postcode: value
+                  postcode: value,
                 })
               }
               inErrorState={
@@ -263,10 +261,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
             />
             <Select
               label={"Country"}
-              options={COUNTRIES.map(country => {
+              options={COUNTRIES.map((country) => {
                 return {
                   name: country.name,
-                  value: country.name
+                  value: country.name,
                 };
               })}
               width={30}
@@ -274,13 +272,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                 margin-top: 14px;
               `}
               value={
-                COUNTRIES.find(country => newAddress.country === country.iso)
+                COUNTRIES.find((country) => newAddress.country === country.iso)
                   ?.name || newAddress.country
               }
               changeSetState={(value: string) =>
                 deliveryAddressContext.setAddress?.({
                   ...newAddress,
-                  country: value
+                  country: value,
                 })
               }
               inErrorState={
@@ -318,7 +316,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
                       onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
                         deliveryAddressContext.setAddress?.({
                           ...newAddress,
-                          instructions: e.target.value
+                          instructions: e.target.value,
                         });
                         setInstructionsRemainingCharacters(
                           250 - e.target.value.length
@@ -502,9 +500,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
           additionalCss={css`
             margin-bottom: 0;
           `}
-          message={`We have successfully updated your delivery details for your subscription${deliveryAddressContext.productsAffected &&
+          message={`We have successfully updated your delivery details for your subscription${
+            deliveryAddressContext.productsAffected &&
             deliveryAddressContext.productsAffected.length > 1 &&
-            "s"}. You will shortly receive a confirmation email.`}
+            "s"
+          }. You will shortly receive a confirmation email.`}
         />
       </div>
       <ReadOnlyAddressDisplay
@@ -551,7 +551,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
         fetch={updateAddressFetcher(
           {
             ...newAddress,
-            addressChangeInformation
+            addressChangeInformation,
           },
           props.productDetail.subscription.contactId
         )}

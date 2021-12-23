@@ -1,12 +1,12 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import {
   breakpoints,
   neutral,
   palette,
-  space
+  space,
 } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductDetail } from "../../../shared/productResponse";
 import { allProductsDetailFetcher } from "../../productUtils";
 import { minWidth } from "../../styles/breakpoints";
@@ -35,7 +35,7 @@ export const KnownIssues = () => {
         (issue: Issue) => !!issue.affectedProducts?.length
       );
       const globalIssues = unfilteredDateSortedIssues.filter(
-        issue => !issue.affectedProducts
+        (issue) => !issue.affectedProducts
       );
       setIssuesData(globalIssues);
 
@@ -44,13 +44,14 @@ export const KnownIssues = () => {
           window.guardian?.identityDetails?.signInStatus || "";
         if (signInStatus === "signedInRecently") {
           const productDetailsResponse = await allProductsDetailFetcher();
-          const productDetails: ProductDetail[] = await productDetailsResponse.json();
+          const productDetails: ProductDetail[] =
+            await productDetailsResponse.json();
           const userProductNames = productDetails.map(
-            productDetail => productDetail.tier
+            (productDetail) => productDetail.tier
           );
 
-          const productIssues = unfilteredDateSortedIssues.filter(issue =>
-            issue.affectedProducts?.some(product =>
+          const productIssues = unfilteredDateSortedIssues.filter((issue) =>
+            issue.affectedProducts?.some((product) =>
               userProductNames.includes(product)
             )
           );

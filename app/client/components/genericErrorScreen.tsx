@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/browser";
-import React from "react";
 import { trackEvent } from "./analytics";
 import { CallCentreNumbers } from "./callCentreNumbers";
 import { WithStandardTopMargin } from "./WithStandardTopMargin";
@@ -9,14 +8,14 @@ interface GenericErrorScreenProps {
 }
 
 export const GenericErrorScreen = ({
-  loggingMessage
+  loggingMessage,
 }: GenericErrorScreenProps) => {
   if (loggingMessage) {
     Sentry.captureException(loggingMessage);
     trackEvent({
       eventCategory: "genericErrorScreen",
       eventAction: "error",
-      eventLabel: loggingMessage
+      eventLabel: loggingMessage,
     });
   }
 

@@ -1,6 +1,5 @@
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import React from "react";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { PaginationNav } from "../../../../components/delivery/records/deliveryRecordsPaginationNav";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -18,18 +17,8 @@ describe("PaginationNav", () => {
     );
 
     expect(wrapper.find("li")).toHaveLength(13);
-    expect(
-      wrapper
-        .find("li")
-        .at(0)
-        .text()
-    ).toEqual("1");
-    expect(
-      wrapper
-        .find("li")
-        .at(12)
-        .text()
-    ).toEqual("13");
+    expect(wrapper.find("li").at(0).text()).toEqual("1");
+    expect(wrapper.find("li").at(12).text()).toEqual("13");
   });
 
   it("renders the correct summary", () => {

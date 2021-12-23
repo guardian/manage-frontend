@@ -1,9 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowRightStraight } from "@guardian/src-icons";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as React from "react";
 import { getGeoLocation } from "../../geolocation";
 import { trackEventInOphanOnly } from "../analytics";
 
@@ -60,7 +61,7 @@ const getDefaultLabel = (date: Date, monthsUntilDate: number, now: Date) => {
 
 const getDefaultThankYouMessage = (date: Date) =>
   date.toLocaleDateString("default", {
-    month: "long"
+    month: "long",
   });
 
 const getDefaultReminderChoice = (monthsUntilDate: number): ReminderChoice => {
@@ -72,15 +73,15 @@ const getDefaultReminderChoice = (monthsUntilDate: number): ReminderChoice => {
     thankYouMessage: getDefaultThankYouMessage(date),
     signup: {
       reminderPeriod: getReminderPeriod(date),
-      reminderOption: getReminderOption(monthsUntilDate)
-    }
+      reminderOption: getReminderOption(monthsUntilDate),
+    },
   };
 };
 
 const getDefaultReminderChoices = (): ReminderChoice[] => [
   getDefaultReminderChoice(3),
   getDefaultReminderChoice(6),
-  getDefaultReminderChoice(9)
+  getDefaultReminderChoice(9),
 ];
 
 export const CancellationContributionReminder: React.FC = () => {
@@ -101,15 +102,15 @@ export const CancellationContributionReminder: React.FC = () => {
         reminderPlatform: REMINDER_PLATFORM,
         reminderComponent: REMINDER_COMPONENT,
         reminderStage: REMINDER_STAGE,
-        ...selectedChoice.signup
-      })
+        ...selectedChoice.signup,
+      }),
     });
 
   const onSubmit = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow",
       eventAction: "click",
-      eventLabel: `set_reminder__${selectedChoice.signup.reminderOption}`
+      eventLabel: `set_reminder__${selectedChoice.signup.reminderOption}`,
     });
 
     setReminder();
@@ -120,7 +121,7 @@ export const CancellationContributionReminder: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow",
       eventAction: "view",
-      eventLabel: `set_reminder`
+      eventLabel: `set_reminder`,
     });
   }, []);
 

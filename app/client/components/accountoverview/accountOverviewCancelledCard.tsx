@@ -1,12 +1,11 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { parseDate } from "../../../shared/dates";
 import {
   CancelledProductDetail,
-  isGift
+  isGift,
 } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
@@ -191,7 +190,7 @@ export const AccountOverviewCancelledCard = (
                   trackEvent({
                     eventCategory: "href",
                     eventAction: "click",
-                    eventLabel: "subscribe_again"
+                    eventLabel: "subscribe_again",
                   });
                 }}
               >

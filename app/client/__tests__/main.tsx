@@ -1,9 +1,8 @@
 import "dom-testing-library/extend-expect";
-import React from "react";
 
-import serializer from "jest-emotion";
+import { createSerializer } from "@emotion/jest";
 
-expect.addSnapshotSerializer(serializer);
+expect.addSnapshotSerializer(createSerializer());
 
 import renderer from "react-test-renderer";
 

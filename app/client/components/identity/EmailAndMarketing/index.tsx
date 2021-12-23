@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { ProductDetail } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { allProductsDetailFetcher } from "../../../productUtils";
@@ -8,7 +8,7 @@ import { Spinner } from "../../spinner";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   GenericErrorMessage,
-  GenericErrorMessageRef
+  GenericErrorMessageRef,
 } from "../GenericErrorMessage";
 import { ConsentOptions, Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
@@ -63,17 +63,17 @@ const EmailAndMarketing = (_: { path?: string }) => {
           return;
         }
         const productDetailsResponse = await allProductsDetailFetcher();
-        const productDetails: ProductDetail[] = await productDetailsResponse.json();
+        const productDetails: ProductDetail[] =
+          await productDetailsResponse.json();
         const consentOptions = await ConsentOptions.getAll();
         const consentsWithFilteredSoftOptIns = consentOptions.filter(
           (consent: ConsentOption) =>
             consent.isProduct
-              ? productDetails.some(productDetail => {
+              ? productDetails.some((productDetail) => {
                   const groupedProductType =
                     GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-                  const specificProductType = groupedProductType.mapGroupedToSpecific(
-                    productDetail
-                  );
+                  const specificProductType =
+                    groupedProductType.mapGroupedToSpecific(productDetail);
                   return specificProductType.softOptInIDs.includes(consent.id);
                 })
               : true
@@ -92,7 +92,7 @@ const EmailAndMarketing = (_: { path?: string }) => {
   const consents = ConsentOptions.consents(state.options);
   const loading = newsletters.length === 0 && consents.length === 0;
 
-  const errorRef = React.createRef<GenericErrorMessageRef>();
+  const errorRef = createRef<GenericErrorMessageRef>();
 
   useEffect(() => {
     if (state.error && errorRef.current) {

@@ -1,15 +1,14 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
 import {
   MenuSpecificNavItem,
   NAV_LINKS,
   NavItem,
-  PROFILE_HOST_NAME
+  PROFILE_HOST_NAME,
 } from "./navConfig";
 
 const leftNavCss = css({
@@ -19,7 +18,7 @@ const leftNavCss = css({
   borderBottom: 0,
   listStyleType: "none",
   position: "sticky",
-  top: "1rem"
+  top: "1rem",
 });
 
 const leftNavLinkCss = (isSelected: boolean | undefined) =>
@@ -55,13 +54,13 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
         right: 0,
         height: "1px",
         width: "calc(100% - 22px)",
-        backgroundColor: neutral["86"]
+        backgroundColor: neutral["86"],
       },
 
       ":hover": {
-        backgroundColor: isSelected ? neutral["100"] : neutral["97"]
-      }
-    }
+        backgroundColor: isSelected ? neutral["100"] : neutral["97"],
+      },
+    },
   });
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
@@ -70,8 +69,8 @@ const leftNavItemCss = (isSelected: boolean | undefined) => ({
   display: "block",
   width: "100%",
   [minWidth.tablet]: {
-    minWidth: "155.5px" // gross hack to make IE11 work
-  }
+    minWidth: "155.5px", // gross hack to make IE11 work
+  },
 });
 
 const leftNavIconCss = css({
@@ -81,7 +80,7 @@ const leftNavIconCss = css({
   height: "100%",
   maxWidth: `${space[5]}px`,
   maxHeight: `${space[5]}px`,
-  marginRight: `${space[5]}px`
+  marginRight: `${space[5]}px`,
 });
 
 export interface LeftSideNavProps {
@@ -91,7 +90,7 @@ export interface LeftSideNavProps {
 export const LeftSideNav = (props: LeftSideNavProps) => (
   <ul role="tablist" css={leftNavCss}>
     {Object.values(NAV_LINKS)
-      .filter(navItem => !navItem.isDropDownExclusive)
+      .filter((navItem) => !navItem.isDropDownExclusive)
       .map((navItem: MenuSpecificNavItem) => (
         <li
           css={leftNavItemCss(props.selectedNavItem === navItem)}

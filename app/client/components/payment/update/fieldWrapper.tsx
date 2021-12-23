@@ -1,6 +1,6 @@
 import { StripeError } from "@stripe/stripe-js";
-import React from "react";
-import { css } from "@emotion/core";
+import * as React from "react";
+import { css } from "@emotion/react";
 import palette from "../../../colours";
 import { textSans } from "@guardian/src-foundations/typography";
 import { neutral, error } from "@guardian/src-foundations/palette";
@@ -31,18 +31,21 @@ export class FieldWrapper extends React.Component<
     super(props);
     this.state = {
       error: {},
-      focus: false
+      focus: false,
     };
   }
 
   public render(): React.ReactNode {
-    const hydratedChildren = React.Children.map(this.props.children, child => {
-      return React.cloneElement(child as React.ReactElement<any>, {
-        onChange: this.validateField(this.props.onChange),
-        onFocus: this.toggleFocus,
-        onBlur: this.toggleFocus
-      });
-    });
+    const hydratedChildren = React.Children.map(
+      this.props.children,
+      (child) => {
+        return React.cloneElement(child as React.ReactElement<any>, {
+          onChange: this.validateField(this.props.onChange),
+          onFocus: this.toggleFocus,
+          onBlur: this.toggleFocus,
+        });
+      }
+    );
 
     return (
       <div
@@ -52,8 +55,8 @@ export class FieldWrapper extends React.Component<
           marginBottom: "10px",
           textAlign: "left",
           ":not(:first-of-type)": {
-            marginLeft: "20px"
-          }
+            marginLeft: "20px",
+          },
         }}
       >
         <div
@@ -105,9 +108,9 @@ export class FieldWrapper extends React.Component<
             width: "100%",
             transition: "all .2s ease-in-out",
             "&:hover": {
-              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`
+              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`,
             },
-            outline: 0
+            outline: 0,
           }}
         >
           {hydratedChildren}
@@ -116,20 +119,20 @@ export class FieldWrapper extends React.Component<
     );
   }
 
-  private validateField = (otherOnChange?: (event: any) => void) => (field: {
-    error: StripeError;
-  }) => {
-    if (otherOnChange) {
-      otherOnChange(field);
-    }
-    this.setState({
-      error: field.error?.message ? field.error : {}
-    });
-  };
+  private validateField =
+    (otherOnChange?: (event: any) => void) =>
+    (field: { error: StripeError }) => {
+      if (otherOnChange) {
+        otherOnChange(field);
+      }
+      this.setState({
+        error: field.error?.message ? field.error : {},
+      });
+    };
 
   private toggleFocus = () => {
     this.setState({
-      focus: !this.state.focus
+      focus: !this.state.focus,
     });
   };
 }

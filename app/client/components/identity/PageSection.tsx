@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import palette from "../../colours";
 import { minWidth } from "../../styles/breakpoints";
 import { sans } from "../../styles/fonts";
@@ -15,7 +15,7 @@ const getTitle = (title: PageSectionProps["title"]) => (
       fontSize: "17px",
       lineHeight: "24px",
       fontWeight: "bold",
-      margin: "0 0 6px 0"
+      margin: "0 0 6px 0",
     }}
   >
     {title}
@@ -27,7 +27,7 @@ const getDescription = (description: PageSectionProps["description"]) => (
     css={{
       fontFamily: sans,
       fontSize: "14px",
-      marginBottom: "8px"
+      marginBottom: "8px",
     }}
   >
     {description}
@@ -42,21 +42,21 @@ const getSubtext = (subtext: PageSectionProps["subtext"]) => (
       fontFamily: sans,
       color: palette.neutral["3"],
       marginBottom: "12px",
-      marginTop: "0"
+      marginTop: "0",
     }}
   >
     {subtext}
   </p>
 );
 
-export const PageSection: FC<PageSectionProps> = props => {
+export const PageSection: FC<PageSectionProps> = (props) => {
   const { children, description, title, subtext } = props;
   return (
     <div
       css={{
         [minWidth.desktop]: {
-          display: "flex"
-        }
+          display: "flex",
+        },
       }}
     >
       <div
@@ -65,8 +65,8 @@ export const PageSection: FC<PageSectionProps> = props => {
             paddingRight: "100px",
             boxSizing: "content-box",
             flexBasis: "220px",
-            minWidth: "220px"
-          }
+            minWidth: "220px",
+          },
         }}
       >
         {title && getTitle(title)}
@@ -77,8 +77,8 @@ export const PageSection: FC<PageSectionProps> = props => {
         css={{
           [minWidth.desktop]: {
             maxWidth: "460px",
-            flexGrow: 1
-          }
+            flexGrow: 1,
+          },
         }}
       >
         {children}

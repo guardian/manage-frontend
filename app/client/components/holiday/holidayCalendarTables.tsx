@@ -1,23 +1,23 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import {
   SvgArrowLeftStraight,
-  SvgArrowRightStraight
+  SvgArrowRightStraight,
 } from "@guardian/src-icons";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
   dateAddDays,
   dateAddMonths,
   dateIsSameOrAfter,
   dateIsSameOrBefore,
-  DateStates
+  DateStates,
 } from "../../../shared/dates";
 import { minWidth } from "../../styles/breakpoints";
 import { HolidayCalendarTable } from "./holidayCalendarTable";
 import {
   HolidayDateChooserStateContext,
-  SharedHolidayDateChooserState
+  SharedHolidayDateChooserState,
 } from "./holidayDateChooser";
 
 interface HolidayCalendarTablesProps {
@@ -58,7 +58,7 @@ export const selectDatesFromRange = (
     wholeRangeSlice = wholeRangeSlice.reverse();
   }
   const firstNonSelectableDate = wholeRangeSlice.findIndex(
-    calendarDateIndex => allDates[calendarDateIndex].isExisting
+    (calendarDateIndex) => allDates[calendarDateIndex].isExisting
   );
   const onlySelectableDates =
     firstNonSelectableDate > -1
@@ -91,24 +91,24 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
         props.maybeLockedStartDate || props.minimumDate
       ) && dateIsSameOrBefore(date, props.maximumDate),
     isDeliveryDay: !!props.daysOfWeekToIconify?.some(
-      iconDay => iconDay === (date.getDay() || 7)
+      (iconDay) => iconDay === (date.getDay() || 7)
     ),
     isSelected: holidayDateChooserStateContext.selectedRange
       ? date >= holidayDateChooserStateContext.selectedRange.start &&
         date <= holidayDateChooserStateContext.selectedRange.end
       : props.dateStates?.some(
-          dateState =>
+          (dateState) =>
             date >= dateState.range.start &&
             date <= dateState.range.end &&
             dateState.state === "amend"
         ),
     isExisting: props.dateStates?.some(
-      dateState =>
+      (dateState) =>
         date >= dateState.range.start &&
         date <= dateState.range.end &&
         dateState.state === "existing"
     ),
-    showAsterisk: date.valueOf() === props.dateToAsterisk?.valueOf()
+    showAsterisk: date.valueOf() === props.dateToAsterisk?.valueOf(),
   });
 
   const holidayDatesInitFill: CalendarTableDate[] = [];
@@ -120,15 +120,13 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
     }
   }
 
-  const [holidayDates, setHolidayDates] = useState<CalendarTableDate[]>(
-    holidayDatesInitFill
-  );
+  const [holidayDates, setHolidayDates] =
+    useState<CalendarTableDate[]>(holidayDatesInitFill);
 
   const [inSelectionMode, setSelectionModeTo] = useState<boolean>(false);
 
-  const [startOfSelectionDateIndex, setStartOfSelectionDateIndex] = useState<
-    number
-  >(-1);
+  const [startOfSelectionDateIndex, setStartOfSelectionDateIndex] =
+    useState<number>(-1);
 
   const [mouseDownStartDate, setMouseDownStartDate] = useState<Date | null>(
     null
@@ -157,7 +155,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 
   const dayMouseDown = (day: Date) => {
     const targetStateDayIndex = holidayDates.findIndex(
-      holidayDate => holidayDate.date.valueOf() === day.valueOf()
+      (holidayDate) => holidayDate.date.valueOf() === day.valueOf()
     );
     if (
       !inSelectionMode &&
@@ -169,7 +167,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
       setHolidayDates(
         holidayDates.map((holidayDate, holidayDateIndex) => ({
           ...holidayDate,
-          isSelected: holidayDateIndex === targetStateDayIndex ? true : false
+          isSelected: holidayDateIndex === targetStateDayIndex ? true : false,
         }))
       );
       setSelectionModeTo(true);
@@ -186,7 +184,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
       dateIsSameOrBefore(day, props.maximumDate)
     ) {
       const targetStateDayIndex = holidayDates.findIndex(
-        holidayDate => holidayDate.date.valueOf() === day.valueOf()
+        (holidayDate) => holidayDate.date.valueOf() === day.valueOf()
       );
       if (targetStateDayIndex > -1 && startOfSelectionDateIndex > -1) {
         const dateIndexesThatShouldBeSelected = selectDatesFromRange(
@@ -198,8 +196,8 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
           holidayDates.map((holidayDate, holidayDateIndex) => ({
             ...holidayDate,
             isSelected: dateIndexesThatShouldBeSelected.some(
-              selectedIndex => selectedIndex === holidayDateIndex
-            )
+              (selectedIndex) => selectedIndex === holidayDateIndex
+            ),
           }))
         );
       }
@@ -215,7 +213,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
       !!mouseDownStartDate && mouseDownStartDate.valueOf() !== day.valueOf();
     if (!inSelectionMode || inDraggingMode) {
       const selectedDatesRange = holidayDates.filter(
-        holidayDate => holidayDate.isSelected
+        (holidayDate) => holidayDate.isSelected
       );
       if (selectedDatesRange.length > 0) {
         const selecteRangeStartDate = selectedDatesRange[0].date;
@@ -224,7 +222,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 
         props.handleRangeChoosen({
           startDate: selecteRangeStartDate,
-          endDate: selecteRangeEndDate
+          endDate: selecteRangeEndDate,
         });
       }
     }
@@ -252,7 +250,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
         `}
         onClick={() =>
           setVisableMonths(
-            visableMonths.map(visableMonthIndex => visableMonthIndex - 1)
+            visableMonths.map((visableMonthIndex) => visableMonthIndex - 1)
           )
         }
       >
@@ -274,7 +272,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
         `}
         onClick={() =>
           setVisableMonths(
-            visableMonths.map(visableMonthIndex => visableMonthIndex + 1)
+            visableMonths.map((visableMonthIndex) => visableMonthIndex + 1)
           )
         }
       >
@@ -291,7 +289,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
           handleDayMouseEnter={dayMouseEnter}
           hideAtDesktop={
             !visableMonths.some(
-              visibleDesktopMonthIndex =>
+              (visibleDesktopMonthIndex) =>
                 visibleDesktopMonthIndex === monthIndex
             )
           }

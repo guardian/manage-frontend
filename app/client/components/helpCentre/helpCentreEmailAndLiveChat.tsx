@@ -1,7 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { neutral, space, text } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { StartLiveChatButton } from "../liveChat/liveChat";
 import { ErrorIcon } from "../svgs/errorIcon";

@@ -1,12 +1,12 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { capitalize } from "lodash";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { parseDate } from "../../../shared/dates";
 import {
   augmentInterval,
-  PaidSubscriptionPlan
+  PaidSubscriptionPlan,
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import { Button } from "../buttons";
@@ -29,7 +29,7 @@ export const ContributionUpdateAmount = (
   enum Status {
     OVERVIEW,
     EDITING,
-    CONFIRMED
+    CONFIRMED,
   }
 
   const [status, setStatus] = useState<Status>(Status.OVERVIEW);
@@ -43,7 +43,7 @@ export const ContributionUpdateAmount = (
         {...props}
         currentAmount={currentAmount}
         mode="MANAGE"
-        onUpdateConfirmed={updatedAmount => {
+        onUpdateConfirmed={(updatedAmount) => {
           setConfirmedAmount(updatedAmount);
           setStatus(Status.CONFIRMED);
         }}
@@ -55,10 +55,12 @@ export const ContributionUpdateAmount = (
     <>
       {status === Status.CONFIRMED && (
         <SuccessMessage
-          message={`We have successfully updated the amount of your contribution. ${props.nextPaymentDate &&
+          message={`We have successfully updated the amount of your contribution. ${
+            props.nextPaymentDate &&
             `This amount will be taken on ${parseDate(
               props.nextPaymentDate
-            ).dateStr()}. `}Thank you for supporting the Guardian.`}
+            ).dateStr()}. `
+          }Thank you for supporting the Guardian.`}
           additionalCss={css`
             margin-bottom: ${space[5]}px;
           `}
@@ -73,8 +75,8 @@ export const ContributionUpdateAmount = (
             )} amount`,
             value: `${props.mainPlan.currency}${currentAmount.toFixed(2)} ${
               props.mainPlan.currencyISO
-            }`
-          }
+            }`,
+          },
         ]}
       />
       <Button

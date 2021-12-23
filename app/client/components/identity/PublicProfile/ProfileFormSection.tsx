@@ -1,5 +1,4 @@
 import { Form, FormikProps, withFormik } from "formik";
-import React from "react";
 import * as Yup from "yup";
 import { Button } from "../../buttons";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
@@ -18,7 +17,7 @@ interface ProfileFormSectionProps {
 const formValidationSchema = Yup.object().shape({
   username: Yup.string()
     .min(6, "Must be 6 characters minimum")
-    .max(20, "Must be 20 characters or less")
+    .max(20, "Must be 20 characters or less"),
 });
 
 const usernameInput = (formikProps: FormikProps<User>) => (
@@ -34,7 +33,7 @@ const usernameInput = (formikProps: FormikProps<User>) => (
 const fieldSetCss = {
   border: "0",
   margin: "0",
-  padding: "0"
+  padding: "0",
 };
 
 const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
@@ -69,7 +68,7 @@ const EnhancedProfileForm = withFormik({
     }
     setSubmitting(false);
   },
-  validationSchema: formValidationSchema
+  validationSchema: formValidationSchema,
 })(ProfileForm);
 
 export const ProfileFormSection = (props: ProfileFormSectionProps) => {

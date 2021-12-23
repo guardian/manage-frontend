@@ -1,5 +1,5 @@
-import { css } from "@emotion/core";
-import React from "react";
+import { css } from "@emotion/react";
+import * as React from "react";
 
 interface WithStandardTopMarginProps {
   children: React.ReactNode;

@@ -1,7 +1,6 @@
 import { Radio } from "@guardian/src-radio";
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import React from "react";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { DeliveryProblemType } from "../../../../../../shared/productTypes";
 import { DeliveryRecordProblemForm } from "../../../../../components/delivery/records/deliveryRecordsProblemForm";
 

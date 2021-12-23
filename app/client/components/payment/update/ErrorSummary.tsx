@@ -1,6 +1,6 @@
-import React from "react";
+import * as React from "react";
 import { Props } from "@guardian/src-helpers";
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { size } from "@guardian/src-foundations/size";
 import { textSans } from "@guardian/src-foundations/typography";
@@ -44,8 +44,8 @@ const iconStyles = (color: string): SerializedStyles => css`
 `;
 
 const messageStyles = (color: string, isBold = true): SerializedStyles => css`
-	${textSans.medium({ fontWeight: isBold ? "bold" : "regular" })}
-	color: ${color};
+  ${textSans.medium({ fontWeight: isBold ? "bold" : "regular" })}
+  color: ${color};
 `;
 
 const messageWrapperStyles = css`

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
   DATE_FNS_INPUT_FORMAT,
   dateAddYears,
@@ -7,7 +7,7 @@ import {
   dateString,
   getOldestDate,
   parseDate,
-  ParsedDate
+  ParsedDate,
 } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
@@ -105,44 +105,40 @@ export const convertRawPotentialHolidayStopDetail = (
 ) => ({
   estimatedPrice: raw.credit,
   invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
-  publicationDate: parseDate(raw.publicationDate)
+  publicationDate: parseDate(raw.publicationDate),
 });
 
-export class GetHolidayStopsAsyncLoader extends AsyncLoader<
-  GetHolidayStopsResponse
-> {}
+export class GetHolidayStopsAsyncLoader extends AsyncLoader<GetHolidayStopsResponse> {}
 
 // tslint:disable-next-line:max-classes-per-file
-export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<
-  PotentialHolidayStopsResponse
-> {}
+export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<PotentialHolidayStopsResponse> {}
 
-export const getPotentialHolidayStopsFetcher = (
-  subscriptionName: string,
-  startDate: Date,
-  endDate: Date,
-  isTestUser: boolean
-) => () =>
-  fetch(
-    `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
-      startDate,
-      DATE_FNS_INPUT_FORMAT
-    )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
-    {
-      headers: {
-        [MDA_TEST_USER_HEADER]: `${isTestUser}`
+export const getPotentialHolidayStopsFetcher =
+  (
+    subscriptionName: string,
+    startDate: Date,
+    endDate: Date,
+    isTestUser: boolean
+  ) =>
+  () =>
+    fetch(
+      `/api/holidays/${subscriptionName}/potential?startDate=${dateString(
+        startDate,
+        DATE_FNS_INPUT_FORMAT
+      )}&endDate=${dateString(endDate, DATE_FNS_INPUT_FORMAT)}`,
+      {
+        headers: {
+          [MDA_TEST_USER_HEADER]: `${isTestUser}`,
+        },
       }
-    }
-  );
+    );
 
 export interface CreateOrAmendHolidayStopsResponse {
   success: string;
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<
-  CreateOrAmendHolidayStopsResponse
-> {}
+export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<CreateOrAmendHolidayStopsResponse> {}
 
 export const HolidayStopsResponseContext: React.Context<
   ReloadableGetHolidayStopsResponse | {}
@@ -178,12 +174,12 @@ const embellishRawHolidayStop = (
       rawHolidayStopRequest.endDate
     ),
     publicationsImpacted: rawHolidayStopRequest.publicationsImpacted.map(
-      raw => ({
+      (raw) => ({
         ...raw,
         publicationDate: parseDate(raw.publicationDate),
-        invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined
+        invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
       })
-    )
+    ),
   } as HolidayStopRequest);
 
 export const embellishExistingHolidayStops = async (response: Response) => {
@@ -194,13 +190,15 @@ export const embellishExistingHolidayStops = async (response: Response) => {
       // taking the oldest date here is only knowingly safe for GW (once per week) and Voucher (no fulfilment)
       // it will need to re-visited for Home Delivery
       firstAvailableDate: getOldestDate(
-        raw.issueSpecifics.map(_ => parseDate(_.firstAvailableDate).date)
+        raw.issueSpecifics.map((_) => parseDate(_.firstAvailableDate).date)
       ),
-      issueDaysOfWeek: raw.issueSpecifics.map(_ => _.issueDayOfWeek)
+      issueDaysOfWeek: raw.issueSpecifics.map((_) => _.issueDayOfWeek),
     },
     existing: raw.existing
       .map(embellishRawHolidayStop)
-      .sort((a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf())
+      .sort(
+        (a, b) => a.dateRange.start.valueOf() - b.dateRange.start.valueOf()
+      ),
   } as GetHolidayStopsResponse;
 };
 
@@ -215,14 +213,14 @@ export const calculateIssuesImpactedPerYear = (
 ) => {
   return {
     issuesThisYear: publicationsImpacted.filter(
-      issue =>
+      (issue) =>
         issue.publicationDate.isBefore(anniversaryDate) &&
         issue.publicationDate.isSameOrAfter(dateAddYears(anniversaryDate, -1))
     ),
     issuesNextYear: publicationsImpacted.filter(
-      issue =>
+      (issue) =>
         issue.publicationDate.isSameOrAfter(anniversaryDate) &&
         issue.publicationDate.isBefore(dateAddYears(anniversaryDate, 1))
-    )
+    ),
   } as IssuesImpactedPerYear;
 };

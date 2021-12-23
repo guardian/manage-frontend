@@ -1,14 +1,13 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React from "react";
 import { trackEvent } from "../analytics";
 import {
   h2Css,
   linkAnchorStyle,
   linkArrowStyle,
   linkListItemStyle,
-  linksListStyle
+  linksListStyle,
 } from "./helpCentreStyles";
 import { SingleTopic } from "./HelpCentreTypes";
 
@@ -46,7 +45,7 @@ export const HelpCentreSingleTopic = (props: HelpCentreSingleTopicProps) => {
                 trackEvent({
                   eventCategory: "help-centre",
                   eventAction: "article-click",
-                  eventLabel: `${props.id}:${article.path}`
+                  eventLabel: `${props.id}:${article.path}`,
                 });
               }}
             >

@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 interface LinesProps {
   n: number;
   margin?: string;
 }
 
-export const Lines: FC<LinesProps> = props => {
+export const Lines: FC<LinesProps> = (props) => {
   const { n, margin } = props;
   const thickness = 1;
   const distance = 4;
@@ -19,7 +19,7 @@ export const Lines: FC<LinesProps> = props => {
           backgroundPosition: "top",
           height: `${height}px`,
           border: 0,
-          margin: margin ? margin : "12px auto 6px"
+          margin: margin ? margin : "12px auto 6px",
         }}
       />
     </>

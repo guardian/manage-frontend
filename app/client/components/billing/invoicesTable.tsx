@@ -1,8 +1,8 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import { parseDate } from "../../../shared/dates";
 import { InvoiceDataApiItem } from "../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
@@ -19,7 +19,7 @@ const invoicePaymentMethods = {
   CARD: "card",
   DIRECT_DEBIT: "directdebit",
   PAYPAL: "paypal",
-  SEPA: "sepa"
+  SEPA: "sepa",
 };
 
 interface InvoiceInfo extends InvoiceDataApiItem {
@@ -36,7 +36,7 @@ interface InvoicesTableProps {
 export const InvoicesTable = (props: InvoicesTableProps) => {
   const [
     trackingPaginationInteractionCount,
-    setTrackingPaginationInteractionCount
+    setTrackingPaginationInteractionCount,
   ] = useState<number>(1);
   const initialPage = 1;
 
@@ -46,17 +46,16 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
   const invoiceYears = [
     ...new Set(
       [...props.invoiceData].map(
-        invoice => `${parseDate(invoice.date).date.getFullYear()}`
+        (invoice) => `${parseDate(invoice.date).date.getFullYear()}`
       )
-    )
+    ),
   ];
   const [currentInvoiceYear, setCurrentInvoiceYear] = useState<string>(
     invoiceYears[0]
   );
 
-  const [currentPaginationPage, setCurrentPaginationPage] = useState<number>(
-    initialPage
-  );
+  const [currentPaginationPage, setCurrentPaginationPage] =
+    useState<number>(initialPage);
 
   const directPaginationUpdate = (newPageNumber: number) => {
     const targetInvoiceYear = `${parseDate(
@@ -68,7 +67,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
       eventCategory: "invoice",
       eventAction: "click",
       eventLabel: "invoice_pagination_select",
-      eventValue: trackingPaginationInteractionCount
+      eventValue: trackingPaginationInteractionCount,
     });
     setTrackingPaginationInteractionCount(
       trackingPaginationInteractionCount + 1
@@ -77,7 +76,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
   const directYearUpdate = (newYear: string) => {
     const invoiceIndex = props.invoiceData.findIndex(
-      invoice => `${parseDate(invoice.date).date.getFullYear()}` === newYear
+      (invoice) => `${parseDate(invoice.date).date.getFullYear()}` === newYear
     );
     const targetPage = Math.ceil((invoiceIndex + 1) / props.resultsPerPage);
     setCurrentPaginationPage(targetPage);
@@ -184,7 +183,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
       background-color: ${rowIndex % 2 === 0 ? neutral[97] : "transparent"};
       :before {
         display: none;
-        content:"";
+        content: "";
       }
     }
   `;
@@ -262,7 +261,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                     props.resultsPerPage
             )
             .map((tableRow, index) => {
-              const paymentMethodLowercase = tableRow.paymentMethod.toLowerCase();
+              const paymentMethodLowercase =
+                tableRow.paymentMethod.toLowerCase();
               return (
                 <div css={tableRowCss2} key={tableRow.invoiceId}>
                   <div css={tdCss2(index, tableHeadings[0])}>
@@ -321,7 +321,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`
+                          eventLabel: `view_${tableRow.productUrlPart}_pdf_invoice`,
                         })
                       }
                     >
@@ -337,7 +337,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
                         trackEvent({
                           eventCategory: "invoice",
                           eventAction: "click",
-                          eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`
+                          eventLabel: `download_${tableRow.productUrlPart}_pdf_invoice`,
                         })
                       }
                     >

@@ -1,16 +1,17 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import {
   background,
   palette,
   space,
   text,
-  transitions
+  transitions,
 } from "@guardian/src-foundations";
 import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { height } from "@guardian/src-foundations/size";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as React from "react";
 import { ErrorIcon } from "../svgs/errorIcon";
 
 interface UploadFileUploadProps {
@@ -134,7 +135,7 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
               margin-left: ${space[3]}px;
               text-decoration: underline;
             `}
-            onClick={event => {
+            onClick={(event) => {
               event.preventDefault();
               setSelectedFile(undefined);
             }}

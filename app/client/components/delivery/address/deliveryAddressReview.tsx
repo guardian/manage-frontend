@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link, navigate } from "@reach/router";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../../callCenterEmailAndNumbers";
 import { InfoSection } from "../../infoSection";
@@ -13,13 +13,13 @@ import { ProgressIndicator } from "../../progressIndicator";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import { DeliveryAddressDisplay } from "./deliveryAddressDisplay";
 import {
   AddressChangedInformationContext,
   convertToDescriptionListData,
-  NewDeliveryAddressContext
+  NewDeliveryAddressContext,
 } from "./deliveryAddressFormContext";
 
 export const DeliveryAddressReview = (props: RouteableStepProps) => (
@@ -32,10 +32,8 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
     AddressChangedInformationContext
   );
 
-  const [
-    showTopCallCentreNumbers,
-    setTopCallCentreNumbersVisibility
-  ] = useState<boolean>(false);
+  const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+    useState<boolean>(false);
 
   if (!newDeliveryAddressContext.newDeliveryAddress?.addressLine1) {
     visuallyNavigateToParent(props);
@@ -71,7 +69,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
         steps={[
           { title: "Update" },
           { title: "Review", isCurrentStep: true },
-          { title: "Confirmation" }
+          { title: "Confirmation" },
         ]}
         additionalCSS={css`
           margin-top: ${space[5]}px;
@@ -206,7 +204,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
           <Button
             onClick={() => {
               (props.navigate || navigate)("confirmed", {
-                state: props.location?.state
+                state: props.location?.state,
               });
             }}
           >

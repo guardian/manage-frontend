@@ -1,9 +1,9 @@
-import React, { ReactNode, ReactNodeArray } from "react";
+import { ReactNode, ReactNodeArray } from "react";
 import { visuallyNavigateToParent } from "../wizardRouterAdapter";
 import {
   cancellationEffectiveToday,
   CancellationOutstandingCreditsContext,
-  CancellationPolicyContext
+  CancellationPolicyContext,
 } from "./cancellationContexts";
 import { RouteableStepPropsWithCancellationFlow } from "./cancellationFlow";
 
@@ -21,19 +21,19 @@ const generateEscalationCausesList = (_: {
   ...(_.hasOutstandingHolidayStops ? ["Outstanding Holiday Stop Credits"] : []),
   ...(_.hasOutstandingDeliveryProblemCredits
     ? ["Outstanding Delivery Problem Credits"]
-    : [])
+    : []),
 ];
 
 export const CancellationFlowEscalationCheck = (
   props: VoucherCancellationFlowEscalationCheckProps
 ) => (
   <CancellationOutstandingCreditsContext.Consumer>
-    {outstandingCredits =>
+    {(outstandingCredits) =>
       props.productType.cancellation.flowWrapper && !outstandingCredits ? (
         visuallyNavigateToParent(props)
       ) : (
         <CancellationPolicyContext.Consumer>
-          {cancellationPolicy =>
+          {(cancellationPolicy) =>
             props.children(
               generateEscalationCausesList({
                 isEffectiveToday:
@@ -45,7 +45,7 @@ export const CancellationFlowEscalationCheck = (
                 hasOutstandingDeliveryProblemCredits:
                   !!outstandingCredits &&
                   !!outstandingCredits.deliveryCredits &&
-                  outstandingCredits.deliveryCredits.length > 0
+                  outstandingCredits.deliveryCredits.length > 0,
               })
             )
           }

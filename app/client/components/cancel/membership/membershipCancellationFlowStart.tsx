@@ -1,5 +1,4 @@
-import { css } from "@emotion/core";
-import React from "react";
+import { css } from "@emotion/react";
 import { ProductDetail } from "../../../../shared/productResponse";
 import palette from "../../../colours";
 import { trackEvent } from "../../analytics";
@@ -17,13 +16,13 @@ const cssBullet = (flexBasis: string = "50%") =>
     "&::before": {
       display: "inline-block",
       content: "'●'",
-      marginRight: "0.6em"
-    }
+      marginRight: "0.6em",
+    },
   });
 
 const benefitsCss = css({
   margin: 0,
-  padding: 0
+  padding: 0,
 });
 
 const clickHereToFindOutMoreAboutOurNewFeatures = (
@@ -33,7 +32,7 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
     onClick={() => {
       trackEvent({
         eventCategory: "href",
-        eventAction: "premium_features"
+        eventAction: "premium_features",
       });
     }}
   >
@@ -48,13 +47,13 @@ export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
         css={{
           backgroundColor: palette.neutral["6"],
           padding: "10px 20px",
-          marginBottom: "40px"
+          marginBottom: "40px",
         }}
       >
         <h4
           css={{
             marginTop: "0",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
         >
           If you cancel your Membership you will miss out on:
@@ -65,7 +64,7 @@ export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
           <li
             css={{
               ...cssBullet("100%"),
-              paddingTop: "5px"
+              paddingTop: "5px",
             }}
           >
             Free access to the premium tier of the Guardian app -{" "}
@@ -78,7 +77,7 @@ export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
       <p
         css={{
           fontSize: "1rem",
-          fontWeight: 500
+          fontWeight: 500,
         }}
       >
         Your support means we can remain independent, open to all readers and

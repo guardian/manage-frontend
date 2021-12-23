@@ -1,7 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { gridColumns, gridItemPlacement } from "../../styles/grid";
 import { expanderButtonCss } from "../expanderButton";
@@ -26,7 +26,7 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
     padding: 0,
     " li": {
       padding: 0,
-      margin: 0
+      margin: 0,
     },
     [minWidth.desktop]: {
       width: "auto",
@@ -40,7 +40,7 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
       borderTop: "none",
       background: neutral["100"],
       "li:not(:last-child)": {
-        borderBottom: `1px solid ${neutral["86"]}`
+        borderBottom: `1px solid ${neutral["86"]}`,
       },
       ":before": {
         content: "''",
@@ -51,9 +51,9 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
         right: `${isHelpCentre ? "85px" : space[3] + "px"}`,
         borderLeft: `${space[2]}px solid transparent`,
         borderRight: `${space[2]}px solid transparent`,
-        borderBottom: `${space[2]}px solid ${neutral["100"]}`
-      }
-    }
+        borderBottom: `${space[2]}px solid ${neutral["100"]}`,
+      },
+    },
   });
 
 const dropdownNavItemCss = css({
@@ -67,10 +67,10 @@ const dropdownNavItemCss = css({
   alignItems: "center",
   ":hover, :focus": {
     backgroundColor: brand[300],
-    textDecoration: "none"
+    textDecoration: "none",
   },
   ":focus": {
-    outline: 0
+    outline: 0,
   },
   ":after": {
     content: "''",
@@ -81,21 +81,21 @@ const dropdownNavItemCss = css({
     right: 0,
     width: "calc(100% - 46px)",
     height: "1px",
-    backgroundColor: `${brand[600]}`
+    backgroundColor: `${brand[600]}`,
   },
   [minWidth.desktop]: {
     padding: "18px 14px",
     color: neutral["20"],
     ".icon--fill": {
-      fill: neutral["20"]
+      fill: neutral["20"],
     },
     ":after": {
-      content: "none"
+      content: "none",
     },
     ":hover, :focus": {
-      backgroundColor: neutral["97"]
-    }
-  }
+      backgroundColor: neutral["97"],
+    },
+  },
 });
 
 export const DropdownNav = () => {
@@ -153,24 +153,24 @@ export const DropdownNav = () => {
           position: "relative",
           left: "0.5rem",
           ...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
-          marginLeft: "auto"
+          marginLeft: "auto",
         },
         [minWidth.wide]: {
-          ...gridItemPlacement(-4, 2, gridColumns.wide)
+          ...gridItemPlacement(-4, 2, gridColumns.wide),
         },
         " button": {
           [minWidth.tablet]: {
-            marginLeft: "auto"
+            marginLeft: "auto",
           },
           paddingTop: 0,
-          paddingBottom: 0
-        }
+          paddingBottom: 0,
+        },
       }}
     >
       {/* TODO refactor to full use ExpanderButton */}
       <button
         css={{
-          ...expanderButtonCss(neutral["100"], neutral["100"])(showMenu)
+          ...expanderButtonCss(neutral["100"], neutral["100"])(showMenu),
         }}
         type="button"
         aria-expanded={showMenu}
@@ -213,11 +213,11 @@ export const DropdownNav = () => {
                   css={{
                     ...(!navItem.isDropDownExclusive && {
                       [minWidth.desktop]: {
-                        display: "none"
-                      }
+                        display: "none",
+                      },
                     }),
                     position: "absolute",
-                    left: `${space[3]}px`
+                    left: `${space[3]}px`,
                   }}
                 >
                   <navItem.icon
@@ -234,8 +234,8 @@ export const DropdownNav = () => {
                     marginLeft:
                       navItem.isDropDownExclusive && navItem.icon
                         ? `${space[5]}px`
-                        : 0
-                  }
+                        : 0,
+                  },
                 }}
               >
                 {navItem.title}

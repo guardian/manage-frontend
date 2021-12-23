@@ -1,20 +1,19 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { isLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
 import {
   LiveChatPrivacyNotice,
-  LiveChatPrivacyNoticeLink
+  LiveChatPrivacyNoticeLink,
 } from "../liveChat/liveChatPrivacyNotice";
 import { helpCentreConfig } from "./helpCentreConfig";
 import {
   EmailAndLiveChatSubHeading,
-  HelpCentreEmailAndLiveChat
+  HelpCentreEmailAndLiveChat,
 } from "./helpCentreEmailAndLiveChat";
 import { HelpCentreLandingMoreTopics } from "./helpCentreLandingMoreTopics";
 import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
@@ -61,7 +60,7 @@ const HelpCentre = (_: RouteComponentProps) => {
             justify-content: space-between;
           `}
         >
-          {helpCentreConfig.map(topic => (
+          {helpCentreConfig.map((topic) => (
             <HelpTopicBox key={topic.id} topic={topic} />
           ))}
         </div>

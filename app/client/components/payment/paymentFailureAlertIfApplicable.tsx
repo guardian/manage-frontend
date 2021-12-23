@@ -1,5 +1,4 @@
-import { css } from "@emotion/core";
-import React from "react";
+import { css } from "@emotion/react";
 import { ProductDetail } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { ProblemAlert } from "../ProblemAlert";
@@ -9,7 +8,7 @@ interface PaymentFailureAlertIfApplicableProps {
 }
 
 export const PaymentFailureAlertIfApplicable = ({
-  productDetail
+  productDetail,
 }: PaymentFailureAlertIfApplicableProps) =>
   productDetail?.alertText ? (
     <ProblemAlert
@@ -22,7 +21,7 @@ export const PaymentFailureAlertIfApplicable = ({
             productDetail
           ).urlPart
         }`,
-        state: productDetail
+        state: productDetail,
       }}
       additionalcss={css`
         margin-top: 30px;

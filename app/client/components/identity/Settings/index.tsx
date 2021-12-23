@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-import React, { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
@@ -7,15 +7,15 @@ import { Spinner } from "../../spinner";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   GenericErrorMessage,
-  GenericErrorMessageRef
+  GenericErrorMessageRef,
 } from "../GenericErrorMessage";
 import { Users } from "../identity";
 import { User } from "../models";
 import { textSmall } from "../sharedStyles";
 import { SettingsFormSection } from "./SettingsFormSection";
 
-const errorRef = React.createRef<GenericErrorMessageRef>();
-const pageTopRef = React.createRef<HTMLDivElement>();
+const errorRef = createRef<GenericErrorMessageRef>();
+const pageTopRef = createRef<HTMLDivElement>();
 
 const loader = (
   <WithStandardTopMargin>
@@ -40,7 +40,7 @@ const Settings = (_: { path?: string }) => {
     trackEvent({
       eventCategory: "publicProfileError",
       eventAction: "error",
-      eventLabel: e.toString()
+      eventLabel: e.toString(),
     });
   };
 
@@ -82,7 +82,7 @@ const Settings = (_: { path?: string }) => {
       <WithStandardTopMargin>
         <SettingsFormSection
           user={u}
-          saveUser={values => saveUser(u, values)}
+          saveUser={(values) => saveUser(u, values)}
           onError={handleGeneralError}
           onSuccess={updateValues}
           onDone={scrollToTop}

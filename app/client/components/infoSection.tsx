@@ -1,8 +1,8 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
+import * as React from "react";
 import { InfoIconDark } from "./svgs/infoIconDark";
 
 interface InfoSectionProps {

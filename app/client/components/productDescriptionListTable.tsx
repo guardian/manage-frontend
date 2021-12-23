@@ -1,8 +1,8 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 
 export interface ProductDescriptionListKeyValue {
@@ -64,7 +64,7 @@ export const ProductDescriptionListTable = (
   `;
 
   const filteredContent = props.content.filter(
-    tableEntry => !!tableEntry.value
+    (tableEntry) => !!tableEntry.value
   );
 
   const isOddNumberOfEntries = filteredContent.length % 2 === 1;
@@ -88,7 +88,7 @@ export const ProductDescriptionListTable = (
     if (!previousContentRowMapEntry) {
       contentRowMap.set(tableEntryIndex, {
         row: tableEntryIndex,
-        isFirstCollum: true
+        isFirstCollum: true,
       });
     } else {
       const previousTableEntry = filteredContent[tableEntryIndex - 1];
@@ -103,7 +103,7 @@ export const ProductDescriptionListTable = (
         row: currentRow,
         isFirstCollum:
           previousTableEntry.spanTwoCols ||
-          previousContentRowMapEntry.row !== currentRow
+          previousContentRowMapEntry.row !== currentRow,
       });
     }
   });

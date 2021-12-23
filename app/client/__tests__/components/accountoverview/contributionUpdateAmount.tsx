@@ -2,10 +2,9 @@
 import { debug, fireEvent, render, screen } from "@testing-library/react";
 import each from "jest-each";
 import { before } from "lodash";
-import * as React from "react";
 import { ContributionUpdateAmount } from "../../../components/accountoverview/contributionUpdateAmount";
 
-const mainPlan = interval => ({
+const mainPlan = (interval) => ({
   start: "2019-10-30",
   end: "2050-10-30",
   amount: 500,
@@ -13,13 +12,13 @@ const mainPlan = interval => ({
   shouldBeVisible: false,
   currency: "£",
   currencyISO: "GBP",
-  interval
+  interval,
 });
 
 const productType = {
   productTitle: () => "contribution test",
   friendlyName: "recurring contribution",
-  urlPart: "contributions"
+  urlPart: "contributions",
 };
 
 each`
@@ -45,7 +44,7 @@ each`
 
     const otherInputElem = container.querySelector('input[type="number"]');
     fireEvent.change(otherInputElem, {
-      target: { value: params.expectedMinAmount - 1 }
+      target: { value: params.expectedMinAmount - 1 },
     });
 
     // click on the change amount button again and then check to make sure that the validation error message shows up
@@ -87,7 +86,7 @@ each`
 
     const otherInputElem = container.querySelector('input[type="number"]');
     fireEvent.change(otherInputElem, {
-      target: { value: params.expectedMaxAmount + 1 }
+      target: { value: params.expectedMaxAmount + 1 },
     });
 
     // click on the change amount button again and then check to make sure that the validation error message shows up
@@ -106,7 +105,7 @@ each`
   }
 );
 
-test("renders validation error if blank input is provided", done => {
+test("renders validation error if blank input is provided", (done) => {
   const { container } = render(
     <ContributionUpdateAmount
       subscriptionId="A-123"
@@ -123,7 +122,7 @@ test("renders validation error if blank input is provided", done => {
 
   const otherInputElem = container.querySelector('input[type="number"]');
   fireEvent.change(otherInputElem, {
-    target: { value: "" }
+    target: { value: "" },
   });
 
   // click on the change amount button again and then check to make sure that the validation error message shows up
@@ -139,7 +138,7 @@ test("renders validation error if blank input is provided", done => {
   done();
 });
 
-test("renders validation error if a string is attempted to be input", done => {
+test("renders validation error if a string is attempted to be input", (done) => {
   const { container } = render(
     <ContributionUpdateAmount
       subscriptionId="A-123"
@@ -156,7 +155,7 @@ test("renders validation error if a string is attempted to be input", done => {
 
   const otherInputElem = container.querySelector('input[type="number"]');
   fireEvent.change(otherInputElem, {
-    target: { value: "twelfty" }
+    target: { value: "twelfty" },
   });
 
   // click on the change amount button again and then check to make sure that the validation error message shows up
@@ -172,7 +171,7 @@ test("renders validation error if a string is attempted to be input", done => {
   done();
 });
 
-test("input correct value", done => {
+test("input correct value", (done) => {
   // mock the console error for this test case to mute "Cannot update a component (`Unknown`) while rendering a different component" error
   const mockedError = () => true;
   // tslint:disable-next-line
@@ -194,7 +193,7 @@ test("input correct value", done => {
 
   const otherInputElem = container.querySelector('input[type="number"]');
   fireEvent.change(otherInputElem, {
-    target: { value: 4 }
+    target: { value: 4 },
   });
 
   // click on the change amount button again and then check to make sure that the validation error message shows up

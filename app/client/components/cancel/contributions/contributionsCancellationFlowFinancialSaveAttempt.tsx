@@ -1,13 +1,14 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button, LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowLeftStraight } from "@guardian/src-icons";
 import { navigate } from "@reach/router";
 import * as Sentry from "@sentry/browser";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 import {
   isPaidSubscriptionPlan,
-  MembersDataApiItemContext
+  MembersDataApiItemContext,
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
@@ -28,7 +29,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_financial_circumstances",
       eventAction: "click",
-      eventLabel: "change"
+      eventLabel: "change",
     });
 
     navigate(`mma_financial_circumstances/saved`, { state: { updatedAmount } });
@@ -38,7 +39,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_financial_circumstances",
       eventAction: "click",
-      eventLabel: "reduce"
+      eventLabel: "reduce",
     });
 
     setShowUpdateForm(true);
@@ -48,7 +49,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_financial_circumstances",
       eventAction: "click",
-      eventLabel: "cancel"
+      eventLabel: "cancel",
     });
 
     navigate(`mma_financial_circumstances/confirmed`);
@@ -63,7 +64,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 
   return (
     <MembersDataApiItemContext.Consumer>
-      {productDetail => {
+      {(productDetail) => {
         if (!isProduct(productDetail)) {
           Sentry.captureMessage(
             "MembersDataApiItem is not a productDetail in ContributionsCancellationFlowFinancialSaveAttempt"

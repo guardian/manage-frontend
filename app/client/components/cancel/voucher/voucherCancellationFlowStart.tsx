@@ -1,4 +1,3 @@
-import React from "react";
 import { getMainPlan, ProductDetail } from "../../../../shared/productResponse";
 import { trackEvent } from "../../analytics";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
@@ -8,11 +7,11 @@ const trackCancellationClickEvent = (eventLabel: string) => () =>
   trackEvent({
     eventCategory: "cancellation",
     eventAction: "click",
-    eventLabel
+    eventLabel,
   });
 
 export const voucherCancellationFlowStart = ({
-  subscription
+  subscription,
 }: ProductDetail) => {
   const mainPlan = getMainPlan(subscription);
 

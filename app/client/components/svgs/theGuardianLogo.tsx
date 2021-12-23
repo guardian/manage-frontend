@@ -1,4 +1,3 @@
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 
 export interface TheGuardianLogoProps {
@@ -16,8 +15,8 @@ export const TheGuardianLogo = (props: TheGuardianLogoProps) => (
       textAlign: "right",
       [minWidth.desktop]: {
         width: `${props.width || 158}px`,
-        height: `${props.height || 51}px`
-      }
+        height: `${props.height || 51}px`,
+      },
     }}
     href="https://www.theguardian.com"
     title="The Guardian - Back to home"
@@ -31,8 +30,8 @@ export const TheGuardianLogo = (props: TheGuardianLogoProps) => (
         height: `${props.height || 39}px`,
         [minWidth.desktop]: {
           width: `${props.width || 158}px`,
-          height: `${props.height || 51}px`
-        }
+          height: `${props.height || 51}px`,
+        },
       }}
     >
       <path

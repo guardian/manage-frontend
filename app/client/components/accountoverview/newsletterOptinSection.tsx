@@ -1,11 +1,11 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { Checkbox } from "@guardian/src-checkbox";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import * as Sentry from "@sentry/browser";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Fragment, ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { trackEvent } from "../analytics";
 import { SuccessMessage } from "../delivery/address/deliveryAddressEditConfirmation";
 import * as NewslettersAPI from "../identity/idapi/newsletters";
@@ -37,22 +37,20 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
   useEffect(() => {
     const makeRestrictedNewslettersAPICall = async () => {
       try {
-        const [
-          restrictedNewsletters,
-          subscribedNewsletters
-        ] = await Promise.all([
-          NewslettersAPI.readRestricted(),
-          NewslettersSubscriptionsAPI.read()
-        ]);
+        const [restrictedNewsletters, subscribedNewsletters] =
+          await Promise.all([
+            NewslettersAPI.readRestricted(),
+            NewslettersSubscriptionsAPI.read(),
+          ]);
         const filteredRestrictedNewsletters = restrictedNewsletters.filter(
-          newsletter => props.activeNewletterIDs.includes(newsletter.id)
+          (newsletter) => props.activeNewletterIDs.includes(newsletter.id)
         );
         const mappedFilteredNewsletters = filteredRestrictedNewsletters.map(
-          filteredRestrictedNewsletter => ({
+          (filteredRestrictedNewsletter) => ({
             ...filteredRestrictedNewsletter,
             subscribed: subscribedNewsletters.includes(
               filteredRestrictedNewsletter.id
-            )
+            ),
           })
         );
 
@@ -71,19 +69,19 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
   if (newsletters?.length) {
     const checkboxChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       const targetNewsletter = newsletters.find(
-        newsletterSearch => newsletterSearch.id === event.target.value
+        (newsletterSearch) => newsletterSearch.id === event.target.value
       );
       if (targetNewsletter) {
         setFocusedNewsletter({
           ...targetNewsletter,
-          subscribed: event.target.checked
+          subscribed: event.target.checked,
         });
         setNewsletters(
-          newsletters.map(newsletterMap =>
+          newsletters.map((newsletterMap) =>
             newsletterMap.id === targetNewsletter.id
               ? {
                   ...targetNewsletter,
-                  subscribed: event.target.checked
+                  subscribed: event.target.checked,
                 }
               : newsletterMap
           )
@@ -108,7 +106,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
             setShowUpdateMsg({ isSuccessful: true });
             setNewslettersPendingChange(
               newslettersPendingChange.filter(
-                newsletterPendingChange =>
+                (newsletterPendingChange) =>
                   newsletterPendingChange !== focusedNewsletter.id
               )
             );
@@ -117,17 +115,17 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
               eventAction: "newsletter_preference_update_success",
               eventLabel: focusedNewsletter.subscribed
                 ? `newsletter_optin_${focusedNewsletter.id}`
-                : `newsletter_optout_${focusedNewsletter.id}`
+                : `newsletter_optout_${focusedNewsletter.id}`,
             });
           },
           () => {
             setShowUpdateMsg({ isSuccessful: false });
             setNewsletters(
-              newsletters.map(newsletterMap =>
+              newsletters.map((newsletterMap) =>
                 newsletterMap.id === focusedNewsletter.id
                   ? {
                       ...focusedNewsletter,
-                      subscribed: !focusedNewsletter.subscribed
+                      subscribed: !focusedNewsletter.subscribed,
                     }
                   : newsletterMap
               )
@@ -135,7 +133,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
             trackEvent({
               eventCategory: "newsletter_preference_update",
               eventAction: "newsletter_preference_update_error",
-              eventLabel: `newsletter_preference_update_error_${focusedNewsletter.id}`
+              eventLabel: `newsletter_preference_update_error_${focusedNewsletter.id}`,
             });
           }
         );
@@ -151,8 +149,8 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
         >
           Front Page Newsletter
         </h2>
-        {newsletters.map(newsletter => (
-          <React.Fragment key={newsletter.id}>
+        {newsletters.map((newsletter) => (
+          <Fragment key={newsletter.id}>
             <p
               css={css`
                 ${textSans.medium()}
@@ -190,7 +188,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
                 </Button>
               )}
             </form>
-          </React.Fragment>
+          </Fragment>
         ))}
       </>
     );

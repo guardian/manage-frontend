@@ -1,15 +1,18 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useContext } from "react";
-import {DATE_FNS_SHORT_OUTPUT_FORMAT, dateString} from "../../../../shared/dates";
+import { useContext } from "react";
+import {
+  DATE_FNS_SHORT_OUTPUT_FORMAT,
+  dateString,
+} from "../../../../shared/dates";
 import {
   DeliveryRecordApiItem,
   PaidSubscriptionPlan,
-  Subscription
+  Subscription,
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
@@ -20,41 +23,40 @@ import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   RouteableStepProps,
   visuallyNavigateToParent,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   DeliveryRecordsRouteableStepProps,
-  PageStatus
+  PageStatus,
 } from "./deliveryRecords";
 import {
   createDeliveryRecordsProblemPost,
   DeliveryRecordsApiAsyncLoader,
-  DeliveryRecordsResponse
+  DeliveryRecordsResponse,
 } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
   DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
-  DeliveryRecordsProblemPostPayloadContext
+  DeliveryRecordsProblemPostPayloadContext,
 } from "./deliveryRecordsProblemContext";
 import { ReadOnlyAddressDisplay } from "./readOnlyAddressDisplay";
 
-const renderDeliveryRecordsConfirmation = (
-  props: DeliveryRecordsRouteableStepProps,
-  subscription: Subscription
-) => (data: DeliveryRecordsResponse) => {
-  const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
+const renderDeliveryRecordsConfirmation =
+  (props: DeliveryRecordsRouteableStepProps, subscription: Subscription) =>
+  (data: DeliveryRecordsResponse) => {
+    const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
-  return (
-    <DeliveryRecordsProblemConfirmationFC
-      data={data}
-      routeableStepProps={props}
-      subscriptionId={subscription.subscriptionId}
-      subscriptionCurrency={mainPlan.currency}
-    />
-  );
-};
+    return (
+      <DeliveryRecordsProblemConfirmationFC
+        data={data}
+        routeableStepProps={props}
+        subscriptionId={subscription.subscriptionId}
+        subscriptionCurrency={mainPlan.currency}
+      />
+    );
+  };
 
 interface DeliveryRecordsProblemConfirmationFCProps {
   data: DeliveryRecordsResponse;
@@ -72,14 +74,15 @@ const DeliveryRecordsProblemConfirmationFC = (
   const deliveryProblemCredit = useContext(DeliveryRecordCreditContext);
   const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
   const filteredData = props.data.results.filter(
-    record =>
+    (record) =>
       deliveryIssuePostPayload?.deliveryRecords?.findIndex(
-        affectedRecord => affectedRecord.id === record.id
+        (affectedRecord) => affectedRecord.id === record.id
       ) !== -1
   );
 
-  const problemCaseId = filteredData.find(record => record.problemCaseId)
-    ?.problemCaseId;
+  const problemCaseId = filteredData.find(
+    (record) => record.problemCaseId
+  )?.problemCaseId;
   const problemReferenceId = problemCaseId
     ? props.data.deliveryProblemMap[problemCaseId]?.ref
     : "-";
@@ -105,7 +108,7 @@ const DeliveryRecordsProblemConfirmationFC = (
           steps={[
             { title: "Update" },
             { title: "Review" },
-            { title: "Confirmation", isCurrentStep: true }
+            { title: "Confirmation", isCurrentStep: true },
           ]}
           additionalCSS={css`
             margin: ${space[5]}px 0 ${space[12]}px;
@@ -220,7 +223,9 @@ const DeliveryRecordsProblemConfirmationFC = (
             </div>
             <div>
               <dt css={dtCss}>Date reported:</dt>
-              <dd css={ddCss}>{dateString(new Date(), DATE_FNS_SHORT_OUTPUT_FORMAT)}</dd>
+              <dd css={ddCss}>
+                {dateString(new Date(), DATE_FNS_SHORT_OUTPUT_FORMAT)}
+              </dd>
             </div>
             <div>
               <dt css={dtCss}>Subscription ID:</dt>

@@ -1,6 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
+import * as React from "react";
 
 type PaginationChangeCallBack = () => void;
 interface PaginationNavProps {
@@ -45,7 +45,7 @@ export const PaginationNav = (props: PaginationNavProps) => {
                 padding: 0 0 1px 0;
                 cursor: pointer;
                 ${pagesArrIndex === props.currentPage &&
-                  `
+                `
               cursor: default;
               width: 28px;
               height: 28px;
@@ -87,8 +87,9 @@ export const PaginationNav = (props: PaginationNavProps) => {
           margin-top: 21px;
           text-align: center;
         `}
-      >{`Displaying ${props.currentPage * props.resultsPerPage +
-        1} - ${Math.min(
+      >{`Displaying ${
+        props.currentPage * props.resultsPerPage + 1
+      } - ${Math.min(
         props.currentPage * props.resultsPerPage + props.resultsPerPage,
         props.totalNumberOfResults
       )} of ${props.totalNumberOfResults} deliveries`}</span>

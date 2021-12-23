@@ -1,4 +1,3 @@
-import React from "react";
 import { PaypalLogo } from "./paypalLogo";
 
 interface PayPalProps {

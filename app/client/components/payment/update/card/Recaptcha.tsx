@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { css } from "@emotion/core";
+import { useEffect } from "react";
+import { css } from "@emotion/react";
 import { textSans } from "@guardian/src-foundations/typography";
 import { space } from "@guardian/src-foundations";
 import { Stripe } from "@stripe/stripe-js";
@@ -13,7 +13,7 @@ declare let window: Window & {
 const hrefStyle = {
   textDecoration: "underline",
   color: "inherit",
-  ":visited": { color: "inherit" }
+  ":visited": { color: "inherit" },
 };
 
 export interface RecaptchaProps {
@@ -23,7 +23,7 @@ export interface RecaptchaProps {
 
 export default function Recaptcha({
   setStripeSetupIntent,
-  setRecaptchaToken
+  setRecaptchaToken,
 }: RecaptchaProps) {
   useEffect(() => {
     if (window.grecaptcha) {
@@ -49,7 +49,7 @@ export default function Recaptcha({
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
       callback: (recaptchaToken: string) => setRecaptchaToken(recaptchaToken),
-      "expired-callback": resetRecaptcha
+      "expired-callback": resetRecaptcha,
     });
   };
 
@@ -64,7 +64,7 @@ export default function Recaptcha({
       </span>
       <div
         css={{
-          marginTop: "4px"
+          marginTop: "4px",
         }}
         id="recaptcha"
       />

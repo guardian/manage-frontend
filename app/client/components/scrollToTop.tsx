@@ -1,5 +1,4 @@
 import { Location } from "@reach/router";
-import React from "react";
 
 const exceptions: string[] = ["/help-centre/contact-us/"];
 
@@ -20,4 +19,4 @@ export const ScrollToTop = () => (
 );
 
 const shouldScrollToTop = (path: string) =>
-  !exceptions.some(exception => path.startsWith(exception));
+  !exceptions.some((exception) => path.startsWith(exception));

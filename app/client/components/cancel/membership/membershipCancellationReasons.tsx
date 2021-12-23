@@ -1,4 +1,3 @@
-import React from "react";
 import { hrefStyle } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
 
@@ -9,7 +8,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "We understand that financial circumstances can change from time to time",
     saveBody:
-      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you."
+      "Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you.",
     // alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
   },
   {
@@ -29,7 +28,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     // TODO restore commented after Coronavirus
     // saveBody: "We’d like to know more details to help resolve the issue. One of our customer service specialists will be more than happy to assist.",
     // alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
-    alternateFeedbackIntro: ""
+    alternateFeedbackIntro: "",
     // alternateFeedbackThankYouTitle: "Thank you.",
     // alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
   },
@@ -39,7 +38,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "In order to improve our journalism, we’d love to know more about why you are thinking of cancelling",
     saveBody:
-      "If there’s anything we can do differently please take a moment to contact our customer services team we would be happy to hear from you."
+      "If there’s anything we can do differently please take a moment to contact our customer services team we would be happy to hear from you.",
   },
   {
     reasonId: "mma_benefits",
@@ -47,7 +46,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "In order to improve our membership programme, we’d love to know more about why you are thinking of cancelling",
     saveBody:
-      "If there’s anything we can do differently please take a moment to give us some feedback"
+      "If there’s anything we can do differently please take a moment to give us some feedback",
   },
   {
     reasonId: "mma_support_another_way",
@@ -58,7 +57,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     alternateCallUsPrefix:
       "If you’re not sure what’s best for you or would like help, to contact us",
     alternateFeedbackIntro:
-      "Alternatively if you'd like to give us feedback, please enter in the box the below."
+      "Alternatively if you'd like to give us feedback, please enter in the box the below.",
     // "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
     // alternateFeedbackThankYouBody:  "One of our customer service specialists will be in touch shortly."
   },
@@ -69,7 +68,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveBody:
       "Your contribution has ensured that our quality journalism remains open for everyone to read and enjoy. Please confirm your cancellation below.",
     skipFeedback: true,
-    hideContactUs: true
+    hideContactUs: true,
   },
   {
     reasonId: "mma_break_from_news",
@@ -90,7 +89,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
           customer services team would be happy to set this up for you.
         </span>
       </>
-    )
+    ),
     // alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
   },
   {
@@ -99,7 +98,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "In order to improve our membership programme, we’d love to know more about why you are thinking of cancelling",
     saveBody:
-      "If there’s anything we can do differently please take a moment to give us some feedback"
+      "If there’s anything we can do differently please take a moment to give us some feedback",
   },
   {
     reasonId: "mma_other",
@@ -107,6 +106,6 @@ export const membershipCancellationReasons: CancellationReason[] = [
     saveTitle:
       "In order to improve our membership programme, we’d love to know more about why you are thinking of cancelling",
     saveBody:
-      "If there’s anything we can do differently please take a moment to give us some feedback"
-  }
+      "If there’s anything we can do differently please take a moment to give us some feedback",
+  },
 ];

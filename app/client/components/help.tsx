@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import { minWidth } from "../styles/breakpoints";
 import { trackEvent } from "./analytics";
 import { CallCentreEmailAndNumbers } from "./callCenterEmailAndNumbers";
@@ -21,39 +21,33 @@ const highlightedQuestions: Question[] = [
   {
     id: "q1",
     title: "Can my delivery be suspended while I'm on holiday?",
-    link:
-      "https://manage.theguardian.com/help-centre/article/i-need-to-pause-my-delivery"
+    link: "https://manage.theguardian.com/help-centre/article/i-need-to-pause-my-delivery",
   },
   {
     id: "q2",
     title: "How do I change my delivery address?",
-    link:
-      "https://manage.theguardian.com/help-centre/article/i-need-to-change-my-delivery-address"
+    link: "https://manage.theguardian.com/help-centre/article/i-need-to-change-my-delivery-address",
   },
   {
     id: "q3",
     title: "My delivery is late or missing",
-    link:
-      "https://manage.theguardian.com/help-centre/article/my-delivery-is-late-or-missing"
+    link: "https://manage.theguardian.com/help-centre/article/my-delivery-is-late-or-missing",
   },
   {
     id: "q4",
     title: "Where can I use my Subscription Card or vouchers?",
-    link:
-      "https://manage.theguardian.com/help-centre/article/im-a-print-subscriber-where-can-i-pick-up-my-papers"
+    link: "https://manage.theguardian.com/help-centre/article/im-a-print-subscriber-where-can-i-pick-up-my-papers",
   },
   {
     id: "q5",
     title: "How do I update my payment details?",
-    link:
-      "https://manage.theguardian.com/help-centre/article/how-do-i-update-my-payment-details"
+    link: "https://manage.theguardian.com/help-centre/article/how-do-i-update-my-payment-details",
   },
   {
     id: "q6",
     title: "How do I reset my password?",
-    link:
-      "https://manage.theguardian.com/help-centre/article/ive-forgotten-my-password"
-  }
+    link: "https://manage.theguardian.com/help-centre/article/ive-forgotten-my-password",
+  },
 ];
 
 const listStyle = css`
@@ -128,7 +122,7 @@ const Help = (_: RouteComponentProps) => {
     <PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help">
       <h2 css={h2Style}>How can we help?</h2>
       <ul css={listStyle}>
-        {highlightedQuestions.map(question => (
+        {highlightedQuestions.map((question) => (
           <li key={question.id} css={listItemStyle}>
             <a href={question.link} css={listItemAnchorStyle}>
               {question.title}
@@ -150,7 +144,7 @@ const Help = (_: RouteComponentProps) => {
         onClick={() =>
           trackEvent({
             eventCategory: "help-page",
-            eventAction: "help-centre-cta-click"
+            eventAction: "help-centre-cta-click",
           })
         }
       >
@@ -178,7 +172,7 @@ const Help = (_: RouteComponentProps) => {
             onClick={() =>
               trackEvent({
                 eventCategory: "help-page",
-                eventAction: "contact-us-cta-click"
+                eventAction: "contact-us-cta-click",
               })
             }
           >

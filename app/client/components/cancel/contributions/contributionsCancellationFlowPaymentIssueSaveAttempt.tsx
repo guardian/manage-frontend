@@ -1,14 +1,15 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button, LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowLeftStraight } from "@guardian/src-icons";
 import { navigate } from "@reach/router";
 import * as Sentry from "@sentry/browser";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 import {
   isPaidSubscriptionPlan,
   MembersDataApiItemContext,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { PRODUCT_TYPES } from "../../../../shared/productTypes";
@@ -27,24 +28,24 @@ const container = css`
 const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
   const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
-  const onManageClicked = (productDetail: ProductDetail) => (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    trackEventInOphanOnly({
-      eventCategory: "cancellation_flow_payment_issue",
-      eventAction: "click",
-      eventLabel: "manage"
-    });
+  const onManageClicked =
+    (productDetail: ProductDetail) =>
+    (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      event.preventDefault();
+      trackEventInOphanOnly({
+        eventCategory: "cancellation_flow_payment_issue",
+        eventAction: "click",
+        eventLabel: "manage",
+      });
 
-    navigate("/payment/contributions", { state: { productDetail } });
-  };
+      navigate("/payment/contributions", { state: { productDetail } });
+    };
 
   const onUpdateConfirmed = (updatedAmount: number) => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
-      eventLabel: "change"
+      eventLabel: "change",
     });
 
     navigate(`mma_payment_issue/saved`, { state: { updatedAmount } });
@@ -54,7 +55,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
-      eventLabel: "reduce"
+      eventLabel: "reduce",
     });
 
     setShowUpdateForm(true);
@@ -64,7 +65,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
     trackEventInOphanOnly({
       eventCategory: "cancellation_flow_payment_issue",
       eventAction: "click",
-      eventLabel: "cancel"
+      eventLabel: "cancel",
     });
 
     navigate(`mma_payment_issue/confirmed`);
@@ -79,7 +80,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
 
   return (
     <MembersDataApiItemContext.Consumer>
-      {productDetail => {
+      {(productDetail) => {
         if (!isProduct(productDetail)) {
           Sentry.captureMessage(
             "MembersDataApiItem is not a productDetail in ContributionsCancellationFlowPaymentIssueSaveAttempt"
@@ -172,7 +173,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt: React.FC = () => {
             )}
 
             <CancellationCaseIdContext.Consumer>
-              {caseId =>
+              {(caseId) =>
                 caseId && (
                   <div
                     css={css`

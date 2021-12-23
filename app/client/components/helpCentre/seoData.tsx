@@ -1,5 +1,4 @@
 import { Location } from "@reach/router";
-import React from "react";
 import { Article } from "./HelpCentreTypes";
 
 interface SeoDataProps {
@@ -12,7 +11,7 @@ const addStructuredData = (article: Article) => {
   const data = {
     "@context": "https://schema.org/",
     "@type": "Article",
-    headline: article.title
+    headline: article.title,
   };
   const scriptElt = document.createElement("script");
   // tslint:disable-next-line:no-object-mutation

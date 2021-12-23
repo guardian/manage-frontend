@@ -1,15 +1,15 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { neutral, news } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ContactUsFormPayload } from "../../../shared/contactUsTypes";
 import {
   base64FromFile,
   MAX_FILE_ATTACHMENT_SIZE_KB,
   VALID_IMAGE_FILE_EXTENSIONS,
-  VALID_IMAGE_FILE_MIME_TYPES
+  VALID_IMAGE_FILE_MIME_TYPES,
 } from "../../../shared/fileUploadUtils";
 import { isEmail } from "../../../shared/validationUtils";
 import { minWidth } from "../../styles/breakpoints";
@@ -64,49 +64,46 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       ""
   );
   const [message, setMessage] = useState<string>("");
-  const [messageRemainingCharacters, setMessageRemainingCharacters] = useState<
-    number
-  >(2500);
+  const [messageRemainingCharacters, setMessageRemainingCharacters] =
+    useState<number>(2500);
 
   const [fileAttachment, setFileAttachment] = useState<File | undefined>();
 
   const [status, setStatus] = useState<ContactUsFormStatus>("form");
 
-  const [showCustomerServiceInfo, setShowCustomerServiceInfo] = useState<
-    boolean
-  >(false);
+  const [showCustomerServiceInfo, setShowCustomerServiceInfo] =
+    useState<boolean>(false);
 
   const mandatoryFieldMessage = "You cannot leave this field empty";
 
-  const [formValidationState, setFormValidationState] = useState<
-    FormValidationState
-  >({
-    inValidationMode: false,
-    name: {
-      isValid: true,
-      errorMessage: mandatoryFieldMessage
-    },
-    email: {
-      isValid: true,
-      errorMessage: "Please insert a valid email address."
-    },
-    subject: {
-      isValid: true,
-      errorMessage: mandatoryFieldMessage
-    },
-    message: {
-      isValid: true,
-      errorMessage: mandatoryFieldMessage
-    },
-    captcha: {
-      isValid: !!captchaToken.length,
-      errorMessage: "Please confirm you are not a robot"
-    },
-    fileAttachment: {
-      isValid: true,
-      errorMessage: "There is a maximum file size limit of 5mb"
-    }
-  });
+  const [formValidationState, setFormValidationState] =
+    useState<FormValidationState>({
+      inValidationMode: false,
+      name: {
+        isValid: true,
+        errorMessage: mandatoryFieldMessage,
+      },
+      email: {
+        isValid: true,
+        errorMessage: "Please insert a valid email address.",
+      },
+      subject: {
+        isValid: true,
+        errorMessage: mandatoryFieldMessage,
+      },
+      message: {
+        isValid: true,
+        errorMessage: mandatoryFieldMessage,
+      },
+      captcha: {
+        isValid: !!captchaToken.length,
+        errorMessage: "Please confirm you are not a robot",
+      },
+      fileAttachment: {
+        isValid: true,
+        errorMessage: "There is a maximum file size limit of 5mb",
+      },
+    });
 
   useEffect(() => {
     if (window.grecaptcha) {
@@ -132,7 +129,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
-      callback: (token: string) => setCaptchaToken(token)
+      callback: (token: string) => setCaptchaToken(token),
     });
   };
 
@@ -158,17 +155,17 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
       email: { ...formValidationState.email, isValid: isEmailValid },
       subject: {
         ...formValidationState.subject,
-        isValid: isSubjectValid
+        isValid: isSubjectValid,
       },
       message: { ...formValidationState.message, isValid: isDetailsValid },
       fileAttachment: {
         ...formValidationState.fileAttachment,
-        isValid: isFileAttachmentValid
+        isValid: isFileAttachmentValid,
       },
       captcha: {
         ...formValidationState.captcha,
-        isValid: !!captchaToken.length
-      }
+        isValid: !!captchaToken.length,
+      },
     });
     return isFormInValidState;
   };
@@ -188,10 +185,10 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               captchaToken,
               attachment: fileAttachment && {
                 name: fileAttachment.name,
-                contents: (await base64FromFile(fileAttachment)) as string
-              }
+                contents: (await base64FromFile(fileAttachment)) as string,
+              },
             })
-            .then(success => {
+            .then((success) => {
               if (!success) {
                 setStatus("failure");
               }
@@ -254,7 +251,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
         <Input
           label="Full Name"
           width={50}
-          changeSetState={newName => setName(newName.substr(0, 50))}
+          changeSetState={(newName) => setName(newName.substr(0, 50))}
           value={name}
           additionalCss={css`
             margin: ${space[5]}px;
@@ -269,7 +266,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
           label="Email address"
           secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
           width={50}
-          changeSetState={newEmail => setEmail(newEmail.substr(0, 50))}
+          changeSetState={(newEmail) => setEmail(newEmail.substr(0, 50))}
           value={email}
           additionalCss={css`
             margin: ${space[5]}px;
@@ -285,7 +282,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
             label="Subject of enquiry"
             type="text"
             width={50}
-            changeSetState={newSubject => setSubject(newSubject.substr(0, 100))}
+            changeSetState={(newSubject) =>
+              setSubject(newSubject.substr(0, 100))
+            }
             value={subject}
             additionalCss={css`
               margin: ${space[5]}px;
@@ -412,7 +411,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
               >
                 Customer Service
               </Button>
-            </>
+            </>,
           ]}
         />
       )}

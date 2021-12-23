@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
-import React from "react";
+import * as React from "react";
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from "../../../shared/dates";
 import {
   MembersDataApiItemContext,
-  ProductDetail
+  ProductDetail,
 } from "../../../shared/productResponse";
 import { ProductTypeWithCancellationFlow } from "../../../shared/productTypes";
 import { hasCancellationFlow } from "../../productUtils";
@@ -18,17 +18,17 @@ import { WithStandardTopMargin } from "../WithStandardTopMargin";
 import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
-  WizardStep
+  WizardStep,
 } from "../wizardRouterAdapter";
 import {
   cancellationEffectiveEndOfLastInvoicePeriod,
   cancellationEffectiveToday,
-  CancellationPolicyContext
+  CancellationPolicyContext,
 } from "./cancellationContexts";
 import {
   CancellationDateAsyncLoader,
   cancellationDateFetcher,
-  CancellationDateResponse
+  CancellationDateResponse,
 } from "./cancellationDateResponse";
 import { CancellationReason } from "./cancellationReason";
 import { ContactUsToCancel } from "./contactUsToCancel";
@@ -57,7 +57,7 @@ class ReasonPicker extends React.Component<
   ReasonPickerState
 > {
   public state: ReasonPickerState = {
-    reasonPath: ""
+    reasonPath: "",
   };
 
   public render(): React.ReactNode {
@@ -83,7 +83,7 @@ class ReasonPicker extends React.Component<
           steps={[
             { title: "Reason", isCurrentStep: true },
             { title: "Review" },
-            { title: "Confirmation" }
+            { title: "Confirmation" },
           ]}
           additionalCSS={css`
             margin: ${space[5]}px 0 ${space[12]}px;
@@ -126,7 +126,8 @@ class ReasonPicker extends React.Component<
                   groupName="cancellationPolicy"
                   onChange={() =>
                     this.setState({
-                      cancellationPolicy: cancellationEffectiveEndOfLastInvoicePeriod
+                      cancellationPolicy:
+                        cancellationEffectiveEndOfLastInvoicePeriod,
                     })
                   }
                 />
@@ -139,7 +140,7 @@ class ReasonPicker extends React.Component<
                   groupName="cancellationPolicy"
                   onChange={() =>
                     this.setState({
-                      cancellationPolicy: cancellationEffectiveToday
+                      cancellationPolicy: cancellationEffectiveToday,
                     })
                   }
                 />
@@ -153,14 +154,14 @@ class ReasonPicker extends React.Component<
               justifyContent: "space-between",
               flexDirection: "row-reverse",
               [maxWidth.mobileLandscape]: {
-                flexDirection: "column"
-              }
+                flexDirection: "column",
+              },
             }}
           >
             <div
               css={{
                 textAlign: "right",
-                marginBottom: "10px"
+                marginBottom: "10px",
               }}
             >
               <LinkButton
@@ -196,40 +197,43 @@ class ReasonPicker extends React.Component<
   }
 }
 
-const ReasonPickerRenderer = (
-  props: RouteableStepProps,
-  productType: ProductTypeWithCancellationFlow,
-  productDetail: ProductDetail
-) => (apiResponse: CancellationDateResponse) => {
-  return (
-    <ReasonPicker
-      {...props}
-      productType={productType}
-      productDetail={productDetail}
-      chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
-    />
-  );
-};
+const ReasonPickerRenderer =
+  (
+    props: RouteableStepProps,
+    productType: ProductTypeWithCancellationFlow,
+    productDetail: ProductDetail
+  ) =>
+  (apiResponse: CancellationDateResponse) => {
+    return (
+      <ReasonPicker
+        {...props}
+        productType={productType}
+        productDetail={productDetail}
+        chargedThroughCancellationDate={apiResponse.cancellationEffectiveDate}
+      />
+    );
+  };
 
 const CancellationFlow = (props: RouteableStepProps) => (
   <FlowWrapper
     {...props}
     loadingMessagePrefix="Checking the status of your"
     selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={`Cancel ${props.productType.shortFriendlyName ||
-      props.productType.friendlyName}`}
+    pageTitle={`Cancel ${
+      props.productType.shortFriendlyName || props.productType.friendlyName
+    }`}
     breadcrumbs={[
       {
         title: NAV_LINKS.accountOverview.title,
-        link: NAV_LINKS.accountOverview.link
+        link: NAV_LINKS.accountOverview.link,
       },
       {
         title: `Cancel ${props.productType.friendlyName}`,
-        currentPage: true
-      }
+        currentPage: true,
+      },
     ]}
   >
-    {productDetail =>
+    {(productDetail) =>
       productDetail.selfServiceCancellation.isAllowed &&
       hasCancellationFlow(props.productType) ? (
         <CancellationDateAsyncLoader
@@ -237,8 +241,10 @@ const CancellationFlow = (props: RouteableStepProps) => (
             productDetail.subscription.subscriptionId
           )}
           render={ReasonPickerRenderer(props, props.productType, productDetail)}
-          loadingMessage={`Checking your ${props.productType
-            .shortFriendlyName || props.productType.friendlyName} details...`}
+          loadingMessage={`Checking your ${
+            props.productType.shortFriendlyName ||
+            props.productType.friendlyName
+          } details...`}
         />
       ) : (
         <ContactUsToCancel

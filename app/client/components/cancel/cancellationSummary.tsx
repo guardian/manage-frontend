@@ -1,7 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { brand } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
-import React from "react";
 import { cancellationFormatDate } from "../../../shared/dates";
 import { ProductDetail, Subscription } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
@@ -97,7 +96,7 @@ const actuallyCancelled = (
               </p>
             )}
             <CancellationReasonContext.Consumer>
-              {reason =>
+              {(reason) =>
                 (!productType.cancellation ||
                   !productType.cancellation
                     .onlyShowSupportSectionIfAlternateText ||
@@ -151,16 +150,15 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
   Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary = (productType: ProductType) => (
-  productDetail: ProductDetail
-) =>
-  isCancelled(productDetail.subscription) ? (
-    actuallyCancelled(productType, productDetail)
-  ) : (
-    <GenericErrorScreen
-      loggingMessage={
-        productType.friendlyName +
-        " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
-      }
-    />
-  );
+export const getCancellationSummary =
+  (productType: ProductType) => (productDetail: ProductDetail) =>
+    isCancelled(productDetail.subscription) ? (
+      actuallyCancelled(productType, productDetail)
+    ) : (
+      <GenericErrorScreen
+        loggingMessage={
+          productType.friendlyName +
+          " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
+        }
+      />
+    );

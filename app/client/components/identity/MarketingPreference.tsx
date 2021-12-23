@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { sans } from "../../styles/fonts";
 import { Checkbox } from "../checkbox";
 
@@ -12,7 +12,7 @@ interface MarketingPreferenceProps {
 
 const standardText = {
   fontSize: "14px",
-  fontFamily: sans
+  fontFamily: sans,
 };
 
 const getTitle = (title: MarketingPreferenceProps["title"]) => (
@@ -25,8 +25,8 @@ const getTitle = (title: MarketingPreferenceProps["title"]) => (
         lineHeight: "22px",
         fontFamily: sans,
         fontWeight: "bold",
-        margin: "0"
-      }
+        margin: "0",
+      },
     ]}
   >
     {title}
@@ -38,18 +38,18 @@ const getDescription = (
 ) => (
   <p
     css={{
-      padding: "2.88px 0 0 0"
+      padding: "2.88px 0 0 0",
     }}
   >
     {description}
   </p>
 );
 
-export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
+export const MarketingPreference: FC<MarketingPreferenceProps> = (props) => {
   const { id, description, selected, title, onClick } = props;
   return (
     <div
-      onClick={e => {
+      onClick={(e) => {
         // Checkboxes inside labels will trigger click events twice.
         // Ignore the input click event
         if (e.target instanceof Element && e.target.nodeName === "INPUT") {
@@ -63,14 +63,14 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = props => {
           lineHeight: "1.333",
           marginTop: "12px",
           paddingLeft: "30px",
-          position: "relative"
-        }
+          position: "relative",
+        },
       ]}
     >
       <div css={{ position: "absolute", left: 0 }}>
         <Checkbox
           checked={!!selected}
-          onChange={_ => {
+          onChange={(_) => {
             return;
           }}
         />

@@ -2,7 +2,7 @@ import {
   getScopeFromRequestPathOrEmptyString,
   X_GU_ID_FORWARDED_SCOPE,
 } from "../../../../shared/identity";
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { neutral, brand } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
@@ -10,7 +10,7 @@ import { Radio } from "@guardian/src-radio";
 import { Button } from "@guardian/src-button";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import * as React from "react";
 import {
   MembersDataApiItemContext,
   ProductDetail,

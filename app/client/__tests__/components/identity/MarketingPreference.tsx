@@ -1,5 +1,4 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
-import React from "react";
 import { create } from "react-test-renderer";
 import { MarketingPreference } from "../../../components/identity/MarketingPreference";
 
@@ -10,7 +9,7 @@ describe("MarketingPreference component", () => {
     id: "13",
     description: "Test description",
     title: "Test title",
-    clickHandler: jest.fn()
+    clickHandler: jest.fn(),
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(

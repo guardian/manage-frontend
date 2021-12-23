@@ -1,5 +1,4 @@
 import { neutral } from "@guardian/src-foundations/palette";
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 
 interface SignoutIconProps {
@@ -14,7 +13,7 @@ export const SignoutIcon = (props: SignoutIconProps) => (
     fill="none"
     css={
       props.overrideWidthAtDesktop && {
-        [minWidth.desktop]: { width: `${props.overrideWidthAtDesktop}px` }
+        [minWidth.desktop]: { width: `${props.overrideWidthAtDesktop}px` },
       }
     }
   >

@@ -1,8 +1,7 @@
-import React from "react";
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { CancellationReason } from "../cancellationReason";
 import ContributionsCancellationAmountUpdatedSaved from "./contributionsCancellationAmountUpdatedSaved";
@@ -19,21 +18,21 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     linkLabel: "As a result of a specific article I read",
     saveTitle: "As a result of a specific article you read",
     saveBody,
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_editorial",
     linkLabel: "I disagree with some editorial decisions",
     saveTitle: "You disagree with some of The Guardian’s editorial decisions",
     saveBody,
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveTitle: "You don’t feel that The Guardian values your support",
     saveBody,
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_support_another_way",
@@ -41,7 +40,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     saveTitle:
       "You support The Guardian in another way, e.g. with a subscription",
     saveBody,
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -51,14 +50,14 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     savedBody: ContributionsCancellationAmountUpdatedSaved,
     hideSaveActions: true,
     skipFeedback: true,
-    hideContactUs: true
+    hideContactUs: true,
   },
   {
     reasonId: "mma_value_for_money",
     linkLabel: "I wasn’t getting value for money",
     saveTitle: "You don’t feel your contribution offers you adequate value",
     saveBody,
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_payment_issue",
@@ -68,7 +67,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     savedBody: ContributionsCancellationAmountUpdatedSaved,
     hideSaveActions: true,
     skipFeedback: true,
-    hideContactUs: true
+    hideContactUs: true,
   },
   {
     reasonId: "mma_direct_debit",
@@ -76,7 +75,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
     saveTitle: "You would prefer to contribute using Direct Debit",
     saveBody:
       "Unfortunately it's not yet possible to switch to paying by Direct Debit online. We’re working on it. To make this change, please contact our customer services team, who will be happy to help you.",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_one_off",
@@ -90,7 +89,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         </p>
       </>
     ),
-    alternateFeedbackIntro
+    alternateFeedbackIntro,
   },
   {
     reasonId: "mma_wants_annual_contribution",
@@ -111,7 +110,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         return false;
       }
       return mainPlan.interval === "month";
-    }
+    },
   },
   {
     reasonId: "mma_wants_monthly_contribution",
@@ -132,7 +131,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
         return false;
       }
       return mainPlan.interval === "year";
-    }
+    },
   },
   {
     reasonId: "mma_health",
@@ -141,13 +140,13 @@ export const contributionsCancellationReasons: CancellationReason[] = [
       "You would like to cancel your contribution due to health reasons",
     saveBody:
       "Your contributions have ensured that our quality journalism remains open for everyone to read and enjoy. Please confirm your cancellation below.",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_other",
     linkLabel: "None of the above",
     saveTitle: "",
     saveBody,
-    alternateFeedbackIntro
-  }
+    alternateFeedbackIntro,
+  },
 ];

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { Button } from "../../buttons";
@@ -16,11 +16,11 @@ const aCss = {
   borderBottom: `1px solid ${palette.neutral["5"]}`,
   transition: "border-color .15s ease-out",
   "&:hover": {
-    borderBottom: `1px solid ${palette.blue.dark}`
-  }
+    borderBottom: `1px solid ${palette.blue.dark}`,
+  },
 };
 const pCss = {
-  marginBottom: "5px"
+  marginBottom: "5px",
 };
 const successMessage = (
   <div
@@ -32,7 +32,7 @@ const successMessage = (
       borderTop: `1px solid ${palette.green.light}`,
       color: palette.green.medium,
       marginTop: "6px",
-      padding: "7px 8px"
+      padding: "7px 8px",
     }}
   >
     You've been unsubscribed from all Guardian marketing newsletters and emails.
@@ -41,7 +41,7 @@ const successMessage = (
 const unsubscribeButton = (clickHandler: () => void) => (
   <Button text="Unsubscribe from all emails" onClick={clickHandler} />
 );
-export const EmailSettingsSection: FC<EmailSettingsSectionProps> = props => {
+export const EmailSettingsSection: FC<EmailSettingsSectionProps> = (props) => {
   const { actionHandler, email, removed } = props;
   return (
     <PageSection title={"Email settings"}>

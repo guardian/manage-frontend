@@ -1,8 +1,7 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral, news } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { LinkButton } from "./buttons";
 import { ErrorIcon } from "./svgs/errorIcon";
 import { ProductDetail } from "../../shared/productResponse";

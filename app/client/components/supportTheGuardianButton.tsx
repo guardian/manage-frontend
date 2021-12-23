@@ -1,4 +1,3 @@
-import React from "react";
 import url from "url";
 import { conf } from "../../server/config";
 import { trackEvent } from "./analytics";
@@ -33,7 +32,7 @@ const buildAcquisitionData = (componentId: string) => ({
     hasWindow && window.guardian.ophan
       ? window.guardian.ophan.viewId
       : undefined,
-  referrerUrl: hasWindow ? window.location.href : undefined
+  referrerUrl: hasWindow ? window.location.href : undefined,
 });
 
 const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
@@ -46,8 +45,8 @@ const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
       acquisitionData: JSON.stringify(
         buildAcquisitionData(`mma_${props.supportReferer}`)
       ),
-      displayExistingPaymentOptions: true
-    }
+      displayExistingPaymentOptions: true,
+    },
   });
 
 export const SupportTheGuardianButton = (
@@ -59,7 +58,7 @@ export const SupportTheGuardianButton = (
       trackEvent({
         eventCategory: "href",
         eventAction: "support_the_guardian",
-        eventLabel: "support_from_" + props.supportReferer
+        eventLabel: "support_from_" + props.supportReferer,
       });
     }}
   >

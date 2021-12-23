@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import palette from "../../colours";
 import { errorMessageCss } from "./sharedStyles";
 
@@ -12,7 +12,7 @@ export const GenericErrorMessage = forwardRef<GenericErrorMessageRef, {}>(
           <a
             css={{
               color: palette.blue.dark,
-              cursor: "pointer"
+              cursor: "pointer",
             }}
             onClick={() => window.location.reload()}
           >

@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { FormEvent } from "react";
+import { FormEvent } from "react";
 import { dateIsAfter, parseDate } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { minWidth } from "../../../styles/breakpoints";
@@ -56,7 +56,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         margin: 0;
         padding: ${space[3]}px;
         ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
-          `padding-left: ${space[3] * 2 + 40}px;`}
+        `padding-left: ${space[3] * 2 + 40}px;`}
         width: 100%;
         ${props.listIndex > 0 && "border-top: none;"}
         position: relative;
@@ -66,7 +66,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         ${minWidth.tablet} {
           padding: ${space[5]}px;
           ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
-            `padding-left: ${space[5] * 2 + 40}px;`}
+          `padding-left: ${space[5] * 2 + 40}px;`}
         }
       `}
     >

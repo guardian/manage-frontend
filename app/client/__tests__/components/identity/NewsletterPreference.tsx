@@ -1,5 +1,4 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
-import React from "react";
 import { create } from "react-test-renderer";
 import { NewsletterPreference } from "../../../components/identity/NewsletterPreference";
 
@@ -12,7 +11,7 @@ describe("NewsletterPreference component", () => {
     frequency: "Test frequency",
     title: "Test title",
     clickHandler: jest.fn(),
-    identityName: "Test-13"
+    identityName: "Test-13",
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(

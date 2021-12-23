@@ -1,19 +1,19 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { headline } from "@guardian/src-foundations/typography";
 import { RouteComponentProps } from "@reach/router";
-import React from "react";
+import { Fragment } from "react";
 import {
   CancelledProductDetail,
   isProduct,
   MembersDataApiItem,
   ProductDetail,
-  sortByJoinDate
+  sortByJoinDate,
 } from "../../../shared/productResponse";
 import {
   GROUPED_PRODUCT_TYPES,
-  GroupedProductTypeKeys
+  GroupedProductTypeKeys,
 } from "../../../shared/productTypes";
 import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
@@ -43,7 +43,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
   const productCategories = [
     ...allActiveProductDetails,
-    ...allCancelledProductDetails
+    ...allCancelledProductDetails,
   ]
     .map(
       (product: ProductDetail | CancelledProductDetail) => product.mmaCategory
@@ -55,7 +55,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
   }
 
   const maybeFirstPaymentFailure = allActiveProductDetails.find(
-    _ => _.alertText
+    (_) => _.alertText
   );
 
   const subHeadingCss = css`
@@ -73,28 +73,28 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
       <PaymentFailureAlertIfApplicable
         productDetail={maybeFirstPaymentFailure}
       />
-      {productCategories.map(category => {
+      {productCategories.map((category) => {
         const groupedProductType =
           GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
         const activeProductsInCategory = allActiveProductDetails.filter(
-          activeProduct => activeProduct.mmaCategory === category
+          (activeProduct) => activeProduct.mmaCategory === category
         );
         const cancelledProductsInCategory = allCancelledProductDetails.filter(
-          activeProduct => activeProduct.mmaCategory === category
+          (activeProduct) => activeProduct.mmaCategory === category
         );
 
         return (
-          <React.Fragment key={category}>
+          <Fragment key={category}>
             <h2 css={subHeadingCss}>
               My {groupedProductType.groupFriendlyName}
             </h2>
-            {activeProductsInCategory.map(productDetail => (
+            {activeProductsInCategory.map((productDetail) => (
               <AccountOverviewCard
                 key={productDetail.subscription.subscriptionId}
                 productDetail={productDetail}
               />
             ))}
-            {cancelledProductsInCategory.map(cancelledProductDetail => (
+            {cancelledProductsInCategory.map((cancelledProductDetail) => (
               <AccountOverviewCancelledCard
                 key={cancelledProductDetail.subscription.subscriptionId}
                 product={cancelledProductDetail}
@@ -103,14 +103,14 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
             {(groupedProductType.groupFriendlyName === "membership" ||
               groupedProductType.groupFriendlyName === "contribution") &&
               (cancelledProductsInCategory.length > 0 ||
-                activeProductsInCategory.some(productDetail =>
+                activeProductsInCategory.some((productDetail) =>
                   isCancelled((productDetail as ProductDetail).subscription)
                 )) && (
                 <SupportTheGuardianSection
                   {...groupedProductType.supportTheGuardianSectionProps}
                 />
               )}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </>
@@ -139,7 +139,7 @@ class AccountOverviewAsyncLoader extends AsyncLoader<
 const AccountOverviewFetcher = () =>
   Promise.all([
     allProductsDetailFetcher(),
-    fetchWithDefaultParameters("/api/cancelled/")
+    fetchWithDefaultParameters("/api/cancelled/"),
   ]);
 
 export default AccountOverview;

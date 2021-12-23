@@ -1,14 +1,13 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import {
   breakpoints,
   neutral,
   palette,
-  space
+  space,
 } from "@guardian/src-foundations";
 import { textSans, titlepiece } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
 import Color from "color";
-import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
 
@@ -29,9 +28,7 @@ const chevronCss = css`
 `;
 
 const headerCss = css`
-  background-color: ${Color(palette.brand[800])
-    .alpha(0.3)
-    .string()};
+  background-color: ${Color(palette.brand[800]).alpha(0.3).string()};
 `;
 
 const containerCss = css`

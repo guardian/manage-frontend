@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 import { CallCentreNumbers } from "./callCentreNumbers";
 
 interface InlineContactUsState {
   expanded: boolean;
 }
 
-export class InlineContactUs extends React.Component<{}, InlineContactUsState> {
+export class InlineContactUs extends Component<{}, InlineContactUsState> {
   public state = { expanded: false };
 
   public render(): JSX.Element {
@@ -22,7 +22,7 @@ export class InlineContactUs extends React.Component<{}, InlineContactUsState> {
             fontFamily: "inherit",
             padding: 0,
             background: "none",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
         >
           contact us
@@ -32,5 +32,5 @@ export class InlineContactUs extends React.Component<{}, InlineContactUsState> {
     );
   }
   private toggleExpanded = () =>
-    this.setState(prevState => ({ expanded: !prevState.expanded }));
+    this.setState((prevState) => ({ expanded: !prevState.expanded }));
 }

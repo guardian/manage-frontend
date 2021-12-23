@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import {
@@ -12,7 +12,7 @@ import {
   innerSectionDivCss,
   linkAnchorStyle,
   linkArrowStyle,
-  sectionTitleCss
+  sectionTitleCss,
 } from "./helpCentreStyles";
 import { MoreTopics } from "./HelpCentreTypes";
 
@@ -87,7 +87,7 @@ export const HelpCentreMoreTopics = (props: HelpCentreMoreTopicsProps) => {
                           trackEvent({
                             eventCategory: "help-centre",
                             eventAction: "article-click",
-                            eventLabel: `${topic.path}:${article.path}`
+                            eventLabel: `${topic.path}:${article.path}`,
                           });
                         }}
                       >

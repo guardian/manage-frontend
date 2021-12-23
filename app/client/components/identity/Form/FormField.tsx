@@ -1,5 +1,5 @@
 import { Field, FormikErrors, FormikProps, FormikTouched } from "formik";
-import React, { cloneElement, ReactElement } from "react";
+import { cloneElement, ReactElement } from "react";
 import { formFieldErrorCss, labelCss } from "../sharedStyles";
 
 interface FormFieldProps<T> {
@@ -65,7 +65,7 @@ export const FormSelectField = <T extends unknown>(
   props: FormSelectProps<T>
 ) => {
   const { options, labelModifier } = props;
-  const optionEls = options.map(o => {
+  const optionEls = options.map((o) => {
     const optionLabel = labelModifier ? labelModifier(o) : o;
     return (
       <option key={o} value={o}>

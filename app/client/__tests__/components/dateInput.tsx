@@ -1,6 +1,5 @@
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import React from "react";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { DateInput } from "../../components/dateInput";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -11,20 +10,20 @@ describe("DateInput", () => {
       givenDate: "2022-01-10",
       expectedDay: 10,
       expectedMonth: 1,
-      expectedYear: 2022
+      expectedYear: 2022,
     },
     {
       givenDate: "2022-03-16",
       expectedDay: 16,
       expectedMonth: 3,
-      expectedYear: 2022
+      expectedYear: 2022,
     },
     {
       givenDate: "2023-12-04",
       expectedDay: 4,
       expectedMonth: 12,
-      expectedYear: 2023
-    }
+      expectedYear: 2023,
+    },
   ])(
     "Displays the correct day, month and year for $givenDate",
     ({ givenDate, expectedDay, expectedMonth, expectedYear }) => {

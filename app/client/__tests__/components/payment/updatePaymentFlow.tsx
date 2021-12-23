@@ -1,8 +1,7 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import {
   PaymentMethod,
-  SelectPaymentMethod
+  SelectPaymentMethod,
 } from "../../../components/payment/update/updatePaymentFlow";
 
 describe("updatePaymentFlow.tsx", () => {

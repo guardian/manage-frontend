@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { headline } from "@guardian/src-foundations/typography";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { parseDate } from "../../../../shared/dates";
 import { DeliveryRecordApiItem } from "../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
@@ -14,24 +14,24 @@ import {
   getPotentialHolidayStopsFetcher,
   PotentialHolidayStopsAsyncLoader,
   PotentialHolidayStopsResponse,
-  RawPotentialHolidayStopDetail
+  RawPotentialHolidayStopDetail,
 } from "../../holiday/holidayStopApi";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   visuallyNavigateToParent,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import { DeliveryRecordCard } from "./deliveryRecordCard";
 import {
   DeliveryRecordsRouteableStepProps,
-  PageStatus
+  PageStatus,
 } from "./deliveryRecords";
 import { ContactPhoneNumbers } from "./deliveryRecordsApi";
 import {
   DeliveryRecordCreditContext,
   DeliveryRecordsProblemContext,
-  DeliveryRecordsProblemPostPayloadContext
+  DeliveryRecordsProblemPostPayloadContext,
 } from "./deliveryRecordsProblemContext";
 import { UserPhoneNumber } from "./userPhoneNumber";
 
@@ -57,7 +57,7 @@ export const DeliveryRecordsProblemReview = (
     const totalCreditAmount: number =
       potentialHolidayStopsResponseWithCredits.potentials.length &&
       potentialHolidayStopsResponseWithCredits.potentials
-        .flatMap(x => [Math.abs(x.credit || 0)])
+        .flatMap((x) => [Math.abs(x.credit || 0)])
         .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     return (
@@ -116,9 +116,8 @@ const DeliveryRecordsProblemReviewFC = (
   const [newPhoneNumbers, setPhoneNumbers] = useState<
     ContactPhoneNumbers | undefined
   >(deliveryProblemContext?.contactPhoneNumbers);
-  const [showCallCenterNumbers, setShowCallCenterNumbers] = useState<boolean>(
-    false
-  );
+  const [showCallCenterNumbers, setShowCallCenterNumbers] =
+    useState<boolean>(false);
 
   const dtCss: string = `
     font-weight: bold;
@@ -144,27 +143,27 @@ const DeliveryRecordsProblemReviewFC = (
         repeatDeliveryProblem: deliveryProblemContext?.repeatDeliveryProblem,
         deliveryRecords:
           props.showCredit && props.relatedPublications
-            ? deliveryProblemContext?.affectedRecords.map(record => {
+            ? deliveryProblemContext?.affectedRecords.map((record) => {
                 const matchingPublication = props.relatedPublications?.find(
-                  x => x.publicationDate === record.deliveryDate
+                  (x) => x.publicationDate === record.deliveryDate
                 );
                 return {
                   id: record.id,
                   creditAmount: matchingPublication?.credit,
                   invoiceDate: matchingPublication
                     ? props.creditDate
-                    : undefined
+                    : undefined,
                 };
               })
-            : deliveryProblemContext?.affectedRecords.map(record => {
+            : deliveryProblemContext?.affectedRecords.map((record) => {
                 return { id: record.id };
               }),
         ...((newPhoneNumbers?.Phone ||
           newPhoneNumbers?.HomePhone ||
           newPhoneNumbers?.MobilePhone ||
           newPhoneNumbers?.OtherPhone) && {
-          newContactPhoneNumbers: newPhoneNumbers
-        })
+          newContactPhoneNumbers: newPhoneNumbers,
+        }),
       }}
     >
       <DeliveryRecordCreditContext.Provider
@@ -173,12 +172,12 @@ const DeliveryRecordsProblemReviewFC = (
           ...(props.totalCreditAmount && {
             creditAmount: `${
               deliveryProblemContext?.subscriptionCurrency
-            }${props.totalCreditAmount.toFixed(2)}`
+            }${props.totalCreditAmount.toFixed(2)}`,
           }),
           ...(props.creditDate && {
             creditDate:
-              props.creditDate && parseDate(props.creditDate).dateStr()
-          })
+              props.creditDate && parseDate(props.creditDate).dateStr(),
+          }),
         }}
       >
         <WizardStep routeableStepProps={props}>
@@ -187,7 +186,7 @@ const DeliveryRecordsProblemReviewFC = (
               steps={[
                 { title: "Update" },
                 { title: "Review", isCurrentStep: true },
-                { title: "Confirmation" }
+                { title: "Confirmation" },
               ]}
               additionalCSS={css`
                 margin: ${space[5]}px 0 ${space[12]}px;

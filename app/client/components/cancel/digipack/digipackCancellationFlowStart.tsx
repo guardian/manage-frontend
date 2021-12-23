@@ -1,4 +1,3 @@
-import React from "react";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 
 export const digipackCancellationFlowStart = () => (

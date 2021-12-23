@@ -1,6 +1,5 @@
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import React from "react";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { RecordAddress } from "../../../../components/delivery/records/deliveryRecordsAddress";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -16,19 +15,9 @@ describe("RecordsAddress", () => {
         country={"United Kingdom"}
       />
     );
-    expect(
-      wrapper
-        .find("span")
-        .at(0)
-        .text()
-    ).toEqual("N1 9GU");
+    expect(wrapper.find("span").at(0).text()).toEqual("N1 9GU");
 
-    expect(
-      wrapper
-        .find("span")
-        .at(1)
-        .text()
-    ).toEqual("Show more");
+    expect(wrapper.find("span").at(1).text()).toEqual("Show more");
 
     expect(wrapper.find("ul")).toHaveLength(0);
   });
@@ -43,10 +32,7 @@ describe("RecordsAddress", () => {
         country={"United Kingdom"}
       />
     );
-    wrapper
-      .find("span")
-      .at(1)
-      .simulate("click");
+    wrapper.find("span").at(1).simulate("click");
     expect(wrapper.find("ul")).toHaveLength(1);
   });
 

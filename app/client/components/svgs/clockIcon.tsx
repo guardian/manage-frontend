@@ -1,5 +1,4 @@
-import { SerializedStyles } from "@emotion/core";
-import React from "react";
+import { SerializedStyles } from "@emotion/react";
 
 interface ClockIconProps {
   additionalCss?: SerializedStyles;

@@ -1,11 +1,12 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { navigate } from "@reach/router";
-import React, { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent, ReactNode } from "react";
+import * as React from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { WithProductType } from "../../../../shared/productTypes";
 import { ProductTypeWithCancellationFlow } from "../../../../shared/productTypes";
@@ -21,16 +22,16 @@ import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   MultiRouteableProps,
   ReturnToAccountOverviewButton,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import {
   CancellationCaseIdContext,
-  CancellationReasonContext
+  CancellationReasonContext,
 } from "../cancellationContexts";
 import { CancellationFlowEscalationCheck } from "../cancellationFlowEscalationCheck";
 import {
   CancellationReason,
-  CancellationReasonId
+  CancellationReasonId,
 } from "../cancellationReason";
 import { CaseCreationWrapper } from "../caseCreationWrapper";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
@@ -54,20 +55,17 @@ interface FeedbackFormState {
   hasHitSubmit: boolean;
 }
 
-const getPatchUpdateCaseFunc = (
-  isTestUser: boolean,
-  caseId: string,
-  feedback: string
-) => async () =>
-  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
-    Description: feedback,
-    Subject: "Online Cancellation Query"
-  });
+const getPatchUpdateCaseFunc =
+  (isTestUser: boolean, caseId: string, feedback: string) => async () =>
+    await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+      Description: feedback,
+      Subject: "Online Cancellation Query",
+    });
 
 const gaTrackFeedback = (actionString: string) =>
   trackEvent({
     eventCategory: "feedback",
-    eventAction: actionString
+    eventAction: actionString,
   });
 
 const ContactUs = (reason: CancellationReason) =>
@@ -87,7 +85,7 @@ class FeedbackFormAndContactUs extends React.Component<
     super(props);
     this.state = {
       feedback: "",
-      hasHitSubmit: false
+      hasHitSubmit: false,
     };
   }
 
@@ -130,7 +128,7 @@ class FeedbackFormAndContactUs extends React.Component<
             width: "100%",
             fontSize: "inherit",
             fontFamily: "inherit",
-            border: "1px black solid"
+            border: "1px black solid",
           }}
           onChange={this.handleChange}
         />
@@ -140,7 +138,7 @@ class FeedbackFormAndContactUs extends React.Component<
               fontSize: "small",
               color: palette.neutral["3"],
               fontFamily: sans,
-              paddingBottom: "10px"
+              paddingBottom: "10px",
             }}
           >
             You have {this.props.characterLimit - this.state.feedback.length}{" "}
@@ -195,13 +193,13 @@ class FeedbackFormAndContactUs extends React.Component<
           marginLeft: "15px",
           marginTop: "30px",
           paddingLeft: "15px",
-          borderLeft: "1px solid " + palette.neutral["4"]
+          borderLeft: "1px solid " + palette.neutral["4"],
         }}
       >
         <p
           css={{
             fontSize: "1rem",
-            fontWeight: 500
+            fontWeight: 500,
           }}
         >
           {reason.alternateFeedbackThankYouTitle ||
@@ -236,14 +234,14 @@ const ConfirmCancellationAndReturnRow = (
           marginTop: "10px",
           textAlign: "left",
           [maxWidth.mobileLandscape]: {
-            flexDirection: "column"
-          }
+            flexDirection: "column",
+          },
         }}
       >
         <div
           css={{
             textAlign: "right",
-            marginBottom: "30px"
+            marginBottom: "30px",
           }}
         >
           <Button
@@ -276,7 +274,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
         steps={[
           { title: "Reason" },
           { title: "Review", isCurrentStep: true },
-          { title: "Confirmation" }
+          { title: "Confirmation" },
         ]}
         additionalCSS={css`
           margin: ${space[5]}px 0 ${space[12]}px;
@@ -291,7 +289,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
         </h3>
 
         <CancellationFlowEscalationCheck {...props}>
-          {escalationCauses => (
+          {(escalationCauses) => (
             <>
               {escalationCauses.length > 0 && (
                 <p>
@@ -311,7 +309,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
         </CancellationFlowEscalationCheck>
 
         <CancellationCaseIdContext.Consumer>
-          {caseId =>
+          {(caseId) =>
             caseId && !props.reason.skipFeedback ? (
               <FeedbackFormAndContactUs
                 characterLimit={2500}
@@ -328,7 +326,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
                     props.productType.cancellation.swapFeedbackAndContactUs &&
                     caseId
                       ? "column-reverse"
-                      : "column"
+                      : "column",
                 }}
               >
                 <ContactUs {...props.reason} />
@@ -347,7 +345,7 @@ export const GenericSaveAttempt = (props: GenericSaveAttemptProps) => {
 
   return (
     <MembersDataApiItemContext.Consumer>
-      {productDetail =>
+      {(productDetail) =>
         isProduct(productDetail) ? (
           flowWrapper(
             productDetail,

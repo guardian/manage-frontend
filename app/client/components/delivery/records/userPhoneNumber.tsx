@@ -1,15 +1,16 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 import { minWidth } from "../../../styles/breakpoints";
 import { InfoIconDark } from "../../svgs/infoIconDark";
 import {
   ContactPhoneNumbers,
-  ContactPhoneNumbersType
+  ContactPhoneNumbersType,
 } from "./deliveryRecordsApi";
 
 interface UserPhoneNumberProps {
@@ -37,32 +38,30 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     Object.entries(props.existingPhoneNumbers).filter(isValidEntry);
 
   const initNumbersEditState = {};
-  Object.keys(props.existingPhoneNumbers || {}).map(phoneType =>
+  Object.keys(props.existingPhoneNumbers || {}).map((phoneType) =>
     Object.defineProperty(initNumbersEditState, phoneType, { value: false })
   );
 
-  const [
-    isPhoneInEditState,
-    setPhoneEditState
-  ] = useState<EditPhoneNumber | null>(initNumbersEditState as EditPhoneNumber);
+  const [isPhoneInEditState, setPhoneEditState] =
+    useState<EditPhoneNumber | null>(initNumbersEditState as EditPhoneNumber);
 
-  const handleInputChange = (whichPhoneNumber: string) => (
-    evt: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (newPhoneNumber) {
-      const newState = {
-        ...newPhoneNumber,
-        [whichPhoneNumber]: evt.target.value
-      };
-      setNewPhoneNumber(newState);
-      props.callback(newState);
-    }
-  };
+  const handleInputChange =
+    (whichPhoneNumber: string) =>
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      if (newPhoneNumber) {
+        const newState = {
+          ...newPhoneNumber,
+          [whichPhoneNumber]: evt.target.value,
+        };
+        setNewPhoneNumber(newState);
+        props.callback(newState);
+      }
+    };
 
   const putNumberInEditState = (phoneType: ContactPhoneNumbersType) => () => {
     setPhoneEditState({
       ...isPhoneInEditState,
-      [phoneType]: true
+      [phoneType]: true,
     } as EditPhoneNumber);
   };
 
@@ -70,14 +69,14 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
     if (newPhoneNumber) {
       const newState = {
         ...newPhoneNumber,
-        [phoneType]: null
+        [phoneType]: null,
       };
       setNewPhoneNumber(newState);
       props.callback(newState);
     }
     setPhoneEditState({
       ...isPhoneInEditState,
-      [phoneType]: false
+      [phoneType]: false,
     } as EditPhoneNumber);
   };
 
@@ -214,7 +213,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
                     if (newPhoneNumber?.Phone) {
                       setNewPhoneNumber({
                         ...newPhoneNumber,
-                        Phone: props.existingPhoneNumbers?.Phone
+                        Phone: props.existingPhoneNumbers?.Phone,
                       });
                     }
                     setShowPhoneInput(false);
@@ -238,7 +237,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
         {(showPhoneInput ||
           (isPhoneInEditState &&
             Object.values(isPhoneInEditState).some(
-              numberInEditState => numberInEditState
+              (numberInEditState) => numberInEditState
             ))) && (
           <span
             css={css`

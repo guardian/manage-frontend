@@ -1,20 +1,20 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { cancellationFormatDate } from "../../../shared/dates";
 import {
   getMainPlan,
   isGift,
   isPaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import {
   hasDeliveryRecordsFlow,
-  shouldHaveHolidayStopsFlow
+  shouldHaveHolidayStopsFlow,
 } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
@@ -58,15 +58,14 @@ interface InnerContentProps {
 }
 const InnerContent = ({
   manageProductProps,
-  productDetail
+  productDetail,
 }: InnerContentProps) => {
   const mainPlan = getMainPlan(productDetail.subscription);
 
   const groupedProductType = manageProductProps.groupedProductType;
 
-  const specificProductType = groupedProductType.mapGroupedToSpecific(
-    productDetail
-  );
+  const specificProductType =
+    groupedProductType.mapGroupedToSpecific(productDetail);
 
   const hasCancellationPending = productDetail.subscription.cancelledAt;
 
@@ -205,7 +204,7 @@ const InnerContent = ({
                       {...productDetail.subscription.deliveryAddress}
                     />
                   ),
-                  spanTwoCols: true
+                  spanTwoCols: true,
                 },
                 ...(specificProductType.delivery
                   ?.enableDeliveryInstructionsUpdate
@@ -215,10 +214,10 @@ const InnerContent = ({
                         value:
                           productDetail.subscription.deliveryAddress
                             .instructions,
-                        spanTwoCols: true
-                      }
+                        spanTwoCols: true,
+                      },
                     ]
-                  : [])
+                  : []),
               ]}
             />
             <LinkButton
@@ -389,20 +388,22 @@ const ManageProduct = (props: RouteableStepPropsForGrouped) => (
     allowCancelledSubscription
     forceRedirectToAccountOverviewIfNoBrowserHistoryState
     selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={`Manage ${props.groupedProductType.shortFriendlyName ||
-      props.groupedProductType.friendlyName}`}
+    pageTitle={`Manage ${
+      props.groupedProductType.shortFriendlyName ||
+      props.groupedProductType.friendlyName
+    }`}
     breadcrumbs={[
       {
         title: NAV_LINKS.accountOverview.title,
-        link: NAV_LINKS.accountOverview.link
+        link: NAV_LINKS.accountOverview.link,
       },
       {
         title: `Manage ${props.groupedProductType.friendlyName}`,
-        currentPage: true
-      }
+        currentPage: true,
+      },
     ]}
   >
-    {productDetail => (
+    {(productDetail) => (
       <InnerContent manageProductProps={props} productDetail={productDetail} />
     )}
   </FlowWrapper>

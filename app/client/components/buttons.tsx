@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { Link } from "@reach/router";
 import Color from "color";
-import React from "react";
+import * as React from "react";
 import { ProductDetail } from "../../shared/productResponse";
 import { sans } from "../styles/fonts";
 import { ArrowIcon } from "./svgs/arrowIcon";
@@ -52,11 +52,11 @@ const applyIconStyleIfApplicable = (
     return hover ? styles.rightHover : styles.right;
   } else if (leftTick) {
     return {
-      padding: "4px 21px 3px 16px"
+      padding: "4px 21px 3px 16px",
     };
   }
   return {
-    padding: "1px 15px 0 15px"
+    padding: "1px 15px 0 15px",
   };
 };
 
@@ -104,7 +104,7 @@ const buttonCss = ({
   hide,
   forceCircle,
   hoverColour,
-  leftTick
+  leftTick,
 }: ButtonProps) => {
   const backgroundColour = calcBackgroundColour(
     disabled,
@@ -119,7 +119,7 @@ const buttonCss = ({
     alignItems: "center",
     position: "relative",
     ":active": {
-      outline: "none"
+      outline: "none",
     },
     minHeight: height || "36px",
     height: height || "36px", // this is required in addition to 'min-height' because IE - see https://github.com/philipwalton/flexbugs/issues/231
@@ -131,7 +131,7 @@ const buttonCss = ({
     ...applyIconStyleIfApplicable(false, left, right, leftTick),
     ...(forceCircle
       ? {
-          padding: "1px 18px 0 18px"
+          padding: "1px 18px 0 18px",
         }
       : {}),
     ":hover": disabled
@@ -142,16 +142,16 @@ const buttonCss = ({
             Color(backgroundColour)
               .darken(backgroundColour === defaultColour ? 0.3 : 0.1)
               .string(),
-          ...applyIconStyleIfApplicable(true, left, right, leftTick)
+          ...applyIconStyleIfApplicable(true, left, right, leftTick),
         },
     cursor: disabled ? "not-allowed" : "pointer",
-    maxWidth: "calc(100vw - 40px)"
+    maxWidth: "calc(100vw - 40px)",
   });
 };
 
 const styles = {
   leftHover: {
-    svg: { transform: "translate(-3px, -50%) rotate(180deg)" }
+    svg: { transform: "translate(-3px, -50%) rotate(180deg)" },
   },
   left: {
     padding: "1px 18px 0 40px",
@@ -163,11 +163,11 @@ const styles = {
       top: "50%",
       transform: "translate(0, -50%) rotate(180deg)",
       transition: "transform .3s, background .3s",
-      width: "36px"
-    }
+      width: "36px",
+    },
   },
   rightHover: {
-    svg: { transform: "translate(3px, -50%)" }
+    svg: { transform: "translate(3px, -50%)" },
   },
   right: {
     padding: "1px 40px 0 18px",
@@ -179,9 +179,9 @@ const styles = {
       top: "50%",
       transform: "translate(0, -50%)",
       transition: "transform .3s, background .3s",
-      width: "36px"
-    }
-  }
+      width: "36px",
+    },
+  },
 };
 
 export const LinkButton = (props: LinkButtonProps) => (

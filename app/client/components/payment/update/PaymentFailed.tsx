@@ -1,24 +1,23 @@
-import React from "react";
 import {
   isProduct,
-  MembersDataApiItemContext
+  MembersDataApiItemContext,
 } from "../../../../shared/productResponse";
 import {
   RouteableStepProps,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
 } from "../../wizardRouterAdapter";
 import {
   isNewPaymentMethodDetail,
-  NewPaymentMethodContext
+  NewPaymentMethodContext,
 } from "./newPaymentMethodDetail";
 import { CallCentreNumbers } from "../../callCentreNumbers";
 
 export default function PaymentFailed(props: RouteableStepProps) {
   return (
     <MembersDataApiItemContext.Consumer>
-      {previousProductDetail => (
+      {(previousProductDetail) => (
         <NewPaymentMethodContext.Consumer>
-          {newPaymentMethodDetail =>
+          {(newPaymentMethodDetail) =>
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
               <div css={{ textAlign: "left", marginTop: "10px" }}>

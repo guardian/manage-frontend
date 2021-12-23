@@ -1,6 +1,5 @@
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import React from "react";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { PRODUCT_TYPES } from "../../../../../../shared/productTypes";
 import { DeliveryRecordCard } from "../../../../../components/delivery/records/deliveryRecordCard";
 import DeliveryRecords, {

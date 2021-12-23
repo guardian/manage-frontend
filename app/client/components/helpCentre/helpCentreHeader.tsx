@@ -1,7 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 import { DropdownNav } from ".././nav/dropdownNav";
 import { TheGuardianLogo } from ".././svgs/theGuardianLogo";

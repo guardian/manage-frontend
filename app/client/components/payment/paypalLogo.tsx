@@ -1,5 +1,3 @@
-import React from "react";
-
 export const PaypalLogo = () => (
   <svg width="76" height="20" viewBox="0 0 76 20" fill="none">
     <path

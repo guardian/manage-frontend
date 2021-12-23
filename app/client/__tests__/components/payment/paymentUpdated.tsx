@@ -1,4 +1,3 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import { Subscription } from "../../../../shared/productResponse";
 import { ConfirmedNewPaymentDetailsRenderer } from "../../../components/payment/update/paymentUpdated";
@@ -7,7 +6,7 @@ import {
   guardianWeeklyCard,
   guardianWeeklySubscriptionCard,
   digitalDD,
-  digitalSubscriptionDD
+  digitalSubscriptionDD,
 } from "../../../testData";
 
 // mock functions for NewPaymentMethodDetail type
@@ -29,7 +28,7 @@ const newPaymentMethodDetailCard: NewPaymentMethodDetail = {
   subHasExpectedPaymentType,
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
-  confirmButtonWrapper
+  confirmButtonWrapper,
   /* add the following property as a new type, look at members-data-api to see if we use a default response from Stripe or build our own
 
     "stripePaymentMethod": {
@@ -97,7 +96,7 @@ const newPaymentMethodDetailDD: NewPaymentMethodDetail = {
   subHasExpectedPaymentType,
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
-  confirmButtonWrapper
+  confirmButtonWrapper,
 };
 
 const tests = [
@@ -105,30 +104,30 @@ const tests = [
     data: {
       subscription: guardianWeeklySubscriptionCard,
       newPaymentMethodDetail: newPaymentMethodDetailCard,
-      previousProductDetail: guardianWeeklyCard
+      previousProductDetail: guardianWeeklyCard,
     },
     expectations: [
       "Guardian Weekly",
       "ending 4242",
       "4 / 2024",
       "£135.00 / annual",
-      "10 December 2021"
-    ]
+      "10 December 2021",
+    ],
   },
   {
     data: {
       subscription: digitalSubscriptionDD,
       newPaymentMethodDetail: newPaymentMethodDetailDD,
-      previousProductDetail: digitalDD
+      previousProductDetail: digitalDD,
     },
     expectations: [
       "Digital Subscription",
       "ending 911",
       "20-00-00",
       "£99.00 / annual",
-      "18 December 2021"
-    ]
-  }
+      "18 December 2021",
+    ],
+  },
 ];
 
 describe("ConfirmedNewPaymentDetailsRenderer component in paymentMethodUpdated.tsx", () => {
@@ -143,7 +142,7 @@ describe("ConfirmedNewPaymentDetailsRenderer component in paymentMethodUpdated.t
         />
       );
 
-      expectations.map(toTest => getByText(toTest));
+      expectations.map((toTest) => getByText(toTest));
     }
   );
 });

@@ -1,11 +1,11 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral, news } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
 import { capitalize } from "lodash";
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { DeliveryProblemType } from "../../../../shared/productTypes";
 import { minWidth } from "../../../styles/breakpoints";
 import { ErrorIcon } from "../../svgs/errorIcon";
@@ -33,10 +33,8 @@ interface ValidateDetails {
 export const DeliveryRecordProblemForm = (
   props: DeliveryRecordProblemFormProps
 ) => {
-  const [
-    selectedDeliveryProblem,
-    setSelectedDeliveryProblem
-  ] = useState<SelectedDeliveryProblem | null>(null);
+  const [selectedDeliveryProblem, setSelectedDeliveryProblem] =
+    useState<SelectedDeliveryProblem | null>(null);
   useEffect(() => {
     const validateDetails: ValidateDetails = validateForm();
     props.updateValidationStatusCallback(
@@ -48,11 +46,11 @@ export const DeliveryRecordProblemForm = (
     if (!selectedDeliveryProblem) {
       return {
         isValid: false,
-        message: "Please select the type of problem"
+        message: "Please select the type of problem",
       };
     } else {
       const deliveryProblem = props.problemTypes.find(
-        issue => issue.label === selectedDeliveryProblem?.value
+        (issue) => issue.label === selectedDeliveryProblem?.value
       );
       const isValid = !(
         deliveryProblem?.messageIsMandatory && !selectedDeliveryProblem?.message
@@ -60,8 +58,8 @@ export const DeliveryRecordProblemForm = (
       return {
         isValid,
         ...(!isValid && {
-          message: "Step 1: Please complete the required field."
-        })
+          message: "Step 1: Please complete the required field.",
+        }),
       };
     }
   };
@@ -80,14 +78,14 @@ export const DeliveryRecordProblemForm = (
           const target: HTMLInputElement = event.target as HTMLInputElement;
           if (target.type === "radio") {
             const deliveryProblemObj = {
-              value: target.value
+              value: target.value,
             };
             setSelectedDeliveryProblem(deliveryProblemObj);
             props.updateRadioSelectionCallback(target.value);
           } else if (target.type === "textarea" && selectedDeliveryProblem) {
             setSelectedDeliveryProblem({
               ...selectedDeliveryProblem,
-              message: target.value
+              message: target.value,
             });
           }
         }}

@@ -1,5 +1,5 @@
 import { Location } from "@reach/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import parse from "url-parse";
 import { OphanProduct } from "../../shared/ophanTypes";
 import { ProductDetail } from "../../shared/productResponse";
@@ -60,13 +60,13 @@ export const trackEvent = (
             ...(eventLabel ? [eventLabel.toUpperCase()] : []),
             ...(MMA_AB_TEST_DIMENSION_VALUE
               ? [MMA_AB_TEST_DIMENSION_VALUE]
-              : [])
-          ]
+              : []),
+          ],
         },
         action: "VIEW",
         value: eventValue !== undefined ? `${eventValue}` : undefined,
-        abTest: window.guardian.abTest
-      }
+        abTest: window.guardian.abTest,
+      },
     });
   }
 };
@@ -103,7 +103,7 @@ export const AnalyticsTracker = () => {
           // tslint:disable-next-line:no-object-mutation
           window.guardian.abTest = {
             name: abName,
-            variant: abVariant
+            variant: abVariant,
           };
         }
       }
@@ -127,7 +127,7 @@ export const AnalyticsTracker = () => {
         childList: true,
         subtree: true,
         attributeOldValue: false,
-        characterDataOldValue: false
+        characterDataOldValue: false,
       });
     }
 
@@ -137,7 +137,7 @@ export const AnalyticsTracker = () => {
   useEffect(() => {
     import("@guardian/consent-management-platform").then(
       ({ onConsentChange, getConsentFor }) => {
-        onConsentChange(consentState => {
+        onConsentChange((consentState) => {
           const gaConsentState = getConsentFor(
             "google-analytics",
             consentState
@@ -177,7 +177,7 @@ export const AnalyticsTracker = () => {
               location: location.href,
               page: location.pathname + location.search,
               dimension12: window.guardian.INTCMP,
-              dimension29: MMA_AB_TEST_DIMENSION_VALUE
+              dimension29: MMA_AB_TEST_DIMENSION_VALUE,
             });
             // TODO add ophan pageViewId as a GA dimension
             applyAnyOptimiseExperiments();

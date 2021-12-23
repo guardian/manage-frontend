@@ -1,6 +1,6 @@
 import { navigate, RouteComponentProps } from "@reach/router";
 import { captureException, captureMessage } from "@sentry/browser";
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
@@ -21,13 +21,13 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     undefined
   );
 
-  const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+  const setSelectedTopicObject = useContext(SelectedTopicObjectContext);
 
   useEffect(() => {
     setSingleTopic(undefined);
     setMoreTopics(undefined);
     fetch(`/api/help-centre/topic/${props.topicCode}`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
@@ -37,12 +37,12 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
           navigate("/help-centre");
         }
       })
-      .then(topicData => {
+      .then((topicData) => {
         topicData.topics
           ? setMoreTopics(topicData as MoreTopics)
           : setSingleTopic(topicData as SingleTopic);
       })
-      .catch(error =>
+      .catch((error) =>
         captureException(
           `Failed to fetch topic ${props.topicCode}. Error: ${error}`
         )

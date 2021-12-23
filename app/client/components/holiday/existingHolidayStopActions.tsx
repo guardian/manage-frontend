@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { MDA_TEST_USER_HEADER } from "../../../shared/productResponse";
 import AsyncLoader, { ReFetch } from "../asyncLoader";
@@ -6,7 +6,7 @@ import { Button, LinkButton } from "../buttons";
 import { HideFunction, Modal } from "../modal";
 import {
   HolidayStopRequest,
-  MinimalHolidayStopRequest
+  MinimalHolidayStopRequest,
 } from "./holidayStopApi";
 import { formatDateRangeAsFriendly } from "./summaryTable";
 
@@ -23,12 +23,12 @@ interface ExistingHolidayStopActionsState {
 class WithdrawHolidayStopAsyncLoader extends AsyncLoader<object> {}
 
 // tslint:disable-next-line:max-classes-per-file
-export class ExistingHolidayStopActions extends React.Component<
+export class ExistingHolidayStopActions extends Component<
   ExistingHolidayStopActionsProps,
   ExistingHolidayStopActionsState
 > {
   public state = {
-    isDeleting: false
+    isDeleting: false,
   };
 
   public render = () => {
@@ -63,16 +63,16 @@ export class ExistingHolidayStopActions extends React.Component<
       (this.props.mutabilityFlags.isFullyMutable ||
         this.props.mutabilityFlags.isEndDateEditable)
     ) {
-      const shouldShowAmendButton = this.props.mutabilityFlags
-        .isEndDateEditable;
+      const shouldShowAmendButton =
+        this.props.mutabilityFlags.isEndDateEditable;
       const shouldShowDeleteButton = this.props.mutabilityFlags.isFullyMutable;
 
       const shouldBeOnlyAmendEndDate =
         this.props.mutabilityFlags.isEndDateEditable &&
         !this.props.mutabilityFlags.isFullyMutable;
 
-      const setExistingHolidayStopToAmend = this.props
-        .setExistingHolidayStopToAmend;
+      const setExistingHolidayStopToAmend =
+        this.props.setExistingHolidayStopToAmend;
 
       const reloadParent: ReFetch = this.props.reloadParent;
 
@@ -81,7 +81,7 @@ export class ExistingHolidayStopActions extends React.Component<
           css={{
             display: "inline-block",
             marginTop: "10px",
-            marginRight: "10px"
+            marginRight: "10px",
           }}
         >
           <Button
@@ -156,7 +156,7 @@ export class ExistingHolidayStopActions extends React.Component<
     fetch(`/api/holidays/${this.props.subscriptionName}/${this.props.id}`, {
       method: "DELETE",
       headers: {
-        [MDA_TEST_USER_HEADER]: `${this.props.isTestUser}`
-      }
+        [MDA_TEST_USER_HEADER]: `${this.props.isTestUser}`,
+      },
     });
 }

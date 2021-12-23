@@ -1,10 +1,11 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { breakpoints } from "@guardian/src-foundations";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import * as React from "react";
 import { minWidth } from "../styles/breakpoints";
 // import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
@@ -142,7 +143,7 @@ const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
                       ${textSans.medium({
                         fontWeight: breadcrumbItem.currentPage
                           ? "bold"
-                          : "regular"
+                          : "regular",
                       })};
                       color: ${neutral[100]};
                     `}
@@ -230,12 +231,12 @@ const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
       paddingBottom: "1rem",
       [minWidth.desktop]: {
         ...(gridBase[minWidth.desktop] as object),
-        paddingBottom: "9rem"
+        paddingBottom: "9rem",
       },
       [minWidth.wide]: {
         ...(gridBase[minWidth.wide] as object),
-        paddingBottom: "12rem"
-      }
+        paddingBottom: "12rem",
+      },
     }}
   >
     {!props.withoutNav && (
@@ -247,12 +248,12 @@ const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
           [minWidth.desktop]: {
             ...gridItemPlacement(1, 4),
             display: "block",
-            paddingRight: "1.25rem"
+            paddingRight: "1.25rem",
           },
 
           [minWidth.wide]: {
-            paddingRight: "0"
-          }
+            paddingRight: "0",
+          },
         }}
       >
         <LeftSideNav {...props} />
@@ -263,16 +264,16 @@ const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
         ...gridItemPlacement(1, 4),
 
         [minWidth.tablet]: {
-          ...gridItemPlacement(1, 12)
+          ...gridItemPlacement(1, 12),
         },
 
         [minWidth.desktop]: {
-          ...gridItemPlacement(5, 8)
+          ...gridItemPlacement(5, 8),
         },
 
         [minWidth.wide]: {
-          ...gridItemPlacement(6, 10)
-        }
+          ...gridItemPlacement(6, 10),
+        },
       }}
     >
       {props.children}

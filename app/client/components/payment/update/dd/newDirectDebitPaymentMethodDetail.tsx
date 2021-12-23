@@ -1,7 +1,6 @@
-import * as React from "react";
 import {
   DirectDebitDetails,
-  Subscription
+  Subscription,
 } from "../../../../../shared/productResponse";
 import { maxWidth, minWidth } from "../../../../styles/breakpoints";
 import { cleanSortCode, DirectDebitDisplay } from "../../directDebitDisplay";
@@ -20,7 +19,8 @@ function isSubscriptionWithMandate(
 }
 
 export class NewDirectDebitPaymentMethodDetail
-  implements NewPaymentMethodDetail {
+  implements NewPaymentMethodDetail
+{
   public readonly apiUrlPart = "dd";
   public readonly name = "direct_debit";
   public readonly friendlyName = "direct debit";
@@ -59,15 +59,15 @@ export class NewDirectDebitPaymentMethodDetail
         flexDirection: "row",
         textAlign: "left",
         [maxWidth.desktop]: {
-          flexDirection: "column"
-        }
+          flexDirection: "column",
+        },
       }}
     >
       <div
         css={{
           [minWidth.desktop]: {
-            marginRight: "20px"
-          }
+            marginRight: "20px",
+          },
         }}
       >
         <h3>Declaration</h3>

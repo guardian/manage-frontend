@@ -1,7 +1,6 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
-import React from "react";
 import { LinkButton } from "../buttons";
 
 const buttonDivCss = css`

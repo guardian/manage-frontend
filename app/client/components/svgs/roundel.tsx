@@ -1,4 +1,3 @@
-import React from "react";
 import { minWidth } from "../../styles/breakpoints";
 
 export interface RoundelProps {
@@ -16,8 +15,8 @@ export const Roundel = (props: RoundelProps) => (
       textAlign: "right",
       [minWidth.desktop]: {
         width: `${props.size || 51}px`,
-        height: `${props.size || 51}px`
-      }
+        height: `${props.size || 51}px`,
+      },
     }}
     href="https://www.theguardian.com"
     title="The Guardian - Back to home"
@@ -30,8 +29,8 @@ export const Roundel = (props: RoundelProps) => (
         height: `${props.size || 39}px`,
         [minWidth.desktop]: {
           width: `${props.size || 51}px`,
-          height: `${props.size || 51}px`
-        }
+          height: `${props.size || 51}px`,
+        },
       }}
     >
       <path

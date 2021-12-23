@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { SubTopic } from "../../../shared/contactUsTypes";
 import { minWidth } from "../../styles/breakpoints";
 
@@ -78,7 +78,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
               }
             `}
           >
-            {props.data.map(subTopic => (
+            {props.data.map((subTopic) => (
               <li
                 key={subTopic.id}
                 css={css`

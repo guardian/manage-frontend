@@ -1,8 +1,8 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import { maxWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { Users } from "../identity/identity";
@@ -11,13 +11,11 @@ import { InfoIconDark } from "../svgs/infoIconDark";
 
 export const EmptyAccountOverview = () => {
   const [userEmailAddress, setUserEmailAddress] = useState("-");
-  Users.getCurrentUser().then(info =>
+  Users.getCurrentUser().then((info) =>
     setUserEmailAddress(info.primaryEmailAddress)
   );
-  const [
-    showTopCallCentreNumbers,
-    setTopCallCentreNumbersVisibility
-  ] = useState<boolean>(false);
+  const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+    useState<boolean>(false);
 
   return (
     <>
@@ -46,12 +44,12 @@ export const EmptyAccountOverview = () => {
       </p>
       <dl
         css={css`
-            ${textSans.medium()}
-            background-color: ${neutral[97]};
-            border: 1px solid ${neutral[86]};
-            margin: 30px 0 0 0;
-            padding: ${space[5]}px;
-          `}
+          ${textSans.medium()}
+          background-color: ${neutral[97]};
+          border: 1px solid ${neutral[86]};
+          margin: 30px 0 0 0;
+          padding: ${space[5]}px;
+        `}
       >
         <dt
           css={css`

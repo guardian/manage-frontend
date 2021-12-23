@@ -1,13 +1,13 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Checkbox, CheckboxGroup } from "@guardian/src-checkbox";
 import { space } from "@guardian/src-foundations";
 import { capitalize } from "lodash";
-import React, {
+import {
   ChangeEvent,
   Dispatch,
   FormEvent,
   SetStateAction,
-  useState
+  useState,
 } from "react";
 import {
   DeliveryAddress,
@@ -15,11 +15,11 @@ import {
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
   ProductDetail,
-  Subscription
+  Subscription,
 } from "../../../../shared/productResponse";
 import {
   GROUPED_PRODUCT_TYPES,
-  ProductType
+  ProductType,
 } from "../../../../shared/productTypes";
 import { createProductDetailFetcher } from "../../../productUtils";
 import { COUNTRIES } from "../../identity/models";
@@ -40,7 +40,7 @@ import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
 import {
   ProductDescriptionListKeyValue,
-  ProductDescriptionListTable
+  ProductDescriptionListTable,
 } from "../../productDescriptionListTable";
 import { ProgressIndicator } from "../../progressIndicator";
 import { InfoIconDark } from "../../svgs/infoIconDark";
@@ -49,7 +49,7 @@ import {
   ContactIdContext,
   convertToDescriptionListData,
   NewDeliveryAddressContext,
-  SubscriptionEffectiveData
+  SubscriptionEffectiveData,
 } from "./deliveryAddressFormContext";
 import { FormValidationResponse, isFormValid } from "./formValidation";
 import { Select } from "./select";
@@ -80,20 +80,19 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
 ) =>
   allProductDetail
     .filter(hasContactId)
-    .map(productDetail => ({
+    .map((productDetail) => ({
       productDetail,
-      productType: GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-        productDetail
-      )
+      productType:
+        GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(productDetail),
     }))
-    .filter(_ => _.productType.delivery?.showAddress)
+    .filter((_) => _.productType.delivery?.showAddress)
     .reduce(
       (accumulator, { productDetail, productType }) => ({
         ...accumulator,
         [productDetail.subscription.contactId]: [
           ...(accumulator[productDetail.subscription.contactId] || []),
-          { productDetail, productType }
-        ]
+          { productDetail, productType },
+        ],
       }),
       {} as ContactIdToArrayOfProductDetailAndProductType
     );
@@ -116,7 +115,7 @@ export const addressChangeAffectedInfo = (
       return {
         friendlyProductName,
         subscriptionId: productDetail.subscription.subscriptionId,
-        effectiveDate
+        effectiveDate,
       };
     });
 
@@ -134,46 +133,48 @@ const formStates: FormStates = {
   VALIDATION_ERROR: "validationError",
   VALIDATION_SUCCESS: "validationSuccess",
   SUCCESS: "success",
-  POST_ERROR: "postError"
+  POST_ERROR: "postError",
 };
 
-const renderDeliveryAddressForm = (routeableStepProps: RouteableStepProps) => (
-  allProductDetails: MembersDataApiItem[]
-) => {
-  return (
-    <FormContainer
-      contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-        allProductDetails
-          .filter(isProduct)
-          .filter(_ => _.subscription.readerType !== "Gift")
-      )}
-      routeableStepProps={routeableStepProps}
-    />
-  );
-};
-const clearState = (
-  setFormStatus: Dispatch<SetStateAction<string>>,
-  setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
-  setAddressLine1: Dispatch<SetStateAction<string>>,
-  setAddressLine2: Dispatch<SetStateAction<string>>,
-  setTown: Dispatch<SetStateAction<string>>,
-  setRegion: Dispatch<SetStateAction<string>>,
-  setPostcode: Dispatch<SetStateAction<string>>,
-  setCountry: Dispatch<SetStateAction<string>>,
-  setInstructions: Dispatch<SetStateAction<string>>,
-  setAcknowledgementState: Dispatch<SetStateAction<boolean>>
-) => () => {
-  setFormStatus(formStates.INIT);
-  setFormErrors({ isValid: false });
-  setAddressLine1("");
-  setAddressLine2("");
-  setTown("");
-  setRegion("");
-  setPostcode("");
-  setCountry("");
-  setInstructions("");
-  setAcknowledgementState(false);
-};
+const renderDeliveryAddressForm =
+  (routeableStepProps: RouteableStepProps) =>
+  (allProductDetails: MembersDataApiItem[]) => {
+    return (
+      <FormContainer
+        contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
+          allProductDetails
+            .filter(isProduct)
+            .filter((_) => _.subscription.readerType !== "Gift")
+        )}
+        routeableStepProps={routeableStepProps}
+      />
+    );
+  };
+const clearState =
+  (
+    setFormStatus: Dispatch<SetStateAction<string>>,
+    setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
+    setAddressLine1: Dispatch<SetStateAction<string>>,
+    setAddressLine2: Dispatch<SetStateAction<string>>,
+    setTown: Dispatch<SetStateAction<string>>,
+    setRegion: Dispatch<SetStateAction<string>>,
+    setPostcode: Dispatch<SetStateAction<string>>,
+    setCountry: Dispatch<SetStateAction<string>>,
+    setInstructions: Dispatch<SetStateAction<string>>,
+    setAcknowledgementState: Dispatch<SetStateAction<boolean>>
+  ) =>
+  () => {
+    setFormStatus(formStates.INIT);
+    setFormErrors({ isValid: false });
+    setAddressLine1("");
+    setAddressLine2("");
+    setTown("");
+    setRegion("");
+    setPostcode("");
+    setCountry("");
+    setInstructions("");
+    setAcknowledgementState(false);
+  };
 
 interface FormContainerProps {
   contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType;
@@ -201,13 +202,12 @@ const FormContainer = (props: FormContainerProps) => {
   const [country, setCountry] = useState(
     existingDeliveryAddress?.country
       ? COUNTRIES.find(
-          countryObj => existingDeliveryAddress?.country === countryObj.iso
+          (countryObj) => existingDeliveryAddress?.country === countryObj.iso
         )?.name || existingDeliveryAddress?.country
       : ""
   );
-  const [acknowledgementChecked, setAcknowledgementState] = useState<boolean>(
-    false
-  );
+  const [acknowledgementChecked, setAcknowledgementState] =
+    useState<boolean>(false);
   const [instructions, setInstructions] = useState(
     existingDeliveryAddress?.instructions || ""
   );
@@ -228,9 +228,10 @@ const FormContainer = (props: FormContainerProps) => {
   )
     .flatMap(flattenEquivalent)
     .map(({ productDetail }) => {
-      const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-        productDetail
-      ).friendlyName;
+      const friendlyProductName =
+        GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
+          productDetail
+        ).friendlyName;
       return `${friendlyProductName}`;
     });
 
@@ -255,7 +256,7 @@ const FormContainer = (props: FormContainerProps) => {
     setInstructions,
     subscriptionsNames,
     acknowledgementChecked,
-    setAcknowledgementState
+    setAcknowledgementState,
   };
   const evolvingAddressObject = {
     addressLine1,
@@ -264,7 +265,7 @@ const FormContainer = (props: FormContainerProps) => {
     region,
     postcode,
     country,
-    instructions
+    instructions,
   };
 
   return (
@@ -282,7 +283,7 @@ const FormContainer = (props: FormContainerProps) => {
           setCountry,
           setInstructions,
           setAcknowledgementState
-        )
+        ),
       }}
     >
       <AddressChangedInformationContext.Provider
@@ -300,7 +301,7 @@ const FormContainer = (props: FormContainerProps) => {
               steps={[
                 { title: "Update", isCurrentStep: true },
                 { title: "Review" },
-                { title: "Confirmation" }
+                { title: "Confirmation" },
               ]}
               additionalCSS={css`
                 margin-top: ${space[5]}px;
@@ -390,15 +391,11 @@ interface FormProps {
 }
 
 const Form = (props: FormProps) => {
-  const [
-    showTopCallCentreNumbers,
-    setTopCallCentreNumbersVisibility
-  ] = useState<boolean>(false);
+  const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+    useState<boolean>(false);
 
-  const [
-    instructionsRemainingCharacters,
-    setInstructionsRemainingCharacters
-  ] = useState<number>(250 - props.instructions.length);
+  const [instructionsRemainingCharacters, setInstructionsRemainingCharacters] =
+    useState<number>(250 - props.instructions.length);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -411,7 +408,7 @@ const Form = (props: FormProps) => {
       town: props.town,
       region: props.region,
       postcode: props.postcode,
-      country: props.country
+      country: props.country,
     };
 
     const isFormValidResponse = isFormValid(formData, props.subscriptionsNames);
@@ -420,13 +417,13 @@ const Form = (props: FormProps) => {
       addressLine1: isFormValidResponse.addressLine1,
       town: isFormValidResponse.town,
       postcode: isFormValidResponse.postcode,
-      country: isFormValidResponse.country
+      country: isFormValidResponse.country,
     } as FormValidationResponse);
 
     if (isFormValidResponse.isValid && props.acknowledgementChecked) {
       // formStates.VALIDATION_SUCCESS`);
       (props.routeableStepProps.navigate || navigate)("review", {
-        state: props.routeableStepProps.location?.state
+        state: props.routeableStepProps.location?.state,
       });
     } else {
       props.setFormStatus(formStates.VALIDATION_ERROR);
@@ -449,8 +446,8 @@ const Form = (props: FormProps) => {
             position: "relative",
             marginBottom: `${space[5]}px`,
             label: {
-              marginTop: `${space[3]}px`
-            }
+              marginTop: `${space[3]}px`,
+            },
           }}
         >
           <legend
@@ -520,10 +517,10 @@ const Form = (props: FormProps) => {
           />
           <Select
             label={"Country"}
-            options={COUNTRIES.map(country => {
+            options={COUNTRIES.map((country) => {
               return {
                 name: country.name,
-                value: country.name
+                value: country.name,
               };
             })}
             width={30}
@@ -730,12 +727,12 @@ const DeliveryAddressForm = (props: RouteableStepProps) => {
       breadcrumbs={[
         {
           title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
+          link: NAV_LINKS.accountOverview.link,
         },
         {
           title: "Edit delivery address",
-          currentPage: true
-        }
+          currentPage: true,
+        },
       ]}
     >
       <MembersDatApiAsyncLoader

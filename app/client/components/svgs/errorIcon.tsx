@@ -1,6 +1,5 @@
-import { SerializedStyles } from "@emotion/core";
+import { SerializedStyles } from "@emotion/react";
 import { brandAlt, news } from "@guardian/src-foundations/palette";
-import React from "react";
 
 interface ErrorIconProps {
   fill?: string;

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const InfoIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +7,7 @@ export const InfoIcon = () => (
     css={{
       position: "relative",
       top: "2.5px",
-      marginRight: "5px"
+      marginRight: "5px",
     }}
   >
     <g fill="none" fillRule="evenodd" transform="translate(1 1)">

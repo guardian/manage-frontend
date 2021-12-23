@@ -1,6 +1,6 @@
 import { breakpoints, palette } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { requiresSignin } from "../../shared/requiresSignin";
 import { minWidth } from "../styles/breakpoints";
 import { gridBase, gridColumns, gridItemPlacement } from "../styles/grid";
@@ -44,8 +44,8 @@ const Header = () => {
         boxShadow: `0 2px 1px -1px ${palette.brand[600]}`,
         zIndex: 1070,
         [minWidth.desktop]: {
-          minHeight: "82px"
-        }
+          minHeight: "82px",
+        },
       }}
     >
       <div
@@ -54,7 +54,7 @@ const Header = () => {
           height: "100%",
           maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
           alignItems: "center",
-          margin: "auto"
+          margin: "auto",
         }}
       >
         {headerStatus === "signedIn" && (
@@ -68,8 +68,8 @@ const Header = () => {
                   display: "none",
                   [minWidth.desktop]: {
                     display: "block",
-                    ...gridItemPlacement(1, 8)
-                  }
+                    ...gridItemPlacement(1, 8),
+                  },
                 }}
               >
                 <Link
@@ -77,7 +77,7 @@ const Header = () => {
                   css={{
                     textDecoration: "none",
                     color: palette.neutral["100"],
-                    ":visited": { color: "inherit" }
+                    ":visited": { color: "inherit" },
                   }}
                 >
                   My account
@@ -101,11 +101,11 @@ const Header = () => {
                 position: "relative",
                 left: "0.5rem",
                 ...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
-                marginLeft: "auto"
+                marginLeft: "auto",
               },
               [minWidth.wide]: {
-                ...gridItemPlacement(-4, 2, gridColumns.wide)
-              }
+                ...gridItemPlacement(-4, 2, gridColumns.wide),
+              },
             }}
           >
             Sign in

@@ -1,6 +1,5 @@
 import { neutral } from "@guardian/src-foundations/palette";
-import React from "react";
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { ProductDetail } from "../../../shared/productResponse";
 import { ProductDescriptionListTable } from "../productDescriptionListTable";
 import { CardDisplay } from "./cardDisplay";
@@ -34,14 +33,14 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
                   )}
                   {props.nextPaymentDetails.paymentValue}
                 </span>
-              )
+              ),
             },
             {
               title: props.nextPaymentDetails.nextPaymentDateKey,
               ...(props.productDetail.subscription.nextPaymentDate && {
-                value: props.nextPaymentDetails.nextPaymentDateValue
-              })
-            }
+                value: props.nextPaymentDetails.nextPaymentDateValue,
+              }),
+            },
           ]
         : []),
       {
@@ -75,7 +74,7 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
         ),
         spanTwoCols: props.productDetail.subscription.payPalEmail
           ? true
-          : undefined
+          : undefined,
       },
       {
         title: "Expiry date",
@@ -84,9 +83,9 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
             props.productDetail.subscription.card.expiry.month < 10 ? "0" : ""
           }${props.productDetail.subscription.card.expiry.month}
                     ${" / "}
-                    ${props.productDetail.subscription.card.expiry.year}`
-        })
-      }
+                    ${props.productDetail.subscription.card.expiry.year}`,
+        }),
+      },
     ]}
   />
 );

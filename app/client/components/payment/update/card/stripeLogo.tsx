@@ -1,5 +1,3 @@
-import React from "react";
-
 export const StripeLogo = () => (
   <svg width="119px" height="26px">
     <path

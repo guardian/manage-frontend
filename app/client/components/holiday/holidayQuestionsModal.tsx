@@ -1,4 +1,3 @@
-import React from "react";
 import { HolidayStopFlowProperties } from "../../../shared/productTypes";
 import { sans } from "../../styles/fonts";
 import { CallCentreNumbers } from "../callCentreNumbers";
@@ -23,7 +22,7 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
           fontSize: "14px",
           cursor: "pointer",
           textDecoration: "underline",
-          margin: "10px"
+          margin: "10px",
         }}
       >
         <InfoIcon />

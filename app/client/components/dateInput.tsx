@@ -1,5 +1,4 @@
-import { AppearanceProperty, TextAlignProperty } from "csstype";
-import React from "react";
+import { Property } from "csstype";
 import palette from "../colours";
 import { maxWidth } from "../styles/breakpoints";
 import { sans } from "../styles/fonts";
@@ -9,22 +8,22 @@ const inputBoxCss = {
   border: 0,
   width: "50px",
   fontSize: "16px",
-  appearance: "textfield" as AppearanceProperty,
-  textAlign: "center" as TextAlignProperty, // this cast shouldn't be required (weird TypeScript issue here)
+  appearance: "textfield" as Property.Appearance,
+  textAlign: "center" as Property.TextAlign, // this cast shouldn't be required (weird TypeScript issue here)
   padding: 0,
-  margin: 0
+  margin: 0,
 };
 
 const dayMonthCss = {
   ...inputBoxCss,
-  width: "25px"
+  width: "25px",
 };
 
 const dividerCss = {
   display: "inline-block",
   fontSize: "16px",
   padding: 0,
-  margin: 0
+  margin: 0,
 };
 
 interface DateInputProps {
@@ -40,8 +39,8 @@ export const DateInput = (props: DateInputProps) => (
         fontFamily: sans,
         fontSize: "14px",
         [maxWidth.desktop]: {
-          display: "none"
-        }
+          display: "none",
+        },
       }}
     >
       {props.labelText}
@@ -52,7 +51,7 @@ export const DateInput = (props: DateInputProps) => (
         border: "1px solid" + palette.neutral["5"],
         padding: "5px",
         whiteSpace: "nowrap",
-        margin: 0
+        margin: 0,
       }}
       aria-describedby="validation-message"
       disabled={props.disabled}

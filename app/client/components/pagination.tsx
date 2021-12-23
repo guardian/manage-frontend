@@ -1,18 +1,19 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import {
   SvgChevronLeftSingle,
-  SvgChevronRightSingle
+  SvgChevronRightSingle,
 } from "@guardian/src-icons";
-import React, {
+import {
+  createContext,
   Dispatch,
   MouseEvent,
   SetStateAction,
   useContext,
   useEffect,
-  useState
+  useState,
 } from "react";
 
 interface PaginationContextProps {
@@ -21,10 +22,10 @@ interface PaginationContextProps {
   onDirectUpdate: (newPageNumber: number) => void;
 }
 
-const PaginationContext = React.createContext<PaginationContextProps>({
+const PaginationContext = createContext<PaginationContextProps>({
   currentPageNumber: 1,
   setCurrentPageNumber: () => undefined,
-  onDirectUpdate: () => undefined
+  onDirectUpdate: () => undefined,
 });
 
 interface PaginationProps {
@@ -47,7 +48,7 @@ export const Pagination = (props: PaginationProps) => {
     [
       ...Array(
         Math.min(numberOfPages, numberOfResultsToShowBeforeEllipsis - 1) + 2
-      ).keys()
+      ).keys(),
     ].slice(1)
   );
 
@@ -68,8 +69,8 @@ export const Pagination = (props: PaginationProps) => {
 
     setCurrentResults(
       [...Array(rangeTotal).keys()]
-        .map(pageNumber => pageNumber + rangeStartNumber)
-        .filter(pageNum => pageNum <= numberOfPages)
+        .map((pageNumber) => pageNumber + rangeStartNumber)
+        .filter((pageNum) => pageNum <= numberOfPages)
     );
   }, [props.currentPage]);
 
@@ -92,7 +93,7 @@ export const Pagination = (props: PaginationProps) => {
       value={{
         currentPageNumber: props.currentPage,
         setCurrentPageNumber: props.setCurrentPage,
-        onDirectUpdate: props.onDirectUpdate
+        onDirectUpdate: props.onDirectUpdate,
       }}
     >
       <div
@@ -136,7 +137,7 @@ export const Pagination = (props: PaginationProps) => {
           <PaginationNumberItem paginationNumber={1} />
         </>
         {shouldShowLeftSideEllipsis && <span css={ellipsisCss}>...</span>}
-        {currentResults.map(resultPage => (
+        {currentResults.map((resultPage) => (
           <PaginationNumberItem
             paginationNumber={resultPage}
             key={resultPage}
@@ -181,11 +182,8 @@ interface PaginationNumberItemProps {
   paginationNumber: number;
 }
 const PaginationNumberItem = (props: PaginationNumberItemProps) => {
-  const {
-    currentPageNumber,
-    setCurrentPageNumber,
-    onDirectUpdate
-  } = useContext(PaginationContext);
+  const { currentPageNumber, setCurrentPageNumber, onDirectUpdate } =
+    useContext(PaginationContext);
 
   const isSelectedPage: boolean = currentPageNumber === props.paginationNumber;
 

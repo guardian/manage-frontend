@@ -1,5 +1,5 @@
-import { CSSObject } from "@emotion/core";
-import React, { FC, useState } from "react";
+import { CSSObject } from "@emotion/react";
+import { FC, useState } from "react";
 import palette from "../../colours";
 import { serif } from "../../styles/fonts";
 interface DropMenuProps {
@@ -13,7 +13,7 @@ const styles = {
     borderTop: `1px solid ${palette.neutral["6"]}`,
     cursor: "pointer",
     padding: "3px 0 12px",
-    position: "relative"
+    position: "relative",
   } as CSSObject,
   header: {
     fontSize: "17px",
@@ -34,15 +34,15 @@ const styles = {
       transition: "transform 250ms ease-out",
       verticalAlign: "middle",
       width: "5px",
-      marginLeft: "4px"
+      marginLeft: "4px",
     },
     "&.open:after": {
-      transform: "rotate(225deg)"
-    }
-  } as CSSObject
+      transform: "rotate(225deg)",
+    },
+  } as CSSObject,
 };
 
-export const DropMenu: FC<DropMenuProps> = props => {
+export const DropMenu: FC<DropMenuProps> = (props) => {
   const { children, color, title } = props;
   const [open, setOpen] = useState(false);
   return (

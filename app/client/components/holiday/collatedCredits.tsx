@@ -1,4 +1,3 @@
-import React from "react";
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from "../../../shared/dates";
 import { HolidayStopDetail } from "./holidayStopApi";
 
@@ -30,10 +29,11 @@ interface CollatedCreditsProps {
 }
 
 export const CollatedCredits = (props: CollatedCreditsProps) => {
-  const collatedCreditsByInvoiceDate: CollatedCreditByInvoiceDate | null = props.publicationsImpacted.reduce(
-    reduceCreditCallback,
-    {} as CollatedCreditByInvoiceDate
-  );
+  const collatedCreditsByInvoiceDate: CollatedCreditByInvoiceDate | null =
+    props.publicationsImpacted.reduce(
+      reduceCreditCallback,
+      {} as CollatedCreditByInvoiceDate
+    );
 
   return (
     <div>

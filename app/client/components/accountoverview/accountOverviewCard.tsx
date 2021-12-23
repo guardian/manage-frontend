@@ -1,13 +1,12 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand, brandAlt, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { cancellationFormatDate, parseDate } from "../../../shared/dates";
 import {
   getMainPlan,
   isGift,
-  ProductDetail
+  ProductDetail,
 } from "../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
@@ -17,7 +16,7 @@ import { CardDisplay } from "../payment/cardDisplay";
 import { DirectDebitDisplay } from "../payment/directDebitDisplay";
 import {
   getNextPaymentDetails,
-  NewPaymentPriceAlert
+  NewPaymentPriceAlert,
 } from "../payment/nextPaymentDetails";
 import { PayPalDisplay } from "../payment/paypalDisplay";
 import { SepaDisplay } from "../payment/sepaDisplay";
@@ -313,7 +312,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                   trackEvent({
                     eventCategory: "account_overview",
                     eventAction: "click",
-                    eventLabel: `manage_${groupedProductType.urlPart}`
+                    eventLabel: `manage_${groupedProductType.urlPart}`,
                   })
                 }
               />
@@ -426,7 +425,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
                       trackEvent({
                         eventCategory: "account_overview",
                         eventAction: "click",
-                        eventLabel: "manage_payment_method"
+                        eventLabel: "manage_payment_method",
                       })
                     }
                   />

@@ -1,7 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { CMP } from "@guardian/consent-management-platform/dist/types";
 import { from } from "@guardian/src-foundations/mq";
-import React, { useEffect, useState, SyntheticEvent } from "react";
+import { useEffect, useState, SyntheticEvent } from "react";
 import palette from "../../colours";
 import { isInUSA as isUserInUSA } from "../../geolocation";
 import { headline } from "../../styles/fonts";
@@ -224,7 +224,7 @@ export const Footer = () => {
                   data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
                   data-node-uid="2"
                   height="86px"
-                  onLoad={emailForm => fillEmailSignup(emailForm)}
+                  onLoad={(emailForm) => fillEmailSignup(emailForm)}
                   css={emailSignUpIframeStyles}
                 />
               </div>
@@ -240,9 +240,9 @@ export const Footer = () => {
                               href: "#",
                               onClick: () => {
                                 importedCmp?.showPrivacyManager();
-                              }
+                              },
                             }
-                          : { href: link })
+                          : { href: link }),
                       };
 
                       return (

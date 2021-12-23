@@ -1,6 +1,5 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { brand } from "@guardian/src-foundations/palette";
-import React from "react";
 import { DirectDebitDetails } from "../../../shared/productResponse";
 import { minWidth } from "../../styles/breakpoints";
 import { DirectDebitLogo } from "./directDebitLogo";
@@ -142,9 +141,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
         </span>
         {props.showAccountName && props.accountName ? (
           <span>{props.accountName}</span>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
       </div>
     </>
   );

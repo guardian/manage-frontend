@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import * as React from "react";
 import { trackEvent } from "./analytics";
 import { GenericErrorScreen } from "./genericErrorScreen";
 import { LoadingProps, Spinner } from "./spinner";
@@ -24,7 +24,7 @@ interface AsyncLoaderProps<T> extends LoadingProps {
 enum LoadingState {
   loading,
   loaded,
-  error
+  error,
 }
 
 interface AsyncLoaderState<T> {
@@ -42,12 +42,12 @@ export default class AsyncLoader<
   public componentDidMount(): void {
     this.props
       .fetch()
-      .then(resp =>
+      .then((resp) =>
         Array.isArray(resp)
           ? Promise.all(resp.map(this.processResponse))
           : this.processResponse(resp)
       )
-      .then(data => {
+      .then((data) => {
         if (
           !(
             this.props.shouldPreventRender &&
@@ -58,7 +58,7 @@ export default class AsyncLoader<
           this.setState({ data, loadingState: LoadingState.loaded });
         }
       })
-      .catch(exception => this.handleError(exception));
+      .catch((exception) => this.handleError(exception));
   }
 
   public render(): React.ReactNode {
@@ -97,7 +97,7 @@ export default class AsyncLoader<
   ) => {
     const locationHeader = resp.headers.get("Location");
     const allResponsesAreOK =
-      (allResponses || [resp]).filter(res => !res.ok).length === 0;
+      (allResponses || [resp]).filter((res) => !res.ok).length === 0;
     if (resp.status === 401 && locationHeader && window !== undefined) {
       window.location.replace(locationHeader);
       return Promise.resolve(null);
@@ -119,7 +119,7 @@ export default class AsyncLoader<
     trackEvent({
       eventCategory: "asyncLoader",
       eventAction: "error",
-      eventLabel: error ? error.toString() : undefined
+      eventLabel: error ? error.toString() : undefined,
     });
     Sentry.captureException(error);
   }

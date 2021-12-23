@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-import React, { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { NAV_LINKS } from "../../nav/navConfig";
 import { PageContainer } from "../../page";
@@ -7,7 +7,7 @@ import { Spinner } from "../../spinner";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import {
   GenericErrorMessage,
-  GenericErrorMessageRef
+  GenericErrorMessageRef,
 } from "../GenericErrorMessage";
 import { Users } from "../identity";
 import { IdentityLocations } from "../IdentityLocations";
@@ -24,7 +24,7 @@ const PublicProfile = (_: { path?: string }) => {
   const [user, setUser] = useState<User>();
   const [error, setError] = useState(false);
 
-  const errorRef = React.createRef<GenericErrorMessageRef>();
+  const errorRef = createRef<GenericErrorMessageRef>();
 
   const handleGeneralError = (e: any) => {
     setError(true);
@@ -32,7 +32,7 @@ const PublicProfile = (_: { path?: string }) => {
     trackEvent({
       eventCategory: "publicProfileError",
       eventAction: "error",
-      eventLabel: e.toString()
+      eventLabel: e.toString(),
     });
   };
 
@@ -76,7 +76,7 @@ const PublicProfile = (_: { path?: string }) => {
     <>
       <ProfileFormSection
         user={u}
-        saveUser={values => saveUser(u, values)}
+        saveUser={(values) => saveUser(u, values)}
         onError={handleGeneralError}
         onSuccess={setUser}
       />

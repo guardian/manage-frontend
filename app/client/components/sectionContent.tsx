@@ -1,6 +1,12 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
-import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 import { maxWidth, minWidth } from "../styles/breakpoints";
 import { gridBase, gridItemPlacement } from "../styles/grid";
 import HelpCentreNav from "./helpCentre/helpCentreNav";
@@ -20,7 +26,7 @@ const sectionCss = (
 
   [minWidth.tablet]: {
     ...gridItemPlacement(1, 12),
-    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" })
+    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" }),
   },
 
   [minWidth.desktop]: {
@@ -29,7 +35,7 @@ const sectionCss = (
       : hasNav
       ? gridItemPlacement(5, 11)
       : gridItemPlacement(3, 9)),
-    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" })
+    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" }),
   },
 
   [minWidth.wide]: {
@@ -37,16 +43,16 @@ const sectionCss = (
       ? gridItemPlacement(1, 3)
       : hasNav
       ? gridItemPlacement(5, 9)
-      : gridItemPlacement(3, 12))
+      : gridItemPlacement(3, 12)),
   },
   ...(isStickyOnMobile && {
     [maxWidth.tablet]: {
       position: "sticky",
       top: 0,
       backgroundColor: palette.neutral[100],
-      zIndex: 2
-    }
-  })
+      zIndex: 2,
+    },
+  }),
 });
 
 const containerCss = css`
@@ -76,7 +82,7 @@ const divCss = (hasNav: boolean | undefined) => css`
 `;
 
 // TODO: refactor this var to remove need for disabling eslint rule
-export const SelectedTopicObjectContext = React.createContext<
+export const SelectedTopicObjectContext = createContext<
   Dispatch<SetStateAction<string | undefined>>
 >(undefined!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 

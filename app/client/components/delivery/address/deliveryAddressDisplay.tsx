@@ -1,6 +1,5 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { DeliveryAddress } from "../../../../shared/productResponse";
 import { COUNTRIES } from "../../identity/models";
 
@@ -23,7 +22,7 @@ export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
       {props.region && <span>{props.region}</span>}
       <span>{props.postcode}</span>
       <span>
-        {COUNTRIES.find(country => props.country === country.iso)?.name ||
+        {COUNTRIES.find((country) => props.country === country.iso)?.name ||
           props.country}
       </span>
     </div>

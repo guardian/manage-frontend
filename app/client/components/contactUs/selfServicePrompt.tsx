@@ -1,9 +1,8 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { trackEvent } from "../analytics";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { InfoIconDark } from "../svgs/infoIconDark";
@@ -46,7 +45,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
     trackEvent({
       eventCategory: "ContactUs",
       eventAction: "servicelink_click",
-      eventLabel: props.topicReferer
+      eventLabel: props.topicReferer,
     });
 
   return (

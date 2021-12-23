@@ -1,5 +1,4 @@
 import { Location } from "@reach/router";
-import React from "react";
 import { DEFAULT_PAGE_TITLE } from "../../../shared/helpCentreConfig";
 
 interface PageTitleProps {

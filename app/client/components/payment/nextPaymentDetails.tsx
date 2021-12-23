@@ -1,14 +1,13 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { brand } from "@guardian/src-foundations/palette";
-import React from "react";
 import { parseDate } from "../../../shared/dates";
 import {
   augmentInterval,
   isPaidSubscriptionPlan,
   isSixForSix,
   Subscription,
-  SubscriptionPlan
+  SubscriptionPlan,
 } from "../../../shared/productResponse";
 import { InfoIconDark } from "../svgs/infoIconDark";
 
@@ -64,7 +63,7 @@ export const getNextPaymentDetails = (
       paymentValue,
       isNewPaymentValue,
       nextPaymentDateKey: "Next payment date",
-      nextPaymentDateValue
+      nextPaymentDateValue,
     };
   }
 };

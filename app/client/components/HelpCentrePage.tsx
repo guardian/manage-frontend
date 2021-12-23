@@ -1,6 +1,6 @@
-import { css, Global } from "@emotion/core";
+import { css, Global } from "@emotion/react";
 import { Redirect, Router } from "@reach/router";
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
@@ -17,24 +17,26 @@ import { ScrollToTop } from "./scrollToTop";
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const HelpCentre = lazy(() =>
-  import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
+const HelpCentre = lazy(
+  () => import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
 );
 
-const HelpCentreArticle = lazy(() =>
-  import(
-    /* webpackChunkName: "HelpCentreArticle" */ "./helpCentre/helpCentreArticle"
-  )
+const HelpCentreArticle = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "HelpCentreArticle" */ "./helpCentre/helpCentreArticle"
+    )
 );
 
-const HelpCentreTopic = lazy(() =>
-  import(
-    /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
-  )
+const HelpCentreTopic = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
+    )
 );
 
-const ContactUs = lazy(() =>
-  import(/* webpackChunkName: "ContactUs" */ "./contactUs/contactUs")
+const ContactUs = lazy(
+  () => import(/* webpackChunkName: "ContactUs" */ "./contactUs/contactUs")
 );
 
 const HelpCentreRouter = () => {

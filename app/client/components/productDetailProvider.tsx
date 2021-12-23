@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   isProduct,
   MembersDataApiItem,
   MembersDatApiAsyncLoader,
-  ProductDetail
+  ProductDetail,
 } from "../../shared/productResponse";
 import { createProductDetailFetcher } from "../productUtils";
 import {
   RouteableStepProps,
-  visuallyNavigateToParent
+  visuallyNavigateToParent,
 } from "./wizardRouterAdapter";
 
 export interface ProductDetailProviderProps extends RouteableStepProps {
@@ -71,21 +71,23 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
   return null;
 };
 
-const renderSingleProductOrReturnToAccountOverview = (
-  props: ProductDetailProviderProps,
-  setSelectedProductDetail: (productDetail: ProductDetail) => void
-) => (data: MembersDataApiItem[]) => {
-  const filteredProductDetails = data
-    .filter(isProduct)
-    .filter(
-      productDetail =>
-        props.allowCancelledSubscription ||
-        !productDetail.subscription.cancelledAt
-    );
+const renderSingleProductOrReturnToAccountOverview =
+  (
+    props: ProductDetailProviderProps,
+    setSelectedProductDetail: (productDetail: ProductDetail) => void
+  ) =>
+  (data: MembersDataApiItem[]) => {
+    const filteredProductDetails = data
+      .filter(isProduct)
+      .filter(
+        (productDetail) =>
+          props.allowCancelledSubscription ||
+          !productDetail.subscription.cancelledAt
+      );
 
-  if (filteredProductDetails.length === 1) {
-    setSelectedProductDetail(filteredProductDetails[0]);
-    return null;
-  }
-  return visuallyNavigateToParent(props, true);
-};
+    if (filteredProductDetails.length === 1) {
+      setSelectedProductDetail(filteredProductDetails[0]);
+      return null;
+    }
+    return visuallyNavigateToParent(props, true);
+  };

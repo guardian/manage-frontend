@@ -1,9 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
 import { neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Link } from "@reach/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
 import { helpCentreNavConfig } from "./helpCentreConfig";
 import {
@@ -11,7 +11,7 @@ import {
   innerSectionDivCss,
   linkAnchorStyle,
   linkArrowStyle,
-  sectionTitleCss
+  sectionTitleCss,
 } from "./helpCentreStyles";
 
 interface HelpCentreNavProps {

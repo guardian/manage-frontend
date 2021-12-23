@@ -1,14 +1,14 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { ChoiceCard, ChoiceCardGroup } from "@guardian/src-choice-card";
 import { neutral, palette, space } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import { TextInput } from "@guardian/src-text-input";
 import { InlineError } from "@guardian/src-user-feedback";
 import { capitalize } from "lodash";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   augmentInterval,
-  PaidSubscriptionPlan
+  PaidSubscriptionPlan,
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import { trackEvent } from "../analytics";
@@ -54,99 +54,99 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
       amounts: [3, 7, 12],
       otherDefaultAmount: 2,
       minAmount: 2,
-      maxAmount: 166
+      maxAmount: 166,
     },
     year: {
       amounts: [60, 120, 240, 480],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
+      maxAmount: 2000,
+    },
   },
   USD: {
     month: {
       amounts: [5, 10, 20],
       otherDefaultAmount: 2,
       minAmount: 2,
-      maxAmount: 800
+      maxAmount: 800,
     },
     year: {
       amounts: [50, 100, 250, 500],
       otherDefaultAmount: 20,
       minAmount: 10,
-      maxAmount: 10000
-    }
+      maxAmount: 10000,
+    },
   },
   EUR: {
     month: {
       amounts: [6, 10, 20],
       otherDefaultAmount: 2,
       minAmount: 2,
-      maxAmount: 166
+      maxAmount: 166,
     },
     year: {
       amounts: [50, 100, 250, 500],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
+      maxAmount: 2000,
+    },
   },
   AUD: {
     month: {
       amounts: [10, 20, 40],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 200
+      maxAmount: 200,
     },
     year: {
       amounts: [80, 250, 500, 750],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
+      maxAmount: 2000,
+    },
   },
   NZD: {
     month: {
       amounts: [10, 20, 50],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 200
+      maxAmount: 200,
     },
     year: {
       amounts: [50, 100, 250, 500],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
+      maxAmount: 2000,
+    },
   },
   CAD: {
     month: {
       amounts: [5, 10, 20],
       otherDefaultAmount: 5,
       minAmount: 5,
-      maxAmount: 166
+      maxAmount: 166,
     },
     year: {
       amounts: [60, 100, 250, 500],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
+      maxAmount: 2000,
+    },
   },
   international: {
     month: {
       amounts: [5, 10, 20],
       otherDefaultAmount: 5,
       minAmount: 5,
-      maxAmount: 166
+      maxAmount: 166,
     },
     year: {
       amounts: [60, 100, 250, 500],
       otherDefaultAmount: 10,
       minAmount: 10,
-      maxAmount: 2000
-    }
-  }
+      maxAmount: 2000,
+    },
+  },
 };
 
 export const ContributionUpdateAmountForm = (
@@ -172,10 +172,8 @@ export const ContributionUpdateAmountForm = (
   const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
     getDefaultIsOtherAmountSelected()
   );
-  const [
-    hasInteractedWithOtherAmount,
-    setHasInteractedWithOtherAmount
-  ] = useState<boolean>(false);
+  const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
+    useState<boolean>(false);
 
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
 
@@ -204,18 +202,16 @@ export const ContributionUpdateAmountForm = (
     }
   }, [confirmedAmount]);
 
-  const getAmountUpdater = (
-    newAmount: number,
-    productType: ProductType,
-    subscriptionName: string
-  ) => async () =>
-    await fetchWithDefaultParameters(
-      `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-      {
-        method: "POST",
-        body: JSON.stringify({ newPaymentAmount: newAmount })
-      }
-    );
+  const getAmountUpdater =
+    (newAmount: number, productType: ProductType, subscriptionName: string) =>
+    async () =>
+      await fetchWithDefaultParameters(
+        `/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ newPaymentAmount: newAmount }),
+        }
+      );
 
   const validateChoice = (): string | null => {
     const chosenOption = isOtherAmountSelected ? otherAmount : selectedValue;
@@ -309,7 +305,7 @@ export const ContributionUpdateAmountForm = (
             eventAction: "contributions_amount_change_success",
             eventLabel: `by ${props.mainPlan.currency}${(
               pendingAmount - props.currentAmount
-            ).toFixed(2)}${props.mainPlan.currencyISO}`
+            ).toFixed(2)}${props.mainPlan.currencyISO}`,
           });
           setConfirmedAmount(pendingAmount);
           return null;
@@ -318,7 +314,7 @@ export const ContributionUpdateAmountForm = (
         errorRender={() => {
           trackEvent({
             eventCategory: "amount_change",
-            eventAction: "contributions_amount_change_failed"
+            eventAction: "contributions_amount_change_failed",
           });
           setUpdateFailedStatus(true);
           setShowUpdateLoader(false);
@@ -389,7 +385,7 @@ export const ContributionUpdateAmountForm = (
                 columns={2}
               >
                 <>
-                  {currentContributionOptions.amounts.map(amount => (
+                  {currentContributionOptions.amounts.map((amount) => (
                     <ChoiceCard
                       id={`amount-${amount}`}
                       key={amount}
@@ -431,8 +427,8 @@ export const ContributionUpdateAmountForm = (
                     undefined
                   }
                   type="number"
-                  value={otherAmount || ""}
-                  onChange={event =>
+                  value={(otherAmount as unknown as string) || ""}
+                  onChange={(event) =>
                     setOtherAmount(
                       event.target.value ? Number(event.target.value) : null
                     )

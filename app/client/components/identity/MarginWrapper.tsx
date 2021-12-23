@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { minWidth } from "../../styles/breakpoints";
 
 export const MarginWrapper: FC<{}> = ({ children }) => {
@@ -9,8 +9,8 @@ export const MarginWrapper: FC<{}> = ({ children }) => {
         margin: "0 auto",
         maxWidth: "620px",
         [minWidth.desktop]: {
-          maxWidth: "100%"
-        }
+          maxWidth: "100%",
+        },
       }}
     >
       {children}

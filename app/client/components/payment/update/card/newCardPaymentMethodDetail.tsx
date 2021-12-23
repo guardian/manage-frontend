@@ -1,5 +1,4 @@
 import { PaymentMethod } from "@stripe/stripe-js";
-import * as React from "react";
 import { Card, Subscription } from "../../../../../shared/productResponse";
 import { CardDisplay } from "../../cardDisplay";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
@@ -48,7 +47,7 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
 
   public readonly detailToPayloadObject = () => ({
     stripePaymentMethodID: this.stripePaymentMethod.id,
-    stripePublicKey: this.stripePublicKeyForUpdate
+    stripePublicKey: this.stripePublicKeyForUpdate,
   });
 
   public readonly matchesResponse = (response: CardUpdateResponse) =>

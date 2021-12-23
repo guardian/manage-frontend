@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import palette from "../../../colours";
 import { DropMenu } from "../DropMenu";
 import { NewsletterPreference } from "../NewsletterPreference";
@@ -20,21 +20,15 @@ const colors: { [T in Theme]: string } = {
   [Theme.lifestyle]: palette.pink.medium,
   [Theme.comment]: "#e05e00",
   [Theme.work]: palette.neutral["1"],
-  [Theme.FromThePapers]: palette.neutral["1"]
+  [Theme.FromThePapers]: palette.neutral["1"],
 };
 
 const newsletterPreference = (
   newsletter: ConsentOption,
   clickHandler: ClickHandler
 ) => {
-  const {
-    id,
-    name,
-    description,
-    frequency,
-    subscribed,
-    identityName
-  } = newsletter;
+  const { id, name, description, frequency, subscribed, identityName } =
+    newsletter;
   return (
     <NewsletterPreference
       id={id}
@@ -64,18 +58,18 @@ const newsletterPreferenceGroups = (
     Theme.lifestyle,
     Theme.comment,
     Theme.work,
-    Theme.FromThePapers
+    Theme.FromThePapers,
   ];
-  return themes.map(theme => (
+  return themes.map((theme) => (
     <DropMenu key={theme} color={colors[theme]} title={theme}>
       {newsletters
-        .filter(n => n.theme === theme)
-        .map(n => newsletterPreference(n, clickHandler))}
+        .filter((n) => n.theme === theme)
+        .map((n) => newsletterPreference(n, clickHandler))}
     </DropMenu>
   ));
 };
 
-export const NewsletterSection: FC<NewsletterSectionProps> = props => {
+export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
   const { newsletters, clickHandler } = props;
   return (
     <PageSection

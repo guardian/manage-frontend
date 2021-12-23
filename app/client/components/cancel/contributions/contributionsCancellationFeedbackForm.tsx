@@ -1,6 +1,7 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from "../caseUpdate";
 import ContributionsCancellationFeedbackFormThankYou from "./contributionsCancellationFeedbackFormThankYou";
 
@@ -25,19 +26,16 @@ type Status = "EDITING" | "SUBMITTED";
 const CHARACTER_LIMIT = 2500;
 const NUM_ROWS = 8;
 
-const getPatchUpdateCaseFunc = (
-  isTestUser: boolean,
-  caseId: string,
-  feedback: string
-) => async () =>
-  await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
-    Description: feedback,
-    Subject: "Online Cancellation Query"
-  });
+const getPatchUpdateCaseFunc =
+  (isTestUser: boolean, caseId: string, feedback: string) => async () =>
+    await getUpdateCasePromise(isTestUser, "_FEEDBACK", caseId, {
+      Description: feedback,
+      Subject: "Online Cancellation Query",
+    });
 
 const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
   isTestUser,
-  caseId
+  caseId,
 }: ContributionsFeedbackFormProps) => {
   const [feedback, setFeedback] = useState("");
   const [status, setStatus] = useState<Status>("EDITING");

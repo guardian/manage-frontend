@@ -1,7 +1,6 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
 import { minWidth } from "../styles/breakpoints";
 import { TickInCircle } from "./svgs/tickInCircle";
 
@@ -17,7 +16,7 @@ interface ProgressIndicatorProps {
 
 export const ProgressIndicator = (props: ProgressIndicatorProps) => {
   const currentStep =
-    props.steps.findIndex(step => step.isCurrentStep) + 1 || 1;
+    props.steps.findIndex((step) => step.isCurrentStep) + 1 || 1;
   return (
     <div
       css={css`

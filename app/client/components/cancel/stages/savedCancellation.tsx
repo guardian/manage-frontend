@@ -1,10 +1,10 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { LinkButton } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { SvgArrowLeftStraight } from "@guardian/src-icons";
 import { navigate } from "@reach/router";
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import * as React from "react";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 import { ProgressIndicator } from "../../progressIndicator";
 import { WithStandardTopMargin } from "../../WithStandardTopMargin";
@@ -25,7 +25,7 @@ const innerContent = (reason: CancellationReason, updatedAmount: number) => {
         steps={[
           { title: "Reason" },
           { title: "Review" },
-          { title: "Confirmation", isCurrentStep: true }
+          { title: "Confirmation", isCurrentStep: true },
         ]}
         additionalCSS={css`
           margin: ${space[5]}px 0 ${space[12]}px;

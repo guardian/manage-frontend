@@ -1,14 +1,13 @@
-import { BorderCollapseProperty, TextAlignProperty } from "csstype";
-import React from "react";
+import { Property } from "csstype";
 import {
   DATE_FNS_LONG_OUTPUT_FORMAT,
   DateRange,
-  dateString
+  dateString,
 } from "../../../shared/dates";
 import {
   getMainPlan,
   isPaidSubscriptionPlan,
-  Subscription
+  Subscription,
 } from "../../../shared/productResponse";
 import palette from "../../colours";
 import { maxWidth, minWidth } from "../../styles/breakpoints";
@@ -19,17 +18,17 @@ import { CollatedCredits } from "./collatedCredits";
 import { ExistingHolidayStopActions } from "./existingHolidayStopActions";
 import {
   isSharedHolidayDateChooserState,
-  SharedHolidayDateChooserState
+  SharedHolidayDateChooserState,
 } from "./holidayDateChooser";
 import {
   HolidayStopDetail,
   HolidayStopRequest,
-  MinimalHolidayStopRequest
+  MinimalHolidayStopRequest,
 } from "./holidayStopApi";
 
 const cellCss = {
   padding: "8px 16px 8px 16px",
-  border: "1px solid " + palette.neutral["5"]
+  border: "1px solid " + palette.neutral["5"],
 };
 
 interface SummaryTableProps {
@@ -113,7 +112,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
           ...cellCss,
           ...withdrawnRelatedCSS,
           backgroundColor: palette.neutral["7"],
-          borderBottom: 0
+          borderBottom: 0,
         }}
       >
         {dateRangeStr}
@@ -134,16 +133,15 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 };
 
 export const SummaryTable = (props: SummaryTableProps) => {
-  const holidayStopRequestsList: MinimalHolidayStopRequest[] = isSharedHolidayDateChooserState(
-    props.data
-  )
-    ? [
-        {
-          dateRange: props.data.selectedRange,
-          publicationsImpacted: props.data.publicationsImpacted
-        }
-      ]
-    : props.data;
+  const holidayStopRequestsList: MinimalHolidayStopRequest[] =
+    isSharedHolidayDateChooserState(props.data)
+      ? [
+          {
+            dateRange: props.data.selectedRange,
+            publicationsImpacted: props.data.publicationsImpacted,
+          },
+        ]
+      : props.data;
 
   const mainPlan = getMainPlan(props.subscription);
   const currency = isPaidSubscriptionPlan(mainPlan)
@@ -158,27 +156,27 @@ export const SummaryTable = (props: SummaryTableProps) => {
     <div
       css={{
         fontFamily: sans,
-        fontSize: "16px"
+        fontSize: "16px",
       }}
     >
       <table
         css={{
           width: "100%",
-          borderCollapse: "collapse" as BorderCollapseProperty,
+          borderCollapse: "collapse" as Property.BorderCollapse,
           tr: {
-            textAlign: "left" as TextAlignProperty
+            textAlign: "left" as Property.TextAlign,
           },
           th: {
             ...cellCss,
             backgroundColor: palette.neutral["7"],
-            margin: 0
+            margin: 0,
           },
           td: {
-            ...cellCss
+            ...cellCss,
           },
           [maxWidth.tablet]: {
-            display: "none"
-          }
+            display: "none",
+          },
         }}
       >
         <tbody>
@@ -208,8 +206,8 @@ export const SummaryTable = (props: SummaryTableProps) => {
       <div
         css={{
           [minWidth.tablet]: {
-            display: "none"
-          }
+            display: "none",
+          },
         }}
       >
         {holidayStopRequestsList.map((holidayStopRequest, index) => (

@@ -3,18 +3,17 @@ import {
   fireEvent,
   render,
   waitFor,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
-import serializer from "jest-emotion";
-import React from "react";
+import { createSerializer } from "@emotion/jest";
 import { create } from "react-test-renderer";
 import { DropMenu } from "../../../components/identity/DropMenu";
 
-expect.addSnapshotSerializer(serializer);
+expect.addSnapshotSerializer(createSerializer());
 
 const ELEMENT_TEXT = {
   TITLE: "TEST DROPMENU",
-  CONTENT: "TEST_CONTENT"
+  CONTENT: "TEST_CONTENT",
 };
 const element = (
   <DropMenu color="blue" title={ELEMENT_TEXT.TITLE}>

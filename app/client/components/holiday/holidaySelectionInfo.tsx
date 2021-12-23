@@ -1,9 +1,9 @@
 import { error } from "@guardian/src-foundations/palette";
-import React from "react";
+import * as React from "react";
 import {
   DATE_FNS_LONG_OUTPUT_FORMAT,
   DateRange,
-  dateString
+  dateString,
 } from "../../../shared/dates";
 import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
 import { maxWidth, queries } from "../../styles/breakpoints";
@@ -43,7 +43,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
         css={{
           color: error["400"],
           fontWeight: "bold",
-          marginTop: "10px"
+          marginTop: "10px",
         }}
       >
         {props.validationErrorMessage}
@@ -57,8 +57,8 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
             marginTop: "10px",
             fontSize: "16px",
             [maxWidth.desktop]: {
-              marginRight: "20px"
-            }
+              marginRight: "20px",
+            },
           }}
         >
           Suspending{" "}
@@ -70,11 +70,11 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
         <div
           css={{
             [queries.maxHeight(600)]: {
-              display: "none"
+              display: "none",
             },
             [maxWidth.desktop]: {
-              marginTop: "10px"
-            }
+              marginTop: "10px",
+            },
           }}
         >
           <hr css={{ [maxWidth.desktop]: { display: "none" } }} />

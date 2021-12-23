@@ -1,20 +1,20 @@
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import * as React from "react";
 import { parseDate } from "../../../../shared/dates";
 import {
   isPaidSubscriptionPlan,
-  MembersDataApiItemContext
+  MembersDataApiItemContext,
 } from "../../../../shared/productResponse";
 import { getMainPlan, isProduct } from "../../../../shared/productResponse";
 import { GenericErrorMessage } from "../../identity/GenericErrorMessage";
 import { SavedBodyProps } from "../stages/savedCancellation";
 
 const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
-  amount
+  amount,
 }: SavedBodyProps) => {
   return (
     <MembersDataApiItemContext.Consumer>
-      {productDetail => {
+      {(productDetail) => {
         if (!isProduct(productDetail)) {
           Sentry.captureMessage(
             "MembersDataApiItem is not a productDetail in ContributionsCancellationAmountUpdateSaved"

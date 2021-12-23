@@ -1,29 +1,29 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { Button } from "@guardian/src-button";
 import { space } from "@guardian/src-foundations";
 import { brand, neutral } from "@guardian/src-foundations/palette";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { navigate } from "@reach/router";
 import { capitalize } from "lodash";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   dateAddDays,
   dateIsSameOrBefore,
-  parseDate
+  parseDate,
 } from "../../../../shared/dates";
 import {
   DeliveryAddress,
   DeliveryRecordApiItem,
   isGift,
   PaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
 } from "../../../../shared/productResponse";
 import { getMainPlan } from "../../../../shared/productResponse";
 import {
   DeliveryProblemType,
   holidaySuspensionDeliveryProblem,
   ProductTypeWithDeliveryRecordsProperties,
-  WithProductType
+  WithProductType,
 } from "../../../../shared/productTypes";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import { trackEvent } from "../../analytics";
@@ -41,13 +41,13 @@ import {
   createDeliveryRecordsFetcher,
   DeliveryRecordDetail,
   DeliveryRecordsApiAsyncLoader,
-  DeliveryRecordsResponse
+  DeliveryRecordsResponse,
 } from "./deliveryRecordsApi";
 import { PaginationNav } from "./deliveryRecordsPaginationNav";
 import {
   DeliveryRecordsAddressContext,
   DeliveryRecordsProblemContext,
-  DeliveryRecordsProblemType
+  DeliveryRecordsProblemType,
 } from "./deliveryRecordsProblemContext";
 import { DeliveryRecordProblemForm } from "./deliveryRecordsProblemForm";
 import { ProductDetailsTable } from "./productDetailsTable";
@@ -67,7 +67,7 @@ export enum PageStatus {
   REPORT_ISSUE_STEP_2,
   CONTINUE_TO_REVIEW,
   REPORT_ISSUE_CONFIRMATION,
-  CANNOT_REPORT_PROBLEM
+  CANNOT_REPORT_PROBLEM,
 }
 
 export type DeliveryRecordsRouteableStepProps = RouteableStepProps &
@@ -85,28 +85,27 @@ interface Step1FormValidationDetails {
   message?: string;
 }
 
-const renderDeliveryRecords = (
-  props: DeliveryRecordsRouteableStepProps,
-  productDetail: ProductDetail
-) => (data: DeliveryRecordsResponse) => {
-  const mainPlan = getMainPlan(
-    productDetail.subscription
-  ) as PaidSubscriptionPlan;
+const renderDeliveryRecords =
+  (props: DeliveryRecordsRouteableStepProps, productDetail: ProductDetail) =>
+  (data: DeliveryRecordsResponse) => {
+    const mainPlan = getMainPlan(
+      productDetail.subscription
+    ) as PaidSubscriptionPlan;
 
-  return (
-    <DeliveryRecordsFC
-      data={data}
-      routeableStepProps={props}
-      productDetail={productDetail}
-      subscriptionCurrency={mainPlan.currency}
-    />
-  );
-};
+    return (
+      <DeliveryRecordsFC
+        data={data}
+        routeableStepProps={props}
+        productDetail={productDetail}
+        subscriptionCurrency={mainPlan.currency}
+      />
+    );
+  };
 
 export const checkForExistingDeliveryProblem = (
   records: DeliveryRecordDetail[]
 ) =>
-  records.findIndex(deliveryRecord => {
+  records.findIndex((deliveryRecord) => {
     const recordDateEpoch = parseDate(
       deliveryRecord.deliveryDate
     ).date.valueOf();
@@ -118,7 +117,7 @@ export const checkForExistingDeliveryProblem = (
   }) > -1;
 
 const checkForRecentHolidayStop = (records: DeliveryRecordDetail[]) =>
-  records.findIndex(record => record.hasHolidayStop) > -1;
+  records.findIndex((record) => record.hasHolidayStop) > -1;
 
 export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [pageStatus, setPageStatus] = useState<PageStatus>(
@@ -128,41 +127,28 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const [selectedProblemRecords, setSelectedProblemRecords] = useState<
     string[]
   >([]);
-  const [step1formValidationState, setStep1formValidationState] = useState<
-    boolean
-  >(false);
-  const [step1FormValidationDetails, setStep1FormValidationDetails] = useState<
-    Step1FormValidationDetails
-  >({ isValid: true });
-  const [step2formValidationState, setStep2formValidationState] = useState<
-    boolean
-  >(false);
-  const [step2FormValidationDetails, setStep2FormValidationDetails] = useState<
-    Step1FormValidationDetails
-  >({ isValid: true });
-  const [step3formValidationState, setStep3formValidationState] = useState<
-    boolean
-  >(false);
-  const [step3FormValidationDetails, setStep3FormValidationDetails] = useState<
-    Step1FormValidationDetails
-  >({ isValid: true });
-  const [addressInValidState, setAddressValidationState] = useState<boolean>(
-    true
-  );
-  const [deliveryProblem, setDeliveryProblem] = useState<
-    DeliveryRecordsProblemType
-  >();
-  const [
-    showTopCallCentreNumbers,
-    setTopCallCentreNumbersVisibility
-  ] = useState<boolean>(false);
-  const [choosenDeliveryProblem, setChoosenDeliveryProblem] = useState<
-    string
-  >();
-  const [
-    showBottomCallCentreNumbers,
-    setBottomCallCentreNumbersVisibility
-  ] = useState<boolean>(false);
+  const [step1formValidationState, setStep1formValidationState] =
+    useState<boolean>(false);
+  const [step1FormValidationDetails, setStep1FormValidationDetails] =
+    useState<Step1FormValidationDetails>({ isValid: true });
+  const [step2formValidationState, setStep2formValidationState] =
+    useState<boolean>(false);
+  const [step2FormValidationDetails, setStep2FormValidationDetails] =
+    useState<Step1FormValidationDetails>({ isValid: true });
+  const [step3formValidationState, setStep3formValidationState] =
+    useState<boolean>(false);
+  const [step3FormValidationDetails, setStep3FormValidationDetails] =
+    useState<Step1FormValidationDetails>({ isValid: true });
+  const [addressInValidState, setAddressValidationState] =
+    useState<boolean>(true);
+  const [deliveryProblem, setDeliveryProblem] =
+    useState<DeliveryRecordsProblemType>();
+  const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+    useState<boolean>(false);
+  const [choosenDeliveryProblem, setChoosenDeliveryProblem] =
+    useState<string>();
+  const [showBottomCallCentreNumbers, setBottomCallCentreNumbersVisibility] =
+    useState<boolean>(false);
   const [address, setAddress] = useState<DeliveryAddress | undefined>(
     props.productDetail.subscription.deliveryAddress
   );
@@ -172,14 +158,14 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   useEffect(() => {
     if (addressInValidState) {
       setStep3FormValidationDetails({
-        isValid: addressInValidState
+        isValid: addressInValidState,
       });
       setStep3formValidationState(!addressInValidState);
     }
   }, [addressInValidState]);
   const productType = props.routeableStepProps.productType;
-  const enableDeliveryInstructions = !!productType.delivery
-    ?.enableDeliveryInstructionsUpdate;
+  const enableDeliveryInstructions =
+    !!productType.delivery?.enableDeliveryInstructionsUpdate;
   const step1FormRadioOptionCallback = (value: string) =>
     setChoosenDeliveryProblem(value);
   const step1FormUpdateCallback = (isValid: boolean, message?: string) => {
@@ -198,9 +184,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         eventAction: "continue_to_step_2_button_click",
         product: {
           productType: props.routeableStepProps.productType,
-          productDetail: props.productDetail
+          productDetail: props.productDetail,
         },
-        eventLabel: props.routeableStepProps.productType.urlPart
+        eventLabel: props.routeableStepProps.productType.urlPart,
       });
       setPageStatus(PageStatus.REPORT_ISSUE_STEP_2);
     }
@@ -232,15 +218,15 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         choosenDeliveryProblem !== holidaySuspensionDeliveryProblem.label;
 
       return props.data.results
-        .filter(_ => {
+        .filter((_) => {
           const startOfDeliveryDateDay = new Date(
             parseDate(_.deliveryDate).date.setHours(0, 0, 0, 0)
           );
           return dateIsSameOrBefore(startOfDeliveryDateDay, startOfToday);
         })
         .slice(0, numOfReportableRecords)
-        .filter(_ => isNotHolidayProblem || _.hasHolidayStop)
-        .filter(_ => !_.problemCaseId);
+        .filter((_) => isNotHolidayProblem || _.hasHolidayStop)
+        .filter((_) => !_.problemCaseId);
     }
     return props.data.results.filter((_, index) =>
       isRecordInCurrentPage(
@@ -267,7 +253,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
 
   const problemTypes: DeliveryProblemType[] = [
     ...productType.delivery.records.availableProblemTypes,
-    ...(hasRecentHolidayStop ? [holidaySuspensionDeliveryProblem] : [])
+    ...(hasRecentHolidayStop ? [holidaySuspensionDeliveryProblem] : []),
   ].sort((a, b) => a.label.localeCompare(b.label));
 
   const formErrorTitle =
@@ -280,7 +266,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
   const formErrorMessages = [
     step1FormValidationDetails,
     step2FormValidationDetails,
-    step3FormValidationDetails
+    step3FormValidationDetails,
   ].reduce(
     (acc: string[], validationDetails) =>
       !validationDetails.isValid && validationDetails.message
@@ -300,7 +286,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
         apiProductName:
           productType.delivery.records.productNameForProblemReport,
         problemType: deliveryProblem,
-        affectedRecords: props.data.results.filter(record =>
+        affectedRecords: props.data.results.filter((record) =>
           selectedProblemRecords.includes(record.id)
         ),
         deliveryProblemMap: props.data.deliveryProblemMap,
@@ -317,7 +303,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           ),
         repeatDeliveryProblem: hasExistingDeliveryProblem,
         contactPhoneNumbers: props.data.contactPhoneNumbers,
-        resetDeliveryRecordsPage
+        resetDeliveryRecordsPage,
       }}
     >
       <DeliveryRecordsAddressContext.Provider
@@ -326,7 +312,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
           setAddress,
           productsAffected,
           setProductsAffected,
-          enableDeliveryInstructions
+          enableDeliveryInstructions,
         }}
       >
         <WizardStep routeableStepProps={props.routeableStepProps}>
@@ -336,7 +322,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                 steps={[
                   { title: "Update", isCurrentStep: true },
                   { title: "Review" },
-                  { title: "Confirmation" }
+                  { title: "Confirmation" },
                 ]}
                 additionalCSS={css`
                   margin: ${space[5]}px 0 ${space[12]}px;
@@ -354,7 +340,7 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
               isGift={isGift(props.productDetail.subscription)}
             />
           </div>
-          {props.data.results.find(record => !record.problemCaseId) && (
+          {props.data.results.find((record) => !record.problemCaseId) && (
             <>
               <h2
                 css={css`
@@ -450,9 +436,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         eventAction: "report_delivery_problem_button_click",
                         product: {
                           productType,
-                          productDetail: props.productDetail
+                          productDetail: props.productDetail,
                         },
-                        eventLabel: productType.urlPart
+                        eventLabel: productType.urlPart,
                       });
                       if (canReportProblem) {
                         setSelectedProblemRecords([]);
@@ -646,14 +632,14 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                     setStep2FormValidationDetails({
                       isValid: isStep2Valid,
                       message:
-                        "Step 2: Please select an affected delivery record."
+                        "Step 2: Please select an affected delivery record.",
                     });
                     setStep2formValidationState(!isStep2Valid);
                     const isStep3Valid = addressInValidState;
                     setStep3FormValidationDetails({
                       isValid: isStep3Valid,
                       message:
-                        "Step 3: Please save or discard your delivery address changes."
+                        "Step 3: Please save or discard your delivery address changes.",
                     });
                     setStep3formValidationState(!isStep3Valid);
                     if (
@@ -666,9 +652,9 @@ export const DeliveryRecordsFC = (props: DeliveryRecordsFCProps) => {
                         eventAction: "review_report_button_click",
                         product: {
                           productType,
-                          productDetail: props.productDetail
+                          productDetail: props.productDetail,
                         },
-                        eventLabel: productType.urlPart
+                        eventLabel: productType.urlPart,
                       });
                       setPageStatus(PageStatus.CONTINUE_TO_REVIEW);
                       (props.routeableStepProps.navigate || navigate)("review");
@@ -741,15 +727,15 @@ const DeliveryRecords = (props: DeliveryRecordsRouteableStepProps) => {
       breadcrumbs={[
         {
           title: NAV_LINKS.accountOverview.title,
-          link: NAV_LINKS.accountOverview.link
+          link: NAV_LINKS.accountOverview.link,
         },
         {
           title: "Delivery history",
-          currentPage: true
-        }
+          currentPage: true,
+        },
       ]}
     >
-      {productDetail => (
+      {(productDetail) => (
         <DeliveryRecordsApiAsyncLoader
           render={renderDeliveryRecords(props, productDetail)}
           fetch={createDeliveryRecordsFetcher(

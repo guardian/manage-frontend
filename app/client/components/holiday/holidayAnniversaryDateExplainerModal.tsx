@@ -1,4 +1,3 @@
-import React from "react";
 import palette from "../../colours";
 import { Modal } from "../modal";
 
@@ -16,7 +15,7 @@ export const HolidayAnniversaryDateExplainerModal = (
         css={{
           textDecoration: "underline",
           color: palette.blue.medium,
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       >
         What is this date?

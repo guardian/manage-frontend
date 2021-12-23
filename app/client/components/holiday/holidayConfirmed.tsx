@@ -1,10 +1,9 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 import { space } from "@guardian/src-foundations";
-import React from "react";
 import {
   isProduct,
   MembersDataApiItemContext,
-  ProductDetail
+  ProductDetail,
 } from "../../../shared/productResponse";
 import { ProductTypeWithHolidayStopsFlow } from "../../../shared/productTypes";
 import { LinkButton } from "../buttons";
@@ -15,14 +14,14 @@ import {
   buttonBarCss,
   HolidayDateChooserStateContext,
   isSharedHolidayDateChooserState,
-  SharedHolidayDateChooserState
+  SharedHolidayDateChooserState,
 } from "./holidayDateChooser";
 import { creditExplainerSentence } from "./holidayQuestionsModal";
 import { HolidayStopsRouteableStepProps } from "./holidaysOverview";
 import {
   HolidayStopsResponseContext,
   isHolidayStopsResponse,
-  ReloadableGetHolidayStopsResponse
+  ReloadableGetHolidayStopsResponse,
 } from "./holidayStopApi";
 import { SummaryTable } from "./summaryTable";
 
@@ -68,12 +67,12 @@ const innerContent = (
 
 export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
   <HolidayStopsResponseContext.Consumer>
-    {holidayStopsResponse =>
+    {(holidayStopsResponse) =>
       isHolidayStopsResponse(holidayStopsResponse) ? (
         <MembersDataApiItemContext.Consumer>
-          {productDetail => (
+          {(productDetail) => (
             <HolidayDateChooserStateContext.Consumer>
-              {dateChooserState =>
+              {(dateChooserState) =>
                 isSharedHolidayDateChooserState(dateChooserState) &&
                 isProduct(productDetail) ? (
                   <WizardStep routeableStepProps={props}>
@@ -83,8 +82,8 @@ export const HolidayConfirmed = (props: HolidayStopsRouteableStepProps) => (
                         { title: "Review" },
                         {
                           title: "Confirmation",
-                          isCurrentStep: true
-                        }
+                          isCurrentStep: true,
+                        },
                       ]}
                       additionalCSS={css`
                         margin: ${space[5]}px 0 ${space[12]}px;

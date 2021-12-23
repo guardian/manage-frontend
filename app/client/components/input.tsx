@@ -1,8 +1,9 @@
-import { css, SerializedStyles } from "@emotion/core";
+import { css, SerializedStyles } from "@emotion/react";
 import { focusHalo } from "@guardian/src-foundations/accessibility";
 import { error, neutral } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import * as React from "react";
 import { ErrorIcon } from "./svgs/errorIcon";
 
 type setStateFunc = (value: string) => void;
@@ -122,27 +123,26 @@ export const Input = (props: InputProps) => {
             props.onFocus && props.onFocus(e)
           }
           css={css`
-          width: ${props.prefixValue ? `calc(100% - 4px)` : `100%`};
-          max-width: ${props.width}ch;
-          height: 44px;
-          ${textSans.medium()}
-          color: ${neutral["7"]};
-          margin-top: 4px;
-          padding: 0 8px;
-          background-color: ${neutral["100"]};
-          border: ${props.inErrorState ? 4 : 2}px solid ${
-            props.inErrorState ? error[400] : neutral["60"]
-          };
-          ${props.prefixValue &&
+            width: ${props.prefixValue ? `calc(100% - 4px)` : `100%`};
+            max-width: ${props.width}ch;
+            height: 44px;
+            ${textSans.medium()}
+            color: ${neutral["7"]};
+            margin-top: 4px;
+            padding: 0 8px;
+            background-color: ${neutral["100"]};
+            border: ${props.inErrorState ? 4 : 2}px solid
+              ${props.inErrorState ? error[400] : neutral["60"]};
+            ${props.prefixValue &&
             `
             margin-left: calc(-${props.prefixValue.length}ch + 4px);
             box-sizing: border-box;
             padding-left: calc(${props.prefixValue.length}ch + 10px);
           `}
-          &:focus {
-            ${focusHalo};
-          }
-        `}
+            &:focus {
+              ${focusHalo};
+            }
+          `}
         />
       </div>
     </label>

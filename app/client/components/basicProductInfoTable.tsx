@@ -1,4 +1,3 @@
-import React from "react";
 import { parseDate } from "../../shared/dates";
 import { ProductDetail } from "../../shared/productResponse";
 import { GroupedProductType } from "../../shared/productTypes";
@@ -16,33 +15,33 @@ export const BasicProductInfoTable = (props: BasicProductInfoTableProps) => {
           ? [
               {
                 title: "Subscription ID",
-                value: props.productDetail.subscription.subscriptionId
-              }
+                value: props.productDetail.subscription.subscriptionId,
+              },
             ]
           : []),
         ...(props.groupedProductType.tierLabel
           ? [
               {
                 title: props.groupedProductType.tierLabel,
-                value: props.productDetail.tier
-              }
+                value: props.productDetail.tier,
+              },
             ]
           : []),
         ...(props.groupedProductType.shouldShowJoinDateNotStartDate
           ? [
               {
                 title: "Join date",
-                value: parseDate(props.productDetail.joinDate).dateStr()
-              }
+                value: parseDate(props.productDetail.joinDate).dateStr(),
+              },
             ]
           : [
               {
                 title: "Start date",
                 value: props.productDetail.subscription.start
                   ? parseDate(props.productDetail.subscription.start).dateStr()
-                  : "-"
-              }
-            ])
+                  : "-",
+              },
+            ]),
       ]}
     />
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import palette from "../colours";
 
 export const ukPhoneNumberWithoutPrefix = "0330 333 6790";
@@ -15,7 +14,7 @@ export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
       css={{
         textDecoration: "underline",
         color: palette.blue.dark,
-        ":visited": { color: palette.blue.dark }
+        ":visited": { color: palette.blue.dark },
       }}
       href="mailto:customer.help@theguardian.com"
     >

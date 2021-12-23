@@ -1,7 +1,8 @@
-import { CSSObject } from "@emotion/core";
+import { CSSObject } from "@emotion/react";
 import * as Sentry from "@sentry/browser";
 import { Form, Formik, FormikProps } from "formik";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
+import * as React from "react";
 import palette from "../../../colours";
 import { sans } from "../../../styles/fonts";
 import { trackEvent } from "../../analytics";
@@ -19,7 +20,7 @@ import {
   isErrored,
   isLoading,
   isSuccessful,
-  useAsyncSource
+  useAsyncSource,
 } from "../useAsyncSource";
 
 interface AvatarSectionProps {
@@ -30,7 +31,7 @@ const imgCss: CSSObject = {
   border: "0",
   borderRadius: "50%",
   height: "60px",
-  width: "60px"
+  width: "60px",
 };
 
 const isEmptyAvatarError = (e: any): boolean => {
@@ -45,11 +46,11 @@ const errorHandler = (e: any) => {
   trackEvent({
     eventCategory: "publicProfileError",
     eventAction: "error",
-    eventLabel: e.toString()
+    eventLabel: e.toString(),
   });
 };
 
-export const AvatarSection: FC<AvatarSectionProps> = props => {
+export const AvatarSection: FC<AvatarSectionProps> = (props) => {
   const { userId } = props;
   const [avatarSaveState, saveAvatar] = useAsyncSource(
     AvatarAPI.write,
@@ -79,7 +80,7 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
   const avatarUploadForm = () => (
     <Formik
       initialValues={{
-        file: null
+        file: null,
       }}
       onSubmit={async (values: AvatarPayload, formikBag) => {
         await saveAvatar(values.file);
@@ -122,7 +123,7 @@ export const AvatarSection: FC<AvatarSectionProps> = props => {
         borderTop: `1px solid ${palette.green.light}`,
         color: palette.green.medium,
         marginTop: "6px",
-        padding: "7px 8px"
+        padding: "7px 8px",
       }}
     >
       Thank you for uploading your avatar. It will be checked by Guardian

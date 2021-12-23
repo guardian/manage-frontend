@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import palette from "../colours";
 import { Button } from "./buttons";
 
@@ -19,7 +19,7 @@ interface ModalState {
 
 export class Modal extends React.Component<ModalProps, ModalState> {
   public state = {
-    isDisplayed: false
+    isDisplayed: false,
   };
 
   public componentDidMount(): void {
@@ -49,7 +49,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-around",
-            background: "rgba(192,192,192,0.5)"
+            background: "rgba(192,192,192,0.5)",
           }}
           onClick={this.hide}
         >
@@ -65,9 +65,9 @@ export class Modal extends React.Component<ModalProps, ModalState> {
               borderRadius: "5px",
               position: "relative",
               color: "initial",
-              fontWeight: "initial"
+              fontWeight: "initial",
             }}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <span
               onClick={this.hide}
@@ -75,7 +75,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
                 position: "absolute",
                 top: "5px",
                 right: "5px",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               <svg width="30" height="30">

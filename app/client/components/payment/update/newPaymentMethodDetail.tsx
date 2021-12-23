@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Subscription } from "../../../../shared/productResponse";
 import AsyncLoader from "../../asyncLoader";
 
@@ -29,8 +29,7 @@ export function isNewPaymentMethodDetail(
   );
 }
 
-export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> = React.createContext(
-  {}
-);
+export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> =
+  React.createContext({});
 
 export class PaymentUpdateAsyncLoader extends AsyncLoader<object> {}

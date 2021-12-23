@@ -1,8 +1,7 @@
-import React from "react";
 import {
   hrefStyle,
   inOrderToImproveSubs,
-  standardAlternateFeedbackIntro
+  standardAlternateFeedbackIntro,
 } from "../cancellationConstants";
 import { CancellationReason } from "../cancellationReason";
 
@@ -12,7 +11,7 @@ export const gwCancellationReasons: CancellationReason[] = [
     linkLabel: "I am unhappy with Guardian journalism",
     saveBody:
       "In order to improve our journalism, we’d love to know more about why you are thinking of cancelling.",
-    alternateFeedbackIntro: standardAlternateFeedbackIntro
+    alternateFeedbackIntro: standardAlternateFeedbackIntro,
   },
   {
     reasonId: "mma_financial_circumstances",
@@ -28,7 +27,7 @@ export const gwCancellationReasons: CancellationReason[] = [
       </>
     ),
     escalationSaveBody: "",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_support_another_way",
@@ -44,7 +43,7 @@ export const gwCancellationReasons: CancellationReason[] = [
       </>
     ),
     escalationSaveBody: "",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_health",
@@ -61,7 +60,7 @@ export const gwCancellationReasons: CancellationReason[] = [
       </>
     ),
     escalationSaveBody: "",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_break_from_news",
@@ -84,55 +83,55 @@ export const gwCancellationReasons: CancellationReason[] = [
       </>
     ),
     escalationSaveBody:
-      "We’d love to know more about what we could do better to help provide inspiring and trustworthy news."
+      "We’d love to know more about what we could do better to help provide inspiring and trustworthy news.",
   },
   {
     reasonId: "mma_values",
     linkLabel: "I don’t feel that The Guardian values my support",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_time",
     linkLabel: "I don't have time to use my subscription",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_better_offer",
     linkLabel: "I've found a better offer with another publisher",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_value_for_money",
     linkLabel: "I wasn't getting value for money",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_covid",
     linkLabel: "My subscription use is disrupted due to COVID-19",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_delivery_issue",
     linkLabel: "I’ve had repeated delivery issues",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
+    alternateFeedbackIntro: inOrderToImproveSubs,
   },
   {
     reasonId: "mma_autorenew",
     linkLabel: "I don’t want an auto-renewing subscription",
     saveBody: "",
-    skipFeedback: true
+    skipFeedback: true,
   },
   {
     reasonId: "mma_other",
     linkLabel: "None of the above",
     saveTitle: "Other",
     saveBody: "",
-    alternateFeedbackIntro: inOrderToImproveSubs
-  }
+    alternateFeedbackIntro: inOrderToImproveSubs,
+  },
 ];

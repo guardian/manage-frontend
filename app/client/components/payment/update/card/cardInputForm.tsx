@@ -1,5 +1,4 @@
 import { Elements } from "@stripe/react-stripe-js";
-import React from "react";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
 import { StripeCardInputForm } from "./stripeCardInputForm";
 import { useStripeSDK } from "../../../../stripe";
@@ -24,12 +23,11 @@ export const CardInputForm = (props: CardInputFormProps) => {
         options={{
           fonts: [
             {
-              src:
-                "url(https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2)",
+              src: "url(https://interactive.guim.co.uk/fonts/guss-webfonts/GuardianTextSansWeb/GuardianTextSansWeb-Regular.woff2)",
               family: "Guardian Text Sans Web",
-              style: "normal"
-            }
-          ]
+              style: "normal",
+            },
+          ],
         }}
       >
         <StripeCardInputForm {...props} />

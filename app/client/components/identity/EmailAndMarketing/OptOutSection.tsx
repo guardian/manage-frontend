@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Lines } from "../Lines";
 import { MarginWrapper } from "../MarginWrapper";
 import { MarketingPreference } from "../MarketingPreference";
@@ -12,28 +12,26 @@ interface OptOutSectionProps {
   clickHandler: ClickHandler;
 }
 
-const optOutFinder = (
-  consents: ConsentOption[],
-  clickHandler: ClickHandler
-) => (id: string) => {
-  const consent = consents.find(c => c.id === id);
-  return (
-    consent && (
-      <MarketingPreference
-        id={consent.id}
-        description={consent.description}
-        selected={consent.subscribed}
-        onClick={clickHandler}
-      />
-    )
-  );
-};
+const optOutFinder =
+  (consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {
+    const consent = consents.find((c) => c.id === id);
+    return (
+      consent && (
+        <MarketingPreference
+          id={consent.id}
+          description={consent.description}
+          selected={consent.subscribed}
+          onClick={clickHandler}
+        />
+      )
+    );
+  };
 
 const standardTextSize = {
-  fontSize: "17px"
+  fontSize: "17px",
 };
 
-export const OptOutSection: FC<OptOutSectionProps> = props => {
+export const OptOutSection: FC<OptOutSectionProps> = (props) => {
   const { consents, clickHandler } = props;
   const getOptOut = optOutFinder(consents, clickHandler);
   return (
