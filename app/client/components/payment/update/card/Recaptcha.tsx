@@ -18,7 +18,7 @@ const hrefStyle = {
 
 export interface RecaptchaProps {
   setStripeSetupIntent: (_: null) => void;
-  setRecaptchaToken: (_: string) => void;
+  setRecaptchaToken: (_: string | undefined) => void;
 }
 
 export default function Recaptcha({
@@ -40,11 +40,16 @@ export default function Recaptcha({
     }
   }, []);
 
+  const resetRecaptcha = () => {
+    setStripeSetupIntent(null);
+    setRecaptchaToken(undefined);
+  };
+
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
       callback: (recaptchaToken: string) => setRecaptchaToken(recaptchaToken),
-      "expired-callback": () => setStripeSetupIntent(null)
+      "expired-callback": resetRecaptcha
     });
   };
 
