@@ -13,17 +13,17 @@ declare let window: Window & {
 const hrefStyle = {
   textDecoration: "underline",
   color: "inherit",
-  ":visited": { color: "inherit" }
+  ":visited": { color: "inherit" },
 };
 
 export interface RecaptchaProps {
   setStripeSetupIntent: (_: null) => void;
-  setRecaptchaToken: (_: string) => void;
+  setRecaptchaToken: (_: string | undefined) => void;
 }
 
 export default function Recaptcha({
   setStripeSetupIntent,
-  setRecaptchaToken
+  setRecaptchaToken,
 }: RecaptchaProps) {
   useEffect(() => {
     if (window.grecaptcha) {
@@ -40,11 +40,16 @@ export default function Recaptcha({
     }
   }, []);
 
+  const resetRecaptcha = () => {
+    setStripeSetupIntent(null);
+    setRecaptchaToken(undefined);
+  };
+
   const renderReCaptcha = () => {
     window.grecaptcha.render("recaptcha", {
       sitekey: window.guardian?.recaptchaPublicKey,
       callback: (recaptchaToken: string) => setRecaptchaToken(recaptchaToken),
-      "expired-callback": () => setStripeSetupIntent(null)
+      "expired-callback": resetRecaptcha,
     });
   };
 
@@ -59,7 +64,7 @@ export default function Recaptcha({
       </span>
       <div
         css={{
-          marginTop: "4px"
+          marginTop: "4px",
         }}
         id="recaptcha"
       />
