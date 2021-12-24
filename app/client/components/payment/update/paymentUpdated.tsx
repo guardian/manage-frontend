@@ -335,7 +335,7 @@ export const PaymentMethodUpdated = ({
         Your payment details were updated successfully
       </h1>
 
-      {!!previousProductDetail.alertText &&
+      {previousProductDetail.alertText &&
         newPaymentMethodDetail.paymentFailureRecoveryMessage && (
           <InfoSummary
             context=""
