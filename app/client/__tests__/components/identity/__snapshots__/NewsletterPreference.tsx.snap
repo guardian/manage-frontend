@@ -1,107 +1,146 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewsletterPreference component renders correctly and displays marketing information 1`] = `
+.emotion-0 {
+  font-size: 14px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  line-height: 1.333;
+  margin-top: 12px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.emotion-1 {
+  position: absolute;
+  left: 0;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-2:hover .checkbox {
+  box-shadow: 0 0 0 3px #ececec;
+}
+
+.emotion-3 {
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+  border: 1px solid #999999;
+  min-width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin: 3px;
+  margin-right: 10px;
+  background: #ffffff;
+  position: relative;
+  outline: 0;
+}
+
+.emotion-3:focus {
+  box-shadow: 0 0 0 3px #ffe500;
+}
+
+.emotion-4 {
+  position: absolute;
+  z-index: -999999;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.emotion-5 {
+  position: absolute;
+  left: 3px;
+  top: 5px;
+  width: 12px;
+  height: 6px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  text-align: right;
+}
+
+.emotion-6 {
+  width: 2px;
+  height: 6px;
+  border-color: #ffffff;
+  border-width: 0 0 2px 2px;
+  border-style: solid;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+  transition-delay: .1s;
+}
+
+.emotion-7 {
+  font-size: 14px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 22px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-weight: bold;
+  margin: 0;
+}
+
+.emotion-8 {
+  padding: 2.88px 0 0 0;
+}
+
+.emotion-9 {
+  font-size: 12px;
+  line-height: 16px;
+  margin: 3px 0 0 0;
+  opacity: 0.75;
+}
+
+.emotion-10 {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.emotion-11 {
+  fill: #dcdcdc;
+}
+
 <div
-  css={
-    Array [
-      Object {
-        "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-        "fontSize": "14px",
-      },
-      Object {
-        "lineHeight": "1.333",
-        "marginTop": "12px",
-        "paddingLeft": "30px",
-        "position": "relative",
-      },
-    ]
-  }
+  className="emotion-0"
   onClick={[Function]}
 >
   <div
-    css={
-      Object {
-        "left": 0,
-        "position": "absolute",
-      }
-    }
+    className="emotion-1"
   >
     <label
-      css={
-        Object {
-          ":hover .checkbox": Object {
-            "boxShadow": "0 0 0 3px #ececec",
-          },
-          "cursor": "pointer",
-          "display": "flex",
-          "maxWidth": undefined,
-          "userSelect": "none",
-        }
-      }
+      className="emotion-2"
     >
       <div
         aria-checked={false}
-        className="checkbox"
-        css={
-          Object {
-            ":focus": Object {
-              "boxShadow": "0 0 0 3px #ffe500",
-            },
-            "background": "#ffffff",
-            "border": "1px solid #999999",
-            "display": "inline-block",
-            "height": "18px",
-            "margin": "3px",
-            "marginRight": "10px",
-            "minWidth": "18px",
-            "outline": 0,
-            "position": "relative",
-            "transition": "all .2s ease-in-out",
-          }
-        }
+        className="checkbox emotion-3"
         onKeyPress={[Function]}
         role="checkbox"
         tabIndex={0}
       >
         <input
           checked={false}
-          css={
-            Object {
-              "opacity": 0,
-              "overflow": "hidden",
-              "position": "absolute",
-              "zIndex": -999999,
-            }
-          }
+          className="emotion-4"
           onChange={[Function]}
           tabIndex={-1}
           type="checkbox"
         />
         <div
-          css={
-            Object {
-              "height": "6px",
-              "left": "3px",
-              "position": "absolute",
-              "textAlign": "right",
-              "top": "5px",
-              "transform": "rotate(-45deg)",
-              "width": "12px",
-            }
-          }
+          className="emotion-5"
         >
           <div
-            css={
-              Object {
-                "borderColor": "#ffffff",
-                "borderStyle": "solid",
-                "borderWidth": "0 0 2px 2px",
-                "height": "6px",
-                "transition": "all .2s ease-in-out",
-                "transitionDelay": ".1s",
-                "width": "2px",
-              }
-            }
+            className="emotion-6"
           />
         </div>
       </div>
@@ -109,59 +148,23 @@ exports[`NewsletterPreference component renders correctly and displays marketing
     </label>
   </div>
   <p
-    css={
-      Array [
-        Object {
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-        },
-        Object {
-          "cursor": "pointer",
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-          "fontWeight": "bold",
-          "lineHeight": "22px",
-          "margin": "0",
-        },
-      ]
-    }
+    className="emotion-7"
   >
     Test title
   </p>
   <p
-    css={
-      Object {
-        "padding": "2.88px 0 0 0",
-      }
-    }
+    className="emotion-8"
   >
     Test description
   </p>
   <p
-    css={
-      Object {
-        "fontSize": "12px",
-        "lineHeight": "16px",
-        "margin": "3px 0 0 0",
-        "opacity": 0.75,
-      }
-    }
+    className="emotion-9"
   >
     <span
-      css={
-        Object {
-          "display": "inline-block",
-          "marginRight": "8px",
-          "verticalAlign": "middle",
-        }
-      }
+      className="emotion-10"
     >
       <svg
-        css={
-          Object {
-            "fill": "#dcdcdc",
-          }
-        }
+        className="emotion-11"
         height="11px"
         viewBox="0 0 11 11"
         width="11px"
@@ -177,107 +180,145 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 `;
 
 exports[`NewsletterPreference component will select the checkbox when the selected prop is passed 1`] = `
+.emotion-0 {
+  font-size: 14px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  line-height: 1.333;
+  margin-top: 12px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.emotion-1 {
+  position: absolute;
+  left: 0;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emotion-2:hover .checkbox {
+  box-shadow: 0 0 0 3px #ececec;
+}
+
+.emotion-3 {
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+  min-width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin: 3px;
+  margin-right: 10px;
+  background: #22834D;
+  position: relative;
+  outline: 0;
+}
+
+.emotion-3:focus {
+  box-shadow: 0 0 0 3px #ffe500;
+}
+
+.emotion-4 {
+  position: absolute;
+  z-index: -999999;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.emotion-5 {
+  position: absolute;
+  left: 3px;
+  top: 5px;
+  width: 12px;
+  height: 6px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  text-align: right;
+}
+
+.emotion-6 {
+  width: 12px;
+  height: 6px;
+  border-color: #ffffff;
+  border-width: 0 0 2px 2px;
+  border-style: solid;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+  transition-delay: .1s;
+}
+
+.emotion-7 {
+  font-size: 14px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 22px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-weight: bold;
+  margin: 0;
+}
+
+.emotion-8 {
+  padding: 2.88px 0 0 0;
+}
+
+.emotion-9 {
+  font-size: 12px;
+  line-height: 16px;
+  margin: 3px 0 0 0;
+  opacity: 0.75;
+}
+
+.emotion-10 {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.emotion-11 {
+  fill: #dcdcdc;
+}
+
 <div
-  css={
-    Array [
-      Object {
-        "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-        "fontSize": "14px",
-      },
-      Object {
-        "lineHeight": "1.333",
-        "marginTop": "12px",
-        "paddingLeft": "30px",
-        "position": "relative",
-      },
-    ]
-  }
+  className="emotion-0"
   onClick={[Function]}
 >
   <div
-    css={
-      Object {
-        "left": 0,
-        "position": "absolute",
-      }
-    }
+    className="emotion-1"
   >
     <label
-      css={
-        Object {
-          ":hover .checkbox": Object {
-            "boxShadow": "0 0 0 3px #ececec",
-          },
-          "cursor": "pointer",
-          "display": "flex",
-          "maxWidth": undefined,
-          "userSelect": "none",
-        }
-      }
+      className="emotion-2"
     >
       <div
         aria-checked={true}
-        className="checkbox"
-        css={
-          Object {
-            ":focus": Object {
-              "boxShadow": "0 0 0 3px #ffe500",
-            },
-            "background": "#22834D",
-            "border": undefined,
-            "display": "inline-block",
-            "height": "18px",
-            "margin": "3px",
-            "marginRight": "10px",
-            "minWidth": "18px",
-            "outline": 0,
-            "position": "relative",
-            "transition": "all .2s ease-in-out",
-          }
-        }
+        className="checkbox emotion-3"
         onKeyPress={[Function]}
         role="checkbox"
         tabIndex={0}
       >
         <input
           checked={true}
-          css={
-            Object {
-              "opacity": 0,
-              "overflow": "hidden",
-              "position": "absolute",
-              "zIndex": -999999,
-            }
-          }
+          className="emotion-4"
           onChange={[Function]}
           tabIndex={-1}
           type="checkbox"
         />
         <div
-          css={
-            Object {
-              "height": "6px",
-              "left": "3px",
-              "position": "absolute",
-              "textAlign": "right",
-              "top": "5px",
-              "transform": "rotate(-45deg)",
-              "width": "12px",
-            }
-          }
+          className="emotion-5"
         >
           <div
-            css={
-              Object {
-                "borderColor": "#ffffff",
-                "borderStyle": "solid",
-                "borderWidth": "0 0 2px 2px",
-                "height": "6px",
-                "transition": "all .2s ease-in-out",
-                "transitionDelay": ".1s",
-                "width": "12px",
-              }
-            }
+            className="emotion-6"
           />
         </div>
       </div>
@@ -285,59 +326,23 @@ exports[`NewsletterPreference component will select the checkbox when the select
     </label>
   </div>
   <p
-    css={
-      Array [
-        Object {
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-        },
-        Object {
-          "cursor": "pointer",
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-          "fontWeight": "bold",
-          "lineHeight": "22px",
-          "margin": "0",
-        },
-      ]
-    }
+    className="emotion-7"
   >
     Test title
   </p>
   <p
-    css={
-      Object {
-        "padding": "2.88px 0 0 0",
-      }
-    }
+    className="emotion-8"
   >
     Test description
   </p>
   <p
-    css={
-      Object {
-        "fontSize": "12px",
-        "lineHeight": "16px",
-        "margin": "3px 0 0 0",
-        "opacity": 0.75,
-      }
-    }
+    className="emotion-9"
   >
     <span
-      css={
-        Object {
-          "display": "inline-block",
-          "marginRight": "8px",
-          "verticalAlign": "middle",
-        }
-      }
+      className="emotion-10"
     >
       <svg
-        css={
-          Object {
-            "fill": "#dcdcdc",
-          }
-        }
+        className="emotion-11"
         height="11px"
         viewBox="0 0 11 11"
         width="11px"
