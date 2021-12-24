@@ -1,6 +1,7 @@
 import { css } from "@emotion/core";
 import { space } from "@guardian/src-foundations";
-import { brand, neutral, news } from "@guardian/src-foundations/palette";
+import { brand, neutral } from "@guardian/src-foundations/palette";
+import { headline } from "@guardian/src-foundations/typography";
 import { maxWidth, minWidth } from "../../../styles/breakpoints";
 import React from "react";
 import {
@@ -11,7 +12,7 @@ import {
   MembersDataApiItemContext,
   ProductDetail,
   Subscription,
-  WithSubscription
+  WithSubscription,
 } from "../../../../shared/productResponse";
 import { GROUPED_PRODUCT_TYPES } from "../../../../shared/productTypes";
 import { LinkButton } from "../../buttons";
@@ -20,12 +21,12 @@ import {
   ReturnToAccountOverviewButton,
   RouteableStepProps,
   visuallyNavigateToParent,
-  WizardStep
+  WizardStep,
 } from "../../wizardRouterAdapter";
 import {
   isNewPaymentMethodDetail,
   NewPaymentMethodContext,
-  NewPaymentMethodDetail
+  NewPaymentMethodDetail,
 } from "./newPaymentMethodDetail";
 import { NewSubscriptionContext } from "./newSubscriptionDetail";
 import { textSans } from "@guardian/src-foundations/typography";
@@ -33,7 +34,7 @@ import { CardDisplay } from "../cardDisplay";
 import { DirectDebitDisplay } from "../directDebitDisplay";
 import { PayPalDisplay } from "../paypalDisplay";
 import { SepaDisplay } from "../sepaDisplay";
-
+import { InfoSummary } from "./Summary";
 interface ConfirmedNewPaymentDetailsRendererProps {
   subscription: Subscription;
   newPaymentMethodDetail: NewPaymentMethodDetail;
@@ -70,6 +71,18 @@ const valueCss = css`
   }
 `;
 
+const subHeadingCss = `
+      border-top: 1px solid ${neutral["86"]};
+      ${headline.small()};
+      font-weight: bold;
+      margin-top: ${space[9]}px;
+
+      ${maxWidth.tablet} {
+        font-size: 1.25rem;
+        line-height: 1.6;
+      };
+    `;
+
 function getPaymentInterval(interval: string) {
   if (interval === "year") {
     return "annual";
@@ -81,7 +94,7 @@ function getPaymentInterval(interval: string) {
 export const ConfirmedNewPaymentDetailsRenderer = ({
   subscription,
   newPaymentMethodDetail,
-  previousProductDetail
+  previousProductDetail,
 }: ConfirmedNewPaymentDetailsRendererProps) => {
   const mainPlan = getMainPlan(subscription);
   const groupedProductType =
@@ -89,8 +102,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
   const specificProductType = groupedProductType.mapGroupedToSpecific(
     previousProductDetail
   );
-
-  const hasPaymentFailure: boolean = !!previousProductDetail.alertText;
 
   if (
     newPaymentMethodDetail.subHasExpectedPaymentType(subscription) &&
@@ -219,7 +230,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
                   <span
                     css={css`
                       ${valueCss};
-                      color: ${hasPaymentFailure ? news[400] : neutral[7]};
+                      color: ${neutral[7]};
                     `}
                   >
                     {subscription.card.expiry.month} /{" "}
@@ -309,37 +320,51 @@ interface PaymentMethodUpdatedProps {
   previousProductDetail: ProductDetail;
 }
 
-const PaymentMethodUpdated = ({
+export const PaymentMethodUpdated = ({
   subs,
   newPaymentMethodDetail,
-  previousProductDetail
+  previousProductDetail,
 }: PaymentMethodUpdatedProps) =>
   Array.isArray(subs) && subs.length === 1 ? (
     <>
       <h1
         css={css`
-          margin: ${space[9]}px 0 ${space[5]}px 0;
-          ${textSans.large({ fontWeight: "bold" })};
+          ${subHeadingCss}
         `}
       >
         Your payment details were updated successfully
       </h1>
+
+      {previousProductDetail.alertText &&
+        newPaymentMethodDetail.paymentFailureRecoveryMessage && (
+          <InfoSummary
+            context=""
+            message={newPaymentMethodDetail.paymentFailureRecoveryMessage}
+            cssOverrides={css`
+              margin-bottom: ${space[6]}px;
+            `}
+          />
+        )}
+
       <ConfirmedNewPaymentDetailsRenderer
         subscription={subs[0].subscription}
         newPaymentMethodDetail={newPaymentMethodDetail}
         previousProductDetail={previousProductDetail}
       />
+
       <h2
         css={css`
-          margin-bottom: 0;
-
-          ${textSans.large({ fontWeight: "bold" })};
+          margin-top: ${space[9]}px;
+          margin-bottom: ${space[1]}px;
+          line-height: 1;
+          font-weight: bold;
+          font-size: 1.75rem;
         `}
       >
         Thank you
       </h2>
       <span> You are helping to support independent journalism.</span>
-      <div css={{ marginTop: "20px" }}>
+      <div css={{ marginTop: `${space[9]}px` }}>
         <LinkButton
           to="/"
           text="Back to Account overview"
@@ -353,8 +378,9 @@ const PaymentMethodUpdated = ({
   ) : (
     <>
       <GenericErrorScreen
-        loggingMessage={`${Array.isArray(subs) &&
-          subs.length} subs returned when one was expected`}
+        loggingMessage={`${
+          Array.isArray(subs) && subs.length
+        } subs returned when one was expected`}
       />
       <ReturnToAccountOverviewButton />
     </>
@@ -363,13 +389,13 @@ const PaymentMethodUpdated = ({
 export const PaymentUpdated = (props: RouteableStepProps) => {
   return (
     <MembersDataApiItemContext.Consumer>
-      {previousProductDetail => (
+      {(previousProductDetail) => (
         <NewPaymentMethodContext.Consumer>
-          {newPaymentMethodDetail =>
+          {(newPaymentMethodDetail) =>
             isNewPaymentMethodDetail(newPaymentMethodDetail) &&
             isProduct(previousProductDetail) ? (
               <NewSubscriptionContext.Consumer>
-                {newSubscriptionData => (
+                {(newSubscriptionData) => (
                   <WizardStep routeableStepProps={props}>
                     <PaymentMethodUpdated
                       subs={newSubscriptionData}

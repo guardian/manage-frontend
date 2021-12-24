@@ -1,11 +1,12 @@
 import React from "react";
 import { Props } from "@guardian/src-helpers";
 import { css, SerializedStyles } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
+import { space, brand as brandColors, text } from "@guardian/src-foundations";
 import { size } from "@guardian/src-foundations/size";
 import { textSans } from "@guardian/src-foundations/typography";
 import { error as errorColors } from "@guardian/src-foundations";
 import { SvgAlertTriangle } from "@guardian/src-icons";
+import { SvgInfo } from "@guardian/src-icons";
 
 interface SummaryProps extends Props {
   /**
@@ -44,8 +45,8 @@ const iconStyles = (color: string): SerializedStyles => css`
 `;
 
 const messageStyles = (color: string, isBold = true): SerializedStyles => css`
-	${textSans.medium({ fontWeight: isBold ? "bold" : "regular" })}
-	color: ${color};
+  ${textSans.medium({ fontWeight: isBold ? "bold" : "regular" })}
+  color: ${color};
 `;
 
 const messageWrapperStyles = css`
@@ -56,7 +57,7 @@ const contextStyles = css`
   ${textSans.medium()}
 `;
 
-const ErrorSummary = ({
+export const ErrorSummary = ({
   message,
   errorReportUrl,
   context,
@@ -79,4 +80,21 @@ const ErrorSummary = ({
   </div>
 );
 
-export default ErrorSummary;
+export type InfoSummaryProps = SummaryProps;
+
+export const InfoSummary = ({
+  message,
+  context,
+  cssOverrides,
+  ...props
+}: InfoSummaryProps): JSX.Element => (
+  <div css={[wrapperStyles(brandColors[500]), cssOverrides]} {...props}>
+    <div css={iconStyles(brandColors[500])}>
+      <SvgInfo />
+    </div>
+    <div css={messageWrapperStyles}>
+      <div css={messageStyles(text.primary)}>{message}</div>
+      {context && <div css={contextStyles}>{context}</div>}
+    </div>
+  </div>
+);
