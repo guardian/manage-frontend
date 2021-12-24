@@ -13,7 +13,7 @@ import { NewDirectDebitPaymentMethodDetail } from "./newDirectDebitPaymentMethod
 import { processResponse } from "../../../../utils";
 // import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
 import { minWidth } from "../../../../styles/breakpoints";
-import ErrorSummary from "../ErrorSummary";
+import { ErrorSummary } from "../Summary";
 
 const inputBoxBaseStyle = {
   width: "100%",
@@ -23,20 +23,20 @@ const inputBoxBaseStyle = {
   border: "none",
   outline: "none",
   "::placeholder": {
-    color: "#c4c4c4"
+    color: "#c4c4c4",
   },
   ":-ms-input-placeholder": {
-    color: "#c4c4c4"
-  }
+    color: "#c4c4c4",
+  },
 };
 
 const bulletsStyling = {
   "::placeholder": {
-    fontSize: "14px"
+    fontSize: "14px",
   },
   ":-ms-input-placeholder": {
-    fontSize: "14px"
-  }
+    fontSize: "14px",
+  },
 };
 
 interface DirectDebitValidationResponse {
@@ -56,9 +56,8 @@ interface DirectDebitUpdateFormProps {
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
   const [isValidating, setIsValidating] = useState<boolean>(false);
 
-  const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] = useState<
-    boolean
-  >(false);
+  const [soleAccountHolderConfirmed, setSoleAccountHolderConfirmed] =
+    useState<boolean>(false);
   const [accountName, setAccountName] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [sortCode, setSortCode] = useState<string>("");
@@ -75,9 +74,9 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           method: "POST",
           body: JSON.stringify({
             accountNumber,
-            sortCode: cleanSortCode(sortCode)
+            sortCode: cleanSortCode(sortCode),
           }),
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         }
       );
       const response = await processResponse<DirectDebitValidationResponse>(
@@ -110,7 +109,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
     const newPaymentMethod = new NewDirectDebitPaymentMethodDetail({
       accountName,
       accountNumber,
-      sortCode
+      sortCode,
     });
 
     props.newPaymentMethodDetailUpdater(newPaymentMethod);
@@ -197,7 +196,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         </FieldWrapper>{" "}
       </div>
       <Checkbox
-        onChange={newValue => setSoleAccountHolderConfirmed(newValue)}
+        onChange={(newValue) => setSoleAccountHolderConfirmed(newValue)}
         checked={soleAccountHolderConfirmed}
         label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
         required
@@ -238,14 +237,12 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           <div
             css={{
               marginTop: `${space[9]}px`,
-              marginBottom: `${space[9]}px`
+              marginBottom: `${space[9]}px`,
             }}
           >
             <ErrorSummary message={error} />
           </div>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
       </div>
     </div>
   );

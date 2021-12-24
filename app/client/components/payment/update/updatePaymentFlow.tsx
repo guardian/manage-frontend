@@ -37,7 +37,7 @@ import { createProductDetailFetch } from "../../../productUtils";
 import { NewSubscriptionContext } from "./newSubscriptionDetail";
 import { processResponse } from "../../../utils";
 import { trackEvent } from "../../analytics";
-import ErrorSummary from "./ErrorSummary";
+import { ErrorSummary } from "./Summary";
 import { DirectDebitLogo } from "../directDebitLogo";
 import { cardTypeToSVG } from "../cardDisplay";
 import ContactUs from "./ContactUs";

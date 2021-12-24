@@ -1,13 +1,17 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { Subscription } from "../../../../shared/productResponse";
-import { ConfirmedNewPaymentDetailsRenderer } from "../../../components/payment/update/paymentUpdated";
+import {
+  ConfirmedNewPaymentDetailsRenderer,
+  PaymentMethodUpdated,
+} from "../../../components/payment/update/paymentUpdated";
 import { NewPaymentMethodDetail } from "../../../components/payment/update/newPaymentMethodDetail";
 import {
   guardianWeeklyCard,
   guardianWeeklySubscriptionCard,
   digitalDD,
-  digitalSubscriptionDD
+  digitalSubscriptionDD,
+  guardianWeeklyExpiredCard,
 } from "../../../testData";
 
 // mock functions for NewPaymentMethodDetail type
@@ -19,17 +23,19 @@ const detailToPayloadObject = () => {
 const newPaymentMethodDetailRender = () => <></>;
 const confirmButtonWrapper = () => <></>;
 
+const failureMessage =
+  "We will take the outstanding payment within 24 hours, using your new card details.";
+
 const newPaymentMethodDetailCard: NewPaymentMethodDetail = {
   apiUrlPart: "card",
   name: "card",
   friendlyName: "payment card",
-  paymentFailureRecoveryMessage:
-    "We will take the outstanding payment within 24 hours, using your new card details.",
+  paymentFailureRecoveryMessage: failureMessage,
   matchesResponse,
   subHasExpectedPaymentType,
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
-  confirmButtonWrapper
+  confirmButtonWrapper,
   /* add the following property as a new type, look at members-data-api to see if we use a default response from Stripe or build our own
 
     "stripePaymentMethod": {
@@ -97,7 +103,7 @@ const newPaymentMethodDetailDD: NewPaymentMethodDetail = {
   subHasExpectedPaymentType,
   render: newPaymentMethodDetailRender,
   detailToPayloadObject,
-  confirmButtonWrapper
+  confirmButtonWrapper,
 };
 
 const tests = [
@@ -105,33 +111,33 @@ const tests = [
     data: {
       subscription: guardianWeeklySubscriptionCard,
       newPaymentMethodDetail: newPaymentMethodDetailCard,
-      previousProductDetail: guardianWeeklyCard
+      previousProductDetail: guardianWeeklyCard,
     },
     expectations: [
       "Guardian Weekly",
       "ending 4242",
       "4 / 2024",
       "£135.00 / annual",
-      "10 December 2021"
-    ]
+      "10 December 2021",
+    ],
   },
   {
     data: {
       subscription: digitalSubscriptionDD,
       newPaymentMethodDetail: newPaymentMethodDetailDD,
-      previousProductDetail: digitalDD
+      previousProductDetail: digitalDD,
     },
     expectations: [
       "Digital Subscription",
       "ending 911",
       "20-00-00",
       "£99.00 / annual",
-      "18 December 2021"
-    ]
-  }
+      "18 December 2021",
+    ],
+  },
 ];
 
-describe("ConfirmedNewPaymentDetailsRenderer component in paymentMethodUpdated.tsx", () => {
+describe("ConfirmedNewPaymentDetailsRenderer component", () => {
   test.each(tests)(
     "Summary table shows correct data for %s",
     ({ data, expectations }) => {
@@ -143,7 +149,31 @@ describe("ConfirmedNewPaymentDetailsRenderer component in paymentMethodUpdated.t
         />
       );
 
-      expectations.map(toTest => getByText(toTest));
+      expectations.map((toTest) => getByText(toTest));
     }
   );
+});
+
+test("PaymentMethodUpdated component does not display failure message", () => {
+  const { queryByText } = render(
+    <PaymentMethodUpdated
+      subs={[{ subscription: guardianWeeklySubscriptionCard }]}
+      newPaymentMethodDetail={newPaymentMethodDetailCard}
+      previousProductDetail={guardianWeeklyCard}
+    />
+  );
+
+  expect(queryByText(failureMessage)).toBeNull();
+});
+
+test("PaymentMethodUpdated component displays failure message when necessary", () => {
+  const { getByText } = render(
+    <PaymentMethodUpdated
+      subs={[{ subscription: guardianWeeklySubscriptionCard }]}
+      newPaymentMethodDetail={newPaymentMethodDetailCard}
+      previousProductDetail={guardianWeeklyExpiredCard}
+    />
+  );
+
+  getByText(failureMessage);
 });

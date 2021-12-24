@@ -23,7 +23,7 @@ import {
 } from "./newCardPaymentMethodDetail";
 import Recaptcha from "./Recaptcha";
 import { LoadingCircleIcon } from "../../../svgs/loadingCircleIcon";
-import ErrorSummary from "../ErrorSummary";
+import { ErrorSummary } from "../Summary";
 export interface StripeSetupIntentDetails {
   stripeSetupIntent?: StripeSetupIntent;
   stripeSetupIntentError?: Error;
