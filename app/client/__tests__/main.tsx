@@ -1,20 +1,27 @@
-import "dom-testing-library/extend-expect";
 import React from "react";
-
 import serializer from "jest-emotion";
+import renderer from "react-test-renderer";
+import { Main } from "../components/main";
 
 expect.addSnapshotSerializer(serializer);
 
-import renderer from "react-test-renderer";
+describe("Main", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2022-01-01"));
+  });
 
-import { Main } from "../components/main";
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
-test("Main renders something", () => {
-  const rendered = renderer.create(
-    <Main>
-      <p>hi</p>
-    </Main>
-  );
+  it("renders something", () => {
+    const rendered = renderer.create(
+      <Main>
+        <p>hi</p>
+      </Main>
+    );
 
-  expect(rendered.toJSON()).toMatchSnapshot();
+    expect(rendered.toJSON()).toMatchSnapshot();
+  });
 });
