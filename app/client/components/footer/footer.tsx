@@ -8,8 +8,6 @@ import { headline } from "../../styles/fonts";
 import { SupportTheGuardianButton } from "../supportTheGuardianButton";
 import { footerLinks } from "./footerlinks";
 
-const TODAY = new Date();
-
 const footerColourStyles = css`
   background-color: ${palette.blue.header};
   color: ${palette.white};
@@ -195,6 +193,8 @@ const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
 };
 
 export const Footer = () => {
+  const TODAY = new Date(Date.now());
+
   const [isInUSA, setIsInUSA] = useState<boolean>(false);
   const [importedCmp, setImportedCmp] = useState<CMP | null>(null);
 
@@ -224,7 +224,7 @@ export const Footer = () => {
                   data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
                   data-node-uid="2"
                   height="86px"
-                  onLoad={emailForm => fillEmailSignup(emailForm)}
+                  onLoad={(emailForm) => fillEmailSignup(emailForm)}
                   css={emailSignUpIframeStyles}
                 />
               </div>
@@ -240,9 +240,9 @@ export const Footer = () => {
                               href: "#",
                               onClick: () => {
                                 importedCmp?.showPrivacyManager();
-                              }
+                              },
                             }
-                          : { href: link })
+                          : { href: link }),
                       };
 
                       return (
