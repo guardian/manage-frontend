@@ -6,7 +6,7 @@ import { neutral } from "@guardian/src-foundations/palette";
 const hrefStyle = {
   color: palette.neutral["3"],
   textDecoration: "underline",
-  cursor: "pointer"
+  cursor: "pointer",
 };
 
 const baseStyle = {
@@ -14,7 +14,7 @@ const baseStyle = {
   fontSize: "12px",
   fontFamily: sans,
   flexGrow: 1,
-  marginTop: "25px"
+  marginTop: "10px",
 };
 
 export class GoCardlessGuarantee extends React.Component<
@@ -22,7 +22,7 @@ export class GoCardlessGuarantee extends React.Component<
   { expanded: boolean }
 > {
   public state = {
-    expanded: false
+    expanded: false,
   };
 
   public render(): React.ReactNode {
@@ -40,7 +40,7 @@ export class GoCardlessGuarantee extends React.Component<
         <ul
           css={{
             display: this.state.expanded ? "block" : "none",
-            paddingLeft: "30px"
+            paddingLeft: "30px",
           }}
         >
           <li>
@@ -80,7 +80,7 @@ export class GoCardlessGuarantee extends React.Component<
 
   private toggleGuaranteeDisplay = () =>
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     });
 }
 
@@ -92,7 +92,7 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
   <div
     css={{
       ...baseStyle,
-      maxWidth: "590px"
+      maxWidth: "590px",
     }}
   >
     <p>
