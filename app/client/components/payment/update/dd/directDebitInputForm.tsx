@@ -155,7 +155,6 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         css={css`
           display: flex;
           justify-content: flex-start;
-          margin-bottom: 10px;
 
           ${minWidth.tablet} {
             margin-top: ${space[4]}px;
@@ -196,22 +195,28 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         </FieldWrapper>{" "}
       </div>
 
-      <Checkbox
-        onChange={(e) => setSoleAccountHolderConfirmed(e.target.checked)}
-        checked={soleAccountHolderConfirmed}
-        label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
-        required
-        value="I confirm that I am the account holder and I am solely able to authorise debit from the account"
-        cssOverrides={css`
-          div {
-            padding: 10px 0;
-          }
+      <div
+        css={css`
+          margin: 14px 0;
 
-          :focus {
-            box-shadow: none !important;
+          ${minWidth.tablet} {
+            margin: 4px 0;
           }
         `}
-      />
+      >
+        <Checkbox
+          onChange={(e) => setSoleAccountHolderConfirmed(e.target.checked)}
+          checked={soleAccountHolderConfirmed}
+          label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+          required
+          value="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+          cssOverrides={css`
+            :focus {
+              box-shadow: none !important;
+            }
+          `}
+        />
+      </div>
 
       <DirectDebitLegal />
 
