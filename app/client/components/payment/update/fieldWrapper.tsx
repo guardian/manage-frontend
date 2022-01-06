@@ -47,6 +47,16 @@ export class FieldWrapper extends React.Component<
       }
     );
 
+    let borderCss: string;
+
+    if (this.state.error?.message) {
+      borderCss = "4px solid " + error[400];
+    } else if (this.state.focus) {
+      borderCss = "2px solid " + brand[500];
+    } else {
+      borderCss = "2px solid " + neutral[60];
+    }
+
     return (
       <div
         css={{
@@ -95,11 +105,8 @@ export class FieldWrapper extends React.Component<
 
         <div
           css={{
-            border: `${
-              (this.state.error?.message && "4px solid " + error[400]) ||
-              (this.state.focus && "2px solid " + brand[500]) ||
-              "2px solid " + neutral[60]
-            }`,
+            border: borderCss,
+            boxShadow: `${this.state.focus && "0 0 0 5px " + brand[500]}`,
             display: "block",
             fontWeight: 400,
             marginTop: "3px",
