@@ -4,7 +4,6 @@ import { authKeysAreFetchableMemoisedHealthcheck } from "../apiGatewayDiscovery"
 import { s3TextFilePromise } from "../awsIntegration";
 import { conf, Environments } from "../config";
 import { log } from "../log";
-import { withIdentity } from "../middleware/identityMiddleware";
 
 const router = Router();
 
@@ -15,7 +14,6 @@ const router = Router();
 router.get(
   "/_healthcheck",
   authKeysAreFetchableMemoisedHealthcheck(),
-  withIdentity(200), // healthcheck needs identity redirect service to be accessible (returns 200 if redirect required)
   (_: Request, res: Response) => {
     res.send("OK - signed in");
   }
@@ -55,7 +53,7 @@ router.get("/sitemap.txt", async (_, res: Response) => {
   const bucketName = "manage-help-content";
   const filePath = `${conf.STAGE}/sitemap.txt`;
   s3TextFilePromise(bucketName, filePath)
-    .then(data => {
+    .then((data) => {
       if (!data) {
         const errorMessage = `File ${filePath} was empty`;
         log.error(errorMessage);
@@ -67,7 +65,7 @@ router.get("/sitemap.txt", async (_, res: Response) => {
         .contentType("text/plain")
         .send(data || []);
     })
-    .catch(error => {
+    .catch((error) => {
       const errorMessage = `File ${filePath} not found`;
       log.error(errorMessage, error);
       captureMessage(errorMessage);

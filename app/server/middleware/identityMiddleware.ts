@@ -9,6 +9,7 @@ import { requiresSignin } from "../../shared/requiresSignin";
 import { handleAwsRelatedError } from "../awsIntegration";
 import { conf } from "../config";
 import { idapiConfigPromise } from "../idapiConfig";
+import { log } from "../log";
 
 interface RedirectResponseBody extends IdentityDetails {
   signInStatus: string;
@@ -214,14 +215,20 @@ export const withIdentity: (
               }
             } else {
               errorHandler(
-                "error back from IDAPI redirect service",
+                "unexpected response from IDAPI redirect service",
                 redirectResponseBody
               );
             }
           })
-          .catch(err =>
-            errorHandler("IDAPI config promise threw an error", err)
-          );
+          .catch(err => {
+            const message = "error back from IDAPI redirect service";
+            if (requiresSignin(req.originalUrl)) {
+              errorHandler(message, err);
+            } else {
+              log.error(message, err);
+              next();
+            }
+          });
       } else {
         errorHandler("IDAPI config is undefined");
       }
