@@ -210,6 +210,11 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
           required
           value="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+          cssOverrides={css`
+            & + span {
+              top: calc(50% - 8px);
+            }
+          `}
         />
       </div>
 
