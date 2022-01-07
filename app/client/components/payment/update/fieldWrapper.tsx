@@ -1,11 +1,13 @@
 import { StripeError } from "@stripe/stripe-js";
 import React from "react";
 import { css } from "@emotion/core";
-import palette from "../../../colours";
 import { textSans } from "@guardian/src-foundations/typography";
-import { neutral, error, brand } from "@guardian/src-foundations/palette";
+import { neutral, error } from "@guardian/src-foundations/palette";
+import { focusHalo } from "@guardian/src-foundations/accessibility";
+import { FocusStyleManager } from "@guardian/src-foundations/utils";
 import { InlineError } from "@guardian/src-user-feedback";
 
+FocusStyleManager.onlyShowFocusOnTabs();
 interface FieldWrapperProps {
   label: string;
   width: string;
@@ -51,8 +53,6 @@ export class FieldWrapper extends React.Component<
 
     if (this.state.error?.message) {
       borderCss = "4px solid " + error[400];
-    } else if (this.state.focus) {
-      borderCss = "2px solid " + brand[500];
     } else {
       borderCss = "2px solid " + neutral[60];
     }
@@ -104,21 +104,17 @@ export class FieldWrapper extends React.Component<
         </div>
 
         <div
-          css={{
-            border: borderCss,
-            boxShadow: `${this.state.focus && "0 0 0 5px " + brand[500]}`,
-            display: "block",
-            fontWeight: 400,
-            marginTop: "3px",
-            lineHeight: "20px",
-            padding: "10px",
-            width: "100%",
-            transition: "all .2s ease-in-out",
-            "&:hover": {
-              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`,
-            },
-            outline: 0,
-          }}
+          css={css`
+            border: ${borderCss};
+            display: block;
+            font-weight: 400;
+            margin-top: 3px;
+            line-height: 20px;
+            padding: 10px;
+            width: 100%;
+            transition: all 0.2s ease-in-out;
+            ${this.state.focus && focusHalo};
+          `}
         >
           {hydratedChildren}
         </div>
