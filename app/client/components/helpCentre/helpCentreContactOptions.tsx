@@ -16,6 +16,7 @@ import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
 
 interface HelpCentreContactOptionsProps {
   compactLayout?: boolean;
+  hideContactOptions?: boolean;
 }
 
 const baseSubtitleStyles = css`
@@ -67,8 +68,8 @@ const contactButtonCss = css`
 `;
 
 const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
-  const [contactOptionsVisible, setContactOptionsVisible] = useState(
-    !props.compactLayout
+  const [contactOptionsHidden, setContactOptionsHidden] = useState(
+    props.hideContactOptions
   );
 
   return (
@@ -93,7 +94,7 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
           </p>
 
           <div aria-live="polite">
-            {contactOptionsVisible && (
+            {!contactOptionsHidden && (
               <>
                 <LiveChatPrivacyNoticeLink />
                 <HelpCentreEmailAndLiveChat
@@ -104,11 +105,11 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
               </>
             )}
 
-            {!contactOptionsVisible && (
+            {contactOptionsHidden && (
               <div css={contactButtonCss}>
                 <Button
                   priority="secondary"
-                  onClick={() => setContactOptionsVisible(true)}
+                  onClick={() => setContactOptionsHidden(false)}
                 >
                   Contact us
                 </Button>

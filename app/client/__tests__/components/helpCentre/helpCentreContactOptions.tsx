@@ -37,7 +37,7 @@ describe("HelpCentreContactOptions", () => {
       });
     });
 
-    describe("Help Centre article (compact layout)", () => {
+    describe("Help Centre article (compact layout and contact options hidden)", () => {
       describe("with live chat feature switches disabled", () => {
         beforeAll(() => {
           (isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
@@ -50,7 +50,10 @@ describe("HelpCentreContactOptions", () => {
 
         it("shows email and phone contacts only", () => {
           const rendered = create(
-            <HelpCentreContactOptions compactLayout={true} />
+            <HelpCentreContactOptions
+              compactLayout={true}
+              hideContactOptions={true}
+            />
           );
           expect(rendered.toJSON()).toMatchSnapshot();
         });
@@ -67,7 +70,12 @@ describe("HelpCentreContactOptions", () => {
         });
 
         it("it shows a 'Contact us' button only with contact options hidden", () => {
-          render(<HelpCentreContactOptions compactLayout={true} />);
+          render(
+            <HelpCentreContactOptions
+              compactLayout={true}
+              hideContactOptions={true}
+            />
+          );
           expect(screen.getByRole("button")).toHaveTextContent("Contact us");
           expect(screen.queryByText("Chat with us")).not.toBeInTheDocument();
           expect(screen.queryByText("Email us")).not.toBeInTheDocument();
@@ -75,7 +83,12 @@ describe("HelpCentreContactOptions", () => {
         });
 
         it("reveals the contact options with live chat when 'Contact us' is clicked", () => {
-          render(<HelpCentreContactOptions compactLayout={true} />);
+          render(
+            <HelpCentreContactOptions
+              compactLayout={true}
+              hideContactOptions={true}
+            />
+          );
           fireEvent.click(screen.getByRole("button"));
           expect(screen.getByText("Chat with us")).toBeInTheDocument();
           expect(screen.getByText("Email us")).toBeInTheDocument();

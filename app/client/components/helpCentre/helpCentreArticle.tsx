@@ -22,7 +22,7 @@ import {
   BaseNode,
   ElementNode,
   LinkNode,
-  TextNode
+  TextNode,
 } from "./HelpCentreTypes";
 import { PageTitle } from "./pageTitle";
 import { SeoData } from "./seoData";
@@ -37,7 +37,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
   useEffect(() => {
     setArticle(undefined);
     fetch(`/api/help-centre/article/${props.articleCode}`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
@@ -47,8 +47,8 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
           navigate("/help-centre");
         }
       })
-      .then(articleData => setArticle(articleData as Article))
-      .catch(error =>
+      .then((articleData) => setArticle(articleData as Article))
+      .catch((error) =>
         captureException(
           `Failed to fetch article ${props.articleCode}. Error: ${error}`
         )
@@ -79,7 +79,10 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
             />
             <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
             {isArticleLiveChatFeatureEnabled() ? (
-              <HelpCentreContactOptions compactLayout={true} />
+              <HelpCentreContactOptions
+                compactLayout={true}
+                hideContactOptions={true}
+              />
             ) : (
               <>
                 <h2 css={h2Css}>Still can’t find what you’re looking for?</h2>
@@ -290,7 +293,7 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
                   eventCategory: "help-centre",
                   eventAction: "article-feedback",
                   eventLabel: props.articleCode,
-                  eventValue: 1
+                  eventValue: 1,
                 });
               }}
             >
@@ -311,7 +314,7 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
                   eventCategory: "help-centre",
                   eventAction: "article-feedback",
                   eventLabel: props.articleCode,
-                  eventValue: 0
+                  eventValue: 0,
                 });
               }}
             >
