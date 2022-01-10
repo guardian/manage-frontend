@@ -4,7 +4,7 @@ import { maxWidth } from "../../../../styles/breakpoints";
 import { space } from "@guardian/src-foundations";
 import { sans } from "../../../../styles/fonts";
 import { Button } from "@guardian/src-button";
-import { Checkbox } from "../../../checkbox";
+import { Checkbox } from "@guardian/src-checkbox";
 import { cleanSortCode } from "../../directDebitDisplay";
 import { FieldWrapper } from "../fieldWrapper";
 import { NewPaymentMethodDetail } from "../newPaymentMethodDetail";
@@ -155,7 +155,6 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
         css={css`
           display: flex;
           justify-content: flex-start;
-          margin-bottom: ${space[3]}px;
 
           ${minWidth.tablet} {
             margin-top: ${space[4]}px;
@@ -195,12 +194,29 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           />
         </FieldWrapper>{" "}
       </div>
-      <Checkbox
-        onChange={(newValue) => setSoleAccountHolderConfirmed(newValue)}
-        checked={soleAccountHolderConfirmed}
-        label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
-        required
-      />
+
+      <div
+        css={css`
+          margin: 14px 0;
+
+          ${minWidth.tablet} {
+            margin: 4px 0;
+          }
+        `}
+      >
+        <Checkbox
+          onChange={(e) => setSoleAccountHolderConfirmed(e.target.checked)}
+          checked={soleAccountHolderConfirmed}
+          label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+          required
+          value="I confirm that I am the account holder and I am solely able to authorise debit from the account"
+          cssOverrides={css`
+            & + span {
+              top: calc(50% - 8px);
+            }
+          `}
+        />
+      </div>
 
       <DirectDebitLegal />
 

@@ -77,7 +77,16 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
           const sentenceEnd = sentence.includes(".") ? "" : ".";
 
           return (
-            <div key={index}>
+            <div
+              key={index}
+              css={css`
+                margin-top: ${space[4]}px;
+
+                :first-of-type {
+                  margin-top: 0;
+                }
+              `}
+            >
               <ErrorSummary message={sentence + sentenceEnd} />
             </div>
           );

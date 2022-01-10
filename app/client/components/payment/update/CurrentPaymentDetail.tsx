@@ -66,7 +66,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
     <div
       css={css`
         border: 1px solid ${neutral[86]};
-        margin-bottom: ${space[6]}px;
+        margin-bottom: ${space[4]}px;
       `}
     >
       <div

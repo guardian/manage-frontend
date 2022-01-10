@@ -7,6 +7,7 @@ import { neutral, brand } from "@guardian/src-foundations/palette";
 import { space } from "@guardian/src-foundations";
 import { headline } from "@guardian/src-foundations/typography";
 import { Radio } from "@guardian/src-radio";
+import { textSans } from "@guardian/src-foundations/typography";
 import { Button } from "@guardian/src-button";
 import { NavigateFn } from "@reach/router";
 import * as Sentry from "@sentry/browser";
@@ -129,42 +130,20 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
     }
   `;
 
-  return (
+  const label = () => (
     <div
       css={css`
         display: flex;
-        border-radius: 4px;
-        padding: ${space[4]}px;
-        margin-bottom: ${space[4]}px;
-        ${isChecked ? radioIsChecked : radioDefault}
-
-        label {
-          min-height: 0;
-          flex: 1;
-
-          div {
-            font-weight: bold;
-          }
-        }
-
-        .src-radio-label-text {
-          line-height: 1;
-        }
+        align-items: center;
       `}
     >
-      <Radio
-        checked={isChecked}
-        label={props.paymentMethod}
-        supporting=""
-        onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
-          props.updatePaymentMethod(changeEvent.target.value as PaymentMethod)
-        }
-        cssOverrides={css`
-          box-shadow: none !important;
-          line-height: 1;
+      <span
+        css={css`
+          flex: 1;
         `}
-        value={props.paymentMethod}
-      />
+      >
+        {props.paymentMethod}
+      </span>
       <div
         css={css`
           display: none;
@@ -182,6 +161,50 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
           {getLogos(props.paymentMethod)}
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <div
+      css={css`
+        border-radius: 4px;
+
+        margin-bottom: ${space[4]}px;
+        ${isChecked ? radioIsChecked : radioDefault}
+
+        label {
+          min-height: 0;
+          padding: ${space[4]}px;
+
+          div {
+            font-weight: bold;
+          }
+        }
+
+        :hover {
+          -webkit-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+          -moz-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+          box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+        }
+
+        .src-radio-label-text {
+          line-height: 1;
+        }
+      `}
+    >
+      <Radio
+        checked={isChecked}
+        label={label()}
+        supporting=""
+        onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
+          props.updatePaymentMethod(changeEvent.target.value as PaymentMethod)
+        }
+        cssOverrides={css`
+          box-shadow: none !important;
+          line-height: 1;
+        `}
+        value={props.paymentMethod}
+      />
     </div>
   );
 };
@@ -420,20 +443,24 @@ export class PaymentUpdaterStep extends React.Component<
               Your current payment method
             </h3>
             <CurrentPaymentDetails {...this.props.productDetail} />
-            <p>
-              {this.props.productDetail.subscription.payPalEmail && (
-                <>
-                  To update your payment details, please login to your PayPal
-                  account. Alternatively, you can switch to a card based payment
-                  method below.
-                </>
-              )}
-            </p>
+            {this.props.productDetail.subscription.payPalEmail && (
+              <p
+                css={css`
+                  ${textSans.medium()}
+                `}
+              >
+                To update your payment details, please login to your PayPal
+                account. Alternatively, you can switch to a card based payment
+                method below.
+              </p>
+            )}
           </div>
 
           <h3
             css={css`
               ${subHeadingCss}
+              ${this.props.productDetail.subscription.payPalEmail &&
+              "margin-top: 36px"}
             `}
           >
             {this.state.selectedPaymentMethod === PaymentMethod.unknown

@@ -1,11 +1,13 @@
 import { StripeError } from "@stripe/stripe-js";
 import React from "react";
 import { css } from "@emotion/core";
-import palette from "../../../colours";
 import { textSans } from "@guardian/src-foundations/typography";
 import { neutral, error } from "@guardian/src-foundations/palette";
+import { focusHalo } from "@guardian/src-foundations/accessibility";
+import { FocusStyleManager } from "@guardian/src-foundations/utils";
 import { InlineError } from "@guardian/src-user-feedback";
 
+FocusStyleManager.onlyShowFocusOnTabs();
 interface FieldWrapperProps {
   label: string;
   width: string;
@@ -31,18 +33,29 @@ export class FieldWrapper extends React.Component<
     super(props);
     this.state = {
       error: {},
-      focus: false
+      focus: false,
     };
   }
 
   public render(): React.ReactNode {
-    const hydratedChildren = React.Children.map(this.props.children, child => {
-      return React.cloneElement(child as React.ReactElement<any>, {
-        onChange: this.validateField(this.props.onChange),
-        onFocus: this.toggleFocus,
-        onBlur: this.toggleFocus
-      });
-    });
+    const hydratedChildren = React.Children.map(
+      this.props.children,
+      (child) => {
+        return React.cloneElement(child as React.ReactElement<any>, {
+          onChange: this.validateField(this.props.onChange),
+          onFocus: this.toggleFocus,
+          onBlur: this.toggleFocus,
+        });
+      }
+    );
+
+    let borderCss: string;
+
+    if (this.state.error?.message) {
+      borderCss = "4px solid " + error[400];
+    } else {
+      borderCss = "2px solid " + neutral[60];
+    }
 
     return (
       <div
@@ -52,8 +65,8 @@ export class FieldWrapper extends React.Component<
           marginBottom: "10px",
           textAlign: "left",
           ":not(:first-of-type)": {
-            marginLeft: "20px"
-          }
+            marginLeft: "20px",
+          },
         }}
       >
         <div
@@ -91,24 +104,17 @@ export class FieldWrapper extends React.Component<
         </div>
 
         <div
-          css={{
-            border: `${
-              this.state.error?.message
-                ? "4px solid " + error[400]
-                : "2px solid " + neutral[60]
-            }`,
-            display: "block",
-            fontWeight: 400,
-            marginTop: "3px",
-            lineHeight: "20px",
-            padding: "10px",
-            width: "100%",
-            transition: "all .2s ease-in-out",
-            "&:hover": {
-              boxShadow: `0 0 0 3px ${palette.neutral["6"]}`
-            },
-            outline: 0
-          }}
+          css={css`
+            border: ${borderCss};
+            display: block;
+            font-weight: 400;
+            margin-top: 3px;
+            line-height: 20px;
+            padding: 10px;
+            width: 100%;
+            transition: all 0.2s ease-in-out;
+            ${this.state.focus && focusHalo};
+          `}
         >
           {hydratedChildren}
         </div>
@@ -116,20 +122,20 @@ export class FieldWrapper extends React.Component<
     );
   }
 
-  private validateField = (otherOnChange?: (event: any) => void) => (field: {
-    error: StripeError;
-  }) => {
-    if (otherOnChange) {
-      otherOnChange(field);
-    }
-    this.setState({
-      error: field.error?.message ? field.error : {}
-    });
-  };
+  private validateField =
+    (otherOnChange?: (event: any) => void) =>
+    (field: { error: StripeError }) => {
+      if (otherOnChange) {
+        otherOnChange(field);
+      }
+      this.setState({
+        error: field.error?.message ? field.error : {},
+      });
+    };
 
   private toggleFocus = () => {
     this.setState({
-      focus: !this.state.focus
+      focus: !this.state.focus,
     });
   };
 }
