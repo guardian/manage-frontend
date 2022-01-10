@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import url, { UrlWithParsedQuery } from "url";
 import {
   getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
+  X_GU_ID_FORWARDED_SCOPE,
 } from "../../shared/identity";
 import { requiresSignin } from "../../shared/requiresSignin";
 import { handleAwsRelatedError } from "../awsIntegration";
@@ -46,7 +46,7 @@ const signInTokenQueryParameterNames = ["encryptedEmail", "autoSignInToken"];
 const containsSignInTokenQueryParameters = (
   req: MockableExpressRequest
 ): boolean =>
-  signInTokenQueryParameterNames.some(name => req.query[name] !== undefined);
+  signInTokenQueryParameterNames.some((name) => req.query[name] !== undefined);
 
 // Adds the redirect url (if defined) as query parameter profileReferer,
 // and removes the sign-in token query parameters since they are not required by manage
@@ -60,7 +60,7 @@ const updateManageUrl = (
   // See the implementation of withIdentity() for more context.
   const queryParameters = filterQueryParametersByName(
     req.query,
-    name => !signInTokenQueryParameterNames.includes(name)
+    (name) => !signInTokenQueryParameterNames.includes(name)
   );
 
   const profileReferrer =
@@ -76,8 +76,8 @@ const updateManageUrl = (
         pathname: req.baseUrl + req.path,
         query: {
           ...queryParameters,
-          profileReferrer
-        }
+          profileReferrer,
+        },
       });
 };
 
@@ -107,11 +107,12 @@ export const augmentRedirectURL = (
     "abName",
     "abVariant",
     "journey",
-    ...signInTokenQueryParameterNames
+    ...signInTokenQueryParameterNames,
   ];
 
-  const profileQueryParameters = filterQueryParametersByName(req.query, name =>
-    profileQueryParameterNames.includes(name)
+  const profileQueryParameters = filterQueryParametersByName(
+    req.query,
+    (name) => profileQueryParameterNames.includes(name)
   );
 
   return url.format({
@@ -121,8 +122,8 @@ export const augmentRedirectURL = (
     query: {
       ...parsedSimpleURL.query,
       ...profileQueryParameters,
-      returnUrl // this is automatically URL encoded
-    }
+      returnUrl, // this is automatically URL encoded
+    },
   });
 };
 
@@ -132,10 +133,7 @@ const redirectOrCustomStatusCode = (
   statusCode?: number
 ) =>
   statusCode
-    ? res
-        .status(statusCode)
-        .header("Location", redirectURL)
-        .send()
+    ? res.status(statusCode).header("Location", redirectURL).send()
     : res.redirect(redirectURL);
 
 export const getCookiesOrEmptyString = (req: express.Request) =>
@@ -143,95 +141,93 @@ export const getCookiesOrEmptyString = (req: express.Request) =>
 
 export const withIdentity: (
   statusCodeOverride?: number
-) => express.RequestHandler = (statusCodeOverride?: number) => (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  const errorHandler = (message: string, detail?: any) => {
-    handleAwsRelatedError(message, detail);
-    res.sendStatus(500); // TODO maybe server side render a pretty response
-  };
+) => express.RequestHandler =
+  (statusCodeOverride?: number) =>
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const errorHandler = (message: string, detail?: any) => {
+      handleAwsRelatedError(message, detail);
+      res.redirect("/maintenance");
+    };
 
-  const useRefererHeaderForManageUrl = !!statusCodeOverride;
+    const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
-  idapiConfigPromise
-    .then(idapiConfig => {
-      if (idapiConfig) {
-        fetch(
-          url.format({
-            protocol: "https",
-            host: idapiConfig.host,
-            pathname: "auth/redirect"
-          }),
-          {
-            headers: {
-              "X-GU-ID-Client-Access-Token":
-                "Bearer " + idapiConfig.accessToken,
-              [X_GU_ID_FORWARDED_SCOPE]:
-                req.header(X_GU_ID_FORWARDED_SCOPE) ||
-                getScopeFromRequestPathOrEmptyString(req.path),
-              Cookie: getCookiesOrEmptyString(req)
+    idapiConfigPromise
+      .then((idapiConfig) => {
+        if (idapiConfig) {
+          fetch(
+            url.format({
+              protocol: "https",
+              host: idapiConfig.host,
+              pathname: "auth/redirect",
+            }),
+            {
+              headers: {
+                "X-GU-ID-Client-Access-Token":
+                  "Bearer " + idapiConfig.accessToken,
+                [X_GU_ID_FORWARDED_SCOPE]:
+                  req.header(X_GU_ID_FORWARDED_SCOPE) ||
+                  getScopeFromRequestPathOrEmptyString(req.path),
+                Cookie: getCookiesOrEmptyString(req),
+              },
             }
-          }
-        )
-          .then(
-            redirectResponse =>
-              redirectResponse.json() as Promise<RedirectResponseBody>
           )
-          .then(redirectResponseBody => {
-            // tslint:disable-next-line:no-object-mutation
-            Object.assign(res.locals, { identity: redirectResponseBody });
+            .then(
+              (redirectResponse) =>
+                redirectResponse.json() as Promise<RedirectResponseBody>
+            )
+            .then((redirectResponseBody) => {
+              // tslint:disable-next-line:no-object-mutation
+              Object.assign(res.locals, { identity: redirectResponseBody });
 
-            if (!requiresSignin(req.originalUrl)) {
-              next();
-            } else if (redirectResponseBody.redirect) {
-              redirectOrCustomStatusCode(
-                res,
-                augmentRedirectURL(
-                  req,
-                  redirectResponseBody.redirect.url,
-                  conf.DOMAIN,
-                  useRefererHeaderForManageUrl
-                ),
-                statusCodeOverride
-              );
-            } else if (
-              redirectResponseBody.signInStatus === "signedInRecently"
-            ) {
-              // If the request to manage contains sign-in token query parameters,
-              // but they are not needed because the user is already signed in,
-              // redirect them to the same url, but with the sign-in token query parameters removed.
-              // This ensures the sensitive query parameters will not be recorded by GA or Ophan,
-              // in addition to the url the user sees in the browser being simpler.
-              if (containsSignInTokenQueryParameters(req)) {
-                // Note it is vital that updateManageUrl() removes the auto sign-in query parameters,
-                // otherwise, on redirect this branch of code would get executed again, causing a redirect loop to occur!
-                res.redirect(
-                  updateManageUrl(req, useRefererHeaderForManageUrl)
+              if (!requiresSignin(req.originalUrl)) {
+                next();
+              } else if (redirectResponseBody.redirect) {
+                redirectOrCustomStatusCode(
+                  res,
+                  augmentRedirectURL(
+                    req,
+                    redirectResponseBody.redirect.url,
+                    conf.DOMAIN,
+                    useRefererHeaderForManageUrl
+                  ),
+                  statusCodeOverride
                 );
+              } else if (
+                redirectResponseBody.signInStatus === "signedInRecently"
+              ) {
+                // If the request to manage contains sign-in token query parameters,
+                // but they are not needed because the user is already signed in,
+                // redirect them to the same url, but with the sign-in token query parameters removed.
+                // This ensures the sensitive query parameters will not be recorded by GA or Ophan,
+                // in addition to the url the user sees in the browser being simpler.
+                if (containsSignInTokenQueryParameters(req)) {
+                  // Note it is vital that updateManageUrl() removes the auto sign-in query parameters,
+                  // otherwise, on redirect this branch of code would get executed again, causing a redirect loop to occur!
+                  res.redirect(
+                    updateManageUrl(req, useRefererHeaderForManageUrl)
+                  );
+                } else {
+                  next();
+                }
               } else {
+                errorHandler(
+                  "unexpected response from IDAPI redirect service",
+                  redirectResponseBody
+                );
+              }
+            })
+            .catch((err) => {
+              const message = "error back from IDAPI redirect service";
+              if (requiresSignin(req.originalUrl)) {
+                errorHandler(message, err);
+              } else {
+                log.error(message, err);
                 next();
               }
-            } else {
-              errorHandler(
-                "unexpected response from IDAPI redirect service",
-                redirectResponseBody
-              );
-            }
-          })
-          .catch(err => {
-            const message = "error back from IDAPI redirect service";
-            if (requiresSignin(req.originalUrl)) {
-              errorHandler(message, err);
-            } else {
-              log.error(message, err);
-              next();
-            }
-          });
-      } else {
-        errorHandler("IDAPI config is undefined");
-      }
-    })
-    .catch(err => errorHandler("error fetching IDAPI config", err));
-};
+            });
+        } else {
+          errorHandler("IDAPI config is undefined");
+        }
+      })
+      .catch((err) => errorHandler("error fetching IDAPI config", err));
+  };
