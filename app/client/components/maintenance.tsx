@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteComponentProps } from "@reach/router";
 import { css } from "@emotion/core";
-import { breakpoints, neutral, space } from "@guardian/src-foundations";
+import { brand, breakpoints, neutral, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { minWidth } from "../styles/breakpoints";
 
@@ -35,6 +35,11 @@ const grafStyle = css`
   margin-bottom: ${space[4]}px;
 `;
 
+const linkCss = css`
+  text-decoration: none;
+  color: ${brand["500"]};
+`;
+
 const Maintenance = (_: RouteComponentProps) => {
   return (
     <div css={containerStyle}>
@@ -46,8 +51,10 @@ const Maintenance = (_: RouteComponentProps) => {
         </p>
         <p css={grafStyle}>
           If you need to you can always{" "}
-          <a href="/help-centre/contact-us">contact us</a>, otherwise we will be
-          back shortly.
+          <a css={linkCss} href="/help-centre/contact-us">
+            contact us
+          </a>
+          , otherwise we will be back shortly.
         </p>
       </section>
     </div>
