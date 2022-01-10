@@ -41,6 +41,7 @@ import { ErrorSummary } from "./Summary";
 import { DirectDebitLogo } from "../directDebitLogo";
 import { cardTypeToSVG } from "../cardDisplay";
 import ContactUs from "./ContactUs";
+import { SvgArrowRightStraight } from "@guardian/src-icons";
 
 export enum PaymentMethod {
   card = "Credit card / debit card",
@@ -463,15 +464,7 @@ export class PaymentUpdaterStep extends React.Component<
                 <Button
                   disabled
                   priority="secondary"
-                  icon={
-                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
-                      />
-                    </svg>
-                  }
+                  icon={<SvgArrowRightStraight />}
                   iconSide="right"
                   cssOverrides={css`
                     background-color: ${neutral[86]};
