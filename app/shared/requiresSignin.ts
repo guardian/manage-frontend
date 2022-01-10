@@ -7,10 +7,13 @@ const publicPaths = [
   "/api/reminders/cancel/",
   "/api/help-centre/",
   "/cancel-reminders/",
-  "/help-centre/"
+  "/help-centre/",
+  "/maintenance/",
 ];
 
 export const requiresSignin = (path: string) => {
   const normalizedPath = normalize(path + "/");
-  return !publicPaths.some(publicPath => normalizedPath.startsWith(publicPath));
+  return !publicPaths.some((publicPath) =>
+    normalizedPath.startsWith(publicPath)
+  );
 };
