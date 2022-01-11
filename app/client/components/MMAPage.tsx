@@ -7,13 +7,13 @@ import {
   PRODUCT_TYPES,
   ProductType,
   ProductTypeWithDeliveryRecordsProperties,
-  ProductTypeWithHolidayStopsFlow
+  ProductTypeWithHolidayStopsFlow,
 } from "../../shared/productTypes";
 import {
   hasCancellationFlow,
   hasDeliveryFlow,
   hasDeliveryRecordsFlow,
-  shouldHaveHolidayStopsFlow
+  shouldHaveHolidayStopsFlow,
 } from "../productUtils";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
@@ -35,61 +35,73 @@ import MMAPageSkeleton from "./MMAPageSkeleton";
 import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import PaymentFailed from "./payment/update/PaymentFailed";
 import { ScrollToTop } from "./scrollToTop";
+import Maintenance from "./maintenance";
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const AccountOverview = lazy(() =>
-  import(
-    /* webpackChunkName: "AccountOverview" */ "./accountoverview/accountOverview"
-  )
+const AccountOverview = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "AccountOverview" */ "./accountoverview/accountOverview"
+    )
 );
-const Billing = lazy(() =>
-  import(/* webpackChunkName: "Billing" */ "./billing/billing")
+const Billing = lazy(
+  () => import(/* webpackChunkName: "Billing" */ "./billing/billing")
 );
-const ManageProduct = lazy(() =>
-  import(
-    /* webpackChunkName: "ManageProduct" */ "./accountoverview/manageProduct"
-  )
+const ManageProduct = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "ManageProduct" */ "./accountoverview/manageProduct"
+    )
 );
-const CancellationFlow = lazy(() =>
-  import(/* webpackChunkName: "CancellationFlow" */ "./cancel/cancellationFlow")
+const CancellationFlow = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "CancellationFlow" */ "./cancel/cancellationFlow"
+    )
 );
-const PaymentUpdateFlow = lazy(() =>
-  import(
-    /* webpackChunkName: "PaymentUpdateFlow" */ "./payment/update/updatePaymentFlow"
-  )
+const PaymentUpdateFlow = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "PaymentUpdateFlow" */ "./payment/update/updatePaymentFlow"
+    )
 );
-const HolidaysOverview = lazy(() =>
-  import(
-    /* HolidaysOverview: "holidaysoverview" */ "./holiday/holidaysOverview"
-  )
+const HolidaysOverview = lazy(
+  () =>
+    import(
+      /* HolidaysOverview: "holidaysoverview" */ "./holiday/holidaysOverview"
+    )
 );
-const DeliveryAddressForm = lazy(() =>
-  import(
-    /* webpackChunkName: "DeliveryAddressForm" */ "./delivery/address/deliveryAddressForm"
-  )
+const DeliveryAddressForm = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "DeliveryAddressForm" */ "./delivery/address/deliveryAddressForm"
+    )
 );
-const DeliveryRecords = lazy(() =>
-  import(
-    /* webpackChunkName: "DeliveryRecords" */ "./delivery/records/deliveryRecords"
-  )
+const DeliveryRecords = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "DeliveryRecords" */ "./delivery/records/deliveryRecords"
+    )
 );
-const EmailAndMarketing = lazy(() =>
-  import(
-    /* webpackChunkName: "EmailAndMarketing" */ "./identity/EmailAndMarketing"
-  )
+const EmailAndMarketing = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "EmailAndMarketing" */ "./identity/EmailAndMarketing"
+    )
 );
-const PublicProfile = lazy(() =>
-  import(/* webpackChunkName: "PublicProfile" */ "./identity/PublicProfile")
+const PublicProfile = lazy(
+  () =>
+    import(/* webpackChunkName: "PublicProfile" */ "./identity/PublicProfile")
 );
-const Settings = lazy(() =>
-  import(/* webpackChunkName: "Settings" */ "./identity/Settings")
+const Settings = lazy(
+  () => import(/* webpackChunkName: "Settings" */ "./identity/Settings")
 );
 const Help = lazy(() => import(/* webpackChunkName: "Help" */ "./help"));
-const CancelReminders = lazy(() =>
-  import(/* webpackChunkName: "CancelReminders" */ "./cancelReminders")
+const CancelReminders = lazy(
+  () => import(/* webpackChunkName: "CancelReminders" */ "./cancelReminders")
 );
 
 const MMARouter = () => (
@@ -234,6 +246,7 @@ const MMARouter = () => (
 
         {/*Does not require sign in*/}
         <CancelReminders path="/cancel-reminders/*reminderCode" />
+        <Maintenance path="/maintenance" />
       </Router>
     </Suspense>
   </Main>
