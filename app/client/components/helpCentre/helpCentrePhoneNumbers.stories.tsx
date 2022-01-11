@@ -1,5 +1,5 @@
-import { ComponentStory } from "@storybook/react";
 import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import {
   HelpCentrePhoneNumbers,
@@ -12,10 +12,10 @@ export default {
   args: {
     compactLayout: false,
   },
-};
+} as ComponentMeta<typeof HelpCentrePhoneNumbers>;
 
 const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = (
-  props: HelpCentrePhoneNumbersProps
-) => <HelpCentrePhoneNumbers {...props} />;
+  args: HelpCentrePhoneNumbersProps
+) => <HelpCentrePhoneNumbers {...args} />;
 
 export const Default = Template.bind({});
