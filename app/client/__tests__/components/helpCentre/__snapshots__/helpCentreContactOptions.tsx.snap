@@ -1,0 +1,3229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (compact layout and contact options hidden) with live chat feature switches disabled shows email and phone contacts only 1`] = `
+Array [
+  <h2
+    css={
+      Object {
+        "map": undefined,
+        "name": "j4gc4h",
+        "next": undefined,
+        "styles": "
+  
+  border-top: 1px solid #DCDCDC;
+  margin-top: 30px;
+  
+	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
+	font-size: 1.75rem;
+	line-height: 1.15;
+	font-weight: 700;
+	;
+;
+;
+  margin-bottom: 24px;
+  @media (min-width: 740px) {
+    margin-bottom: 24px;
+    margin-top: 40px;
+  }
+",
+        "toString": [Function],
+      }
+    }
+  >
+    Still can’t find what you’re looking for?
+  </h2>,
+  <div
+    css={
+      Object {
+        "map": undefined,
+        "name": "1ofn7ld",
+        "next": undefined,
+        "styles": "margin-bottom:10px;display:flex;flex-wrap:wrap;text-align:left;font-weight:normal;",
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "1kvvfmb",
+          "next": undefined,
+          "styles": "
+          width: 100%;
+          border: 1px solid #DCDCDC;
+        ",
+          "toString": [Function],
+        }
+      }
+    >
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "asga8g",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+        font-weight: bold;
+        background-color: #F6F6F6;
+        border-bottom: 1px solid #DCDCDC;
+      
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-1px) rotate(-45deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    false
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          United Kingdom, Europe and rest of world
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Hide
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "52ezka",
+              "next": undefined,
+              "styles": "
+                  
+    display: block;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +44 (0) 330 333 6790
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              8am - 6pm Monday - Friday (GMT/BST)
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 6pm Saturday - Sunday (GMT/BST)
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "1eo8x6r",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          Australia, New Zealand, and Asia Pacific
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Show
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "d995dt",
+              "next": undefined,
+              "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              1800 773 766
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (within Australia)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +61 28076 8599
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (outside Australia)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 5pm Monday - Friday (AEDT)
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "1eo8x6r",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          Canada and USA
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Show
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "d995dt",
+              "next": undefined,
+              "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              1-844-632-2010
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (toll free USA)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +1 917-900-4663
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (outside USA)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 5pm on weekdays (EST/EDT)
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`HelpCentreContactOptions Help Centre landing page with live chat feature switch disabled shows email and phone contacts only 1`] = `
+Array [
+  <h2
+    css={
+      Object {
+        "map": undefined,
+        "name": "j4gc4h",
+        "next": undefined,
+        "styles": "
+  
+  border-top: 1px solid #DCDCDC;
+  margin-top: 30px;
+  
+	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
+	font-size: 1.75rem;
+	line-height: 1.15;
+	font-weight: 700;
+	;
+;
+;
+  margin-bottom: 24px;
+  @media (min-width: 740px) {
+    margin-bottom: 24px;
+    margin-top: 40px;
+  }
+",
+        "toString": [Function],
+      }
+    }
+  >
+    Still can’t find what you’re looking for?
+  </h2>,
+  <div
+    css={
+      Object {
+        "map": undefined,
+        "name": "1ofn7ld",
+        "next": undefined,
+        "styles": "margin-bottom:10px;display:flex;flex-wrap:wrap;text-align:left;font-weight:normal;",
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "1kvvfmb",
+          "next": undefined,
+          "styles": "
+          width: 100%;
+          border: 1px solid #DCDCDC;
+        ",
+          "toString": [Function],
+        }
+      }
+    >
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "asga8g",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+        font-weight: bold;
+        background-color: #F6F6F6;
+        border-bottom: 1px solid #DCDCDC;
+      
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-1px) rotate(-45deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    false
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          United Kingdom, Europe and rest of world
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Hide
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "52ezka",
+              "next": undefined,
+              "styles": "
+                  
+    display: block;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +44 (0) 330 333 6790
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              8am - 6pm Monday - Friday (GMT/BST)
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 6pm Saturday - Sunday (GMT/BST)
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "1eo8x6r",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          Australia, New Zealand, and Asia Pacific
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Show
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "d995dt",
+              "next": undefined,
+              "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              1800 773 766
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (within Australia)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +61 28076 8599
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (outside Australia)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 5pm Monday - Friday (AEDT)
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2
+          css={
+            Object {
+              "map": undefined,
+              "name": "1eo8x6r",
+              "next": undefined,
+              "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+              "toString": [Function],
+            }
+          }
+          onClick={[Function]}
+        >
+          Canada and USA
+          <span
+            aria-hidden="true"
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "1tq13jn",
+                  "next": undefined,
+                  "styles": "
+    display: none;
+    user-select: none;
+  ",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "mk8fqy",
+                  "next": undefined,
+                  "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Show
+          </span>
+        </h2>
+        <div
+          css={
+            Object {
+              "map": undefined,
+              "name": "d995dt",
+              "next": undefined,
+              "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+              "toString": [Function],
+            }
+          }
+        >
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "o6magp",
+                "next": undefined,
+                "styles": "
+                        
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            Email:
+          </h4>
+          <span
+            css={
+              Object {
+                "map": undefined,
+                "name": "13eodb",
+                "next": undefined,
+                "styles": "
+                        
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+                        word-break: break-word;
+                      ",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </span>
+          <h4
+            css={
+              Object {
+                "map": undefined,
+                "name": "12kbnvd",
+                "next": undefined,
+                "styles": "
+                      
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 6px 0 4px;
+  
+                    ",
+                "toString": [Function],
+              }
+            }
+          >
+            Phone:
+          </h4>
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "v9a1zq",
+                "next": undefined,
+                "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                "toString": [Function],
+              }
+            }
+          >
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              1-844-632-2010
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (toll free USA)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "1vdm42g",
+                  "next": undefined,
+                  "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                  "toString": [Function],
+                }
+              }
+            >
+              +1 917-900-4663
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "3nofu1",
+                    "next": undefined,
+                    "styles": "
+                            font-weight: normal;
+                          ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                 
+                (outside USA)
+              </span>
+            </span>
+            <span
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "6ux35a",
+                  "next": undefined,
+                  "styles": "
+                          display: block;
+                        ",
+                  "toString": [Function],
+                }
+              }
+            >
+              9am - 5pm on weekdays (EST/EDT)
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`HelpCentreContactOptions Help Centre landing page with live chat feature switch enabled shows the live chat contact box 1`] = `
+Array [
+  <h2
+    css={
+      Object {
+        "map": undefined,
+        "name": "wv50w6",
+        "next": undefined,
+        "styles": "
+  
+  border-top: 1px solid #DCDCDC;
+  margin-top: 30px;
+  
+	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
+	font-size: 1.75rem;
+	line-height: 1.15;
+	font-weight: 700;
+	;
+;
+;
+  margin-bottom: 4px;
+  @media (min-width: 740px) {
+    margin-bottom: 0;
+    margin-top: 40px;
+  }
+",
+        "toString": [Function],
+      }
+    }
+  >
+    Still can’t find what you’re looking for?
+  </h2>,
+  <p
+    css={
+      Array [
+        Object {
+          "map": undefined,
+          "name": "wzkwc0",
+          "next": undefined,
+          "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  margin-bottom: 4px;
+  max-width: 320px;
+  @media (min-width: 740px) {
+    max-width: none;
+  }
+",
+          "toString": [Function],
+        },
+        Object {
+          "map": undefined,
+          "name": "cb082j",
+          "next": undefined,
+          "styles": "
+  @media (min-width: 1300px) {
+    display: none;
+  }
+",
+          "toString": [Function],
+        },
+      ]
+    }
+  >
+    Get in touch with one of our customer service agents.
+  </p>,
+  .emotion-0 {
+  margin-bottom: 20px;
+  margin-top: 4px;
+}
+
+@media (min-width:740px) {
+  .emotion-0 {
+    margin-bottom: 36px;
+  }
+}
+
+<div
+    aria-live="polite"
+  >
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "oirohx",
+          "next": undefined,
+          "styles": "
+    margin-bottom: 8px;
+    text-align: right;
+    a {
+      
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+      color: #007ABC;
+      text-decoration: underline;
+    }
+  ",
+          "toString": [Function],
+        }
+      }
+    >
+      <a
+        href="#livechatPrivacyNotice"
+        onClick={[Function]}
+      >
+        data privacy notice
+      </a>
+    </div>
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "77v4mp",
+          "next": undefined,
+          "styles": "
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 660px) {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+  & > * {
+    margin-bottom: 20px;
+  }
+",
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        css={
+          Object {
+            "map": undefined,
+            "name": "1cbbicq",
+            "next": undefined,
+            "styles": "
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #DCDCDC;
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  @media (min-width: 660px) {
+    width: calc(50% - 10px);
+  }
+",
+            "toString": [Function],
+          }
+        }
+      >
+        <div>
+          <h2
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "6z60u3",
+                  "next": undefined,
+                  "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+  color: #333333;
+  position: relative;
+  margin: 0;
+  padding: 18px 0 18px 60px;
+",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "12wt86f",
+                  "next": undefined,
+                  "styles": "
+  @media (min-width: 980px) {
+    padding: 22px 0 22px 64px;
+  }
+",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            <i
+              css={
+                Array [
+                  Object {
+                    "map": undefined,
+                    "name": "17gfd4y",
+                    "next": undefined,
+                    "styles": "
+  position: absolute;
+  top: 12px;
+  left: 12px;
+",
+                    "toString": [Function],
+                  },
+                  Object {
+                    "map": undefined,
+                    "name": "na2jba",
+                    "next": undefined,
+                    "styles": "
+  @media (min-width: 980px) {
+    top: 16px;
+    left: 16px;
+  }
+",
+                    "toString": [Function],
+                  },
+                ]
+              }
+            >
+              <svg
+                fill="none"
+                height={39}
+                viewBox="0 0 39 39"
+                width={39}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="19.5"
+                  cy="19.5"
+                  fill="#052962"
+                  r="19.5"
+                />
+                <g
+                  transform="matrix(-1,0,0,1,39.14842,0)"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="m 29.3242,14.688 -1.625,-1.625 h -16.25 l -1.62498,1.625 v 9.7499 l 1.59788,1.625 h 2.7354 v 5.4167 h 1.0563 l 3.2771,-5.4167 h 9.2083 l 1.625,-1.625 z"
+                    fill="#ffffff"
+                    fillRule="evenodd"
+                  />
+                  <circle
+                    cx="14.6187"
+                    cy="19.552299"
+                    fill="#052962"
+                    r="1.23884"
+                  />
+                  <circle
+                    cx="19.5748"
+                    cy="19.552299"
+                    fill="#052962"
+                    r="1.23884"
+                  />
+                  <circle
+                    cx="24.5299"
+                    cy="19.552299"
+                    fill="#052962"
+                    r="1.23884"
+                  />
+                </g>
+              </svg>
+            </i>
+            Chat with us
+          </h2>
+          <p
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "169dapk",
+                  "next": undefined,
+                  "styles": "
+  display: none;
+  margin: 0 16px 12px 16px;
+",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "13pj9fm",
+                  "next": undefined,
+                  "styles": "
+  @media (min-width: 1300px) {
+    display: block;
+  }
+",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Chat with one of our customer service agents.
+          </p>
+        </div>
+        <div
+          css={
+            Array [
+              Object {
+                "map": undefined,
+                "name": "122i3er",
+                "next": undefined,
+                "styles": "
+  border-top: 1px solid #DCDCDC;
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  & p {
+    margin-bottom: 0;
+  }
+",
+                "toString": [Function],
+              },
+              Object {
+                "map": undefined,
+                "name": "yjcsox",
+                "next": undefined,
+                "styles": "
+  @media (min-width: 1300px) {
+    padding: 12px 0 0;
+    margin: 0 16px 16px;
+  }
+",
+                "toString": [Function],
+              },
+            ]
+          }
+        >
+          <button
+            className="emotion-0"
+            onClick={[Function]}
+            type="button"
+          >
+            Start live chat
+            <div
+              className="src-button-space"
+            />
+            <svg
+              viewBox="0 0 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                fillRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        css={
+          Object {
+            "map": undefined,
+            "name": "1cbbicq",
+            "next": undefined,
+            "styles": "
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #DCDCDC;
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  @media (min-width: 660px) {
+    width: calc(50% - 10px);
+  }
+",
+            "toString": [Function],
+          }
+        }
+      >
+        <div>
+          <h2
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "6z60u3",
+                  "next": undefined,
+                  "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+  color: #333333;
+  position: relative;
+  margin: 0;
+  padding: 18px 0 18px 60px;
+",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "12wt86f",
+                  "next": undefined,
+                  "styles": "
+  @media (min-width: 980px) {
+    padding: 22px 0 22px 64px;
+  }
+",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            <i
+              css={
+                Array [
+                  Object {
+                    "map": undefined,
+                    "name": "17gfd4y",
+                    "next": undefined,
+                    "styles": "
+  position: absolute;
+  top: 12px;
+  left: 12px;
+",
+                    "toString": [Function],
+                  },
+                  Object {
+                    "map": undefined,
+                    "name": "na2jba",
+                    "next": undefined,
+                    "styles": "
+  @media (min-width: 980px) {
+    top: 16px;
+    left: 16px;
+  }
+",
+                    "toString": [Function],
+                  },
+                ]
+              }
+            >
+              <svg
+                fill="none"
+                height={39}
+                viewBox="0 0 39 39"
+                width={39}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="19.5"
+                  cy="19.5"
+                  fill="#052962"
+                  r="19.5"
+                />
+                <g>
+                  <path
+                    d="M10.7902 11.7285L9.21875 13.427L19.1711 21.3535H21.2664L31.2188 13.427L29.6473 11.7285H10.7902Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M9.21875 25.3535V15.8535L19.1711 22.8535H21.2664L31.2188 15.8535V25.3535L29.6473 26.8535H10.7902L9.21875 25.3535Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+            </i>
+            Email us
+          </h2>
+          <p
+            css={
+              Array [
+                Object {
+                  "map": undefined,
+                  "name": "169dapk",
+                  "next": undefined,
+                  "styles": "
+  display: none;
+  margin: 0 16px 12px 16px;
+",
+                  "toString": [Function],
+                },
+                Object {
+                  "map": undefined,
+                  "name": "13pj9fm",
+                  "next": undefined,
+                  "styles": "
+  @media (min-width: 1300px) {
+    display: block;
+  }
+",
+                  "toString": [Function],
+                },
+              ]
+            }
+          >
+            Send a message to one of our customer service agents.
+          </p>
+        </div>
+        <div
+          css={
+            Array [
+              Object {
+                "map": undefined,
+                "name": "122i3er",
+                "next": undefined,
+                "styles": "
+  border-top: 1px solid #DCDCDC;
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  & p {
+    margin-bottom: 0;
+  }
+",
+                "toString": [Function],
+              },
+              Object {
+                "map": undefined,
+                "name": "yjcsox",
+                "next": undefined,
+                "styles": "
+  @media (min-width: 1300px) {
+    padding: 12px 0 0;
+    margin: 0 16px 16px;
+  }
+",
+                "toString": [Function],
+              },
+            ]
+          }
+        >
+          <p
+            css={
+              Object {
+                "map": undefined,
+                "name": "4ug6yy",
+                "next": undefined,
+                "styles": "
+  font-weight: bold;
+  margin-bottom: 36px !important;
+",
+                "toString": [Function],
+              }
+            }
+          >
+            customer.help@theguardian.com
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "z0mih3",
+          "next": undefined,
+          "styles": "
+  border-top: 1px solid #DCDCDC;
+  border-left: 1px solid #DCDCDC;
+  border-right: 1px solid #DCDCDC;
+",
+          "toString": [Function],
+        }
+      }
+    >
+      <h2
+        css={
+          Array [
+            Object {
+              "map": undefined,
+              "name": "6z60u3",
+              "next": undefined,
+              "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+  color: #333333;
+  position: relative;
+  margin: 0;
+  padding: 18px 0 18px 60px;
+",
+              "toString": [Function],
+            },
+            Object {
+              "map": undefined,
+              "name": "12wt86f",
+              "next": undefined,
+              "styles": "
+  @media (min-width: 980px) {
+    padding: 22px 0 22px 64px;
+  }
+",
+              "toString": [Function],
+            },
+          ]
+        }
+      >
+        <i
+          css={
+            Array [
+              Object {
+                "map": undefined,
+                "name": "17gfd4y",
+                "next": undefined,
+                "styles": "
+  position: absolute;
+  top: 12px;
+  left: 12px;
+",
+                "toString": [Function],
+              },
+              Object {
+                "map": undefined,
+                "name": "na2jba",
+                "next": undefined,
+                "styles": "
+  @media (min-width: 980px) {
+    top: 16px;
+    left: 16px;
+  }
+",
+                "toString": [Function],
+              },
+            ]
+          }
+        >
+          <svg
+            fill="none"
+            height={39}
+            viewBox="0 0 39 39"
+            width={39}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="19.5"
+              cy="19.5"
+              fill="#052962"
+              r="19.5"
+            />
+            <circle
+              cx="19.5"
+              cy="19.65"
+              fill="#052962"
+              r="19.5"
+            />
+            <path
+              d="M28.917 23.844c-.518-.236-3.05-1.436-3.527-1.593-.477-.157-.809-.236-1.162.236-.352.492-1.327 1.593-1.639 1.907-.29.335-.601.374-1.12.118-.519-.236-2.178-.767-4.15-2.418-1.535-1.298-2.572-2.89-2.862-3.382-.312-.492-.042-.747.228-1.003.228-.216.518-.57.767-.865.25-.295.353-.492.519-.826.166-.334.083-.61-.041-.865-.125-.236-1.162-2.655-1.598-3.638-.415-.963-.85-.826-1.162-.845-.29-.02-.643-.02-.996-.02a1.88 1.88 0 00-1.369.61C10.349 11.75 9 12.93 9 15.35c0 2.398 1.847 4.738 2.116 5.053.25.334 3.631 5.27 8.818 7.393 1.224.511 2.199.806 2.946 1.023 1.245.373 2.365.314 3.257.196.996-.138 3.05-1.18 3.486-2.32.435-1.14.435-2.124.29-2.32-.124-.158-.477-.276-.996-.531z"
+              fill="#fff"
+            />
+          </svg>
+        </i>
+        Call us
+      </h2>
+      <p
+        css={
+          Array [
+            Object {
+              "map": undefined,
+              "name": "1b0hm2f",
+              "next": undefined,
+              "styles": "
+  display: none;
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  padding: 0 16px 16px 16px;
+  margin: 0;
+",
+              "toString": [Function],
+            },
+            Object {
+              "map": undefined,
+              "name": "13pj9fm",
+              "next": undefined,
+              "styles": "
+  @media (min-width: 1300px) {
+    display: block;
+  }
+",
+              "toString": [Function],
+            },
+          ]
+        }
+      >
+        Speak with one of our customer service agents.
+      </p>
+    </div>
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "1ofn7ld",
+          "next": undefined,
+          "styles": "margin-bottom:10px;display:flex;flex-wrap:wrap;text-align:left;font-weight:normal;",
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        css={
+          Object {
+            "map": undefined,
+            "name": "1kvvfmb",
+            "next": undefined,
+            "styles": "
+          width: 100%;
+          border: 1px solid #DCDCDC;
+        ",
+            "toString": [Function],
+          }
+        }
+      >
+        <div>
+          <h2
+            css={
+              Object {
+                "map": undefined,
+                "name": "asga8g",
+                "next": undefined,
+                "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+        font-weight: bold;
+        background-color: #F6F6F6;
+        border-bottom: 1px solid #DCDCDC;
+      
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-1px) rotate(-45deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    false
+  
+                ",
+                "toString": [Function],
+              }
+            }
+            onClick={[Function]}
+          >
+            United Kingdom, Europe and rest of world
+            <span
+              aria-hidden="true"
+              css={
+                Array [
+                  Object {
+                    "map": undefined,
+                    "name": "1tq13jn",
+                    "next": undefined,
+                    "styles": "
+    display: none;
+    user-select: none;
+  ",
+                    "toString": [Function],
+                  },
+                  Object {
+                    "map": undefined,
+                    "name": "mk8fqy",
+                    "next": undefined,
+                    "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                    "toString": [Function],
+                  },
+                ]
+              }
+            >
+              Hide
+            </span>
+          </h2>
+          <div
+            css={
+              Object {
+                "map": undefined,
+                "name": "52ezka",
+                "next": undefined,
+                "styles": "
+                  
+    display: block;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+                "toString": [Function],
+              }
+            }
+          >
+            <p
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "v9a1zq",
+                  "next": undefined,
+                  "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                  "toString": [Function],
+                }
+              }
+            >
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "1vdm42g",
+                    "next": undefined,
+                    "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                +44 (0) 330 333 6790
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "6ux35a",
+                    "next": undefined,
+                    "styles": "
+                          display: block;
+                        ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                8am - 6pm Monday - Friday (GMT/BST)
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "6ux35a",
+                    "next": undefined,
+                    "styles": "
+                          display: block;
+                        ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                9am - 6pm Saturday - Sunday (GMT/BST)
+              </span>
+            </p>
+          </div>
+        </div>
+        <div>
+          <h2
+            css={
+              Object {
+                "map": undefined,
+                "name": "1eo8x6r",
+                "next": undefined,
+                "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+                "toString": [Function],
+              }
+            }
+            onClick={[Function]}
+          >
+            Australia, New Zealand, and Asia Pacific
+            <span
+              aria-hidden="true"
+              css={
+                Array [
+                  Object {
+                    "map": undefined,
+                    "name": "1tq13jn",
+                    "next": undefined,
+                    "styles": "
+    display: none;
+    user-select: none;
+  ",
+                    "toString": [Function],
+                  },
+                  Object {
+                    "map": undefined,
+                    "name": "mk8fqy",
+                    "next": undefined,
+                    "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                    "toString": [Function],
+                  },
+                ]
+              }
+            >
+              Show
+            </span>
+          </h2>
+          <div
+            css={
+              Object {
+                "map": undefined,
+                "name": "d995dt",
+                "next": undefined,
+                "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+                "toString": [Function],
+              }
+            }
+          >
+            <p
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "v9a1zq",
+                  "next": undefined,
+                  "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                  "toString": [Function],
+                }
+              }
+            >
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "1vdm42g",
+                    "next": undefined,
+                    "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                1800 773 766
+                <span
+                  css={
+                    Object {
+                      "map": undefined,
+                      "name": "3nofu1",
+                      "next": undefined,
+                      "styles": "
+                            font-weight: normal;
+                          ",
+                      "toString": [Function],
+                    }
+                  }
+                >
+                   
+                  (within Australia)
+                </span>
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "1vdm42g",
+                    "next": undefined,
+                    "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                +61 28076 8599
+                <span
+                  css={
+                    Object {
+                      "map": undefined,
+                      "name": "3nofu1",
+                      "next": undefined,
+                      "styles": "
+                            font-weight: normal;
+                          ",
+                      "toString": [Function],
+                    }
+                  }
+                >
+                   
+                  (outside Australia)
+                </span>
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "6ux35a",
+                    "next": undefined,
+                    "styles": "
+                          display: block;
+                        ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                9am - 5pm Monday - Friday (AEDT)
+              </span>
+            </p>
+          </div>
+        </div>
+        <div>
+          <h2
+            css={
+              Object {
+                "map": undefined,
+                "name": "1eo8x6r",
+                "next": undefined,
+                "styles": "
+                  
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin: 0;
+    padding: 16px 47px 16px 16px;
+    position: relative;
+    cursor: pointer;
+    
+    :after {
+      content: \\"\\";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid #121212;
+      border-right: 2px solid #121212;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-3.5px) rotate(135deg);
+      transition: transform 0.4s;
+      right: 17px;
+    }
+    
+      :before {
+        content: \\"\\";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #DCDCDC
+      }
+    
+  
+                ",
+                "toString": [Function],
+              }
+            }
+            onClick={[Function]}
+          >
+            Canada and USA
+            <span
+              aria-hidden="true"
+              css={
+                Array [
+                  Object {
+                    "map": undefined,
+                    "name": "1tq13jn",
+                    "next": undefined,
+                    "styles": "
+    display: none;
+    user-select: none;
+  ",
+                    "toString": [Function],
+                  },
+                  Object {
+                    "map": undefined,
+                    "name": "mk8fqy",
+                    "next": undefined,
+                    "styles": "
+    @media (min-width: 980px) {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      font-weight: normal;
+      font-size: 0.75rem;
+    }
+  ",
+                    "toString": [Function],
+                  },
+                ]
+              }
+            >
+              Show
+            </span>
+          </h2>
+          <div
+            css={
+              Object {
+                "map": undefined,
+                "name": "d995dt",
+                "next": undefined,
+                "styles": "
+                  
+    display: none;
+    background-color: #F6F6F6;
+    padding: 16px;
+  
+                ",
+                "toString": [Function],
+              }
+            }
+          >
+            <p
+              css={
+                Object {
+                  "map": undefined,
+                  "name": "v9a1zq",
+                  "next": undefined,
+                  "styles": "
+                    
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 1.0625rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    margin-bottom: 0;
+    & + p {
+      margin-top: 16px;
+    }
+  
+                  ",
+                  "toString": [Function],
+                }
+              }
+            >
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "1vdm42g",
+                    "next": undefined,
+                    "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                1-844-632-2010
+                <span
+                  css={
+                    Object {
+                      "map": undefined,
+                      "name": "3nofu1",
+                      "next": undefined,
+                      "styles": "
+                            font-weight: normal;
+                          ",
+                      "toString": [Function],
+                    }
+                  }
+                >
+                   
+                  (toll free USA)
+                </span>
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "1vdm42g",
+                    "next": undefined,
+                    "styles": "
+                        
+      display: block;
+      margin-bottom: 4px;
+      font-weight: bold;
+  
+                      ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                +1 917-900-4663
+                <span
+                  css={
+                    Object {
+                      "map": undefined,
+                      "name": "3nofu1",
+                      "next": undefined,
+                      "styles": "
+                            font-weight: normal;
+                          ",
+                      "toString": [Function],
+                    }
+                  }
+                >
+                   
+                  (outside USA)
+                </span>
+              </span>
+              <span
+                css={
+                  Object {
+                    "map": undefined,
+                    "name": "6ux35a",
+                    "next": undefined,
+                    "styles": "
+                          display: block;
+                        ",
+                    "toString": [Function],
+                  }
+                }
+              >
+                9am - 5pm on weekdays (EST/EDT)
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      css={
+        Object {
+          "map": undefined,
+          "name": "1q2o0a8",
+          "next": undefined,
+          "styles": "
+    margin-top: 36px;
+    padding: 12px;
+    @media (min-width: 980px) {
+      padding: 24px;
+    }
+    background-color: #ecf3fe;
+  ",
+          "toString": [Function],
+        }
+      }
+      id="livechatPrivacyNotice"
+    >
+      <h2
+        css={
+          Object {
+            "map": undefined,
+            "name": "o6ecah",
+            "next": undefined,
+            "styles": "
+    margin: 0;
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	font-weight: 700;
+	;
+;
+  ",
+            "toString": [Function],
+          }
+        }
+      >
+        Data privacy notice
+      </h2>
+      <p
+        css={
+          Object {
+            "map": undefined,
+            "name": "yid24d",
+            "next": undefined,
+            "styles": "
+    
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+    max-width: 830px;
+    margin: 0;
+    a {
+      color: #007ABC;
+      text-decoration: underline;
+    }
+  ",
+            "toString": [Function],
+          }
+        }
+      >
+        We use a type of cookie technology called an SDK (Software Development Kit) to ensure that our live chat services work correctly and meet your expectations. It cannot be switched off but it is removed at the end of the chat. If you do not wish for this cookie to be dropped on your device, please email or phone us instead. Live chats and phone calls will be recorded for monitoring and training purposes. Please do not disclose personal data of a sensitive nature in the live chat, such as health or financial information. A copy of the chat transcript will be emailed to you unless the chat contains payment card information, in which case no transcript will be sent. Click to find out more in our
+         
+        <a
+          href="https://thegulocal.com/info/privacy"
+        >
+          privacy policy
+        </a>
+         and
+         
+        <a
+          href="https://thegulocal.com/info/cookies"
+        >
+          cookie policy
+        </a>
+        .
+      </p>
+    </div>
+  </div>,
+]
+`;

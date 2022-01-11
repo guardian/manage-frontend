@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/core";
 import { Button } from "@guardian/src-button";
-import { SvgArrowRightStraight } from "@guardian/src-icons/arrow-right-straight";
+import { SvgArrowRightStraight } from "@guardian/src-icons";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { LoadingCircleIcon } from "../svgs/loadingCircleIcon";
 import { avatarImg } from "./liveChatBase64Images";
@@ -24,7 +24,7 @@ const initESW = (
       defaultMinimizedText: "Live chat",
       disabledMinimizedText: "Live chat",
       prepopulatedPrechatFields: {
-        SuppliedEmail: loginEmail
+        SuppliedEmail: loginEmail,
       },
       enabledFeatures: ["LiveAgent"],
       entryFeature: "LiveAgent",
@@ -33,29 +33,29 @@ const initESW = (
       extraPrechatFormDetails: [
         {
           label: "Origin Channel",
-          value: "Live Chat"
+          value: "Live Chat",
         },
         {
           label: "Identity ID",
-          value: identityID
+          value: identityID,
         },
         {
           label: "Contact Identity Id",
           value: identityID,
-          transcriptFields: ["Contact_Identity_Id__c"]
+          transcriptFields: ["Contact_Identity_Id__c"],
         },
         {
           label: "First Name",
-          transcriptFields: ["Contact_First_Name__c"]
+          transcriptFields: ["Contact_First_Name__c"],
         },
         {
           label: "Last Name",
-          transcriptFields: ["Contact_Last_Name__c"]
+          transcriptFields: ["Contact_Last_Name__c"],
         },
         {
           label: "Web Email",
-          transcriptFields: ["Contact_Email__c"]
-        }
+          transcriptFields: ["Contact_Email__c"],
+        },
       ],
       extraPrechatInfo: [
         {
@@ -65,24 +65,24 @@ const initESW = (
               doFind: false,
               fieldName: "LastName",
               isExactMatch: true,
-              label: "Last Name"
+              label: "Last Name",
             },
             {
               doCreate: false,
               doFind: false,
               fieldName: "FirstName",
               isExactMatch: true,
-              label: "First Name"
+              label: "First Name",
             },
             {
               doCreate: false,
               doFind: true,
               fieldName: "IdentityID__c",
               isExactMatch: true,
-              label: "Identity ID"
-            }
+              label: "Identity ID",
+            },
           ],
-          entityName: "Contact"
+          entityName: "Contact",
         },
         {
           entityFieldMaps: [
@@ -91,12 +91,12 @@ const initESW = (
               doFind: false,
               fieldName: "Origin_Channel__c",
               isExactMatch: true,
-              label: "Origin Channel"
-            }
+              label: "Origin Channel",
+            },
           ],
-          entityName: "Case"
-        }
-      ]
+          entityName: "Case",
+        },
+      ],
     };
 
     const timeoutTimer = setTimeout(() => {
@@ -170,7 +170,7 @@ const initESW = (
           baseLiveAgentURL: "https://d.la2-c2-cdg.salesforceliveagent.com/chat",
           eswLiveAgentDevName:
             "EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2",
-          isOfflineSupportEnabled: false
+          isOfflineSupportEnabled: false,
         }
       );
     } else {
@@ -190,7 +190,7 @@ const initESW = (
             "https://d.la2-c1cs-fra.salesforceliveagent.com/chat",
           eswLiveAgentDevName:
             "EmbeddedServiceLiveAgent_Parent04I9E0000008OxDUAU_1797a576c18",
-          isOfflineSupportEnabled: false
+          isOfflineSupportEnabled: false,
         }
       );
     }
@@ -290,7 +290,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
         trackEvent({
           eventCategory: "livechat",
           eventAction: "click",
-          eventLabel: "start_live_chat"
+          eventLabel: "start_live_chat",
         });
         bootstrapChat();
       }}

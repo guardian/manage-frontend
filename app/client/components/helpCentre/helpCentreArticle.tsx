@@ -9,18 +9,20 @@ import { minWidth } from "../../styles/breakpoints";
 import { trackEvent } from "../analytics";
 import { LinkButton } from "../buttons";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
+import { isArticleLiveChatFeatureEnabled } from "../liveChat/liveChatFeatureSwitch";
 import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { ThumbsUpIcon } from "../svgs/thumbsUpIcon";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
-import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
+import { BackToHelpCentreLink } from "./BackToHelpCentreLink";
+import HelpCentreContactOptions from "./helpCentreContactOptions";
 import { h2Css } from "./helpCentreStyles";
 import {
   Article,
   BaseNode,
   ElementNode,
   LinkNode,
-  TextNode
+  TextNode,
 } from "./HelpCentreTypes";
 import { PageTitle } from "./pageTitle";
 import { SeoData } from "./seoData";
@@ -35,7 +37,7 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
   useEffect(() => {
     setArticle(undefined);
     fetch(`/api/help-centre/article/${props.articleCode}`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
@@ -45,8 +47,8 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
           navigate("/help-centre");
         }
       })
-      .then(articleData => setArticle(articleData as Article))
-      .catch(error =>
+      .then((articleData) => setArticle(articleData as Article))
+      .catch((error) =>
         captureException(
           `Failed to fetch article ${props.articleCode}. Error: ${error}`
         )
@@ -76,24 +78,33 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
               articleCode={props.articleCode ?? ""}
             />
             <ArticleFeedbackWidget articleCode={props.articleCode ?? ""} />
-            <h2 css={h2Css}>Still can’t find what you’re looking for?</h2>
-            <CallCentreEmailAndNumbers />
-            <p>
-              Or use our contact form to get in touch and we’ll get back to you
-              as soon as possible.
-            </p>
-            <LinkButton
-              to="/help-centre/contact-us"
-              text={"Contact us"}
-              fontWeight={"bold"}
-              textColour={`${brand["400"]}`}
-              colour={`${brand["800"]}`}
-            />
+            {isArticleLiveChatFeatureEnabled() ? (
+              <HelpCentreContactOptions
+                compactLayout={true}
+                hideContactOptions={true}
+              />
+            ) : (
+              <>
+                <h2 css={h2Css}>Still can’t find what you’re looking for?</h2>
+                <CallCentreEmailAndNumbers />
+                <p>
+                  Or use our contact form to get in touch and we’ll get back to
+                  you as soon as possible.
+                </p>
+                <LinkButton
+                  to="/help-centre/contact-us"
+                  text={"Contact us"}
+                  fontWeight={"bold"}
+                  textColour={`${brand["400"]}`}
+                  colour={`${brand["800"]}`}
+                />
+              </>
+            )}
           </>
         ) : (
           <Loading />
         )}
-        <BackToHelpCentreButton />
+        <BackToHelpCentreLink />
       </div>
     </>
   );
@@ -282,7 +293,7 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
                   eventCategory: "help-centre",
                   eventAction: "article-feedback",
                   eventLabel: props.articleCode,
-                  eventValue: 1
+                  eventValue: 1,
                 });
               }}
             >
@@ -303,7 +314,7 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
                   eventCategory: "help-centre",
                   eventAction: "article-feedback",
                   eventLabel: props.articleCode,
-                  eventValue: 0
+                  eventValue: 0,
                 });
               }}
             >

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SelectedTopicObjectContext } from "../sectionContent";
 import { Spinner } from "../spinner";
 import { WithStandardTopMargin } from "../WithStandardTopMargin";
-import { BackToHelpCentreButton } from "./BackToHelpCentreButton";
+import { BackToHelpCentreLink } from "./BackToHelpCentreLink";
 import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpCentreSingleTopic } from "./helpCentreSingleTopic";
 import { MoreTopics, SingleTopic } from "./HelpCentreTypes";
@@ -53,7 +53,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
   return (
     <>
       {getTopicComponent(props.topicCode, singleTopic, moreTopics)}
-      <BackToHelpCentreButton />
+      <BackToHelpCentreLink />
     </>
   );
 };

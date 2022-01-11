@@ -80,6 +80,7 @@ const PHONE_DATA: PhoneRegion[] = [
 interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
   hideEmailAddress?: boolean;
   phoneRegionFilterKeys?: PhoneRegionKey[];
+  compactLayout?: boolean;
 }
 
 export const CallCentreEmailAndNumbers = (
@@ -145,6 +146,9 @@ export const CallCentreEmailAndNumbers = (
   const showHideSpanCss = css`
     display: none;
     user-select: none;
+  `;
+
+  const showHideSpanWideCss = css`
     ${minWidth.desktop} {
       display: block;
       position: absolute;
@@ -205,7 +209,13 @@ export const CallCentreEmailAndNumbers = (
                 onClick={handleSectionClick(index)}
               >
                 {phoneRegion.title}
-                <span css={showHideSpanCss} aria-hidden="true">
+                <span
+                  css={[
+                    showHideSpanCss,
+                    !props.compactLayout && showHideSpanWideCss,
+                  ]}
+                  aria-hidden="true"
+                >
                   {isOpen ? "Hide" : "Show"}
                 </span>
               </h2>

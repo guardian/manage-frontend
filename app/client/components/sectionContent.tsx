@@ -20,7 +20,7 @@ const sectionCss = (
 
   [minWidth.tablet]: {
     ...gridItemPlacement(1, 12),
-    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" })
+    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" }),
   },
 
   [minWidth.desktop]: {
@@ -29,7 +29,7 @@ const sectionCss = (
       : hasNav
       ? gridItemPlacement(5, 11)
       : gridItemPlacement(3, 9)),
-    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" })
+    ...(isNavSection && { marginRight: "-21px", marginLeft: "-21px" }),
   },
 
   [minWidth.wide]: {
@@ -37,16 +37,16 @@ const sectionCss = (
       ? gridItemPlacement(1, 3)
       : hasNav
       ? gridItemPlacement(5, 9)
-      : gridItemPlacement(3, 12))
+      : gridItemPlacement(3, 12)),
   },
   ...(isStickyOnMobile && {
     [maxWidth.tablet]: {
       position: "sticky",
       top: 0,
       backgroundColor: palette.neutral[100],
-      zIndex: 2
-    }
-  })
+      zIndex: 2,
+    },
+  }),
 });
 
 const containerCss = css`
@@ -62,11 +62,12 @@ const containerCss = css`
 `;
 
 const divCss = (hasNav: boolean | undefined) => css`
-  margin-bottom: ${space[24]}px;
   ${{ ...gridBase }};
+  margin-bottom: ${space[12]}px;
   padding-bottom: 1rem;
   ${minWidth.desktop} {
     ${{ ...(gridBase[minWidth.desktop] as object) }};
+    margin-bottom: ${space[24]}px;
     padding-bottom: 0;
     border-top: ${hasNav ? "none" : `1px solid ${palette.neutral[86]}`};
   }

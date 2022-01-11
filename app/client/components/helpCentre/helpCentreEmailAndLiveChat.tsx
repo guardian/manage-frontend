@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import { neutral, space, text } from "@guardian/src-foundations";
 import { textSans } from "@guardian/src-foundations/typography";
 import React, { ReactNode, useState } from "react";
-import { maxWidth, minWidth } from "../../styles/breakpoints";
+import { minWidth } from "../../styles/breakpoints";
 import { StartLiveChatButton } from "../liveChat/liveChat";
 import { ErrorIcon } from "../svgs/errorIcon";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
@@ -12,6 +12,7 @@ interface HelpCentreContactBoxProps {
   title: string;
   subtitle: string;
   subTitleIsWarning?: boolean;
+  compactLayout?: boolean;
   children: ReactNode;
 }
 
@@ -20,40 +21,46 @@ const contactBoxContainerCss = css`
   flex-direction: column;
   border: 1px solid ${neutral[86]};
   ${textSans.medium()};
-  ${minWidth.tablet} {
+  ${minWidth.phablet} {
     width: calc(50% - ${space[5] / 2}px);
   }
 `;
 
-const contactBoxH2Css = css`
+const contactBoxHeadingCss = css`
   ${textSans.large({ fontWeight: "bold" })};
   color: ${neutral[20]};
   position: relative;
   margin: 0;
-  padding: 22px 0 22px 64px;
-  ${maxWidth.desktop} {
-    padding: 18px 0 18px 60px;
+  padding: 18px 0 18px 60px;
+`;
+
+const contactBoxHeadingWideCss = css`
+  ${minWidth.desktop} {
+    padding: 22px 0 22px 64px;
   }
 `;
 
 const contactBoxIconCss = css`
   position: absolute;
-  top: ${space[4]}px;
-  left: ${space[4]}px;
-  ${maxWidth.desktop} {
-    top: ${space[3]}px;
-    left: ${space[3]}px;
+  top: ${space[3]}px;
+  left: ${space[3]}px;
+`;
+
+const contactBoxIconWideCss = css`
+  ${minWidth.desktop} {
+    top: ${space[4]}px;
+    left: ${space[4]}px;
   }
 `;
 
 const contactBoxSubtitleCss = css`
   display: none;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
+`;
+
+const contactBoxSubtitleWideCss = css`
   ${minWidth.wide} {
     display: block;
-  }
-  @media screen and (min-width: 740px) and (max-width: 1270px) {
-    min-height: 3em;
   }
 `;
 
@@ -63,15 +70,11 @@ const contactBoxSubtitleWarningCss = css`
   font-weight: bold;
   margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
   padding-left: ${space[5] + space[2]}px;
-  @media screen and (min-width: 740px) and (max-width: 1270px) {
-    min-height: 3em;
-  }
 `;
 
 const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
   border-top: ${includeTopBorder ? `1px solid ${neutral[86]}` : "0"};
-  padding-top: ${space[3]}px;
-  margin: 0 ${space[4]}px ${space[4]}px ${space[4]}px;
+  padding: ${space[3]}px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -80,9 +83,12 @@ const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
   & p {
     margin-bottom: 0;
   }
-  ${maxWidth.desktop} {
-    padding: ${space[3]}px;
-    margin: 0;
+`;
+
+const contactBoxDetailsWideCss = css`
+  ${minWidth.wide} {
+    padding: ${space[3]}px 0 0;
+    margin: 0 ${space[4]}px ${space[4]}px;
   }
 `;
 
@@ -90,15 +96,30 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
   return (
     <div css={contactBoxContainerCss}>
       <div>
-        <h2 css={contactBoxH2Css}>
-          <i css={contactBoxIconCss}>{getHelpSectionIcon(props.iconId)}</i>
+        <h2
+          css={[
+            contactBoxHeadingCss,
+            !props.compactLayout && contactBoxHeadingWideCss,
+          ]}
+        >
+          <i
+            css={[
+              contactBoxIconCss,
+              !props.compactLayout && contactBoxIconWideCss,
+            ]}
+          >
+            {getHelpSectionIcon(props.iconId)}
+          </i>
           {props.title}
         </h2>
         <p
           css={
             props.subTitleIsWarning
               ? contactBoxSubtitleWarningCss
-              : contactBoxSubtitleCss
+              : [
+                  contactBoxSubtitleCss,
+                  !props.compactLayout && contactBoxSubtitleWideCss,
+                ]
           }
         >
           {props.subTitleIsWarning && (
@@ -115,30 +136,27 @@ const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
           {props.subtitle}
         </p>
       </div>
-      <div css={contactBoxDetailsCss(!props.subTitleIsWarning)}>
+      <div
+        css={[
+          contactBoxDetailsCss(!props.subTitleIsWarning),
+          !props.compactLayout && contactBoxDetailsWideCss,
+        ]}
+      >
         {props.children}
       </div>
     </div>
   );
 };
 
-const emailAndLiveChatSubheadingCss = css`
-  ${textSans.medium()};
-  margin-bottom: ${space[1]}px;
-  max-width: 320px;
-  ${minWidth.tablet} {
-    max-width: none;
-  }
-  ${minWidth.desktop} {
-    display: none;
-  }
-`;
+interface HelpCentreEmailAndLiveChatProps {
+  compactLayout?: boolean;
+}
 
 const emailAndLiveChatFlexContainerCss = css`
   display: flex;
   flex-direction: column;
-  ${minWidth.tablet} {
-    flex-direction: row;
+  ${minWidth.phablet} {
+    flex-direction: row-reverse;
     justify-content: space-between;
   }
   & > * {
@@ -159,24 +177,13 @@ const emailAndLiveChatButtonCss = css`
   }
 `;
 
-export const EmailAndLiveChatSubHeading = () => (
-  <p css={emailAndLiveChatSubheadingCss}>
-    Get in touch with one of our customer service agents.
-  </p>
-);
-
-export const HelpCentreEmailAndLiveChat = () => {
+export const HelpCentreEmailAndLiveChat = (
+  props: HelpCentreEmailAndLiveChatProps
+) => {
   const [isLiveChatAvailable, setIsLiveChatAvailable] = useState<boolean>(true);
   return (
     <>
       <div css={emailAndLiveChatFlexContainerCss}>
-        <HelpCentreContactBox
-          iconId="email-us"
-          title="Email us"
-          subtitle="Send a message to one of our customer service agents."
-        >
-          <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
-        </HelpCentreContactBox>
         <HelpCentreContactBox
           title="Chat with us"
           subtitle={
@@ -186,6 +193,7 @@ export const HelpCentreEmailAndLiveChat = () => {
           }
           subTitleIsWarning={!isLiveChatAvailable}
           iconId="chat-with-us"
+          compactLayout={props.compactLayout}
         >
           {isLiveChatAvailable && (
             <StartLiveChatButton
@@ -193,6 +201,14 @@ export const HelpCentreEmailAndLiveChat = () => {
               setIsLiveChatAvailable={setIsLiveChatAvailable}
             />
           )}
+        </HelpCentreContactBox>
+        <HelpCentreContactBox
+          iconId="email-us"
+          title="Email us"
+          subtitle="Send a message to one of our customer service agents."
+          compactLayout={props.compactLayout}
+        >
+          <p css={emailAndLiveChatPCss}>customer.help@theguardian.com</p>
         </HelpCentreContactBox>
       </div>
     </>
