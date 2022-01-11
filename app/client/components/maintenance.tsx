@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteComponentProps } from "@reach/router";
 import { css } from "@emotion/core";
-import { brand, breakpoints, neutral, space } from "@guardian/src-foundations";
+import { breakpoints, neutral, space } from "@guardian/src-foundations";
 import { headline, textSans } from "@guardian/src-foundations/typography";
 import { minWidth } from "../styles/breakpoints";
 
@@ -35,26 +35,14 @@ const grafStyle = css`
   margin-bottom: ${space[4]}px;
 `;
 
-const linkCss = css`
-  text-decoration: none;
-  color: ${brand["500"]};
-`;
-
 const Maintenance = (_: RouteComponentProps) => {
   return (
     <div css={containerStyle}>
       <section css={wrapperStyle}>
         <h1 css={headingStyle}>We'll be back soon</h1>
         <p css={grafStyle}>
-          Sorry for the inconvenience but we are currently performing some
-          maintenance at the moment.
-        </p>
-        <p css={grafStyle}>
-          If you need to you can always{" "}
-          <a css={linkCss} href="/help-centre/contact-us">
-            contact us
-          </a>
-          , otherwise we will be back shortly.
+          Sorry for the inconvenience. We are currently performing some
+          essential maintenance. Please try again later.
         </p>
       </section>
     </div>
