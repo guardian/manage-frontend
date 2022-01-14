@@ -7,7 +7,7 @@ import {
 } from "./helpCentrePhoneNumbers";
 
 export default {
-  title: "HelpCentrePhoneNumbers",
+  title: "Components/Help Centre/Help Centre Phone Numbers",
   component: HelpCentrePhoneNumbers,
   args: {
     compactLayout: false,
