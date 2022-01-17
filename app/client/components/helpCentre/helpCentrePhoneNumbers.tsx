@@ -7,10 +7,6 @@ import { minWidth } from "../../styles/breakpoints";
 import { CallCentreEmailAndNumbers } from "../callCenterEmailAndNumbers";
 import { getHelpSectionIcon } from "../svgs/helpSectionIcons";
 
-interface HelpCentrePhoneNumbersProps {
-  compactLayout?: boolean;
-}
-
 const containerCss = css`
   border-top: 1px solid ${neutral["86"]};
   border-left: 1px solid ${neutral["86"]};
@@ -56,6 +52,10 @@ const subtitleWideCss = css`
     display: block;
   }
 `;
+
+export interface HelpCentrePhoneNumbersProps {
+  compactLayout?: boolean;
+}
 
 export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
   <>
