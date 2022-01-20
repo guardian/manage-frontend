@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../main";
 import Billing from "./billing";
 import {
   guardianWeeklyCard,
@@ -27,11 +26,7 @@ export const NoSubscription: ComponentStory<typeof Billing> = () => {
     .get("/api/invoices", { body: { invoices: [] } })
     .get("/idapi/user", { body: idapiUser });
 
-  return (
-    <Main signInStatus="signedIn">
-      <Billing />
-    </Main>
-  );
+  return <Billing />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
@@ -42,9 +37,5 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
     })
     .get("/api/invoices", { body: { invoices: [] } });
 
-  return (
-    <Main signInStatus="signedIn">
-      <Billing />
-    </Main>
-  );
+  return <Billing />;
 };

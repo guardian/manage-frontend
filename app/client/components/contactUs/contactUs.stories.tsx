@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../main";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import { KnownIssues } from "../helpCentre/knownIssues";
@@ -23,13 +22,13 @@ export const Default: ComponentStory<typeof ContactUs> = (
   fetchMock.restore().get("/api/known-issues/", { body: [] });
 
   return (
-    <Main helpCentrePage={true} signInStatus="signedOut">
+    <>
       <SectionHeader title="Need to contact us?" />
       <KnownIssues />
       <SectionContent>
         <ContactUs />
       </SectionContent>
-    </Main>
+    </>
   );
 };
 
@@ -46,13 +45,13 @@ export const WithKnownIssue: ComponentStory<typeof ContactUs> = (
   fetchMock.restore().get("/api/known-issues/", { body: knownIssue });
 
   return (
-    <Main helpCentrePage={true} signInStatus="signedOut">
+    <>
       <SectionHeader title="Need to contact us?" />
       <KnownIssues />
       <SectionContent>
         <ContactUs />
       </SectionContent>
-    </Main>
+    </>
   );
 };
 
@@ -62,12 +61,12 @@ export const TopicSelected: ComponentStory<typeof ContactUs> = (
   fetchMock.restore().get("/api/known-issues/", { body: [] });
 
   return (
-    <Main helpCentrePage={true} signInStatus="signedOut">
+    <>
       <SectionHeader title="Need to contact us?" />
       <KnownIssues />
       <SectionContent>
         <ContactUs urlTopicId="billing" />
       </SectionContent>
-    </Main>
+    </>
   );
 };

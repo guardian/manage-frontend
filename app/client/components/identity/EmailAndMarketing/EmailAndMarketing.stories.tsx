@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../../main";
 import EmailAndMarketing from "./";
 import {
   guardianWeeklyCard,
@@ -37,9 +36,5 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
     .get("/idapicodeproxy/consents?filter=all", { body: consents })
     .get("/api/reminders/status", { body: { recurringStatus: "NotSet" } });
 
-  return (
-    <Main signInStatus="signedIn">
-      <EmailAndMarketing />
-    </Main>
-  );
+  return <EmailAndMarketing />;
 };

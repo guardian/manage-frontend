@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../../main";
 import Settings from "./";
 import { idapiUser } from "../../../fixtures/idapiUser";
 
@@ -18,9 +17,5 @@ export default {
 export const Default: ComponentStory<typeof Settings> = () => {
   fetchMock.restore().get("/idapi/user", { body: idapiUser });
 
-  return (
-    <Main signInStatus="signedIn">
-      <Settings />
-    </Main>
-  );
+  return <Settings />;
 };

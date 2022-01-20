@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../main";
 import AccountOverview from "./accountOverview";
 import {
   guardianWeeklyCard,
@@ -27,11 +26,7 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
     .get("/api/me/mma", { body: [] })
     .get("/idapi/user", { body: idapiUser });
 
-  return (
-    <Main signInStatus="signedIn">
-      <AccountOverview />
-    </Main>
-  );
+  return <AccountOverview />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
@@ -42,9 +37,5 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
       body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
     });
 
-  return (
-    <Main signInStatus="signedIn">
-      <AccountOverview />
-    </Main>
-  );
+  return <AccountOverview />;
 };

@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "../main";
 import { SectionContent } from "../sectionContent";
 import { SectionHeader } from "../sectionHeader";
 import HelpCentreTopic, { HelpCentreTopicProps } from "./helpCentreTopic";
@@ -43,11 +42,11 @@ export const Default: ComponentStory<typeof HelpCentreTopic> = (
     .get("/api/help-centre/topic/delivery", { body: topicContent });
 
   return (
-    <Main helpCentrePage={true} signInStatus="signedOut">
+    <>
       <SectionHeader title="How can we help you?" pageHasNav={true} />
       <SectionContent hasNav={true}>
         <HelpCentreTopic topicCode="delivery" />
       </SectionContent>
-    </Main>
+    </>
   );
 };

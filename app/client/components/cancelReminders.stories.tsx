@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
-import { Main } from "./main";
 import CancelReminders, { CancelRemindersProps } from "./cancelReminders";
 
 export default {
@@ -19,11 +18,7 @@ export const Error: ComponentStory<typeof CancelReminders> = (
 ) => {
   fetchMock.restore().post("/api/reminders/cancel", 500);
 
-  return (
-    <Main signInStatus="signedIn">
-      <CancelReminders reminderCode="123" />
-    </Main>
-  );
+  return <CancelReminders reminderCode="123" />;
 };
 
 export const Success: ComponentStory<typeof CancelReminders> = (
@@ -31,9 +26,5 @@ export const Success: ComponentStory<typeof CancelReminders> = (
 ) => {
   fetchMock.restore().post("/api/reminders/cancel", 200);
 
-  return (
-    <Main signInStatus="signedIn">
-      <CancelReminders reminderCode="123" />
-    </Main>
-  );
+  return <CancelReminders reminderCode="123" />;
 };
