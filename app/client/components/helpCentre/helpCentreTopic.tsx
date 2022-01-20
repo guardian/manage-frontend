@@ -9,7 +9,7 @@ import { HelpCentreMoreTopics } from "./helpCentreMoreTopics";
 import { HelpCentreSingleTopic } from "./helpCentreSingleTopic";
 import { MoreTopics, SingleTopic } from "./HelpCentreTypes";
 
-interface HelpCentreTopicProps extends RouteComponentProps {
+export interface HelpCentreTopicProps extends RouteComponentProps {
   topicCode?: string;
 }
 
@@ -27,7 +27,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
     setSingleTopic(undefined);
     setMoreTopics(undefined);
     fetch(`/api/help-centre/topic/${props.topicCode}`)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
@@ -37,12 +37,12 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
           navigate("/help-centre");
         }
       })
-      .then(topicData => {
+      .then((topicData) => {
         topicData.topics
           ? setMoreTopics(topicData as MoreTopics)
           : setSingleTopic(topicData as SingleTopic);
       })
-      .catch(error =>
+      .catch((error) =>
         captureException(
           `Failed to fetch topic ${props.topicCode}. Error: ${error}`
         )
