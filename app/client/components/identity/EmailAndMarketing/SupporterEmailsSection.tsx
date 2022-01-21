@@ -1,4 +1,6 @@
 import React, { FC } from "react";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
+import { Lines } from "../Lines";
 import { MarketingPreference } from "../MarketingPreference";
 import { ConsentOption } from "../models";
 import { PageSection } from "../PageSection";
@@ -12,6 +14,8 @@ interface ConsentSectionProps {
 
 const softOptInEmailConsents = (consents: ConsentOption[]): ConsentOption[] =>
   consents.filter((consent) => !!consent.isProduct);
+
+const shouldDisplay = (consents: ConsentOption[]): boolean => !!consents.length;
 
 const consentPreference = (
   consent: ConsentOption,
@@ -37,9 +41,17 @@ const consentPreferences = (
 
 export const SupporterEmailsSection: FC<ConsentSectionProps> = (props) => {
   const { consents, clickHandler } = props;
-  return (
-    <PageSection title="Supporter exclusive">
-      {consentPreferences(softOptInEmailConsents(consents), clickHandler)}
-    </PageSection>
-  );
+
+  return shouldDisplay(softOptInEmailConsents(consents)) ? (
+    <>
+      <WithStandardTopMargin>
+        <Lines n={1} />
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
+        <PageSection title="Supporter exclusive">
+          {consentPreferences(softOptInEmailConsents(consents), clickHandler)}
+        </PageSection>
+      </WithStandardTopMargin>
+    </>
+  ) : null;
 };

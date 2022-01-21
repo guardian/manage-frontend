@@ -124,15 +124,12 @@ const EmailAndMarketing = (_: { path?: string }) => {
           clickHandler={toggleSubscription}
         />
       </WithStandardTopMargin>
-      <WithStandardTopMargin>
-        <Lines n={1} />
-      </WithStandardTopMargin>
-      <WithStandardTopMargin>
-        <SupporterEmailsSection
-          consents={consents}
-          clickHandler={toggleSubscription}
-        />
-      </WithStandardTopMargin>
+
+      <SupporterEmailsSection
+        consents={consents}
+        clickHandler={toggleSubscription}
+      />
+
       <WithStandardTopMargin>
         <Lines n={1} />
       </WithStandardTopMargin>
