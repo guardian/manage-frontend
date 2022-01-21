@@ -11,9 +11,6 @@ interface ConsentSectionProps {
   consents: ConsentOption[];
 }
 
-const softOptInEmailConsents = (consents: ConsentOption[]): ConsentOption[] =>
-  consents.filter(consent => !!consent.isProduct);
-
 const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
   ConsentOptions.findByIds(consents, ["support_reminder"]);
 
@@ -45,9 +42,9 @@ const consentPreference = (
 const consentPreferences = (
   consents: ConsentOption[],
   clickHandler: ClickHandler
-) => consents.map(consent => consentPreference(consent, clickHandler));
+) => consents.map((consent) => consentPreference(consent, clickHandler));
 
-export const ConsentSection: FC<ConsentSectionProps> = props => {
+export const MarketingEmailsSection: FC<ConsentSectionProps> = (props) => {
   const { consents, clickHandler } = props;
   return (
     <PageSection
@@ -58,12 +55,11 @@ export const ConsentSection: FC<ConsentSectionProps> = props => {
       `}
     >
       {consentPreferences(supportReminderConsent(consents), clickHandler)}
-      {consentPreferences(softOptInEmailConsents(consents), clickHandler)}
       {consentPreferences(otherEmailConsents(consents), clickHandler)}
       <h2
         css={{
           fontSize: "17px",
-          fontWeight: "bold"
+          fontWeight: "bold",
         }}
       >
         Would you also like to hear about the above by SMS?
