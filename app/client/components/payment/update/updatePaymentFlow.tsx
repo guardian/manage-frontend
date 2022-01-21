@@ -166,6 +166,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 
   return (
     <div
+      data-cy={props.paymentMethod}
       css={css`
         border-radius: 4px;
 
