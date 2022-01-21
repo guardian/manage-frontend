@@ -15,8 +15,16 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-// eslint-disable-next-line no-unused-vars
-module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+
+const webpackPreprocessor = require("@cypress/webpack-preprocessor");
+
+module.exports = (on: any) => {
+  const options = {
+    // send in the options from your webpack.config.js, so it works the same
+    // as your app's code
+    webpackOptions: require("../../webpack.dev.client"),
+    watchOptions: {},
+  };
+
+  on("file:preprocessor", webpackPreprocessor(options));
 };
