@@ -2,14 +2,14 @@ import { css } from "@emotion/core";
 import { breakpoints, palette, space } from "@guardian/src-foundations";
 import { Link } from "@reach/router";
 import React from "react";
+import { SignInStatus } from "../../services/signInStatus";
 import { minWidth } from "../../styles/breakpoints";
 import { DropdownNav } from ".././nav/dropdownNav";
 import { TheGuardianLogo } from ".././svgs/theGuardianLogo";
-import { HeaderStatus } from "../header";
 
-interface HelpCentreHeaderProps {
-  headerStatus: HeaderStatus;
-  pageRequiresSignin: boolean;
+export interface HelpCentreHeaderProps {
+  signInStatus: SignInStatus;
+  requiresSignIn?: boolean;
 }
 
 const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
@@ -71,9 +71,9 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
   return (
     <header css={headerCss}>
       <div css={containerCss}>
-        {props.headerStatus === "signedIn" && (
+        {props.signInStatus === "signedIn" && (
           <div css={divCss}>
-            {props.pageRequiresSignin && (
+            {props.requiresSignIn && (
               <h1 css={h1Css}>
                 <Link to={"/"} css={linkCss}>
                   My account
@@ -83,7 +83,7 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
             <DropdownNav />
           </div>
         )}
-        {props.headerStatus === "signedOut" && (
+        {props.signInStatus === "signedOut" && (
           <a href={"/"} css={aCss}>
             Sign in
           </a>

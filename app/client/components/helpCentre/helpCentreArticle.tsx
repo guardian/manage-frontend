@@ -27,7 +27,7 @@ import {
 import { PageTitle } from "./pageTitle";
 import { SeoData } from "./seoData";
 
-interface HelpCentreArticleProps extends RouteComponentProps {
+export interface HelpCentreArticleProps extends RouteComponentProps {
   articleCode?: string;
 }
 

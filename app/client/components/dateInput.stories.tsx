@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { DateInput, DateInputProps } from "./dateInput";
 
 export default {
-  title: "DateInput",
+  title: "Components/Date Input",
   component: DateInput,
   args: {
     date: new Date(),

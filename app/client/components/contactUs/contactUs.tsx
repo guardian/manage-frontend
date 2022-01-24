@@ -14,7 +14,7 @@ import { SelfServicePrompt } from "./selfServicePrompt";
 import { SubTopicForm } from "./subTopicForm";
 import { TopicForm } from "./topicForm";
 
-interface ContactUsProps extends RouteComponentProps {
+export interface ContactUsProps extends RouteComponentProps {
   urlTopicId?: string;
   urlSubTopicId?: string;
   urlSubSubTopicId?: string;
@@ -23,17 +23,17 @@ interface ContactUsProps extends RouteComponentProps {
 
 const ContactUs = (props: ContactUsProps) => {
   const currentTopic = contactUsConfig.find(
-    topic => topic.id === props.urlTopicId
+    (topic) => topic.id === props.urlTopicId
   );
 
   const subTopics = currentTopic?.subtopics;
   const currentSubTopic = subTopics?.find(
-    subTopic => subTopic.id === props.urlSubTopicId
+    (subTopic) => subTopic.id === props.urlSubTopicId
   );
 
   const subSubTopics = currentSubTopic?.subsubtopics;
   const currentSubSubTopic = subSubTopics?.find(
-    subSubTopic => subSubTopic.id === props.urlSubSubTopicId
+    (subSubTopic) => subSubTopic.id === props.urlSubSubTopicId
   );
 
   const success = props.urlSuccess === "1";
@@ -75,7 +75,7 @@ const ContactUs = (props: ContactUsProps) => {
     trackEvent({
       eventCategory: "ContactUs",
       eventAction: "topic_click",
-      eventLabel: selectedTopic
+      eventLabel: selectedTopic,
     });
 
     navigate(`/help-centre/contact-us/${selectedTopic}`, { replace: true });
@@ -85,13 +85,13 @@ const ContactUs = (props: ContactUsProps) => {
     trackEvent({
       eventCategory: "ContactUs",
       eventAction: "subtopic_click",
-      eventLabel: selectedSubTopic
+      eventLabel: selectedSubTopic,
     });
 
     navigate(
       `/help-centre/contact-us/${currentTopic?.id}/${selectedSubTopic}`,
       {
-        replace: true
+        replace: true,
       }
     );
   };
@@ -100,13 +100,13 @@ const ContactUs = (props: ContactUsProps) => {
     trackEvent({
       eventCategory: "ContactUs",
       eventAction: "subsubtopic_click",
-      eventLabel: selectedSubSubTopic
+      eventLabel: selectedSubSubTopic,
     });
 
     navigate(
       `/help-centre/contact-us/${currentTopic?.id}/${currentSubTopic?.id}/${selectedSubSubTopic}`,
       {
-        replace: true
+        replace: true,
       }
     );
   };
@@ -116,15 +116,15 @@ const ContactUs = (props: ContactUsProps) => {
   ): Promise<boolean> => {
     const body = JSON.stringify({
       ...(currentTopic?.id && {
-        topic: currentTopic?.id
+        topic: currentTopic?.id,
       }),
       ...(currentSubTopic?.id && {
-        subtopic: currentSubTopic?.id
+        subtopic: currentSubTopic?.id,
       }),
       ...(currentSubSubTopic?.id && {
-        subsubtopic: currentSubSubTopic?.id
+        subsubtopic: currentSubSubTopic?.id,
       }),
-      ...formData
+      ...formData,
     });
 
     const res = await fetch("/api/contact-us/", { method: "POST", body });
@@ -135,7 +135,7 @@ const ContactUs = (props: ContactUsProps) => {
         eventLabel:
           `${currentTopic?.id} - ` +
           `${currentSubTopic?.id || "N/A"} - ` +
-          `${currentSubSubTopic?.id || "N/A"}`
+          `${currentSubSubTopic?.id || "N/A"}`,
       });
 
       const urlSections = [
@@ -143,7 +143,7 @@ const ContactUs = (props: ContactUsProps) => {
         currentTopic?.id,
         currentSubTopic?.id || "0",
         currentSubSubTopic?.id || "0",
-        "1"
+        "1",
       ];
       navigate(urlSections.join("/"));
 
@@ -153,7 +153,7 @@ const ContactUs = (props: ContactUsProps) => {
       trackEvent({
         eventCategory: "ContactUs",
         eventAction: "submission_failure",
-        eventLabel: errorMsg
+        eventLabel: errorMsg,
       });
       captureException(errorMsg);
 
