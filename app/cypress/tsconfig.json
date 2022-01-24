@@ -43,7 +43,6 @@
       /* Type declaration files to be included in compilation. */
       "@emotion/core",
       "node",
-      "jest",
       "cypress",
       "@testing-library/cypress"
     ],

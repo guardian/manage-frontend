@@ -1,6 +1,6 @@
 import { setLocalBaseUrl } from "../../lib/setLocalBaseUrl";
 import { StripeSetupIntent } from "../../../shared/stripeSetupIntent";
-import { PaymentMethod } from "../../../client/components/payment/update/updatePaymentFlow";
+// import { PaymentMethod } from "../../../client/components/payment/update/updatePaymentFlow";
 
 // 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
 Cypress.on("uncaught:exception", (err: any, runnable: any) => {
@@ -59,8 +59,9 @@ const stripePaymentMethod = {
 };
 
 const stripeSetupIntent: StripeSetupIntent = {
-  id: "setupIntentId",
-  client_secret: "setupIntentSecret",
+  id: "seti_0KLFtUItVxyc3M6nBXnYb2jO",
+  client_secret:
+    "seti_0KLFtUItVxyc3Q6nBXnYb2jO_secret_L1IUioSNMNThetlMQnVtbCJu0Gj2cq1M",
 };
 
 const confirmCardSetupResponse = {
@@ -105,6 +106,54 @@ describe("E2E Page rendering", function () {
     });
   });
 
+  it("Show card number error", function () {
+    cy.intercept("POST", "/api/payment/card", {
+      statusCode: 200,
+      body: stripeSetupIntent,
+    });
+
+    // think this is createPaymentMethod
+    cy.intercept("POST", "https://api.stripe.com/v1/payment_methods", {
+      statusCode: 200,
+      body: stripePaymentMethod,
+    });
+
+    // i think this is confirmCardSetup
+    cy.intercept("POST", "https://api.stripe.com/v1/setup_intents/*", {
+      statusCode: 200,
+      body: confirmCardSetupResponse,
+    });
+
+    cy.intercept("POST", "/api/payment/card/S-*", {
+      statusCode: 200,
+      body: executePaymentUpdateResponse,
+    });
+
+    cy.visit("/payment/subscriptioncard");
+
+    // wait for stripe to load
+    cy.wait(12000);
+
+    cy.fillElementsInput("cardNumber", "4242424242424242");
+    cy.fillElementsInput("cardExpiry", "1025");
+    cy.fillElementsInput("cardCvc", "123");
+
+    cy.get("#recaptcha *> iframe").then(($iframe) => {
+      const $body = $iframe.contents().find("body");
+      cy.wrap($body)
+        .find(".recaptcha-checkbox-border")
+        .should("be.visible")
+        .click();
+    });
+
+    cy.wait(3000);
+    cy.findByText("Update payment method").click();
+
+    cy.wait(5000);
+
+    cy.findByText("Your payment details were updated successfully");
+  });
+
   it("Shows direct debit input", function () {
     cy.visit("/payment/digital");
 
@@ -115,7 +164,7 @@ describe("E2E Page rendering", function () {
     // wait for stripe to load -> use cy.intercept on stripe Script
     cy.wait(5000);
 
-    cy.get(`[data-cy=${PaymentMethod.dd}] input`).click();
+    cy.get(`[data-cy="Direct Debit"] input`).click();
 
     cy.findByText("Update your payment method");
 
@@ -140,44 +189,5 @@ describe("E2E Page rendering", function () {
 
     cy.findByText("Recaptcha has not been completed.");
     cy.wait(10000);
-  });
-
-  it("Show card number error", function () {
-    cy.visit("/payment/subscriptioncard");
-
-    // wait for stripe to load
-    cy.wait(5000);
-
-    cy.fillElementsInput("cardNumber", "4242424242424242");
-    cy.fillElementsInput("cardExpiry", "1025");
-    cy.fillElementsInput("cardCvc", "123");
-
-    cy.findByText("Update payment method").click();
-
-    cy.intercept("POST", "/api/payment/card/", {
-      statusCode: 200,
-      body: stripeSetupIntent,
-    });
-
-    // think this is createPaymentMethod
-    cy.intercept("POST", "https://api.stripe.com/v1/payment_methods", {
-      statusCode: 200,
-      body: stripePaymentMethod,
-    });
-
-    // i think this is confirmCardSetup
-    cy.intercept("POST", "https://api.stripe.com/v1/setup_intents/*", {
-      statusCode: 200,
-      body: confirmCardSetupResponse,
-    });
-
-    cy.intercept("POST", "/api/payment/card/S-*", {
-      statusCode: 200,
-      body: executePaymentUpdateResponse,
-    });
-
-    cy.wait(5000);
-
-    cy.findByText("Your payment details were updated successfully");
   });
 });

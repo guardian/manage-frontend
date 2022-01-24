@@ -112,6 +112,7 @@
     "jest-each": "^26.6.2",
     "jest-emotion": "^10.0.32",
     "jest-teamcity-reporter": "^0.9.0",
+    "mini-css-extract-plugin": "^2.5.2",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
