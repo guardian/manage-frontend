@@ -125,6 +125,7 @@ const EmailAndMarketing = (_: { path?: string }) => {
         />
       </WithStandardTopMargin>
 
+      {/* SupporterEmailSection will only display if a user has a product */}
       <SupporterEmailsSection
         consents={consents}
         clickHandler={toggleSubscription}
