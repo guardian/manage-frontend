@@ -12,6 +12,9 @@ export default {
   parameters: {
     controls: { hideNoControlsWarning: true },
     layout: "fullscreen",
+    chromatic: {
+      viewports: [320, 1300],
+    },
   },
 } as ComponentMeta<typeof HelpCentreArticle>;
 

@@ -40,3 +40,9 @@ export const WithKnownIssue: ComponentStory<typeof HelpCentre> = () => {
     </HelpCenterContentWrapper>
   );
 };
+
+WithKnownIssue.parameters = {
+  chromatic: {
+    viewports: [320, 1300],
+  },
+};

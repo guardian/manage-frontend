@@ -12,6 +12,11 @@ export default {
   args: {
     compactLayout: false,
   },
+  parameters: {
+    chromatic: {
+      viewports: [320, 1300],
+    },
+  },
 } as ComponentMeta<typeof HelpCentrePhoneNumbers>;
 
 const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = (
@@ -19,3 +24,8 @@ const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = (
 ) => <HelpCentrePhoneNumbers {...args} />;
 
 export const Default = Template.bind({});
+
+export const CompactLayout = Template.bind({});
+CompactLayout.args = {
+  compactLayout: true,
+};
