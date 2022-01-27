@@ -4,17 +4,16 @@ on: push
 jobs:
   chromatic:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: app
     steps:
       - uses: actions/checkout@v1
       - uses: guardian/actions-setup-node@v2.4.1
         with:
           cache: "yarn"
+          working-directory: app
 
       - name: Install dependencies
         run: yarn
+        working-directory: app
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
