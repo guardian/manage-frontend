@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Lines } from "../Lines";
 import { MarginWrapper } from "../MarginWrapper";
-import { MarketingPreference } from "../MarketingPreference";
+import { MarketingToggle } from "../MarketingToggle";
 import { ConsentOption } from "../models";
 import { PageSection } from "../PageSection";
 
@@ -12,30 +12,33 @@ interface OptOutSectionProps {
   clickHandler: ClickHandler;
 }
 
-const optOutFinder = (
-  consents: ConsentOption[],
-  clickHandler: ClickHandler
-) => (id: string) => {
-  const consent = consents.find(c => c.id === id);
-  return (
-    consent && (
-      <MarketingPreference
-        id={consent.id}
-        description={consent.description}
-        selected={consent.subscribed}
-        onClick={clickHandler}
-      />
-    )
-  );
-};
+/**
+ * NOTE:
+ * The description of Opt On consents have changed so for UX/UI they are now opt INs
+ * The backend model remains an opt OUT, so we invert the consented/subscribed here.
+ */
+const optOutFinderAndInverter =
+  (consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {
+    const consent = consents.find((c) => c.id === id);
+    return (
+      consent && (
+        <MarketingToggle
+          id={consent.id}
+          description={consent.description}
+          selected={!consent.subscribed} // NOTE: Opt Out consent value is inverted
+          onClick={clickHandler}
+        />
+      )
+    );
+  };
 
 const standardTextSize = {
-  fontSize: "17px"
+  fontSize: "17px",
 };
 
-export const OptOutSection: FC<OptOutSectionProps> = props => {
+export const OptOutSection: FC<OptOutSectionProps> = (props) => {
   const { consents, clickHandler } = props;
-  const getOptOut = optOutFinder(consents, clickHandler);
+  const addMarketingToggle = optOutFinderAndInverter(consents, clickHandler);
   return (
     <>
       <PageSection
@@ -50,8 +53,8 @@ export const OptOutSection: FC<OptOutSectionProps> = props => {
           <strong>do not wish to receive</strong> information via any of these
           channels:
         </p>
-        {getOptOut("post_optout")}
-        {getOptOut("phone_optout")}
+        {addMarketingToggle("post_optout")}
+        {addMarketingToggle("phone_optout")}
         <h2 css={[standardTextSize, { fontWeight: "bold" }]}>
           Market Research
         </h2>
@@ -61,7 +64,7 @@ export const OptOutSection: FC<OptOutSectionProps> = props => {
           Normally, this invitation would be sent via email, but we may also
           contact you by phone.
         </p>
-        {getOptOut("market_research_optout")}
+        {addMarketingToggle("market_research_optout")}
       </PageSection>
       <MarginWrapper>
         <Lines n={1} />
@@ -75,7 +78,7 @@ export const OptOutSection: FC<OptOutSectionProps> = props => {
           We do this to understand your interests and preferences so that we can
           make our marketing communication more relevant to you.
         </p>
-        {getOptOut("profiling_optout")}
+        {addMarketingToggle("profiling_optout")}
       </PageSection>
     </>
   );
