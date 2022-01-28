@@ -14,8 +14,9 @@ interface OptOutSectionProps {
 
 /**
  * NOTE:
- * The description of Opt On consents have changed so for UX/UI they are now opt INs
- * The backend model remains an opt OUT, so we invert the consented/subscribed here.
+ * Only use this method for an OPT OUT consent, eg. "post_optout"
+ * The description of Opt On consents have changed so for UX/UI purposes they are now opt INs
+ * The backend model remains an opt OUT, so we invert the consented/subscribed value here.
  */
 const optOutFinderAndInverter =
   (consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {

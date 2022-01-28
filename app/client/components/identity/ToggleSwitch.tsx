@@ -44,9 +44,12 @@ interface ToggleSwitchProps extends Props {
   defaultChecked?: boolean;
   /**
    * Appears to the right of the switch.
-   *
    */
   label?: string;
+  /**
+   * Optional labelId. Defaults to "notify"
+   */
+  labelId?: string;
   /**
    * Sets the toggle styling appropriate for each platform.
    * The default platform is 'web'.
@@ -84,6 +87,7 @@ const getPlatformStyles = (platform: Platform): SerializedStyles => {
 export const ToggleSwitch = ({
   checked,
   label,
+  labelId,
   defaultChecked,
   cssOverrides,
   platform = "web",
@@ -102,12 +106,12 @@ export const ToggleSwitch = ({
     <div css={[toggleSwitchStyles, cssOverrides]} {...props}>
       <button
         css={[buttonStyles, getPlatformStyles(platform)]}
-        role="switch"
+        // role="switch"
         aria-checked={isChecked()}
-        aria-labelledby="notify"
+        aria-labelledby={labelId || "notify"}
         onClick={onClick}
       ></button>
-      <label css={labelStyles} id="notify">
+      <label css={labelStyles} id={labelId || "notify"}>
         {label}
       </label>
     </div>
