@@ -20,7 +20,8 @@
     "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && eslint --fix 'client/**' 'server/**' 'shared/**'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "chromatic"
   },
   "husky": {
     "hooks": {
@@ -93,6 +94,7 @@
     "babel-loader-exclude-node-modules-except": "^1.2.1",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-source-map-support": "^2.1.1",
+    "chromatic": "^6.4.1",
     "copy-node-modules": "^1.0.4",
     "copy-webpack-plugin": "^9.1.0",
     "core-js": "^3.19.1",

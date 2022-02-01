@@ -9,9 +9,10 @@ export default {
   parameters: {
     controls: { hideNoControlsWarning: true },
     layout: "fullscreen",
+    chromatic: {
+      viewports: [320, 740, 1300],
+    },
   },
 } as ComponentMeta<typeof Footer>;
 
-const Template: ComponentStory<typeof Footer> = () => <Footer />;
-
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Footer> = () => <Footer />;

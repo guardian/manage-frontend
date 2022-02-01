@@ -7,7 +7,7 @@ export default {
   title: "Components/Date Input",
   component: DateInput,
   args: {
-    date: new Date(),
+    date: new Date("2022-01-25"),
     labelText: "From",
     disabled: false,
   },
