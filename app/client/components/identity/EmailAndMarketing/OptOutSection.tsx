@@ -33,6 +33,20 @@ const optOutFinderAndInverter =
     );
   };
 
+const YourDataDescription: FC = () => (
+  <p>
+    By “Your data” we mean:
+    <ul>
+      <li>Information you provide such as your email address</li>
+      <li>Products or services you buy from us</li>
+      <li>
+        Pages you view on theguardian.com or other Guardian websites when signed
+        in
+      </li>
+    </ul>
+  </p>
+);
+
 const standardTextSize = {
   fontSize: "17px",
 };
@@ -49,36 +63,20 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
         and services via telephone and post.
       `}
       >
-        <p css={standardTextSize}>
-          Please tick the boxes below to let us know if you{" "}
-          <strong>do not wish to receive</strong> information via any of these
-          channels:
-        </p>
         {addMarketingToggle("post_optout")}
         {addMarketingToggle("phone_optout")}
-        <h2 css={[standardTextSize, { fontWeight: "bold" }]}>
-          Market Research
-        </h2>
+        {addMarketingToggle("market_research_optout")}
         <p css={standardTextSize}>
           From time to time we may contact you for market research purposes
           inviting you to complete a survey, or take part in a group discussion.
           Normally, this invitation would be sent via email, but we may also
           contact you by phone.
         </p>
-        {addMarketingToggle("market_research_optout")}
       </PageSection>
       <MarginWrapper>
         <Lines n={1} />
       </MarginWrapper>
-      <PageSection title="Using your data for marketing analysis">
-        <p css={standardTextSize}>
-          From time to time we may use your personal data for marketing
-          analysis. That includes looking at what products or services you have
-          bought from us and what pages you have been viewing on theguardian.com
-          and other Guardian websites (e.g. Guardian Jobs or Guardian Holidays).
-          We do this to understand your interests and preferences so that we can
-          make our marketing communication more relevant to you.
-        </p>
+      <PageSection title="Your data" description={<YourDataDescription />}>
         {addMarketingToggle("profiling_optout")}
       </PageSection>
     </>
