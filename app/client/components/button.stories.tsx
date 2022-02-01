@@ -8,7 +8,7 @@ export default {
   component: Button,
   args: {
     text: "Button",
-    height: "",
+    height: undefined,
     fontWeight: undefined,
     left: false,
     right: false,
@@ -16,6 +16,7 @@ export default {
     colour: undefined,
     textColour: undefined,
     primary: undefined,
+    hollow: undefined,
     hide: false,
     forceCircle: undefined,
     hoverColour: undefined,
@@ -25,19 +26,24 @@ export default {
   },
   argTypes: {
     fontWeight: {
-      options: ["bold"],
+      options: ["bold", undefined],
+      control: { type: "inline-radio" },
     },
     primary: {
-      control: { type: "boolean" },
+      options: [true, undefined],
+      control: { type: "inline-radio" },
     },
     hollow: {
-      control: { type: "boolean" },
+      options: [true, undefined],
+      control: { type: "inline-radio" },
     },
     forceCircle: {
-      control: { type: "boolean" },
+      options: [true, undefined],
+      control: { type: "inline-radio" },
     },
     leftTick: {
-      control: { type: "boolean" },
+      options: [true, undefined],
+      control: { type: "inline-radio" },
     },
     colour: {
       control: { type: "color" },
@@ -48,6 +54,10 @@ export default {
     hoverColour: {
       control: { type: "color" },
     },
+    type: {
+      options: ["button", "submit", "reset"],
+      control: { type: "inline-radio" },
+    },
   },
 } as ComponentMeta<typeof Button>;
 
@@ -57,7 +67,24 @@ const Template: ComponentStory<typeof Button> = (args: ButtonProps) => (
 
 export const Default = Template.bind({});
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Bold = Template.bind({});
+Bold.args = {
+  fontWeight: "bold",
+};
+
+export const WithRightArrow = Template.bind({});
+WithRightArrow.args = {
+  right: true,
+};
+
+export const PrimaryWithRightArrow = Template.bind({});
+PrimaryWithRightArrow.args = {
   primary: true,
+  right: true,
+};
+
+export const HollowWithLeftArrow = Template.bind({});
+HollowWithLeftArrow.args = {
+  hollow: true,
+  left: true,
 };
