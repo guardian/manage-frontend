@@ -29,6 +29,7 @@ declare global {
       mockNext(status: any, body: any): Chainable<Element>;
       getIframeBody(selector: string): Chainable<Element>;
       getWithinIframe(targetElement: string): Chainable<Element>;
+      findByText(text: string): Chainable<Element>;
     }
   }
 }

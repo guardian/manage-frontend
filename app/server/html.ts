@@ -27,13 +27,17 @@ const html: (_: {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>${title}</title>
+
       ${insertGlobals(globals)}
+      <script src="https://js.stripe.com/v3/"></script>
+
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
     </head>
     <body style="margin:0">
       <div id="app"></div>
       </body>
       <script src="${src}?release=${WEBPACK_BUILD}"></script>
+      
   </html>
 `;
 

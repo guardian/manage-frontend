@@ -9,12 +9,12 @@ import {
   getMainPlan,
   isGift,
   isPaidSubscriptionPlan,
-  ProductDetail
+  ProductDetail,
 } from "../../../shared/productResponse";
 import { ProductType } from "../../../shared/productTypes";
 import {
   hasDeliveryRecordsFlow,
-  shouldHaveHolidayStopsFlow
+  shouldHaveHolidayStopsFlow,
 } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
 import { BasicProductInfoTable } from "../basicProductInfoTable";
@@ -58,15 +58,15 @@ interface InnerContentProps {
 }
 const InnerContent = ({
   manageProductProps,
-  productDetail
+  productDetail,
 }: InnerContentProps) => {
+  console.log("yeet");
   const mainPlan = getMainPlan(productDetail.subscription);
 
   const groupedProductType = manageProductProps.groupedProductType;
 
-  const specificProductType = groupedProductType.mapGroupedToSpecific(
-    productDetail
-  );
+  const specificProductType =
+    groupedProductType.mapGroupedToSpecific(productDetail);
 
   const hasCancellationPending = productDetail.subscription.cancelledAt;
 
@@ -205,7 +205,7 @@ const InnerContent = ({
                       {...productDetail.subscription.deliveryAddress}
                     />
                   ),
-                  spanTwoCols: true
+                  spanTwoCols: true,
                 },
                 ...(specificProductType.delivery
                   ?.enableDeliveryInstructionsUpdate
@@ -215,10 +215,10 @@ const InnerContent = ({
                         value:
                           productDetail.subscription.deliveryAddress
                             .instructions,
-                        spanTwoCols: true
-                      }
+                        spanTwoCols: true,
+                      },
                     ]
-                  : [])
+                  : []),
               ]}
             />
             <LinkButton
@@ -371,6 +371,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
           color: ${brand["500"]};
         `}
         to={"/cancel/" + props.specificProductType.urlPart}
+        data-cy={`Cancel ${props.friendlyName}`}
         state={props.productDetail}
       >
         {shouldContactUsToCancel
@@ -389,20 +390,22 @@ const ManageProduct = (props: RouteableStepPropsForGrouped) => (
     allowCancelledSubscription
     forceRedirectToAccountOverviewIfNoBrowserHistoryState
     selectedNavItem={NAV_LINKS.accountOverview}
-    pageTitle={`Manage ${props.groupedProductType.shortFriendlyName ||
-      props.groupedProductType.friendlyName}`}
+    pageTitle={`Manage ${
+      props.groupedProductType.shortFriendlyName ||
+      props.groupedProductType.friendlyName
+    }`}
     breadcrumbs={[
       {
         title: NAV_LINKS.accountOverview.title,
-        link: NAV_LINKS.accountOverview.link
+        link: NAV_LINKS.accountOverview.link,
       },
       {
         title: `Manage ${props.groupedProductType.friendlyName}`,
-        currentPage: true
-      }
+        currentPage: true,
+      },
     ]}
   >
-    {productDetail => (
+    {(productDetail) => (
       <InnerContent manageProductProps={props} productDetail={productDetail} />
     )}
   </FlowWrapper>
