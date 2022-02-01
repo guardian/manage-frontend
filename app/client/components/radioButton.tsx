@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import React, { ChangeEvent } from "react";
 import palette from "../colours";
 
-interface RadioButtonProps {
+export interface RadioButtonProps {
   value: string;
   label: string;
   checked: boolean;
@@ -28,7 +28,7 @@ export class RadioButton extends React.Component<
         css={css({
           display: "block",
           cursor: "pointer",
-          marginBottom: "7px"
+          marginBottom: "7px",
         })}
       >
         <input
@@ -43,7 +43,7 @@ export class RadioButton extends React.Component<
             position: "absolute",
             width: 0,
             height: 0,
-            opacity: 0
+            opacity: 0,
           }}
         />
         <div css={{ position: "relative" }}>
@@ -66,13 +66,13 @@ export class RadioButton extends React.Component<
                   this.state.focus
                     ? palette.yellow.medium
                     : palette.neutral["6"]
-                }`
+                }`,
               },
               top: "2.5px",
               ...(this.props.checked && {
                 backgroundColor: palette.green.dark,
-                borderColor: palette.green.dark
-              })
+                borderColor: palette.green.dark,
+              }),
             })}
           />
           <div css={{ marginLeft: "1.5rem" }}>{this.props.label}</div>
