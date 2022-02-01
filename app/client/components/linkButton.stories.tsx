@@ -1,14 +1,15 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { brand } from "@guardian/src-foundations/palette";
+import { brand, neutral } from "@guardian/src-foundations/palette";
 
-import { Button, ButtonProps } from "./buttons";
+import { LinkButton, LinkButtonProps } from "./buttons";
 
 export default {
-  title: "Components/Button",
-  component: Button,
+  title: "Components/LinkButton",
+  component: LinkButton,
   args: {
-    text: "Button",
+    text: "Link Button",
+    to: "/example",
     height: undefined,
     fontWeight: undefined,
     left: false,
@@ -60,28 +61,27 @@ export default {
       control: { type: "inline-radio" },
     },
   },
-} as ComponentMeta<typeof Button>;
+} as ComponentMeta<typeof LinkButton>;
 
-const Template: ComponentStory<typeof Button> = (args: ButtonProps) => (
-  <Button {...args} />
+const Template: ComponentStory<typeof LinkButton> = (args: LinkButtonProps) => (
+  <LinkButton {...args} />
 );
 
 export const Default = Template.bind({});
 
-export const Bold = Template.bind({});
-Bold.args = {
+export const BoldWithBrandColours = Template.bind({});
+BoldWithBrandColours.args = {
   fontWeight: "bold",
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-};
-
-export const WithBrandColours = Template.bind({});
-WithBrandColours.args = {
   colour: brand[800],
   textColour: brand[400],
+};
+
+export const WithAlert = Template.bind({});
+WithAlert.args = {
+  alert: true,
+  fontWeight: "bold",
+  colour: brand[400],
+  textColour: neutral[100],
 };
 
 export const WithRightArrow = Template.bind({});
@@ -89,10 +89,9 @@ WithRightArrow.args = {
   right: true,
 };
 
-export const DisabledWithRightArrow = Template.bind({});
-DisabledWithRightArrow.args = {
-  disabled: true,
-  right: true,
+export const WithLeftArrow = Template.bind({});
+WithLeftArrow.args = {
+  left: true,
 };
 
 export const PrimaryWithRightArrow = Template.bind({});

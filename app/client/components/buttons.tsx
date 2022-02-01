@@ -35,7 +35,7 @@ interface LinkButtonState {
   flowReferrer?: { title: string; link: string };
 }
 
-interface LinkButtonProps extends ButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   to: string;
   state?: LinkButtonState | ProductDetail;
 }
