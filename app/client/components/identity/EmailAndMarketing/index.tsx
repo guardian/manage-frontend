@@ -15,8 +15,7 @@ import { IdentityLocations } from "../IdentityLocations";
 import { Lines } from "../Lines";
 import { ConsentOption } from "../models";
 import { Actions, useConsentOptions } from "../useConsentOptions";
-import { MarketingEmailsSection } from "./MarketingEmailsSection";
-import { SupporterEmailsSection } from "./SupporterEmailsSection";
+import { ConsentSection } from "./ConsentSection";
 import { EmailSettingsSection } from "./EmailSettingsSection";
 import { NewsletterSection } from "./NewsletterSection";
 import { OptOutSection } from "./OptOutSection";
@@ -119,18 +118,8 @@ const EmailAndMarketing = (_: { path?: string }) => {
         <Lines n={4} />
       </WithStandardTopMargin>
       <WithStandardTopMargin>
-        <MarketingEmailsSection
-          consents={consents}
-          clickHandler={toggleSubscription}
-        />
+        <ConsentSection consents={consents} clickHandler={toggleSubscription} />
       </WithStandardTopMargin>
-
-      {/* SupporterEmailSection will only display if a user has a product */}
-      <SupporterEmailsSection
-        consents={consents}
-        clickHandler={toggleSubscription}
-      />
-
       <WithStandardTopMargin>
         <Lines n={1} />
       </WithStandardTopMargin>
