@@ -9,6 +9,8 @@ import {
   labelStyles,
   toggleSwitchStyles,
   webStyles,
+  labelPaddingLeft,
+  labelPaddingRight,
 } from "./ToggleStyles";
 
 /**
@@ -26,7 +28,7 @@ interface Props {
 }
 
 type Platform = "android" | "ios" | "web";
-
+type LabelPosition = "left" | "right";
 interface ToggleSwitchProps extends Props {
   /**
    * Whether the ToggleSwitch is checked. This is necessary when using the
@@ -46,6 +48,10 @@ interface ToggleSwitchProps extends Props {
    * Appears to the right of the switch.
    */
   label?: string;
+  /**
+   * Appears to the right by default.
+   */
+  labelPosition?: LabelPosition;
   /**
    * Optional labelId. Defaults to "notify"
    */
@@ -84,9 +90,13 @@ const getPlatformStyles = (platform: Platform): SerializedStyles => {
   }
 };
 
+const getLabelPaddingStyle = (labelPosition: LabelPosition): SerializedStyles =>
+  labelPosition === "left" ? labelPaddingRight : labelPaddingLeft;
+
 export const ToggleSwitch = ({
   checked,
   label,
+  labelPosition = "right",
   labelId,
   defaultChecked,
   cssOverrides,
@@ -102,18 +112,26 @@ export const ToggleSwitch = ({
     return !!defaultChecked;
   };
 
+  const Label = () => (
+    <label
+      css={[labelStyles, getLabelPaddingStyle(labelPosition)]}
+      id={labelId || "notify"}
+    >
+      {label}
+    </label>
+  );
+
   return (
     <div css={[toggleSwitchStyles, cssOverrides]} {...props}>
+      {labelPosition === "left" && <Label />}
       <button
         css={[buttonStyles, getPlatformStyles(platform)]}
-        // role="switch"
+        role="switch"
         aria-checked={isChecked()}
         aria-labelledby={labelId || "notify"}
         onClick={onClick}
       ></button>
-      <label css={labelStyles} id={labelId || "notify"}>
-        {label}
-      </label>
+      {labelPosition === "right" && <Label />}
     </div>
   );
 };

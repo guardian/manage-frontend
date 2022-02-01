@@ -10,6 +10,7 @@ import { neutral, success } from "@guardian/src-foundations/palette"; // TODO v4
 export const toggleSwitchStyles = css`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const buttonStyles = css`
@@ -128,6 +129,14 @@ export const webStyles = css`
     left: 1.375rem;
     background: ${neutral[100]};
   }
+`;
+
+export const labelPaddingLeft = css`
+  padding-left: 30px;
+`;
+
+export const labelPaddingRight = css`
+  padding-right: 30px;
 `;
 
 export const labelStyles = css`

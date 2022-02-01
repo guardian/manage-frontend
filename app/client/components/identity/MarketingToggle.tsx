@@ -56,8 +56,8 @@ export const MarketingToggle: FC<MarketingPreferenceProps> = (props) => {
     >
       <div css={{ left: 0 }}>
         <ToggleSwitch
-          css={[{ paddingRight: "30px" }]}
-          label={description}
+          label={title}
+          labelPosition="left"
           labelId={id}
           checked={!!selected}
           onClick={(_) => {
