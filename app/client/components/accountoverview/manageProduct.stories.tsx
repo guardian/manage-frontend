@@ -14,7 +14,7 @@ export default {
   title: "Pages/ManageProduct",
   component: ManageProduct,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof ManageProduct>;

@@ -17,7 +17,7 @@ export default {
   title: "Pages/EmailAndMarketing",
   component: EmailAndMarketing,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof EmailAndMarketing>;

@@ -10,7 +10,7 @@ export default {
   title: "Pages/HelpCentreArticle",
   component: HelpCentreArticle,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
     chromatic: {
       viewports: [320, 1300],

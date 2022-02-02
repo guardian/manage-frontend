@@ -14,7 +14,7 @@ export default {
   title: "Pages/AccountOverview",
   component: AccountOverview,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof AccountOverview>;
