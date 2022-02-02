@@ -7,7 +7,7 @@ import {
   dateIsLeapYear,
   dateIsSame,
   DateRange,
-  dateRange
+  dateRange,
 } from "../../shared/dates";
 import palette from "../colours";
 import { maxWidth, minWidth } from "../styles/breakpoints";
@@ -19,18 +19,18 @@ const stateDefinitions = {
   available: {
     selectable: true,
     color: "white",
-    label: ""
+    label: "",
   },
   existing: {
     selectable: false,
     color: palette.labs.main,
-    label: "Existing suspensions"
+    label: "Existing suspensions",
   },
   amend: {
     selectable: true,
     color: brandAlt[400],
-    label: "Suspension you're amending"
-  }
+    label: "Suspension you're amending",
+  },
 };
 
 interface LegendItemProps {
@@ -57,10 +57,10 @@ const legendItems = (
     transform: rotate(-45deg);
   }
   `,
-    label: `${issueKeyword} day`
+    label: `${issueKeyword} day`,
   },
   ...(includeExisting ? [stateDefinitions.existing] : []),
-  ...(includeAmend ? [stateDefinitions.amend] : [])
+  ...(includeAmend ? [stateDefinitions.amend] : []),
 ];
 
 const mergeAdjacentDateRanges = (
@@ -88,7 +88,7 @@ const LegendItem = (props: LegendItemProps) => (
     css={{
       display: "flex",
       alignItems: "center",
-      marginBottom: "10px"
+      marginBottom: "10px",
     }}
   >
     <div
@@ -99,9 +99,9 @@ const LegendItem = (props: LegendItemProps) => (
           backgroundColor: props.color,
           display: "inline-block",
           marginRight: "10px",
-          border: "0 !important"
+          border: "0 !important",
         },
-        css(props.extraCss)
+        css(props.extraCss),
       ]}
       className="DateRangePicker__Date"
     />
@@ -109,7 +109,7 @@ const LegendItem = (props: LegendItemProps) => (
       css={{
         marginRight: "20px",
         fontFamily: sans,
-        fontSize: "14px"
+        fontSize: "14px",
       }}
     >
       {props.label}
@@ -117,7 +117,7 @@ const LegendItem = (props: LegendItemProps) => (
   </div>
 );
 
-interface DatePickerProps {
+export interface DatePickerProps {
   firstAvailableDate: Date;
   issueDaysOfWeek: number[];
   issueKeyword: string;
@@ -136,14 +136,14 @@ export const DatePicker = (props: DatePickerProps) => (
       css={{
         display: "flex",
         alignItems: "center",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
       }}
     >
       {legendItems(
         props.issueKeyword,
         props.existingDates.length > 0,
         !!props.amendableDateRange
-      ).map(itemProps => (
+      ).map((itemProps) => (
         <LegendItem key={itemProps.label} {...itemProps} />
       ))}
     </div>
@@ -151,8 +151,8 @@ export const DatePicker = (props: DatePickerProps) => (
       css={{
         display: "flex",
         [maxWidth.desktop]: {
-          flexDirection: "column-reverse"
-        }
+          flexDirection: "column-reverse",
+        },
       }}
     >
       <div css={{ flexGrow: 1 }}>
@@ -168,18 +168,18 @@ export const DatePicker = (props: DatePickerProps) => (
           dateStates={[
             ...props.existingDates
               .reduce(mergeAdjacentDateRanges, []) // TODO check if they need to be merged across different types of 'date state'
-              .map(range => ({
+              .map((range) => ({
                 state: "existing",
-                range
+                range,
               })),
             ...(props.amendableDateRange
               ? [
                   {
                     state: "amend",
-                    range: props.amendableDateRange
-                  }
+                    range: props.amendableDateRange,
+                  },
                 ]
-              : [])
+              : []),
           ].sort((a, b) => a.range.start.valueOf() - b.range.start.valueOf())}
           handleRangeChoosen={props.onChange}
         />
@@ -209,8 +209,8 @@ export const DatePicker = (props: DatePickerProps) => (
             marginBottom: "15px",
             marginLeft: "-20px",
             marginRight: "-20px",
-            boxShadow: "0 3px 5px -3px " + palette.neutral["4"]
-          }
+            boxShadow: "0 3px 5px -3px " + palette.neutral["4"],
+          },
         }}
       >
         <div
@@ -219,8 +219,8 @@ export const DatePicker = (props: DatePickerProps) => (
               display: "flex",
               alignItems: "center",
               marginRight: "10px",
-              marginTop: "10px"
-            }
+              marginTop: "10px",
+            },
           }}
         >
           <div>
