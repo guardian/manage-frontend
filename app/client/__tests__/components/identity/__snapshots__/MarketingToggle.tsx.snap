@@ -7,9 +7,9 @@ exports[`MarketingToggle component renders correctly and displays marketing info
       Object {
         "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
         "fontSize": "14px",
+        "lineHeight": "1.333",
       },
       Object {
-        "lineHeight": "1.333",
         "marginTop": "12px",
         "position": "relative",
       },
@@ -28,11 +28,66 @@ exports[`MarketingToggle component renders correctly and displays marketing info
       css={
         Array [
           Object {
-            "paddingRight": "30px",
+            "map": undefined,
+            "name": "1knbux5",
+            "next": undefined,
+            "styles": "
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+",
+            "toString": [Function],
+          },
+          Object {
+            "map": undefined,
+            "name": "10fk1re",
+            "next": undefined,
+            "styles": "
+            label {
+              font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;font-size:14px;line-height:1.333;;
+              font-weight: bold;
+            }
+          ",
+            "toString": [Function],
           },
         ]
       }
     >
+      <label
+        css={
+          Array [
+            Object {
+              "map": undefined,
+              "name": "o10xob",
+              "next": undefined,
+              "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  display: inline-block;
+  color: #121212;
+",
+              "toString": [Function],
+            },
+            Object {
+              "map": undefined,
+              "name": "ce2p88",
+              "next": undefined,
+              "styles": "
+  padding-right: 30px;
+",
+              "toString": [Function],
+            },
+          ]
+        }
+        id="13"
+      >
+        Test title
+      </label>
       <button
         aria-checked={false}
         aria-labelledby="13"
@@ -115,31 +170,8 @@ exports[`MarketingToggle component renders correctly and displays marketing info
           ]
         }
         onClick={[Function]}
+        role="switch"
       />
-      <label
-        css={
-          Object {
-            "map": undefined,
-            "name": "o10xob",
-            "next": undefined,
-            "styles": "
-  
-	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
-	font-size: 0.9375rem;
-	line-height: 1.5;
-	font-weight: 400;
-	;
-;
-  display: inline-block;
-  color: #121212;
-",
-            "toString": [Function],
-          }
-        }
-        id="13"
-      >
-        Test description
-      </label>
     </div>
   </div>
   <p
@@ -148,19 +180,16 @@ exports[`MarketingToggle component renders correctly and displays marketing info
         Object {
           "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
           "fontSize": "14px",
+          "lineHeight": "1.333",
         },
         Object {
-          "cursor": "pointer",
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-          "fontWeight": "bold",
-          "lineHeight": "22px",
           "margin": "0",
+          "padding": "2.88px 90px 0 0",
         },
       ]
     }
   >
-    Test title
+    Test description
   </p>
 </div>
 `;
@@ -172,9 +201,9 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
       Object {
         "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
         "fontSize": "14px",
+        "lineHeight": "1.333",
       },
       Object {
-        "lineHeight": "1.333",
         "marginTop": "12px",
         "position": "relative",
       },
@@ -193,11 +222,66 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
       css={
         Array [
           Object {
-            "paddingRight": "30px",
+            "map": undefined,
+            "name": "1knbux5",
+            "next": undefined,
+            "styles": "
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+",
+            "toString": [Function],
+          },
+          Object {
+            "map": undefined,
+            "name": "10fk1re",
+            "next": undefined,
+            "styles": "
+            label {
+              font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;font-size:14px;line-height:1.333;;
+              font-weight: bold;
+            }
+          ",
+            "toString": [Function],
           },
         ]
       }
     >
+      <label
+        css={
+          Array [
+            Object {
+              "map": undefined,
+              "name": "o10xob",
+              "next": undefined,
+              "styles": "
+  
+	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	font-weight: 400;
+	;
+;
+  display: inline-block;
+  color: #121212;
+",
+              "toString": [Function],
+            },
+            Object {
+              "map": undefined,
+              "name": "ce2p88",
+              "next": undefined,
+              "styles": "
+  padding-right: 30px;
+",
+              "toString": [Function],
+            },
+          ]
+        }
+        id="13"
+      >
+        Test title
+      </label>
       <button
         aria-checked={true}
         aria-labelledby="13"
@@ -280,31 +364,8 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
           ]
         }
         onClick={[Function]}
+        role="switch"
       />
-      <label
-        css={
-          Object {
-            "map": undefined,
-            "name": "o10xob",
-            "next": undefined,
-            "styles": "
-  
-	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
-	font-size: 0.9375rem;
-	line-height: 1.5;
-	font-weight: 400;
-	;
-;
-  display: inline-block;
-  color: #121212;
-",
-            "toString": [Function],
-          }
-        }
-        id="13"
-      >
-        Test description
-      </label>
     </div>
   </div>
   <p
@@ -313,19 +374,16 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
         Object {
           "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
           "fontSize": "14px",
+          "lineHeight": "1.333",
         },
         Object {
-          "cursor": "pointer",
-          "fontFamily": "\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif",
-          "fontSize": "14px",
-          "fontWeight": "bold",
-          "lineHeight": "22px",
           "margin": "0",
+          "padding": "2.88px 90px 0 0",
         },
       ]
     }
   >
-    Test title
+    Test description
   </p>
 </div>
 `;

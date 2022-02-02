@@ -34,8 +34,8 @@ describe("OptOutSection component", () => {
 const idapiConsentsFixture: ConsentOption[] = [
   {
     id: "post_optout",
-    description: "Allow post",
-    name: "post_optout",
+    description: "",
+    name: "Allow post",
     isProduct: false,
     isChannel: false,
     type: ConsentOptionType.OPT_OUT,
@@ -43,8 +43,8 @@ const idapiConsentsFixture: ConsentOption[] = [
   },
   {
     id: "phone_optout",
-    description: "Allow phone",
-    name: "phone_optout",
+    description: "",
+    name: "Allow phone",
     isProduct: false,
     isChannel: false,
     type: ConsentOptionType.OPT_OUT,
