@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Lines } from "../Lines";
-import { MarginWrapper } from "../MarginWrapper";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
 import { MarketingToggle } from "../MarketingToggle";
 import { ConsentOption } from "../models";
 import { PageSection } from "../PageSection";
@@ -19,14 +19,16 @@ interface OptOutSectionProps {
  * The backend model remains an opt OUT, so we invert the consented/subscribed value here.
  */
 const optOutFinderAndInverter =
-  (consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {
+  (consents: ConsentOption[], clickHandler: ClickHandler) =>
+  (id: string, altDescription?: string) => {
     const consent = consents.find((c) => c.id === id);
     return (
       consent && (
         <MarketingToggle
           id={consent.id}
-          description={consent.description}
-          selected={!consent.subscribed} // NOTE: Opt Out consent value is inverted
+          title={consent.name}
+          description={consent.description || altDescription} // Not all consents from IDAPI have a description
+          selected={!consent.subscribed} // Opt Out consent value is inverted
           onClick={clickHandler}
         />
       )
@@ -34,7 +36,7 @@ const optOutFinderAndInverter =
   };
 
 const YourDataDescription: FC = () => (
-  <p>
+  <>
     By “Your data” we mean:
     <ul>
       <li>Information you provide such as your email address</li>
@@ -44,12 +46,11 @@ const YourDataDescription: FC = () => (
         in
       </li>
     </ul>
-  </p>
+  </>
 );
 
-const standardTextSize = {
-  fontSize: "17px",
-};
+const marketResearchAltDescription: string =
+  "From time to time we may contact you for market research purposes inviting you to complete a survey, or take part in a group discussion. Normally, this invitation would be sent via email, but we may also contact you by phone.";
 
 export const OptOutSection: FC<OptOutSectionProps> = (props) => {
   const { consents, clickHandler } = props;
@@ -65,20 +66,19 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
       >
         {addMarketingToggle("post_optout")}
         {addMarketingToggle("phone_optout")}
-        {addMarketingToggle("market_research_optout")}
-        <p css={standardTextSize}>
-          From time to time we may contact you for market research purposes
-          inviting you to complete a survey, or take part in a group discussion.
-          Normally, this invitation would be sent via email, but we may also
-          contact you by phone.
-        </p>
+        {addMarketingToggle(
+          "market_research_optout",
+          marketResearchAltDescription
+        )}
       </PageSection>
-      <MarginWrapper>
+      <WithStandardTopMargin>
         <Lines n={1} />
-      </MarginWrapper>
-      <PageSection title="Your data" description={<YourDataDescription />}>
-        {addMarketingToggle("profiling_optout")}
-      </PageSection>
+      </WithStandardTopMargin>
+      <WithStandardTopMargin>
+        <PageSection title="Your data" description={<YourDataDescription />}>
+          {addMarketingToggle("profiling_optout")}
+        </PageSection>
+      </WithStandardTopMargin>
     </>
   );
 };

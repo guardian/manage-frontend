@@ -1,39 +1,37 @@
 import React, { FC } from "react";
 import { sans } from "../../styles/fonts";
+import { css } from "@emotion/core";
 import { ToggleSwitch } from "./ToggleSwitch";
 
-interface MarketingPreferenceProps {
+interface MarketingToggleProps {
   id: string;
-  description: string;
+  description?: string;
   title?: string;
   selected?: boolean;
   onClick: (id: string) => {};
 }
 
 const standardText = {
-  fontSize: "14px",
   fontFamily: sans,
+  fontSize: "14px",
+  lineHeight: "1.333",
 };
 
-const getTitle = (title: MarketingPreferenceProps["title"]) => (
+const getDescription = (description: MarketingToggleProps["description"]) => (
   <p
     css={[
       standardText,
       {
-        cursor: "pointer",
-        fontSize: "14px",
-        lineHeight: "22px",
-        fontFamily: sans,
-        fontWeight: "bold",
         margin: "0",
+        padding: "2.88px 90px 0 0",
       },
     ]}
   >
-    {title}
+    {description}
   </p>
 );
 
-export const MarketingToggle: FC<MarketingPreferenceProps> = (props) => {
+export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
   const { id, description, selected, title, onClick } = props;
   return (
     <div
@@ -48,7 +46,6 @@ export const MarketingToggle: FC<MarketingPreferenceProps> = (props) => {
       css={[
         standardText,
         {
-          lineHeight: "1.333",
           marginTop: "12px",
           position: "relative",
         },
@@ -56,6 +53,12 @@ export const MarketingToggle: FC<MarketingPreferenceProps> = (props) => {
     >
       <div css={{ left: 0 }}>
         <ToggleSwitch
+          cssOverrides={css`
+            label {
+              ${standardText};
+              font-weight: bold;
+            }
+          `}
           label={title}
           labelPosition="left"
           labelId={id}
@@ -65,7 +68,7 @@ export const MarketingToggle: FC<MarketingPreferenceProps> = (props) => {
           }}
         />
       </div>
-      {title && getTitle(title)}
+      {description && getDescription(description)}
     </div>
   );
 };
