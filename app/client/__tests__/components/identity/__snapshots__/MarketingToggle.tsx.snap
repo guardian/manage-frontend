@@ -29,22 +29,34 @@ exports[`MarketingToggle component renders correctly and displays marketing info
         Array [
           Object {
             "map": undefined,
-            "name": "1knbux5",
+            "name": "1sg2lsz",
             "next": undefined,
             "styles": "
   display: flex;
   align-items: center;
-  justify-content: space-between;
 ",
             "toString": [Function],
           },
           Object {
             "map": undefined,
-            "name": "10fk1re",
+            "name": "qd9qgn",
+            "next": undefined,
+            "styles": "
+  justify-content: space-between;
+  button {
+    margin-right: 0;
+  }
+",
+            "toString": [Function],
+          },
+          Object {
+            "map": undefined,
+            "name": "a31lvs",
             "next": undefined,
             "styles": "
             label {
               font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;font-size:14px;line-height:1.333;;
+              padding-right: 5px;
               font-weight: bold;
             }
           ",
@@ -73,15 +85,6 @@ exports[`MarketingToggle component renders correctly and displays marketing info
 ",
               "toString": [Function],
             },
-            Object {
-              "map": undefined,
-              "name": "ce2p88",
-              "next": undefined,
-              "styles": "
-  padding-right: 30px;
-",
-              "toString": [Function],
-            },
           ]
         }
         id="13"
@@ -95,13 +98,12 @@ exports[`MarketingToggle component renders correctly and displays marketing info
           Array [
             Object {
               "map": undefined,
-              "name": "jdbwo1",
+              "name": "nru31b",
               "next": undefined,
               "styles": "
   flex: none;
   border: none;
   margin: 8px;
-  margin-left: 0;
   padding: 0;
   display: inline-block;
   vertical-align: middle;
@@ -223,22 +225,34 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
         Array [
           Object {
             "map": undefined,
-            "name": "1knbux5",
+            "name": "1sg2lsz",
             "next": undefined,
             "styles": "
   display: flex;
   align-items: center;
-  justify-content: space-between;
 ",
             "toString": [Function],
           },
           Object {
             "map": undefined,
-            "name": "10fk1re",
+            "name": "qd9qgn",
+            "next": undefined,
+            "styles": "
+  justify-content: space-between;
+  button {
+    margin-right: 0;
+  }
+",
+            "toString": [Function],
+          },
+          Object {
+            "map": undefined,
+            "name": "a31lvs",
             "next": undefined,
             "styles": "
             label {
               font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;font-size:14px;line-height:1.333;;
+              padding-right: 5px;
               font-weight: bold;
             }
           ",
@@ -267,15 +281,6 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
 ",
               "toString": [Function],
             },
-            Object {
-              "map": undefined,
-              "name": "ce2p88",
-              "next": undefined,
-              "styles": "
-  padding-right: 30px;
-",
-              "toString": [Function],
-            },
           ]
         }
         id="13"
@@ -289,13 +294,12 @@ exports[`MarketingToggle component will select the checkbox when the selected pr
           Array [
             Object {
               "map": undefined,
-              "name": "jdbwo1",
+              "name": "nru31b",
               "next": undefined,
               "styles": "
   flex: none;
   border: none;
   margin: 8px;
-  margin-left: 0;
   padding: 0;
   display: inline-block;
   vertical-align: middle;
