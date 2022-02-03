@@ -7,7 +7,7 @@ export default {
   title: "Components/RadioButton",
   component: RadioButton,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
   },
 } as ComponentMeta<typeof RadioButton>;
 
