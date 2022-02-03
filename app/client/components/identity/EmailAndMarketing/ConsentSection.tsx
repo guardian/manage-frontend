@@ -57,6 +57,7 @@ const consentPreference = (
       return (
         <MarketingToggle
           id={id}
+          key={id}
           title={name}
           description={description}
           selected={subscribed}

@@ -23,7 +23,7 @@ const getTitle = (title: PageSectionProps["title"]) => (
 );
 
 const getDescription = (description: PageSectionProps["description"]) => (
-  <p
+  <div
     css={{
       fontFamily: sans,
       fontSize: "14px",
@@ -31,7 +31,7 @@ const getDescription = (description: PageSectionProps["description"]) => (
     }}
   >
     {description}
-  </p>
+  </div>
 );
 
 const getSubtext = (subtext: PageSectionProps["subtext"]) => (
