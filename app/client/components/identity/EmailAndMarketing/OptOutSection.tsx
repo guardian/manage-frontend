@@ -15,19 +15,18 @@ interface OptOutSectionProps {
 /**
  * NOTE:
  * Only use this method for an OPT OUT consent, eg. "post_optout"
- * The description of Opt On consents have changed so for UX/UI purposes they are now opt INs
+ * The description of Opt Out consents have changed so for UX/UI purposes they are now opt INs
  * The backend model remains an opt OUT, so we invert the consented/subscribed value here.
  */
 const optOutFinderAndInverter =
-  (consents: ConsentOption[], clickHandler: ClickHandler) =>
-  (id: string, altDescription?: string) => {
+  (consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {
     const consent = consents.find((c) => c.id === id);
     return (
       consent && (
         <MarketingToggle
           id={consent.id}
           title={consent.name}
-          description={consent.description || altDescription} // Not all consents from IDAPI have a description
+          description={consent.description} // Not all consents from IDAPI have a description
           selected={!consent.subscribed} // Opt Out consent value is inverted
           onClick={clickHandler}
         />
@@ -49,9 +48,6 @@ const YourDataDescription: FC = () => (
   </>
 );
 
-const marketResearchAltDescription: string =
-  "From time to time we may contact you for market research purposes inviting you to complete a survey, or take part in a group discussion. Normally, this invitation would be sent via email, but we may also contact you by phone.";
-
 export const OptOutSection: FC<OptOutSectionProps> = (props) => {
   const { consents, clickHandler } = props;
   const addMarketingToggle = optOutFinderAndInverter(consents, clickHandler);
@@ -66,10 +62,7 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
       >
         {addMarketingToggle("post_optout")}
         {addMarketingToggle("phone_optout")}
-        {addMarketingToggle(
-          "market_research_optout",
-          marketResearchAltDescription
-        )}
+        {addMarketingToggle("market_research_optout")}
       </PageSection>
       <WithStandardTopMargin>
         <Lines n={1} />

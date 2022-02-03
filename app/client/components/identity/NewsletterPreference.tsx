@@ -5,9 +5,9 @@ import { Checkbox } from "../checkbox";
 
 interface NewsletterPreferenceProps {
   id: string;
-  description: string;
-  identityName: string;
-  frequency: string;
+  description?: string;
+  identityName?: string;
+  frequency?: string;
   title: string;
   selected?: boolean;
   onClick: (id: string) => {};
@@ -15,7 +15,7 @@ interface NewsletterPreferenceProps {
 
 const standardText = {
   fontSize: "14px",
-  fontFamily: sans
+  fontFamily: sans,
 };
 
 const clockSVG = (
@@ -39,8 +39,8 @@ const getTitle = (title: NewsletterPreferenceProps["title"]) => (
         lineHeight: "22px",
         fontFamily: sans,
         fontWeight: "bold",
-        margin: "0"
-      }
+        margin: "0",
+      },
     ]}
   >
     {title}
@@ -52,7 +52,7 @@ const getDescription = (
 ) => (
   <p
     css={{
-      padding: "2.88px 0 0 0"
+      padding: "2.88px 0 0 0",
     }}
   >
     {description}
@@ -65,14 +65,14 @@ const getFrequency = (frequency: NewsletterPreferenceProps["frequency"]) => (
       fontSize: "12px",
       lineHeight: "16px",
       margin: "3px 0 0 0",
-      opacity: 0.75
+      opacity: 0.75,
     }}
   >
     <span
       css={{
         display: "inline-block",
         marginRight: "8px",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       }}
     >
       {clockSVG}
@@ -81,19 +81,12 @@ const getFrequency = (frequency: NewsletterPreferenceProps["frequency"]) => (
   </p>
 );
 
-export const NewsletterPreference: FC<NewsletterPreferenceProps> = props => {
-  const {
-    id,
-    description,
-    frequency,
-    selected,
-    title,
-    identityName,
-    onClick
-  } = props;
+export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
+  const { id, description, frequency, selected, title, identityName, onClick } =
+    props;
   return (
     <div
-      onClick={e => {
+      onClick={(e) => {
         // Checkboxes inside labels will trigger click events twice.
         // Ignore the input click event
         if (e.target instanceof Element && e.target.nodeName === "INPUT") {
@@ -107,11 +100,11 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = props => {
             componentEvent: {
               component: {
                 componentType: "NEWSLETTER_SUBSCRIPTION",
-                id: identityName
+                id: identityName,
               },
               action: "CLICK",
-              value: selected ? "untick" : "tick"
-            }
+              value: selected ? "untick" : "tick",
+            },
           });
         }
       }}
@@ -121,20 +114,20 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = props => {
           lineHeight: "1.333",
           marginTop: "12px",
           paddingLeft: "30px",
-          position: "relative"
-        }
+          position: "relative",
+        },
       ]}
     >
       <div css={{ position: "absolute", left: 0 }}>
         <Checkbox
           checked={!!selected}
-          onChange={_ => {
+          onChange={(_) => {
             return;
           }}
         />
       </div>
-      {title && getTitle(title)}
-      {getDescription(description)}
+      {getTitle(title)}
+      {description && getDescription(description)}
       {frequency && getFrequency(frequency)}
     </div>
   );

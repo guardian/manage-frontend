@@ -40,11 +40,8 @@ const newsletterPreference = (
       id={id}
       key={id}
       title={name}
-      // A newsletter always has identityName & frequency (see interface NewsletterAPIResponse)
-      // but ConsentOption has these as optional so we need to keep ts happy by falling back to
-      // "" here
-      identityName={identityName || ""}
-      frequency={frequency || ""}
+      identityName={identityName}
+      frequency={frequency}
       description={description}
       selected={subscribed}
       onClick={clickHandler}

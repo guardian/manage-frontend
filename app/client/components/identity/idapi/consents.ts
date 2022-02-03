@@ -3,7 +3,7 @@ import { APIPatchOptions, APIUseCredentials, identityFetch } from "./fetch";
 
 interface ConsentAPIResponse {
   id: string;
-  description: string;
+  description?: string;
   name: string;
   isOptOut: boolean;
   isChannel: boolean;
@@ -21,7 +21,7 @@ const consentToConsentOption = (
     isProduct,
     isChannel,
     type: isOptOut ? ConsentOptionType.OPT_OUT : ConsentOptionType.EMAIL,
-    subscribed: false
+    subscribed: false,
   };
 };
 
@@ -37,8 +37,8 @@ export const update = async (id: string, consented: boolean = true) => {
   const payload = [
     {
       id,
-      consented
-    }
+      consented,
+    },
   ];
   await identityFetch(url, APIUseCredentials(APIPatchOptions(payload)));
 };

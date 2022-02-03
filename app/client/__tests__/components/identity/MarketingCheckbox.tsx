@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import React from "react";
 import { create } from "react-test-renderer";
-import { MarketingPreference } from "../../../components/identity/MarketingPreference";
+import { MarketingCheckbox } from "../../../components/identity/MarketingCheckbox";
 
 afterEach(cleanup);
 
@@ -10,11 +10,11 @@ describe("MarketingPreference component", () => {
     id: "13",
     description: "Test description",
     title: "Test title",
-    clickHandler: jest.fn()
+    clickHandler: jest.fn(),
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(
-      <MarketingPreference
+      <MarketingCheckbox
         id={input.id}
         description={input.description}
         title={input.title}
@@ -26,7 +26,7 @@ describe("MarketingPreference component", () => {
 
   it("will select the checkbox when the selected prop is passed", () => {
     const rendered = create(
-      <MarketingPreference
+      <MarketingCheckbox
         id={input.id}
         description={input.description}
         title={input.title}
@@ -39,7 +39,7 @@ describe("MarketingPreference component", () => {
 
   it("will call the click handler when it is clicked", () => {
     const { getByText } = render(
-      <MarketingPreference
+      <MarketingCheckbox
         id={input.id}
         description={input.description}
         title={input.title}
