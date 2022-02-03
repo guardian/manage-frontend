@@ -5,11 +5,6 @@ import { textSans } from "@guardian/src-foundations/typography";
 import React, { ReactElement } from "react";
 import { ErrorIcon } from "./svgs/errorIcon";
 
-interface FormErrorProps {
-  title?: string;
-  messages: Array<string | ReactElement>;
-}
-
 const dlStyles = css`
   position: relative;
   padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
@@ -36,6 +31,11 @@ const ulStyles = css`
   margin: 0;
   padding: 0;
 `;
+
+export interface FormErrorProps {
+  title?: string;
+  messages: Array<string | ReactElement>;
+}
 
 export const FormError = (props: FormErrorProps) => (
   <dl css={dlStyles}>
