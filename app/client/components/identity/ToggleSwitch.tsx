@@ -9,8 +9,8 @@ import {
   labelStyles,
   toggleSwitchStyles,
   webStyles,
-  labelPaddingLeft,
-  labelPaddingRight,
+  labelPositionLeftStyle,
+  labelPositionRightStyle,
 } from "./ToggleStyles";
 
 /**
@@ -90,8 +90,10 @@ const getPlatformStyles = (platform: Platform): SerializedStyles => {
   }
 };
 
-const getLabelPaddingStyle = (labelPosition: LabelPosition): SerializedStyles =>
-  labelPosition === "left" ? labelPaddingRight : labelPaddingLeft;
+const getLabelPositionStyles = (
+  labelPosition: LabelPosition
+): SerializedStyles =>
+  labelPosition === "left" ? labelPositionLeftStyle : labelPositionRightStyle;
 
 export const ToggleSwitch = ({
   checked,
@@ -113,16 +115,20 @@ export const ToggleSwitch = ({
   };
 
   const Label = () => (
-    <label
-      css={[labelStyles, getLabelPaddingStyle(labelPosition)]}
-      id={labelId || "notify"}
-    >
+    <label css={[labelStyles]} id={labelId || "notify"}>
       {label}
     </label>
   );
 
   return (
-    <div css={[toggleSwitchStyles, cssOverrides]} {...props}>
+    <div
+      css={[
+        toggleSwitchStyles,
+        getLabelPositionStyles(labelPosition),
+        cssOverrides,
+      ]}
+      {...props}
+    >
       {labelPosition === "left" && <Label />}
       <button
         css={[buttonStyles, getPlatformStyles(platform)]}

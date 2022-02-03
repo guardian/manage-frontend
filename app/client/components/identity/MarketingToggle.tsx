@@ -56,6 +56,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
           cssOverrides={css`
             label {
               ${standardText};
+              padding-right: 5px;
               font-weight: bold;
             }
           `}

@@ -10,14 +10,12 @@ import { neutral, success } from "@guardian/src-foundations/palette"; // TODO v4
 export const toggleSwitchStyles = css`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 `;
 
 export const buttonStyles = css`
   flex: none;
   border: none;
   margin: 8px;
-  margin-left: 0;
   padding: 0;
   display: inline-block;
   vertical-align: middle;
@@ -131,12 +129,17 @@ export const webStyles = css`
   }
 `;
 
-export const labelPaddingLeft = css`
-  padding-left: 30px;
+export const labelPositionLeftStyle = css`
+  justify-content: space-between;
+  button {
+    margin-right: 0;
+  }
 `;
 
-export const labelPaddingRight = css`
-  padding-right: 30px;
+export const labelPositionRightStyle = css`
+  button {
+    margin-left: 0;
+  }
 `;
 
 export const labelStyles = css`
