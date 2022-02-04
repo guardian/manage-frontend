@@ -14,7 +14,7 @@ interface MarketingToggleProps {
 const standardText = {
   fontFamily: sans,
   fontSize: "14px",
-  lineHeight: "1.333",
+  lineHeight: "1.333"
 };
 
 const getDescription = (description: MarketingToggleProps["description"]) => (
@@ -23,8 +23,8 @@ const getDescription = (description: MarketingToggleProps["description"]) => (
       standardText,
       {
         margin: "0",
-        padding: "2.88px 90px 0 0",
-      },
+        padding: "2.88px 90px 0 0"
+      }
     ]}
   >
     {description}
@@ -47,8 +47,8 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
         standardText,
         {
           marginTop: "12px",
-          position: "relative",
-        },
+          position: "relative"
+        }
       ]}
     >
       <div css={{ left: 0 }}>

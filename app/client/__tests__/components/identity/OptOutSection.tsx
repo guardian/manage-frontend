@@ -4,7 +4,7 @@ import React from "react";
 import { OptOutSection } from "../../../components/identity/EmailAndMarketing/OptOutSection";
 import {
   ConsentOption,
-  ConsentOptionType,
+  ConsentOptionType
 } from "../../../components/identity/models";
 
 afterEach(cleanup);
@@ -38,7 +38,7 @@ const idapiConsentsFixture: ConsentOption[] = [
     isProduct: false,
     isChannel: false,
     type: ConsentOptionType.OPT_OUT,
-    subscribed: false,
+    subscribed: false
   },
   {
     id: "phone_optout",
@@ -46,6 +46,6 @@ const idapiConsentsFixture: ConsentOption[] = [
     isProduct: false,
     isChannel: false,
     type: ConsentOptionType.OPT_OUT,
-    subscribed: true,
-  },
+    subscribed: true
+  }
 ];

@@ -12,7 +12,7 @@ interface MarketingCheckboxProps {
 
 const standardText = {
   fontSize: "14px",
-  fontFamily: sans,
+  fontFamily: sans
 };
 
 const getTitle = (title: MarketingCheckboxProps["title"]) => (
@@ -25,8 +25,8 @@ const getTitle = (title: MarketingCheckboxProps["title"]) => (
         lineHeight: "22px",
         fontFamily: sans,
         fontWeight: "bold",
-        margin: "0",
-      },
+        margin: "0"
+      }
     ]}
   >
     {title}
@@ -36,7 +36,7 @@ const getTitle = (title: MarketingCheckboxProps["title"]) => (
 const getDescription = (description: MarketingCheckboxProps["description"]) => (
   <p
     css={{
-      padding: "2.88px 0 0 0",
+      padding: "2.88px 0 0 0"
     }}
   >
     {description}
@@ -61,8 +61,8 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
           lineHeight: "1.333",
           marginTop: "12px",
           paddingLeft: "30px",
-          position: "relative",
-        },
+          position: "relative"
+        }
       ]}
     >
       <div css={{ position: "absolute", left: 0 }}>

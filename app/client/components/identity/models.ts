@@ -6,20 +6,20 @@ export enum Theme {
   lifestyle = "lifestyle",
   comment = "comment",
   work = "work",
-  FromThePapers = "From the papers",
+  FromThePapers = "From the papers"
 }
 
 export enum ErrorTypes {
   GENERAL = "GENERAL",
   NOT_FOUND = "NOT_FOUND",
-  VALIDATION = "VALIDATION",
+  VALIDATION = "VALIDATION"
 }
 
 export enum ConsentOptionType {
   EMAIL = "EMAIL",
   NEWSLETTER = "NEWSLETTER",
   OPT_OUT = "OPT_OUT",
-  SUPPORT_REMINDER = "SUPPORT_REMINDER",
+  SUPPORT_REMINDER = "SUPPORT_REMINDER"
 }
 
 export interface User {
@@ -96,7 +96,7 @@ export enum Titles {
   MISS = "Miss",
   DR = "Dr",
   PROF = "Prof",
-  REV = "Rev",
+  REV = "Rev"
 }
 
 /* Extracted from https://github.com/catamphetamine/libphonenumber-js using:
@@ -322,7 +322,7 @@ export const PHONE_CALLING_CODES: string[] = [
   "994",
   "995",
   "996",
-  "998",
+  "998"
 ];
 
 interface CountryValues {
@@ -578,5 +578,5 @@ export const COUNTRIES: CountryValues[] = [
   { iso: "YE", name: "Yemen" },
   { iso: "ZM", name: "Zambia" },
   { iso: "ZW", name: "Zimbabwe" },
-  { iso: "AX", name: "Åland Islands" },
+  { iso: "AX", name: "Åland Islands" }
 ];

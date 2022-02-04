@@ -10,7 +10,7 @@ describe("MarketingToggle component", () => {
     id: "13",
     description: "Test description",
     title: "Test title",
-    clickHandler: jest.fn(),
+    clickHandler: jest.fn()
   };
   it("renders correctly and displays marketing information", () => {
     const rendered = create(

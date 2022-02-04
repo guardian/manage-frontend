@@ -99,7 +99,7 @@ export const ConsentSection: FC<ConsentSectionProps> = (props) => {
         <h2
           css={{
             fontSize: "17px",
-            fontWeight: "bold",
+            fontWeight: "bold"
           }}
         >
           Would you also like to hear about the above by SMS?

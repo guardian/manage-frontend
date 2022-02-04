@@ -10,7 +10,7 @@ import {
   toggleSwitchStyles,
   webStyles,
   labelPositionLeftStyle,
-  labelPositionRightStyle,
+  labelPositionRightStyle
 } from "./ToggleStyles";
 
 /**
@@ -125,7 +125,7 @@ export const ToggleSwitch = ({
       css={[
         toggleSwitchStyles,
         getLabelPositionStyles(labelPosition),
-        cssOverrides,
+        cssOverrides
       ]}
       {...props}
     >
