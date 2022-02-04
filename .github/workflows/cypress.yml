@@ -32,7 +32,7 @@ jobs:
         env:
           IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
-          workingDir: app
+          working-directory: app
           build: yarn bundle-dev
           start: yarn start
           wait-on: "http://localhost:9233"
