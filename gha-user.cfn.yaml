@@ -1,0 +1,90 @@
+# Stack: manage-frontend-github-actions-user
+# ==========================================
+
+Resources:
+
+  GetObjectsDE66E0D1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: s3:GetObject
+            Effect: Allow
+            Resource: arn:aws:s3:::gu-reader-revenue-private/manage-frontend/*
+        Version: "2012-10-17"
+      PolicyName: GetObjectsDE66E0D1
+      Roles:
+        - Ref: GithubActionsRoleF5CC769F
+
+  DiscoverApiGatewayLambdas:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: cloudformation:ListStackResources
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-DEV-*
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-CODE-*
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/membership-${Stage}-* # avoids PROD resources being available to lower environments
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-DEV-*
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-CODE-*
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/support-${Stage}-* # avoids PROD resources being available to lower environments
+        Version: "2012-10-17"
+      PolicyName: DiscoverApiGatewayLambdas
+      Roles:
+        - Ref: GithubActionsRoleF5CC769F
+
+  DiscoverApiGatewayApiKeys:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: apigateway:GET
+            Effect: Allow
+            Resource: !Sub arn:aws:apigateway:${AWS::Region}::/apikeys/*
+        Version: "2012-10-17"
+      PolicyName: DiscoverApiGatewayApiKeys
+      Roles:
+        - Ref: GithubActionsRoleF5CC769F
+
+  GithubActionsOidc:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sigstore
+      ThumbprintList:
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+
+  GithubActionsRoleF5CC769F:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub: repo:guardian/*
+            Effect: Allow
+            Principal:
+              Federated:
+                Ref: GithubActionsOidc
+        Version: "2012-10-17"
+      Tags:
+        - Key: gu:cdk:version
+          Value: 34.0.2
+        - Key: gu:repo
+          Value: guardian/membership-platform
+        - Key: Stack
+          Value: membership
+        - Key: Stage
+          Value: INFRA
+
+Outputs:
+
+  GithubActionsRoleGithubActionsRoleArnC13D9654:
+    Value:
+      Fn::GetAtt:
+        - GithubActionsRoleF5CC769F
+        - Arn
