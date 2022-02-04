@@ -111,7 +111,9 @@ export const createTestUser = ({
         url: "https://idapi.code.dev-theguardian.com/user/test",
         method: "POST",
         headers: {
-          "X-GU-ID-Client-Access-Token": `Bearer `,
+          "X-GU-ID-Client-Access-Token": `Bearer ${Cypress.env(
+            "IDAPI_CLIENT_ACCESS_TOKEN"
+          )}`,
         },
         body: {
           primaryEmailAddress: finalEmail,
