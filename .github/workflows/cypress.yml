@@ -4,7 +4,7 @@ on: push
 jobs:
   cypress:
     name: Manage-frontend Cypress
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     permissions:
       id-token: write
@@ -20,19 +20,19 @@ jobs:
         with:
           awsRoleToAssume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
 
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
         with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+          node-version-file: app/.nvmrc
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
           IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
+          workingDir: app
           build: yarn bundle-dev
           start: yarn start
           wait-on: "http://localhost:9233"
