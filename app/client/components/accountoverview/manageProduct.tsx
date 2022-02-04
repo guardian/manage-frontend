@@ -60,7 +60,6 @@ const InnerContent = ({
   manageProductProps,
   productDetail,
 }: InnerContentProps) => {
-  console.log("yeet");
   const mainPlan = getMainPlan(productDetail.subscription);
 
   const groupedProductType = manageProductProps.groupedProductType;

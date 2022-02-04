@@ -3,6 +3,7 @@
   "viewportHeight": 860,
   "baseUrl": "http://localhost:9233/",
   "video": false,
+  "failOnStatusCode": false,
   "chromeWebSecurity": false,
   "experimentalSessionSupport": true,
   "blockHosts": [
@@ -18,5 +19,8 @@
     "*the-ozone-project.com",
     "*openx.net"
   ],
-  "retries": 2
+  "retries": 2,
+  "env": {
+    "mockingEndpoint": "localhost:9000/mock"
+  }
 }

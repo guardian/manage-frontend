@@ -151,7 +151,7 @@ const contribution = [
       payPalEmail: "sb-ltpuy8454870@personal.example.com",
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -223,7 +223,7 @@ const mmaResponse = [
       },
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -293,7 +293,7 @@ const mmaResponse = [
       },
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -364,7 +364,7 @@ const mmaResponse = [
       },
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -434,7 +434,7 @@ const mmaResponse = [
       },
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -639,7 +639,7 @@ const gwProductDetail = [
       },
       contactId: "0039E00001KA26BQAT",
       deliveryAddress: {
-        addressLine1: "71 Valnay Street",
+        addressLine1: "11 Valnay Street",
         addressLine2: "",
         town: "Canberra",
         region: "ACT",
@@ -705,21 +705,11 @@ describe("E2E Page rendering", function () {
         body: cancelledResponse,
       }).as("cancelled");
 
-      cy.visit(
-        "https://profile.thegulocal.com/signin?returnUrl=https%3A%2F%2Fmanage.thegulocal.com%2F"
-      );
-
-      cy.get('input[name="email"]').type("jon.flynn+code@guardian.co.uk");
-      cy.get('input[name="password"]').type("");
-
-      cy.mockNext(200, {
-        cookies: {
-          values: [{ key: "key", value: "value" }],
-          expiresAt: "tomorrow",
-        },
+      cy.createTestUser({ isUserEmailValidated: true }).then(({ cookies }) => {
+        cookies.forEach((cookie) => cy.setCookie(cookie.key, cookie.value));
       });
 
-      cy.get("[data-cy=sign-in-button]").click();
+      cy.visit("/");
 
       cy.wait("@mma");
       cy.wait("@cancelled");
@@ -734,6 +724,70 @@ describe("E2E Page rendering", function () {
     });
   });
 
+  it("cancels contribution", function () {
+    cy.intercept("GET", "/api/me/mma?productType=Contribution", {
+      statusCode: 200,
+      body: contribution,
+    });
+
+    cy.intercept("GET", "/api/me/mma", {
+      statusCode: 200,
+      body: mmaResponse,
+    });
+
+    cy.intercept("GET", "/api/me/mma/**", {
+      statusCode: 200,
+      body: { subscription: {} },
+    }).as("new_product_detail");
+
+    cy.intercept("GET", "/api/cancelled/", {
+      statusCode: 200,
+      body: cancelledResponse,
+    }).as("cancelled");
+
+    cy.intercept("GET", "api/cancellation-date/**", {
+      statusCode: 200,
+      body: { cancellationEffectiveDate: "2022-02-05" },
+    });
+
+    cy.intercept("POST", "api/cancel/**", {
+      statusCode: 200,
+    }).as("cancel_contribution");
+
+    cy.intercept("POST", "/api/case", {
+      statusCode: 200,
+      body: {
+        id: "caseId",
+      },
+    }).as("get_case");
+
+    cy.intercept("PATCH", "/api/case/**", {
+      statusCode: 200,
+      body: { message: "success" },
+    }).as("create_case_in_salesforce");
+
+    cy.visit("/");
+    cy.findByText("Manage recurring contribution").click();
+    cy.wait("@cancelled");
+
+    cy.get('[data-cy="Cancel recurring contribution"]').click();
+    cy.get('[data-cy="cancellation_reasons"] label').first().click();
+    cy.get('[data-cy="cta_container"] a').first().click();
+
+    cy.wait("@get_case");
+
+    cy.findByText("Confirm cancellation").click();
+
+    cy.wait("@create_case_in_salesforce");
+    cy.wait("@cancel_contribution");
+    cy.wait("@new_product_detail");
+
+    cy.get('[data-cy="cancellation_message"]');
+
+    cy.get("@create_case_in_salesforce.all").should("have.length", 1);
+    cy.get("@cancel_contribution.all").should("have.length", 1);
+  });
+
   it("Completes adding holiday stop", function () {
     cy.intercept("GET", "/api/me/mma", {
       statusCode: 200,
@@ -745,7 +799,7 @@ describe("E2E Page rendering", function () {
       body: gwProductDetail,
     }).as("product_detail");
 
-    cy.intercept("GET", "/api/holidays/**", {
+    cy.intercept("GET", "/api/holidays/*/*", {
       statusCode: 200,
       body: {
         nextInvoiceDateAfterToday: "2022-02-24",
@@ -801,88 +855,20 @@ describe("E2E Page rendering", function () {
     }).as("create_holiday_stop");
 
     cy.visit("/suspend/guardianweekly");
-
     cy.wait("@fetch_holidays");
     cy.wait("@product_detail");
-
     cy.get('[data-cy="create_suspension_cta"] button').click();
 
     cy.findByText("Choose the dates you will be away");
-
     cy.get('[data-cy="date_picker"] div').eq(8).click();
     cy.get('[data-cy="date_picker"] div').eq(10).click();
-
-    cy.wait(8000);
+    cy.findByText("Review details").click();
 
     cy.findByText("Confirm").click();
-
     cy.findByText("Review details before confirming");
 
     cy.wait("@create_holiday_stop");
-  });
-
-  it("cancels contribution", function () {
-    cy.intercept("GET", "/api/me/mma?productType=Contribution", {
-      statusCode: 200,
-      body: contribution,
-    });
-
-    cy.intercept("GET", "/api/me/mma", {
-      statusCode: 200,
-      body: mmaResponse,
-    });
-
-    cy.intercept("GET", "/api/me/mma/**", {
-      statusCode: 200,
-      body: { subscription: {} },
-    }).as("new_product_detail");
-
-    cy.intercept("GET", "/api/cancelled/", {
-      statusCode: 200,
-      body: cancelledResponse,
-    }).as("cancelled");
-
-    cy.intercept("GET", "api/cancellation-date/**", {
-      statusCode: 200,
-      body: { cancellationEffectiveDate: "2022-02-05" },
-    });
-
-    cy.intercept("POST", "api/cancel/**", {
-      statusCode: 200,
-    }).as("cancel_contribution");
-
-    cy.intercept("POST", "/api/case", {
-      statusCode: 200,
-      body: {
-        id: "caseId",
-      },
-    }).as("get_case");
-
-    cy.intercept("PATCH", "/api/case/**", {
-      statusCode: 200,
-    }).as("create_case_in_salesforce");
-
-    cy.visit("/");
-    cy.findByText("Manage recurring contribution").click();
-    cy.wait("@cancelled");
-
-    cy.get('[data-cy="Cancel recurring contribution"]').click();
-    cy.get('[data-cy="cancellation_reasons"] label').first().click();
-    cy.get('[data-cy="cta_container"] a').first().click();
-
-    cy.wait("@get_case");
-
-    cy.findByText("Confirm cancellation").click();
-
-    cy.wait("@create_case_in_salesforce");
-    cy.wait("@cancel_contribution");
-    cy.wait("@new_product_detail");
-
-    cy.get('[data-cy="cancellation_message"]');
-    cy.wait(5000);
-
-    // expect('@create_case_in_salesforce').to.have.been.calledOnce;
-    // expect('@cancel_contribution').to.have.been.calledOnce;
+    cy.findByText("Your schedule has been set");
   });
 
   it("Complete direct debit payment update", function () {
@@ -921,6 +907,8 @@ describe("E2E Page rendering", function () {
     cy.wait("@refetch_subscription");
 
     cy.findByText("Your payment details were updated successfully");
+
+    cy.get("@scala_backend.all").should("have.length", 1);
   });
 
   it("Shows correct error messages for direct debit form", function () {
@@ -954,7 +942,7 @@ describe("E2E Page rendering", function () {
     cy.intercept("POST", "/api/payment/card", {
       statusCode: 200,
       body: stripeSetupIntent,
-    });
+    }).as("createSetupIntent");
 
     cy.intercept("POST", "/api/payment/card/**", {
       statusCode: 200,
@@ -964,7 +952,7 @@ describe("E2E Page rendering", function () {
     cy.intercept("POST", "https://api.stripe.com/v1/setup_intents/**", {
       statusCode: 200,
       body: confirmCardSetupResponse,
-    });
+    }).as("confirmCardSetup");
 
     cy.intercept("POST", "https://api.stripe.com/v1/payment_methods", {
       statusCode: 200,
@@ -973,7 +961,6 @@ describe("E2E Page rendering", function () {
 
     cy.visit("/payment/subscriptioncard");
 
-    // wait for MMA to load data
     cy.wait("@mma");
 
     cy.fillElementsInput("cardNumber", "4242424242424242");
@@ -998,6 +985,10 @@ describe("E2E Page rendering", function () {
     cy.wait("@mma");
 
     cy.findByText("Your payment details were updated successfully");
+
+    cy.get("@createSetupIntent.all").should("have.length", 1);
+    cy.get("@confirmCardSetup.all").should("have.length", 1);
+    cy.get("@scala_backend.all").should("have.length", 1);
   });
 
   it("Show recaptcha error", function () {
@@ -1005,6 +996,7 @@ describe("E2E Page rendering", function () {
 
     cy.findByText("Your current payment method");
     cy.findByText("Update your payment method");
+
     // wait for stripe to load
     cy.wait(5000);
 
@@ -1015,6 +1007,5 @@ describe("E2E Page rendering", function () {
     cy.findByText("Update payment method").click();
 
     cy.findByText("Recaptcha has not been completed.");
-    cy.wait(10000);
   });
 });

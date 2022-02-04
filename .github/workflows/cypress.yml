@@ -1,0 +1,29 @@
+name: manage-frontend cypress
+on: push
+
+jobs:
+  cypress:
+    name: Manage-frontend Cypress
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [1, 2, 3, 4, 5, 6]
+    steps:
+      - uses: guardian/actions-assume-aws-role@v1.0.0
+        with:
+          awsRoleToAssume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+      - run: aws s3 cp s3://gu-reader-revenue-private/manage-frontend/CODE/idapi-CODE.json .
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          build: yarn bundle-dev
+          start: yarn start
+          wait-on: "http://localhost:9233"
+          wait-on-timeout: 30
+          quiet: true
+          browser: chrome
+          spec: cypress/integration/parallel-${{ matrix.group }}/*.ts
