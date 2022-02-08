@@ -14,8 +14,8 @@ const dlStyles = css`
 
 const iStyles = css`
   position: absolute;
-  top: ${space[5]}px;
-  left: ${space[5]}px;
+  top: ${space[6]}px;
+  left: ${space[6]}px;
 `;
 
 const dtStyles = css`

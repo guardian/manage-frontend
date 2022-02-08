@@ -104,7 +104,7 @@ export const CallCentreEmailAndNumbers = (
       isOpen
         ? `
         font-weight: bold;
-        background-color: ${neutral["97"]};
+        background-color: ${neutral["86"]};
         border-bottom: 1px solid ${neutral["86"]};
       `
         : ""
