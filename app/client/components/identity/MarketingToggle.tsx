@@ -35,14 +35,6 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
   const { id, description, selected, title, onClick } = props;
   return (
     <div
-      onClick={(e) => {
-        // Checkboxes inside labels will trigger click events twice.
-        // Ignore the input click event
-        if (e.target instanceof Element && e.target.nodeName === "INPUT") {
-          return;
-        }
-        onClick(id);
-      }}
       css={[
         standardText,
         {
@@ -59,13 +51,16 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
               padding-right: 5px;
               font-weight: bold;
             }
+            button {
+              cursor: pointer;
+            }
           `}
           label={title}
           labelPosition="left"
           labelId={id}
           checked={!!selected}
           onClick={(_) => {
-            return;
+            onClick(id);
           }}
         />
       </div>
