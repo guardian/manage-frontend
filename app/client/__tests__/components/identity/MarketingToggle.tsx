@@ -1,6 +1,6 @@
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
-import { create } from "react-test-renderer";
 import { MarketingToggle } from "../../../components/identity/MarketingToggle";
 
 afterEach(cleanup);
@@ -12,41 +12,35 @@ describe("MarketingToggle component", () => {
     title: "Test title",
     clickHandler: jest.fn()
   };
-  it("renders correctly and displays marketing information", () => {
-    const rendered = create(
-      <MarketingToggle
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        onClick={input.clickHandler}
-      />
-    );
-    expect(rendered.toJSON()).toMatchSnapshot();
+
+  const marketingToggle = (selected: boolean) => (
+    <MarketingToggle
+      id={input.id}
+      description={input.description}
+      title={input.title}
+      selected={selected}
+      onClick={input.clickHandler}
+    />
+  );
+
+  it("renders correctly", () => {
+    render(marketingToggle(false));
+
+    expect(screen.getByRole("switch")).toBeInTheDocument();
+    expect(screen.getByLabelText("Test title")).not.toBeChecked();
+    expect(screen.getByText("Test description")).toBeVisible();
   });
 
   it("will select the checkbox when the selected prop is passed", () => {
-    const rendered = create(
-      <MarketingToggle
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        selected={true}
-        onClick={input.clickHandler}
-      />
-    );
-    expect(rendered.toJSON()).toMatchSnapshot();
+    render(marketingToggle(true));
+
+    expect(screen.getByRole("switch")).toBeChecked();
   });
 
   it("will call the click handler when it is clicked", () => {
-    const { getByText } = render(
-      <MarketingToggle
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        onClick={input.clickHandler}
-      />
-    );
-    fireEvent.click(getByText(input.title));
+    render(marketingToggle(false));
+    fireEvent.click(screen.getByRole("switch"));
+
     expect(input.clickHandler).toHaveBeenCalledTimes(1);
     expect(input.clickHandler).toHaveBeenLastCalledWith(input.id);
   });

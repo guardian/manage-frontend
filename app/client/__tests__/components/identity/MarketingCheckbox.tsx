@@ -1,52 +1,52 @@
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, render, fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
-import { create } from "react-test-renderer";
 import { MarketingCheckbox } from "../../../components/identity/MarketingCheckbox";
 
 afterEach(cleanup);
 
-describe("MarketingPreference component", () => {
+describe("MarketingCheckbox component", () => {
   const input = {
     id: "13",
     description: "Test description",
     title: "Test title",
     clickHandler: jest.fn()
   };
+
+  const marketingCheckbox = (selected: boolean) => (
+    <MarketingCheckbox
+      id={input.id}
+      description={input.description}
+      title={input.title}
+      selected={selected}
+      onClick={input.clickHandler}
+    />
+  );
+
   it("renders correctly and displays marketing information", () => {
-    const rendered = create(
-      <MarketingCheckbox
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        onClick={input.clickHandler}
-      />
-    );
-    expect(rendered.toJSON()).toMatchSnapshot();
+    render(marketingCheckbox(false));
+
+    const checkboxRoles = screen.getAllByRole("checkbox");
+    expect(checkboxRoles).toHaveLength(2);
+    checkboxRoles.map((role) => expect(role).not.toBeChecked());
+
+    expect(screen.getByText("Test title")).toBeVisible();
+    expect(screen.getByText("Test description")).toBeVisible();
   });
 
   it("will select the checkbox when the selected prop is passed", () => {
-    const rendered = create(
-      <MarketingCheckbox
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        selected={true}
-        onClick={input.clickHandler}
-      />
-    );
-    expect(rendered.toJSON()).toMatchSnapshot();
+    render(marketingCheckbox(true));
+
+    const checkboxRoles = screen.getAllByRole("checkbox");
+    checkboxRoles.map((role) => expect(role).toBeChecked());
   });
 
   it("will call the click handler when it is clicked", () => {
-    const { getByText } = render(
-      <MarketingCheckbox
-        id={input.id}
-        description={input.description}
-        title={input.title}
-        onClick={input.clickHandler}
-      />
-    );
-    fireEvent.click(getByText(input.title));
+    render(marketingCheckbox(false));
+
+    const checkboxRoles = screen.getAllByRole("checkbox");
+    fireEvent.click(checkboxRoles[0]);
+
     expect(input.clickHandler).toHaveBeenCalledTimes(1);
     expect(input.clickHandler).toHaveBeenLastCalledWith(input.id);
   });

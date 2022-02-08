@@ -20,14 +20,8 @@ describe("OptOutSection component", () => {
       />
     );
 
-    expect(screen.getByLabelText("Allow post")).toHaveAttribute(
-      "aria-checked",
-      "true"
-    );
-    expect(screen.getByLabelText("Allow phone")).toHaveAttribute(
-      "aria-checked",
-      "false"
-    );
+    expect(screen.getByLabelText("Allow post")).toBeChecked();
+    expect(screen.getByLabelText("Allow phone")).not.toBeChecked();
   });
 });
 
