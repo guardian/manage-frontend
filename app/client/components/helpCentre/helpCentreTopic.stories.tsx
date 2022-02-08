@@ -10,7 +10,7 @@ export default {
   title: "Pages/HelpCentreTopic",
   component: HelpCentreTopic,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof HelpCentreTopic>;

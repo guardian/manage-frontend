@@ -7,7 +7,7 @@ export default {
   title: "Pages/Help",
   component: Help,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
     chromatic: {
       viewports: [320, 1300],

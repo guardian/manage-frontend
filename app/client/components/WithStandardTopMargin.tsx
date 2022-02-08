@@ -1,7 +1,7 @@
 import { css } from "@emotion/core";
 import React from "react";
 
-interface WithStandardTopMarginProps {
+export interface WithStandardTopMarginProps {
   children: React.ReactNode;
 }
 export const WithStandardTopMargin = (props: WithStandardTopMarginProps) => (

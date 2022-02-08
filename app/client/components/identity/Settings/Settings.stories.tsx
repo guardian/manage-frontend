@@ -9,7 +9,7 @@ export default {
   title: "Pages/Settings",
   component: Settings,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof Settings>;

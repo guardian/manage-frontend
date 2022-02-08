@@ -14,7 +14,7 @@ export default {
   title: "Pages/Billing",
   component: Billing,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof Billing>;

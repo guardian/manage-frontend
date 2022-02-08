@@ -7,7 +7,7 @@ export default {
   title: "Pages/Maintenance",
   component: Maintenance,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof Maintenance>;

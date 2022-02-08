@@ -1,53 +1,51 @@
 import { css } from "@emotion/core";
 import React from "react";
 
-export const expanderButtonCss = (
-  mainColour?: string,
-  highlightColour?: string
-) => (isExpanded: boolean) =>
-  css({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    cursor: "pointer",
-    border: "0",
-    background: "none",
-    textAlign: "left",
-    fontFamily: "inherit",
-    fontSize: "16px",
-    padding: "10px 1px 10px 0",
-    position: "relative",
-    transform: "translateY(-1px)",
-    "::after": {
-      content: "''",
-      display: "block",
-      width: "5px",
-      height: "5px",
-      border: "1px solid currentColor",
-      borderLeft: "transparent",
-      borderTop: "transparent",
-      marginLeft: "8px",
-      transform: `translateY(${isExpanded ? 0 : -2}px) rotate(${
-        isExpanded ? "225deg" : "45deg"
-      })`
-    },
-    ":hover, :focus": {
-      color: highlightColour
-    },
-    ":hover": {
+export const expanderButtonCss =
+  (mainColour?: string, highlightColour?: string) => (isExpanded: boolean) =>
+    css({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      cursor: "pointer",
+      border: "0",
+      background: "none",
+      textAlign: "left",
+      fontFamily: "inherit",
+      fontSize: "16px",
+      padding: "10px 1px 10px 0",
+      position: "relative",
+      transform: "translateY(-1px)",
       "::after": {
-        transform: `translateY(${isExpanded ? -2 : 0}px) rotate(${
+        content: "''",
+        display: "block",
+        width: "5px",
+        height: "5px",
+        border: "1px solid currentColor",
+        borderLeft: "transparent",
+        borderTop: "transparent",
+        marginLeft: "8px",
+        transform: `translateY(${isExpanded ? 0 : -2}px) rotate(${
           isExpanded ? "225deg" : "45deg"
         })`,
-        transitionProperty: "transform",
-        transitionDuration: "250ms",
-        transitionTimingFunction: "ease-in-out"
-      }
-    },
-    color: isExpanded ? highlightColour : mainColour
-  });
+      },
+      ":hover, :focus": {
+        color: highlightColour,
+      },
+      ":hover": {
+        "::after": {
+          transform: `translateY(${isExpanded ? -2 : 0}px) rotate(${
+            isExpanded ? "225deg" : "45deg"
+          })`,
+          transitionProperty: "transform",
+          transitionDuration: "250ms",
+          transitionTimingFunction: "ease-in-out",
+        },
+      },
+      color: isExpanded ? highlightColour : mainColour,
+    });
 
-interface ExpanderButtonProps {
+export interface ExpanderButtonProps {
   buttonLabel: string | React.ReactElement;
   children: React.ReactElement | React.ReactElement[];
 }
@@ -61,7 +59,7 @@ export class ExpanderButton extends React.Component<
   ExpanderButtonState
 > {
   public state = {
-    isExpanded: false
+    isExpanded: false,
   };
 
   public render = () => (
@@ -71,7 +69,7 @@ export class ExpanderButton extends React.Component<
         type="button"
         aria-expanded={this.state.isExpanded}
         onClick={() =>
-          this.setState(prevState => ({ isExpanded: !prevState.isExpanded }))
+          this.setState((prevState) => ({ isExpanded: !prevState.isExpanded }))
         }
       >
         {this.props.buttonLabel}

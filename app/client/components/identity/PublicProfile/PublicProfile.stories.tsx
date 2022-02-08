@@ -9,7 +9,7 @@ export default {
   title: "Pages/Profile",
   component: PublicProfile,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof PublicProfile>;

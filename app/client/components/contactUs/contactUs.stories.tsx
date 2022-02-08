@@ -11,7 +11,7 @@ export default {
   title: "Pages/ContactUs",
   component: ContactUs,
   parameters: {
-    controls: { hideNoControlsWarning: true },
+    controls: { disabled: true },
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof ContactUs>;
