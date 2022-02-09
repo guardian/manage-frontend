@@ -36,9 +36,9 @@ const optOutFinderAndInverter =
 
 const YourDataDescription: FC = () => (
   <>
-    By “Your data” we mean:
+    What we mean by your data:
     <ul>
-      <li>Information you provide such as your email address</li>
+      <li>Information you provide e.g. your email address</li>
       <li>Products or services you buy from us</li>
       <li>
         Pages you view on theguardian.com or other Guardian websites when signed
