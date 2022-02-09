@@ -9,10 +9,12 @@
     "bundle": "copy-node-modules . ./dist && yarn webpack --config webpack.production.js",
     "bundle-dev": "yarn bundle-dev-server && yarn bundle-dev-client",
     "bundle-dev-server": "webpack --config webpack.dev.server.js",
+    "bundle-dev-server-cypress": "CYPRESS=SKIP_IDAPI webpack --config webpack.dev.server.js",
     "bundle-dev-client": "webpack --config webpack.dev.client.js",
     "bundle-check-client": "webpack --config webpack.prod.client.bundle-check.js",
     "bundle-check-client-if-changed": "((git diff --name-only --cached | grep 'yarn.lock') && yarn bundle-check-client) || true",
     "serve-dev": "webpack-dev-server --config ./webpack.dev.client.js --client-web-socket-url https://manage.thegulocal.com/ws --open https://manage.thegulocal.com/",
+    "serve-dev-cypress": "webpack-dev-server --config ./webpack.dev.client.js",
     "watch": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn start & yarn serve-dev)",
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
@@ -23,8 +25,7 @@
     "build-storybook": "build-storybook",
     "cypress:open": "DEBUG=cypress:* cypress open",
     "cypress:run": "cypress run",
-    "cypress:run:e2e": "cypress run --spec 'cypress/integration/e2e/**/*'",
-    "cypress:run:mocked": "cypress run --spec 'cypress/integration/mocked/**/*'"
+    "cypress:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)"
   },
   "husky": {
     "hooks": {

@@ -151,6 +151,10 @@ export const withIdentity: (
 
     const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
+    if (process.env.CYPRESS === "SKIP_IDAPI") {
+      return next();
+    }
+
     idapiConfigPromise
       .then((idapiConfig) => {
         if (idapiConfig) {
