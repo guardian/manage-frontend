@@ -100,7 +100,7 @@
     "copy-node-modules": "^1.0.4",
     "copy-webpack-plugin": "^9.1.0",
     "core-js": "^3.19.1",
-    "cypress": "^9.3.1",
+    "cypress": "8.5.0",
     "cypress-plugin-stripe-elements": "^1.0.2",
     "dom-testing-library": "^2.3.2",
     "emotion-theming": "10.3.0",
