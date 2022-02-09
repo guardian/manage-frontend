@@ -8,11 +8,13 @@ import {
 import { NewPaymentMethodDetail } from "../../../components/payment/update/newPaymentMethodDetail";
 import {
   guardianWeeklyCard,
-  guardianWeeklySubscriptionCard,
   digitalDD,
-  digitalSubscriptionDD,
   guardianWeeklyExpiredCard,
-} from "../../../testData";
+} from "../../../fixtures/productDetail";
+import {
+  guardianWeeklySubscriptionCard,
+  digitalSubscriptionDD,
+} from "../../../fixtures/subscription";
 
 // mock functions for NewPaymentMethodDetail type
 const matchesResponse = (_: any) => true;
