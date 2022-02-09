@@ -727,7 +727,7 @@ describe("E2E Page rendering", function () {
 
       // wait for cookies to be set
       cy.wait(1000);
-      cy.url().should("contain", "manage.thegulocal.com");
+      //   cy.url().should("contain", "manage.thegulocal.com");
     });
   });
 

@@ -102,6 +102,7 @@
     "core-js": "^3.19.1",
     "cypress": "8.5.0",
     "cypress-plugin-stripe-elements": "^1.0.2",
+    "cypress-webpack-preprocessor-v5": "^5.0.0-alpha.1",
     "dom-testing-library": "^2.3.2",
     "emotion-theming": "10.3.0",
     "enzyme": "^3.11.0",
