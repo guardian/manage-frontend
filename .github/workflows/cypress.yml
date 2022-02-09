@@ -34,7 +34,7 @@ jobs:
         with:
           working-directory: app
           start: yarn cypress:server
-          wait-on: "http://localhost:9234"
+          wait-on: "http://localhost:9234, http://localhost:9233"
           wait-on-timeout: 30
           quiet: true
           browser: chrome

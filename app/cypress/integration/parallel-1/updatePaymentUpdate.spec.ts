@@ -711,6 +711,16 @@ describe("E2E Page rendering", function () {
       cy.wait("@mma");
       cy.wait("@cancelled");
 
+      cy.window().then((window) => {
+        // @ts-ignore
+        window.guardian.identityDetails = {
+          signInStatus: "signedInRecently",
+          userId: "200006712",
+          displayName: "user",
+          email: "example@example.com",
+        };
+      });
+
       cy.getIframeBody(iframeMessage)
         .find(`button[title="${acceptCookiesButtonText}"]`, { timeout: 10000 })
         .click();
@@ -719,6 +729,67 @@ describe("E2E Page rendering", function () {
       cy.wait(1000);
       cy.url().should("contain", "manage.thegulocal.com");
     });
+  });
+
+  it("Complete card payment update", function () {
+    cy.intercept("GET", "/api/me/mma?productType=*", {
+      statusCode: 200,
+      body: gwProductDetail,
+    }).as("product_detail");
+
+    cy.intercept("POST", "/api/payment/card", {
+      statusCode: 200,
+      body: stripeSetupIntent,
+    }).as("createSetupIntent");
+
+    cy.intercept("POST", "/api/payment/card/**", {
+      statusCode: 200,
+      body: executePaymentUpdateResponse,
+    }).as("scala_backend");
+
+    cy.intercept("POST", "https://api.stripe.com/v1/setup_intents/**", {
+      statusCode: 200,
+      body: confirmCardSetupResponse,
+    }).as("confirmCardSetup");
+
+    cy.intercept("POST", "https://api.stripe.com/v1/payment_methods", {
+      statusCode: 200,
+      body: stripePaymentMethod,
+    });
+
+    cy.visit("/payment/subscriptioncard");
+
+    cy.wait("@product_detail");
+
+    // wait for stripe to load
+    cy.wait(4000);
+
+    cy.fillElementsInput("cardNumber", "4242424242424242");
+    cy.fillElementsInput("cardExpiry", "1025");
+    cy.fillElementsInput("cardCvc", "123");
+
+    cy.get("#recaptcha *> iframe").then(($iframe) => {
+      const $body = $iframe.contents().find("body");
+      cy.wrap($body)
+        .find(".recaptcha-checkbox-border")
+        .should("be.visible")
+        .click()
+        .then(() => {
+          // wait for recaptcha to resolve
+          cy.wait(1000);
+
+          cy.findByText("Update payment method").click();
+        });
+    });
+
+    cy.wait("@scala_backend");
+    cy.wait("@product_detail");
+
+    cy.findByText("Your payment details were updated successfully");
+
+    cy.get("@createSetupIntent.all").should("have.length", 1);
+    cy.get("@confirmCardSetup.all").should("have.length", 1);
+    cy.get("@scala_backend.all").should("have.length", 1);
   });
 
   it("Completes adding holiday stop", function () {
@@ -961,76 +1032,5 @@ describe("E2E Page rendering", function () {
 
     cy.get("@create_case_in_salesforce.all").should("have.length", 1);
     cy.get("@cancel_contribution.all").should("have.length", 1);
-  });
-
-  it("Complete card payment update", function () {
-    cy.intercept("GET", "/api/me/mma?productType=*", {
-      statusCode: 200,
-      body: gwProductDetail,
-    }).as("product_detail");
-
-    cy.intercept("POST", "/api/payment/card", {
-      statusCode: 200,
-      body: stripeSetupIntent,
-    }).as("createSetupIntent");
-
-    cy.intercept("POST", "/api/payment/card/**", {
-      statusCode: 200,
-      body: executePaymentUpdateResponse,
-    }).as("scala_backend");
-
-    cy.intercept("POST", "https://api.stripe.com/v1/setup_intents/**", {
-      statusCode: 200,
-      body: confirmCardSetupResponse,
-    }).as("confirmCardSetup");
-
-    cy.intercept("POST", "https://api.stripe.com/v1/payment_methods", {
-      statusCode: 200,
-      body: stripePaymentMethod,
-    });
-
-    cy.visit("/payment/subscriptioncard", {
-      onLoad(window) {
-        // @ts-ignore
-        window.guardian.identityDetails = {
-          signInStatus: "signedInRecently",
-          userId: "200006712",
-          displayName: "user",
-          email: "example@example.com",
-        };
-      },
-    });
-
-    cy.wait("@product_detail");
-
-    // wait for stripe to load
-    cy.wait(4000);
-
-    cy.fillElementsInput("cardNumber", "4242424242424242");
-    cy.fillElementsInput("cardExpiry", "1025");
-    cy.fillElementsInput("cardCvc", "123");
-
-    cy.get("#recaptcha *> iframe").then(($iframe) => {
-      const $body = $iframe.contents().find("body");
-      cy.wrap($body)
-        .find(".recaptcha-checkbox-border")
-        .should("be.visible")
-        .click()
-        .then(() => {
-          // wait for recaptcha to resolve
-          cy.wait(1000);
-
-          cy.findByText("Update payment method").click();
-        });
-    });
-
-    cy.wait("@scala_backend");
-    cy.wait("@product_detail");
-
-    cy.findByText("Your payment details were updated successfully");
-
-    cy.get("@createSetupIntent.all").should("have.length", 1);
-    cy.get("@confirmCardSetup.all").should("have.length", 1);
-    cy.get("@scala_backend.all").should("have.length", 1);
   });
 });
