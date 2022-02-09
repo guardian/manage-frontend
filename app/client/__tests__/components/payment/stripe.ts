@@ -27,7 +27,7 @@ test("Uses Rest Of World Stripe key for UK delivery address", () => {
   );
 });
 
-test("Uses Australian Stripe key for Autralian delivery address", () => {
+test("Uses Australian Stripe key for Australian delivery address", () => {
   const stripePublicKey = getStripeKey(
     guardianWeeklySubscriptionAustralia.deliveryAddress?.country,
     false

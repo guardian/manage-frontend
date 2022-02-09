@@ -1,3 +1,4 @@
+/* eslint jest/no-conditional-expect: "off" */
 import Enzyme, { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import React from "react";
@@ -20,6 +21,7 @@ Enzyme.configure({ adapter: new Adapter() });
    ************************************************** */
 
 declare global {
+  /* eslint-disable-next-line */
   namespace NodeJS {
     interface Global {
       document: Document;
