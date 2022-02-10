@@ -51,7 +51,7 @@ describe("currentPaymentDetails.tsx", () => {
         <CurrentPaymentDetails {...newspaperVoucherPaypal} />
       );
 
-      getByText("s*************0@personal.example.com");
+      getByText("t*******r@example.com");
     });
   });
 });
