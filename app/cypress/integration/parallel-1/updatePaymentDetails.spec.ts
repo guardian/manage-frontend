@@ -76,9 +76,6 @@ describe("E2E Page rendering", function () {
 
     cy.wait("@product_detail");
 
-    // wait for stripe to load
-    cy.wait(3000);
-
     cy.fillElementsInput("cardNumber", "4242424242424242");
     cy.fillElementsInput("cardExpiry", "1025");
     cy.fillElementsInput("cardCvc", "123");
@@ -277,9 +274,6 @@ describe("E2E Page rendering", function () {
 
     cy.findByText("Your current payment method");
     cy.findByText("Update your payment method");
-
-    // wait for stripe to load
-    cy.wait(3000);
 
     cy.fillElementsInput("cardNumber", "4242424242424242");
     cy.fillElementsInput("cardExpiry", "1025");
