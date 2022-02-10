@@ -16,8 +16,7 @@
  * @type {Cypress.PluginConfig}
  */
 
-const webpackPreprocessor = require("cypress-webpack-preprocessor-v5");
-let webpackConfig = require("../../webpack.dev.client");
+const webpackPreprocessor = require("@cypress/webpack-preprocessor");
 
 module.exports = (on: any) => {
   const options = {

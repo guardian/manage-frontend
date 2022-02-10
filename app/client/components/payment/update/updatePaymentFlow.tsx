@@ -366,7 +366,9 @@ export class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
+            userEmail={
+              subscription.card?.email || window.guardian.identityDetails.email
+            }
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
@@ -377,7 +379,9 @@ export class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
+            userEmail={
+              subscription.card?.email || window.guardian.identityDetails.email
+            }
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
