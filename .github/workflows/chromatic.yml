@@ -1,0 +1,24 @@
+name: Chromatic
+on: push
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+        with:
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+          node-version-file: app/.nvmrc
+
+      - name: Install dependencies
+        run: yarn
+        working-directory: app
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_APP_CODE }}
+          workingDir: app

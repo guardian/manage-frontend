@@ -77,7 +77,7 @@ const PHONE_DATA: PhoneRegion[] = [
   },
 ];
 
-interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
+export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
   hideEmailAddress?: boolean;
   phoneRegionFilterKeys?: PhoneRegionKey[];
   compactLayout?: boolean;

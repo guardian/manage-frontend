@@ -3,10 +3,6 @@ import { css } from "@emotion/core";
 import { textSans } from "@guardian/src-foundations/typography";
 import { Spinner } from "./spinner";
 
-interface OverlayLoaderProps {
-  message: string;
-}
-
 const overlay = css`
   z-index: 10000;
   display: block;
@@ -49,6 +45,10 @@ const overlayMessageBackground = css`
   right: 0;
   background: rgba(0, 0, 0, 0.6);
 `;
+
+export interface OverlayLoaderProps {
+  message: string;
+}
 
 export default function OverlayLoader(props: OverlayLoaderProps) {
   return (

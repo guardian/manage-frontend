@@ -2,7 +2,7 @@ import { css } from "@emotion/core";
 import React, { ChangeEvent } from "react";
 import palette from "../colours";
 
-interface RadioButtonProps {
+export interface RadioButtonProps {
   value: string;
   label: string;
   checked: boolean;

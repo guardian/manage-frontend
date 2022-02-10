@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { Redirect, Router } from "@reach/router";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import {
   GROUPED_PRODUCT_TYPES,
   GroupedProductType,
@@ -36,6 +36,11 @@ import { PaymentUpdated } from "./payment/update/paymentUpdated";
 import PaymentFailed from "./payment/update/PaymentFailed";
 import { ScrollToTop } from "./scrollToTop";
 import Maintenance from "./maintenance";
+import {
+  isSignedIn,
+  pageRequiresSignIn,
+  SignInStatus,
+} from "../services/signInStatus";
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -104,153 +109,161 @@ const CancelReminders = lazy(
   () => import(/* webpackChunkName: "CancelReminders" */ "./cancelReminders")
 );
 
-const MMARouter = () => (
-  <Main>
-    <Global styles={css(`${global}`)} />
-    <Global styles={css(`${fonts}`)} />
-    <Suspense fallback={<MMAPageSkeleton />}>
-      <Router primary={true} css={{ height: "100%" }}>
-        <AccountOverview path="/" />
-        <Billing path="/billing" />
+const MMARouter = () => {
+  const [signInStatus, setSignInStatus] = useState<SignInStatus>("init");
 
-        {Object.values(GROUPED_PRODUCT_TYPES).map(
-          (groupedProductType: GroupedProductType) => (
-            <ManageProduct
-              key={groupedProductType.urlPart}
-              path={"/" + groupedProductType.urlPart}
-              groupedProductType={groupedProductType}
-            />
-          )
-        )}
-        {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
-          <CancellationFlow
-            key={productType.urlPart}
-            path={"/cancel/" + productType.urlPart}
-            productType={productType}
-          >
-            {hasCancellationFlow(productType) &&
-              productType.cancellation.reasons.map(
-                (reason: CancellationReason) => (
-                  <GenericSaveAttempt
-                    path={reason.reasonId}
-                    productType={productType}
-                    reason={reason}
-                    key={reason.reasonId}
-                    linkLabel={reason.linkLabel}
-                  >
-                    <ExecuteCancellation
+  useEffect(() => {
+    setSignInStatus(isSignedIn() ? "signedIn" : "signedOut");
+  }, []);
+
+  return (
+    <Main signInStatus={signInStatus} requiresSignIn={pageRequiresSignIn()}>
+      <Global styles={css(`${global}`)} />
+      <Global styles={css(`${fonts}`)} />
+      <Suspense fallback={<MMAPageSkeleton />}>
+        <Router primary={true} css={{ height: "100%" }}>
+          <AccountOverview path="/" />
+          <Billing path="/billing" />
+
+          {Object.values(GROUPED_PRODUCT_TYPES).map(
+            (groupedProductType: GroupedProductType) => (
+              <ManageProduct
+                key={groupedProductType.urlPart}
+                path={"/" + groupedProductType.urlPart}
+                groupedProductType={groupedProductType}
+              />
+            )
+          )}
+          {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
+            <CancellationFlow
+              key={productType.urlPart}
+              path={"/cancel/" + productType.urlPart}
+              productType={productType}
+            >
+              {hasCancellationFlow(productType) &&
+                productType.cancellation.reasons.map(
+                  (reason: CancellationReason) => (
+                    <GenericSaveAttempt
+                      path={reason.reasonId}
+                      productType={productType}
+                      reason={reason}
+                      key={reason.reasonId}
+                      linkLabel={reason.linkLabel}
+                    >
+                      <ExecuteCancellation
+                        path="confirmed"
+                        productType={productType}
+                      />
+                      {!!reason.savedBody && (
+                        <SavedCancellation
+                          path="saved"
+                          reason={reason}
+                          productType={productType}
+                        />
+                      )}
+                    </GenericSaveAttempt>
+                  )
+                )}
+            </CancellationFlow>
+          ))}
+
+          {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
+            <PaymentUpdateFlow
+              key={productType.urlPart}
+              path={"/payment/" + productType.urlPart}
+              productType={productType}
+            >
+              <PaymentUpdated path="updated" productType={productType} />
+              <PaymentFailed path="failed" productType={productType} />
+            </PaymentUpdateFlow>
+          ))}
+
+          {Object.values(PRODUCT_TYPES)
+            .filter(shouldHaveHolidayStopsFlow)
+            .map((productType: ProductTypeWithHolidayStopsFlow) => (
+              <HolidaysOverview
+                key={productType.urlPart}
+                path={"/suspend/" + productType.urlPart}
+                productType={productType}
+              >
+                <HolidayDateChooser path="create" productType={productType}>
+                  <HolidayReview path="review" productType={productType}>
+                    <HolidayConfirmed
                       path="confirmed"
                       productType={productType}
                     />
-                    {!!reason.savedBody && (
-                      <SavedCancellation
-                        path="saved"
-                        reason={reason}
-                        productType={productType}
-                      />
-                    )}
-                  </GenericSaveAttempt>
-                )
-              )}
-          </CancellationFlow>
-        ))}
+                  </HolidayReview>
+                </HolidayDateChooser>
+                <HolidayDateChooser
+                  path="amend"
+                  productType={productType}
+                  requiresExistingHolidayStopToAmendInContext
+                >
+                  <HolidayReview path="review" productType={productType}>
+                    <HolidayConfirmed
+                      path="confirmed"
+                      productType={productType}
+                    />
+                  </HolidayReview>
+                </HolidayDateChooser>
+              </HolidaysOverview>
+            ))}
 
-        {Object.values(PRODUCT_TYPES).map((productType: ProductType) => (
-          <PaymentUpdateFlow
-            key={productType.urlPart}
-            path={"/payment/" + productType.urlPart}
-            productType={productType}
-          >
-            <PaymentUpdated path="updated" productType={productType} />
-            <PaymentFailed path="failed" productType={productType} />
-          </PaymentUpdateFlow>
-        ))}
-
-        {Object.values(PRODUCT_TYPES)
-          .filter(shouldHaveHolidayStopsFlow)
-          .map((productType: ProductTypeWithHolidayStopsFlow) => (
-            <HolidaysOverview
-              key={productType.urlPart}
-              path={"/suspend/" + productType.urlPart}
-              productType={productType}
-            >
-              <HolidayDateChooser path="create" productType={productType}>
-                <HolidayReview path="review" productType={productType}>
-                  <HolidayConfirmed
+          {Object.values(PRODUCT_TYPES)
+            .filter(hasDeliveryFlow)
+            .map((productType: ProductType) => (
+              <DeliveryAddressForm
+                key={productType.urlPart}
+                path={`/delivery/${productType.urlPart}/address`}
+                productType={productType}
+              >
+                <DeliveryAddressReview path="review" productType={productType}>
+                  <DeliveryAddressEditConfirmation
                     path="confirmed"
                     productType={productType}
                   />
-                </HolidayReview>
-              </HolidayDateChooser>
-              <HolidayDateChooser
-                path="amend"
+                </DeliveryAddressReview>
+              </DeliveryAddressForm>
+            ))}
+
+          {Object.values(PRODUCT_TYPES)
+            .filter(hasDeliveryRecordsFlow)
+            .map((productType: ProductTypeWithDeliveryRecordsProperties) => (
+              <DeliveryRecords
+                key={productType.urlPart}
+                path={`/delivery/${productType.urlPart}/records`}
                 productType={productType}
-                requiresExistingHolidayStopToAmendInContext
               >
-                <HolidayReview path="review" productType={productType}>
-                  <HolidayConfirmed
+                <DeliveryRecordsProblemReview
+                  path="review"
+                  productType={productType}
+                >
+                  <DeliveryRecordsProblemConfirmation
                     path="confirmed"
                     productType={productType}
                   />
-                </HolidayReview>
-              </HolidayDateChooser>
-            </HolidaysOverview>
-          ))}
+                </DeliveryRecordsProblemReview>
+              </DeliveryRecords>
+            ))}
 
-        {Object.values(PRODUCT_TYPES)
-          .filter(hasDeliveryFlow)
-          .map((productType: ProductType) => (
-            <DeliveryAddressForm
-              key={productType.urlPart}
-              path={`/delivery/${productType.urlPart}/address`}
-              productType={productType}
-            >
-              <DeliveryAddressReview path="review" productType={productType}>
-                <DeliveryAddressEditConfirmation
-                  path="confirmed"
-                  productType={productType}
-                />
-              </DeliveryAddressReview>
-            </DeliveryAddressForm>
-          ))}
+          <EmailAndMarketing path="/email-prefs" />
 
-        {Object.values(PRODUCT_TYPES)
-          .filter(hasDeliveryRecordsFlow)
-          .map((productType: ProductTypeWithDeliveryRecordsProperties) => (
-            <DeliveryRecords
-              key={productType.urlPart}
-              path={`/delivery/${productType.urlPart}/records`}
-              productType={productType}
-            >
-              <DeliveryRecordsProblemReview
-                path="review"
-                productType={productType}
-              >
-                <DeliveryRecordsProblemConfirmation
-                  path="confirmed"
-                  productType={productType}
-                />
-              </DeliveryRecordsProblemReview>
-            </DeliveryRecords>
-          ))}
+          <PublicProfile path="/public-settings" />
 
-        <EmailAndMarketing path="/email-prefs" />
+          <Settings path="/account-settings" />
 
-        <PublicProfile path="/public-settings" />
+          <Help path="/help" />
 
-        <Settings path="/account-settings" />
+          <Redirect default from="/*" to="/" noThrow />
 
-        <Help path="/help" />
-
-        <Redirect default from="/*" to="/" noThrow />
-
-        {/*Does not require sign in*/}
-        <CancelReminders path="/cancel-reminders/*reminderCode" />
-        <Maintenance path="/maintenance" />
-      </Router>
-    </Suspense>
-  </Main>
-);
+          {/*Does not require sign in*/}
+          <CancelReminders path="/cancel-reminders/*reminderCode" />
+          <Maintenance path="/maintenance" />
+        </Router>
+      </Suspense>
+    </Main>
+  );
+};
 
 export const MMAPage = (
   <>

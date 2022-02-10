@@ -1,15 +1,31 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { HelpCentrePhoneNumbers } from "./helpCentrePhoneNumbers";
+import {
+  HelpCentrePhoneNumbers,
+  HelpCentrePhoneNumbersProps,
+} from "./helpCentrePhoneNumbers";
 
 export default {
-  title: "HelpCentrePhoneNumbers",
-  component: HelpCentrePhoneNumbers
+  title: "Components/Help Centre/Help Centre Phone Numbers",
+  component: HelpCentrePhoneNumbers,
+  args: {
+    compactLayout: false,
+  },
+  parameters: {
+    chromatic: {
+      viewports: [320, 1300],
+    },
+  },
 } as ComponentMeta<typeof HelpCentrePhoneNumbers>;
 
-const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = () => (
-  <HelpCentrePhoneNumbers />
-);
+const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = (
+  args: HelpCentrePhoneNumbersProps
+) => <HelpCentrePhoneNumbers {...args} />;
 
-export const Demo = Template.bind({});
+export const Default = Template.bind({});
+
+export const CompactLayout = Template.bind({});
+CompactLayout.args = {
+  compactLayout: true,
+};

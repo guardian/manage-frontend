@@ -12,22 +12,22 @@ const inputBoxCss = {
   appearance: "textfield" as AppearanceProperty,
   textAlign: "center" as TextAlignProperty, // this cast shouldn't be required (weird TypeScript issue here)
   padding: 0,
-  margin: 0
+  margin: 0,
 };
 
 const dayMonthCss = {
   ...inputBoxCss,
-  width: "25px"
+  width: "25px",
 };
 
 const dividerCss = {
   display: "inline-block",
   fontSize: "16px",
   padding: 0,
-  margin: 0
+  margin: 0,
 };
 
-interface DateInputProps {
+export interface DateInputProps {
   date: Date;
   labelText: string;
   disabled?: boolean;
@@ -40,8 +40,8 @@ export const DateInput = (props: DateInputProps) => (
         fontFamily: sans,
         fontSize: "14px",
         [maxWidth.desktop]: {
-          display: "none"
-        }
+          display: "none",
+        },
       }}
     >
       {props.labelText}
@@ -52,7 +52,7 @@ export const DateInput = (props: DateInputProps) => (
         border: "1px solid" + palette.neutral["5"],
         padding: "5px",
         whiteSpace: "nowrap",
-        margin: 0
+        margin: 0,
       }}
       aria-describedby="validation-message"
       disabled={props.disabled}

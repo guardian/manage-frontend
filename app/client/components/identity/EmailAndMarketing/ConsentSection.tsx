@@ -3,6 +3,8 @@ import { ConsentOptions } from "../identity";
 import { MarketingPreference } from "../MarketingPreference";
 import { ConsentOption } from "../models";
 import { PageSection } from "../PageSection";
+import { WithStandardTopMargin } from "../../WithStandardTopMargin";
+import { Lines } from "../Lines";
 
 type ClickHandler = (id: string) => {};
 
@@ -11,19 +13,22 @@ interface ConsentSectionProps {
   consents: ConsentOption[];
 }
 
-const softOptInEmailConsents = (consents: ConsentOption[]): ConsentOption[] =>
-  consents.filter(consent => !!consent.isProduct);
-
 const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
   ConsentOptions.findByIds(consents, ["support_reminder"]);
 
-const otherEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
+const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
   const ids = ["supporter", "jobs", "holidays", "events", "offers"];
   return ConsentOptions.findByIds(consents, ids);
 };
 
 const smsConsent = (consents: ConsentOption[]): ConsentOption[] =>
   ConsentOptions.findByIds(consents, ["sms"]);
+
+const softOptInSupporterEmailConsents = (
+  consents: ConsentOption[]
+): ConsentOption[] => consents.filter((consent) => !!consent.isProduct);
+
+const shouldDisplay = (consents: ConsentOption[]): boolean => !!consents.length;
 
 const consentPreference = (
   consent: ConsentOption,
@@ -45,30 +50,46 @@ const consentPreference = (
 const consentPreferences = (
   consents: ConsentOption[],
   clickHandler: ClickHandler
-) => consents.map(consent => consentPreference(consent, clickHandler));
+) => consents.map((consent) => consentPreference(consent, clickHandler));
 
-export const ConsentSection: FC<ConsentSectionProps> = props => {
+export const ConsentSection: FC<ConsentSectionProps> = (props) => {
   const { consents, clickHandler } = props;
   return (
-    <PageSection
-      title="What else would you like to hear about by email?"
-      description={`
+    <>
+      <PageSection
+        title="What else would you like to hear about by email?"
+        description={`
         From time to time, we'd love to be able to send you information about
         our products, services and events.
       `}
-    >
-      {consentPreferences(supportReminderConsent(consents), clickHandler)}
-      {consentPreferences(softOptInEmailConsents(consents), clickHandler)}
-      {consentPreferences(otherEmailConsents(consents), clickHandler)}
-      <h2
-        css={{
-          fontSize: "17px",
-          fontWeight: "bold"
-        }}
       >
-        Would you also like to hear about the above by SMS?
-      </h2>
-      {consentPreferences(smsConsent(consents), clickHandler)}
-    </PageSection>
+        {consentPreferences(supportReminderConsent(consents), clickHandler)}
+        {consentPreferences(marketingEmailConsents(consents), clickHandler)}
+        <h2
+          css={{
+            fontSize: "17px",
+            fontWeight: "bold",
+          }}
+        >
+          Would you also like to hear about the above by SMS?
+        </h2>
+        {consentPreferences(smsConsent(consents), clickHandler)}
+      </PageSection>
+      {shouldDisplay(softOptInSupporterEmailConsents(consents)) && (
+        <>
+          <WithStandardTopMargin>
+            <Lines n={1} />
+          </WithStandardTopMargin>
+          <WithStandardTopMargin>
+            <PageSection title="Supporter exclusive">
+              {consentPreferences(
+                softOptInSupporterEmailConsents(consents),
+                clickHandler
+              )}
+            </PageSection>
+          </WithStandardTopMargin>
+        </>
+      )}
+    </>
   );
 };

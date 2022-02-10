@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/core";
 import { Redirect, Router } from "@reach/router";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { fonts } from "../styles/fonts";
 import global from "../styles/global";
 import { AnalyticsTracker } from "./analytics";
@@ -12,34 +12,51 @@ import HelpCentreLoadingContent from "./HelpCentreLoadingContent";
 import { LiveChat } from "./liveChat/liveChat";
 import { Main } from "./main";
 import { ScrollToTop } from "./scrollToTop";
+import {
+  isSignedIn,
+  pageRequiresSignIn,
+  SignInStatus,
+} from "../services/signInStatus";
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const HelpCentre = lazy(() =>
-  import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
+const HelpCentre = lazy(
+  () => import(/* webpackChunkName: "HelpCentre" */ "./helpCentre/helpCentre")
 );
 
-const HelpCentreArticle = lazy(() =>
-  import(
-    /* webpackChunkName: "HelpCentreArticle" */ "./helpCentre/helpCentreArticle"
-  )
+const HelpCentreArticle = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "HelpCentreArticle" */ "./helpCentre/helpCentreArticle"
+    )
 );
 
-const HelpCentreTopic = lazy(() =>
-  import(
-    /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
-  )
+const HelpCentreTopic = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "HelpCentreTopic" */ "./helpCentre/helpCentreTopic"
+    )
 );
 
-const ContactUs = lazy(() =>
-  import(/* webpackChunkName: "ContactUs" */ "./contactUs/contactUs")
+const ContactUs = lazy(
+  () => import(/* webpackChunkName: "ContactUs" */ "./contactUs/contactUs")
 );
 
 const HelpCentreRouter = () => {
+  const [signInStatus, setSignInStatus] = useState<SignInStatus>("init");
+
+  useEffect(() => {
+    setSignInStatus(isSignedIn() ? "signedIn" : "signedOut");
+  }, []);
+
   return (
-    <Main>
+    <Main
+      signInStatus={signInStatus}
+      requiresSignIn={pageRequiresSignIn()}
+      helpCentrePage={true}
+    >
       <Global styles={css(`${global}`)} />
       <Global styles={css(`${fonts}`)} />
       <HelpCenterContentWrapper>
