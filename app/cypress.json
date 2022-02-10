@@ -19,8 +19,5 @@
     "*the-ozone-project.com",
     "*openx.net"
   ],
-  "retries": 2,
-  "env": {
-    "mockingEndpoint": "localhost:9000/mock"
-  }
+  "retries": 2
 }
