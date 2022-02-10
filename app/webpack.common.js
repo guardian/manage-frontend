@@ -7,17 +7,6 @@ const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const babelLoaderExcludeNodeModulesExcept = require("babel-loader-exclude-node-modules-except");
 
-module.exports.babelExclude = {
-  and: [/node_modules/],
-  not: [
-    // Include all @guardian modules, except automat-modules
-    /@guardian\/(?!(automat-modules))/,
-
-    // Include the dynamic-import-polyfill
-    /dynamic-import-polyfill/,
-  ],
-};
-
 const assetsPluginInstance = new AssetsPlugin({
   path: path.resolve(__dirname, "./dist/"),
 });
@@ -84,7 +73,7 @@ const server = merge(common, {
     rules: [
       {
         test: /\.(tsx?)|(js)$/,
-        exclude: module.exports.babelExclude,
+        exclude: babelLoaderExcludeNodeModulesExcept(["@guardian/*"]),
         use: {
           loader: "babel-loader",
           options: {
@@ -126,7 +115,7 @@ const client = merge(common, {
     rules: [
       {
         test: /\.(tsx?)|(js)$/,
-        exclude: module.exports.babelExclude,
+        exclude: babelLoaderExcludeNodeModulesExcept(["@guardian/*"]),
         use: {
           loader: "babel-loader",
           options: {
