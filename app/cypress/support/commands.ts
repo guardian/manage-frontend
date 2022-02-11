@@ -27,7 +27,6 @@
 import "@testing-library/cypress/add-commands";
 import { v4 as uuidv4 } from "uuid";
 
-// @ts-ignore
 Cypress.Commands.add("getIframeBody", (selector = "") => {
   // get the iframe > document > body
   // and retry until the body element is not empty
@@ -43,7 +42,6 @@ Cypress.Commands.add("getIframeBody", (selector = "") => {
   );
 });
 
-// @ts-ignore
 Cypress.Commands.add("iframeLoaded", { prevSubject: "element" }, ($iframe) => {
   const contentWindow = $iframe.prop("contentWindow");
   return new Promise((resolve) => {
@@ -55,6 +53,24 @@ Cypress.Commands.add("iframeLoaded", { prevSubject: "element" }, ($iframe) => {
       });
     }
   });
+});
+
+Cypress.Commands.add("resolve", (name, options = {}) => {
+  const getValue = () => {
+    // @ts-ignore
+    const win = cy.state("window");
+    return win[name];
+  };
+  const resolveValue = () => {
+    return Cypress.Promise.try(getValue).then((value) => {
+      // @ts-ignore
+      return cy.verifyUpcomingAssertions(value, options, {
+        onRetry: resolveValue,
+      });
+    });
+  };
+
+  return resolveValue();
 });
 
 type Networks = "facebook" | "apple" | "google";

@@ -16,14 +16,6 @@ const insertGlobals = (globals: Globals) => {
   </script>`;
 };
 
-const insertStripe = () => {
-  if (process.env.CYPRESS === "SKIP_IDAPI") {
-    return '<script src="https://js.stripe.com/v3/"></script>';
-  }
-
-  return "";
-};
-
 const html: (_: {
   readonly title: string;
   readonly src: string;
@@ -37,7 +29,6 @@ const html: (_: {
       <title>${title}</title>
 
       ${insertGlobals(globals)}
-      ${insertStripe()}
 
       <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
     </head>

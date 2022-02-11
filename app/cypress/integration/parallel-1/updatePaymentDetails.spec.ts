@@ -76,6 +76,10 @@ describe("E2E Page rendering", function () {
 
     cy.wait("@product_detail");
 
+    cy.resolve("Stripe").should((value) => {
+      expect(value).to.be.ok;
+    });
+
     cy.fillElementsInput("cardNumber", "4242424242424242");
     cy.fillElementsInput("cardExpiry", "1025");
     cy.fillElementsInput("cardCvc", "123");
@@ -274,6 +278,10 @@ describe("E2E Page rendering", function () {
 
     cy.findByText("Your current payment method");
     cy.findByText("Update your payment method");
+
+    cy.resolve("Stripe").should((value) => {
+      expect(value).to.be.ok;
+    });
 
     cy.fillElementsInput("cardNumber", "4242424242424242");
     cy.fillElementsInput("cardExpiry", "1025");

@@ -24,6 +24,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       createTestUser: typeof createTestUser;
+      resolve(name: string): Chainable<Element>;
       getIframeBody(selector: string): Chainable<Element>;
       findByText(text: string): Chainable<Element>;
     }
