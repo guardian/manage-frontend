@@ -14,11 +14,11 @@ import {
   MembersDataApiItem,
   PaidSubscriptionPlan,
   ProductDetail,
-  sortByJoinDate
+  sortByJoinDate,
 } from "../../../shared/productResponse";
 import {
   GROUPED_PRODUCT_TYPES,
-  GroupedProductTypeKeys
+  GroupedProductTypeKeys,
 } from "../../../shared/productTypes";
 import { allProductsDetailFetcher } from "../../productUtils";
 import { maxWidth } from "../../styles/breakpoints";
@@ -60,13 +60,13 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
       ...accumulator,
       [productDetail.mmaCategory]: [
         ...(accumulator[productDetail.mmaCategory] || []),
-        productDetail
-      ]
+        productDetail,
+      ],
     }),
     {} as MMACategoryToProductDetails
   );
 
-  const maybeFirstPaymentFailure = allProductDetails.find(_ => _.alertText);
+  const maybeFirstPaymentFailure = allProductDetails.find((_) => _.alertText);
 
   if (allProductDetails.length === 0) {
     return <EmptyAccountOverview />;
@@ -94,13 +94,12 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
           return (
             productDetails.length > 0 && (
               <React.Fragment key={mmaCategory}>
-                {productDetails.map(productDetail => {
+                {productDetails.map((productDetail) => {
                   const mainPlan = getMainPlan(productDetail.subscription);
                   const groupedProductType =
                     GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-                  const specificProductType = groupedProductType.mapGroupedToSpecific(
-                    productDetail
-                  );
+                  const specificProductType =
+                    groupedProductType.mapGroupedToSpecific(productDetail);
                   const hasCancellationPending =
                     productDetail.subscription.cancelledAt;
                   const cancelledCopy =
@@ -121,16 +120,16 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                   ) as PaidSubscriptionPlan;
                   const productInvoiceData = invoiceData
                     .filter(
-                      invoice =>
+                      (invoice) =>
                         invoice.subscriptionName ===
                         productDetail.subscription.subscriptionId
                     )
-                    .map(invoice => ({
+                    .map((invoice) => ({
                       ...invoice,
                       pdfPath: `/api/${invoice.pdfPath}`,
                       currency: paidPlan.currency,
                       currencyISO: paidPlan.currencyISO,
-                      productUrlPart: specificProductType.urlPart
+                      productUrlPart: specificProductType.urlPart,
                     }));
                   const resultsPerPage = paidPlan.interval?.includes("year")
                     ? productInvoiceData.length
@@ -223,8 +222,8 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                             productDetail,
                             flowReferrer: {
                               title: NAV_LINKS.billing.title,
-                              link: NAV_LINKS.billing.link
-                            }
+                              link: NAV_LINKS.billing.link,
+                            },
                           }}
                         />
                       )}
@@ -268,7 +267,7 @@ const Billing = (_: RouteComponentProps) => {
 const billingFetcher = () =>
   Promise.all([
     allProductsDetailFetcher(),
-    fetchWithDefaultParameters("/api/invoices")
+    fetchWithDefaultParameters("/api/invoices"),
   ]);
 
 export default Billing;
