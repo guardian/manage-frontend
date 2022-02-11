@@ -118,8 +118,6 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
                   const paidPlan = getMainPlan(
                     productDetail.subscription
                   ) as PaidSubscriptionPlan;
-                  console.log("paidPlan = ");
-                  console.log(paidPlan);
                   const productInvoiceData = invoiceData
                     .filter(
                       (invoice) =>
