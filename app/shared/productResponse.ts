@@ -26,15 +26,14 @@ export class MembersDatApiAsyncLoader extends AsyncLoader<
   MembersDataApiItem[]
 > {}
 
-export const MembersDataApiItemContext: React.Context<MembersDataApiItem> = React.createContext(
-  {}
-);
+export const MembersDataApiItemContext: React.Context<MembersDataApiItem> =
+  React.createContext({});
 
 export const formatDate = (shortForm: string) => {
   return new Date(shortForm).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
-    year: "numeric"
+    year: "numeric",
   });
 };
 
@@ -211,6 +210,8 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
   return {
     name: null,
     start: subscription.start,
-    shouldBeVisible: true
+    shouldBeVisible: true,
+    currency: subscription.plan?.currency,
+    currencyISO: subscription.plan?.currencyISO,
   };
 };
