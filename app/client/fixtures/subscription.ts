@@ -1,3 +1,11 @@
+/*
+ * Product subscription details for signed in user
+ * /api/me/mma?productType=ContentSubscription
+ *
+ * Subscriptions are split out here, but will be returned as an array from the API.
+ * eg. `[guardianWeeklySubscriptionCard, digitalSubscriptionDD]`
+ */
+
 import { Subscription } from "../../shared/productResponse";
 
 export const guardianWeeklySubscriptionCard: Subscription = {

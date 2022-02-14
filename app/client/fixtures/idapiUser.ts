@@ -1,3 +1,8 @@
+/*
+ * Details of signed in user
+ * /idapi/user
+ */
+
 export const idapiUser = {
   status: "ok",
   user: {

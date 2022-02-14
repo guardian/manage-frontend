@@ -1,3 +1,11 @@
+/*
+ * Product details for signed in user
+ * /api/me/mma
+ *
+ * Products are split out here, but will be returned as an array from the API.
+ * eg. `[guardianWeeklyCard, digitalDD, newspaperVoucherPaypal]`
+ */
+
 import { ProductDetail } from "../../shared/productResponse";
 
 export const guardianWeeklyCard: ProductDetail = {

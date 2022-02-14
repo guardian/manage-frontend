@@ -1,3 +1,8 @@
+/*
+ * Available newsletter subscriptions
+ * /idapicodeproxy/newsletters
+ */
+
 export const newsletters = [
   {
     id: "today-uk",
