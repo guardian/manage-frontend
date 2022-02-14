@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
 import PublicProfile from "./";
-import { idapiUser } from "../../../fixtures/idapiUser";
+import { user } from "../../../fixtures/user";
 
 export default {
   title: "Pages/Profile",
@@ -15,7 +15,7 @@ export default {
 } as ComponentMeta<typeof PublicProfile>;
 
 export const Default: ComponentStory<typeof PublicProfile> = () => {
-  fetchMock.restore().get("/idapi/user", { body: idapiUser });
+  fetchMock.restore().get("/idapi/user", { body: user });
 
   return <PublicProfile />;
 };

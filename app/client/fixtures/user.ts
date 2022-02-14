@@ -1,7 +1,12 @@
-export const idapiUser = {
+/*
+ * Details of signed in user
+ * /idapi/user
+ */
+
+export const user = {
   status: "ok",
   user: {
-    primaryEmailAddress: "james.mockett@guardian.co.uk",
+    primaryEmailAddress: "test.user@example.com",
     id: "106690155",
     publicFields: {
       displayName: "user",
@@ -11,8 +16,8 @@ export const idapiUser = {
         "c59a25ab22941af1a9062b75c3b153115a6a08a410e5721adcf514ed90c23b68",
       googleTagId:
         "805ddf6e391ba0bd592ec1648f25946ca2f6e2e8629a38a6b226f787301b6881",
-      firstName: "James",
-      secondName: "Mockett",
+      firstName: "Test",
+      secondName: "User",
       legacyPackages: "CRE,RCO",
       legacyProducts: "CRE,RCO",
     },

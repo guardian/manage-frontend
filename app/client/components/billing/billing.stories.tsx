@@ -8,7 +8,7 @@ import {
   digitalDD,
   newspaperVoucherPaypal,
 } from "../../fixtures/productDetail";
-import { idapiUser } from "../../fixtures/idapiUser";
+import { user } from "../../fixtures/user";
 
 export default {
   title: "Pages/Billing",
@@ -24,7 +24,7 @@ export const NoSubscription: ComponentStory<typeof Billing> = () => {
     .restore()
     .get("/api/me/mma", { body: [] })
     .get("/api/invoices", { body: { invoices: [] } })
-    .get("/idapi/user", { body: idapiUser });
+    .get("/idapi/user", { body: user });
 
   return <Billing />;
 };

@@ -1,3 +1,11 @@
+/*
+ * Product subscription details for signed in user
+ * /api/me/mma?productType=ContentSubscription
+ *
+ * Subscriptions are split out here, but will be returned as an array from the API.
+ * eg. `[guardianWeeklySubscriptionCard, digitalSubscriptionDD]`
+ */
+
 import { Subscription } from "../../shared/productResponse";
 
 export const guardianWeeklySubscriptionCard: Subscription = {
@@ -9,15 +17,15 @@ export const guardianWeeklySubscriptionCard: Subscription = {
       year: 2024,
     },
     type: "Visa",
-    stripePublicKeyForUpdate: "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f",
-    email: "jon.flynn+code@guardian.co.uk",
+    stripePublicKeyForUpdate: "pk_test_123",
+    email: "test.user@example.com",
   },
   contactId: "0039E00001KA26BQAT",
   deliveryAddress: {
-    addressLine1: "11 Valnay Street",
-    addressLine2: "",
+    addressLine1: "Kings Place",
+    addressLine2: "90 York Way",
     town: "London",
-    postcode: "SW17 8PS",
+    postcode: "N1 9GU",
     country: "United Kingdom",
   },
   safeToUpdatePaymentMethod: true,
@@ -69,13 +77,13 @@ export const guardianWeeklySubscriptionAustralia: Subscription = {
       year: 2033,
     },
     type: "Visa",
-    stripePublicKeyForUpdate: "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f",
-    email: "jon.flynn+code@guardian.co.uk",
+    stripePublicKeyForUpdate: "pk_test_123",
+    email: "test.user@example.com",
   },
   contactId: "0039E00001KA26BQAT",
   deliveryAddress: {
-    addressLine1: "11 Valnay Street",
-    addressLine2: "",
+    addressLine1: "Kings Place",
+    addressLine2: "90 York Way",
     town: "Canberra",
     region: "ACT",
     postcode: "2601",
@@ -133,10 +141,10 @@ export const digitalSubscriptionDD: Subscription = {
   },
   contactId: "0039E00001KA26BQAT",
   deliveryAddress: {
-    addressLine1: "11 Valnay Street",
-    addressLine2: "",
+    addressLine1: "Kings Place",
+    addressLine2: "90 York Way",
     town: "London",
-    postcode: "SW17 8PS",
+    postcode: "N1 9GU",
     country: "United Kingdom",
   },
   safeToUpdatePaymentMethod: true,

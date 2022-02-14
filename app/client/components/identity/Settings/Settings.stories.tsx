@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import fetchMock from "fetch-mock";
 
 import Settings from "./";
-import { idapiUser } from "../../../fixtures/idapiUser";
+import { user } from "../../../fixtures/user";
 
 export default {
   title: "Pages/Settings",
@@ -15,7 +15,7 @@ export default {
 } as ComponentMeta<typeof Settings>;
 
 export const Default: ComponentStory<typeof Settings> = () => {
-  fetchMock.restore().get("/idapi/user", { body: idapiUser });
+  fetchMock.restore().get("/idapi/user", { body: user });
 
   return <Settings />;
 };
