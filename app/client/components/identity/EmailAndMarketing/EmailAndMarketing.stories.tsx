@@ -8,7 +8,7 @@ import {
   digitalDD,
   newspaperVoucherPaypal,
 } from "../../../fixtures/productDetail";
-import { idapiUser } from "../../../fixtures/idapiUser";
+import { user } from "../../../fixtures/user";
 import { newsletters } from "../../../fixtures/newsletters";
 import { newsletterSubscriptions } from "../../../fixtures/newsletterSubscriptions";
 import { consents } from "../../../fixtures/consents";
@@ -28,7 +28,7 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
     .get("/api/me/mma", {
       body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
     })
-    .get("/idapi/user", { body: idapiUser })
+    .get("/idapi/user", { body: user })
     .get("/idapicodeproxy/newsletters", { body: newsletters })
     .get("/idapicodeproxy/users/me/newsletters", {
       body: newsletterSubscriptions,

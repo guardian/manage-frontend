@@ -8,7 +8,7 @@ import {
   digitalDD,
   newspaperVoucherPaypal,
 } from "../../fixtures/productDetail";
-import { idapiUser } from "../../fixtures/idapiUser";
+import { user } from "../../fixtures/user";
 
 export default {
   title: "Pages/AccountOverview",
@@ -24,7 +24,7 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
     .restore()
     .get("/api/cancelled/", { body: [] })
     .get("/api/me/mma", { body: [] })
-    .get("/idapi/user", { body: idapiUser });
+    .get("/idapi/user", { body: user });
 
   return <AccountOverview />;
 };

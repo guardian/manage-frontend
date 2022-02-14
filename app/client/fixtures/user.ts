@@ -3,7 +3,7 @@
  * /idapi/user
  */
 
-export const idapiUser = {
+export const user = {
   status: "ok",
   user: {
     primaryEmailAddress: "test.user@example.com",
