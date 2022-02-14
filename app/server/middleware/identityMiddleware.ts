@@ -139,6 +139,8 @@ const redirectOrCustomStatusCode = (
 export const getCookiesOrEmptyString = (req: express.Request) =>
   req.header("cookie") || "";
 
+declare let CYPRESS: string;
+
 export const withIdentity: (
   statusCodeOverride?: number
 ) => express.RequestHandler =
@@ -151,7 +153,7 @@ export const withIdentity: (
 
     const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
-    if (process.env.CYPRESS === "SKIP_IDAPI") {
+    if (CYPRESS === "SKIP_IDAPI") {
       return next();
     }
 

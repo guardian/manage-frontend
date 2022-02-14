@@ -18,9 +18,7 @@ const definePlugin = new webpack.DefinePlugin({
   GIT_COMMIT_HASH: process.env.BUILD_VCS_NUMBER
     ? `'${process.env.BUILD_VCS_NUMBER}'`
     : `'${new GitRevisionPlugin().commithash()}'`,
-  "process.env.CYPRESS": process.env.CYPRESS
-    ? JSON.stringify(process.env.CYPRESS)
-    : undefined,
+  CYPRESS: `'${process.env.CYPRESS}'`,
 });
 
 const copyPlugin = new CopyWebpackPlugin({
