@@ -5,8 +5,8 @@ import {
   guardianWeeklyCard,
   guardianWeeklyExpiredCard,
   digitalDD,
-  NewspaperVoucherPaypal
-} from "../../../testData";
+  newspaperVoucherPaypal,
+} from "../../../fixtures/productDetail";
 
 describe("currentPaymentDetails.tsx", () => {
   it("Shows product name", () => {
@@ -48,10 +48,10 @@ describe("currentPaymentDetails.tsx", () => {
   describe("For Paypal", () => {
     test("shows masked email", () => {
       const { getByText } = render(
-        <CurrentPaymentDetails {...NewspaperVoucherPaypal} />
+        <CurrentPaymentDetails {...newspaperVoucherPaypal} />
       );
 
-      getByText("s*************0@personal.example.com");
+      getByText("t*******r@example.com");
     });
   });
 });

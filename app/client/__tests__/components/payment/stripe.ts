@@ -1,19 +1,19 @@
 import { getStripeKey } from "../../../stripe";
 import {
   guardianWeeklySubscriptionCard,
-  guardianWeeklySubscriptionAustralia
-} from "../../../testData";
+  guardianWeeklySubscriptionAustralia,
+} from "../../../fixtures/subscription";
 
 // @ts-ignore
 window.guardian = {
   stripeKeyAustralia: {
     uat: "uatKeyAustralia",
-    default: "defaultKeyAustralia"
+    default: "defaultKeyAustralia",
   },
   stripeKeyDefaultCurrencies: {
     uat: "uatKeyDefaultCurrencies",
-    default: "defaultKeyDefaultCurrencies"
-  }
+    default: "defaultKeyDefaultCurrencies",
+  },
 };
 
 test("Uses Rest Of World Stripe key for UK delivery address", () => {

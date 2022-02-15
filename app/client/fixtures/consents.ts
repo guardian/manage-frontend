@@ -1,3 +1,8 @@
+/*
+ * Consent for marketing communications for signed in user
+ * /idapicodeproxy/consents?filter=all
+ */
+
 export const consents = [
   {
     id: "your_support_onboarding",
