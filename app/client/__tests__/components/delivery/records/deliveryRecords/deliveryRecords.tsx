@@ -1,7 +1,7 @@
 import {
   DATE_FNS_INPUT_FORMAT,
   dateAddDays,
-  dateString
+  dateString,
 } from "../../../../../../shared/dates";
 import { checkForExistingDeliveryProblem } from "../../../../../components/delivery/records/deliveryRecords";
 import { DeliveryRecordDetail } from "../../../../../components/delivery/records/deliveryRecordsApi";
@@ -15,10 +15,10 @@ describe("delivery records unit tests", () => {
     addressCountry: "addressCountry",
     addressPostcode: "addressPostcode",
     hasHolidayStop: false,
-    deliveryDate: dateString(new Date(), DATE_FNS_INPUT_FORMAT)
+    deliveryDate: dateString(new Date(), DATE_FNS_INPUT_FORMAT),
   };
 
-  test("checkForExistingDeliveryProblem returns true if ", () => {
+  test("checkForExistingDeliveryProblem returns true if", () => {
     const deliverRecords = [
       {
         ...baseMockDeliveryRecord,
@@ -26,8 +26,8 @@ describe("delivery records unit tests", () => {
           dateAddDays(new Date(), -7),
           DATE_FNS_INPUT_FORMAT
         ),
-        problemCaseId: "123"
-      }
+        problemCaseId: "123",
+      },
     ];
     expect(checkForExistingDeliveryProblem(deliverRecords)).toEqual(true);
   });

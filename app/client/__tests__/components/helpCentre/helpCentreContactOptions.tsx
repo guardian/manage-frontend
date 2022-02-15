@@ -69,7 +69,7 @@ describe("HelpCentreContactOptions", () => {
           );
         });
 
-        it("it shows a 'Contact us' button only with contact options hidden", () => {
+        it("shows a 'Contact us' button only with contact options hidden", () => {
           render(
             <HelpCentreContactOptions
               compactLayout={true}

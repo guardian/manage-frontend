@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import Header from "../../components/header";
 
-describe.only("Header", () => {
+describe("Header", () => {
   it("renders the header in a signed out state", () => {
     render(<Header signInStatus="signedOut" />);
     expect(screen.getByRole("link", { name: "Sign in" })).toBeInTheDocument();

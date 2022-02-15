@@ -2,23 +2,31 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true
+    node: true,
   },
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:jest/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 12,
-    sourceType: "module"
+    sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
-  ignorePatterns: ["client/__tests__/**"],
+  plugins: ["react", "@typescript-eslint", "jest"],
+  overrides: [
+    {
+      files: ["client/__tests__/**"],
+      rules: {
+        "@typescript-eslint/ban-ts-comment": ["off"],
+      },
+    },
+  ],
   rules: {
     "no-prototype-builtins": ["off"],
     "react/no-unescaped-entities": ["off"],
@@ -34,8 +42,8 @@ module.exports = {
         "ts-ignore": "allow-with-description",
         "ts-nocheck": "allow-with-description",
         "ts-check": "allow-with-description",
-        minimumDescriptionLength: 10
-      }
-    ]
-  }
+        minimumDescriptionLength: 10,
+      },
+    ],
+  },
 };
