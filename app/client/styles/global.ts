@@ -1,4 +1,4 @@
-import { headline, serif } from "./fonts";
+import { headline, serif } from './fonts';
 
 const global = `
 html {

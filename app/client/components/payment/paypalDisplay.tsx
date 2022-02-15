@@ -1,9 +1,9 @@
-import React from "react";
-import { PaypalLogo } from "./paypalLogo";
+import React from 'react';
+import { PaypalLogo } from './paypalLogo';
 
 interface PayPalProps {
-  payPalId?: string;
-  shouldIncludePrefixCopy?: true;
+	payPalId?: string;
+	shouldIncludePrefixCopy?: true;
 }
 
 // Regex to split a PayPal ID into 3 groups:
@@ -30,27 +30,28 @@ interface PayPalProps {
 const SPLIT_PAYPAL_ID_REGEX = /^(.)(.*?)(.?|.?@.+)$/;
 
 export const getObfuscatedPayPalId = (rawId: string) => {
-  return rawId.replace(
-    SPLIT_PAYPAL_ID_REGEX,
-    (_, firstChar, remainingChars, lastChar) =>
-      `${firstChar}${remainingChars.replace(/./g, "*")}${lastChar}`
-  );
+	return rawId.replace(
+		SPLIT_PAYPAL_ID_REGEX,
+		(_, firstChar, remainingChars, lastChar) =>
+			`${firstChar}${remainingChars.replace(/./g, '*')}${lastChar}`,
+	);
 };
 
 export const PayPalDisplay = (props: PayPalProps) => (
-  <>
-    <PaypalLogo />
-    {props.payPalId && (
-      <p>
-        {props.shouldIncludePrefixCopy && (
-          <>
-            To update your payment details, please login to your PayPal account.
-            <br />
-            Your PayPal ID is&nbsp;
-          </>
-        )}
-        {getObfuscatedPayPalId(props.payPalId)}
-      </p>
-    )}
-  </>
+	<>
+		<PaypalLogo />
+		{props.payPalId && (
+			<p>
+				{props.shouldIncludePrefixCopy && (
+					<>
+						To update your payment details, please login to your
+						PayPal account.
+						<br />
+						Your PayPal ID is&nbsp;
+					</>
+				)}
+				{getObfuscatedPayPalId(props.payPalId)}
+			</p>
+		)}
+	</>
 );

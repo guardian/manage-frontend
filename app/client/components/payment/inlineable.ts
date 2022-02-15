@@ -1,3 +1,3 @@
 export interface Inlineable {
-  inline?: true;
+	inline?: true;
 }

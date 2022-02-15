@@ -1,36 +1,36 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import {
-  CallCentreEmailAndNumbers,
-  CallCentreEmailAndNumbersProps,
-} from "./callCenterEmailAndNumbers";
+	CallCentreEmailAndNumbers,
+	CallCentreEmailAndNumbersProps,
+} from './callCenterEmailAndNumbers';
 
 export default {
-  title: "Components/CallCentreEmailAndNumbers",
-  component: CallCentreEmailAndNumbers,
-  args: {
-    prefixText: "",
-    hideEmailAddress: false,
-    compactLayout: false,
-    phoneRegionFilterKeys: undefined,
-  },
+	title: 'Components/CallCentreEmailAndNumbers',
+	component: CallCentreEmailAndNumbers,
+	args: {
+		prefixText: '',
+		hideEmailAddress: false,
+		compactLayout: false,
+		phoneRegionFilterKeys: undefined,
+	},
 } as ComponentMeta<typeof CallCentreEmailAndNumbers>;
 
 const Template: ComponentStory<typeof CallCentreEmailAndNumbers> = (
-  args: CallCentreEmailAndNumbersProps
+	args: CallCentreEmailAndNumbersProps,
 ) => {
-  return <CallCentreEmailAndNumbers {...args} />;
+	return <CallCentreEmailAndNumbers {...args} />;
 };
 
 export const Default = Template.bind({});
 
 export const WithEmailHidden = Template.bind({});
 WithEmailHidden.args = {
-  hideEmailAddress: true,
+	hideEmailAddress: true,
 };
 
 export const WithCompactLayout = Template.bind({});
 WithCompactLayout.args = {
-  compactLayout: true,
+	compactLayout: true,
 };

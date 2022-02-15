@@ -16,16 +16,16 @@
  * @type {Cypress.PluginConfig}
  */
 
-const webpackPreprocessor = require("@cypress/webpack-preprocessor");
+const webpackPreprocessor = require('@cypress/webpack-preprocessor');
 
 module.exports = (on: any) => {
-  const options = {
-    // send in the options from your webpack.config.js, so it works the same
-    // as your app's code
+	const options = {
+		// send in the options from your webpack.config.js, so it works the same
+		// as your app's code
 
-    webpackOptions: require("../../webpack.dev.client"),
-    watchOptions: {},
-  };
+		webpackOptions: require('../../webpack.dev.client'),
+		watchOptions: {},
+	};
 
-  on("file:preprocessor", webpackPreprocessor(options));
+	on('file:preprocessor', webpackPreprocessor(options));
 };

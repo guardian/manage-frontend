@@ -1,44 +1,44 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Header, { HeaderProps } from "./header";
+import Header, { HeaderProps } from './header';
 
 export default {
-  title: "Components/Header",
-  component: Header,
-  parameters: {
-    layout: "fullscreen",
-  },
-  args: {
-    signInStatus: "init",
-    requiresSignIn: false,
-  },
-  argTypes: {
-    signInStatus: {
-      options: ["init", "signedOut", "signedIn"],
-      control: { type: "select" },
-    },
-  },
+	title: 'Components/Header',
+	component: Header,
+	parameters: {
+		layout: 'fullscreen',
+	},
+	args: {
+		signInStatus: 'init',
+		requiresSignIn: false,
+	},
+	argTypes: {
+		signInStatus: {
+			options: ['init', 'signedOut', 'signedIn'],
+			control: { type: 'select' },
+		},
+	},
 } as ComponentMeta<typeof Header>;
 
 const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
-  <Header {...args} />
+	<Header {...args} />
 );
 
 export const Initial = Template.bind({});
 
 export const SignedOut = Template.bind({});
 SignedOut.args = {
-  signInStatus: "signedOut",
+	signInStatus: 'signedOut',
 };
 
 export const SignedIn = Template.bind({});
 SignedIn.args = {
-  signInStatus: "signedIn",
+	signInStatus: 'signedIn',
 };
 
 export const RequiresSignIn = Template.bind({});
 RequiresSignIn.args = {
-  signInStatus: "signedIn",
-  requiresSignIn: true,
+	signInStatus: 'signedIn',
+	requiresSignIn: true,
 };

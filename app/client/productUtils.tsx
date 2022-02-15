@@ -1,73 +1,72 @@
 import {
-  getScopeFromRequestPathOrEmptyString,
-  X_GU_ID_FORWARDED_SCOPE
-} from "../shared/identity";
+	getScopeFromRequestPathOrEmptyString,
+	X_GU_ID_FORWARDED_SCOPE,
+} from '../shared/identity';
 import {
-  ProductType,
-  ProductTypeWithCancellationFlow,
-  ProductTypeWithDeliveryRecordsProperties,
-  ProductTypeWithHolidayStopsFlow
-} from "../shared/productTypes";
-import { fetchWithDefaultParameters } from "./fetch";
+	ProductType,
+	ProductTypeWithCancellationFlow,
+	ProductTypeWithDeliveryRecordsProperties,
+	ProductTypeWithHolidayStopsFlow,
+} from '../shared/productTypes';
+import { fetchWithDefaultParameters } from './fetch';
 
 export const shouldHaveHolidayStopsFlow = (
-  productType: ProductType
+	productType: ProductType,
 ): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
 
-export const createProductDetailFetcher = (
-  productType: ProductType,
-  subscriptionName?: string
-) => () =>
-  fetchWithDefaultParameters(
-    "/api/me/mma" +
-      (subscriptionName
-        ? `/${subscriptionName}`
-        : `?productType=${productType.allProductsProductTypeFilterString}`),
-    {
-      headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-          window.location.href
-        )
-      }
-    }
-  );
+export const createProductDetailFetcher =
+	(productType: ProductType, subscriptionName?: string) => () =>
+		fetchWithDefaultParameters(
+			'/api/me/mma' +
+				(subscriptionName
+					? `/${subscriptionName}`
+					: `?productType=${productType.allProductsProductTypeFilterString}`),
+			{
+				headers: {
+					[X_GU_ID_FORWARDED_SCOPE]:
+						getScopeFromRequestPathOrEmptyString(
+							window.location.href,
+						),
+				},
+			},
+		);
 
 export const createProductDetailFetch = (
-  productType: ProductType,
-  subscriptionName?: string
+	productType: ProductType,
+	subscriptionName?: string,
 ) =>
-  fetchWithDefaultParameters(
-    "/api/me/mma" +
-      (subscriptionName
-        ? `/${subscriptionName}`
-        : `?productType=${productType.allProductsProductTypeFilterString}`),
-    {
-      headers: {
-        [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-          window.location.href
-        )
-      }
-    }
-  ).then(res => res.json());
+	fetchWithDefaultParameters(
+		'/api/me/mma' +
+			(subscriptionName
+				? `/${subscriptionName}`
+				: `?productType=${productType.allProductsProductTypeFilterString}`),
+		{
+			headers: {
+				[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+					window.location.href,
+				),
+			},
+		},
+	).then((res) => res.json());
 
 export const allProductsDetailFetcher = () =>
-  fetchWithDefaultParameters("/api/me/mma", {
-    headers: {
-      [X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-        window.location.href
-      )
-    }
-  });
+	fetchWithDefaultParameters('/api/me/mma', {
+		headers: {
+			[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+				window.location.href,
+			),
+		},
+	});
 
 export const hasCancellationFlow = (
-  productType: ProductType
+	productType: ProductType,
 ): productType is ProductTypeWithCancellationFlow =>
-  productType.cancellation !== undefined;
+	productType.cancellation !== undefined;
 
 export const hasDeliveryFlow = (productType: ProductType) =>
-  productType.delivery?.showAddress;
+	productType.delivery?.showAddress;
 
 export const hasDeliveryRecordsFlow = (
-  productType: ProductType
+	productType: ProductType,
 ): productType is ProductTypeWithDeliveryRecordsProperties =>
-  !!productType.delivery?.records;
+	!!productType.delivery?.records;

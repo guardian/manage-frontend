@@ -1,30 +1,30 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import fetchMock from "fetch-mock";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import fetchMock from 'fetch-mock';
 
-import CancelReminders, { CancelRemindersProps } from "./cancelReminders";
+import CancelReminders, { CancelRemindersProps } from './cancelReminders';
 
 export default {
-  title: "Pages/CancelReminders",
-  component: CancelReminders,
-  parameters: {
-    controls: { disabled: true },
-    layout: "fullscreen",
-  },
+	title: 'Pages/CancelReminders',
+	component: CancelReminders,
+	parameters: {
+		controls: { disabled: true },
+		layout: 'fullscreen',
+	},
 } as ComponentMeta<typeof CancelReminders>;
 
 export const Error: ComponentStory<typeof CancelReminders> = (
-  _: CancelRemindersProps
+	_: CancelRemindersProps,
 ) => {
-  fetchMock.restore().post("/api/reminders/cancel", 500);
+	fetchMock.restore().post('/api/reminders/cancel', 500);
 
-  return <CancelReminders reminderCode="123" />;
+	return <CancelReminders reminderCode="123" />;
 };
 
 export const Success: ComponentStory<typeof CancelReminders> = (
-  _: CancelRemindersProps
+	_: CancelRemindersProps,
 ) => {
-  fetchMock.restore().post("/api/reminders/cancel", 200);
+	fetchMock.restore().post('/api/reminders/cancel', 200);
 
-  return <CancelReminders reminderCode="123" />;
+	return <CancelReminders reminderCode="123" />;
 };

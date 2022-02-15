@@ -6,13 +6,13 @@ Array [
     css={
       Object {
         "map": undefined,
-        "name": "j4gc4h",
+        "name": "y7tyyp",
         "next": undefined,
         "styles": "
-  
-  border-top: 1px solid #DCDCDC;
-  margin-top: 30px;
-  
+	
+	border-top: 1px solid #DCDCDC;
+	margin-top: 30px;
+	
 	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
 	font-size: 1.75rem;
 	line-height: 1.15;
@@ -20,11 +20,11 @@ Array [
 	;
 ;
 ;
-  margin-bottom: 24px;
-  @media (min-width: 740px) {
-    margin-bottom: 24px;
-    margin-top: 40px;
-  }
+	margin-bottom: 24px;
+	@media (min-width: 740px) {
+		margin-bottom: 24px;
+		margin-top: 40px;
+	}
 ",
         "toString": [Function],
       }
@@ -47,12 +47,12 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "1kvvfmb",
+          "name": "1xbx0f5",
           "next": undefined,
           "styles": "
-          width: 100%;
-          border: 1px solid #DCDCDC;
-        ",
+					width: 100%;
+					border: 1px solid #DCDCDC;
+				",
           "toString": [Function],
         }
       }
@@ -62,10 +62,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "asga8g",
+              "name": "1n5rft4",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -97,7 +97,7 @@ Array [
     }
     false
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -110,29 +110,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -145,15 +145,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "52ezka",
+              "name": "a9yqa",
               "next": undefined,
               "styles": "
-                  
+									
     display: block;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -162,10 +162,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -175,7 +175,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -186,18 +186,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -208,10 +208,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -221,7 +221,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -232,10 +232,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -248,7 +248,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -257,15 +257,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -276,11 +276,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -291,11 +291,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -310,10 +310,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "1eo8x6r",
+              "name": "1of1b04",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -352,7 +352,7 @@ Array [
       }
     
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -365,29 +365,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -400,15 +400,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "d995dt",
+              "name": "11lclfu",
               "next": undefined,
               "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -417,10 +417,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -430,7 +430,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -441,18 +441,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -463,10 +463,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -476,7 +476,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -487,10 +487,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -503,7 +503,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -512,15 +512,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -530,11 +530,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -547,15 +547,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -565,11 +565,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -582,11 +582,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -601,10 +601,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "1eo8x6r",
+              "name": "1of1b04",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -643,7 +643,7 @@ Array [
       }
     
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -656,29 +656,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -691,15 +691,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "d995dt",
+              "name": "11lclfu",
               "next": undefined,
               "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -708,10 +708,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -721,7 +721,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -732,18 +732,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -754,10 +754,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -767,7 +767,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -778,10 +778,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -794,7 +794,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -803,15 +803,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -821,11 +821,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -838,15 +838,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -856,11 +856,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -873,11 +873,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -898,13 +898,13 @@ Array [
     css={
       Object {
         "map": undefined,
-        "name": "j4gc4h",
+        "name": "y7tyyp",
         "next": undefined,
         "styles": "
-  
-  border-top: 1px solid #DCDCDC;
-  margin-top: 30px;
-  
+	
+	border-top: 1px solid #DCDCDC;
+	margin-top: 30px;
+	
 	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
 	font-size: 1.75rem;
 	line-height: 1.15;
@@ -912,11 +912,11 @@ Array [
 	;
 ;
 ;
-  margin-bottom: 24px;
-  @media (min-width: 740px) {
-    margin-bottom: 24px;
-    margin-top: 40px;
-  }
+	margin-bottom: 24px;
+	@media (min-width: 740px) {
+		margin-bottom: 24px;
+		margin-top: 40px;
+	}
 ",
         "toString": [Function],
       }
@@ -939,12 +939,12 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "1kvvfmb",
+          "name": "1xbx0f5",
           "next": undefined,
           "styles": "
-          width: 100%;
-          border: 1px solid #DCDCDC;
-        ",
+					width: 100%;
+					border: 1px solid #DCDCDC;
+				",
           "toString": [Function],
         }
       }
@@ -954,10 +954,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "asga8g",
+              "name": "1n5rft4",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -989,7 +989,7 @@ Array [
     }
     false
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1002,29 +1002,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -1037,15 +1037,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "52ezka",
+              "name": "a9yqa",
               "next": undefined,
               "styles": "
-                  
+									
     display: block;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1054,10 +1054,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1067,7 +1067,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -1078,18 +1078,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -1100,10 +1100,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1113,7 +1113,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -1124,10 +1124,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1140,7 +1140,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -1149,15 +1149,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -1168,11 +1168,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -1183,11 +1183,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -1202,10 +1202,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "1eo8x6r",
+              "name": "1of1b04",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1244,7 +1244,7 @@ Array [
       }
     
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1257,29 +1257,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -1292,15 +1292,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "d995dt",
+              "name": "11lclfu",
               "next": undefined,
               "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1309,10 +1309,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1322,7 +1322,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -1333,18 +1333,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -1355,10 +1355,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1368,7 +1368,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -1379,10 +1379,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1395,7 +1395,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -1404,15 +1404,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -1422,11 +1422,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -1439,15 +1439,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -1457,11 +1457,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -1474,11 +1474,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -1493,10 +1493,10 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "1eo8x6r",
+              "name": "1of1b04",
               "next": undefined,
               "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1535,7 +1535,7 @@ Array [
       }
     
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1548,29 +1548,29 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "1tq13jn",
+                  "name": "1m19bxr",
                   "next": undefined,
                   "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "mk8fqy",
+                  "name": "pc2mjs",
                   "next": undefined,
                   "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                   "toString": [Function],
                 },
               ]
@@ -1583,15 +1583,15 @@ Array [
           css={
             Object {
               "map": undefined,
-              "name": "d995dt",
+              "name": "11lclfu",
               "next": undefined,
               "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
               "toString": [Function],
             }
           }
@@ -1600,10 +1600,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "o6magp",
+                "name": "5fk7b0",
                 "next": undefined,
                 "styles": "
-                        
+												
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1613,7 +1613,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                      ",
+											",
                 "toString": [Function],
               }
             }
@@ -1624,18 +1624,18 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "13eodb",
+                "name": "1rqc2wz",
                 "next": undefined,
                 "styles": "
-                        
+												
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-                        word-break: break-word;
-                      ",
+												word-break: break-word;
+											",
                 "toString": [Function],
               }
             }
@@ -1646,10 +1646,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "12kbnvd",
+                "name": "58i9yn",
                 "next": undefined,
                 "styles": "
-                      
+											
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1659,7 +1659,7 @@ Array [
 ;
     margin: 6px 0 4px;
   
-                    ",
+										",
                 "toString": [Function],
               }
             }
@@ -1670,10 +1670,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "v9a1zq",
+                "name": "u4w0zl",
                 "next": undefined,
                 "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -1686,7 +1686,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                 "toString": [Function],
               }
             }
@@ -1695,15 +1695,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -1713,11 +1713,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -1730,15 +1730,15 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "1vdm42g",
+                  "name": "19velgr",
                   "next": undefined,
                   "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                   "toString": [Function],
                 }
               }
@@ -1748,11 +1748,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "3nofu1",
+                    "name": "1si7vg5",
                     "next": undefined,
                     "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                     "toString": [Function],
                   }
                 }
@@ -1765,11 +1765,11 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "6ux35a",
+                  "name": "91h43d",
                   "next": undefined,
                   "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                   "toString": [Function],
                 }
               }
@@ -1790,13 +1790,13 @@ Array [
     css={
       Object {
         "map": undefined,
-        "name": "wv50w6",
+        "name": "iopk9v",
         "next": undefined,
         "styles": "
-  
-  border-top: 1px solid #DCDCDC;
-  margin-top: 30px;
-  
+	
+	border-top: 1px solid #DCDCDC;
+	margin-top: 30px;
+	
 	font-family: GH Guardian Headline, Guardian Egyptian Web, Georgia, serif;
 	font-size: 1.75rem;
 	line-height: 1.15;
@@ -1804,11 +1804,11 @@ Array [
 	;
 ;
 ;
-  margin-bottom: 4px;
-  @media (min-width: 740px) {
-    margin-bottom: 0;
-    margin-top: 40px;
-  }
+	margin-bottom: 4px;
+	@media (min-width: 740px) {
+		margin-bottom: 0;
+		margin-top: 40px;
+	}
 ",
         "toString": [Function],
       }
@@ -1821,32 +1821,32 @@ Array [
       Array [
         Object {
           "map": undefined,
-          "name": "wzkwc0",
+          "name": "1pljvuf",
           "next": undefined,
           "styles": "
-  
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-  margin-bottom: 4px;
-  max-width: 320px;
-  @media (min-width: 740px) {
-    max-width: none;
-  }
+	margin-bottom: 4px;
+	max-width: 320px;
+	@media (min-width: 740px) {
+		max-width: none;
+	}
 ",
           "toString": [Function],
         },
         Object {
           "map": undefined,
-          "name": "cb082j",
+          "name": "1e9oew8",
           "next": undefined,
           "styles": "
-  @media (min-width: 1300px) {
-    display: none;
-  }
+	@media (min-width: 1300px) {
+		display: none;
+	}
 ",
           "toString": [Function],
         },
@@ -1873,23 +1873,23 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "oirohx",
+          "name": "ch09pe",
           "next": undefined,
           "styles": "
-    margin-bottom: 8px;
-    text-align: right;
-    a {
-      
+		margin-bottom: 8px;
+		text-align: right;
+		a {
+			
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 0.9375rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-      color: #007ABC;
-      text-decoration: underline;
-    }
-  ",
+			color: #007ABC;
+			text-decoration: underline;
+		}
+	",
           "toString": [Function],
         }
       }
@@ -1905,18 +1905,18 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "77v4mp",
+          "name": "1akg8vr",
           "next": undefined,
           "styles": "
-  display: flex;
-  flex-direction: column;
-  @media (min-width: 660px) {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-  & > * {
-    margin-bottom: 20px;
-  }
+	display: flex;
+	flex-direction: column;
+	@media (min-width: 660px) {
+		flex-direction: row-reverse;
+		justify-content: space-between;
+	}
+	& > * {
+		margin-bottom: 20px;
+	}
 ",
           "toString": [Function],
         }
@@ -1926,22 +1926,22 @@ Array [
         css={
           Object {
             "map": undefined,
-            "name": "1cbbicq",
+            "name": "mvxes8",
             "next": undefined,
             "styles": "
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #DCDCDC;
-  
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #DCDCDC;
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-  @media (min-width: 660px) {
-    width: calc(50% - 10px);
-  }
+	@media (min-width: 660px) {
+		width: calc(50% - 10px);
+	}
 ",
             "toString": [Function],
           }
@@ -1953,31 +1953,31 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "6z60u3",
+                  "name": "1ietvtj",
                   "next": undefined,
                   "styles": "
-  
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.25rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-  color: #333333;
-  position: relative;
-  margin: 0;
-  padding: 18px 0 18px 60px;
+	color: #333333;
+	position: relative;
+	margin: 0;
+	padding: 18px 0 18px 60px;
 ",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "12wt86f",
+                  "name": "1o95trx",
                   "next": undefined,
                   "styles": "
-  @media (min-width: 980px) {
-    padding: 22px 0 22px 64px;
-  }
+	@media (min-width: 980px) {
+		padding: 22px 0 22px 64px;
+	}
 ",
                   "toString": [Function],
                 },
@@ -1989,24 +1989,24 @@ Array [
                 Array [
                   Object {
                     "map": undefined,
-                    "name": "17gfd4y",
+                    "name": "19siuiw",
                     "next": undefined,
                     "styles": "
-  position: absolute;
-  top: 12px;
-  left: 12px;
+	position: absolute;
+	top: 12px;
+	left: 12px;
 ",
                     "toString": [Function],
                   },
                   Object {
                     "map": undefined,
-                    "name": "na2jba",
+                    "name": "digrf6",
                     "next": undefined,
                     "styles": "
-  @media (min-width: 980px) {
-    top: 16px;
-    left: 16px;
-  }
+	@media (min-width: 980px) {
+		top: 16px;
+		left: 16px;
+	}
 ",
                     "toString": [Function],
                   },
@@ -2063,22 +2063,22 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "169dapk",
+                  "name": "1dargjh",
                   "next": undefined,
                   "styles": "
-  display: none;
-  margin: 0 16px 12px 16px;
+	display: none;
+	margin: 0 16px 12px 16px;
 ",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "13pj9fm",
+                  "name": "1jkmgkt",
                   "next": undefined,
                   "styles": "
-  @media (min-width: 1300px) {
-    display: block;
-  }
+	@media (min-width: 1300px) {
+		display: block;
+	}
 ",
                   "toString": [Function],
                 },
@@ -2093,31 +2093,31 @@ Array [
             Array [
               Object {
                 "map": undefined,
-                "name": "122i3er",
+                "name": "lfjzhr",
                 "next": undefined,
                 "styles": "
-  border-top: 1px solid #DCDCDC;
-  padding: 12px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  & p {
-    margin-bottom: 0;
-  }
+	border-top: 1px solid #DCDCDC;
+	padding: 12px;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	& p {
+		margin-bottom: 0;
+	}
 ",
                 "toString": [Function],
               },
               Object {
                 "map": undefined,
-                "name": "yjcsox",
+                "name": "5u67jf",
                 "next": undefined,
                 "styles": "
-  @media (min-width: 1300px) {
-    padding: 12px 0 0;
-    margin: 0 16px 16px;
-  }
+	@media (min-width: 1300px) {
+		padding: 12px 0 0;
+		margin: 0 16px 16px;
+	}
 ",
                 "toString": [Function],
               },
@@ -2150,22 +2150,22 @@ Array [
         css={
           Object {
             "map": undefined,
-            "name": "1cbbicq",
+            "name": "mvxes8",
             "next": undefined,
             "styles": "
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #DCDCDC;
-  
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #DCDCDC;
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-  @media (min-width: 660px) {
-    width: calc(50% - 10px);
-  }
+	@media (min-width: 660px) {
+		width: calc(50% - 10px);
+	}
 ",
             "toString": [Function],
           }
@@ -2177,31 +2177,31 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "6z60u3",
+                  "name": "1ietvtj",
                   "next": undefined,
                   "styles": "
-  
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.25rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-  color: #333333;
-  position: relative;
-  margin: 0;
-  padding: 18px 0 18px 60px;
+	color: #333333;
+	position: relative;
+	margin: 0;
+	padding: 18px 0 18px 60px;
 ",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "12wt86f",
+                  "name": "1o95trx",
                   "next": undefined,
                   "styles": "
-  @media (min-width: 980px) {
-    padding: 22px 0 22px 64px;
-  }
+	@media (min-width: 980px) {
+		padding: 22px 0 22px 64px;
+	}
 ",
                   "toString": [Function],
                 },
@@ -2213,24 +2213,24 @@ Array [
                 Array [
                   Object {
                     "map": undefined,
-                    "name": "17gfd4y",
+                    "name": "19siuiw",
                     "next": undefined,
                     "styles": "
-  position: absolute;
-  top: 12px;
-  left: 12px;
+	position: absolute;
+	top: 12px;
+	left: 12px;
 ",
                     "toString": [Function],
                   },
                   Object {
                     "map": undefined,
-                    "name": "na2jba",
+                    "name": "digrf6",
                     "next": undefined,
                     "styles": "
-  @media (min-width: 980px) {
-    top: 16px;
-    left: 16px;
-  }
+	@media (min-width: 980px) {
+		top: 16px;
+		left: 16px;
+	}
 ",
                     "toString": [Function],
                   },
@@ -2269,22 +2269,22 @@ Array [
               Array [
                 Object {
                   "map": undefined,
-                  "name": "169dapk",
+                  "name": "1dargjh",
                   "next": undefined,
                   "styles": "
-  display: none;
-  margin: 0 16px 12px 16px;
+	display: none;
+	margin: 0 16px 12px 16px;
 ",
                   "toString": [Function],
                 },
                 Object {
                   "map": undefined,
-                  "name": "13pj9fm",
+                  "name": "1jkmgkt",
                   "next": undefined,
                   "styles": "
-  @media (min-width: 1300px) {
-    display: block;
-  }
+	@media (min-width: 1300px) {
+		display: block;
+	}
 ",
                   "toString": [Function],
                 },
@@ -2299,31 +2299,31 @@ Array [
             Array [
               Object {
                 "map": undefined,
-                "name": "122i3er",
+                "name": "lfjzhr",
                 "next": undefined,
                 "styles": "
-  border-top: 1px solid #DCDCDC;
-  padding: 12px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  & p {
-    margin-bottom: 0;
-  }
+	border-top: 1px solid #DCDCDC;
+	padding: 12px;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	& p {
+		margin-bottom: 0;
+	}
 ",
                 "toString": [Function],
               },
               Object {
                 "map": undefined,
-                "name": "yjcsox",
+                "name": "5u67jf",
                 "next": undefined,
                 "styles": "
-  @media (min-width: 1300px) {
-    padding: 12px 0 0;
-    margin: 0 16px 16px;
-  }
+	@media (min-width: 1300px) {
+		padding: 12px 0 0;
+		margin: 0 16px 16px;
+	}
 ",
                 "toString": [Function],
               },
@@ -2334,11 +2334,11 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "4ug6yy",
+                "name": "122vlyx",
                 "next": undefined,
                 "styles": "
-  font-weight: bold;
-  margin-bottom: 36px !important;
+	font-weight: bold;
+	margin-bottom: 36px !important;
 ",
                 "toString": [Function],
               }
@@ -2353,12 +2353,12 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "z0mih3",
+          "name": "1fhb0nj",
           "next": undefined,
           "styles": "
-  border-top: 1px solid #DCDCDC;
-  border-left: 1px solid #DCDCDC;
-  border-right: 1px solid #DCDCDC;
+	border-top: 1px solid #DCDCDC;
+	border-left: 1px solid #DCDCDC;
+	border-right: 1px solid #DCDCDC;
 ",
           "toString": [Function],
         }
@@ -2369,31 +2369,31 @@ Array [
           Array [
             Object {
               "map": undefined,
-              "name": "6z60u3",
+              "name": "1ietvtj",
               "next": undefined,
               "styles": "
-  
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.25rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-  color: #333333;
-  position: relative;
-  margin: 0;
-  padding: 18px 0 18px 60px;
+	color: #333333;
+	position: relative;
+	margin: 0;
+	padding: 18px 0 18px 60px;
 ",
               "toString": [Function],
             },
             Object {
               "map": undefined,
-              "name": "12wt86f",
+              "name": "1o95trx",
               "next": undefined,
               "styles": "
-  @media (min-width: 980px) {
-    padding: 22px 0 22px 64px;
-  }
+	@media (min-width: 980px) {
+		padding: 22px 0 22px 64px;
+	}
 ",
               "toString": [Function],
             },
@@ -2405,24 +2405,24 @@ Array [
             Array [
               Object {
                 "map": undefined,
-                "name": "17gfd4y",
+                "name": "19siuiw",
                 "next": undefined,
                 "styles": "
-  position: absolute;
-  top: 12px;
-  left: 12px;
+	position: absolute;
+	top: 12px;
+	left: 12px;
 ",
                 "toString": [Function],
               },
               Object {
                 "map": undefined,
-                "name": "na2jba",
+                "name": "digrf6",
                 "next": undefined,
                 "styles": "
-  @media (min-width: 980px) {
-    top: 16px;
-    left: 16px;
-  }
+	@media (min-width: 980px) {
+		top: 16px;
+		left: 16px;
+	}
 ",
                 "toString": [Function],
               },
@@ -2461,30 +2461,30 @@ Array [
           Array [
             Object {
               "map": undefined,
-              "name": "1b0hm2f",
+              "name": "duf8d3",
               "next": undefined,
               "styles": "
-  display: none;
-  
+	display: none;
+	
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-  padding: 0 16px 16px 16px;
-  margin: 0;
+	padding: 0 16px 16px 16px;
+	margin: 0;
 ",
               "toString": [Function],
             },
             Object {
               "map": undefined,
-              "name": "13pj9fm",
+              "name": "1jkmgkt",
               "next": undefined,
               "styles": "
-  @media (min-width: 1300px) {
-    display: block;
-  }
+	@media (min-width: 1300px) {
+		display: block;
+	}
 ",
               "toString": [Function],
             },
@@ -2509,12 +2509,12 @@ Array [
         css={
           Object {
             "map": undefined,
-            "name": "1kvvfmb",
+            "name": "1xbx0f5",
             "next": undefined,
             "styles": "
-          width: 100%;
-          border: 1px solid #DCDCDC;
-        ",
+					width: 100%;
+					border: 1px solid #DCDCDC;
+				",
             "toString": [Function],
           }
         }
@@ -2524,10 +2524,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "asga8g",
+                "name": "1n5rft4",
                 "next": undefined,
                 "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -2559,7 +2559,7 @@ Array [
     }
     false
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -2572,29 +2572,29 @@ Array [
                 Array [
                   Object {
                     "map": undefined,
-                    "name": "1tq13jn",
+                    "name": "1m19bxr",
                     "next": undefined,
                     "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                     "toString": [Function],
                   },
                   Object {
                     "map": undefined,
-                    "name": "mk8fqy",
+                    "name": "pc2mjs",
                     "next": undefined,
                     "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                     "toString": [Function],
                   },
                 ]
@@ -2607,15 +2607,15 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "52ezka",
+                "name": "a9yqa",
                 "next": undefined,
                 "styles": "
-                  
+									
     display: block;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -2624,10 +2624,10 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "v9a1zq",
+                  "name": "u4w0zl",
                   "next": undefined,
                   "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -2640,7 +2640,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                   "toString": [Function],
                 }
               }
@@ -2649,15 +2649,15 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1vdm42g",
+                    "name": "19velgr",
                     "next": undefined,
                     "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                     "toString": [Function],
                   }
                 }
@@ -2668,11 +2668,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "6ux35a",
+                    "name": "91h43d",
                     "next": undefined,
                     "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                     "toString": [Function],
                   }
                 }
@@ -2683,11 +2683,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "6ux35a",
+                    "name": "91h43d",
                     "next": undefined,
                     "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                     "toString": [Function],
                   }
                 }
@@ -2702,10 +2702,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "1eo8x6r",
+                "name": "1of1b04",
                 "next": undefined,
                 "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -2744,7 +2744,7 @@ Array [
       }
     
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -2757,29 +2757,29 @@ Array [
                 Array [
                   Object {
                     "map": undefined,
-                    "name": "1tq13jn",
+                    "name": "1m19bxr",
                     "next": undefined,
                     "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                     "toString": [Function],
                   },
                   Object {
                     "map": undefined,
-                    "name": "mk8fqy",
+                    "name": "pc2mjs",
                     "next": undefined,
                     "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                     "toString": [Function],
                   },
                 ]
@@ -2792,15 +2792,15 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "d995dt",
+                "name": "11lclfu",
                 "next": undefined,
                 "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -2809,10 +2809,10 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "v9a1zq",
+                  "name": "u4w0zl",
                   "next": undefined,
                   "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -2825,7 +2825,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                   "toString": [Function],
                 }
               }
@@ -2834,15 +2834,15 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1vdm42g",
+                    "name": "19velgr",
                     "next": undefined,
                     "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                     "toString": [Function],
                   }
                 }
@@ -2852,11 +2852,11 @@ Array [
                   css={
                     Object {
                       "map": undefined,
-                      "name": "3nofu1",
+                      "name": "1si7vg5",
                       "next": undefined,
                       "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                       "toString": [Function],
                     }
                   }
@@ -2869,15 +2869,15 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1vdm42g",
+                    "name": "19velgr",
                     "next": undefined,
                     "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                     "toString": [Function],
                   }
                 }
@@ -2887,11 +2887,11 @@ Array [
                   css={
                     Object {
                       "map": undefined,
-                      "name": "3nofu1",
+                      "name": "1si7vg5",
                       "next": undefined,
                       "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                       "toString": [Function],
                     }
                   }
@@ -2904,11 +2904,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "6ux35a",
+                    "name": "91h43d",
                     "next": undefined,
                     "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                     "toString": [Function],
                   }
                 }
@@ -2923,10 +2923,10 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "1eo8x6r",
+                "name": "1of1b04",
                 "next": undefined,
                 "styles": "
-                  
+									
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -2965,7 +2965,7 @@ Array [
       }
     
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -2978,29 +2978,29 @@ Array [
                 Array [
                   Object {
                     "map": undefined,
-                    "name": "1tq13jn",
+                    "name": "1m19bxr",
                     "next": undefined,
                     "styles": "
-    display: none;
-    user-select: none;
-  ",
+		display: none;
+		user-select: none;
+	",
                     "toString": [Function],
                   },
                   Object {
                     "map": undefined,
-                    "name": "mk8fqy",
+                    "name": "pc2mjs",
                     "next": undefined,
                     "styles": "
-    @media (min-width: 980px) {
-      display: block;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 32px;
-      font-weight: normal;
-      font-size: 0.75rem;
-    }
-  ",
+		@media (min-width: 980px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			right: 32px;
+			font-weight: normal;
+			font-size: 0.75rem;
+		}
+	",
                     "toString": [Function],
                   },
                 ]
@@ -3013,15 +3013,15 @@ Array [
             css={
               Object {
                 "map": undefined,
-                "name": "d995dt",
+                "name": "11lclfu",
                 "next": undefined,
                 "styles": "
-                  
+									
     display: none;
     background-color: #F6F6F6;
     padding: 16px;
   
-                ",
+								",
                 "toString": [Function],
               }
             }
@@ -3030,10 +3030,10 @@ Array [
               css={
                 Object {
                   "map": undefined,
-                  "name": "v9a1zq",
+                  "name": "u4w0zl",
                   "next": undefined,
                   "styles": "
-                    
+										
     
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 1.0625rem;
@@ -3046,7 +3046,7 @@ Array [
       margin-top: 16px;
     }
   
-                  ",
+									",
                   "toString": [Function],
                 }
               }
@@ -3055,15 +3055,15 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1vdm42g",
+                    "name": "19velgr",
                     "next": undefined,
                     "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                     "toString": [Function],
                   }
                 }
@@ -3073,11 +3073,11 @@ Array [
                   css={
                     Object {
                       "map": undefined,
-                      "name": "3nofu1",
+                      "name": "1si7vg5",
                       "next": undefined,
                       "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                       "toString": [Function],
                     }
                   }
@@ -3090,15 +3090,15 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1vdm42g",
+                    "name": "19velgr",
                     "next": undefined,
                     "styles": "
-                        
+													
       display: block;
       margin-bottom: 4px;
       font-weight: bold;
   
-                      ",
+												",
                     "toString": [Function],
                   }
                 }
@@ -3108,11 +3108,11 @@ Array [
                   css={
                     Object {
                       "map": undefined,
-                      "name": "3nofu1",
+                      "name": "1si7vg5",
                       "next": undefined,
                       "styles": "
-                            font-weight: normal;
-                          ",
+															font-weight: normal;
+														",
                       "toString": [Function],
                     }
                   }
@@ -3125,11 +3125,11 @@ Array [
                 css={
                   Object {
                     "map": undefined,
-                    "name": "6ux35a",
+                    "name": "91h43d",
                     "next": undefined,
                     "styles": "
-                          display: block;
-                        ",
+													display: block;
+												",
                     "toString": [Function],
                   }
                 }
@@ -3145,16 +3145,16 @@ Array [
       css={
         Object {
           "map": undefined,
-          "name": "1q2o0a8",
+          "name": "mwkswx",
           "next": undefined,
           "styles": "
-    margin-top: 36px;
-    padding: 12px;
-    @media (min-width: 980px) {
-      padding: 24px;
-    }
-    background-color: #ecf3fe;
-  ",
+		margin-top: 36px;
+		padding: 12px;
+		@media (min-width: 980px) {
+			padding: 24px;
+		}
+		background-color: #ecf3fe;
+	",
           "toString": [Function],
         }
       }
@@ -3164,18 +3164,18 @@ Array [
         css={
           Object {
             "map": undefined,
-            "name": "o6ecah",
+            "name": "py3lpv",
             "next": undefined,
             "styles": "
-    margin: 0;
-    
+		margin: 0;
+		
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 0.9375rem;
 	line-height: 1.5;
 	font-weight: 700;
 	;
 ;
-  ",
+	",
             "toString": [Function],
           }
         }
@@ -3186,23 +3186,23 @@ Array [
         css={
           Object {
             "map": undefined,
-            "name": "yid24d",
+            "name": "576g4d",
             "next": undefined,
             "styles": "
-    
+		
 	font-family: GuardianTextSans, Guardian Text Sans Web, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 	font-size: 0.9375rem;
 	line-height: 1.5;
 	font-weight: 400;
 	;
 ;
-    max-width: 830px;
-    margin: 0;
-    a {
-      color: #007ABC;
-      text-decoration: underline;
-    }
-  ",
+		max-width: 830px;
+		margin: 0;
+		a {
+			color: #007ABC;
+			text-decoration: underline;
+		}
+	",
             "toString": [Function],
           }
         }
@@ -3214,8 +3214,8 @@ Array [
         >
           privacy policy
         </a>
-         and
          
+        and 
         <a
           href="https://thegulocal.com/info/cookies"
         >

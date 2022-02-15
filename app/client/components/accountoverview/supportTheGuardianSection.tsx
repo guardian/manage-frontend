@@ -1,36 +1,36 @@
-import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
-import { brand, neutral } from "@guardian/src-foundations/palette";
-import { textSans } from "@guardian/src-foundations/typography";
-import React from "react";
+import { css } from '@emotion/core';
+import { space } from '@guardian/src-foundations';
+import { brand, neutral } from '@guardian/src-foundations/palette';
+import { textSans } from '@guardian/src-foundations/typography';
+import React from 'react';
 import {
-  SupportTheGuardianButton,
-  SupportTheGuardianButtonProps
-} from "../supportTheGuardianButton";
+	SupportTheGuardianButton,
+	SupportTheGuardianButtonProps,
+} from '../supportTheGuardianButton';
 
 export interface SupportTheGuardianSectionProps
-  extends SupportTheGuardianButtonProps {
-  message: string;
+	extends SupportTheGuardianButtonProps {
+	message: string;
 }
 
 export const SupportTheGuardianSection = (
-  props: SupportTheGuardianSectionProps
+	props: SupportTheGuardianSectionProps,
 ) => (
-  <>
-    <p
-      css={css`
-        ${textSans.medium()}
-        margin-top: ${space[6]}px;
-      `}
-    >
-      {props.message}
-    </p>
-    <SupportTheGuardianButton
-      fontWeight="bold"
-      textColour={neutral[100]}
-      colour={brand[400]}
-      notPrimary
-      {...props}
-    />
-  </>
+	<>
+		<p
+			css={css`
+				${textSans.medium()}
+				margin-top: ${space[6]}px;
+			`}
+		>
+			{props.message}
+		</p>
+		<SupportTheGuardianButton
+			fontWeight="bold"
+			textColour={neutral[100]}
+			colour={brand[400]}
+			notPrimary
+			{...props}
+		/>
+	</>
 );
