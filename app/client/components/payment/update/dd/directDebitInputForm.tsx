@@ -146,6 +146,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           type="text"
           css={inputBoxBaseStyle}
           placeholder="First Name Surname"
+          name="Account holder name"
           pattern="[A-Za-z\s]{3,}"
           title="The name of the account holder must have at least 3 letters."
           required
@@ -174,6 +175,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
             css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
             placeholder="•• •• ••"
+            name="Sort Code"
             required
           />
         </FieldWrapper>
@@ -189,6 +191,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
             pattern="[0-9]{7,}"
             css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
             placeholder="•••• ••••"
+            name="Account Number"
             title="Account Number should typically be 8 digits"
             required
           />
@@ -209,6 +212,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
           checked={soleAccountHolderConfirmed}
           label="I confirm that I am the account holder and I am solely able to authorise debit from the account"
           required
+          name="accountHolderConfirmation"
           value="I confirm that I am the account holder and I am solely able to authorise debit from the account"
           cssOverrides={css`
             & + span {

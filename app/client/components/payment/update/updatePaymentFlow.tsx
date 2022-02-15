@@ -166,6 +166,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 
   return (
     <div
+      data-cy={props.paymentMethod}
       css={css`
         border-radius: 4px;
 
@@ -365,7 +366,9 @@ export class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
+            userEmail={
+              subscription.card?.email || window.guardian.identityDetails.email
+            }
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (
@@ -376,7 +379,9 @@ export class PaymentUpdaterStep extends React.Component<
           <CardInputForm
             stripeApiKey={stripePublicKey}
             newPaymentMethodDetailUpdater={this.newPaymentMethodDetailUpdater}
-            userEmail={window.guardian.identityDetails.email}
+            userEmail={
+              subscription.card?.email || window.guardian.identityDetails.email
+            }
             executePaymentUpdate={this.executePaymentUpdate}
           />
         ) : (

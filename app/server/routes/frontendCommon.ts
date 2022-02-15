@@ -2,10 +2,7 @@ import * as Sentry from "@sentry/node";
 import { conf, Environments } from "../config";
 import { log } from "../log";
 import { recaptchaConfigPromise } from "../recaptchaConfig";
-import {
-  stripePublicKeysPromise
-} from "../stripeSetupIntentConfig";
-
+import { stripePublicKeysPromise } from "../stripeSetupIntentConfig";
 
 export const clientDSN =
   conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
@@ -17,8 +14,14 @@ if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
 
 export const getRecaptchaPublicKey = async () => {
   try {
-    const recaptchaConfig = await recaptchaConfigPromise;
-    const recaptchaPublicKey = recaptchaConfig?.publicKey;
+    let recaptchaPublicKey: string | undefined;
+
+    if (conf.ENVIRONMENT === Environments.DEVELOPMENT) {
+      recaptchaPublicKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+    } else {
+      const recaptchaConfig = await recaptchaConfigPromise;
+      recaptchaPublicKey = recaptchaConfig?.publicKey;
+    }
 
     if (!recaptchaPublicKey) {
       throw new Error(`recaptcha public key is '${recaptchaPublicKey}'`);

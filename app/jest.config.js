@@ -1,6 +1,6 @@
 module.exports = {
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": "ts-jest",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   moduleFileExtensions: ["js", "json", "jsx", "node", "ts", "tsx"],
@@ -10,27 +10,28 @@ module.exports = {
     "ts-jest": {
       tsconfig: {
         jsx: "react",
-        module: "commonjs"
+        module: "commonjs",
       },
       babelConfig: {
         presets: [
           "@babel/typescript",
           "@babel/react",
-          "@emotion/babel-preset-css-prop"
+          "@emotion/babel-preset-css-prop",
         ],
         plugins: [
           "@babel/proposal-class-properties",
           "@babel/proposal-object-rest-spread",
           "@babel/plugin-proposal-optional-chaining",
-          "lodash"
-        ]
-      }
-    }
+          "lodash",
+        ],
+      },
+    },
   },
   moduleNameMapper: {
     "^@guardian/src-foundations/(.*)(?<!cjs)$":
-      "@guardian/src-foundations/$1/cjs"
+      "@guardian/src-foundations/$1/cjs",
   },
   preset: "ts-jest",
-  testEnvironment: "jsdom"
+  testEnvironment: "jsdom",
+  testPathIgnorePatterns: ["/cypress/"],
 };

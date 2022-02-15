@@ -4,14 +4,14 @@ import {
   brand,
   brandAlt,
   labs,
-  neutral
+  neutral,
 } from "@guardian/src-foundations/palette";
 import { textSans } from "@guardian/src-foundations/typography";
 import React from "react";
 import {
   dateAddDays,
   getWeekDay,
-  numberOfDaysInMonth
+  numberOfDaysInMonth,
 } from "../../../shared/dates";
 import { minWidth } from "../../styles/breakpoints";
 import { CalendarTableDate } from "./holidayCalendarTables";
@@ -34,7 +34,7 @@ const days: Array<{ day: string; abbr: string }> = [
   { day: "Thursday", abbr: "Thu" },
   { day: "Friday", abbr: "Fri" },
   { day: "Saturday", abbr: "Sat" },
-  { day: "Sunday", abbr: "Sun" }
+  { day: "Sunday", abbr: "Sun" },
 ];
 
 export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
@@ -161,7 +161,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 
   const firstDayOfSelectedMonth = getWeekDay(props.targetMonthStartDate);
   const firstDayOfSelectedMonthNum = days.findIndex(
-    day => day.day === firstDayOfSelectedMonth
+    (day) => day.day === firstDayOfSelectedMonth
   );
   const totalDaysInSelectedMonth = numberOfDaysInMonth(
     props.targetMonthStartDate
@@ -196,26 +196,26 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
   const calendarDates: Date[] = [
     ...prependDatesPadding,
     ...selectedMonthDates,
-    ...appendDatesPadding
+    ...appendDatesPadding,
   ];
 
   return (
     <div css={holderCss}>
       <span css={monthTitleCss}>
         {props.targetMonthStartDate.toLocaleString("default", {
-          month: "long"
+          month: "long",
         })}{" "}
         {props.targetMonthStartDate.getFullYear()}
       </span>
-      <div css={tableHolderCss}>
-        {days.map(day => (
+      <div data-cy="date_picker" css={tableHolderCss}>
+        {days.map((day) => (
           <abbr title={day.day} css={thCss} key={day.day}>
             {day.abbr}
           </abbr>
         ))}
         {calendarDates.map((date, dateIndex) => {
           const matchingDate = props.holidayDates.find(
-            holidayDate => holidayDate.date.valueOf() === date.valueOf()
+            (holidayDate) => holidayDate.date.valueOf() === date.valueOf()
           );
           return (
             <div
@@ -230,14 +230,22 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
                 calendarDates.length - 1
               )}
               key={date.getTime()}
-              onMouseDown={((targetDate: Date) => () =>
-                props.handleDayMouseDown(targetDate))(date)}
-              onMouseUp={((targetDate: Date) => () =>
-                props.handleDayMouseUp(targetDate))(date)}
-              onTouchStart={((targetDate: Date) => () =>
-                props.handleTouchStart(targetDate))(date)}
-              onMouseEnter={((targetDate: Date) => () =>
-                props.handleDayMouseEnter(targetDate))(date)}
+              onMouseDown={(
+                (targetDate: Date) => () =>
+                  props.handleDayMouseDown(targetDate)
+              )(date)}
+              onMouseUp={(
+                (targetDate: Date) => () =>
+                  props.handleDayMouseUp(targetDate)
+              )(date)}
+              onTouchStart={(
+                (targetDate: Date) => () =>
+                  props.handleTouchStart(targetDate)
+              )(date)}
+              onMouseEnter={(
+                (targetDate: Date) => () =>
+                  props.handleDayMouseEnter(targetDate)
+              )(date)}
             >
               {date.getDate()}
               {matchingDate?.showAsterisk ? <sup>*</sup> : ""}

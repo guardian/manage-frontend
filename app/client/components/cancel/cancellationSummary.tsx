@@ -24,7 +24,9 @@ const actuallyCancelled = (
   return (
     <>
       <WithStandardTopMargin>
-        <h3>Your {productType.friendlyName} is cancelled.</h3>
+        <h3 data-cy="cancellation_message">
+          Your {productType.friendlyName} is cancelled.
+        </h3>
         {productType.cancellation &&
           !productType.cancellation.shouldHideSummaryMainPara && (
             <p>
@@ -97,7 +99,7 @@ const actuallyCancelled = (
               </p>
             )}
             <CancellationReasonContext.Consumer>
-              {reason =>
+              {(reason) =>
                 (!productType.cancellation ||
                   !productType.cancellation
                     .onlyShowSupportSectionIfAlternateText ||
@@ -151,16 +153,15 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
   Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary = (productType: ProductType) => (
-  productDetail: ProductDetail
-) =>
-  isCancelled(productDetail.subscription) ? (
-    actuallyCancelled(productType, productDetail)
-  ) : (
-    <GenericErrorScreen
-      loggingMessage={
-        productType.friendlyName +
-        " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
-      }
-    />
-  );
+export const getCancellationSummary =
+  (productType: ProductType) => (productDetail: ProductDetail) =>
+    isCancelled(productDetail.subscription) ? (
+      actuallyCancelled(productType, productDetail)
+    ) : (
+      <GenericErrorScreen
+        loggingMessage={
+          productType.friendlyName +
+          " cancellation call succeeded but subsequent product detail doesn't show as cancelled"
+        }
+      />
+    );

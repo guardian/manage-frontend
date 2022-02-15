@@ -1,0 +1,41 @@
+name: manage-frontend cypress
+on: push
+
+jobs:
+  cypress:
+    name: Manage-frontend Cypress
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [1, 2, 3, 4, 5, 6]
+
+    steps:
+      - uses: guardian/actions-assume-aws-role@v1.0.0
+        with:
+          awsRoleToAssume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+        with:
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+          node-version-file: app/.nvmrc
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        env:
+          IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
+        with:
+          working-directory: app
+          start: yarn cypress:server
+          wait-on: "http://localhost:9234, http://localhost:9233"
+          wait-on-timeout: 30
+          quiet: true
+          browser: chrome
+          spec: cypress/integration/parallel-${{ matrix.group }}/*.ts

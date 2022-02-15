@@ -35,6 +35,7 @@ export class RadioButton extends React.Component<
           type="radio"
           value={this.props.value}
           name={this.props.groupName}
+          data-cy={this.props.value}
           onChange={this.props.onChange}
           checked={this.props.checked}
           onFocus={() => this.setState({ focus: true })}
