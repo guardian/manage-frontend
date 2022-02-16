@@ -1,4 +1,4 @@
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import { Redirect, Router } from '@reach/router';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { fonts } from '../styles/fonts';

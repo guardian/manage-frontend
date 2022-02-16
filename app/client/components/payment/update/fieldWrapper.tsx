@@ -1,6 +1,6 @@
 import { StripeError } from '@stripe/stripe-js';
 import React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { textSans } from '@guardian/src-foundations/typography';
 import { neutral, error } from '@guardian/src-foundations/palette';
 import { focusHalo } from '@guardian/src-foundations/accessibility';

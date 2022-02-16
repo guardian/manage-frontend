@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from } from '@guardian/src-foundations/mq';
 import React, { useEffect, useState, SyntheticEvent } from 'react';

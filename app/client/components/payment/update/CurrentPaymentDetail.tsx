@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral, news } from '@guardian/src-foundations/palette';
 import { InlineError } from '@guardian/src-user-feedback';

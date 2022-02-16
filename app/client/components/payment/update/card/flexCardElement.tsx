@@ -5,7 +5,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
 import React, { Dispatch, SetStateAction } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { minWidth } from '../../../../styles/breakpoints';
 import { space } from '@guardian/src-foundations';
 import { sans } from '../../../../styles/fonts';

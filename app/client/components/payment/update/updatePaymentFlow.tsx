@@ -2,7 +2,7 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../../shared/identity';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { neutral, brand } from '@guardian/src-foundations/palette';
 import { space } from '@guardian/src-foundations';
 import { headline } from '@guardian/src-foundations/typography';

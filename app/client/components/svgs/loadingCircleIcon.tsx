@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/core';
+import { css, SerializedStyles } from '@emotion/react';
 import { brand } from '@guardian/src-foundations/palette';
 import React from 'react';
 

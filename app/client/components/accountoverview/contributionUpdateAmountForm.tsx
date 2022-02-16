@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ChoiceCard, ChoiceCardGroup } from '@guardian/src-choice-card';
 import { neutral, palette, space } from '@guardian/src-foundations';
 import { textSans } from '@guardian/src-foundations/typography';

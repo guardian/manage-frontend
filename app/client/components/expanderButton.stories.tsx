@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 import { ExpanderButton } from './expanderButton';
 

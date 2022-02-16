@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
 import { Link } from '@reach/router';
 import React from 'react';

@@ -1,4 +1,4 @@
-import css from '@emotion/css';
+import { css } from '@emotion/react'
 import { Button } from '@guardian/src-button';
 import { brand, neutral, space } from '@guardian/src-foundations';
 import { headline, textSans } from '@guardian/src-foundations/typography';
