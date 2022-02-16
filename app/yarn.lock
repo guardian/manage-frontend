@@ -2423,7 +2423,7 @@
     "@emotion/serialize" "^0.11.15"
     "@emotion/utils" "0.11.3"
 
-"@emotion/styled@^10.0.27", "@emotion/styled@^10.3.0":
+"@emotion/styled@^10.0.27":
   version "10.3.0"
   resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-10.3.0.tgz#8ee959bf75730789abb5f67f7c3ded0c30aec876"
   integrity sha512-GgcUpXBBEU5ido+/p/mCT2/Xx+Oqmp9JzQRuC+a4lYM4i4LBBn/dWvc0rQ19N9ObA8/T4NWMrPNe79kMBDJqoQ==
