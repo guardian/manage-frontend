@@ -1,6 +1,5 @@
-import React from "react";
-import { WithSubscription } from "../../../../shared/productResponse";
+import React from 'react';
+import { WithSubscription } from '../../../../shared/productResponse';
 
-export const NewSubscriptionContext: React.Context<
-  WithSubscription[] | {}
-> = React.createContext({});
+export const NewSubscriptionContext: React.Context<WithSubscription[] | {}> =
+	React.createContext({});

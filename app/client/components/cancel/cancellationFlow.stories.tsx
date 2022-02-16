@@ -1,24 +1,24 @@
-import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import CancellationFlow from "./cancellationFlow";
-import { PRODUCT_TYPES } from "../../../shared/productTypes";
+import CancellationFlow from './cancellationFlow';
+import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
-import { guardianWeeklyCard } from "../../fixtures/productDetail";
+import { guardianWeeklyCard } from '../../fixtures/productDetail';
 
 export default {
-  title: "Pages/CancellationFlow",
-  component: CancellationFlow,
-  parameters: {
-    controls: { disabled: true },
-    layout: "fullscreen",
-  },
+	title: 'Pages/CancellationFlow',
+	component: CancellationFlow,
+	parameters: {
+		controls: { disabled: true },
+		layout: 'fullscreen',
+	},
 } as ComponentMeta<typeof CancellationFlow>;
 
 export const GuardianWeekly: ComponentStory<typeof CancellationFlow> = () => (
-  <CancellationFlow
-    path="/"
-    productType={PRODUCT_TYPES.guardianweekly}
-    location={{ state: { productDetail: guardianWeeklyCard } }}
-  />
+	<CancellationFlow
+		path="/"
+		productType={PRODUCT_TYPES.guardianweekly}
+		location={{ state: { productDetail: guardianWeeklyCard } }}
+	/>
 );

@@ -159,11 +159,11 @@ exports[`Main renders something 1`] = `
         css={
           Object {
             "map": undefined,
-            "name": "vck559",
+            "name": "9psuwv",
             "next": undefined,
             "styles": "
-  background-color: #052962;
-  color: #ffffff;
+	background-color: #052962;
+	color: #ffffff;
 ",
             "toString": [Function],
           }
@@ -173,11 +173,11 @@ exports[`Main renders something 1`] = `
           css={
             Object {
               "map": undefined,
-              "name": "1fkn892",
+              "name": "1tnpcj",
               "next": undefined,
               "styles": "
-  max-width: 1300px;
-  margin: auto;
+	max-width: 1300px;
+	margin: auto;
 ",
               "toString": [Function],
             }
@@ -187,20 +187,20 @@ exports[`Main renders something 1`] = `
             css={
               Object {
                 "map": undefined,
-                "name": "1ku4d2x",
+                "name": "1hlpax4",
                 "next": undefined,
                 "styles": "
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-top: 0;
+	padding: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-top: 0;
 
-  @media (min-width: 980px) {
-    padding: 0 20px;
-  }
+	@media (min-width: 980px) {
+		padding: 0 20px;
+	}
 
-  @media (min-width: 1140px) {
-    display: flex;
-  }
+	@media (min-width: 1140px) {
+		display: flex;
+	}
 ",
                 "toString": [Function],
               }
@@ -210,19 +210,19 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "1jqhtyp",
+                  "name": "1eqsgue",
                   "next": undefined,
                   "styles": "
-  padding: 0;
-  border: 0;
-  width: 100%;
-  margin: 0;
-  @media (min-width: 1140px) {
-    width: 340px;
-  }
-  @media (min-width: 1300px) {
-    width: 460px;
-  }
+	padding: 0;
+	border: 0;
+	width: 100%;
+	margin: 0;
+	@media (min-width: 1140px) {
+		width: 340px;
+	}
+	@media (min-width: 1300px) {
+		width: 460px;
+	}
 ",
                   "toString": [Function],
                 }
@@ -232,10 +232,10 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "a2zj5o",
+                    "name": "5ht1r8",
                     "next": undefined,
                     "styles": "
-  min-height: 150px;
+	min-height: 150px;
 ",
                     "toString": [Function],
                   }
@@ -255,20 +255,20 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "1x6vqcu",
+                  "name": "c46mxl",
                   "next": undefined,
                   "styles": "
-  font-feature-settings: kern;
-  font-size: 16px;
-  line-height: 16px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-bottom: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  @media (min-width: 1300px) {
-    border-top: 0;
-  }
+	font-feature-settings: kern;
+	font-size: 16px;
+	line-height: 16px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding-bottom: 18px;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	@media (min-width: 1300px) {
+		border-top: 0;
+	}
 ",
                   "toString": [Function],
                 }
@@ -278,32 +278,32 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1hkg2v9",
+                    "name": "16v9wgp",
                     "next": undefined,
                     "styles": "
-  line-height: 19.2px;
-  width: calc(50% - 1.25rem - 1px);
-  list-style: none;
-  position: relative;
-  padding: 0 10px;
-  margin: 0;
+	line-height: 19.2px;
+	width: calc(50% - 1.25rem - 1px);
+	list-style: none;
+	position: relative;
+	padding: 0 10px;
+	margin: 0;
 
-  &:nth-of-type(even) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	&:nth-of-type(even) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 
-  @media (min-width: 740px) {
-    &:not(:first-of-type) {
-      border-left: 1px solid rgba(255, 255, 255, 0.3);
-    }
+	@media (min-width: 740px) {
+		&:not(:first-of-type) {
+			border-left: 1px solid rgba(255, 255, 255, 0.3);
+		}
 
-    width: 161px;
-    flex: 1 0 0;
-  }
+		width: 161px;
+		flex: 1 0 0;
+	}
 
-  @media (min-width: 980px) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	@media (min-width: 980px) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 ",
                     "toString": [Function],
                   }
@@ -313,10 +313,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -326,16 +326,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -349,10 +349,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -362,16 +362,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -385,10 +385,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -398,16 +398,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -421,10 +421,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -434,16 +434,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -457,10 +457,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -470,16 +470,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -493,10 +493,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -506,16 +506,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -530,10 +530,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -543,16 +543,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -566,10 +566,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -579,16 +579,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -602,10 +602,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -615,16 +615,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -638,10 +638,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -651,16 +651,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -675,32 +675,32 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1hkg2v9",
+                    "name": "16v9wgp",
                     "next": undefined,
                     "styles": "
-  line-height: 19.2px;
-  width: calc(50% - 1.25rem - 1px);
-  list-style: none;
-  position: relative;
-  padding: 0 10px;
-  margin: 0;
+	line-height: 19.2px;
+	width: calc(50% - 1.25rem - 1px);
+	list-style: none;
+	position: relative;
+	padding: 0 10px;
+	margin: 0;
 
-  &:nth-of-type(even) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	&:nth-of-type(even) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 
-  @media (min-width: 740px) {
-    &:not(:first-of-type) {
-      border-left: 1px solid rgba(255, 255, 255, 0.3);
-    }
+	@media (min-width: 740px) {
+		&:not(:first-of-type) {
+			border-left: 1px solid rgba(255, 255, 255, 0.3);
+		}
 
-    width: 161px;
-    flex: 1 0 0;
-  }
+		width: 161px;
+		flex: 1 0 0;
+	}
 
-  @media (min-width: 980px) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	@media (min-width: 980px) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 ",
                     "toString": [Function],
                   }
@@ -710,10 +710,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -723,16 +723,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -746,10 +746,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -759,16 +759,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -782,10 +782,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -795,16 +795,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -818,10 +818,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -831,16 +831,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -854,10 +854,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -867,16 +867,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -890,10 +890,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -903,16 +903,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -927,32 +927,32 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "1hkg2v9",
+                    "name": "16v9wgp",
                     "next": undefined,
                     "styles": "
-  line-height: 19.2px;
-  width: calc(50% - 1.25rem - 1px);
-  list-style: none;
-  position: relative;
-  padding: 0 10px;
-  margin: 0;
+	line-height: 19.2px;
+	width: calc(50% - 1.25rem - 1px);
+	list-style: none;
+	position: relative;
+	padding: 0 10px;
+	margin: 0;
 
-  &:nth-of-type(even) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	&:nth-of-type(even) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 
-  @media (min-width: 740px) {
-    &:not(:first-of-type) {
-      border-left: 1px solid rgba(255, 255, 255, 0.3);
-    }
+	@media (min-width: 740px) {
+		&:not(:first-of-type) {
+			border-left: 1px solid rgba(255, 255, 255, 0.3);
+		}
 
-    width: 161px;
-    flex: 1 0 0;
-  }
+		width: 161px;
+		flex: 1 0 0;
+	}
 
-  @media (min-width: 980px) {
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-  }
+	@media (min-width: 980px) {
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
 ",
                     "toString": [Function],
                   }
@@ -962,10 +962,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -975,16 +975,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -998,10 +998,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -1011,16 +1011,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -1034,10 +1034,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -1047,16 +1047,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -1070,10 +1070,10 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "66iazq",
+                      "name": "kagisi",
                       "next": undefined,
                       "styles": "
-  list-style: none;
+	list-style: none;
 ",
                       "toString": [Function],
                     }
@@ -1083,16 +1083,16 @@ exports[`Main renders something 1`] = `
                     css={
                       Object {
                         "map": undefined,
-                        "name": "1x52xav",
+                        "name": "776szo",
                         "next": undefined,
                         "styles": "
-  display: inline-block;
-  padding: 6px 0;
-  color: #ffffff;
-  :hover {
-    color: #ffe500;
-    cursor: pointer;
-  }
+	display: inline-block;
+	padding: 6px 0;
+	color: #ffffff;
+	:hover {
+		color: #ffe500;
+		cursor: pointer;
+	}
 ",
                         "toString": [Function],
                       }
@@ -1107,19 +1107,19 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "pt8jss",
+                    "name": "18sp5si",
                     "next": undefined,
                     "styles": "
-  width: 50%;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  padding-left: 10px;
-  @media (min-width: 660px) {
-    width: 300px;
-  }
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  @media (min-width: 740px) {
-    border-top: 0;
-  }
+	width: 50%;
+	border-left: 1px solid rgba(255, 255, 255, 0.3);
+	padding-left: 10px;
+	@media (min-width: 660px) {
+		width: 300px;
+	}
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	@media (min-width: 740px) {
+		border-top: 0;
+	}
 ",
                     "toString": [Function],
                   }
@@ -1129,20 +1129,20 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "1k0upo6",
+                      "name": "v4bbi0",
                       "next": undefined,
                       "styles": "
-  color: #ffe500;
-  font-family: GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif;
-  font-size: 24px;
-  line-height: 24px;
-  font-weight: bold;
-  margin-top: 3px;
-  margin-bottom: 12px;
-  @media (min-width: 660px) {
-    font-size: 32px;
-    line-height: 32px;
-  }
+	color: #ffe500;
+	font-family: GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif;
+	font-size: 24px;
+	line-height: 24px;
+	font-weight: bold;
+	margin-top: 3px;
+	margin-bottom: 12px;
+	@media (min-width: 660px) {
+		font-size: 32px;
+		line-height: 32px;
+	}
 ",
                       "toString": [Function],
                     }
@@ -1154,12 +1154,12 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "l2bq3g",
+                      "name": "99wu88",
                       "next": undefined,
                       "styles": "
-  display: inline-block;
-  margin-right: 10px;
-  margin-bottom: 6px;
+	display: inline-block;
+	margin-right: 10px;
+	margin-bottom: 6px;
 ",
                       "toString": [Function],
                     }
@@ -1225,13 +1225,13 @@ exports[`Main renders something 1`] = `
             css={
               Object {
                 "map": undefined,
-                "name": "1wu2ni1",
+                "name": "1k9maw8",
                 "next": undefined,
                 "styles": "
-  padding-bottom: 24px;
-  padding-left: 20px;
-  padding-right: 20px;
-  position: relative;
+	padding-bottom: 24px;
+	padding-left: 20px;
+	padding-right: 20px;
+	position: relative;
 ",
                 "toString": [Function],
               }
@@ -1241,20 +1241,20 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "rhcyrc",
+                  "name": "10m9f08",
                   "next": undefined,
                   "styles": "
-  font-size: 16px;
-  color: #ffffff;
-  font-weight: bold;
-  padding: 0 5px;
-  background-color: #052962;
-  :hover {
-    color: #ffe500;
-  }
-  position: absolute;
-  right: 20px;
-  transform: translateY(-50%);
+	font-size: 16px;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 0 5px;
+	background-color: #052962;
+	:hover {
+		color: #ffe500;
+	}
+	position: absolute;
+	right: 20px;
+	transform: translateY(-50%);
 ",
                   "toString": [Function],
                 }
@@ -1265,12 +1265,12 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "m3p6yb",
+                    "name": "1pzszly",
                     "next": undefined,
                     "styles": "
-  display: inline-block;
-  padding-right: 5px;
-  padding-top: 9px;
+	display: inline-block;
+	padding-right: 5px;
+	padding-top: 9px;
 ",
                     "toString": [Function],
                   }
@@ -1282,15 +1282,15 @@ exports[`Main renders something 1`] = `
                 css={
                   Object {
                     "map": undefined,
-                    "name": "n17lfs",
+                    "name": "i95g9i",
                     "next": undefined,
                     "styles": "
-  position: relative;
-  float: right;
-  background-color: currentColor;
-  border-radius: 100%;
-  height: 42px;
-  width: 42px;
+	position: relative;
+	float: right;
+	background-color: currentColor;
+	border-radius: 100%;
+	height: 42px;
+	width: 42px;
 ",
                     "toString": [Function],
                   }
@@ -1300,13 +1300,13 @@ exports[`Main renders something 1`] = `
                   css={
                     Object {
                       "map": undefined,
-                      "name": "1e08lku",
+                      "name": "1f2brqo",
                       "next": undefined,
                       "styles": "
-  position: absolute;
-  fill: #052962;
-  top: 9px;
-  left: 9px;
+	position: absolute;
+	fill: #052962;
+	top: 9px;
+	left: 9px;
 ",
                       "toString": [Function],
                     }
@@ -1328,14 +1328,14 @@ exports[`Main renders something 1`] = `
               css={
                 Object {
                   "map": undefined,
-                  "name": "n9fado",
+                  "name": "1dh3ndf",
                   "next": undefined,
                   "styles": "
-  @media (min-width: 740px) {
-    padding-top: 6px;
-  }
-  padding-top: 26px;
-  font-size: 12px;
+	@media (min-width: 740px) {
+		padding-top: 6px;
+	}
+	padding-top: 26px;
+	font-size: 12px;
 ",
                   "toString": [Function],
                 }

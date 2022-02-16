@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
 interface SepaDisplayProps {
-  accountName: string;
-  iban: string;
+	accountName: string;
+	iban: string;
 }
 
 export const SepaDisplay = ({ accountName, iban }: SepaDisplayProps) => {
-  return (
-    <div>
-      <div>SEPA</div>
+	return (
+		<div>
+			<div>SEPA</div>
 
-      <div>
-        {accountName}
-        <br />
-        {iban}
-      </div>
-    </div>
-  );
+			<div>
+				{accountName}
+				<br />
+				{iban}
+			</div>
+		</div>
+	);
 };

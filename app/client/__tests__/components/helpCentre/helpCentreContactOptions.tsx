@@ -1,100 +1,114 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import React from "react";
-import { create } from "react-test-renderer";
-import HelpCentreContactOptions from "../../../components/helpCentre/helpCentreContactOptions";
+import { fireEvent, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import React from 'react';
+import { create } from 'react-test-renderer';
+import HelpCentreContactOptions from '../../../components/helpCentre/helpCentreContactOptions';
 import {
-  isArticleLiveChatFeatureEnabled,
-  isLiveChatFeatureEnabled,
-} from "../../../components/liveChat/liveChatFeatureSwitch";
+	isArticleLiveChatFeatureEnabled,
+	isLiveChatFeatureEnabled,
+} from '../../../components/liveChat/liveChatFeatureSwitch';
 
-jest.mock("../../../components/liveChat/liveChatFeatureSwitch", () => ({
-  isLiveChatFeatureEnabled: jest.fn(),
-  isArticleLiveChatFeatureEnabled: jest.fn(),
+jest.mock('../../../components/liveChat/liveChatFeatureSwitch', () => ({
+	isLiveChatFeatureEnabled: jest.fn(),
+	isArticleLiveChatFeatureEnabled: jest.fn(),
 }));
 
-describe("HelpCentreContactOptions", () => {
-  describe("Help Centre landing page", () => {
-    describe("with live chat feature switch disabled", () => {
-      beforeAll(() => {
-        (isLiveChatFeatureEnabled as jest.Mock).mockImplementation(() => false);
-      });
+describe('HelpCentreContactOptions', () => {
+	describe('Help Centre landing page', () => {
+		describe('with live chat feature switch disabled', () => {
+			beforeAll(() => {
+				(isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
+					() => false,
+				);
+			});
 
-      it("shows email and phone contacts only", () => {
-        const rendered = create(<HelpCentreContactOptions />);
-        expect(rendered.toJSON()).toMatchSnapshot();
-      });
-    });
+			it('shows email and phone contacts only', () => {
+				const rendered = create(<HelpCentreContactOptions />);
+				expect(rendered.toJSON()).toMatchSnapshot();
+			});
+		});
 
-    describe("with live chat feature switch enabled", () => {
-      beforeAll(() => {
-        (isLiveChatFeatureEnabled as jest.Mock).mockImplementation(() => true);
-      });
+		describe('with live chat feature switch enabled', () => {
+			beforeAll(() => {
+				(isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
+					() => true,
+				);
+			});
 
-      it("shows the live chat contact box", () => {
-        const rendered = create(<HelpCentreContactOptions />);
-        expect(rendered.toJSON()).toMatchSnapshot();
-      });
-    });
+			it('shows the live chat contact box', () => {
+				const rendered = create(<HelpCentreContactOptions />);
+				expect(rendered.toJSON()).toMatchSnapshot();
+			});
+		});
 
-    describe("Help Centre article (compact layout and contact options hidden)", () => {
-      describe("with live chat feature switches disabled", () => {
-        beforeAll(() => {
-          (isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
-            () => false
-          );
-          (isArticleLiveChatFeatureEnabled as jest.Mock).mockImplementation(
-            () => false
-          );
-        });
+		describe('Help Centre article (compact layout and contact options hidden)', () => {
+			describe('with live chat feature switches disabled', () => {
+				beforeAll(() => {
+					(isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
+						() => false,
+					);
+					(
+						isArticleLiveChatFeatureEnabled as jest.Mock
+					).mockImplementation(() => false);
+				});
 
-        it("shows email and phone contacts only", () => {
-          const rendered = create(
-            <HelpCentreContactOptions
-              compactLayout={true}
-              hideContactOptions={true}
-            />
-          );
-          expect(rendered.toJSON()).toMatchSnapshot();
-        });
-      });
+				it('shows email and phone contacts only', () => {
+					const rendered = create(
+						<HelpCentreContactOptions
+							compactLayout={true}
+							hideContactOptions={true}
+						/>,
+					);
+					expect(rendered.toJSON()).toMatchSnapshot();
+				});
+			});
 
-      describe("with live chat features switches enabled", () => {
-        beforeAll(() => {
-          (isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
-            () => true
-          );
-          (isArticleLiveChatFeatureEnabled as jest.Mock).mockImplementation(
-            () => true
-          );
-        });
+			describe('with live chat features switches enabled', () => {
+				beforeAll(() => {
+					(isLiveChatFeatureEnabled as jest.Mock).mockImplementation(
+						() => true,
+					);
+					(
+						isArticleLiveChatFeatureEnabled as jest.Mock
+					).mockImplementation(() => true);
+				});
 
-        it("shows a 'Contact us' button only with contact options hidden", () => {
-          render(
-            <HelpCentreContactOptions
-              compactLayout={true}
-              hideContactOptions={true}
-            />
-          );
-          expect(screen.getByRole("button")).toHaveTextContent("Contact us");
-          expect(screen.queryByText("Chat with us")).not.toBeInTheDocument();
-          expect(screen.queryByText("Email us")).not.toBeInTheDocument();
-          expect(screen.queryByText("Call us")).not.toBeInTheDocument();
-        });
+				it("shows a 'Contact us' button only with contact options hidden", () => {
+					render(
+						<HelpCentreContactOptions
+							compactLayout={true}
+							hideContactOptions={true}
+						/>,
+					);
+					expect(screen.getByRole('button')).toHaveTextContent(
+						'Contact us',
+					);
+					expect(
+						screen.queryByText('Chat with us'),
+					).not.toBeInTheDocument();
+					expect(
+						screen.queryByText('Email us'),
+					).not.toBeInTheDocument();
+					expect(
+						screen.queryByText('Call us'),
+					).not.toBeInTheDocument();
+				});
 
-        it("reveals the contact options with live chat when 'Contact us' is clicked", () => {
-          render(
-            <HelpCentreContactOptions
-              compactLayout={true}
-              hideContactOptions={true}
-            />
-          );
-          fireEvent.click(screen.getByRole("button"));
-          expect(screen.getByText("Chat with us")).toBeInTheDocument();
-          expect(screen.getByText("Email us")).toBeInTheDocument();
-          expect(screen.getByText("Call us")).toBeInTheDocument();
-        });
-      });
-    });
-  });
+				it("reveals the contact options with live chat when 'Contact us' is clicked", () => {
+					render(
+						<HelpCentreContactOptions
+							compactLayout={true}
+							hideContactOptions={true}
+						/>,
+					);
+					fireEvent.click(screen.getByRole('button'));
+					expect(
+						screen.getByText('Chat with us'),
+					).toBeInTheDocument();
+					expect(screen.getByText('Email us')).toBeInTheDocument();
+					expect(screen.getByText('Call us')).toBeInTheDocument();
+				});
+			});
+		});
+	});
 });

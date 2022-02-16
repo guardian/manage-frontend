@@ -1,1 +1,1 @@
-declare module "jest-emotion";
+declare module 'jest-emotion';

@@ -1,20 +1,20 @@
-import { css } from "@emotion/core";
-import { space } from "@guardian/src-foundations";
-import React from "react";
-import { Spinner } from "./spinner";
-import { WithStandardTopMargin } from "./WithStandardTopMargin";
+import { css } from '@emotion/core';
+import { space } from '@guardian/src-foundations';
+import React from 'react';
+import { Spinner } from './spinner';
+import { WithStandardTopMargin } from './WithStandardTopMargin';
 
 const HelpCentreLoadingContent = () => (
-  <div
-    css={css`
-      margin-bottom: ${space[24]}px;
-    `}
-  >
-    <WithStandardTopMargin>
-      <Spinner />
-    </WithStandardTopMargin>
-    <div style={{ height: "50vh" }} />
-  </div>
+	<div
+		css={css`
+			margin-bottom: ${space[24]}px;
+		`}
+	>
+		<WithStandardTopMargin>
+			<Spinner />
+		</WithStandardTopMargin>
+		<div style={{ height: '50vh' }} />
+	</div>
 );
 
 export default HelpCentreLoadingContent;

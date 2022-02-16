@@ -1,168 +1,175 @@
-import { css } from "@emotion/core";
-import { Button } from "@guardian/src-button";
-import { space } from "@guardian/src-foundations";
-import { SvgArrowRightStraight } from "@guardian/src-icons";
-import { Radio, RadioGroup } from "@guardian/src-radio";
-import React, { useEffect, useState } from "react";
-import { getGeoLocation } from "../../geolocation";
-import { trackEventInOphanOnly } from "../analytics";
+import { css } from '@emotion/core';
+import { Button } from '@guardian/src-button';
+import { space } from '@guardian/src-foundations';
+import { SvgArrowRightStraight } from '@guardian/src-icons';
+import { Radio, RadioGroup } from '@guardian/src-radio';
+import React, { useEffect, useState } from 'react';
+import { getGeoLocation } from '../../geolocation';
+import { trackEventInOphanOnly } from '../analytics';
 
 const containerStyles = css`
-  padding-bottom: ${space[24]}px;
+	padding-bottom: ${space[24]}px;
 `;
 
 const setReminderContainerStyles = css`
-  & > * + * {
-    margin-top: ${space[9]}px;
-  }
+	& > * + * {
+		margin-top: ${space[9]}px;
+	}
 `;
 
 const formContainerStyles = css`
-  & > * + * {
-    margin-top: ${space[6]}px;
-  }
+	& > * + * {
+		margin-top: ${space[6]}px;
+	}
 `;
 
 interface ReminderSignup {
-  reminderPeriod: string;
-  reminderOption: string;
+	reminderPeriod: string;
+	reminderOption: string;
 }
 
 interface ReminderChoice {
-  signup: ReminderSignup;
-  label: string;
-  thankYouMessage: string;
+	signup: ReminderSignup;
+	label: string;
+	thankYouMessage: string;
 }
 
-const REMINDER_ENDPOINT = "/api/reminders";
-const REMINDER_PLATFORM = "MMA";
-const REMINDER_STAGE = "WINBACK";
-const REMINDER_COMPONENT = "CANCELLATION";
+const REMINDER_ENDPOINT = '/api/reminders';
+const REMINDER_PLATFORM = 'MMA';
+const REMINDER_STAGE = 'WINBACK';
+const REMINDER_COMPONENT = 'CANCELLATION';
 
 const getReminderPeriod = (date: Date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1; // javascript dates run from 0-11, we want 1-12
-  const paddedMonth = month.toString().padStart(2, "0");
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1; // javascript dates run from 0-11, we want 1-12
+	const paddedMonth = month.toString().padStart(2, '0');
 
-  return `${year}-${paddedMonth}-01`;
+	return `${year}-${paddedMonth}-01`;
 };
 
 const getReminderOption = (monthsUntilDate: number) =>
-  `${monthsUntilDate}-months`;
+	`${monthsUntilDate}-months`;
 
 const getDefaultLabel = (date: Date, monthsUntilDate: number, now: Date) => {
-  const month = date.toLocaleDateString("default", { month: "long" });
-  const year =
-    now.getFullYear() === date.getFullYear() ? "" : ` ${date.getFullYear()}`;
+	const month = date.toLocaleDateString('default', { month: 'long' });
+	const year =
+		now.getFullYear() === date.getFullYear()
+			? ''
+			: ` ${date.getFullYear()}`;
 
-  return `in ${monthsUntilDate} months (${month}${year})`;
+	return `in ${monthsUntilDate} months (${month}${year})`;
 };
 
 const getDefaultThankYouMessage = (date: Date) =>
-  date.toLocaleDateString("default", {
-    month: "long"
-  });
+	date.toLocaleDateString('default', {
+		month: 'long',
+	});
 
 const getDefaultReminderChoice = (monthsUntilDate: number): ReminderChoice => {
-  const now = new Date();
-  const date = new Date(now.getFullYear(), now.getMonth() + monthsUntilDate);
+	const now = new Date();
+	const date = new Date(now.getFullYear(), now.getMonth() + monthsUntilDate);
 
-  return {
-    label: getDefaultLabel(date, monthsUntilDate, now),
-    thankYouMessage: getDefaultThankYouMessage(date),
-    signup: {
-      reminderPeriod: getReminderPeriod(date),
-      reminderOption: getReminderOption(monthsUntilDate)
-    }
-  };
+	return {
+		label: getDefaultLabel(date, monthsUntilDate, now),
+		thankYouMessage: getDefaultThankYouMessage(date),
+		signup: {
+			reminderPeriod: getReminderPeriod(date),
+			reminderOption: getReminderOption(monthsUntilDate),
+		},
+	};
 };
 
 const getDefaultReminderChoices = (): ReminderChoice[] => [
-  getDefaultReminderChoice(3),
-  getDefaultReminderChoice(6),
-  getDefaultReminderChoice(9)
+	getDefaultReminderChoice(3),
+	getDefaultReminderChoice(6),
+	getDefaultReminderChoice(9),
 ];
 
 export const CancellationContributionReminder: React.FC = () => {
-  const [selectedChoiceIndex, setSelectedChoiceIndex] = useState(0);
-  const [hasSetReminder, setHasSetReminder] = useState(false);
+	const [selectedChoiceIndex, setSelectedChoiceIndex] = useState(0);
+	const [hasSetReminder, setHasSetReminder] = useState(false);
 
-  const email = window.guardian.identityDetails.email;
-  const reminderChoices = getDefaultReminderChoices();
-  const selectedChoice = reminderChoices[selectedChoiceIndex];
+	const email = window.guardian.identityDetails.email;
+	const reminderChoices = getDefaultReminderChoices();
+	const selectedChoice = reminderChoices[selectedChoiceIndex];
 
-  const setReminder = () =>
-    fetch(REMINDER_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        country: getGeoLocation(),
-        reminderPlatform: REMINDER_PLATFORM,
-        reminderComponent: REMINDER_COMPONENT,
-        reminderStage: REMINDER_STAGE,
-        ...selectedChoice.signup
-      })
-    });
+	const setReminder = () =>
+		fetch(REMINDER_ENDPOINT, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				email,
+				country: getGeoLocation(),
+				reminderPlatform: REMINDER_PLATFORM,
+				reminderComponent: REMINDER_COMPONENT,
+				reminderStage: REMINDER_STAGE,
+				...selectedChoice.signup,
+			}),
+		});
 
-  const onSubmit = () => {
-    trackEventInOphanOnly({
-      eventCategory: "cancellation_flow",
-      eventAction: "click",
-      eventLabel: `set_reminder__${selectedChoice.signup.reminderOption}`
-    });
+	const onSubmit = () => {
+		trackEventInOphanOnly({
+			eventCategory: 'cancellation_flow',
+			eventAction: 'click',
+			eventLabel: `set_reminder__${selectedChoice.signup.reminderOption}`,
+		});
 
-    setReminder();
-    setHasSetReminder(true);
-  };
+		setReminder();
+		setHasSetReminder(true);
+	};
 
-  useEffect(() => {
-    trackEventInOphanOnly({
-      eventCategory: "cancellation_flow",
-      eventAction: "view",
-      eventLabel: `set_reminder`
-    });
-  }, []);
+	useEffect(() => {
+		trackEventInOphanOnly({
+			eventCategory: 'cancellation_flow',
+			eventAction: 'view',
+			eventLabel: `set_reminder`,
+		});
+	}, []);
 
-  return (
-    <div css={containerStyles}>
-      {hasSetReminder ? (
-        <p>
-          Thank you for setting up support reminder. We will be in touch in{" "}
-          {selectedChoice.thankYouMessage}, so look out for a message from the
-          Guardian in your inbox.
-        </p>
-      ) : (
-        <div css={setReminderContainerStyles}>
-          <p>
-            We can invite you to support our journalism again at a later date,
-            when it might suit you better. This will be no more than two emails,
-            with no obligation to give.
-          </p>
+	return (
+		<div css={containerStyles}>
+			{hasSetReminder ? (
+				<p>
+					Thank you for setting up support reminder. We will be in
+					touch in {selectedChoice.thankYouMessage}, so look out for a
+					message from the Guardian in your inbox.
+				</p>
+			) : (
+				<div css={setReminderContainerStyles}>
+					<p>
+						We can invite you to support our journalism again at a
+						later date, when it might suit you better. This will be
+						no more than two emails, with no obligation to give.
+					</p>
 
-          <div css={formContainerStyles}>
-            <RadioGroup name="reminder" label="I'd like to be reminded in:">
-              {reminderChoices.map((choice, index) => (
-                <Radio
-                  key={`reminderRadio${index}`}
-                  value={`${index}`}
-                  label={choice.label}
-                  checked={selectedChoiceIndex === index}
-                  onChange={() => setSelectedChoiceIndex(index)}
-                />
-              ))}
-            </RadioGroup>
+					<div css={formContainerStyles}>
+						<RadioGroup
+							name="reminder"
+							label="I'd like to be reminded in:"
+						>
+							{reminderChoices.map((choice, index) => (
+								<Radio
+									key={`reminderRadio${index}`}
+									value={`${index}`}
+									label={choice.label}
+									checked={selectedChoiceIndex === index}
+									onChange={() =>
+										setSelectedChoiceIndex(index)
+									}
+								/>
+							))}
+						</RadioGroup>
 
-            <Button
-              onClick={onSubmit}
-              icon={<SvgArrowRightStraight />}
-              iconSide="right"
-            >
-              Set my reminder
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+						<Button
+							onClick={onSubmit}
+							icon={<SvgArrowRightStraight />}
+							iconSide="right"
+						>
+							Set my reminder
+						</Button>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 };

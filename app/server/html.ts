@@ -1,4 +1,4 @@
-import { Globals } from "../shared/globals";
+import { Globals } from '../shared/globals';
 
 declare let WEBPACK_BUILD: string;
 
@@ -11,15 +11,15 @@ declare let WEBPACK_BUILD: string;
  */
 
 const insertGlobals = (globals: Globals) => {
-  return `<script>
+	return `<script>
   window.guardian = ${JSON.stringify(globals)}
   </script>`;
 };
 
 const html: (_: {
-  readonly title: string;
-  readonly src: string;
-  readonly globals: Globals;
+	readonly title: string;
+	readonly src: string;
+	readonly globals: Globals;
 }) => string = ({ title, src, globals }) => `
   <!DOCTYPE html>
   <html lang="en">
