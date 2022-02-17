@@ -37,7 +37,10 @@ const nodePolyfillPlugin = new NodePolyfillPlugin({
 const babelCommon = {
 	presets: [
 		'@babel/typescript',
-		'@babel/react',
+		[
+			"@babel/preset-react",
+			{ runtime: "automatic" }
+		],
 		'@emotion/babel-preset-css-prop',
 	],
 	plugins: [

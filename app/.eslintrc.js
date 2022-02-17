@@ -7,6 +7,7 @@ module.exports = {
 	extends: [
 		'eslint:recommended',
 		'plugin:react/recommended',
+		'plugin:react/jsx-runtime',
 		'plugin:jest/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',
@@ -20,6 +21,11 @@ module.exports = {
 		sourceType: 'module',
 	},
 	plugins: ['react', '@typescript-eslint', 'jest'],
+	settings: {
+		react: {
+		  version: 'detect',
+		},
+	},
 	overrides: [
 		{
 			files: ['client/__tests__/**'],

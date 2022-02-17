@@ -9,13 +9,13 @@ module.exports = {
 	globals: {
 		'ts-jest': {
 			tsconfig: {
-				jsx: 'react',
+				jsx: 'react-jsx',
 				module: 'commonjs',
 			},
 			babelConfig: {
 				presets: [
 					'@babel/typescript',
-					'@babel/react',
+					['@babel/preset-react', { runtime: 'automatic' }],
 					'@emotion/babel-preset-css-prop',
 				],
 				plugins: [
