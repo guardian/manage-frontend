@@ -42,7 +42,7 @@
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     "types": [
       /* Type declaration files to be included in compilation. */
-      "@emotion/core",
+      "@emotion/react",
       "node",
       "jest"
     ],

@@ -38,13 +38,17 @@ const babelCommon = {
 	presets: [
 		'@babel/typescript',
 		'@babel/react',
-		'@emotion/babel-preset-css-prop',
+		[
+			'@babel/preset-react',
+			{ runtime: 'automatic', importSource: '@emotion/react' },
+		],
 	],
 	plugins: [
 		'@babel/proposal-class-properties',
 		'@babel/proposal-object-rest-spread',
 		'@babel/plugin-proposal-optional-chaining',
 		'lodash',
+		'@emotion/babel-plugin',
 	],
 };
 
