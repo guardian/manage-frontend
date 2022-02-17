@@ -1,9 +1,9 @@
-import serializer from '@emotion/jest';
+import { createSerializer } from '@emotion/jest';
 import React from 'react';
 import { create } from 'react-test-renderer';
 import { Lines } from '../../../components/identity/Lines';
 
-expect.addSnapshotSerializer(serializer);
+expect.addSnapshotSerializer(createSerializer());
 
 describe('Lines', () => {
 	it('draws one line when n = 1', () => {
