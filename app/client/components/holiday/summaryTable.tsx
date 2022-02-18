@@ -1,5 +1,4 @@
-import { BorderCollapseProperty, TextAlignProperty } from 'csstype';
-import React from 'react';
+import { css } from '@emotion/core';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DateRange,
@@ -27,10 +26,10 @@ import {
 	MinimalHolidayStopRequest,
 } from './holidayStopApi';
 
-const cellCss = {
+const cellCss = css({
 	padding: '8px 16px 8px 16px',
 	border: '1px solid ' + palette.neutral['5'],
-};
+});
 
 interface SummaryTableProps {
 	data: HolidayStopRequest[] | SharedHolidayDateChooserState;
@@ -168,9 +167,9 @@ export const SummaryTable = (props: SummaryTableProps) => {
 			<table
 				css={{
 					width: '100%',
-					borderCollapse: 'collapse' as BorderCollapseProperty,
+					borderCollapse: 'collapse',
 					tr: {
-						textAlign: 'left' as TextAlignProperty,
+						textAlign: 'left',
 					},
 					th: {
 						...cellCss,

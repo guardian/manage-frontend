@@ -3,9 +3,9 @@ import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { Link, navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import { FlexWrapProperty, FontWeightProperty } from 'csstype';
 import { startCase } from 'lodash';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import * as React from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateAddYears,
@@ -48,29 +48,29 @@ import {
 	ReloadableGetHolidayStopsResponse,
 } from './holidayStopApi';
 
-export const cancelLinkCss = {
+export const cancelLinkCss = css({
 	marginRight: '20px',
 	fontFamily: sans,
-	fontWeight: 'bold' as FontWeightProperty,
+	fontWeight: 'bold',
 	textDecoration: 'underline',
 	fontSize: '16px',
 	color: `${neutral['7']}`,
-};
+});
 
-export const buttonBarCss = {
+export const buttonBarCss = css({
 	display: 'flex',
 	alignItems: 'center',
 	marginTop: '40px',
-	flexWrap: 'wrap' as FlexWrapProperty,
-};
+	flexWrap: 'wrap',
+});
 
-const oneAtATimeStyles = {
+const oneAtATimeStyles = css({
 	fontFamily: sans,
 	fontSize: '14px',
 	marginBottom: '27px',
-};
+});
 
-const fixedButtonFooterCss = {
+const fixedButtonFooterCss = css({
 	[maxWidth.mobileLandscape]: {
 		justifyContent: 'space-between',
 	},
@@ -84,7 +84,7 @@ const fixedButtonFooterCss = {
 		padding: '10px',
 		boxShadow: '0 0 5px' + neutral[60],
 	},
-};
+});
 
 interface HolidayDateChooserProps extends HolidayStopsRouteableStepProps {
 	requiresExistingHolidayStopToAmendInContext?: true;

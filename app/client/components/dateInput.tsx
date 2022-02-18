@@ -1,31 +1,30 @@
-import { AppearanceProperty, TextAlignProperty } from 'csstype';
-import React from 'react';
+import { css } from '@emotion/core';
 import palette from '../colours';
 import { maxWidth } from '../styles/breakpoints';
 import { sans } from '../styles/fonts';
 
-const inputBoxCss = {
+const inputBoxCss = css({
 	fontFamily: sans,
 	border: 0,
 	width: '50px',
 	fontSize: '16px',
-	appearance: 'textfield' as AppearanceProperty,
-	textAlign: 'center' as TextAlignProperty, // this cast shouldn't be required (weird TypeScript issue here)
+	appearance: 'textfield',
+	textAlign: 'center',
 	padding: 0,
 	margin: 0,
-};
+});
 
-const dayMonthCss = {
+const dayMonthCss = css({
 	...inputBoxCss,
 	width: '25px',
-};
+});
 
-const dividerCss = {
+const dividerCss = css({
 	display: 'inline-block',
 	fontSize: '16px',
 	padding: 0,
 	margin: 0,
-};
+});
 
 export interface DateInputProps {
 	date: Date;
