@@ -3,7 +3,7 @@ import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { FormEvent } from 'react';
+import { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '../../../../shared/dates';
 import { DeliveryRecordApiItem } from '../../../../shared/productResponse';
 import { minWidth } from '../../../styles/breakpoints';

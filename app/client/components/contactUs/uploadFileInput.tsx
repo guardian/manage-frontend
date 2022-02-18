@@ -10,7 +10,8 @@ import {
 import { focusHalo } from '@guardian/src-foundations/accessibility';
 import { height } from '@guardian/src-foundations/size';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { ErrorIcon } from '../svgs/errorIcon';
 
 interface UploadFileUploadProps {

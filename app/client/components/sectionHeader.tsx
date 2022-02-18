@@ -8,7 +8,6 @@ import {
 import { textSans, titlepiece } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
 import Color from 'color';
-import React from 'react';
 import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 

@@ -4,7 +4,8 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
+import * as React from 'react';
 import { minWidth } from '../styles/breakpoints';
 // import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';

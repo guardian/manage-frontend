@@ -4,7 +4,7 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import {
 	DATE_FNS_SHORT_OUTPUT_FORMAT,
 	dateString,

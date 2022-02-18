@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import * as React from 'react';
 import { css } from '@emotion/core';
 import { maxWidth } from '../../../../styles/breakpoints';
 import { space } from '@guardian/src-foundations';

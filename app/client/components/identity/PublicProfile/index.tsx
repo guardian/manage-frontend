@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import React, { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { trackEvent } from '../../analytics';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
@@ -24,7 +24,7 @@ const PublicProfile = (_: { path?: string }) => {
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState(false);
 
-	const errorRef = React.createRef<GenericErrorMessageRef>();
+	const errorRef = createRef<GenericErrorMessageRef>();
 
 	const handleGeneralError = (e: any) => {
 		setError(true);

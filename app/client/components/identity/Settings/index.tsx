@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import React, { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { trackEvent } from '../../analytics';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
@@ -14,8 +14,8 @@ import { User } from '../models';
 import { textSmall } from '../sharedStyles';
 import { SettingsFormSection } from './SettingsFormSection';
 
-const errorRef = React.createRef<GenericErrorMessageRef>();
-const pageTopRef = React.createRef<HTMLDivElement>();
+const errorRef = createRef<GenericErrorMessageRef>();
+const pageTopRef = createRef<HTMLDivElement>();
 
 const loader = (
 	<WithStandardTopMargin>

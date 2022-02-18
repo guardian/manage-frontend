@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import palette from '../../colours';
 import { minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';

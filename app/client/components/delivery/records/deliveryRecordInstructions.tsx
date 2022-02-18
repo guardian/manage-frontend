@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { brand } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { minWidth } from '../../../styles/breakpoints';
 
 interface DeliveryRecordInstructionsProps {

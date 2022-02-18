@@ -6,7 +6,6 @@ import {
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
 import serializer from 'jest-emotion';
-import React from 'react';
 import { create } from 'react-test-renderer';
 import { DropMenu } from '../../../components/identity/DropMenu';
 

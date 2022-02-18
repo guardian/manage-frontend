@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactNodeArray } from 'react';
+import { ReactNode, ReactNodeArray } from 'react';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
 import {
 	MDA_TEST_USER_HEADER,

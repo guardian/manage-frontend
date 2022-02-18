@@ -3,7 +3,6 @@ import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
 import { RouteComponentProps } from '@reach/router';
-import React from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { helpCentreConfig } from './helpCentreConfig';
 import HelpCentreContactOptions from './helpCentreContactOptions';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import AsyncLoader, { ReFetch } from '../asyncLoader';
@@ -25,7 +25,7 @@ interface ExistingHolidayStopActionsState {
 class WithdrawHolidayStopAsyncLoader extends AsyncLoader<object> {}
 
 // tslint:disable-next-line:max-classes-per-file
-export class ExistingHolidayStopActions extends React.Component<
+export class ExistingHolidayStopActions extends Component<
 	ExistingHolidayStopActionsProps,
 	ExistingHolidayStopActionsState
 > {

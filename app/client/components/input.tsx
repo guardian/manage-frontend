@@ -2,7 +2,8 @@ import { css, SerializedStyles } from '@emotion/core';
 import { focusHalo } from '@guardian/src-foundations/accessibility';
 import { error, neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import * as React from 'react';
 import { ErrorIcon } from './svgs/errorIcon';
 
 type setStateFunc = (value: string) => void;

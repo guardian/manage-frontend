@@ -3,7 +3,7 @@ import { space } from '@guardian/src-foundations';
 import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { cancellationFormatDate } from '../../../shared/dates';
 import {
 	getMainPlan,

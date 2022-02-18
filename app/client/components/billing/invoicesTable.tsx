@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import { InvoiceDataApiItem } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';

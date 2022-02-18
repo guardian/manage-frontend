@@ -1,5 +1,4 @@
 import { css } from '@emotion/core';
-import React from 'react';
 
 export const HolidayStopIcon = () => (
 	<svg

@@ -1,5 +1,5 @@
 import { Field, FormikErrors, FormikProps, FormikTouched } from 'formik';
-import React, { cloneElement, ReactElement } from 'react';
+import { cloneElement, ReactElement } from 'react';
 import { formFieldErrorCss, labelCss } from '../sharedStyles';
 
 interface FormFieldProps<T> {

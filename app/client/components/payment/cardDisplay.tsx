@@ -1,6 +1,5 @@
 import { css, SerializedStyles } from '@emotion/core';
 import { neutral, news } from '@guardian/src-foundations/palette';
-import React from 'react';
 import { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {

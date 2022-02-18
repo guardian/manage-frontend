@@ -4,7 +4,7 @@ import {
 	CardNumberElement,
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { css } from '@emotion/core';
 import { minWidth } from '../../../../styles/breakpoints';
 import { space } from '@guardian/src-foundations';

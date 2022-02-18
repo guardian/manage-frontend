@@ -4,7 +4,7 @@ import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import { Radio, RadioGroup } from '@guardian/src-radio';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { SubTopic } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';
 

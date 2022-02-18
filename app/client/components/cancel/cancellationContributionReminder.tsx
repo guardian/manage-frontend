@@ -3,7 +3,8 @@ import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { Radio, RadioGroup } from '@guardian/src-radio';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { getGeoLocation } from '../../geolocation';
 import { trackEventInOphanOnly } from '../analytics';
 

@@ -6,13 +6,14 @@ import {
 	SvgChevronLeftSingle,
 	SvgChevronRightSingle,
 } from '@guardian/src-icons';
-import React, {
-	Dispatch,
-	MouseEvent,
-	SetStateAction,
-	useContext,
-	useEffect,
-	useState,
+import {
+    createContext,
+    Dispatch,
+    MouseEvent,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useState,
 } from 'react';
 
 interface PaginationContextProps {
@@ -21,7 +22,7 @@ interface PaginationContextProps {
 	onDirectUpdate: (newPageNumber: number) => void;
 }
 
-const PaginationContext = React.createContext<PaginationContextProps>({
+const PaginationContext = createContext<PaginationContextProps>({
 	currentPageNumber: 1,
 	setCurrentPageNumber: () => undefined,
 	onDirectUpdate: () => undefined,

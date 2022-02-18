@@ -3,7 +3,7 @@ import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';

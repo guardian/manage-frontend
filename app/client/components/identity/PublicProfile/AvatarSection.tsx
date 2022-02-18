@@ -1,7 +1,8 @@
 import { CSSObject } from '@emotion/core';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
+import * as React from 'react';
 import palette from '../../../colours';
 import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../analytics';

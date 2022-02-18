@@ -5,14 +5,7 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import Color from 'color';
-import React, {
-	ChangeEvent,
-	Dispatch,
-	FormEvent,
-	SetStateAction,
-	useContext,
-	useState,
-} from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react';
 import { dateString } from '../../../../shared/dates';
 import {
 	DeliveryAddress,

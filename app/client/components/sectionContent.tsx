@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
-import React, { Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { maxWidth, minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 import HelpCentreNav from './helpCentre/helpCentreNav';
@@ -77,7 +77,7 @@ const divCss = (hasNav: boolean | undefined) => css`
 `;
 
 // TODO: refactor this var to remove need for disabling eslint rule
-export const SelectedTopicObjectContext = React.createContext<
+export const SelectedTopicObjectContext = createContext<
 	Dispatch<SetStateAction<string | undefined>>
 >(undefined!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 

@@ -3,7 +3,7 @@ import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Topic } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';
 import { TopicButton } from './topicButton';

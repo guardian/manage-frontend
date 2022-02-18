@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
 	isProduct,
 	MembersDataApiItem,

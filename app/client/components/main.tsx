@@ -1,4 +1,3 @@
-import React from 'react';
 import palette from '../colours';
 import { serif } from '../styles/fonts';
 import { Footer } from './footer/footer';

@@ -1,6 +1,5 @@
 import { breakpoints, palette } from '@guardian/src-foundations';
 import { Link } from '@reach/router';
-import React from 'react';
 import { SignInStatus } from '../services/signInStatus';
 import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';

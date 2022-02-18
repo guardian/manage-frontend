@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { expanderButtonCss } from '../expanderButton';

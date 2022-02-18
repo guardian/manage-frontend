@@ -1,4 +1,3 @@
-import React from 'react';
 import { HolidayStopFlowProperties } from '../../../shared/productTypes';
 import { sans } from '../../styles/fonts';
 import { CallCentreNumbers } from '../callCentreNumbers';

@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import React from 'react';
 import { trackEvent } from './analytics';
 import { CallCentreNumbers } from './callCentreNumbers';
 import { WithStandardTopMargin } from './WithStandardTopMargin';

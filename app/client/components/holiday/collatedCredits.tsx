@@ -1,4 +1,3 @@
-import React from 'react';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { HolidayStopDetail } from './holidayStopApi';
 

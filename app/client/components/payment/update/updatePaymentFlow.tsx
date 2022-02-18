@@ -11,7 +11,7 @@ import { textSans } from '@guardian/src-foundations/typography';
 import { Button } from '@guardian/src-button';
 import { NavigateFn } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import React from 'react';
+import * as React from 'react';
 import {
 	MembersDataApiItemContext,
 	ProductDetail,

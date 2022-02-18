@@ -1,4 +1,3 @@
-import React from 'react';
 import { minWidth } from '../../styles/breakpoints';
 
 export interface RoundelProps {

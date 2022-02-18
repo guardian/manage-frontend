@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/core';
 import { Redirect, Router } from '@reach/router';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductType,

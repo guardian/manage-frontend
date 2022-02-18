@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Subscription } from '../../../../shared/productResponse';
 import AsyncLoader from '../../asyncLoader';
 

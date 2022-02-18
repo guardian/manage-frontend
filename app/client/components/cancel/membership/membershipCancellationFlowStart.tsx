@@ -1,5 +1,4 @@
 import { css } from '@emotion/core';
-import React from 'react';
 import { ProductDetail } from '../../../../shared/productResponse';
 import palette from '../../../colours';
 import { trackEvent } from '../../analytics';

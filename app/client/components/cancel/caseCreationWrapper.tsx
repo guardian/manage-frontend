@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
 	MDA_TEST_USER_HEADER,
 	ProductDetail,

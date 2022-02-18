@@ -1,5 +1,5 @@
 import { error } from '@guardian/src-foundations/palette';
-import React from 'react';
+import * as React from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DateRange,

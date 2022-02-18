@@ -1,6 +1,5 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
-import React from 'react';
 import {
 	isProduct,
 	MembersDataApiItemContext,

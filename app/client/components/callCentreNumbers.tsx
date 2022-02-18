@@ -1,4 +1,3 @@
-import React from 'react';
 import palette from '../colours';
 
 export const ukPhoneNumberWithoutPrefix = '0330 333 6790';

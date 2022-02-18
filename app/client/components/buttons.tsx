@@ -3,7 +3,7 @@ import { space } from '@guardian/src-foundations';
 import { brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { Link } from '@reach/router';
 import Color from 'color';
-import React from 'react';
+import * as React from 'react';
 import { ProductDetail } from '../../shared/productResponse';
 import { sans } from '../styles/fonts';
 import { ArrowIcon } from './svgs/arrowIcon';

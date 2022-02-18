@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const TickIcon = () => (
 	<svg
 		viewBox="0 0 10.79 8.608"

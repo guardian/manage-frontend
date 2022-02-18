@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import { brand, space } from '@guardian/src-foundations';
 import { textSans } from '@guardian/src-foundations/typography';
-import React from 'react';
 import { conf } from '../../../server/config';
 import { minWidth } from '../../styles/breakpoints';
 

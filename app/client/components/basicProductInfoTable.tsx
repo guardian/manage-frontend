@@ -1,4 +1,3 @@
-import React from 'react';
 import { parseDate } from '../../shared/dates';
 import { ProductDetail } from '../../shared/productResponse';
 import { GroupedProductType } from '../../shared/productTypes';

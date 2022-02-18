@@ -4,7 +4,7 @@ import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
 import { navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import React from 'react';
+import * as React from 'react';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../progressIndicator';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';

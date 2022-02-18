@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import CurrentPaymentDetails from '../../../components/payment/update/CurrentPaymentDetail';
 import {

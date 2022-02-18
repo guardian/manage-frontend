@@ -1,5 +1,4 @@
 import { Global } from '@emotion/core';
-import React from 'react';
 
 export interface LoadingProps {
 	loadingMessage?: string;

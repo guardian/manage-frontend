@@ -1,4 +1,3 @@
-import React from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { Roundel, RoundelProps } from './roundel';

@@ -1,5 +1,5 @@
 import { CSSObject } from '@emotion/core';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import palette from '../../colours';
 import { serif } from '../../styles/fonts';
 interface DropMenuProps {

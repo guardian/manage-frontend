@@ -4,7 +4,7 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { Link, navigate } from '@reach/router';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';

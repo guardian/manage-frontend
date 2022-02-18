@@ -1,4 +1,3 @@
-import React from 'react';
 import palette from '../../colours';
 import { Modal } from '../modal';
 

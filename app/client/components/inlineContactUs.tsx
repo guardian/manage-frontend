@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import { CallCentreNumbers } from './callCentreNumbers';
 
 interface InlineContactUsState {
 	expanded: boolean;
 }
 
-export class InlineContactUs extends React.Component<{}, InlineContactUsState> {
+export class InlineContactUs extends Component<{}, InlineContactUsState> {
 	public state = { expanded: false };
 
 	public render(): JSX.Element {

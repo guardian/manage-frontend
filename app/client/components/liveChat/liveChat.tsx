@@ -1,7 +1,7 @@
 import { css, SerializedStyles } from '@emotion/core';
 import { Button } from '@guardian/src-button';
 import { SvgArrowRightStraight } from '@guardian/src-icons';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';
 import { avatarImg } from './liveChatBase64Images';
 import { liveChatCss } from './liveChatCssOverrides';

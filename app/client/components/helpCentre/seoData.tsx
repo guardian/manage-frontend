@@ -1,5 +1,4 @@
 import { Location } from '@reach/router';
-import React from 'react';
 import { Article } from './HelpCentreTypes';
 
 interface SeoDataProps {

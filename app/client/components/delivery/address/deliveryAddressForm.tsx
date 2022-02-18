@@ -2,13 +2,7 @@ import { css } from '@emotion/core';
 import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
 import { space } from '@guardian/src-foundations';
 import { capitalize } from 'lodash';
-import React, {
-	ChangeEvent,
-	Dispatch,
-	FormEvent,
-	SetStateAction,
-	useState,
-} from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import {
 	DeliveryAddress,
 	isProduct,

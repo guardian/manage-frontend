@@ -3,7 +3,7 @@ import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { neutral, news } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import {
 	base64FromFile,
@@ -174,7 +174,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 	};
 
 	return (
-		<form
+        <form
 			onSubmit={async (event: FormEvent) => {
 				event.preventDefault();
 				if (validateForm()) {
@@ -468,5 +468,5 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 				Submit
 			</Button>
 		</form>
-	);
+    );
 };

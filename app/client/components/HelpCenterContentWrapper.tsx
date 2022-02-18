@@ -1,5 +1,5 @@
 import { Location } from '@reach/router';
-import React from 'react';
+import * as React from 'react';
 import { KnownIssues } from './helpCentre/knownIssues';
 import { SectionContent } from './sectionContent';
 import { SectionHeader } from './sectionHeader';
