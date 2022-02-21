@@ -16,13 +16,13 @@ module.exports = {
 				presets: [
 					'@babel/typescript',
 					['@babel/preset-react', { runtime: 'automatic' }],
-					'@emotion/babel-preset-css-prop',
 				],
 				plugins: [
 					'@babel/proposal-class-properties',
 					'@babel/proposal-object-rest-spread',
 					'@babel/plugin-proposal-optional-chaining',
 					'lodash',
+					['babel-plugin-emotion', { 'cssPropOptimization': true }],
 				],
 			},
 		},
