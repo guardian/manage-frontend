@@ -18,8 +18,9 @@ import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { getIsPayingMinAmount } from './utils';
 
 const container = css`
-  & > * + * {
-    margin-top: ${space[6]}px;
+	& > * + * {
+		margin-top: ${space[6]}px;
+	}
 `;
 
 const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
