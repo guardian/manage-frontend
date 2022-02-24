@@ -14,8 +14,7 @@ const inputBoxCss = css({
 	margin: 0,
 });
 
-const dayMonthCss = css({
-	...inputBoxCss,
+const dayMonthCss = css(inputBoxCss, {
 	width: '25px',
 });
 
