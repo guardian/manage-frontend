@@ -58,6 +58,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@cypress/webpack-preprocessor": "^5.11.1",
     "@emotion/babel-plugin": "^11.7.2",
+    "@emotion/eslint-plugin": "^11.7.0",
     "@emotion/jest": "^11.8.0",
     "@guardian/node-riffraff-artifact": "^0.2.2",
     "@guardian/prettier": "^1.0.0",

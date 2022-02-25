@@ -20,7 +20,7 @@ module.exports = {
 		ecmaVersion: 12,
 		sourceType: 'module',
 	},
-	plugins: ['react', '@typescript-eslint', 'jest'],
+	plugins: ['react', '@typescript-eslint', 'jest', '@emotion'],
 	settings: {
 		react: {
 		  version: 'detect',
@@ -55,5 +55,6 @@ module.exports = {
 				minimumDescriptionLength: 10,
 			},
 		],
+		'@emotion/pkg-renaming': 'error',
 	},
 };
