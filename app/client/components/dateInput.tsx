@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import palette from '../colours';
 import { maxWidth } from '../styles/breakpoints';
 import { sans } from '../styles/fonts';

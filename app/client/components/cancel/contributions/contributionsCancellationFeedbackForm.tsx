@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Button } from '@guardian/src-button';
 import { useState } from 'react';
 import * as React from 'react';

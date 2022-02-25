@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { maxWidth, minWidth } from '../styles/breakpoints';

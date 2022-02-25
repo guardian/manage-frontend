@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ChangeEvent } from 'react';
 import * as React from 'react';
 import palette from '../colours';

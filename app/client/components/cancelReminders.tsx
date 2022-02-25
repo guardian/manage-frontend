@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { RouteComponentProps } from '@reach/router';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';

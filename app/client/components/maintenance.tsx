@@ -1,5 +1,5 @@
 import { RouteComponentProps } from '@reach/router';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { breakpoints, neutral, space } from '@guardian/src-foundations';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { minWidth } from '../styles/breakpoints';

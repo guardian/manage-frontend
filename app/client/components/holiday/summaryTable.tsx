@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DateRange,

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { textSans } from '@guardian/src-foundations/typography';
 import { space } from '@guardian/src-foundations';
 import { Stripe } from '@stripe/stripe-js';
