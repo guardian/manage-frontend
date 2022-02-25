@@ -1,8 +1,5 @@
-import serializer from 'jest-emotion';
 import renderer from 'react-test-renderer';
 import { Main } from '../components/main';
-
-expect.addSnapshotSerializer(serializer);
 
 describe('Main', () => {
 	beforeEach(() => {

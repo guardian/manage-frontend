@@ -5,11 +5,8 @@ import {
 	waitFor,
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
-import serializer from 'jest-emotion';
 import { create } from 'react-test-renderer';
 import { DropMenu } from '../../../components/identity/DropMenu';
-
-expect.addSnapshotSerializer(serializer);
 
 const ELEMENT_TEXT = {
 	TITLE: 'TEST DROPMENU',
