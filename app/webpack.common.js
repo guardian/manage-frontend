@@ -39,7 +39,7 @@ const babelCommon = {
 		'@babel/preset-typescript',
 		[
 			'@babel/preset-react',
-			{ runtime: 'automatic', importSource: '@emotion/core' },
+			{ runtime: 'automatic', importSource: '@emotion/react' },
 		],
 	],
 	plugins: [
@@ -47,7 +47,7 @@ const babelCommon = {
 		'@babel/proposal-object-rest-spread',
 		'@babel/plugin-proposal-optional-chaining',
 		'lodash',
-		['babel-plugin-emotion', { 'cssPropOptimization': true }],
+		'@emotion/babel-plugin',
 	],
 };
 
