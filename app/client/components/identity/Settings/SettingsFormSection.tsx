@@ -44,11 +44,10 @@ const deletePhoneNumber = async () => {
 
 const EmailMessage = (email: string) => (
 	<p
-		css={{
-			...textSmall,
+		css={[textSmall, {
 			padding: '6px 14px',
 			backgroundColor: palette.neutral[7],
-		}}
+		}]}
 	>
 		To verify your new email address <strong>{email}</strong> please check
 		your inbox - the confimation email is on its way. In the meantime you
@@ -63,12 +62,11 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 		));
 		return (
 			<div
-				css={{
+				css={[{
 					color: palette.red.medium,
 					backgroundColor: '#ffe1e1',
 					padding: '20px 15px',
-					...textSmall,
-				}}
+				}, textSmall]}
 			>
 				There were some problems submitting your form. Your information
 				has not been saved. Please resolve the following:

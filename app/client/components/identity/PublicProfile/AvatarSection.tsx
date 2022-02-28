@@ -1,4 +1,4 @@
-import { CSSObject } from '@emotion/react';
+import { css } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
 import { FC, useEffect } from 'react';
@@ -27,12 +27,12 @@ interface AvatarSectionProps {
 	userId: string;
 }
 
-const imgCss: CSSObject = {
+const imgCss = css({
 	border: '0',
 	borderRadius: '50%',
 	height: '60px',
 	width: '60px',
-};
+});
 
 const isEmptyAvatarError = (e: any): boolean => {
 	return e.type && e.type === ErrorTypes.NOT_FOUND;
@@ -119,8 +119,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 
 	const avatarUploadSuccessNotice = () => (
 		<div
-			css={{
-				...textSmall,
+			css={[textSmall, {
 				lineHeight: '18px',
 				fontFamily: sans,
 				borderBottom: `1px solid ${palette.green.light}`,
@@ -128,7 +127,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				color: palette.green.medium,
 				marginTop: '6px',
 				padding: '7px 8px',
-			}}
+			}]}
 		>
 			Thank you for uploading your avatar. It will be checked by Guardian
 			moderators shortly.
