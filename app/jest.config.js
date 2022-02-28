@@ -8,12 +8,9 @@ module.exports = {
 	snapshotSerializers: ['@emotion/jest/serializer'],
 	globals: {
 		'ts-jest': {
-			tsconfig: {
-				jsx: 'react-jsx',
-				module: 'commonjs',
-			},
 			babelConfig: {
 				presets: [
+					['@babel/preset-env', {targets: {node: 'current'}}],
 					'@babel/typescript',
 					['@babel/preset-react', { runtime: 'automatic', importSource: '@emotion/react' }],
 				],
