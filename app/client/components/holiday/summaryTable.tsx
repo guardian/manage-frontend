@@ -94,14 +94,18 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 		</ExpanderButton>
 	);
 
-	const withdrawnRelatedCSS = props.withdrawnDate
-		? { textDecoration: 'line-through' }
-		: {};
+	const withdrawnRelatedCSS = css({
+		textDecoration: 'line-through',
+	});
 
 	return props.asTD ? (
 		<tr>
-			<td css={withdrawnRelatedCSS}>{dateRangeStr}</td>
-			<td css={withdrawnRelatedCSS}>{detailPart}</td>
+			<td css={props.withdrawnDate && withdrawnRelatedCSS}>
+				{dateRangeStr}
+			</td>
+			<td css={props.withdrawnDate && withdrawnRelatedCSS}>
+				{detailPart}
+			</td>
 			<td>
 				{props.isOperatingOnNewHolidayStop ? (
 					<CollatedCredits {...props} />
@@ -111,19 +115,28 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 			</td>
 		</tr>
 	) : (
-		<div css={{ marginBottom: '20px', ...withdrawnRelatedCSS }}>
+		<div
+			css={[
+				{ marginBottom: '20px' },
+				props.withdrawnDate && withdrawnRelatedCSS,
+			]}
+		>
 			<div
-				css={{
-					...cellCss,
-					...withdrawnRelatedCSS,
-					backgroundColor: palette.neutral['7'],
-					borderBottom: 0,
-				}}
+				css={[
+					cellCss,
+					props.withdrawnDate && withdrawnRelatedCSS,
+					{
+						backgroundColor: palette.neutral['7'],
+						borderBottom: 0,
+					},
+				]}
 			>
 				{dateRangeStr}
 			</div>
-			<div css={{ ...cellCss, ...withdrawnRelatedCSS }}>{detailPart}</div>
-			<div css={{ ...cellCss, borderTop: 0 }}>
+			<div css={[cellCss, props.withdrawnDate && withdrawnRelatedCSS]}>
+				{detailPart}
+			</div>
+			<div css={[cellCss, { borderTop: 0 }]}>
 				{props.isOperatingOnNewHolidayStop ? (
 					<>
 						<strong>Expected Credits</strong>
@@ -171,14 +184,14 @@ export const SummaryTable = (props: SummaryTableProps) => {
 					tr: {
 						textAlign: 'left',
 					},
-					th: {
-						...cellCss,
-						backgroundColor: palette.neutral['7'],
-						margin: 0,
-					},
-					td: {
-						...cellCss,
-					},
+					th: [
+						cellCss,
+						{
+							backgroundColor: palette.neutral['7'],
+							margin: 0,
+						},
+					],
+					td: cellCss,
 					[maxWidth.tablet]: {
 						display: 'none',
 					},

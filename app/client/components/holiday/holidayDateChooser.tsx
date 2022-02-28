@@ -459,11 +459,11 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 							dateToAsterisk={anniversaryDate}
 						/>
 						<div
-							css={{
-								...buttonBarCss,
-								justifyContent: 'flex-end',
-								...fixedButtonFooterCss,
-							}}
+							css={[
+								buttonBarCss,
+								{ justifyContent: 'flex-end' },
+								fixedButtonFooterCss,
+							]}
 						>
 							<div
 								css={{

@@ -294,15 +294,17 @@ export class HolidayReview extends Component<
 						</div>
 					) : (
 						<div
-							css={{
-								...buttonBarCss,
-								justifyContent: 'space-between',
-								marginTop: '20px',
-								[maxWidth.mobileMedium]: {
-									flexDirection: 'column',
-									marginTop: 0,
+							css={[
+								buttonBarCss,
+								{
+									justifyContent: 'space-between',
+									marginTop: '20px',
+									[maxWidth.mobileMedium]: {
+										flexDirection: 'column',
+										marginTop: 0,
+									},
 								},
-							}}
+							]}
 						>
 							<div
 								css={{
@@ -320,11 +322,13 @@ export class HolidayReview extends Component<
 								/>
 							</div>
 							<div
-								css={{
-									...buttonBarCss,
-									marginTop: '20px',
-									alignSelf: 'flex-end',
-								}}
+								css={[
+									buttonBarCss,
+									{
+										marginTop: '20px',
+										alignSelf: 'flex-end',
+									},
+								]}
 							>
 								<Link
 									css={cancelLinkCss}

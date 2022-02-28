@@ -44,7 +44,7 @@ const innerContent = (
 			subscription={productDetail.subscription}
 			issueKeyword={productType.holidayStops.issueKeyword}
 		/>
-		<div css={{ ...buttonBarCss, justifyContent: 'flex-end' }}>
+		<div css={[buttonBarCss, { justifyContent: 'flex-end' }]}>
 			<div css={{ marginBottom: '10px' }}>
 				<LinkButton
 					to={'/suspend/' + productType.urlPart + '/create'}
