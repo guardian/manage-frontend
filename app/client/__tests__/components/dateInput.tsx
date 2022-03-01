@@ -32,13 +32,13 @@ describe('DateInput', () => {
 				<DateInput date={date} labelText="My Label" />,
 			);
 
-			expect(wrapper.find("[aria-label='day']").props().value).toEqual(
+			expect(wrapper.find("[aria-label='day']").hostNodes().props().value).toEqual(
 				expectedDay,
 			);
-			expect(wrapper.find("[aria-label='month']").props().value).toEqual(
+			expect(wrapper.find("[aria-label='month']").hostNodes().props().value).toEqual(
 				expectedMonth,
 			);
-			expect(wrapper.find("[aria-label='year']").props().value).toEqual(
+			expect(wrapper.find("[aria-label='year']").hostNodes().props().value).toEqual(
 				expectedYear,
 			);
 		},

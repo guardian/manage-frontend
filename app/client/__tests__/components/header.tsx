@@ -13,9 +13,6 @@ describe('Header', () => {
 	it('renders the header in a signed in state', () => {
 		render(<Header signInStatus="signedIn" requiresSignIn={true} />);
 		expect(
-			screen.getByRole('link', { name: 'My account' }),
-		).toBeInTheDocument();
-		expect(
 			screen.getByRole('button', { name: 'My account' }),
 		).toBeInTheDocument();
 	});
