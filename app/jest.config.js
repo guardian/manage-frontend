@@ -10,9 +10,15 @@ module.exports = {
 		'ts-jest': {
 			babelConfig: {
 				presets: [
-					['@babel/preset-env', {targets: {node: 'current'}}],
+					['@babel/preset-env', { targets: { node: 'current' } }],
 					'@babel/typescript',
-					['@babel/preset-react', { runtime: 'automatic', importSource: '@emotion/react' }],
+					[
+						'@babel/preset-react',
+						{
+							runtime: 'automatic',
+							importSource: '@emotion/react',
+						},
+					],
 				],
 				plugins: [
 					'@babel/proposal-class-properties',
@@ -23,10 +29,6 @@ module.exports = {
 				],
 			},
 		},
-	},
-	moduleNameMapper: {
-		'^@guardian/src-foundations/(.*)(?<!cjs)$':
-			'@guardian/src-foundations/$1/cjs',
 	},
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',

@@ -969,24 +969,12 @@ Array [
 }
 
 .emotion-7 {
-  margin-bottom: 20px;
-  margin-top: 4px;
-}
-
-@media (min-width: 740px) {
-  .emotion-7 {
-    margin-bottom: 36px;
-  }
-}
-
-.emotion-8 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1012,21 +1000,23 @@ Array [
   padding-bottom: 2px;
   background-color: #C1D8FC;
   color: #052962;
+  margin-bottom: 20px;
+  margin-top: 4px;
 }
 
-.emotion-8:focus {
+.emotion-7:focus {
   outline: 0;
 }
 
-html:not(.src-focus-disabled) .emotion-8:focus {
-  box-shadow: 0 0 0 5px #00B2FF;
+html:not(.src-focus-disabled) .emotion-7:focus {
+  box-shadow: 0 0 0 5px #0093E0;
 }
 
-.emotion-8:hover {
+.emotion-7:hover {
   background-color: #ACC9F7;
 }
 
-.emotion-8 svg {
+.emotion-7 svg {
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -1037,26 +1027,32 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   height: auto;
 }
 
-.emotion-8 .src-button-space {
+.emotion-7 .src-button-space {
   width: 12px;
 }
 
-.emotion-8 svg {
+.emotion-7 svg {
   margin-right: -4px;
 }
 
-.emotion-14 {
+@media (min-width: 740px) {
+  .emotion-7 {
+    margin-bottom: 36px;
+  }
+}
+
+.emotion-13 {
   font-weight: bold;
   margin-bottom: 36px!important;
 }
 
-.emotion-15 {
+.emotion-14 {
   border-top: 1px solid #DCDCDC;
   border-left: 1px solid #DCDCDC;
   border-right: 1px solid #DCDCDC;
 }
 
-.emotion-16 {
+.emotion-15 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.25rem;
   line-height: 1.5;
@@ -1068,25 +1064,25 @@ html:not(.src-focus-disabled) .emotion-8:focus {
 }
 
 @media (min-width: 980px) {
-  .emotion-16 {
+  .emotion-15 {
     padding: 22px 0 22px 64px;
   }
 }
 
-.emotion-17 {
+.emotion-16 {
   position: absolute;
   top: 12px;
   left: 12px;
 }
 
 @media (min-width: 980px) {
-  .emotion-17 {
+  .emotion-16 {
     top: 16px;
     left: 16px;
   }
 }
 
-.emotion-18 {
+.emotion-17 {
   display: none;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
@@ -1097,12 +1093,12 @@ html:not(.src-focus-disabled) .emotion-8:focus {
 }
 
 @media (min-width: 1300px) {
-  .emotion-18 {
+  .emotion-17 {
     display: block;
   }
 }
 
-.emotion-19 {
+.emotion-18 {
   margin-bottom: 10px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1116,12 +1112,12 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   font-weight: normal;
 }
 
-.emotion-20 {
+.emotion-19 {
   width: 100%;
   border: 1px solid #DCDCDC;
 }
 
-.emotion-21 {
+.emotion-20 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -1135,7 +1131,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   border-bottom: 1px solid #DCDCDC;
 }
 
-.emotion-21:after {
+.emotion-20:after {
   content: "";
   display: block;
   width: 7px;
@@ -1153,7 +1149,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   right: 17px;
 }
 
-.emotion-22 {
+.emotion-21 {
   display: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1162,7 +1158,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
 }
 
 @media (min-width: 980px) {
-  .emotion-22 {
+  .emotion-21 {
     display: block;
     position: absolute;
     top: 50%;
@@ -1176,13 +1172,13 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   }
 }
 
-.emotion-23 {
+.emotion-22 {
   display: block;
   background-color: #F6F6F6;
   padding: 16px;
 }
 
-.emotion-24 {
+.emotion-23 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -1190,21 +1186,21 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   margin-bottom: 0;
 }
 
-.emotion-24+p {
+.emotion-23+p {
   margin-top: 16px;
 }
 
-.emotion-25 {
+.emotion-24 {
   display: block;
   margin-bottom: 4px;
   font-weight: bold;
 }
 
-.emotion-26 {
+.emotion-25 {
   display: block;
 }
 
-.emotion-28 {
+.emotion-27 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -1215,7 +1211,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   cursor: pointer;
 }
 
-.emotion-28:after {
+.emotion-27:after {
   content: "";
   display: block;
   width: 7px;
@@ -1233,7 +1229,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   right: 17px;
 }
 
-.emotion-28:before {
+.emotion-27:before {
   content: "";
   display: block;
   position: absolute;
@@ -1244,29 +1240,29 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   background-color: #DCDCDC;
 }
 
-.emotion-30 {
+.emotion-29 {
   display: none;
   background-color: #F6F6F6;
   padding: 16px;
 }
 
-.emotion-33 {
+.emotion-32 {
   font-weight: normal;
 }
 
-.emotion-46 {
+.emotion-45 {
   margin-top: 36px;
   padding: 12px;
   background-color: #ecf3fe;
 }
 
 @media (min-width: 980px) {
-  .emotion-46 {
+  .emotion-45 {
     padding: 24px;
   }
 }
 
-.emotion-47 {
+.emotion-46 {
   margin: 0;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
@@ -1274,7 +1270,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   font-weight: 700;
 }
 
-.emotion-48 {
+.emotion-47 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
   line-height: 1.5;
@@ -1283,7 +1279,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
   margin: 0;
 }
 
-.emotion-48 a {
+.emotion-47 a {
   color: #007ABC;
   -webkit-text-decoration: underline;
   text-decoration: underline;
@@ -1370,7 +1366,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
           className="emotion-6"
         >
           <button
-            className="emotion-7 emotion-8"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -1438,7 +1434,7 @@ html:not(.src-focus-disabled) .emotion-8:focus {
           className="emotion-6"
         >
           <p
-            className="emotion-14"
+            className="emotion-13"
           >
             customer.help@theguardian.com
           </p>
@@ -1446,13 +1442,13 @@ html:not(.src-focus-disabled) .emotion-8:focus {
       </div>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-14"
     >
       <h2
-        className="emotion-16"
+        className="emotion-15"
       >
         <i
-          className="emotion-17"
+          className="emotion-16"
         >
           <svg
             fill="none"
@@ -1482,48 +1478,48 @@ html:not(.src-focus-disabled) .emotion-8:focus {
         Call us
       </h2>
       <p
-        className="emotion-18"
+        className="emotion-17"
       >
         Speak with one of our customer service agents.
       </p>
     </div>
     <div
-      className="emotion-19"
+      className="emotion-18"
     >
       <div
-        className="emotion-20"
+        className="emotion-19"
       >
         <div>
           <h2
-            className="emotion-21"
+            className="emotion-20"
             onClick={[Function]}
           >
             United Kingdom, Europe and rest of world
             <span
               aria-hidden="true"
-              className="emotion-22"
+              className="emotion-21"
             >
               Hide
             </span>
           </h2>
           <div
-            className="emotion-23"
+            className="emotion-22"
           >
             <p
-              className="emotion-24"
+              className="emotion-23"
             >
               <span
-                className="emotion-25"
+                className="emotion-24"
               >
                 +44 (0) 330 333 6790
               </span>
               <span
-                className="emotion-26"
+                className="emotion-25"
               >
                 8am - 6pm Monday - Friday (GMT/BST)
               </span>
               <span
-                className="emotion-26"
+                className="emotion-25"
               >
                 9am - 6pm Saturday - Sunday (GMT/BST)
               </span>
@@ -1532,47 +1528,47 @@ html:not(.src-focus-disabled) .emotion-8:focus {
         </div>
         <div>
           <h2
-            className="emotion-28"
+            className="emotion-27"
             onClick={[Function]}
           >
             Australia, New Zealand, and Asia Pacific
             <span
               aria-hidden="true"
-              className="emotion-22"
+              className="emotion-21"
             >
               Show
             </span>
           </h2>
           <div
-            className="emotion-30"
+            className="emotion-29"
           >
             <p
-              className="emotion-24"
+              className="emotion-23"
             >
               <span
-                className="emotion-25"
+                className="emotion-24"
               >
                 1800 773 766
                 <span
-                  className="emotion-33"
+                  className="emotion-32"
                 >
                    
                   (within Australia)
                 </span>
               </span>
               <span
-                className="emotion-25"
+                className="emotion-24"
               >
                 +61 28076 8599
                 <span
-                  className="emotion-33"
+                  className="emotion-32"
                 >
                    
                   (outside Australia)
                 </span>
               </span>
               <span
-                className="emotion-26"
+                className="emotion-25"
               >
                 9am - 5pm Monday - Friday (AEDT)
               </span>
@@ -1581,47 +1577,47 @@ html:not(.src-focus-disabled) .emotion-8:focus {
         </div>
         <div>
           <h2
-            className="emotion-28"
+            className="emotion-27"
             onClick={[Function]}
           >
             Canada and USA
             <span
               aria-hidden="true"
-              className="emotion-22"
+              className="emotion-21"
             >
               Show
             </span>
           </h2>
           <div
-            className="emotion-30"
+            className="emotion-29"
           >
             <p
-              className="emotion-24"
+              className="emotion-23"
             >
               <span
-                className="emotion-25"
+                className="emotion-24"
               >
                 1-844-632-2010
                 <span
-                  className="emotion-33"
+                  className="emotion-32"
                 >
                    
                   (toll free USA)
                 </span>
               </span>
               <span
-                className="emotion-25"
+                className="emotion-24"
               >
                 +1 917-900-4663
                 <span
-                  className="emotion-33"
+                  className="emotion-32"
                 >
                    
                   (outside USA)
                 </span>
               </span>
               <span
-                className="emotion-26"
+                className="emotion-25"
               >
                 9am - 5pm on weekdays (EST/EDT)
               </span>
@@ -1631,16 +1627,16 @@ html:not(.src-focus-disabled) .emotion-8:focus {
       </div>
     </div>
     <div
-      className="emotion-46"
+      className="emotion-45"
       id="livechatPrivacyNotice"
     >
       <h2
-        className="emotion-47"
+        className="emotion-46"
       >
         Data privacy notice
       </h2>
       <p
-        className="emotion-48"
+        className="emotion-47"
       >
         We use a type of cookie technology called an SDK (Software Development Kit) to ensure that our live chat services work correctly and meet your expectations. It cannot be switched off but it is removed at the end of the chat. If you do not wish for this cookie to be dropped on your device, please email or phone us instead. Live chats and phone calls will be recorded for monitoring and training purposes. Please do not disclose personal data of a sensitive nature in the live chat, such as health or financial information. A copy of the chat transcript will be emailed to you unless the chat contains payment card information, in which case no transcript will be sent. Click to find out more in our
          
