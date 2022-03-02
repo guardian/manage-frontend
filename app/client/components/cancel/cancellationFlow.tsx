@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
-import React from 'react';
+import * as React from 'react';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
 import {
 	MembersDataApiItemContext,

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { OptionalCancellationReasonId } from './cancellationReason';

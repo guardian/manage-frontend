@@ -1,5 +1,4 @@
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import React from 'react';
 import { create } from 'react-test-renderer';
 import { MarketingPreference } from '../../../components/identity/MarketingPreference';
 

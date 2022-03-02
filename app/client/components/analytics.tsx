@@ -1,5 +1,5 @@
 import { Location } from '@reach/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import parse from 'url-parse';
 import { OphanProduct } from '../../shared/ophanTypes';
 import { ProductDetail } from '../../shared/productResponse';

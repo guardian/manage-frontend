@@ -1,5 +1,4 @@
 import { brand } from '@guardian/src-foundations/palette';
-import React from 'react';
 
 interface CreditCardIconProps {
 	overrideFillColor?: string;

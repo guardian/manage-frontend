@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import palette from '../../../../colours';
 import { sans } from '../../../../styles/fonts';
 import { neutral } from '@guardian/src-foundations/palette';

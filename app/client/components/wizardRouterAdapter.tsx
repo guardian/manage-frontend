@@ -1,6 +1,6 @@
 import { neutral } from '@guardian/src-foundations/palette';
 import { RouteComponentProps, Router } from '@reach/router';
-import React from 'react';
+import * as React from 'react';
 import {
 	GroupedProductType,
 	ProductType,

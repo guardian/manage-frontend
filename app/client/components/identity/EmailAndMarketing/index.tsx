@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { ProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { allProductsDetailFetcher } from '../../../productUtils';
@@ -98,7 +98,7 @@ const EmailAndMarketing = (_: { path?: string }) => {
 	const consents = ConsentOptions.consents(state.options);
 	const loading = newsletters.length === 0 && consents.length === 0;
 
-	const errorRef = React.createRef<GenericErrorMessageRef>();
+	const errorRef = createRef<GenericErrorMessageRef>();
 
 	useEffect(() => {
 		if (state.error && errorRef.current) {

@@ -36,15 +36,18 @@ const nodePolyfillPlugin = new NodePolyfillPlugin({
 
 const babelCommon = {
 	presets: [
-		'@babel/typescript',
-		'@babel/react',
-		'@emotion/babel-preset-css-prop',
+		'@babel/preset-typescript',
+		[
+			'@babel/preset-react',
+			{ runtime: 'automatic', importSource: '@emotion/core' },
+		],
 	],
 	plugins: [
 		'@babel/proposal-class-properties',
 		'@babel/proposal-object-rest-spread',
 		'@babel/plugin-proposal-optional-chaining',
 		'lodash',
+		['babel-plugin-emotion', { 'cssPropOptimization': true }],
 	],
 };
 
@@ -120,7 +123,7 @@ const client = merge(common, {
 						plugins: babelCommon.plugins,
 						presets: [
 							[
-								'@babel/env',
+								'@babel/preset-env',
 								{
 									useBuiltIns: 'entry',
 									corejs: 3.16,

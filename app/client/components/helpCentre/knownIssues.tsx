@@ -6,7 +6,7 @@ import {
 	space,
 } from '@guardian/src-foundations';
 import { textSans } from '@guardian/src-foundations/typography';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductDetail } from '../../../shared/productResponse';
 import { allProductsDetailFetcher } from '../../productUtils';
 import { minWidth } from '../../styles/breakpoints';

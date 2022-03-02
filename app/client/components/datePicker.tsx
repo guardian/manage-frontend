@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { brandAlt } from '@guardian/src-foundations/palette';
-import React from 'react';
+import * as React from 'react';
 import {
 	dateAddDays,
 	dateClone,

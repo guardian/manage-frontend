@@ -5,7 +5,7 @@ import { brand, neutral, news } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import { Radio, RadioGroup } from '@guardian/src-radio';
 import { capitalize } from 'lodash';
-import React, { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { DeliveryProblemType } from '../../../../shared/productTypes';
 import { minWidth } from '../../../styles/breakpoints';
 import { ErrorIcon } from '../../svgs/errorIcon';

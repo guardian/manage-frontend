@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
-import React from 'react';
+import * as React from 'react';
 
 const containerStyles = css`
 	margin-left: ${space[4]}px;

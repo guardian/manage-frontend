@@ -1,6 +1,5 @@
 import { css } from '@emotion/core';
 import { textSans } from '@guardian/src-foundations/typography';
-import React from 'react';
 
 type giftArrowAlign = 'left' | 'right';
 

@@ -4,7 +4,6 @@ import { space } from '@guardian/src-foundations';
 import { brand } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import Color from 'color';
-import React from 'react';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import { minWidth } from '../../../styles/breakpoints';
 import { DeliveryAddressDisplay } from '../address/deliveryAddressDisplay';

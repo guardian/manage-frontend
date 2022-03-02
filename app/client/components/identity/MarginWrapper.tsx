@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 
 export const MarginWrapper: FC<{}> = ({ children }) => {

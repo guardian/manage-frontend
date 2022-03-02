@@ -1,4 +1,3 @@
-import React from 'react';
 import { trackEvent } from '../../analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';

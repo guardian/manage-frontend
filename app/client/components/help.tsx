@@ -3,7 +3,7 @@ import { LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { minWidth } from '../styles/breakpoints';
 import { trackEvent } from './analytics';
 import { CallCentreEmailAndNumbers } from './callCenterEmailAndNumbers';

@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import React from 'react';
+import * as React from 'react';
 import AsyncLoader from '../client/components/asyncLoader';
 import { PhoneRegionKey } from '../client/components/callCenterEmailAndNumbers';
 import { DeliveryRecordDetail } from '../client/components/delivery/records/deliveryRecordsApi';

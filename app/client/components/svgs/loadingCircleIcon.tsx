@@ -1,6 +1,5 @@
 import { css, SerializedStyles } from '@emotion/core';
 import { brand } from '@guardian/src-foundations/palette';
-import React from 'react';
 
 interface LoadingCircleIconProps {
 	additionalCss?: SerializedStyles;

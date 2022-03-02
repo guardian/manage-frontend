@@ -1,5 +1,4 @@
 import { Form, FormikProps, withFormik } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
 import { Button } from '../../buttons';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';

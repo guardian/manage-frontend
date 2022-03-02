@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { maxWidth, minWidth } from '../styles/breakpoints';
 
 export interface ProductDescriptionListKeyValue {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Lines } from '../Lines';
 import { MarginWrapper } from '../MarginWrapper';
 import { MarketingPreference } from '../MarketingPreference';

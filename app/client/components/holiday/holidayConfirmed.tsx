@@ -1,6 +1,5 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
-import React from 'react';
 import {
 	isProduct,
 	MembersDataApiItemContext,
@@ -45,7 +44,7 @@ const innerContent = (
 			subscription={productDetail.subscription}
 			issueKeyword={productType.holidayStops.issueKeyword}
 		/>
-		<div css={{ ...buttonBarCss, justifyContent: 'flex-end' }}>
+		<div css={[buttonBarCss, { justifyContent: 'flex-end' }]}>
 			<div css={{ marginBottom: '10px' }}>
 				<LinkButton
 					to={'/suspend/' + productType.urlPart + '/create'}

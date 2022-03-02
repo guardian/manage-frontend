@@ -2,7 +2,6 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand } from '@guardian/src-foundations/palette';
 import { capitalize } from 'lodash';
-import React from 'react';
 import { ErrorIcon } from '../../svgs/errorIcon';
 import { HolidayStopIcon } from '../../svgs/holidayStopIcon';
 import { InfoIconDark } from '../../svgs/infoIconDark';

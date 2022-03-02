@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import palette from '../../colours';
 import { sans } from '../../styles/fonts';
 import { Checkbox } from '../checkbox';

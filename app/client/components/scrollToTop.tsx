@@ -1,5 +1,4 @@
 import { Location } from '@reach/router';
-import React from 'react';
 
 const exceptions: string[] = ['/help-centre/contact-us/'];
 

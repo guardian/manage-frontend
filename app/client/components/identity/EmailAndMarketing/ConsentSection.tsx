@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ConsentOptions } from '../identity';
 import { MarketingPreference } from '../MarketingPreference';
 import { ConsentOption } from '../models';

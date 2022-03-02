@@ -1,5 +1,5 @@
 import { navigate } from '@reach/router';
-import React from 'react';
+import * as React from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateString,

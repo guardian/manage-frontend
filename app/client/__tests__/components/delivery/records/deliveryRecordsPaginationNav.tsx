@@ -1,6 +1,5 @@
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import React from 'react';
 import { PaginationNav } from '../../../../components/delivery/records/deliveryRecordsPaginationNav';
 
 Enzyme.configure({ adapter: new Adapter() });

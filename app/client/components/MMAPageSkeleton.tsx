@@ -1,5 +1,4 @@
 import { Location } from '@reach/router';
-import React from 'react';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,

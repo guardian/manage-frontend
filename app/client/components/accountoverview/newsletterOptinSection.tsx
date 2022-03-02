@@ -5,7 +5,7 @@ import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import * as Sentry from '@sentry/browser';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Fragment, ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { trackEvent } from '../analytics';
 import { SuccessMessage } from '../delivery/address/deliveryAddressEditConfirmation';
 import * as NewslettersAPI from '../identity/idapi/newsletters';
@@ -147,62 +147,60 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
 			}
 		};
 
-		return (
-			<>
-				<h2
-					css={css`
-						${subHeadingCss}
-					`}
-				>
-					Front Page Newsletter
-				</h2>
-				{newsletters.map((newsletter) => (
-					<React.Fragment key={newsletter.id}>
-						<p
-							css={css`
-								${textSans.medium()}
-							`}
-						>
-							{newsletter.description}
-						</p>
-						{showUpdateMsg && (
-							<UpdateMessage updateStatus={showUpdateMsg} />
-						)}
-						<form onSubmit={formSubmissionHandler}>
-							<fieldset
-								css={css`
-									padding: ${space[3]}px ${space[5]}px;
-									border: 1px solid ${neutral[86]};
-									margin-bottom: ${space[5]}px;
-								`}
-							>
-								<Checkbox
-									value={newsletter.id}
-									label={
-										<CheckboxLabel
-											title={newsletter.name}
-											frequency={newsletter.frequency}
-										/>
-									}
-									checked={newsletter.subscribed}
-									cssOverrides={css`
-										font-weight: bold;
-									`}
-									onChange={checkboxChangeHandler}
-								/>
-							</fieldset>
-							{newslettersPendingChange.includes(
-								newsletter.id,
-							) && (
-								<Button icon={<TickIcon />} type="submit">
-									Confirm preferences
-								</Button>
-							)}
-						</form>
-					</React.Fragment>
-				))}
-			</>
-		);
+		return <>
+            <h2
+                css={css`
+                    ${subHeadingCss}
+                `}
+            >
+                Front Page Newsletter
+            </h2>
+            {newsletters.map((newsletter) => (
+                <Fragment key={newsletter.id}>
+                    <p
+                        css={css`
+                            ${textSans.medium()}
+                        `}
+                    >
+                        {newsletter.description}
+                    </p>
+                    {showUpdateMsg && (
+                        <UpdateMessage updateStatus={showUpdateMsg} />
+                    )}
+                    <form onSubmit={formSubmissionHandler}>
+                        <fieldset
+                            css={css`
+                                padding: ${space[3]}px ${space[5]}px;
+                                border: 1px solid ${neutral[86]};
+                                margin-bottom: ${space[5]}px;
+                            `}
+                        >
+                            <Checkbox
+                                value={newsletter.id}
+                                label={
+                                    <CheckboxLabel
+                                        title={newsletter.name}
+                                        frequency={newsletter.frequency}
+                                    />
+                                }
+                                checked={newsletter.subscribed}
+                                cssOverrides={css`
+                                    font-weight: bold;
+                                `}
+                                onChange={checkboxChangeHandler}
+                            />
+                        </fieldset>
+                        {newslettersPendingChange.includes(
+                            newsletter.id,
+                        ) && (
+                            <Button icon={<TickIcon />} type="submit">
+                                Confirm preferences
+                            </Button>
+                        )}
+                    </form>
+                </Fragment>
+            ))}
+        </>;
 	} else {
 		return null;
 	}

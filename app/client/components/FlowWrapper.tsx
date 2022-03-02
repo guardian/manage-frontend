@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageContainer, PageContainerProps } from './page';
 import {
 	ProductDetailProvider,

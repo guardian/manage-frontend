@@ -9,20 +9,20 @@ module.exports = {
 	globals: {
 		'ts-jest': {
 			tsconfig: {
-				jsx: 'react',
+				jsx: 'react-jsx',
 				module: 'commonjs',
 			},
 			babelConfig: {
 				presets: [
 					'@babel/typescript',
-					'@babel/react',
-					'@emotion/babel-preset-css-prop',
+					['@babel/preset-react', { runtime: 'automatic' }],
 				],
 				plugins: [
 					'@babel/proposal-class-properties',
 					'@babel/proposal-object-rest-spread',
 					'@babel/plugin-proposal-optional-chaining',
 					'lodash',
+					['babel-plugin-emotion', { 'cssPropOptimization': true }],
 				],
 			},
 		},

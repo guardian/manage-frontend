@@ -1,6 +1,7 @@
 import { css } from '@emotion/core';
 import { Button } from '@guardian/src-button';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import * as React from 'react';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 import ContributionsCancellationFeedbackFormThankYou from './contributionsCancellationFeedbackFormThankYou';
 

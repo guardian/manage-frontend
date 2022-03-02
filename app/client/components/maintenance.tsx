@@ -1,4 +1,3 @@
-import React from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { css } from '@emotion/core';
 import { breakpoints, neutral, space } from '@guardian/src-foundations';

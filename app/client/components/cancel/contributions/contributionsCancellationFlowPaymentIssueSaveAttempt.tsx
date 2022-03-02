@@ -4,7 +4,8 @@ import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
 import { navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import * as React from 'react';
 import {
 	isPaidSubscriptionPlan,
 	MembersDataApiItemContext,

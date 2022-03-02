@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React from 'react';
+import * as React from 'react';
 
 export const expanderButtonCss =
 	(mainColour?: string, highlightColour?: string) => (isExpanded: boolean) =>

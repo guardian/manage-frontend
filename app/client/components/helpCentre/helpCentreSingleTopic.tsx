@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { Link } from '@reach/router';
-import React from 'react';
 import { trackEvent } from '../analytics';
 import {
 	h2Css,

@@ -5,7 +5,7 @@ import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { navigate } from '@reach/router';
 import { capitalize } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	dateAddDays,
 	dateIsSameOrBefore,

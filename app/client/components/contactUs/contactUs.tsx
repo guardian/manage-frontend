@@ -4,7 +4,6 @@ import { neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { navigate, RouteComponentProps } from '@reach/router';
 import { captureException } from '@sentry/browser';
-import React from 'react';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';

@@ -1,5 +1,4 @@
 import { neutral } from '@guardian/src-foundations/palette';
-import React from 'react';
 
 interface ThumbsUpIconProps {
 	overrideFillColor?: string;

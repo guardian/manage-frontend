@@ -5,7 +5,7 @@ import { textSans } from '@guardian/src-foundations/typography';
 import { TextInput } from '@guardian/src-text-input';
 import { InlineError } from '@guardian/src-user-feedback';
 import { capitalize } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	augmentInterval,
 	PaidSubscriptionPlan,

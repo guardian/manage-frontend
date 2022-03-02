@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { Link, navigate, NavigateFn } from '@reach/router';
-import React from 'react';
+import { Component } from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	DateRange,
@@ -110,7 +110,7 @@ interface HolidayReviewState {
 	isCheckboxConfirmed: boolean;
 }
 
-export class HolidayReview extends React.Component<
+export class HolidayReview extends Component<
 	HolidayStopsRouteableStepProps,
 	HolidayReviewState
 > {
@@ -294,15 +294,17 @@ export class HolidayReview extends React.Component<
 						</div>
 					) : (
 						<div
-							css={{
-								...buttonBarCss,
-								justifyContent: 'space-between',
-								marginTop: '20px',
-								[maxWidth.mobileMedium]: {
-									flexDirection: 'column',
-									marginTop: 0,
+							css={[
+								buttonBarCss,
+								{
+									justifyContent: 'space-between',
+									marginTop: '20px',
+									[maxWidth.mobileMedium]: {
+										flexDirection: 'column',
+										marginTop: 0,
+									},
 								},
-							}}
+							]}
 						>
 							<div
 								css={{
@@ -320,11 +322,13 @@ export class HolidayReview extends React.Component<
 								/>
 							</div>
 							<div
-								css={{
-									...buttonBarCss,
-									marginTop: '20px',
-									alignSelf: 'flex-end',
-								}}
+								css={[
+									buttonBarCss,
+									{
+										marginTop: '20px',
+										alignSelf: 'flex-end',
+									},
+								]}
 							>
 								<Link
 									css={cancelLinkCss}

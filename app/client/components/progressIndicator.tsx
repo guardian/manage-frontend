@@ -1,7 +1,6 @@
 import { css, SerializedStyles } from '@emotion/core';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import React from 'react';
 import { minWidth } from '../styles/breakpoints';
 import { TickInCircle } from './svgs/tickInCircle';
 

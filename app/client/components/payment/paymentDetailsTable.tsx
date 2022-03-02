@@ -1,5 +1,4 @@
 import { neutral } from '@guardian/src-foundations/palette';
-import React from 'react';
 import { css } from '@emotion/core';
 import { ProductDetail } from '../../../shared/productResponse';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';

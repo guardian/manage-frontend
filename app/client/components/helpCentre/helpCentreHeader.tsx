@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
 import { Link } from '@reach/router';
-import React from 'react';
 import { SignInStatus } from '../../services/signInStatus';
 import { minWidth } from '../../styles/breakpoints';
 import { DropdownNav } from '.././nav/dropdownNav';

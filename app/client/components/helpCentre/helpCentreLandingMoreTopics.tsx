@@ -3,7 +3,7 @@ import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../analytics';
 import { helpCentreMoreQuestionsConfig } from './helpCentreConfig';

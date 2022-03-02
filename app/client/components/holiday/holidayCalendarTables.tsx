@@ -5,7 +5,7 @@ import {
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/src-icons';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
 	dateAddDays,
 	dateAddMonths,

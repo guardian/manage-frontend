@@ -1,5 +1,4 @@
 import { PaymentMethod } from '@stripe/stripe-js';
-import * as React from 'react';
 import { Card, Subscription } from '../../../../../shared/productResponse';
 import { CardDisplay } from '../../cardDisplay';
 import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';

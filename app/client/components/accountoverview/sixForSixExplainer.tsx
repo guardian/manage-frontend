@@ -1,5 +1,4 @@
 import { css, SerializedStyles } from '@emotion/core';
-import React from 'react';
 import {
 	isPaidSubscriptionPlan,
 	isSixForSix,

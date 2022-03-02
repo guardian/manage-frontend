@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { RouteComponentProps } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sendReminderCancellation } from './identity/idapi/supportReminders';
 
 const containerStyle = css`

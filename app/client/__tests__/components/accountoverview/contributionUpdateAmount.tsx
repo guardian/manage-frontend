@@ -2,7 +2,6 @@
 /* eslint jest/no-standalone-expect: "off", jest/no-done-callback: "off" */
 import { fireEvent, render, screen } from '@testing-library/react';
 import each from 'jest-each';
-import * as React from 'react';
 import { ContributionUpdateAmount } from '../../../components/accountoverview/contributionUpdateAmount';
 
 const mainPlan = (interval) => ({

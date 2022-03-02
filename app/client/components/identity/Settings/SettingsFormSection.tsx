@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import palette from '../../../colours';
 import { Button } from '../../buttons';
 import {

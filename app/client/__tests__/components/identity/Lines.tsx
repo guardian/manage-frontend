@@ -1,5 +1,4 @@
 import serializer from 'jest-emotion';
-import React from 'react';
 import { create } from 'react-test-renderer';
 import { Lines } from '../../../components/identity/Lines';
 

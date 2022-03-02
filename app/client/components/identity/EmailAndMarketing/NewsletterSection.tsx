@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import palette from '../../../colours';
 import { DropMenu } from '../DropMenu';
 import { NewsletterPreference } from '../NewsletterPreference';

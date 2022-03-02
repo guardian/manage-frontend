@@ -3,7 +3,6 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
-import React from 'react';
 import {
 	formatDate,
 	getMainPlan,

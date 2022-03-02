@@ -1,6 +1,6 @@
 import { navigate, RouteComponentProps } from '@reach/router';
 import { captureException, captureMessage } from '@sentry/browser';
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SelectedTopicObjectContext } from '../sectionContent';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
@@ -21,7 +21,7 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
 		undefined,
 	);
 
-	const setSelectedTopicObject = React.useContext(SelectedTopicObjectContext);
+	const setSelectedTopicObject = useContext(SelectedTopicObjectContext);
 
 	useEffect(() => {
 		setSingleTopic(undefined);

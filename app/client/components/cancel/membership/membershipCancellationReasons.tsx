@@ -1,4 +1,3 @@
-import React from 'react';
 import { hrefStyle } from '../cancellationConstants';
 import { CancellationReason } from '../cancellationReason';
 

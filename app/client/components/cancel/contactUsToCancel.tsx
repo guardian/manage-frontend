@@ -3,7 +3,6 @@ import { LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React from 'react';
 import { SelfServiceCancellation } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../styles/breakpoints';

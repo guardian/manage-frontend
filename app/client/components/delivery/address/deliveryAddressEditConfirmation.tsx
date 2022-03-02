@@ -8,7 +8,7 @@ import {
 	text,
 } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { dateString } from '../../../../shared/dates';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { trackEvent } from '../../analytics';

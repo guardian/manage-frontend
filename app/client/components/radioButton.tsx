@@ -1,5 +1,6 @@
 import { css } from '@emotion/core';
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
+import * as React from 'react';
 import palette from '../colours';
 
 export interface RadioButtonProps {

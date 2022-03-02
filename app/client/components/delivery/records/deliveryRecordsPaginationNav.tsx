@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { textSans } from '@guardian/src-foundations/typography';
-import React from 'react';
+import * as React from 'react';
 
 type PaginationChangeCallBack = () => void;
 interface PaginationNavProps {

@@ -4,7 +4,6 @@ import { brand, neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
 import Color from 'color';
-import React from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../analytics';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';

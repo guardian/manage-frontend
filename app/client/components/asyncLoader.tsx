@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import React from 'react';
+import * as React from 'react';
 import { trackEvent } from './analytics';
 import { GenericErrorScreen } from './genericErrorScreen';
 import { LoadingProps, Spinner } from './spinner';

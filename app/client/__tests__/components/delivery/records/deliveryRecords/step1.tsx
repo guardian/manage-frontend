@@ -1,7 +1,6 @@
 /* eslint jest/no-conditional-expect: "off" */
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import React from 'react';
 import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
 import { DeliveryRecordCard } from '../../../../../components/delivery/records/deliveryRecordCard';
 import DeliveryRecords, {

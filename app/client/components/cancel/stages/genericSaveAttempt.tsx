@@ -1,7 +1,8 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { navigate } from '@reach/router';
-import React, { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactNode } from 'react';
+import * as React from 'react';
 import {
 	isProduct,
 	MembersDataApiItemContext,
