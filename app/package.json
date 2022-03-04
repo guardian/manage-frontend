@@ -180,7 +180,7 @@
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.19",
     "stylis-pxtorem": "^0.0.2",
-    "url-parse": "^1.5.3",
+    "url-parse": "^1.5.9",
     "winston": "^3.2.1",
     "yup": "^0.28.2"
   },
