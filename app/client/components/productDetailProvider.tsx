@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
 	isProduct,
 	MembersDataApiItem,
 	MembersDatApiAsyncLoader,
 	ProductDetail,
 } from '../../shared/productResponse';
+import { GroupedProductType, WithGroupedProductType } from '../../shared/productTypes';
 import { createProductDetailFetcher } from '../productUtils';
 import {
-	RouteableStepProps,
 	visuallyNavigateToParent,
 } from './wizardRouterAdapter';
 
-export interface ProductDetailProviderProps extends RouteableStepProps {
+export interface ProductDetailProviderProps extends WithGroupedProductType<GroupedProductType> {
 	children: (productDetail: ProductDetail) => JSX.Element;
 	allowCancelledSubscription?: true;
 	loadingMessagePrefix: string;
 	forceRedirectToAccountOverviewIfNoBrowserHistoryState?: true;
+}
+
+interface LocationState {
+	state:ProductDetail;
+	pathname: string;
+	search: string;
+	hash: string;
+	key: string;
 }
 
 export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
@@ -29,11 +38,13 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 		ProductDetail | null | undefined
 	>();
 
+	const location = useLocation().state as MembersDataApiItem | undefined;
+
 	// Browser history state is inspected inside this hook to avoid race condition with server side rendering
 	useEffect(() => {
 		const productDetailNestedFromBrowserHistoryState =
-			isProduct(props.location?.state?.productDetail) &&
-			props.location?.state?.productDetail;
+			isProduct(location?.state?.productDetail) &&
+			location?.state?.productDetail;
 
 		const productDetailDirectFromBrowserHistoryState =
 			isProduct(props.location?.state) && props.location?.state;
@@ -91,3 +102,7 @@ const renderSingleProductOrReturnToAccountOverview =
 		}
 		return visuallyNavigateToParent(props, true);
 	};
+function WithProductType<T>() {
+	throw new Error('Function not implemented.');
+}
+

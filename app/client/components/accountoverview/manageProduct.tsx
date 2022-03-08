@@ -11,7 +11,7 @@ import {
 	isPaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import { WithGroupedProductType, GroupedProductType, ProductType } from '../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
@@ -394,7 +394,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	);
 };
 
-const ManageProduct = (props: RouteableStepPropsForGrouped) => (
+const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => (
 	<FlowWrapper
 		{...props}
 		productType={props.groupedProductType}

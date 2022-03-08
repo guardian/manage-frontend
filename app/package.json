@@ -175,6 +175,8 @@
     "ophan-tracker-js": "^1.3.16",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-router": "^6.2.2",
+    "react-router-dom": "^6.2.2",
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.19",
     "stylis-pxtorem": "^0.0.2",

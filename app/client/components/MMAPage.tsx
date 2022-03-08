@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/core';
-import { Redirect, Router } from '@reach/router';
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductType,
@@ -41,6 +41,7 @@ import {
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -123,11 +124,40 @@ const MMARouter = () => {
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<Suspense fallback={<MMAPageSkeleton />}>
-				<Router primary={true} css={{ height: '100%' }}>
-					<AccountOverview path="/" />
-					<Billing path="/billing" />
+				<Routes>
+					<Route path="/" element={<AccountOverview />} />
+					<Route path="/billing" element={<Billing />} />
+
+					<Route
+						path="/email-prefs"
+						element={<EmailAndMarketing />}
+					/>
+
+					<Route
+						path="/public-settings"
+						element={<PublicProfile />}
+					/>
+
+					<Route path="/account-settings" element={<Settings />} />
 
 					{Object.values(GROUPED_PRODUCT_TYPES).map(
+						(groupedProductType: GroupedProductType) => (
+							<Route
+								key={groupedProductType.urlPart}
+								path={`/${groupedProductType.urlPart}`}
+								element={
+									<ManageProduct
+										groupedProductType={groupedProductType}
+									/>
+								}
+							/>
+						),
+					)}
+
+					<Route path="/help" element={<Help />} />
+
+					{/*
+						{Object.values(GROUPED_PRODUCT_TYPES).map(
 						(groupedProductType: GroupedProductType) => (
 							<ManageProduct
 								key={groupedProductType.urlPart}
@@ -274,32 +304,26 @@ const MMARouter = () => {
 									</DeliveryRecordsProblemReview>
 								</DeliveryRecords>
 							),
-						)}
-
-					<EmailAndMarketing path="/email-prefs" />
-
-					<PublicProfile path="/public-settings" />
-
-					<Settings path="/account-settings" />
-
-					<Help path="/help" />
-
-					<Redirect default from="/*" to="/" noThrow />
+						)} */}
 
 					{/*Does not require sign in*/}
-					<CancelReminders path="/cancel-reminders/*reminderCode" />
-					<Maintenance path="/maintenance" />
-				</Router>
+					<Route
+						path="/cancel-reminders/*reminderCode"
+						element={<CancelReminders />}
+					/>
+					<Route path="/maintenance" element={<Maintenance />} />
+					<Route path="*" element={<Navigate to="/" />} />
+				</Routes>
 			</Suspense>
 		</Main>
 	);
 };
 
 export const MMAPage = (
-	<>
+	<BrowserRouter>
 		<AnalyticsTracker />
 		<MMARouter />
 		<CMPBanner />
 		<ScrollToTop />
-	</>
+	</BrowserRouter>
 );
