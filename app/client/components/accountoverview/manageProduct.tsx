@@ -30,7 +30,6 @@ import { ProductDescriptionListTable } from '../productDescriptionListTable';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { ErrorIcon } from '../svgs/errorIcon';
 import { GiftIcon } from '../svgs/giftIcon';
-import { RouteableStepPropsForGrouped } from '../wizardRouterAdapter';
 import { ContributionUpdateAmount } from './contributionUpdateAmount';
 import { NewsletterOptinSection } from './newsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './sixForSixExplainer';
@@ -53,7 +52,7 @@ export const subHeadingCss = `
   `;
 
 interface InnerContentProps {
-	manageProductProps: RouteableStepPropsForGrouped;
+	manageProductProps: WithGroupedProductType<GroupedProductType>;
 	productDetail: ProductDetail;
 }
 const InnerContent = ({

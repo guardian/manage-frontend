@@ -29,11 +29,11 @@ import {
 } from '../../productDescriptionListTable';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { updateAddressFetcher } from '../address/deliveryAddressApi';
-import { SuccessMessage } from '../address/deliveryAddressEditConfirmation';
+import { SuccessMessage } from '../address/deliveryAddressConfirmation';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
-} from '../address/deliveryAddressForm';
+} from "../../../services/deliveryAddress";
 import { convertToDescriptionListData } from '../address/deliveryAddressFormContext';
 import { FormValidationResponse, isFormValid } from '../address/formValidation';
 import { Select } from '../address/select';

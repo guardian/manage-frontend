@@ -8,8 +8,7 @@ import {
 	WithProductType,
 } from '../../shared/productTypes';
 import { LinkButton } from './buttons';
-import { GenericErrorScreen } from './genericErrorScreen';
-
+import { Navigate } from 'react-router-dom';
 interface RouteableProps extends RouteComponentProps {
 	path: string;
 }
@@ -30,17 +29,10 @@ export interface MultiRouteableProps extends RouteableStepProps {
 }
 
 export const visuallyNavigateToParent = (
-	props: RouteableStepProps,
 	toRoot?: boolean,
-) => {
-	if (props.navigate) {
-		props.navigate(toRoot ? '/' : '..', { replace: true }); // step back up a level
-		return null;
-	}
-	return (
-		<GenericErrorScreen loggingMessage="No navigate function - very odd" />
-	);
-};
+) => (
+	<Navigate to={toRoot ? '/' : '..'} replace />
+);
 
 export const ReturnToAccountOverviewButton = () => (
 	<LinkButton

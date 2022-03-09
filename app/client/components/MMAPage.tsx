@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/core';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
 	GROUPED_PRODUCT_TYPES,
@@ -23,7 +23,7 @@ import { ExecuteCancellation } from './cancel/stages/executeCancellation';
 import { GenericSaveAttempt } from './cancel/stages/genericSaveAttempt';
 import { SavedCancellation } from './cancel/stages/savedCancellation';
 import { CMPBanner } from './consent/CMPBanner';
-import { DeliveryAddressEditConfirmation } from './delivery/address/deliveryAddressEditConfirmation';
+import { DeliveryAddressConfirmation } from './delivery/address/deliveryAddressConfirmation';
 import { DeliveryAddressReview } from './delivery/address/deliveryAddressReview';
 import { DeliveryRecordsProblemConfirmation } from './delivery/records/deliveryRecordsProblemConfirmation';
 import { DeliveryRecordsProblemReview } from './delivery/records/deliveryRecordsProblemReview';
@@ -42,6 +42,7 @@ import {
 	SignInStatus,
 } from '../services/signInStatus';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -80,10 +81,10 @@ const HolidaysOverview = lazy(
 			/* HolidaysOverview: "holidaysoverview" */ './holiday/holidaysOverview'
 		),
 );
-const DeliveryAddressForm = lazy(
+const DeliveryAddressChangeContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "DeliveryAddressForm" */ './delivery/address/deliveryAddressForm'
+			/* webpackChunkName: "DeliveryAddressChangeContainer" */ './delivery/address/deliveryAddressChangeContainer'
 		),
 );
 const DeliveryRecords = lazy(
@@ -154,19 +155,32 @@ const MMARouter = () => {
 						),
 					)}
 
+					{Object.values(PRODUCT_TYPES)
+						.filter(hasDeliveryFlow)
+						.map((productType: ProductType) =>
+							<Route
+								key={productType.urlPart}
+								path={`/delivery/${productType.urlPart}/address`}
+								element={<DeliveryAddressChangeContainer productType={productType}/>}
+							>
+								<Route
+									index
+									element={<DeliveryAddressUpdate productType={productType} />}
+								/>
+								<Route
+									path="review"
+									element={<DeliveryAddressReview productType={productType} />}
+								/>
+								<Route
+									path="confirmed"
+									element={<DeliveryAddressConfirmation productType={productType} />}
+								/>
+							</Route>
+						)
+					}
 					<Route path="/help" element={<Help />} />
 
-					{/*
-						{Object.values(GROUPED_PRODUCT_TYPES).map(
-						(groupedProductType: GroupedProductType) => (
-							<ManageProduct
-								key={groupedProductType.urlPart}
-								path={'/' + groupedProductType.urlPart}
-								groupedProductType={groupedProductType}
-							/>
-						),
-					)}
-					{Object.values(PRODUCT_TYPES).map(
+					{/* {Object.values(PRODUCT_TYPES).map(
 						(productType: ProductType) => (
 							<CancellationFlow
 								key={productType.urlPart}
@@ -201,8 +215,9 @@ const MMARouter = () => {
 									)}
 							</CancellationFlow>
 						),
-					)}
+					)} */}
 
+					{/*
 					{Object.values(PRODUCT_TYPES).map(
 						(productType: ProductType) => (
 							<PaymentUpdateFlow
@@ -262,25 +277,7 @@ const MMARouter = () => {
 							</HolidaysOverview>
 						))}
 
-					{Object.values(PRODUCT_TYPES)
-						.filter(hasDeliveryFlow)
-						.map((productType: ProductType) => (
-							<DeliveryAddressForm
-								key={productType.urlPart}
-								path={`/delivery/${productType.urlPart}/address`}
-								productType={productType}
-							>
-								<DeliveryAddressReview
-									path="review"
-									productType={productType}
-								>
-									<DeliveryAddressEditConfirmation
-										path="confirmed"
-										productType={productType}
-									/>
-								</DeliveryAddressReview>
-							</DeliveryAddressForm>
-						))}
+
 
 					{Object.values(PRODUCT_TYPES)
 						.filter(hasDeliveryRecordsFlow)

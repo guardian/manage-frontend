@@ -3,18 +3,15 @@ import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { Link, navigate } from '@reach/router';
 import { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
-import {
-	RouteableStepProps,
-	visuallyNavigateToParent,
-	WizardStep,
-} from '../../wizardRouterAdapter';
+import { visuallyNavigateToParent } from '../../wizardRouterAdapter';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {
 	AddressChangedInformationContext,
@@ -22,11 +19,7 @@ import {
 	NewDeliveryAddressContext,
 } from './deliveryAddressFormContext';
 
-export const DeliveryAddressReview = (props: RouteableStepProps) => (
-	<DeliveryAddressReviewFC {...props} />
-);
-
-const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
+export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 	const newDeliveryAddressContext = useContext(NewDeliveryAddressContext);
 	const addressChangedInformationContext = useContext(
 		AddressChangedInformationContext,
@@ -35,8 +28,11 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
 		useState<boolean>(false);
 
-	if (!newDeliveryAddressContext.newDeliveryAddress?.addressLine1) {
-		visuallyNavigateToParent(props);
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	if (!newDeliveryAddressContext.addressStateObject?.addressLine1) {
+		visuallyNavigateToParent();
 	}
 
 	const subHeadingCss = `
@@ -64,7 +60,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
   `;
 
 	return (
-		<WizardStep routeableStepProps={props}>
+		<>
 			<ProgressIndicator
 				steps={[
 					{ title: 'Update' },
@@ -142,9 +138,9 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 									${ddCss}
 								`}
 							>
-								{newDeliveryAddressContext.newDeliveryAddress && (
+								{newDeliveryAddressContext.addressStateObject && (
 									<DeliveryAddressDisplay
-										{...newDeliveryAddressContext.newDeliveryAddress}
+										{...newDeliveryAddressContext.addressStateObject}
 									/>
 								)}
 							</dd>
@@ -170,7 +166,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 									${ddCss}
 								`}
 							>
-								{newDeliveryAddressContext.newDeliveryAddress
+								{newDeliveryAddressContext.addressStateObject
 									?.instructions || '-'}
 							</dd>
 						</div>
@@ -204,8 +200,8 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 				>
 					<Button
 						onClick={() => {
-							(props.navigate || navigate)('confirmed', {
-								state: props.location?.state,
+							navigate('../confirmed', {
+								state: location.state,
 							});
 						}}
 					>
@@ -230,7 +226,7 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 						color: ${neutral[46]};
 					`}
 				>
-					If you need seperate delivery addresses for each of your
+					If you need separate delivery addresses for each of your
 					subscriptions, please{' '}
 					<span
 						css={css`
@@ -250,6 +246,6 @@ const DeliveryAddressReviewFC = (props: RouteableStepProps) => {
 				</p>
 				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 			</div>
-		</WizardStep>
-	);
+		</>
+	)
 };

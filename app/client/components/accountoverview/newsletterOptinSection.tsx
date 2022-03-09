@@ -7,7 +7,7 @@ import { textSans } from '@guardian/src-foundations/typography';
 import * as Sentry from '@sentry/browser';
 import { Fragment, ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { trackEvent } from '../analytics';
-import { SuccessMessage } from '../delivery/address/deliveryAddressEditConfirmation';
+import { SuccessMessage } from '../delivery/address/deliveryAddressConfirmation';
 import * as NewslettersAPI from '../identity/idapi/newsletters';
 import * as NewslettersSubscriptionsAPI from '../identity/idapi/newsletterSubscriptions';
 import { ConsentOptions } from '../identity/identity';

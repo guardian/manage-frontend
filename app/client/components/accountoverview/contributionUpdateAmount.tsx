@@ -10,7 +10,7 @@ import {
 } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
 import { Button } from '../buttons';
-import { SuccessMessage } from '../delivery/address/deliveryAddressEditConfirmation';
+import { SuccessMessage } from '../delivery/address/deliveryAddressConfirmation';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
 
 import { ContributionUpdateAmountForm } from './contributionUpdateAmountForm';
