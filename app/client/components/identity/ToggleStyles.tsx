@@ -1,26 +1,23 @@
 import { css } from '@emotion/core';
-import { textSans } from '@guardian/src-foundations/typography'; // TODO v4 -> 2 change
-import { neutral, success } from '@guardian/src-foundations/palette'; // TODO v4 -> 2 change
+import { neutral, success } from '@guardian/src-foundations/palette';
+import { textSans } from '@guardian/src-foundations/typography';
+import type { LabelPosition } from './ToggleSwitch';
 
 /**
  *  TODO: this toggle stylesheet is copied from Source (Design System)
  *  It should be updated to the Source version once MMA migration to Emotion 11 and Source v3+ is complete
  */
 
-export const toggleSwitchStyles = css`
-	display: flex;
-	align-items: center;
-`;
-
-export const buttonStyles = css`
+export const buttonStyles = (labelPosition: LabelPosition) => css`
 	flex: none;
 	border: none;
+	margin: ${labelPosition === 'left' ? '0px 0px 0px 8px' : '0px 8px 0px 0px'};
 	padding: 0;
 	display: inline-block;
-	vertical-align: middle;
 	text-align: center;
 	position: relative;
 	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	cursor: pointer;
 	&:after {
 		content: '';
 		position: absolute;
@@ -97,19 +94,21 @@ export const webStyles = css`
 	&:before {
 		content: '';
 		position: absolute;
-		top: 0.375rem;
-		height: 0.7rem;
-		width: 0.4rem;
+		top: 6px;
+		height: 11px;
+		width: 6px;
+		right: 10px;
 		opacity: 0;
 		border-bottom: 2px solid ${success[400]};
 		border-right: 2px solid ${success[400]};
+		transform: rotate(45deg);
 		transition: opacity 0.1s ease-in;
 	}
 	&:after {
-		height: 1.125rem;
-		width: 1.125rem;
-		top: 0.15625rem;
-		left: 0.25rem;
+		height: 18px;
+		width: 18px;
+		top: 3px;
+		left: 4px;
 	}
 	&[aria-checked='false'] {
 		background-color: rgba(153, 153, 153, 0.5);
@@ -120,7 +119,6 @@ export const webStyles = css`
 	&[aria-checked='true']:before {
 		opacity: 1;
 		z-index: 1;
-		transform: translateX(6px) rotate(45deg);
 	}
 	&[aria-checked='true']:after {
 		left: 1.375rem;
@@ -128,21 +126,11 @@ export const webStyles = css`
 	}
 `;
 
-export const labelPositionLeftStyle = css`
-	justify-content: space-between;
-	button {
-		margin-right: 0;
-	}
-`;
-
-export const labelPositionRightStyle = css`
-	button {
-		margin-left: 0;
-	}
-`;
-
 export const labelStyles = css`
 	${textSans.small()};
-	display: inline-block;
+	display: flex;
 	color: ${neutral[7]};
+	align-items: center;
+	cursor: pointer;
+	user-select: none;
 `;

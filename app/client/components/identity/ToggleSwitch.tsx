@@ -1,5 +1,7 @@
 import React from 'react';
 import type { SerializedStyles } from '@emotion/core';
+import { descriptionId } from '@guardian/src-foundations/accessibility';
+
 //  TODO v 4 -> v2 import type { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 
 import {
@@ -7,10 +9,7 @@ import {
 	buttonStyles,
 	iosStyles,
 	labelStyles,
-	toggleSwitchStyles,
 	webStyles,
-	labelPositionLeftStyle,
-	labelPositionRightStyle,
 } from './ToggleStyles';
 
 /**
@@ -26,10 +25,10 @@ interface Props {
 	 */
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 }
+export type Platform = 'android' | 'ios' | 'web';
+export type LabelPosition = 'left' | 'right';
 
-type Platform = 'android' | 'ios' | 'web';
-type LabelPosition = 'left' | 'right';
-interface ToggleSwitchProps extends Props {
+export interface ToggleSwitchProps extends Props {
 	/**
 	 * Whether the ToggleSwitch is checked. This is necessary when using the
 	 * [controlled approach](https://reactjs.org/docs/forms.html#controlled-components)
@@ -41,21 +40,21 @@ interface ToggleSwitchProps extends Props {
 	checked?: boolean;
 	/**
 	 * When using the [uncontrolled approach](https://reactjs.org/docs/uncontrolled-components.html),
-	 * use defaultChecked to indicate the whether the ToggleSwitch is checked intially.
+	 * use defaultChecked to indicate the whether the ToggleSwitch is checked initially.
 	 */
 	defaultChecked?: boolean;
 	/**
-	 * Appears to the right of the switch.
+	 * Optional Id for the switch. Defaults to a generated indexed Source ID e.g. "src-component-XXX}"
+	 */
+	id: string;
+	/**
+	 * Appears to the right of the switch by default.
 	 */
 	label?: string;
 	/**
-	 * Appears to the right by default.
+	 * Which side of the switch the label will appear on.
 	 */
 	labelPosition?: LabelPosition;
-	/**
-	 * Optional labelId. Defaults to "notify"
-	 */
-	labelId?: string;
 	/**
 	 * Sets the toggle styling appropriate for each platform.
 	 * The default platform is 'web'.
@@ -74,9 +73,9 @@ interface ToggleSwitchProps extends Props {
  * [GitHub](https://github.com/guardian/source/tree/main/packages/@guardian/source-react-components-development-kitchen/components/toggle-switch) •
  * [NPM](https://www.npmjs.com/package/@guardian/source-react-components-development-kitchen)
  *
- * Displays an on/off toggle switch. This toggle has default styling and can be used on andriod, ios or web.
+ * Displays an on/off toggle switch. This toggle has default styling and can be used on android, ios or web.
  * These styles are driven by the 'platform' prop.
- * To give it more custome styling cssOverride may be used.
+ * To give it more custom styling cssOverride may be used.
  *
  */
 const getPlatformStyles = (platform: Platform): SerializedStyles => {
@@ -90,22 +89,18 @@ const getPlatformStyles = (platform: Platform): SerializedStyles => {
 	}
 };
 
-const getLabelPositionStyles = (
-	labelPosition: LabelPosition,
-): SerializedStyles =>
-	labelPosition === 'left' ? labelPositionLeftStyle : labelPositionRightStyle;
-
 export const ToggleSwitch = ({
 	checked,
+	id,
 	label,
 	labelPosition = 'right',
-	labelId,
 	defaultChecked,
 	cssOverrides,
 	platform = 'web',
 	onClick = () => undefined,
 	...props
 }: ToggleSwitchProps): JSX.Element => {
+	const labelId = descriptionId(id);
 	const isChecked = (): boolean => {
 		if (checked != undefined) {
 			return checked;
@@ -114,30 +109,18 @@ export const ToggleSwitch = ({
 		return !!defaultChecked;
 	};
 
-	const Label = () => (
-		<label css={[labelStyles]} id={labelId || 'notify'}>
-			{label}
-		</label>
-	);
-
 	return (
-		<div
-			css={[
-				toggleSwitchStyles,
-				getLabelPositionStyles(labelPosition),
-				cssOverrides,
-			]}
-			{...props}
-		>
-			{labelPosition === 'left' && <Label />}
+		<label id={labelId} css={[labelStyles, cssOverrides]} {...props}>
+			{labelPosition === 'left' && label}
 			<button
-				css={[buttonStyles, getPlatformStyles(platform)]}
+				id={id}
+				css={[buttonStyles(labelPosition), getPlatformStyles(platform)]}
 				role="switch"
 				aria-checked={isChecked()}
-				aria-labelledby={labelId || 'notify'}
+				aria-labelledby={labelId}
 				onClick={onClick}
 			></button>
-			{labelPosition === 'right' && <Label />}
-		</div>
+			{labelPosition === 'right' && label}
+		</label>
 	);
 };

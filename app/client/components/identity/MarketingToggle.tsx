@@ -46,11 +46,10 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 			<div css={{ left: 0 }}>
 				<ToggleSwitch
 					cssOverrides={css`
-						label {
-							${standardText};
-							padding-right: 20px;
-							font-weight: bold;
-						}
+						${standardText};
+						padding-right: 20px;
+						font-weight: bold;
+						justify-content: space-between;
 						button {
 							align-self: flex-start;
 							cursor: pointer;
@@ -58,7 +57,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 					`}
 					label={title}
 					labelPosition="left"
-					labelId={id}
+					id={id}
 					checked={!!selected}
 					onClick={(_) => {
 						onClick(id);
