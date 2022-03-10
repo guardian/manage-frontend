@@ -39,31 +39,19 @@ const consentPreference = (
 	clickHandler: ClickHandler,
 ) => {
 	const { id, name, description, subscribed } = consent;
-
+	const props = {
+		id,
+		key: id,
+		title: name,
+		description,
+		selected: subscribed,
+	};
 	switch (uxType) {
 		case 'checkbox': {
-			return (
-				<MarketingCheckbox
-					id={id}
-					key={id}
-					title={name}
-					description={description}
-					selected={subscribed}
-					onClick={clickHandler}
-				/>
-			);
+			return <MarketingCheckbox {...props} onClick={clickHandler} />;
 		}
 		case 'toggle': {
-			return (
-				<MarketingToggle
-					id={id}
-					key={id}
-					title={name}
-					description={description}
-					selected={subscribed}
-					onClick={clickHandler}
-				/>
-			);
+			return <MarketingToggle {...props} onClick={clickHandler} />;
 		}
 	}
 };

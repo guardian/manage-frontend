@@ -59,7 +59,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 					labelPosition="left"
 					id={id}
 					checked={!!selected}
-					onClick={(_) => {
+					onClick={() => {
 						onClick(id);
 					}}
 				/>
