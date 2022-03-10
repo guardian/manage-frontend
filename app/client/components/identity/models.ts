@@ -57,7 +57,7 @@ export interface UserCollection {
 
 export interface ConsentOption {
 	id: string;
-	description: string;
+	description?: string;
 	frequency?: string;
 	name: string;
 	theme?: string;

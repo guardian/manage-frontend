@@ -3,7 +3,7 @@ import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 
 interface ConsentAPIResponse {
 	id: string;
-	description: string;
+	description?: string;
 	name: string;
 	isOptOut: boolean;
 	isChannel: boolean;
