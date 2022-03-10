@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Lines } from '../Lines';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { MarketingToggle } from '../MarketingToggle';
-import { ConsentOption, ConsentOptionType } from '../models';
+import { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 
 type ClickHandler = (id: string) => {};
@@ -63,31 +63,7 @@ const YourDataDescription: FC = () => (
 export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 	const { consents, clickHandler } = props;
 
-	// TODO: Replace consentsHardcoded with props.consents once API Change released
-	const consentsHardcoded: ConsentOption[] = consents.map((consent) => {
-		const match = consentsFixture.find(
-			(hardConsent) => hardConsent.id === consent.id,
-		);
-		if (match) {
-			return {
-				id: consent.id,
-				isChannel: consent.isChannel,
-				isProduct: consent.isProduct,
-				type: consent.type,
-				subscribed: consent.subscribed,
-				name: match.name,
-				...('description' in match && {
-					description: match.description,
-				}),
-			};
-		}
-		return consent;
-	});
-
-	const addMarketingToggle = optOutFinderAndInverter(
-		consentsHardcoded,
-		clickHandler,
-	);
+	const addMarketingToggle = optOutFinderAndInverter(consents, clickHandler);
 
 	return (
 		<>
@@ -116,41 +92,3 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 		</>
 	);
 };
-
-// TODO Replace with IDAPI model values once released
-const consentsFixture: ConsentOption[] = [
-	{
-		id: 'market_research_optout',
-		description:
-			'From time to time we may contact you for market research purposes inviting you to complete a survey, or take part in a group discussion. Normally, this invitation would be sent via email, but we may also contact you by phone.',
-		name: 'Allow the Guardian to contact me for market research purposes',
-		isProduct: false,
-		isChannel: false,
-		type: ConsentOptionType.OPT_OUT,
-		subscribed: false,
-	},
-	{
-		id: 'post_optout',
-		name: 'Allow the Guardian to send communications by post',
-		isProduct: false,
-		isChannel: false,
-		type: ConsentOptionType.OPT_OUT,
-		subscribed: true,
-	},
-	{
-		id: 'profiling_optout',
-		name: 'Allow the Guardian to analyse this data to improve marketing content',
-		isProduct: false,
-		isChannel: false,
-		type: ConsentOptionType.OPT_OUT,
-		subscribed: true,
-	},
-	{
-		id: 'phone_optout',
-		name: 'Allow the Guardian to send communications by telephone',
-		isProduct: false,
-		isChannel: true,
-		type: ConsentOptionType.OPT_OUT,
-		subscribed: false,
-	},
-];
