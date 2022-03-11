@@ -451,7 +451,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								>
 									<LinkButton
 										to={`/payment/${specificProductType.urlPart}`}
-										state={props.productDetail}
+										state={{productDetail: props.productDetail}}
 										text={'Manage payment method'}
 										colour={
 											hasPaymentFailure

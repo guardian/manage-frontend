@@ -9,33 +9,24 @@ import { headline } from '@guardian/src-foundations/typography';
 import { Radio } from '@guardian/src-radio';
 import { textSans } from '@guardian/src-foundations/typography';
 import { Button } from '@guardian/src-button';
-import { NavigateFn } from '@reach/router';
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import {
-	MembersDataApiItemContext,
 	ProductDetail,
 	Subscription,
 	WithSubscription,
 } from '../../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
-import { FlowWrapper } from '../../FlowWrapper';
 import { GenericErrorScreen } from '../../genericErrorScreen';
-import { getNavItemFromFlowReferrer } from '../../nav/navConfig';
 import { SupportTheGuardianButton } from '../../supportTheGuardianButton';
-import { RouteableStepProps, WizardStep } from '../../wizardRouterAdapter';
 import { augmentPaymentFailureAlertText } from '../paymentFailureAlertIfApplicable';
 import { CardInputForm } from './card/cardInputForm';
 import CurrentPaymentDetails from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/directDebitInputForm';
-import {
-	NewPaymentMethodContext,
-	NewPaymentMethodDetail,
-} from './newPaymentMethodDetail';
+import { NewPaymentMethodDetail } from './newPaymentMethodDetail';
 import { getStripeKey } from '../../../stripe';
 import OverlayLoader from '../../OverlayLoader';
 import { createProductDetailFetch } from '../../../productUtils';
-import { NewSubscriptionContext } from './newSubscriptionDetail';
 import { processResponse } from '../../../utils';
 import { trackEvent } from '../../analytics';
 import { ErrorSummary } from './Summary';
@@ -43,6 +34,10 @@ import { DirectDebitLogo } from '../directDebitLogo';
 import { cardTypeToSVG } from '../cardDisplay';
 import ContactUs from './ContactUs';
 import { SvgArrowRightStraight } from '@guardian/src-icons';
+import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
 
 export enum PaymentMethod {
 	card = 'Credit card / debit card',
@@ -71,12 +66,6 @@ interface PaymentMethodProps {
 interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
 	paymentMethod: PaymentMethod;
 }
-
-export const NavigateFnContext: React.Context<{
-	navigate?: NavigateFn;
-}> = React.createContext({});
-
-export const FlowReferrerContext = React.createContext({});
 
 export function getLogos(paymentMethod: PaymentMethod) {
 	if (paymentMethod === PaymentMethod.card) {
@@ -109,8 +98,6 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 	const isChecked = props.value === props.paymentMethod;
 
 	const radioIsChecked = css`
-		-webkit-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-		-moz-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
 		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
 
 		background-color: #e3f6ff;
@@ -121,14 +108,12 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 	`;
 
 	const radioDefault = css`
-    -webkit-box-shadow: inset 0px 0px 0px 2px ${neutral[46]}
-    -moz-box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
-    box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
-    
-    div {
-      color: ${neutral[46]};
-    }
-  `;
+		box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
+
+		div {
+			color: ${neutral[46]};
+		}
+	`;
 
 	const label = () => (
 		<div
@@ -255,42 +240,43 @@ const subscriptionToPaymentMethod = (productDetail: ProductDetail) => {
 	return PaymentMethod.unknown;
 };
 
-interface PaymentUpdaterStepProps {
-	productDetail: ProductDetail;
-	routeableStepProps: RouteableStepProps;
-}
-interface PaymentUpdaterStepState {
-	executingPaymentUpdate: boolean;
-	selectedPaymentMethod: PaymentMethod;
+export interface PaymentUpdaterStepState {
 	newPaymentMethodDetail?: NewPaymentMethodDetail;
 	newSubscriptionData?: WithSubscription[];
 }
 
-export class PaymentUpdaterStep extends React.Component<
-	PaymentUpdaterStepProps,
-	PaymentUpdaterStepState
-> {
-	public readonly currentPaymentMethod = subscriptionToPaymentMethod(
-		this.props.productDetail,
-	);
-	public state = {
-		executingPaymentUpdate: false,
-		newPaymentMethodDetail: undefined,
-		newSubscriptionData: undefined,
-		selectedPaymentMethod:
-			this.currentPaymentMethod === PaymentMethod.dd
+const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
+	const productDetail = useContext(
+		PaymentUpdateProductDetailContext,
+	) as ProductDetail;
+
+	const currentPaymentMethod = subscriptionToPaymentMethod(productDetail);
+
+	const [paymentUpdateState, setPaymentUpdateState] =
+		useState<PaymentUpdaterStepState>({
+			newPaymentMethodDetail: undefined,
+			newSubscriptionData: undefined,
+		});
+
+	const [executingPaymentUpdate, setExecutingPaymentUpdate] =
+		useState<boolean>(false);
+	const [selectedPaymentMethod, setSelectedPaymentMethod] =
+		useState<PaymentMethod>(
+			currentPaymentMethod === PaymentMethod.dd
 				? PaymentMethod.unknown
 				: PaymentMethod.card,
-	};
+		);
 
-	private executePaymentUpdate = async (
+	const navigate = useNavigate();
+
+	const executePaymentUpdate = async (
 		newPaymentMethodDetail: NewPaymentMethodDetail,
 	) => {
-		this.setState({ executingPaymentUpdate: true });
+		setExecutingPaymentUpdate(true);
 
 		try {
-			const executePaymentUpdate = await fetch(
-				`/api/payment/${newPaymentMethodDetail.apiUrlPart}/${this.props.productDetail.subscription.subscriptionId}`,
+			const paymentUpdateFetch = await fetch(
+				`/api/payment/${newPaymentMethodDetail.apiUrlPart}/${productDetail.subscription.subscriptionId}`,
 				{
 					credentials: 'include',
 					method: 'POST',
@@ -308,15 +294,12 @@ export class PaymentUpdaterStep extends React.Component<
 			);
 
 			const response = await processResponse<NewPaymentMethodDetail>(
-				executePaymentUpdate,
+				paymentUpdateFetch,
 			);
 
-			if (
-				this.props.routeableStepProps.navigate &&
-				newPaymentMethodDetail.matchesResponse(response)
-			) {
+			if (newPaymentMethodDetail.matchesResponse(response)) {
 				const paymentMethodChangeType: string =
-					this.props.productDetail.subscription.paymentMethod ===
+					productDetail.subscription.paymentMethod ===
 					PaymentMethod.resetRequired
 						? 'reset'
 						: 'update';
@@ -325,45 +308,51 @@ export class PaymentUpdaterStep extends React.Component<
 					eventCategory: 'payment',
 					eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
 					product: {
-						productType: this.props.routeableStepProps.productType,
-						productDetail: this.props.productDetail,
+						productType: props.productType,
+						productDetail: productDetail,
 					},
-					eventLabel:
-						this.props.routeableStepProps.productType.urlPart,
+					eventLabel: props.productType.urlPart,
 				});
 
 				// refetch subscription from members data api
 				const newSubscriptionData = await createProductDetailFetch(
-					this.props.routeableStepProps.productType,
-					this.props.productDetail.subscription.subscriptionId,
+					props.productType,
+					productDetail.subscription.subscriptionId,
 				);
-				this.setState({ newSubscriptionData });
-
-				this.props.routeableStepProps.navigate('updated', {
-					state: this.props.routeableStepProps.location?.state,
+				navigate('updated', {
+					state: {
+						paymentFailureRecoveryMessage:
+							newPaymentMethodDetail.paymentFailureRecoveryMessage,
+						subHasExpectedPaymentType:
+							newPaymentMethodDetail.subHasExpectedPaymentType(
+								newSubscriptionData[0].subscription,
+							),
+						newSubscriptionData,
+					},
 				});
 			}
 		} catch {
-			this.props.routeableStepProps.navigate &&
-				this.props.routeableStepProps.navigate('failed', {
-					state: this.props.routeableStepProps.location?.state,
-				});
+			navigate('failed', {
+				state: {
+					newPaymentMethodDetailFriendlyName:
+						newPaymentMethodDetail.friendlyName,
+				},
+			});
 		}
-
-		this.setState({ executingPaymentUpdate: false });
 	};
 
-	private newPaymentMethodDetailUpdater = (
+	const newPaymentMethodDetailUpdater = (
 		newPaymentMethodDetail: NewPaymentMethodDetail,
-	) => this.setState({ newPaymentMethodDetail });
+	) =>
+		setPaymentUpdateState({
+			...paymentUpdateState,
+			newPaymentMethodDetail,
+		});
 
-	private updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
-		this.setState({ selectedPaymentMethod: newPaymentMethod });
+	const updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
+		setSelectedPaymentMethod(newPaymentMethod);
 
-	private getInputForm = (
-		subscription: Subscription,
-		isTestUser: boolean,
-	) => {
+	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
 		let stripePublicKey: string | undefined;
 
 		if (subscription.card) {
@@ -375,19 +364,19 @@ export class PaymentUpdaterStep extends React.Component<
 			);
 		}
 
-		switch (this.state.selectedPaymentMethod) {
+		switch (selectedPaymentMethod) {
 			case PaymentMethod.resetRequired:
 				return stripePublicKey ? (
 					<CardInputForm
 						stripeApiKey={stripePublicKey}
 						newPaymentMethodDetailUpdater={
-							this.newPaymentMethodDetailUpdater
+							newPaymentMethodDetailUpdater
 						}
 						userEmail={
 							subscription.card?.email ||
 							window.guardian.identityDetails.email
 						}
-						executePaymentUpdate={this.executePaymentUpdate}
+						executePaymentUpdate={executePaymentUpdate}
 					/>
 				) : (
 					<GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
@@ -397,13 +386,13 @@ export class PaymentUpdaterStep extends React.Component<
 					<CardInputForm
 						stripeApiKey={stripePublicKey}
 						newPaymentMethodDetailUpdater={
-							this.newPaymentMethodDetailUpdater
+							newPaymentMethodDetailUpdater
 						}
 						userEmail={
 							subscription.card?.email ||
 							window.guardian.identityDetails.email
 						}
-						executePaymentUpdate={this.executePaymentUpdate}
+						executePaymentUpdate={executePaymentUpdate}
 					/>
 				) : (
 					<GenericErrorScreen loggingMessage="No existing card information to update from" />
@@ -431,10 +420,10 @@ export class PaymentUpdaterStep extends React.Component<
 				return (
 					<DirectDebitInputForm
 						newPaymentMethodDetailUpdater={
-							this.newPaymentMethodDetailUpdater
+							newPaymentMethodDetailUpdater
 						}
 						testUser={isTestUser}
-						executePaymentUpdate={this.executePaymentUpdate}
+						executePaymentUpdate={executePaymentUpdate}
 					/>
 				);
 			case PaymentMethod.unknown:
@@ -452,175 +441,99 @@ export class PaymentUpdaterStep extends React.Component<
 		}
 	};
 
-	public render(): React.ReactNode {
-		const innerContent = (
-			<>
-				<>
-					<div css={{ minWidth: '260px' }}>
-						{this.props.productDetail.alertText && (
-							<ErrorSummary
-								cssOverrides={css`
-									margin-top: ${space[9]}px;
-								`}
-								message={augmentPaymentFailureAlertText(
-									this.props.productDetail.alertText,
-								)}
-							/>
-						)}
-						<h3
-							css={css`
-								${subHeadingCss}
-								margin-top: ${space[9]}px;
-							`}
-						>
-							Your current payment method
-						</h3>
-						<CurrentPaymentDetails {...this.props.productDetail} />
-						{this.props.productDetail.subscription.payPalEmail && (
-							<p
-								css={css`
-									${textSans.medium()}
-								`}
-							>
-								To update your payment details, please login to
-								your PayPal account. Alternatively, you can
-								switch to a card based payment method below.
-							</p>
-						)}
-					</div>
-
-					<h3
-						css={css`
-							${subHeadingCss}
-							${this.props.productDetail.subscription
-								.payPalEmail && 'margin-top: 36px'}
-						`}
-					>
-						{this.state.selectedPaymentMethod ===
-						PaymentMethod.unknown
-							? 'Choose your payment method'
-							: 'Update your payment method'}
-					</h3>
-
-					<SelectPaymentMethod
-						updatePaymentMethod={this.updatePaymentMethod}
-						value={this.state.selectedPaymentMethod}
-						currentPaymentMethod={this.currentPaymentMethod}
-					/>
-
-					{this.getInputForm(
-						this.props.productDetail.subscription,
-						this.props.productDetail.isTestUser,
-					)}
-
-					{
-						/* Dummy button when user has not selected a payment method */
-						this.state.selectedPaymentMethod ===
-						PaymentMethod.unknown ? (
-							<div
-								css={css`
-									margin-top: ${space[9]}px;
-									margin-bottom: ${space[9]}px;
-								`}
-							>
-								<Button
-									disabled
-									priority="secondary"
-									icon={<SvgArrowRightStraight />}
-									iconSide="right"
-									cssOverrides={css`
-										background-color: ${neutral[86]};
-										color: ${neutral[46]};
-
-										:hover {
-											background-color: ${neutral[86]};
-											color: ${neutral[46]};
-										}
-
-										cursor: not-allowed;
-									`}
-								>
-									Update payment method
-								</Button>
-							</div>
-						) : null
-					}
-
-					<ContactUs />
-				</>
-				<div css={{ height: '10px' }} />
-			</>
-		);
-
-		return (
-			<MembersDataApiItemContext.Provider
-				value={this.props.productDetail}
-			>
-				<NewPaymentMethodContext.Provider
-					value={this.state.newPaymentMethodDetail || {}}
-				>
-					<NewSubscriptionContext.Provider
-						value={this.state.newSubscriptionData || {}}
-					>
-						<NavigateFnContext.Provider
-							value={{
-								navigate:
-									this.props.routeableStepProps.navigate,
-							}}
-						>
-							<WizardStep
-								routeableStepProps={
-									this.props.routeableStepProps
-								}
-							>
-								{this.state.executingPaymentUpdate && (
-									<OverlayLoader
-										message={`Updating payment details...`}
-									/>
-								)}
-								{innerContent}
-							</WizardStep>
-						</NavigateFnContext.Provider>
-					</NewSubscriptionContext.Provider>
-				</NewPaymentMethodContext.Provider>
-			</MembersDataApiItemContext.Provider>
-		);
-	}
-}
-
-const PaymentUpdateFlow = (props: RouteableStepProps) => {
-	const navItemReferrer = getNavItemFromFlowReferrer(
-		props.location?.state?.flowReferrer?.title,
-	);
-
 	return (
-		<FlowReferrerContext.Provider value={props.location?.state}>
-			<FlowWrapper
-				{...props}
-				loadingMessagePrefix="Retrieving current payment details for your"
-				allowCancelledSubscription
-				selectedNavItem={navItemReferrer}
-				pageTitle="Manage payment method"
-				breadcrumbs={[
-					{
-						title: navItemReferrer.title,
-						link: navItemReferrer.link,
-					},
-					{
-						title: 'Manage payment method',
-						currentPage: true,
-					},
-				]}
-			>
-				{(productDetail) => (
-					<PaymentUpdaterStep
-						routeableStepProps={props}
-						productDetail={productDetail}
+		<>
+			{executingPaymentUpdate && (
+				<OverlayLoader message={`Updating payment details...`} />
+			)}
+			<div css={{ minWidth: '260px' }}>
+				{productDetail.alertText && (
+					<ErrorSummary
+						cssOverrides={css`
+							margin-top: ${space[9]}px;
+						`}
+						message={augmentPaymentFailureAlertText(
+							productDetail.alertText,
+						)}
 					/>
 				)}
-			</FlowWrapper>
-		</FlowReferrerContext.Provider>
+				<h3
+					css={css`
+						${subHeadingCss}
+						margin-top: ${space[9]}px;
+					`}
+				>
+					Your current payment method
+				</h3>
+				<CurrentPaymentDetails {...productDetail} />
+				{productDetail.subscription.payPalEmail && (
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						To update your payment details, please login to your
+						PayPal account. Alternatively, you can switch to a card
+						based payment method below.
+					</p>
+				)}
+			</div>
+
+			<h3
+				css={css`
+					${subHeadingCss}
+					${productDetail.subscription.payPalEmail &&
+					'margin-top: 36px'}
+				`}
+			>
+				{selectedPaymentMethod === PaymentMethod.unknown
+					? 'Choose your payment method'
+					: 'Update your payment method'}
+			</h3>
+
+			<SelectPaymentMethod
+				updatePaymentMethod={updatePaymentMethod}
+				value={selectedPaymentMethod}
+				currentPaymentMethod={currentPaymentMethod}
+			/>
+
+			{getInputForm(productDetail.subscription, productDetail.isTestUser)}
+
+			{
+				/* Dummy button when user has not selected a payment method */
+				selectedPaymentMethod === PaymentMethod.unknown ? (
+					<div
+						css={css`
+							margin-top: ${space[9]}px;
+							margin-bottom: ${space[9]}px;
+						`}
+					>
+						<Button
+							disabled
+							priority="secondary"
+							icon={<SvgArrowRightStraight />}
+							iconSide="right"
+							cssOverrides={css`
+								background-color: ${neutral[86]};
+								color: ${neutral[46]};
+
+								:hover {
+									background-color: ${neutral[86]};
+									color: ${neutral[46]};
+								}
+
+								cursor: not-allowed;
+							`}
+						>
+							Update payment method
+						</Button>
+					</div>
+				) : null
+			}
+			<ContactUs />
+			<div css={{ height: '10px' }} />
+		</>
 	);
 };
 
-export default PaymentUpdateFlow;
+export default PaymentDetailUpdate;

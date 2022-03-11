@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Children, useEffect, useState } from 'react';
 import { useLocation, NavigateFunction } from 'react-router-dom';
 import {
 	isProduct,
@@ -8,11 +8,10 @@ import {
 } from '../../shared/productResponse';
 import { WithProductType, ProductType } from '../../shared/productTypes';
 import { createProductDetailFetcher } from '../productUtils';
-import {
-	visuallyNavigateToParent,
-} from './wizardRouterAdapter';
+import { visuallyNavigateToParent } from './wizardRouterAdapter';
 
-export interface ProductDetailProviderProps extends WithProductType<ProductType> {
+export interface ProductDetailProviderProps
+	extends WithProductType<ProductType> {
 	children: (productDetail: ProductDetail) => JSX.Element;
 	allowCancelledSubscription?: true;
 	loadingMessagePrefix: string;
@@ -34,19 +33,15 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 	const state = location.state as LocationState;
 
 	const productDetailNestedFromBrowserHistoryState =
-		isProduct(state?.productDetail) &&
-		state?.productDetail;
+		isProduct(state?.productDetail) && state?.productDetail;
 
 	const productDetailDirectFromBrowserHistoryState =
 		isProduct(state) && state;
 
-	const [selectedProductDetail, setSelectedProductDetail] = useState<
-		ProductDetail | null
-	>(
+	const selectedProductDetail: ProductDetail | null =
 		productDetailNestedFromBrowserHistoryState ||
 		productDetailDirectFromBrowserHistoryState ||
-		null);
-
+		null;
 
 	if (selectedProductDetail) {
 		return props.children(selectedProductDetail);
@@ -59,16 +54,8 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 		) : (
 			<MembersDatApiAsyncLoader
 				fetch={createProductDetailFetcher(props.productType)}
-				render={renderSingleProductOrReturnToAccountOverview(
-					props,
-					setSelectedProductDetail
-				)}
-				loadingMessage={
-					props.loadingMessagePrefix +
-					' ' +
-					props.productType.friendlyName +
-					'...'
-				}
+				render={renderSingleProductOrReturnToAccountOverview(props)}
+				loadingMessage={`${props.loadingMessagePrefix} ${props.productType.friendlyName}...`}
 			/>
 		);
 	}
@@ -76,11 +63,7 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 };
 
 const renderSingleProductOrReturnToAccountOverview =
-	(
-		props: ProductDetailProviderProps,
-		setSelectedProductDetail: (productDetail: ProductDetail) => void
-	) =>
-	(data: MembersDataApiItem[]) => {
+	(props: ProductDetailProviderProps) => (data: MembersDataApiItem[]) => {
 		const filteredProductDetails = data
 			.filter(isProduct)
 			.filter(
@@ -90,8 +73,7 @@ const renderSingleProductOrReturnToAccountOverview =
 			);
 
 		if (filteredProductDetails.length === 1) {
-			setSelectedProductDetail(filteredProductDetails[0]);
-			return null;
+			return props.children(filteredProductDetails[0]);
 		}
 		return visuallyNavigateToParent(true);
 	};

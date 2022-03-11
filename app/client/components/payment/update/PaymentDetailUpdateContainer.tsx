@@ -1,0 +1,87 @@
+import { Context, createContext } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import {
+	isProduct,
+	MembersDataApiItem,
+	MembersDatApiAsyncLoader,
+	ProductDetail,
+} from '../../../../shared/productResponse';
+import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import { createProductDetailFetcher } from '../../../productUtils';
+import { getNavItemFromFlowReferrer } from '../../nav/navConfig';
+import { PageContainer } from '../../page';
+
+const renderContextAndOutletContainer = (
+	allProductDetails: MembersDataApiItem[],
+) => {
+	const filteredProductDetails = allProductDetails
+		.filter(isProduct)
+		.filter(
+			(productDetail) =>
+				!productDetail.subscription.cancelledAt &&
+				productDetail.subscription.readerType !== 'Gift',
+		);
+	if (filteredProductDetails.length === 1) {
+		return (
+			<PaymentUpdateProductDetailContext.Provider
+				value={filteredProductDetails[0]}
+			>
+				<Outlet />
+			</PaymentUpdateProductDetailContext.Provider>
+		);
+	}
+	return <Navigate to="/" />;
+};
+
+export const PaymentUpdateProductDetailContext: Context<ProductDetail | {}> =
+	createContext({});
+
+const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
+	interface LocationState {
+		productDetail: ProductDetail;
+		flowReferrer?: {
+			title: string;
+			link: string;
+		};
+	}
+
+	const location = useLocation();
+	const state = location.state as LocationState;
+
+	const navItemReferrer = getNavItemFromFlowReferrer(
+		state?.flowReferrer?.title,
+	);
+
+	return (
+		<PageContainer
+			selectedNavItem={navItemReferrer}
+			pageTitle="Manage payment method"
+			breadcrumbs={[
+				{
+					title: navItemReferrer.title,
+					link: navItemReferrer.link,
+				},
+				{
+					title: 'Manage payment method',
+					currentPage: true,
+				},
+			]}
+		>
+			{state.productDetail ? (
+				<PaymentUpdateProductDetailContext.Provider
+					value={state.productDetail}
+				>
+					<Outlet />
+				</PaymentUpdateProductDetailContext.Provider>
+			) : (
+				<MembersDatApiAsyncLoader
+					fetch={createProductDetailFetcher(props.productType)}
+					render={renderContextAndOutletContainer}
+					loadingMessage={`'Retrieving current payment details for your' ${props.productType.friendlyName}...`}
+				/>
+			)}
+		</PageContainer>
+	);
+};
+
+export default PaymentDetailUpdateContainer;

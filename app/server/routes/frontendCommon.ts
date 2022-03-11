@@ -23,6 +23,11 @@ export const getRecaptchaPublicKey = async () => {
 			recaptchaPublicKey = recaptchaConfig?.publicKey;
 		}
 
+		//
+		// const recaptchaConfig = await recaptchaConfigPromise;
+		// const recaptchaPublicKey: string | undefined = recaptchaConfig?.publicKey;
+		//
+
 		if (!recaptchaPublicKey) {
 			throw new Error(`recaptcha public key is '${recaptchaPublicKey}'`);
 		}

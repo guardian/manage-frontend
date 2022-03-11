@@ -23,8 +23,6 @@ import { ExecuteCancellation } from './cancel/stages/executeCancellation';
 import { GenericSaveAttempt } from './cancel/stages/genericSaveAttempt';
 import { SavedCancellation } from './cancel/stages/savedCancellation';
 import { CMPBanner } from './consent/CMPBanner';
-import { DeliveryAddressConfirmation } from './delivery/address/deliveryAddressConfirmation';
-import { DeliveryAddressReview } from './delivery/address/deliveryAddressReview';
 import { DeliveryRecordsProblemConfirmation } from './delivery/records/deliveryRecordsProblemConfirmation';
 import { DeliveryRecordsProblemReview } from './delivery/records/deliveryRecordsProblemReview';
 import { HolidayConfirmed } from './holiday/holidayConfirmed';
@@ -32,8 +30,6 @@ import { HolidayDateChooser } from './holiday/holidayDateChooser';
 import { HolidayReview } from './holiday/holidayReview';
 import { Main } from './main';
 import MMAPageSkeleton from './MMAPageSkeleton';
-import { PaymentUpdated } from './payment/update/paymentUpdated';
-import PaymentFailed from './payment/update/PaymentFailed';
 import { ScrollToTop } from './scrollToTop';
 import Maintenance from './maintenance';
 import {
@@ -69,12 +65,33 @@ const CancellationFlow = lazy(
 			/* webpackChunkName: "CancellationFlow" */ './cancel/cancellationFlow'
 		),
 );
-const PaymentUpdateFlow = lazy(
+const PaymentDetailUpdateContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "PaymentUpdateFlow" */ './payment/update/updatePaymentFlow'
+			/* webpackChunkName: "PaymentDetailUpdateContainer" */ './payment/update/PaymentDetailUpdateContainer'
 		),
 );
+const PaymentDetailUpdate = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "PaymentDetailUpdate" */ './payment/update/PaymentDetailUpdate'
+		),
+);
+
+const PaymentDetailUpdateConfirmation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "PaymentDetailUpdateConfirmation" */ './payment/update/PaymentDetailUpdateConfirmation'
+		),
+);
+
+const PaymentFailed = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "PaymentFailed" */ './payment/update/PaymentFailed'
+		),
+);
+
 const HolidaysOverview = lazy(
 	() =>
 		import(
@@ -87,6 +104,21 @@ const DeliveryAddressChangeContainer = lazy(
 			/* webpackChunkName: "DeliveryAddressChangeContainer" */ './delivery/address/deliveryAddressChangeContainer'
 		),
 );
+
+const DeliveryAddressReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "DeliveryAddressReview" */ './delivery/address/deliveryAddressReview'
+		),
+);
+
+const DeliveryAddressConfirmation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "DeliveryAddressConfirmation" */ './delivery/address/deliveryAddressConfirmation'
+		),
+);
+
 const DeliveryRecords = lazy(
 	() =>
 		import(
@@ -157,27 +189,115 @@ const MMARouter = () => {
 
 					{Object.values(PRODUCT_TYPES)
 						.filter(hasDeliveryFlow)
-						.map((productType: ProductType) =>
+						.map((productType: ProductType) => (
 							<Route
 								key={productType.urlPart}
 								path={`/delivery/${productType.urlPart}/address`}
-								element={<DeliveryAddressChangeContainer productType={productType}/>}
+								element={
+									<DeliveryAddressChangeContainer
+										productType={productType}
+									/>
+								}
 							>
 								<Route
 									index
-									element={<DeliveryAddressUpdate productType={productType} />}
+									element={
+										<DeliveryAddressUpdate
+											productType={productType}
+										/>
+									}
 								/>
 								<Route
 									path="review"
-									element={<DeliveryAddressReview productType={productType} />}
+									element={
+										<DeliveryAddressReview
+											productType={productType}
+										/>
+									}
 								/>
 								<Route
 									path="confirmed"
-									element={<DeliveryAddressConfirmation productType={productType} />}
+									element={
+										<DeliveryAddressConfirmation
+											productType={productType}
+										/>
+									}
 								/>
 							</Route>
-						)
-					}
+						))}
+
+					{Object.values(PRODUCT_TYPES).map(
+						(productType: ProductType) => (
+							<Route
+								key={productType.urlPart}
+								path={`/payment/${productType.urlPart}`}
+								element={
+									<PaymentDetailUpdateContainer
+										productType={productType}
+									/>
+								}
+							>
+								<Route
+									index
+									element={
+										<PaymentDetailUpdate
+											productType={productType}
+										/>
+									}
+								/>
+								<Route
+									path="updated"
+									element={
+										<PaymentDetailUpdateConfirmation />
+									}
+								/>
+								<Route
+									path="failed"
+									element={<PaymentFailed />}
+								/>
+							</Route>
+						),
+					)}
+
+					{/* {Object.values(PRODUCT_TYPES)
+						.filter(hasDeliveryRecordsFlow)
+						.map(
+							(
+								productType: ProductTypeWithDeliveryRecordsProperties,
+							) => (
+								<Route
+									key={productType.urlPart}
+									path={`/delivery/${productType.urlPart}/records`}
+									element={
+										<DeliveryRecordsContainer
+											productType={productType}
+										/>
+									}
+								>
+									<Route
+										index
+										element={<h1>delivery records test</h1>}
+									/>
+									<Route
+										path="review"
+										element={
+											<h1>
+												delivery records review page
+											</h1>
+										}
+									/>
+									<Route
+										path="confirmed"
+										element={
+											<h1>
+												delivery records confirmed page
+											</h1>
+										}
+									/>
+								</Route>
+							),
+						)} */}
+
 					<Route path="/help" element={<Help />} />
 
 					{/* {Object.values(PRODUCT_TYPES).map(
@@ -218,25 +338,6 @@ const MMARouter = () => {
 					)} */}
 
 					{/*
-					{Object.values(PRODUCT_TYPES).map(
-						(productType: ProductType) => (
-							<PaymentUpdateFlow
-								key={productType.urlPart}
-								path={'/payment/' + productType.urlPart}
-								productType={productType}
-							>
-								<PaymentUpdated
-									path="updated"
-									productType={productType}
-								/>
-								<PaymentFailed
-									path="failed"
-									productType={productType}
-								/>
-							</PaymentUpdateFlow>
-						),
-					)}
-
 					{Object.values(PRODUCT_TYPES)
 						.filter(shouldHaveHolidayStopsFlow)
 						.map((productType: ProductTypeWithHolidayStopsFlow) => (

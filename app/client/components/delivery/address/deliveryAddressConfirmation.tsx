@@ -263,7 +263,7 @@ const AddressConfirmation = (props: ProductType) => {
 	);
 };
 
-export const DeliveryAddressConfirmation = (props: WithProductType<ProductType>) => {
+const DeliveryAddressConfirmation = (props: WithProductType<ProductType>) => {
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const contactIdContext = useContext(ContactIdContext);
 	const addressChangedInformationContext = useContext(
@@ -341,3 +341,6 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 		{props.message}
 	</div>
 );
+
+
+export default DeliveryAddressConfirmation;

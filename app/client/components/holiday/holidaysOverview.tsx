@@ -23,7 +23,6 @@ import { Button } from '../buttons';
 import { FlowWrapper } from '../FlowWrapper';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { NAV_LINKS } from '../nav/navConfig';
-import { NavigateFnContext } from '../payment/update/updatePaymentFlow';
 import { InfoIcon } from '../svgs/infoIcon';
 import {
 	ReturnToAccountOverviewButton,
@@ -422,9 +421,6 @@ class HolidaysOverview extends React.Component<
 		>
 			{(productDetail) => (
 				<MembersDataApiItemContext.Provider value={productDetail}>
-					<NavigateFnContext.Provider
-						value={{ navigate: this.props.navigate }}
-					>
 						{' '}
 						{productDetail.subscription.start ? (
 							<GetHolidayStopsAsyncLoader
@@ -444,7 +440,6 @@ class HolidaysOverview extends React.Component<
 						) : (
 							<GenericErrorScreen loggingMessage="Subscription had no start date" />
 						)}
-					</NavigateFnContext.Provider>
 				</MembersDataApiItemContext.Provider>
 			)}
 		</FlowWrapper>

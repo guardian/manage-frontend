@@ -10,7 +10,7 @@ import { minWidth } from '../../../../styles/breakpoints';
 import { space } from '@guardian/src-foundations';
 import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../fieldWrapper';
-import { getLogos, PaymentMethod } from '../updatePaymentFlow';
+import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';
 
 interface FlexCardElementProps {
 	disabled?: boolean;

@@ -20,18 +20,13 @@ export interface NewPaymentMethodDetail {
 	readonly updatedSuccessExtras?: JSX.Element;
 }
 
-type MaybeNewPaymentMethodDetail = NewPaymentMethodDetail | {};
-
 export function isNewPaymentMethodDetail(
-	maybeDetail: MaybeNewPaymentMethodDetail,
-): maybeDetail is NewPaymentMethodDetail {
+	newPaymentMethodDetail: NewPaymentMethodDetail,
+) {
 	return (
-		maybeDetail.hasOwnProperty('name') &&
-		maybeDetail.hasOwnProperty('detailToPayloadObject')
+		newPaymentMethodDetail.hasOwnProperty('name') &&
+		newPaymentMethodDetail.hasOwnProperty('detailToPayloadObject')
 	);
 }
-
-export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> =
-	React.createContext({});
 
 export class PaymentUpdateAsyncLoader extends AsyncLoader<object> {}

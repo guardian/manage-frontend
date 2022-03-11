@@ -3,7 +3,7 @@ import { Subscription } from '../../../../shared/productResponse';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
-} from '../../../components/payment/update/paymentUpdated';
+} from '../../../components/payment/update/paymentDetailUpdated';
 import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
 	guardianWeeklyCard,

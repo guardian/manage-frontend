@@ -7,8 +7,6 @@ import {
 	formatDate,
 	getMainPlan,
 	isPaidSubscriptionPlan,
-	isProduct,
-	MembersDataApiItemContext,
 	ProductDetail,
 	Subscription,
 	WithSubscription,
@@ -16,27 +14,19 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';
 import { GenericErrorScreen } from '../../genericErrorScreen';
-import {
-	ReturnToAccountOverviewButton,
-	RouteableStepProps,
-	visuallyNavigateToParent,
-	WizardStep,
-} from '../../wizardRouterAdapter';
-import {
-	isNewPaymentMethodDetail,
-	NewPaymentMethodContext,
-	NewPaymentMethodDetail,
-} from './newPaymentMethodDetail';
-import { NewSubscriptionContext } from './newSubscriptionDetail';
+import { ReturnToAccountOverviewButton } from '../../wizardRouterAdapter';
 import { textSans } from '@guardian/src-foundations/typography';
 import { CardDisplay } from '../cardDisplay';
 import { DirectDebitDisplay } from '../directDebitDisplay';
 import { PayPalDisplay } from '../paypalDisplay';
 import { SepaDisplay } from '../sepaDisplay';
 import { InfoSummary } from './Summary';
+import { useContext } from 'react';
+import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
+import { Navigate, useLocation } from 'react-router-dom';
 interface ConfirmedNewPaymentDetailsRendererProps {
 	subscription: Subscription;
-	newPaymentMethodDetail: NewPaymentMethodDetail;
+	subHasExpectedPaymentType: boolean;
 	previousProductDetail: ProductDetail;
 }
 
@@ -92,7 +82,7 @@ function getPaymentInterval(interval: string) {
 
 export const ConfirmedNewPaymentDetailsRenderer = ({
 	subscription,
-	newPaymentMethodDetail,
+	subHasExpectedPaymentType,
 	previousProductDetail,
 }: ConfirmedNewPaymentDetailsRendererProps) => {
 	const mainPlan = getMainPlan(subscription);
@@ -101,11 +91,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 	const specificProductType = groupedProductType.mapGroupedToSpecific(
 		previousProductDetail,
 	);
-
-	if (
-		newPaymentMethodDetail.subHasExpectedPaymentType(subscription) &&
-		isPaidSubscriptionPlan(mainPlan)
-	) {
+	if (subHasExpectedPaymentType && isPaidSubscriptionPlan(mainPlan)) {
 		return (
 			<div
 				css={css`
@@ -333,13 +319,15 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 
 interface PaymentMethodUpdatedProps {
 	subs: WithSubscription[] | {};
-	newPaymentMethodDetail: NewPaymentMethodDetail;
+	paymentFailureRecoveryMessage: string;
+	subHasExpectedPaymentType: boolean;
 	previousProductDetail: ProductDetail;
 }
 
 export const PaymentMethodUpdated = ({
 	subs,
-	newPaymentMethodDetail,
+	paymentFailureRecoveryMessage,
+	subHasExpectedPaymentType,
 	previousProductDetail,
 }: PaymentMethodUpdatedProps) =>
 	Array.isArray(subs) && subs.length === 1 ? (
@@ -352,22 +340,19 @@ export const PaymentMethodUpdated = ({
 				Your payment details were updated successfully
 			</h1>
 
-			{previousProductDetail.alertText &&
-				newPaymentMethodDetail.paymentFailureRecoveryMessage && (
-					<InfoSummary
-						context=""
-						message={
-							newPaymentMethodDetail.paymentFailureRecoveryMessage
-						}
-						cssOverrides={css`
-							margin-bottom: ${space[6]}px;
-						`}
-					/>
-				)}
+			{previousProductDetail.alertText && paymentFailureRecoveryMessage && (
+				<InfoSummary
+					context=""
+					message={paymentFailureRecoveryMessage}
+					cssOverrides={css`
+						margin-bottom: ${space[6]}px;
+					`}
+				/>
+			)}
 
 			<ConfirmedNewPaymentDetailsRenderer
 				subscription={subs[0].subscription}
-				newPaymentMethodDetail={newPaymentMethodDetail}
+				subHasExpectedPaymentType={subHasExpectedPaymentType}
 				previousProductDetail={previousProductDetail}
 			/>
 
@@ -405,35 +390,30 @@ export const PaymentMethodUpdated = ({
 		</>
 	);
 
-export const PaymentUpdated = (props: RouteableStepProps) => {
-	return (
-		<MembersDataApiItemContext.Consumer>
-			{(previousProductDetail) => (
-				<NewPaymentMethodContext.Consumer>
-					{(newPaymentMethodDetail) =>
-						isNewPaymentMethodDetail(newPaymentMethodDetail) &&
-						isProduct(previousProductDetail) ? (
-							<NewSubscriptionContext.Consumer>
-								{(newSubscriptionData) => (
-									<WizardStep routeableStepProps={props}>
-										<PaymentMethodUpdated
-											subs={newSubscriptionData}
-											newPaymentMethodDetail={
-												newPaymentMethodDetail
-											}
-											previousProductDetail={
-												previousProductDetail
-											}
-										/>
-									</WizardStep>
-								)}
-							</NewSubscriptionContext.Consumer>
-						) : (
-							visuallyNavigateToParent(props)
-						)
-					}
-				</NewPaymentMethodContext.Consumer>
-			)}
-		</MembersDataApiItemContext.Consumer>
+const PaymentDetailUpdateConfirmation = () => {
+	const previousProductDetail = useContext(
+		PaymentUpdateProductDetailContext,
+	) as ProductDetail;
+
+	const location = useLocation();
+	const state = location.state as {
+		paymentFailureRecoveryMessage: string;
+		subHasExpectedPaymentType: boolean;
+		newSubscriptionData: WithSubscription[];
+	};
+
+	const newSubscriptionData = state.newSubscriptionData;
+
+	return state ? (
+		<PaymentMethodUpdated
+			subs={newSubscriptionData}
+			paymentFailureRecoveryMessage={state.paymentFailureRecoveryMessage}
+			subHasExpectedPaymentType={state.subHasExpectedPaymentType}
+			previousProductDetail={previousProductDetail}
+		/>
+	) : (
+		<Navigate to="/" />
 	);
 };
+
+export default PaymentDetailUpdateConfirmation;

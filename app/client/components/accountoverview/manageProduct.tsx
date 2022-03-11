@@ -182,7 +182,7 @@ const InnerContent = ({
 						alert={!!productDetail.alertText}
 						text="Update payment method"
 						to={`/payment/${specificProductType.urlPart}`}
-						state={productDetail}
+						state={{"productDetail": productDetail}}
 					/>
 				)}
 

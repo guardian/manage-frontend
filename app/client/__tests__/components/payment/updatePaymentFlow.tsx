@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import {
 	PaymentMethod,
 	SelectPaymentMethod,
-} from '../../../components/payment/update/updatePaymentFlow';
+} from '../../../components/payment/update/PaymentDetailUpdate';
 
 describe('updatePaymentFlow.tsx', () => {
 	it('Shows only card when sub/crontrib is already using card', () => {
