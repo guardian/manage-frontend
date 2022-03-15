@@ -11,7 +11,13 @@ interface EmailSettingsSectionProps {
 	email: string;
 }
 
-const aCss = {
+const text = {
+	fontSize: '14px',
+	lineHeight: '18px',
+	fontFamily: sans,
+};
+const linkCss = {
+	...text,
 	color: palette.blue.dark,
 	borderBottom: `1px solid ${palette.neutral['5']}`,
 	transition: 'border-color .15s ease-out',
@@ -19,15 +25,11 @@ const aCss = {
 		borderBottom: `1px solid ${palette.blue.dark}`,
 	},
 };
-const pCss = {
-	marginBottom: '5px',
-};
+
 const successMessage = (
 	<div
 		css={{
-			fontSize: '13px',
-			lineHeight: '18px',
-			fontFamily: sans,
+			...text,
 			borderBottom: `1px solid ${palette.green.light}`,
 			borderTop: `1px solid ${palette.green.light}`,
 			color: palette.green.medium,
@@ -46,17 +48,17 @@ export const EmailSettingsSection: FC<EmailSettingsSectionProps> = (props) => {
 	const { actionHandler, email, removed } = props;
 	return (
 		<PageSection title={'Email settings'}>
-			<p css={pCss}>
+			<p css={{ ...text, marginBottom: '8px' }}>
 				You are receiving newsletters, notifications and all other
 				emails to <strong>{email}</strong>
 			</p>
-			<p css={pCss}>
-				<a css={aCss} href={IdentityLocations.CHANGE_EMAIL}>
+			<p css={{ ...text, marginBottom: '2px' }}>
+				<a css={linkCss} href={IdentityLocations.CHANGE_EMAIL}>
 					Change your email address
 				</a>
 			</p>
-			<p css={{ ...pCss, marginBottom: '20px' }}>
-				<a css={aCss} href={IdentityLocations.MANAGE_JOB_ALERTS}>
+			<p css={{ ...text, marginBottom: '20px' }}>
+				<a css={linkCss} href={IdentityLocations.MANAGE_JOB_ALERTS}>
 					Manage your Jobs alerts
 				</a>
 			</p>

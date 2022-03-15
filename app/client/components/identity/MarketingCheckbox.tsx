@@ -2,9 +2,9 @@ import { FC } from 'react';
 import { sans } from '../../styles/fonts';
 import { Checkbox } from '../checkbox';
 
-interface MarketingPreferenceProps {
+interface MarketingCheckboxProps {
 	id: string;
-	description: string;
+	description?: string;
 	title?: string;
 	selected?: boolean;
 	onClick: (id: string) => {};
@@ -15,7 +15,7 @@ const standardText = {
 	fontFamily: sans,
 };
 
-const getTitle = (title: MarketingPreferenceProps['title']) => (
+const getTitle = (title: MarketingCheckboxProps['title']) => (
 	<p
 		css={[
 			standardText,
@@ -33,9 +33,7 @@ const getTitle = (title: MarketingPreferenceProps['title']) => (
 	</p>
 );
 
-const getDescription = (
-	description: MarketingPreferenceProps['description'],
-) => (
+const getDescription = (description: MarketingCheckboxProps['description']) => (
 	<p
 		css={{
 			padding: '2.88px 0 0 0',
@@ -45,7 +43,7 @@ const getDescription = (
 	</p>
 );
 
-export const MarketingPreference: FC<MarketingPreferenceProps> = (props) => {
+export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
 	return (
 		<div
@@ -79,7 +77,7 @@ export const MarketingPreference: FC<MarketingPreferenceProps> = (props) => {
 				/>
 			</div>
 			{title && getTitle(title)}
-			{getDescription(description)}
+			{description && getDescription(description)}
 		</div>
 	);
 };

@@ -39,7 +39,7 @@ const newsletterPreference = (
 			// "" here
 			identityName={identityName || ''}
 			frequency={frequency || ''}
-			description={description}
+			description={description || ''}
 			selected={subscribed}
 			onClick={clickHandler}
 		/>
