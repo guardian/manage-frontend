@@ -18,9 +18,26 @@ interface OptOutSectionProps {
  * The description of Opt Out consents have changed so for UX/UI purposes they are now opt INs
  * The backend model remains an opt OUT, so we invert the consented/subscribed value here.
  */
-const optOutFinderAndInverter =
-	(consents: ConsentOption[], clickHandler: ClickHandler) => (id: string) => {
-		const consent = consents.find((c) => c.id === id);
+const consentSubscribedValueInverter = (
+	consent: ConsentOption,
+): ConsentOption => {
+	return {
+		...consent,
+		subscribed: !consent.subscribed, // Opt Out consent value is inverted
+	};
+};
+
+const optOutFinder =
+	(
+		consents: ConsentOption[],
+		clickHandler: ClickHandler,
+		invertSubscribedValue?: (c: ConsentOption) => ConsentOption,
+	) =>
+	(id: string) => {
+		let consent = consents.find((c) => c.id === id);
+		if (consent && !!invertSubscribedValue) {
+			consent = invertSubscribedValue(consent);
+		}
 
 		return (
 			consent && (
@@ -28,7 +45,7 @@ const optOutFinderAndInverter =
 					id={consent.id}
 					title={consent.name}
 					description={consent.description} // Not all consents from IDAPI have a description
-					selected={!consent.subscribed} // Opt Out consent value is inverted
+					selected={consent.subscribed}
 					onClick={clickHandler}
 				/>
 			)
@@ -63,7 +80,12 @@ const YourDataDescription: FC = () => (
 export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 	const { consents, clickHandler } = props;
 
-	const addMarketingToggle = optOutFinderAndInverter(consents, clickHandler);
+	const addInvertedMarketingToggle = optOutFinder(
+		consents,
+		clickHandler,
+		consentSubscribedValueInverter,
+	);
+	const addMarketingToggle = optOutFinder(consents, clickHandler);
 
 	return (
 		<>
@@ -74,9 +96,9 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
         and services via telephone and post.
       `}
 			>
-				{addMarketingToggle('post_optout')}
-				{addMarketingToggle('phone_optout')}
-				{addMarketingToggle('market_research_optout')}
+				{addInvertedMarketingToggle('post_optout')}
+				{addInvertedMarketingToggle('phone_optout')}
+				{addInvertedMarketingToggle('market_research_optout')}
 			</PageSection>
 			<WithStandardTopMargin>
 				<Lines n={1} />
@@ -86,7 +108,8 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 					title="Your data"
 					description={<YourDataDescription />}
 				>
-					{addMarketingToggle('profiling_optout')}
+					{addInvertedMarketingToggle('profiling_optout')}
+					{addMarketingToggle('advertising_optin')}
 				</PageSection>
 			</WithStandardTopMargin>
 		</>
