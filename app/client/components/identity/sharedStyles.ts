@@ -1,8 +1,20 @@
 import { CSSObject } from '@emotion/core';
+import { sans } from '../../styles/fonts';
 import palette from '../../colours';
 
 export const textSmall: CSSObject = {
 	fontSize: '14px',
+};
+
+export const standardSansText = {
+	fontFamily: sans,
+	fontSize: '14px',
+	lineHeight: '1.333',
+};
+
+export const toggleDescriptionPadding = {
+	margin: '0',
+	padding: '2.88px 90px 0 0',
 };
 
 const lightBorder: CSSObject = {

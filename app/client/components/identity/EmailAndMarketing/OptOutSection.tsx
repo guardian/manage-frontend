@@ -1,9 +1,11 @@
 import { FC } from 'react';
+import { css } from '@emotion/core';
 import { Lines } from '../Lines';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { MarketingToggle } from '../MarketingToggle';
 import { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
+import { standardSansText, toggleDescriptionPadding } from '../sharedStyles';
 
 type ClickHandler = (id: string) => {};
 
@@ -52,21 +54,22 @@ const optOutFinder =
 		);
 	};
 
+const yourDataStyles = css`
+	ul {
+		padding-inline-start: 20px;
+		margin-block-start: 0;
+		line-height: 1.5;
+	}
+
+	p {
+		margin-bottom: 6px;
+	}
+`;
+
 const YourDataDescription: FC = () => (
-	<>
-		<p
-			css={{
-				marginBottom: '6px',
-			}}
-		>
-			What we mean by your data:
-		</p>
-		<ul
-			css={{
-				paddingInlineStart: '20px',
-				marginBlockStart: '0',
-			}}
-		>
+	<div css={yourDataStyles}>
+		<p>What we mean by your data:</p>
+		<ul>
 			<li>Information you provide e.g. email address</li>
 			<li>Products or services you buy from us</li>
 			<li>
@@ -74,7 +77,28 @@ const YourDataDescription: FC = () => (
 				when signed in
 			</li>
 		</ul>
-	</>
+	</div>
+);
+
+const AdvertisingConsentDescription: FC = () => (
+	<div css={[standardSansText, toggleDescriptionPadding, yourDataStyles]}>
+		<p>
+			Advertising is a crucial source of our funding. You won't see more
+			ads, and your data won't be shared with third parties to use for
+			their own advertising.
+		</p>
+		<p>We do this by:</p>
+		<ul>
+			<li>
+				Analysing your information to predict what you might be
+				interested in.
+			</li>
+			<li>
+				Checking if you are already a customer of other trusted
+				partners.
+			</li>
+		</ul>
+	</div>
 );
 
 export const OptOutSection: FC<OptOutSectionProps> = (props) => {
@@ -110,6 +134,7 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 				>
 					{addInvertedMarketingToggle('profiling_optout')}
 					{addMarketingToggle('advertising_optin')}
+					<AdvertisingConsentDescription />
 				</PageSection>
 			</WithStandardTopMargin>
 		</>
