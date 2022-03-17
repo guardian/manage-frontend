@@ -66,6 +66,8 @@ const yourDataStyles = css`
 	}
 `;
 
+// NOTE: The Your Data description is hard coded here and in
+// Identity Gateway. They should be the same unless running A/B tests.
 const YourDataDescription: FC = () => (
 	<div css={yourDataStyles}>
 		<p>What we mean by your data:</p>
@@ -80,6 +82,8 @@ const YourDataDescription: FC = () => (
 	</div>
 );
 
+// NOTE: The advertising consent description is hard coded here and in
+// Identity Gateway. They should be the same unless running A/B tests.
 const AdvertisingConsentDescription: FC = () => (
 	<div css={[standardSansText, toggleDescriptionPadding, yourDataStyles]}>
 		<p>

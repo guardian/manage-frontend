@@ -29,9 +29,11 @@ describe('OptOutSection component', () => {
 				'Allow the Guardian to send communications by telephone',
 			),
 		).not.toBeChecked();
+		expect(screen.getByLabelText('Allow optin consent')).toBeChecked();
 	});
 });
 
+// ID values are hardcoded in the component
 const idapiConsentsFixture: ConsentOption[] = [
 	{
 		id: 'post_optout',
@@ -47,6 +49,14 @@ const idapiConsentsFixture: ConsentOption[] = [
 		isProduct: false,
 		isChannel: false,
 		type: ConsentOptionType.OPT_OUT,
+		subscribed: true,
+	},
+	{
+		id: 'advertising_optin',
+		name: 'Allow optin consent',
+		isProduct: false,
+		isChannel: false,
+		type: ConsentOptionType.EMAIL,
 		subscribed: true,
 	},
 ];
