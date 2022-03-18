@@ -60,13 +60,18 @@ const newsletterPreferenceGroups = (
 		Theme.work,
 		Theme.FromThePapers,
 	];
-	return themes.map((theme) => (
-		<DropMenu key={theme} color={colors[theme]} title={theme}>
-			{newsletters
-				.filter((n) => n.theme === theme)
-				.map((n) => newsletterPreference(n, clickHandler))}
-		</DropMenu>
-	));
+	return themes.map((theme) => {
+		const newslettersForTheme = newsletters.filter(
+			(n) => n.theme === theme,
+		);
+		return newslettersForTheme.length ? (
+			<DropMenu key={theme} color={colors[theme]} title={theme}>
+				{newslettersForTheme.map((n) =>
+					newsletterPreference(n, clickHandler),
+				)}
+			</DropMenu>
+		) : null;
+	});
 };
 
 export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
