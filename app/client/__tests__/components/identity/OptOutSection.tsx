@@ -52,7 +52,7 @@ const idapiConsentsFixture: ConsentOption[] = [
 		subscribed: true,
 	},
 	{
-		id: 'advertising_optin',
+		id: 'personalised_advertising',
 		name: 'Allow optin consent',
 		isProduct: false,
 		isChannel: false,

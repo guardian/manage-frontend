@@ -82,9 +82,9 @@ const YourDataDescription: FC = () => (
 	</div>
 );
 
-// NOTE: The advertising consent description is hard coded here and in
+// NOTE: The personalised advertising consent description is hard coded here and in
 // Identity Gateway. They should be the same unless running A/B tests.
-const AdvertisingConsentDescription: FC = () => (
+const PersonalisedAdvertisingConsentDescription: FC = () => (
 	<div css={[standardSansText, toggleDescriptionPadding, yourDataStyles]}>
 		<p>
 			Advertising is a crucial source of our funding. You won't see more
@@ -137,8 +137,8 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 					description={<YourDataDescription />}
 				>
 					{addInvertedMarketingToggle('profiling_optout')}
-					{addMarketingToggle('advertising_optin')}
-					<AdvertisingConsentDescription />
+					{addMarketingToggle('personalised_advertising')}
+					<PersonalisedAdvertisingConsentDescription />
 				</PageSection>
 			</WithStandardTopMargin>
 		</>
