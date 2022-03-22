@@ -182,6 +182,7 @@ export interface ProductTypeWithCancellationFlow extends ProductType {
 export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
 	delivery: {
 		records: DeliveryRecordsProperties;
+		enableDeliveryInstructionsUpdate?: boolean;
 	};
 }
 

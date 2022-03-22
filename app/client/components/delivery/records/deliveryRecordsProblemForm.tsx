@@ -147,14 +147,11 @@ export const DeliveryRecordProblemForm = (
 									`}
 								>
 									<Radio
+										name="delivery-problem"
 										value={deliveryProblemRadioOption.label}
 										label={capitalize(
 											deliveryProblemRadioOption.label,
 										)}
-										checked={
-											selectedDeliveryProblem?.value ===
-											deliveryProblemRadioOption.label
-										}
 										css={css`
 											vertical-align: top;
 											text-transform: lowercase;

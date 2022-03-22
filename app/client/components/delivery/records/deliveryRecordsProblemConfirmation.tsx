@@ -5,6 +5,7 @@ import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
 import { textSans } from '@guardian/src-foundations/typography';
 import { useContext } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import {
 	DATE_FNS_SHORT_OUTPUT_FORMAT,
 	dateString,
@@ -20,38 +21,33 @@ import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
-import {
-	RouteableStepProps,
-	visuallyNavigateToParent,
-	WizardStep,
-} from '../../wizardRouterAdapter';
 import { DeliveryRecordCard } from './deliveryRecordCard';
-import {
-	DeliveryRecordsRouteableStepProps,
-	PageStatus,
-} from './deliveryRecords';
+import { PageStatus } from './deliveryRecords';
 import {
 	createDeliveryRecordsProblemPost,
 	DeliveryRecordsApiAsyncLoader,
+	DeliveryRecordsPostPayload,
 	DeliveryRecordsResponse,
 } from './deliveryRecordsApi';
 import {
+	DeliveryRecordsContext,
+	DeliveryRecordsContextInterface,
+	DeliveryRecordsRouterState,
+} from './DeliveryRecordsContainer';
+import {
 	DeliveryRecordCreditContext,
 	DeliveryRecordsAddressContext,
-	DeliveryRecordsProblemContext,
 	DeliveryRecordsProblemPostPayloadContext,
 } from './deliveryRecordsProblemContext';
 import { ReadOnlyAddressDisplay } from './readOnlyAddressDisplay';
 
 const renderDeliveryRecordsConfirmation =
-	(props: DeliveryRecordsRouteableStepProps, subscription: Subscription) =>
-	(data: DeliveryRecordsResponse) => {
+	(subscription: Subscription) => (data: DeliveryRecordsResponse) => {
 		const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
 		return (
 			<DeliveryRecordsProblemConfirmationFC
 				data={data}
-				routeableStepProps={props}
 				subscriptionId={subscription.subscriptionId}
 				subscriptionCurrency={mainPlan.currency}
 			/>
@@ -60,7 +56,6 @@ const renderDeliveryRecordsConfirmation =
 
 interface DeliveryRecordsProblemConfirmationFCProps {
 	data: DeliveryRecordsResponse;
-	routeableStepProps: RouteableStepProps;
 	subscriptionId: string;
 	subscriptionCurrency: string;
 }
@@ -79,6 +74,10 @@ const DeliveryRecordsProblemConfirmationFC = (
 				(affectedRecord) => affectedRecord.id === record.id,
 			) !== -1,
 	);
+
+	const { productType } = useContext(
+		DeliveryRecordsContext,
+	) as DeliveryRecordsContextInterface;
 
 	const problemCaseId = filteredData.find(
 		(record) => record.problemCaseId,
@@ -102,383 +101,368 @@ const DeliveryRecordsProblemConfirmationFC = (
 		vertical-align: top;
 	`;
 	return (
-		<WizardStep routeableStepProps={props.routeableStepProps}>
-			<>
-				<ProgressIndicator
-					steps={[
-						{ title: 'Update' },
-						{ title: 'Review' },
-						{ title: 'Confirmation', isCurrentStep: true },
-					]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0 ${space[12]}px;
+		<>
+			<ProgressIndicator
+				steps={[
+					{ title: 'Update' },
+					{ title: 'Review' },
+					{ title: 'Confirmation', isCurrentStep: true },
+				]}
+				additionalCSS={css`
+					margin: ${space[5]}px 0 ${space[12]}px;
+				`}
+			/>
+			<h2
+				css={css`
+					border-top: 1px solid ${neutral['86']};
+					${headline.small()};
+					font-weight: bold;
+					${maxWidth.tablet} {
+						font-size: 1.25rem;
+						line-height: 1.6;
+					}
+				`}
+			>
+				Delivery report confirmation
+			</h2>
+			<p
+				css={css`
+					${textSans.medium()};
+				`}
+			>
+				Your delivery problem report has been successfully submitted.
+			</p>
+			<span
+				css={css`
+					position: relative;
+					display: block;
+					margin: ${space[3]}px 0;
+					padding: ${space[3]}px ${space[3]}px ${space[3]}px
+						${space[3] * 2 + 17}px;
+					background-color: ${neutral[97]};
+					${textSans.small()};
+					${minWidth.tablet} {
+						margin: ${space[5]}px 0;
+					}
+				`}
+			>
+				<i
+					css={css`
+						position: absolute;
+						top: ${space[3]}px;
+						left: ${space[3]}px;
 					`}
-				/>
+				>
+					<InfoIconDark fillColor={brand[500]} />
+				</i>
+				{deliveryProblemCredit?.showCredit
+					? `Thank you for reporting your delivery problem${
+							deliveryAddressContext.address &&
+							deliveryAddressContext.productsAffected &&
+							deliveryAddressContext.productsAffected?.length > 0
+								? ' and updating your delivery details'
+								: ''
+					  }. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service.`
+					: `Your case is high priority. Our customer service team will try their best to contact you as soon as possible to resolve the issue.${
+							deliveryAddressContext.address &&
+							deliveryAddressContext.productsAffected &&
+							deliveryAddressContext.productsAffected?.length > 0
+								? ' Thank you for updating your delivery details.'
+								: ''
+					  }`}
+			</span>
+			<section
+				css={css`
+					border: 1px solid ${neutral['86']};
+					margin-bottom: ${deliveryAddressContext.address &&
+					deliveryAddressContext.productsAffected &&
+					deliveryAddressContext.productsAffected?.length > 0
+						? space[5]
+						: space[9]}px;
+				`}
+			>
 				<h2
 					css={css`
-						border-top: 1px solid ${neutral['86']};
-						${headline.small()};
-						font-weight: bold;
-						${maxWidth.tablet} {
-							font-size: 1.25rem;
-							line-height: 1.6;
-						}
-					`}
-				>
-					Delivery report confirmation
-				</h2>
-				<p
-					css={css`
-						${textSans.medium()};
-					`}
-				>
-					Your delivery problem report has been successfully
-					submitted.
-				</p>
-				<span
-					css={css`
-						position: relative;
-						display: block;
-						margin: ${space[3]}px 0;
-						padding: ${space[3]}px ${space[3]}px ${space[3]}px
-							${space[3] * 2 + 17}px;
-						background-color: ${neutral[97]};
-						${textSans.small()};
+						margin: 0;
+						padding: 14px ${space[3]}px;
+						background-color: ${neutral['97']};
+						border-bottom: 1px solid ${neutral['86']};
+						${textSans.medium({ fontWeight: 'bold' })};
 						${minWidth.tablet} {
-							margin: ${space[5]}px 0;
+							padding: 14px ${space[5]}px;
 						}
 					`}
 				>
-					<i
-						css={css`
-							position: absolute;
-							top: ${space[3]}px;
-							left: ${space[3]}px;
-						`}
-					>
-						<InfoIconDark fillColor={brand[500]} />
-					</i>
-					{deliveryProblemCredit?.showCredit
-						? `Thank you for reporting your delivery problem${
-								deliveryAddressContext.address &&
-								deliveryAddressContext.productsAffected &&
-								deliveryAddressContext.productsAffected
-									?.length > 0
-									? ' and updating your delivery details'
-									: ''
-						  }. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service.`
-						: `Your case is high priority. Our customer service team will try their best to contact you as soon as possible to resolve the issue.${
-								deliveryAddressContext.address &&
-								deliveryAddressContext.productsAffected &&
-								deliveryAddressContext.productsAffected
-									?.length > 0
-									? ' Thank you for updating your delivery details.'
-									: ''
-						  }`}
-				</span>
-				<section
+					Reported delivery problems
+				</h2>
+				<dl
 					css={css`
-						border: 1px solid ${neutral['86']};
-						margin-bottom: ${deliveryAddressContext.address &&
-						deliveryAddressContext.productsAffected &&
-						deliveryAddressContext.productsAffected?.length > 0
-							? space[5]
-							: space[9]}px;
+						padding: 0 ${space[3]}px;
+						${textSans.medium()};
+						display: flex;
+						flex-wrap: wrap;
+						flex-direction: column;
+						justify-content: space-between;
+						${minWidth.tablet} {
+							flex-direction: initial;
+							padding: 0 ${space[5]}px;
+						}
+						div {
+							margin-top: 16px;
+							${minWidth.tablet} {
+								min-width: 50%;
+							}
+						}
 					`}
 				>
-					<h2
-						css={css`
-							margin: 0;
-							padding: 14px ${space[3]}px;
-							background-color: ${neutral['97']};
-							border-bottom: 1px solid ${neutral['86']};
-							${textSans.medium({ fontWeight: 'bold' })};
-							${minWidth.tablet} {
-								padding: 14px ${space[5]}px;
-							}
-						`}
-					>
-						Reported delivery problems
-					</h2>
+					<div>
+						<dt css={dtCss}>Reference:</dt>
+						<dd css={ddCss}>{problemReferenceId}</dd>
+					</div>
+					<div>
+						<dt css={dtCss}>Date reported:</dt>
+						<dd css={ddCss}>
+							{dateString(
+								new Date(),
+								DATE_FNS_SHORT_OUTPUT_FORMAT,
+							)}
+						</dd>
+					</div>
+					<div>
+						<dt css={dtCss}>Subscription ID:</dt>
+						<dd css={ddCss}>{props.subscriptionId}</dd>
+					</div>
+					<div>
+						<dt css={dtCss}>Product:</dt>
+						<dd css={ddCss}>
+							{productType.shortFriendlyName ||
+								productType.friendlyName}
+						</dd>
+					</div>
+					<div>
+						<dt css={dtCss}>Contact number:</dt>
+						<dd css={ddCss}>
+							{Object.entries(props.data.contactPhoneNumbers)
+								.filter(
+									([phoneType, phoneNumber]) =>
+										phoneType.toLowerCase() !== 'id' &&
+										phoneNumber,
+								)
+								.map(([_, phoneNumber], index) => (
+									<span
+										key={`phoneNo-${index}`}
+										css={css`
+											display: block;
+											margin-bottom: ${space[3]};
+										`}
+									>
+										{phoneNumber}
+									</span>
+								)) || '-'}
+						</dd>
+					</div>
+					<div>
+						<dt css={dtCss}>Selected Issue(s):</dt>
+						<dd css={ddCss}>
+							{deliveryIssuePostPayload?.deliveryRecords?.length}
+						</dd>
+					</div>
+				</dl>
+				<div
+					css={css`
+						padding: 0 ${space[3]}px;
+						margin-bottom: ${space[5]}px;
+						${minWidth.tablet} {
+							padding: 0 ${space[5]}px;
+						}
+					`}
+				>
+					{props.data.results.length ? (
+						filteredData.map(
+							(
+								deliveryRecord: DeliveryRecordApiItem,
+								listIndex,
+							) => (
+								<DeliveryRecordCard
+									key={deliveryRecord.id}
+									deliveryRecord={deliveryRecord}
+									listIndex={listIndex}
+									pageStatus={
+										PageStatus.REPORT_ISSUE_CONFIRMATION
+									}
+									showDeliveryInstructions={
+										productType.delivery?.records
+											?.showDeliveryInstructions
+									}
+									deliveryProblemMap={
+										props.data.deliveryProblemMap
+									}
+									recordCurrency={props.subscriptionCurrency}
+								/>
+							),
+						)
+					) : (
+						<p>There aren't any delivery records to show you yet</p>
+					)}
+				</div>
+				{deliveryProblemCredit?.showCredit && (
 					<dl
 						css={css`
-							padding: 0 ${space[3]}px;
 							${textSans.medium()};
-							display: flex;
-							flex-wrap: wrap;
-							flex-direction: column;
-							justify-content: space-between;
-							${minWidth.tablet} {
-								flex-direction: initial;
-								padding: 0 ${space[5]}px;
-							}
-							div {
-								margin-top: 16px;
-								${minWidth.tablet} {
-									min-width: 50%;
-								}
-							}
+							padding: ${space[5]}px;
+							margin: ${space[5]}px;
+							background-color: ${neutral['97']};
 						`}
 					>
-						<div>
-							<dt css={dtCss}>Reference:</dt>
-							<dd css={ddCss}>{problemReferenceId}</dd>
-						</div>
-						<div>
-							<dt css={dtCss}>Date reported:</dt>
-							<dd css={ddCss}>
-								{dateString(
-									new Date(),
-									DATE_FNS_SHORT_OUTPUT_FORMAT,
-								)}
+						<div
+							css={css`
+								display: inline-block;
+							`}
+						>
+							<dt
+								css={css`
+									display: inline-block;
+									font-weight: bold;
+								`}
+							>
+								Credit amount:
+							</dt>
+							<dd
+								css={css`
+									display: inline-block;
+									min-width: 9ch;
+								`}
+							>
+								{deliveryProblemCredit.creditAmount}
 							</dd>
 						</div>
-						<div>
-							<dt css={dtCss}>Subscription ID:</dt>
-							<dd css={ddCss}>{props.subscriptionId}</dd>
-						</div>
-						<div>
-							<dt css={dtCss}>Product:</dt>
-							<dd css={ddCss}>
-								{props.routeableStepProps.productType
-									.shortFriendlyName ||
-									props.routeableStepProps.productType
-										.friendlyName}
-							</dd>
-						</div>
-						<div>
-							<dt css={dtCss}>Contact number:</dt>
-							<dd css={ddCss}>
-								{Object.entries(props.data.contactPhoneNumbers)
-									.filter(
-										([phoneType, phoneNumber]) =>
-											phoneType.toLowerCase() !== 'id' &&
-											phoneNumber,
-									)
-									.map(([_, phoneNumber], index) => (
-										<span
-											key={`phoneNo-${index}`}
-											css={css`
-												display: block;
-												margin-bottom: ${space[3]};
-											`}
-										>
-											{phoneNumber}
-										</span>
-									)) || '-'}
-							</dd>
-						</div>
-						<div>
-							<dt css={dtCss}>Selected Issue(s):</dt>
-							<dd css={ddCss}>
-								{
-									deliveryIssuePostPayload?.deliveryRecords
-										?.length
-								}
+						<div
+							css={css`
+								display: inline-block;
+							`}
+						>
+							<dt
+								css={css`
+									display: inline-block;
+									font-weight: bold;
+								`}
+							>
+								Credit date:
+							</dt>
+							<dd
+								css={css`
+									display: inline-block;
+								`}
+							>
+								{deliveryProblemCredit.creditDate}
 							</dd>
 						</div>
 					</dl>
-					<div
+				)}
+			</section>
+			{deliveryAddressContext.address &&
+				deliveryAddressContext.productsAffected &&
+				deliveryAddressContext.productsAffected?.length > 0 && (
+					<section
 						css={css`
-							padding: 0 ${space[3]}px;
-							margin-bottom: ${space[5]}px;
-							${minWidth.tablet} {
-								padding: 0 ${space[5]}px;
-							}
+							border: 1px solid ${neutral['86']};
+							margin-bottom: ${space[9]}px;
 						`}
 					>
-						{props.data.results.length ? (
-							filteredData.map(
-								(
-									deliveryRecord: DeliveryRecordApiItem,
-									listIndex,
-								) => (
-									<DeliveryRecordCard
-										key={deliveryRecord.id}
-										deliveryRecord={deliveryRecord}
-										listIndex={listIndex}
-										pageStatus={
-											PageStatus.REPORT_ISSUE_CONFIRMATION
-										}
-										showDeliveryInstructions={
-											props.routeableStepProps.productType
-												.delivery?.records
-												?.showDeliveryInstructions
-										}
-										deliveryProblemMap={
-											props.data.deliveryProblemMap
-										}
-										recordCurrency={
-											props.subscriptionCurrency
-										}
-									/>
-								),
-							)
-						) : (
-							<p>
-								There aren't any delivery records to show you
-								yet
-							</p>
-						)}
-					</div>
-					{deliveryProblemCredit?.showCredit && (
-						<dl
+						<h2
 							css={css`
-								${textSans.medium()};
-								padding: ${space[5]}px;
-								margin: ${space[5]}px;
+								margin: 0;
+								padding: 14px ${space[3]}px;
 								background-color: ${neutral['97']};
-							`}
-						>
-							<div
-								css={css`
-									display: inline-block;
-								`}
-							>
-								<dt
-									css={css`
-										display: inline-block;
-										font-weight: bold;
-									`}
-								>
-									Credit amount:
-								</dt>
-								<dd
-									css={css`
-										display: inline-block;
-										min-width: 9ch;
-									`}
-								>
-									{deliveryProblemCredit.creditAmount}
-								</dd>
-							</div>
-							<div
-								css={css`
-									display: inline-block;
-								`}
-							>
-								<dt
-									css={css`
-										display: inline-block;
-										font-weight: bold;
-									`}
-								>
-									Credit date:
-								</dt>
-								<dd
-									css={css`
-										display: inline-block;
-									`}
-								>
-									{deliveryProblemCredit.creditDate}
-								</dd>
-							</div>
-						</dl>
-					)}
-				</section>
-				{deliveryAddressContext.address &&
-					deliveryAddressContext.productsAffected &&
-					deliveryAddressContext.productsAffected?.length > 0 && (
-						<section
-							css={css`
-								border: 1px solid ${neutral['86']};
-								margin-bottom: ${space[9]}px;
-							`}
-						>
-							<h2
-								css={css`
-									margin: 0;
-									padding: 14px ${space[3]}px;
-									background-color: ${neutral['97']};
-									border-bottom: 1px solid ${neutral['86']};
-									${textSans.medium({ fontWeight: 'bold' })};
-									${minWidth.tablet} {
-										padding: 14px ${space[5]}px;
-									}
-								`}
-							>
-								Delivery address changes
-							</h2>
-							<ReadOnlyAddressDisplay
-								address={deliveryAddressContext.address}
-								instructions={
-									(deliveryAddressContext.enableDeliveryInstructions &&
-										deliveryAddressContext.address
-											.instructions) ||
-									undefined
+								border-bottom: 1px solid ${neutral['86']};
+								${textSans.medium({ fontWeight: 'bold' })};
+								${minWidth.tablet} {
+									padding: 14px ${space[5]}px;
 								}
-							/>
-							<div
+							`}
+						>
+							Delivery address changes
+						</h2>
+						<ReadOnlyAddressDisplay
+							address={deliveryAddressContext.address}
+							instructions={
+								(deliveryAddressContext.enableDeliveryInstructions &&
+									deliveryAddressContext.address
+										.instructions) ||
+								undefined
+							}
+						/>
+						<div
+							css={css`
+								padding: 0 ${space[3]}px;
+								margin-top: ${space[5]}px;
+								${minWidth.tablet} {
+									padding: 0 ${space[5]}px;
+								}
+							`}
+						>
+							<p
 								css={css`
-									padding: 0 ${space[3]}px;
-									margin-top: ${space[5]}px;
-									${minWidth.tablet} {
-										padding: 0 ${space[5]}px;
-									}
+									${textSans.medium()}
 								`}
 							>
-								<p
-									css={css`
-										${textSans.medium()}
-									`}
-								>
-									Your change of address affects the following
-									subscriptions:
-								</p>
-								<ProductDescriptionListTable
-									content={
-										deliveryAddressContext.productsAffected
-									}
-									seperateEachRow
-								/>
-							</div>
-						</section>
-					)}
-				<LinkButton
-					css={css`
-						margin-top: ${space[3]}px;
-						${minWidth.tablet} {
-							margin-top: ${space[5]}px;
-						}
-					`}
-					href={NAV_LINKS.accountOverview.link}
-				>
-					Return to your account
-				</LinkButton>
-			</>
-		</WizardStep>
+								Your change of address affects the following
+								subscriptions:
+							</p>
+							<ProductDescriptionListTable
+								content={
+									deliveryAddressContext.productsAffected
+								}
+								seperateEachRow
+							/>
+						</div>
+					</section>
+				)}
+			<LinkButton
+				css={css`
+					margin-top: ${space[3]}px;
+					${minWidth.tablet} {
+						margin-top: ${space[5]}px;
+					}
+				`}
+				href={NAV_LINKS.accountOverview.link}
+			>
+				Return to your account
+			</LinkButton>
+		</>
 	);
 };
 
-export const DeliveryRecordsProblemConfirmation = (
-	props: DeliveryRecordsRouteableStepProps,
-) => {
-	const deliveryIssuePostPayload = useContext(
-		DeliveryRecordsProblemPostPayloadContext,
-	);
-	const deliveryRecordsProblemContext = useContext(
-		DeliveryRecordsProblemContext,
-	);
+interface DeliveryRecordsConfirmationRouterState
+	extends DeliveryRecordsRouterState {
+	deliveryIssuePostPayload: DeliveryRecordsPostPayload;
+}
 
-	if (
-		!deliveryRecordsProblemContext.affectedRecords.length ||
-		!deliveryIssuePostPayload.deliveryRecords?.length
-	) {
-		return visuallyNavigateToParent(props);
+const DeliveryRecordsProblemConfirmation = () => {
+	const location = useLocation();
+	const routerState = location.state as DeliveryRecordsConfirmationRouterState;
+
+	if (!routerState) {
+		return <Navigate to=".." />;
 	}
+
+	const { productDetail, deliveryIssuePostPayload } =
+		routerState;
+
+	const subscription = productDetail.subscription;
+	const isTestUser = productDetail.isTestUser;
 
 	return (
 		<DeliveryRecordsApiAsyncLoader
-			render={renderDeliveryRecordsConfirmation(
-				props,
-				deliveryRecordsProblemContext.subscription,
-			)}
+			render={renderDeliveryRecordsConfirmation(subscription)}
 			fetch={createDeliveryRecordsProblemPost(
-				deliveryRecordsProblemContext.subscription.subscriptionId,
-				deliveryRecordsProblemContext.isTestUser,
+				subscription.subscriptionId,
+				isTestUser,
 				deliveryIssuePostPayload,
 			)}
 			loadingMessage={'Reporting problem...'}
 		/>
 	);
 };
+
+export default DeliveryRecordsProblemConfirmation;

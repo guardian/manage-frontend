@@ -23,8 +23,6 @@ import { ExecuteCancellation } from './cancel/stages/executeCancellation';
 import { GenericSaveAttempt } from './cancel/stages/genericSaveAttempt';
 import { SavedCancellation } from './cancel/stages/savedCancellation';
 import { CMPBanner } from './consent/CMPBanner';
-import { DeliveryRecordsProblemConfirmation } from './delivery/records/deliveryRecordsProblemConfirmation';
-import { DeliveryRecordsProblemReview } from './delivery/records/deliveryRecordsProblemReview';
 import { HolidayConfirmed } from './holiday/holidayConfirmed';
 import { HolidayDateChooser } from './holiday/holidayDateChooser';
 import { HolidayReview } from './holiday/holidayReview';
@@ -119,12 +117,34 @@ const DeliveryAddressConfirmation = lazy(
 		),
 );
 
+const DeliveryRecordsContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "DeliveryRecordsContainer" */ './delivery/records/DeliveryRecordsContainer'
+		),
+);
+
 const DeliveryRecords = lazy(
 	() =>
 		import(
 			/* webpackChunkName: "DeliveryRecords" */ './delivery/records/deliveryRecords'
 		),
 );
+
+const DeliveryRecordsProblemReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "DeliveryRecordsProblemReview" */ './delivery/records/deliveryRecordsProblemReview'
+		),
+);
+
+const DeliveryRecordsProblemConfirmation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "DeliveryRecordsProblemConfirmation" */ './delivery/records/deliveryRecordsProblemConfirmation'
+		),
+);
+
 const EmailAndMarketing = lazy(
 	() =>
 		import(
@@ -259,7 +279,7 @@ const MMARouter = () => {
 						),
 					)}
 
-					{/* {Object.values(PRODUCT_TYPES)
+					{Object.values(PRODUCT_TYPES)
 						.filter(hasDeliveryRecordsFlow)
 						.map(
 							(
@@ -276,27 +296,23 @@ const MMARouter = () => {
 								>
 									<Route
 										index
-										element={<h1>delivery records test</h1>}
+										element={<DeliveryRecords />}
 									/>
 									<Route
 										path="review"
 										element={
-											<h1>
-												delivery records review page
-											</h1>
+											<DeliveryRecordsProblemReview />
 										}
 									/>
 									<Route
 										path="confirmed"
 										element={
-											<h1>
-												delivery records confirmed page
-											</h1>
+											<DeliveryRecordsProblemConfirmation />
 										}
 									/>
 								</Route>
 							),
-						)} */}
+						)}
 
 					<Route path="/help" element={<Help />} />
 

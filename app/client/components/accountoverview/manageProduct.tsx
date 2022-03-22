@@ -11,7 +11,11 @@ import {
 	isPaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { WithGroupedProductType, GroupedProductType, ProductType } from '../../../shared/productTypes';
+import {
+	WithGroupedProductType,
+	GroupedProductType,
+	ProductType,
+} from '../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
@@ -182,7 +186,7 @@ const InnerContent = ({
 						alert={!!productDetail.alertText}
 						text="Update payment method"
 						to={`/payment/${specificProductType.urlPart}`}
-						state={{"productDetail": productDetail}}
+						state={{ productDetail: productDetail }}
 					/>
 				)}
 
@@ -260,7 +264,7 @@ const InnerContent = ({
 						fontWeight="bold"
 						text="Manage delivery history"
 						to={`/delivery/${specificProductType.urlPart}/records`}
-						state={productDetail}
+						state={{ productDetail }}
 					/>
 				</>
 			)}
