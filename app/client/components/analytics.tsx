@@ -78,12 +78,47 @@ export const applyAnyOptimiseExperiments = () => {
 		window.dataLayer.push({ event: 'optimize.activate' });
 	}
 };
+export class AnalyticsTracker {
+	cmpInitialised: boolean;
+	gaInitialised: boolean;
 
-export const AnalyticsTracker = () => {
-	const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);
-	const [gaIsInitialised, setGaIsInitialised] = useState<boolean>(false);
+	constructor() {
+		this.cmpInitialised = false;
+		this.gaInitialised = false;
 
-	const initialiseGa = () => {
+		this.initialiseCmp();
+		window.addEventListener('locationchange', () => {
+			console.log('locationchange');
+			this.sendAnalytics();
+		});
+	}
+
+	initialiseCmp() {
+		console.log('initialiseCmp()');
+
+		import('@guardian/consent-management-platform').then(
+			({ onConsentChange, getConsentFor }) => {
+				onConsentChange((consentState) => {
+					const gaConsentState = getConsentFor(
+						'google-analytics',
+						consentState,
+					);
+
+					// @ts-ignore: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
+					window[`ga-disable-${GA_UA}`] = !gaConsentState;
+
+					if (gaConsentState && !this.gaInitialised) {
+						this.initialiseGa();
+					}
+
+					this.cmpInitialised = true;
+					this.sendAnalytics();
+				});
+			},
+		);
+	}
+
+	initialiseGa() {
 		// Run self evoking GA script
 		runGaStub();
 
@@ -134,62 +169,42 @@ export const AnalyticsTracker = () => {
 			);
 		}
 
-		setGaIsInitialised(true);
-	};
+		this.gaInitialised = true;
+	}
 
-	useEffect(() => {
-		import('@guardian/consent-management-platform').then(
-			({ onConsentChange, getConsentFor }) => {
-				onConsentChange((consentState) => {
-					const gaConsentState = getConsentFor(
-						'google-analytics',
-						consentState,
+	sendAnalytics() {
+		if (!this.cmpInitialised) {
+			return;
+		}
+
+		console.log("sendAnalytics()");
+
+		if (typeof window !== 'undefined') {
+			if (
+				window.guardian &&
+				window.guardian.ophan &&
+				window.guardian.ophan.sendInitialEvent
+			) {
+				if (window.guardian.spaTransition) {
+					window.guardian.ophan.sendInitialEvent(
+						window.location.href,
 					);
-
-					// @ts-ignore: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
-					window[`ga-disable-${GA_UA}`] = !gaConsentState;
-
-					if (gaConsentState && !gaIsInitialised) {
-						initialiseGa();
-					}
-					setCmpIsInitialised(true);
-				});
-			},
-		);
-	}, []);
-
-	return cmpIsInitialised ? (
-		<Location>
-			{({ location }) => {
-				if (location && typeof window !== 'undefined') {
-					if (
-						window.guardian &&
-						window.guardian.ophan &&
-						window.guardian.ophan.sendInitialEvent
-					) {
-						if (window.guardian.spaTransition) {
-							window.guardian.ophan.sendInitialEvent(
-								location.href,
-							);
-						} else {
-							// tslint:disable-next-line:no-object-mutation
-							window.guardian.spaTransition = true;
-						}
-					}
-
-					if (gaIsInitialised && window.ga) {
-						window.ga('send', 'pageview', {
-							location: location.href,
-							page: location.pathname + location.search,
-							dimension12: window.guardian.INTCMP,
-							dimension29: MMA_AB_TEST_DIMENSION_VALUE,
-						});
-						// TODO add ophan pageViewId as a GA dimension
-						applyAnyOptimiseExperiments();
-					}
+				} else {
+					// tslint:disable-next-line:no-object-mutation
+					window.guardian.spaTransition = true;
 				}
-				return null; // null is a valid React node type, but void is not.
-			}}
-		</Location>
-	) : null;
-};
+			}
+
+			if (this.gaInitialised && window.ga) {
+				window.ga('send', 'pageview', {
+					location: window.location.href,
+					page: window.location.pathname + location.search,
+					dimension12: window.guardian.INTCMP,
+					dimension29: MMA_AB_TEST_DIMENSION_VALUE,
+				});
+				// TODO add ophan pageViewId as a GA dimension
+				applyAnyOptimiseExperiments();
+			}
+		}
+	}
+}

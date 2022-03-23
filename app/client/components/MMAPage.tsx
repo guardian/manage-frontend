@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/core';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
 	GROUPED_PRODUCT_TYPES,
@@ -10,7 +10,6 @@ import {
 	ProductTypeWithHolidayStopsFlow,
 } from '../../shared/productTypes';
 import {
-	hasCancellationFlow,
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
@@ -18,14 +17,7 @@ import {
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
 import { AnalyticsTracker } from './analytics';
-import { CancellationReason } from './cancel/cancellationReason';
-import { ExecuteCancellation } from './cancel/stages/executeCancellation';
-import { GenericSaveAttempt } from './cancel/stages/genericSaveAttempt';
-import { SavedCancellation } from './cancel/stages/savedCancellation';
 import { CMPBanner } from './consent/CMPBanner';
-import { HolidayConfirmed } from './holiday/holidayConfirmed';
-import { HolidayDateChooser } from './holiday/holidayDateChooser';
-import { HolidayReview } from './holiday/holidayReview';
 import { Main } from './main';
 import MMAPageSkeleton from './MMAPageSkeleton';
 import { ScrollToTop } from './scrollToTop';
@@ -57,12 +49,34 @@ const ManageProduct = lazy(
 			/* webpackChunkName: "ManageProduct" */ './accountoverview/manageProduct'
 		),
 );
-const CancellationFlow = lazy(
+const CancellationContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "CancellationFlow" */ './cancel/cancellationFlow'
+			/* webpackChunkName: "CancellationContainer" */ './cancel/CancellationContainer'
 		),
 );
+
+const CancellationReasonSelection = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "CancellationReasonSelection" */ './cancel/CancellationReasonSelection'
+		),
+);
+
+const CancellationReasonReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "CancellationReasonReview" */ './cancel/CancellationReasonReview'
+		),
+);
+
+const ExecuteCancellation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "ExecuteCancellation" */ './cancel/stages/executeCancellation'
+		),
+);
+
 const PaymentDetailUpdateContainer = lazy(
 	() =>
 		import(
@@ -90,12 +104,41 @@ const PaymentFailed = lazy(
 		),
 );
 
+const HolidayStopsContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "HolidayStopsContainer" */ './holiday/HolidayStopsContainer'
+		),
+);
+
 const HolidaysOverview = lazy(
 	() =>
 		import(
 			/* HolidaysOverview: "holidaysoverview" */ './holiday/holidaysOverview'
 		),
 );
+
+const HolidayDateChooser = lazy(
+	() =>
+		import(
+			/* HolidayDateChooser: "holidayDateChooser" */ './holiday/holidayDateChooser'
+		),
+);
+
+const HolidayReview = lazy(
+	() =>
+	import(
+		/* HolidayReview: "holidayReview" */ './holiday/holidayReview'
+	),
+);
+
+const HolidayConfirmed = lazy(
+	() =>
+	import(
+		/* HolidayConfirmed: "holidayConfirmed" */ './holiday/holidayConfirmed'
+	),
+);
+
 const DeliveryAddressChangeContainer = lazy(
 	() =>
 		import(
@@ -170,6 +213,7 @@ const MMARouter = () => {
 
 	useEffect(() => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
+		new AnalyticsTracker();
 	}, []);
 
 	return (
@@ -180,19 +224,15 @@ const MMARouter = () => {
 				<Routes>
 					<Route path="/" element={<AccountOverview />} />
 					<Route path="/billing" element={<Billing />} />
-
 					<Route
 						path="/email-prefs"
 						element={<EmailAndMarketing />}
 					/>
-
 					<Route
 						path="/public-settings"
 						element={<PublicProfile />}
 					/>
-
 					<Route path="/account-settings" element={<Settings />} />
-
 					{Object.values(GROUPED_PRODUCT_TYPES).map(
 						(groupedProductType: GroupedProductType) => (
 							<Route
@@ -206,7 +246,6 @@ const MMARouter = () => {
 							/>
 						),
 					)}
-
 					{Object.values(PRODUCT_TYPES)
 						.filter(hasDeliveryFlow)
 						.map((productType: ProductType) => (
@@ -245,7 +284,6 @@ const MMARouter = () => {
 								/>
 							</Route>
 						))}
-
 					{Object.values(PRODUCT_TYPES).map(
 						(productType: ProductType) => (
 							<Route
@@ -278,7 +316,6 @@ const MMARouter = () => {
 							</Route>
 						),
 					)}
-
 					{Object.values(PRODUCT_TYPES)
 						.filter(hasDeliveryRecordsFlow)
 						.map(
@@ -313,46 +350,68 @@ const MMARouter = () => {
 								</Route>
 							),
 						)}
-
-					<Route path="/help" element={<Help />} />
-
-					{/* {Object.values(PRODUCT_TYPES).map(
+					{Object.values(PRODUCT_TYPES).map(
 						(productType: ProductType) => (
-							<CancellationFlow
+							<Route
 								key={productType.urlPart}
 								path={'/cancel/' + productType.urlPart}
-								productType={productType}
+								element={
+									<CancellationContainer
+										productType={productType}
+									/>
+								}
 							>
-								{hasCancellationFlow(productType) &&
-									productType.cancellation.reasons.map(
-										(reason: CancellationReason) => (
-											<GenericSaveAttempt
-												path={reason.reasonId}
-												productType={productType}
-												reason={reason}
-												key={reason.reasonId}
-												linkLabel={reason.linkLabel}
-											>
-												<ExecuteCancellation
-													path="confirmed"
-													productType={productType}
-												/>
-												{!!reason.savedBody && (
-													<SavedCancellation
-														path="saved"
-														reason={reason}
-														productType={
-															productType
-														}
-													/>
-												)}
-											</GenericSaveAttempt>
-										),
-									)}
-							</CancellationFlow>
+								<Route
+									index
+									element={<CancellationReasonSelection />}
+								/>
+								<Route
+									path="review"
+									element={<CancellationReasonReview />}
+								/>
+								<Route
+									path="confirmed"
+									element={<ExecuteCancellation />}
+								/>
+							</Route>
 						),
-					)} */}
-
+					)}
+					;
+					{Object.values(PRODUCT_TYPES)
+						.filter(shouldHaveHolidayStopsFlow)
+						.map((productType: ProductTypeWithHolidayStopsFlow) => (
+							<Route
+								key={productType.urlPart}
+								path={'/suspend/' + productType.urlPart}
+								element={
+									<HolidayStopsContainer
+										productType={productType}
+									/>
+								}
+							>
+								<Route
+									index
+									element={<HolidaysOverview />}
+								/>
+								<Route
+									path="create"
+									element={<HolidayDateChooser />}
+								/>
+								<Route
+									path="amend"
+									element={<HolidayDateChooser isAmendJourney />}
+								/>
+								<Route
+									path="review"
+									element={<HolidayReview />}
+								/>
+								<Route
+									path="confirmed"
+									element={<HolidayConfirmed />}
+								/>
+							</Route>
+						))}
+					<Route path="/help" element={<Help />} />
 					{/*
 					{Object.values(PRODUCT_TYPES)
 						.filter(shouldHaveHolidayStopsFlow)
@@ -393,33 +452,7 @@ const MMARouter = () => {
 								</HolidayDateChooser>
 							</HolidaysOverview>
 						))}
-
-
-
-					{Object.values(PRODUCT_TYPES)
-						.filter(hasDeliveryRecordsFlow)
-						.map(
-							(
-								productType: ProductTypeWithDeliveryRecordsProperties,
-							) => (
-								<DeliveryRecords
-									key={productType.urlPart}
-									path={`/delivery/${productType.urlPart}/records`}
-									productType={productType}
-								>
-									<DeliveryRecordsProblemReview
-										path="review"
-										productType={productType}
-									>
-										<DeliveryRecordsProblemConfirmation
-											path="confirmed"
-											productType={productType}
-										/>
-									</DeliveryRecordsProblemReview>
-								</DeliveryRecords>
-							),
-						)} */}
-
+					 */}
 					{/*Does not require sign in*/}
 					<Route
 						path="/cancel-reminders/*reminderCode"
@@ -435,7 +468,6 @@ const MMARouter = () => {
 
 export const MMAPage = (
 	<BrowserRouter>
-		<AnalyticsTracker />
 		<MMARouter />
 		<CMPBanner />
 		<ScrollToTop />

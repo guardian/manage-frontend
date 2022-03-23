@@ -6,7 +6,10 @@ import {
 import AsyncLoader from '../asyncLoader';
 import { CancellationCaseIdContext } from './cancellationContexts';
 import { CancellationReasonContext } from './cancellationContexts';
-import { OptionalCancellationReasonId } from './cancellationReason';
+import {
+	CancellationReasonId,
+	OptionalCancellationReasonId,
+} from './cancellationReason';
 import { fetchWithDefaultParameters } from '../../fetch';
 
 interface CaseCreationResponse {
@@ -51,21 +54,18 @@ interface CaseCreationWrapperProps {
 	children: JSX.Element;
 	sfCaseProduct: string;
 	productDetail: ProductDetail;
+	reasonId: CancellationReasonId;
 }
 
 export const CaseCreationWrapper = (props: CaseCreationWrapperProps) => (
-	<CancellationReasonContext.Consumer>
-		{(reason) => (
-			<CaseCreationAsyncLoader
-				fetch={getCreateCaseFunc(
-					reason,
-					props.sfCaseProduct,
-					props.productDetail,
-				)}
-				render={renderWithCaseIdContextProvider(props.children)}
-				errorRender={renderWithCaseIdContextProvider(props.children)}
-				loadingMessage="Capturing your cancellation reason..."
-			/>
+	<CaseCreationAsyncLoader
+		fetch={getCreateCaseFunc(
+			props.reasonId,
+			props.sfCaseProduct,
+			props.productDetail,
 		)}
-	</CancellationReasonContext.Consumer>
+		render={renderWithCaseIdContextProvider(props.children)}
+		errorRender={renderWithCaseIdContextProvider(props.children)}
+		loadingMessage="Capturing your cancellation reason..."
+	/>
 );

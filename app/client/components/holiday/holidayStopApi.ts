@@ -149,8 +149,7 @@ export function isHolidayStopsResponse(
 ): data is ReloadableGetHolidayStopsResponse {
 	return (
 		!!data &&
-		data.hasOwnProperty('existing') &&
-		data.hasOwnProperty('reload')
+		data.hasOwnProperty('existing')
 	);
 }
 
@@ -235,3 +234,11 @@ export const calculateIssuesImpactedPerYear = (
 		),
 	} as IssuesImpactedPerYear;
 };
+
+export const createGetHolidayStopsFetcher =
+	(subscriptionName: string, isTestUser: boolean) => () =>
+		fetch(`/api/holidays/${subscriptionName}`, {
+			headers: {
+				[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+			},
+		});

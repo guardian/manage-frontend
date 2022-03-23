@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import CancellationFlow from './cancellationFlow';
+import CancellationFlow from './CancellationContainer';
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
 import { guardianWeeklyCard } from '../../fixtures/productDetail';

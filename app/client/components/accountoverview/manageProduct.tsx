@@ -2,8 +2,8 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
 import {
 	getMainPlan,
@@ -387,7 +387,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 				`}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				data-cy={`Cancel ${props.friendlyName}`}
-				state={props.productDetail}
+				state={{ productDetail: props.productDetail }}
 			>
 				{shouldContactUsToCancel
 					? 'Contact us'

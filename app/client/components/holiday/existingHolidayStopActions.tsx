@@ -1,8 +1,9 @@
+import { Button } from '@guardian/src-button';
+import { navigate } from '@reach/router';
 import { Component } from 'react';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import AsyncLoader, { ReFetch } from '../asyncLoader';
-import { Button, LinkButton } from '../buttons';
 import { HideFunction, Modal } from '../modal';
 import {
 	HolidayStopRequest,
@@ -90,12 +91,11 @@ export class ExistingHolidayStopActions extends Component<
 					}}
 				>
 					<Button
-						text="Yes"
 						onClick={() => {
 							this.setState({ isDeleting: true });
 							hideFunction();
 						}}
-					/>
+					>Yes</Button>
 				</div>
 			);
 
@@ -134,17 +134,19 @@ export class ExistingHolidayStopActions extends Component<
 								marginLeft: 0,
 							}}
 						>
-							<LinkButton
-								text={`Amend${
-									shouldBeOnlyAmendEndDate ? ' end date' : ''
-								}`}
-								to="amend"
-								onClick={() =>
+							<Button
+								onClick={() => {
 									setExistingHolidayStopToAmend(
 										this.props as HolidayStopRequest,
 									)
-								}
-							/>
+									navigate('amend');
+								}}
+								priority="secondary"
+							>
+								{`Amend${
+									shouldBeOnlyAmendEndDate ? ' end date' : ''
+								}`}
+							</Button>
 						</div>
 					)}
 					{shouldShowDeleteButton && (
@@ -152,7 +154,7 @@ export class ExistingHolidayStopActions extends Component<
 							title="Are you sure?"
 							alternateOkText="No"
 							additionalButton={yesButton}
-							instigator={<Button text="Delete" hollow />}
+							instigator={<Button priority="tertiary">Delete</Button>}
 						>
 							Are you sure you want to delete your{' '}
 							<strong>{friendlyDateRange}</strong> suspension?
