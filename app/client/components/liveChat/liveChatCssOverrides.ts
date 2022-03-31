@@ -13,7 +13,7 @@ export const liveChatCss = css`
 			top: 0;
 			width: 100%;
 			max-width: 100%;
-			min-height: 100vh;
+			min-height: 100%;
 			margin-top: 0;
 		}
 		.embeddedServiceLiveAgentSidebarFeature
