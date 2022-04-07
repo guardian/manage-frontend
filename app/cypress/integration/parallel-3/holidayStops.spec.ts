@@ -45,13 +45,6 @@ describe('Holiday stops', function () {
 			// wait for cookies to be set
 			cy.wait(1000);
 		});
-	});
-
-	it.only('can add a holiday stop', function () {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
-		}).as('mma');
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
@@ -74,7 +67,9 @@ describe('Holiday stops', function () {
 				message: 'success',
 			},
 		}).as('create_holiday_stop');
+	});
 
+	it('can add a holiday stop', function () {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -101,33 +96,6 @@ describe('Holiday stops', function () {
 	});
 
 	it('can amend a holiday stop', function () {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
-		}).as('mma');
-
-		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
-			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
-		}).as('product_detail');
-
-		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
-			statusCode: 200,
-			body: potentialDeliveries,
-		}).as('fetch_potential_holidays');
-
-		cy.intercept('GET', '/api/holidays/A-S00293857', {
-			statusCode: 200,
-			body: existingHolidays,
-		}).as('fetch_existing_holidays');
-
-		cy.intercept('POST', '/api/holidays', {
-			statusCode: 200,
-			body: {
-				message: 'success',
-			},
-		}).as('create_holiday_stop');
-
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -150,32 +118,10 @@ describe('Holiday stops', function () {
 	});
 
 	it('can not create holiday stop for dates when there is no delivery', function () {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
-		}).as('mma');
-
-		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
-			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
-		}).as('product_detail');
-
 		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
 			statusCode: 200,
 			body: noPotentialDeliveries,
 		}).as('fetch_potential_holidays');
-
-		cy.intercept('GET', '/api/holidays/A-S00293857', {
-			statusCode: 200,
-			body: existingHolidays,
-		}).as('fetch_existing_holidays');
-
-		cy.intercept('POST', '/api/holidays', {
-			statusCode: 200,
-			body: {
-				message: 'success',
-			},
-		}).as('create_holiday_stop');
 
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
