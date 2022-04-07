@@ -4,6 +4,7 @@ import {
 	potentialDeliveries,
 	noPotentialDeliveries,
 	existingHolidays,
+	existingHolidaysWithDeletion,
 } from '../../../client/fixtures/holidays';
 
 // 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
@@ -69,7 +70,7 @@ describe('Holiday stops', function () {
 		}).as('create_holiday_stop');
 	});
 
-	it('can add a holiday stop', function () {
+	it('can add a new holiday stop', function () {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -79,7 +80,7 @@ describe('Holiday stops', function () {
 		cy.get('[data-cy="date_picker"] div').eq(9).click();
 		cy.get('[data-cy="date_picker"] div').eq(11).click();
 		cy.wait('@fetch_potential_holidays');
-		cy.get('[data-cy="suspended-issues"')
+		cy.get('[data-cy="suspended-issues"]')
 			.contains('Suspending')
 			.contains('1 issue');
 
@@ -95,7 +96,7 @@ describe('Holiday stops', function () {
 		cy.findByText('Your schedule has been set').should('exist');
 	});
 
-	it('can amend a holiday stop', function () {
+	it('can amend a non-confirmed holiday stop', function () {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -115,9 +116,15 @@ describe('Holiday stops', function () {
 		cy.get('[aria-label="day"]').eq(1).should('have.value', '11');
 		cy.get('[aria-label="month"]').eq(1).should('have.value', '2');
 		cy.get('[aria-label="year"]').eq(1).should('have.value', '2022');
+
+		cy.get('[data-cy="date_picker"] div').eq(16).click();
+		cy.get('[data-cy="date_picker"] div').eq(18).click();
+
+		cy.get('[aria-label="day"]').eq(0).should('have.value', '16');
+		cy.get('[aria-label="day"]').eq(1).should('have.value', '18');
 	});
 
-	it('can not create holiday stop for dates when there is no delivery', function () {
+	it('can not create a holiday stop for date range when there are no deliveries', function () {
 		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
 			statusCode: 200,
 			body: noPotentialDeliveries,
@@ -133,5 +140,55 @@ describe('Holiday stops', function () {
 		cy.wait('@fetch_potential_holidays');
 
 		cy.findByText('No issues occur during selected period').should('exist');
+	});
+
+	it('shows existing holidays stops on landing page', function () {
+		cy.visit('/suspend/guardianweekly');
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+
+		cy.get('table').contains('11 March - 12 March 2022');
+	});
+
+	it('can amend an existing holiday stop', function () {
+		cy.visit('/suspend/guardianweekly');
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+
+		cy.get('table').findByText('Amend').click();
+		cy.findByText('Please select your new dates...').should('exist');
+
+		cy.get('[data-cy="date_picker"] div').eq(9).click();
+		cy.get('[data-cy="date_picker"] div').eq(11).click();
+		cy.wait('@fetch_potential_holidays');
+
+		cy.findByText('Review details').click();
+		cy.get('table').contains('9 February - 11 February 2022');
+	});
+
+	it('can delete an existing holiday stop', function () {
+		cy.intercept('DELETE', '/api/holidays/*/*', {
+			statusCode: 200,
+			body: {
+				message: 'success',
+			},
+		}).as('delete_holiday_stop');
+
+		cy.visit('/suspend/guardianweekly');
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+
+		cy.get('table').findByText('Delete').click();
+
+		cy.intercept('GET', '/api/holidays/A-S00293857', {
+			statusCode: 200,
+			body: existingHolidaysWithDeletion,
+		}).as('fetch_existing_holidays');
+
+		cy.findByRole('button', { name: 'Yes' }).click();
+		cy.wait('@delete_holiday_stop');
+		cy.wait('@fetch_existing_holidays');
+
+		cy.get('table').contains('Deleted on 7 April 2022');
 	});
 });
