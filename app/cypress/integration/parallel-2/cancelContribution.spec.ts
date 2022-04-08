@@ -1,5 +1,5 @@
 import { setLocalBaseUrl } from '../../lib/setLocalBaseUrl';
-import * as fixtures from '../../fixtures/fixtures';
+import { contribution } from '../../../client/fixtures/productDetail';
 
 // 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
 Cypress.on('uncaught:exception', () => {
@@ -16,12 +16,12 @@ describe('E2E Page rendering', function () {
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: fixtures.mmaResponse,
+				body: [contribution],
 			}).as('mma');
 
 			cy.intercept('GET', '/api/cancelled/', {
 				statusCode: 200,
-				body: fixtures.cancelledResponse,
+				body: [],
 			}).as('cancelled');
 
 			cy.wait(1000);
@@ -45,12 +45,12 @@ describe('E2E Page rendering', function () {
 	it('cancels contribution', function () {
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: fixtures.contribution,
+			body: [contribution],
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: fixtures.mmaResponse,
+			body: [contribution],
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
@@ -60,7 +60,7 @@ describe('E2E Page rendering', function () {
 
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
-			body: fixtures.cancelledResponse,
+			body: [],
 		}).as('cancelled');
 
 		cy.intercept('GET', 'api/cancellation-date/**', {

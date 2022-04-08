@@ -1,7 +1,7 @@
 {
   "viewportWidth": 1500,
   "viewportHeight": 860,
-  "baseUrl": "http://localhost:9233/",
+  "baseUrl": "http://localhost:9234/",
   "video": false,
   "failOnStatusCode": false,
   "chromeWebSecurity": false,
@@ -19,5 +19,6 @@
     "*the-ozone-project.com",
     "*openx.net"
   ],
+  "fixturesFolder": false,
   "retries": 2
 }

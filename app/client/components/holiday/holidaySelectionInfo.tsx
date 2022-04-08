@@ -62,6 +62,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 							marginRight: '20px',
 						},
 					}}
+					data-cy="suspended-issues"
 				>
 					Suspending{' '}
 					{displayNumberOfIssuesAsText(
