@@ -30,3 +30,8 @@ declare global {
 		}
 	}
 }
+
+// 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
+Cypress.on('uncaught:exception', () => {
+	return false;
+});

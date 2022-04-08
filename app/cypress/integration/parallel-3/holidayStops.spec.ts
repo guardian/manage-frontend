@@ -1,4 +1,3 @@
-import { setLocalBaseUrl } from '../../lib/setLocalBaseUrl';
 import { guardianWeeklyCurrentSubscription } from '../../../client/fixtures/productDetail';
 import {
 	potentialDeliveries,
@@ -6,46 +5,11 @@ import {
 	existingHolidays,
 	existingHolidaysWithDeletion,
 } from '../../../client/fixtures/holidays';
+import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-// 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
-Cypress.on('uncaught:exception', () => {
-	return false;
-});
-
-const iframeMessage = `[id^="sp_message_iframe_"]`;
-const acceptCookiesButtonText = 'Yes, I’m happy';
-
-describe('Holiday stops', function () {
-	beforeEach(function () {
-		cy.session('auth', () => {
-			setLocalBaseUrl();
-
-			cy.intercept('GET', '/api/me/mma', {
-				statusCode: 200,
-				body: [guardianWeeklyCurrentSubscription],
-			}).as('mma');
-
-			cy.intercept('GET', '/api/cancelled/', {
-				statusCode: 200,
-				body: [],
-			}).as('cancelled');
-
-			cy.wait(1000);
-			cy.visit('/');
-
-			cy.wait('@mma');
-			cy.wait('@cancelled');
-
-			// accept cookies
-			cy.getIframeBody(iframeMessage)
-				.find(`button[title="${acceptCookiesButtonText}"]`, {
-					timeout: 10000,
-				})
-				.click();
-
-			// wait for cookies to be set
-			cy.wait(1000);
-		});
+describe('Holiday stops', () => {
+	beforeEach(() => {
+		signInAndAcceptCookies();
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
@@ -70,7 +34,7 @@ describe('Holiday stops', function () {
 		}).as('create_holiday_stop');
 	});
 
-	it('can add a new holiday stop', function () {
+	it('can add a new holiday stop', () => {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -98,7 +62,7 @@ describe('Holiday stops', function () {
 		cy.get('@create_holiday_stop.all').should('have.length', 1);
 	});
 
-	it('can amend a non-confirmed holiday stop', function () {
+	it('can amend a non-confirmed holiday stop', () => {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -130,7 +94,7 @@ describe('Holiday stops', function () {
 		cy.get('@fetch_potential_holidays.all').should('have.length', 3);
 	});
 
-	it('can not create a holiday stop for date range when there are no deliveries', function () {
+	it('can not create a holiday stop for date range when there are no deliveries', () => {
 		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
 			statusCode: 200,
 			body: noPotentialDeliveries,
@@ -151,7 +115,7 @@ describe('Holiday stops', function () {
 		cy.get('@fetch_potential_holidays.all').should('have.length', 1);
 	});
 
-	it('shows existing holidays stops on landing page', function () {
+	it('shows existing holidays stops on landing page', () => {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -162,7 +126,7 @@ describe('Holiday stops', function () {
 		cy.get('@product_detail.all').should('have.length', 1);
 	});
 
-	it('can amend an existing holiday stop', function () {
+	it('can amend an existing holiday stop', () => {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -181,7 +145,7 @@ describe('Holiday stops', function () {
 		cy.get('@product_detail.all').should('have.length', 1);
 	});
 
-	it('can delete an existing holiday stop', function () {
+	it('can delete an existing holiday stop', () => {
 		cy.intercept('DELETE', '/api/holidays/*/*', {
 			statusCode: 200,
 			body: {

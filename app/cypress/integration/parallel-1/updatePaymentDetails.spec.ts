@@ -1,4 +1,3 @@
-import { setLocalBaseUrl } from '../../lib/setLocalBaseUrl';
 import {
 	guardianWeeklyCurrentSubscription,
 	digitalDD,
@@ -9,49 +8,14 @@ import {
 	ddPaymentMethod,
 } from '../../../client/fixtures/payment';
 import { paymentMethods } from '../../../client/fixtures/stripe';
+import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-// 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
-Cypress.on('uncaught:exception', () => {
-	return false;
-});
-
-const iframeMessage = `[id^="sp_message_iframe_"]`;
-const acceptCookiesButtonText = 'Yes, I’m happy';
-
-describe('E2E Page rendering', function () {
-	beforeEach(function () {
-		cy.session('auth', () => {
-			setLocalBaseUrl();
-
-			cy.intercept('GET', '/api/me/mma', {
-				statusCode: 200,
-				body: [guardianWeeklyCurrentSubscription],
-			}).as('mma');
-
-			cy.intercept('GET', '/api/cancelled/', {
-				statusCode: 200,
-				body: [],
-			}).as('cancelled');
-
-			cy.wait(1000);
-			cy.visit('/');
-
-			cy.wait('@mma');
-			cy.wait('@cancelled');
-
-			// accept cookies
-			cy.getIframeBody(iframeMessage)
-				.find(`button[title="${acceptCookiesButtonText}"]`, {
-					timeout: 10000,
-				})
-				.click();
-
-			// wait for cookies to be set
-			cy.wait(1000);
-		});
+describe('Update payment details', () => {
+	beforeEach(() => {
+		signInAndAcceptCookies();
 	});
 
-	it('Complete card payment update', function () {
+	it('Complete card payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
 			body: [guardianWeeklyCurrentSubscription],
@@ -118,7 +82,7 @@ describe('E2E Page rendering', function () {
 		cy.get('@scala_backend.all').should('have.length', 1);
 	});
 
-	it('Shows correct error messages for direct debit form', function () {
+	it('Shows correct error messages for direct debit form', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
 			body: [digitalDD],
@@ -154,7 +118,7 @@ describe('E2E Page rendering', function () {
 		);
 	});
 
-	it('Complete direct debit payment update', function () {
+	it('Complete direct debit payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
 			body: [digitalDD],
@@ -194,7 +158,7 @@ describe('E2E Page rendering', function () {
 		cy.get('@scala_backend.all').should('have.length', 1);
 	});
 
-	it('Show recaptcha error', function () {
+	it('Show recaptcha error', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
 			body: [guardianWeeklyCurrentSubscription],
