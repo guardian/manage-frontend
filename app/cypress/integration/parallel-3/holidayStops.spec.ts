@@ -94,6 +94,8 @@ describe('Holiday stops', function () {
 
 		cy.wait('@create_holiday_stop');
 		cy.findByText('Your schedule has been set').should('exist');
+
+		cy.get('@create_holiday_stop.all').should('have.length', 1);
 	});
 
 	it('can amend a non-confirmed holiday stop', function () {
@@ -122,6 +124,10 @@ describe('Holiday stops', function () {
 
 		cy.get('[aria-label="day"]').eq(0).should('have.value', '16');
 		cy.get('[aria-label="day"]').eq(1).should('have.value', '18');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
+		cy.get('@product_detail.all').should('have.length', 1);
+		cy.get('@fetch_potential_holidays.all').should('have.length', 3);
 	});
 
 	it('can not create a holiday stop for date range when there are no deliveries', function () {
@@ -140,6 +146,9 @@ describe('Holiday stops', function () {
 		cy.wait('@fetch_potential_holidays');
 
 		cy.findByText('No issues occur during selected period').should('exist');
+
+		cy.get('@product_detail.all').should('have.length', 1);
+		cy.get('@fetch_potential_holidays.all').should('have.length', 1);
 	});
 
 	it('shows existing holidays stops on landing page', function () {
@@ -148,6 +157,9 @@ describe('Holiday stops', function () {
 		cy.wait('@product_detail');
 
 		cy.get('table').contains('11 March - 12 March 2022');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
+		cy.get('@product_detail.all').should('have.length', 1);
 	});
 
 	it('can amend an existing holiday stop', function () {
@@ -164,6 +176,9 @@ describe('Holiday stops', function () {
 
 		cy.findByText('Review details').click();
 		cy.get('table').contains('9 February - 11 February 2022');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
+		cy.get('@product_detail.all').should('have.length', 1);
 	});
 
 	it('can delete an existing holiday stop', function () {
@@ -190,5 +205,9 @@ describe('Holiday stops', function () {
 		cy.wait('@fetch_existing_holidays');
 
 		cy.get('table').contains('Deleted on 7 April 2022');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 2);
+		cy.get('@product_detail.all').should('have.length', 1);
+		cy.get('@delete_holiday_stop.all').should('have.length', 1);
 	});
 });
