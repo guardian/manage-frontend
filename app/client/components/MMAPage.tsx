@@ -16,7 +16,6 @@ import {
 } from '../productUtils';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
-import { AnalyticsTracker } from './analytics';
 import { CMPBanner } from './consent/CMPBanner';
 import { Main } from './main';
 import MMAPageSkeleton from './MMAPageSkeleton';
@@ -27,6 +26,7 @@ import {
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
+import useAnalytics from '../services/useAnalytics';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 
@@ -213,8 +213,9 @@ const MMARouter = () => {
 
 	useEffect(() => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
-		new AnalyticsTracker();
 	}, []);
+
+	useAnalytics();
 
 	return (
 		<Main signInStatus={signInStatus} requiresSignIn={pageRequiresSignIn()}>

@@ -3,7 +3,6 @@ import { Redirect, Router } from '@reach/router';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
-import { AnalyticsTracker } from './analytics';
 import { CMPBanner } from './consent/CMPBanner';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { PageTitle } from './helpCentre/pageTitle';
@@ -17,6 +16,7 @@ import {
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
+import useAnalytics from '../services/useAnalytics';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -51,6 +51,8 @@ const HelpCentreRouter = () => {
 	useEffect(() => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
 	}, []);
+
+	useAnalytics();
 
 	return (
 		<Main
@@ -88,7 +90,6 @@ export const HelpCentrePage = (
 	<>
 		<PageTitle />
 		<SeoData />
-		<AnalyticsTracker />
 		<HelpCentreRouter />
 		<CMPBanner />
 		<ScrollToTop />
