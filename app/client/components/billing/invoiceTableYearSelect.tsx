@@ -5,7 +5,7 @@ import { headline } from '@guardian/src-foundations/typography';
 import { SvgChevronDownSingle } from '@guardian/src-icons';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 
 interface InvoiceTableYearSelectProps {
 	years: string[];

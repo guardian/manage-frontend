@@ -6,7 +6,7 @@ import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import palette from '../../colours';
 import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { Button } from '@guardian/src-button';
 import { InlineError } from '@guardian/src-user-feedback';
 import { CallCentreNumbers } from '../callCentreNumbers';

@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';
 import { avatarImg } from './liveChatBase64Images';
 import { liveChatCss } from './liveChatCssOverrides';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { conf } from '../../../server/config';
 
 let areAgentsAvailable = false;

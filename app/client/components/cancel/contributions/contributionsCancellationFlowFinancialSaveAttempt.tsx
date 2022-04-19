@@ -13,7 +13,7 @@ import {
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
-import { trackEventInOphanOnly } from '../../analytics';
+import { trackEventInOphanOnly } from '../../../services/analytics';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { getIsPayingMinAmount } from './utils';
 

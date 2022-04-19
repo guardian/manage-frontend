@@ -5,7 +5,7 @@ import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { useState } from 'react';
 import { minWidth } from '../styles/breakpoints';
-import { trackEvent } from './analytics';
+import { trackEvent } from '../services/analytics';
 import { CallCentreEmailAndNumbers } from './callCenterEmailAndNumbers';
 import { NAV_LINKS } from './nav/navConfig';
 import { PageContainer } from './page';

@@ -5,7 +5,7 @@ import { FC, useEffect } from 'react';
 import * as React from 'react';
 import palette from '../../../colours';
 import { sans } from '../../../styles/fonts';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { Button } from '../../buttons';
 import { Spinner } from '../../spinner';
 import * as AvatarAPI from '../idapi/avatar';

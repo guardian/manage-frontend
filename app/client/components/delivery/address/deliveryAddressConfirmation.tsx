@@ -14,7 +14,7 @@ import { dateString } from '../../../../shared/dates';
 import { ProductDetail } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import AsyncLoader from '../../asyncLoader';
 import { LinkButton } from '../../buttons';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -120,8 +120,7 @@ const AddressConfirmation = (props: ProductType) => {
 							`}
 						>
 							Delivery address
-							{props.delivery
-								?.enableDeliveryInstructionsUpdate &&
+							{props.delivery?.enableDeliveryInstructionsUpdate &&
 								' and instructions'}
 						</h2>
 						<dl
@@ -224,9 +223,8 @@ const AddressConfirmation = (props: ProductType) => {
 										'delivery_address_update_confirmation',
 									eventAction: 'click',
 									eventLabel: `manage_${props.urlPart}`,
-								})
-							}
-							}
+								});
+							}}
 						/>
 					</div>
 					<p
@@ -341,6 +339,5 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 		{props.message}
 	</div>
 );
-
 
 export default DeliveryAddressConfirmation;

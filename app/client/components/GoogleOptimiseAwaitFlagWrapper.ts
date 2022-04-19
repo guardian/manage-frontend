@@ -1,5 +1,5 @@
 import { Globals } from '../../shared/globals';
-import { applyAnyOptimiseExperiments } from './analytics';
+import { applyAnyOptimiseExperiments } from '../services/analytics';
 
 export interface GlobalsWithExperimentFlags extends Globals {
 	experimentFlags?: {

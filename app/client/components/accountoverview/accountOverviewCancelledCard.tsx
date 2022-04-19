@@ -9,7 +9,7 @@ import {
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { Button } from '../buttons';
 import { ErrorIcon } from '../svgs/errorIcon';
 import { GiftIcon } from '../svgs/giftIcon';

@@ -5,7 +5,7 @@ import { textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
 import { useState } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import {
 	h2Css,
 	innerSectionCss,

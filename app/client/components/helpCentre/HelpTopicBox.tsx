@@ -5,7 +5,7 @@ import { textSans } from '@guardian/src-foundations/typography';
 import { Link } from '@reach/router';
 import Color from 'color';
 import { minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
 import { HelpCentreTopic } from './helpCentreConfig';
 import {

@@ -17,7 +17,7 @@ import {
 import { isProduct } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { Button } from '@guardian/src-button';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';

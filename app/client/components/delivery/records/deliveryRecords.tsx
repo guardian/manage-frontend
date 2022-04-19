@@ -19,7 +19,7 @@ import {
 	holidaySuspensionDeliveryProblem,
 } from '../../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
 import { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';

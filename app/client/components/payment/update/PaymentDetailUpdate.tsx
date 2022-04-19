@@ -28,7 +28,7 @@ import { getStripeKey } from '../../../stripe';
 import OverlayLoader from '../../OverlayLoader';
 import { createProductDetailFetch } from '../../../productUtils';
 import { processResponse } from '../../../utils';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { ErrorSummary } from './Summary';
 import { DirectDebitLogo } from '../directDebitLogo';
 import { cardTypeToSVG } from '../cardDisplay';
