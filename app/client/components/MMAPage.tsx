@@ -19,7 +19,6 @@ import global from '../styles/global';
 import { CMPBanner } from './consent/CMPBanner';
 import { Main } from './main';
 import MMAPageSkeleton from './MMAPageSkeleton';
-import { ScrollToTop } from './scrollToTop';
 import Maintenance from './maintenance';
 import {
 	isSignedIn,
@@ -29,6 +28,7 @@ import {
 import useAnalytics from '../services/useAnalytics';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
+import useScrollToTop from '../services/useScrollToTop';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -216,6 +216,7 @@ const MMARouter = () => {
 	}, []);
 
 	useAnalytics();
+	useScrollToTop();
 
 	return (
 		<Main signInStatus={signInStatus} requiresSignIn={pageRequiresSignIn()}>
@@ -377,7 +378,6 @@ const MMARouter = () => {
 							</Route>
 						),
 					)}
-					;
 					{Object.values(PRODUCT_TYPES)
 						.filter(shouldHaveHolidayStopsFlow)
 						.map((productType: ProductTypeWithHolidayStopsFlow) => (
@@ -471,6 +471,5 @@ export const MMAPage = (
 	<BrowserRouter>
 		<MMARouter />
 		<CMPBanner />
-		<ScrollToTop />
 	</BrowserRouter>
 );

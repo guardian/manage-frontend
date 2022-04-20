@@ -5,11 +5,9 @@ import { fonts } from '../styles/fonts';
 import global from '../styles/global';
 import { CMPBanner } from './consent/CMPBanner';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
-import { SeoData } from './helpCentre/seoData';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
 import { LiveChat } from './liveChat/liveChat';
 import { Main } from './main';
-import { ScrollToTop } from './scrollToTop';
 import {
 	isSignedIn,
 	pageRequiresSignIn,
@@ -17,6 +15,7 @@ import {
 } from '../services/signInStatus';
 import useAnalytics from '../services/useAnalytics';
 import { setPageTitle } from '../services/pageTitle';
+import useScrollToTop from '../services/useScrollToTop';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -54,6 +53,7 @@ const HelpCentreRouter = () => {
 
 	useAnalytics();
 	setPageTitle();
+	useScrollToTop();
 
 	return (
 		<Main
@@ -111,6 +111,5 @@ export const HelpCentrePage = (
 	<BrowserRouter>
 		<HelpCentreRouter />
 		<CMPBanner />
-		<ScrollToTop />
 	</BrowserRouter>
 );
