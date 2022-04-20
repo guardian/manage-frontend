@@ -180,7 +180,9 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 								border: 4px solid ${news[400]};
 							`}
 						>
-							feedback validation error message here
+							Please insert your feedback into the textbox before
+							submitting. Otherwise select ‘Confirm cancellation’
+							to continue
 						</InlineError>
 					)}
 					<Button priority="secondary" onClick={submitFeedback}>
@@ -291,12 +293,6 @@ const ConfirmCancellationAndReturnRow = (
 };
 
 const CancellationReasonReview = () => {
-	/*
-	const outstandingCredits = useContext(
-		CancellationOutstandingCreditsContext,
-	);
-	*/
-
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -378,8 +374,6 @@ const CancellationReasonReview = () => {
 			(!holidayStopCreditFetch.data ||
 				!deliveryProblemCreditFetch.data)) ||
 		!cancellationCaseFetch.data;
-
-	// requiresCancellationEscalation(holidayStopCreditFetch.data.publicationsToRefund, deliveryProblemCreditFetch.data.results);
 
 	return (
 		<>
