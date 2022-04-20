@@ -1,4 +1,4 @@
-import { Location } from '@reach/router';
+import { useLocation } from 'react-router';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -112,31 +112,31 @@ const MMALocationObjectArr: LocationObject[] = [
 	},
 ];
 
-const MMAPageSkeleton = () => (
-	<Location>
-		{({ location }) => {
-			const selectedMMALocationObject = MMALocationObjectArr.filter(
-				(currentObject) =>
-					location.pathname === currentObject.path ||
-					location.pathname === currentObject.path + '/',
-			)[0];
+const MMAPageSkeleton = () => {
+	const location = useLocation();
 
-			if (selectedMMALocationObject) {
-				return (
-					<PageContainer
-						selectedNavItem={
-							selectedMMALocationObject.selectedNavItem
-						}
-						pageTitle={selectedMMALocationObject.title}
-					>
-						<WithStandardTopMargin>
-							<Spinner />
-						</WithStandardTopMargin>
-					</PageContainer>
-				);
+	const selectedMMALocationObject = MMALocationObjectArr.filter(
+		(currentObject) =>
+			location.pathname === currentObject.path ||
+			location.pathname === currentObject.path + '/',
+	)[0];
+
+	if (!selectedMMALocationObject) {
+		return null;
+	}
+
+	return (
+		<PageContainer
+			selectedNavItem={
+				selectedMMALocationObject.selectedNavItem
 			}
-		}}
-	</Location>
-);
+			pageTitle={selectedMMALocationObject.title}
+		>
+			<WithStandardTopMargin>
+				<Spinner />
+			</WithStandardTopMargin>
+		</PageContainer>
+	);
+};
 
 export default MMAPageSkeleton;
