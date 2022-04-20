@@ -1,6 +1,5 @@
 import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { navigate } from '@reach/router';
+import { news, space } from '@guardian/src-foundations';
 import { ChangeEvent, useContext, useState } from 'react';
 import { WithProductType } from '../../../shared/productTypes';
 import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
@@ -8,11 +7,11 @@ import palette from '../../colours';
 import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../analytics';
-import { Button } from '../buttons';
+import { Button } from '@guardian/src-button';
+import { InlineError } from '@guardian/src-user-feedback';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { ProgressIndicator } from '../progressIndicator';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import { ReturnToAccountOverviewButton } from '../wizardRouterAdapter';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
 import {
@@ -25,7 +24,7 @@ import {
 	CancellationContext,
 	CancellationContextInterface,
 } from './CancellationContainer';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
 import useFetch from '../../services/useFetch';
 import {
@@ -74,6 +73,8 @@ interface FeedbackFormProps
 const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 	const [feedback, setFeedback] = useState<string>('');
 	const [hasHitSubmit, setHasHitSubmit] = useState<boolean>(false);
+	const [inFeedbackValidationErrorState, setFeedbackValidationErrorState] =
+		useState<boolean>(false);
 
 	const getFeedbackThankYouRenderer = (reason: CancellationReason) => {
 		return () => (
@@ -104,11 +105,15 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 
 	const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		setFeedback(event.target.value);
+		setFeedbackValidationErrorState(false);
 	};
 
 	const submitFeedback = () => {
-		setHasHitSubmit(true);
-		gaTrackFeedback('submitted');
+		if (feedback.length) {
+			setHasHitSubmit(true);
+			gaTrackFeedback('submitted');
+		}
+		setFeedbackValidationErrorState(!feedback.length);
 	};
 
 	return hasHitSubmit ? (
@@ -167,11 +172,20 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 						You have {props.characterLimit - feedback.length}{' '}
 						characters remaining
 					</div>
-					<Button
-						onClick={submitFeedback}
-						text="Submit feedback"
-						disabled={feedback.length === 0}
-					/>
+					{inFeedbackValidationErrorState && (
+						<InlineError
+							cssOverrides={css`
+								padding: ${space[5]}px;
+								margin-bottom: ${space[4]}px;
+								border: 4px solid ${news[400]};
+							`}
+						>
+							feedback validation error message here
+						</InlineError>
+					)}
+					<Button priority="secondary" onClick={submitFeedback}>
+						Submit feedback
+					</Button>
 					<ConfirmCancellationAndReturnRow
 						hide={!!props.reason.hideSaveActions}
 						reasonId={props.reason.reasonId}
@@ -221,6 +235,7 @@ const ConfirmCancellationAndReturnRow = (
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
+	const navigate = useNavigate();
 
 	return (
 		<>
@@ -244,7 +259,6 @@ const ConfirmCancellationAndReturnRow = (
 						}}
 					>
 						<Button
-							text="Confirm cancellation"
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
@@ -258,11 +272,17 @@ const ConfirmCancellationAndReturnRow = (
 									},
 								});
 							}}
-							right
-						/>
+						>
+							Confirm cancellation
+						</Button>
 					</div>
 					<div>
-						<ReturnToAccountOverviewButton />
+						<Button
+							priority="tertiary"
+							onClick={() => navigate('/')}
+						>
+							Return to your account
+						</Button>
 					</div>
 				</div>
 			)}

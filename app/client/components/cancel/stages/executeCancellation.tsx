@@ -1,28 +1,15 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { ReactNode, useContext } from 'react';
-import {
-	isProduct,
-	MembersDataApiItem,
-	MembersDataApiItemContext,
-	ProductDetail,
-} from '../../../../shared/productResponse';
+import { isProduct, ProductDetail } from '../../../../shared/productResponse';
 import { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
 import AsyncLoader from '../../asyncLoader';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';
-import { ReturnToAccountOverviewButton } from '../../wizardRouterAdapter';
-import {
-	CancellationCaseIdContext,
-	cancellationEffectiveToday,
-	CancellationReasonContext,
-} from '../cancellationContexts';
-import { RouteableStepPropsWithCancellationFlow } from '../cancellationFlow';
-import {
-	CancellationFlowEscalationCheck,
-	generateEscalationCausesList,
-} from '../cancellationFlowEscalationCheck';
+import { Button } from '@guardian/src-button';
+import { cancellationEffectiveToday } from '../cancellationContexts';
+import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
 import { OptionalCancellationReasonId } from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../cancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
@@ -32,7 +19,7 @@ import {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
@@ -81,12 +68,25 @@ const getCaseUpdateFuncForEscalation =
 			Priority: 'High',
 		});
 
+const ReturnToAccountButton = () => {
+	const navigate = useNavigate();
+	return (
+		<Button
+			cssOverrides={css`
+				margin-top: ${space[5]}px;
+			`}
+			onClick={() => navigate('/')}
+		>
+			Return to your account
+		</Button>
+	);
+};
+
 const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
 	(
 		<div>
 			{body}
-			<div css={{ height: '20px' }} />
-			<ReturnToAccountOverviewButton />
+			<ReturnToAccountButton />
 		</div>
 	);
 
@@ -124,7 +124,7 @@ const ExecuteCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	if (!routerState?.selectedReasonId || routerState?.caseId) {
+	if (!routerState?.selectedReasonId || !routerState?.caseId) {
 		return <Navigate to="../" />;
 	}
 
