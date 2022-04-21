@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
-import { CMPBanner } from './consent/CMPBanner';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
 import { LiveChat } from './liveChat/liveChat';
@@ -16,6 +15,7 @@ import {
 import useAnalytics from '../services/useAnalytics';
 import { setPageTitle } from '../services/pageTitle';
 import useScrollToTop from '../services/useScrollToTop';
+import useConsent from '../services/useConsent';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -53,6 +53,7 @@ const HelpCentreRouter = () => {
 
 	useAnalytics();
 	setPageTitle();
+	useConsent();
 	useScrollToTop();
 
 	return (
@@ -110,6 +111,5 @@ const HelpCentreRouter = () => {
 export const HelpCentrePage = (
 	<BrowserRouter>
 		<HelpCentreRouter />
-		<CMPBanner />
 	</BrowserRouter>
 );

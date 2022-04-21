@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { getGeoLocation } from '../../geolocation';
+import { getGeoLocation } from '../geolocation';
 
-export const CMPBanner = () => {
+const useConsent = () => {
 	useEffect(() => {
 		import('@guardian/consent-management-platform').then(({ cmp }) => {
 			cmp.init({
@@ -11,6 +11,6 @@ export const CMPBanner = () => {
 			});
 		});
 	}, []);
-
-	return null;
 };
+
+export default useConsent;

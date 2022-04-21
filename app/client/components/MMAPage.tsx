@@ -16,7 +16,6 @@ import {
 } from '../productUtils';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
-import { CMPBanner } from './consent/CMPBanner';
 import { Main } from './main';
 import MMAPageSkeleton from './MMAPageSkeleton';
 import Maintenance from './maintenance';
@@ -29,6 +28,7 @@ import useAnalytics from '../services/useAnalytics';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 import useScrollToTop from '../services/useScrollToTop';
+import useConsent from '../services/useConsent';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -216,6 +216,7 @@ const MMARouter = () => {
 	}, []);
 
 	useAnalytics();
+	useConsent();
 	useScrollToTop();
 
 	return (
@@ -470,6 +471,5 @@ const MMARouter = () => {
 export const MMAPage = (
 	<BrowserRouter>
 		<MMARouter />
-		<CMPBanner />
 	</BrowserRouter>
 );

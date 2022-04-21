@@ -138,7 +138,7 @@ const useAnalytics = () => {
 			// TODO add ophan pageViewId as a GA dimension
 			applyAnyOptimiseExperiments();
 		}
-	}, [location, cmpIsInitialised]);
+	}, [location, cmpIsInitialised, gaIsInitialised]);
 };
 
 export default useAnalytics;
