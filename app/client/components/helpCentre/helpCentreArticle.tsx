@@ -25,8 +25,8 @@ import {
 	LinkNode,
 	TextNode,
 } from './HelpCentreTypes';
-import { PageTitle } from './pageTitle';
-import { SeoData } from './seoData';
+import { setPageTitle } from '../../services/pageTitle';
+import useHelpArticleSeo from '../../services/useHelpArticleSeo';
 
 export interface HelpCentreArticleProps extends RouteComponentProps {
 	articleCode?: string;
@@ -65,11 +65,12 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
 		max-width: 620px;
 		color: ${neutral['7']};
 	`;
+	setPageTitle(article?.title);
+
+	useHelpArticleSeo(article);
 
 	return (
 		<>
-			<PageTitle title={article?.title} />
-			<SeoData article={article} />
 			<div css={articleContainerCss}>
 				<h2 css={h2Css}>{article?.title}</h2>
 				{article ? (

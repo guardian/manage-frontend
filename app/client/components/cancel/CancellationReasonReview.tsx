@@ -178,6 +178,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 								padding: ${space[5]}px;
 								margin-bottom: ${space[4]}px;
 								border: 4px solid ${news[400]};
+								text-align: left;
 							`}
 						>
 							Please insert your feedback into the textbox before

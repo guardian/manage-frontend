@@ -8,12 +8,14 @@ import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
 import { HelpCentreTopic } from './helpCentreConfig';
+import { Button } from '@guardian/src-button';
 import {
 	linkAnchorStyle,
 	linkArrowStyle,
 	linkListItemStyle,
 	linksListStyle,
 } from './helpCentreStyles';
+import { useNavigate } from 'react-router-dom';
 
 interface HelpTopicBoxProps {
 	topic: HelpCentreTopic;
@@ -74,53 +76,69 @@ const linksLisWithMargintStyle = css`
 	padding: 0 ${space[3]}px;
 `;
 
-export const HelpTopicBox = (props: HelpTopicBoxProps) => (
-	<div css={boxHolderStyle}>
-		<h2 css={boxTitleStyle}>
-			<i css={iconStyle}>{getHelpSectionIcon(props.topic.id)}</i>
-			{props.topic.title}
-		</h2>
-		<ul css={linksLisWithMargintStyle}>
-			{props.topic.links.map((question, questionIndex) => (
-				<li
-					key={`${props.topic.id}Question-${questionIndex}`}
-					css={linkListItemStyle}
-				>
-					<Link
-						to={question.link}
-						css={linkAnchorStyle}
-						onClick={() => {
-							trackEvent({
-								eventCategory: 'help-centre',
-								eventAction: 'popular-topic-q-click',
-								eventLabel: `${props.topic.id}-${question.id}`,
-							});
-						}}
+export const HelpTopicBox = (props: HelpTopicBoxProps) => {
+	const navigate = useNavigate();
+	return (
+		<div css={boxHolderStyle}>
+			<h2 css={boxTitleStyle}>
+				<i css={iconStyle}>{getHelpSectionIcon(props.topic.id)}</i>
+				{props.topic.title}
+			</h2>
+			<ul css={linksLisWithMargintStyle}>
+				{props.topic.links.map((question, questionIndex) => (
+					<li
+						key={`${props.topic.id}Question-${questionIndex}`}
+						css={linkListItemStyle}
 					>
-						{question.title}
-					</Link>
-					<span css={linkArrowStyle} />
-				</li>
-			))}
-		</ul>
-		<div
-			css={css`
-				margin: auto 11px 20px 11px;
-			`}
-		>
-			<Link
-				to={props.topic.seeAllLink}
-				css={seeAllAnchorStyle}
-				onClick={() => {
-					trackEvent({
-						eventCategory: 'help-centre',
-						eventAction: 'popular-topic-see-all-click',
-						eventLabel: props.topic.id,
-					});
-				}}
+						<Link
+							to={question.link}
+							css={linkAnchorStyle}
+							onClick={() => {
+								trackEvent({
+									eventCategory: 'help-centre',
+									eventAction: 'popular-topic-q-click',
+									eventLabel: `${props.topic.id}-${question.id}`,
+								});
+							}}
+						>
+							{question.title}
+						</Link>
+						<span css={linkArrowStyle} />
+					</li>
+				))}
+			</ul>
+			<div
+				css={css`
+					margin: auto 11px 20px 11px;
+				`}
 			>
-				See all
-			</Link>
+				<Link
+					to={props.topic.seeAllLink}
+					css={seeAllAnchorStyle}
+					onClick={() => {
+						trackEvent({
+							eventCategory: 'help-centre',
+							eventAction: 'popular-topic-see-all-click',
+							eventLabel: props.topic.id,
+						});
+					}}
+				>
+					See all
+				</Link>
+				<Button
+					priority="secondary"
+					onClick={() => {
+						trackEvent({
+							eventCategory: 'help-centre',
+							eventAction: 'popular-topic-see-all-click',
+							eventLabel: props.topic.id,
+						});
+						navigate(props.topic.seeAllLink);
+					}}
+				>
+					See all
+				</Button>
+			</div>
 		</div>
-	</div>
-);
+	);
+};
