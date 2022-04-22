@@ -53,24 +53,6 @@ const iconStyle = css`
 	left: 11px;
 `;
 
-const seeAllAnchorStyle = css`
-	display: inline-block;
-	${textSans.small({ fontWeight: 'bold' })};
-	line-height: 36px;
-	min-height: 36px;
-	height: 36px;
-	border-radius: 18px;
-	padding: 0 16px;
-	color: ${brand[400]};
-	background-color: ${brand[800]};
-	:hover {
-		background-color: ${Color(brand[800], 'hex').darken(0.1).string()};
-	}
-	:visited {
-		color: ${brand[400]};
-	}
-`;
-
 const linksLisWithMargintStyle = css`
 	${linksListStyle};
 	padding: 0 ${space[3]}px;
@@ -112,19 +94,6 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => {
 					margin: auto 11px 20px 11px;
 				`}
 			>
-				<Link
-					to={props.topic.seeAllLink}
-					css={seeAllAnchorStyle}
-					onClick={() => {
-						trackEvent({
-							eventCategory: 'help-centre',
-							eventAction: 'popular-topic-see-all-click',
-							eventLabel: props.topic.id,
-						});
-					}}
-				>
-					See all
-				</Link>
 				<Button
 					priority="secondary"
 					onClick={() => {
