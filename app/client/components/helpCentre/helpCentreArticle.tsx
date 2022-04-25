@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
-import { LinkButton } from '../buttons';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isArticleLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import { SelectedTopicObjectContext } from '../sectionContent';
@@ -26,13 +25,12 @@ import {
 } from './HelpCentreTypes';
 import { setPageTitle } from '../../services/pageTitle';
 import useHelpArticleSeo from '../../services/useHelpArticleSeo';
-import {useNavigate, useParams} from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
 
 const HelpCentreArticle = () => {
 	const [article, setArticle] = useState<Article | undefined>(undefined);
 
-	const {articleCode} = useParams();
+	const { articleCode } = useParams();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -97,13 +95,14 @@ const HelpCentreArticle = () => {
 									Or use our contact form to get in touch and
 									we’ll get back to you as soon as possible.
 								</p>
-								<LinkButton
-									to="/help-centre/contact-us"
-									text={'Contact us'}
-									fontWeight={'bold'}
-									textColour={`${brand['400']}`}
-									colour={`${brand['800']}`}
-								/>
+								<Button
+									priority="secondary"
+									onClick={() => {
+										navigate('/help-centre/contact-us');
+									}}
+								>
+									Contact us
+								</Button>
 							</>
 						)}
 					</>

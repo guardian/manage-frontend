@@ -9,7 +9,6 @@ import { trackEvent } from '../services/analytics';
 import { CallCentreEmailAndNumbers } from './callCenterEmailAndNumbers';
 import { NAV_LINKS } from './nav/navConfig';
 import { PageContainer } from './page';
-import { RouteComponentProps } from '@reach/router';
 
 interface Question {
 	id: string;
@@ -116,7 +115,7 @@ const pStyle = css`
 	}
 `;
 
-const Help = (_: RouteComponentProps) => {
+const Help = () => {
 	const [callCentreOpen, setCallCentreOpen] = useState<boolean>(false);
 	return (
 		<PageContainer selectedNavItem={NAV_LINKS.help} pageTitle="Help">
