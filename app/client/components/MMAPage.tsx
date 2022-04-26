@@ -70,6 +70,13 @@ const CancellationReasonReview = lazy(
 		),
 );
 
+const SavedCancellation = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "SavedCancellation" */ './cancel/stages/savedCancellation'
+		),
+);
+
 const ExecuteCancellation = lazy(
 	() =>
 		import(
@@ -373,6 +380,10 @@ const MMARouter = () => {
 									element={<CancellationReasonReview />}
 								/>
 								<Route
+									path="saved"
+									element={<SavedCancellation />}
+								/>
+								<Route
 									path="confirmed"
 									element={<ExecuteCancellation />}
 								/>
@@ -414,47 +425,6 @@ const MMARouter = () => {
 							</Route>
 						))}
 					<Route path="/help" element={<Help />} />
-					{/*
-					{Object.values(PRODUCT_TYPES)
-						.filter(shouldHaveHolidayStopsFlow)
-						.map((productType: ProductTypeWithHolidayStopsFlow) => (
-							<HolidaysOverview
-								key={productType.urlPart}
-								path={'/suspend/' + productType.urlPart}
-								productType={productType}
-							>
-								<HolidayDateChooser
-									path="create"
-									productType={productType}
-								>
-									<HolidayReview
-										path="review"
-										productType={productType}
-									>
-										<HolidayConfirmed
-											path="confirmed"
-											productType={productType}
-										/>
-									</HolidayReview>
-								</HolidayDateChooser>
-								<HolidayDateChooser
-									path="amend"
-									productType={productType}
-									requiresExistingHolidayStopToAmendInContext
-								>
-									<HolidayReview
-										path="review"
-										productType={productType}
-									>
-										<HolidayConfirmed
-											path="confirmed"
-											productType={productType}
-										/>
-									</HolidayReview>
-								</HolidayDateChooser>
-							</HolidaysOverview>
-						))}
-					 */}
 					{/*Does not require sign in*/}
 					<Route
 						path="/cancel-reminders/*reminderCode"

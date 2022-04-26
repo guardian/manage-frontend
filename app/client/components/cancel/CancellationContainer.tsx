@@ -16,7 +16,10 @@ import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
-import { OptionalCancellationReasonId } from './cancellationReason';
+import {
+	CancellationReason,
+	OptionalCancellationReasonId,
+} from './cancellationReason';
 
 const renderSingleProductOrReturnToAccountOverview =
 	(productType: ProductType) => (data: MembersDataApiItem[]) => {
@@ -58,6 +61,8 @@ export interface CancellationRouterState {
 	caseId?: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
+	updatedContributionAmount?: number;
+	selectedReason?: CancellationReason;
 }
 
 const CancellationContainer = (props: WithProductType<ProductType>) => {

@@ -1,5 +1,4 @@
 import { css } from '@emotion/core';
-import { RouteComponentProps } from '@reach/router';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { sendReminderCancellation } from './identity/idapi/supportReminders';
@@ -26,7 +25,7 @@ const linkStyle = css`
 
 type CancelStatus = 'PENDING' | 'SUCCESS' | 'FAILURE';
 
-export interface CancelRemindersProps extends RouteComponentProps {
+export interface CancelRemindersProps {
 	reminderCode?: string;
 }
 

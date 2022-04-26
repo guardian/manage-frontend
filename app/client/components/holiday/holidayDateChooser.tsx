@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
-import { Link } from '@reach/router';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -41,7 +40,7 @@ import {
 	IssuesImpactedPerYear,
 	PotentialHolidayStopsResponse,
 } from './holidayStopApi';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, Link } from 'react-router-dom';
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,
@@ -491,7 +490,6 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 								color: neutral[20],
 							}}
 							to=".."
-							replace={true}
 						>
 							Cancel
 						</Link>
@@ -503,14 +501,6 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 										selectedRange &&
 										issuesImpactedPerYearBySelection;
 									if (readyForReview) {
-										console.log(
-											'create, selectedRange = ',
-											selectedRange,
-										);
-										console.log(
-											'create publicationsImpacted = ',
-											publicationsImpacted,
-										);
 										navigate('../review');
 									} else {
 										setShowReviewWarning(true);

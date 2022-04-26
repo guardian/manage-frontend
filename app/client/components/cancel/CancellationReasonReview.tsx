@@ -418,7 +418,7 @@ const CancellationReasonReview = () => {
 									?.publicationsToRefund,
 								deliveryProblemCreditFetch.data?.results,
 								routerState.cancellationPolicy,
-							) && reason.escalationSaveBody !== undefined
+							) && !!reason.escalationSaveBody
 								? reason.escalationSaveBody
 								: reason.saveBody}
 						</p>

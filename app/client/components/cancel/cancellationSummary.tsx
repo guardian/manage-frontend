@@ -1,6 +1,5 @@
 import { css } from '@emotion/core';
 import { brand } from '@guardian/src-foundations/palette';
-import { Link } from '@reach/router';
 import { cancellationFormatDate } from '../../../shared/dates';
 import { ProductDetail, Subscription } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
@@ -12,6 +11,7 @@ import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { hrefStyle } from './cancellationConstants';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
+import { Link } from 'react-router-dom';
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -79,7 +79,7 @@ const actuallyCancelled = (
 										}
 									`}
 									to={deliveryRecordsLink}
-									state={productDetail}
+									state={{ productDetail }}
 								>
 									view your previous deliveries
 								</Link>{' '}
@@ -93,7 +93,7 @@ const actuallyCancelled = (
 										}
 									`}
 									to={deliveryRecordsLink}
-									state={productDetail}
+									state={{ productDetail }}
 								>
 									report a delivery problem
 								</Link>

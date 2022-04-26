@@ -3,8 +3,8 @@ import { breakpoints } from '@guardian/src-foundations';
 import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
 import { ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 import * as React from 'react';
 import { minWidth } from '../styles/breakpoints';
 // import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
@@ -36,9 +36,7 @@ interface PageHeaderContainerProps extends LeftSideNavProps {
 	title: string | ReactElement;
 }
 
-const PageHeaderContainer: React.SFC<PageHeaderContainerProps> = (
-	props: PageHeaderContainerProps,
-) => {
+const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	const gridBasev2 = () => {
 		return `
       display: grid;
@@ -223,9 +221,7 @@ interface PageNavAndContentContainerProps extends LeftSideNavProps {
 	withoutNav?: true;
 }
 
-const PageNavAndContentContainer: React.SFC<PageNavAndContentContainerProps> = (
-	props: PageNavAndContentContainerProps,
-) => (
+const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 	<div
 		css={{
 			...gridBase,
