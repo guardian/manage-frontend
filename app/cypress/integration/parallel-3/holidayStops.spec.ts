@@ -76,6 +76,7 @@ describe('Holiday stops', () => {
 		cy.findByText('Amend').click();
 
 		cy.findByText('Choose the dates you will be away').should('exist');
+		cy.findByText('Please select your new dates...').should('exist');
 		cy.get('[aria-label="day"]').eq(0).should('have.value', '9');
 		cy.get('[aria-label="month"]').eq(0).should('have.value', '2');
 		cy.get('[aria-label="year"]').eq(0).should('have.value', '2022');
@@ -85,13 +86,17 @@ describe('Holiday stops', () => {
 
 		cy.get('[data-cy="date_picker"] div').eq(16).click();
 		cy.get('[data-cy="date_picker"] div').eq(18).click();
+		cy.wait('@fetch_potential_holidays');
 
 		cy.get('[aria-label="day"]').eq(0).should('have.value', '16');
 		cy.get('[aria-label="day"]').eq(1).should('have.value', '18');
+		cy.get('[data-cy="suspended-issues"]')
+			.contains('Suspending')
+			.contains('1 issue');
 
 		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
 		cy.get('@product_detail.all').should('have.length', 1);
-		cy.get('@fetch_potential_holidays.all').should('have.length', 3);
+		cy.get('@fetch_potential_holidays.all').should('have.length', 2);
 	});
 
 	it('can not create a holiday stop for date range when there are no deliveries', () => {
