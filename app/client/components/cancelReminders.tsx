@@ -35,7 +35,6 @@ const CancelReminders = (props: CancelRemindersProps) => {
 	useEffect(() => {
 		if (props.reminderCode) {
 			sendReminderCancellation(props.reminderCode).then((response) => {
-				console.log(response);
 				if (!response.ok) {
 					setCancelStatus('FAILURE');
 					Sentry.captureMessage(

@@ -395,7 +395,6 @@ export const PaymentMethodUpdated = ({
 				icon={<ArrowIcon pointingLeft />}
 				iconSide="left"
 				onClick={() => {
-					console.log('navigate to account overview');
 					navigate('/');
 				}}
 			>
