@@ -9,7 +9,7 @@ import {
 } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
 import { ProductDetail } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
@@ -21,7 +21,6 @@ import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { TickInCircle } from '../../svgs/tickInCircle';
-import { visuallyNavigateToParent } from '../../wizardRouterAdapter';
 import { updateAddressFetcher } from './deliveryAddressApi';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {
@@ -255,7 +254,7 @@ const AddressConfirmation = (props: ProductType) => {
 					{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 				</>
 			) : (
-				visuallyNavigateToParent()
+				<Navigate to=".." replace />
 			)}
 		</>
 	);
@@ -304,7 +303,7 @@ const DeliveryAddressConfirmation = (props: WithProductType<ProductType>) => {
 			loadingMessage={'Updating delivery address details...'}
 		/>
 	) : (
-		visuallyNavigateToParent()
+		<Navigate to=".." replace />
 	);
 };
 

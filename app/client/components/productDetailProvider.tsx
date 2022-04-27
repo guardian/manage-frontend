@@ -7,7 +7,7 @@ import {
 } from '../../shared/productResponse';
 import { WithProductType, ProductType } from '../../shared/productTypes';
 import { createProductDetailFetcher } from '../productUtils';
-import { visuallyNavigateToParent } from './wizardRouterAdapter';
+import { Navigate } from 'react-router-dom';
 
 export interface ProductDetailProviderProps
 	extends WithProductType<ProductType> {
@@ -49,7 +49,7 @@ export const ProductDetailProvider = (props: ProductDetailProviderProps) => {
 	// ie definitely no browser history state
 	else if (selectedProductDetail === null) {
 		return props.forceRedirectToAccountOverviewIfNoBrowserHistoryState ? (
-			visuallyNavigateToParent(true)
+			<Navigate to="/" replace />
 		) : (
 			<MembersDatApiAsyncLoader
 				fetch={createProductDetailFetcher(props.productType)}
@@ -74,5 +74,5 @@ const renderSingleProductOrReturnToAccountOverview =
 		if (filteredProductDetails.length === 1) {
 			return props.children(filteredProductDetails[0]);
 		}
-		return visuallyNavigateToParent(true);
+		<Navigate to="/" replace />;
 	};

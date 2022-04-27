@@ -4,14 +4,13 @@ import { space } from '@guardian/src-foundations';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { useContext, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
-import { visuallyNavigateToParent } from '../../wizardRouterAdapter';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {
 	AddressChangedInformationContext,
@@ -32,7 +31,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 
 	if (!newDeliveryAddressContext.addressStateObject?.addressLine1) {
-		visuallyNavigateToParent();
+		<Navigate to=".." replace />;
 	}
 
 	const subHeadingCss = `
@@ -247,7 +246,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 			</div>
 		</>
-	)
+	);
 };
 
 export default DeliveryAddressReview;

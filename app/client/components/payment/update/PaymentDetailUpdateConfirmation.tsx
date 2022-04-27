@@ -14,7 +14,6 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';
 import { GenericErrorScreen } from '../../genericErrorScreen';
-import { ReturnToAccountOverviewButton } from '../../wizardRouterAdapter';
 import { textSans } from '@guardian/src-foundations/typography';
 import { CardDisplay } from '../cardDisplay';
 import { DirectDebitDisplay } from '../directDebitDisplay';
@@ -23,7 +22,11 @@ import { SepaDisplay } from '../sepaDisplay';
 import { InfoSummary } from './Summary';
 import { useContext } from 'react';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+
+import { Button } from '@guardian/src-button';
+import { ArrowIcon } from '../../svgs/arrowIcon';
+
 interface ConfirmedNewPaymentDetailsRendererProps {
 	subscription: Subscription;
 	subHasExpectedPaymentType: boolean;
@@ -329,8 +332,9 @@ export const PaymentMethodUpdated = ({
 	paymentFailureRecoveryMessage,
 	subHasExpectedPaymentType,
 	previousProductDetail,
-}: PaymentMethodUpdatedProps) =>
-	Array.isArray(subs) && subs.length === 1 ? (
+}: PaymentMethodUpdatedProps) => {
+	const navigate = useNavigate();
+	return Array.isArray(subs) && subs.length === 1 ? (
 		<>
 			<h1
 				css={css`
@@ -386,9 +390,20 @@ export const PaymentMethodUpdated = ({
 					Array.isArray(subs) && subs.length
 				} subs returned when one was expected`}
 			/>
-			<ReturnToAccountOverviewButton />
+			<Button
+				priority="tertiary"
+				icon={<ArrowIcon pointingLeft />}
+				iconSide="left"
+				onClick={() => {
+					console.log('navigate to account overview');
+					navigate('/');
+				}}
+			>
+				Return to your account
+			</Button>
 		</>
 	);
+};
 
 const PaymentDetailUpdateConfirmation = () => {
 	const previousProductDetail = useContext(
