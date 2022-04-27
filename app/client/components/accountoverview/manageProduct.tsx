@@ -297,7 +297,7 @@ const InnerContent = ({
 							fontWeight="bold"
 							text="Manage suspensions"
 							to={`/suspend/${specificProductType.urlPart}`}
-							state={productDetail}
+							state={{productDetail}}
 						/>
 					</>
 				)}

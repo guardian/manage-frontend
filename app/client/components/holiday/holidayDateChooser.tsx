@@ -192,7 +192,6 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 
 	const location = useLocation();
 	const routerState = location.state as HolidayStopsRouterState;
-	console.log('create, routerState = ', routerState);
 
 	useEffect(() => {
 		if (
@@ -352,7 +351,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						`}
 					/>
 					{props.isAmendJourney && !existingHolidayStopToAmend && (
-						<Navigate to=".." />
+						<Navigate to=".." state={routerState} />
 					)}
 
 					<h1>Choose the dates you will be away</h1>
@@ -490,6 +489,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 								color: neutral[20],
 							}}
 							to=".."
+							state={routerState}
 						>
 							Cancel
 						</Link>
@@ -501,7 +501,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 										selectedRange &&
 										issuesImpactedPerYearBySelection;
 									if (readyForReview) {
-										navigate('../review');
+										navigate('../review', {state: routerState});
 									} else {
 										setShowReviewWarning(true);
 									}
@@ -530,7 +530,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 				</>
 			);
 		}
-		return <Navigate to=".." />;
+		return <Navigate to=".." state={routerState} />;
 	}
 	return <GenericErrorScreen loggingMessage="No holiday stop response" />;
 };

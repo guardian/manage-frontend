@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateString,
@@ -12,7 +13,6 @@ import {
 } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-// import { Button } from '../buttons';
 import { Button } from '@guardian/src-button';
 import { InfoIcon } from '../svgs/infoIcon';
 import { CollatedCredits } from './collatedCredits';
@@ -28,6 +28,7 @@ import {
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,
+	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
 
@@ -68,9 +69,12 @@ const HolidaysOverview = () => {
 		setExistingHolidayStopToAmend,
 		holidayStopResponse,
 		reload,
+		setSelectedRange,
 	} = holidayStopsContext;
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
 
 	const renewalDate = parseDate(productDetail.subscription.renewalDate).date;
 	const combinedIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
@@ -90,7 +94,8 @@ const HolidaysOverview = () => {
 		<Button
 			onClick={() => {
 				setExistingHolidayStopToAmend(null);
-				navigate('create');
+				setSelectedRange(undefined);
+				navigate('create', {state: routerState});
 			}}
 		>
 			Create suspension

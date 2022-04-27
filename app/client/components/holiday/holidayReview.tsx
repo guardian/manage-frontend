@@ -34,10 +34,11 @@ import {
 } from './holidayStopApi';
 import { SummaryTable } from './summaryTable';
 import { fetchWithDefaultParameters } from '../../fetch';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,
+	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { InlineError } from '@guardian/src-user-feedback';
 
@@ -98,9 +99,12 @@ const HolidayReview = () => {
 		selectedRange,
 		publicationsImpacted,
 		holidayStopResponse,
+		setExistingHolidayStopToAmend,
 	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
 
 	const buildActualRenderer = (
 		holidayStopsResponse: ReloadableGetHolidayStopsResponse,
@@ -193,7 +197,7 @@ const HolidayReview = () => {
 								holidayStopsResponse.existingHolidayStopToAmend,
 							)}
 							render={(_: CreateOrAmendHolidayStopsResponse) => (
-								<Navigate to="../confirmed" />
+								<Navigate to="../confirmed" state={routerState} />
 							)}
 							errorRender={getRenderCreateOrAmendError(
 								holidayStopsResponse.existingHolidayStopToAmend
@@ -230,7 +234,17 @@ const HolidayReview = () => {
 							}}
 						>
 							<Button
-								onClick={() => navigate('..')}
+								onClick={() => {
+									setExistingHolidayStopToAmend({
+										dateRange: selectedRange,
+										publicationsImpacted,
+										mutabilityFlags: {
+											isEndDateEditable: true,
+											isFullyMutable: true
+										}
+									});
+									navigate('../amend', {state: routerState})
+								}}
 								priority="secondary"
 							>
 								Amend
@@ -245,7 +259,7 @@ const HolidayReview = () => {
 								},
 							]}
 						>
-							<Link css={cancelLinkCss} to="../..">
+							<Link css={cancelLinkCss} to=".." state={routerState}>
 								Cancel
 							</Link>
 							<Button
@@ -297,7 +311,7 @@ const HolidayReview = () => {
 			publicationsImpacted,
 		)
 	) : (
-		<Navigate to=".." />
+		<Navigate to=".." state={routerState} />
 	);
 };
 

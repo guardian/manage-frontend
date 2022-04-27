@@ -1,6 +1,6 @@
 import { Button } from '@guardian/src-button';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import AsyncLoader, { ReFetch } from '../asyncLoader';
@@ -9,6 +9,7 @@ import {
 	HolidayStopRequest,
 	MinimalHolidayStopRequest,
 } from './holidayStopApi';
+import { HolidayStopsRouterState } from './HolidayStopsContainer';
 import { formatDateRangeAsFriendly } from './summaryTable';
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
@@ -27,6 +28,8 @@ export const ExistingHolidayStopActions = (
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
 
 	const withdrawHolidayStopFetch = () =>
 		fetch(`/api/holidays/${props.subscriptionName}/${props.id}`, {
@@ -136,7 +139,7 @@ export const ExistingHolidayStopActions = (
 								setExistingHolidayStopToAmend(
 									props as HolidayStopRequest,
 								);
-								navigate('amend');
+								navigate('amend', {state: routerState});
 							}}
 							priority="secondary"
 						>
@@ -161,5 +164,5 @@ export const ExistingHolidayStopActions = (
 		);
 	}
 
-	return 'No longer amendable.';
+	return <span>No longer amendable.</span>;
 };

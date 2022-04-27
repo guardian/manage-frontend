@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { isProduct } from '../../../shared/productResponse';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';
@@ -12,6 +12,7 @@ import { isHolidayStopsResponse } from './holidayStopApi';
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,
+	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
 
@@ -22,10 +23,14 @@ const HolidayConfirmed = () => {
 		selectedRange,
 		publicationsImpacted,
 		holidayStopResponse,
+		setSelectedRange,
+		setPublicationsImpacted,
 		reload,
 	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
 
 	return isHolidayStopsResponse(holidayStopResponse) ? (
 		!!selectedRange && isProduct(productDetail) ? (
@@ -63,16 +68,16 @@ const HolidayConfirmed = () => {
 							priority="secondary"
 							onClick={() => {
 								reload();
-								navigate('../create');
+								setSelectedRange(undefined);
+								setPublicationsImpacted([]);
+								navigate('../create', {state: routerState});
 							}}
 						>
 							Schedule another suspension
 						</Button>
 					</div>
 					<div css={{ marginBottom: '10px', marginLeft: '20px' }}>
-						<Button
-							onClick={() => navigate(`/${productType.urlPart}`)}
-						>
+						<Button onClick={() => navigate(`/`)}>
 							Manage your subscriptions
 						</Button>
 					</div>

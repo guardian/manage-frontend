@@ -71,8 +71,6 @@ export interface MinimalHolidayStopRequest {
 }
 
 export interface HolidayStopRequest extends MinimalHolidayStopRequest {
-	id: string;
-	subscriptionName: string;
 	mutabilityFlags: MutabilityFlags;
 }
 
