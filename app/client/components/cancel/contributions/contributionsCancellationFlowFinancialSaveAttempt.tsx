@@ -6,9 +6,8 @@ import * as Sentry from '@sentry/browser';
 import { useState } from 'react';
 import {
 	isPaidSubscriptionPlan,
-	MembersDataApiItemContext,
 } from '../../../../shared/productResponse';
-import { getMainPlan, isProduct } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { trackEventInOphanOnly } from '../../../services/analytics';
