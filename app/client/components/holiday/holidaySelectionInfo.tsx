@@ -62,7 +62,6 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 							marginRight: '20px',
 						},
 					}}
-					data-cy="suspended-issues"
 				>
 					Suspending{' '}
 					{displayNumberOfIssuesAsText(
@@ -124,7 +123,7 @@ const displayNumberOfIssuesAsText = (
 	numberOfIssues: number,
 	issueKeyword: string,
 ) => (
-	<strong>
+	<strong data-cy="suspension-issue-count">
 		{numberOfIssues}&nbsp;{issueKeyword}
 		{numberOfIssues !== 1 ? 's' : ''}
 	</strong>

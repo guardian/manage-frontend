@@ -299,7 +299,7 @@ const HolidaysOverview = () => {
 					</Button>
 				</div>
 				<div
-					data-cy="create_suspension_cta"
+					data-cy="create-suspension-cta"
 					css={{ marginTop: '10px', alignSelf: 'flex-end' }}
 				>
 					{productDetail.subscription.autoRenew &&
