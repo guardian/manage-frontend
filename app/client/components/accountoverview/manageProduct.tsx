@@ -386,7 +386,6 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 					color: ${brand['500']};
 				`}
 				to={'/cancel/' + props.specificProductType.urlPart}
-				data-cy={`Cancel ${props.friendlyName}`}
 				state={{ productDetail: props.productDetail }}
 			>
 				{shouldContactUsToCancel

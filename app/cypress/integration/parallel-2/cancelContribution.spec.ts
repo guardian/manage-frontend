@@ -63,19 +63,19 @@ describe('Cancel contribution', () => {
 		cy.findByText('Manage recurring contribution').click();
 		cy.wait('@cancelled');
 
-		cy.get('[data-cy="Cancel recurring contribution"]').click();
-		cy.get('[data-cy="cancellation_reasons"] label').first().click();
-		cy.get('[data-cy="cta_container"] a').first().click();
+		cy.findByRole('link', {name: 'Cancel recurring contribution'}).click();
+		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('button', {name: 'Continue'}).click();
 
 		cy.wait('@get_case');
 
-		cy.findByText('Confirm cancellation').click();
+		cy.findByRole('button', {name: 'Confirm cancellation'}).click();
 
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_contribution');
 		cy.wait('@new_product_detail');
 
-		cy.get('[data-cy="cancellation_message"]');
+		cy.findByRole('heading', {name: 'Your recurring contribution is cancelled.'});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
 		cy.get('@cancel_contribution.all').should('have.length', 1);

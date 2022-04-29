@@ -23,7 +23,7 @@ const actuallyCancelled = (
 	return (
 		<>
 			<WithStandardTopMargin>
-				<h3 data-cy="cancellation_message">
+				<h3>
 					Your {productType.friendlyName} is cancelled.
 				</h3>
 				{productType.cancellation &&
