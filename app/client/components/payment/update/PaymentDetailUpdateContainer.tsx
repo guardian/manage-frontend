@@ -46,10 +46,11 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 	}
 
 	const location = useLocation();
-	const state = location.state as LocationState;
+	const routerState = location.state as LocationState;
+	const productDetail = routerState?.productDetail;
 
 	const navItemReferrer = getNavItemFromFlowReferrer(
-		state?.flowReferrer?.title,
+		routerState?.flowReferrer?.title,
 	);
 
 	return (
@@ -67,9 +68,9 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 				},
 			]}
 		>
-			{state.productDetail ? (
+			{productDetail ? (
 				<PaymentUpdateProductDetailContext.Provider
-					value={state.productDetail}
+					value={productDetail}
 				>
 					<Outlet />
 				</PaymentUpdateProductDetailContext.Provider>
