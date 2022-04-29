@@ -7,19 +7,9 @@ import {
 	MMA_AB_TEST_DIMENSION_VALUE
 } from './analytics';
 
-type GaType = (
-	command: string,
-	trackingIdOrObject:
-		| string
-		| { trackingId?: string; cookieDomain: string; name: string }
-		| { hitType: string },
-	cookieDomain?: string,
-	name?: string,
-) => void;
-
 declare global {
 	interface Window {
-		ga?: GaType;
+		ga?: any;
 		gaData?: string;
 		dataLayer?: any;
 	}
