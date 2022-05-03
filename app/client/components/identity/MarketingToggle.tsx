@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { sans } from '../../styles/fonts';
 import { css } from '@emotion/core';
 import { ToggleSwitch } from './ToggleSwitch';
+import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
 
 interface MarketingToggleProps {
 	id: string;
@@ -11,24 +11,8 @@ interface MarketingToggleProps {
 	onClick: (id: string) => {};
 }
 
-const standardText = {
-	fontFamily: sans,
-	fontSize: '14px',
-	lineHeight: '1.333',
-};
-
 const getDescription = (description: MarketingToggleProps['description']) => (
-	<p
-		css={[
-			standardText,
-			{
-				margin: '0',
-				padding: '2.88px 90px 0 0',
-			},
-		]}
-	>
-		{description}
-	</p>
+	<p css={[standardSansText, toggleDescriptionPadding]}>{description}</p>
 );
 
 export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
@@ -36,7 +20,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 	return (
 		<div
 			css={[
-				standardText,
+				standardSansText,
 				{
 					marginTop: '12px',
 					position: 'relative',
@@ -46,11 +30,11 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 			<div css={{ left: 0 }}>
 				<ToggleSwitch
 					cssOverrides={css`
-						${standardText};
-						padding-right: 20px;
+						${standardSansText};
 						font-weight: bold;
 						justify-content: space-between;
 						button {
+							margin-left: 20px;
 							align-self: flex-start;
 							cursor: pointer;
 						}

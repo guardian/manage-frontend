@@ -107,6 +107,13 @@ export const consents = [
 		name: 'Allow the Guardian to send communications by telephone',
 	},
 	{
+		id: 'personalised_advertising',
+		isOptOut: false,
+		isChannel: false,
+		isProduct: false,
+		name: 'Allow personalised advertising using this data - this supports the Guardian',
+	},
+	{
 		id: 'supporter',
 		isOptOut: false,
 		isChannel: false,

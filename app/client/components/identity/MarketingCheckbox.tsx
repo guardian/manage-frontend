@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { sans } from '../../styles/fonts';
 import { Checkbox } from '../checkbox';
+import { standardSansText } from './sharedStyles';
 
 interface MarketingCheckboxProps {
 	id: string;
@@ -10,20 +10,13 @@ interface MarketingCheckboxProps {
 	onClick: (id: string) => {};
 }
 
-const standardText = {
-	fontSize: '14px',
-	fontFamily: sans,
-};
-
 const getTitle = (title: MarketingCheckboxProps['title']) => (
 	<p
 		css={[
-			standardText,
+			standardSansText,
 			{
 				cursor: 'pointer',
-				fontSize: '14px',
 				lineHeight: '22px',
-				fontFamily: sans,
 				fontWeight: 'bold',
 				margin: '0',
 			},
@@ -59,9 +52,8 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 				onClick(id);
 			}}
 			css={[
-				standardText,
+				standardSansText,
 				{
-					lineHeight: '1.333',
 					marginTop: '12px',
 					paddingLeft: '30px',
 					position: 'relative',
