@@ -14,7 +14,7 @@ import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { textSans } from '@guardian/src-foundations/typography';
 import { PaypalLogo } from '../paypalLogo';
 
-export function cardExpired(year: number, month: number) {
+function cardExpired(year: number, month: number) {
 	const expiryTimestamp = new Date(year, month);
 	const now = new Date();
 

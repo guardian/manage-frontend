@@ -138,17 +138,10 @@ export interface CreateOrAmendHolidayStopsResponse {
 // tslint:disable-next-line:max-classes-per-file
 export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<CreateOrAmendHolidayStopsResponse> {}
 
-export const HolidayStopsResponseContext: React.Context<
-	ReloadableGetHolidayStopsResponse | {}
-> = React.createContext({});
-
 export function isHolidayStopsResponse(
 	data: ReloadableGetHolidayStopsResponse | {} | undefined,
 ): data is ReloadableGetHolidayStopsResponse {
-	return (
-		!!data &&
-		data.hasOwnProperty('existing')
-	);
+	return !!data && data.hasOwnProperty('existing');
 }
 
 export const isNotWithdrawn = (holidayStopRequest: HolidayStopRequest) =>

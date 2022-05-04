@@ -7,7 +7,6 @@ import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
 import { minWidth } from '../styles/breakpoints';
-// import { titlepiece } from "../styles/fonts"; TODO: add titlepiece back in with font usage overhaul
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { LeftSideNav, LeftSideNavProps } from './nav/leftSideNav';
 import { NavItem } from './nav/navConfig';
@@ -280,7 +279,7 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 	</div>
 );
 
-export interface Breadcrumbs {
+interface Breadcrumbs {
 	title: string;
 	link?: string;
 	currentPage?: boolean;

@@ -10,7 +10,7 @@ const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 export const cleanSortCode = (sortCode: string) =>
 	sortCode.replace(/[^0-9]/g, '');
 
-export const dashifySortCode = (sortCode: string) => {
+const dashifySortCode = (sortCode: string) => {
 	if (!sortCode) {
 		return sortCode;
 	}

@@ -83,7 +83,7 @@ export const ErrorSummary = ({
 	</div>
 );
 
-export type InfoSummaryProps = SummaryProps;
+type InfoSummaryProps = SummaryProps;
 
 export const InfoSummary = ({
 	message,

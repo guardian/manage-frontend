@@ -37,11 +37,6 @@ interface DeliveryProblemCreditInterface {
 	creditDate?: string | null;
 }
 
-export const DeliveryRecordsProblemContext =
-	createContext<DeliveryRecordsProblemContextInterface>(
-		{} as DeliveryRecordsProblemContextInterface,
-	);
-
 interface DeliveryRecordsAddressContextInterface {
 	address?: DeliveryAddress;
 	setAddress?: Dispatch<SetStateAction<DeliveryAddress | undefined>>;
@@ -60,39 +55,3 @@ export const DeliveryRecordCreditContext =
 
 export const DeliveryRecordsProblemPostPayloadContext =
 	createContext<DeliveryRecordsPostPayload>({});
-
-{
-	/*
-		<DeliveryRecordsProblemContext.Provider
-			value={{
-				subscription: productDetail.subscription,
-				subscriptionCurrency,
-				productName: capitalize(
-					productType.shortFriendlyName || productType.friendlyName,
-				),
-				apiProductName:
-					productType.delivery.records.productNameForProblemReport,
-				problemType: deliveryProblem,
-				affectedRecords: data.results.filter((record) =>
-					selectedProblemRecords.includes(record.id),
-				),
-				deliveryProblemMap: data.deliveryProblemMap,
-				isTestUser: productDetail.isTestUser,
-				showProblemCredit:
-					!(
-						choosenDeliveryProblem ===
-						holidaySuspensionDeliveryProblem.label
-					) &&
-					!productDetail.subscription.cancelledAt &&
-					productDetail.subscription.autoRenew &&
-					!(
-						hasExistingDeliveryProblem &&
-						productType.delivery?.records
-							?.contactUserOnExistingProblemReport
-					),
-				repeatDeliveryProblem: hasExistingDeliveryProblem,
-				contactPhoneNumbers: data.contactPhoneNumbers,
-				resetDeliveryRecordsPage,
-			}}
-			>*/
-}

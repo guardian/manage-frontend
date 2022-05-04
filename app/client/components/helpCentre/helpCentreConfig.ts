@@ -207,7 +207,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
 	},
 ];
 
-export interface HelpCentreMoreQuestionsTopic {
+interface HelpCentreMoreQuestionsTopic {
 	id: string;
 	title: string;
 	links: Link[];
@@ -342,7 +342,7 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 	},
 ];
 
-export interface HelpCentreNavConfig {
+interface HelpCentreNavConfig {
 	id: string;
 	title: string;
 }

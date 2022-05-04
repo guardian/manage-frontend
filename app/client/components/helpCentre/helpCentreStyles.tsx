@@ -118,7 +118,3 @@ export const h2Css = css`
 		font-size: 32px;
 	}
 `;
-
-export const contentDivStyles = css`
-	margin: 0 ${space[3]}px ${space[24]}px ${space[3]}px;
-`;

@@ -49,18 +49,6 @@ const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
 	);
 };
 
-export const FormTextAreaField = <T extends unknown>(
-	props: FormTextAreaProps<T>,
-) => (
-	<FormField
-		name={props.name}
-		label={props.label}
-		formikProps={props.formikProps}
-	>
-		<Field component="textarea" />
-	</FormField>
-);
-
 export const FormSelectField = <T extends unknown>(
 	props: FormSelectProps<T>,
 ) => {

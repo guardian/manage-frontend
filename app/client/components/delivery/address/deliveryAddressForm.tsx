@@ -1,6 +1,13 @@
 import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
 import { space } from '@guardian/src-foundations';
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react';
+import {
+	ChangeEvent,
+	Dispatch,
+	FormEvent,
+	SetStateAction,
+	useContext,
+	useState,
+} from 'react';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import {
 	GROUPED_PRODUCT_TYPES,
@@ -37,7 +44,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { css } from '@emotion/core';
 import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 
-export interface FormStates {
+interface FormStates {
 	INIT: string;
 	PENDING: string;
 	VALIDATION_ERROR: string;
@@ -46,7 +53,7 @@ export interface FormStates {
 	POST_ERROR: string;
 }
 
-export const formStates: FormStates = {
+const formStates: FormStates = {
 	INIT: 'init',
 	PENDING: 'pending',
 	VALIDATION_ERROR: 'validationError',
@@ -69,10 +76,13 @@ const Form = (props: FormProps) => {
 	const navigate = useNavigate();
 
 	const addressStateContext = useContext(NewDeliveryAddressContext);
-	const contactIdToArrayOfProductDetailAndProductType = useContext(ContactIdContext);
+	const contactIdToArrayOfProductDetailAndProductType =
+		useContext(ContactIdContext);
 
-	const addressStateObject = addressStateContext.addressStateObject as DeliveryAddress;
-	const addressSetStateObject = addressStateContext.addressSetStateObject as AddressSetStateObject;
+	const addressStateObject =
+		addressStateContext.addressStateObject as DeliveryAddress;
+	const addressSetStateObject =
+		addressStateContext.addressSetStateObject as AddressSetStateObject;
 
 	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
 		useState<boolean>(false);
@@ -111,10 +121,7 @@ const Form = (props: FormProps) => {
 			country: addressStateObject.country,
 		};
 
-		const isFormValidResponse = isFormValid(
-			formData,
-			subscriptionsNames,
-		);
+		const isFormValidResponse = isFormValid(formData, subscriptionsNames);
 
 		props.setFormErrors({
 			addressLine1: isFormValidResponse.addressLine1,
@@ -124,7 +131,7 @@ const Form = (props: FormProps) => {
 		} as FormValidationResponse);
 
 		if (isFormValidResponse.isValid && acknowledgementChecked) {
-			navigate("review", {state: location.state});
+			navigate('review', { state: location.state });
 		} else {
 			props.setFormStatus(formStates.VALIDATION_ERROR);
 		}
@@ -407,10 +414,10 @@ const Form = (props: FormProps) => {
 };
 
 export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
-
 	const [formStatus, setFormStatus] = useState<string>(formStates.INIT);
 	const [formErrors, setFormErrors] = useState({ isValid: false });
-	const contactIdToArrayOfProductDetailAndProductType = useContext(ContactIdContext);
+	const contactIdToArrayOfProductDetailAndProductType =
+		useContext(ContactIdContext);
 
 	const subHeadingCss = `
 		border-top: 1px solid ${neutral['86']};
@@ -442,53 +449,44 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 			>
 				Update address details
 			</h2>
-			{Object.keys(
-				contactIdToArrayOfProductDetailAndProductType,
-			).length === 0 && (
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType)
+				.length === 0 && (
 				<div>
 					<p>
-						No addresses available for update. If this
-						doesn't seem right please contact us
+						No addresses available for update. If this doesn't seem
+						right please contact us
 					</p>
 					<CallCentreNumbers />
 				</div>
 			)}
-			{Object.keys(
-				contactIdToArrayOfProductDetailAndProductType,
-			).length > 1 && (
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType).length >
+				1 && (
 				<div>
-					<p>
-						You will need to contact us to update your
-						addresses
-					</p>
+					<p>You will need to contact us to update your addresses</p>
 					<CallCentreNumbers />
 				</div>
 			)}
-			{Object.keys(
-				contactIdToArrayOfProductDetailAndProductType,
-			).length === 1 && (
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType)
+				.length === 1 && (
 				<div>
 					{Object.values(
 						contactIdToArrayOfProductDetailAndProductType,
 					).flatMap(flattenEquivalent).length > 1 && (
 						<InfoSection>
-							Please note that changing your address
-							here will update the delivery address
-							for all of your subscriptions.
+							Please note that changing your address here will
+							update the delivery address for all of your
+							subscriptions.
 						</InfoSection>
 					)}
 					{(formStatus === formStates.INIT ||
 						formStatus === formStates.PENDING ||
-						formStatus ===
-							formStates.VALIDATION_ERROR) && (
+						formStatus === formStates.VALIDATION_ERROR) && (
 						<Form
 							formStatus={formStatus}
 							setFormStatus={setFormStatus}
 							formErrors={formErrors}
 							setFormErrors={setFormErrors}
-							productType={
-								props.productType
-							}
+							productType={props.productType}
 							warning={convertToDescriptionListData(
 								addressChangeAffectedInfo(
 									contactIdToArrayOfProductDetailAndProductType,
@@ -499,5 +497,5 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 				</div>
 			)}
 		</>
-	)
-}
+	);
+};

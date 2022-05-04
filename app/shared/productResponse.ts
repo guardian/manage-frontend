@@ -84,16 +84,16 @@ export interface DirectDebitDetails {
 	sortCode: string;
 }
 
-export interface SepaDetails {
-	accountName: string;
-	iban: string;
-}
-
 export interface SubscriptionPlan {
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
 	daysOfWeek?: string[];
+}
+
+interface SepaDetails {
+	accountName: string;
+	iban: string;
 }
 
 interface CurrencyAndIntervalDetail {
@@ -173,7 +173,7 @@ export interface Subscription {
 	cancellationEffectiveDate?: string;
 }
 
-export interface CancelledSubscription {
+interface CancelledSubscription {
 	subscriptionId: string;
 	cancellationEffectiveDate: string;
 	start: string;

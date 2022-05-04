@@ -25,7 +25,7 @@ import Recaptcha from './Recaptcha';
 import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
 import { ErrorSummary } from '../Summary';
 import { SvgArrowRightStraight } from '@guardian/src-icons';
-export interface StripeSetupIntentDetails {
+interface StripeSetupIntentDetails {
 	stripeSetupIntent?: StripeSetupIntent;
 	stripeSetupIntentError?: Error;
 }

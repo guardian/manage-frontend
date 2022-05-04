@@ -25,10 +25,10 @@ interface Props {
 	 */
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 }
-export type Platform = 'android' | 'ios' | 'web';
+type Platform = 'android' | 'ios' | 'web';
 export type LabelPosition = 'left' | 'right';
 
-export interface ToggleSwitchProps extends Props {
+interface ToggleSwitchProps extends Props {
 	/**
 	 * Whether the ToggleSwitch is checked. This is necessary when using the
 	 * [controlled approach](https://reactjs.org/docs/forms.html#controlled-components)

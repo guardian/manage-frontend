@@ -1,6 +1,6 @@
 import { minWidth } from '../../styles/breakpoints';
 
-export interface TheGuardianLogoProps {
+interface TheGuardianLogoProps {
 	width?: number;
 	height?: number;
 	fill: string;
