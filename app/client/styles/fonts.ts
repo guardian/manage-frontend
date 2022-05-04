@@ -1,5 +1,3 @@
-import palette from '../colours';
-
 const fontAssetsUrl = 'https://assets.guim.co.uk/static/frontend/fonts/';
 
 export const fonts = `

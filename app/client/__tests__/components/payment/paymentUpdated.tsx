@@ -3,7 +3,7 @@ import { Subscription } from '../../../../shared/productResponse';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
-} from '../../../components/payment/update/paymentDetailUpdated';
+} from '../../../components/payment/update/PaymentDetailUpdateConfirmation';
 import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
 	guardianWeeklyCard,
@@ -14,9 +14,10 @@ import {
 	guardianWeeklySubscriptionCard,
 	digitalSubscriptionDD,
 } from '../../../fixtures/subscription';
+import { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
 
 // mock functions for NewPaymentMethodDetail type
-const matchesResponse = (_: any) => true;
+const matchesResponse = (_: CardUpdateResponse) => true;
 const subHasExpectedPaymentType = (_?: Subscription) => true;
 const detailToPayloadObject = () => {
 	return {};
@@ -145,12 +146,14 @@ describe('ConfirmedNewPaymentDetailsRenderer component', () => {
 			const { getByText } = render(
 				<ConfirmedNewPaymentDetailsRenderer
 					subscription={data.subscription}
-					newPaymentMethodDetail={data.newPaymentMethodDetail}
+					subHasExpectedPaymentType={true}
 					previousProductDetail={data.previousProductDetail}
 				/>,
 			);
 
-			expectations.map((toTest) => getByText(toTest));
+			expectations.map((toTest) =>
+				expect(getByText(toTest)).toBeTruthy(),
+			);
 		},
 	);
 });
@@ -159,8 +162,9 @@ test('PaymentMethodUpdated component does not display failure message', () => {
 	const { queryByText } = render(
 		<PaymentMethodUpdated
 			subs={[{ subscription: guardianWeeklySubscriptionCard }]}
-			newPaymentMethodDetail={newPaymentMethodDetailCard}
+			subHasExpectedPaymentType={true}
 			previousProductDetail={guardianWeeklyCard}
+			paymentFailureRecoveryMessage="test failure message"
 		/>,
 	);
 
@@ -171,10 +175,11 @@ test('PaymentMethodUpdated component displays failure message when necessary', (
 	const { getByText } = render(
 		<PaymentMethodUpdated
 			subs={[{ subscription: guardianWeeklySubscriptionCard }]}
-			newPaymentMethodDetail={newPaymentMethodDetailCard}
+			subHasExpectedPaymentType={true}
 			previousProductDetail={guardianWeeklyExpiredCard}
+			paymentFailureRecoveryMessage="test failure message"
 		/>,
 	);
 
-	getByText(failureMessage);
+	expect(getByText(failureMessage)).toBeTruthy();
 });

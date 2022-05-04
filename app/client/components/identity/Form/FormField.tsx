@@ -15,7 +15,6 @@ type FormInputProps<T> = Pick<
 	Exclude<keyof FormFieldProps<T>, 'children'>
 >;
 
-type FormTextAreaProps<T> = FormInputProps<T>;
 type FormSelectProps<T> = FormInputProps<T> & {
 	options: string[];
 	labelModifier?: (option: string) => string;

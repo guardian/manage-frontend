@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	dateAddYears,
