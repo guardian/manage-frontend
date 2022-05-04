@@ -3,7 +3,7 @@ import { ProductDetail } from '../../shared/productResponse';
 import { GroupedProductType } from '../../shared/productTypes';
 import { ProductDescriptionListTable } from './productDescriptionListTable';
 
-interface BasicProductInfoTableProps {
+export interface BasicProductInfoTableProps {
 	groupedProductType: GroupedProductType;
 	productDetail: ProductDetail;
 }

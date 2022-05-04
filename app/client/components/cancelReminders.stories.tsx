@@ -7,7 +7,6 @@ export default {
 	title: 'Pages/CancelReminders',
 	component: CancelReminders,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof CancelReminders>;

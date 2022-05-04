@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import fetchMock from 'fetch-mock';
 
 import AccountOverview from './accountOverview';
@@ -13,7 +14,6 @@ export default {
 	title: 'Pages/AccountOverview',
 	component: AccountOverview,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof AccountOverview>;
@@ -25,7 +25,11 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
 		.get('/api/me/mma', { body: [] })
 		.get('/idapi/user', { body: user });
 
-	return <AccountOverview />;
+	return (
+		<MemoryRouter>
+			<AccountOverview />
+		</MemoryRouter>
+	);
 };
 
 export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
@@ -36,5 +40,9 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 			body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
 		});
 
-	return <AccountOverview />;
+	return (
+		<MemoryRouter>
+			<AccountOverview />
+		</MemoryRouter>
+	);
 };

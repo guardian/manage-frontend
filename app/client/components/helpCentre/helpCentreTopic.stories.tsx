@@ -1,15 +1,15 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import fetchMock from 'fetch-mock';
 
 import { SectionContent } from '../sectionContent';
 import { SectionHeader } from '../sectionHeader';
-import HelpCentreTopic, { HelpCentreTopicProps } from './helpCentreTopic';
+import HelpCentreTopic from './helpCentreTopic';
 
 export default {
 	title: 'Pages/HelpCentreTopic',
 	component: HelpCentreTopic,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof HelpCentreTopic>;
@@ -33,19 +33,23 @@ const topicContent = {
 	],
 };
 
-export const Default: ComponentStory<typeof HelpCentreTopic> = (
-	_: HelpCentreTopicProps,
-) => {
+export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
 	fetchMock
 		.restore()
 		.get('/api/help-centre/topic/delivery', { body: topicContent });
 
 	return (
-		<>
-			<SectionHeader title="How can we help you?" pageHasNav={true} />
-			<SectionContent hasNav={true}>
-				<HelpCentreTopic topicCode="delivery" />
-			</SectionContent>
-		</>
+		<MemoryRouter initialEntries={["/topic/delivery"]}>
+			<Routes>
+				<Route path="/topic/:topicCode" element={
+					<>
+						<SectionHeader title="How can we help you?" pageHasNav={true} />
+						<SectionContent hasNav={true}>
+							<HelpCentreTopic />
+						</SectionContent>
+					</>
+				} />
+			</Routes>
+		</MemoryRouter>
 	);
 };

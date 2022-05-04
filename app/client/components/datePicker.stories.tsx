@@ -6,7 +6,6 @@ export default {
 	title: 'Components/DatePicker',
 	component: DatePicker,
 	parameters: {
-		controls: { disabled: true },
 		chromatic: {
 			viewports: [320, 740, 1300],
 		},
