@@ -86,8 +86,7 @@ function returnCardInputForm() {
 
 describe('cardInputForm.tsx and stripeCardInputForm.tsx', () => {
 	beforeEach(() => {
-		// tslint:disable-next-line: no-object-mutation
-		global.fetch = jest.fn().mockImplementation((url) => {
+		globalThis.fetch = jest.fn().mockImplementation((url) => {
 			return new Promise((resolve) => {
 				resolve({
 					ok: true,
