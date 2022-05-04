@@ -1,8 +1,9 @@
 import { ProgressIndicator } from '../progressIndicator';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { Button } from '@guardian/src-button';
+import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { Radio, RadioGroup } from '@guardian/src-radio';
-
+import { InlineError } from '@guardian/src-user-feedback';
 import { FormEvent, useContext, useState } from 'react';
 import { hasCancellationFlow } from '../../productUtils';
 import {
@@ -28,7 +29,6 @@ import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { CancellationReason } from './cancellationReason';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { textSans } from '@guardian/src-foundations/typography';
-import { ErrorIcon } from '../svgs/errorIcon';
 
 interface ReasonPickerProps {
 	productDetail: ProductDetail;
@@ -82,10 +82,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						setSelectedReasonId(target.value);
 					}}
 					css={css`
-						border: ${inValidationErrorState &&
-						!selectedReasonId.length
-							? `4px solid ${news[400]}`
-							: `1px solid ${neutral['86']}`};
+						border: 1px solid ${neutral['86']};
 						margin: 0 0 ${space[5]}px;
 						padding: 0;
 					`}
@@ -105,13 +102,6 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							}
 						`}
 					>
-						{inValidationErrorState && !selectedReasonId.length && (
-							<ErrorIcon
-								additionalCss={css`
-									margin-right: ${space[3]}px;
-								`}
-							/>
-						)}
 						Please select a reason
 					</legend>
 					<RadioGroup
@@ -145,76 +135,94 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							))}
 					</RadioGroup>
 				</fieldset>
-				{shouldOfferEffectiveDateOptions && (
-					<fieldset
-						onChange={(event: FormEvent<HTMLFieldSetElement>) => {
-							const target: HTMLInputElement =
-								event.target as HTMLInputElement;
-							if (target.value === 'EndOfLastInvoicePeriod') {
-								setCancellationPolicy(
-									cancellationEffectiveEndOfLastInvoicePeriod,
-								);
-							} else {
-								setCancellationPolicy(
-									cancellationEffectiveToday,
-								);
-							}
-						}}
-						css={css`
-							border: ${inValidationErrorState &&
-							!cancellationPolicy.length
-								? `4px solid ${news[400]}`
-								: `1px solid ${neutral['86']}`};
-							margin: 0 0 ${space[5]}px;
-							padding: 0;
+				{inValidationErrorState && !selectedReasonId.length && (
+					<InlineError
+						cssOverrides={css`
+							padding: ${space[5]}px;
+							margin-bottom: ${space[4]}px;
+							border: 4px solid ${news[400]};
+							text-align: left;
 						`}
 					>
-						<legend
-							css={css`
-								display: block;
-								width: 100%;
-								margin: 0;
-								padding: ${space[3]}px;
-								float: left;
-								background-color: ${neutral['97']};
-								border-bottom: 1px solid ${neutral['86']};
-								${textSans.medium({ fontWeight: 'bold' })};
-								${minWidth.tablet} {
-									padding: ${space[3]}px ${space[5]}px;
+						Please select a reason
+					</InlineError>
+				)}
+				{shouldOfferEffectiveDateOptions && (
+					<>
+						<fieldset
+							onChange={(
+								event: FormEvent<HTMLFieldSetElement>,
+							) => {
+								const target: HTMLInputElement =
+									event.target as HTMLInputElement;
+								if (target.value === 'EndOfLastInvoicePeriod') {
+									setCancellationPolicy(
+										cancellationEffectiveEndOfLastInvoicePeriod,
+									);
+								} else {
+									setCancellationPolicy(
+										cancellationEffectiveToday,
+									);
 								}
-							`}
-						>
-							{inValidationErrorState &&
-								!cancellationPolicy.length && (
-									<ErrorIcon
-										additionalCss={css`
-											margin-right: ${space[3]}px;
-										`}
-									/>
-								)}
-							When would you like your cancellation to become
-							effective?
-						</legend>
-						<RadioGroup
-							name="issue_type"
-							orientation="vertical"
+							}}
 							css={css`
-								display: block;
-								padding: ${space[5]}px;
+								border: 1px solid ${neutral['86']};
+								margin: 0 0 ${space[5]}px;
+								padding: 0;
 							`}
 						>
-							<Radio
-								name="effective-date"
-								value="EndOfLastInvoicePeriod"
-								label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
-							/>
-							<Radio
-								name="effective-date"
-								value="Today"
-								label="Today"
-							/>
-						</RadioGroup>
-					</fieldset>
+							<legend
+								css={css`
+									display: block;
+									width: 100%;
+									margin: 0;
+									padding: ${space[3]}px;
+									float: left;
+									background-color: ${neutral['97']};
+									border-bottom: 1px solid ${neutral['86']};
+									${textSans.medium({ fontWeight: 'bold' })};
+									${minWidth.tablet} {
+										padding: ${space[3]}px ${space[5]}px;
+									}
+								`}
+							>
+								When would you like your cancellation to become
+								effective?
+							</legend>
+							<RadioGroup
+								name="issue_type"
+								orientation="vertical"
+								css={css`
+									display: block;
+									padding: ${space[5]}px;
+								`}
+							>
+								<Radio
+									name="effective-date"
+									value="EndOfLastInvoicePeriod"
+									label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
+								/>
+								<Radio
+									name="effective-date"
+									value="Today"
+									label="Today"
+								/>
+							</RadioGroup>
+						</fieldset>
+						{inValidationErrorState && !cancellationPolicy.length && (
+							<InlineError
+								cssOverrides={css`
+									padding: ${space[5]}px;
+									margin-bottom: ${space[4]}px;
+									border: 4px solid ${news[400]};
+									text-align: left;
+								`}
+							>
+								Please select When would you like your
+								cancellation to become effective?
+							</InlineError>
+						)}
+					</>
 				)}
 
 				<div
@@ -235,6 +243,8 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						}}
 					>
 						<Button
+							icon={<SvgArrowRightStraight />}
+							iconSide="right"
 							onClick={() => {
 								const canContinue =
 									!!selectedReasonId.length &&

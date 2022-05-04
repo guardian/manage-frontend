@@ -8,6 +8,7 @@ import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
 import { Button } from '@guardian/src-button';
+import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { InlineError } from '@guardian/src-user-feedback';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { ProgressIndicator } from '../progressIndicator';
@@ -262,6 +263,8 @@ const ConfirmCancellationAndReturnRow = (
 						}}
 					>
 						<Button
+							icon={<SvgArrowRightStraight />}
+							iconSide="right"
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
