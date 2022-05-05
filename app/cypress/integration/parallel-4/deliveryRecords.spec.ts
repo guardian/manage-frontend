@@ -226,8 +226,6 @@ describe('Delivery records', () => {
 		cy.findByRole('checkbox').click();
 		cy.findByRole('button', { name: 'Review your report' }).click();
 
-		cy.wait('@fetch_potential_holidays');
-
 		cy.findByText('Delivery report review').should('exist');
 		cy.findByText('Step 4. Please review your report details').should(
 			'exist',
