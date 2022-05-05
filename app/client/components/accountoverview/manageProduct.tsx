@@ -3,7 +3,7 @@ import { space } from '@guardian/src-foundations';
 import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
 import {
 	getMainPlan,
@@ -25,8 +25,8 @@ import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { DeliveryAddressDisplay } from '../delivery/address/deliveryAddressDisplay';
-import { FlowWrapper } from '../FlowWrapper';
 import { NAV_LINKS } from '../nav/navConfig';
+import { PageContainer } from '../page';
 import { getNextPaymentDetails } from '../payment/nextPaymentDetails';
 import { PaymentDetailsTable } from '../payment/paymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertIfApplicable';
@@ -59,6 +59,7 @@ interface InnerContentProps {
 	manageProductProps: WithGroupedProductType<GroupedProductType>;
 	productDetail: ProductDetail;
 }
+
 const InnerContent = ({
 	manageProductProps,
 	productDetail,
@@ -297,7 +298,7 @@ const InnerContent = ({
 							fontWeight="bold"
 							text="Manage suspensions"
 							to={`/suspend/${specificProductType.urlPart}`}
-							state={{productDetail}}
+							state={{ productDetail }}
 						/>
 					</>
 				)}
@@ -396,36 +397,43 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	);
 };
 
-const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => (
-	<FlowWrapper
-		{...props}
-		productType={props.groupedProductType}
-		loadingMessagePrefix="Retrieving details of your"
-		allowCancelledSubscription
-		forceRedirectToAccountOverviewIfNoBrowserHistoryState
-		selectedNavItem={NAV_LINKS.accountOverview}
-		pageTitle={`Manage ${
-			props.groupedProductType.shortFriendlyName ||
-			props.groupedProductType.friendlyName
-		}`}
-		breadcrumbs={[
-			{
-				title: NAV_LINKS.accountOverview.title,
-				link: NAV_LINKS.accountOverview.link,
-			},
-			{
-				title: `Manage ${props.groupedProductType.friendlyName}`,
-				currentPage: true,
-			},
-		]}
-	>
-		{(productDetail) => (
-			<InnerContent
-				manageProductProps={props}
-				productDetail={productDetail}
-			/>
-		)}
-	</FlowWrapper>
-);
+interface ManageProductRouterState {
+	productDetail: ProductDetail;
+}
+
+const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => {
+	const location = useLocation();
+	const routerState = location.state as ManageProductRouterState;
+	const productDetail = routerState?.productDetail;
+
+	return (
+		<PageContainer
+			selectedNavItem={NAV_LINKS.accountOverview}
+			pageTitle={`Manage ${
+				props.groupedProductType.shortFriendlyName ||
+				props.groupedProductType.friendlyName
+			}`}
+			breadcrumbs={[
+				{
+					title: NAV_LINKS.accountOverview.title,
+					link: NAV_LINKS.accountOverview.link,
+				},
+				{
+					title: `Manage ${props.groupedProductType.friendlyName}`,
+					currentPage: true,
+				},
+			]}
+		>
+			{productDetail ? (
+				<InnerContent
+					manageProductProps={props}
+					productDetail={productDetail}
+				/>
+			) : (
+				<Navigate to="/" />
+			)}
+		</PageContainer>
+	);
+};
 
 export default ManageProduct;

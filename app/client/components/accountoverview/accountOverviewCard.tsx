@@ -324,7 +324,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								to={`/${groupedProductType.urlPart}`}
 								text={`Manage ${groupedProductType.friendlyName}`}
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
-								state={props.productDetail}
+								state={{ productDetail: props.productDetail }}
 								colour={brand[800]}
 								textColour={brand[400]}
 								fontWeight={'bold'}
