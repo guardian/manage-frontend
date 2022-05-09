@@ -3,58 +3,59 @@ import { Button, LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
 import * as Sentry from '@sentry/browser';
-import { useState } from 'react';
-import {
-	isPaidSubscriptionPlan,
-	ProductDetail,
-} from '../../../../shared/productResponse';
+import { useContext, useState } from 'react';
+import { isPaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { trackEventInOphanOnly } from '../../../services/analytics';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import { CancellationCaseIdContext } from '../cancellationContexts';
 import ContributionsFeedbackForm from './contributionsCancellationFeedbackForm';
 import { getIsPayingMinAmount } from './utils';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { CancellationRouterState } from '../CancellationContainer';
-import { CancellationReason } from '../cancellationReason';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
+import { CancellationReason, SaveBodyProps } from '../cancellationReason';
 
 const container = css`
   & > * + * {
     margin-top: ${space[6]}px;
 `;
 
-const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
+const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
+	props: SaveBodyProps,
+) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const navigate = useNavigate();
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
 
-	if (
-		!routerState.productType ||
-		!routerState.productDetail ||
-		!routerState.selectedReasonId
-	) {
+	if (!productType || !productDetail || !routerState.selectedReasonId) {
 		return <Navigate to="../" />;
 	}
 
-	const onManageClicked =
-		(productDetail: ProductDetail) =>
-		(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-			event.preventDefault();
-			trackEventInOphanOnly({
-				eventCategory: 'cancellation_flow_payment_issue',
-				eventAction: 'click',
-				eventLabel: 'manage',
-			});
+	const onManageClicked = (
+		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+	) => {
+		event.preventDefault();
+		trackEventInOphanOnly({
+			eventCategory: 'cancellation_flow_payment_issue',
+			eventAction: 'click',
+			eventLabel: 'manage',
+		});
 
-			navigate('/payment/contributions', { state: { productDetail } });
-		};
+		navigate('/payment/contributions', { state: { productDetail } });
+	};
 
 	const onUpdateConfirmed = (updatedAmount: number) => {
-		const reason = routerState.productType?.cancellation.reasons.find(
+		const reason = productType.cancellation.reasons.find(
 			(reason) => reason.reasonId === routerState.selectedReasonId,
 		) as CancellationReason;
 
@@ -90,7 +91,9 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
 			eventLabel: 'cancel',
 		});
 
-		navigate(`mma_payment_issue/confirmed`);
+		navigate('../confirmed', {
+			state: { ...routerState, caseId: props.caseId },
+		});
 	};
 
 	const onReturnClicked = (
@@ -100,7 +103,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
 		navigate('/');
 	};
 
-	const mainPlan = getMainPlan(routerState.productDetail.subscription);
+	const mainPlan = getMainPlan(productDetail.subscription);
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
 		Sentry.captureMessage(
@@ -135,7 +138,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
 				>
 					<LinkButton
 						href="/payments/contributions"
-						onClick={onManageClicked(routerState.productDetail)}
+						onClick={onManageClicked}
 					>
 						Manage payment method
 					</LinkButton>
@@ -159,14 +162,12 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
 						<ContributionUpdateAmountForm
 							currentAmount={mainPlan.amount / 100}
 							subscriptionId={
-								routerState.productDetail.subscription
-									.subscriptionId
+								productDetail.subscription.subscriptionId
 							}
 							mainPlan={mainPlan}
 							productType={PRODUCT_TYPES.contributions}
 							nextPaymentDate={
-								routerState.productDetail.subscription
-									.nextPaymentDate
+								productDetail.subscription.nextPaymentDate
 							}
 							mode="CANCELLATION_SAVE"
 							onUpdateConfirmed={onUpdateConfirmed}
@@ -196,26 +197,18 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = () => {
 					)}
 				</div>
 			)}
-
-			<CancellationCaseIdContext.Consumer>
-				{(caseId) =>
-					caseId && (
-						<div
-							css={css`
-								margin-top: ${space[9]}px;
-							`}
-						>
-							<ContributionsFeedbackForm
-								isTestUser={
-									routerState.productDetail.isTestUser
-								}
-								caseId={caseId}
-							/>
-						</div>
-					)
-				}
-			</CancellationCaseIdContext.Consumer>
-
+			{props.caseId && (
+				<div
+					css={css`
+						margin-top: ${space[9]}px;
+					`}
+				>
+					<ContributionsFeedbackForm
+						isTestUser={productDetail.isTestUser}
+						caseId={props.caseId}
+					/>
+				</div>
+			)}
 			<div
 				css={css`
 					margin-top: ${space[12]}px;

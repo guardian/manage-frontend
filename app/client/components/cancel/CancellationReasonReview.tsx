@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { news, space } from '@guardian/src-foundations';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, FC, useContext, useState } from 'react';
 import { WithProductType } from '../../../shared/productTypes';
 import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import palette from '../../colours';
@@ -19,6 +19,7 @@ import {
 	CancellationReason,
 	CancellationReasonId,
 	OptionalCancellationReasonId,
+	SaveBodyProps,
 } from './cancellationReason';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 import {
@@ -38,6 +39,7 @@ import {
 	DeliveryRecordsResponse,
 } from '../delivery/records/deliveryRecordsApi';
 import { Spinner } from '../spinner';
+import { GenericErrorScreen } from '../genericErrorScreen';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -379,6 +381,34 @@ const CancellationReasonReview = () => {
 				!deliveryProblemCreditFetch.data)) ||
 		!cancellationCaseFetch.data;
 
+	const loadingHasFailed =
+		(productType.cancellation.checkForOutstandingCredits &&
+			holidayStopCreditFetch.error) ||
+		deliveryProblemCreditFetch.error ||
+		cancellationCaseFetch.error;
+
+	const needsCancellationEscalation = requiresCancellationEscalation(
+		holidayStopCreditFetch.data?.publicationsToRefund,
+		deliveryProblemCreditFetch.data?.results,
+		routerState.cancellationPolicy,
+	);
+
+	const renderSaveBody = (
+		saveBody: string[] | React.FC<SaveBodyProps>,
+		caseId: string,
+	) => {
+		if (saveBody.length && typeof saveBody === 'object') {
+			<>
+				{saveBody.map((saveBodyParagraph, index) => (
+					<p key={`save_body_${index}`}>{saveBodyParagraph}</p>
+				))}
+			</>;
+			return <p id="save_body">{saveBody}</p>;
+		}
+		const SaveBody = saveBody as FC<SaveBodyProps>;
+		return <SaveBody caseId={caseId} />;
+	};
+
 	return (
 		<>
 			<ProgressIndicator
@@ -393,7 +423,9 @@ const CancellationReasonReview = () => {
 			/>
 			<WithStandardTopMargin>
 				{isLoading() ? (
-					<Spinner loadingMessage="Checking details" />
+					!loadingHasFailed && (
+						<Spinner loadingMessage="Checking details" />
+					)
 				) : (
 					<>
 						<h3 id="save_title">
@@ -402,12 +434,7 @@ const CancellationReasonReview = () => {
 								: 'Reason: '}
 							{reason.saveTitle || reason.linkLabel}
 						</h3>
-
-						{requiresCancellationEscalation(
-							holidayStopCreditFetch.data?.publicationsToRefund,
-							deliveryProblemCreditFetch.data?.results,
-							routerState.cancellationPolicy,
-						) && (
+						{needsCancellationEscalation && (
 							<p>
 								Once you submit your cancellation request our
 								customer service team will try their best to
@@ -415,16 +442,12 @@ const CancellationReasonReview = () => {
 								cancellation and refund any credit you are owed.
 							</p>
 						)}
-						<p id="save_body">
-							{requiresCancellationEscalation(
-								holidayStopCreditFetch.data
-									?.publicationsToRefund,
-								deliveryProblemCreditFetch.data?.results,
-								routerState.cancellationPolicy,
-							) && !!reason.escalationSaveBody
-								? reason.escalationSaveBody
-								: reason.saveBody}
-						</p>
+
+						{reason.saveBody &&
+							renderSaveBody(reason.saveBody, caseId)}
+						{needsCancellationEscalation &&
+							reason.escalationSaveBody &&
+							renderSaveBody(reason.escalationSaveBody, caseId)}
 
 						{caseId && !reason.skipFeedback ? (
 							<FeedbackFormAndContactUs
@@ -469,6 +492,9 @@ const CancellationReasonReview = () => {
 							</div>
 						)}
 					</>
+				)}
+				{loadingHasFailed && (
+					<GenericErrorScreen loggingMessage="Cancel journey case id, holiday stop credits or delivery problem credits api call failed during the cancellation process" />
 				)}
 			</WithStandardTopMargin>
 		</>

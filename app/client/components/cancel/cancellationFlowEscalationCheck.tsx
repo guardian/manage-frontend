@@ -2,11 +2,6 @@ import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 
-// interface VoucherCancellationFlowEscalationCheckProps
-// 	extends RouteableStepPropsWithCancellationFlow {
-// 	children: (reasonsList: string[]) => ReactNode | ReactNodeArray;
-// }
-
 export const generateEscalationCausesList = (_: {
 	isEffectiveToday: boolean;
 	hasOutstandingHolidayStops: boolean;
@@ -20,32 +15,6 @@ export const generateEscalationCausesList = (_: {
 		? ['Outstanding Delivery Problem Credits']
 		: []),
 ];
-
-// export const CancellationFlowEscalationCheck = (
-// 	props: VoucherCancellationFlowEscalationCheckProps,
-// ) => {
-// 	const outstandingCredits = useContext(
-// 		CancellationOutstandingCreditsContext,
-// 	);
-// 	const cancellationPolicy = useContext(CancellationPolicyContext);
-
-// 	return props.productType.cancellation.flowWrapper && !outstandingCredits
-// 		? visuallyNavigateToParent(props)
-// 		: props.children(
-// 				generateEscalationCausesList({
-// 					isEffectiveToday:
-// 						cancellationPolicy === cancellationEffectiveToday,
-// 					hasOutstandingHolidayStops:
-// 						!!outstandingCredits &&
-// 						!!outstandingCredits.holidayStops &&
-// 						outstandingCredits.holidayStops.length > 0,
-// 					hasOutstandingDeliveryProblemCredits:
-// 						!!outstandingCredits &&
-// 						!!outstandingCredits.deliveryCredits &&
-// 						outstandingCredits.deliveryCredits.length > 0,
-// 				}),
-// 		  );
-// };
 
 export const requiresCancellationEscalation = (
 	holidayStops: OutstandingHolidayStop[] | undefined,

@@ -1,13 +1,17 @@
 import { ProductDetail } from '../../../shared/productResponse';
 import { SavedBodyProps } from './stages/savedCancellation';
 
+export interface SaveBodyProps {
+	caseId: string;
+}
+
 export interface CancellationReason {
 	reasonId: CancellationReasonId;
 	linkLabel: string;
 	saveTitle?: string;
-	saveBody: string | JSX.Element;
+	saveBody?: string[] | React.FC<SaveBodyProps>;
 	hideSaveActions?: boolean;
-	escalationSaveBody?: string | JSX.Element;
+	escalationSaveBody?: string[] | React.FC<SaveBodyProps>;
 	alternateCallUsPrefix?: string;
 	alternateFeedbackIntro?: string;
 	alternateFeedbackThankYouTitle?: string;

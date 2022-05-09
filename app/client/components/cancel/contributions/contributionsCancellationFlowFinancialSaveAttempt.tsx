@@ -3,10 +3,8 @@ import { Button, LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
 import * as Sentry from '@sentry/browser';
-import { useState } from 'react';
-import {
-	isPaidSubscriptionPlan,
-} from '../../../../shared/productResponse';
+import { useContext, useState } from 'react';
+import { isPaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
@@ -14,8 +12,12 @@ import { trackEventInOphanOnly } from '../../../services/analytics';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { getIsPayingMinAmount } from './utils';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { CancellationRouterState } from '../CancellationContainer';
-import { CancellationReason } from '../cancellationReason';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
+import { CancellationReason, SaveBodyProps } from '../cancellationReason';
 
 const container = css`
 	& > * + * {
@@ -23,23 +25,24 @@ const container = css`
 	}
 `;
 
-const ContributionsCancellationFlowFinancialSaveAttempt = () => {
+const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
+	SaveBodyProps
+> = ({ caseId }: SaveBodyProps) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const navigate = useNavigate();
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
 
-	if (
-		!routerState.productType ||
-		!routerState.productDetail ||
-		!routerState.selectedReasonId
-	) {
+	if (!productType || !productDetail || !routerState.selectedReasonId) {
 		return <Navigate to="../" />;
 	}
 
 	const onUpdateConfirmed = (updatedAmount: number) => {
-		const reason = routerState.productType?.cancellation.reasons.find(
+		const reason = productType.cancellation.reasons.find(
 			(reason) => reason.reasonId === routerState.selectedReasonId,
 		) as CancellationReason;
 
@@ -75,7 +78,9 @@ const ContributionsCancellationFlowFinancialSaveAttempt = () => {
 			eventLabel: 'cancel',
 		});
 
-		navigate('../confirmed');
+		navigate('../confirmed', {
+			state: { ...routerState, caseId },
+		});
 	};
 
 	const onReturnClicked = (
@@ -85,7 +90,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt = () => {
 		navigate('/');
 	};
 
-	const mainPlan = getMainPlan(routerState.productDetail.subscription);
+	const mainPlan = getMainPlan(productDetail.subscription);
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
 		Sentry.captureMessage(
@@ -122,14 +127,12 @@ const ContributionsCancellationFlowFinancialSaveAttempt = () => {
 						<ContributionUpdateAmountForm
 							currentAmount={mainPlan.amount / 100}
 							subscriptionId={
-								routerState.productDetail.subscription
-									.subscriptionId
+								productDetail.subscription.subscriptionId
 							}
 							mainPlan={mainPlan}
 							productType={PRODUCT_TYPES.contributions}
 							nextPaymentDate={
-								routerState.productDetail.subscription
-									.nextPaymentDate
+								productDetail.subscription.nextPaymentDate
 							}
 							mode="CANCELLATION_SAVE"
 							onUpdateConfirmed={onUpdateConfirmed}
