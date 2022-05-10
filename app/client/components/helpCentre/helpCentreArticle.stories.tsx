@@ -49,16 +49,22 @@ export const Default: ComponentStory<typeof HelpCentreArticle> = () => {
 		});
 
 	return (
-		<MemoryRouter initialEntries={["/article/i-need-to-pause-my-delivery"]}>
+		<MemoryRouter initialEntries={['/article/i-need-to-pause-my-delivery']}>
 			<Routes>
-				<Route path="/article/:articleCode" element={
-					<>
-						<SectionHeader title="How can we help you?" pageHasNav={true} />
-						<SectionContent hasNav={true}>
-							<HelpCentreArticle />
-						</SectionContent>
-					</>
-				} />
+				<Route
+					path="/article/:articleCode"
+					element={
+						<>
+							<SectionHeader
+								title="How can we help you?"
+								pageHasNav={true}
+							/>
+							<SectionContent hasNav={true}>
+								<HelpCentreArticle />
+							</SectionContent>
+						</>
+					}
+				/>
 			</Routes>
 		</MemoryRouter>
 	);

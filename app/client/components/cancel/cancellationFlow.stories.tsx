@@ -26,11 +26,13 @@ export const GuardianWeekly: ComponentStory<typeof CancellationFlow> = () => (
 	// 	<CancellationReasonSelection />
 	// </MemoryRouter>
 
-	<MemoryRouter initialEntries={
-		[{
-			state: {productDetail: guardianWeeklyCard}
-		}]
-	}>
+	<MemoryRouter
+		initialEntries={[
+			{
+				state: { productDetail: guardianWeeklyCard },
+			},
+		]}
+	>
 		<Routes>
 			<Route
 				path="*"
@@ -40,10 +42,7 @@ export const GuardianWeekly: ComponentStory<typeof CancellationFlow> = () => (
 					/>
 				}
 			>
-				<Route
-					index
-					element={<CancellationReasonSelection />}
-				/>
+				<Route index element={<CancellationReasonSelection />} />
 			</Route>
 		</Routes>
 	</MemoryRouter>

@@ -197,7 +197,10 @@ const HolidayReview = () => {
 								holidayStopsResponse.existingHolidayStopToAmend,
 							)}
 							render={(_: CreateOrAmendHolidayStopsResponse) => (
-								<Navigate to="../confirmed" state={routerState} />
+								<Navigate
+									to="../confirmed"
+									state={routerState}
+								/>
 							)}
 							errorRender={getRenderCreateOrAmendError(
 								holidayStopsResponse.existingHolidayStopToAmend
@@ -240,10 +243,12 @@ const HolidayReview = () => {
 										publicationsImpacted,
 										mutabilityFlags: {
 											isEndDateEditable: true,
-											isFullyMutable: true
-										}
+											isFullyMutable: true,
+										},
 									});
-									navigate('../amend', {state: routerState})
+									navigate('../amend', {
+										state: routerState,
+									});
 								}}
 								priority="secondary"
 							>
@@ -259,7 +264,11 @@ const HolidayReview = () => {
 								},
 							]}
 						>
-							<Link css={cancelLinkCss} to=".." state={routerState}>
+							<Link
+								css={cancelLinkCss}
+								to=".."
+								state={routerState}
+							>
 								Cancel
 							</Link>
 							<Button
@@ -276,7 +285,10 @@ const HolidayReview = () => {
 						{!!productType.holidayStops
 							.explicitConfirmationRequired &&
 							!isCheckboxConfirmed && (
-								<InlineError>Please confirm you will destroy the affected vouchers by checking the box.</InlineError>
+								<InlineError>
+									Please confirm you will destroy the affected
+									vouchers by checking the box.
+								</InlineError>
 							)}
 					</div>
 				)}

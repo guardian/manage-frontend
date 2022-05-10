@@ -14,7 +14,8 @@ export default {
 	},
 } as ComponentMeta<typeof Help>;
 
-export const Default: ComponentStory<typeof Help> = () =>
+export const Default: ComponentStory<typeof Help> = () => (
 	<MemoryRouter>
 		<Help />
-	</MemoryRouter>;
+	</MemoryRouter>
+);

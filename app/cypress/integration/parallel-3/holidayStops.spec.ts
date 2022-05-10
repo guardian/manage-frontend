@@ -1,4 +1,7 @@
-import { guardianWeeklyCard, guardianWeeklyCurrentSubscription } from '../../../client/fixtures/productDetail';
+import {
+	guardianWeeklyCard,
+	guardianWeeklyCurrentSubscription,
+} from '../../../client/fixtures/productDetail';
 import {
 	potentialDeliveries,
 	noPotentialDeliveries,
@@ -57,7 +60,6 @@ describe('Holiday stops', () => {
 
 		// Total issues suspended
 		cy.get('[data-cy="suspension-issue-count"]').eq(0).contains('1 issue');
-
 
 		cy.findByText('Review details').click();
 
@@ -212,22 +214,22 @@ describe('Holiday stops', () => {
 		}).as('fetch_potential_holidays');
 
 		cy.visit('/');
-		cy.wait('@mma')
-        cy.wait('@cancelled');
+		cy.wait('@mma');
+		cy.wait('@cancelled');
 
-		cy.findByRole('heading', {name: 'Account overview'}).should('exist');
-		cy.findAllByRole('link', {name: 'Manage subscription'}).eq(0).click();
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+		cy.findAllByRole('link', { name: 'Manage subscription' }).eq(0).click();
 
 		cy.findByText('A-S00293857').should('exist');
 
 		cy.visit('/');
-		cy.wait('@mma')
-        cy.wait('@cancelled');
+		cy.wait('@mma');
+		cy.wait('@cancelled');
 
-		cy.findAllByRole('link', {name: 'Manage subscription'}).eq(1).click();
+		cy.findAllByRole('link', { name: 'Manage subscription' }).eq(1).click();
 
 		cy.findByText('A-S00286635').should('exist');
-		cy.findByRole('link', {name: 'Manage suspensions'}).click();
+		cy.findByRole('link', { name: 'Manage suspensions' }).click();
 
 		cy.wait('@fetch_existing_holidays');
 		cy.get('[data-cy="create-suspension-cta"] button').click();
@@ -271,9 +273,9 @@ describe('Holiday stops', () => {
 
 		cy.wait('@mma_filtered');
 		cy.wait('@mma');
-        cy.wait('@cancelled');
+		cy.wait('@cancelled');
 
-		cy.findByRole('heading', {name: 'Account overview'}).should('exist');
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 		cy.findByText('A-S00293857').should('exist');
 		cy.findByText('A-S00286635').should('exist');
 	});
@@ -289,7 +291,7 @@ describe('Holiday stops', () => {
 		cy.wait('@product_detail');
 		cy.get('[data-cy="create-suspension-cta"] button').click();
 
-		cy.findByRole('button', {name: 'Go forward a month'}).click();
+		cy.findByRole('button', { name: 'Go forward a month' }).click();
 
 		// Calendar has been advanced to the next month.
 		// Selects 18/03/2022 - 22/04/2022

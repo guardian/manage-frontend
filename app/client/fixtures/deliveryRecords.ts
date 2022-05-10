@@ -61,19 +61,20 @@ export const deliveryRecordsWithReportedProblem = {
 			isChangedDeliveryInstruction: null,
 			credit: {
 				amount: -2.89,
-				invoiceDate: "2023-03-25",
-				isActioned: false
+				invoiceDate: '2023-03-25',
+				isActioned: false,
 			},
 		},
 	],
 	deliveryProblemMap: {
 		'5009E00000KU9yBQAT': {
-			id: "5009E00000KU9yBQAT",
-			ref: "01573148",
-			subject: "[Self Service] Delivery Problem : Damaged Paper (Guardian Weekly - A-S00333617)",
-			description: "Pages torn",
-			problemType: "Damaged Paper"
-		}
+			id: '5009E00000KU9yBQAT',
+			ref: '01573148',
+			subject:
+				'[Self Service] Delivery Problem : Damaged Paper (Guardian Weekly - A-S00333617)',
+			description: 'Pages torn',
+			problemType: 'Damaged Paper',
+		},
 	},
 	contactPhoneNumbers: {
 		Id: '0039E00001Mw6DCQAZ',

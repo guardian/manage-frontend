@@ -54,17 +54,20 @@ export const TopicSelected: ComponentStory<typeof ContactUs> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: [] });
 
 	return (
-		<MemoryRouter initialEntries={["/contact-us/billing"]}>
+		<MemoryRouter initialEntries={['/contact-us/billing']}>
 			<Routes>
-				<Route path="/contact-us/:urlTopicId" element={
-					<>
-						<SectionHeader title="Need to contact us?" />
-						<KnownIssues />
-						<SectionContent>
-							<ContactUs />
-						</SectionContent>
-					</>
-				 } />
+				<Route
+					path="/contact-us/:urlTopicId"
+					element={
+						<>
+							<SectionHeader title="Need to contact us?" />
+							<KnownIssues />
+							<SectionContent>
+								<ContactUs />
+							</SectionContent>
+						</>
+					}
+				/>
 			</Routes>
 		</MemoryRouter>
 	);

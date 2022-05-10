@@ -139,7 +139,7 @@ export const ExistingHolidayStopActions = (
 								setExistingHolidayStopToAmend(
 									props as HolidayStopRequest,
 								);
-								navigate('amend', {state: routerState});
+								navigate('amend', { state: routerState });
 							}}
 							priority="secondary"
 						>

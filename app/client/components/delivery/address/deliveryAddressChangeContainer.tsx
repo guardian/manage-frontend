@@ -1,15 +1,31 @@
-import { css } from "@emotion/core";
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { isProduct, MembersDataApiItem, MembersDatApiAsyncLoader } from "../../../../shared/productResponse";
-import { GROUPED_PRODUCT_TYPES, ProductType, WithProductType } from "../../../../shared/productTypes";
-import { createProductDetailFetcher } from "../../../productUtils";
-import { addressChangeAffectedInfo, ContactIdToArrayOfProductDetailAndProductType, getValidDeliveryAddressChangeEffectiveDates } from "../../../services/deliveryAddress";
-import { minWidth } from "../../../styles/breakpoints";
-import { COUNTRIES } from "../../identity/models";
-import { NAV_LINKS } from "../../nav/navConfig";
-import { PageContainer } from "../../page";
-import { AddressChangedInformationContext, ContactIdContext, NewDeliveryAddressContext } from "./deliveryAddressFormContext";
+import { css } from '@emotion/core';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import {
+	isProduct,
+	MembersDataApiItem,
+	MembersDatApiAsyncLoader,
+} from '../../../../shared/productResponse';
+import {
+	GROUPED_PRODUCT_TYPES,
+	ProductType,
+	WithProductType,
+} from '../../../../shared/productTypes';
+import { createProductDetailFetcher } from '../../../productUtils';
+import {
+	addressChangeAffectedInfo,
+	ContactIdToArrayOfProductDetailAndProductType,
+	getValidDeliveryAddressChangeEffectiveDates,
+} from '../../../services/deliveryAddress';
+import { minWidth } from '../../../styles/breakpoints';
+import { COUNTRIES } from '../../identity/models';
+import { NAV_LINKS } from '../../nav/navConfig';
+import { PageContainer } from '../../page';
+import {
+	AddressChangedInformationContext,
+	ContactIdContext,
+	NewDeliveryAddressContext,
+} from './deliveryAddressFormContext';
 
 interface ContextAndOutletContainerProps {
 	contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType;
@@ -17,8 +33,7 @@ interface ContextAndOutletContainerProps {
 }
 
 const renderContextAndOutletContainer =
-	(productType: ProductType) =>
-	(allProductDetails: MembersDataApiItem[]) => {
+	(productType: ProductType) => (allProductDetails: MembersDataApiItem[]) => {
 		return (
 			<ContextAndOutletContainer
 				contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
@@ -84,7 +99,7 @@ const ContextAndOutletContainer = (props: ContextAndOutletContainerProps) => {
 		<NewDeliveryAddressContext.Provider
 			value={{
 				addressStateObject,
-				addressSetStateObject
+				addressSetStateObject,
 			}}
 		>
 			<AddressChangedInformationContext.Provider
@@ -102,7 +117,9 @@ const ContextAndOutletContainer = (props: ContextAndOutletContainerProps) => {
 	);
 };
 
-const DeliveryAddressChangeContainer = (props: WithProductType<ProductType>) => {
+const DeliveryAddressChangeContainer = (
+	props: WithProductType<ProductType>,
+) => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}

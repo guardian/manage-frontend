@@ -39,16 +39,22 @@ export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
 		.get('/api/help-centre/topic/delivery', { body: topicContent });
 
 	return (
-		<MemoryRouter initialEntries={["/topic/delivery"]}>
+		<MemoryRouter initialEntries={['/topic/delivery']}>
 			<Routes>
-				<Route path="/topic/:topicCode" element={
-					<>
-						<SectionHeader title="How can we help you?" pageHasNav={true} />
-						<SectionContent hasNav={true}>
-							<HelpCentreTopic />
-						</SectionContent>
-					</>
-				} />
+				<Route
+					path="/topic/:topicCode"
+					element={
+						<>
+							<SectionHeader
+								title="How can we help you?"
+								pageHasNav={true}
+							/>
+							<SectionContent hasNav={true}>
+								<HelpCentreTopic />
+							</SectionContent>
+						</>
+					}
+				/>
 			</Routes>
 		</MemoryRouter>
 	);

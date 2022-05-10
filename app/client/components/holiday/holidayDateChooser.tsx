@@ -501,7 +501,9 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 										selectedRange &&
 										issuesImpactedPerYearBySelection;
 									if (readyForReview) {
-										navigate('../review', {state: routerState});
+										navigate('../review', {
+											state: routerState,
+										});
 									} else {
 										setShowReviewWarning(true);
 									}

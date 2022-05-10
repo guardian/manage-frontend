@@ -70,7 +70,7 @@ const HolidayConfirmed = () => {
 								reload();
 								setSelectedRange(undefined);
 								setPublicationsImpacted([]);
-								navigate('../create', {state: routerState});
+								navigate('../create', { state: routerState });
 							}}
 						>
 							Schedule another suspension

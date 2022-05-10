@@ -440,14 +440,14 @@ interface DeliveryRecordsConfirmationRouterState
 
 const DeliveryRecordsProblemConfirmation = () => {
 	const location = useLocation();
-	const routerState = location.state as DeliveryRecordsConfirmationRouterState;
+	const routerState =
+		location.state as DeliveryRecordsConfirmationRouterState;
 
 	if (!routerState) {
 		return <Navigate to=".." />;
 	}
 
-	const { productDetail, deliveryIssuePostPayload } =
-		routerState;
+	const { productDetail, deliveryIssuePostPayload } = routerState;
 
 	const subscription = productDetail.subscription;
 	const isTestUser = productDetail.isTestUser;

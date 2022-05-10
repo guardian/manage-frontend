@@ -1,9 +1,9 @@
-import { capitalize } from "lodash";
-import { parseDate } from "../../shared/dates";
-import { ProductDetail, Subscription } from "../../shared/productResponse";
-import { GROUPED_PRODUCT_TYPES, ProductType } from "../../shared/productTypes";
-import { SubscriptionEffectiveData } from "../components/delivery/address/deliveryAddressFormContext";
-import { flattenEquivalent } from "../utils";
+import { capitalize } from 'lodash';
+import { parseDate } from '../../shared/dates';
+import { ProductDetail, Subscription } from '../../shared/productResponse';
+import { GROUPED_PRODUCT_TYPES, ProductType } from '../../shared/productTypes';
+import { SubscriptionEffectiveData } from '../components/delivery/address/deliveryAddressFormContext';
+import { flattenEquivalent } from '../utils';
 
 interface ProductDetailAndProductType {
 	productDetail: ProductDetail;
@@ -24,7 +24,7 @@ const hasContactId = (
 	productDetail: ProductDetail,
 ): productDetail is ProductDetailWithContactId => {
 	return !!productDetail.subscription.contactId;
-}
+};
 
 export const getValidDeliveryAddressChangeEffectiveDates = (
 	allProductDetail: ProductDetail[],
@@ -65,7 +65,7 @@ export const addressChangeAffectedInfo = (
 				? parseDate(
 						productDetail.subscription
 							.deliveryAddressChangeEffectiveDate,
-					).date
+				  ).date
 				: undefined;
 			return {
 				friendlyProductName,

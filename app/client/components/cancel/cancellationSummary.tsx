@@ -23,9 +23,7 @@ const actuallyCancelled = (
 	return (
 		<>
 			<WithStandardTopMargin>
-				<h3>
-					Your {productType.friendlyName} is cancelled.
-				</h3>
+				<h3>Your {productType.friendlyName} is cancelled.</h3>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
 						<p>

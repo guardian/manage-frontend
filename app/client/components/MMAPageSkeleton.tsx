@@ -127,9 +127,7 @@ const MMAPageSkeleton = () => {
 
 	return (
 		<PageContainer
-			selectedNavItem={
-				selectedMMALocationObject.selectedNavItem
-			}
+			selectedNavItem={selectedMMALocationObject.selectedNavItem}
 			pageTitle={selectedMMALocationObject.title}
 		>
 			<WithStandardTopMargin>

@@ -95,7 +95,7 @@ const HolidaysOverview = () => {
 			onClick={() => {
 				setExistingHolidayStopToAmend(null);
 				setSelectedRange(undefined);
-				navigate('create', {state: routerState});
+				navigate('create', { state: routerState });
 			}}
 		>
 			Create suspension
@@ -163,7 +163,9 @@ const HolidaysOverview = () => {
 							</div>
 						</div>
 						<HolidayQuestionsModal
-							annualIssueLimit={holidayStopResponse.annualIssueLimit}
+							annualIssueLimit={
+								holidayStopResponse.annualIssueLimit
+							}
 							holidayStopFlowProperties={productType.holidayStops}
 						/>
 					</>
@@ -172,7 +174,9 @@ const HolidaysOverview = () => {
 				<h4>
 					This subscription does not automatically renew, so
 					unfortunately you{' '}
-					{holidayStopResponse.existing.length > 0 ? 'can no longer' : 'cannot'}{' '}
+					{holidayStopResponse.existing.length > 0
+						? 'can no longer'
+						: 'cannot'}{' '}
 					create a holiday suspension for this subscription.
 				</h4>
 			)}
@@ -190,7 +194,10 @@ const HolidaysOverview = () => {
 												combinedIssuesImpactedPerYear
 													.issuesThisYear.length
 											}
-											/{holidayStopResponse.annualIssueLimit}
+											/
+											{
+												holidayStopResponse.annualIssueLimit
+											}
 										</strong>{' '}
 										{productType.holidayStops.issueKeyword}s
 										until{' '}
@@ -209,7 +216,10 @@ const HolidaysOverview = () => {
 															.issuesNextYear
 															.length
 													}
-													/{holidayStopResponse.annualIssueLimit}
+													/
+													{
+														holidayStopResponse.annualIssueLimit
+													}
 												</strong>{' '}
 												{
 													productType.holidayStops
@@ -224,7 +234,9 @@ const HolidaysOverview = () => {
 							) : (
 								<div>
 									You have{' '}
-									<strong>{holidayStopResponse.annualIssueLimit}</strong>{' '}
+									<strong>
+										{holidayStopResponse.annualIssueLimit}
+									</strong>{' '}
 									{productType.holidayStops.issueKeyword}s
 									available to suspend until{' '}
 									{dateString(

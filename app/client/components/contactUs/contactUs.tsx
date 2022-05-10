@@ -11,11 +11,11 @@ import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';
 import { SubTopicForm } from './subTopicForm';
 import { TopicForm } from './topicForm';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ContactUs = () => {
-
-	const {urlTopicId, urlSubTopicId, urlSubSubTopicId, urlSuccess} = useParams();
+	const { urlTopicId, urlSubTopicId, urlSubSubTopicId, urlSuccess } =
+		useParams();
 	const navigate = useNavigate();
 
 	const currentTopic = contactUsConfig.find(

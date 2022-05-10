@@ -174,9 +174,9 @@ const HolidayStopsContainer = (
 							existingHolidayStopToAmend,
 							setExistingHolidayStopToAmend,
 							selectedRange,
-						setSelectedRange,
-						publicationsImpacted,
-						setPublicationsImpacted,
+							setSelectedRange,
+							publicationsImpacted,
+							setPublicationsImpacted,
 						)}
 						loadingMessage="Loading existing suspensions..."
 						readerOnOK={embellishExistingHolidayStops}

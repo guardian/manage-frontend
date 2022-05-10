@@ -174,7 +174,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 	};
 
 	return (
-        <form
+		<form
 			onSubmit={async (event: FormEvent) => {
 				event.preventDefault();
 				if (validateForm()) {
@@ -468,5 +468,5 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 				Submit
 			</Button>
 		</form>
-    );
+	);
 };

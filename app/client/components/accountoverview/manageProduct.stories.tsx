@@ -19,7 +19,9 @@ export default {
 } as ComponentMeta<typeof ManageProduct>;
 
 export const GuardianWeekly: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter initialEntries={[{ state: { productDetail: guardianWeeklyCard } }]}>
+	<MemoryRouter
+		initialEntries={[{ state: { productDetail: guardianWeeklyCard } }]}
+	>
 		<ManageProduct
 			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
 		/>
@@ -37,7 +39,9 @@ export const NewspaperSubscriptionCard: ComponentStory<
 );
 
 export const DigitalSubscription: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter initialEntries={[{ state: { productDetail: newspaperVoucherPaypal } }]}>
+	<MemoryRouter
+		initialEntries={[{ state: { productDetail: newspaperVoucherPaypal } }]}
+	>
 		<ManageProduct
 			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
 		/>

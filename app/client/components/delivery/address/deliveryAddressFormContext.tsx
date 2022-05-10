@@ -35,7 +35,8 @@ export const AddressChangedInformationContext = createContext<
 	SubscriptionEffectiveData[]
 >([]);
 
-export const ContactIdContext = createContext<ContactIdToArrayOfProductDetailAndProductType>({});
+export const ContactIdContext =
+	createContext<ContactIdToArrayOfProductDetailAndProductType>({});
 
 export function isAddress(maybeAddress: any): maybeAddress is DeliveryAddress {
 	return maybeAddress?.postcode;

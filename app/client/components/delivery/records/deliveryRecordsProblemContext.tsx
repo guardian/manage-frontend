@@ -1,11 +1,7 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import {
-	DeliveryAddress,
-} from '../../../../shared/productResponse';
+import { DeliveryAddress } from '../../../../shared/productResponse';
 import { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
-import {
-	DeliveryRecordsPostPayload,
-} from './deliveryRecordsApi';
+import { DeliveryRecordsPostPayload } from './deliveryRecordsApi';
 
 export interface DeliveryRecordsProblemType {
 	category?: string;
