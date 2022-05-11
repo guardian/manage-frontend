@@ -241,4 +241,43 @@ describe('Cancel contribution', () => {
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
 		cy.get('@cancel_contribution.all').should('have.length', 1);
 	});
+
+	it('save journey completed contribution not cancelled, amount reduced', () => {
+		cy.intercept('POST', 'api/update/amount/contributions/**', {
+			statusCode: 200,
+			body: { status: 'success' },
+		});
+
+		cy.visit('/');
+
+		cy.window().then((window) => {
+			// @ts-ignore
+			window.guardian.identityDetails = {
+				signInStatus: 'signedInRecently',
+				userId: '200006712',
+				displayName: 'user',
+				email: 'example@example.com',
+			};
+		});
+
+		cy.findByText('Manage recurring contribution').click();
+		cy.wait('@cancelled');
+
+		cy.findByRole('link', {
+			name: 'Cancel recurring contribution',
+		}).click();
+		cy.findAllByRole('radio').eq(4).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.wait('@get_case');
+
+		cy.findByRole('button', { name: 'Reduce amount' }).click();
+
+		cy.get('input[type="number"]').type('80');
+		cy.findByRole('button', { name: 'Change amount' }).click();
+
+		cy.findByText(
+			'We have successfully updated the amount of your contribution. New amount, £80.00, will be taken on 5 Feb 2022. Thank you for supporting the Guardian.',
+		).should('exist');
+	});
 });

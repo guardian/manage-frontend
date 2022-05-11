@@ -17,7 +17,7 @@ import {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { CancellationReason, SaveBodyProps } from '../cancellationReason';
+import { SaveBodyProps } from '../cancellationReason';
 
 const container = css`
 	& > * + * {
@@ -42,10 +42,6 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	}
 
 	const onUpdateConfirmed = (updatedAmount: number) => {
-		const reason = productType.cancellation.reasons.find(
-			(reason) => reason.reasonId === routerState.selectedReasonId,
-		) as CancellationReason;
-
 		trackEventInOphanOnly({
 			eventCategory: 'cancellation_flow_financial_circumstances',
 			eventAction: 'click',
@@ -53,11 +49,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 		});
 
 		navigate('../saved', {
-			state: {
-				...routerState,
-				updatedContributionAmount: updatedAmount,
-				selectedReason: reason,
-			},
+			state: { ...routerState, updatedContributionAmount: updatedAmount },
 		});
 	};
 
