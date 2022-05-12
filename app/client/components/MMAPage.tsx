@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/core';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, ReactNode, Suspense, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
 	GROUPED_PRODUCT_TYPES,
@@ -29,6 +29,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
+import ErrorBoundary from './ErrorBoundary';
+import { GenericErrorScreen } from './genericErrorScreen';
+import { breakpoints, space } from '@guardian/src-foundations';
+import { minWidth } from '../styles/breakpoints';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -215,6 +219,27 @@ const CancelReminders = lazy(
 	() => import(/* webpackChunkName: "CancelReminders" */ './cancelReminders'),
 );
 
+const GenericErrorContainer = (props: { children: ReactNode }) => (
+	<section
+		css={css`
+			padding: 0 ${space[3]}px;
+			${minWidth.tablet} {
+				padding-left: ${space[5]}px;
+				padding-right: ${space[5]}px;
+			}
+		`}
+	>
+		<div
+			css={css`
+				margin: ${space[12]}px auto;
+				max-width: ${breakpoints.wide}px;
+			`}
+		>
+			{props.children}
+		</div>
+	</section>
+);
+
 const MMARouter = () => {
 	const [signInStatus, setSignInStatus] = useState<SignInStatus>('init');
 
@@ -231,208 +256,231 @@ const MMARouter = () => {
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<Suspense fallback={<MMAPageSkeleton />}>
-				<Routes>
-					<Route path="/" element={<AccountOverview />} />
-					<Route path="/billing" element={<Billing />} />
-					<Route
-						path="/email-prefs"
-						element={<EmailAndMarketing />}
-					/>
-					<Route
-						path="/public-settings"
-						element={<PublicProfile />}
-					/>
-					<Route path="/account-settings" element={<Settings />} />
-					{Object.values(GROUPED_PRODUCT_TYPES).map(
-						(groupedProductType: GroupedProductType) => (
-							<Route
-								key={groupedProductType.urlPart}
-								path={`/${groupedProductType.urlPart}`}
-								element={
-									<ManageProduct
-										groupedProductType={groupedProductType}
-									/>
-								}
-							/>
-						),
+				<ErrorBoundary
+					fallback={(error) => (
+						<GenericErrorContainer>
+							<GenericErrorScreen loggingMessage={error} />
+						</GenericErrorContainer>
 					)}
-					{Object.values(PRODUCT_TYPES)
-						.filter(hasDeliveryFlow)
-						.map((productType: ProductType) => (
-							<Route
-								key={productType.urlPart}
-								path={`/delivery/${productType.urlPart}/address`}
-								element={
-									<DeliveryAddressChangeContainer
-										productType={productType}
-									/>
-								}
-							>
+				>
+					<Routes>
+						<Route path="/" element={<AccountOverview />} />
+						<Route path="/billing" element={<Billing />} />
+						<Route
+							path="/email-prefs"
+							element={<EmailAndMarketing />}
+						/>
+						<Route
+							path="/public-settings"
+							element={<PublicProfile />}
+						/>
+						<Route
+							path="/account-settings"
+							element={<Settings />}
+						/>
+						{Object.values(GROUPED_PRODUCT_TYPES).map(
+							(groupedProductType: GroupedProductType) => (
 								<Route
-									index
+									key={groupedProductType.urlPart}
+									path={`/${groupedProductType.urlPart}`}
 									element={
-										<DeliveryAddressUpdate
-											productType={productType}
+										<ManageProduct
+											groupedProductType={
+												groupedProductType
+											}
 										/>
 									}
 								/>
-								<Route
-									path="review"
-									element={
-										<DeliveryAddressReview
-											productType={productType}
-										/>
-									}
-								/>
-								<Route
-									path="confirmed"
-									element={
-										<DeliveryAddressConfirmation
-											productType={productType}
-										/>
-									}
-								/>
-							</Route>
-						))}
-					{Object.values(PRODUCT_TYPES).map(
-						(productType: ProductType) => (
-							<Route
-								key={productType.urlPart}
-								path={`/payment/${productType.urlPart}`}
-								element={
-									<PaymentDetailUpdateContainer
-										productType={productType}
-									/>
-								}
-							>
-								<Route
-									index
-									element={
-										<PaymentDetailUpdate
-											productType={productType}
-										/>
-									}
-								/>
-								<Route
-									path="updated"
-									element={
-										<PaymentDetailUpdateConfirmation />
-									}
-								/>
-								<Route
-									path="failed"
-									element={<PaymentFailed />}
-								/>
-							</Route>
-						),
-					)}
-					{Object.values(PRODUCT_TYPES)
-						.filter(hasDeliveryRecordsFlow)
-						.map(
-							(
-								productType: ProductTypeWithDeliveryRecordsProperties,
-							) => (
+							),
+						)}
+						{Object.values(PRODUCT_TYPES)
+							.filter(hasDeliveryFlow)
+							.map((productType: ProductType) => (
 								<Route
 									key={productType.urlPart}
-									path={`/delivery/${productType.urlPart}/records`}
+									path={`/delivery/${productType.urlPart}/address`}
 									element={
-										<DeliveryRecordsContainer
+										<DeliveryAddressChangeContainer
 											productType={productType}
 										/>
 									}
 								>
 									<Route
 										index
-										element={<DeliveryRecords />}
+										element={
+											<DeliveryAddressUpdate
+												productType={productType}
+											/>
+										}
 									/>
 									<Route
 										path="review"
 										element={
-											<DeliveryRecordsProblemReview />
+											<DeliveryAddressReview
+												productType={productType}
+											/>
 										}
 									/>
 									<Route
 										path="confirmed"
 										element={
-											<DeliveryRecordsProblemConfirmation />
+											<DeliveryAddressConfirmation
+												productType={productType}
+											/>
 										}
+									/>
+								</Route>
+							))}
+						{Object.values(PRODUCT_TYPES).map(
+							(productType: ProductType) => (
+								<Route
+									key={productType.urlPart}
+									path={`/payment/${productType.urlPart}`}
+									element={
+										<PaymentDetailUpdateContainer
+											productType={productType}
+										/>
+									}
+								>
+									<Route
+										index
+										element={
+											<PaymentDetailUpdate
+												productType={productType}
+											/>
+										}
+									/>
+									<Route
+										path="updated"
+										element={
+											<PaymentDetailUpdateConfirmation />
+										}
+									/>
+									<Route
+										path="failed"
+										element={<PaymentFailed />}
 									/>
 								</Route>
 							),
 						)}
-					{Object.values(PRODUCT_TYPES).map(
-						(productType: ProductType) => (
-							<Route
-								key={productType.urlPart}
-								path={'/cancel/' + productType.urlPart}
-								element={
-									<CancellationContainer
-										productType={productType}
+						{Object.values(PRODUCT_TYPES)
+							.filter(hasDeliveryRecordsFlow)
+							.map(
+								(
+									productType: ProductTypeWithDeliveryRecordsProperties,
+								) => (
+									<Route
+										key={productType.urlPart}
+										path={`/delivery/${productType.urlPart}/records`}
+										element={
+											<DeliveryRecordsContainer
+												productType={productType}
+											/>
+										}
+									>
+										<Route
+											index
+											element={<DeliveryRecords />}
+										/>
+										<Route
+											path="review"
+											element={
+												<DeliveryRecordsProblemReview />
+											}
+										/>
+										<Route
+											path="confirmed"
+											element={
+												<DeliveryRecordsProblemConfirmation />
+											}
+										/>
+									</Route>
+								),
+							)}
+						{Object.values(PRODUCT_TYPES).map(
+							(productType: ProductType) => (
+								<Route
+									key={productType.urlPart}
+									path={'/cancel/' + productType.urlPart}
+									element={
+										<CancellationContainer
+											productType={productType}
+										/>
+									}
+								>
+									<Route
+										index
+										element={
+											<CancellationReasonSelection />
+										}
 									/>
-								}
-							>
-								<Route
-									index
-									element={<CancellationReasonSelection />}
-								/>
-								<Route
-									path="review"
-									element={<CancellationReasonReview />}
-								/>
-								<Route
-									path="saved"
-									element={<SavedCancellation />}
-								/>
-								<Route
-									path="confirmed"
-									element={<ExecuteCancellation />}
-								/>
-							</Route>
-						),
-					)}
-					{Object.values(PRODUCT_TYPES)
-						.filter(shouldHaveHolidayStopsFlow)
-						.map((productType: ProductTypeWithHolidayStopsFlow) => (
-							<Route
-								key={productType.urlPart}
-								path={'/suspend/' + productType.urlPart}
-								element={
-									<HolidayStopsContainer
-										productType={productType}
+									<Route
+										path="review"
+										element={<CancellationReasonReview />}
 									/>
-								}
-							>
-								<Route
-									index
-									element={<HolidaysOverview />}
-								/>
-								<Route
-									path="create"
-									element={<HolidayDateChooser />}
-								/>
-								<Route
-									path="amend"
-									element={<HolidayDateChooser isAmendJourney />}
-								/>
-								<Route
-									path="review"
-									element={<HolidayReview />}
-								/>
-								<Route
-									path="confirmed"
-									element={<HolidayConfirmed />}
-								/>
-							</Route>
-						))}
-					<Route path="/help" element={<Help />} />
-					{/*Does not require sign in*/}
-					<Route
-						path="/cancel-reminders/*reminderCode"
-						element={<CancelReminders />}
-					/>
-					<Route path="/maintenance" element={<Maintenance />} />
-					<Route path="*" element={<Navigate to="/" />} />
-				</Routes>
+									<Route
+										path="saved"
+										element={<SavedCancellation />}
+									/>
+									<Route
+										path="confirmed"
+										element={<ExecuteCancellation />}
+									/>
+								</Route>
+							),
+						)}
+						{Object.values(PRODUCT_TYPES)
+							.filter(shouldHaveHolidayStopsFlow)
+							.map(
+								(
+									productType: ProductTypeWithHolidayStopsFlow,
+								) => (
+									<Route
+										key={productType.urlPart}
+										path={'/suspend/' + productType.urlPart}
+										element={
+											<HolidayStopsContainer
+												productType={productType}
+											/>
+										}
+									>
+										<Route
+											index
+											element={<HolidaysOverview />}
+										/>
+										<Route
+											path="create"
+											element={<HolidayDateChooser />}
+										/>
+										<Route
+											path="amend"
+											element={
+												<HolidayDateChooser
+													isAmendJourney
+												/>
+											}
+										/>
+										<Route
+											path="review"
+											element={<HolidayReview />}
+										/>
+										<Route
+											path="confirmed"
+											element={<HolidayConfirmed />}
+										/>
+									</Route>
+								),
+							)}
+						<Route path="/help" element={<Help />} />
+						{/*Does not require sign in*/}
+						<Route
+							path="/cancel-reminders/*reminderCode"
+							element={<CancelReminders />}
+						/>
+						<Route path="/maintenance" element={<Maintenance />} />
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</ErrorBoundary>
 			</Suspense>
 		</Main>
 	);

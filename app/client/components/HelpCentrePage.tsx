@@ -16,6 +16,8 @@ import useAnalytics from '../services/useAnalytics';
 import { setPageTitle } from '../services/pageTitle';
 import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
+import ErrorBoundary from './ErrorBoundary';
+import { GenericErrorScreen } from './genericErrorScreen';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -66,41 +68,50 @@ const HelpCentreRouter = () => {
 			<Global styles={css(`${fonts}`)} />
 			<HelpCenterContentWrapper>
 				<Suspense fallback={<HelpCentreLoadingContent />}>
-					<Routes>
-						<Route path="/help-centre" element={<HelpCentre />} />
-						<Route
-							path="/help-centre/article/:articleCode"
-							element={<HelpCentreArticle />}
-						/>
-						<Route
-							path="/help-centre/topic/:topicCode"
-							element={<HelpCentreTopic />}
-						/>
-						<Route
-							path="/help-centre/contact-us"
-							element={<ContactUs />}
-						/>
-						<Route
-							path="/help-centre/contact-us/:urlTopicId"
-							element={<ContactUs />}
-						/>
-						<Route
-							path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId"
-							element={<ContactUs />}
-						/>
-						<Route
-							path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId"
-							element={<ContactUs />}
-						/>
-						<Route
-							path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess"
-							element={<ContactUs />}
-						/>
-						<Route
-							path="/*"
-							element={<Navigate to="/help-centre" />}
-						/>
-					</Routes>
+					<ErrorBoundary
+						fallback={(error) => (
+							<GenericErrorScreen loggingMessage={error} />
+						)}
+					>
+						<Routes>
+							<Route
+								path="/help-centre"
+								element={<HelpCentre />}
+							/>
+							<Route
+								path="/help-centre/article/:articleCode"
+								element={<HelpCentreArticle />}
+							/>
+							<Route
+								path="/help-centre/topic/:topicCode"
+								element={<HelpCentreTopic />}
+							/>
+							<Route
+								path="/help-centre/contact-us"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/*"
+								element={<Navigate to="/help-centre" />}
+							/>
+						</Routes>
+					</ErrorBoundary>
 				</Suspense>
 			</HelpCenterContentWrapper>
 			<LiveChat />
