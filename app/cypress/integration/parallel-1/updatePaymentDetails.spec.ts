@@ -158,6 +158,45 @@ describe('Update payment details', () => {
 		cy.get('@scala_backend.all').should('have.length', 1);
 	});
 
+	it('Shows payment failure route correctly for direct debit', () => {
+		cy.intercept('GET', '/api/me/mma?productType=*', {
+			statusCode: 200,
+			body: [digitalDD],
+		}).as('product_detail');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: [digitalDD],
+		}).as('refetch_subscription');
+
+		cy.intercept('POST', '/api/payment/dd/**', {
+			statusCode: 500,
+		}).as('scala_backend');
+
+		cy.visit('/payment/digital');
+
+		cy.wait('@product_detail');
+		cy.findByText('Your current payment method');
+
+		cy.get(`[data-cy="Direct debit"] input`).click();
+
+		cy.findByText('Update your payment method');
+
+		cy.get('input[name="Account holder name"]').type('JON R HEE');
+		cy.get('input[name="Sort Code"]').type('200000');
+		cy.get('input[name="Account Number"]').type('55779911');
+
+		cy.get('input[name="accountHolderConfirmation"').click();
+		cy.findByText('Update payment method').click();
+
+		cy.wait('@scala_backend');
+
+		cy.findByText('Try again');
+		cy.url().should('include', 'failed');
+
+		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
 	it('Show recaptcha error', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
