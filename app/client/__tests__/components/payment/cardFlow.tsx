@@ -115,6 +115,6 @@ describe('cardInputForm.tsx and stripeCardInputForm.tsx', () => {
 			}),
 		);
 
-		getByText('Recaptcha has not been completed.');
+		expect(getByText('Recaptcha has not been completed.')).toBeDefined();
 	});
 });

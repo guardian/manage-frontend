@@ -102,9 +102,12 @@ const extractMaybeLockedStartDate = (
 		: null;
 
 export function isSharedHolidayDateChooserState(
-	state: any,
+	state: HolidayStopRequest[] | SharedHolidayDateChooserState,
 ): state is SharedHolidayDateChooserState {
-	return !!state && state.selectedRange && state.publicationsImpacted;
+	return (
+		state.hasOwnProperty('selectedRange') &&
+		state.hasOwnProperty('publicationsImpacted')
+	);
 }
 
 const validateIssuesSelected = (

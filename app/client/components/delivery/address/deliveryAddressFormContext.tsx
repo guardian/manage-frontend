@@ -38,8 +38,10 @@ export const AddressChangedInformationContext = createContext<
 export const ContactIdContext =
 	createContext<ContactIdToArrayOfProductDetailAndProductType>({});
 
-export function isAddress(maybeAddress: any): maybeAddress is DeliveryAddress {
-	return maybeAddress?.postcode;
+export function isAddress(
+	maybeAddress: DeliveryAddress | undefined,
+): maybeAddress is DeliveryAddress {
+	return !!maybeAddress?.postcode;
 }
 
 export const convertToDescriptionListData = (

@@ -121,11 +121,11 @@ export const DropdownNav = () => {
 		}
 	};
 
-	const handleDismissiveClick = (event: any): void => {
+	const handleDismissiveClick = (event: MouseEvent): void => {
 		if (
 			wrapperRef.current &&
 			event.target &&
-			!wrapperRef.current.contains(event.target)
+			!wrapperRef.current.contains(event.target as Node)
 		) {
 			setShowMenu(false);
 		}

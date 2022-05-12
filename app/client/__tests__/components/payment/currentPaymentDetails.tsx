@@ -13,7 +13,7 @@ describe('currentPaymentDetails.tsx', () => {
 			<CurrentPaymentDetails {...guardianWeeklyCard} />,
 		);
 
-		getByText('Guardian Weekly');
+		expect(getByText('Guardian Weekly')).toBeDefined();
 	});
 
 	describe('For Card', () => {
@@ -22,8 +22,8 @@ describe('currentPaymentDetails.tsx', () => {
 				<CurrentPaymentDetails {...guardianWeeklyCard} />,
 			);
 
-			getByText('ending 4242');
-			getByText('4 / 2024');
+			expect(getByText('ending 4242')).toBeDefined();
+			expect(getByText('4 / 2024')).toBeDefined();
 		});
 
 		test('Shows expired when expiry date is in the past', () => {
@@ -31,7 +31,7 @@ describe('currentPaymentDetails.tsx', () => {
 				<CurrentPaymentDetails {...guardianWeeklyExpiredCard} />,
 			);
 
-			getByText('Expired');
+			expect(getByText('Expired')).toBeDefined();
 		});
 	});
 
@@ -41,8 +41,8 @@ describe('currentPaymentDetails.tsx', () => {
 				<CurrentPaymentDetails {...digitalDD} />,
 			);
 
-			getByText('ending 911');
-			getByText('20-00-00');
+			expect(getByText('ending 911')).toBeDefined();
+			expect(getByText('20-00-00')).toBeDefined();
 		});
 	});
 
@@ -52,7 +52,7 @@ describe('currentPaymentDetails.tsx', () => {
 				<CurrentPaymentDetails {...newspaperVoucherPaypal} />,
 			);
 
-			getByText('t*******r@example.com');
+			expect(getByText('t*******r@example.com')).toBeDefined();
 		});
 	});
 });

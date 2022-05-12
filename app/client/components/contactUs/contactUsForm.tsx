@@ -12,6 +12,7 @@ import {
 	VALID_IMAGE_FILE_MIME_TYPES,
 } from '../../../shared/fileUploadUtils';
 import { isEmail } from '../../../shared/validationUtils';
+import { Grecaptcha } from '../../services/captcha';
 import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
@@ -46,7 +47,7 @@ interface FormValidationState {
 type ContactUsFormStatus = 'form' | 'submitting' | 'failure';
 
 declare const window: Window & {
-	grecaptcha: any;
+	grecaptcha: Grecaptcha;
 	v2ReCaptchaOnLoadCallback: () => void;
 };
 

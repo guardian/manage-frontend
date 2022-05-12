@@ -3,10 +3,11 @@ import { css } from '@emotion/core';
 import { textSans } from '@guardian/src-foundations/typography';
 import { space } from '@guardian/src-foundations';
 import { Stripe } from '@stripe/stripe-js';
+import { Grecaptcha } from '../../../../services/captcha';
 
 declare let window: Window & {
 	Stripe: Stripe;
-	grecaptcha: any;
+	grecaptcha: Grecaptcha;
 	v2ReCaptchaOnLoadCallback: () => void;
 };
 
