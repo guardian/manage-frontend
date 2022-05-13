@@ -17,15 +17,6 @@ export default {
 } as ComponentMeta<typeof CancellationFlow>;
 
 export const GuardianWeekly: ComponentStory<typeof CancellationFlow> = () => (
-	// <MemoryRouter initialEntries={
-	// 	[{
-	// 		state: {productDetail: guardianWeeklyCard}
-	// 	}]
-	// }>
-	// 	<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
-	// 	<CancellationReasonSelection />
-	// </MemoryRouter>
-
 	<MemoryRouter
 		initialEntries={[
 			{
