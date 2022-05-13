@@ -22,7 +22,7 @@ export interface InvoiceDataApiItem {
 	cardType?: string;
 }
 
-export class MembersDatApiAsyncLoader extends AsyncLoader<
+export class MembersDataApiAsyncLoader extends AsyncLoader<
 	MembersDataApiItem[]
 > {}
 

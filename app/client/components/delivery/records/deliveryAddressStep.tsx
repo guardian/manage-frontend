@@ -18,7 +18,7 @@ import {
 	DeliveryAddress,
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -571,7 +571,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					}
 				`}
 			>
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					render={renderDeliveryAddressForm}
 					fetch={createProductDetailFetcher(
 						GROUPED_PRODUCT_TYPES.subscriptions,

@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import {
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import {
 	GROUPED_PRODUCT_TYPES,
@@ -155,7 +155,7 @@ const DeliveryAddressChangeContainer = (
 				},
 			]}
 		>
-			<MembersDatApiAsyncLoader
+			<MembersDataApiAsyncLoader
 				render={renderContextAndOutletContainer(props.productType)}
 				fetch={createProductDetailFetcher(
 					GROUPED_PRODUCT_TYPES.subscriptions,

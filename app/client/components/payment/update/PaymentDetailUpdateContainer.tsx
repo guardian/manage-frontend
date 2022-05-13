@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
@@ -75,7 +75,7 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 					<Outlet />
 				</PaymentUpdateProductDetailContext.Provider>
 			) : (
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					fetch={createProductDetailFetcher(props.productType)}
 					render={renderContextAndOutletContainer}
 					loadingMessage={`'Retrieving current payment details for your' ${props.productType.friendlyName}...`}

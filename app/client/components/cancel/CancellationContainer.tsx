@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
@@ -91,7 +91,7 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 			{productDetail ? (
 				contextAndOutletContainer(productDetail, props.productType)
 			) : (
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					fetch={createProductDetailFetcher(props.productType)}
 					render={renderSingleProductOrReturnToAccountOverview(
 						props.productType,

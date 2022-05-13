@@ -10,7 +10,7 @@ import { DateRange } from '../../../shared/dates';
 import {
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
@@ -185,7 +185,7 @@ const HolidayStopsContainer = (
 					<GenericErrorScreen loggingMessage="Subscription had no start date" />
 				)
 			) : (
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					fetch={createProductDetailFetcher(props.productType)}
 					render={handleMembersDataResponse(
 						props.productType,

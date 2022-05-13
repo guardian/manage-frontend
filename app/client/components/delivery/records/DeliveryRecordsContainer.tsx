@@ -5,7 +5,7 @@ import {
 	DeliveryRecordApiItem,
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
@@ -84,7 +84,7 @@ const DeliveryRecordsContainer = (
 					loadingMessage={'Loading delivery history...'}
 				/>
 			) : (
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					fetch={createProductDetailFetcher(props.productType)}
 					render={handleMembersDataResponse(props.productType)}
 					loadingMessage={`Retrieving details of your ${props.productType.friendlyName}...`}
