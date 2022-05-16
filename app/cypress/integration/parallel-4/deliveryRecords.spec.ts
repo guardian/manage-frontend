@@ -277,6 +277,61 @@ describe('Delivery records', () => {
 		cy.findByText('Problem reported (Damaged paper)').should('exist');
 	});
 
+	it('allows you to uodate delivery address before reporting a problem', () => {
+		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
+			statusCode: 200,
+			body: [guardianWeeklyCurrentSubscription],
+		}).as('address_product_detail');
+
+		cy.intercept('PUT', '/api/delivery/address/update/**', {
+			statusCode: 200,
+			body: 'success',
+		}).as('address_update');
+
+		cy.visit('/delivery/guardianweekly/records');
+		cy.wait('@product_detail');
+		cy.wait('@delivery_records');
+
+		cy.findByRole('button', { name: 'Report a problem' }).click();
+
+		cy.findByText(
+			'Step 1. What type of problem are you experiencing?',
+		).should('exist');
+		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
+		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
+
+		cy.findByText(
+			'Step 2. Select the date you have experienced the problem',
+		).should('exist');
+		cy.findByText('Step 3. Check your current delivery address').should(
+			'exist',
+		);
+		cy.findByText('Kings Place').should('exist');
+		cy.findByText('Kings Place').parent().next().click();
+		cy.wait('@address_product_detail');
+		cy.findByText('Address line 1')
+			.should('exist')
+			.find('input')
+			.clear()
+			.type('Queens Place');
+		cy.findByText('Save address').click();
+		cy.findByText(
+			'Please indicate that you understand which subscriptions this change will affect.',
+		).should('exist');
+		cy.get('input[name="instructions-checkbox"]').click();
+		cy.findByText('Save address').click();
+		cy.wait('@address_update')
+			.its('request.body')
+			.should('have.property', 'addressLine1', 'Queens Place');
+
+		cy.findByText(
+			'We have successfully updated your delivery details for your subscriptions. You will shortly receive a confirmation email.',
+		).should('exist');
+		cy.findByText('Queens Place').should('exist');
+		cy.findByRole('button', { name: 'Review your report' }).should('exist');
+	});
+
 	it('displays an error message if a delivery problem is not selected', () => {
 		cy.visit('/delivery/guardianweekly/records');
 		cy.wait('@product_detail');
