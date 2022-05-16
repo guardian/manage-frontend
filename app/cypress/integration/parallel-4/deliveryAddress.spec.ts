@@ -48,5 +48,7 @@ describe('Delivery address', () => {
 			'We have successfully updated your delivery details for your Guardian Weekly subscription. You will shortly receive a confirmation email.',
 		).should('exist');
 		cy.findByText('Queens Place').should('exist');
+
+		cy.get('@address_update.all').should('have.length', 1);
 	});
 });

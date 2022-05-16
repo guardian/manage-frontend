@@ -277,7 +277,7 @@ describe('Delivery records', () => {
 		cy.findByText('Problem reported (Damaged paper)').should('exist');
 	});
 
-	it('allows you to uodate delivery address before reporting a problem', () => {
+	it('allows you to update delivery address before reporting a problem', () => {
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
 			body: [guardianWeeklyCurrentSubscription],
@@ -330,6 +330,8 @@ describe('Delivery records', () => {
 		).should('exist');
 		cy.findByText('Queens Place').should('exist');
 		cy.findByRole('button', { name: 'Review your report' }).should('exist');
+
+		cy.get('@address_update.all').should('have.length', 1);
 	});
 
 	it('displays an error message if a delivery problem is not selected', () => {
