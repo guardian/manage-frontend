@@ -91,7 +91,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			type="button"
 			onClick={async () => {
 				const response = await deletePhoneNumber();
-				props.resetForm(response);
+				props.resetForm({ values: response });
 			}}
 		/>
 	);
@@ -228,7 +228,7 @@ const FormikForm = withFormik({
 		setStatus(undefined);
 		try {
 			const response = await saveUser(values);
-			resetForm(response);
+			resetForm({ values: response });
 			onSuccess(values, response);
 		} catch (e) {
 			if (e.type && e.type === ErrorTypes.VALIDATION) {

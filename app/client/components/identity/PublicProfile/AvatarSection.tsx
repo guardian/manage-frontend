@@ -86,7 +86,8 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				await saveAvatar(values.file);
 				formikBag.setSubmitting(false);
 			}}
-			render={(formikBag: FormikProps<AvatarPayload>) => (
+		>
+			{(formikBag: FormikProps<AvatarPayload>) => (
 				<Form>
 					<label css={labelCss}>
 						{avatarDisplay()}
@@ -114,7 +115,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					/>
 				</Form>
 			)}
-		/>
+		</Formik>
 	);
 
 	const avatarUploadSuccessNotice = () => (
