@@ -11,6 +11,11 @@
       "action": "manage-frontend",
       "path": "dist",
       "compress": "zip"
+    },
+    {
+      "action": "assets-static",
+      "path": "dist/static",
+      "compress": false
     }
   ]
 }
