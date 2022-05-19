@@ -6,4 +6,4 @@ aws cloudformation deploy \
     --stack-name manage-PROD-frontend-static \
     --template-file cfn.yaml \
     --region eu-west-1 \
-    --tags App=frontend-static Stage=PROD Stack=support
+    --tags App=manage-frontend-static Stage=PROD Stack=support
