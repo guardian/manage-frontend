@@ -1,54 +1,41 @@
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { fireEvent, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+
 import { RecordAddress } from '../../../../components/delivery/records/deliveryRecordsAddress';
 
-Enzyme.configure({ adapter: new Adapter() });
+beforeEach(() => {
+	render(
+		<RecordAddress
+			addressLine1={'Kings Place'}
+			addressLine2={'90 York Way'}
+			town={'London'}
+			postcode={'N1 9GU'}
+			country={'United Kingdom'}
+		/>,
+	);
+});
 
 describe('RecordsAddress', () => {
-	it('postcode and read more button', () => {
-		const wrapper = mount(
-			<RecordAddress
-				addressLine1={'Kings place, 90 York way'}
-				addressLine2={'Kings cross'}
-				town={'London'}
-				postcode={'N1 9GU'}
-				country={'United Kingdom'}
-			/>,
-		);
-		expect(wrapper.find('span').at(0).text()).toEqual('N1 9GU');
-
-		expect(wrapper.find('span').at(1).text()).toEqual('Show more');
-
-		expect(wrapper.find('ul')).toHaveLength(0);
+	it('displays the postcode only and a disclosure button to reveal the full address', () => {
+		expect(screen.getByText('N1 9GU')).toBeInTheDocument();
+		expect(screen.getByText('Show more')).toBeInTheDocument();
+		expect(screen.queryByText('Kings Place')).not.toBeInTheDocument();
 	});
 
-	it('clicking on the read more button displays the whole address', () => {
-		const wrapper = mount(
-			<RecordAddress
-				addressLine1={'Kings place, 90 York way'}
-				addressLine2={'Kings cross'}
-				town={'London'}
-				postcode={'N1 9GU'}
-				country={'United Kingdom'}
-			/>,
-		);
-		wrapper.find('span').at(1).simulate('click');
-		expect(wrapper.find('ul')).toHaveLength(1);
+	it('displays the full address when the disclosure button is clicked', () => {
+		fireEvent.click(screen.getByText('Show more'));
+
+		expect(screen.getByText('Kings Place')).toBeInTheDocument();
+		expect(screen.getByText('90 York Way')).toBeInTheDocument();
+		expect(screen.getByText('N1 9GU')).toBeInTheDocument();
+		expect(screen.getByText('Show less')).toBeInTheDocument();
 	});
 
-	it('clicking on the read more button twice hides the whole address', () => {
-		const wrapper = mount(
-			<RecordAddress
-				addressLine1={'Kings place, 90 York way'}
-				addressLine2={'Kings cross'}
-				town={'London'}
-				postcode={'N1 9GU'}
-				country={'United Kingdom'}
-			/>,
-		);
-		const readmoreBtn = wrapper.find('span').at(1);
-		readmoreBtn.simulate('click');
-		readmoreBtn.simulate('click');
-		expect(wrapper.find('ul')).toHaveLength(0);
+	it('hides the full address when the disclosure button is clicked again', () => {
+		fireEvent.click(screen.getByText('Show more'));
+		fireEvent.click(screen.getByText('Show less'));
+
+		expect(screen.getByText('N1 9GU')).toBeInTheDocument();
+		expect(screen.queryByText('Kings Place')).not.toBeInTheDocument();
 	});
 });

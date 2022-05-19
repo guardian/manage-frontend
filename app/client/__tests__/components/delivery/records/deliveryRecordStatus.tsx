@@ -1,12 +1,11 @@
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { RecordStatus } from '../../../../components/delivery/records/deliveryRecordStatus';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
-Enzyme.configure({ adapter: new Adapter() });
+import { RecordStatus } from '../../../../components/delivery/records/deliveryRecordStatus';
 
 describe('DeliveryRecordStatus', () => {
 	it('renders dispatched status', () => {
-		const wrapper = mount(
+		render(
 			<RecordStatus
 				isDispatched={true}
 				isHolidayStop={false}
@@ -16,10 +15,12 @@ describe('DeliveryRecordStatus', () => {
 				deliveryProblem={null}
 			/>,
 		);
-		expect(wrapper.find('span').at(0).text()).toEqual('Dispatched');
+
+		expect(screen.getByText('Dispatched')).toBeInTheDocument();
 	});
+
 	it('renders holiday stop status', () => {
-		const wrapper = mount(
+		render(
 			<RecordStatus
 				isDispatched={false}
 				isHolidayStop={true}
@@ -29,22 +30,24 @@ describe('DeliveryRecordStatus', () => {
 				deliveryProblem={null}
 			/>,
 		);
-		expect(wrapper.find('span').at(0).text()).toEqual('Holiday stop');
+
+		expect(screen.getByText('Holiday stop')).toBeInTheDocument();
 	});
 
 	it('renders delivery problem status', () => {
-		const wrapper = mount(
+		render(
 			<RecordStatus
 				isDispatched={false}
 				isHolidayStop={false}
 				isChangedAddress={false}
 				isChangedDeliveryInstruction={false}
 				isFutureRecord={false}
-				deliveryProblem={'uh oh!'}
+				deliveryProblem="Damaged paper"
 			/>,
 		);
-		expect(wrapper.find('span').at(0).text()).toEqual(
-			'Problem reported (Uh oh!)',
-		);
+
+		expect(
+			screen.getByText('Problem reported (Damaged paper)'),
+		).toBeInTheDocument();
 	});
 });

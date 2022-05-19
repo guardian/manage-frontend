@@ -1,10 +1,8 @@
-import { Radio } from '@guardian/src-radio';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { fireEvent, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+
 import { DeliveryProblemType } from '../../../../../../shared/productTypes';
 import { DeliveryRecordProblemForm } from '../../../../../components/delivery/records/deliveryRecordsProblemForm';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [
 	{ label: 'Damaged paper', messageIsMandatory: true },
@@ -18,7 +16,7 @@ describe('DeliveryRecordsProblemForm', () => {
 		const onFormSubmitSpy = jest.fn();
 		const updateValidationStatusCallback = jest.fn();
 
-		const wrapper = mount(
+		render(
 			<DeliveryRecordProblemForm
 				showNextStepButton={true}
 				onFormSubmit={onFormSubmitSpy}
@@ -29,18 +27,20 @@ describe('DeliveryRecordsProblemForm', () => {
 			/>,
 		);
 
-		for (let a = 0; a < guardianWeeklyProblemArr.length; a++) {
-			expect(wrapper.find(Radio).at(a).text()).toEqual(
-				guardianWeeklyProblemArr[a].label,
-			);
+		for (let i = 0; i < guardianWeeklyProblemArr.length; i++) {
+			expect(
+				screen.queryByRole('radio', {
+					name: guardianWeeklyProblemArr[i].label,
+				}),
+			).toBeInTheDocument();
 		}
 	});
 
-	it('shows vlidation warning if form is submitted without selecting option', async () => {
+	it('shows a validation warning if form is submitted without selecting option', async () => {
 		const onFormSubmitSpy = jest.fn();
 		const updateValidationStatusCallback = jest.fn();
 
-		const wrapper = mount(
+		render(
 			<DeliveryRecordProblemForm
 				showNextStepButton={true}
 				onFormSubmit={onFormSubmitSpy}
@@ -51,12 +51,10 @@ describe('DeliveryRecordsProblemForm', () => {
 			/>,
 		);
 
-		wrapper.find('button').at(0).simulate('click');
+		fireEvent.click(screen.getByText('Continue to Step 2 & 3'));
 
-		wrapper.update();
-
-		expect(wrapper.find('span').at(0).text()).toEqual(
-			'Please select the type of problem',
-		);
+		expect(
+			screen.queryByText('Please select the type of problem'),
+		).toBeInTheDocument();
 	});
 });
