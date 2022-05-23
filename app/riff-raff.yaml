@@ -9,7 +9,7 @@ deployments:
       bucket: manage-frontend-static
       prefixPackage: false
       prefixStack: false
-      cacheControl: public, max-age=31536000
+      cacheControl: public, max-age=30
       publicReadAcl: true
   manage-frontend-cloudformation:
     type: cloud-formation
