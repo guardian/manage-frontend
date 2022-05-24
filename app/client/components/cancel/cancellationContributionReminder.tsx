@@ -6,7 +6,7 @@ import { Radio, RadioGroup } from '@guardian/src-radio';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { getGeoLocation } from '../../geolocation';
-import { trackEventInOphanOnly } from '../analytics';
+import { trackEventInOphanOnly } from '../../services/analytics';
 
 const containerStyles = css`
 	padding-bottom: ${space[24]}px;

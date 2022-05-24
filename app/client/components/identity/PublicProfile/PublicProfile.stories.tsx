@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter } from 'react-router';
 import fetchMock from 'fetch-mock';
 
 import PublicProfile from './';
@@ -8,7 +9,6 @@ export default {
 	title: 'Pages/Profile',
 	component: PublicProfile,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof PublicProfile>;
@@ -16,5 +16,9 @@ export default {
 export const Default: ComponentStory<typeof PublicProfile> = () => {
 	fetchMock.restore().get('/idapi/user', { body: user });
 
-	return <PublicProfile />;
+	return (
+		<MemoryRouter>
+			<PublicProfile />
+		</MemoryRouter>
+	);
 };

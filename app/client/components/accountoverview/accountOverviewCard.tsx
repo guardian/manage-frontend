@@ -10,7 +10,7 @@ import {
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { LinkButton } from '../buttons';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
@@ -324,7 +324,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								to={`/${groupedProductType.urlPart}`}
 								text={`Manage ${groupedProductType.friendlyName}`}
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
-								state={props.productDetail}
+								state={{ productDetail: props.productDetail }}
 								colour={brand[800]}
 								textColour={brand[400]}
 								fontWeight={'bold'}
@@ -451,7 +451,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								>
 									<LinkButton
 										to={`/payment/${specificProductType.urlPart}`}
-										state={props.productDetail}
+										state={{
+											productDetail: props.productDetail,
+										}}
 										text={'Manage payment method'}
 										colour={
 											hasPaymentFailure

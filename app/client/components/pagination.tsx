@@ -7,13 +7,13 @@ import {
 	SvgChevronRightSingle,
 } from '@guardian/src-icons';
 import {
-    createContext,
-    Dispatch,
-    MouseEvent,
-    SetStateAction,
-    useContext,
-    useEffect,
-    useState,
+	createContext,
+	Dispatch,
+	MouseEvent,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useState,
 } from 'react';
 
 interface PaginationContextProps {

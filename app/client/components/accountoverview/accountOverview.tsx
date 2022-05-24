@@ -2,7 +2,6 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { headline } from '@guardian/src-foundations/typography';
-import { RouteComponentProps } from '@reach/router';
 import { Fragment } from 'react';
 import {
 	CancelledProductDetail,
@@ -69,66 +68,68 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 		}
 	`;
 
-	return <>
-        <PaymentFailureAlertIfApplicable
-            productDetail={maybeFirstPaymentFailure}
-        />
-        {productCategories.map((category) => {
-            const groupedProductType =
-                GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
-            const activeProductsInCategory = allActiveProductDetails.filter(
-                (activeProduct) => activeProduct.mmaCategory === category,
-            );
-            const cancelledProductsInCategory =
-                allCancelledProductDetails.filter(
-                    (activeProduct) =>
-                        activeProduct.mmaCategory === category,
-                );
+	return (
+		<>
+			<PaymentFailureAlertIfApplicable
+				productDetail={maybeFirstPaymentFailure}
+			/>
+			{productCategories.map((category) => {
+				const groupedProductType =
+					GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
+				const activeProductsInCategory = allActiveProductDetails.filter(
+					(activeProduct) => activeProduct.mmaCategory === category,
+				);
+				const cancelledProductsInCategory =
+					allCancelledProductDetails.filter(
+						(activeProduct) =>
+							activeProduct.mmaCategory === category,
+					);
 
-            return (
-                <Fragment key={category}>
-                    <h2 css={subHeadingCss}>
-                        My {groupedProductType.groupFriendlyName}
-                    </h2>
-                    {activeProductsInCategory.map((productDetail) => (
-                        <AccountOverviewCard
-                            key={productDetail.subscription.subscriptionId}
-                            productDetail={productDetail}
-                        />
-                    ))}
-                    {cancelledProductsInCategory.map(
-                        (cancelledProductDetail) => (
-                            <AccountOverviewCancelledCard
-                                key={
-                                    cancelledProductDetail.subscription
-                                        .subscriptionId
-                                }
-                                product={cancelledProductDetail}
-                            />
-                        ),
-                    )}
-                    {(groupedProductType.groupFriendlyName ===
-                        'membership' ||
-                        groupedProductType.groupFriendlyName ===
-                            'contribution') &&
-                        (cancelledProductsInCategory.length > 0 ||
-                            activeProductsInCategory.some((productDetail) =>
-                                isCancelled(
-                                    (productDetail as ProductDetail)
-                                        .subscription,
-                                ),
-                            )) && (
-                            <SupportTheGuardianSection
-                                {...groupedProductType.supportTheGuardianSectionProps}
-                            />
-                        )}
-                </Fragment>
-            );
-        })}
-    </>;
+				return (
+					<Fragment key={category}>
+						<h2 css={subHeadingCss}>
+							My {groupedProductType.groupFriendlyName}
+						</h2>
+						{activeProductsInCategory.map((productDetail) => (
+							<AccountOverviewCard
+								key={productDetail.subscription.subscriptionId}
+								productDetail={productDetail}
+							/>
+						))}
+						{cancelledProductsInCategory.map(
+							(cancelledProductDetail) => (
+								<AccountOverviewCancelledCard
+									key={
+										cancelledProductDetail.subscription
+											.subscriptionId
+									}
+									product={cancelledProductDetail}
+								/>
+							),
+						)}
+						{(groupedProductType.groupFriendlyName ===
+							'membership' ||
+							groupedProductType.groupFriendlyName ===
+								'contribution') &&
+							(cancelledProductsInCategory.length > 0 ||
+								activeProductsInCategory.some((productDetail) =>
+									isCancelled(
+										(productDetail as ProductDetail)
+											.subscription,
+									),
+								)) && (
+								<SupportTheGuardianSection
+									{...groupedProductType.supportTheGuardianSectionProps}
+								/>
+							)}
+					</Fragment>
+				);
+			})}
+		</>
+	);
 };
 
-const AccountOverview = (_: RouteComponentProps) => {
+const AccountOverview = () => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter } from 'react-router';
 
 import { Main, MainProps } from './main';
 
@@ -22,9 +23,11 @@ export default {
 } as ComponentMeta<typeof Main>;
 
 const Template: ComponentStory<typeof Main> = (args: MainProps) => (
-	<Main {...args}>
-		<h1>Main content</h1>
-	</Main>
+	<MemoryRouter>
+		<Main {...args}>
+			<h1>Main content</h1>
+		</Main>
+	</MemoryRouter>
 );
 
 export const SignedOut = Template.bind({});

@@ -22,7 +22,7 @@ module.exports = {
 					'@babel/proposal-object-rest-spread',
 					'@babel/plugin-proposal-optional-chaining',
 					'lodash',
-					['babel-plugin-emotion', { 'cssPropOptimization': true }],
+					['babel-plugin-emotion', { cssPropOptimization: true }],
 				],
 			},
 		},

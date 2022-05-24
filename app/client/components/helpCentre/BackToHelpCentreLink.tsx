@@ -3,7 +3,7 @@ import { palette, space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import { SvgChevronLeftSingle } from '@guardian/src-icons';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 
 const dividerCss = css`
 	margin-top: ${space[12]}px;

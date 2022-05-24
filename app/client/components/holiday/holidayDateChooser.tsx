@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
-import { Link, navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -14,39 +13,40 @@ import {
 	dateString,
 	parseDate,
 } from '../../../shared/dates';
-import {
-	isProduct,
-	MembersDataApiItemContext,
-} from '../../../shared/productResponse';
+import { isProduct } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-import { trackEvent } from '../analytics';
-import { Button } from '../buttons';
+import { trackEvent } from '../../services/analytics';
+import { Button } from '@guardian/src-button';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';
 import { InfoIcon } from '../svgs/infoIcon';
-import { visuallyNavigateToParent, WizardStep } from '../wizardRouterAdapter';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import {
 	creditExplainerSentence,
 	HolidayQuestionsModal,
 } from './holidayQuestionsModal';
 import { HolidaySelectionInfo } from './holidaySelectionInfo';
-import { HolidayStopsRouteableStepProps } from './holidaysOverview';
 import {
 	calculateIssuesImpactedPerYear,
 	convertRawPotentialHolidayStopDetail,
 	getPotentialHolidayStopsFetcher,
 	HolidayStopDetail,
-	HolidayStopsResponseContext,
+	HolidayStopRequest,
 	isHolidayStopsResponse,
 	isNotBulkSuspension,
 	isNotWithdrawn,
 	IssuesImpactedPerYear,
 	PotentialHolidayStopsResponse,
-	ReloadableGetHolidayStopsResponse,
 } from './holidayStopApi';
+import { Navigate, useLocation, useNavigate, Link } from 'react-router-dom';
+import {
+	HolidayStopsContext,
+	HolidayStopsContextInterface,
+	HolidayStopsRouterState,
+} from './HolidayStopsContainer';
+import { InlineError } from '@guardian/src-user-feedback';
 
 export const cancelLinkCss = css({
 	marginRight: '20px',
@@ -86,31 +86,28 @@ const fixedButtonFooterCss = css({
 	},
 });
 
-interface HolidayDateChooserProps extends HolidayStopsRouteableStepProps {
-	requiresExistingHolidayStopToAmendInContext?: true;
-}
-
 export interface SharedHolidayDateChooserState {
 	selectedRange: DateRange;
 	publicationsImpacted: HolidayStopDetail[];
 }
 
 const extractMaybeLockedStartDate = (
-	holidayStopsResponse: ReloadableGetHolidayStopsResponse,
+	existingHolidayStopToAmend: HolidayStopRequest | null,
 ) =>
-	!!holidayStopsResponse.existingHolidayStopToAmend &&
-	holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags &&
-	!holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags
-		.isFullyMutable &&
-	holidayStopsResponse.existingHolidayStopToAmend.mutabilityFlags
-		.isEndDateEditable
-		? holidayStopsResponse.existingHolidayStopToAmend.dateRange.start
+	!!existingHolidayStopToAmend &&
+	existingHolidayStopToAmend.mutabilityFlags &&
+	!existingHolidayStopToAmend.mutabilityFlags.isFullyMutable &&
+	existingHolidayStopToAmend.mutabilityFlags.isEndDateEditable
+		? existingHolidayStopToAmend.dateRange.start
 		: null;
 
 export function isSharedHolidayDateChooserState(
-	state: any,
+	state: HolidayStopRequest[] | SharedHolidayDateChooserState,
 ): state is SharedHolidayDateChooserState {
-	return !!state && state.selectedRange && state.publicationsImpacted;
+	return (
+		state.hasOwnProperty('selectedRange') &&
+		state.hasOwnProperty('publicationsImpacted')
+	);
 }
 
 const validateIssuesSelected = (
@@ -169,19 +166,22 @@ export const HolidayDateChooserStateContext = createContext<
 	SharedHolidayDateChooserState | {}
 >({});
 
-export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
-	const holidayStopsResponse = useContext(
-		HolidayStopsResponseContext,
-	) as ReloadableGetHolidayStopsResponse;
+interface HolidayDateChooserProps {
+	isAmendJourney?: true;
+}
 
-	const productDetail = useContext(MembersDataApiItemContext);
+const HolidayDateChooser = (props: HolidayDateChooserProps) => {
+	const {
+		productDetail,
+		productType,
+		existingHolidayStopToAmend,
+		selectedRange,
+		setSelectedRange,
+		publicationsImpacted,
+		setPublicationsImpacted,
+		holidayStopResponse,
+	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
-	const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(
-		undefined,
-	);
-	const [publicationsImpacted, setPublicationsImpacted] = useState<
-		HolidayStopDetail[]
-	>([]);
 	const [
 		issuesImpactedPerYearBySelection,
 		setIssuesImpactedPerYearBySelection,
@@ -189,17 +189,23 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 	const [validationErrorMessage, setValidationErrorMessage] =
 		useState<React.ReactNode | null>(null);
 
+	const [showReviewWarning, setShowReviewWarning] = useState<Boolean>(false);
+
+	const navigate = useNavigate();
+
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
+
 	useEffect(() => {
 		if (
-			isHolidayStopsResponse(holidayStopsResponse) &&
-			holidayStopsResponse.existingHolidayStopToAmend
+			isHolidayStopsResponse(holidayStopResponse) &&
+			existingHolidayStopToAmend
 		) {
-			const maybeLockedStartDate =
-				extractMaybeLockedStartDate(holidayStopsResponse);
-
-			setSelectedRange(
-				holidayStopsResponse.existingHolidayStopToAmend.dateRange,
+			const maybeLockedStartDate = extractMaybeLockedStartDate(
+				existingHolidayStopToAmend,
 			);
+
+			setSelectedRange(existingHolidayStopToAmend.dateRange);
 			setValidationErrorMessage(
 				`Please select your new ${
 					maybeLockedStartDate
@@ -220,7 +226,8 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 			isTestUser: boolean,
 		) =>
 		({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
-			setSelectedRange(dateRange(startDate, endDate));
+			const newSelectedRange = dateRange(startDate, endDate);
+			setSelectedRange(newSelectedRange);
 			setIssuesImpactedPerYearBySelection(null);
 			setValidationErrorMessage(null);
 
@@ -272,23 +279,29 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 					setIssuesImpactedPerYearBySelection(
 						updateIssuesImpactedPerYearBySelection,
 					);
-					setValidationErrorMessage(
-						validateIssuesSelected(
-							renewalDate,
-							annualIssueLimit,
-							updateIssuesImpactedPerYearBySelection
-								.issuesThisYear.length,
-							issuesRemainingThisYear,
-							updateIssuesImpactedPerYearBySelection
-								.issuesNextYear.length,
-							issuesRemainingNextYear,
-							props.productType.holidayStops.issueKeyword,
-						),
+					const newValidationErrorMessage = validateIssuesSelected(
+						renewalDate,
+						annualIssueLimit,
+						updateIssuesImpactedPerYearBySelection.issuesThisYear
+							.length,
+						issuesRemainingThisYear,
+						updateIssuesImpactedPerYearBySelection.issuesNextYear
+							.length,
+						issuesRemainingNextYear,
+						productType.holidayStops.issueKeyword,
 					);
+					setValidationErrorMessage(newValidationErrorMessage);
+					if (showReviewWarning) {
+						setShowReviewWarning(
+							!!newValidationErrorMessage ||
+								!newSelectedRange ||
+								!updateIssuesImpactedPerYearBySelection,
+						);
+					}
 				})
 				.catch((error) => {
 					setValidationErrorMessage(
-						`Failed to calculate ${props.productType.holidayStops.issueKeyword}s impacted by selected dates. Please try again later...`,
+						`Failed to calculate ${productType.holidayStops.issueKeyword}s impacted by selected dates. Please try again later...`,
 					);
 					trackEvent({
 						eventCategory: 'holidayDateChooser',
@@ -300,12 +313,11 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 		};
 
 	const holidayStopResponseIsValid =
-		isHolidayStopsResponse(holidayStopsResponse);
+		isHolidayStopsResponse(holidayStopResponse);
 
 	if (holidayStopResponseIsValid) {
 		if (isProduct(productDetail)) {
-			const existingHolidayStopToAmendId =
-				holidayStopsResponse?.existingHolidayStopToAmend?.id;
+			const existingHolidayStopToAmendId = existingHolidayStopToAmend?.id;
 
 			const anniversaryDate = parseDate(
 				productDetail.subscription.anniversaryDate,
@@ -313,7 +325,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 
 			const combinedIssuesImpactedPerYear =
 				calculateIssuesImpactedPerYear(
-					holidayStopsResponse.existing
+					holidayStopResponse.existing
 						.filter(isNotWithdrawn)
 						.filter(isNotBulkSuspension)
 						.filter((_) => _.id !== existingHolidayStopToAmendId)
@@ -322,7 +334,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 				);
 
 			const allIssuesImpactedPerYear = calculateIssuesImpactedPerYear(
-				holidayStopsResponse.existing
+				holidayStopResponse.existing
 					.filter(isNotWithdrawn)
 					.filter(isNotBulkSuspension)
 					.flatMap((_) => _.publicationsImpacted),
@@ -330,196 +342,202 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 			);
 
 			return (
-				<HolidayDateChooserStateContext.Provider
-					value={{ selectedRange, publicationsImpacted }}
-				>
-					<WizardStep routeableStepProps={props}>
-						<ProgressIndicator
-							steps={[
-								{ title: 'Choose dates', isCurrentStep: true },
-								{ title: 'Review' },
-								{ title: 'Confirmation' },
-							]}
-							additionalCSS={css`
-								margin: ${space[5]}px 0 ${space[12]}px;
-							`}
-						/>
-						{props.requiresExistingHolidayStopToAmendInContext &&
-							!holidayStopsResponse.existingHolidayStopToAmend &&
-							visuallyNavigateToParent(props)}
+				<>
+					<ProgressIndicator
+						steps={[
+							{ title: 'Choose dates', isCurrentStep: true },
+							{ title: 'Review' },
+							{ title: 'Confirmation' },
+						]}
+						additionalCSS={css`
+							margin: ${space[5]}px 0 ${space[12]}px;
+						`}
+					/>
+					{props.isAmendJourney && !existingHolidayStopToAmend && (
+						<Navigate to=".." state={routerState} />
+					)}
 
-						<h1>Choose the dates you will be away</h1>
-						<p>
-							The first available date is{' '}
+					<h1>Choose the dates you will be away</h1>
+					<p>
+						The first available date is{' '}
+						<strong>
+							{dateString(
+								holidayStopResponse.productSpecifics
+									.firstAvailableDate,
+								'cccc d MMMM',
+							)}
+						</strong>{' '}
+						due to{' '}
+						{productType.holidayStops.alternateNoticeString ? (
 							<strong>
-								{dateString(
-									holidayStopsResponse.productSpecifics
-										.firstAvailableDate,
-									'cccc d MMMM',
-								)}
-							</strong>{' '}
-							due to{' '}
-							{props.productType.holidayStops
-								.alternateNoticeString ? (
-								<strong>
-									{
-										props.productType.holidayStops
-											.alternateNoticeString
-									}{' '}
-									period
-								</strong>
-							) : (
-								'our printing and delivery schedule (notice period)'
-							)}
-							.
-							<br />
-							{creditExplainerSentence(
-								props.productType.holidayStops.issueKeyword,
-							)}
-						</p>
-						<div css={oneAtATimeStyles}>
-							<div css={{ margin: '10px' }}>
-								<InfoIcon />
-								You can schedule one suspension at a time.
-							</div>
-							<div
-								css={{
-									[minWidth.mobileLandscape]: {
-										display: 'none',
-									},
-								}}
-							>
-								<HolidayQuestionsModal
-									annualIssueLimit={
-										holidayStopsResponse.annualIssueLimit
-									}
-									holidayStopFlowProperties={
-										props.productType.holidayStops
-									}
-								/>
-							</div>
+								{productType.holidayStops.alternateNoticeString}{' '}
+								period
+							</strong>
+						) : (
+							'our printing and delivery schedule (notice period)'
+						)}
+						.
+						<br />
+						{creditExplainerSentence(
+							productType.holidayStops.issueKeyword,
+						)}
+					</p>
+					<div css={oneAtATimeStyles}>
+						<div css={{ margin: '10px' }}>
+							<InfoIcon />
+							You can schedule one suspension at a time.
 						</div>
-						<DatePicker
-							firstAvailableDate={
-								holidayStopsResponse.productSpecifics
-									.firstAvailableDate
-							}
-							issueDaysOfWeek={
-								holidayStopsResponse.productSpecifics
-									.issueDaysOfWeek
-							}
-							issueKeyword={startCase(
-								props.productType.holidayStops.issueKeyword,
-							)}
-							existingDates={holidayStopsResponse.existing
-								.filter(isNotWithdrawn)
-								.filter(
-									(holidayStopRequest) =>
-										holidayStopRequest.id !==
-										existingHolidayStopToAmendId,
-								)
-								.map((hsr) => hsr.dateRange)}
-							amendableDateRange={
-								holidayStopsResponse.existingHolidayStopToAmend &&
-								holidayStopsResponse.existingHolidayStopToAmend
-									.dateRange
-							}
-							selectedRange={selectedRange}
-							maybeLockedStartDate={extractMaybeLockedStartDate(
-								holidayStopsResponse,
-							)}
-							selectionInfo={
-								<HolidaySelectionInfo
-									productType={props.productType}
-									renewalDate={anniversaryDate}
-									combinedIssuesImpactedPerYear={
-										combinedIssuesImpactedPerYear
-									}
-									annualIssueLimit={
-										holidayStopsResponse.annualIssueLimit
-									}
-									publicationsImpacted={publicationsImpacted}
-									issuesImpactedPerYearBySelection={
-										issuesImpactedPerYearBySelection
-									}
-									validationErrorMessage={
-										validationErrorMessage
-									}
-									selectedRange={selectedRange}
-								/>
-							}
-							onChange={onChange(
-								anniversaryDate,
-								productDetail.subscription.subscriptionId,
-								combinedIssuesImpactedPerYear,
-								allIssuesImpactedPerYear,
-								holidayStopsResponse.annualIssueLimit,
-								productDetail.isTestUser,
-							)}
-							dateToAsterisk={anniversaryDate}
-						/>
 						<div
-							css={[
-								buttonBarCss,
-								{ justifyContent: 'flex-end' },
-								fixedButtonFooterCss,
-							]}
+							css={{
+								[minWidth.mobileLandscape]: {
+									display: 'none',
+								},
+							}}
 						>
-							<div
-								css={{
-									marginRight: '30px',
-									[maxWidth.mobileLandscape]: {
-										display: 'none',
-									},
-								}}
-							>
-								<HolidayQuestionsModal
-									annualIssueLimit={
-										holidayStopsResponse.annualIssueLimit
-									}
-									holidayStopFlowProperties={
-										props.productType.holidayStops
-									}
-								/>
-							</div>
-							<Link
-								css={{
-									marginRight: '20px',
-									fontFamily: sans,
-									fontWeight: 'bold',
-									textDecoration: 'underline',
-									fontSize: '16px',
-									color: neutral[20],
-								}}
-								to=".."
-								replace={true}
-							>
-								Cancel
-							</Link>
-							<div>
-								<Button
-									text="Review details"
-									right
-									disabled={
-										!!validationErrorMessage ||
-										!selectedRange ||
-										!issuesImpactedPerYearBySelection
-									}
-									onClick={() =>
-										(props.navigate || navigate)('review')
-									}
-									primary
-								/>
-							</div>
+							<HolidayQuestionsModal
+								annualIssueLimit={
+									holidayStopResponse.annualIssueLimit
+								}
+								holidayStopFlowProperties={
+									productType.holidayStops
+								}
+							/>
 						</div>
-						<div css={{ height: '10px' }} />
-					</WizardStep>
-				</HolidayDateChooserStateContext.Provider>
+					</div>
+					<DatePicker
+						firstAvailableDate={
+							holidayStopResponse.productSpecifics
+								.firstAvailableDate
+						}
+						issueDaysOfWeek={
+							holidayStopResponse.productSpecifics.issueDaysOfWeek
+						}
+						issueKeyword={startCase(
+							productType.holidayStops.issueKeyword,
+						)}
+						existingDates={holidayStopResponse.existing
+							.filter(isNotWithdrawn)
+							.filter(
+								(holidayStopRequest) =>
+									holidayStopRequest.id !==
+									existingHolidayStopToAmendId,
+							)
+							.map((hsr) => hsr.dateRange)}
+						amendableDateRange={
+							existingHolidayStopToAmend?.dateRange
+						}
+						selectedRange={selectedRange}
+						maybeLockedStartDate={extractMaybeLockedStartDate(
+							existingHolidayStopToAmend,
+						)}
+						selectionInfo={
+							<HolidaySelectionInfo
+								productType={productType}
+								renewalDate={anniversaryDate}
+								combinedIssuesImpactedPerYear={
+									combinedIssuesImpactedPerYear
+								}
+								annualIssueLimit={
+									holidayStopResponse.annualIssueLimit
+								}
+								publicationsImpacted={publicationsImpacted}
+								issuesImpactedPerYearBySelection={
+									issuesImpactedPerYearBySelection
+								}
+								validationErrorMessage={validationErrorMessage}
+								selectedRange={selectedRange}
+							/>
+						}
+						onChange={onChange(
+							anniversaryDate,
+							productDetail.subscription.subscriptionId,
+							combinedIssuesImpactedPerYear,
+							allIssuesImpactedPerYear,
+							holidayStopResponse.annualIssueLimit,
+							productDetail.isTestUser,
+						)}
+						dateToAsterisk={anniversaryDate}
+					/>
+					<div
+						css={[
+							buttonBarCss,
+							{ justifyContent: 'flex-end' },
+							fixedButtonFooterCss,
+						]}
+					>
+						<div
+							css={{
+								marginRight: '30px',
+								[maxWidth.mobileLandscape]: {
+									display: 'none',
+								},
+							}}
+						>
+							<HolidayQuestionsModal
+								annualIssueLimit={
+									holidayStopResponse.annualIssueLimit
+								}
+								holidayStopFlowProperties={
+									productType.holidayStops
+								}
+							/>
+						</div>
+						<Link
+							css={{
+								marginRight: `${space[5]}px`,
+								fontFamily: sans,
+								fontWeight: 'bold',
+								textDecoration: 'underline',
+								fontSize: '16px',
+								color: neutral[20],
+							}}
+							to=".."
+							state={routerState}
+						>
+							Cancel
+						</Link>
+						<div>
+							<Button
+								onClick={() => {
+									const readyForReview =
+										!validationErrorMessage &&
+										selectedRange &&
+										issuesImpactedPerYearBySelection;
+									if (readyForReview) {
+										navigate('../review', {
+											state: routerState,
+										});
+									} else {
+										setShowReviewWarning(true);
+									}
+								}}
+							>
+								Review details
+							</Button>
+						</div>
+					</div>
+					<div
+						css={{
+							marginTop: `${space[5]}px`,
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
+						{showReviewWarning && (
+							<InlineError>
+								Your request is incomplete. Please ensure your
+								chosen dates are valid and that your remaining
+								holiday balance has been calculated before
+								trying again.
+							</InlineError>
+						)}
+					</div>
+				</>
 			);
 		}
-		return (
-			<GenericErrorScreen loggingMessage="No product detail for holiday stop date chooser" />
-		);
+		return <Navigate to=".." state={routerState} />;
 	}
 	return <GenericErrorScreen loggingMessage="No holiday stop response" />;
 };
+
+export default HolidayDateChooser;

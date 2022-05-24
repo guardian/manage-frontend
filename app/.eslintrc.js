@@ -23,7 +23,7 @@ module.exports = {
 	plugins: ['react', '@typescript-eslint', 'jest'],
 	settings: {
 		react: {
-		  version: 'detect',
+			version: 'detect',
 		},
 	},
 	overrides: [

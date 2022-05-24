@@ -17,7 +17,7 @@ export interface StripePaymentMethod extends PaymentMethod {
 	card: PaymentMethod.Card;
 }
 
-interface CardUpdateResponse {
+export interface CardUpdateResponse {
 	type: string;
 	last4: string;
 	expiryMonth: number;

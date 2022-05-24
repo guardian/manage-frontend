@@ -288,7 +288,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 					)
 				}
 			>
-				Go back a month
+				Go forward a month
 			</Button>
 			{calendarsMonthStartDate.map((monthStartDate, monthIndex) => (
 				<HolidayCalendarTable

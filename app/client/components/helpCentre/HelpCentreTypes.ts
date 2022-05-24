@@ -18,7 +18,7 @@ export interface SingleTopic extends BaseTopic {
 	articles: ArticleWithPath[];
 }
 
-export interface SingleTopicWithPath extends SingleTopic {
+interface SingleTopicWithPath extends SingleTopic {
 	path: string;
 }
 

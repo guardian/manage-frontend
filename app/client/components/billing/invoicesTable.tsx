@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import { InvoiceDataApiItem } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';

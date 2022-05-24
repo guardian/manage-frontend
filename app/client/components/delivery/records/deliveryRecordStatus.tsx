@@ -63,6 +63,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
 							position: relative;
 							margin-bottom: ${space[2]}px;
 						`}
+						data-cy="delivery-status"
 					>
 						<i
 							css={css`

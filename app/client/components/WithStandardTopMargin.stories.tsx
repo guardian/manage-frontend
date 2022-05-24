@@ -6,9 +6,6 @@ import { WithStandardTopMargin } from './WithStandardTopMargin';
 export default {
 	title: 'Components/WithStandardTopMargin',
 	component: WithStandardTopMargin,
-	parameters: {
-		controls: { disabled: true },
-	},
 } as ComponentMeta<typeof WithStandardTopMargin>;
 
 export const Default: ComponentStory<typeof WithStandardTopMargin> = () => (

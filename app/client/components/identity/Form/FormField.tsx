@@ -15,7 +15,6 @@ type FormInputProps<T> = Pick<
 	Exclude<keyof FormFieldProps<T>, 'children'>
 >;
 
-type FormTextAreaProps<T> = FormInputProps<T>;
 type FormSelectProps<T> = FormInputProps<T> & {
 	options: string[];
 	labelModifier?: (option: string) => string;
@@ -48,18 +47,6 @@ const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
 		</label>
 	);
 };
-
-export const FormTextAreaField = <T extends unknown>(
-	props: FormTextAreaProps<T>,
-) => (
-	<FormField
-		name={props.name}
-		label={props.label}
-		formikProps={props.formikProps}
-	>
-		<Field component="textarea" />
-	</FormField>
-);
 
 export const FormSelectField = <T extends unknown>(
 	props: FormSelectProps<T>,

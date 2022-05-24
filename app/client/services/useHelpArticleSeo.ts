@@ -1,11 +1,22 @@
-import { Location } from '@reach/router';
-import { Article } from './HelpCentreTypes';
-
-interface SeoDataProps {
-	article?: Article;
-}
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Article } from '../components/helpCentre/HelpCentreTypes';
 
 const ELEMENT_ID = 'seodata';
+
+const useHelpArticleSeo = (article?: Article) => {
+	const location = useLocation();
+
+	useEffect(() => {
+		if (document) {
+			const scriptElt = document.getElementById(ELEMENT_ID);
+			if (scriptElt) {
+				scriptElt.remove();
+			}
+			article && addStructuredData(article);
+		}
+	}, [location]);
+};
 
 const addStructuredData = (article: Article) => {
 	const data = {
@@ -23,19 +34,4 @@ const addStructuredData = (article: Article) => {
 	document.head.appendChild(scriptElt);
 };
 
-export const SeoData = (props: SeoDataProps) => (
-	<Location>
-		{() => {
-			if (document) {
-				const scriptElt = document.getElementById(ELEMENT_ID);
-				if (scriptElt) {
-					scriptElt.remove();
-				}
-				if (props.article) {
-					addStructuredData(props.article);
-				}
-			}
-			return null;
-		}}
-	</Location>
-);
+export default useHelpArticleSeo;

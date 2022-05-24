@@ -6,9 +6,6 @@ import { ExpanderButton } from './expanderButton';
 export default {
 	title: 'Components/ExpanderButton',
 	component: ExpanderButton,
-	parameters: {
-		controls: { disabled: true },
-	},
 } as ComponentMeta<typeof ExpanderButton>;
 
 export const Default: ComponentStory<typeof ExpanderButton> = () => (

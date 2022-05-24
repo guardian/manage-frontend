@@ -6,7 +6,7 @@ import {
 	space,
 } from '@guardian/src-foundations';
 import { textSans, titlepiece } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 import Color from 'color';
 import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';

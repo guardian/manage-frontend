@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Subscription } from '../../../../shared/productResponse';
-import AsyncLoader from '../../asyncLoader';
 
 type PaymentUpdateTypeName = 'card' | 'direct_debit';
 type PaymentUpdateTypeApiUrlPart = 'card' | 'dd';
@@ -19,19 +18,3 @@ export interface NewPaymentMethodDetail {
 	readonly confirmButtonWrapper: (confirmButton: JSX.Element) => JSX.Element;
 	readonly updatedSuccessExtras?: JSX.Element;
 }
-
-type MaybeNewPaymentMethodDetail = NewPaymentMethodDetail | {};
-
-export function isNewPaymentMethodDetail(
-	maybeDetail: MaybeNewPaymentMethodDetail,
-): maybeDetail is NewPaymentMethodDetail {
-	return (
-		maybeDetail.hasOwnProperty('name') &&
-		maybeDetail.hasOwnProperty('detailToPayloadObject')
-	);
-}
-
-export const NewPaymentMethodContext: React.Context<MaybeNewPaymentMethodDetail> =
-	React.createContext({});
-
-export class PaymentUpdateAsyncLoader extends AsyncLoader<object> {}

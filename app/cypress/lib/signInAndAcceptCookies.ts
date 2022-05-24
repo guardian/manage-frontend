@@ -1,11 +1,12 @@
 const iframeMessage = `[id^="sp_message_iframe_"]`;
 const acceptCookiesButtonText = 'Yes, I’m happy';
+import { guardianWeeklyCurrentSubscription } from '../../client/fixtures/productDetail';
 
 export const signInAndAcceptCookies = () => {
 	cy.session('auth', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [],
+			body: [guardianWeeklyCurrentSubscription],
 		}).as('mma');
 
 		cy.intercept('GET', '/api/cancelled/', {

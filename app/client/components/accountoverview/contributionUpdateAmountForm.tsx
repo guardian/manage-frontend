@@ -11,7 +11,7 @@ import {
 	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import AsyncLoader from '../asyncLoader';
 import { Button } from '../buttons';
 import { fetchWithDefaultParameters } from '../../fetch';

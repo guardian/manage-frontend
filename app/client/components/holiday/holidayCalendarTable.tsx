@@ -207,7 +207,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 				})}{' '}
 				{props.targetMonthStartDate.getFullYear()}
 			</span>
-			<div data-cy="date_picker" css={tableHolderCss}>
+			<div data-cy="date-picker" css={tableHolderCss}>
 				{days.map((day) => (
 					<abbr title={day.day} css={thCss} key={day.day}>
 						{day.abbr}

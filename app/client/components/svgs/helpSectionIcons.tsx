@@ -47,7 +47,7 @@ const SvgWrapper = (props: SvgWrapperProps) => (
 	</svg>
 );
 
-export const AccountsAndSignInIcon = (props: HelpSectionIconProps) => (
+const AccountsAndSignInIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -72,7 +72,7 @@ export const AccountsAndSignInIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const JournalismIcon = (props: HelpSectionIconProps) => (
+const JournalismIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -103,7 +103,7 @@ export const JournalismIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const DeliveryIcon = (props: HelpSectionIconProps) => (
+const DeliveryIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -124,7 +124,7 @@ export const DeliveryIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const BillingIcon = (props: HelpSectionIconProps) => (
+const BillingIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -161,7 +161,7 @@ export const BillingIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const PrintSubscriptionsIcon = (props: HelpSectionIconProps) => (
+const PrintSubscriptionsIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -257,7 +257,7 @@ export const PrintSubscriptionsIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const TheGuardianWebsiteIcon = (props: HelpSectionIconProps) => (
+const TheGuardianWebsiteIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g css={{ transform: 'translate(6.9px, 7.2px)' }}>
 			<path
@@ -270,7 +270,7 @@ export const TheGuardianWebsiteIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const EmailUsIcon = (props: HelpSectionIconProps) => (
+const EmailUsIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g>
 			<path
@@ -285,7 +285,7 @@ export const EmailUsIcon = (props: HelpSectionIconProps) => (
 	</SvgWrapper>
 );
 
-export const ChatWithUsIcon = (props: HelpSectionIconProps) => (
+const ChatWithUsIcon = (props: HelpSectionIconProps) => (
 	<SvgWrapper size={props.size || 39}>
 		<g transform="matrix(-1,0,0,1,39.14842,0)">
 			<path

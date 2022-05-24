@@ -1,6 +1,6 @@
 import url from 'url';
 import { conf } from '../../server/config';
-import { trackEvent } from './analytics';
+import { trackEvent } from '../services/analytics';
 import { Button } from './buttons';
 
 export interface SupportTheGuardianButtonProps {

@@ -1,29 +1,24 @@
-import { css } from '@emotion/core';
 import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
 import { space } from '@guardian/src-foundations';
-import { capitalize } from 'lodash';
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import {
-	DeliveryAddress,
-	isProduct,
-	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
-	ProductDetail,
-	Subscription,
-} from '../../../../shared/productResponse';
+	ChangeEvent,
+	Dispatch,
+	FormEvent,
+	SetStateAction,
+	useContext,
+	useState,
+} from 'react';
+import { DeliveryAddress } from '../../../../shared/productResponse';
 import {
 	GROUPED_PRODUCT_TYPES,
 	ProductType,
+	WithProductType,
 } from '../../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../../productUtils';
 import { COUNTRIES } from '../../identity/models';
-import { RouteableStepProps, WizardStep } from '../../wizardRouterAdapter';
 
 import { Button } from '@guardian/src-button';
 import { brand, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { Link, navigate } from '@reach/router';
-import { parseDate } from '../../../../shared/dates';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -31,7 +26,6 @@ import { CallCentreNumbers } from '../../callCentreNumbers';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
 import { NAV_LINKS } from '../../nav/navConfig';
-import { PageContainer } from '../../page';
 import {
 	ProductDescriptionListKeyValue,
 	ProductDescriptionListTable,
@@ -39,83 +33,16 @@ import {
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import {
-	AddressChangedInformationContext,
+	AddressSetStateObject,
 	ContactIdContext,
 	convertToDescriptionListData,
 	NewDeliveryAddressContext,
-	SubscriptionEffectiveData,
 } from './deliveryAddressFormContext';
 import { FormValidationResponse, isFormValid } from './formValidation';
 import { Select } from './select';
-
-interface ProductDetailAndProductType {
-	productDetail: ProductDetail;
-	productType: ProductType;
-}
-
-interface ContactIdToArrayOfProductDetailAndProductType {
-	[contactId: string]: ProductDetailAndProductType[];
-}
-
-interface ProductDetailWithContactId extends ProductDetail {
-	subscription: Subscription & {
-		contactId: string;
-	};
-}
-
-function hasContactId(
-	productDetail: ProductDetail,
-): productDetail is ProductDetailWithContactId {
-	return !!productDetail.subscription.contactId;
-}
-
-export const getValidDeliveryAddressChangeEffectiveDates = (
-	allProductDetail: ProductDetail[],
-) =>
-	allProductDetail
-		.filter(hasContactId)
-		.map((productDetail) => ({
-			productDetail,
-			productType:
-				GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-					productDetail,
-				),
-		}))
-		.filter((_) => _.productType.delivery?.showAddress)
-		.reduce(
-			(accumulator, { productDetail, productType }) => ({
-				...accumulator,
-				[productDetail.subscription.contactId]: [
-					...(accumulator[productDetail.subscription.contactId] ||
-						[]),
-					{ productDetail, productType },
-				],
-			}),
-			{} as ContactIdToArrayOfProductDetailAndProductType,
-		);
-
-export const addressChangeAffectedInfo = (
-	contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType,
-): SubscriptionEffectiveData[] =>
-	Object.values(contactIdToArrayOfProductDetailAndProductType)
-		.flatMap<ProductDetailAndProductType>(flattenEquivalent)
-		.map(({ productDetail, productType }) => {
-			const friendlyProductName = capitalize(
-				productType.shortFriendlyName || productType.friendlyName,
-			).trim();
-			const effectiveDate = productDetail.subscription
-				.deliveryAddressChangeEffectiveDate
-				? parseDate(
-						productDetail.subscription
-							.deliveryAddressChangeEffectiveDate,
-				  ).date
-				: undefined;
-			return {
-				friendlyProductName,
-				subscriptionId: productDetail.subscription.subscriptionId,
-				effectiveDate,
-			};
-		});
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { css } from '@emotion/core';
+import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 
 interface FormStates {
 	INIT: string;
@@ -125,6 +52,7 @@ interface FormStates {
 	SUCCESS: string;
 	POST_ERROR: string;
 }
+
 const formStates: FormStates = {
 	INIT: 'init',
 	PENDING: 'pending',
@@ -134,96 +62,41 @@ const formStates: FormStates = {
 	POST_ERROR: 'postError',
 };
 
-const renderDeliveryAddressForm =
-	(routeableStepProps: RouteableStepProps) =>
-	(allProductDetails: MembersDataApiItem[]) => {
-		return (
-			<FormContainer
-				contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-					allProductDetails
-						.filter(isProduct)
-						.filter((_) => _.subscription.readerType !== 'Gift'),
-				)}
-				routeableStepProps={routeableStepProps}
-			/>
-		);
-	};
-const clearState =
-	(
-		setFormStatus: Dispatch<SetStateAction<string>>,
-		setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>,
-		setAddressLine1: Dispatch<SetStateAction<string>>,
-		setAddressLine2: Dispatch<SetStateAction<string>>,
-		setTown: Dispatch<SetStateAction<string>>,
-		setRegion: Dispatch<SetStateAction<string>>,
-		setPostcode: Dispatch<SetStateAction<string>>,
-		setCountry: Dispatch<SetStateAction<string>>,
-		setInstructions: Dispatch<SetStateAction<string>>,
-		setAcknowledgementState: Dispatch<SetStateAction<boolean>>,
-	) =>
-	() => {
-		setFormStatus(formStates.INIT);
-		setFormErrors({ isValid: false });
-		setAddressLine1('');
-		setAddressLine2('');
-		setTown('');
-		setRegion('');
-		setPostcode('');
-		setCountry('');
-		setInstructions('');
-		setAcknowledgementState(false);
-	};
-
-interface FormContainerProps {
-	contactIdToArrayOfProductDetailAndProductType: ContactIdToArrayOfProductDetailAndProductType;
-	routeableStepProps: RouteableStepProps;
+interface FormProps {
+	formStatus: string;
+	setFormStatus: Dispatch<SetStateAction<string>>;
+	formErrors: FormValidationResponse;
+	setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>;
+	warning?: ProductDescriptionListKeyValue[];
+	productType: ProductType;
 }
-const FormContainer = (props: FormContainerProps) => {
-	const existingDeliveryAddress = Object.values(
-		props.contactIdToArrayOfProductDetailAndProductType,
-	)[0][0].productDetail.subscription.deliveryAddress;
 
-	const [formStatus, setFormStatus] = useState(formStates.INIT);
-	const [formErrors, setFormErrors] = useState({ isValid: false });
-	const [addressLine1, setAddressLine1] = useState(
-		existingDeliveryAddress?.addressLine1 || '',
-	);
-	const [addressLine2, setAddressLine2] = useState(
-		existingDeliveryAddress?.addressLine2 || '',
-	);
-	const [town, setTown] = useState(existingDeliveryAddress?.town || '');
-	const [region, setRegion] = useState(existingDeliveryAddress?.region || '');
-	const [postcode, setPostcode] = useState(
-		existingDeliveryAddress?.postcode || '',
-	);
+const Form = (props: FormProps) => {
+	const location = useLocation();
+	const navigate = useNavigate();
 
-	const [country, setCountry] = useState(
-		existingDeliveryAddress?.country
-			? COUNTRIES.find(
-					(countryObj) =>
-						existingDeliveryAddress?.country === countryObj.iso,
-			  )?.name || existingDeliveryAddress?.country
-			: '',
-	);
+	const addressStateContext = useContext(NewDeliveryAddressContext);
+	const contactIdToArrayOfProductDetailAndProductType =
+		useContext(ContactIdContext);
+
+	const addressStateObject =
+		addressStateContext.addressStateObject as DeliveryAddress;
+	const addressSetStateObject =
+		addressStateContext.addressSetStateObject as AddressSetStateObject;
+
+	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+		useState<boolean>(false);
+
+	const [
+		instructionsRemainingCharacters,
+		setInstructionsRemainingCharacters,
+	] = useState<number>(250 - (addressStateObject.instructions?.length || 0));
+
 	const [acknowledgementChecked, setAcknowledgementState] =
 		useState<boolean>(false);
-	const [instructions, setInstructions] = useState(
-		existingDeliveryAddress?.instructions || '',
-	);
-
-	const subHeadingCss = `
-    border-top: 1px solid ${neutral['86']};
-    ${headline.small()};
-    font-weight: bold;
-    margin-top: 50px;
-    ${maxWidth.tablet} {
-      font-size: 1.25rem;
-      line-height: 1.6;
-    };
-  `;
 
 	const subscriptionsNames = Object.values(
-		props.contactIdToArrayOfProductDetailAndProductType,
+		contactIdToArrayOfProductDetailAndProductType,
 	)
 		.flatMap(flattenEquivalent)
 		.map(({ productDetail }) => {
@@ -234,200 +107,21 @@ const FormContainer = (props: FormContainerProps) => {
 			return `${friendlyProductName}`;
 		});
 
-	const defaultFormProps = {
-		formStatus,
-		setFormStatus,
-		formErrors,
-		setFormErrors,
-		addressLine1,
-		setAddressLine1,
-		addressLine2,
-		setAddressLine2,
-		town,
-		setTown,
-		region,
-		setRegion,
-		postcode,
-		setPostcode,
-		country,
-		setCountry,
-		instructions,
-		setInstructions,
-		subscriptionsNames,
-		acknowledgementChecked,
-		setAcknowledgementState,
-	};
-	const evolvingAddressObject = {
-		addressLine1,
-		addressLine2,
-		town,
-		region,
-		postcode,
-		country,
-		instructions,
-	};
-
-	return (
-		<NewDeliveryAddressContext.Provider
-			value={{
-				newDeliveryAddress: evolvingAddressObject,
-				addressStateReset: clearState(
-					setFormStatus,
-					setFormErrors,
-					setAddressLine1,
-					setAddressLine2,
-					setTown,
-					setRegion,
-					setPostcode,
-					setCountry,
-					setInstructions,
-					setAcknowledgementState,
-				),
-			}}
-		>
-			<AddressChangedInformationContext.Provider
-				value={addressChangeAffectedInfo(
-					props.contactIdToArrayOfProductDetailAndProductType,
-				)}
-			>
-				<ContactIdContext.Provider
-					value={
-						Object.keys(
-							props.contactIdToArrayOfProductDetailAndProductType,
-						)[0]
-					}
-				>
-					<WizardStep routeableStepProps={props.routeableStepProps}>
-						<ProgressIndicator
-							steps={[
-								{ title: 'Update', isCurrentStep: true },
-								{ title: 'Review' },
-								{ title: 'Confirmation' },
-							]}
-							additionalCSS={css`
-								margin-top: ${space[5]}px;
-							`}
-						/>
-						<h2
-							css={css`
-								${subHeadingCss}
-							`}
-						>
-							Update address details
-						</h2>
-						{Object.keys(
-							props.contactIdToArrayOfProductDetailAndProductType,
-						).length === 0 && (
-							<div>
-								<p>
-									No addresses available for update. If this
-									doesn't seem right please contact us
-								</p>
-								<CallCentreNumbers />
-							</div>
-						)}
-						{Object.keys(
-							props.contactIdToArrayOfProductDetailAndProductType,
-						).length > 1 && (
-							<div>
-								<p>
-									You will need to contact us to update your
-									addresses
-								</p>
-								<CallCentreNumbers />
-							</div>
-						)}
-						{Object.keys(
-							props.contactIdToArrayOfProductDetailAndProductType,
-						).length === 1 && (
-							<div>
-								{Object.values(
-									props.contactIdToArrayOfProductDetailAndProductType,
-								).flatMap(flattenEquivalent).length > 1 && (
-									<InfoSection>
-										Please note that changing your address
-										here will update the delivery address
-										for all of your subscriptions.
-									</InfoSection>
-								)}
-								{(formStatus === formStates.INIT ||
-									formStatus === formStates.PENDING ||
-									formStatus ===
-										formStates.VALIDATION_ERROR) && (
-									<Form
-										{...defaultFormProps}
-										routeableStepProps={
-											props.routeableStepProps
-										}
-										warning={convertToDescriptionListData(
-											addressChangeAffectedInfo(
-												props.contactIdToArrayOfProductDetailAndProductType,
-											),
-										)}
-									/>
-								)}
-							</div>
-						)}
-					</WizardStep>
-				</ContactIdContext.Provider>
-			</AddressChangedInformationContext.Provider>
-		</NewDeliveryAddressContext.Provider>
-	);
-};
-
-interface FormProps {
-	formStatus: string;
-	setFormStatus: Dispatch<SetStateAction<string>>;
-	formErrors: FormValidationResponse;
-	setFormErrors: Dispatch<SetStateAction<FormValidationResponse>>;
-	addressLine1: string;
-	setAddressLine1: Dispatch<SetStateAction<string>>;
-	addressLine2: string;
-	setAddressLine2: Dispatch<SetStateAction<string>>;
-	town: string;
-	setTown: Dispatch<SetStateAction<string>>;
-	region: string;
-	setRegion: Dispatch<SetStateAction<string>>;
-	postcode: string;
-	setPostcode: Dispatch<SetStateAction<string>>;
-	country: string;
-	setCountry: Dispatch<SetStateAction<string>>;
-	instructions: string;
-	setInstructions: Dispatch<SetStateAction<string>>;
-	acknowledgementChecked: boolean;
-	setAcknowledgementState: Dispatch<SetStateAction<boolean>>;
-	warning?: ProductDescriptionListKeyValue[];
-	subscriptionsNames: string[];
-	routeableStepProps: RouteableStepProps;
-}
-
-const Form = (props: FormProps) => {
-	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
-		useState<boolean>(false);
-
-	const [
-		instructionsRemainingCharacters,
-		setInstructionsRemainingCharacters,
-	] = useState<number>(250 - props.instructions.length);
-
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		props.setFormStatus(formStates.PENDING);
 
 		const formData: DeliveryAddress = {
-			addressLine1: props.addressLine1,
-			addressLine2: props.addressLine2,
-			town: props.town,
-			region: props.region,
-			postcode: props.postcode,
-			country: props.country,
+			addressLine1: addressStateObject.addressLine1,
+			addressLine2: addressStateObject.addressLine2,
+			town: addressStateObject.town,
+			region: addressStateObject.region,
+			postcode: addressStateObject.postcode,
+			country: addressStateObject.country,
 		};
 
-		const isFormValidResponse = isFormValid(
-			formData,
-			props.subscriptionsNames,
-		);
+		const isFormValidResponse = isFormValid(formData, subscriptionsNames);
 
 		props.setFormErrors({
 			addressLine1: isFormValidResponse.addressLine1,
@@ -436,11 +130,8 @@ const Form = (props: FormProps) => {
 			country: isFormValidResponse.country,
 		} as FormValidationResponse);
 
-		if (isFormValidResponse.isValid && props.acknowledgementChecked) {
-			// formStates.VALIDATION_SUCCESS`);
-			(props.routeableStepProps.navigate || navigate)('review', {
-				state: props.routeableStepProps.location?.state,
-			});
+		if (isFormValidResponse.isValid && acknowledgementChecked) {
+			navigate('review', { state: location.state });
 		} else {
 			props.setFormStatus(formStates.VALIDATION_ERROR);
 		}
@@ -449,12 +140,6 @@ const Form = (props: FormProps) => {
 	return (
 		<>
 			<form action="#" onSubmit={handleFormSubmit}>
-				{props.formStatus === formStates.POST_ERROR && (
-					<span>Uh oh, something went wrong</span>
-				)}
-				{props.formStatus === formStates.SUCCESS && (
-					<span>Form submitted successfully</span>
-				)}
 				<fieldset
 					css={{
 						border: `1px solid ${neutral['86']}`,
@@ -481,15 +166,15 @@ const Form = (props: FormProps) => {
 						`}
 					>
 						Delivery address
-						{props.routeableStepProps.productType.delivery
+						{props.productType.delivery
 							?.enableDeliveryInstructionsUpdate &&
 							' and instructions'}
 					</legend>
 					<Input
 						label={'Address line 1'}
 						width={30}
-						value={props.addressLine1}
-						changeSetState={props.setAddressLine1}
+						value={addressStateObject.addressLine1}
+						changeSetState={addressSetStateObject.setAddressLine1}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
 							!props.formErrors.addressLine1?.isValid
@@ -499,15 +184,15 @@ const Form = (props: FormProps) => {
 					<Input
 						label="Address line 2"
 						width={30}
-						value={props.addressLine2}
-						changeSetState={props.setAddressLine2}
+						value={addressStateObject.addressLine2 || ''}
+						changeSetState={addressSetStateObject.setAddressLine2}
 						optional={true}
 					/>
 					<Input
 						label="Town or City"
 						width={30}
-						value={props.town}
-						changeSetState={props.setTown}
+						value={addressStateObject.town || ''}
+						changeSetState={addressSetStateObject.setTown}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
 							!props.formErrors.town?.isValid
@@ -517,15 +202,15 @@ const Form = (props: FormProps) => {
 					<Input
 						label="County or State"
 						width={30}
-						value={props.region}
+						value={addressStateObject.region || ''}
 						optional={true}
-						changeSetState={props.setRegion}
+						changeSetState={addressSetStateObject.setRegion}
 					/>
 					<Input
 						label="Postcode/Zipcode"
 						width={11}
-						value={props.postcode}
-						changeSetState={props.setPostcode}
+						value={addressStateObject.postcode}
+						changeSetState={addressSetStateObject.setPostcode}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
 							!props.formErrors.postcode?.isValid
@@ -544,15 +229,15 @@ const Form = (props: FormProps) => {
 						additionalCSS={css`
 							margin-top: 14px;
 						`}
-						value={props.country}
-						changeSetState={props.setCountry}
+						value={addressStateObject.country}
+						changeSetState={addressSetStateObject.setCountry}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
 							!props.formErrors.country?.isValid
 						}
 						errorMessage={props.formErrors.country?.message}
 					/>
-					{props.routeableStepProps.productType.delivery
+					{props.productType.delivery
 						?.enableDeliveryInstructionsUpdate && (
 						<label
 							css={css`
@@ -578,11 +263,11 @@ const Form = (props: FormProps) => {
 										name="instructions"
 										rows={2}
 										maxLength={250}
-										value={props.instructions}
+										value={addressStateObject.instructions}
 										onChange={(
 											e: ChangeEvent<HTMLTextAreaElement>,
 										) => {
-											props.setInstructions(
+											addressSetStateObject.setInstructions(
 												e.target.value,
 											);
 											setInstructionsRemainingCharacters(
@@ -653,7 +338,7 @@ const Form = (props: FormProps) => {
 					name="instructions-checkbox"
 					error={
 						props.formStatus === formStates.VALIDATION_ERROR &&
-						!props.acknowledgementChecked
+						!acknowledgementChecked
 							? 'Please indicate that you understand which subscriptions this change will affect.'
 							: undefined
 					}
@@ -661,9 +346,9 @@ const Form = (props: FormProps) => {
 					<Checkbox
 						value="acknowledged"
 						label="I understand that this address change will affect the following subscriptions"
-						checked={props.acknowledgementChecked}
+						checked={acknowledgementChecked}
 						onChange={(e: ChangeEvent<HTMLInputElement>) => {
-							props.setAcknowledgementState(e.target.checked);
+							setAcknowledgementState(e.target.checked);
 						}}
 					/>
 				</CheckboxGroup>
@@ -705,7 +390,7 @@ const Form = (props: FormProps) => {
 					color: ${neutral[46]};
 				`}
 			>
-				If you need seperate delivery addresses for each of your
+				If you need separate delivery addresses for each of your
 				subscriptions, please{' '}
 				<span
 					css={css`
@@ -728,52 +413,89 @@ const Form = (props: FormProps) => {
 	);
 };
 
-const DeliveryAddressForm = (props: RouteableStepProps) => {
-	// const ProductDetailContext = React.createContext(props.location?.state);
+export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
+	const [formStatus, setFormStatus] = useState<string>(formStates.INIT);
+	const [formErrors, setFormErrors] = useState({ isValid: false });
+	const contactIdToArrayOfProductDetailAndProductType =
+		useContext(ContactIdContext);
+
+	const subHeadingCss = `
+		border-top: 1px solid ${neutral['86']};
+		${headline.small()};
+		font-weight: bold;
+		margin-top: 50px;
+		${maxWidth.tablet} {
+			font-size: 1.25rem;
+			line-height: 1.6;
+		};
+	`;
+
 	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle={
-				<span
-					css={css`
-						::first-letter {
-							text-transform: capitalize;
-						}
-					`}
-				>
-					<span
-						css={css`
-							display: none;
-							${minWidth.tablet} {
-								display: inline;
-							}
-						`}
-					>
-						Update{' '}
-					</span>
-					delivery details
-				</span>
-			}
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: 'Edit delivery address',
-					currentPage: true,
-				},
-			]}
-		>
-			<MembersDatApiAsyncLoader
-				render={renderDeliveryAddressForm(props)}
-				fetch={createProductDetailFetcher(
-					GROUPED_PRODUCT_TYPES.subscriptions,
-				)}
-				loadingMessage={'Loading delivery details...'}
+		<>
+			<ProgressIndicator
+				steps={[
+					{ title: 'Update', isCurrentStep: true },
+					{ title: 'Review' },
+					{ title: 'Confirmation' },
+				]}
+				additionalCSS={css`
+					margin-top: ${space[5]}px;
+				`}
 			/>
-		</PageContainer>
+			<h2
+				css={css`
+					${subHeadingCss}
+				`}
+			>
+				Update address details
+			</h2>
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType)
+				.length === 0 && (
+				<div>
+					<p>
+						No addresses available for update. If this doesn't seem
+						right please contact us
+					</p>
+					<CallCentreNumbers />
+				</div>
+			)}
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType).length >
+				1 && (
+				<div>
+					<p>You will need to contact us to update your addresses</p>
+					<CallCentreNumbers />
+				</div>
+			)}
+			{Object.keys(contactIdToArrayOfProductDetailAndProductType)
+				.length === 1 && (
+				<div>
+					{Object.values(
+						contactIdToArrayOfProductDetailAndProductType,
+					).flatMap(flattenEquivalent).length > 1 && (
+						<InfoSection>
+							Please note that changing your address here will
+							update the delivery address for all of your
+							subscriptions.
+						</InfoSection>
+					)}
+					{(formStatus === formStates.INIT ||
+						formStatus === formStates.PENDING ||
+						formStatus === formStates.VALIDATION_ERROR) && (
+						<Form
+							formStatus={formStatus}
+							setFormStatus={setFormStatus}
+							formErrors={formErrors}
+							setFormErrors={setFormErrors}
+							productType={props.productType}
+							warning={convertToDescriptionListData(
+								addressChangeAffectedInfo(
+									contactIdToArrayOfProductDetailAndProductType,
+								),
+							)}
+						/>
+					)}
+				</div>
+			)}
+		</>
 	);
 };
-
-export default DeliveryAddressForm;

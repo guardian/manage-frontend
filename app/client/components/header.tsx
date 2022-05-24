@@ -1,10 +1,10 @@
 import { breakpoints, palette } from '@guardian/src-foundations';
-import { Link } from '@reach/router';
 import { SignInStatus } from '../services/signInStatus';
 import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { DropdownNav } from './nav/dropdownNav';
 import { GridRoundel } from './svgs/gridRoundel';
+import { Link } from 'react-router-dom';
 
 export interface HeaderProps {
 	signInStatus: SignInStatus;

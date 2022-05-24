@@ -8,21 +8,19 @@ import {
 	text,
 } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
+import { ProductDetail } from '../../../../shared/productResponse';
+import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import AsyncLoader from '../../asyncLoader';
 import { LinkButton } from '../../buttons';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { TickInCircle } from '../../svgs/tickInCircle';
-import {
-	RouteableStepProps,
-	visuallyNavigateToParent,
-	WizardStep,
-} from '../../wizardRouterAdapter';
 import { updateAddressFetcher } from './deliveryAddressApi';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {
@@ -33,24 +31,26 @@ import {
 	NewDeliveryAddressContext,
 } from './deliveryAddressFormContext';
 
-const renderConfirmation = (props: RouteableStepProps) => () =>
-	<ConfirmationFC {...props} />;
+const renderConfirmation = (props: ProductType) => () =>
+	<AddressConfirmation {...props} />;
 
-const ConfirmationFC = (props: RouteableStepProps) => {
+const AddressConfirmation = (props: ProductType) => {
+	interface LocationState {
+		productDetail: ProductDetail;
+	}
+
+	const location = useLocation();
+	const state = location.state as LocationState;
+
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const addressChangedInformationContext = useContext(
 		AddressChangedInformationContext,
 	);
-	const productName = props.productType.friendlyName;
+
+	const productName = props.friendlyName;
 
 	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
 		useState<boolean>(false);
-
-	useEffect(() => {
-		return () => {
-			addressContext.addressStateReset?.();
-		};
-	}, []);
 
 	const subHeadingCss = `
     border-top: 1px solid ${neutral['86']};
@@ -77,8 +77,8 @@ const ConfirmationFC = (props: RouteableStepProps) => {
   `;
 
 	return (
-		<WizardStep routeableStepProps={props}>
-			{isAddress(addressContext.newDeliveryAddress) ? (
+		<>
+			{isAddress(addressContext.addressStateObject) ? (
 				<>
 					<ProgressIndicator
 						steps={[
@@ -119,8 +119,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 							`}
 						>
 							Delivery address
-							{props.productType.delivery
-								?.enableDeliveryInstructionsUpdate &&
+							{props.delivery?.enableDeliveryInstructionsUpdate &&
 								' and instructions'}
 						</h2>
 						<dl
@@ -153,9 +152,9 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 										${ddCss}
 									`}
 								>
-									{addressContext.newDeliveryAddress && (
+									{addressContext.addressStateObject && (
 										<DeliveryAddressDisplay
-											{...addressContext.newDeliveryAddress}
+											{...addressContext.addressStateObject}
 										/>
 									)}
 								</dd>
@@ -181,7 +180,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 										${ddCss}
 									`}
 								>
-									{addressContext.newDeliveryAddress
+									{addressContext.addressStateObject
 										?.instructions || '-'}
 								</dd>
 							</div>
@@ -213,18 +212,18 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 						<LinkButton
 							to={'/subscriptions'}
 							text={'Return to subscription'}
-							state={props.location?.state}
+							state={state}
 							colour={background.ctaPrimary}
 							textColour={text.ctaPrimary}
 							fontWeight={'bold'}
-							onClick={() =>
+							onClick={() => {
 								trackEvent({
 									eventCategory:
 										'delivery_address_update_confirmation',
 									eventAction: 'click',
-									eventLabel: `manage_${props.productType.urlPart}`,
-								})
-							}
+									eventLabel: `manage_${props.urlPart}`,
+								});
+							}}
 						/>
 					</div>
 					<p
@@ -234,7 +233,7 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 							color: ${neutral[46]};
 						`}
 					>
-						If you need seperate delivery addresses for each of your
+						If you need separate delivery addresses for each of your
 						subscriptions, please{' '}
 						<span
 							css={css`
@@ -255,18 +254,19 @@ const ConfirmationFC = (props: RouteableStepProps) => {
 					{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 				</>
 			) : (
-				visuallyNavigateToParent(props)
+				<Navigate to=".." replace />
 			)}
-		</WizardStep>
+		</>
 	);
 };
 
-export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
+const DeliveryAddressConfirmation = (props: WithProductType<ProductType>) => {
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const contactIdContext = useContext(ContactIdContext);
 	const addressChangedInformationContext = useContext(
 		AddressChangedInformationContext,
 	);
+	const contactId = Object.keys(contactIdContext)[0];
 
 	const addressChangeInformationCopy = [
 		...addressChangedInformationContext.map(
@@ -289,21 +289,21 @@ export const DeliveryAddressEditConfirmation = (props: RouteableStepProps) => {
 		)} )`,
 	].join('\n');
 
-	return addressContext.newDeliveryAddress ? (
+	return addressContext.addressStateObject ? (
 		<AsyncLoader
-			render={renderConfirmation(props)}
+			render={renderConfirmation(props.productType)}
 			fetch={updateAddressFetcher(
 				{
-					...addressContext.newDeliveryAddress,
+					...addressContext.addressStateObject,
 					addressChangeInformation: addressChangeInformationCopy,
 				},
-				contactIdContext,
+				contactId,
 			)}
 			readerOnOK={(resp: Response) => resp.text()}
 			loadingMessage={'Updating delivery address details...'}
 		/>
 	) : (
-		visuallyNavigateToParent(props)
+		<Navigate to=".." replace />
 	);
 };
 
@@ -338,3 +338,5 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 		{props.message}
 	</div>
 );
+
+export default DeliveryAddressConfirmation;

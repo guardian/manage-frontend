@@ -2,8 +2,8 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
 import { useState } from 'react';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
 import {
 	getMainPlan,
@@ -11,7 +11,11 @@ import {
 	isPaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import {
+	WithGroupedProductType,
+	GroupedProductType,
+	ProductType,
+} from '../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
@@ -21,8 +25,8 @@ import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { DeliveryAddressDisplay } from '../delivery/address/deliveryAddressDisplay';
-import { FlowWrapper } from '../FlowWrapper';
 import { NAV_LINKS } from '../nav/navConfig';
+import { PageContainer } from '../page';
 import { getNextPaymentDetails } from '../payment/nextPaymentDetails';
 import { PaymentDetailsTable } from '../payment/paymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertIfApplicable';
@@ -30,7 +34,6 @@ import { ProductDescriptionListTable } from '../productDescriptionListTable';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { ErrorIcon } from '../svgs/errorIcon';
 import { GiftIcon } from '../svgs/giftIcon';
-import { RouteableStepPropsForGrouped } from '../wizardRouterAdapter';
 import { ContributionUpdateAmount } from './contributionUpdateAmount';
 import { NewsletterOptinSection } from './newsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './sixForSixExplainer';
@@ -53,9 +56,10 @@ export const subHeadingCss = `
   `;
 
 interface InnerContentProps {
-	manageProductProps: RouteableStepPropsForGrouped;
+	manageProductProps: WithGroupedProductType<GroupedProductType>;
 	productDetail: ProductDetail;
 }
+
 const InnerContent = ({
 	manageProductProps,
 	productDetail,
@@ -183,7 +187,7 @@ const InnerContent = ({
 						alert={!!productDetail.alertText}
 						text="Update payment method"
 						to={`/payment/${specificProductType.urlPart}`}
-						state={productDetail}
+						state={{ productDetail: productDetail }}
 					/>
 				)}
 
@@ -261,7 +265,7 @@ const InnerContent = ({
 						fontWeight="bold"
 						text="Manage delivery history"
 						to={`/delivery/${specificProductType.urlPart}/records`}
-						state={productDetail}
+						state={{ productDetail }}
 					/>
 				</>
 			)}
@@ -294,7 +298,7 @@ const InnerContent = ({
 							fontWeight="bold"
 							text="Manage suspensions"
 							to={`/suspend/${specificProductType.urlPart}`}
-							state={productDetail}
+							state={{ productDetail }}
 						/>
 					</>
 				)}
@@ -383,8 +387,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 					color: ${brand['500']};
 				`}
 				to={'/cancel/' + props.specificProductType.urlPart}
-				data-cy={`Cancel ${props.friendlyName}`}
-				state={props.productDetail}
+				state={{ productDetail: props.productDetail }}
 			>
 				{shouldContactUsToCancel
 					? 'Contact us'
@@ -394,36 +397,43 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	);
 };
 
-const ManageProduct = (props: RouteableStepPropsForGrouped) => (
-	<FlowWrapper
-		{...props}
-		productType={props.groupedProductType}
-		loadingMessagePrefix="Retrieving details of your"
-		allowCancelledSubscription
-		forceRedirectToAccountOverviewIfNoBrowserHistoryState
-		selectedNavItem={NAV_LINKS.accountOverview}
-		pageTitle={`Manage ${
-			props.groupedProductType.shortFriendlyName ||
-			props.groupedProductType.friendlyName
-		}`}
-		breadcrumbs={[
-			{
-				title: NAV_LINKS.accountOverview.title,
-				link: NAV_LINKS.accountOverview.link,
-			},
-			{
-				title: `Manage ${props.groupedProductType.friendlyName}`,
-				currentPage: true,
-			},
-		]}
-	>
-		{(productDetail) => (
-			<InnerContent
-				manageProductProps={props}
-				productDetail={productDetail}
-			/>
-		)}
-	</FlowWrapper>
-);
+interface ManageProductRouterState {
+	productDetail: ProductDetail;
+}
+
+const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => {
+	const location = useLocation();
+	const routerState = location.state as ManageProductRouterState;
+	const productDetail = routerState?.productDetail;
+
+	return (
+		<PageContainer
+			selectedNavItem={NAV_LINKS.accountOverview}
+			pageTitle={`Manage ${
+				props.groupedProductType.shortFriendlyName ||
+				props.groupedProductType.friendlyName
+			}`}
+			breadcrumbs={[
+				{
+					title: NAV_LINKS.accountOverview.title,
+					link: NAV_LINKS.accountOverview.link,
+				},
+				{
+					title: `Manage ${props.groupedProductType.friendlyName}`,
+					currentPage: true,
+				},
+			]}
+		>
+			{productDetail ? (
+				<InnerContent
+					manageProductProps={props}
+					productDetail={productDetail}
+				/>
+			) : (
+				<Navigate to="/" />
+			)}
+		</PageContainer>
+	);
+};
 
 export default ManageProduct;

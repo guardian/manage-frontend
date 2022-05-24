@@ -1,4 +1,3 @@
-import { RouteComponentProps } from '@reach/router';
 import { css } from '@emotion/core';
 import { breakpoints, neutral, space } from '@guardian/src-foundations';
 import { headline, textSans } from '@guardian/src-foundations/typography';
@@ -34,7 +33,7 @@ const grafStyle = css`
 	margin-bottom: ${space[4]}px;
 `;
 
-const Maintenance = (_: RouteComponentProps) => {
+const Maintenance = () => {
 	return (
 		<div css={containerStyle}>
 			<section css={wrapperStyle}>

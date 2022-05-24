@@ -2,16 +2,47 @@ import { css } from '@emotion/core';
 import { LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
-import { navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import * as React from 'react';
+import { useContext } from 'react';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../progressIndicator';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
-import { RouteableStepProps, WizardStep } from '../../wizardRouterAdapter';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
 import { CancellationReason } from '../cancellationReason';
 
-const innerContent = (reason: CancellationReason, updatedAmount: number) => {
+export interface SavedBodyProps {
+	amount: number;
+}
+
+const SavedCancellation = () => {
+	const navigate = useNavigate();
+
+	const location = useLocation();
+
+	const routerState = location.state as CancellationRouterState;
+	const { productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const updatedAmount = routerState.updatedContributionAmount;
+	const selectedReasonId = routerState.selectedReasonId;
+
+	if (!updatedAmount || !selectedReasonId || !productType) {
+		Sentry.captureMessage(
+			'Updated amount and/or cancellation reason not passed to SavedCancellation',
+		);
+		return <Navigate to="../" />;
+	}
+
+	const reason = productType.cancellation.reasons.find(
+		(reason) => reason.reasonId === selectedReasonId,
+	) as CancellationReason;
+
 	const onReturnClicked = (
 		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 	) => {
@@ -19,7 +50,7 @@ const innerContent = (reason: CancellationReason, updatedAmount: number) => {
 		navigate('/');
 	};
 
-	return (
+	return updatedAmount && reason ? (
 		<>
 			<ProgressIndicator
 				steps={[
@@ -53,31 +84,9 @@ const innerContent = (reason: CancellationReason, updatedAmount: number) => {
 				</div>
 			</WithStandardTopMargin>
 		</>
+	) : (
+		<GenericErrorMessage />
 	);
 };
 
-interface SavedCancellationStepProps extends RouteableStepProps {
-	reason: CancellationReason;
-}
-
-export interface SavedBodyProps {
-	amount: number;
-}
-
-export const SavedCancellation = (props: SavedCancellationStepProps) => {
-	const updatedAmount = props.location?.state.updatedAmount;
-
-	if (!updatedAmount) {
-		Sentry.captureMessage('Updated amount not passed to SavedCancellation');
-	}
-
-	return (
-		<WizardStep routeableStepProps={props}>
-			{updatedAmount ? (
-				innerContent(props.reason, updatedAmount)
-			) : (
-				<GenericErrorMessage />
-			)}
-		</WizardStep>
-	);
-};
+export default SavedCancellation;

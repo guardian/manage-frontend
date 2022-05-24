@@ -2,20 +2,22 @@ import { css } from '@emotion/core';
 import { Button, LinkButton } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { SvgArrowLeftStraight } from '@guardian/src-icons';
-import { navigate } from '@reach/router';
 import * as Sentry from '@sentry/browser';
-import { useState } from 'react';
-import * as React from 'react';
-import {
-	isPaidSubscriptionPlan,
-	MembersDataApiItemContext,
-} from '../../../../shared/productResponse';
-import { getMainPlan, isProduct } from '../../../../shared/productResponse';
+import { useContext, useState } from 'react';
+import { isPaidSubscriptionPlan } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
-import { trackEventInOphanOnly } from '../../analytics';
+import { trackEventInOphanOnly } from '../../../services/analytics';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { getIsPayingMinAmount } from './utils';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
+import { SaveBodyProps } from '../cancellationReason';
 
 const container = css`
 	& > * + * {
@@ -23,8 +25,21 @@ const container = css`
 	}
 `;
 
-const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
+const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
+	SaveBodyProps
+> = ({ caseId }: SaveBodyProps) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+	const navigate = useNavigate();
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	if (!productType || !productDetail || !routerState.selectedReasonId) {
+		return <Navigate to="../" />;
+	}
 
 	const onUpdateConfirmed = (updatedAmount: number) => {
 		trackEventInOphanOnly({
@@ -33,8 +48,8 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 			eventLabel: 'change',
 		});
 
-		navigate(`mma_financial_circumstances/saved`, {
-			state: { updatedAmount },
+		navigate('../saved', {
+			state: { ...routerState, updatedContributionAmount: updatedAmount },
 		});
 	};
 
@@ -55,7 +70,9 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 			eventLabel: 'cancel',
 		});
 
-		navigate(`mma_financial_circumstances/confirmed`);
+		navigate('../confirmed', {
+			state: { ...routerState, caseId },
+		});
 	};
 
 	const onReturnClicked = (
@@ -65,111 +82,92 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC = () => {
 		navigate('/');
 	};
 
+	const mainPlan = getMainPlan(productDetail.subscription);
+
+	if (!isPaidSubscriptionPlan(mainPlan)) {
+		Sentry.captureMessage(
+			'mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationFlowFinancialSaveAttempt',
+		);
+		return <GenericErrorMessage />;
+	}
+
+	const isPayingMinAmount = getIsPayingMinAmount(mainPlan);
+
 	return (
-		<MembersDataApiItemContext.Consumer>
-			{(productDetail) => {
-				if (!isProduct(productDetail)) {
-					Sentry.captureMessage(
-						'MembersDataApiItem is not a productDetail in ContributionsCancellationFlowFinancialSaveAttempt',
-					);
-					return <GenericErrorMessage />;
-				}
+		<div css={container}>
+			{isPayingMinAmount ? (
+				<>
+					<div>
+						We understand that financial circumstances change, and
+						your current contribution might not suit you right now.
+					</div>
 
-				const mainPlan = getMainPlan(productDetail.subscription);
+					<Button onClick={onCancelClicked}>
+						Confirm cancellation
+					</Button>
+				</>
+			) : (
+				<>
+					<div>
+						We understand that financial circumstances change. If
+						you can, we hope you’ll consider reducing the size of
+						your contribution today rather than cancelling it.
+						Simply pick a new amount and we’ll do the rest.
+					</div>
 
-				if (!isPaidSubscriptionPlan(mainPlan)) {
-					Sentry.captureMessage(
-						'mainPlan is not a PaidSubscriptionPlan in ContributionsCancellationFlowFinancialSaveAttempt',
-					);
-					return <GenericErrorMessage />;
-				}
-
-				const isPayingMinAmount = getIsPayingMinAmount(mainPlan);
-
-				return (
-					<div css={container}>
-						{isPayingMinAmount ? (
-							<>
-								<div>
-									We understand that financial circumstances
-									change, and your current contribution might
-									not suit you right now.
-								</div>
-
-								<Button onClick={onCancelClicked}>
-									Confirm cancellation
-								</Button>
-							</>
-						) : (
-							<>
-								<div>
-									We understand that financial circumstances
-									change. If you can, we hope you’ll consider
-									reducing the size of your contribution today
-									rather than cancelling it. Simply pick a new
-									amount and we’ll do the rest.
-								</div>
-
-								{showAmountUpdateForm ? (
-									<ContributionUpdateAmountForm
-										currentAmount={mainPlan.amount / 100}
-										subscriptionId={
-											productDetail.subscription
-												.subscriptionId
-										}
-										mainPlan={mainPlan}
-										productType={
-											PRODUCT_TYPES.contributions
-										}
-										nextPaymentDate={
-											productDetail.subscription
-												.nextPaymentDate
-										}
-										mode="CANCELLATION_SAVE"
-										onUpdateConfirmed={onUpdateConfirmed}
-									/>
-								) : (
-									<div
-										css={css`
-											& > * + * {
-												margin-left: ${space[4]}px;
-											}
-										`}
-									>
-										<Button onClick={onReduceClicked}>
-											Reduce amount
-										</Button>
-
-										<Button
-											onClick={onCancelClicked}
-											priority="subdued"
-										>
-											I still want to cancel
-										</Button>
-									</div>
-								)}
-							</>
-						)}
-
+					{showAmountUpdateForm ? (
+						<ContributionUpdateAmountForm
+							currentAmount={mainPlan.amount / 100}
+							subscriptionId={
+								productDetail.subscription.subscriptionId
+							}
+							mainPlan={mainPlan}
+							productType={PRODUCT_TYPES.contributions}
+							nextPaymentDate={
+								productDetail.subscription.nextPaymentDate
+							}
+							mode="CANCELLATION_SAVE"
+							onUpdateConfirmed={onUpdateConfirmed}
+						/>
+					) : (
 						<div
 							css={css`
-								margin-top: ${space[24]}px;
+								& > * + * {
+									margin-left: ${space[4]}px;
+								}
 							`}
 						>
-							<LinkButton
-								href="/"
-								onClick={onReturnClicked}
-								priority="tertiary"
-								icon={<SvgArrowLeftStraight />}
-								iconSide="left"
+							<Button onClick={onReduceClicked}>
+								Reduce amount
+							</Button>
+
+							<Button
+								onClick={onCancelClicked}
+								priority="subdued"
 							>
-								Return to your account
-							</LinkButton>
+								I still want to cancel
+							</Button>
 						</div>
-					</div>
-				);
-			}}
-		</MembersDataApiItemContext.Consumer>
+					)}
+				</>
+			)}
+
+			<div
+				css={css`
+					margin-top: ${space[24]}px;
+				`}
+			>
+				<LinkButton
+					href="/"
+					onClick={onReturnClicked}
+					priority="tertiary"
+					icon={<SvgArrowLeftStraight />}
+					iconSide="left"
+				>
+					Return to your account
+				</LinkButton>
+			</div>
+		</div>
 	);
 };
 

@@ -2,7 +2,6 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
 import { headline, textSans } from '@guardian/src-foundations/typography';
-import { RouteComponentProps } from '@reach/router';
 import { Fragment } from 'react';
 import { parseDate } from '../../../shared/dates';
 import {
@@ -86,220 +85,224 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
     margin: 50px 0 ${space[5]}px;
   `;
 
-	return <>
-        <PaymentFailureAlertIfApplicable
-            productDetail={maybeFirstPaymentFailure}
-        />
-        {Object.entries(mmaCategoryToProductDetails).map(
-            ([mmaCategory, productDetails]) => {
-                return productDetails.length > 0 && (
-                    <Fragment key={mmaCategory}>
-                        {productDetails.map((productDetail) => {
-                            const mainPlan = getMainPlan(
-                                productDetail.subscription,
-                            );
-                            const groupedProductType =
-                                GROUPED_PRODUCT_TYPES[
-                                    productDetail.mmaCategory
-                                ];
-                            const specificProductType =
-                                groupedProductType.mapGroupedToSpecific(
-                                    productDetail,
-                                );
-                            const hasCancellationPending =
-                                productDetail.subscription.cancelledAt;
-                            const cancelledCopy =
-                                specificProductType.cancelledCopy ||
-                                groupedProductType.cancelledCopy;
-                            const isAmountOveridable =
-                                specificProductType.updateAmountMdaEndpoint;
-                            const isContribution =
-                                isAmountOveridable &&
-                                isPaidSubscriptionPlan(mainPlan);
-                            const nextPaymentDetails =
-                                getNextPaymentDetails(
-                                    mainPlan,
-                                    productDetail.subscription,
-                                    null,
-                                    !!productDetail.alertText,
-                                );
-                            const paidPlan = getMainPlan(
-                                productDetail.subscription,
-                            ) as PaidSubscriptionPlan;
-                            const productInvoiceData = invoiceData
-                                .filter(
-                                    (invoice) =>
-                                        invoice.subscriptionName ===
-                                        productDetail.subscription
-                                            .subscriptionId,
-                                )
-                                .map((invoice) => ({
-                                    ...invoice,
-                                    pdfPath: `/api/${invoice.pdfPath}`,
-                                    currency: paidPlan.currency,
-                                    currencyISO: paidPlan.currencyISO,
-                                    productUrlPart:
-                                        specificProductType.urlPart,
-                                }));
-                            const resultsPerPage =
-                                paidPlan.interval?.includes('year')
-                                    ? productInvoiceData.length
-                                    : 6;
-                            return (
-                                <Fragment
-                                    key={
-                                        productDetail.subscription
-                                            .subscriptionId
-                                    }
-                                >
-                                    <div
-                                        css={css`
-                                            ${subHeadingBorderTopCss}
-                                            display: flex;
-                                            align-items: start;
-                                            justify-content: space-between;
-                                        `}
-                                    >
-                                        <h2
-                                            css={css`
-                                                ${subHeadingTitleCss}
-                                                margin: 0;
-                                            `}
-                                        >
-                                            {specificProductType.productTitle(
-                                                mainPlan,
-                                            )}
-                                        </h2>
-                                        {isGift(
-                                            productDetail.subscription,
-                                        ) && (
-                                            <i
-                                                css={css`
-                                                    margin: 4px 0 0
-                                                        ${space[3]}px;
-                                                `}
-                                            >
-                                                <GiftIcon
-                                                    alignArrowToThisSide={
-                                                        'left'
-                                                    }
-                                                />
-                                            </i>
-                                        )}
-                                    </div>
+	return (
+		<>
+			<PaymentFailureAlertIfApplicable
+				productDetail={maybeFirstPaymentFailure}
+			/>
+			{Object.entries(mmaCategoryToProductDetails).map(
+				([mmaCategory, productDetails]) => {
+					return (
+						productDetails.length > 0 && (
+							<Fragment key={mmaCategory}>
+								{productDetails.map((productDetail) => {
+									const mainPlan = getMainPlan(
+										productDetail.subscription,
+									);
+									const groupedProductType =
+										GROUPED_PRODUCT_TYPES[
+											productDetail.mmaCategory
+										];
+									const specificProductType =
+										groupedProductType.mapGroupedToSpecific(
+											productDetail,
+										);
+									const hasCancellationPending =
+										productDetail.subscription.cancelledAt;
+									const cancelledCopy =
+										specificProductType.cancelledCopy ||
+										groupedProductType.cancelledCopy;
+									const isAmountOveridable =
+										specificProductType.updateAmountMdaEndpoint;
+									const isContribution =
+										isAmountOveridable &&
+										isPaidSubscriptionPlan(mainPlan);
+									const nextPaymentDetails =
+										getNextPaymentDetails(
+											mainPlan,
+											productDetail.subscription,
+											null,
+											!!productDetail.alertText,
+										);
+									const paidPlan = getMainPlan(
+										productDetail.subscription,
+									) as PaidSubscriptionPlan;
+									const productInvoiceData = invoiceData
+										.filter(
+											(invoice) =>
+												invoice.subscriptionName ===
+												productDetail.subscription
+													.subscriptionId,
+										)
+										.map((invoice) => ({
+											...invoice,
+											pdfPath: `/api/${invoice.pdfPath}`,
+											currency: paidPlan.currency,
+											currencyISO: paidPlan.currencyISO,
+											productUrlPart:
+												specificProductType.urlPart,
+										}));
+									const resultsPerPage =
+										paidPlan.interval?.includes('year')
+											? productInvoiceData.length
+											: 6;
+									return (
+										<Fragment
+											key={
+												productDetail.subscription
+													.subscriptionId
+											}
+										>
+											<div
+												css={css`
+													${subHeadingBorderTopCss}
+													display: flex;
+													align-items: start;
+													justify-content: space-between;
+												`}
+											>
+												<h2
+													css={css`
+														${subHeadingTitleCss}
+														margin: 0;
+													`}
+												>
+													{specificProductType.productTitle(
+														mainPlan,
+													)}
+												</h2>
+												{isGift(
+													productDetail.subscription,
+												) && (
+													<i
+														css={css`
+															margin: 4px 0 0
+																${space[3]}px;
+														`}
+													>
+														<GiftIcon
+															alignArrowToThisSide={
+																'left'
+															}
+														/>
+													</i>
+												)}
+											</div>
 
-                                    {hasCancellationPending && (
-                                        <p
-                                            css={css`
-                                                ${textSans.medium()};
-                                            `}
-                                        >
-                                            <ErrorIcon
-                                                fill={brandAlt[200]}
-                                            />
-                                            <span
-                                                css={css`
-                                                    margin-left: ${space[2]}px;
-                                                `}
-                                            >
-                                                {cancelledCopy}{' '}
-                                                <strong>
-                                                    {parseDate(
-                                                        productDetail
-                                                            .subscription
-                                                            .end,
-                                                    ).dateStr()}
-                                                </strong>
-                                            </span>
-                                            .
-                                        </p>
-                                    )}
-                                    {!isContribution && (
-                                        <BasicProductInfoTable
-                                            groupedProductType={
-                                                groupedProductType
-                                            }
-                                            productDetail={
-                                                productDetail
-                                            }
-                                        />
-                                    )}
-                                    <SixForSixExplainerIfApplicable
-                                        additionalCss={css`
-                                            ${textSans.medium()};
-                                        `}
-                                        mainPlan={mainPlan}
-                                        hasCancellationPending={
-                                            hasCancellationPending
-                                        }
-                                    />
-                                    <PaymentDetailsTable
-                                        productDetail={productDetail}
-                                        nextPaymentDetails={
-                                            nextPaymentDetails
-                                        }
-                                        hasCancellationPending={
-                                            hasCancellationPending
-                                        }
-                                        tableHeading="Payment"
-                                    />
-                                    {productDetail.isPaidTier && (
-                                        <LinkButton
-                                            colour={
-                                                productDetail.alertText
-                                                    ? brand[400]
-                                                    : brand[800]
-                                            }
-                                            textColour={
-                                                productDetail.alertText
-                                                    ? neutral[100]
-                                                    : brand[400]
-                                            }
-                                            fontWeight={'bold'}
-                                            alert={
-                                                !!productDetail.alertText
-                                            }
-                                            text="Update payment method"
-                                            to={`/payment/${specificProductType.urlPart}`}
-                                            state={{
-                                                productDetail,
-                                                flowReferrer: {
-                                                    title: NAV_LINKS
-                                                        .billing.title,
-                                                    link: NAV_LINKS
-                                                        .billing.link,
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                    {productInvoiceData.length > 0 && (
-                                        <div
-                                            css={css`
-                                                margin-top: ${space[12]}px;
-                                                margin-bottom: ${space[3]}px;
-                                            `}
-                                        >
-                                            <InvoicesTable
-                                                resultsPerPage={
-                                                    resultsPerPage
-                                                }
-                                                invoiceData={
-                                                    productInvoiceData
-                                                }
-                                            />
-                                        </div>
-                                    )}
-                                </Fragment>
-                            );
-                        })}
-                    </Fragment>
-                );
-            },
-        )}
-    </>;
+											{hasCancellationPending && (
+												<p
+													css={css`
+														${textSans.medium()};
+													`}
+												>
+													<ErrorIcon
+														fill={brandAlt[200]}
+													/>
+													<span
+														css={css`
+															margin-left: ${space[2]}px;
+														`}
+													>
+														{cancelledCopy}{' '}
+														<strong>
+															{parseDate(
+																productDetail
+																	.subscription
+																	.end,
+															).dateStr()}
+														</strong>
+													</span>
+													.
+												</p>
+											)}
+											{!isContribution && (
+												<BasicProductInfoTable
+													groupedProductType={
+														groupedProductType
+													}
+													productDetail={
+														productDetail
+													}
+												/>
+											)}
+											<SixForSixExplainerIfApplicable
+												additionalCss={css`
+													${textSans.medium()};
+												`}
+												mainPlan={mainPlan}
+												hasCancellationPending={
+													hasCancellationPending
+												}
+											/>
+											<PaymentDetailsTable
+												productDetail={productDetail}
+												nextPaymentDetails={
+													nextPaymentDetails
+												}
+												hasCancellationPending={
+													hasCancellationPending
+												}
+												tableHeading="Payment"
+											/>
+											{productDetail.isPaidTier && (
+												<LinkButton
+													colour={
+														productDetail.alertText
+															? brand[400]
+															: brand[800]
+													}
+													textColour={
+														productDetail.alertText
+															? neutral[100]
+															: brand[400]
+													}
+													fontWeight={'bold'}
+													alert={
+														!!productDetail.alertText
+													}
+													text="Update payment method"
+													to={`/payment/${specificProductType.urlPart}`}
+													state={{
+														productDetail,
+														flowReferrer: {
+															title: NAV_LINKS
+																.billing.title,
+															link: NAV_LINKS
+																.billing.link,
+														},
+													}}
+												/>
+											)}
+											{productInvoiceData.length > 0 && (
+												<div
+													css={css`
+														margin-top: ${space[12]}px;
+														margin-bottom: ${space[3]}px;
+													`}
+												>
+													<InvoicesTable
+														resultsPerPage={
+															resultsPerPage
+														}
+														invoiceData={
+															productInvoiceData
+														}
+													/>
+												</div>
+											)}
+										</Fragment>
+									);
+								})}
+							</Fragment>
+						)
+					);
+				},
+			)}
+		</>
+	);
 };
 
-const Billing = (_: RouteComponentProps) => {
+const Billing = () => {
 	return (
 		<PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
 			<BillingDataAsyncLoader

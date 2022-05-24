@@ -36,7 +36,11 @@ test('Stripe Elements has not been loaded yet', async () => {
 		}),
 	);
 
-	getByText('Something went wrong, please check the details and try again.');
+	expect(
+		getByText(
+			'Something went wrong, please check the details and try again.',
+		),
+	).toBeDefined();
 });
 
 // fieldWrapper.tsx component should have integration testing, but StripeElements do not load when running tests, so we would have to mock StripeElements, job for the future.

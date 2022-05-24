@@ -2,10 +2,9 @@ import { css } from '@emotion/core';
 import { space } from '@guardian/src-foundations';
 import { neutral } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
 import { useState } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { helpCentreMoreQuestionsConfig } from './helpCentreConfig';
 import {
 	containterCss,
@@ -15,6 +14,7 @@ import {
 	linkArrowStyle,
 	sectionTitleCss,
 } from './helpCentreStyles';
+import { Link } from 'react-router-dom';
 
 const moreTopicsStyles = css({
 	marginBottom: '10px',

@@ -27,10 +27,10 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
 	>(props.existingPhoneNumbers);
 
 	function isValidEntry(
-		existingNumberEntry: [string, any],
+		existingNumberEntry: [string, string | null],
 	): existingNumberEntry is [ContactPhoneNumbersType, string] {
 		const [phoneType, phoneNumber] = existingNumberEntry;
-		return phoneType.toLowerCase() !== 'id' && phoneNumber;
+		return !!(phoneType.toLowerCase() !== 'id' && phoneNumber);
 	}
 
 	const currentPhoneNumbers =

@@ -7,9 +7,6 @@ import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
 export default {
 	title: 'Components/BasicProductInfoTable',
 	component: BasicProductInfoTable,
-	parameters: {
-		controls: { hideNoControlsWarning: true },
-	},
 } as ComponentMeta<typeof BasicProductInfoTable>;
 
 export const Default: ComponentStory<typeof BasicProductInfoTable> = () => (

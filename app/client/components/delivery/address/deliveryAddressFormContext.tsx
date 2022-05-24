@@ -1,14 +1,25 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateString,
 } from '../../../../shared/dates';
 import { DeliveryAddress } from '../../../../shared/productResponse';
+import { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 
+export interface AddressSetStateObject {
+	setAddressLine1: Dispatch<SetStateAction<string>>;
+	setAddressLine2: Dispatch<SetStateAction<string>>;
+	setTown: Dispatch<SetStateAction<string>>;
+	setRegion: Dispatch<SetStateAction<string>>;
+	setPostcode: Dispatch<SetStateAction<string>>;
+	setCountry: Dispatch<SetStateAction<string>>;
+	setInstructions: Dispatch<SetStateAction<string>>;
+}
+
 interface NewDeliveryAddressContextInterface {
-	newDeliveryAddress?: DeliveryAddress;
-	addressStateReset?: () => void;
+	addressStateObject?: DeliveryAddress;
+	addressSetStateObject?: AddressSetStateObject;
 }
 
 export interface SubscriptionEffectiveData {
@@ -24,10 +35,13 @@ export const AddressChangedInformationContext = createContext<
 	SubscriptionEffectiveData[]
 >([]);
 
-export const ContactIdContext = createContext<string>('');
+export const ContactIdContext =
+	createContext<ContactIdToArrayOfProductDetailAndProductType>({});
 
-export function isAddress(maybeAddress: any): maybeAddress is DeliveryAddress {
-	return maybeAddress?.postcode;
+export function isAddress(
+	maybeAddress: DeliveryAddress | undefined,
+): maybeAddress is DeliveryAddress {
+	return !!maybeAddress?.postcode;
 }
 
 export const convertToDescriptionListData = (

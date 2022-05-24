@@ -5,7 +5,7 @@ interface CommonGlobals {
 	dsn: string | null;
 }
 
-export interface IdentityDetails {
+interface IdentityDetails {
 	userId?: string;
 	email?: string;
 	displayName?: string;

@@ -1,10 +1,10 @@
 import { css } from '@emotion/core';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
-import { Link } from '@reach/router';
 import { SignInStatus } from '../../services/signInStatus';
 import { minWidth } from '../../styles/breakpoints';
 import { DropdownNav } from '.././nav/dropdownNav';
 import { TheGuardianLogo } from '.././svgs/theGuardianLogo';
+import { Link } from 'react-router-dom';
 
 export interface HelpCentreHeaderProps {
 	signInStatus: SignInStatus;
