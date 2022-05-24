@@ -41,13 +41,19 @@ export const getNextPaymentDetails = (
 				: mainPlan.interval,
 		)} payment`;
 
-		const paymentValue = `${mainPlan.currency}${(
-			overiddenAmount ||
-			(subscription.nextPaymentPrice || mainPlan.amount) / 100.0
-		).toFixed(2)} ${mainPlan.currencyISO}`;
+		const paymentValue =
+			subscription.readerType === 'Patron'
+				? 'not applicable'
+				: `${mainPlan.currency}${(
+						overiddenAmount ||
+						(subscription.nextPaymentPrice ?? mainPlan.amount) /
+							100.0
+				  ).toFixed(2)} ${mainPlan.currencyISO}`;
 
 		const nextPaymentDateValue =
-			!hasPaymentFailure && subscription.nextPaymentDate
+			subscription.readerType === 'Patron'
+				? 'not applicable'
+				: !hasPaymentFailure && subscription.nextPaymentDate
 				? parseDate(
 						subscription.currentPlans.length === 0
 							? mainPlan.start

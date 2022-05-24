@@ -298,7 +298,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					)}
 					{specificProductType.showTrialRemainingIfApplicable &&
 						props.productDetail.subscription.trialLength > 0 &&
-						!isGifted && (
+						!isGifted &&
+						props.productDetail.subscription.readerType !==
+							'Patron' && (
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Trial remaining</li>
 								<li css={valueCss}>
@@ -378,17 +380,19 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 										)}
 										{nextPaymentDetails.paymentValue}
 									</span>
-									{nextPaymentDetails.nextPaymentDateValue && (
-										<span
-											css={css`
-												display: block;
-											`}
-										>
-											{
-												nextPaymentDetails.nextPaymentDateValue
-											}
-										</span>
-									)}
+									{nextPaymentDetails.nextPaymentDateValue &&
+										props.productDetail.subscription
+											.readerType !== 'Patron' && (
+											<span
+												css={css`
+													display: block;
+												`}
+											>
+												{
+													nextPaymentDetails.nextPaymentDateValue
+												}
+											</span>
+										)}
 								</li>
 							</ul>
 						)}

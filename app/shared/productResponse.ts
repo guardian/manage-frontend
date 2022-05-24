@@ -135,7 +135,7 @@ export interface DeliveryAddress {
 	addressChangeInformation?: string;
 }
 
-type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary';
+type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary' | 'Patron';
 
 export interface Subscription {
 	accountId?: string;
