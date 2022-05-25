@@ -1,46 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DropMenu displays the text in the supplied color 1`] = `
+.emotion-0 {
+  border-color: #999999;
+  border-top: 1px solid #ececec;
+  cursor: pointer;
+  padding: 3px 0 12px;
+  position: relative;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  font-family: "GuardianTextEgyptian",Georgia,serif;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: capitalize;
+  color: green;
+}
+
+.emotion-1:after {
+  content: '';
+  border: 2px solid currentColor;
+  border-left: transparent;
+  border-top: transparent;
+  box-sizing: content-box;
+  display: inline-block;
+  height: 5px;
+  color: inherit;
+  -webkit-transform: translateY(-2px) rotate(45deg);
+  -moz-transform: translateY(-2px) rotate(45deg);
+  -ms-transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-2px) rotate(45deg);
+  -webkit-transition: -webkit-transform 250ms ease-out;
+  transition: transform 250ms ease-out;
+  vertical-align: middle;
+  width: 5px;
+  margin-left: 4px;
+}
+
+.emotion-1.open:after {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
 <div
-  css={
-    Object {
-      "borderColor": "#999999",
-      "borderTop": "1px solid #ececec",
-      "cursor": "pointer",
-      "padding": "3px 0 12px",
-      "position": "relative",
-    }
-  }
+  className="emotion-0"
 >
   <div
-    css={
-      Object {
-        "&.open:after": Object {
-          "transform": "rotate(225deg)",
-        },
-        ":after": Object {
-          "border": "2px solid currentColor",
-          "borderLeft": "transparent",
-          "borderTop": "transparent",
-          "boxSizing": "content-box",
-          "color": "inherit",
-          "content": "''",
-          "display": "inline-block",
-          "height": "5px",
-          "marginLeft": "4px",
-          "transform": "translateY(-2px) rotate(45deg)",
-          "transition": "transform 250ms ease-out",
-          "verticalAlign": "middle",
-          "width": "5px",
-        },
-        "color": "green",
-        "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
-        "fontSize": "17px",
-        "fontWeight": "bold",
-        "lineHeight": "24px",
-        "textTransform": "capitalize",
-      }
-    }
+    className="emotion-1"
     onClick={[Function]}
   >
     TEST DROPMENU
@@ -49,13 +58,56 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
 `;
 
 exports[`DropMenu if closed, opens and shows children on click 1`] = `
+.emotion-0 {
+  border-color: #999999;
+  border-top: 1px solid #ececec;
+  cursor: pointer;
+  padding: 3px 0 12px;
+  position: relative;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  font-family: "GuardianTextEgyptian",Georgia,serif;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: capitalize;
+  color: blue;
+}
+
+.emotion-1:after {
+  content: '';
+  border: 2px solid currentColor;
+  border-left: transparent;
+  border-top: transparent;
+  box-sizing: content-box;
+  display: inline-block;
+  height: 5px;
+  color: inherit;
+  -webkit-transform: translateY(-2px) rotate(45deg);
+  -moz-transform: translateY(-2px) rotate(45deg);
+  -ms-transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-2px) rotate(45deg);
+  -webkit-transition: -webkit-transform 250ms ease-out;
+  transition: transform 250ms ease-out;
+  vertical-align: middle;
+  width: 5px;
+  margin-left: 4px;
+}
+
+.emotion-1.open:after {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
 <div>
   <div
-    css="[object Object]"
+    class="emotion-0"
   >
     <div
-      class="open"
-      css="[object Object]"
+      class="open emotion-1"
     >
       TEST DROPMENU
     </div>
@@ -67,12 +119,56 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
 `;
 
 exports[`DropMenu if open, closes and hides children on click 1`] = `
+.emotion-0 {
+  border-color: #999999;
+  border-top: 1px solid #ececec;
+  cursor: pointer;
+  padding: 3px 0 12px;
+  position: relative;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  font-family: "GuardianTextEgyptian",Georgia,serif;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: capitalize;
+  color: blue;
+}
+
+.emotion-1:after {
+  content: '';
+  border: 2px solid currentColor;
+  border-left: transparent;
+  border-top: transparent;
+  box-sizing: content-box;
+  display: inline-block;
+  height: 5px;
+  color: inherit;
+  -webkit-transform: translateY(-2px) rotate(45deg);
+  -moz-transform: translateY(-2px) rotate(45deg);
+  -ms-transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-2px) rotate(45deg);
+  -webkit-transition: -webkit-transform 250ms ease-out;
+  transition: transform 250ms ease-out;
+  vertical-align: middle;
+  width: 5px;
+  margin-left: 4px;
+}
+
+.emotion-1.open:after {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
 <div>
   <div
-    css="[object Object]"
+    class="emotion-0"
   >
     <div
-      css="[object Object]"
+      class="emotion-1"
     >
       TEST DROPMENU
     </div>
@@ -81,12 +177,56 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
 `;
 
 exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
+.emotion-0 {
+  border-color: #999999;
+  border-top: 1px solid #ececec;
+  cursor: pointer;
+  padding: 3px 0 12px;
+  position: relative;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  font-family: "GuardianTextEgyptian",Georgia,serif;
+  font-weight: bold;
+  line-height: 24px;
+  text-transform: capitalize;
+  color: blue;
+}
+
+.emotion-1:after {
+  content: '';
+  border: 2px solid currentColor;
+  border-left: transparent;
+  border-top: transparent;
+  box-sizing: content-box;
+  display: inline-block;
+  height: 5px;
+  color: inherit;
+  -webkit-transform: translateY(-2px) rotate(45deg);
+  -moz-transform: translateY(-2px) rotate(45deg);
+  -ms-transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-2px) rotate(45deg);
+  -webkit-transition: -webkit-transform 250ms ease-out;
+  transition: transform 250ms ease-out;
+  vertical-align: middle;
+  width: 5px;
+  margin-left: 4px;
+}
+
+.emotion-1.open:after {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
 <div>
   <div
-    css="[object Object]"
+    class="emotion-0"
   >
     <div
-      css="[object Object]"
+      class="emotion-1"
     >
       TEST DROPMENU
     </div>
