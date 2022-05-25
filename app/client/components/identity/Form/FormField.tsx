@@ -37,10 +37,9 @@ const getError = <T extends unknown>(
 const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
 	const { name, label, formikProps, children } = props;
 	const error = getError(name, formikProps);
-	const errorCss = error ? formFieldErrorCss : {};
 	const field = cloneElement(children, { name });
 	return (
-		<label css={{ ...labelCss, ...errorCss }}>
+		<label css={[labelCss, error && formFieldErrorCss]}>
 			{label}
 			{field}
 			{error ? <p>{error}</p> : null}

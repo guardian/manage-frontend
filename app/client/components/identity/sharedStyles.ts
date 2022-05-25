@@ -1,40 +1,40 @@
-import { CSSObject } from '@emotion/react';
+import { css } from '@emotion/react';
 import { sans } from '../../styles/fonts';
 import palette from '../../colours';
 
-export const textSmall: CSSObject = {
+export const textSmall = css({
 	fontSize: '14px',
-};
+});
 
-export const standardSansText = {
+export const standardSansText = css({
 	fontFamily: sans,
 	fontSize: '14px',
 	lineHeight: '1.333',
-};
+});
 
-export const toggleDescriptionPadding = {
+export const toggleDescriptionPadding = css({
 	margin: '0',
 	padding: '2.88px 90px 0 0',
-};
+});
 
-const lightBorder: CSSObject = {
+const lightBorder = css({
 	border: `1px solid ${palette.neutral['5']}`,
-};
+});
 
-const errorBorder: CSSObject = {
+const errorBorder = css({
 	border: `1px solid ${palette.red.medium}`,
-};
+});
 
-export const aCss = {
+export const aCss = css({
 	color: palette.blue.dark,
 	borderBottom: `1px solid ${palette.neutral['5']}`,
 	transition: 'border-color .15s ease-out',
 	'&:hover': {
 		borderBottom: `1px solid ${palette.blue.dark}`,
 	},
-};
+});
 
-const inputCss: CSSObject = {
+const inputCss = css({
 	boxShadow: 'none',
 	boxSizing: 'border-box',
 	color: palette.neutral['1'],
@@ -46,33 +46,33 @@ const inputCss: CSSObject = {
 	borderRadius: '0',
 	width: '100%',
 	marginTop: '4px',
-};
+});
 
-const textareaCss: CSSObject = {
+const textareaCss = css({
 	verticalAlign: 'top',
 	minHeight: '108px',
 	overflow: 'auto',
 	resize: 'vertical',
 	marginTop: '4px',
-};
+});
 
-const selectCss = {
+const selectCss = css({
 	font: 'inherit',
 	display: 'block',
 	marginTop: '4px',
-};
+});
 
-export const labelCss: CSSObject = {
+export const labelCss = css({
 	margin: '5px 0 24px 0',
 	display: 'block',
 	width: '100%',
-	"& input:not([type='file']), & textarea": { ...inputCss, ...lightBorder },
+	"& input:not([type='file']), & textarea": [inputCss, lightBorder],
 	"& input[type='file']": inputCss,
 	'& textarea': textareaCss,
 	'& select': selectCss,
-};
+});
 
-export const errorMessageCss: CSSObject = {
+export const errorMessageCss = css({
 	fontSize: '13px',
 	lineHeight: '18px',
 	backgroundColor: '#ffe1e1',
@@ -81,15 +81,15 @@ export const errorMessageCss: CSSObject = {
 	color: palette.red.medium,
 	marginTop: '6px',
 	padding: '7px 8px',
-};
+});
 
-export const formFieldErrorCss: CSSObject = {
-	"& input:not([type='file']), & textarea, & input": {
-		...errorBorder,
-	},
-	'& p': {
-		...textSmall,
-		color: palette.red.medium,
-		marginTop: '6px',
-	},
-};
+export const formFieldErrorCss = css({
+	"& input:not([type='file']), & textarea, & input": errorBorder,
+	'& p': [
+		textSmall,
+		{
+			color: palette.red.medium,
+			marginTop: '6px',
+		},
+	],
+});
