@@ -127,6 +127,11 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 									const paidPlan = getMainPlan(
 										productDetail.subscription,
 									) as PaidSubscriptionPlan;
+									const maybePatronSuffix =
+										productDetail.subscription
+											.readerType === 'Patron'
+											? ' - Patron'
+											: '';
 									const productInvoiceData = invoiceData
 										.filter(
 											(invoice) =>
@@ -170,6 +175,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 													{specificProductType.productTitle(
 														mainPlan,
 													)}
+													{maybePatronSuffix}
 												</h2>
 												{isGift(
 													productDetail.subscription,
