@@ -19,7 +19,7 @@ import {
 import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import { ProductDetail } from '../../../shared/productResponse';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { neutral, news, space } from '@guardian/src-foundations';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,

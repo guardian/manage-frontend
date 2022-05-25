@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { neutral, success } from '@guardian/src-foundations/palette';
 import { textSans } from '@guardian/src-foundations/typography';
 import type { LabelPosition } from './ToggleSwitch';

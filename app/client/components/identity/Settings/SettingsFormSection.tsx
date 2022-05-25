@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
 import palette from '../../../colours';

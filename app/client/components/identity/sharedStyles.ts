@@ -1,4 +1,4 @@
-import { CSSObject } from '@emotion/core';
+import { CSSObject } from '@emotion/react';
 import { sans } from '../../styles/fonts';
 import palette from '../../colours';
 

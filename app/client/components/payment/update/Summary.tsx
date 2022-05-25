@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Props } from '@guardian/src-helpers';
-import { css, SerializedStyles } from '@emotion/core';
+import { css, SerializedStyles } from '@emotion/react';
 import { space, brand as brandColors, text } from '@guardian/src-foundations';
 import { size } from '@guardian/src-foundations/size';
 import { textSans } from '@guardian/src-foundations/typography';

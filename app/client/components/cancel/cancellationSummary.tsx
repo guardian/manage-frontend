@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { brand } from '@guardian/src-foundations/palette';
 import { cancellationFormatDate } from '../../../shared/dates';
 import { ProductDetail, Subscription } from '../../../shared/productResponse';

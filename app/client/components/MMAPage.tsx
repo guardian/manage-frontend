@@ -1,4 +1,4 @@
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import { lazy, ReactNode, Suspense, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import {

@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
 import {
 	createContext,

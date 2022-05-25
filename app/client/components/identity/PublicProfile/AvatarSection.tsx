@@ -1,4 +1,4 @@
-import { CSSObject } from '@emotion/core';
+import { CSSObject } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
 import { FC, useEffect } from 'react';

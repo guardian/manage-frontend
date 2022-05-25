@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { brandAlt } from '@guardian/src-foundations/palette';
 import * as React from 'react';
 import {

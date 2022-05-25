@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { neutral, brand } from '@guardian/src-foundations/palette';
 import { space } from '@guardian/src-foundations';
 import { minWidth } from '../../../styles/breakpoints';

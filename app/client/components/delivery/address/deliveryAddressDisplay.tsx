@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { textSans } from '@guardian/src-foundations/typography';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import { COUNTRIES } from '../../identity/models';

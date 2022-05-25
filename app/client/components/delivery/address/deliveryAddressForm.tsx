@@ -41,7 +41,7 @@ import {
 import { FormValidationResponse, isFormValid } from './formValidation';
 import { Select } from './select';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 
 interface FormStates {

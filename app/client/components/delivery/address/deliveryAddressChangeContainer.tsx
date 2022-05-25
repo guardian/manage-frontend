@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import {

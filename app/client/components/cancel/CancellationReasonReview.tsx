@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { news, space } from '@guardian/src-foundations';
 import { ChangeEvent, FC, useContext, useState } from 'react';
 import { WithProductType } from '../../../shared/productTypes';

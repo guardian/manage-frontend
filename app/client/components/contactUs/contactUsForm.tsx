@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/core';
+import { css, SerializedStyles } from '@emotion/react';
 import { Button } from '@guardian/src-button';
 import { space } from '@guardian/src-foundations';
 import { neutral, news } from '@guardian/src-foundations/palette';

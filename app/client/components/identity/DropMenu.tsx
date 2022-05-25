@@ -1,4 +1,4 @@
-import { CSSObject } from '@emotion/core';
+import { CSSObject } from '@emotion/react';
 import { FC, useState } from 'react';
 import palette from '../../colours';
 import { serif } from '../../styles/fonts';

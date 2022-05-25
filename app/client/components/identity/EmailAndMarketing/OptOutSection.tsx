@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Lines } from '../Lines';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { MarketingToggle } from '../MarketingToggle';

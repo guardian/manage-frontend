@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { breakpoints, palette, space } from '@guardian/src-foundations';
 import { SignInStatus } from '../../services/signInStatus';
 import { minWidth } from '../../styles/breakpoints';
