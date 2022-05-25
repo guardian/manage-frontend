@@ -66,6 +66,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 
 	const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
 
+	const maybePatronSuffix =
+		props.productDetail.subscription.readerType === 'Patron'
+			? ' - Patron'
+			: '';
+
 	const shouldShowStartDate = !(
 		shouldShowJoinDateNotStartDate || userIsGifter
 	);
@@ -133,6 +138,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					`}
 				>
 					{specificProductType.productTitle(mainPlan)}
+					{maybePatronSuffix}
 				</h2>
 				<div
 					css={css`

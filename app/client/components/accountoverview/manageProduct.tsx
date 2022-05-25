@@ -86,6 +86,9 @@ const InnerContent = ({
 		!!productDetail.alertText,
 	);
 
+	const maybePatronSuffix =
+		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
+
 	return (
 		<>
 			<PaymentFailureAlertIfApplicable productDetail={productDetail} />
@@ -104,6 +107,7 @@ const InnerContent = ({
 					`}
 				>
 					{specificProductType.productTitle(mainPlan)}
+					{maybePatronSuffix}
 				</h2>
 				{isGift(productDetail.subscription) && (
 					<i
