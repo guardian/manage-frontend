@@ -309,7 +309,7 @@ const CancellationReasonReview = () => {
 		cancellationPolicy: string;
 	};
 
-	if (!routerState.selectedReasonId) {
+	if (!routerState?.selectedReasonId) {
 		return <Navigate to=".." />;
 	}
 
