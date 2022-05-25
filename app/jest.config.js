@@ -30,10 +30,6 @@ module.exports = {
 			},
 		},
 	},
-	moduleNameMapper: {
-		'^@guardian/src-foundations/(.*)(?<!cjs)$':
-			'@guardian/src-foundations/$1/cjs',
-	},
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
 	testPathIgnorePatterns: ['/cypress/'],

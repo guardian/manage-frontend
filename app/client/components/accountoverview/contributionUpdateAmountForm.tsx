@@ -443,7 +443,7 @@ export const ContributionUpdateAmountForm = (
 										undefined
 									}
 									type="number"
-									value={otherAmount || ''}
+									value={otherAmount?.toString() || ''}
 									onChange={(event) =>
 										setOtherAmount(
 											event.target.value
