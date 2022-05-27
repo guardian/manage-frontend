@@ -20,7 +20,7 @@ type FormSelectProps<T> = FormInputProps<T> & {
 	labelModifier?: (option: string) => string;
 };
 
-const getError = <T extends unknown>(
+const getError = <T,>(
 	name: string,
 	{ errors, touched, status }: FormikProps<T>,
 ) => {
@@ -34,7 +34,7 @@ const getError = <T extends unknown>(
 	}
 };
 
-const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
+const FormField = <T,>(props: FormFieldProps<T>) => {
 	const { name, label, formikProps, children } = props;
 	const error = getError(name, formikProps);
 	const field = cloneElement(children, { name });
@@ -47,9 +47,7 @@ const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
 	);
 };
 
-export const FormSelectField = <T extends unknown>(
-	props: FormSelectProps<T>,
-) => {
+export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
 	const { options, labelModifier } = props;
 	const optionEls = options.map((o) => {
 		const optionLabel = labelModifier ? labelModifier(o) : o;
@@ -74,7 +72,7 @@ export const FormSelectField = <T extends unknown>(
 };
 
 const getInputFieldOfType = (type: string) => {
-	return <T extends unknown>(props: FormInputProps<T>) => (
+	return <T,>(props: FormInputProps<T>) => (
 		<FormField
 			name={props.name}
 			label={props.label}
