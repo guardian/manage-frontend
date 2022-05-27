@@ -1,20 +1,12 @@
 import * as React from 'react';
 import {
-	Props,
 	SvgAlertTriangle,
-	SvgInfo,
+	SvgInfoRound,
 } from '@guardian/source-react-components';
 import { css, SerializedStyles } from '@emotion/react';
-import {
-	space,
-	brand as brandColors,
-	text,
-	error as errorColors,
-	size,
-	textSans,
-} from '@guardian/source-foundations';
+import { space, palette, size, textSans } from '@guardian/source-foundations';
 
-interface SummaryProps extends Props {
+interface SummaryProps {
 	/**
 	 * The main message of the component
 	 * e.g. the main error message, success message etc.
@@ -24,6 +16,10 @@ interface SummaryProps extends Props {
 	 * Optional context information about the message
 	 */
 	context?: React.ReactNode;
+	/**
+	 * Optional additional styles
+	 */
+	cssOverrides?: SerializedStyles;
 }
 
 interface ErrorSummaryProps extends SummaryProps {
@@ -70,15 +66,15 @@ export const ErrorSummary = ({
 	cssOverrides,
 	...props
 }: ErrorSummaryProps): JSX.Element => (
-	<div css={[wrapperStyles(errorColors[400]), cssOverrides]} {...props}>
-		<div css={iconStyles(errorColors[400])}>
+	<div css={[wrapperStyles(palette.error[400]), cssOverrides]} {...props}>
+		<div css={iconStyles(palette.error[400])}>
 			<SvgAlertTriangle />
 		</div>
 		<div css={messageWrapperStyles}>
-			<div css={messageStyles(errorColors[400])}>{message}</div>
+			<div css={messageStyles(palette.error[400])}>{message}</div>
 			{errorReportUrl && (
 				<a
-					css={messageStyles(errorColors[400], false)}
+					css={messageStyles(palette.error[400], false)}
 					href={errorReportUrl}
 				>
 					Report this error
@@ -97,12 +93,12 @@ export const InfoSummary = ({
 	cssOverrides,
 	...props
 }: InfoSummaryProps): JSX.Element => (
-	<div css={[wrapperStyles(brandColors[500]), cssOverrides]} {...props}>
-		<div css={iconStyles(brandColors[500])}>
-			<SvgInfo />
+	<div css={[wrapperStyles(palette.brand[500]), cssOverrides]} {...props}>
+		<div css={iconStyles(palette.brand[500])}>
+			<SvgInfoRound />
 		</div>
 		<div css={messageWrapperStyles}>
-			<div css={messageStyles(text.primary)}>{message}</div>
+			<div css={messageStyles(palette.neutral[100])}>{message}</div>
 			{context && <div css={contextStyles}>{context}</div>}
 		</div>
 	</div>

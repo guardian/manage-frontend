@@ -1,4 +1,4 @@
-import { ReactNode, ReactNodeArray } from 'react';
+import { ReactNode } from 'react';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
 import {
 	MDA_TEST_USER_HEADER,
@@ -70,7 +70,7 @@ const getOutstandingCreditsFetcher =
 		]);
 	};
 
-export type RestOfCancellationFlow = ReactNode | ReactNodeArray;
+export type RestOfCancellationFlow = ReactNode | ReactNode[];
 
 const getContextualRestOfFlowRenderer =
 	(restOfFlow: RestOfCancellationFlow) =>

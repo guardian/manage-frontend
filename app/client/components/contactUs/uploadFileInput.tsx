@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
 import {
 	background,
+	text,
 	palette,
 	space,
-	text,
 	transitions,
 	focusHalo,
 	height,

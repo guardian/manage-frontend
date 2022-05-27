@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { neutral, space, text, textSans } from '@guardian/source-foundations';
+import { space, palette, textSans } from '@guardian/source-foundations';
 import { ReactNode, useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { StartLiveChatButton } from '../liveChat/liveChat';
@@ -18,7 +18,7 @@ interface HelpCentreContactBoxProps {
 const contactBoxContainerCss = css`
 	display: flex;
 	flex-direction: column;
-	border: 1px solid ${neutral[86]};
+	border: 1px solid ${palette.neutral[86]};
 	${textSans.medium()};
 	${minWidth.phablet} {
 		width: calc(50% - ${space[5] / 2}px);
@@ -27,7 +27,7 @@ const contactBoxContainerCss = css`
 
 const contactBoxHeadingCss = css`
 	${textSans.large({ fontWeight: 'bold' })};
-	color: ${neutral[20]};
+	color: ${palette.neutral[20]};
 	position: relative;
 	margin: 0;
 	padding: 18px 0 18px 60px;
@@ -65,14 +65,14 @@ const contactBoxSubtitleWideCss = css`
 
 const contactBoxSubtitleWarningCss = css`
 	position: relative;
-	color: ${text.error};
+	color: ${palette.error[400]};
 	font-weight: bold;
 	margin: 0 ${space[4]}px ${space[3]}px ${space[4]}px;
 	padding-left: ${space[5] + space[2]}px;
 `;
 
 const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
-	border-top: ${includeTopBorder ? `1px solid ${neutral[86]}` : '0'};
+	border-top: ${includeTopBorder ? `1px solid ${palette.neutral[86]}` : '0'};
 	padding: ${space[3]}px;
 	flex-grow: 1;
 	display: flex;
