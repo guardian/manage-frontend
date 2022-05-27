@@ -12,8 +12,7 @@ import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
-import { errorMessageCss } from '../sharedStyles';
-import { labelCss, textSmall } from '../sharedStyles';
+import { errorMessageCss, labelCss, textSmall } from '../sharedStyles';
 
 import {
 	getData,

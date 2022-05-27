@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/src-foundations/typography';
-import { space } from '@guardian/src-foundations';
+import { textSans, space } from '@guardian/source-foundations';
 import { Stripe } from '@stripe/stripe-js';
 import { Grecaptcha } from '../../../../services/captcha';
 

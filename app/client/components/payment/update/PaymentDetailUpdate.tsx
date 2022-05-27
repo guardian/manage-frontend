@@ -3,12 +3,18 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../../shared/identity';
 import { css } from '@emotion/react';
-import { neutral, brand } from '@guardian/src-foundations/palette';
-import { space } from '@guardian/src-foundations';
-import { headline } from '@guardian/src-foundations/typography';
-import { Radio } from '@guardian/src-radio';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Button } from '@guardian/src-button';
+import {
+	neutral,
+	brand,
+	space,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
+import {
+	Radio,
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import {
@@ -33,7 +39,6 @@ import { ErrorSummary } from './Summary';
 import { DirectDebitLogo } from '../directDebitLogo';
 import { cardTypeToSVG } from '../cardDisplay';
 import ContactUs from './ContactUs';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';

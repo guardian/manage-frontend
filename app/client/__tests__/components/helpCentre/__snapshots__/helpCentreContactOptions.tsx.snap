@@ -1004,12 +1004,16 @@ Array [
   margin-top: 4px;
 }
 
+.emotion-7:disabled {
+  cursor: not-allowed;
+}
+
 .emotion-7:focus {
   outline: 0;
 }
 
 html:not(.src-focus-disabled) .emotion-7:focus {
-  box-shadow: 0 0 0 5px #0093E0;
+  box-shadow: 0 0 0 5px #007CC4;
 }
 
 .emotion-7:hover {
@@ -1366,6 +1370,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
           className="emotion-6"
         >
           <button
+            aria-live="polite"
             className="emotion-7"
             onClick={[Function]}
             type="button"
@@ -1375,15 +1380,18 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               className="src-button-space"
             />
             <svg
-              viewBox="0 0 30 30"
+              aria-hidden={true}
+              focusable={false}
+              viewBox="-3 -3 30 30"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 clipRule="evenodd"
-                d="M4 15.95h19.125l-7.5 8.975.975.975 10.425-10.45v-1L16.6 4l-.975.975 7.5 8.975H4v2z"
+                d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1v1.912Z"
                 fillRule="evenodd"
               />
             </svg>
+            
           </button>
         </div>
       </div>

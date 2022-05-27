@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand } from '@guardian/src-foundations/palette';
+import { brand } from '@guardian/source-foundations';
 import { DirectDebitDetails } from '../../../shared/productResponse';
 import { minWidth } from '../../styles/breakpoints';
 import { DirectDebitLogo } from './directDebitLogo';

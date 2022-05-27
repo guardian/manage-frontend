@@ -1,8 +1,6 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { LinkButton } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { LinkButton } from '@guardian/source-react-components';
+import { space, brand, textSans } from '@guardian/source-foundations';
 import { trackEvent } from '../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { InfoIconDark } from '../svgs/infoIconDark';

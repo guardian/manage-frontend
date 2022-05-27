@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
-import { textSans } from '@guardian/src-foundations/typography';
+import { space, textSans } from '@guardian/source-foundations';
 import { Topic } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';
 import { TopicIcon } from './topicIcon';

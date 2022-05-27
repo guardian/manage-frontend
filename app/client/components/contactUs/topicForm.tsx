@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline } from '@guardian/src-foundations/typography';
+import { Button } from '@guardian/source-react-components';
+import { space, neutral, headline } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Topic } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';

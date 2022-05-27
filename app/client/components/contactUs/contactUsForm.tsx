@@ -1,8 +1,6 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { neutral, news } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { Button } from '@guardian/source-react-components';
+import { space, neutral, news, textSans } from '@guardian/source-foundations';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import {

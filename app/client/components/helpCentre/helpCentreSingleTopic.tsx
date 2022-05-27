@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
+import { space } from '@guardian/source-foundations';
 import { trackEvent } from '../../services/analytics';
 import {
 	h2Css,

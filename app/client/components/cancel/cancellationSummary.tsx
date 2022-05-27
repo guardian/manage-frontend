@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand } from '@guardian/src-foundations/palette';
+import { brand } from '@guardian/source-foundations';
 import { cancellationFormatDate } from '../../../shared/dates';
 import { ProductDetail, Subscription } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';

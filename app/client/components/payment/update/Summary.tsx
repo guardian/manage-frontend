@@ -1,12 +1,18 @@
 import * as React from 'react';
-import { Props } from '@guardian/src-helpers';
+import {
+	Props,
+	SvgAlertTriangle,
+	SvgInfo,
+} from '@guardian/source-react-components';
 import { css, SerializedStyles } from '@emotion/react';
-import { space, brand as brandColors, text } from '@guardian/src-foundations';
-import { size } from '@guardian/src-foundations/size';
-import { textSans } from '@guardian/src-foundations/typography';
-import { error as errorColors } from '@guardian/src-foundations';
-import { SvgAlertTriangle } from '@guardian/src-icons';
-import { SvgInfo } from '@guardian/src-icons';
+import {
+	space,
+	brand as brandColors,
+	text,
+	error as errorColors,
+	size,
+	textSans,
+} from '@guardian/source-foundations';
 
 interface SummaryProps extends Props {
 	/**

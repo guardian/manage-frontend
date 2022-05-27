@@ -1,4 +1,4 @@
-import { breakpoints, palette } from '@guardian/src-foundations';
+import { breakpoints, palette } from '@guardian/source-foundations';
 import { SignInStatus } from '../services/signInStatus';
 import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';

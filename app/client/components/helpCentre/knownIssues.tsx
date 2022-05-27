@@ -4,8 +4,8 @@ import {
 	neutral,
 	palette,
 	space,
-} from '@guardian/src-foundations';
-import { textSans } from '@guardian/src-foundations/typography';
+	textSans,
+} from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import { ProductDetail } from '../../../shared/productResponse';
 import { allProductsDetailFetcher } from '../../productUtils';

@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/src-foundations/typography';
-import { neutral, brand } from '@guardian/src-foundations/palette';
+import { textSans, neutral, brand, space } from '@guardian/source-foundations';
 import { minWidth } from '../../../styles/breakpoints';
-import { space } from '@guardian/src-foundations';
 
 const privacyNoticeLinkCss = css`
 	color: ${brand[500]};

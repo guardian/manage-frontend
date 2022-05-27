@@ -11,6 +11,8 @@ module.exports = {
 		'plugin:jest/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',
+		'plugin:@guardian/source-foundations/recommended',
+		'plugin:@guardian/source-react-components/recommended',
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {

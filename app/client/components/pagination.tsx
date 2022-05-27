@@ -1,11 +1,9 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { space, neutral, textSans } from '@guardian/source-foundations';
 import {
 	SvgChevronLeftSingle,
 	SvgChevronRightSingle,
-} from '@guardian/src-icons';
+} from '@guardian/source-react-components';
 import {
 	createContext,
 	Dispatch,

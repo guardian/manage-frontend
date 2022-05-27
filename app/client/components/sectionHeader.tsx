@@ -4,8 +4,9 @@ import {
 	neutral,
 	palette,
 	space,
-} from '@guardian/src-foundations';
-import { textSans, titlepiece } from '@guardian/src-foundations/typography';
+	textSans,
+	titlepiece,
+} from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import Color from 'color';
 import { minWidth } from '../styles/breakpoints';

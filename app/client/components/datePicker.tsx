@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brandAlt } from '@guardian/src-foundations/palette';
+import { brandAlt } from '@guardian/source-foundations';
 import * as React from 'react';
 import {
 	dateAddDays,

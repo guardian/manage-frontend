@@ -1,13 +1,14 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
 import {
+	space,
 	background,
 	brand,
 	neutral,
 	success,
 	text,
-} from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';

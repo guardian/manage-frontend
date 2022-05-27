@@ -1,9 +1,6 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { TextInput } from '@guardian/src-text-input';
+import { Button, TextInput } from '@guardian/source-react-components';
+import { space, brand, neutral, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import * as React from 'react';
 import { minWidth } from '../../../styles/breakpoints';

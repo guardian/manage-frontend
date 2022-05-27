@@ -1,8 +1,11 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { Button } from '@guardian/source-react-components';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';

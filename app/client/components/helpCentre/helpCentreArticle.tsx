@@ -1,7 +1,12 @@
-import { css } from '@emotion/react'
-import { Button } from '@guardian/src-button';
-import { brand, neutral, space } from '@guardian/src-foundations';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import { Button } from '@guardian/source-react-components';
+import {
+	brand,
+	neutral,
+	space,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

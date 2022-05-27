@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
+import { space } from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
@@ -13,7 +13,7 @@ import {
 import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { LinkButton } from '../buttons';
-import { Button } from '@guardian/src-button';
+import { Button, InlineError } from '@guardian/source-react-components';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { Checkbox } from '../checkbox';
 import { Modal } from '../modal';
@@ -40,7 +40,6 @@ import {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
-import { InlineError } from '@guardian/src-user-feedback';
 
 const getPerformCreateOrAmendFetcher =
 	(

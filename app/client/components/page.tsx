@@ -1,8 +1,12 @@
 import { css } from '@emotion/react';
-import { breakpoints } from '@guardian/src-foundations';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import {
+	breakpoints,
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import * as React from 'react';

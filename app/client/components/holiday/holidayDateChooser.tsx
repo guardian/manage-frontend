@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
+import { space, neutral } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -17,7 +16,7 @@ import { isProduct } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
-import { Button } from '@guardian/src-button';
+import { Button, InlineError } from '@guardian/source-react-components';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';
@@ -46,7 +45,6 @@ import {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
-import { InlineError } from '@guardian/src-user-feedback';
 
 export const cancelLinkCss = css({
 	marginRight: '20px',

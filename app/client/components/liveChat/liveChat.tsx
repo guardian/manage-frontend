@@ -1,6 +1,8 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';
 import { avatarImg } from './liveChatBase64Images';

@@ -1,7 +1,10 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { captureException } from '@sentry/browser';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';

@@ -1,9 +1,12 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { headline } from '@guardian/src-foundations/typography';
+import { Button } from '@guardian/source-react-components';
+import {
+	space,
+	brand,
+	neutral,
+	textSans,
+	headline,
+} from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';

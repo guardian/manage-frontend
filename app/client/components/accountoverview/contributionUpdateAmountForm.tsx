@@ -1,9 +1,16 @@
 import { css } from '@emotion/react';
-import { ChoiceCard, ChoiceCardGroup } from '@guardian/src-choice-card';
-import { neutral, palette, space } from '@guardian/src-foundations';
-import { textSans } from '@guardian/src-foundations/typography';
-import { TextInput } from '@guardian/src-text-input';
-import { InlineError } from '@guardian/src-user-feedback';
+import {
+	ChoiceCard,
+	ChoiceCardGroup,
+	TextInput,
+	InlineError,
+} from '@guardian/source-react-components';
+import {
+	neutral,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import {

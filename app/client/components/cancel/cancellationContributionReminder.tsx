@@ -1,8 +1,11 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
-import { Radio, RadioGroup } from '@guardian/src-radio';
+import {
+	Button,
+	SvgArrowRightStraight,
+	Radio,
+	RadioGroup,
+} from '@guardian/source-react-components';
+import { space } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { getGeoLocation } from '../../geolocation';

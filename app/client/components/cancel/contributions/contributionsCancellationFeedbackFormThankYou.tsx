@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
+import { space, neutral } from '@guardian/source-foundations';
 import * as React from 'react';
 
 const containerStyles = css`

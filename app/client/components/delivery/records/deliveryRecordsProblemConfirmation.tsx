@@ -1,9 +1,12 @@
 import { css } from '@emotion/react';
-import { LinkButton } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline } from '@guardian/src-foundations/typography';
-import { textSans } from '@guardian/src-foundations/typography';
+import { LinkButton } from '@guardian/source-react-components';
+import {
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import {
@@ -14,8 +17,8 @@ import {
 	DeliveryRecordApiItem,
 	PaidSubscriptionPlan,
 	Subscription,
+	getMainPlan,
 } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';

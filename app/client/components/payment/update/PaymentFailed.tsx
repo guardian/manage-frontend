@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
-import { neutral, brand } from '@guardian/src-foundations/palette';
-import { space } from '@guardian/src-foundations';
+import { neutral, brand, space, textSans } from '@guardian/source-foundations';
 import { minWidth } from '../../../styles/breakpoints';
-import { Button } from '@guardian/src-button';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { CallCentreNumbers } from '../../callCentreNumbers';
-import { textSans } from '@guardian/src-foundations/typography';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 
 export default function PaymentFailed() {

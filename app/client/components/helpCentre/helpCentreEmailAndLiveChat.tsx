@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { neutral, space, text } from '@guardian/src-foundations';
-import { textSans } from '@guardian/src-foundations/typography';
+import { neutral, space, text, textSans } from '@guardian/source-foundations';
 import { ReactNode, useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { StartLiveChatButton } from '../liveChat/liveChat';

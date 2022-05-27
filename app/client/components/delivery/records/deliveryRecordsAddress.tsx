@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { brand } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { brand, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import { minWidth } from '../../../styles/breakpoints';

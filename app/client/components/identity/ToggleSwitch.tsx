@@ -1,6 +1,6 @@
 import React from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import { descriptionId } from '@guardian/src-foundations/accessibility';
+import { descriptionId } from '@guardian/source-foundations';
 
 //  TODO v 4 -> v2 import type { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 
