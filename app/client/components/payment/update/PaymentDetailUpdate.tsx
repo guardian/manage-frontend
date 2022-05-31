@@ -14,6 +14,7 @@ import {
 	Radio,
 	Button,
 	SvgArrowRightStraight,
+	RadioGroup,
 } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
@@ -53,16 +54,17 @@ export enum PaymentMethod {
 	unknown = 'Unknown',
 }
 
-const subHeadingCss = `
-      border-top: 1px solid ${neutral['86']};
-      ${headline.small()};
-      font-weight: bold;
-      margin-top: 50px;
-      ${maxWidth.tablet} {
-        font-size: 1.25rem;
-        line-height: 1.6;
-      };
-    `;
+const subHeadingCss = css`
+	border-top: 1px solid ${neutral['86']};
+	${headline.small()};
+	font-weight: bold;
+	margin-top: 50px;
+	${maxWidth.tablet} {
+		font-size: 1.25rem;
+		line-height: 1.6;
+	} ;
+`;
+
 interface PaymentMethodProps {
 	value: PaymentMethod;
 	updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
@@ -78,12 +80,7 @@ export function getLogos(paymentMethod: PaymentMethod) {
 			<>
 				{cardTypeToSVG('visa')}
 				{cardTypeToSVG('mastercard')}
-				{cardTypeToSVG(
-					'americanexpress',
-					css`
-						margin-right: 0;
-					`,
-				)}
+				{cardTypeToSVG('americanexpress')}
 			</>
 		);
 	} else if (paymentMethod === PaymentMethod.dd) {
@@ -102,102 +99,35 @@ export function getLogos(paymentMethod: PaymentMethod) {
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 	const isChecked = props.value === props.paymentMethod;
 
-	const radioIsChecked = css`
-		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-
-		background-color: #e3f6ff;
-
-		div {
-			color: ${brand[400]};
-		}
-	`;
-
-	const radioDefault = css`
-		box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
-
-		div {
-			color: ${neutral[46]};
-		}
-	`;
-
-	const label = () => (
-		<div
-			css={css`
-				display: flex;
-				align-items: center;
-			`}
-		>
-			<span
-				css={css`
-					flex: 1;
-				`}
-			>
-				{props.paymentMethod}
-			</span>
-			<div
-				css={css`
-					display: none;
-					${minWidth.mobileMedium} {
-						display: block;
-						margin: auto;
-					}
-				`}
-			>
-				<div
-					css={css`
-						display: flex;
-					`}
-				>
-					{getLogos(props.paymentMethod)}
-				</div>
-			</div>
-		</div>
-	);
-
 	return (
 		<div
 			data-cy={props.paymentMethod}
 			css={css`
-				border-radius: 4px;
-
-				margin-bottom: ${space[4]}px;
-				${isChecked ? radioIsChecked : radioDefault}
-
-				label {
-					min-height: 0;
-					padding: ${space[4]}px;
-
-					div {
-						font-weight: bold;
-					}
-				}
-
-				:hover {
-					-webkit-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-					-moz-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-					box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-				}
-
-				.src-radio-label-text {
-					line-height: 1;
-				}
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 			`}
 		>
 			<Radio
 				checked={isChecked}
-				label={label()}
-				supporting=""
+				label={props.paymentMethod}
 				onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
 					props.updatePaymentMethod(
 						changeEvent.target.value as PaymentMethod,
 					)
 				}
-				cssOverrides={css`
-					box-shadow: none !important;
-					line-height: 1;
-				`}
 				value={props.paymentMethod}
 			/>
+			<div
+				css={css`
+					display: none;
+					${minWidth.mobileMedium} {
+						display: flex;
+					}
+				`}
+			>
+				{getLogos(props.paymentMethod)}
+			</div>
 		</div>
 	);
 };
@@ -206,16 +136,20 @@ export const SelectPaymentMethod = (
 	props: PaymentMethodProps & { currentPaymentMethod: string | undefined },
 ) => (
 	<form>
-		<PaymentMethodRadioButton
-			paymentMethod={PaymentMethod.card}
-			{...props}
-		/>
-		{props.currentPaymentMethod === PaymentMethod.dd && (
+		<RadioGroup label="Select payment method" hideLabel>
 			<PaymentMethodRadioButton
-				paymentMethod={PaymentMethod.dd}
+				paymentMethod={PaymentMethod.card}
 				{...props}
 			/>
-		)}
+			{props.currentPaymentMethod === PaymentMethod.dd ? (
+				<PaymentMethodRadioButton
+					paymentMethod={PaymentMethod.dd}
+					{...props}
+				/>
+			) : (
+				<></>
+			)}
+		</RadioGroup>
 	</form>
 );
 
