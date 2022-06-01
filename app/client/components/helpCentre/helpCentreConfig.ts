@@ -87,8 +87,8 @@ export const helpCentreConfig: HelpCentreTopic[] = [
 			},
 			{
 				id: 'q2',
-				title: "I've forgotten my password",
-				link: '/help-centre/article/ive-forgotten-my-password',
+				title: 'How to stay signed in',
+				link: '/help-centre/article/how-to-stay-signed-in',
 			},
 			{
 				id: 'q3',
@@ -156,8 +156,8 @@ export const helpCentreConfig: HelpCentreTopic[] = [
 			},
 			{
 				id: 'q3',
-				title: "I'd like to offer you a contribution as a freelancer",
-				link: '/help-centre/article/i-d-like-to-offer-you-a-contribution-as-a-freelancer',
+				title: 'Using our journalism as a source',
+				link: '/help-centre/article/using-our-journalism-as-a-souce',
 			},
 			{
 				id: 'q4',
