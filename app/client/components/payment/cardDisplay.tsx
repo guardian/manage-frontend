@@ -147,6 +147,7 @@ export const CardDisplay = (props: CardDisplayProps) => {
 			{cardTypeToSVG(props.type)}{' '}
 			<span
 				css={css`
+					margin-left: 3px;
 					color: ${props.inErrorState ? news[400] : neutral[7]};
 				`}
 			>
