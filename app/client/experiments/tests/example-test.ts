@@ -7,7 +7,7 @@ export const exampleTest: ABTest = {
 	author: 'anemailaddress@theguardian.com',
 	description: 'This Test',
 	audience: 0.0001, // 0.01% (1 is 100%)
-	audienceOffset: 0, // 50% (1 is 100%). Prevent overlapping with other tests.
+	audienceOffset: 0.5, // 50% (1 is 100%). Prevent overlapping with other tests.
 	successMeasure: 'It works',
 	audienceCriteria: 'Everyone',
 	idealOutcome: 'It works',
