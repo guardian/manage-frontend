@@ -164,7 +164,7 @@ export const withIdentity: (
 
 		const useRefererHeaderForManageUrl = !!statusCodeOverride;
 
-		if (CYPRESS === 'SKIP_IDAPI') {
+		if (CYPRESS === 'true') {
 			return next();
 		}
 

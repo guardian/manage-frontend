@@ -50,7 +50,7 @@ const toDefinedPhysicalResourceId =
 const getHost = (
 	stackName: string,
 	stackResourceSummaries?: StackResourceSummaries,
-) => {
+): string => {
 	const hosts = stackResourceSummaries
 		?.filter(byResourceType('AWS::ApiGateway::RestApi'))
 		.map(toDefinedPhysicalResourceId(stackName))
@@ -58,10 +58,14 @@ const getHost = (
 			(apiGatewayId) =>
 				`${apiGatewayId}.execute-api.${AWS_REGION}.amazonaws.com`,
 		);
-	if (hosts && hosts.length === 1) {
+	if (hosts && hosts.length > 1) {
+		throw Error(
+			`${(hosts || []).length} hosts for ${stackName}, expected 1`,
+		);
+	} else if (hosts && hosts.length === 1) {
 		return hosts[0];
 	}
-	log.error(`${(hosts || []).length} hosts for ${stackName}, expected 1`);
+	throw Error(`No host for ${stackName}.`);
 };
 
 const lookupApiKey = async (apiKey: string) =>
@@ -72,30 +76,41 @@ const lookupApiKey = async (apiKey: string) =>
 		}).promise()
 	).value;
 
-const getApiKeyPromise = (
+const getApiKeyPromise = async (
 	stackName: string,
 	stackResourceSummaries?: StackResourceSummaries,
-) => {
+): Promise<string> => {
 	const apiKeyPromises = stackResourceSummaries
 		?.filter(byResourceType('AWS::ApiGateway::ApiKey'))
 		.map(toDefinedPhysicalResourceId(stackName))
 		.map(lookupApiKey);
-	if (apiKeyPromises && apiKeyPromises.length === 1) {
-		return apiKeyPromises[0];
+	if (apiKeyPromises && apiKeyPromises.length > 1) {
+		throw Error(
+			`${
+				(apiKeyPromises || []).length
+			} API keys for ${stackName}, expected 1`,
+		);
+	} else if (
+		apiKeyPromises &&
+		apiKeyPromises.length === 1 &&
+		apiKeyPromises[0]
+	) {
+		const apiKey = await apiKeyPromises[0];
+		if (apiKey) {
+			return apiKey;
+		}
 	}
-	log.error(
-		`${
-			(apiKeyPromises || []).length
-		} API keys for ${stackName}, expected 1`,
-	);
+	throw Error(`No API key for ${stackName}.`);
 };
 
 interface HostAndApiKey {
-	host?: string;
-	apiKey?: string;
+	host: string;
+	apiKey: string;
 }
 
 type StackPrefix = 'membership' | 'support';
+
+declare let CYPRESS: string;
 
 function getHostAndApiKeyForStack(
 	stackPrefix: StackPrefix,
@@ -105,6 +120,10 @@ function getHostAndApiKeyForStack(
 	const stackName = `${stackPrefix}-${stage}-${apiName}`;
 
 	log.info(`loading host and api key for ${stackName}`);
+
+	if (CYPRESS === 'true') {
+		return Promise.resolve({ host: 'cypress', apiKey: 'cypress' });
+	}
 
 	return CloudFormation.listStackResources({
 		StackName: stackName,
@@ -120,8 +139,12 @@ function getHostAndApiKeyForStack(
 			),
 		}))
 		.catch((err) => {
-			log.error(`ERROR loading host and api key for ${stackName}`, err);
-			return {};
+			// this typically only happens when the AWS account-wide rate limit (per second) has been exceeded when looking up
+			log.error(
+				`ERROR loading host and api key for ${stackName}. Exit. `,
+				err,
+			);
+			process.exit();
 		});
 }
 
@@ -154,13 +177,7 @@ const getAuthorisedExpressCallbackForApiGateway = (
 				? testModeConfigPromise
 				: normalModeConfigPromise);
 			const stage = isTestUser ? testUserApiStage : normalUserApiStage;
-			if (!apiKey) {
-				log.error(`Missing API Key for ${stage} ${apiName}`);
-				res.status(500).send();
-			} else if (!host) {
-				log.error(`Missing host for ${stage} ${apiName}`);
-				res.status(500).send();
-			} else if (!res.locals.identity && !res.locals.identity.userId) {
+			if (!res.locals.identity && !res.locals.identity.userId) {
 				log.error(`Missing identity ID on the request object`);
 				res.status(500).send();
 			} else {
@@ -209,40 +226,5 @@ export const getContactUsAPIHostAndKey = async () => {
 		'contact-us-api',
 		stage,
 	);
-
-	if (!apiKey) {
-		log.error(`Missing API Key for ${stage} contact-us-api`);
-		return undefined;
-	} else if (!host) {
-		log.error(`Missing host for ${stage} contact-us-api`);
-		return undefined;
-	}
-
 	return { host: `https://${host}/${stage}/`, apiKey };
-};
-
-/**
- * Used to fail riff raff deployment. Uses an arbitrarily selected service layer api as a check.
- * Memoised in the sense of credentials fetching happens only once on deployment.
- */
-export const authKeysAreFetchableMemoisedHealthcheck = () => {
-	const memoisedHostKeyPair = getHostAndApiKeyForStack(
-		'membership',
-		'holiday-stop-api',
-		conf.STAGE.toUpperCase(),
-	);
-	return async (
-		_: express.Request,
-		res: express.Response,
-		next: express.NextFunction,
-	) => {
-		const { host, apiKey } = await memoisedHostKeyPair;
-		const errMsg = `Failed to fetch authentication credentials for API Gateway service layer. Healthcheck failed!`;
-		if (apiKey && host) {
-			next();
-		} else {
-			log.error(errMsg);
-			res.status(500).send(errMsg);
-		}
-	};
 };
