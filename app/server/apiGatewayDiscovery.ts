@@ -120,12 +120,12 @@ function getHostAndApiKeyForStack(
 			),
 		}))
 		.catch((err) => {
-			log.error(`ERROR loading host and api key for ${stackName}`, err);
+			log.error(`ERROR loading host and api key for ${stackName}. `, err);
 			return {};
 		});
 }
 
-const getAuthorisedExpressCallbackForApiGateway = (
+const getApiGateway = (
 	stackPrefix: StackPrefix,
 	apiName: ApiName,
 	additionalHeaderGenerator?: AdditionalHeaderGenerator,
@@ -141,67 +141,85 @@ const getAuthorisedExpressCallbackForApiGateway = (
 		testUserApiStage,
 	);
 
-	return (
-			path: string,
-			loggingCode: string,
-			urlParamNamesToReplace: string[] = [],
-			headers: Headers = {},
-			shouldNotLogBody?: boolean,
-		) =>
-		async (req: express.Request, res: express.Response) => {
-			const isTestUser = req.header(MDA_TEST_USER_HEADER) === 'true';
-			const { host, apiKey } = await (isTestUser
-				? testModeConfigPromise
-				: normalModeConfigPromise);
-			const stage = isTestUser ? testUserApiStage : normalUserApiStage;
-			if (!apiKey) {
-				log.error(`Missing API Key for ${stage} ${apiName}`);
-				res.status(500).send();
-			} else if (!host) {
-				log.error(`Missing host for ${stage} ${apiName}`);
-				res.status(500).send();
-			} else if (!res.locals.identity && !res.locals.identity.userId) {
-				log.error(`Missing identity ID on the request object`);
-				res.status(500).send();
-			} else {
-				const shouldForwardQueryArgs = true;
-				return proxyApiHandler(
-					host,
-					{
-						'x-api-key': apiKey,
-						'x-identity-id':
-							res.locals.identity && res.locals.identity.userId,
-						...headers,
-					},
-					additionalHeaderGenerator,
-				)(straightThroughBodyHandler)(
-					`${stage}/${path}`,
-					loggingCode,
-					urlParamNamesToReplace,
-					shouldForwardQueryArgs,
-					shouldNotLogBody,
-				)(req, res);
-			}
-		};
+	return {
+		configPromises: [testModeConfigPromise, normalModeConfigPromise],
+		authorisedExpressCallback:
+			(
+				path: string,
+				loggingCode: string,
+				urlParamNamesToReplace: string[] = [],
+				headers: Headers = {},
+				shouldNotLogBody?: boolean,
+			) =>
+			async (req: express.Request, res: express.Response) => {
+				const isTestUser = req.header(MDA_TEST_USER_HEADER) === 'true';
+				const { host, apiKey } = await (isTestUser
+					? testModeConfigPromise
+					: normalModeConfigPromise);
+				const stage = isTestUser
+					? testUserApiStage
+					: normalUserApiStage;
+				if (!apiKey) {
+					log.error(`Missing API Key for ${stage} ${apiName}`);
+					res.status(500).send();
+				} else if (!host) {
+					log.error(`Missing host for ${stage} ${apiName}`);
+					res.status(500).send();
+				} else if (
+					!res.locals.identity &&
+					!res.locals.identity.userId
+				) {
+					log.error(`Missing identity ID on the request object`);
+					res.status(500).send();
+				} else {
+					const shouldForwardQueryArgs = true;
+					return proxyApiHandler(
+						host,
+						{
+							'x-api-key': apiKey,
+							'x-identity-id':
+								res.locals.identity &&
+								res.locals.identity.userId,
+							...headers,
+						},
+						additionalHeaderGenerator,
+					)(straightThroughBodyHandler)(
+						`${stage}/${path}`,
+						loggingCode,
+						urlParamNamesToReplace,
+						shouldForwardQueryArgs,
+						shouldNotLogBody,
+					)(req, res);
+				}
+			},
+	};
 };
 
-export const cancellationSfCasesAPI = getAuthorisedExpressCallbackForApiGateway(
+const cancellationSfCasesAPIGateway = getApiGateway(
 	'membership',
 	'cancellation-sf-cases-api',
 );
-export const holidayStopAPI = getAuthorisedExpressCallbackForApiGateway(
-	'membership',
-	'holiday-stop-api',
-);
-export const deliveryRecordsAPI = getAuthorisedExpressCallbackForApiGateway(
+export const cancellationSfCasesAPI =
+	cancellationSfCasesAPIGateway.authorisedExpressCallback;
+
+const holidayStopAPIGateway = getApiGateway('membership', 'holiday-stop-api');
+export const holidayStopAPI = holidayStopAPIGateway.authorisedExpressCallback;
+
+const deliveryRecordsAPIGateway = getApiGateway(
 	'membership',
 	'delivery-records-api',
 );
-export const invoicingAPI = getAuthorisedExpressCallbackForApiGateway(
+export const deliveryRecordsAPI =
+	deliveryRecordsAPIGateway.authorisedExpressCallback;
+
+const invoicingAPIGateway = getApiGateway(
 	'support',
 	'invoicing-api',
 	generateAwsSignatureHeaders,
 );
+export const invoicingAPI = invoicingAPIGateway.authorisedExpressCallback;
+
+// not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {
 	const stage = conf.STAGE.toUpperCase();
 	const { host, apiKey } = await getHostAndApiKeyForStack(
@@ -221,28 +239,28 @@ export const getContactUsAPIHostAndKey = async () => {
 	return { host: `https://${host}/${stage}/`, apiKey };
 };
 
-/**
- * Used to fail riff raff deployment. Uses an arbitrarily selected service layer api as a check.
- * Memoised in the sense of credentials fetching happens only once on deployment.
- */
-export const authKeysAreFetchableMemoisedHealthcheck = () => {
-	const memoisedHostKeyPair = getHostAndApiKeyForStack(
-		'membership',
-		'holiday-stop-api',
-		conf.STAGE.toUpperCase(),
-	);
+export const middlewareFailIfAnyAPIGatewayCredsAreMissing = (
+	errorMessage: string,
+) => {
+	const allConfigPromises = [
+		cancellationSfCasesAPIGateway,
+		holidayStopAPIGateway,
+		deliveryRecordsAPIGateway,
+		invoicingAPIGateway,
+	].flatMap((_) => _.configPromises);
+
 	return async (
 		_: express.Request,
 		res: express.Response,
 		next: express.NextFunction,
 	) => {
-		const { host, apiKey } = await memoisedHostKeyPair;
-		const errMsg = `Failed to fetch authentication credentials for API Gateway service layer. Healthcheck failed!`;
-		if (apiKey && host) {
+		const allConfig = await Promise.all(allConfigPromises);
+
+		if (allConfig.every(({ host, apiKey }) => host && apiKey)) {
 			next();
 		} else {
-			log.error(errMsg);
-			res.status(500).send(errMsg);
+			log.error(errorMessage);
+			res.status(500).send(errorMessage);
 		}
 	};
 };
