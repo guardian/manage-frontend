@@ -99,18 +99,39 @@ export function getLogos(paymentMethod: PaymentMethod) {
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 	const isChecked = props.value === props.paymentMethod;
 
+	const defaultRadioStyles = css`
+		display: flex;
+		align-items: center;
+		padding: ${space[4]}px;
+		margin-bottom: ${space[4]}px;
+		${textSans.medium({ lineHeight: 'regular' })};
+		font-weight: bold;
+		color: ${neutral[46]};
+		border-radius: 4px;
+		box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
+		cursor: pointer;
+
+		&:hover {
+			box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+		}
+	`;
+
+	const checkedRadioStyles = css`
+		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+		background-color: #e3f6ff;
+		color: ${brand[400]};
+	`;
+
 	return (
-		<div
+		<label
 			data-cy={props.paymentMethod}
 			css={css`
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
+				${defaultRadioStyles}
+				${isChecked && checkedRadioStyles}
 			`}
 		>
 			<Radio
 				checked={isChecked}
-				label={props.paymentMethod}
 				onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
 					props.updatePaymentMethod(
 						changeEvent.target.value as PaymentMethod,
@@ -118,9 +139,11 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 				}
 				value={props.paymentMethod}
 			/>
+			{props.paymentMethod}
 			<div
 				css={css`
 					display: none;
+					margin-left: auto;
 					${minWidth.mobileMedium} {
 						display: flex;
 					}
@@ -128,7 +151,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 			>
 				{getLogos(props.paymentMethod)}
 			</div>
-		</div>
+		</label>
 	);
 };
 
