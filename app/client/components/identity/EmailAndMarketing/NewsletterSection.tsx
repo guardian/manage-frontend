@@ -4,6 +4,7 @@ import { DropMenu } from '../DropMenu';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { ConsentOption, Theme } from '../models';
 import { PageSection } from '../PageSection';
+import uniq from 'lodash/uniq';
 
 type ClickHandler = (id: string) => {};
 
@@ -50,20 +51,11 @@ const newsletterPreferenceGroups = (
 	newsletters: ConsentOption[],
 	clickHandler: ClickHandler,
 ) => {
-	const themes = [
-		Theme.news,
-		Theme.features,
-		Theme.sport,
-		Theme.culture,
-		Theme.lifestyle,
-		Theme.comment,
-		Theme.work,
-		Theme.FromThePapers,
-	];
-	return themes.map((theme) => (
-		<DropMenu key={theme} color={colors[theme]} title={theme}>
+	const groups = uniq(newsletters.map((_) => _.group));
+	return groups.map((group) => (
+		<DropMenu key={group} color={colors[Theme.work]} title={group}>
 			{newsletters
-				.filter((n) => n.theme === theme)
+				.filter((n) => n.group === group)
 				.map((n) => newsletterPreference(n, clickHandler))}
 		</DropMenu>
 	));
