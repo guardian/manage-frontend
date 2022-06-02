@@ -9,6 +9,7 @@ interface NewsletterAPIResponse {
 	frequency: string;
 	subscribed: boolean;
 	exactTargetListId: number;
+	group: string;
 }
 
 const newsletterToConsentOption = (
@@ -21,6 +22,7 @@ const newsletterToConsentOption = (
 		description,
 		frequency,
 		exactTargetListId,
+		group,
 	} = newsletter;
 	return {
 		id: exactTargetListId.toString(),
@@ -31,6 +33,7 @@ const newsletterToConsentOption = (
 		frequency,
 		subscribed: false,
 		identityName,
+		group,
 	};
 };
 
