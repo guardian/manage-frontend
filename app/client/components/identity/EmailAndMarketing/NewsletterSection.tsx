@@ -47,11 +47,16 @@ const newsletterPreference = (
 	);
 };
 
+function notEmpty<T>(value: T | undefined): value is T {
+	return value !== undefined;
+}
+
 const newsletterPreferenceGroups = (
 	newsletters: ConsentOption[],
 	clickHandler: ClickHandler,
 ) => {
-	const groups = uniq(newsletters.map((_) => _.group));
+	const groups = uniq(newsletters.map((_) => _.group)).filter(notEmpty);
+
 	return groups.map((group) => (
 		<DropMenu key={group} color={colors[Theme.work]} title={group}>
 			{newsletters
