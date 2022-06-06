@@ -209,6 +209,7 @@ const deliveryRecordsAPIGateway = getApiGateway(
 	'membership',
 	'delivery-records-api',
 );
+
 export const deliveryRecordsAPI =
 	deliveryRecordsAPIGateway.authorisedExpressCallback;
 
@@ -239,15 +240,19 @@ export const getContactUsAPIHostAndKey = async () => {
 	return { host: `https://${host}/${stage}/`, apiKey };
 };
 
+const apiCredentialsArray = [
+	cancellationSfCasesAPIGateway,
+	holidayStopAPIGateway,
+	deliveryRecordsAPIGateway,
+	invoicingAPIGateway,
+];
+
 export const middlewareFailIfAnyAPIGatewayCredsAreMissing = (
 	errorMessage: string,
 ) => {
-	const allConfigPromises = [
-		cancellationSfCasesAPIGateway,
-		holidayStopAPIGateway,
-		deliveryRecordsAPIGateway,
-		invoicingAPIGateway,
-	].flatMap((_) => _.configPromises);
+	const allConfigPromises = apiCredentialsArray.flatMap(
+		(_) => _.configPromises,
+	);
 
 	return async (
 		_: express.Request,
