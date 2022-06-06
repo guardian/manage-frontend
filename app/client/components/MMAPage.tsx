@@ -59,10 +59,10 @@ const CancellationContainer = lazy(
 		),
 );
 
-const CancellationReasonSelection = lazy(
+const CancellationSwitchEligibilityCheck = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationReasonSelection'
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
 		),
 );
 
@@ -410,7 +410,7 @@ const MMARouter = () => {
 									<Route
 										index
 										element={
-											<CancellationReasonSelection />
+											<CancellationSwitchEligibilityCheck />
 										}
 									/>
 									<Route
