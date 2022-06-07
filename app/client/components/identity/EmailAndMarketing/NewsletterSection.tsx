@@ -13,17 +13,6 @@ interface NewsletterSectionProps {
 	clickHandler: ClickHandler;
 }
 
-const colors: { [T in Theme]: string } = {
-	[Theme.news]: palette.red.medium,
-	[Theme.features]: palette.neutral['1'],
-	[Theme.sport]: palette.blue.medium,
-	[Theme.culture]: '#a1845c',
-	[Theme.lifestyle]: palette.pink.medium,
-	[Theme.comment]: '#e05e00',
-	[Theme.work]: palette.neutral['1'],
-	[Theme.fromThePapers]: palette.neutral['1'],
-};
-
 const newsletterPreference = (
 	newsletter: ConsentOption,
 	clickHandler: ClickHandler,
@@ -51,16 +40,35 @@ function notEmpty<T>(value: T | undefined): value is T {
 	return value !== undefined;
 }
 
+function getColor(theme: string): string {
+	const colors: { [T in Theme]: string } = {
+		[Theme.news]: palette.red.medium,
+		[Theme.opinion]: palette.orange.medium,
+		[Theme.features]: palette.neutral['1'],
+		[Theme.sport]: palette.blue.medium,
+		[Theme.culture]: '#a1845c',
+		[Theme.lifestyle]: palette.pink.medium,
+		[Theme.comment]: '#e05e00',
+		[Theme.work]: palette.neutral['1'],
+		[Theme.fromThePapers]: palette.neutral['1'],
+	};
+
+	if (theme in Theme) {
+		return colors[theme as Theme];
+	}
+	return palette.neutral['1'];
+}
+
 const newsletterPreferenceGroups = (
 	newsletters: ConsentOption[],
 	clickHandler: ClickHandler,
 ) => {
-	const groups = uniq(newsletters.map((_) => _.group)).filter(notEmpty);
+	const themes = uniq(newsletters.map((_) => _.theme)).filter(notEmpty);
 
-	return groups.map((group) => (
-		<DropMenu key={group} color={colors[Theme.work]} title={group}>
+	return themes.map((theme) => (
+		<DropMenu key={theme} color={getColor(theme)} title={theme}>
 			{newsletters
-				.filter((n) => n.group === group)
+				.filter((n) => n.theme === theme)
 				.map((n) => newsletterPreference(n, clickHandler))}
 		</DropMenu>
 	));

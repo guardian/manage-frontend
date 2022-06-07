@@ -1,5 +1,6 @@
 export enum Theme {
 	news = 'news',
+	opinion = 'opinion',
 	features = 'features',
 	sport = 'sport',
 	culture = 'culture',
