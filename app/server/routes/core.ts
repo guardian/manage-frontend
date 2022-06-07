@@ -1,19 +1,21 @@
 import { captureMessage } from '@sentry/node';
 import { Request, Response, Router } from 'express';
-import { authKeysAreFetchableMemoisedHealthcheck } from '../apiGatewayDiscovery';
+import { middlewareFailIfAnyAPIGatewayCredsAreMissing } from '../apiGatewayDiscovery';
 import { s3TextFilePromise } from '../awsIntegration';
 import { conf, Environments } from '../config';
 import { log } from '../log';
 
 const router = Router();
 
-/**
- * In some cases withIdentity might not call its next middleware so if you add a new healthcheck to the sequence
- * you might have to add it above withIdentity.
- */
 router.get(
 	'/_healthcheck',
-	authKeysAreFetchableMemoisedHealthcheck(),
+	/**
+	 * Fails riff-raff deployment (because ASG/ELB healthcheck fails)
+	 * if the box fails to get host and API key for all the API Gateways
+	 */
+	middlewareFailIfAnyAPIGatewayCredsAreMissing(
+		`Failed to fetch auth credentials for at least one service layer API Gateway. Healthcheck failed!`,
+	),
 	(_: Request, res: Response) => {
 		res.send('OK - signed in');
 	},
