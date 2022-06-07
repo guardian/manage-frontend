@@ -1,12 +1,11 @@
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { PaginationNav } from '../../../../components/delivery/records/deliveryRecordsPaginationNav';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
-Enzyme.configure({ adapter: new Adapter() });
+import { PaginationNav } from '../../../../components/delivery/records/deliveryRecordsPaginationNav';
 
 describe('PaginationNav', () => {
 	it('renders the correct number of pages', () => {
-		const wrapper = mount(
+		render(
 			<PaginationNav
 				resultsPerPage={7}
 				totalNumberOfResults={90}
@@ -16,13 +15,15 @@ describe('PaginationNav', () => {
 			/>,
 		);
 
-		expect(wrapper.find('li')).toHaveLength(13);
-		expect(wrapper.find('li').at(0).text()).toEqual('1');
-		expect(wrapper.find('li').at(12).text()).toEqual('13');
+		const pages = screen.getAllByRole('listitem');
+
+		expect(pages).toHaveLength(13);
+		expect(pages[0]).toHaveTextContent('1');
+		expect(pages[12]).toHaveTextContent('13');
 	});
 
-	it('renders the correct summary', () => {
-		const wrapper = mount(
+	it('renders the correct summary for the first page', () => {
+		render(
 			<PaginationNav
 				resultsPerPage={7}
 				totalNumberOfResults={90}
@@ -32,13 +33,13 @@ describe('PaginationNav', () => {
 			/>,
 		);
 
-		expect(wrapper.find('span').text()).toEqual(
-			'Displaying 1 - 7 of 90 deliveries',
-		);
+		expect(
+			screen.getByText('Displaying 1 - 7 of 90 deliveries'),
+		).toBeInTheDocument();
 	});
 
-	it('renders the correct summary (page 2)', () => {
-		const wrapper = mount(
+	it('renders the correct summary for subsequent pages', () => {
+		render(
 			<PaginationNav
 				resultsPerPage={7}
 				totalNumberOfResults={90}
@@ -48,13 +49,13 @@ describe('PaginationNav', () => {
 			/>,
 		);
 
-		expect(wrapper.find('span').text()).toEqual(
-			'Displaying 8 - 14 of 90 deliveries',
-		);
+		expect(
+			screen.getByText('Displaying 8 - 14 of 90 deliveries'),
+		).toBeInTheDocument();
 	});
 
-	it('renders the correct summary for a non divisional number of results', () => {
-		const wrapper = mount(
+	it('renders the correct summary when the total number of results is not cleanly divisible by the number of results per page', () => {
+		render(
 			<PaginationNav
 				resultsPerPage={7}
 				totalNumberOfResults={10}
@@ -64,8 +65,8 @@ describe('PaginationNav', () => {
 			/>,
 		);
 
-		expect(wrapper.find('span').text()).toEqual(
-			'Displaying 8 - 10 of 10 deliveries',
-		);
+		expect(
+			screen.getByText('Displaying 8 - 10 of 10 deliveries'),
+		).toBeInTheDocument();
 	});
 });
