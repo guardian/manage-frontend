@@ -6,7 +6,7 @@ export enum Theme {
 	lifestyle = 'lifestyle',
 	comment = 'comment',
 	work = 'work',
-	FromThePapers = 'From the papers',
+	fromThePapers = 'From the papers',
 }
 
 export enum ErrorTypes {

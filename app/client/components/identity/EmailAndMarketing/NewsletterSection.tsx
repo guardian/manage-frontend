@@ -21,7 +21,7 @@ const colors: { [T in Theme]: string } = {
 	[Theme.lifestyle]: palette.pink.medium,
 	[Theme.comment]: '#e05e00',
 	[Theme.work]: palette.neutral['1'],
-	[Theme.FromThePapers]: palette.neutral['1'],
+	[Theme.fromThePapers]: palette.neutral['1'],
 };
 
 const newsletterPreference = (
