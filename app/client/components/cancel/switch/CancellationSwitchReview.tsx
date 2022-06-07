@@ -11,19 +11,25 @@ import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 
 interface BoxProps {
 	heading: string;
+	theme?: 'brand' | undefined;
 	children: ReactNode;
 }
 
 const Box = (props: BoxProps) => {
 	const boxCss = css`
-		border: 1px solid ${palette.neutral['86']};
+		border: 1px solid ${palette.neutral[86]};
 	`;
 
 	const headingCss = css`
 		${headline.xxsmall({ fontWeight: 'bold' })};
 		margin: 0;
 		padding: ${space[3]}px ${space[4]}px;
-		background-color: ${palette.neutral['97']};
+		background-color: ${palette.neutral[97]};
+		${props.theme == 'brand' &&
+		`
+			color: ${palette.neutral[100]};
+			background-color: ${palette.brand[400]};
+		`}
 	`;
 
 	return (
@@ -36,7 +42,7 @@ const Box = (props: BoxProps) => {
 
 const CancellationSwitchReview = () => {
 	const subHeadingCss = css`
-		border-top: 1px solid ${palette.neutral['86']};
+		border-top: 1px solid ${palette.neutral[86]};
 		${headline.small({ fontWeight: 'bold' })};
 		margin-top: ${space[12]}px;
 		margin-bottom: ${space[3]}px;
@@ -83,7 +89,9 @@ const CancellationSwitchReview = () => {
 
 			<Box heading="Your current contribution">TBC</Box>
 
-			<Box heading="Your new digital subscription">TBC</Box>
+			<Box theme="brand" heading="Your new digital subscription">
+				TBC
+			</Box>
 
 			<Button priority="tertiary">Return to cancellation</Button>
 			<ThemeProvider theme={{ ...buttonReaderRevenueBrand }}>
