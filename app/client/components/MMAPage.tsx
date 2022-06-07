@@ -101,6 +101,13 @@ const ExecuteCancellation = lazy(
 		),
 );
 
+const CancellationSwitchReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "Cancellation" */ './cancel/switch/CancellationSwitchReview'
+		),
+);
+
 const PaymentDetailUpdateContainer = lazy(
 	() =>
 		import(
@@ -452,6 +459,12 @@ const MMARouter = () => {
 								</Route>
 							),
 						)}
+
+						<Route
+							path={`/cancel/contributions/switch/review`}
+							element={<CancellationSwitchReview />}
+						/>
+
 						{Object.values(PRODUCT_TYPES)
 							.filter(shouldHaveHolidayStopsFlow)
 							.map(
