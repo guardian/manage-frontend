@@ -67,7 +67,6 @@ export interface ConsentOption {
 	identityName?: string;
 	isProduct?: boolean;
 	isChannel?: boolean;
-	group?: string;
 }
 
 export interface ConsentOptionCollection {
