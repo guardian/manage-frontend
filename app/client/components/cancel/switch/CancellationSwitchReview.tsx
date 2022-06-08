@@ -7,7 +7,25 @@ import { ReactNode } from 'react';
 import { maxWidth } from '../../../styles/breakpoints';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
-import { ProductDescriptionListTable } from '../../productDescriptionListTable';
+
+interface StackProps {
+	space: 1 | 2 | 3 | 4 | 5 | 6 | 9 | 12 | 24;
+	children: ReactNode;
+}
+
+const Stack = (props: StackProps) => {
+	return (
+		<div
+			css={css`
+				> * + * {
+					margin-top: ${space[props.space]}px;
+				}
+			`}
+		>
+			{props.children}
+		</div>
+	);
+};
 
 interface BoxProps {
 	heading: string;
@@ -25,10 +43,12 @@ const Box = (props: BoxProps) => {
 		margin: 0;
 		padding: ${space[3]}px ${space[4]}px;
 		background-color: ${palette.neutral[97]};
+		border-bottom: 1px solid ${palette.neutral[86]};
 		${props.theme == 'brand' &&
 		`
 			color: ${palette.neutral[100]};
 			background-color: ${palette.brand[400]};
+			border-bottom-color: ${palette.neutral[100]};
 		`}
 	`;
 
@@ -37,6 +57,65 @@ const Box = (props: BoxProps) => {
 			<h3 css={headingCss}>{props.heading}</h3>
 			{props.children}
 		</div>
+	);
+};
+
+export interface PaymentDetailsKeyValue {
+	key: string;
+	value: string | number | ReactNode;
+}
+
+interface PaymentDetailsProps {
+	content: PaymentDetailsKeyValue[];
+}
+
+const PaymentDetails = (props: PaymentDetailsProps) => {
+	const listCss = css`
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
+		padding: ${space[4]}px;
+		${textSans.medium()};
+	`;
+
+	const keyValuePairCss = css`
+		display: flex;
+		flex: 0 1 50%;
+
+		:nth-of-type(2n) {
+			padding-left: ${space[4]}px;
+		}
+
+		:nth-of-type(4n + 1),
+		:nth-of-type(4n + 2) {
+			padding-bottom: ${space[2]}px;
+			border-bottom: 1px solid ${palette.neutral[86]};
+		}
+
+		:nth-of-type(4n + 3),
+		:nth-of-type(4n + 4) {
+			padding-top: ${space[2]}px;
+		}
+	`;
+
+	const keyCss = css`
+		margin-right: ${space[4]}px;
+		font-weight: bold;
+	`;
+
+	const valueCss = css`
+		margin-left: auto;
+	`;
+
+	return (
+		<dl css={listCss}>
+			{props.content.map((item) => (
+				<div css={keyValuePairCss} key={item.key}>
+					<dt css={keyCss}>{item.key}</dt>
+					<dd css={valueCss}>{item.value}</dd>
+				</div>
+			))}
+		</dl>
 	);
 };
 
@@ -80,54 +159,78 @@ const CancellationSwitchReview = () => {
 				Change your support to a digital subscription
 			</h2>
 
-			<p>
-				If you decide to change the way you support us by becoming a
-				digital subscriber we’ll stop your monthly contribution payments
-				straight away and you’ll have immediate access to the benefits
-				of a digital subscription.
-			</p>
+			<Stack space={9}>
+				<p
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					If you decide to change the way you support us by becoming a
+					digital subscriber we’ll stop your monthly contribution
+					payments straight away and you’ll have immediate access to
+					the benefits of a digital subscription.
+				</p>
 
-			<Box heading="Your current contribution">TBC</Box>
+				<Box heading="Your current contribution">TBC</Box>
 
-			<Box theme="brand" heading="Your new digital subscription">
-				TBC
-			</Box>
+				<Box theme="brand" heading="Your new digital subscription">
+					TBC
+				</Box>
 
-			<Button priority="tertiary">Return to cancellation</Button>
-			<ThemeProvider theme={{ ...buttonReaderRevenueBrand }}>
-				<Button>Confirm change</Button>
-			</ThemeProvider>
+				<Button priority="tertiary">Return to cancellation</Button>
+				<ThemeProvider theme={buttonReaderRevenueBrand}>
+					<Button>Confirm change</Button>
+				</ThemeProvider>
 
-			<Box heading="Payment details">TBC</Box>
+				<Box heading="Payment details">
+					<PaymentDetails
+						content={[
+							{
+								key: 'Payment method',
+								value: 'card ending 2345',
+							},
+							{
+								key: 'Expiry',
+								value: '05/2025',
+							},
+							{
+								key: 'Next payment amount',
+								value: '£5.66',
+							},
+							{
+								key: 'Next payment date',
+								value: 'June 4th 2022',
+							},
+						]}
+					/>
+				</Box>
 
-			<ProductDescriptionListTable
-				tableHeading="Payment details"
-				content={[
-					{
-						title: 'Payment method',
-						value: 'card ending 2345',
-					},
-					{
-						title: 'Expiry',
-						value: '05/2025',
-					},
-					{
-						title: 'Next payment amount',
-						value: '£5.66',
-					},
-					{
-						title: 'Next payment date',
-						value: 'June 4th 2022',
-					},
-				]}
-			/>
+				<Box heading="What happens next?">
+					<ul
+						css={css`
+							${textSans.medium()};
+							padding: 0;
+							margin: ${space[4]}px;
+							list-style-position: inside;
 
-			<p css={smallPrintCss}>
-				By proceeding, you are agreeing to our{' '}
-				<a href="/">Terms and Conditions</a>. To find out what personal
-				data we collect and how we use it, please visit our Privacy
-				Policy.
-			</p>
+							> * + * {
+								margin-top: ${space[2]}px;
+							}
+						`}
+					>
+						<li>We'll stop your monthly contribution payments.</li>
+						<li>Your new digital subscription starts today.</li>
+						<li>Your 14 day free trial kicks in immediately.</li>
+					</ul>
+				</Box>
+
+				<p css={smallPrintCss}>
+					By proceeding, you are agreeing to our{' '}
+					<a href="/">Terms and Conditions</a>. To find out what
+					personal data we collect and how we use it, please visit our
+					Privacy Policy.
+				</p>
+			</Stack>
 		</PageContainer>
 	);
 };
