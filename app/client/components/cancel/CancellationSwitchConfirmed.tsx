@@ -7,7 +7,7 @@ import { Button } from '@guardian/src-button';
 import { useNavigate } from 'react-router-dom';
 import { maxWidth } from '../../styles/breakpoints';
 
-const CancellationSwitchOffer = () => {
+const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
 
 	const subHeadingTitleCss = `
@@ -30,31 +30,30 @@ const CancellationSwitchOffer = () => {
 					${subHeadingBorderTopCss}
 				`}
 			>
-				We’re sorry to hear you’re thinking of cancelling.
+				You’re now a digital subscritber
 			</h2>
 			<p
 				css={css`
 					${textSans.medium()}
 				`}
 			>
-				Your support means the Guardian can remain editorially
-				independent, free from the influence of billionaire owners and
-				politicians. This enables us to give a voice to the voiceless,
-				challenge the powerful and hold them to account. The support
-				from our readers helps us to keep our journalism free of a
-				paywall, so it’s open and accessible to all.
+				Your monthly contribution has successfully been changed to a
+				Digital Subscription. We’ve stopped your previous payments and
+				started you on your new plan. Please check your inbox for an
+				email containing all your details and information on how to
+				access your benefits.
 			</p>
 			<Button
 				icon={<SvgArrowRightStraight />}
 				iconSide="right"
 				onClick={() => {
-					navigate('./switch');
+					navigate('/');
 				}}
 			>
-				Explore a digital subscription
+				Return to Account overview
 			</Button>
 		</>
 	);
 };
 
-export default CancellationSwitchOffer;
+export default CancellationSwitchConfirmed;
