@@ -4,9 +4,10 @@ import { palette, space } from '@guardian/src-foundations';
 import { headline, textSans } from '@guardian/src-foundations/typography';
 import { ThemeProvider } from 'emotion-theming';
 import { ReactNode } from 'react';
-import { maxWidth } from '../../../styles/breakpoints';
+import { minWidth } from '../../../styles/breakpoints';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
+import { cardTypeToSVG } from '../../payment/cardDisplay';
 
 interface StackProps {
 	space: 1 | 2 | 3 | 4 | 5 | 6 | 9 | 12 | 24;
@@ -72,29 +73,46 @@ interface PaymentDetailsProps {
 const PaymentDetails = (props: PaymentDetailsProps) => {
 	const listCss = css`
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
 		margin: 0;
 		padding: ${space[4]}px;
 		${textSans.medium()};
+
+		${minWidth.tablet} {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
 	`;
 
 	const keyValuePairCss = css`
 		display: flex;
-		flex: 0 1 50%;
+		margin-top: ${space[3]}px;
 
-		:nth-of-type(2n) {
-			padding-left: ${space[4]}px;
+		:first-of-type {
+			margin-top: 0;
 		}
 
-		:nth-of-type(4n + 1),
-		:nth-of-type(4n + 2) {
+		${minWidth.tablet} {
+			flex: 0 1 50%;
+			margin-top: 0;
+			padding-top: ${space[2]}px;
 			padding-bottom: ${space[2]}px;
 			border-bottom: 1px solid ${palette.neutral[86]};
-		}
 
-		:nth-of-type(4n + 3),
-		:nth-of-type(4n + 4) {
-			padding-top: ${space[2]}px;
+			:nth-of-type(2n) {
+				padding-left: ${space[4]}px;
+			}
+
+			:nth-of-type(1),
+			:nth-of-type(2) {
+				padding-top: 0;
+			}
+
+			:nth-last-of-type(1),
+			:nth-last-of-type(2) {
+				padding-bottom: 0;
+				border-bottom: none;
+			}
 		}
 	`;
 
@@ -119,14 +137,28 @@ const PaymentDetails = (props: PaymentDetailsProps) => {
 	);
 };
 
+const CardDetails = () => {
+	return (
+		<span
+			css={css`
+				display: flex;
+				align-items: center;
+			`}
+		>
+			{cardTypeToSVG('visa')}
+			<span>card ending 2345</span>
+		</span>
+	);
+};
+
 const CancellationSwitchReview = () => {
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
-		${headline.small({ fontWeight: 'bold' })};
+		${headline.xxsmall({ fontWeight: 'bold' })};
 		margin-top: ${space[12]}px;
 		margin-bottom: ${space[3]}px;
-		${maxWidth.tablet} {
-			${headline.xxsmall({ fontWeight: 'bold' })};
+		${minWidth.tablet} {
+			${headline.small({ fontWeight: 'bold' })};
 		} ;
 	`;
 
@@ -187,7 +219,7 @@ const CancellationSwitchReview = () => {
 						content={[
 							{
 								key: 'Payment method',
-								value: 'card ending 2345',
+								value: <CardDetails />,
 							},
 							{
 								key: 'Expiry',
