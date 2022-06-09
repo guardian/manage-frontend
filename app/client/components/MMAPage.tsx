@@ -59,10 +59,24 @@ const CancellationContainer = lazy(
 		),
 );
 
-const CancellationReasonSelection = lazy(
+const CancellationSwitchEligibilityCheck = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationReasonSelection'
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
+		),
+);
+
+const CancellationSwitchReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchReview'
+		),
+);
+
+const CancellationSwitchConfirmed = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchConfirmed'
 		),
 );
 
@@ -410,7 +424,17 @@ const MMARouter = () => {
 									<Route
 										index
 										element={
-											<CancellationReasonSelection />
+											<CancellationSwitchEligibilityCheck />
+										}
+									/>
+									<Route
+										path="switch"
+										element={<CancellationSwitchReview />}
+									/>
+									<Route
+										path="switch/confirmed"
+										element={
+											<CancellationSwitchConfirmed />
 										}
 									/>
 									<Route
