@@ -1,9 +1,14 @@
-import { css } from '@emotion/core';
-import { headline, textSans } from '@guardian/src-foundations/typography';
-import { neutral } from '@guardian/src-foundations/palette';
-import { space } from '@guardian/src-foundations';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
-import { Button } from '@guardian/src-button';
+import { css } from '@emotion/react';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { useNavigate } from 'react-router-dom';
 import { maxWidth } from '../../styles/breakpoints';
 
