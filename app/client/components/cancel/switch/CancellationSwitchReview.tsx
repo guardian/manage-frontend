@@ -14,6 +14,8 @@ import {
 import { ReactNode } from 'react';
 import { minWidth } from '../../../styles/breakpoints';
 import { cardTypeToSVG } from '../../payment/cardDisplay';
+import { ExpanderButton } from '../../expanderButton';
+import { ArrowInCircle } from '../../svgs/arrowInCircle';
 
 /**
  * Generic Card container component
@@ -144,6 +146,53 @@ const CancellationSwitchReview = () => {
 		${minWidth.tablet} {
 			${headline.small({ fontWeight: 'bold' })};
 		} ;
+	`;
+
+	const switchDetailsCardLayoutCss = css`
+		> * + * {
+			margin-top: 6px;
+		}
+
+		${minWidth.tablet} {
+			display: flex;
+			> * + * {
+				margin-top: 0;
+				margin-left: 6px;
+			}
+		}
+	`;
+
+	const switchArrowCss = css`
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transform: rotate(90deg);
+
+		${minWidth.tablet} {
+			transform: none;
+		}
+	`;
+
+	const buttonLayoutCss = css`
+		display: flex;
+		flex-direction: column-reverse;
+
+		button:first-of-type {
+			margin-top: ${space[4]}px;
+		}
+
+		${minWidth.tablet} {
+			flex-direction: row;
+			justify-content: space-between;
+
+			button:first-of-type {
+				margin-top: 0;
+			}
+
+			button:last-of-type {
+				flex-basis: calc(50% - 36px);
+			}
+		}
 	`;
 
 	const listCss = css`
@@ -277,22 +326,7 @@ const CancellationSwitchReview = () => {
 					the benefits of a digital subscription.
 				</p>
 
-				<div
-					css={css`
-						> * + * {
-							margin-top: ${space[4]}px;
-						}
-
-						${minWidth.tablet} {
-							display: flex;
-
-							> * + * {
-								margin-top: 0;
-								margin-left: ${space[4]}px;
-							}
-						}
-					`}
-				>
+				<div css={switchDetailsCardLayoutCss}>
 					<Card heading="Your current contribution">
 						<hr
 							css={css`
@@ -321,6 +355,10 @@ const CancellationSwitchReview = () => {
 							</ul>
 						</div>
 					</Card>
+
+					<div css={switchArrowCss}>
+						<ArrowInCircle />
+					</div>
 
 					<Card theme="brand" heading="Your new digital subscription">
 						<h4
@@ -365,14 +403,28 @@ const CancellationSwitchReview = () => {
 									</span>
 								</li>
 							</ul>
+							<div css={css`
+								margin-top: 6px;
+								margin-left: 34px;
+							`}>
+								<ExpanderButton buttonLabel="View more">
+									<span>More copy goes here…</span>
+								</ExpanderButton>
+							</div>
 						</div>
 					</Card>
 				</div>
 
-				<Button priority="tertiary">Return to cancellation</Button>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button>Confirm change</Button>
-				</ThemeProvider>
+				<div css={buttonLayoutCss}>
+					<Button priority="tertiary" cssOverrides={css`justify-content: center;`}>
+						Return to cancellation
+					</Button>
+					<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+						<Button cssOverrides={css`justify-content: center;`}>
+							Confirm change
+						</Button>
+					</ThemeProvider>
+				</div>
 
 				<Stack space={6}>
 					<Card heading="Payment details">
