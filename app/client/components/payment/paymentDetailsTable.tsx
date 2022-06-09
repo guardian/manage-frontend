@@ -1,5 +1,5 @@
-import { neutral } from '@guardian/src-foundations/palette';
-import { css } from '@emotion/core';
+import { neutral } from '@guardian/source-foundations';
+import { css } from '@emotion/react';
 import { ProductDetail } from '../../../shared/productResponse';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
 import { CardDisplay } from './cardDisplay';

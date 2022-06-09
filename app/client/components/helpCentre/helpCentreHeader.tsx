@@ -1,5 +1,5 @@
-import { css } from '@emotion/core';
-import { breakpoints, palette, space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
+import { breakpoints, palette, space } from '@guardian/source-foundations';
 import { SignInStatus } from '../../services/signInStatus';
 import { minWidth } from '../../styles/breakpoints';
 import { DropdownNav } from '.././nav/dropdownNav';

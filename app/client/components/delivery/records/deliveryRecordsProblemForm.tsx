@@ -1,9 +1,12 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral, news } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Radio, RadioGroup } from '@guardian/src-radio';
+import { css } from '@emotion/react';
+import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
+import {
+	space,
+	brand,
+	neutral,
+	news,
+	textSans,
+} from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeliveryProblemType } from '../../../../shared/productTypes';

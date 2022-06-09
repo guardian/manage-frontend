@@ -1,6 +1,5 @@
 // @ts-expect-error - required for hooks
-import { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
-import { loadStripe } from '@stripe/stripe-js/pure';
+import { Stripe as StripeSDK, loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
 
 export function getStripeKey(

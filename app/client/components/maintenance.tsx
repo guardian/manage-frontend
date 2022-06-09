@@ -1,6 +1,11 @@
-import { css } from '@emotion/core';
-import { breakpoints, neutral, space } from '@guardian/src-foundations';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	breakpoints,
+	neutral,
+	space,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { minWidth } from '../styles/breakpoints';
 
 const containerStyle = css`

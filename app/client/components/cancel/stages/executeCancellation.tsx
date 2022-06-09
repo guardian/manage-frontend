@@ -1,5 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
+import { space } from '@guardian/source-foundations';
 import { ReactNode, useContext } from 'react';
 import { isProduct, ProductDetail } from '../../../../shared/productResponse';
 import { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
@@ -7,7 +7,7 @@ import { createProductDetailFetcher } from '../../../productUtils';
 import AsyncLoader from '../../asyncLoader';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';
-import { Button } from '@guardian/src-button';
+import { Button } from '@guardian/source-react-components';
 import { cancellationEffectiveToday } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
 import { OptionalCancellationReasonId } from '../cancellationReason';

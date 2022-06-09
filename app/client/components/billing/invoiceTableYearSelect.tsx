@@ -1,8 +1,6 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline } from '@guardian/src-foundations/typography';
-import { SvgChevronDownSingle } from '@guardian/src-icons';
+import { css } from '@emotion/react';
+import { space, neutral, headline } from '@guardian/source-foundations';
+import { SvgChevronDownSingle } from '@guardian/source-react-components';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';

@@ -1,9 +1,12 @@
 import { ProgressIndicator } from '../progressIndicator';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import { Button } from '@guardian/src-button';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
-import { Radio, RadioGroup } from '@guardian/src-radio';
-import { InlineError } from '@guardian/src-user-feedback';
+import {
+	Button,
+	SvgArrowRightStraight,
+	Radio,
+	RadioGroup,
+	InlineError,
+} from '@guardian/source-react-components';
 import { FormEvent, useContext, useState } from 'react';
 import { hasCancellationFlow } from '../../productUtils';
 import {
@@ -19,8 +22,8 @@ import {
 import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import { ProductDetail } from '../../../shared/productResponse';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
-import { css } from '@emotion/core';
-import { neutral, news, space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
+import { neutral, news, space, textSans } from '@guardian/source-foundations';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
@@ -28,7 +31,6 @@ import {
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { CancellationReason } from './cancellationReason';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { textSans } from '@guardian/src-foundations/typography';
 
 interface ReasonPickerProps {
 	productDetail: ProductDetail;

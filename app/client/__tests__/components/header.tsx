@@ -12,7 +12,7 @@ describe('Header', () => {
 			</MemoryRouter>,
 		);
 		expect(
-			screen.getByRole('link', { name: 'Sign in' }),
+			screen.queryByRole('link', { name: 'Sign in' }),
 		).toBeInTheDocument();
 	});
 
@@ -23,10 +23,7 @@ describe('Header', () => {
 			</MemoryRouter>,
 		);
 		expect(
-			screen.getByRole('link', { name: 'My account' }),
-		).toBeInTheDocument();
-		expect(
-			screen.getByRole('button', { name: 'My account' }),
+			screen.queryByRole('button', { name: 'My account' }),
 		).toBeInTheDocument();
 	});
 });

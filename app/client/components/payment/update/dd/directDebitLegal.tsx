@@ -1,7 +1,7 @@
 import * as React from 'react';
 import palette from '../../../../colours';
 import { sans } from '../../../../styles/fonts';
-import { neutral } from '@guardian/src-foundations/palette';
+import { neutral } from '@guardian/source-foundations';
 
 const hrefStyle = {
 	color: palette.neutral['3'],

@@ -2,8 +2,11 @@ import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import { useContext } from 'react';
 import { parseDate } from '../../../../shared/dates';
-import { isPaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan, isProduct } from '../../../../shared/productResponse';
+import {
+	isPaidSubscriptionPlan,
+	getMainPlan,
+	isProduct,
+} from '../../../../shared/productResponse';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import {
 	CancellationContext,

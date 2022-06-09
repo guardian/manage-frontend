@@ -2,13 +2,20 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../../shared/identity';
-import { css } from '@emotion/core';
-import { neutral, brand } from '@guardian/src-foundations/palette';
-import { space } from '@guardian/src-foundations';
-import { headline } from '@guardian/src-foundations/typography';
-import { Radio } from '@guardian/src-radio';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Button } from '@guardian/src-button';
+import { css } from '@emotion/react';
+import {
+	neutral,
+	brand,
+	space,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
+import {
+	Radio,
+	Button,
+	SvgArrowRightStraight,
+	RadioGroup,
+} from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import {
@@ -33,7 +40,6 @@ import { ErrorSummary } from './Summary';
 import { DirectDebitLogo } from '../directDebitLogo';
 import { cardTypeToSVG } from '../cardDisplay';
 import ContactUs from './ContactUs';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
@@ -48,16 +54,17 @@ export enum PaymentMethod {
 	unknown = 'Unknown',
 }
 
-const subHeadingCss = `
-      border-top: 1px solid ${neutral['86']};
-      ${headline.small()};
-      font-weight: bold;
-      margin-top: 50px;
-      ${maxWidth.tablet} {
-        font-size: 1.25rem;
-        line-height: 1.6;
-      };
-    `;
+const subHeadingCss = css`
+	border-top: 1px solid ${neutral['86']};
+	${headline.small()};
+	font-weight: bold;
+	margin-top: 50px;
+	${maxWidth.tablet} {
+		font-size: 1.25rem;
+		line-height: 1.6;
+	} ;
+`;
+
 interface PaymentMethodProps {
 	value: PaymentMethod;
 	updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
@@ -73,12 +80,7 @@ export function getLogos(paymentMethod: PaymentMethod) {
 			<>
 				{cardTypeToSVG('visa')}
 				{cardTypeToSVG('mastercard')}
-				{cardTypeToSVG(
-					'americanexpress',
-					css`
-						margin-right: 0;
-					`,
-				)}
+				{cardTypeToSVG('americanexpress')}
 			</>
 		);
 	} else if (paymentMethod === PaymentMethod.dd) {
@@ -97,103 +99,59 @@ export function getLogos(paymentMethod: PaymentMethod) {
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 	const isChecked = props.value === props.paymentMethod;
 
-	const radioIsChecked = css`
-		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-
-		background-color: #e3f6ff;
-
-		div {
-			color: ${brand[400]};
-		}
-	`;
-
-	const radioDefault = css`
+	const defaultRadioStyles = css`
+		display: flex;
+		align-items: center;
+		padding: ${space[4]}px;
+		margin-bottom: ${space[4]}px;
+		${textSans.medium({ lineHeight: 'regular' })};
+		font-weight: bold;
+		color: ${neutral[46]};
+		border-radius: 4px;
 		box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
+		cursor: pointer;
 
-		div {
-			color: ${neutral[46]};
+		&:hover {
+			box-shadow: inset 0px 0px 0px 4px ${brand[500]};
 		}
 	`;
 
-	const label = () => (
-		<div
-			css={css`
-				display: flex;
-				align-items: center;
-			`}
-		>
-			<span
-				css={css`
-					flex: 1;
-				`}
-			>
-				{props.paymentMethod}
-			</span>
-			<div
-				css={css`
-					display: none;
-					${minWidth.mobileMedium} {
-						display: block;
-						margin: auto;
-					}
-				`}
-			>
-				<div
-					css={css`
-						display: flex;
-					`}
-				>
-					{getLogos(props.paymentMethod)}
-				</div>
-			</div>
-		</div>
-	);
+	const checkedRadioStyles = css`
+		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+		background-color: #e3f6ff;
+		color: ${brand[400]};
+	`;
 
 	return (
-		<div
+		<label
 			data-cy={props.paymentMethod}
 			css={css`
-				border-radius: 4px;
-
-				margin-bottom: ${space[4]}px;
-				${isChecked ? radioIsChecked : radioDefault}
-
-				label {
-					min-height: 0;
-					padding: ${space[4]}px;
-
-					div {
-						font-weight: bold;
-					}
-				}
-
-				:hover {
-					-webkit-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-					-moz-box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-					box-shadow: inset 0px 0px 0px 4px ${brand[500]};
-				}
-
-				.src-radio-label-text {
-					line-height: 1;
-				}
+				${defaultRadioStyles}
+				${isChecked && checkedRadioStyles}
 			`}
 		>
 			<Radio
 				checked={isChecked}
-				label={label()}
-				supporting=""
 				onChange={(changeEvent: React.ChangeEvent<HTMLInputElement>) =>
 					props.updatePaymentMethod(
 						changeEvent.target.value as PaymentMethod,
 					)
 				}
-				cssOverrides={css`
-					box-shadow: none !important;
-					line-height: 1;
-				`}
 				value={props.paymentMethod}
 			/>
-		</div>
+			{props.paymentMethod}
+			<div
+				css={css`
+					display: none;
+					margin-left: auto;
+					${minWidth.mobileMedium} {
+						display: flex;
+					}
+				`}
+			>
+				{getLogos(props.paymentMethod)}
+			</div>
+		</label>
 	);
 };
 
@@ -201,16 +159,20 @@ export const SelectPaymentMethod = (
 	props: PaymentMethodProps & { currentPaymentMethod: string | undefined },
 ) => (
 	<form>
-		<PaymentMethodRadioButton
-			paymentMethod={PaymentMethod.card}
-			{...props}
-		/>
-		{props.currentPaymentMethod === PaymentMethod.dd && (
+		<RadioGroup label="Select payment method" hideLabel>
 			<PaymentMethodRadioButton
-				paymentMethod={PaymentMethod.dd}
+				paymentMethod={PaymentMethod.card}
 				{...props}
 			/>
-		)}
+			{props.currentPaymentMethod === PaymentMethod.dd ? (
+				<PaymentMethodRadioButton
+					paymentMethod={PaymentMethod.dd}
+					{...props}
+				/>
+			) : (
+				<></>
+			)}
+		</RadioGroup>
 	</form>
 );
 

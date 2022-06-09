@@ -1,5 +1,15 @@
-import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
-import { space } from '@guardian/src-foundations';
+import {
+	Checkbox,
+	CheckboxGroup,
+	Button,
+} from '@guardian/source-react-components';
+import {
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import {
 	ChangeEvent,
 	Dispatch,
@@ -16,9 +26,6 @@ import {
 } from '../../../../shared/productTypes';
 import { COUNTRIES } from '../../identity/models';
 
-import { Button } from '@guardian/src-button';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -41,7 +48,7 @@ import {
 import { FormValidationResponse, isFormValid } from './formValidation';
 import { Select } from './select';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 
 interface FormStates {

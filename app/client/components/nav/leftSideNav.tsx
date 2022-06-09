@@ -1,6 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
+import { css } from '@emotion/react';
+import { space, brand, brandAlt, neutral } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import { minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';

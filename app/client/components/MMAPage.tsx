@@ -1,6 +1,6 @@
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import { lazy, ReactNode, Suspense, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, BrowserRouter, Route, Routes } from 'react-router-dom';
 import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductType,
@@ -25,13 +25,12 @@ import {
 	SignInStatus,
 } from '../services/signInStatus';
 import useAnalytics from '../services/useAnalytics';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
-import { breakpoints, space } from '@guardian/src-foundations';
+import { breakpoints, space } from '@guardian/source-foundations';
 import { minWidth } from '../styles/breakpoints';
 
 // The code below uses magic comments to instruct Webpack on

@@ -1,7 +1,11 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import {
 	formatDate,
@@ -14,7 +18,6 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';
 import { GenericErrorScreen } from '../../genericErrorScreen';
-import { textSans } from '@guardian/src-foundations/typography';
 import { CardDisplay } from '../cardDisplay';
 import { DirectDebitDisplay } from '../directDebitDisplay';
 import { PayPalDisplay } from '../paypalDisplay';
@@ -24,7 +27,7 @@ import { useContext } from 'react';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-import { Button } from '@guardian/src-button';
+import { Button } from '@guardian/source-react-components';
 import { ArrowIcon } from '../../svgs/arrowIcon';
 
 interface ConfirmedNewPaymentDetailsRendererProps {

@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 interface InfoIconDarkProps {
 	fillColor?: string;

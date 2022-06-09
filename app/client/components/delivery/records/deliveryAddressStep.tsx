@@ -1,9 +1,10 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	Button,
+	Checkbox,
+	CheckboxGroup,
+} from '@guardian/source-react-components';
+import { space, brand, neutral, textSans } from '@guardian/source-foundations';
 import Color from 'color';
 import {
 	ChangeEvent,

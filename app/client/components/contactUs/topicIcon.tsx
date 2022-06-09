@@ -1,4 +1,4 @@
-import { neutral } from '@guardian/src-foundations/palette';
+import { neutral } from '@guardian/source-foundations';
 import { CommentsIcon } from '../svgs/commentsIcon';
 import { CreditCardIcon } from '../svgs/creditCardIcon';
 import { DeliveryIcon } from '../svgs/deliveryIcon';

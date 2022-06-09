@@ -13,7 +13,7 @@ import {
 } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-import { Button } from '@guardian/src-button';
+import { Button } from '@guardian/source-react-components';
 import { InfoIcon } from '../svgs/infoIcon';
 import { CollatedCredits } from './collatedCredits';
 import {

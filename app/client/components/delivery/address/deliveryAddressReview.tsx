@@ -1,8 +1,12 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import { Button } from '@guardian/source-react-components';
+import {
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';

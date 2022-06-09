@@ -1,4 +1,4 @@
-import { space } from '@guardian/src-foundations';
+import { space } from '@guardian/source-foundations';
 import { minWidth } from './breakpoints';
 
 export const gridColumns = {

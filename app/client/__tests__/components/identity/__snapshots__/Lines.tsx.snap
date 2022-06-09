@@ -1,31 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Lines draws one line when n = 1 1`] = `
+.emotion-0 {
+  background-image: repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px);
+  background-repeat: repeat;
+  -webkit-background-position: top;
+  background-position: top;
+  height: 4px;
+  border: 0;
+  margin: 12px auto 6px;
+}
+
 <hr
-  css={
-    Object {
-      "backgroundImage": "repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px)",
-      "backgroundPosition": "top",
-      "backgroundRepeat": "repeat",
-      "border": 0,
-      "height": "4px",
-      "margin": "12px auto 6px",
-    }
-  }
+  className="emotion-0"
 />
 `;
 
 exports[`Lines draws one line when n = 2 1`] = `
+.emotion-0 {
+  background-image: repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px);
+  background-repeat: repeat;
+  -webkit-background-position: top;
+  background-position: top;
+  height: 8px;
+  border: 0;
+  margin: 12px auto 6px;
+}
+
 <hr
-  css={
-    Object {
-      "backgroundImage": "repeating-linear-gradient(to bottom, #dcdcdc, #dcdcdc 1px, transparent 1px, transparent 4px)",
-      "backgroundPosition": "top",
-      "backgroundRepeat": "repeat",
-      "border": 0,
-      "height": "8px",
-      "margin": "12px auto 6px",
-    }
-  }
+  className="emotion-0"
 />
 `;

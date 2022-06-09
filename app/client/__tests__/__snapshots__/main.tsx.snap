@@ -1,118 +1,462 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main renders something 1`] = `
-<div
-  css={
-    Object {
-      "alignItems": "stretch",
-      "color": "#333333",
-      "display": "flex",
-      "flexDirection": "column",
-      "height": "100vh",
-      "width": "100%",
-    }
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  width: 100%;
+  color: #333333;
+}
+
+.emotion-1 {
+  background-color: #052962;
+  min-height: 50px;
+  overflow: visible;
+  position: relative;
+  box-shadow: 0 2px 1px -1px #506991;
+  z-index: 1070;
+}
+
+@media (min-width: 980px) {
+  .emotion-1 {
+    min-height: 82px;
   }
+}
+
+.emotion-2 {
+  padding-left: 12px;
+  padding-right: 12px;
+  display: -ms-grid;
+  -ms-grid-columns: (minmax(0, 1fr))[4];
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-columns: max-content;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+  height: 100%;
+  max-width: calc(1300px + 2.5rem);
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: auto;
+}
+
+@supports (display: grid) {
+  .emotion-2 {
+    display: grid;
+  }
+}
+
+@media (min-width: 740px) {
+  .emotion-2 {
+    padding-left: 20px;
+    padding-right: 20px;
+    -ms-grid-columns: (minmax(0, 1fr))[12];
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1300px) {
+  .emotion-2 {
+    -ms-grid-columns: (minmax(0, 1fr))[16];
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+  }
+}
+
+.emotion-3 {
+  grid-column-start: -2;
+  grid-column-end: span 1;
+  -ms-grid-column: 4;
+  -ms-grid-column-span: 1;
+  -ms-grid-row: 1;
+  display: inline-block;
+}
+
+@media (min-width: 740px) {
+  .emotion-3 {
+    margin: auto;
+    max-height: 51px;
+    grid-column-start: -2;
+    grid-column-end: span 1;
+    -ms-grid-column: 12;
+    -ms-grid-column-span: 1;
+    -ms-grid-row: 1;
+  }
+}
+
+@media (min-width: 1300px) {
+  .emotion-3 {
+    grid-column-start: -2;
+    grid-column-end: span 1;
+    -ms-grid-column: 16;
+    -ms-grid-column-span: 1;
+    -ms-grid-row: 1;
+  }
+}
+
+.emotion-4 {
+  display: block;
+  margin: auto 0 auto auto;
+  height: 39px;
+  text-align: right;
+}
+
+@media (min-width: 980px) {
+  .emotion-4 {
+    width: 51px;
+    height: 51px;
+  }
+}
+
+.emotion-5 {
+  width: 39px;
+  height: 39px;
+}
+
+@media (min-width: 980px) {
+  .emotion-5 {
+    width: 51px;
+    height: 51px;
+  }
+}
+
+.emotion-6 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-7 {
+  font-family: "GuardianTextEgyptian",Georgia,serif;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-8 {
+  background-color: #052962;
+  color: #ffffff;
+}
+
+.emotion-9 {
+  max-width: 1300px;
+  margin: auto;
+}
+
+.emotion-10 {
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 0;
+}
+
+@media (min-width: 980px) {
+  .emotion-10 {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1140px) {
+  .emotion-10 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+.emotion-11 {
+  padding: 0;
+  border: 0;
+  width: 100%;
+  margin: 0;
+}
+
+@media (min-width: 1140px) {
+  .emotion-11 {
+    width: 340px;
+  }
+}
+
+@media (min-width: 1300px) {
+  .emotion-11 {
+    width: 460px;
+  }
+}
+
+.emotion-12 {
+  min-height: 150px;
+}
+
+.emotion-13 {
+  font-feature-settings: kern;
+  font-size: 16px;
+  line-height: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 1300px) {
+  .emotion-13 {
+    border-top: 0;
+  }
+}
+
+.emotion-14 {
+  line-height: 19.2px;
+  width: calc(50% - 1.25rem - 1px);
+  list-style: none;
+  position: relative;
+  padding: 0 10px;
+  margin: 0;
+}
+
+.emotion-14:nth-of-type(even) {
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 740px) {
+  .emotion-14 {
+    width: 161px;
+    -webkit-flex: 1 0 0;
+    -ms-flex: 1 0 0;
+    flex: 1 0 0;
+  }
+
+  .emotion-14:not(:first-of-type) {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+@media (min-width: 980px) {
+  .emotion-14 {
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+.emotion-15 {
+  list-style: none;
+}
+
+.emotion-16 {
+  display: inline-block;
+  padding: 6px 0;
+  color: #ffffff;
+}
+
+.emotion-16:hover {
+  color: #ffe500;
+  cursor: pointer;
+}
+
+.emotion-57 {
+  width: 50%;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 660px) {
+  .emotion-57 {
+    width: 300px;
+  }
+}
+
+@media (min-width: 740px) {
+  .emotion-57 {
+    border-top: 0;
+  }
+}
+
+.emotion-58 {
+  color: #ffe500;
+  font-family: GH Guardian Headline,"GuardianTextEgyptian",Georgia,serif;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  margin-top: 3px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 660px) {
+  .emotion-58 {
+    font-size: 32px;
+    line-height: 32px;
+  }
+}
+
+.emotion-59 {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 6px;
+}
+
+.emotion-60 {
+  font-size: 16px;
+  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  border-radius: 1000px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  min-height: 36px;
+  height: 36px;
+  font-weight: bold;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  background: #FFE500;
+  color: #121212;
+  border: none;
+  padding: 1px 40px 0 18px;
+  cursor: pointer;
+  max-width: calc(100vw - 40px);
+}
+
+.emotion-60:active {
+  outline: none;
+}
+
+.emotion-60 svg {
+  fill: currentColor;
+  height: 34px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  -webkit-transition: -webkit-transform .3s,background .3s;
+  transition: transform .3s,background .3s;
+  width: 36px;
+}
+
+.emotion-60:hover {
+  background: hsl(53.89999999999998, 100%, 45%);
+}
+
+.emotion-60:hover svg {
+  -webkit-transform: translate(3px, -50%);
+  -moz-transform: translate(3px, -50%);
+  -ms-transform: translate(3px, -50%);
+  transform: translate(3px, -50%);
+}
+
+.emotion-62 {
+  padding-bottom: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+}
+
+.emotion-63 {
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0 5px;
+  background-color: #052962;
+  position: absolute;
+  right: 20px;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.emotion-63:hover {
+  color: #ffe500;
+}
+
+.emotion-64 {
+  display: inline-block;
+  padding-right: 5px;
+  padding-top: 9px;
+}
+
+.emotion-65 {
+  position: relative;
+  float: right;
+  background-color: currentColor;
+  border-radius: 100%;
+  height: 42px;
+  width: 42px;
+}
+
+.emotion-66 {
+  position: absolute;
+  fill: #052962;
+  top: 9px;
+  left: 9px;
+}
+
+.emotion-67 {
+  padding-top: 26px;
+  font-size: 12px;
+}
+
+@media (min-width: 740px) {
+  .emotion-67 {
+    padding-top: 6px;
+  }
+}
+
+<div
+  className="emotion-0"
 >
   <header
-    css={
-      Object {
-        "@media (min-width: 980px)": Object {
-          "minHeight": "82px",
-        },
-        "backgroundColor": "#052962",
-        "boxShadow": "0 2px 1px -1px #506991",
-        "minHeight": "50px",
-        "overflow": "visible",
-        "position": "relative",
-        "zIndex": 1070,
-      }
-    }
+    className="emotion-1"
   >
     <div
-      css={
-        Object {
-          "@media (min-width: 1300px)": Object {
-            "gridTemplateColumns": "repeat(16, minmax(0, 1fr))",
-            "msGridColumns": "(minmax(0, 1fr))[16]",
-          },
-          "@media (min-width: 740px)": Object {
-            "gridTemplateColumns": "repeat(12, minmax(0, 1fr))",
-            "msGridColumns": "(minmax(0, 1fr))[12]",
-            "paddingLeft": "20px",
-            "paddingRight": "20px",
-          },
-          "@supports (display: grid)": Object {
-            "display": "grid",
-          },
-          "alignItems": "center",
-          "columnGap": "20px",
-          "display": "-ms-grid",
-          "gridAutoColumns": "max-content",
-          "gridTemplateColumns": "repeat(4, minmax(0, 1fr))",
-          "height": "100%",
-          "margin": "auto",
-          "maxWidth": "calc(1300px + 2.5rem)",
-          "msGridColumns": "(minmax(0, 1fr))[4]",
-          "paddingLeft": "12px",
-          "paddingRight": "12px",
-        }
-      }
+      className="emotion-2"
     >
       <div
-        css={
-          Object {
-            "@media (min-width: 1300px)": Object {
-              "gridColumnEnd": "span 1",
-              "gridColumnStart": "-2",
-              "msGridColumn": "16",
-              "msGridColumnSpan": "1",
-              "msGridRow": "1",
-            },
-            "@media (min-width: 740px)": Object {
-              "gridColumnEnd": "span 1",
-              "gridColumnStart": "-2",
-              "margin": "auto",
-              "maxHeight": "51px",
-              "msGridColumn": "12",
-              "msGridColumnSpan": "1",
-              "msGridRow": "1",
-            },
-            "display": "inline-block",
-            "gridColumnEnd": "span 1",
-            "gridColumnStart": "-2",
-            "msGridColumn": "4",
-            "msGridColumnSpan": "1",
-            "msGridRow": "1",
-          }
-        }
+        className="emotion-3"
       >
         <a
-          css={
-            Object {
-              "@media (min-width: 980px)": Object {
-                "height": "51px",
-                "width": "51px",
-              },
-              "display": "block",
-              "height": "39px",
-              "margin": "auto 0 auto auto",
-              "textAlign": "right",
-            }
-          }
+          className="emotion-4"
           href="https://www.theguardian.com"
           title="The Guardian - Back to home"
         >
           <svg
-            css={
-              Object {
-                "@media (min-width: 980px)": Object {
-                  "height": "51px",
-                  "width": "51px",
-                },
-                "height": "39px",
-                "width": "39px",
-              }
-            }
+            className="emotion-5"
             viewBox="0 0 56 56"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -130,23 +474,10 @@ exports[`Main renders something 1`] = `
     </div>
   </header>
   <div
-    css={
-      Object {
-        "display": "flex",
-        "flexDirection": "column",
-        "flexGrow": 1,
-        "flexShrink": 0,
-      }
-    }
+    className="emotion-6"
   >
     <main
-      css={
-        Object {
-          "flexGrow": 1,
-          "flexShrink": 0,
-          "fontFamily": "\\"GuardianTextEgyptian\\", Georgia, serif",
-        }
-      }
+      className="emotion-7"
     >
       <p>
         hi
@@ -156,90 +487,19 @@ exports[`Main renders something 1`] = `
   <footer>
     <div>
       <div
-        css={
-          Object {
-            "map": undefined,
-            "name": "9psuwv",
-            "next": undefined,
-            "styles": "
-	background-color: #052962;
-	color: #ffffff;
-",
-            "toString": [Function],
-          }
-        }
+        className="emotion-8"
       >
         <div
-          css={
-            Object {
-              "map": undefined,
-              "name": "1tnpcj",
-              "next": undefined,
-              "styles": "
-	max-width: 1300px;
-	margin: auto;
-",
-              "toString": [Function],
-            }
-          }
+          className="emotion-9"
         >
           <div
-            css={
-              Object {
-                "map": undefined,
-                "name": "1hlpax4",
-                "next": undefined,
-                "styles": "
-	padding: 10px;
-	border: 1px solid rgba(255, 255, 255, 0.3);
-	border-top: 0;
-
-	@media (min-width: 980px) {
-		padding: 0 20px;
-	}
-
-	@media (min-width: 1140px) {
-		display: flex;
-	}
-",
-                "toString": [Function],
-              }
-            }
+            className="emotion-10"
           >
             <div
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1eqsgue",
-                  "next": undefined,
-                  "styles": "
-	padding: 0;
-	border: 0;
-	width: 100%;
-	margin: 0;
-	@media (min-width: 1140px) {
-		width: 340px;
-	}
-	@media (min-width: 1300px) {
-		width: 460px;
-	}
-",
-                  "toString": [Function],
-                }
-              }
+              className="emotion-11"
             >
               <iframe
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "5ht1r8",
-                    "next": undefined,
-                    "styles": "
-	min-height: 150px;
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-12"
                 data-form-success-desc="We will send you our picks of the most important headlines tomorrow morning."
                 data-node-uid="2"
                 frameBorder="0"
@@ -252,274 +512,66 @@ exports[`Main renders something 1`] = `
               />
             </div>
             <div
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "c46mxl",
-                  "next": undefined,
-                  "styles": "
-	font-feature-settings: kern;
-	font-size: 16px;
-	line-height: 16px;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	padding-bottom: 18px;
-	border-top: 1px solid rgba(255, 255, 255, 0.3);
-	@media (min-width: 1300px) {
-		border-top: 0;
-	}
-",
-                  "toString": [Function],
-                }
-              }
+              className="emotion-13"
             >
               <ul
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "16v9wgp",
-                    "next": undefined,
-                    "styles": "
-	line-height: 19.2px;
-	width: calc(50% - 1.25rem - 1px);
-	list-style: none;
-	position: relative;
-	padding: 0 10px;
-	margin: 0;
-
-	&:nth-of-type(even) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-
-	@media (min-width: 740px) {
-		&:not(:first-of-type) {
-			border-left: 1px solid rgba(255, 255, 255, 0.3);
-		}
-
-		width: 161px;
-		flex: 1 0 0;
-	}
-
-	@media (min-width: 980px) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-14"
               >
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/about"
                   >
                     About us
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/help/contact-us"
                   >
                     Contact us
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/info/complaints-and-corrections"
                   >
                     Complaints & corrections
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/securedrop"
                   >
                     Secure Drop
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://workforus.thegulocal.com"
                   >
                     Work for us
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="#"
                     onClick={[Function]}
                   >
@@ -527,144 +579,40 @@ exports[`Main renders something 1`] = `
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/info/privacy"
                   >
                     Privacy policy
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/info/cookies"
                   >
                     Cookie policy
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://www.thegulocal.com/help/terms-of-service"
                   >
                     Terms & conditions
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://www.thegulocal.com/help"
                   >
                     Help
@@ -672,251 +620,63 @@ exports[`Main renders something 1`] = `
                 </li>
               </ul>
               <ul
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "16v9wgp",
-                    "next": undefined,
-                    "styles": "
-	line-height: 19.2px;
-	width: calc(50% - 1.25rem - 1px);
-	list-style: none;
-	position: relative;
-	padding: 0 10px;
-	margin: 0;
-
-	&:nth-of-type(even) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-
-	@media (min-width: 740px) {
-		&:not(:first-of-type) {
-			border-left: 1px solid rgba(255, 255, 255, 0.3);
-		}
-
-		width: 161px;
-		flex: 1 0 0;
-	}
-
-	@media (min-width: 980px) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-14"
               >
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/index/subjects/a"
                   >
                     All topics
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/index/contributors"
                   >
                     All writers
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://uploads.guim.co.uk/2021/07/27/STL_&_GMG_Modern_Slavery_Act_Statement_2021.pdf"
                   >
                     Modern Slavery Act
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://theguardian.newspapers.com/"
                   >
                     Digital newspaper archive
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://www.facebook.com/theguardian"
                   >
                     Facebook
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://twitter.com/guardian"
                   >
                     Twitter
@@ -924,179 +684,43 @@ exports[`Main renders something 1`] = `
                 </li>
               </ul>
               <ul
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "16v9wgp",
-                    "next": undefined,
-                    "styles": "
-	line-height: 19.2px;
-	width: calc(50% - 1.25rem - 1px);
-	list-style: none;
-	position: relative;
-	padding: 0 10px;
-	margin: 0;
-
-	&:nth-of-type(even) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-
-	@media (min-width: 740px) {
-		&:not(:first-of-type) {
-			border-left: 1px solid rgba(255, 255, 255, 0.3);
-		}
-
-		width: 161px;
-		flex: 1 0 0;
-	}
-
-	@media (min-width: 980px) {
-		border-left: 1px solid rgba(255, 255, 255, 0.3);
-	}
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-14"
               >
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://advertising.thegulocal.com"
                   >
                     Advertise with us
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://thegulocal.com/guardian-labs"
                   >
                     Guardian Labs
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://jobs.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
                   >
                     Search jobs
                   </a>
                 </li>
                 <li
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "kagisi",
-                      "next": undefined,
-                      "styles": "
-	list-style: none;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-15"
                 >
                   <a
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "776szo",
-                        "next": undefined,
-                        "styles": "
-	display: inline-block;
-	padding: 6px 0;
-	color: #ffffff;
-	:hover {
-		color: #ffe500;
-		cursor: pointer;
-	}
-",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-16"
                     href="https://patrons.thegulocal.com/?INTCMP=footer_patrons"
                   >
                     Patrons
@@ -1104,81 +728,22 @@ exports[`Main renders something 1`] = `
                 </li>
               </ul>
               <div
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "18sp5si",
-                    "next": undefined,
-                    "styles": "
-	width: 50%;
-	border-left: 1px solid rgba(255, 255, 255, 0.3);
-	padding-left: 10px;
-	@media (min-width: 660px) {
-		width: 300px;
-	}
-	border-top: 1px solid rgba(255, 255, 255, 0.3);
-	@media (min-width: 740px) {
-		border-top: 0;
-	}
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-57"
               >
                 <div
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "v4bbi0",
-                      "next": undefined,
-                      "styles": "
-	color: #ffe500;
-	font-family: GH Guardian Headline, \\"GuardianTextEgyptian\\", Georgia, serif;
-	font-size: 24px;
-	line-height: 24px;
-	font-weight: bold;
-	margin-top: 3px;
-	margin-bottom: 12px;
-	@media (min-width: 660px) {
-		font-size: 32px;
-		line-height: 32px;
-	}
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-58"
                 >
                   Support The Guardian
                 </div>
                 <div
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "99wu88",
-                      "next": undefined,
-                      "styles": "
-	display: inline-block;
-	margin-right: 10px;
-	margin-bottom: 6px;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-59"
                 >
                   <a
                     href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
                     <button
-                      css={
-                        Object {
-                          "map": undefined,
-                          "name": "1dykxcg",
-                          "next": undefined,
-                          "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
-                          "toString": [Function],
-                        }
-                      }
+                      className="emotion-60"
                       onMouseUp={[Function]}
                     >
                       Contribute
@@ -1197,15 +762,7 @@ exports[`Main renders something 1`] = `
                   onClick={[Function]}
                 >
                   <button
-                    css={
-                      Object {
-                        "map": undefined,
-                        "name": "1dykxcg",
-                        "next": undefined,
-                        "styles": "font-size:16px;font-family:\\"Guardian Text Sans Web\\", \\"Helvetica Neue\\", Helvetica, Arial, \\"Lucida Grande\\", sans-serif;border-radius:1000px;align-items:center;position:relative;:active{outline:none;}min-height:36px;height:36px;font-weight:bold;display:inline-flex;background:#FFE500;color:#121212;border:none;padding:1px 40px 0 18px;svg{fill:currentColor;height:34px;position:absolute;right:0;top:50%;transform:translate(0, -50%);transition:transform .3s, background .3s;width:36px;}:hover{background:hsl(53.89999999999998, 100%, 45%);svg{transform:translate(3px, -50%);}}cursor:pointer;max-width:calc(100vw - 40px);",
-                        "toString": [Function],
-                      }
-                    }
+                    className="emotion-60"
                     onMouseUp={[Function]}
                   >
                     Subscribe
@@ -1222,95 +779,22 @@ exports[`Main renders something 1`] = `
             </div>
           </div>
           <div
-            css={
-              Object {
-                "map": undefined,
-                "name": "1k9maw8",
-                "next": undefined,
-                "styles": "
-	padding-bottom: 24px;
-	padding-left: 20px;
-	padding-right: 20px;
-	position: relative;
-",
-                "toString": [Function],
-              }
-            }
+            className="emotion-62"
           >
             <a
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "10m9f08",
-                  "next": undefined,
-                  "styles": "
-	font-size: 16px;
-	color: #ffffff;
-	font-weight: bold;
-	padding: 0 5px;
-	background-color: #052962;
-	:hover {
-		color: #ffe500;
-	}
-	position: absolute;
-	right: 20px;
-	transform: translateY(-50%);
-",
-                  "toString": [Function],
-                }
-              }
+              className="emotion-63"
               href="#top"
             >
               <span
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "1pzszly",
-                    "next": undefined,
-                    "styles": "
-	display: inline-block;
-	padding-right: 5px;
-	padding-top: 9px;
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-64"
               >
                 Back to top
               </span>
               <span
-                css={
-                  Object {
-                    "map": undefined,
-                    "name": "i95g9i",
-                    "next": undefined,
-                    "styles": "
-	position: relative;
-	float: right;
-	background-color: currentColor;
-	border-radius: 100%;
-	height: 42px;
-	width: 42px;
-",
-                    "toString": [Function],
-                  }
-                }
+                className="emotion-65"
               >
                 <span
-                  css={
-                    Object {
-                      "map": undefined,
-                      "name": "1f2brqo",
-                      "next": undefined,
-                      "styles": "
-	position: absolute;
-	fill: #052962;
-	top: 9px;
-	left: 9px;
-",
-                      "toString": [Function],
-                    }
-                  }
+                  className="emotion-66"
                 >
                   <svg
                     height="18"
@@ -1325,21 +809,7 @@ exports[`Main renders something 1`] = `
               </span>
             </a>
             <div
-              css={
-                Object {
-                  "map": undefined,
-                  "name": "1dh3ndf",
-                  "next": undefined,
-                  "styles": "
-	@media (min-width: 740px) {
-		padding-top: 6px;
-	}
-	padding-top: 26px;
-	font-size: 12px;
-",
-                  "toString": [Function],
-                }
-              }
+              className="emotion-67"
             >
               © 
               2022

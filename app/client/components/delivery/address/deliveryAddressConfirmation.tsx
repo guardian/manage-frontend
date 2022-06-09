@@ -1,13 +1,10 @@
-import { css, SerializedStyles } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
+import { css, SerializedStyles } from '@emotion/react';
 import {
-	background,
-	brand,
-	neutral,
-	success,
-	text,
-} from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+	space,
+	palette,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
@@ -53,7 +50,7 @@ const AddressConfirmation = (props: ProductType) => {
 		useState<boolean>(false);
 
 	const subHeadingCss = `
-    border-top: 1px solid ${neutral['86']};
+    border-top: 1px solid ${palette.neutral['86']};
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
@@ -102,7 +99,7 @@ const AddressConfirmation = (props: ProductType) => {
 					/>
 					<section
 						css={css`
-							border: 1px solid ${neutral['86']};
+							border: 1px solid ${palette.neutral['86']};
 							margin-top: ${space[5]}px;
 						`}
 					>
@@ -110,8 +107,9 @@ const AddressConfirmation = (props: ProductType) => {
 							css={css`
 								margin: 0;
 								padding: ${space[3]}px;
-								background-color: ${neutral['97']};
-								border-bottom: 1px solid ${neutral['86']};
+								background-color: ${palette.neutral['97']};
+								border-bottom: 1px solid
+									${palette.neutral['86']};
 								${textSans.medium({ fontWeight: 'bold' })};
 								${minWidth.tablet} {
 									padding: ${space[3]}px ${space[5]}px;
@@ -213,8 +211,8 @@ const AddressConfirmation = (props: ProductType) => {
 							to={'/subscriptions'}
 							text={'Return to subscription'}
 							state={state}
-							colour={background.ctaPrimary}
-							textColour={text.ctaPrimary}
+							colour={palette.brand[400]}
+							textColour={palette.neutral[100]}
 							fontWeight={'bold'}
 							onClick={() => {
 								trackEvent({
@@ -230,7 +228,7 @@ const AddressConfirmation = (props: ProductType) => {
 						css={css`
 							${textSans.medium()};
 							margin-top: ${space[12]}px;
-							color: ${neutral[46]};
+							color: ${palette.neutral[46]};
 						`}
 					>
 						If you need separate delivery addresses for each of your
@@ -238,7 +236,7 @@ const AddressConfirmation = (props: ProductType) => {
 						<span
 							css={css`
 								cursor: pointer;
-								color: ${brand[500]};
+								color: ${palette.brand[500]};
 								text-decoration: underline;
 							`}
 							onClick={() =>
@@ -317,7 +315,7 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 			position: relative;
 			width: 100%;
 			text-align: left;
-			border: 4px solid ${success[400]};
+			border: 4px solid ${palette.success[400]};
 			box-sizing: border-box;
 			padding: 14px 14px 14px 50px;
 			margin-bottom: 50px;

@@ -1,12 +1,12 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
 import {
+	space,
 	brand,
 	brandAlt,
 	labs,
 	neutral,
-} from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+	textSans,
+} from '@guardian/source-foundations';
 import {
 	dateAddDays,
 	getWeekDay,

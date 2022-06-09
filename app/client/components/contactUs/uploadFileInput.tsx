@@ -1,15 +1,15 @@
-import { css, SerializedStyles } from '@emotion/core';
-import { Button } from '@guardian/src-button';
+import { css, SerializedStyles } from '@emotion/react';
+import { Button } from '@guardian/source-react-components';
 import {
 	background,
+	text,
 	palette,
 	space,
-	text,
 	transitions,
-} from '@guardian/src-foundations';
-import { focusHalo } from '@guardian/src-foundations/accessibility';
-import { height } from '@guardian/src-foundations/size';
-import { textSans } from '@guardian/src-foundations/typography';
+	focusHalo,
+	height,
+	textSans,
+} from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { ErrorIcon } from '../svgs/errorIcon';

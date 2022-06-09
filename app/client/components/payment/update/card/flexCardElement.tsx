@@ -5,9 +5,9 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
 import { Dispatch, SetStateAction } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { minWidth } from '../../../../styles/breakpoints';
-import { space } from '@guardian/src-foundations';
+import { space } from '@guardian/source-foundations';
 import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../fieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';

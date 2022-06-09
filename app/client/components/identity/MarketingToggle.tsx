@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ToggleSwitch } from './ToggleSwitch';
 import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
 

@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { brand, neutral } from '@guardian/src-foundations/palette';
+import { brand, neutral } from '@guardian/source-foundations';
 
 import { LinkButton, LinkButtonProps } from './buttons';
 

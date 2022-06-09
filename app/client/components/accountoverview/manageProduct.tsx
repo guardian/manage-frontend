@@ -1,7 +1,12 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	brand,
+	brandAlt,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';

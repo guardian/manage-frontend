@@ -1,7 +1,9 @@
-import { css } from '@emotion/core';
-import { LinkButton } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { SvgArrowLeftStraight } from '@guardian/src-icons';
+import { css } from '@emotion/react';
+import {
+	LinkButton,
+	SvgArrowLeftStraight,
+} from '@guardian/source-react-components';
+import { space } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { useContext } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
