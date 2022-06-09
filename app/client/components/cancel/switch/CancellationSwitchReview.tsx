@@ -3,6 +3,7 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
+	SvgCheckmark,
 } from '@guardian/source-react-components';
 import {
 	headline,
@@ -13,6 +14,11 @@ import {
 import { ReactNode } from 'react';
 import { minWidth } from '../../../styles/breakpoints';
 import { cardTypeToSVG } from '../../payment/cardDisplay';
+
+/**
+ * Generic Card container component
+ * This could be extracted as a generic component for reuse elsewhere
+ */
 
 interface CardProps {
 	heading: string;
@@ -47,6 +53,12 @@ const Card = (props: CardProps) => {
 		</div>
 	);
 };
+
+/**
+ * KeyValueTable component - Used for displaying payment details
+ * Essentially a simplified version of ProductDetailsTable
+ * This could also be extracted as a generic component for reuse elsewhere
+ */
 
 interface KeyValuePair {
 	key: string;
@@ -142,6 +154,22 @@ const CancellationSwitchReview = () => {
 
 		> * + * {
 			margin-top: ${space[2]}px;
+		}
+	`;
+
+	const tickListCss = css`
+		list-style: none;
+		padding-left: 0;
+
+		li {
+			display: flex;
+			align-items: center;
+		}
+
+		svg {
+			flex-shrink: 0;
+			margin-right: ${space[2]}px;
+			fill: ${palette.brand[500]};
 		}
 	`;
 
@@ -285,8 +313,11 @@ const CancellationSwitchReview = () => {
 							`}
 						>
 							<PaymentDetails paymentAmount="£10 per months" />
-							<ul css={listCss}>
-								<li>Support independent journalism</li>
+							<ul css={[listCss, tickListCss]}>
+								<li>
+									<SvgCheckmark size="small" />
+									Support independent journalism
+								</li>
 							</ul>
 						</div>
 					</Card>
@@ -320,12 +351,18 @@ const CancellationSwitchReview = () => {
 								}
 								theme="brand"
 							/>
-							<ul css={listCss}>
-								<li>Support independent journalism</li>
+							<ul css={[listCss, tickListCss]}>
 								<li>
-									Premium access to{' '}
-									<span>our award-winning news app</span>, for
-									the best mobile experience
+									<SvgCheckmark size="small" />
+									<span>Support independent journalism</span>
+								</li>
+								<li>
+									<SvgCheckmark size="small" />
+									<span>
+										Premium access to{' '}
+										<strong>our award-winning news app</strong>, for
+										the best mobile experience
+									</span>
 								</li>
 							</ul>
 						</div>
