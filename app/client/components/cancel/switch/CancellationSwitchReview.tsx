@@ -36,6 +36,7 @@ interface BoxProps {
 
 const Box = (props: BoxProps) => {
 	const boxCss = css`
+		width: 100%;
 		border: 1px solid ${palette.neutral[86]};
 	`;
 
@@ -61,16 +62,16 @@ const Box = (props: BoxProps) => {
 	);
 };
 
-export interface PaymentDetailsKeyValue {
+interface KeyValuePair {
 	key: string;
 	value: string | number | ReactNode;
 }
 
-interface PaymentDetailsProps {
-	content: PaymentDetailsKeyValue[];
+interface KeyValueTableProps {
+	content: KeyValuePair[];
 }
 
-const PaymentDetails = (props: PaymentDetailsProps) => {
+const KeyValueTable = (props: KeyValueTableProps) => {
 	const listCss = css`
 		display: flex;
 		flex-direction: column;
@@ -87,7 +88,6 @@ const PaymentDetails = (props: PaymentDetailsProps) => {
 	const keyValuePairCss = css`
 		display: flex;
 		margin-top: ${space[3]}px;
-
 		:first-of-type {
 			margin-top: 0;
 		}
@@ -137,20 +137,6 @@ const PaymentDetails = (props: PaymentDetailsProps) => {
 	);
 };
 
-const CardDetails = () => {
-	return (
-		<span
-			css={css`
-				display: flex;
-				align-items: center;
-			`}
-		>
-			{cardTypeToSVG('visa')}
-			<span>card ending 2345</span>
-		</span>
-	);
-};
-
 const CancellationSwitchReview = () => {
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
@@ -162,6 +148,17 @@ const CancellationSwitchReview = () => {
 		} ;
 	`;
 
+	const listCss = css`
+		${textSans.medium()};
+		margin: 0;
+		padding-left: ${space[4]}px;
+		list-style-position: outside;
+
+		> * + * {
+			margin-top: ${space[2]}px;
+		}
+	`;
+
 	const smallPrintCss = css`
 		${textSans.xsmall()};
 		max-width: 60ch;
@@ -171,6 +168,72 @@ const CancellationSwitchReview = () => {
 			text-decoration: underline;
 		}
 	`;
+
+	const PaymentMethod = () => {
+		return (
+			<span
+				css={css`
+					display: flex;
+					align-items: center;
+				`}
+			>
+				{cardTypeToSVG('visa')}
+				<span>card ending 2345</span>
+			</span>
+		);
+	};
+
+	interface PaymentDetailsProps {
+		theme?: 'brand' | undefined;
+		paymentAmount: string | ReactNode;
+		paymentFollowOnAmount?: string | ReactNode;
+	}
+
+	const PaymentDetails = (props: PaymentDetailsProps) => {
+		return (
+			<div
+				css={css`
+					min-height: 62px;
+					margin-bottom: ${space[6]}px;
+					padding-bottom: ${space[4]}px;
+					border-bottom: 1px solid ${palette.neutral[86]};
+					${props.theme == 'brand' &&
+					`
+					border-bottom: 1px solid ${palette.neutral[60]};
+				`}
+				`}
+			>
+				<dl
+					css={css`
+						display: flex;
+						margin: 0;
+						font-weight: bold;
+					`}
+				>
+					<dt>Payment</dt>
+					<dd
+						css={css`
+							margin-left: auto;
+						`}
+					>
+						{props.paymentAmount}
+					</dd>
+				</dl>
+				{props.paymentFollowOnAmount && (
+					<span
+						css={css`
+							display: block;
+							margin-top: 2px;
+							text-align: right;
+							${textSans.xsmall()};
+						`}
+					>
+						{props.paymentFollowOnAmount}
+					</span>
+				)}
+			</div>
+		);
+	};
 
 	return (
 		<PageContainer
@@ -195,6 +258,7 @@ const CancellationSwitchReview = () => {
 				<p
 					css={css`
 						${textSans.medium()};
+						max-width: 60ch;
 					`}
 				>
 					If you decide to change the way you support us by becoming a
@@ -203,11 +267,76 @@ const CancellationSwitchReview = () => {
 					the benefits of a digital subscription.
 				</p>
 
-				<Box heading="Your current contribution">TBC</Box>
+				<div
+					css={css`
+						display: flex;
+						> * + * {
+							margin-left: ${space[4]}px;
+						}
+					`}
+				>
+					<Box heading="Your current contribution">
+						<hr
+							css={css`
+								height: 42px;
+								margin: 0;
+								border: none;
+								border-bottom: 1px solid ${palette.neutral[86]};
+							`}
+						/>
+						<div
+							css={css`
+								${textSans.medium()};
+								padding: ${space[4]}px;
+							`}
+						>
+							<PaymentDetails paymentAmount="£10 per months" />
+							<ul css={listCss}>
+								<li>Support independent journalism</li>
+							</ul>
+						</div>
+					</Box>
 
-				<Box theme="brand" heading="Your new digital subscription">
-					TBC
-				</Box>
+					<Box theme="brand" heading="Your new digital subscription">
+						<h4
+							css={css`
+								margin: 0;
+								padding: ${space[2]}px ${space[4]}px;
+								${textSans.medium({ fontWeight: 'bold' })};
+								color: ${palette.brandAlt[400]};
+								background-color: ${palette.brand[400]};
+							`}
+						>
+							14 days free trial then 50% off for 3 months
+						</h4>
+						<div
+							css={css`
+								${textSans.medium()};
+								padding: ${space[4]}px;
+								background-color: ${palette.brand[800]};
+							`}
+						>
+							<PaymentDetails
+								paymentAmount="£5.66 for 3 months"
+								paymentFollowOnAmount={
+									<>
+										Then £11.99 per month.{' '}
+										<strong>Cancel anytime.</strong>
+									</>
+								}
+								theme="brand"
+							/>
+							<ul css={listCss}>
+								<li>Support independent journalism</li>
+								<li>
+									Premium access to{' '}
+									<span>our award-winning news app</span>, for
+									the best mobile experience
+								</li>
+							</ul>
+						</div>
+					</Box>
+				</div>
 
 				<Button priority="tertiary">Return to cancellation</Button>
 				<ThemeProvider theme={buttonReaderRevenueBrand}>
@@ -215,11 +344,11 @@ const CancellationSwitchReview = () => {
 				</ThemeProvider>
 
 				<Box heading="Payment details">
-					<PaymentDetails
+					<KeyValueTable
 						content={[
 							{
 								key: 'Payment method',
-								value: <CardDetails />,
+								value: <PaymentMethod />,
 							},
 							{
 								key: 'Expiry',
@@ -238,22 +367,21 @@ const CancellationSwitchReview = () => {
 				</Box>
 
 				<Box heading="What happens next?">
-					<ul
+					<div
 						css={css`
-							${textSans.medium()};
-							padding: 0;
-							margin: ${space[4]}px;
-							list-style-position: inside;
-
-							> * + * {
-								margin-top: ${space[2]}px;
-							}
+							padding: ${space[4]}px;
 						`}
 					>
-						<li>We'll stop your monthly contribution payments.</li>
-						<li>Your new digital subscription starts today.</li>
-						<li>Your 14 day free trial kicks in immediately.</li>
-					</ul>
+						<ul css={listCss}>
+							<li>
+								We'll stop your monthly contribution payments.
+							</li>
+							<li>Your new digital subscription starts today.</li>
+							<li>
+								Your 14 day free trial kicks in immediately.
+							</li>
+						</ul>
+					</div>
 				</Box>
 
 				<p css={smallPrintCss}>
