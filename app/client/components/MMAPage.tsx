@@ -62,21 +62,21 @@ const CancellationContainer = lazy(
 const CancellationSwitchEligibilityCheck = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/cancellationSwitchEligibilityCheck'
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
 		),
 );
 
 const CancellationSwitchReview = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/cancellationSwitchReview'
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchReview'
 		),
 );
 
 const CancellationSwitchConfirmed = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/cancellationSwitchConfirmed'
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchConfirmed'
 		),
 );
 
