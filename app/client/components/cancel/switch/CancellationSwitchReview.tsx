@@ -193,14 +193,16 @@ const CancellationSwitchReview = () => {
 		return (
 			<div
 				css={css`
-					min-height: 62px;
 					margin-bottom: ${space[6]}px;
 					padding-bottom: ${space[4]}px;
 					border-bottom: 1px solid ${palette.neutral[86]};
 					${props.theme == 'brand' &&
 					`
-					border-bottom: 1px solid ${palette.neutral[60]};
-				`}
+						border-bottom: 1px solid ${palette.neutral[60]};
+					`}
+					${minWidth.tablet} {
+						min-height: 62px;
+					}
 				`}
 			>
 				<dl
@@ -269,19 +271,31 @@ const CancellationSwitchReview = () => {
 
 				<div
 					css={css`
-						display: flex;
 						> * + * {
-							margin-left: ${space[4]}px;
+							margin-top: ${space[4]}px;
+						}
+
+						${minWidth.tablet} {
+							display: flex;
+
+							> * + * {
+								margin-top: 0;
+								margin-left: ${space[4]}px;
+							}
 						}
 					`}
 				>
 					<Card heading="Your current contribution">
 						<hr
 							css={css`
+								display: none;
 								height: 42px;
 								margin: 0;
 								border: none;
 								border-bottom: 1px solid ${palette.neutral[86]};
+								${minWidth.tablet} {
+									display: block;
+								}
 							`}
 						/>
 						<div
