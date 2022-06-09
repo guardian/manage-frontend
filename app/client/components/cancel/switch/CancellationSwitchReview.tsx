@@ -1,12 +1,16 @@
-import { css } from '@emotion/core';
-import { Button, buttonReaderRevenueBrand } from '@guardian/src-button';
-import { palette, space } from '@guardian/src-foundations';
-import { headline, textSans } from '@guardian/src-foundations/typography';
-import { ThemeProvider } from 'emotion-theming';
+import { css, ThemeProvider } from '@emotion/react';
+import {
+	Button,
+	buttonThemeReaderRevenueBrand,
+} from '@guardian/source-react-components';
+import {
+	headline,
+	textSans,
+	palette,
+	space,
+} from '@guardian/source-foundations';
 import { ReactNode } from 'react';
 import { minWidth } from '../../../styles/breakpoints';
-import { NAV_LINKS } from '../../nav/navConfig';
-import { PageContainer } from '../../page';
 import { cardTypeToSVG } from '../../payment/cardDisplay';
 
 interface StackProps {
@@ -178,7 +182,13 @@ const CancellationSwitchReview = () => {
 				`}
 			>
 				{cardTypeToSVG('visa')}
-				<span>card ending 2345</span>
+				<span
+					css={css`
+						margin-left: ${space[1]}px;
+					`}
+				>
+					card ending 2345
+				</span>
 			</span>
 		);
 	};
@@ -201,7 +211,7 @@ const CancellationSwitchReview = () => {
 						border-bottom: 1px solid ${palette.neutral[60]};
 					`}
 					${minWidth.tablet} {
-						min-height: 62px;
+						min-height: 64px;
 					}
 				`}
 			>
@@ -238,20 +248,7 @@ const CancellationSwitchReview = () => {
 	};
 
 	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle="Manage your support type"
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: 'Cancel recurring contribution',
-					currentPage: true,
-				},
-			]}
-		>
+		<>
 			<h2 css={subHeadingCss}>
 				Change your support to a digital subscription
 			</h2>
@@ -327,7 +324,7 @@ const CancellationSwitchReview = () => {
 							css={css`
 								${textSans.medium()};
 								padding: ${space[4]}px;
-								background-color: ${palette.brand[800]};
+								background-color: #e3edfe;
 							`}
 						>
 							<PaymentDetails
@@ -353,7 +350,7 @@ const CancellationSwitchReview = () => {
 				</div>
 
 				<Button priority="tertiary">Return to cancellation</Button>
-				<ThemeProvider theme={buttonReaderRevenueBrand}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button>Confirm change</Button>
 				</ThemeProvider>
 
@@ -405,7 +402,7 @@ const CancellationSwitchReview = () => {
 					Privacy Policy.
 				</p>
 			</Stack>
-		</PageContainer>
+		</>
 	);
 };
 

@@ -66,13 +66,6 @@ const CancellationSwitchEligibilityCheck = lazy(
 		),
 );
 
-const CancellationSwitchReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchReview'
-		),
-);
-
 const CancellationSwitchConfirmed = lazy(
 	() =>
 		import(
@@ -459,11 +452,6 @@ const MMARouter = () => {
 								</Route>
 							),
 						)}
-
-						<Route
-							path={`/cancel/contributions/switch/review`}
-							element={<CancellationSwitchReview />}
-						/>
 
 						{Object.values(PRODUCT_TYPES)
 							.filter(shouldHaveHolidayStopsFlow)
