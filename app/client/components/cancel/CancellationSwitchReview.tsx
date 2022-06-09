@@ -193,7 +193,7 @@ const CancellationSwitchReview = () => {
 			}
 
 			button:last-of-type {
-				flex-basis: calc(50% - 36px);
+				flex-basis: calc(50% - 23px);
 			}
 		}
 	`;
@@ -215,7 +215,7 @@ const CancellationSwitchReview = () => {
 
 		li {
 			display: flex;
-			align-items: center;
+			align-items: start;
 		}
 
 		svg {
