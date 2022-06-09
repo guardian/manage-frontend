@@ -28,14 +28,14 @@ const Stack = (props: StackProps) => {
 	);
 };
 
-interface BoxProps {
+interface CardProps {
 	heading: string;
 	theme?: 'brand' | undefined;
 	children: ReactNode;
 }
 
-const Box = (props: BoxProps) => {
-	const boxCss = css`
+const Card = (props: CardProps) => {
+	const cardCss = css`
 		width: 100%;
 		border: 1px solid ${palette.neutral[86]};
 	`;
@@ -55,7 +55,7 @@ const Box = (props: BoxProps) => {
 	`;
 
 	return (
-		<div css={boxCss}>
+		<div css={cardCss}>
 			<h3 css={headingCss}>{props.heading}</h3>
 			{props.children}
 		</div>
@@ -275,7 +275,7 @@ const CancellationSwitchReview = () => {
 						}
 					`}
 				>
-					<Box heading="Your current contribution">
+					<Card heading="Your current contribution">
 						<hr
 							css={css`
 								height: 42px;
@@ -295,9 +295,9 @@ const CancellationSwitchReview = () => {
 								<li>Support independent journalism</li>
 							</ul>
 						</div>
-					</Box>
+					</Card>
 
-					<Box theme="brand" heading="Your new digital subscription">
+					<Card theme="brand" heading="Your new digital subscription">
 						<h4
 							css={css`
 								margin: 0;
@@ -335,7 +335,7 @@ const CancellationSwitchReview = () => {
 								</li>
 							</ul>
 						</div>
-					</Box>
+					</Card>
 				</div>
 
 				<Button priority="tertiary">Return to cancellation</Button>
@@ -343,7 +343,7 @@ const CancellationSwitchReview = () => {
 					<Button>Confirm change</Button>
 				</ThemeProvider>
 
-				<Box heading="Payment details">
+				<Card heading="Payment details">
 					<KeyValueTable
 						content={[
 							{
@@ -364,9 +364,9 @@ const CancellationSwitchReview = () => {
 							},
 						]}
 					/>
-				</Box>
+				</Card>
 
-				<Box heading="What happens next?">
+				<Card heading="What happens next?">
 					<div
 						css={css`
 							padding: ${space[4]}px;
@@ -382,7 +382,7 @@ const CancellationSwitchReview = () => {
 							</li>
 						</ul>
 					</div>
-				</Box>
+				</Card>
 
 				<p css={smallPrintCss}>
 					By proceeding, you are agreeing to our{' '}
