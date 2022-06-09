@@ -2,6 +2,7 @@ import { css, ThemeProvider } from '@emotion/react';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	Stack,
 } from '@guardian/source-react-components';
 import {
 	headline,
@@ -12,25 +13,6 @@ import {
 import { ReactNode } from 'react';
 import { minWidth } from '../../../styles/breakpoints';
 import { cardTypeToSVG } from '../../payment/cardDisplay';
-
-interface StackProps {
-	space: 1 | 2 | 3 | 4 | 5 | 6 | 9 | 12 | 24;
-	children: ReactNode;
-}
-
-const Stack = (props: StackProps) => {
-	return (
-		<div
-			css={css`
-				> * + * {
-					margin-top: ${space[props.space]}px;
-				}
-			`}
-		>
-			{props.children}
-		</div>
-	);
-};
 
 interface CardProps {
 	heading: string;
@@ -164,6 +146,7 @@ const CancellationSwitchReview = () => {
 	`;
 
 	const smallPrintCss = css`
+		margin-top: ${space[4]}px;
 		${textSans.xsmall()};
 		max-width: 60ch;
 
@@ -354,54 +337,56 @@ const CancellationSwitchReview = () => {
 					<Button>Confirm change</Button>
 				</ThemeProvider>
 
-				<Card heading="Payment details">
-					<KeyValueTable
-						content={[
-							{
-								key: 'Payment method',
-								value: <PaymentMethod />,
-							},
-							{
-								key: 'Expiry',
-								value: '05/2025',
-							},
-							{
-								key: 'Next payment amount',
-								value: '£5.66',
-							},
-							{
-								key: 'Next payment date',
-								value: 'June 4th 2022',
-							},
-						]}
-					/>
-				</Card>
+				<Stack space={6}>
+					<Card heading="Payment details">
+						<KeyValueTable
+							content={[
+								{
+									key: 'Payment method',
+									value: <PaymentMethod />,
+								},
+								{
+									key: 'Expiry',
+									value: '05/2025',
+								},
+								{
+									key: 'Next payment amount',
+									value: '£5.66',
+								},
+								{
+									key: 'Next payment date',
+									value: 'June 4th 2022',
+								},
+							]}
+						/>
+					</Card>
 
-				<Card heading="What happens next?">
-					<div
-						css={css`
-							padding: ${space[4]}px;
-						`}
-					>
-						<ul css={listCss}>
-							<li>
-								We'll stop your monthly contribution payments.
-							</li>
-							<li>Your new digital subscription starts today.</li>
-							<li>
-								Your 14 day free trial kicks in immediately.
-							</li>
-						</ul>
-					</div>
-				</Card>
-
-				<p css={smallPrintCss}>
-					By proceeding, you are agreeing to our{' '}
-					<a href="/">Terms and Conditions</a>. To find out what
-					personal data we collect and how we use it, please visit our
-					Privacy Policy.
-				</p>
+					<Card heading="What happens next?">
+						<div
+							css={css`
+								padding: ${space[4]}px;
+							`}
+						>
+							<ul css={listCss}>
+								<li>
+									We'll stop your monthly contribution payments.
+								</li>
+								<li>Your new digital subscription starts today.</li>
+								<li>
+									Your 14 day free trial kicks in immediately.
+								</li>
+							</ul>
+						</div>
+					</Card>
+				</Stack>
 			</Stack>
+
+			<p css={smallPrintCss}>
+				By proceeding, you are agreeing to our{' '}
+				<a href="/">Terms and Conditions</a>. To find out what
+				personal data we collect and how we use it, please visit our
+				Privacy Policy.
+			</p>
 		</>
 	);
 };
