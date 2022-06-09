@@ -2,8 +2,8 @@ import CancellationReasonSelection from './CancellationReasonSelection';
 import CancellationSwitchOffer from './CancellationSwitchOffer';
 
 const CancellationSwitchEligibilityCheck = () => {
-	const isEligibleToSwitch: boolean = false;
-	const inABTest: boolean = false;
+	const isEligibleToSwitch: boolean = true;
+	const inABTest: boolean = true;
 	return inABTest && isEligibleToSwitch ? (
 		<CancellationSwitchOffer />
 	) : (
