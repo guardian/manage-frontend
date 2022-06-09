@@ -116,7 +116,11 @@ const client = merge(common, {
 		rules: [
 			{
 				test: /\.(tsx?)|(js)$/,
-				exclude: babelLoaderExcludeNodeModulesExcept(['@guardian/*']),
+				exclude: babelLoaderExcludeNodeModulesExcept([
+					'@guardian/*',
+					'react-router',
+					'react-router-dom',
+				]),
 				use: {
 					loader: 'babel-loader',
 					options: {
