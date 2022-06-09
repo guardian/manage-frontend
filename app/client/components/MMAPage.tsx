@@ -66,6 +66,13 @@ const CancellationSwitchEligibilityCheck = lazy(
 		),
 );
 
+const CancellationSwitchReview = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchReview'
+		),
+);
+
 const CancellationSwitchConfirmed = lazy(
 	() =>
 		import(
@@ -91,13 +98,6 @@ const ExecuteCancellation = lazy(
 	() =>
 		import(
 			/* webpackChunkName: "Cancellation" */ './cancel/stages/executeCancellation'
-		),
-);
-
-const CancellationSwitchReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/switch/CancellationSwitchReview'
 		),
 );
 
