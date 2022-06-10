@@ -33,6 +33,17 @@ const CancellationSwitchEligibilityCheck = () => {
 	const isEligibleToSwitch: boolean = false;
 	const inABTest: boolean = false;
 
+	/*
+	const tmp = async () => {
+		await fetchWithDefaultParameters('/api/move-product', {
+			method: 'POST',
+			body: JSON.stringify({}),
+			headers: { 'Content-Type': 'application/json' },
+		});
+	};
+	tmp();
+	 */
+
 	return inABTest && isEligibleToSwitch ? (
 		<CancellationSwitchOffer />
 	) : (

@@ -10,6 +10,7 @@ import {
 	deliveryRecordsAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	productMoveAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -134,6 +135,15 @@ router.patch(
 	cancellationSfCasesAPI('case/:caseId', 'UPDATE_CANCELLATION_CASE', [
 		'caseId',
 	]),
+);
+
+router.post(
+	'/move-product',
+	productMoveAPI(
+		// 'move-product/:subscriptionName',
+		'product-move',
+		'MOVE_PRODUCT',
+	),
 );
 
 router.get(
