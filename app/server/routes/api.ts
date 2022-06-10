@@ -137,13 +137,58 @@ router.patch(
 	]),
 );
 
-router.post(
-	'/move-product',
+/*
+router.get(
+	'/available-product-moves/:subscriptionName',
 	productMoveAPI(
-		// 'move-product/:subscriptionName',
-		'product-move',
-		'MOVE_PRODUCT',
+		'available-product-moves/:subscriptionName',
+		'GET_AVAILABLE_PRODUCTS',
 	),
+);
+*/
+
+//
+router.get('/available-product-moves/:subscriptionName', (_, response) => {
+	response.json([
+		{
+			id: '123',
+			name: 'digital subscription',
+			billing: {
+				amount: 11.99,
+				currency: {
+					symbol: '£',
+					code: 'GBP',
+				},
+				frequency: {
+					name: 'Months',
+					count: 1,
+				},
+			},
+			introOffer: {
+				billing: {
+					amount: 5.99,
+					currency: {
+						symbol: '£',
+						code: 'GBP',
+					},
+					frequency: {
+						name: 'Months',
+						count: 1,
+					},
+				},
+				duration: {
+					name: 'Months',
+					count: 3,
+				},
+			},
+		},
+	]);
+});
+//
+
+router.post(
+	'/move-product/:subscriptionName',
+	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT'),
 );
 
 router.get(

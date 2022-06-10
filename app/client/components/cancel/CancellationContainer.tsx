@@ -23,6 +23,10 @@ import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
 import {
+	AvailableProductsResponse,
+	ProductSwitchContext,
+} from '../productSwitch/productSwitchApi';
+import {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from './cancellationReason';
@@ -92,35 +96,48 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 		}`,
 	);
 
+	const [availableProductsToSwitch, setAvailableProductsToSwitch] = useState<
+		AvailableProductsResponse[]
+	>([]);
+
 	return (
-		<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
-			<PageContainer
-				selectedNavItem={NAV_LINKS.accountOverview}
-				pageTitle={pageTitle}
-				breadcrumbs={[
-					{
-						title: NAV_LINKS.accountOverview.title,
-						link: NAV_LINKS.accountOverview.link,
-					},
-					{
-						title: `Cancel ${props.productType.friendlyName}`,
-						currentPage: true,
-					},
-				]}
-			>
-				{productDetail ? (
-					contextAndOutletContainer(productDetail, props.productType)
-				) : (
-					<MembersDataApiAsyncLoader
-						fetch={createProductDetailFetcher(props.productType)}
-						render={renderSingleProductOrReturnToAccountOverview(
+		<ProductSwitchContext.Provider
+			value={{ availableProductsToSwitch, setAvailableProductsToSwitch }}
+		>
+			<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
+				<PageContainer
+					selectedNavItem={NAV_LINKS.accountOverview}
+					pageTitle={pageTitle}
+					breadcrumbs={[
+						{
+							title: NAV_LINKS.accountOverview.title,
+							link: NAV_LINKS.accountOverview.link,
+						},
+						{
+							title: `Cancel ${props.productType.friendlyName}`,
+							currentPage: true,
+						},
+					]}
+				>
+					{productDetail ? (
+						contextAndOutletContainer(
+							productDetail,
 							props.productType,
-						)}
-						loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
-					/>
-				)}
-			</PageContainer>
-		</CancellationPageTitleContext.Provider>
+						)
+					) : (
+						<MembersDataApiAsyncLoader
+							fetch={createProductDetailFetcher(
+								props.productType,
+							)}
+							render={renderSingleProductOrReturnToAccountOverview(
+								props.productType,
+							)}
+							loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
+						/>
+					)}
+				</PageContainer>
+			</CancellationPageTitleContext.Provider>
+		</ProductSwitchContext.Provider>
 	);
 };
 

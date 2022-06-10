@@ -20,7 +20,7 @@ import { ArrowInCircle } from '../svgs/arrowInCircle';
 import {
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
-} from './CancellationContainer';
+} from '../cancel/CancellationContainer';
 
 /**
  * Generic Card container component
@@ -148,6 +148,11 @@ const CancellationSwitchReview = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 	pageTitleContext.setPageTitle('Manage your support type');
+	/*
+	const productSwitchContext = useContext(
+		ProductSwitchContext,
+	) as ProductSwitchContextInterface;
+	*/
 
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};

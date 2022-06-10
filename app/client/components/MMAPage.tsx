@@ -69,14 +69,14 @@ const CancellationSwitchEligibilityCheck = lazy(
 const CancellationSwitchReview = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchReview'
+			/* webpackChunkName: "Cancellation" */ './productSwitch/CancellationSwitchReview'
 		),
 );
 
 const CancellationSwitchConfirmed = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchConfirmed'
+			/* webpackChunkName: "Cancellation" */ './productSwitch/CancellationSwitchConfirmed'
 		),
 );
 
