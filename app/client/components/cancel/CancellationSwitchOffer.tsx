@@ -16,7 +16,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const subHeadingCss = css`
-	margin: ${space[12]}px 0 ${space[4]}px;
+	margin: ${space[9]}px 0 ${space[2]}px;
 	border-top: 1px solid ${neutral['86']};
 	${headline.small({ fontWeight: 'bold' })};
 	${maxWidth.tablet} {
@@ -67,9 +67,8 @@ const CancellationSwitchOffer = () => {
 				>
 					<div
 						css={css`
-							font-size: 24px;
-							font-weight: bold;
-							line-height: 28px;
+							${headline.xsmall({ fontWeight: 'bold' })};
+
 							margin: 0;
 
 							${minWidth.tablet} {
@@ -81,10 +80,6 @@ const CancellationSwitchOffer = () => {
 						<p
 							css={css`
 								margin: 0 0 ${space[3]}px 0;
-
-								${minWidth.tablet} {
-									margin: ${space[2]}px 0 ${space[3]}px;
-								}
 							`}
 						>
 							Before you go, would you consider supporting us
@@ -120,8 +115,8 @@ const CancellationSwitchOffer = () => {
 					</div>
 					<GridPicture
 						cssOverrides={css`
-							margin-right: ${space[6]}px;
-							max-width: 250px;
+							margin-right: 42px;
+							max-width: 220px;
 
 							${maxWidth.tablet} {
 								display: none;
@@ -133,7 +128,7 @@ const CancellationSwitchOffer = () => {
 								srcSizes: [497, 285],
 								imgType: 'png',
 								sizes: '100vw',
-								media: '(max-width: 250px)',
+								media: '(max-width: 220px)',
 							},
 						]}
 						fallback="digitalSubPackshot"
@@ -146,6 +141,7 @@ const CancellationSwitchOffer = () => {
 				<div
 					css={css`
 						padding: ${space[4]}px ${space[3]}px 0 ${space[3]}px;
+						border-top: 1px solid ${neutral[86]};
 
 						${minWidth.tablet} {
 							padding: ${space[4]}px;
