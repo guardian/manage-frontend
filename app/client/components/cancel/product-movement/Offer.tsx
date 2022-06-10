@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	headline,
 	textSans,
@@ -12,113 +12,7 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-
-import type { $Keys } from 'utility-types';
-
-const catalogue = {
-	benefitsPackshotBulletsDesktopUS:
-		'71ff2a443acb92047e428782ed0239075fd2007a/0_0_497_285',
-};
-
-// ----- Types ----- //
-export type ImageType = 'jpg' | 'png';
-// ----- Setup ----- //
-export const GRID_DOMAIN = 'https://media.guim.co.uk';
-export const imageCatalogue: Record<string, string> = catalogue;
-// Utility type: https://flow.org/en/docs/types/utilities/#toc-keys
-export type ImageId = $Keys<typeof imageCatalogue>;
-// ----- Functions ----- //
-// Builds a grid url from and id and an image size.
-// Example: https://media.guim.co.uk/g65756g5/300.jpg
-export function gridUrl(
-	gridId: ImageId,
-	size: number,
-	imgType: ImageType = 'jpg',
-): string {
-	const path = `${imageCatalogue[gridId]}/${size}.${imgType}`;
-	const url = new URL(path, GRID_DOMAIN);
-	return url.toString();
-}
-
-// Returns a series of grid urls and their corresponding sizes.
-// Example:
-//   "https://media.guim.co.uk/g65756g5/300.jpg 300w,
-//    https://media.guim.co.uk/g65756g5/500.jpg 500w,
-//    https://media.guim.co.uk/g65756g5/700.jpg 700w"
-export function gridSrcset(
-	gridId: ImageId,
-	sizes: number[],
-	imgType?: ImageType,
-): string {
-	const sources = sizes.map(
-		(size) => `${gridUrl(gridId, size, imgType)} ${size}w`,
-	);
-	return sources.join(', ');
-}
-
-// ----- Types ----- //
-export type GridImage = {
-	gridId: ImageId;
-	srcSizes: number[];
-	imgType: ImageType;
-};
-export type GridSlot = {
-	sizes: string;
-	media: string;
-};
-export type Source = GridImage & GridSlot;
-export type PropTypes = {
-	sources: Source[];
-	fallback: string;
-	fallbackSize: number;
-	altText: string;
-	fallbackImgType: ImageType;
-	cssOverrides?: SerializedStyles | SerializedStyles[];
-}; // ----- Component ----- //
-
-export default function GridPicture(props: PropTypes) {
-	const sources = props.sources.map((source) => {
-		const srcSet = gridSrcset(
-			source.gridId,
-			source.srcSizes,
-			source.imgType,
-		);
-		return (
-			<source
-				key={source.gridId}
-				sizes={source.sizes}
-				media={source.media}
-				srcSet={srcSet}
-			/>
-		);
-	});
-	return (
-		<picture>
-			{sources}
-			<img
-				css={props.cssOverrides}
-				src={gridUrl(
-					props.fallback,
-					props.fallbackSize,
-					props.fallbackImgType,
-				)}
-				alt={props.altText}
-			/>
-		</picture>
-	);
-} // ----- Default Props ----- //
-
-GridPicture.defaultProps = {
-	altText: '',
-	fallbackImgType: 'jpg',
-};
-
-const valueCss = css`
-	${textSans.medium()};
-	margin: 0 0 24px 0;
-	padding: 0;
-	display: inline-block;
-`;
+import GridPicture from '../../images/GridPicture';
 
 const subHeadingCss = css`
 	margin: ${space[12]}px 0 ${space[4]}px;
@@ -236,14 +130,14 @@ export const Offer = () => {
 						`}
 						sources={[
 							{
-								gridId: 'benefitsPackshotBulletsDesktopUS',
+								gridId: 'digitalSubPackshot',
 								srcSizes: [497, 285],
 								imgType: 'png',
 								sizes: '100vw',
 								media: '(max-width: 250px)',
 							},
 						]}
-						fallback="benefitsPackshotBulletsDesktopUS"
+						fallback="digitalSubPackshot"
 						fallbackSize={497}
 						altText=""
 						fallbackImgType="png"
@@ -283,14 +177,13 @@ export const Offer = () => {
 							</span>{' '}
 							for 3 months
 						</p>
-						<div className="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+						<div>
 							<div
 								css={css`
 									${textSans.small()};
 
 									color: ${neutral[46]};
 								`}
-								className="mt-2 flex items-center text-sm text-gray-500"
 							>
 								Then £11.99 per month.{' '}
 								<strong>Cancel anytime</strong>.
@@ -343,7 +236,14 @@ export const Offer = () => {
 							}
 						`}
 					>
-						<p css={valueCss}>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: 0 0 24px 0;
+								padding: 0;
+								display: inline-block;
+							`}
+						>
 							Unlock additional features and benefits.
 						</p>
 
@@ -360,11 +260,13 @@ export const Offer = () => {
 								}
 							`}
 						>
-							<div
+							<ul
 								css={css`
+									padding: 0;
+									margin: 0;
+
 									${minWidth.tablet} {
 										flex: 1;
-
 										max-width: 50%;
 										display: flex;
 										flex-flow: column nowrap;
@@ -447,9 +349,14 @@ export const Offer = () => {
 										, for the best mobile experience
 									</span>
 								</li>
-							</div>
+							</ul>
 
-							<div>
+							<ul
+								css={css`
+									margin: 0;
+									padding: 0;
+								`}
+							>
 								<li
 									css={css`
 										${textSans.medium()};
@@ -560,7 +467,7 @@ export const Offer = () => {
 										<strong>crosswords</strong>
 									</span>
 								</li>
-							</div>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -568,6 +475,10 @@ export const Offer = () => {
 			<div
 				css={css`
 					margin: ${space[9]}px 0;
+
+					${minWidth.tablet} {
+						margin: ${space[9]}px 0 0 0;
+					}
 				`}
 			>
 				<Button
@@ -578,7 +489,7 @@ export const Offer = () => {
 					`}
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
-					// onClick={() => navigate('./')}
+					// onClick={() => navigate('/')}
 				>
 					Continue to cancellation
 				</Button>
