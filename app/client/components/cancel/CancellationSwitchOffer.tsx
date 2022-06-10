@@ -14,6 +14,8 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router-dom';
+import { CancellationRouterState } from './CancellationContainer';
+import { useLocation } from 'react-router';
 
 const subHeadingCss = css`
 	margin: ${space[9]}px 0 ${space[2]}px;
@@ -27,6 +29,8 @@ const subHeadingCss = css`
 
 const CancellationSwitchOffer = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
 
 	return (
 		<>
@@ -484,7 +488,11 @@ const CancellationSwitchOffer = () => {
 					`}
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
-					// onClick={() => navigate('/')}
+					onClick={() =>
+						navigate('./', {
+							state: { ...routerState, dontShowOffer: true },
+						})
+					}
 				>
 					Continue to cancellation
 				</Button>
