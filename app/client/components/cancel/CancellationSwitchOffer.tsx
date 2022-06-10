@@ -305,8 +305,8 @@ const CancellationSwitchOffer = () => {
 											margin-left: ${space[3]}px;
 										`}
 									>
-										Continue to support independant
-										journalism (to be --- by Ioan)
+										Continue to support independent
+										journalism
 									</span>
 								</li>
 								<li
