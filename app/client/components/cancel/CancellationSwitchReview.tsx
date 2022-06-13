@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { css, ThemeProvider } from '@emotion/react';
 import {
@@ -17,6 +17,10 @@ import { minWidth } from '../../styles/breakpoints';
 import { cardTypeToSVG } from '../payment/cardDisplay';
 import { ExpanderButton } from '../expanderButton';
 import { ArrowInCircle } from '../svgs/arrowInCircle';
+import {
+	CancellationPageTitleContext,
+	CancellationPageTitleInterface,
+} from './CancellationContainer';
 
 /**
  * Generic Card container component
@@ -140,6 +144,10 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 
 const CancellationSwitchReview = () => {
 	const navigate = useNavigate();
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+	pageTitleContext.setPageTitle('Manage your support type');
 
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};

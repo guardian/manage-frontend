@@ -210,7 +210,9 @@ const CancellationSwitchOffer = () => {
 								iconSide="right"
 								priority="secondary"
 								nudgeIcon
-								onClick={() => navigate('./switch')}
+								onClick={() =>
+									navigate('./switch', { state: routerState })
+								}
 							>
 								{'Explore a digital subscription'}
 							</Button>
