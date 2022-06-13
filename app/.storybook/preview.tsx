@@ -1,4 +1,4 @@
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import { fonts } from '../client/styles/fonts';
 import global from '../client/styles/global';
 import { viewport } from './viewport';
