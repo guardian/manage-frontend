@@ -1,4 +1,10 @@
-import { Context, createContext } from 'react';
+import {
+	Context,
+	createContext,
+	Dispatch,
+	SetStateAction,
+	useState,
+} from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
 	isProduct,
@@ -66,41 +72,55 @@ export interface CancellationRouterState {
 	dontShowOffer?: boolean;
 }
 
+export interface CancellationPageTitleInterface {
+	setPageTitle: Dispatch<SetStateAction<string>>;
+}
+
+export const CancellationPageTitleContext: Context<
+	CancellationPageTitleInterface | {}
+> = createContext({});
+
 const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
 
+	const [pageTitle, setPageTitle] = useState<string>(
+		`Cancel ${
+			props.productType.shortFriendlyName ||
+			props.productType.friendlyName
+		}`,
+	);
+
 	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle={`Cancel ${
-				props.productType.shortFriendlyName ||
-				props.productType.friendlyName
-			}`}
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: `Cancel ${props.productType.friendlyName}`,
-					currentPage: true,
-				},
-			]}
-		>
-			{productDetail ? (
-				contextAndOutletContainer(productDetail, props.productType)
-			) : (
-				<MembersDataApiAsyncLoader
-					fetch={createProductDetailFetcher(props.productType)}
-					render={renderSingleProductOrReturnToAccountOverview(
-						props.productType,
-					)}
-					loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
-				/>
-			)}
-		</PageContainer>
+		<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
+			<PageContainer
+				selectedNavItem={NAV_LINKS.accountOverview}
+				pageTitle={pageTitle}
+				breadcrumbs={[
+					{
+						title: NAV_LINKS.accountOverview.title,
+						link: NAV_LINKS.accountOverview.link,
+					},
+					{
+						title: `Cancel ${props.productType.friendlyName}`,
+						currentPage: true,
+					},
+				]}
+			>
+				{productDetail ? (
+					contextAndOutletContainer(productDetail, props.productType)
+				) : (
+					<MembersDataApiAsyncLoader
+						fetch={createProductDetailFetcher(props.productType)}
+						render={renderSingleProductOrReturnToAccountOverview(
+							props.productType,
+						)}
+						loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
+					/>
+				)}
+			</PageContainer>
+		</CancellationPageTitleContext.Provider>
 	);
 };
 
