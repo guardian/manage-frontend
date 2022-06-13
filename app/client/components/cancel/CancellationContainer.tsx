@@ -63,6 +63,7 @@ export interface CancellationRouterState {
 	deliveryCredits?: DeliveryRecordDetail[];
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
+	dontShowOffer?: boolean;
 }
 
 const CancellationContainer = (props: WithProductType<ProductType>) => {
