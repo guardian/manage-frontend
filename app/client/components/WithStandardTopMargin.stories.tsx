@@ -1,14 +1,11 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 import { WithStandardTopMargin } from './WithStandardTopMargin';
 
 export default {
 	title: 'Components/WithStandardTopMargin',
 	component: WithStandardTopMargin,
-	parameters: {
-		controls: { disabled: true },
-	},
 } as ComponentMeta<typeof WithStandardTopMargin>;
 
 export const Default: ComponentStory<typeof WithStandardTopMargin> = () => (

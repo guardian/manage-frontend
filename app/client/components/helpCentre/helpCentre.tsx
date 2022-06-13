@@ -1,8 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline } from '@guardian/src-foundations/typography';
-import { RouteComponentProps } from '@reach/router';
+import { css } from '@emotion/react';
+import { space, neutral, headline } from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
 import { helpCentreConfig } from './helpCentreConfig';
 import HelpCentreContactOptions from './helpCentreContactOptions';
@@ -20,7 +17,7 @@ const subtitleStyles = css`
 	}
 `;
 
-const HelpCentre = (_: RouteComponentProps) => {
+const HelpCentre = () => {
 	return (
 		<>
 			<div

@@ -1,6 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand } from '@guardian/src-foundations/palette';
+import { css } from '@emotion/react';
+import { space, brand } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { ErrorIcon } from '../../svgs/errorIcon';
 import { HolidayStopIcon } from '../../svgs/holidayStopIcon';
@@ -63,6 +62,7 @@ export const RecordStatus = (props: RecordStatusProps) => {
 							position: relative;
 							margin-bottom: ${space[2]}px;
 						`}
+						data-cy="delivery-status"
 					>
 						<i
 							css={css`

@@ -1,9 +1,16 @@
-import { css } from '@emotion/core';
-import { ChoiceCard, ChoiceCardGroup } from '@guardian/src-choice-card';
-import { neutral, palette, space } from '@guardian/src-foundations';
-import { textSans } from '@guardian/src-foundations/typography';
-import { TextInput } from '@guardian/src-text-input';
-import { InlineError } from '@guardian/src-user-feedback';
+import { css } from '@emotion/react';
+import {
+	ChoiceCard,
+	ChoiceCardGroup,
+	TextInput,
+	InlineError,
+} from '@guardian/source-react-components';
+import {
+	neutral,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import {
@@ -11,7 +18,7 @@ import {
 	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import AsyncLoader from '../asyncLoader';
 import { Button } from '../buttons';
 import { fetchWithDefaultParameters } from '../../fetch';
@@ -443,7 +450,7 @@ export const ContributionUpdateAmountForm = (
 										undefined
 									}
 									type="number"
-									value={otherAmount || ''}
+									value={otherAmount?.toString() || ''}
 									onChange={(event) =>
 										setOtherAmount(
 											event.target.value

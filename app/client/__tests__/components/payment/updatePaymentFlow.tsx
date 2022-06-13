@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import {
 	PaymentMethod,
 	SelectPaymentMethod,
-} from '../../../components/payment/update/updatePaymentFlow';
+} from '../../../components/payment/update/PaymentDetailUpdate';
 
 describe('updatePaymentFlow.tsx', () => {
 	it('Shows only card when sub/crontrib is already using card', () => {
@@ -27,8 +27,8 @@ describe('updatePaymentFlow.tsx', () => {
 			/>,
 		);
 
-		getByText(PaymentMethod.card);
-		getByText(PaymentMethod.dd);
+		expect(getByText(PaymentMethod.card)).toBeDefined();
+		expect(getByText(PaymentMethod.dd)).toBeDefined();
 	});
 
 	it('Shows only card when sub/crontrib is using Paypal', () => {

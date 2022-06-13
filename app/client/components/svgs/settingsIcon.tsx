@@ -1,4 +1,4 @@
-import { brand } from '@guardian/src-foundations/palette';
+import { brand } from '@guardian/source-foundations';
 
 interface SettingsIconProps {
 	overrideFillColor?: string;

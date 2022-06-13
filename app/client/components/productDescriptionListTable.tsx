@@ -1,7 +1,10 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import { maxWidth, minWidth } from '../styles/breakpoints';
 

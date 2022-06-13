@@ -1,6 +1,12 @@
-import { css } from '@emotion/core';
-import { breakpoints, palette, space } from '@guardian/src-foundations';
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { css } from '@emotion/react';
+import { breakpoints, palette, space } from '@guardian/source-foundations';
+import {
+	createContext,
+	Dispatch,
+	ReactNode,
+	SetStateAction,
+	useState,
+} from 'react';
 import { maxWidth, minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 import HelpCentreNav from './helpCentre/helpCentreNav';

@@ -1,11 +1,8 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
+import { css } from '@emotion/react';
+import { space, neutral, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { maxWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import {
 	h2Css,
 	innerSectionCss,
@@ -15,6 +12,7 @@ import {
 	sectionTitleCss,
 } from './helpCentreStyles';
 import { MoreTopics } from './HelpCentreTypes';
+import { Link } from 'react-router-dom';
 
 const moreTopicsStyles = css`
 	margin-bottom: '10px';

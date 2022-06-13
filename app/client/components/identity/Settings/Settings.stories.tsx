@@ -3,12 +3,12 @@ import fetchMock from 'fetch-mock';
 
 import Settings from './';
 import { user } from '../../../fixtures/user';
+import { MemoryRouter } from 'react-router';
 
 export default {
 	title: 'Pages/Settings',
 	component: Settings,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof Settings>;
@@ -16,5 +16,9 @@ export default {
 export const Default: ComponentStory<typeof Settings> = () => {
 	fetchMock.restore().get('/idapi/user', { body: user });
 
-	return <Settings />;
+	return (
+		<MemoryRouter>
+			<Settings />
+		</MemoryRouter>
+	);
 };

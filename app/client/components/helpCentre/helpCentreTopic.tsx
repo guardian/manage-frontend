@@ -1,6 +1,6 @@
-import { navigate, RouteComponentProps } from '@reach/router';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectedTopicObjectContext } from '../sectionContent';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
@@ -9,11 +9,7 @@ import { HelpCentreMoreTopics } from './helpCentreMoreTopics';
 import { HelpCentreSingleTopic } from './helpCentreSingleTopic';
 import { MoreTopics, SingleTopic } from './HelpCentreTypes';
 
-export interface HelpCentreTopicProps extends RouteComponentProps {
-	topicCode?: string;
-}
-
-const HelpCentreTopic = (props: HelpCentreTopicProps) => {
+const HelpCentreTopic = () => {
 	const [singleTopic, setSingleTopic] = useState<SingleTopic | undefined>(
 		undefined,
 	);
@@ -23,16 +19,19 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
 
 	const setSelectedTopicObject = useContext(SelectedTopicObjectContext);
 
+	const navigate = useNavigate();
+	const { topicCode } = useParams();
+
 	useEffect(() => {
 		setSingleTopic(undefined);
 		setMoreTopics(undefined);
-		fetch(`/api/help-centre/topic/${props.topicCode}`)
+		fetch(`/api/help-centre/topic/${topicCode}`)
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
 				} else {
 					captureMessage(
-						`Fetching topic ${props.topicCode} returned ${response.status}.`,
+						`Fetching topic ${topicCode} returned ${response.status}.`,
 					);
 					navigate('/help-centre');
 				}
@@ -44,15 +43,15 @@ const HelpCentreTopic = (props: HelpCentreTopicProps) => {
 			})
 			.catch((error) =>
 				captureException(
-					`Failed to fetch topic ${props.topicCode}. Error: ${error}`,
+					`Failed to fetch topic ${topicCode}. Error: ${error}`,
 				),
 			);
-		setSelectedTopicObject(props.topicCode);
-	}, [props.topicCode]);
+		setSelectedTopicObject(topicCode);
+	}, [topicCode]);
 
 	return (
 		<>
-			{getTopicComponent(props.topicCode, singleTopic, moreTopics)}
+			{getTopicComponent(topicCode, singleTopic, moreTopics)}
 			<BackToHelpCentreLink />
 		</>
 	);

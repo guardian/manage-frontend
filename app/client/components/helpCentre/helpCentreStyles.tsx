@@ -1,7 +1,10 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
 
 export const linkAnchorStyle = css`
@@ -117,8 +120,4 @@ export const h2Css = css`
 	${minWidth.desktop} {
 		font-size: 32px;
 	}
-`;
-
-export const contentDivStyles = css`
-	margin: 0 ${space[3]}px ${space[24]}px ${space[3]}px;
 `;

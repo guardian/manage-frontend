@@ -1,7 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { news } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import { space, news, textSans } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import { ErrorIcon } from './svgs/errorIcon';
 

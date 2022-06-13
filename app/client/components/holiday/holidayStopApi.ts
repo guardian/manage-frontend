@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	dateAddYears,
@@ -71,8 +70,6 @@ export interface MinimalHolidayStopRequest {
 }
 
 export interface HolidayStopRequest extends MinimalHolidayStopRequest {
-	id: string;
-	subscriptionName: string;
 	mutabilityFlags: MutabilityFlags;
 }
 
@@ -140,18 +137,10 @@ export interface CreateOrAmendHolidayStopsResponse {
 // tslint:disable-next-line:max-classes-per-file
 export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<CreateOrAmendHolidayStopsResponse> {}
 
-export const HolidayStopsResponseContext: React.Context<
-	ReloadableGetHolidayStopsResponse | {}
-> = React.createContext({});
-
 export function isHolidayStopsResponse(
 	data: ReloadableGetHolidayStopsResponse | {} | undefined,
 ): data is ReloadableGetHolidayStopsResponse {
-	return (
-		!!data &&
-		data.hasOwnProperty('existing') &&
-		data.hasOwnProperty('reload')
-	);
+	return !!data && data.hasOwnProperty('existing');
 }
 
 export const isNotWithdrawn = (holidayStopRequest: HolidayStopRequest) =>
@@ -235,3 +224,11 @@ export const calculateIssuesImpactedPerYear = (
 		),
 	} as IssuesImpactedPerYear;
 };
+
+export const createGetHolidayStopsFetcher =
+	(subscriptionName: string, isTestUser: boolean) => () =>
+		fetch(`/api/holidays/${subscriptionName}`, {
+			headers: {
+				[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+			},
+		});

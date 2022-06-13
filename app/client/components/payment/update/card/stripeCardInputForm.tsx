@@ -6,14 +6,17 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
 import { useState } from 'react';
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
+import { space } from '@guardian/source-foundations';
 import {
 	STRIPE_PUBLIC_KEY_HEADER,
 	StripeSetupIntent,
 } from '../../../../../shared/stripeSetupIntent';
 import { maxWidth } from '../../../../styles/breakpoints';
-import { Button } from '@guardian/src-button';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { GenericErrorScreen } from '../../../genericErrorScreen';
 import { CardInputFormProps } from './cardInputForm';
 import { FlexCardElement } from './flexCardElement';
@@ -24,8 +27,7 @@ import {
 import Recaptcha from './Recaptcha';
 import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
 import { ErrorSummary } from '../Summary';
-import { SvgArrowRightStraight } from '@guardian/src-icons';
-export interface StripeSetupIntentDetails {
+interface StripeSetupIntentDetails {
 	stripeSetupIntent?: StripeSetupIntent;
 	stripeSetupIntentError?: Error;
 }

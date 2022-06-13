@@ -1,8 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Link } from '@reach/router';
+import { css } from '@emotion/react';
+import { space, neutral, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { helpCentreNavConfig } from './helpCentreConfig';
@@ -13,6 +10,7 @@ import {
 	linkArrowStyle,
 	sectionTitleCss,
 } from './helpCentreStyles';
+import { Link } from 'react-router-dom';
 
 interface HelpCentreNavProps {
 	selectedTopicId?: string;

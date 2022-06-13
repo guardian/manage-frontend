@@ -15,13 +15,12 @@ type FormInputProps<T> = Pick<
 	Exclude<keyof FormFieldProps<T>, 'children'>
 >;
 
-type FormTextAreaProps<T> = FormInputProps<T>;
 type FormSelectProps<T> = FormInputProps<T> & {
 	options: string[];
 	labelModifier?: (option: string) => string;
 };
 
-const getError = <T extends unknown>(
+const getError = <T,>(
 	name: string,
 	{ errors, touched, status }: FormikProps<T>,
 ) => {
@@ -35,13 +34,12 @@ const getError = <T extends unknown>(
 	}
 };
 
-const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
+const FormField = <T,>(props: FormFieldProps<T>) => {
 	const { name, label, formikProps, children } = props;
 	const error = getError(name, formikProps);
-	const errorCss = error ? formFieldErrorCss : {};
 	const field = cloneElement(children, { name });
 	return (
-		<label css={{ ...labelCss, ...errorCss }}>
+		<label css={[labelCss, error && formFieldErrorCss]}>
 			{label}
 			{field}
 			{error ? <p>{error}</p> : null}
@@ -49,21 +47,7 @@ const FormField = <T extends unknown>(props: FormFieldProps<T>) => {
 	);
 };
 
-export const FormTextAreaField = <T extends unknown>(
-	props: FormTextAreaProps<T>,
-) => (
-	<FormField
-		name={props.name}
-		label={props.label}
-		formikProps={props.formikProps}
-	>
-		<Field component="textarea" />
-	</FormField>
-);
-
-export const FormSelectField = <T extends unknown>(
-	props: FormSelectProps<T>,
-) => {
+export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
 	const { options, labelModifier } = props;
 	const optionEls = options.map((o) => {
 		const optionLabel = labelModifier ? labelModifier(o) : o;
@@ -88,7 +72,7 @@ export const FormSelectField = <T extends unknown>(
 };
 
 const getInputFieldOfType = (type: string) => {
-	return <T extends unknown>(props: FormInputProps<T>) => (
+	return <T,>(props: FormInputProps<T>) => (
 		<FormField
 			name={props.name}
 			label={props.label}

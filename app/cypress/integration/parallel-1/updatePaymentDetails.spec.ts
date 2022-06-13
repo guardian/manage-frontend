@@ -1,77 +1,49 @@
-import { setLocalBaseUrl } from '../../lib/setLocalBaseUrl';
-import * as fixtures from '../../fixtures/fixtures';
-// import { PaymentMethod } from "../../../client/components/payment/update/updatePaymentFlow";
+import {
+	guardianWeeklyCurrentSubscription,
+	digitalDD,
+} from '../../../client/fixtures/productDetail';
+import {
+	stripeSetupIntent,
+	executePaymentUpdateResponse,
+	ddPaymentMethod,
+} from '../../../client/fixtures/payment';
+import { paymentMethods } from '../../../client/fixtures/stripe';
+import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-// 'No IAB consent management framework' exception is thrown from here: https://github.com/guardian/consent-management-platform/blob/405a4fee4c54c2bdabea3df0fd1bf187ae6d7927/src/onConsentChange.ts#L34
-Cypress.on('uncaught:exception', () => {
-	return false;
-});
-
-const iframeMessage = `[id^="sp_message_iframe_"]`;
-const acceptCookiesButtonText = 'Yes, I’m happy';
-
-describe('E2E Page rendering', function () {
-	beforeEach(function () {
-		cy.session('auth', () => {
-			setLocalBaseUrl();
-
-			cy.intercept('GET', '/api/me/mma', {
-				statusCode: 200,
-				body: fixtures.mmaResponse,
-			}).as('mma');
-
-			cy.intercept('GET', '/api/cancelled/', {
-				statusCode: 200,
-				body: fixtures.cancelledResponse,
-			}).as('cancelled');
-
-			cy.wait(1000);
-			cy.visit('/');
-
-			cy.wait('@mma');
-			cy.wait('@cancelled');
-
-			// accept cookies
-			cy.getIframeBody(iframeMessage)
-				.find(`button[title="${acceptCookiesButtonText}"]`, {
-					timeout: 10000,
-				})
-				.click();
-
-			// wait for cookies to be set
-			cy.wait(1000);
-		});
+describe('Update payment details', () => {
+	beforeEach(() => {
+		signInAndAcceptCookies();
 	});
 
-	it('Complete card payment update', function () {
+	it('Complete card payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: fixtures.gwProductDetail,
+			body: [guardianWeeklyCurrentSubscription],
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: fixtures.gwProductDetail,
+			body: [guardianWeeklyCurrentSubscription],
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/payment/card', {
 			statusCode: 200,
-			body: fixtures.stripeSetupIntent,
+			body: stripeSetupIntent,
 		}).as('createSetupIntent');
 
 		cy.intercept('POST', '/api/payment/card/**', {
 			statusCode: 200,
-			body: fixtures.executePaymentUpdateResponse,
+			body: executePaymentUpdateResponse,
 		}).as('scala_backend');
 
 		cy.intercept('POST', 'https://api.stripe.com/v1/setup_intents/**', {
 			statusCode: 200,
-			body: fixtures.confirmCardSetupResponse,
+			body: { status: 'succeeded' },
 		}).as('confirmCardSetup');
 
 		cy.intercept('POST', 'https://api.stripe.com/v1/payment_methods', {
 			statusCode: 200,
-			body: fixtures.stripePaymentMethod,
+			body: paymentMethods,
 		});
 
 		cy.visit('/payment/subscriptioncard');
@@ -110,92 +82,10 @@ describe('E2E Page rendering', function () {
 		cy.get('@scala_backend.all').should('have.length', 1);
 	});
 
-	it('Completes adding holiday stop', function () {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: fixtures.gwProductDetail,
-		}).as('mma');
-
-		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
-			statusCode: 200,
-			body: fixtures.gwProductDetail,
-		}).as('product_detail');
-
-		cy.intercept('GET', '/api/holidays/*/*', {
-			statusCode: 200,
-			body: {
-				nextInvoiceDateAfterToday: '2022-02-24',
-				potentials: [
-					{
-						publicationDate: '2022-03-25',
-						credit: -8.13,
-						invoiceDate: '2022-04-24',
-					},
-				],
-			},
-		}).as('fetch_holidays');
-
-		cy.intercept('GET', '/api/holidays/*', {
-			statusCode: 200,
-			body: {
-				existing: [
-					{
-						id: 'a2k9E000005NnbrQAC',
-						startDate: '2022-03-11',
-						endDate: '2022-03-12',
-						subscriptionName: 'A-S00293857',
-						publicationsImpacted: [
-							{
-								publicationDate: '2022-03-11',
-								estimatedPrice: -8.13,
-								invoiceDate: '2022-03-24',
-								isActioned: false,
-							},
-						],
-						mutabilityFlags: {
-							isFullyMutable: true,
-							isEndDateEditable: true,
-						},
-					},
-				],
-				issueSpecifics: [
-					{
-						firstAvailableDate: '2022-02-05',
-						issueDayOfWeek: 5,
-					},
-				],
-				annualIssueLimit: 6,
-				firstAvailableDate: '2022-02-05',
-			},
-		}).as('fetch_holidays');
-
-		cy.intercept('POST', '/api/holidays', {
-			statusCode: 200,
-			body: {
-				message: 'success',
-			},
-		}).as('create_holiday_stop');
-
-		cy.visit('/suspend/guardianweekly');
-		cy.wait('@fetch_holidays');
-		cy.wait('@product_detail');
-		cy.get('[data-cy="create_suspension_cta"] button').click();
-
-		cy.findByText('Choose the dates you will be away');
-		cy.get('[data-cy="date_picker"] div').eq(8).click();
-		cy.get('[data-cy="date_picker"] div').eq(10).click();
-		cy.findByText('Review details').click();
-
-		cy.findByText('Confirm').click();
-
-		cy.wait('@create_holiday_stop');
-		cy.findByText('Your schedule has been set');
-	});
-
-	it('Shows correct error messages for direct debit form', function () {
+	it('Shows correct error messages for direct debit form', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: fixtures.digitalDD,
+			body: [digitalDD],
 		}).as('product_detail');
 
 		cy.visit('/payment/digital');
@@ -228,20 +118,20 @@ describe('E2E Page rendering', function () {
 		);
 	});
 
-	it('Complete direct debit payment update', function () {
+	it('Complete direct debit payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: fixtures.digitalDD,
+			body: [digitalDD],
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: fixtures.digitalDD,
+			body: [digitalDD],
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/payment/dd/**', {
 			statusCode: 200,
-			body: fixtures.ddPaymentMethod,
+			body: ddPaymentMethod,
 		}).as('scala_backend');
 
 		cy.visit('/payment/digital');
@@ -268,10 +158,49 @@ describe('E2E Page rendering', function () {
 		cy.get('@scala_backend.all').should('have.length', 1);
 	});
 
-	it('Show recaptcha error', function () {
+	it('Shows payment failure route correctly for direct debit', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: fixtures.gwProductDetail,
+			body: [digitalDD],
+		}).as('product_detail');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: [digitalDD],
+		}).as('refetch_subscription');
+
+		cy.intercept('POST', '/api/payment/dd/**', {
+			statusCode: 500,
+		}).as('scala_backend');
+
+		cy.visit('/payment/digital');
+
+		cy.wait('@product_detail');
+		cy.findByText('Your current payment method');
+
+		cy.get(`[data-cy="Direct debit"] input`).click();
+
+		cy.findByText('Update your payment method');
+
+		cy.get('input[name="Account holder name"]').type('JON R HEE');
+		cy.get('input[name="Sort Code"]').type('200000');
+		cy.get('input[name="Account Number"]').type('55779911');
+
+		cy.get('input[name="accountHolderConfirmation"').click();
+		cy.findByText('Update payment method').click();
+
+		cy.wait('@scala_backend');
+
+		cy.findByText('Try again');
+		cy.url().should('include', 'failed');
+
+		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
+	it('Show recaptcha error', () => {
+		cy.intercept('GET', '/api/me/mma?productType=*', {
+			statusCode: 200,
+			body: [guardianWeeklyCurrentSubscription],
 		}).as('product_detail');
 
 		cy.visit('/payment/subscriptioncard');

@@ -4,6 +4,7 @@ import { DropMenu } from '../DropMenu';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { ConsentOption, Theme } from '../models';
 import { PageSection } from '../PageSection';
+import uniq from 'lodash/uniq';
 
 type ClickHandler = (id: string) => {};
 
@@ -11,17 +12,6 @@ interface NewsletterSectionProps {
 	newsletters: ConsentOption[];
 	clickHandler: ClickHandler;
 }
-
-const colors: { [T in Theme]: string } = {
-	[Theme.news]: palette.red.medium,
-	[Theme.features]: palette.neutral['1'],
-	[Theme.sport]: palette.blue.medium,
-	[Theme.culture]: '#a1845c',
-	[Theme.lifestyle]: palette.pink.medium,
-	[Theme.comment]: '#e05e00',
-	[Theme.work]: palette.neutral['1'],
-	[Theme.FromThePapers]: palette.neutral['1'],
-};
 
 const newsletterPreference = (
 	newsletter: ConsentOption,
@@ -39,29 +29,44 @@ const newsletterPreference = (
 			// "" here
 			identityName={identityName || ''}
 			frequency={frequency || ''}
-			description={description}
+			description={description || ''}
 			selected={subscribed}
 			onClick={clickHandler}
 		/>
 	);
 };
 
+function notEmpty<T>(value: T | undefined): value is T {
+	return value !== undefined;
+}
+
+function getColor(theme: string): string {
+	const colors: { [T in Theme]: string } = {
+		[Theme.news]: palette.red.medium,
+		[Theme.opinion]: palette.orange.medium,
+		[Theme.features]: palette.neutral['1'],
+		[Theme.sport]: palette.blue.medium,
+		[Theme.culture]: '#a1845c',
+		[Theme.lifestyle]: palette.pink.medium,
+		[Theme.comment]: '#e05e00',
+		[Theme.work]: palette.neutral['1'],
+		[Theme.fromThePapers]: palette.neutral['1'],
+	};
+
+	if (theme in Theme) {
+		return colors[theme as Theme];
+	}
+	return palette.neutral['1'];
+}
+
 const newsletterPreferenceGroups = (
 	newsletters: ConsentOption[],
 	clickHandler: ClickHandler,
 ) => {
-	const themes = [
-		Theme.news,
-		Theme.features,
-		Theme.sport,
-		Theme.culture,
-		Theme.lifestyle,
-		Theme.comment,
-		Theme.work,
-		Theme.FromThePapers,
-	];
+	const themes = uniq(newsletters.map((_) => _.theme)).filter(notEmpty);
+
 	return themes.map((theme) => (
-		<DropMenu key={theme} color={colors[theme]} title={theme}>
+		<DropMenu key={theme} color={getColor(theme)} title={theme}>
 			{newsletters
 				.filter((n) => n.theme === theme)
 				.map((n) => newsletterPreference(n, clickHandler))}

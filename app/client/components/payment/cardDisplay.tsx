@@ -1,5 +1,5 @@
-import { css, SerializedStyles } from '@emotion/core';
-import { neutral, news } from '@guardian/src-foundations/palette';
+import { css, SerializedStyles } from '@emotion/react';
+import { neutral, news } from '@guardian/source-foundations';
 import { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
@@ -19,13 +19,10 @@ interface CardDisplayProps extends CardProps, Inlineable {
 }
 
 const svgStyles = css`
-	display: inline-block;
 	width: 35px;
 	height: 22px;
-	margin-right: 3px;
-
-	svg:last-of-type {
-		margin-right: 0;
+	& + & {
+		margin-left: 3px;
 	}
 `;
 
@@ -150,6 +147,7 @@ export const CardDisplay = (props: CardDisplayProps) => {
 			{cardTypeToSVG(props.type)}{' '}
 			<span
 				css={css`
+					margin-left: 3px;
 					color: ${props.inErrorState ? news[400] : neutral[7]};
 				`}
 			>

@@ -1,34 +1,11 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import {
-	DeliveryAddress,
-	DeliveryRecordApiItem,
-	Subscription,
-} from '../../../../shared/productResponse';
+import { DeliveryAddress } from '../../../../shared/productResponse';
 import { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
-import {
-	ContactPhoneNumbers,
-	DeliveryProblemMap,
-	DeliveryRecordsPostPayload,
-} from './deliveryRecordsApi';
+import { DeliveryRecordsPostPayload } from './deliveryRecordsApi';
 
 export interface DeliveryRecordsProblemType {
 	category?: string;
 	message?: string;
-}
-
-interface DeliveryRecordsProblemContextInterface {
-	subscription: Subscription;
-	subscriptionCurrency: string;
-	productName: string;
-	apiProductName?: string;
-	problemType?: DeliveryRecordsProblemType;
-	affectedRecords: DeliveryRecordApiItem[];
-	deliveryProblemMap: DeliveryProblemMap;
-	isTestUser: boolean;
-	showProblemCredit?: boolean;
-	repeatDeliveryProblem?: boolean;
-	contactPhoneNumbers?: ContactPhoneNumbers;
-	resetDeliveryRecordsPage: () => void;
 }
 
 interface DeliveryProblemCreditInterface {
@@ -36,11 +13,6 @@ interface DeliveryProblemCreditInterface {
 	creditAmount?: string;
 	creditDate?: string | null;
 }
-
-export const DeliveryRecordsProblemContext =
-	createContext<DeliveryRecordsProblemContextInterface>(
-		{} as DeliveryRecordsProblemContextInterface,
-	);
 
 interface DeliveryRecordsAddressContextInterface {
 	address?: DeliveryAddress;

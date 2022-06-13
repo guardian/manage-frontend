@@ -1,8 +1,6 @@
-import { css, SerializedStyles } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { neutral, news } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css, SerializedStyles } from '@emotion/react';
+import { Button } from '@guardian/source-react-components';
+import { space, neutral, news, textSans } from '@guardian/source-foundations';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import {
@@ -12,6 +10,7 @@ import {
 	VALID_IMAGE_FILE_MIME_TYPES,
 } from '../../../shared/fileUploadUtils';
 import { isEmail } from '../../../shared/validationUtils';
+import { Grecaptcha } from '../../services/captcha';
 import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
@@ -46,7 +45,7 @@ interface FormValidationState {
 type ContactUsFormStatus = 'form' | 'submitting' | 'failure';
 
 declare const window: Window & {
-	grecaptcha: any;
+	grecaptcha: Grecaptcha;
 	v2ReCaptchaOnLoadCallback: () => void;
 };
 
@@ -174,7 +173,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 	};
 
 	return (
-        <form
+		<form
 			onSubmit={async (event: FormEvent) => {
 				event.preventDefault();
 				if (validateForm()) {
@@ -468,5 +467,5 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 				Submit
 			</Button>
 		</form>
-    );
+	);
 };

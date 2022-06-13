@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter } from 'react-router';
 import fetchMock from 'fetch-mock';
 
 import EmailAndMarketing from './';
@@ -16,7 +17,6 @@ export default {
 	title: 'Pages/EmailAndMarketing',
 	component: EmailAndMarketing,
 	parameters: {
-		controls: { disabled: true },
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof EmailAndMarketing>;
@@ -35,5 +35,9 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
 
-	return <EmailAndMarketing />;
+	return (
+		<MemoryRouter>
+			<EmailAndMarketing />
+		</MemoryRouter>
+	);
 };

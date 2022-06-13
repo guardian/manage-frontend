@@ -1,5 +1,5 @@
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';
 

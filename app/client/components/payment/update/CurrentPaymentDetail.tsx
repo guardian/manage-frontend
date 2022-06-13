@@ -1,7 +1,12 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral, news } from '@guardian/src-foundations/palette';
-import { InlineError } from '@guardian/src-user-feedback';
+import { css } from '@emotion/react';
+import {
+	space,
+	brand,
+	neutral,
+	news,
+	textSans,
+} from '@guardian/source-foundations';
+import { InlineError } from '@guardian/source-react-components';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
 import { CardDisplay } from '../cardDisplay';
@@ -11,10 +16,9 @@ import {
 } from '../directDebitDisplay';
 import { getObfuscatedPayPalId } from '../paypalDisplay';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { textSans } from '@guardian/src-foundations/typography';
 import { PaypalLogo } from '../paypalLogo';
 
-export function cardExpired(year: number, month: number) {
+function cardExpired(year: number, month: number) {
 	const expiryTimestamp = new Date(year, month);
 	const now = new Date();
 

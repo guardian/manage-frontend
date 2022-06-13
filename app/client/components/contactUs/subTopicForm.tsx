@@ -1,9 +1,6 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
-import { Radio, RadioGroup } from '@guardian/src-radio';
+import { css } from '@emotion/react';
+import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
+import { space, neutral, textSans } from '@guardian/source-foundations';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { SubTopic } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';

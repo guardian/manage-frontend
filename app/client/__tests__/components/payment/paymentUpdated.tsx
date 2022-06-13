@@ -1,9 +1,12 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router';
+
 import { Subscription } from '../../../../shared/productResponse';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
-} from '../../../components/payment/update/paymentUpdated';
+} from '../../../components/payment/update/PaymentDetailUpdateConfirmation';
 import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
 	guardianWeeklyCard,
@@ -14,9 +17,10 @@ import {
 	guardianWeeklySubscriptionCard,
 	digitalSubscriptionDD,
 } from '../../../fixtures/subscription';
+import { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
 
 // mock functions for NewPaymentMethodDetail type
-const matchesResponse = (_: any) => true;
+const matchesResponse = (_: CardUpdateResponse) => true;
 const subHasExpectedPaymentType = (_?: Subscription) => true;
 const detailToPayloadObject = () => {
 	return {};
@@ -37,69 +41,12 @@ const newPaymentMethodDetailCard: NewPaymentMethodDetail = {
 	render: newPaymentMethodDetailRender,
 	detailToPayloadObject,
 	confirmButtonWrapper,
-	/* add the following property as a new type, look at members-data-api to see if we use a default response from Stripe or build our own
-
-    "stripePaymentMethod": {
-        "id": "pm_0K1vCEItVxyc3Q6ndAt3Sc4l",
-        "object": "payment_method",
-        "billing_details": {
-            "address": {
-                "city": null,
-                "country": null,
-                "line1": null,
-                "line2": null,
-                "postal_code": null,
-                "state": null
-            },
-            "email": "jon.flynn+code@guardian.co.uk",
-            "name": "jon.flynn+code@guardian.co.uk",
-            "phone": null
-        },
-        "card": {
-            "brand": "visa",
-            "checks": {
-                "address_line1_check": null,
-                "address_postal_code_check": null,
-                "cvc_check": null
-            },
-            "country": "US",
-            "exp_month": 4,
-            "exp_year": 2024,
-            "funding": "credit",
-            "generated_from": null,
-            "last4": "4242",
-            "networks": {
-                "available": [
-                    "visa"
-                ],
-                "preferred": null
-            },
-            "three_d_secure_usage": {
-                "supported": true
-            },
-            "wallet": null
-        },
-        "created": 1638374294,
-        "customer": null,
-        "livemode": false,
-        "type": "card"
-    },
-    "stripePublicKeyForUpdate": "pk_test_Qm3CGRdrV4WfGYCpm0sftR0f"
-    */
 };
 
 const newPaymentMethodDetailDD: NewPaymentMethodDetail = {
 	apiUrlPart: 'dd',
 	name: 'direct_debit',
 	friendlyName: 'direct debit',
-	/*
-  same goes for gocardless DD responses
-    "ddDetail": {
-        "accountName": "asfd",
-        "accountNumber": "55779911",
-        "sortCode": "200000"
-    },
-    */
 	matchesResponse,
 	subHasExpectedPaymentType,
 	render: newPaymentMethodDetailRender,
@@ -142,39 +89,47 @@ describe('ConfirmedNewPaymentDetailsRenderer component', () => {
 	test.each(tests)(
 		'Summary table shows correct data for %s',
 		({ data, expectations }) => {
-			const { getByText } = render(
+			render(
 				<ConfirmedNewPaymentDetailsRenderer
 					subscription={data.subscription}
-					newPaymentMethodDetail={data.newPaymentMethodDetail}
+					subHasExpectedPaymentType={true}
 					previousProductDetail={data.previousProductDetail}
 				/>,
 			);
 
-			expectations.map((toTest) => getByText(toTest));
+			expectations.map((toTest) =>
+				expect(screen.queryByText(toTest)).toBeInTheDocument(),
+			);
 		},
 	);
 });
 
 test('PaymentMethodUpdated component does not display failure message', () => {
-	const { queryByText } = render(
-		<PaymentMethodUpdated
-			subs={[{ subscription: guardianWeeklySubscriptionCard }]}
-			newPaymentMethodDetail={newPaymentMethodDetailCard}
-			previousProductDetail={guardianWeeklyCard}
-		/>,
+	render(
+		<MemoryRouter>
+			<PaymentMethodUpdated
+				subs={[{ subscription: guardianWeeklySubscriptionCard }]}
+				subHasExpectedPaymentType={true}
+				previousProductDetail={guardianWeeklyCard}
+				paymentFailureRecoveryMessage={failureMessage}
+			/>
+		</MemoryRouter>,
 	);
 
-	expect(queryByText(failureMessage)).toBeNull();
+	expect(screen.queryByText(failureMessage)).not.toBeInTheDocument();
 });
 
 test('PaymentMethodUpdated component displays failure message when necessary', () => {
-	const { getByText } = render(
-		<PaymentMethodUpdated
-			subs={[{ subscription: guardianWeeklySubscriptionCard }]}
-			newPaymentMethodDetail={newPaymentMethodDetailCard}
-			previousProductDetail={guardianWeeklyExpiredCard}
-		/>,
+	render(
+		<MemoryRouter>
+			<PaymentMethodUpdated
+				subs={[{ subscription: guardianWeeklySubscriptionCard }]}
+				subHasExpectedPaymentType={true}
+				previousProductDetail={guardianWeeklyExpiredCard}
+				paymentFailureRecoveryMessage={failureMessage}
+			/>
+		</MemoryRouter>,
 	);
 
-	getByText(failureMessage);
+	expect(screen.queryByText(failureMessage)).toBeInTheDocument();
 });

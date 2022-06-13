@@ -1,5 +1,5 @@
-import { SerializedStyles } from '@emotion/core';
-import { brand } from '@guardian/src-foundations/palette';
+import { SerializedStyles } from '@emotion/react';
+import { brand } from '@guardian/source-foundations';
 
 interface ProfileIconProps {
 	additionalCss?: SerializedStyles;

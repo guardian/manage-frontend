@@ -69,7 +69,7 @@ interface UserAPIErrorResponse {
 const getOrEmpty = (user: IdapiUserDetails) => (path: string) =>
 	get(user, path, '');
 
-export const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
+const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
 	return error.status && error.status === 'error';
 };
 

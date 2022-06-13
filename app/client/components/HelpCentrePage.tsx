@@ -1,22 +1,23 @@
-import { css, Global } from '@emotion/core';
-import { Redirect, Router } from '@reach/router';
+import { css, Global } from '@emotion/react';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
-import { AnalyticsTracker } from './analytics';
-import { CMPBanner } from './consent/CMPBanner';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
-import { PageTitle } from './helpCentre/pageTitle';
-import { SeoData } from './helpCentre/seoData';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
 import { LiveChat } from './liveChat/liveChat';
 import { Main } from './main';
-import { ScrollToTop } from './scrollToTop';
 import {
 	isSignedIn,
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
+import useAnalytics from '../services/useAnalytics';
+import { setPageTitle } from '../services/pageTitle';
+import useScrollToTop from '../services/useScrollToTop';
+import useConsent from '../services/useConsent';
+import ErrorBoundary from './ErrorBoundary';
+import { GenericErrorScreen } from './genericErrorScreen';
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -52,6 +53,11 @@ const HelpCentreRouter = () => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
 	}, []);
 
+	useAnalytics();
+	setPageTitle();
+	useConsent();
+	useScrollToTop();
+
 	return (
 		<Main
 			signInStatus={signInStatus}
@@ -62,21 +68,50 @@ const HelpCentreRouter = () => {
 			<Global styles={css(`${fonts}`)} />
 			<HelpCenterContentWrapper>
 				<Suspense fallback={<HelpCentreLoadingContent />}>
-					<Router primary={true} css={{ height: '100%' }}>
-						<HelpCentre path="/help-centre" />
-
-						<HelpCentreArticle path="/help-centre/article/:articleCode" />
-						<HelpCentreTopic path="/help-centre/topic/:topicCode" />
-
-						<ContactUs path="/help-centre/contact-us" />
-						<ContactUs path="/help-centre/contact-us/:urlTopicId" />
-						<ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId" />
-						<ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId" />
-						<ContactUs path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess" />
-
-						{/* otherwise redirect to root instead of having a "not found page" */}
-						<Redirect default from="/*" to="/help-centre" noThrow />
-					</Router>
+					<ErrorBoundary
+						fallback={(error) => (
+							<GenericErrorScreen loggingMessage={error} />
+						)}
+					>
+						<Routes>
+							<Route
+								path="/help-centre"
+								element={<HelpCentre />}
+							/>
+							<Route
+								path="/help-centre/article/:articleCode"
+								element={<HelpCentreArticle />}
+							/>
+							<Route
+								path="/help-centre/topic/:topicCode"
+								element={<HelpCentreTopic />}
+							/>
+							<Route
+								path="/help-centre/contact-us"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess"
+								element={<ContactUs />}
+							/>
+							<Route
+								path="/*"
+								element={<Navigate to="/help-centre" />}
+							/>
+						</Routes>
+					</ErrorBoundary>
 				</Suspense>
 			</HelpCenterContentWrapper>
 			<LiveChat />
@@ -85,12 +120,7 @@ const HelpCentreRouter = () => {
 };
 
 export const HelpCentrePage = (
-	<>
-		<PageTitle />
-		<SeoData />
-		<AnalyticsTracker />
+	<BrowserRouter>
 		<HelpCentreRouter />
-		<CMPBanner />
-		<ScrollToTop />
-	</>
+	</BrowserRouter>
 );

@@ -5,7 +5,7 @@ import {
 } from '../../shared/identity';
 import palette from '../colours';
 import { minWidth } from '../styles/breakpoints';
-import { trackEvent } from './analytics';
+import { trackEvent } from '../services/analytics';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
 import { fetchWithDefaultParameters } from '../fetch';

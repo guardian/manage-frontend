@@ -6,7 +6,6 @@ export default {
 	title: 'Components/Footer',
 	component: Footer,
 	parameters: {
-		controls: { hideNoControlsWarning: true },
 		layout: 'fullscreen',
 		chromatic: {
 			viewports: [320, 740, 1300],

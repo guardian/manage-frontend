@@ -1,7 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import { space, brand, neutral, textSans } from '@guardian/source-foundations';
 import { maxWidth } from '../../styles/breakpoints';
 
 export const liveChatCss = css`
@@ -13,7 +11,7 @@ export const liveChatCss = css`
 			top: 0;
 			width: 100%;
 			max-width: 100%;
-			min-height: 100vh;
+			min-height: 100%;
 			margin-top: 0;
 		}
 		.embeddedServiceLiveAgentSidebarFeature

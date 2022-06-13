@@ -1,5 +1,5 @@
-import { css } from '@emotion/core';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import { textSans } from '@guardian/source-foundations';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import { COUNTRIES } from '../../identity/models';
 

@@ -1,7 +1,11 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, brandAlt, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	brand,
+	brandAlt,
+	neutral,
+	textSans,
+} from '@guardian/source-foundations';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import {
 	getMainPlan,
@@ -10,7 +14,7 @@ import {
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { LinkButton } from '../buttons';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
@@ -65,6 +69,11 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 	const userIsGifter = isGifted && props.productDetail.isPaidTier;
 
 	const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
+
+	const maybePatronSuffix =
+		props.productDetail.subscription.readerType === 'Patron'
+			? ' - Patron'
+			: '';
 
 	const shouldShowStartDate = !(
 		shouldShowJoinDateNotStartDate || userIsGifter
@@ -133,6 +142,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					`}
 				>
 					{specificProductType.productTitle(mainPlan)}
+					{maybePatronSuffix}
 				</h2>
 				<div
 					css={css`
@@ -298,7 +308,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					)}
 					{specificProductType.showTrialRemainingIfApplicable &&
 						props.productDetail.subscription.trialLength > 0 &&
-						!isGifted && (
+						!isGifted &&
+						props.productDetail.subscription.readerType !==
+							'Patron' && (
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Trial remaining</li>
 								<li css={valueCss}>
@@ -324,7 +336,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								to={`/${groupedProductType.urlPart}`}
 								text={`Manage ${groupedProductType.friendlyName}`}
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
-								state={props.productDetail}
+								state={{ productDetail: props.productDetail }}
 								colour={brand[800]}
 								textColour={brand[400]}
 								fontWeight={'bold'}
@@ -378,17 +390,19 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 										)}
 										{nextPaymentDetails.paymentValue}
 									</span>
-									{nextPaymentDetails.nextPaymentDateValue && (
-										<span
-											css={css`
-												display: block;
-											`}
-										>
-											{
-												nextPaymentDetails.nextPaymentDateValue
-											}
-										</span>
-									)}
+									{nextPaymentDetails.nextPaymentDateValue &&
+										props.productDetail.subscription
+											.readerType !== 'Patron' && (
+											<span
+												css={css`
+													display: block;
+												`}
+											>
+												{
+													nextPaymentDetails.nextPaymentDateValue
+												}
+											</span>
+										)}
 								</li>
 							</ul>
 						)}
@@ -451,7 +465,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								>
 									<LinkButton
 										to={`/payment/${specificProductType.urlPart}`}
-										state={props.productDetail}
+										state={{
+											productDetail: props.productDetail,
+										}}
 										text={'Manage payment method'}
 										colour={
 											hasPaymentFailure

@@ -7,11 +7,11 @@ coverage/
 
 *.swp
 *.swo
+*.lock
 
 *.code-workspace
 
 .vscode/
- 
 
 logs/
 /app/node_modules/
@@ -25,3 +25,5 @@ tmp_client_bundle/
 .DS_Store
 .scannerwork/
 app/test-report.xml
+
+app/cypress/screenshots

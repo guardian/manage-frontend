@@ -1,12 +1,16 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	space,
+	brand,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import { InvoiceDataApiItem } from '../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';

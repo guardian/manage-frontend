@@ -86,8 +86,7 @@ function returnCardInputForm() {
 
 describe('cardInputForm.tsx and stripeCardInputForm.tsx', () => {
 	beforeEach(() => {
-		// tslint:disable-next-line: no-object-mutation
-		global.fetch = jest.fn().mockImplementation((url) => {
+		globalThis.fetch = jest.fn().mockImplementation((url) => {
 			return new Promise((resolve) => {
 				resolve({
 					ok: true,
@@ -116,6 +115,6 @@ describe('cardInputForm.tsx and stripeCardInputForm.tsx', () => {
 			}),
 		);
 
-		getByText('Recaptcha has not been completed.');
+		expect(getByText('Recaptcha has not been completed.')).toBeDefined();
 	});
 });

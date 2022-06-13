@@ -22,7 +22,7 @@ export interface InvoiceDataApiItem {
 	cardType?: string;
 }
 
-export class MembersDatApiAsyncLoader extends AsyncLoader<
+export class MembersDataApiAsyncLoader extends AsyncLoader<
 	MembersDataApiItem[]
 > {}
 
@@ -84,16 +84,16 @@ export interface DirectDebitDetails {
 	sortCode: string;
 }
 
-export interface SepaDetails {
-	accountName: string;
-	iban: string;
-}
-
 export interface SubscriptionPlan {
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
 	daysOfWeek?: string[];
+}
+
+interface SepaDetails {
+	accountName: string;
+	iban: string;
 }
 
 interface CurrencyAndIntervalDetail {
@@ -135,7 +135,7 @@ export interface DeliveryAddress {
 	addressChangeInformation?: string;
 }
 
-type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary';
+type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary' | 'Patron';
 
 export interface Subscription {
 	accountId?: string;
@@ -173,7 +173,7 @@ export interface Subscription {
 	cancellationEffectiveDate?: string;
 }
 
-export interface CancelledSubscription {
+interface CancelledSubscription {
 	subscriptionId: string;
 	cancellationEffectiveDate: string;
 	start: string;

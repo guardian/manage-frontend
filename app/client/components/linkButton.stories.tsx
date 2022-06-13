@@ -1,5 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { brand, neutral } from '@guardian/src-foundations/palette';
+import { MemoryRouter } from 'react-router-dom';
+
+import { brand, neutral } from '@guardian/source-foundations';
 
 import { LinkButton, LinkButtonProps } from './buttons';
 
@@ -63,7 +65,9 @@ export default {
 } as ComponentMeta<typeof LinkButton>;
 
 const Template: ComponentStory<typeof LinkButton> = (args: LinkButtonProps) => (
-	<LinkButton {...args} />
+	<MemoryRouter>
+		<LinkButton {...args} />
+	</MemoryRouter>
 );
 
 export const Default = Template.bind({});

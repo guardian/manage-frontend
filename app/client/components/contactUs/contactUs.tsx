@@ -1,41 +1,41 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { neutral } from '@guardian/src-foundations/palette';
-import { headline, textSans } from '@guardian/src-foundations/typography';
-import { navigate, RouteComponentProps } from '@reach/router';
+import { css } from '@emotion/react';
+import {
+	space,
+	neutral,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { captureException } from '@sentry/browser';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import { minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
+import { trackEvent } from '../../services/analytics';
 import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';
 import { SubTopicForm } from './subTopicForm';
 import { TopicForm } from './topicForm';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export interface ContactUsProps extends RouteComponentProps {
-	urlTopicId?: string;
-	urlSubTopicId?: string;
-	urlSubSubTopicId?: string;
-	urlSuccess?: string;
-}
+const ContactUs = () => {
+	const { urlTopicId, urlSubTopicId, urlSubSubTopicId, urlSuccess } =
+		useParams();
+	const navigate = useNavigate();
 
-const ContactUs = (props: ContactUsProps) => {
 	const currentTopic = contactUsConfig.find(
-		(topic) => topic.id === props.urlTopicId,
+		(topic) => topic.id === urlTopicId,
 	);
 
 	const subTopics = currentTopic?.subtopics;
 	const currentSubTopic = subTopics?.find(
-		(subTopic) => subTopic.id === props.urlSubTopicId,
+		(subTopic) => subTopic.id === urlSubTopicId,
 	);
 
 	const subSubTopics = currentSubTopic?.subsubtopics;
 	const currentSubSubTopic = subSubTopics?.find(
-		(subSubTopic) => subSubTopic.id === props.urlSubSubTopicId,
+		(subSubTopic) => subSubTopic.id === urlSubSubTopicId,
 	);
 
-	const success = props.urlSuccess === '1';
+	const success = urlSuccess === '1';
 
 	const headerText = success
 		? 'Thank you for contacting us'

@@ -1,54 +1,45 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { Link, navigate, NavigateFn } from '@reach/router';
-import { Component } from 'react';
+import { css } from '@emotion/react';
+import { space } from '@guardian/source-foundations';
+import { useContext, useState } from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	DateRange,
 	dateString,
 } from '../../../shared/dates';
 import {
-	isProduct,
 	MDA_TEST_USER_HEADER,
-	MembersDataApiItemContext,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
-import { Button, LinkButton } from '../buttons';
+import { LinkButton } from '../buttons';
+import { Button, InlineError } from '@guardian/source-react-components';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { Checkbox } from '../checkbox';
-import { GenericErrorScreen } from '../genericErrorScreen';
 import { Modal } from '../modal';
 import { ProgressIndicator } from '../progressIndicator';
 import { InfoIcon } from '../svgs/infoIcon';
-import { visuallyNavigateToParent, WizardStep } from '../wizardRouterAdapter';
-import {
-	buttonBarCss,
-	cancelLinkCss,
-	HolidayDateChooserStateContext,
-	isSharedHolidayDateChooserState,
-	SharedHolidayDateChooserState,
-} from './holidayDateChooser';
+import { buttonBarCss, cancelLinkCss } from './holidayDateChooser';
 import {
 	creditExplainerSentence,
 	HolidayQuestionsModal,
 } from './holidayQuestionsModal';
-import { HolidayStopsRouteableStepProps } from './holidaysOverview';
 import {
-	convertRawPotentialHolidayStopDetail,
 	CreateOrAmendHolidayStopsAsyncLoader,
 	CreateOrAmendHolidayStopsResponse,
-	getPotentialHolidayStopsFetcher,
+	HolidayStopDetail,
 	HolidayStopRequest,
-	HolidayStopsResponseContext,
 	isHolidayStopsResponse,
-	PotentialHolidayStopsAsyncLoader,
-	PotentialHolidayStopsResponse,
 	ReloadableGetHolidayStopsResponse,
 } from './holidayStopApi';
 import { SummaryTable } from './summaryTable';
 import { fetchWithDefaultParameters } from '../../fetch';
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import {
+	HolidayStopsContext,
+	HolidayStopsContextInterface,
+	HolidayStopsRouterState,
+} from './HolidayStopsContainer';
 
 const getPerformCreateOrAmendFetcher =
 	(
@@ -84,16 +75,6 @@ const getPerformCreateOrAmendFetcher =
 			},
 		);
 
-const getRenderCreateOrAmendSuccess =
-	(nav: NavigateFn) =>
-	(
-		// TODO should probably check the 'success' string within this (even thought status code should catch failure)
-		_: CreateOrAmendHolidayStopsResponse,
-	) => {
-		nav('confirmed', { replace: true });
-		return null;
-	};
-
 const getRenderCreateOrAmendError = (modificationKeyword: string) => () =>
 	(
 		<div css={{ textAlign: 'left', marginTop: '10px' }}>
@@ -105,277 +86,244 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () =>
 			<LinkButton to=".." text="Back" left />
 		</div>
 	);
-interface HolidayReviewState {
-	isExecuting: boolean;
-	isCheckboxConfirmed: boolean;
-}
 
-export class HolidayReview extends Component<
-	HolidayStopsRouteableStepProps,
-	HolidayReviewState
-> {
-	public state: HolidayReviewState = {
-		isExecuting: false,
-		isCheckboxConfirmed: false,
-	};
-	public render = () => (
-		<HolidayStopsResponseContext.Consumer>
-			{(holidayStopsResponse) =>
-				isHolidayStopsResponse(holidayStopsResponse) ? (
-					<MembersDataApiItemContext.Consumer>
-						{(productDetail) => (
-							<HolidayDateChooserStateContext.Consumer>
-								{(dateChooserState) =>
-									isSharedHolidayDateChooserState(
-										dateChooserState,
-									) && isProduct(productDetail) ? (
-										<PotentialHolidayStopsAsyncLoader
-											fetch={getPotentialHolidayStopsFetcher(
-												productDetail.subscription
-													.subscriptionId,
-												dateChooserState.selectedRange
-													.start,
-												dateChooserState.selectedRange
-													.end,
-												productDetail.isTestUser,
-											)}
-											render={this.buildActualRenderer(
-												holidayStopsResponse,
-												productDetail,
-												dateChooserState,
-											)}
-											loadingMessage="Calculating expected credit..."
-										/>
-									) : (
-										visuallyNavigateToParent(this.props)
-									)
-								}
-							</HolidayDateChooserStateContext.Consumer>
-						)}
-					</MembersDataApiItemContext.Consumer>
-				) : (
-					<GenericErrorScreen loggingMessage="No holiday stop response" />
-				)
-			}
-		</HolidayStopsResponseContext.Consumer>
-	);
+const HolidayReview = () => {
+	const [isExecuting, setIsExecuting] = useState<boolean>(false);
+	const [isCheckboxConfirmed, setIsCheckboxConfirmed] =
+		useState<boolean>(false);
 
-	private buildActualRenderer =
-		(
-			holidayStopsResponse: ReloadableGetHolidayStopsResponse,
-			productDetail: ProductDetail,
-			dateChooserState: SharedHolidayDateChooserState,
-		) =>
-		(
-			potentialHolidayStopsResponseWithCredits: PotentialHolidayStopsResponse,
-		) => {
-			const dateChooserStateWithCredits: SharedHolidayDateChooserState = {
-				...dateChooserState,
-				publicationsImpacted:
-					potentialHolidayStopsResponseWithCredits.potentials.map(
-						convertRawPotentialHolidayStopDetail,
-					),
-			};
+	const {
+		productDetail,
+		productType,
+		selectedRange,
+		publicationsImpacted,
+		holidayStopResponse,
+		setExistingHolidayStopToAmend,
+	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
-			const innerContent = (
-				<>
-					<div>
-						<h1>Review details before confirming</h1>
-						<p>
-							Check the details carefully and amend them if
-							necessary.{' '}
-							{creditExplainerSentence(
-								this.props.productType.holidayStops
-									.issueKeyword,
-							)}{' '}
-							{
-								this.props.productType.holidayStops
-									.additionalHowAdvice
-							}
-						</p>
-						<HolidayQuestionsModal
-							annualIssueLimit={
-								holidayStopsResponse.annualIssueLimit
-							}
-							holidayStopFlowProperties={
-								this.props.productType.holidayStops
-							}
-						/>
-						<div css={{ height: '25px' }} />
-						<SummaryTable
-							data={dateChooserStateWithCredits}
-							alternateSuspendedColumnHeading="To be suspended"
-							isTestUser={productDetail.isTestUser}
-							subscription={productDetail.subscription}
-							issueKeyword={
-								this.props.productType.holidayStops.issueKeyword
-							}
-						/>
-						{this.props.productType.holidayStops
-							.explicitConfirmationRequired && (
-							<>
-								<div
-									css={{
-										marginTop: '20px',
-										marginBottom: '10px',
-									}}
-								>
-									<Checkbox
-										checked={this.state.isCheckboxConfirmed}
-										onChange={(newValue) =>
-											this.setState({
-												isCheckboxConfirmed: newValue,
-											})
-										}
-										label={
-											this.props.productType.holidayStops
-												.explicitConfirmationRequired
-												.checkboxLabel
-										}
-									/>
-								</div>
-								<Modal
-									instigator={
-										<a
-											css={{
-												fontFamily: sans,
-												fontSize: '14px',
-												cursor: 'pointer',
-												textDecoration: 'underline',
-												margin: '10px',
-											}}
-										>
-											<InfoIcon />
-											Tell me more
-										</a>
+	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as HolidayStopsRouterState;
+
+	const buildActualRenderer = (
+		holidayStopsResponse: ReloadableGetHolidayStopsResponse,
+		productDetail: ProductDetail,
+		selectedRange: DateRange,
+		publicationsImpacted: HolidayStopDetail[],
+	) => {
+		const innerContent = (
+			<>
+				<div>
+					<h1>Review details before confirming</h1>
+					<p>
+						Check the details carefully and amend them if necessary.{' '}
+						{creditExplainerSentence(
+							productType.holidayStops.issueKeyword,
+						)}{' '}
+						{productType.holidayStops.additionalHowAdvice}
+					</p>
+					<HolidayQuestionsModal
+						annualIssueLimit={holidayStopsResponse.annualIssueLimit}
+						holidayStopFlowProperties={productType.holidayStops}
+					/>
+					<div css={{ height: '25px' }} />
+					<SummaryTable
+						data={{ selectedRange, publicationsImpacted }}
+						alternateSuspendedColumnHeading="To be suspended"
+						isTestUser={productDetail.isTestUser}
+						subscription={productDetail.subscription}
+						issueKeyword={productType.holidayStops.issueKeyword}
+					/>
+					{productType.holidayStops.explicitConfirmationRequired && (
+						<>
+							<div
+								css={{
+									marginTop: '20px',
+									marginBottom: '10px',
+								}}
+							>
+								<Checkbox
+									checked={isCheckboxConfirmed}
+									onChange={(newValue) =>
+										setIsCheckboxConfirmed(newValue)
 									}
-									title={
-										this.props.productType.holidayStops
+									label={
+										productType.holidayStops
 											.explicitConfirmationRequired
-											.explainerModalTitle
+											.checkboxLabel
 									}
-								>
-									<p>
-										{
-											this.props.productType.holidayStops
-												.explicitConfirmationRequired
-												.explainerModalBody
-										}
-									</p>
-								</Modal>
-							</>
-						)}
+								/>
+							</div>
+							<Modal
+								instigator={
+									<a
+										css={{
+											fontFamily: sans,
+											fontSize: '14px',
+											cursor: 'pointer',
+											textDecoration: 'underline',
+											margin: '10px',
+										}}
+									>
+										<InfoIcon />
+										Tell me more
+									</a>
+								}
+								title={
+									productType.holidayStops
+										.explicitConfirmationRequired
+										.explainerModalTitle
+								}
+							>
+								<p>
+									{
+										productType.holidayStops
+											.explicitConfirmationRequired
+											.explainerModalBody
+									}
+								</p>
+							</Modal>
+						</>
+					)}
+				</div>
+				{isExecuting ? (
+					<div css={{ marginTop: '40px', textAlign: 'right' }}>
+						<CreateOrAmendHolidayStopsAsyncLoader
+							fetch={getPerformCreateOrAmendFetcher(
+								selectedRange,
+								productDetail.subscription.subscriptionId,
+								productDetail.isTestUser,
+								holidayStopsResponse.existingHolidayStopToAmend,
+							)}
+							render={(_: CreateOrAmendHolidayStopsResponse) => (
+								<Navigate
+									to="../confirmed"
+									state={routerState}
+								/>
+							)}
+							errorRender={getRenderCreateOrAmendError(
+								holidayStopsResponse.existingHolidayStopToAmend
+									? 'amending'
+									: 'creating',
+							)}
+							loadingMessage={`${
+								holidayStopsResponse.existingHolidayStopToAmend
+									? 'Amending'
+									: 'Creating'
+							} your suspension...`}
+							spinnerScale={0.7}
+							inline
+						/>
 					</div>
-					{this.state.isExecuting ? (
-						<div css={{ marginTop: '40px', textAlign: 'right' }}>
-							<CreateOrAmendHolidayStopsAsyncLoader
-								fetch={getPerformCreateOrAmendFetcher(
-									dateChooserState.selectedRange,
-									productDetail.subscription.subscriptionId,
-									productDetail.isTestUser,
-									holidayStopsResponse.existingHolidayStopToAmend,
-								)}
-								render={getRenderCreateOrAmendSuccess(
-									this.props.navigate || navigate,
-								)}
-								errorRender={getRenderCreateOrAmendError(
-									holidayStopsResponse.existingHolidayStopToAmend
-										? 'amending'
-										: 'creating',
-								)}
-								loadingMessage={`${
-									holidayStopsResponse.existingHolidayStopToAmend
-										? 'Amending'
-										: 'Creating'
-								} your suspension...`}
-								spinnerScale={0.7}
-								inline
-							/>
+				) : (
+					<div
+						css={[
+							buttonBarCss,
+							{
+								justifyContent: 'space-between',
+								marginTop: '20px',
+								[maxWidth.mobileMedium]: {
+									flexDirection: 'column',
+									marginTop: 0,
+								},
+							},
+						]}
+					>
+						<div
+							css={{
+								marginTop: '20px',
+								alignSelf: 'flex-start',
+							}}
+						>
+							<Button
+								onClick={() => {
+									setExistingHolidayStopToAmend({
+										dateRange: selectedRange,
+										publicationsImpacted,
+										mutabilityFlags: {
+											isEndDateEditable: true,
+											isFullyMutable: true,
+										},
+									});
+									navigate('../amend', {
+										state: routerState,
+									});
+								}}
+								priority="secondary"
+							>
+								Amend
+							</Button>
 						</div>
-					) : (
 						<div
 							css={[
 								buttonBarCss,
 								{
-									justifyContent: 'space-between',
 									marginTop: '20px',
-									[maxWidth.mobileMedium]: {
-										flexDirection: 'column',
-										marginTop: 0,
-									},
+									alignSelf: 'flex-end',
 								},
 							]}
 						>
-							<div
-								css={{
-									marginTop: '20px',
-									alignSelf: 'flex-start',
-								}}
+							<Link
+								css={cancelLinkCss}
+								to=".."
+								state={routerState}
 							>
-								<Button
-									text="Amend"
-									onClick={() =>
-										(this.props.navigate || navigate)('..')
-									}
-									left
-									hollow
-								/>
-							</div>
-							<div
-								css={[
-									buttonBarCss,
-									{
-										marginTop: '20px',
-										alignSelf: 'flex-end',
-									},
-								]}
+								Cancel
+							</Link>
+							<Button
+								disabled={
+									!!productType.holidayStops
+										.explicitConfirmationRequired &&
+									!isCheckboxConfirmed
+								}
+								onClick={() => setIsExecuting(true)}
 							>
-								<Link
-									css={cancelLinkCss}
-									to="../.."
-									replace={true}
-								>
-									Cancel
-								</Link>
-								<Button
-									text="Confirm"
-									disabled={
-										!!this.props.productType.holidayStops
-											.explicitConfirmationRequired &&
-										!this.state.isCheckboxConfirmed
-									}
-									onClick={() =>
-										this.setState({ isExecuting: true })
-									}
-									right
-									primary
-								/>
-							</div>
+								Confirm
+							</Button>
 						</div>
-					)}
-				</>
-			);
+						{!!productType.holidayStops
+							.explicitConfirmationRequired &&
+							!isCheckboxConfirmed && (
+								<InlineError>
+									Please confirm you will destroy the affected
+									vouchers by checking the box.
+								</InlineError>
+							)}
+					</div>
+				)}
+			</>
+		);
 
-			return this.props.navigate ? (
-				<HolidayDateChooserStateContext.Provider
-					value={dateChooserStateWithCredits}
-				>
-					<WizardStep routeableStepProps={this.props}>
-						<ProgressIndicator
-							steps={[
-								{ title: 'Choose dates' },
-								{ title: 'Review', isCurrentStep: true },
-								{ title: 'Confirmation' },
-							]}
-							additionalCSS={css`
-								margin: ${space[5]}px 0 ${space[12]}px;
-							`}
-						/>
-						{innerContent}
-					</WizardStep>
-				</HolidayDateChooserStateContext.Provider>
-			) : (
-				visuallyNavigateToParent(this.props)
-			);
-		};
-}
+		return (
+			<>
+				<ProgressIndicator
+					steps={[
+						{ title: 'Choose dates' },
+						{ title: 'Review', isCurrentStep: true },
+						{ title: 'Confirmation' },
+					]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+				{innerContent}
+			</>
+		);
+	};
+
+	return isHolidayStopsResponse(holidayStopResponse) &&
+		productDetail?.tier &&
+		selectedRange &&
+		publicationsImpacted ? (
+		buildActualRenderer(
+			holidayStopResponse,
+			productDetail,
+			selectedRange,
+			publicationsImpacted,
+		)
+	) : (
+		<Navigate to=".." state={routerState} />
+	);
+};
+
+export default HolidayReview;

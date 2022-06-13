@@ -17,24 +17,26 @@ const requestedUrlSimple = {
 	query: {},
 };
 
-test('should replace code.dev-theguardian.com with thegulocal.com in the augmented redirect URL', () => {
-	expect(
-		augmentRedirectURL(
-			requestedUrlSimple,
-			codeReauthURL,
-			gulocalDomain,
-			false,
-		),
-	).toContain(profilePrefix + gulocalDomain);
-});
+describe('identity middleware', () => {
+	test('should replace code.dev-theguardian.com with thegulocal.com in the augmented redirect URL', () => {
+		expect(
+			augmentRedirectURL(
+				requestedUrlSimple,
+				codeReauthURL,
+				gulocalDomain,
+				false,
+			),
+		).toContain(profilePrefix + gulocalDomain);
+	});
 
-test('augmented URL should at least contain the simple input URL', () => {
-	expect(
-		augmentRedirectURL(
-			requestedUrlSimple,
-			codeReauthURL,
-			codeDomain,
-			false,
-		),
-	).toContain(codeReauthURL);
+	test('augmented URL should at least contain the simple input URL', () => {
+		expect(
+			augmentRedirectURL(
+				requestedUrlSimple,
+				codeReauthURL,
+				codeDomain,
+				false,
+			),
+		).toContain(codeReauthURL);
+	});
 });

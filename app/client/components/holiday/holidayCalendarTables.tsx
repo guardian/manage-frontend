@@ -1,10 +1,10 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { space } from '@guardian/src-foundations';
+import { css } from '@emotion/react';
 import {
+	Button,
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
-} from '@guardian/src-icons';
+} from '@guardian/source-react-components';
+import { space } from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import {
 	dateAddDays,
@@ -288,7 +288,7 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 					)
 				}
 			>
-				Go back a month
+				Go forward a month
 			</Button>
 			{calendarsMonthStartDate.map((monthStartDate, monthIndex) => (
 				<HolidayCalendarTable

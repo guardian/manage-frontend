@@ -1,19 +1,18 @@
-import { CSSObject } from '@emotion/core';
+import { css } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
 import { FC, useEffect } from 'react';
 import * as React from 'react';
 import palette from '../../../colours';
 import { sans } from '../../../styles/fonts';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { Button } from '../../buttons';
 import { Spinner } from '../../spinner';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
-import { errorMessageCss } from '../sharedStyles';
-import { labelCss, textSmall } from '../sharedStyles';
+import { errorMessageCss, labelCss, textSmall } from '../sharedStyles';
 
 import {
 	getData,
@@ -27,12 +26,12 @@ interface AvatarSectionProps {
 	userId: string;
 }
 
-const imgCss: CSSObject = {
+const imgCss = css({
 	border: '0',
 	borderRadius: '50%',
 	height: '60px',
 	width: '60px',
-};
+});
 
 const isEmptyAvatarError = (e: any): boolean => {
 	return e.type && e.type === ErrorTypes.NOT_FOUND;
@@ -86,7 +85,8 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				await saveAvatar(values.file);
 				formikBag.setSubmitting(false);
 			}}
-			render={(formikBag: FormikProps<AvatarPayload>) => (
+		>
+			{(formikBag: FormikProps<AvatarPayload>) => (
 				<Form>
 					<label css={labelCss}>
 						{avatarDisplay()}
@@ -114,21 +114,23 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					/>
 				</Form>
 			)}
-		/>
+		</Formik>
 	);
 
 	const avatarUploadSuccessNotice = () => (
 		<div
-			css={{
-				...textSmall,
-				lineHeight: '18px',
-				fontFamily: sans,
-				borderBottom: `1px solid ${palette.green.light}`,
-				borderTop: `1px solid ${palette.green.light}`,
-				color: palette.green.medium,
-				marginTop: '6px',
-				padding: '7px 8px',
-			}}
+			css={[
+				textSmall,
+				{
+					lineHeight: '18px',
+					fontFamily: sans,
+					borderBottom: `1px solid ${palette.green.light}`,
+					borderTop: `1px solid ${palette.green.light}`,
+					color: palette.green.medium,
+					marginTop: '6px',
+					padding: '7px 8px',
+				},
+			]}
 		>
 			Thank you for uploading your avatar. It will be checked by Guardian
 			moderators shortly.

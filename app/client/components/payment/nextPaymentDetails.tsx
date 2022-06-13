@@ -1,6 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand } from '@guardian/src-foundations/palette';
+import { css } from '@emotion/react';
+import { space, brand } from '@guardian/source-foundations';
 import { parseDate } from '../../../shared/dates';
 import {
 	augmentInterval,
@@ -41,13 +40,19 @@ export const getNextPaymentDetails = (
 				: mainPlan.interval,
 		)} payment`;
 
-		const paymentValue = `${mainPlan.currency}${(
-			overiddenAmount ||
-			(subscription.nextPaymentPrice || mainPlan.amount) / 100.0
-		).toFixed(2)} ${mainPlan.currencyISO}`;
+		const paymentValue =
+			subscription.readerType === 'Patron'
+				? 'not applicable'
+				: `${mainPlan.currency}${(
+						overiddenAmount ||
+						(subscription.nextPaymentPrice ?? mainPlan.amount) /
+							100.0
+				  ).toFixed(2)} ${mainPlan.currencyISO}`;
 
 		const nextPaymentDateValue =
-			!hasPaymentFailure && subscription.nextPaymentDate
+			subscription.readerType === 'Patron'
+				? 'not applicable'
+				: !hasPaymentFailure && subscription.nextPaymentDate
 				? parseDate(
 						subscription.currentPlans.length === 0
 							? mainPlan.start

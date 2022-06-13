@@ -1,7 +1,7 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ProductDetail } from '../../../../shared/productResponse';
 import palette from '../../../colours';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';
 

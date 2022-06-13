@@ -1,14 +1,17 @@
-import css from '@emotion/css';
-import { Button } from '@guardian/src-button';
-import { brand, neutral, space } from '@guardian/src-foundations';
-import { headline, textSans } from '@guardian/src-foundations/typography';
-import { navigate, RouteComponentProps } from '@reach/router';
+import { css } from '@emotion/react';
+import { Button } from '@guardian/source-react-components';
+import {
+	brand,
+	neutral,
+	space,
+	headline,
+	textSans,
+} from '@guardian/source-foundations';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { minWidth } from '../../styles/breakpoints';
-import { trackEvent } from '../analytics';
-import { LinkButton } from '../buttons';
+import { trackEvent } from '../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isArticleLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import { SelectedTopicObjectContext } from '../sectionContent';
@@ -25,25 +28,25 @@ import {
 	LinkNode,
 	TextNode,
 } from './HelpCentreTypes';
-import { PageTitle } from './pageTitle';
-import { SeoData } from './seoData';
+import { setPageTitle } from '../../services/pageTitle';
+import useHelpArticleSeo from '../../services/useHelpArticleSeo';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export interface HelpCentreArticleProps extends RouteComponentProps {
-	articleCode?: string;
-}
-
-const HelpCentreArticle = (props: HelpCentreArticleProps) => {
+const HelpCentreArticle = () => {
 	const [article, setArticle] = useState<Article | undefined>(undefined);
+
+	const { articleCode } = useParams();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setArticle(undefined);
-		fetch(`/api/help-centre/article/${props.articleCode}`)
+		fetch(`/api/help-centre/article/${articleCode}`)
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
 				} else {
 					captureMessage(
-						`Fetching article ${props.articleCode} returned ${response.status}.`,
+						`Fetching article ${articleCode} returned ${response.status}.`,
 					);
 					navigate('/help-centre');
 				}
@@ -51,10 +54,10 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
 			.then((articleData) => setArticle(articleData as Article))
 			.catch((error) =>
 				captureException(
-					`Failed to fetch article ${props.articleCode}. Error: ${error}`,
+					`Failed to fetch article ${articleCode}. Error: ${error}`,
 				),
 			);
-	}, [props.articleCode]);
+	}, [articleCode]);
 
 	const setSelectedTopicId = React.useContext(SelectedTopicObjectContext);
 	useEffect(() => {
@@ -65,21 +68,22 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
 		max-width: 620px;
 		color: ${neutral['7']};
 	`;
+	setPageTitle(article?.title);
+
+	useHelpArticleSeo(article);
 
 	return (
 		<>
-			<PageTitle title={article?.title} />
-			<SeoData article={article} />
 			<div css={articleContainerCss}>
 				<h2 css={h2Css}>{article?.title}</h2>
 				{article ? (
 					<>
 						<ArticleBody
 							article={article}
-							articleCode={props.articleCode ?? ''}
+							articleCode={articleCode ?? ''}
 						/>
 						<ArticleFeedbackWidget
-							articleCode={props.articleCode ?? ''}
+							articleCode={articleCode ?? ''}
 						/>
 						{isArticleLiveChatFeatureEnabled() ? (
 							<HelpCentreContactOptions
@@ -96,13 +100,14 @@ const HelpCentreArticle = (props: HelpCentreArticleProps) => {
 									Or use our contact form to get in touch and
 									we’ll get back to you as soon as possible.
 								</p>
-								<LinkButton
-									to="/help-centre/contact-us"
-									text={'Contact us'}
-									fontWeight={'bold'}
-									textColour={`${brand['400']}`}
-									colour={`${brand['800']}`}
-								/>
+								<Button
+									priority="secondary"
+									onClick={() => {
+										navigate('/help-centre/contact-us');
+									}}
+								>
+									Contact us
+								</Button>
 							</>
 						)}
 					</>

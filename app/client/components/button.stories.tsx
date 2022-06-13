@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { brand } from '@guardian/src-foundations/palette';
+import { brand } from '@guardian/source-foundations';
 
 import { Button, ButtonProps } from './buttons';
 

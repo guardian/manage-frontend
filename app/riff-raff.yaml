@@ -3,6 +3,14 @@ regions:
 stacks:
   - support
 deployments:
+  assets-static:
+    type: aws-s3
+    parameters:
+      bucket: manage-frontend-static
+      prefixPackage: false
+      prefixStack: false
+      cacheControl: public, max-age=30
+      publicReadAcl: true
   manage-frontend-cloudformation:
     type: cloud-formation
     app: manage-frontend

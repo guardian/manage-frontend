@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { ConsentOptions } from '../identity';
-import { MarketingPreference } from '../MarketingPreference';
 import { ConsentOption } from '../models';
+import { MarketingCheckbox } from '../MarketingCheckbox';
+import { MarketingToggle } from '../MarketingToggle';
 import { PageSection } from '../PageSection';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { Lines } from '../Lines';
@@ -30,27 +31,37 @@ const softOptInSupporterEmailConsents = (
 
 const shouldDisplay = (consents: ConsentOption[]): boolean => !!consents.length;
 
+type MarketingPreference = 'checkbox' | 'toggle';
+
 const consentPreference = (
 	consent: ConsentOption,
+	uxType: MarketingPreference,
 	clickHandler: ClickHandler,
 ) => {
 	const { id, name, description, subscribed } = consent;
-	return (
-		<MarketingPreference
-			id={id}
-			key={id}
-			title={name}
-			description={description}
-			selected={subscribed}
-			onClick={clickHandler}
-		/>
-	);
+	const props = {
+		id,
+		key: id,
+		title: name,
+		description,
+		selected: subscribed,
+	};
+	switch (uxType) {
+		case 'checkbox': {
+			return <MarketingCheckbox {...props} onClick={clickHandler} />;
+		}
+		case 'toggle': {
+			return <MarketingToggle {...props} onClick={clickHandler} />;
+		}
+	}
 };
 
 const consentPreferences = (
 	consents: ConsentOption[],
+	uxType: MarketingPreference,
 	clickHandler: ClickHandler,
-) => consents.map((consent) => consentPreference(consent, clickHandler));
+) =>
+	consents.map((consent) => consentPreference(consent, uxType, clickHandler));
 
 export const ConsentSection: FC<ConsentSectionProps> = (props) => {
 	const { consents, clickHandler } = props;
@@ -65,10 +76,12 @@ export const ConsentSection: FC<ConsentSectionProps> = (props) => {
 			>
 				{consentPreferences(
 					supportReminderConsent(consents),
+					'checkbox',
 					clickHandler,
 				)}
 				{consentPreferences(
 					marketingEmailConsents(consents),
+					'checkbox',
 					clickHandler,
 				)}
 				<h2
@@ -79,7 +92,11 @@ export const ConsentSection: FC<ConsentSectionProps> = (props) => {
 				>
 					Would you also like to hear about the above by SMS?
 				</h2>
-				{consentPreferences(smsConsent(consents), clickHandler)}
+				{consentPreferences(
+					smsConsent(consents),
+					'checkbox',
+					clickHandler,
+				)}
 			</PageSection>
 			{shouldDisplay(softOptInSupporterEmailConsents(consents)) && (
 				<>
@@ -90,6 +107,7 @@ export const ConsentSection: FC<ConsentSectionProps> = (props) => {
 						<PageSection title="Supporter exclusive">
 							{consentPreferences(
 								softOptInSupporterEmailConsents(consents),
+								'toggle',
 								clickHandler,
 							)}
 						</PageSection>

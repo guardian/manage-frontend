@@ -11,6 +11,8 @@ module.exports = {
 		'plugin:jest/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'prettier',
+		'plugin:@guardian/source-foundations/recommended',
+		'plugin:@guardian/source-react-components/recommended',
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -20,10 +22,10 @@ module.exports = {
 		ecmaVersion: 12,
 		sourceType: 'module',
 	},
-	plugins: ['react', '@typescript-eslint', 'jest'],
+	plugins: ['react', '@typescript-eslint', 'jest', '@emotion'],
 	settings: {
 		react: {
-		  version: 'detect',
+			version: 'detect',
 		},
 	},
 	overrides: [
@@ -55,5 +57,6 @@ module.exports = {
 				minimumDescriptionLength: 10,
 			},
 		],
+		'@emotion/pkg-renaming': 'error',
 	},
 };

@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { MemoryRouter } from 'react-router';
 
 import Header, { HeaderProps } from './header';
 
@@ -21,7 +22,9 @@ export default {
 } as ComponentMeta<typeof Header>;
 
 const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
-	<Header {...args} />
+	<MemoryRouter>
+		<Header {...args} />
+	</MemoryRouter>
 );
 
 export const Initial = Template.bind({});

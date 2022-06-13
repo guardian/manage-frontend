@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
 import palette from '../../../colours';
@@ -44,11 +44,13 @@ const deletePhoneNumber = async () => {
 
 const EmailMessage = (email: string) => (
 	<p
-		css={{
-			...textSmall,
-			padding: '6px 14px',
-			backgroundColor: palette.neutral[7],
-		}}
+		css={[
+			textSmall,
+			{
+				padding: '6px 14px',
+				backgroundColor: palette.neutral[7],
+			},
+		]}
 	>
 		To verify your new email address <strong>{email}</strong> please check
 		your inbox - the confimation email is on its way. In the meantime you
@@ -63,12 +65,14 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 		));
 		return (
 			<div
-				css={{
-					color: palette.red.medium,
-					backgroundColor: '#ffe1e1',
-					padding: '20px 15px',
-					...textSmall,
-				}}
+				css={[
+					{
+						color: palette.red.medium,
+						backgroundColor: '#ffe1e1',
+						padding: '20px 15px',
+					},
+					textSmall,
+				]}
 			>
 				There were some problems submitting your form. Your information
 				has not been saved. Please resolve the following:
@@ -91,7 +95,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			type="button"
 			onClick={async () => {
 				const response = await deletePhoneNumber();
-				props.resetForm(response);
+				props.resetForm({ values: response });
 			}}
 		/>
 	);
@@ -228,7 +232,7 @@ const FormikForm = withFormik({
 		setStatus(undefined);
 		try {
 			const response = await saveUser(values);
-			resetForm(response);
+			resetForm({ values: response });
 			onSuccess(values, response);
 		} catch (e) {
 			if (e.type && e.type === ErrorTypes.VALIDATION) {

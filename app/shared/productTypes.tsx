@@ -70,6 +70,7 @@ interface CancellationFlowProperties {
 	reasons: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	linkOnProductPage?: true;
+	checkForOutstandingCredits?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -182,6 +183,7 @@ export interface ProductTypeWithCancellationFlow extends ProductType {
 export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
 	delivery: {
 		records: DeliveryRecordsProperties;
+		enableDeliveryInstructionsUpdate?: boolean;
 	};
 }
 
@@ -418,6 +420,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			linkOnProductPage: true,
 			reasons: voucherCancellationReasons,
 			sfCaseProduct: 'Voucher Subscriptions',
+			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: voucherCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,
@@ -497,6 +500,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			linkOnProductPage: true,
 			reasons: gwCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
+			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: gwCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,

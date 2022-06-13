@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { createRef, useEffect, useState } from 'react';
-import { trackEvent } from '../../analytics';
+import { trackEvent } from '../../../services/analytics';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
 import { Spinner } from '../../spinner';

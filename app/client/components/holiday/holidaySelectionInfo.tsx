@@ -1,4 +1,4 @@
-import { error } from '@guardian/src-foundations/palette';
+import { error } from '@guardian/source-foundations';
 import * as React from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -123,7 +123,7 @@ const displayNumberOfIssuesAsText = (
 	numberOfIssues: number,
 	issueKeyword: string,
 ) => (
-	<strong>
+	<strong data-cy="suspension-issue-count">
 		{numberOfIssues}&nbsp;{issueKeyword}
 		{numberOfIssues !== 1 ? 's' : ''}
 	</strong>

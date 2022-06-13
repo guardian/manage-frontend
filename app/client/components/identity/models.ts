@@ -1,12 +1,13 @@
 export enum Theme {
 	news = 'news',
+	opinion = 'opinion',
 	features = 'features',
 	sport = 'sport',
 	culture = 'culture',
 	lifestyle = 'lifestyle',
 	comment = 'comment',
 	work = 'work',
-	FromThePapers = 'From the papers',
+	fromThePapers = 'From the papers',
 }
 
 export enum ErrorTypes {
@@ -57,7 +58,7 @@ export interface UserCollection {
 
 export interface ConsentOption {
 	id: string;
-	description: string;
+	description?: string;
 	frequency?: string;
 	name: string;
 	theme?: string;

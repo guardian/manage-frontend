@@ -1,17 +1,25 @@
-import { css } from '@emotion/core';
-import { Button } from '@guardian/src-button';
-import { Checkbox, CheckboxGroup } from '@guardian/src-checkbox';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
-import { textSans } from '@guardian/src-foundations/typography';
+import { css } from '@emotion/react';
+import {
+	Button,
+	Checkbox,
+	CheckboxGroup,
+} from '@guardian/source-react-components';
+import { space, brand, neutral, textSans } from '@guardian/source-foundations';
 import Color from 'color';
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react';
+import {
+	ChangeEvent,
+	Dispatch,
+	FormEvent,
+	SetStateAction,
+	useContext,
+	useState,
+} from 'react';
 import { dateString } from '../../../../shared/dates';
 import {
 	DeliveryAddress,
 	isProduct,
 	MembersDataApiItem,
-	MembersDatApiAsyncLoader,
+	MembersDataApiAsyncLoader,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -29,12 +37,15 @@ import {
 } from '../../productDescriptionListTable';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { updateAddressFetcher } from '../address/deliveryAddressApi';
-import { SuccessMessage } from '../address/deliveryAddressEditConfirmation';
+import { SuccessMessage } from '../address/deliveryAddressConfirmation';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
-} from '../address/deliveryAddressForm';
-import { convertToDescriptionListData } from '../address/deliveryAddressFormContext';
+} from '../../../services/deliveryAddress';
+import {
+	convertToDescriptionListData,
+	SubscriptionEffectiveData,
+} from '../address/deliveryAddressFormContext';
 import { FormValidationResponse, isFormValid } from '../address/formValidation';
 import { Select } from '../address/select';
 import { DeliveryRecordsAddressContext } from './deliveryRecordsProblemContext';
@@ -78,12 +89,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		useState<boolean>(false);
 
 	const [addressChangeInformation, setAddressChangeInformation] =
-		useState<string>();
+		useState<string>('');
 
 	const handleFormSubmit =
 		(
 			subscriptionsNames: string[],
 			productsAffected: ProductDescriptionListKeyValue[],
+			addressChangeAffectedInfoArray: SubscriptionEffectiveData[],
 		) =>
 		(e: FormEvent) => {
 			e.preventDefault();
@@ -106,6 +118,28 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
 			if (isFormValidResponse.isValid && acknowledgementChecked) {
 				props.setAddressValidationState(true);
+				setAddressChangeInformation(
+					[
+						...addressChangeAffectedInfoArray.map(
+							(element) =>
+								`${element.friendlyProductName} subscription (${
+									element.subscriptionId
+								})${
+									element.effectiveDate
+										? ` as of front cover dated ${dateString(
+												element.effectiveDate,
+												'EEEE do MMMM yyyy',
+										  )}`
+										: ''
+								}`,
+						),
+						'',
+						`(as displayed on confirmation page at ${dateString(
+							new Date(),
+							"HH:mm:ss x 'on' do MMMM yyyy",
+						)})`,
+					].join('\n'),
+				);
 				setStatus(Status.CONFIRMATION);
 			} else {
 				setStatus(Status.VALIDATION_ERROR);
@@ -126,29 +160,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
 		const addressChangeAffectedInfoArray = addressChangeAffectedInfo(
 			contactIdToArrayOfProductDetailAndProductType,
-		);
-
-		setAddressChangeInformation(
-			[
-				...addressChangeAffectedInfoArray.map(
-					(element) =>
-						`${element.friendlyProductName} subscription (${
-							element.subscriptionId
-						})${
-							element.effectiveDate
-								? ` as of front cover dated ${dateString(
-										element.effectiveDate,
-										'EEEE do MMMM yyyy',
-								  )}`
-								: ''
-						}`,
-				),
-				'',
-				`(as displayed on confirmation page at ${dateString(
-					new Date(),
-					"HH:mm:ss x 'on' do MMMM yyyy",
-				)})`,
-			].join('\n'),
 		);
 
 		const productsAffected: ProductDescriptionListKeyValue[] =
@@ -179,6 +190,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					onSubmit={handleFormSubmit(
 						subscriptionNames,
 						productsAffected,
+						addressChangeAffectedInfoArray,
 					)}
 				>
 					<fieldset
@@ -357,7 +369,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 									<p
 										css={css`
 											display: block;
-											vertical-align: top;
 											${textSans.medium()};
 											border: 4px solid ${brand[500]};
 											padding: ${space[5]}px ${space[5]}px
@@ -561,7 +572,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					}
 				`}
 			>
-				<MembersDatApiAsyncLoader
+				<MembersDataApiAsyncLoader
 					render={renderDeliveryAddressForm}
 					fetch={createProductDetailFetcher(
 						GROUPED_PRODUCT_TYPES.subscriptions,

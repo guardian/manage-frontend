@@ -1,6 +1,5 @@
-import { css } from '@emotion/core';
-import { space } from '@guardian/src-foundations';
-import { brand, neutral } from '@guardian/src-foundations/palette';
+import { css } from '@emotion/react';
+import { space, brand, neutral } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
 import { minWidth } from '../../styles/breakpoints';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
@@ -121,11 +120,11 @@ export const DropdownNav = () => {
 		}
 	};
 
-	const handleDismissiveClick = (event: any): void => {
+	const handleDismissiveClick = (event: MouseEvent): void => {
 		if (
 			wrapperRef.current &&
 			event.target &&
-			!wrapperRef.current.contains(event.target)
+			!wrapperRef.current.contains(event.target as Node)
 		) {
 			setShowMenu(false);
 		}

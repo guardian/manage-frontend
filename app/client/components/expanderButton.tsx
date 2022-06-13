@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import * as React from 'react';
 
 export const expanderButtonCss =
@@ -45,7 +45,7 @@ export const expanderButtonCss =
 			color: isExpanded ? highlightColour : mainColour,
 		});
 
-export interface ExpanderButtonProps {
+interface ExpanderButtonProps {
 	buttonLabel: string | React.ReactElement;
 	children: React.ReactElement | React.ReactElement[];
 }
