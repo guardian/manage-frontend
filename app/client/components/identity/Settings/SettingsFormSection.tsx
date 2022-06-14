@@ -17,6 +17,7 @@ import {
 	COUNTRIES,
 	ErrorTypes,
 	PHONE_CALLING_CODES,
+	RegistrationLocations,
 	Titles,
 	User,
 } from '../models';
@@ -87,6 +88,14 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			<a css={aCss} href={IdentityLocations.CONTACT_AND_DELIVERY_HELP}>
 				Help with updating your contact or delivery details.
 			</a>
+		</span>
+	);
+	const locationDescription = (
+		<span>
+			We work out your location using cookies, so your experience is more
+			relevant to you. You can make sure this is accurate when you are
+			signed in by selecting your location. If you don’t want to share
+			this information, please select <br /> “I prefer not to say”.
 		</span>
 	);
 	const deletePhoneNumberButton = (
@@ -202,6 +211,15 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					name="country"
 					label="Country"
 					options={COUNTRIES.flatMap((country) => country.name)}
+					formikProps={props}
+				/>
+			</PageSection>
+			{lines()}
+			<PageSection title="Location" description={locationDescription}>
+				<FormSelectField
+					name="registrationLocation" // must match api fieldname
+					label="Location"
+					options={Object.values(RegistrationLocations)}
 					formikProps={props}
 				/>
 			</PageSection>
