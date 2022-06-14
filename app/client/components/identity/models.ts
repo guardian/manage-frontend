@@ -87,7 +87,19 @@ export interface ConsentOptionCollection {
  * The following models are being used to aid in migration of functionality off of a legacy system. There is
  * currently no standard library or API for these values at the Guardian, when these become available, these hardcoded values should be replaced.
  * Note: COUNTRIES comes from a non-standard list used by the Guardian.
+ * Note : REGISTRATION LOCATION comes from a non-standard list used by the Guardian and enforced by the Identity API
  */
+
+export enum RegistrationLocations {
+	AUSTRALIA = 'Australia',
+	CANADA = 'Canada',
+	EUROPE = 'Europe',
+	NEW_ZEALAND = 'New Zealand',
+	UNITED_KINGDOM = 'United Kingdom',
+	UNITED_STATES = 'United States',
+	OTHER = 'Other',
+	PREFER_NOT_TO_SAY = 'Prefer not to say',
+}
 
 export enum Titles {
 	MR = 'Mr',
