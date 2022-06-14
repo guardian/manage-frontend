@@ -38,7 +38,8 @@ type ProductFriendlyName =
 	| 'newspaper home delivery subscription'
 	| 'digital subscription'
 	| 'Guardian Weekly subscription'
-	| 'subscription';
+	| 'subscription'
+	| 'guardian patron';
 type ProductUrlPart =
 	| 'membership'
 	| 'contributions'
@@ -48,13 +49,15 @@ type ProductUrlPart =
 	| 'homedelivery'
 	| 'digital'
 	| 'guardianweekly'
-	| 'subscriptions';
+	| 'subscriptions'
+	| 'guardianpatron';
 type SfCaseProduct =
 	| 'Membership'
 	| 'Recurring - Contributions'
 	| 'Voucher Subscriptions'
 	| 'Guardian Weekly'
-	| 'Digital Pack Subscriptions';
+	| 'Digital Pack Subscriptions'
+	| 'Guardian Patron';
 type AllProductsProductTypeFilterString =
 	| 'Weekly'
 	| 'Paper'
@@ -64,7 +67,8 @@ type AllProductsProductTypeFilterString =
 	| 'Contribution'
 	| 'Membership'
 	| 'Digipack'
-	| 'ContentSubscription';
+	| 'ContentSubscription'
+	| 'GuardianPatron';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -226,7 +230,8 @@ type ProductTypeKeys =
 	| 'voucher'
 	| 'digitalvoucher'
 	| 'guardianweekly'
-	| 'digipack';
+	| 'digipack'
+	| 'guardianpatron';
 
 export type GroupedProductTypeKeys =
 	| 'membership'
@@ -561,6 +566,21 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			swapFeedbackAndContactUs: true,
 		},
 	},
+	guardianpatron: {
+		productTitle: () => 'Guardian Patron',
+		friendlyName: 'guardian patron',
+		allProductsProductTypeFilterString: 'GuardianPatron',
+		urlPart: 'guardianpatron',
+		legacyUrlPart: 'guardianpatron',
+		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: What should this be?
+		showTrialRemainingIfApplicable: true,
+		softOptInIDs: [
+			SOFT_OPT_IN_IDS.support_onboarding,
+			SOFT_OPT_IN_IDS.digi_subscriber_preview,
+			SOFT_OPT_IN_IDS.similar_products,
+			SOFT_OPT_IN_IDS.supporter_newsletter,
+		],
+	},
 };
 
 export const GROUPED_PRODUCT_TYPES: {
@@ -613,6 +633,8 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.digitalvoucher;
 			} else if (productDetail.tier.startsWith('Guardian Weekly')) {
 				return PRODUCT_TYPES.guardianweekly;
+			} else if (productDetail.tier.startsWith('guardianpatron')) {
+				return PRODUCT_TYPES.guardianpatron;
 			}
 			return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
 		},
