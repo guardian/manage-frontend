@@ -253,6 +253,7 @@ const CancellationSwitchConfirmed = () => {
 							href={
 								'https://apps.apple.com/us/app/the-guardian/id409128287'
 							}
+							aria-label="Click to download the Guardian Daily app on the Apple App Store"
 						>
 							{/* had to add max-width in the cssOverrides as well as the sizes attribute as the attribute only doesn't work in IE11 */}
 							<GridImage
@@ -271,6 +272,7 @@ const CancellationSwitchConfirmed = () => {
 							target="_blank"
 							href="https://play.google.com/store/apps/details?id=com.guardian"
 							rel="noreferrer"
+							aria-label="Click to download the Guardian Live app on Google Play"
 						>
 							<GridImage
 								cssOverrides={css`
