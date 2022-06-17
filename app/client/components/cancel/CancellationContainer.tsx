@@ -100,9 +100,16 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 		AvailableProductsResponse[]
 	>([]);
 
+	const [choosenProduct, setChoosenProduct] = useState<number>(0);
+
 	return (
 		<ProductSwitchContext.Provider
-			value={{ availableProductsToSwitch, setAvailableProductsToSwitch }}
+			value={{
+				availableProductsToSwitch,
+				setAvailableProductsToSwitch,
+				choosenProduct,
+				setChoosenProduct,
+			}}
 		>
 			<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
 				<PageContainer

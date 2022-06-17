@@ -60,7 +60,7 @@ const CancellationSwitchOffer = () => {
 				paywall, so it’s open and accessible to all.
 			</p>
 			{productSwitchContext.availableProductsToSwitch.map(
-				(availableProduct) => (
+				(availableProduct, availableProductIndex) => (
 					<div
 						key={`available-product-${availableProduct.id}`}
 						css={css`
@@ -251,11 +251,14 @@ const CancellationSwitchOffer = () => {
 										iconSide="right"
 										priority="secondary"
 										nudgeIcon
-										onClick={() =>
+										onClick={() => {
+											productSwitchContext.setChoosenProductIndex(
+												availableProductIndex,
+											);
 											navigate('./switch', {
 												state: routerState,
-											})
-										}
+											});
+										}}
 									>
 										{`Explore a ${availableProduct.name}`}
 									</Button>

@@ -39,6 +39,8 @@ export interface ProductSwitchContextInterface {
 	setAvailableProductsToSwitch: Dispatch<
 		SetStateAction<AvailableProductsResponse[]>
 	>;
+	choosenProductIndex: number;
+	setChoosenProductIndex: Dispatch<SetStateAction<number>>;
 }
 
 export const ProductSwitchContext: Context<ProductSwitchContextInterface | {}> =

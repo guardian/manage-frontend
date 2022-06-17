@@ -1,5 +1,5 @@
 import { ReactNode, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { css, ThemeProvider } from '@emotion/react';
 import {
 	Button,
@@ -20,7 +20,12 @@ import { ArrowInCircle } from '../svgs/arrowInCircle';
 import {
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
+	CancellationRouterState,
 } from '../cancel/CancellationContainer';
+import {
+	ProductSwitchContext,
+	ProductSwitchContextInterface,
+} from './productSwitchApi';
 
 /**
  * Generic Card container component
@@ -148,11 +153,11 @@ const CancellationSwitchReview = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 	pageTitleContext.setPageTitle('Manage your support type');
-	/*
 	const productSwitchContext = useContext(
 		ProductSwitchContext,
 	) as ProductSwitchContextInterface;
-	*/
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
 
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
@@ -323,10 +328,22 @@ const CancellationSwitchReview = () => {
 		);
 	};
 
+	const choosenProduct =
+		productSwitchContext.availableProductsToSwitch[
+			productSwitchContext.choosenProductIndex
+		];
+
+	const existingProductPrice = routerState.productDetail.subscription
+		.nextPaymentPrice as number;
+	const existingProductPaymentInterval = routerState.productDetail
+		.subscription.plan?.interval as string;
+	const existingProductCurrency = routerState.productDetail.subscription.plan
+		?.currency as string;
+
 	return (
 		<>
 			<h2 css={subHeadingCss}>
-				Change your support to a digital subscription
+				Change your support to a {choosenProduct.name}
 			</h2>
 
 			<Stack space={9}>
@@ -339,7 +356,7 @@ const CancellationSwitchReview = () => {
 					If you decide to change the way you support us by becoming a
 					digital subscriber we’ll stop your monthly contribution
 					payments straight away and you’ll have immediate access to
-					the benefits of a digital subscription.
+					the benefits of a {choosenProduct.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
@@ -362,7 +379,13 @@ const CancellationSwitchReview = () => {
 								padding: ${space[4]}px;
 							`}
 						>
-							<PaymentDetails paymentAmount="£10 per months" />
+							<PaymentDetails
+								paymentAmount={`${existingProductCurrency}${(
+									existingProductPrice / 100.0
+								).toFixed(
+									2,
+								)} per ${existingProductPaymentInterval}`}
+							/>
 							<ul css={[listCss, tickListCss]}>
 								<li>
 									<SvgCheckmark size="small" />
