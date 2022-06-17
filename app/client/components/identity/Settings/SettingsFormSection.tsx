@@ -37,6 +37,7 @@ type SettingsFormSectionProps = SettingsFormProps;
 
 const lines = () => <Lines n={1} margin="32px auto 16px" />;
 const titles = Object.values(Titles);
+const registrationLocations = Object.values(RegistrationLocations);
 
 const deletePhoneNumber = async () => {
 	await PhoneNumber.remove();
@@ -217,9 +218,9 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			{lines()}
 			<PageSection title="Location" description={locationDescription}>
 				<FormSelectField
-					name="registrationLocation" // must match api fieldname
+					name="registrationLocation" // must match api field name
 					label="Location"
-					options={Object.values(RegistrationLocations)}
+					options={registrationLocations}
 					formikProps={props}
 				/>
 			</PageSection>
