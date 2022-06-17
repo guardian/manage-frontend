@@ -197,7 +197,11 @@ const CancellationSwitchConfirmed = () => {
 			<div
 				css={css`
 					border: 1px solid ${neutral[86]};
-					margin: ${space[6]}px 0 ${space[9]}px;
+					margin: ${space[6]}px 0;
+
+					${minWidth.tablet} {
+						margin: ${space[6]}px 0 ${space[9]}px;
+					}
 				`}
 			>
 				<div
