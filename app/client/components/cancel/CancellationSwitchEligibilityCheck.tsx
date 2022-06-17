@@ -30,8 +30,8 @@ const CancellationSwitchEligibilityCheck = () => {
 		return <CancellationReasonSelection />;
 	}
 
-	const isEligibleToSwitch: boolean = true;
-	const inABTest: boolean = true;
+	const isEligibleToSwitch: boolean = false;
+	const inABTest: boolean = false;
 
 	return inABTest && isEligibleToSwitch ? (
 		<CancellationSwitchOffer />
