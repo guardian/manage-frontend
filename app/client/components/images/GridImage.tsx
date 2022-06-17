@@ -2,14 +2,8 @@
 // This code is designed to work with a single image at one or more crops
 // If you want to work with multiple (different) images, maybe try gridPicture instead
 // ----- Imports ----- //
-import {
-	gridSrcset,
-	gridUrl,
-	ImageId,
-	ImageType,
-	ascending,
-	classNameWithModifiers,
-} from './theGrid';
+import { gridSrcset, gridUrl, ImageId, ImageType, ascending } from './theGrid';
+import { SerializedStyles } from '@emotion/react';
 // ----- Constants ----- //
 const MIN_IMG_WIDTH = 300;
 // ----- Types ----- //
@@ -19,7 +13,7 @@ export type GridImg = {
 	sizes: string;
 	altText: string;
 	imgType?: ImageType;
-	classModifiers?: Array<string | null | undefined>;
+	cssOverrides?: SerializedStyles | SerializedStyles[];
 };
 type PropTypes = GridImg; // ----- Component ----- //
 
@@ -34,10 +28,7 @@ export default function GridImage(props: PropTypes): JSX.Element | null {
 	const fallbackSrc = gridUrl(props.gridId, fallbackSize, props.imgType);
 	return (
 		<img
-			className={classNameWithModifiers(
-				'component-grid-image',
-				props.classModifiers ?? [],
-			)}
+			css={props.cssOverrides}
 			sizes={props.sizes}
 			srcSet={srcSet}
 			src={fallbackSrc}
