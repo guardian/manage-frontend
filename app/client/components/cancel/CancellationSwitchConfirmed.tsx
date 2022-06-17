@@ -243,8 +243,10 @@ const CancellationSwitchConfirmed = () => {
 							margin-bottom: ${space[4]}px;
 						`}
 					>
-						<Link
-							to={
+						<a
+							target="_blank"
+							rel="noreferrer"
+							href={
 								'https://apps.apple.com/us/app/the-guardian/id409128287'
 							}
 						>
@@ -260,11 +262,11 @@ const CancellationSwitchConfirmed = () => {
 								gridId="appleAppStore"
 								srcSizes={[140, 500]}
 							/>
-						</Link>
-						<Link
-							to={
-								'https://play.google.com/store/apps/details?id=com.guardian'
-							}
+						</a>
+						<a
+							target="_blank"
+							href="https://play.google.com/store/apps/details?id=com.guardian"
+							rel="noreferrer"
 						>
 							<GridImage
 								cssOverrides={css`
@@ -276,7 +278,7 @@ const CancellationSwitchConfirmed = () => {
 								gridId="googlePlay"
 								srcSizes={[140, 500]}
 							/>
-						</Link>
+						</a>
 					</div>
 					<p
 						css={css`
