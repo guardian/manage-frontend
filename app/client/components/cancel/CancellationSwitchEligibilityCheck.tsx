@@ -20,7 +20,7 @@ const CancellationSwitchEligibilityCheck = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	if (routerState.dontShowOffer) {
+	if (routerState?.dontShowOffer) {
 		pageTitleContext.setPageTitle(
 			`Cancel ${
 				cancellationContext.productType.shortFriendlyName ||
