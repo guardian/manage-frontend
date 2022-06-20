@@ -179,6 +179,7 @@ const InnerContent = ({
 				hasCancellationPending={hasCancellationPending}
 			/>
 			{productDetail.isPaidTier &&
+				productDetail.subscription.safeToUpdatePaymentMethod &&
 				!productDetail.subscription.payPalEmail && (
 					<LinkButton
 						colour={
