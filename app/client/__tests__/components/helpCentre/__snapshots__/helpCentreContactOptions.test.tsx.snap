@@ -842,7 +842,7 @@ Array [
   font-size: 0.9375rem;
   line-height: 1.5;
   font-weight: 400;
-  color: #007ABC;
+  color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -1013,7 +1013,8 @@ Array [
 }
 
 html:not(.src-focus-disabled) .emotion-7:focus {
-  box-shadow: 0 0 0 5px #007CC4;
+  outline: 5px solid #0077B6;
+  outline-offset: 3px;
 }
 
 .emotion-7:hover {
@@ -1284,7 +1285,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-47 a {
-  color: #007ABC;
+  color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
