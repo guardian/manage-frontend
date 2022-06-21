@@ -1,6 +1,8 @@
 // ----- Setup ----- //
 const catalogue = {
 	digitalSubPackshot: '71ff2a443acb92047e428782ed0239075fd2007a/0_0_497_285',
+	googlePlay: '0a3eda7d719ad8ebe3a13a9bab8fd2b3348d1f20/0_0_554_160',
+	appleAppStore: 'a0787d3b313f03ed87a16ced224ab4022f794bc5/0_0_554_160',
 };
 
 export const GRID_DOMAIN = 'https://media.guim.co.uk';
@@ -59,17 +61,4 @@ export function gridSrcset(
 // Ascending comparison function for use with Array.prototype.sort.
 export function ascending(a: number, b: number): number {
 	return a - b;
-}
-// Generates the "class class-modifier" string for HTML elements.
-// Does not add null, undefined and empty string.
-export function classNameWithModifiers(
-	className: string,
-	modifiers: Array<string | null | undefined>,
-): string {
-	const validModifiers = modifiers.filter(Boolean) as string[];
-
-	return validModifiers.reduce(
-		(acc, modifier) => `${acc} ${className}--${modifier}`,
-		className,
-	);
 }
