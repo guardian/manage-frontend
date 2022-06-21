@@ -289,9 +289,7 @@ const CancellationSwitchConfirmed = () => {
 					<p
 						css={css`
 							${textSans.medium()};
-							${minWidth.tablet} {
-								max-width: 70%;
-							}
+							max-width: 45ch;
 							margin-bottom: 0;
 						`}
 					>
