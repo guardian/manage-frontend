@@ -40,6 +40,7 @@ export interface User {
 	country: string;
 	countryCode: string;
 	localNumber: number;
+	registrationLocation: registrationLocationType;
 }
 
 export interface UserError {
@@ -90,6 +91,7 @@ export interface ConsentOptionCollection {
  * Note : REGISTRATION LOCATION comes from a non-standard list used by the Guardian and enforced by the Identity API
  */
 
+type registrationLocationType = `${RegistrationLocations}`;
 export enum RegistrationLocations {
 	AUSTRALIA = 'Australia',
 	CANADA = 'Canada',

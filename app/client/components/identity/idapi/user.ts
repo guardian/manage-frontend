@@ -23,6 +23,7 @@ type UserPrivateFields = Partial<
 		| 'address4'
 		| 'postcode'
 		| 'country'
+		| 'registrationLocation'
 	>
 > & {
 	telephoneNumber?: {
@@ -98,6 +99,7 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 			postcode: user.postcode,
 			country: user.country,
 			telephoneNumber,
+			registrationLocation: user.registrationLocation,
 		},
 		primaryEmailAddress: user.primaryEmailAddress,
 	};
@@ -122,6 +124,7 @@ const toUser = (response: UserAPIResponse): User => {
 		country: getFromUser('privateFields.country'),
 		countryCode: getFromUser('privateFields.telephoneNumber.countryCode'),
 		localNumber: getFromUser('privateFields.telephoneNumber.localNumber'),
+		registrationLocation: getFromUser('privateFields.registrationLocation'),
 		consents,
 		validated: user.statusFields.userEmailValidated,
 	};
