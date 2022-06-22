@@ -34,6 +34,38 @@ export interface AvailableProductsResponse {
 	};
 }
 
+export interface ProductSwitchResponse {
+	newSubscriptionName: string;
+	newProduct: {
+		id: string;
+		name: string;
+		billing: {
+			amount: number;
+			currency: Currency;
+			frequency: {
+				name: BillingFrequency;
+				count: number;
+			};
+			startDate: string; // i.e.: 2022-02-02
+		};
+		introOffer: {
+			billing: {
+				amount: number;
+				currency: Currency;
+				frequency: {
+					name: BillingFrequency;
+					count: number;
+				};
+				startDate: string; // i.e.: 2022-02-02
+			};
+			duration: {
+				name: BillingFrequency;
+				count: number;
+			};
+		};
+	};
+}
+
 export interface ProductSwitchContextInterface {
 	availableProductsToSwitch: AvailableProductsResponse[];
 	setAvailableProductsToSwitch: Dispatch<
@@ -41,6 +73,8 @@ export interface ProductSwitchContextInterface {
 	>;
 	chosenProductIndex: number;
 	setChosenProductIndex: Dispatch<SetStateAction<number>>;
+	newProductInfo: ProductSwitchResponse;
+	setNewProductInfo: Dispatch<SetStateAction<ProductSwitchResponse>>;
 }
 
 export const ProductSwitchContext: Context<ProductSwitchContextInterface | {}> =

@@ -25,6 +25,7 @@ import { PageContainer } from '../page';
 import {
 	AvailableProductsResponse,
 	ProductSwitchContext,
+	ProductSwitchResponse,
 } from '../productSwitch/productSwitchApi';
 import {
 	CancellationReason,
@@ -100,6 +101,9 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 		AvailableProductsResponse[]
 	>([]);
 
+	const [newProductInfo, setNewProductInfo] =
+		useState<ProductSwitchResponse>();
+
 	const [chosenProductIndex, setChosenProductIndex] = useState<number>(0);
 
 	return (
@@ -109,6 +113,8 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 				setAvailableProductsToSwitch,
 				chosenProductIndex,
 				setChosenProductIndex,
+				newProductInfo,
+				setNewProductInfo,
 			}}
 		>
 			<CancellationPageTitleContext.Provider value={{ setPageTitle }}>

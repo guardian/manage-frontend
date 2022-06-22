@@ -11,7 +11,7 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import GridImage from '../images/GridImage';
@@ -20,8 +20,8 @@ import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
-import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { getGeoLocation } from '../../geolocation';
+import { dateString, parseDate } from '../../../shared/dates';
 
 function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
 	switch (countryCode.toLowerCase()) {
@@ -52,10 +52,6 @@ function getIosAppUrl(countryCode: string | null): string {
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
-	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
-
-	console.log(routerState);
 
 	const productSwitchContext = useContext(
 		ProductSwitchContext,
@@ -213,8 +209,25 @@ const CancellationSwitchConfirmed = () => {
 										}${Number(
 											availableProduct.introOffer.billing
 												.amount,
-										).toFixed(2)} will be taken on 26 May
-							2022.`}
+										).toFixed(
+											2,
+										)} will be taken on ${dateString(
+											parseDate(
+												productSwitchContext
+													.newProductInfo.newProduct
+													.introOffer
+													? productSwitchContext
+															.newProductInfo
+															.newProduct
+															.introOffer.billing
+															.startDate
+													: productSwitchContext
+															.newProductInfo
+															.newProduct.billing
+															.startDate,
+											).date,
+											'd MMMM yyyy',
+										)}.`}
 									</span>
 								</li>
 							</>

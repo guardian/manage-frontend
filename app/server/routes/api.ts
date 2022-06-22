@@ -163,6 +163,7 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 					name: 'Months',
 					count: 1,
 				},
+				startDate: '2022-06-21',
 			},
 			introOffer: {
 				billing: {
@@ -175,6 +176,7 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 						name: 'Months',
 						count: 1,
 					},
+					startDate: '2022-06-21',
 				},
 				duration: {
 					name: 'Months',
@@ -194,8 +196,9 @@ router.post(
 */
 
 router.post('/product-move/:subscriptionName', (_, response) => {
-	response.json([
-		{
+	response.json({
+		newSubscriptionName: 'asdf',
+		newProduct: {
 			id: '123',
 			name: 'digital subscription',
 			billing: {
@@ -208,6 +211,7 @@ router.post('/product-move/:subscriptionName', (_, response) => {
 					name: 'Months',
 					count: 1,
 				},
+				startDate: '2022-02-02',
 			},
 			introOffer: {
 				billing: {
@@ -220,6 +224,7 @@ router.post('/product-move/:subscriptionName', (_, response) => {
 						name: 'Months',
 						count: 1,
 					},
+					startDate: '2022-02-02',
 				},
 				duration: {
 					name: 'Months',
@@ -227,7 +232,7 @@ router.post('/product-move/:subscriptionName', (_, response) => {
 				},
 			},
 		},
-	]);
+	});
 });
 
 router.get(
