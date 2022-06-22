@@ -10,7 +10,7 @@ import {
 	deliveryRecordsAPI,
 	holidayStopAPI,
 	invoicingAPI,
-	productMoveAPI,
+	// productMoveAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -186,10 +186,49 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 });
 //
 
+/*
 router.post(
-	'/move-product/:subscriptionName',
+	'/product-move/:subscriptionName',
 	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT'),
 );
+*/
+
+router.post('/product-move/:subscriptionName', (_, response) => {
+	response.json([
+		{
+			id: '123',
+			name: 'digital subscription',
+			billing: {
+				amount: 11.99,
+				currency: {
+					symbol: '£',
+					code: 'GBP',
+				},
+				frequency: {
+					name: 'Months',
+					count: 1,
+				},
+			},
+			introOffer: {
+				billing: {
+					amount: 5.99,
+					currency: {
+						symbol: '£',
+						code: 'GBP',
+					},
+					frequency: {
+						name: 'Months',
+						count: 1,
+					},
+				},
+				duration: {
+					name: 'Months',
+					count: 3,
+				},
+			},
+		},
+	]);
+});
 
 router.get(
 	'/holidays/:subscriptionName/potential',

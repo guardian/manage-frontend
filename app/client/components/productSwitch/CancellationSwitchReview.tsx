@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { css, ThemeProvider } from '@emotion/react';
 import {
@@ -26,6 +26,7 @@ import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 
 /**
  * Generic Card container component
@@ -159,6 +160,8 @@ const CancellationSwitchReview = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
+	const [confirmingChange, setConfirmingChange] = useState<boolean>(false);
+
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
 		${headline.xxsmall({ fontWeight: 'bold' })};
@@ -280,6 +283,36 @@ const CancellationSwitchReview = () => {
 		paymentFollowOnAmount?: string | ReactNode;
 	}
 
+	const confirmChange = async () => {
+		setConfirmingChange(true);
+
+		console.log(routerState);
+
+		try {
+			throw Error();
+			const res = await fetch(
+				`/api/product-move/${routerState.productDetail.subscription.subscriptionId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({ targetProductId: chosenProduct.id }),
+					headers: {
+						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
+					},
+				},
+			);
+
+			const json = await res.json();
+
+			navigate('./confirmed', {
+				state: { ...routerState, response: json },
+			});
+		} catch (e) {
+			navigate('./failed', { state: routerState });
+		} finally {
+			setConfirmingChange(false);
+		}
+	};
+
 	const PaymentDetails = (props: PaymentDetailsProps) => {
 		return (
 			<div
@@ -328,9 +361,9 @@ const CancellationSwitchReview = () => {
 		);
 	};
 
-	const choosenProduct =
+	const chosenProduct =
 		productSwitchContext.availableProductsToSwitch[
-			productSwitchContext.choosenProductIndex
+			productSwitchContext.chosenProductIndex
 		];
 
 	const existingProductPrice = routerState.productDetail.subscription
@@ -343,7 +376,7 @@ const CancellationSwitchReview = () => {
 	return (
 		<>
 			<h2 css={subHeadingCss}>
-				Change your support to a {choosenProduct.name}
+				Change your support to a {chosenProduct.name}
 			</h2>
 
 			<Stack space={9}>
@@ -356,7 +389,7 @@ const CancellationSwitchReview = () => {
 					If you decide to change the way you support us by becoming a
 					digital subscriber we’ll stop your monthly contribution
 					payments straight away and you’ll have immediate access to
-					the benefits of a {choosenProduct.name}.
+					the benefits of a {chosenProduct.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
@@ -472,9 +505,8 @@ const CancellationSwitchReview = () => {
 							cssOverrides={css`
 								justify-content: center;
 							`}
-							onClick={() => {
-								navigate('./confirmed');
-							}}
+							isLoading={confirmingChange}
+							onClick={confirmChange}
 						>
 							Confirm change
 						</Button>

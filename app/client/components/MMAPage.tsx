@@ -32,6 +32,16 @@ import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
 import { breakpoints, space } from '@guardian/source-foundations';
 import { minWidth } from '../styles/breakpoints';
+import { tests } from '../experiments/abTests';
+import { abSwitches } from '../experiments/abSwitches';
+import { ABProvider, useAB } from '@guardian/ab-react';
+// import { getCookie } from '../cookies';
+
+const record = (event: any) => {
+	if (window.guardian?.ophan?.record) {
+		window.guardian.ophan.record(event);
+	}
+};
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -77,6 +87,13 @@ const CancellationSwitchConfirmed = lazy(
 	() =>
 		import(
 			/* webpackChunkName: "Cancellation" */ './productSwitch/CancellationSwitchConfirmed'
+		),
+);
+
+const ProductSwitchFailed = lazy(
+	() =>
+		import(
+			/* webpackChunkName: "Cancellation" */ './productSwitch/CancellationSwitchFailed'
 		),
 );
 
@@ -256,9 +273,15 @@ const GenericErrorContainer = (props: { children: ReactNode }) => (
 const MMARouter = () => {
 	const [signInStatus, setSignInStatus] = useState<SignInStatus>('init');
 
+	const ABTestAPI = useAB();
+
 	useEffect(() => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
-	}, []);
+
+		const allRunnableTests = ABTestAPI.allRunnableTests(tests);
+		ABTestAPI.registerImpressionEvents(allRunnableTests);
+		ABTestAPI.registerCompleteEvents(allRunnableTests);
+	}, [ABTestAPI]);
 
 	useAnalytics();
 	useConsent();
@@ -438,6 +461,10 @@ const MMARouter = () => {
 										}
 									/>
 									<Route
+										path="switch/failed"
+										element={<ProductSwitchFailed />}
+									/>
+									<Route
 										path="review"
 										element={<CancellationReasonReview />}
 									/>
@@ -510,8 +537,30 @@ const MMARouter = () => {
 	);
 };
 
+/*
+const getMvtId = (): number => {
+	const mvtId = getCookie('GU_mvt_id');
+
+	if (mvtId) {
+		return parseInt(mvtId);
+	} else {
+		return 0;
+	}
+};
+*/
+
 export const MMAPage = (
-	<BrowserRouter>
-		<MMARouter />
-	</BrowserRouter>
+	<ABProvider
+		arrayOfTestObjects={tests}
+		abTestSwitches={abSwitches}
+		pageIsSensitive={false}
+		mvtMaxValue={1000000}
+		// mvtId={getMvtId()}
+		mvtId={999999}
+		ophanRecord={record}
+	>
+		<BrowserRouter>
+			<MMARouter />
+		</BrowserRouter>
+	</ABProvider>
 );

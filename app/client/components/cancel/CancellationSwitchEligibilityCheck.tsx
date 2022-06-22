@@ -18,8 +18,12 @@ import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from '../productSwitch/productSwitchApi';
+import { useAB } from '@guardian/ab-react';
+import { ProductMovementTest } from '../../experiments/tests/product-movement-test';
 
 const CancellationSwitchEligibilityCheck = () => {
+	const ABTestAPI = useAB();
+
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const cancellationContext = useContext(
@@ -46,7 +50,10 @@ const CancellationSwitchEligibilityCheck = () => {
 		return <CancellationReasonSelection />;
 	}
 
-	const inABTest: boolean = true;
+	const inABTest = ABTestAPI.isUserInVariant(
+		ProductMovementTest.id,
+		ProductMovementTest.variants[1].id,
+	);
 
 	const { data, error } = useFetch<AvailableProductsResponse[]>(
 		`/api/available-product-moves/${routerState.productDetail.subscription.subscriptionId}`,

@@ -252,7 +252,7 @@ const CancellationSwitchOffer = () => {
 										priority="secondary"
 										nudgeIcon
 										onClick={() => {
-											productSwitchContext.setChoosenProductIndex(
+											productSwitchContext.setChosenProductIndex(
 												availableProductIndex,
 											);
 											navigate('./switch', {

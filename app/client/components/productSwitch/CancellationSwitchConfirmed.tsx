@@ -11,13 +11,27 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import GridImage from '../images/GridImage';
+import { useContext } from 'react';
+import {
+	ProductSwitchContext,
+	ProductSwitchContextInterface,
+} from './productSwitchApi';
+import { CancellationRouterState } from '../cancel/CancellationContainer';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+
+	console.log(routerState);
+
+	const productSwitchContext = useContext(
+		ProductSwitchContext,
+	) as ProductSwitchContextInterface;
 
 	const subHeadingCss = css`
 		margin: ${space[9]}px 0 ${space[3]}px;
@@ -135,37 +149,49 @@ const CancellationSwitchConfirmed = () => {
 							We'll stop your monthly contribution payments.
 						</span>
 					</li>
-					<li
-						css={css`
-							${textSans.medium()};
-							margin-bottom: ${space[3]}px;
-							line-height: 20px;
-						`}
-					>
-						<span
-							css={css`
-								margin-left: ${space[1]}px;
-							`}
-						>
-							Your new digital subscription starts today.
-						</span>
-					</li>
-					<li
-						css={css`
-							${textSans.medium()};
-							margin-bottom: ${space[3]}px;
-							line-height: 20px;
-						`}
-					>
-						<span
-							css={css`
-								margin-left: ${space[1]}px;
-							`}
-						>
-							Your first payment of £12 will be taken on 26 May
-							2022.
-						</span>
-					</li>
+					{productSwitchContext.availableProductsToSwitch.map(
+						(availableProduct) => (
+							<>
+								<li
+									css={css`
+										${textSans.medium()};
+										margin-bottom: ${space[3]}px;
+										line-height: 20px;
+									`}
+								>
+									<span
+										css={css`
+											margin-left: ${space[1]}px;
+										`}
+									>
+										{`Your new ${availableProduct.name} starts today.`}
+									</span>
+								</li>
+								<li
+									css={css`
+										${textSans.medium()};
+										margin-bottom: ${space[3]}px;
+										line-height: 20px;
+									`}
+								>
+									<span
+										css={css`
+											margin-left: ${space[1]}px;
+										`}
+									>
+										{`Your first payment of ${
+											availableProduct.introOffer.billing
+												.currency.symbol
+										}${Number(
+											availableProduct.introOffer.billing
+												.amount,
+										).toFixed(2)} will be taken on 26 May
+							2022.`}
+									</span>
+								</li>
+							</>
+						),
+					)}
 					<li
 						css={css`
 							${textSans.medium()};

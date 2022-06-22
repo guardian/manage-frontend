@@ -1,13 +1,13 @@
 import { ABTest } from '@guardian/ab-core';
 
-export const exampleTest: ABTest = {
-	id: 'ExampleTest', // This ID must match the Server Side AB Test
-	start: '2020-05-20',
-	expiry: '2020-12-01', // Remember that the server side test expiry can be different
-	author: 'anemailaddress@theguardian.com',
-	description: 'This Test',
-	audience: 1, // 0.01% (1 is 100%)
-	audienceOffset: 0, // 50% (1 is 100%). Prevent overlapping with other tests.
+export const ProductMovementTest: ABTest = {
+	id: 'ProductMovementTest', // This ID must match the Server Side AB Test
+	start: '2022-06-21',
+	expiry: '2023-12-01', // Remember that the server side test expiry can be different
+	author: 'supporter.revenue.retention.dev@guardian.co.uk',
+	description: 'Initial AB test for our product movement MVP',
+	audience: 0.5, // 0.01% (1 is 100%)
+	audienceOffset: 0.5, // 50% (1 is 100%). Prevent overlapping with other tests.
 	successMeasure: 'It works',
 	audienceCriteria: 'Everyone',
 	idealOutcome: 'It works',
@@ -22,9 +22,9 @@ export const exampleTest: ABTest = {
 			},
 		},
 		{
-			id: 'variant',
+			id: 'showOffer',
 			test: (): string => {
-				return 'variant';
+				return 'showOffer';
 			},
 		},
 	],
