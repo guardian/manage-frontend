@@ -286,10 +286,7 @@ const CancellationSwitchReview = () => {
 	const confirmChange = async () => {
 		setConfirmingChange(true);
 
-		console.log(routerState);
-
 		try {
-			throw Error();
 			const res = await fetch(
 				`/api/product-move/${routerState.productDetail.subscription.subscriptionId}`,
 				{

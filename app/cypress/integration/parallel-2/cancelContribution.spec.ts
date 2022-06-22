@@ -5,6 +5,8 @@ describe('Cancel contribution', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
+		cy.setCookie('GU_mvt_id', '0');
+
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
 			body: {

@@ -45,7 +45,7 @@ const CancellationSwitchConfirmed = () => {
 
 	return (
 		<>
-			<h2 css={subHeadingCss}>You’re now a digital subscriber</h2>
+			<h2 css={subHeadingCss}>You're now a digital subscriber</h2>
 			<p
 				css={css`
 					${textSans.medium()}
