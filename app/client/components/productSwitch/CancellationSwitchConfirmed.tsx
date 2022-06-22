@@ -21,6 +21,34 @@ import {
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
+import { getGeoLocation } from '../../geolocation';
+
+function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
+	switch (countryCode.toLowerCase()) {
+		case 'gb':
+			return 'gb';
+
+		default:
+			return 'us';
+	}
+}
+
+function getAppleStoreUrl(product: string, countryCode: string) {
+	const appStoreCountryCode =
+		convertCountryGroupIdToAppStoreCountryCode(countryCode);
+	return `https://apps.apple.com/${appStoreCountryCode}/app/${product}`;
+}
+
+function getIosAppUrl(countryCode: string | null): string {
+	if (countryCode) {
+		return getAppleStoreUrl(
+			'the-guardian-breaking-news/id409128287',
+			countryCode,
+		);
+	} else {
+		return 'https://apps.apple.com/us/app/the-guardian-breaking-news/id409128287';
+	}
+}
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -276,9 +304,7 @@ const CancellationSwitchConfirmed = () => {
 						<a
 							target="_blank"
 							rel="noreferrer"
-							href={
-								'https://apps.apple.com/us/app/the-guardian/id409128287'
-							}
+							href={getIosAppUrl(getGeoLocation())}
 							aria-label="Click to download the Guardian Daily app on the Apple App Store"
 						>
 							{/* had to add max-width in the cssOverrides as well as the sizes attribute as the attribute only doesn't work in IE11 */}
