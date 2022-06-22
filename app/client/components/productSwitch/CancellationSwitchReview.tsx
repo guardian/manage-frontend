@@ -162,6 +162,59 @@ const CancellationSwitchReview = () => {
 
 	const [confirmingChange, setConfirmingChange] = useState<boolean>(false);
 
+	const confirmChange = async () => {
+		setConfirmingChange(true);
+
+		try {
+			const res = await fetch(
+				`/api/product-move/${routerState.productDetail.subscription.subscriptionId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({ targetProductId: chosenProduct.id }),
+					headers: {
+						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
+					},
+				},
+			);
+
+			const json = await res.json();
+
+			navigate('./confirmed', {
+				state: { ...routerState, response: json },
+			});
+		} catch (e) {
+			navigate('./failed', { state: routerState });
+		} finally {
+			setConfirmingChange(false);
+		}
+	};
+
+	const chosenProduct =
+		productSwitchContext.availableProductsToSwitch[
+			productSwitchContext.chosenProductIndex
+		];
+
+	const existingProductPrice = routerState.productDetail.subscription
+		.nextPaymentPrice as number;
+	const existingProductPaymentInterval = routerState.productDetail
+		.subscription.plan?.interval as string;
+	const existingProductCurrency = routerState.productDetail.subscription.plan
+		?.currency as string;
+
+	const chosenProductIntroPrice =
+		chosenProduct.introOffer.billing.currency.symbol +
+		chosenProduct.introOffer.billing.amount.toFixed(2);
+	const chosenProductIntroPaymentInterval = `${
+		chosenProduct.introOffer.duration.count
+	} ${chosenProduct.introOffer.duration.name.toLowerCase()}`;
+
+	const chosenProductPrice =
+		chosenProduct.billing.currency.symbol +
+		chosenProduct.billing.amount.toFixed(2);
+	const chosenProductPaymentInterval = 'month';
+
+	console.log(routerState.productDetail);
+
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
 		${headline.xxsmall({ fontWeight: 'bold' })};
@@ -283,35 +336,6 @@ const CancellationSwitchReview = () => {
 		paymentFollowOnAmount?: string | ReactNode;
 	}
 
-	const confirmChange = async () => {
-		setConfirmingChange(true);
-
-		try {
-			const res = await fetch(
-				`/api/product-move/${routerState.productDetail.subscription.subscriptionId}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ targetProductId: chosenProduct.id }),
-					headers: {
-						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
-					},
-				},
-			);
-
-			const json = await res.json();
-
-			productSwitchContext.setNewProductInfo(json);
-
-			navigate('./confirmed', {
-				state: routerState,
-			});
-		} catch (e) {
-			navigate('./failed', { state: routerState });
-		} finally {
-			setConfirmingChange(false);
-		}
-	};
-
 	const PaymentDetails = (props: PaymentDetailsProps) => {
 		return (
 			<div
@@ -359,18 +383,6 @@ const CancellationSwitchReview = () => {
 			</div>
 		);
 	};
-
-	const chosenProduct =
-		productSwitchContext.availableProductsToSwitch[
-			productSwitchContext.chosenProductIndex
-		];
-
-	const existingProductPrice = routerState.productDetail.subscription
-		.nextPaymentPrice as number;
-	const existingProductPaymentInterval = routerState.productDetail
-		.subscription.plan?.interval as string;
-	const existingProductCurrency = routerState.productDetail.subscription.plan
-		?.currency as string;
 
 	return (
 		<>
@@ -431,7 +443,10 @@ const CancellationSwitchReview = () => {
 						<ArrowInCircle />
 					</div>
 
-					<Card theme="brand" heading="Your new digital subscription">
+					<Card
+						theme="brand"
+						heading={`Your new ${chosenProduct.name}`}
+					>
 						<h4
 							css={css`
 								margin: 0;
@@ -441,7 +456,8 @@ const CancellationSwitchReview = () => {
 								background-color: ${palette.brand[400]};
 							`}
 						>
-							14 days free trial then 50% off for 3 months
+							14 days free trial then 50% off for{' '}
+							{chosenProductIntroPaymentInterval}
 						</h4>
 						<div
 							css={css`
@@ -451,10 +467,13 @@ const CancellationSwitchReview = () => {
 							`}
 						>
 							<PaymentDetails
-								paymentAmount="£5.66 for 3 months"
+								paymentAmount={`
+									${chosenProductIntroPrice} for
+									${chosenProductIntroPaymentInterval}
+								`}
 								paymentFollowOnAmount={
 									<>
-										Then £11.99 per month.{' '}
+										{`Then  ${chosenProductPrice} per ${chosenProductPaymentInterval}. `}
 										<strong>Cancel anytime.</strong>
 									</>
 								}
