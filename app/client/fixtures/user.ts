@@ -18,6 +18,7 @@ export const user = {
 				'805ddf6e391ba0bd592ec1648f25946ca2f6e2e8629a38a6b226f787301b6881',
 			firstName: 'Test',
 			secondName: 'User',
+			registrationLocation: 'Other',
 			legacyPackages: 'CRE,RCO',
 			legacyProducts: 'CRE,RCO',
 		},
