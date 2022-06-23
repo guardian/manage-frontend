@@ -35,7 +35,7 @@ import { minWidth } from '../styles/breakpoints';
 import { tests } from '../experiments/abTests';
 import { abSwitches } from '../experiments/abSwitches';
 import { ABProvider, useAB } from '@guardian/ab-react';
-// import { getCookie } from '../cookies';
+import { getCookie } from '../cookies';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -537,7 +537,6 @@ const MMARouter = () => {
 	);
 };
 
-/*
 const getMvtId = (): number => {
 	const mvtId = getCookie('GU_mvt_id');
 
@@ -547,7 +546,6 @@ const getMvtId = (): number => {
 		return 0;
 	}
 };
-*/
 
 export const MMAPage = (
 	<ABProvider
@@ -555,8 +553,7 @@ export const MMAPage = (
 		abTestSwitches={abSwitches}
 		pageIsSensitive={false}
 		mvtMaxValue={1000000}
-		// mvtId={getMvtId()}
-		mvtId={999999}
+		mvtId={getMvtId()}
 		ophanRecord={record}
 	>
 		<BrowserRouter>

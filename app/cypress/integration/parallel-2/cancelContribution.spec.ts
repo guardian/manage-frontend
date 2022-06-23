@@ -3,9 +3,9 @@ import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
 	beforeEach(() => {
-		signInAndAcceptCookies();
-
 		cy.setCookie('GU_mvt_id', '0');
+
+		signInAndAcceptCookies();
 
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
@@ -61,6 +61,8 @@ describe('Cancel contribution', () => {
 				email: 'example@example.com',
 			};
 		});
+
+		console.log(cy.getCookie('GU_mvt_id'));
 
 		cy.findByText('Manage recurring contribution').click();
 		cy.wait('@cancelled');

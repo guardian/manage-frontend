@@ -19,6 +19,7 @@ import { useContext } from 'react';
 import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
+	ProductSwitchResponse,
 } from './productSwitchApi';
 import { getGeoLocation } from '../../geolocation';
 import { dateString, parseDate } from '../../../shared/dates';
@@ -48,6 +49,36 @@ function getIosAppUrl(countryCode: string | null): string {
 	} else {
 		return 'https://apps.apple.com/us/app/the-guardian-breaking-news/id409128287';
 	}
+}
+
+function getStartDate(newProductInfo: ProductSwitchResponse) {
+	const { newProduct } = newProductInfo;
+
+	return dateString(
+		parseDate(
+			newProduct.introOffer
+				? newProduct.introOffer.billing.startDate
+				: newProduct.billing.startDate,
+		).date,
+		'd MMMM yyyy',
+	);
+}
+
+function getFirstPaymentAmount(newProductInfo: ProductSwitchResponse) {
+	const { newProduct } = newProductInfo;
+
+	let currencySymbol: string;
+	let amount: number;
+
+	if (newProduct.introOffer) {
+		currencySymbol = newProduct.introOffer.billing.currency.symbol;
+		amount = newProduct.introOffer.billing.amount;
+	} else {
+		currencySymbol = newProduct.billing.currency.symbol;
+		amount = newProduct.billing.amount;
+	}
+
+	return `${currencySymbol}${Number(amount).toFixed(2)}`;
 }
 
 const CancellationSwitchConfirmed = () => {
@@ -173,65 +204,43 @@ const CancellationSwitchConfirmed = () => {
 							We'll stop your monthly contribution payments.
 						</span>
 					</li>
-					{productSwitchContext.availableProductsToSwitch.map(
-						(availableProduct) => (
-							<>
-								<li
+					{productSwitchContext.newProductInfo.newProduct && (
+						<>
+							<li
+								css={css`
+									${textSans.medium()};
+									margin-bottom: ${space[3]}px;
+									line-height: 20px;
+								`}
+							>
+								<span
 									css={css`
-										${textSans.medium()};
-										margin-bottom: ${space[3]}px;
-										line-height: 20px;
+										margin-left: ${space[1]}px;
 									`}
 								>
-									<span
-										css={css`
-											margin-left: ${space[1]}px;
-										`}
-									>
-										{`Your new ${availableProduct.name} starts today.`}
-									</span>
-								</li>
-								<li
+									{`Your new ${productSwitchContext.newProductInfo.newProduct.name} starts today.`}
+								</span>
+							</li>
+							<li
+								css={css`
+									${textSans.medium()};
+									margin-bottom: ${space[3]}px;
+									line-height: 20px;
+								`}
+							>
+								<span
 									css={css`
-										${textSans.medium()};
-										margin-bottom: ${space[3]}px;
-										line-height: 20px;
+										margin-left: ${space[1]}px;
 									`}
 								>
-									<span
-										css={css`
-											margin-left: ${space[1]}px;
-										`}
-									>
-										{`Your first payment of ${
-											availableProduct.introOffer.billing
-												.currency.symbol
-										}${Number(
-											availableProduct.introOffer.billing
-												.amount,
-										).toFixed(
-											2,
-										)} will be taken on ${dateString(
-											parseDate(
-												productSwitchContext
-													.newProductInfo.newProduct
-													.introOffer
-													? productSwitchContext
-															.newProductInfo
-															.newProduct
-															.introOffer.billing
-															.startDate
-													: productSwitchContext
-															.newProductInfo
-															.newProduct.billing
-															.startDate,
-											).date,
-											'd MMMM yyyy',
-										)}.`}
-									</span>
-								</li>
-							</>
-						),
+									{`Your first payment of ${getFirstPaymentAmount(
+										productSwitchContext.newProductInfo,
+									)} will be taken on ${getStartDate(
+										productSwitchContext.newProductInfo,
+									)}.`}
+								</span>
+							</li>
+						</>
 					)}
 					<li
 						css={css`
