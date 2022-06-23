@@ -62,8 +62,6 @@ describe('Cancel contribution', () => {
 			};
 		});
 
-		console.log(cy.getCookie('GU_mvt_id'));
-
 		cy.findByText('Manage recurring contribution').click();
 		cy.wait('@cancelled');
 

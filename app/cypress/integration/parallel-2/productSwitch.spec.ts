@@ -28,10 +28,42 @@ describe('product movement', () => {
 			body: [],
 		}).as('cancelled');
 
+		cy.intercept('GET', 'api/cancellation-date/**', {
+			statusCode: 200,
+			body: { cancellationEffectiveDate: '2022-02-05' },
+		});
+
 		cy.intercept('GET', '/api/available-product-moves/**', {
 			statusCode: 200,
 			body: availableProductMovesResponse,
 		}).as('available-product-moves');
+	});
+
+	it('Goes to cancellation reason selection on clicking Continue to cancellation', () => {
+		cy.visit('/');
+
+		cy.window().then((window) => {
+			// @ts-ignore
+			window.guardian.identityDetails = {
+				signInStatus: 'signedInRecently',
+				userId: '200006712',
+				displayName: 'user',
+				email: 'example@example.com',
+			};
+		});
+
+		cy.findByText('Manage recurring contribution').click();
+		cy.wait('@cancelled');
+
+		cy.findByRole('link', {
+			name: 'Cancel recurring contribution',
+		}).click();
+
+		cy.wait('@available-product-moves');
+
+		cy.findByText('Continue to cancellation').click();
+
+		cy.findByText('Please select a reason').should('exist');
 	});
 
 	it('Completes a product switch from recurring contribution to digital subscription', () => {
