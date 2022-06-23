@@ -105,7 +105,7 @@ describe('product movement', () => {
 
 		cy.wait('@product-move');
 
-		cy.findByText("You're now a digital subscriber").should('exist');
+		cy.url().should('include', 'confirmed');
 	});
 
 	it('Shows error screen if API fails when switching from recurring contribution to digital subscription', () => {
