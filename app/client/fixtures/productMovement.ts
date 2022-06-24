@@ -12,10 +12,17 @@ export const availableProductMovesResponse = [
 				name: 'Months',
 				count: 1,
 			},
+			startDate: '2022-09-21',
+		},
+		trial: {
+			duration: {
+				name: 'Days',
+				count: 14,
+			},
 		},
 		introOffer: {
 			billing: {
-				amount: 5.99,
+				percentage: 50,
 				currency: {
 					symbol: '£',
 					code: 'GBP',
@@ -24,6 +31,7 @@ export const availableProductMovesResponse = [
 					name: 'Months',
 					count: 1,
 				},
+				startDate: '2022-06-21',
 			},
 			duration: {
 				name: 'Months',

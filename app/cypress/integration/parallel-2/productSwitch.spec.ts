@@ -96,6 +96,8 @@ describe('product movement', () => {
 		cy.findByText('14 days free trial then 50% off for 3 months').should(
 			'exist',
 		);
+		cy.findByText('£6.00').should('exist');
+		// cy.findByText('£11.99').should('exist');
 
 		cy.findByText('Explore a digital subscription').click();
 
@@ -108,6 +110,9 @@ describe('product movement', () => {
 		cy.findByText('Confirm change').click();
 
 		cy.wait('@product-move');
+
+		// cy.findByText('£6.00').should('exist');
+		cy.findByText('21 June 2022').should('exist');
 
 		cy.url().should('include', 'confirmed');
 	});

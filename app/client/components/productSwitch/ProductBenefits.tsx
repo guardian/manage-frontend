@@ -41,7 +41,8 @@ export const productBenefitsLookup: ProductBenefitsLookup = {
 						margin-left: ${space[3]}px;
 					`}
 				>
-					Continue to support independent journalism
+					Continue to support independent journalism - more copy to
+					fill in here
 				</span>
 			</>,
 			<>

@@ -369,9 +369,10 @@ const CancellationSwitchOffer = () => {
 															${textSans.medium()};
 															display: flex;
 															line-height: 20px;
-															${benefitIndex === 0
-																? `margin-bottom: ${space[3]}px;`
-																: ''}
+															margin-bottom: ${space[3]}px;
+															:last-of-type {
+																margin-bottom: 0;
+															}
 														`}
 													>
 														{benefit}
@@ -398,9 +399,10 @@ const CancellationSwitchOffer = () => {
 															${textSans.medium()};
 															display: flex;
 															line-height: 20px;
-															${benefitIndex === 0
-																? `margin-bottom: ${space[3]}px;`
-																: ''}
+															margin-bottom: ${space[3]}px;
+															:last-of-type {
+																margin-bottom: 0;
+															}
 														`}
 													>
 														{benefit}
