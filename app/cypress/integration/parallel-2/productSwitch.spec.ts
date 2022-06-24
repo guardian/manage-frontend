@@ -93,7 +93,9 @@ describe('product movement', () => {
 
 		cy.wait('@available-product-moves');
 
-		cy.findByText('14 days free trial then 50% off').should('exist');
+		cy.findByText('14 days free trial then 50% off for 3 months').should(
+			'exist',
+		);
 
 		cy.findByText('Explore a digital subscription').click();
 

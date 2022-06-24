@@ -7,18 +7,21 @@ interface Currency {
 	code: string;
 }
 
+export interface Billing {
+	amount: number;
+	percentage: number;
+	currency: Currency;
+	frequency: {
+		name: BillingFrequency;
+		count: number;
+	};
+	startDate: string;
+}
+
 export interface AvailableProductsResponse {
 	id: string;
 	name: string;
-	billing: {
-		amount: number;
-		currency: Currency;
-		frequency: {
-			name: BillingFrequency;
-			count: number;
-		};
-		startDate: string;
-	};
+	billing: Billing;
 	trial?: {
 		duration: {
 			name: BillingFrequency;
@@ -26,16 +29,7 @@ export interface AvailableProductsResponse {
 		};
 	};
 	introOffer: {
-		billing: {
-			percentage: string;
-			amount: number;
-			currency: Currency;
-			frequency: {
-				name: BillingFrequency;
-				count: number;
-			};
-			startDate: string;
-		};
+		billing: Billing;
 		duration: {
 			name: BillingFrequency;
 			count: number;

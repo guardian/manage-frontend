@@ -19,6 +19,7 @@ import { useLocation } from 'react-router';
 import { useContext } from 'react';
 import {
 	AvailableProductsResponse,
+	Billing,
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
@@ -33,6 +34,18 @@ const subHeadingCss = css`
 		line-height: 1.6;
 	}
 `;
+
+/*
+	Calculates the cost from a subscription with a percentage discount
+ */
+function getAmountFromOffer(offer: Billing, normalPlan: Billing): string {
+	if (offer.amount) {
+		return Number(offer.amount).toFixed(2);
+	} else {
+		const discount = (offer.percentage / 100) * normalPlan.amount;
+		return Number(normalPlan.amount - discount).toFixed(2);
+	}
+}
 
 function buildBannerCopy(product: AvailableProductsResponse): string {
 	let copy = '';
@@ -216,10 +229,11 @@ const CancellationSwitchOffer = () => {
 											{`${
 												availableProduct.introOffer
 													.billing.currency.symbol
-											}${Number(
+											}${getAmountFromOffer(
 												availableProduct.introOffer
-													.billing.amount,
-											).toFixed(2)}`}
+													.billing,
+												availableProduct.billing,
+											)}`}
 										</span>{' '}
 										for{' '}
 										{`${

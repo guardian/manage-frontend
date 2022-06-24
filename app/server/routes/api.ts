@@ -173,7 +173,7 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 			},
 			introOffer: {
 				billing: {
-					amount: 5.99,
+					percentage: 50,
 					currency: {
 						symbol: '£',
 						code: 'GBP',
