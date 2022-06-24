@@ -27,6 +27,13 @@ import {
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import {
+	introOfferBanner,
+	introOfferDuration,
+	introOfferPrice,
+	regularBillingFrequency,
+	regularPrice,
+} from './productSwitchHelpers';
 
 /**
  * Generic Card container component
@@ -194,26 +201,17 @@ const CancellationSwitchReview = () => {
 			productSwitchContext.chosenProductIndex
 		];
 
-	const existingProductPrice = routerState.productDetail.subscription
-		.nextPaymentPrice as number;
-	const existingProductPaymentInterval = routerState.productDetail
-		.subscription.plan?.interval as string;
-	const existingProductCurrency = routerState.productDetail.subscription.plan
-		?.currency as string;
+	const existingProductPrice = () => {
+		const plan = routerState.productDetail.subscription.plan;
 
-	const chosenProductIntroPrice =
-		chosenProduct.introOffer.billing.currency.symbol +
-		chosenProduct.introOffer.billing.amount.toFixed(2);
-	const chosenProductIntroPaymentInterval = `${
-		chosenProduct.introOffer.duration.count
-	} ${chosenProduct.introOffer.duration.name.toLowerCase()}`;
+		if (!plan) {
+			return '';
+		}
 
-	const chosenProductPrice =
-		chosenProduct.billing.currency.symbol +
-		chosenProduct.billing.amount.toFixed(2);
-	const chosenProductPaymentInterval = 'month';
-
-	console.log(routerState.productDetail);
+		return `${plan.currency}${(plan.amount / 100).toFixed(2)} per ${
+			plan.interval
+		}`;
+	};
 
 	const subHeadingCss = css`
 		border-top: 1px solid ${palette.neutral[86]};
@@ -405,18 +403,21 @@ const CancellationSwitchReview = () => {
 
 				<div css={switchDetailsCardLayoutCss}>
 					<Card heading="Your current contribution">
-						<hr
-							css={css`
-								display: none;
-								height: 42px;
-								margin: 0;
-								border: none;
-								border-bottom: 1px solid ${palette.neutral[86]};
-								${minWidth.tablet} {
-									display: block;
-								}
-							`}
-						/>
+						{chosenProduct.introOffer && (
+							<hr
+								css={css`
+									display: none;
+									height: 42px;
+									margin: 0;
+									border: none;
+									border-bottom: 1px solid
+										${palette.neutral[86]};
+									${minWidth.tablet} {
+										display: block;
+									}
+								`}
+							/>
+						)}
 						<div
 							css={css`
 								${textSans.medium()};
@@ -424,11 +425,7 @@ const CancellationSwitchReview = () => {
 							`}
 						>
 							<PaymentDetails
-								paymentAmount={`${existingProductCurrency}${(
-									existingProductPrice / 100.0
-								).toFixed(
-									2,
-								)} per ${existingProductPaymentInterval}`}
+								paymentAmount={existingProductPrice()}
 							/>
 							<ul css={[listCss, tickListCss]}>
 								<li>
@@ -447,18 +444,19 @@ const CancellationSwitchReview = () => {
 						theme="brand"
 						heading={`Your new ${chosenProduct.name}`}
 					>
-						<h4
-							css={css`
-								margin: 0;
-								padding: ${space[2]}px ${space[4]}px;
-								${textSans.medium({ fontWeight: 'bold' })};
-								color: ${palette.brandAlt[400]};
-								background-color: ${palette.brand[400]};
-							`}
-						>
-							14 days free trial then 50% off for{' '}
-							{chosenProductIntroPaymentInterval}
-						</h4>
+						{chosenProduct.introOffer && (
+							<h4
+								css={css`
+									margin: 0;
+									padding: ${space[2]}px ${space[4]}px;
+									${textSans.medium({ fontWeight: 'bold' })};
+									color: ${palette.brandAlt[400]};
+									background-color: ${palette.brand[400]};
+								`}
+							>
+								{introOfferBanner(chosenProduct)}
+							</h4>
+						)}
 						<div
 							css={css`
 								${textSans.medium()};
@@ -466,19 +464,34 @@ const CancellationSwitchReview = () => {
 								background-color: #e3edfe;
 							`}
 						>
-							<PaymentDetails
-								paymentAmount={`
-									${chosenProductIntroPrice} for
-									${chosenProductIntroPaymentInterval}
-								`}
-								paymentFollowOnAmount={
-									<>
-										{`Then  ${chosenProductPrice} per ${chosenProductPaymentInterval}. `}
-										<strong>Cancel anytime.</strong>
-									</>
-								}
-								theme="brand"
-							/>
+							{chosenProduct.introOffer ? (
+								<PaymentDetails
+									paymentAmount={`
+										${introOfferPrice(chosenProduct)} for
+										${introOfferDuration(chosenProduct)}
+									`}
+									paymentFollowOnAmount={
+										<>
+											{`Then  ${regularPrice(
+												chosenProduct,
+											)} ${regularBillingFrequency(
+												chosenProduct,
+											)}. `}
+											<strong>Cancel anytime.</strong>
+										</>
+									}
+									theme="brand"
+								/>
+							) : (
+								<PaymentDetails
+									paymentAmount={`${regularPrice(
+										chosenProduct,
+									)} ${regularBillingFrequency(
+										chosenProduct,
+									)}`}
+									theme="brand"
+								/>
+							)}
 							<ul css={[listCss, tickListCss]}>
 								<li>
 									<SvgCheckmark size="small" />

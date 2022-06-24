@@ -18,12 +18,17 @@ import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { useLocation } from 'react-router';
 import { useContext } from 'react';
 import {
-	AvailableProductsResponse,
-	Billing,
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
 import { productBenefitsLookup } from './ProductBenefits';
+import {
+	introOfferBanner,
+	introOfferDuration,
+	introOfferPrice,
+	regularBillingFrequency,
+	regularPrice,
+} from './productSwitchHelpers';
 
 const subHeadingCss = css`
 	margin: ${space[9]}px 0 ${space[2]}px;
@@ -34,39 +39,6 @@ const subHeadingCss = css`
 		line-height: 1.6;
 	}
 `;
-
-/*
-	Calculates the cost from a subscription with a percentage discount
- */
-function getAmountFromOffer(offer: Billing, normalPlan: Billing): string {
-	if (offer.amount) {
-		return Number(offer.amount).toFixed(2);
-	} else {
-		const discount = (offer.percentage / 100) * normalPlan.amount;
-		return Number(normalPlan.amount - discount).toFixed(2);
-	}
-}
-
-function buildBannerCopy(product: AvailableProductsResponse): string {
-	let copy = '';
-
-	if (product.trial) {
-		copy += `${
-			product.trial.duration.count
-		} ${product.trial.duration.name.toLowerCase()} free trial then `;
-	}
-
-	if (product.introOffer) {
-		const discount = product.introOffer.billing.percentage
-			? `${product.introOffer.billing.percentage}% off`
-			: `${product.introOffer.billing.currency.symbol}${product.introOffer.billing.amount}`;
-		copy += `${discount} for ${
-			product.introOffer.duration.count
-		} ${product.introOffer.duration.name.toLowerCase()}`;
-	}
-
-	return copy;
-}
 
 const CancellationSwitchOffer = () => {
 	const navigate = useNavigate();
@@ -164,7 +136,7 @@ const CancellationSwitchOffer = () => {
 										margin: 6px 0px;
 									`}
 								>
-									{buildBannerCopy(availableProduct)}
+									{introOfferBanner(availableProduct)}
 								</p>
 							</div>
 							<GridPicture
@@ -226,20 +198,10 @@ const CancellationSwitchOffer = () => {
 												font-size: 20px;
 											`}
 										>
-											{`${
-												availableProduct.introOffer
-													.billing.currency.symbol
-											}${getAmountFromOffer(
-												availableProduct.introOffer
-													.billing,
-												availableProduct.billing,
-											)}`}
+											{introOfferPrice(availableProduct)}
 										</span>{' '}
 										for{' '}
-										{`${
-											availableProduct.introOffer.duration
-												.count
-										} ${availableProduct.introOffer.duration.name.toLowerCase()}`}
+										{introOfferDuration(availableProduct)}
 									</p>
 									<div>
 										<div
@@ -249,18 +211,12 @@ const CancellationSwitchOffer = () => {
 												color: ${neutral[46]};
 											`}
 										>
-											Then{' '}
-											{`${
-												availableProduct.billing
-													.currency.symbol
-											}${Number(
-												availableProduct.billing.amount,
-											).toFixed(2)}`}{' '}
-											per{' '}
-											{availableProduct.billing.frequency.name
-												.toLowerCase()
-												.slice(0, -1)}
-											. <strong>Cancel anytime</strong>.
+											{`Then ${regularPrice(
+												availableProduct,
+											)} ${regularBillingFrequency(
+												availableProduct,
+											)}. `}
+											<strong>Cancel anytime</strong>.
 										</div>
 									</div>
 								</div>

@@ -166,10 +166,7 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 				startDate: '2022-06-21',
 			},
 			trial: {
-				duration: {
-					name: 'Days',
-					count: 14,
-				},
+				dayCount: 14,
 			},
 			introOffer: {
 				billing: {

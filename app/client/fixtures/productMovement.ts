@@ -12,13 +12,10 @@ export const availableProductMovesResponse = [
 				name: 'Months',
 				count: 1,
 			},
-			startDate: '2022-09-21',
+			startDate: '2022-06-21',
 		},
 		trial: {
-			duration: {
-				name: 'Days',
-				count: 14,
-			},
+			dayCount: 14,
 		},
 		introOffer: {
 			billing: {

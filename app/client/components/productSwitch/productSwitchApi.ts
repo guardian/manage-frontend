@@ -9,7 +9,6 @@ interface Currency {
 
 export interface Billing {
 	amount: number;
-	percentage: number;
 	currency: Currency;
 	frequency: {
 		name: BillingFrequency;
@@ -23,13 +22,13 @@ export interface AvailableProductsResponse {
 	name: string;
 	billing: Billing;
 	trial?: {
-		duration: {
-			name: BillingFrequency;
-			count: number;
-		};
+		dayCount: number;
 	};
-	introOffer: {
-		billing: Billing;
+	introOffer?: {
+		billing: Billing & {
+			amount?: number;
+			percentage?: number;
+		};
 		duration: {
 			name: BillingFrequency;
 			count: number;

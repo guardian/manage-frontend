@@ -19,10 +19,12 @@ import { useContext } from 'react';
 import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
-	ProductSwitchResponse,
 } from './productSwitchApi';
 import { getGeoLocation } from '../../geolocation';
-import { dateString, parseDate } from '../../../shared/dates';
+import {
+	newProductStartDate,
+	newProductFirstPaymentAmount,
+} from './productSwitchHelpers';
 
 function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
 	switch (countryCode.toLowerCase()) {
@@ -49,36 +51,6 @@ function getIosAppUrl(countryCode: string | null): string {
 	} else {
 		return 'https://apps.apple.com/us/app/the-guardian-breaking-news/id409128287';
 	}
-}
-
-function getStartDate(newProductInfo: ProductSwitchResponse) {
-	const { newProduct } = newProductInfo;
-
-	return dateString(
-		parseDate(
-			newProduct.introOffer
-				? newProduct.introOffer.billing.startDate
-				: newProduct.billing.startDate,
-		).date,
-		'd MMMM yyyy',
-	);
-}
-
-function getFirstPaymentAmount(newProductInfo: ProductSwitchResponse) {
-	const { newProduct } = newProductInfo;
-
-	let currencySymbol: string;
-	let amount: number;
-
-	if (newProduct.introOffer) {
-		currencySymbol = newProduct.introOffer.billing.currency.symbol;
-		amount = newProduct.introOffer.billing.amount;
-	} else {
-		currencySymbol = newProduct.billing.currency.symbol;
-		amount = newProduct.billing.amount;
-	}
-
-	return `${currencySymbol}${Number(amount).toFixed(2)}`;
 }
 
 const CancellationSwitchConfirmed = () => {
@@ -233,9 +205,9 @@ const CancellationSwitchConfirmed = () => {
 										margin-left: ${space[1]}px;
 									`}
 								>
-									{`Your first payment of ${getFirstPaymentAmount(
+									{`Your first payment of ${newProductFirstPaymentAmount(
 										productSwitchContext.newProductInfo,
-									)} will be taken on ${getStartDate(
+									)} will be taken on ${newProductStartDate(
 										productSwitchContext.newProductInfo,
 									)}.`}
 								</span>
