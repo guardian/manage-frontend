@@ -17,15 +17,24 @@ export interface AvailableProductsResponse {
 			name: BillingFrequency;
 			count: number;
 		};
+		startDate: string;
+	};
+	trial?: {
+		duration: {
+			name: BillingFrequency;
+			count: number;
+		};
 	};
 	introOffer: {
 		billing: {
+			percentage: string;
 			amount: number;
 			currency: Currency;
 			frequency: {
 				name: BillingFrequency;
 				count: number;
 			};
+			startDate: string;
 		};
 		duration: {
 			name: BillingFrequency;
@@ -36,34 +45,7 @@ export interface AvailableProductsResponse {
 
 export interface ProductSwitchResponse {
 	newSubscriptionName: string;
-	newProduct: {
-		id: string;
-		name: string;
-		billing: {
-			amount: number;
-			currency: Currency;
-			frequency: {
-				name: BillingFrequency;
-				count: number;
-			};
-			startDate: string; // i.e.: 2022-02-02
-		};
-		introOffer: {
-			billing: {
-				amount: number;
-				currency: Currency;
-				frequency: {
-					name: BillingFrequency;
-					count: number;
-				};
-				startDate: string; // i.e.: 2022-02-02
-			};
-			duration: {
-				name: BillingFrequency;
-				count: number;
-			};
-		};
-	};
+	newProduct: AvailableProductsResponse;
 }
 
 export interface ProductSwitchContextInterface {

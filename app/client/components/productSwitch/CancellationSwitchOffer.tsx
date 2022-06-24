@@ -18,6 +18,7 @@ import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { useLocation } from 'react-router';
 import { useContext } from 'react';
 import {
+	AvailableProductsResponse,
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
@@ -32,6 +33,27 @@ const subHeadingCss = css`
 		line-height: 1.6;
 	}
 `;
+
+function buildBannerCopy(product: AvailableProductsResponse): string {
+	let copy = '';
+
+	if (product.trial) {
+		copy += `${
+			product.trial.duration.count
+		} ${product.trial.duration.name.toLowerCase()} free trial then `;
+	}
+
+	if (product.introOffer) {
+		const discount = product.introOffer.billing.percentage
+			? `${product.introOffer.billing.percentage}% off`
+			: `${product.introOffer.billing.currency.symbol}${product.introOffer.billing.amount}`;
+		copy += `${discount} for ${
+			product.introOffer.duration.count
+		} ${product.introOffer.duration.name.toLowerCase()}`;
+	}
+
+	return copy;
+}
 
 const CancellationSwitchOffer = () => {
 	const navigate = useNavigate();
@@ -129,7 +151,7 @@ const CancellationSwitchOffer = () => {
 										margin: 6px 0px;
 									`}
 								>
-									14 days free trial then 50% off for 3 months
+									{buildBannerCopy(availableProduct)}
 								</p>
 							</div>
 							<GridPicture
