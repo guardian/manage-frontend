@@ -186,8 +186,10 @@ const CancellationSwitchReview = () => {
 
 			const json = await res.json();
 
+			productSwitchContext.setNewProductInfo(json);
+
 			navigate('./confirmed', {
-				state: { ...routerState, response: json },
+				state: routerState,
 			});
 		} catch (e) {
 			navigate('./failed', { state: routerState });

@@ -1,6 +1,9 @@
 import { contribution } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
-import { availableProductMovesResponse } from '../../../client/fixtures/productMovement';
+import {
+	availableProductMovesResponse,
+	productMoveResponse,
+} from '../../../client/fixtures/productMovement';
 
 describe('product movement', () => {
 	beforeEach(() => {
@@ -69,7 +72,7 @@ describe('product movement', () => {
 	it('Completes a product switch from recurring contribution to digital subscription', () => {
 		cy.intercept('POST', '/api/product-move/**', {
 			statusCode: 200,
-			body: availableProductMovesResponse,
+			body: productMoveResponse,
 		}).as('product-move');
 
 		cy.visit('/');
@@ -112,7 +115,7 @@ describe('product movement', () => {
 		cy.wait('@product-move');
 
 		// cy.findByText('£6.00').should('exist');
-		cy.findByText('21 June 2022').should('exist');
+		cy.findByText('2 February 2022').should('exist');
 
 		cy.url().should('include', 'confirmed');
 	});
