@@ -397,14 +397,18 @@ const CancellationSwitchReview = () => {
 						max-width: 60ch;
 					`}
 				>
-					If you decide to change the way you support us by becoming a
-					digital subscriber we’ll stop your monthly contribution
-					payments straight away and you’ll have immediate access to
-					the benefits of a {chosenProduct.name}.
+					If you decide to change your support to a{' '}
+					{chosenProduct.name} we’ll stop your{' '}
+					{chosenProduct.billing.frequency.name}ly{' '}
+					{productSwitchContext.productType.friendlyName} payments
+					straight away and you’ll have immediate access to the
+					benefits of a {chosenProduct.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
-					<Card heading="Your current contribution">
+					<Card
+						heading={`Your current ${productSwitchContext.productType.friendlyName}`}
+					>
 						{chosenProduct.introOffer && (
 							<hr
 								css={css`
@@ -578,15 +582,23 @@ const CancellationSwitchReview = () => {
 						>
 							<ul css={listCss}>
 								<li>
-									We'll stop your monthly contribution
+									We'll stop your{' '}
+									{chosenProduct.billing.frequency.name}ly{' '}
+									{
+										productSwitchContext.productType
+											.friendlyName
+									}{' '}
 									payments.
 								</li>
 								<li>
-									Your new digital subscription starts today.
+									Your new {chosenProduct.name} starts today.
 								</li>
-								<li>
-									Your 14 day free trial kicks in immediately.
-								</li>
+								{chosenProduct.trial && (
+									<li>
+										Your {chosenProduct.trial.dayCount} day
+										free trial kicks in immediately.
+									</li>
+								)}
 							</ul>
 						</div>
 					</Card>

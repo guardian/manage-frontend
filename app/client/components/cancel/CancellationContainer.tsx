@@ -115,6 +115,7 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 				setChosenProductIndex,
 				newProductInfo,
 				setNewProductInfo,
+				productType: props.productType,
 			}}
 		>
 			<CancellationPageTitleContext.Provider value={{ setPageTitle }}>

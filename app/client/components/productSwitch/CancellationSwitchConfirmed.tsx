@@ -34,6 +34,8 @@ const CancellationSwitchConfirmed = () => {
 		ProductSwitchContext,
 	) as ProductSwitchContextInterface;
 
+	const newProduct = productSwitchContext.newProductInfo.newProduct;
+
 	const subHeadingCss = css`
 		margin: ${space[9]}px 0 ${space[3]}px;
 		border-top: 1px solid ${neutral['86']};
@@ -44,8 +46,6 @@ const CancellationSwitchConfirmed = () => {
 		}
 	`;
 
-	const { newProduct } = productSwitchContext.newProductInfo;
-
 	return (
 		<>
 			<h2 css={subHeadingCss}>Your ${newProduct.name} is now active</h2>
@@ -55,11 +55,12 @@ const CancellationSwitchConfirmed = () => {
 					margin-bottom: ${space[9]}px;
 				`}
 			>
-				Your monthly contribution has successfully been changed to a $
-				{newProduct.name}. We’ve stopped your previous payments and
-				started you on your new plan. Please check your inbox for an
-				email containing all your details and information on how to
-				access your benefits.
+				Your {newProduct.billing.frequency.name}ly{' '}
+				{productSwitchContext.productType.friendlyName} has successfully
+				been changed to a {newProduct.name}. We’ve stopped your previous
+				payments and started you on your new plan. Please check your
+				inbox for an email containing all your details and information
+				on how to access your benefits.
 			</p>
 			<div
 				css={css`
@@ -149,10 +150,12 @@ const CancellationSwitchConfirmed = () => {
 								margin-left: ${space[1]}px;
 							`}
 						>
-							We'll stop your monthly contribution payments.
+							We'll stop your {newProduct.billing.frequency.name}
+							ly {productSwitchContext.productType.friendlyName}{' '}
+							payments.
 						</span>
 					</li>
-					{productSwitchContext.newProductInfo.newProduct && (
+					{newProduct && (
 						<>
 							<li
 								css={css`
@@ -316,8 +319,8 @@ const CancellationSwitchConfirmed = () => {
 						`}
 					>
 						This app comes with a variety of features including Live
-						news, Discover - a tailored feed, and the ability to
-						read offline. Don’t forget to sign in using your
+						news, Discover &mdash; a tailored feed, and the ability
+						to read offline. Don’t forget to sign in using your
 						subscriber details to access ad-free.
 					</p>
 				</div>
