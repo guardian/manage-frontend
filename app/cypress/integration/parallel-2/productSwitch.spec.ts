@@ -114,8 +114,10 @@ describe('product movement', () => {
 
 		cy.wait('@product-move');
 
-		// cy.findByText('£6.00').should('exist');
-		cy.findByText('2 February 2022').should('exist');
+		cy.contains('digital subscription');
+		cy.contains(
+			'Your first payment of £6.00 will be taken on 21 June 2022.',
+		).should('exist');
 
 		cy.url().should('include', 'confirmed');
 	});

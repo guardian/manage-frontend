@@ -31,6 +31,10 @@ import {
 	reactivateReminderHandler,
 } from '../reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
+import {
+	availableProductMovesResponse,
+	productMoveResponse,
+} from '../../client/fixtures/productMovement';
 
 const router = Router();
 
@@ -149,45 +153,7 @@ router.get(
 
 //
 router.get('/available-product-moves/:subscriptionName', (_, response) => {
-	response.json([
-		{
-			id: '123',
-			name: 'digital subscription',
-			billing: {
-				amount: 11.99,
-				currency: {
-					symbol: '£',
-					code: 'GBP',
-				},
-				frequency: {
-					name: 'Months',
-					count: 1,
-				},
-				startDate: '2022-06-21',
-			},
-			trial: {
-				dayCount: 14,
-			},
-			introOffer: {
-				billing: {
-					percentage: 50,
-					currency: {
-						symbol: '£',
-						code: 'GBP',
-					},
-					frequency: {
-						name: 'Months',
-						count: 1,
-					},
-					startDate: '2022-06-21',
-				},
-				duration: {
-					name: 'Months',
-					count: 3,
-				},
-			},
-		},
-	]);
+	response.json(availableProductMovesResponse);
 });
 //
 
@@ -199,43 +165,7 @@ router.post(
 */
 
 router.post('/product-move/:subscriptionName', (_, response) => {
-	response.json({
-		newSubscriptionName: 'asdf',
-		newProduct: {
-			id: '123',
-			name: 'digital subscription',
-			billing: {
-				amount: 11.99,
-				currency: {
-					symbol: '£',
-					code: 'GBP',
-				},
-				frequency: {
-					name: 'Months',
-					count: 1,
-				},
-				startDate: '2022-02-02',
-			},
-			introOffer: {
-				billing: {
-					amount: 5.99,
-					currency: {
-						symbol: '£',
-						code: 'GBP',
-					},
-					frequency: {
-						name: 'Months',
-						count: 1,
-					},
-					startDate: '2022-02-02',
-				},
-				duration: {
-					name: 'Months',
-					count: 3,
-				},
-			},
-		},
-	});
+	response.json(productMoveResponse);
 });
 
 router.get(

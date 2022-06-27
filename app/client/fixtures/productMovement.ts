@@ -53,11 +53,14 @@ export const productMoveResponse = {
 				name: 'Months',
 				count: 1,
 			},
-			startDate: '2022-02-02',
+			startDate: '2022-09-21',
+		},
+		trial: {
+			dayCount: 14,
 		},
 		introOffer: {
 			billing: {
-				amount: 5.99,
+				percentage: 50,
 				currency: {
 					symbol: '£',
 					code: 'GBP',
@@ -66,7 +69,7 @@ export const productMoveResponse = {
 					name: 'Months',
 					count: 1,
 				},
-				startDate: '2022-02-02',
+				startDate: '2022-06-21',
 			},
 			duration: {
 				name: 'Months',
