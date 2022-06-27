@@ -44,17 +44,19 @@ const CancellationSwitchConfirmed = () => {
 		}
 	`;
 
+	const { newProduct } = productSwitchContext.newProductInfo;
+
 	return (
 		<>
-			<h2 css={subHeadingCss}>You're now a digital subscriber</h2>
+			<h2 css={subHeadingCss}>Your ${newProduct.name} is now active</h2>
 			<p
 				css={css`
 					${textSans.medium()}
 					margin-bottom: ${space[9]}px;
 				`}
 			>
-				Your monthly contribution has successfully been changed to a
-				Digital Subscription. We’ve stopped your previous payments and
+				Your monthly contribution has successfully been changed to a $
+				{newProduct.name}. We’ve stopped your previous payments and
 				started you on your new plan. Please check your inbox for an
 				email containing all your details and information on how to
 				access your benefits.
@@ -164,7 +166,7 @@ const CancellationSwitchConfirmed = () => {
 										margin-left: ${space[1]}px;
 									`}
 								>
-									{`Your new ${productSwitchContext.newProductInfo.newProduct.name} starts today.`}
+									{`Your new ${newProduct.name} starts today.`}
 								</span>
 							</li>
 							<li
