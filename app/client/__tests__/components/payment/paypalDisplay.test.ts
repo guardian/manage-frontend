@@ -7,10 +7,14 @@ test('obfuscate email id', () => {
 	expect(getObfuscatedPayPalId('last.first@guardian.com')).toEqual(
 		'l********t@guardian.com',
 	);
-	expect(getObfuscatedPayPalId('j@gu.com')).toEqual('j@gu.com');
-	expect(getObfuscatedPayPalId('jm@gu.com')).toEqual('jm@gu.com');
-	expect(getObfuscatedPayPalId('jim@gu.com')).toEqual('j*m@gu.com');
-	expect(getObfuscatedPayPalId('james@gu.com')).toEqual('j***s@gu.com');
+	expect(getObfuscatedPayPalId('j@guardian.com')).toEqual('j@guardian.com');
+	expect(getObfuscatedPayPalId('jm@guardian.com')).toEqual('jm@guardian.com');
+	expect(getObfuscatedPayPalId('jim@guardian.com')).toEqual(
+		'j*m@guardian.com',
+	);
+	expect(getObfuscatedPayPalId('james@guardian.com')).toEqual(
+		'j***s@guardian.com',
+	);
 });
 
 test('obfuscate string id', () => {

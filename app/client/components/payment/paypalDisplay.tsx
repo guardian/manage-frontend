@@ -18,13 +18,13 @@ interface PayPalProps {
 //
 // Examples:
 //
-// ID           | 1 | 2   | 3
-// -------------|---|-----|---------
-// james        | j | ame | s
-// james@gu.com | j | ame | s@gu.com
-// jim@gu.com   | j | i   | m@gu.com
-// jm@gu.com    | j |     | m@gu.com
-// j@gu.com     | j |     | @gu.com
+// ID                    | 1 | 2   | 3
+// ----------------------|---|-----|---------
+// james                 | j | ame | s
+// james@theguardian.com | j | ame | s@theguardian.com
+// jim@theguardian.com   | j | i   | m@theguardian.com
+// jm@theguardian.com    | j |     | m@theguardian.com
+// j@theguardian.com     | j |     | @theguardian.com
 
 const SPLIT_PAYPAL_ID_REGEX = /^(.)(.*?)(.?|.?@.+)$/;
 
