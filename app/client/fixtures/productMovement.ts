@@ -3,13 +3,13 @@ export const availableProductMovesResponse = [
 		id: '123',
 		name: 'digital subscription',
 		billing: {
-			amount: 11.99,
+			amount: 1199,
 			currency: {
 				symbol: '£',
 				code: 'GBP',
 			},
 			frequency: {
-				name: 'Months',
+				name: 'month',
 				count: 1,
 			},
 			startDate: '2022-06-21',
@@ -25,13 +25,13 @@ export const availableProductMovesResponse = [
 					code: 'GBP',
 				},
 				frequency: {
-					name: 'Months',
+					name: 'month',
 					count: 1,
 				},
 				startDate: '2022-06-21',
 			},
 			duration: {
-				name: 'Months',
+				name: 'month',
 				count: 3,
 			},
 		},
@@ -44,13 +44,13 @@ export const productMoveResponse = {
 		id: '123',
 		name: 'digital subscription',
 		billing: {
-			amount: 11.99,
+			amount: 1199,
 			currency: {
 				symbol: '£',
 				code: 'GBP',
 			},
 			frequency: {
-				name: 'Months',
+				name: 'month',
 				count: 1,
 			},
 			startDate: '2022-09-21',
@@ -66,13 +66,13 @@ export const productMoveResponse = {
 					code: 'GBP',
 				},
 				frequency: {
-					name: 'Months',
+					name: 'month',
 					count: 1,
 				},
 				startDate: '2022-06-21',
 			},
 			duration: {
-				name: 'Months',
+				name: 'month',
 				count: 3,
 			},
 		},
