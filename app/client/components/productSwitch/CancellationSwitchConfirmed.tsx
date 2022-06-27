@@ -24,34 +24,8 @@ import { getGeoLocation } from '../../geolocation';
 import {
 	newProductStartDate,
 	newProductFirstPaymentAmount,
+	getIosAppUrl,
 } from './productSwitchHelpers';
-
-function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
-	switch (countryCode.toLowerCase()) {
-		case 'gb':
-			return 'gb';
-
-		default:
-			return 'us';
-	}
-}
-
-function getAppleStoreUrl(product: string, countryCode: string) {
-	const appStoreCountryCode =
-		convertCountryGroupIdToAppStoreCountryCode(countryCode);
-	return `https://apps.apple.com/${appStoreCountryCode}/app/${product}`;
-}
-
-function getIosAppUrl(countryCode: string | null): string {
-	if (countryCode) {
-		return getAppleStoreUrl(
-			'the-guardian-breaking-news/id409128287',
-			countryCode,
-		);
-	} else {
-		return 'https://apps.apple.com/us/app/the-guardian-breaking-news/id409128287';
-	}
-}
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();

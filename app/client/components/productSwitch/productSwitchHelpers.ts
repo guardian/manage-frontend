@@ -131,3 +131,35 @@ export const newProductFirstPaymentAmount = (
 		return `${currencySymbol}${Number(amount).toFixed(2)}`;
 	}
 };
+
+/*
+	The Apple appstore does not seem to have geolocation functionality, and requires us to link the user to the appropriate site.
+	We use the GU_geo_country cookie to detect the user's location.
+	The following functions have been taken from: https://github.com/guardian/support-frontend/blob/main/support-frontend/assets/helpers/urls/externalLinks.ts#L103
+ */
+function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
+	switch (countryCode.toLowerCase()) {
+		case 'gb':
+			return 'gb';
+
+		default:
+			return 'us';
+	}
+}
+
+function getAppleStoreUrl(product: string, countryCode: string) {
+	const appStoreCountryCode =
+		convertCountryGroupIdToAppStoreCountryCode(countryCode);
+	return `https://apps.apple.com/${appStoreCountryCode}/app/${product}`;
+}
+
+export function getIosAppUrl(countryCode: string | null): string {
+	if (countryCode) {
+		return getAppleStoreUrl(
+			'the-guardian-breaking-news/id409128287',
+			countryCode,
+		);
+	} else {
+		return 'https://apps.apple.com/us/app/the-guardian-breaking-news/id409128287';
+	}
+}
