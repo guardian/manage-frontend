@@ -1,8 +1,5 @@
 import { dateString, parseDate } from '../../../shared/dates';
-import {
-	AvailableProductsResponse,
-	ProductSwitchResponse,
-} from './productSwitchApi';
+import { AvailableProductsResponse } from './productSwitchApi';
 
 /**
  * Returns intro offer price if available.
@@ -98,14 +95,14 @@ export const regularBillingFrequency = (
  * e.g. '4 June 2022'
  */
 
-export const newProductStartDate = (product: ProductSwitchResponse): string => {
-	const { newProduct } = product;
-
+export const productStartDate = (
+	product: AvailableProductsResponse,
+): string => {
 	return dateString(
 		parseDate(
-			newProduct.introOffer
-				? newProduct.introOffer.billing.startDate
-				: newProduct.billing.startDate,
+			product.introOffer
+				? product.introOffer.billing.startDate
+				: product.billing.startDate,
 		).date,
 		'd MMMM yyyy',
 	);
@@ -116,16 +113,14 @@ export const newProductStartDate = (product: ProductSwitchResponse): string => {
  * e.g. '£5.99'
  */
 
-export const newProductFirstPaymentAmount = (
-	product: ProductSwitchResponse,
+export const productFirstPaymentAmount = (
+	product: AvailableProductsResponse,
 ): string => {
-	const { newProduct } = product;
-
-	if (newProduct.introOffer) {
-		return introOfferPrice(newProduct);
+	if (product.introOffer) {
+		return introOfferPrice(product);
 	} else {
-		const currencySymbol = newProduct.billing.currency.symbol;
-		const amount = newProduct.billing.amount;
+		const currencySymbol = product.billing.currency.symbol;
+		const amount = product.billing.amount;
 		return `${currencySymbol}${Number(amount / 100).toFixed(2)}`;
 	}
 };

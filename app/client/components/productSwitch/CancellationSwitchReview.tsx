@@ -14,7 +14,7 @@ import {
 	space,
 } from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
-import { cardTypeToSVG } from '../payment/cardDisplay';
+import { CardDisplay } from '../payment/cardDisplay';
 import { ExpanderButton } from '../expanderButton';
 import { ArrowInCircle } from '../svgs/arrowInCircle';
 import {
@@ -31,9 +31,14 @@ import {
 	introOfferBanner,
 	introOfferDuration,
 	introOfferPrice,
+	productFirstPaymentAmount,
+	productStartDate,
 	regularBillingFrequency,
 	regularPrice,
 } from './productSwitchHelpers';
+import { PayPalDisplay } from '../payment/paypalDisplay';
+import { SepaDisplay } from '../payment/sepaDisplay';
+import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 
 /**
  * Generic Card container component
@@ -169,6 +174,13 @@ const CancellationSwitchReview = () => {
 
 	const [confirmingChange, setConfirmingChange] = useState<boolean>(false);
 
+	const currentSubscription = routerState.productDetail.subscription;
+
+	const chosenProduct =
+		productSwitchContext.availableProductsToSwitch[
+			productSwitchContext.chosenProductIndex
+		];
+
 	const confirmChange = async () => {
 		setConfirmingChange(true);
 
@@ -198,13 +210,8 @@ const CancellationSwitchReview = () => {
 		}
 	};
 
-	const chosenProduct =
-		productSwitchContext.availableProductsToSwitch[
-			productSwitchContext.chosenProductIndex
-		];
-
-	const existingProductPrice = () => {
-		const plan = routerState.productDetail.subscription.plan;
+	const currentProductPrice = () => {
+		const plan = currentSubscription.plan;
 
 		if (!plan) {
 			return '';
@@ -312,21 +319,38 @@ const CancellationSwitchReview = () => {
 
 	const PaymentMethod = () => {
 		return (
-			<span
-				css={css`
-					display: flex;
-					align-items: center;
-				`}
-			>
-				{cardTypeToSVG('visa')}
-				<span
-					css={css`
-						margin-left: ${space[1]}px;
-					`}
-				>
-					card ending 2345
-				</span>
-			</span>
+			<>
+				{currentSubscription.card && (
+					<CardDisplay
+						inErrorState={false}
+						cssOverrides={css`
+							margin: 0;
+						`}
+						{...currentSubscription.card}
+					/>
+				)}
+				{currentSubscription.mandate && (
+					<DirectDebitDisplay
+						inErrorState={false}
+						onlyAccountEnding={true}
+						{...currentSubscription.mandate}
+					/>
+				)}
+				{currentSubscription.payPalEmail && (
+					<PayPalDisplay payPalId={currentSubscription.payPalEmail} />
+				)}
+				{currentSubscription.sepaMandate && (
+					<SepaDisplay
+						accountName={
+							currentSubscription.sepaMandate.accountName
+						}
+						iban={currentSubscription.sepaMandate.iban}
+					/>
+				)}
+				{currentSubscription.stripePublicKeyForCardAddition && (
+					<span>No Payment Method</span>
+				)}
+			</>
 		);
 	};
 
@@ -431,7 +455,7 @@ const CancellationSwitchReview = () => {
 							`}
 						>
 							<PaymentDetails
-								paymentAmount={existingProductPrice()}
+								paymentAmount={currentProductPrice()}
 							/>
 							<ul css={[listCss, tickListCss]}>
 								<li>
@@ -559,16 +583,38 @@ const CancellationSwitchReview = () => {
 									value: <PaymentMethod />,
 								},
 								{
-									key: 'Expiry',
-									value: '05/2025',
+									key:
+										currentSubscription.card &&
+										currentSubscription.card.expiry
+											? 'Expiry'
+											: '',
+									value:
+										currentSubscription.card &&
+										currentSubscription.card.expiry ? (
+											<>
+												{
+													currentSubscription.card
+														.expiry.month
+												}{' '}
+												/{' '}
+												{
+													currentSubscription.card
+														.expiry.year
+												}
+											</>
+										) : (
+											''
+										),
 								},
 								{
 									key: 'Next payment amount',
-									value: '£5.66',
+									value: productFirstPaymentAmount(
+										chosenProduct,
+									),
 								},
 								{
 									key: 'Next payment date',
-									value: 'June 4th 2022',
+									value: productStartDate(chosenProduct),
 								},
 							]}
 						/>

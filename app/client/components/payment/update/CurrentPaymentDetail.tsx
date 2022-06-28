@@ -17,6 +17,7 @@ import {
 import { getObfuscatedPayPalId } from '../paypalDisplay';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { PaypalLogo } from '../paypalLogo';
+import { SepaDisplay } from '../sepaDisplay';
 
 function cardExpired(year: number, month: number) {
 	const expiryTimestamp = new Date(year, month);
@@ -159,7 +160,9 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 									)}
 									{subscription.payPalEmail && <PaypalLogo />}
 									{subscription.sepaMandate && (
-										<div>SEPA</div>
+										<SepaDisplay
+											{...subscription.sepaMandate}
+										/>
 									)}
 									{subscription.mandate && (
 										<span

@@ -22,9 +22,9 @@ import {
 } from './productSwitchApi';
 import { getGeoLocation } from '../../geolocation';
 import {
-	newProductStartDate,
-	newProductFirstPaymentAmount,
 	getIosAppUrl,
+	productStartDate,
+	productFirstPaymentAmount,
 } from './productSwitchHelpers';
 
 const CancellationSwitchConfirmed = () => {
@@ -184,10 +184,10 @@ const CancellationSwitchConfirmed = () => {
 										margin-left: ${space[1]}px;
 									`}
 								>
-									{`Your first payment of ${newProductFirstPaymentAmount(
-										productSwitchContext.newProductInfo,
-									)} will be taken on ${newProductStartDate(
-										productSwitchContext.newProductInfo,
+									{`Your first payment of ${productFirstPaymentAmount(
+										newProduct,
+									)} will be taken on ${productStartDate(
+										newProduct,
 									)}.`}
 								</span>
 							</li>
