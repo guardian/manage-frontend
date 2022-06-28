@@ -122,16 +122,6 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 				<PageContainer
 					selectedNavItem={NAV_LINKS.accountOverview}
 					pageTitle={pageTitle}
-					breadcrumbs={[
-						{
-							title: NAV_LINKS.accountOverview.title,
-							link: NAV_LINKS.accountOverview.link,
-						},
-						{
-							title: `Cancel ${props.productType.friendlyName}`,
-							currentPage: true,
-						},
-					]}
 				>
 					{productDetail ? (
 						contextAndOutletContainer(
