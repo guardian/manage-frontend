@@ -86,8 +86,8 @@ const Card = (props: CardProps) => {
  */
 
 interface KeyValuePair {
-	key: string;
-	value: string | number | ReactNode;
+	key: string | undefined;
+	value: string | number | ReactNode | undefined;
 }
 
 interface KeyValueTableProps {
@@ -111,7 +111,8 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 	const keyValuePairCss = css`
 		display: flex;
 		margin-top: ${space[3]}px;
-		:first-of-type {
+		:first-of-type,
+		:empty {
 			margin-top: 0;
 		}
 
@@ -152,8 +153,12 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 		<dl css={listCss}>
 			{props.content.map((item) => (
 				<div css={keyValuePairCss} key={item.key}>
-					<dt css={keyCss}>{item.key}</dt>
-					<dd css={valueCss}>{item.value}</dd>
+					{item.key && item.value && (
+						<>
+							<dt css={keyCss}>{item.key}</dt>
+							<dd css={valueCss}>{item.value}</dd>
+						</>
+					)}
 				</div>
 			))}
 		</dl>
@@ -587,7 +592,7 @@ const CancellationSwitchReview = () => {
 										currentSubscription.card &&
 										currentSubscription.card.expiry
 											? 'Expiry'
-											: '',
+											: undefined,
 									value:
 										currentSubscription.card &&
 										currentSubscription.card.expiry ? (
@@ -602,9 +607,7 @@ const CancellationSwitchReview = () => {
 														.expiry.year
 												}
 											</>
-										) : (
-											''
-										),
+										) : undefined,
 								},
 								{
 									key: 'Next payment amount',
