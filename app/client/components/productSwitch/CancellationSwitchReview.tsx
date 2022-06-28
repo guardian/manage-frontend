@@ -15,7 +15,7 @@ import {
 } from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
 import { CardDisplay } from '../payment/cardDisplay';
-import { ExpanderButton } from '../expanderButton';
+import { expanderButtonCss } from '../expanderButton';
 import { ArrowInCircle } from '../svgs/arrowInCircle';
 import {
 	CancellationPageTitleContext,
@@ -178,6 +178,7 @@ const CancellationSwitchReview = () => {
 	const routerState = location.state as CancellationRouterState;
 
 	const [confirmingChange, setConfirmingChange] = useState<boolean>(false);
+	const [benefitsExpanded, setBenefitsExpanded] = useState<boolean>(false);
 
 	const currentSubscription = routerState.productDetail.subscription;
 
@@ -527,6 +528,7 @@ const CancellationSwitchReview = () => {
 									theme="brand"
 								/>
 							)}
+
 							<ul css={[listCss, tickListCss]}>
 								<li>
 									<SvgCheckmark size="small" />
@@ -543,16 +545,60 @@ const CancellationSwitchReview = () => {
 									</span>
 								</li>
 							</ul>
-							<div
-								css={css`
-									margin-top: 6px;
-									margin-left: 34px;
-								`}
+
+							<ul
+								css={[
+									listCss,
+									tickListCss,
+									css`
+										margin-top: ${space[2]}px;
+									`,
+								]}
+								hidden={!benefitsExpanded}
 							>
-								<ExpanderButton buttonLabel="View more">
-									<span>More copy goes here…</span>
-								</ExpanderButton>
-							</div>
+								<li>
+									<SvgCheckmark size="small" />
+									<span>
+										<strong>Ad-free reading</strong> on all
+										your devices
+									</span>
+								</li>
+								<li>
+									<SvgCheckmark size="small" />
+									<span>
+										<strong>Off line reading</strong> in
+										both of your apps
+									</span>
+								</li>
+								<li>
+									<SvgCheckmark size="small" />
+									<span>
+										Play interactive{' '}
+										<strong>crosswords</strong>
+									</span>
+								</li>
+							</ul>
+
+							<button
+								css={[
+									expanderButtonCss()(benefitsExpanded),
+									css`
+										padding: 0;
+										margin-top: ${space[4]}px;
+										margin-bottom: ${space[1]}px;
+										margin-left: 34px;
+										border-bottom: 1px solid
+											${palette.neutral[7]};
+									`,
+								]}
+								type="button"
+								aria-expanded={benefitsExpanded}
+								onClick={() =>
+									setBenefitsExpanded(!benefitsExpanded)
+								}
+							>
+								View more
+							</button>
 						</div>
 					</Card>
 				</div>
