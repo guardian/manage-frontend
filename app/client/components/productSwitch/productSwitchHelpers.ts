@@ -37,7 +37,10 @@ export const introOfferPrice = (product: AvailableProductsResponse): string => {
 export const introOfferDuration = (
 	product: AvailableProductsResponse,
 ): string => {
-	return `${product.introOffer?.duration.count} ${product.introOffer?.duration.name}s`;
+	const count = product.introOffer?.duration.count;
+	const name = product.introOffer?.duration.name;
+
+	return `${count} ${name}${count === 1 ? '' : 's'}`;
 };
 
 /**
@@ -125,11 +128,14 @@ export const productFirstPaymentAmount = (
 	}
 };
 
-/*
-	The Apple appstore does not seem to have geolocation functionality, and requires us to link the user to the appropriate site.
-	We use the GU_geo_country cookie to detect the user's location.
-	The following functions have been taken from: https://github.com/guardian/support-frontend/blob/main/support-frontend/assets/helpers/urls/externalLinks.ts#L103
+/**
+ * The Apple app store does not seem to have geolocation functionality, and
+ * requires us to link the user to the appropriate site. We use the
+ * GU_geo_country cookie to detect the user's location. The following functions
+ * have been taken from:
+ * https://github.com/guardian/support-frontend/blob/main/support-frontend/assets/helpers/urls/externalLinks.ts#L103
  */
+
 function convertCountryGroupIdToAppStoreCountryCode(countryCode: string) {
 	switch (countryCode.toLowerCase()) {
 		case 'gb':
