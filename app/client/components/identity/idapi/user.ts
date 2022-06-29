@@ -32,6 +32,15 @@ type UserPrivateFields = Partial<
 	};
 };
 
+// The api error message is displayed directly to the user unless
+// you create an MMA specific error message here per field.
+const userErrorMessageMap = new Map([
+	[
+		'user.privateFields.registrationLocation',
+		'Please select a location from the list or "Prefer not to say"',
+	],
+]);
+
 interface UserAPIResponse {
 	user: IdapiUserDetails;
 }
@@ -149,9 +158,11 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
 	const error = response.errors.reduce((a, e) => {
 		return {
 			...a,
-			[getFieldNameFromContext(e.context)]: e.description,
+			[getFieldNameFromContext(e.context)]:
+				userErrorMessageMap.get(e.context) || e.description,
 		};
 	}, {} as UserError['error']);
+
 	return {
 		type: ErrorTypes.VALIDATION,
 		error,
