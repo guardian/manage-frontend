@@ -216,8 +216,6 @@ const CancellationSwitchReview = () => {
 			});
 		} catch (e) {
 			navigate('./failed', { state: routerState });
-		} finally {
-			setConfirmingChange(false);
 		}
 	};
 
@@ -668,7 +666,9 @@ const CancellationSwitchReview = () => {
 								},
 								{
 									key: 'Next payment date',
-									value: productStartDate(choosenProductToSwitch),
+									value: productStartDate(
+										choosenProductToSwitch,
+									),
 								},
 							]}
 						/>
