@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
 import palette from '../../../colours';
+import { minWidth } from '../../../styles/breakpoints';
 import { Button } from '../../buttons';
 import {
 	FormEmailField,
@@ -96,7 +97,16 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			We work out your location using cookies, so your experience is more
 			relevant to you. You can make sure this is accurate when you are
 			signed in by selecting your location. If you don’t want to share
-			this information, please select <br /> “I prefer not to say”.
+			this information, please select{' '}
+			<span
+				css={{
+					[minWidth.desktop]: {
+						display: 'block',
+					},
+				}}
+			>
+				“I prefer not to say”.
+			</span>
 		</span>
 	);
 	const deletePhoneNumberButton = (
