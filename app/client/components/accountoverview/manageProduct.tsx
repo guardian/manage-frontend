@@ -7,6 +7,7 @@ import {
 	headline,
 	textSans,
 } from '@guardian/source-foundations';
+import { Inline } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
@@ -183,22 +184,42 @@ const InnerContent = ({
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
 			/>
-			{productDetail.isPaidTier &&
-				!productDetail.subscription.payPalEmail && (
-					<LinkButton
-						colour={
-							productDetail.alertText ? brand[400] : brand[800]
-						}
-						textColour={
-							productDetail.alertText ? neutral[100] : brand[400]
-						}
-						fontWeight={'bold'}
-						alert={!!productDetail.alertText}
-						text="Update payment method"
-						to={`/payment/${specificProductType.urlPart}`}
-						state={{ productDetail: productDetail }}
+
+			<Inline
+				space={4}
+				cssOverrides={css`
+					align-items: center;
+				`}
+			>
+				{productDetail.isPaidTier &&
+					!productDetail.subscription.payPalEmail && (
+						<LinkButton
+							colour={
+								productDetail.alertText
+									? brand[400]
+									: brand[800]
+							}
+							textColour={
+								productDetail.alertText
+									? neutral[100]
+									: brand[400]
+							}
+							fontWeight={'bold'}
+							alert={!!productDetail.alertText}
+							text="Update payment method"
+							to={`/payment/${specificProductType.urlPart}`}
+							state={{ productDetail: productDetail }}
+						/>
+					)}
+
+				{!hasCancellationPending && (
+					<CancellationCTA
+						productDetail={productDetail}
+						friendlyName={groupedProductType.friendlyName}
+						specificProductType={specificProductType}
 					/>
 				)}
+			</Inline>
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
@@ -359,14 +380,6 @@ const InnerContent = ({
 					}
 				/>
 			)}
-
-			{!hasCancellationPending && (
-				<CancellationCTA
-					productDetail={productDetail}
-					friendlyName={groupedProductType.friendlyName}
-					specificProductType={specificProductType}
-				/>
-			)}
 		</>
 	);
 };
@@ -384,7 +397,6 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	return (
 		<div
 			css={css`
-				margin: ${space[24]}px 0 0 auto;
 				${textSans.medium()}
 				color: ${neutral[46]};
 			`}
