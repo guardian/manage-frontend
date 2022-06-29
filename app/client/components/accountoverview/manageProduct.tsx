@@ -189,6 +189,7 @@ const InnerContent = ({
 				space={4}
 				cssOverrides={css`
 					align-items: center;
+					margin-bottom: -${space[4]}px;
 				`}
 			>
 				{productDetail.isPaidTier &&
