@@ -1,5 +1,5 @@
-import { ReactNode, useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { css, ThemeProvider } from '@emotion/react';
 import {
 	Button,
@@ -23,6 +23,7 @@ import {
 	CancellationRouterState,
 } from '../cancel/CancellationContainer';
 import {
+	AvailableProductsResponse,
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
@@ -170,22 +171,26 @@ const CancellationSwitchReview = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
-	pageTitleContext.setPageTitle('Manage your support type');
 	const productSwitchContext = useContext(
 		ProductSwitchContext,
 	) as ProductSwitchContextInterface;
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
+	const choosenProductToSwitch =
+		routerState?.choosenProductToSwitchTo as AvailableProductsResponse;
+
+	if (!choosenProductToSwitch) {
+		return <Navigate to="/" />;
+	}
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Manage your support type');
+	}, []);
 
 	const [confirmingChange, setConfirmingChange] = useState<boolean>(false);
 	const [benefitsExpanded, setBenefitsExpanded] = useState<boolean>(false);
 
 	const currentSubscription = routerState.productDetail.subscription;
-
-	const chosenProduct =
-		productSwitchContext.availableProductsToSwitch[
-			productSwitchContext.chosenProductIndex
-		];
 
 	const confirmChange = async () => {
 		setConfirmingChange(true);
@@ -195,7 +200,9 @@ const CancellationSwitchReview = () => {
 				`/api/product-move/${routerState.productDetail.subscription.subscriptionId}`,
 				{
 					method: 'POST',
-					body: JSON.stringify({ targetProductId: chosenProduct.id }),
+					body: JSON.stringify({
+						targetProductId: choosenProductToSwitch.id,
+					}),
 					headers: {
 						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
 					},
@@ -204,10 +211,8 @@ const CancellationSwitchReview = () => {
 
 			const json = await res.json();
 
-			productSwitchContext.setNewProductInfo(json);
-
 			navigate('./confirmed', {
-				state: routerState,
+				state: { ...routerState, productSwitchConfirmationInfo: json },
 			});
 		} catch (e) {
 			navigate('./failed', { state: routerState });
@@ -417,7 +422,7 @@ const CancellationSwitchReview = () => {
 	return (
 		<>
 			<h2 css={subHeadingCss}>
-				Change your support to a {chosenProduct.name}
+				Change your support to a {choosenProductToSwitch.name}
 			</h2>
 
 			<Stack space={9}>
@@ -428,18 +433,18 @@ const CancellationSwitchReview = () => {
 					`}
 				>
 					If you decide to change your support to a{' '}
-					{chosenProduct.name} we’ll stop your{' '}
-					{chosenProduct.billing.frequency.name}ly{' '}
+					{choosenProductToSwitch.name} we’ll stop your{' '}
+					{choosenProductToSwitch.billing.frequency.name}ly{' '}
 					{productSwitchContext.productType.friendlyName} payments
 					straight away and you’ll have immediate access to the
-					benefits of a {chosenProduct.name}.
+					benefits of a {choosenProductToSwitch.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
 					<Card
 						heading={`Your current ${productSwitchContext.productType.friendlyName}`}
 					>
-						{chosenProduct.introOffer && (
+						{choosenProductToSwitch.introOffer && (
 							<hr
 								css={css`
 									display: none;
@@ -478,9 +483,9 @@ const CancellationSwitchReview = () => {
 
 					<Card
 						theme="brand"
-						heading={`Your new ${chosenProduct.name}`}
+						heading={`Your new ${choosenProductToSwitch.name}`}
 					>
-						{chosenProduct.introOffer && (
+						{choosenProductToSwitch.introOffer && (
 							<h4
 								css={css`
 									margin: 0;
@@ -490,7 +495,7 @@ const CancellationSwitchReview = () => {
 									background-color: ${palette.brand[400]};
 								`}
 							>
-								{introOfferBanner(chosenProduct)}
+								{introOfferBanner(choosenProductToSwitch)}
 							</h4>
 						)}
 						<div
@@ -500,18 +505,18 @@ const CancellationSwitchReview = () => {
 								background-color: #e3edfe;
 							`}
 						>
-							{chosenProduct.introOffer ? (
+							{choosenProductToSwitch.introOffer ? (
 								<PaymentDetails
 									paymentAmount={`
-										${introOfferPrice(chosenProduct)} for
-										${introOfferDuration(chosenProduct)}
+										${introOfferPrice(choosenProductToSwitch)} for
+										${introOfferDuration(choosenProductToSwitch)}
 									`}
 									paymentFollowOnAmount={
 										<>
 											{`Then  ${regularPrice(
-												chosenProduct,
+												choosenProductToSwitch,
 											)} ${regularBillingFrequency(
-												chosenProduct,
+												choosenProductToSwitch,
 											)}. `}
 											<strong>Cancel anytime.</strong>
 										</>
@@ -521,9 +526,9 @@ const CancellationSwitchReview = () => {
 							) : (
 								<PaymentDetails
 									paymentAmount={`${regularPrice(
-										chosenProduct,
+										choosenProductToSwitch,
 									)} ${regularBillingFrequency(
-										chosenProduct,
+										choosenProductToSwitch,
 									)}`}
 									theme="brand"
 								/>
@@ -658,12 +663,12 @@ const CancellationSwitchReview = () => {
 								{
 									key: 'Next payment amount',
 									value: productFirstPaymentAmount(
-										chosenProduct,
+										choosenProductToSwitch,
 									),
 								},
 								{
 									key: 'Next payment date',
-									value: productStartDate(chosenProduct),
+									value: productStartDate(choosenProductToSwitch),
 								},
 							]}
 						/>
@@ -678,7 +683,11 @@ const CancellationSwitchReview = () => {
 							<ul css={listCss}>
 								<li>
 									We'll stop your{' '}
-									{chosenProduct.billing.frequency.name}ly{' '}
+									{
+										choosenProductToSwitch.billing.frequency
+											.name
+									}
+									ly{' '}
 									{
 										productSwitchContext.productType
 											.friendlyName
@@ -686,12 +695,14 @@ const CancellationSwitchReview = () => {
 									payments.
 								</li>
 								<li>
-									Your new {chosenProduct.name} starts today.
+									Your new {choosenProductToSwitch.name}{' '}
+									starts today.
 								</li>
-								{chosenProduct.trial && (
+								{choosenProductToSwitch.trial && (
 									<li>
-										Your {chosenProduct.trial.dayCount} day
-										free trial kicks in immediately.
+										Your{' '}
+										{choosenProductToSwitch.trial.dayCount}{' '}
+										day free trial kicks in immediately.
 									</li>
 								)}
 							</ul>

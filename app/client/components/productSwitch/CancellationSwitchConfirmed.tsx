@@ -11,7 +11,7 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
 import { maxWidth, minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import GridImage from '../images/GridImage';
@@ -19,6 +19,7 @@ import { useContext } from 'react';
 import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
+	ProductSwitchResponse,
 } from './productSwitchApi';
 import { getGeoLocation } from '../../geolocation';
 import {
@@ -26,6 +27,7 @@ import {
 	productStartDate,
 	productFirstPaymentAmount,
 } from './productSwitchHelpers';
+import { CancellationRouterState } from '../cancel/CancellationContainer';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -33,8 +35,16 @@ const CancellationSwitchConfirmed = () => {
 	const productSwitchContext = useContext(
 		ProductSwitchContext,
 	) as ProductSwitchContextInterface;
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+	const productSwitchConfirmationInfo =
+		routerState?.productSwitchConfirmationInfo as ProductSwitchResponse;
 
-	const newProduct = productSwitchContext.newProductInfo.newProduct;
+	if (!productSwitchConfirmationInfo) {
+		return <Navigate to="/" />;
+	}
+
+	const newProduct = productSwitchConfirmationInfo.newProduct;
 
 	const subHeadingCss = css`
 		margin: ${space[9]}px 0 ${space[3]}px;
@@ -48,7 +58,7 @@ const CancellationSwitchConfirmed = () => {
 
 	return (
 		<>
-			<h2 css={subHeadingCss}>Your ${newProduct.name} is now active</h2>
+			<h2 css={subHeadingCss}>Your {newProduct.name} is now active</h2>
 			<p
 				css={css`
 					${textSans.medium()}

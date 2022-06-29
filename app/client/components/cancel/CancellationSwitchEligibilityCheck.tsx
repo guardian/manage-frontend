@@ -13,11 +13,7 @@ import useFetch from '../../services/useFetch';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import {
-	AvailableProductsResponse,
-	ProductSwitchContext,
-	ProductSwitchContextInterface,
-} from '../productSwitch/productSwitchApi';
+import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
 import { useAB } from '@guardian/ab-react';
 import { ProductMovementTest } from '../../experiments/tests/product-movement-test';
 
@@ -32,9 +28,6 @@ const CancellationSwitchEligibilityCheck = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
-	const productSwitchContext = useContext(
-		ProductSwitchContext,
-	) as ProductSwitchContextInterface;
 
 	if (!routerState) {
 		return <Navigate to="/" />;
@@ -65,7 +58,12 @@ const CancellationSwitchEligibilityCheck = () => {
 		},
 	);
 
-	data && productSwitchContext.setAvailableProductsToSwitch(data);
+	/*
+	useEffect(() => {
+		data && productSwitchContext.setAvailableProductsToSwitch(data);
+	}, []);
+	*/
+	// data && productSwitchContext.setAvailableProductsToSwitch(data);
 
 	if (error) {
 		return <CancellationReasonSelection />;
@@ -83,7 +81,7 @@ const CancellationSwitchEligibilityCheck = () => {
 		);
 	}
 	return inABTest ? (
-		<CancellationSwitchOffer />
+		<CancellationSwitchOffer availableProductsToSwitch={data} />
 	) : (
 		<CancellationReasonSelection />
 	);

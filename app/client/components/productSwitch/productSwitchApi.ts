@@ -1,4 +1,4 @@
-import { Context, createContext, Dispatch, SetStateAction } from 'react';
+import { Context, createContext } from 'react';
 import { ProductType } from '../../../shared/productTypes';
 
 type BillingFrequency = 'Weeks' | 'Months' | 'Years';
@@ -43,14 +43,6 @@ export interface ProductSwitchResponse {
 }
 
 export interface ProductSwitchContextInterface {
-	availableProductsToSwitch: AvailableProductsResponse[];
-	setAvailableProductsToSwitch: Dispatch<
-		SetStateAction<AvailableProductsResponse[]>
-	>;
-	chosenProductIndex: number;
-	setChosenProductIndex: Dispatch<SetStateAction<number>>;
-	newProductInfo: ProductSwitchResponse;
-	setNewProductInfo: Dispatch<SetStateAction<ProductSwitchResponse>>;
 	productType: ProductType;
 }
 

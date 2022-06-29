@@ -16,11 +16,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { useLocation } from 'react-router';
-import { useContext } from 'react';
-import {
-	ProductSwitchContext,
-	ProductSwitchContextInterface,
-} from './productSwitchApi';
+import { AvailableProductsResponse } from './productSwitchApi';
 import { productBenefitsLookup } from './ProductBenefits';
 import {
 	introOfferBanner,
@@ -40,13 +36,14 @@ const subHeadingCss = css`
 	}
 `;
 
-const CancellationSwitchOffer = () => {
+interface CancellationSwitchOfferProps {
+	availableProductsToSwitch: AvailableProductsResponse[];
+}
+
+const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
-	const productSwitchContext = useContext(
-		ProductSwitchContext,
-	) as ProductSwitchContextInterface;
 
 	return (
 		<>
@@ -66,7 +63,7 @@ const CancellationSwitchOffer = () => {
 				from our readers helps us to keep our journalism free of a
 				paywall, so it’s open and accessible to all.
 			</p>
-			{productSwitchContext.availableProductsToSwitch.map(
+			{props.availableProductsToSwitch.map(
 				(availableProduct, availableProductIndex) => (
 					<div
 						key={`available-product-${availableProduct.id}`}
@@ -244,11 +241,15 @@ const CancellationSwitchOffer = () => {
 										priority="secondary"
 										nudgeIcon
 										onClick={() => {
-											productSwitchContext.setChosenProductIndex(
-												availableProductIndex,
-											);
 											navigate('./switch', {
-												state: routerState,
+												state: {
+													...routerState,
+													choosenProductToSwitchTo:
+														props
+															.availableProductsToSwitch[
+															availableProductIndex
+														],
+												},
 											});
 										}}
 									>

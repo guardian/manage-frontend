@@ -75,6 +75,8 @@ export interface CancellationRouterState {
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
 	dontShowOffer?: boolean;
+	choosenProductToSwitchTo?: AvailableProductsResponse;
+	productSwitchConfirmationInfo?: ProductSwitchResponse;
 }
 
 export interface CancellationPageTitleInterface {
@@ -97,24 +99,9 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 		}`,
 	);
 
-	const [availableProductsToSwitch, setAvailableProductsToSwitch] = useState<
-		AvailableProductsResponse[]
-	>([]);
-
-	const [newProductInfo, setNewProductInfo] =
-		useState<ProductSwitchResponse>();
-
-	const [chosenProductIndex, setChosenProductIndex] = useState<number>(0);
-
 	return (
 		<ProductSwitchContext.Provider
 			value={{
-				availableProductsToSwitch,
-				setAvailableProductsToSwitch,
-				chosenProductIndex,
-				setChosenProductIndex,
-				newProductInfo,
-				setNewProductInfo,
 				productType: props.productType,
 			}}
 		>
