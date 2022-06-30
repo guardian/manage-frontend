@@ -37,7 +37,7 @@ type UserPrivateFields = Partial<
 const userErrorMessageMap = new Map([
 	[
 		'user.privateFields.registrationLocation',
-		'Please select a location from the list or "Prefer not to say"',
+		'Please select a location from the list or "I prefer not to say"',
 	],
 ]);
 

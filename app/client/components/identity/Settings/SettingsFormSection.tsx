@@ -39,6 +39,16 @@ type SettingsFormSectionProps = SettingsFormProps;
 const lines = () => <Lines n={1} margin="32px auto 16px" />;
 const titles = Object.values(Titles);
 const registrationLocations = Object.values(RegistrationLocations);
+const registrationLocationLabelModifier = (location: string) => {
+	switch (location) {
+		case 'Europe':
+			return `${location} (non UK)`;
+		case 'Prefer not to say':
+			return `I prefer not to say`;
+		default:
+			return location;
+	}
+};
 
 const deletePhoneNumber = async () => {
 	await PhoneNumber.remove();
@@ -230,7 +240,10 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 				<FormSelectField
 					name="registrationLocation" // must match api field name
 					label="Location"
+					labelModifier={registrationLocationLabelModifier}
 					options={registrationLocations}
+					firstOptionLabel="Unknown"
+					firstOptionDisabled={true}
 					formikProps={props}
 				/>
 			</PageSection>

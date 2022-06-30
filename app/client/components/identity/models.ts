@@ -93,14 +93,14 @@ export interface ConsentOptionCollection {
 
 type registrationLocationType = `${RegistrationLocations}`;
 export enum RegistrationLocations {
-	AUSTRALIA = 'Australia',
-	CANADA = 'Canada',
-	EUROPE = 'Europe',
-	NEW_ZEALAND = 'New Zealand',
-	UNITED_KINGDOM = 'United Kingdom',
-	UNITED_STATES = 'United States',
-	OTHER = 'Other',
 	PREFER_NOT_TO_SAY = 'Prefer not to say',
+	UNITED_KINGDOM = 'United Kingdom',
+	EUROPE = 'Europe',
+	UNITED_STATES = 'United States',
+	CANADA = 'Canada',
+	AUSTRALIA = 'Australia',
+	NEW_ZEALAND = 'New Zealand',
+	OTHER = 'Other',
 }
 
 export enum Titles {
