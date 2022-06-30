@@ -321,6 +321,7 @@ const CancellationSwitchReview = () => {
 
 	const smallPrintCss = css`
 		margin-top: ${space[4]}px;
+		margin-bottom: 0;
 		${textSans.xsmall()};
 		max-width: 60ch;
 
@@ -444,7 +445,7 @@ const CancellationSwitchReview = () => {
 
 				<div css={switchDetailsCardLayoutCss}>
 					<Card
-						heading={`Your current ${productSwitchContext.productType.friendlyName}`}
+						heading={`Your ${productSwitchContext.productType.friendlyName}`}
 					>
 						{chosenProductToSwitch.introOffer && (
 							<hr
@@ -604,7 +605,7 @@ const CancellationSwitchReview = () => {
 									setBenefitsExpanded(!benefitsExpanded)
 								}
 							>
-								View more
+								View {benefitsExpanded ? 'less' : 'more'}
 							</button>
 						</div>
 					</Card>
@@ -717,9 +718,15 @@ const CancellationSwitchReview = () => {
 
 			<p css={smallPrintCss}>
 				By proceeding, you are agreeing to our{' '}
-				<a href="/">Terms and Conditions</a>. To find out what personal
-				data we collect and how we use it, please visit our Privacy
-				Policy.
+				<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+					Terms and Conditions
+				</a>
+				. To find out what personal data we collect and how we use it,
+				please visit our{' '}
+				<a href="https://www.theguardian.com/help/privacy-policy">
+					Privacy Policy
+				</a>
+				.
 			</p>
 		</>
 	);
