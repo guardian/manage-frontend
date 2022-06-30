@@ -1,4 +1,9 @@
-import { dateString, parseDate } from '../../../shared/dates';
+import {
+	dateString,
+	DATE_FNS_LONG_OUTPUT_FORMAT,
+	DATE_FNS_SHORT_OUTPUT_FORMAT,
+	parseDate,
+} from '../../../shared/dates';
 import { AvailableProductsResponse } from './productSwitchApi';
 
 /**
@@ -101,6 +106,7 @@ export const regularBillingFrequency = (
 
 export const productStartDate = (
 	product: AvailableProductsResponse,
+	shortOutput: boolean = false,
 ): string => {
 	return dateString(
 		parseDate(
@@ -108,7 +114,9 @@ export const productStartDate = (
 				? product.introOffer.billing.startDate
 				: product.billing.startDate,
 		).date,
-		'd MMMM yyyy',
+		shortOutput
+			? DATE_FNS_SHORT_OUTPUT_FORMAT
+			: DATE_FNS_LONG_OUTPUT_FORMAT,
 	);
 };
 

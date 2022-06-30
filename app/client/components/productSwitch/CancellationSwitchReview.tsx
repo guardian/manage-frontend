@@ -673,6 +673,7 @@ const CancellationSwitchReview = () => {
 									key: 'Next payment date',
 									value: productStartDate(
 										chosenProductToSwitch,
+										true,
 									),
 								},
 							]}
