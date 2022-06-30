@@ -244,7 +244,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											navigate('./switch', {
 												state: {
 													...routerState,
-													choosenProductToSwitchTo:
+													chosenProductToSwitchTo:
 														props
 															.availableProductsToSwitch[
 															availableProductIndex

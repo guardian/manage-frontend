@@ -180,10 +180,10 @@ const CancellationSwitchReview = () => {
 	) as ProductSwitchContextInterface;
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
-	const choosenProductToSwitch =
-		routerState?.choosenProductToSwitchTo as AvailableProductsResponse;
+	const chosenProductToSwitch =
+		routerState?.chosenProductToSwitchTo as AvailableProductsResponse;
 
-	if (!choosenProductToSwitch) {
+	if (!chosenProductToSwitch) {
 		return <Navigate to="/" />;
 	}
 
@@ -205,7 +205,7 @@ const CancellationSwitchReview = () => {
 				{
 					method: 'POST',
 					body: JSON.stringify({
-						targetProductId: choosenProductToSwitch.id,
+						targetProductId: chosenProductToSwitch.id,
 					}),
 					headers: {
 						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
@@ -424,7 +424,7 @@ const CancellationSwitchReview = () => {
 	return (
 		<>
 			<h2 css={subHeadingCss}>
-				Change your support to a {choosenProductToSwitch.name}
+				Change your support to a {chosenProductToSwitch.name}
 			</h2>
 
 			<Stack space={9}>
@@ -435,18 +435,18 @@ const CancellationSwitchReview = () => {
 					`}
 				>
 					If you decide to change your support to a{' '}
-					{choosenProductToSwitch.name} we’ll stop your{' '}
-					{choosenProductToSwitch.billing.frequency.name}ly{' '}
+					{chosenProductToSwitch.name} we’ll stop your{' '}
+					{chosenProductToSwitch.billing.frequency.name}ly{' '}
 					{productSwitchContext.productType.friendlyName} payments
 					straight away and you’ll have immediate access to the
-					benefits of a {choosenProductToSwitch.name}.
+					benefits of a {chosenProductToSwitch.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
 					<Card
 						heading={`Your current ${productSwitchContext.productType.friendlyName}`}
 					>
-						{choosenProductToSwitch.introOffer && (
+						{chosenProductToSwitch.introOffer && (
 							<hr
 								css={css`
 									display: none;
@@ -485,9 +485,9 @@ const CancellationSwitchReview = () => {
 
 					<Card
 						theme="brand"
-						heading={`Your new ${choosenProductToSwitch.name}`}
+						heading={`Your new ${chosenProductToSwitch.name}`}
 					>
-						{choosenProductToSwitch.introOffer && (
+						{chosenProductToSwitch.introOffer && (
 							<h4
 								css={css`
 									margin: 0;
@@ -497,7 +497,7 @@ const CancellationSwitchReview = () => {
 									background-color: ${palette.brand[400]};
 								`}
 							>
-								{introOfferBanner(choosenProductToSwitch)}
+								{introOfferBanner(chosenProductToSwitch)}
 							</h4>
 						)}
 						<div
@@ -507,18 +507,18 @@ const CancellationSwitchReview = () => {
 								background-color: #e3edfe;
 							`}
 						>
-							{choosenProductToSwitch.introOffer ? (
+							{chosenProductToSwitch.introOffer ? (
 								<PaymentDetails
 									paymentAmount={`
-										${introOfferPrice(choosenProductToSwitch)} for
-										${introOfferDuration(choosenProductToSwitch)}
+										${introOfferPrice(chosenProductToSwitch)} for
+										${introOfferDuration(chosenProductToSwitch)}
 									`}
 									paymentFollowOnAmount={
 										<>
 											{`Then  ${regularPrice(
-												choosenProductToSwitch,
+												chosenProductToSwitch,
 											)} ${regularBillingFrequency(
-												choosenProductToSwitch,
+												chosenProductToSwitch,
 											)}. `}
 											<strong>Cancel anytime.</strong>
 										</>
@@ -528,9 +528,9 @@ const CancellationSwitchReview = () => {
 							) : (
 								<PaymentDetails
 									paymentAmount={`${regularPrice(
-										choosenProductToSwitch,
+										chosenProductToSwitch,
 									)} ${regularBillingFrequency(
-										choosenProductToSwitch,
+										chosenProductToSwitch,
 									)}`}
 									theme="brand"
 								/>
@@ -665,13 +665,13 @@ const CancellationSwitchReview = () => {
 								{
 									key: 'Next payment amount',
 									value: productFirstPaymentAmount(
-										choosenProductToSwitch,
+										chosenProductToSwitch,
 									),
 								},
 								{
 									key: 'Next payment date',
 									value: productStartDate(
-										choosenProductToSwitch,
+										chosenProductToSwitch,
 									),
 								},
 							]}
@@ -688,7 +688,7 @@ const CancellationSwitchReview = () => {
 								<li>
 									We'll stop your{' '}
 									{
-										choosenProductToSwitch.billing.frequency
+										chosenProductToSwitch.billing.frequency
 											.name
 									}
 									ly{' '}
@@ -699,13 +699,13 @@ const CancellationSwitchReview = () => {
 									payments.
 								</li>
 								<li>
-									Your new {choosenProductToSwitch.name}{' '}
-									starts today.
+									Your new {chosenProductToSwitch.name} starts
+									today.
 								</li>
-								{choosenProductToSwitch.trial && (
+								{chosenProductToSwitch.trial && (
 									<li>
 										Your{' '}
-										{choosenProductToSwitch.trial.dayCount}{' '}
+										{chosenProductToSwitch.trial.dayCount}{' '}
 										day free trial kicks in immediately.
 									</li>
 								)}

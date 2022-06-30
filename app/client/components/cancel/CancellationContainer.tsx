@@ -75,7 +75,7 @@ export interface CancellationRouterState {
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
 	dontShowOffer?: boolean;
-	choosenProductToSwitchTo?: AvailableProductsResponse;
+	chosenProductToSwitchTo?: AvailableProductsResponse;
 	productSwitchConfirmationInfo?: ProductSwitchResponse;
 }
 
