@@ -23,7 +23,8 @@ export const introOfferPrice = (product: AvailableProductsResponse): string => {
 		copy += Number(offer.amount / 100).toFixed(2);
 	} else {
 		const discount = offer.percentage ?? 0;
-		copy += Number((regular.amount / 100) * (discount / 100)).toFixed(2);
+		const offerPrice = Math.floor((regular.amount * discount) / 100) / 100;
+		copy += offerPrice.toFixed(2);
 	}
 
 	return copy;
