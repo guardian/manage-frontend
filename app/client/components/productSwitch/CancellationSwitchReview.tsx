@@ -27,7 +27,11 @@ import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
-import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import {
+	getMainPlan,
+	MDA_TEST_USER_HEADER,
+	PaidSubscriptionPlan,
+} from '../../../shared/productResponse';
 import {
 	introOfferBanner,
 	introOfferDuration,
@@ -220,7 +224,7 @@ const CancellationSwitchReview = () => {
 	};
 
 	const currentProductPrice = () => {
-		const plan = currentSubscription.plan;
+		const plan = getMainPlan(currentSubscription) as PaidSubscriptionPlan;
 
 		if (!plan) {
 			return '';
