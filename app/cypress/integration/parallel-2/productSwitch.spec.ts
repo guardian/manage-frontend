@@ -99,8 +99,7 @@ describe('product movement', () => {
 		cy.findByText('14 days free trial then 50% off for 3 months').should(
 			'exist',
 		);
-		cy.findByText('£6.00').should('exist');
-		// cy.findByText('£11.99').should('exist');
+		cy.findByText('£5.99').should('exist');
 
 		cy.findByText('Explore a digital subscription').click();
 
@@ -116,7 +115,7 @@ describe('product movement', () => {
 
 		cy.contains('digital subscription');
 		cy.contains(
-			'Your first payment of £6.00 will be taken on 21 June 2022.',
+			'Your first payment of £5.99 will be taken on 21 June 2022.',
 		).should('exist');
 
 		cy.url().should('include', 'confirmed');
