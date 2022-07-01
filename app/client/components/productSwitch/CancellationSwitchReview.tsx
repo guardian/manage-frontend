@@ -33,13 +33,14 @@ import {
 	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import {
-	introOfferBanner,
+	introOfferCopy,
 	introOfferDuration,
 	introOfferPrice,
 	productFirstPaymentAmount,
 	productStartDate,
 	regularBillingFrequency,
 	regularPrice,
+	trialCopy,
 } from './productSwitchHelpers';
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
@@ -462,7 +463,14 @@ const CancellationSwitchReview = () => {
 									background-color: ${palette.brand[400]};
 								`}
 							>
-								{introOfferBanner(chosenProductToSwitch)}
+								{trialCopy(chosenProductToSwitch)}{' '}
+								<span
+									css={css`
+										display: inline-block;
+									`}
+								>
+									{introOfferCopy(chosenProductToSwitch)}
+								</span>
 							</h4>
 						)}
 						<div

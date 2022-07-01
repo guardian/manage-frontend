@@ -50,22 +50,20 @@ export const introOfferDuration = (
 };
 
 /**
- * Returns intro offer banner copy.
+ * Returns copy for trial offer if present.
+ * e.g. '14 days free trial'
+ */
+
+export const trialCopy = (product: AvailableProductsResponse): string =>
+	product.trial ? `${product.trial.dayCount} days free trial` : '';
+
+/**
+ * Returns copy for intro offer if present.
  * e.g. '14 days free trial then 50% off for 3 months'
  */
 
-export const introOfferBanner = (
-	product: AvailableProductsResponse,
-): string => {
-	let copy = '';
-
-	if (product.trial) {
-		copy += `${product.trial.dayCount} days free trial`;
-	}
-
-	if (product.trial && product.introOffer) {
-		copy += ' then ';
-	}
+export const introOfferCopy = (product: AvailableProductsResponse): string => {
+	let copy = product.trial && product.introOffer ? 'then ' : '';
 
 	if (product.introOffer) {
 		const discount = product.introOffer.billing.percentage

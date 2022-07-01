@@ -20,11 +20,12 @@ import { useLocation } from 'react-router';
 import { AvailableProductsResponse } from './productSwitchApi';
 import { productBenefitsLookup } from './ProductBenefits';
 import {
-	introOfferBanner,
+	introOfferCopy,
 	introOfferDuration,
 	introOfferPrice,
 	regularBillingFrequency,
 	regularPrice,
+	trialCopy,
 } from './productSwitchHelpers';
 import { headingCss, standfirstCss } from './productSwitchStyles';
 
@@ -120,11 +121,18 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 												0 -5px 0 ${brand[400]};
 											box-decoration-break: clone;
 											color: ${brandAlt[400]};
-											padding: 0px 16px 1px 8px;
-											margin: 6px 0px;
+											padding: 0px ${space[2]}px 1px
+												${space[2]}px;
 										`}
 									>
-										{introOfferBanner(availableProduct)}
+										{trialCopy(availableProduct)}{' '}
+										<span
+											css={css`
+												display: inline-block;
+											`}
+										>
+											{introOfferCopy(availableProduct)}
+										</span>
 									</p>
 								</div>
 								<GridPicture
