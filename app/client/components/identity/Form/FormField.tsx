@@ -50,8 +50,13 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
 };
 
 export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
-	const { options, firstOptionLabel, firstOptionDisabled, labelModifier } =
-		props;
+	const {
+		options,
+		firstOptionLabel,
+		firstOptionDisabled = false,
+		labelModifier,
+	} = props;
+
 	const optionEls = options.map((o) => {
 		const optionLabel = labelModifier ? labelModifier(o) : o;
 		return (
