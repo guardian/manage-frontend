@@ -42,13 +42,6 @@ export const guardianWeeklySubscriptionCard: Subscription = {
 	subscriberId: 'A-S00286635',
 	trialLength: 9,
 	autoRenew: true,
-	plan: {
-		name: 'Guardian Weekly - Domestic',
-		amount: 15000,
-		currency: '£',
-		currencyISO: 'GBP',
-		interval: 'year',
-	},
 	currentPlans: [],
 	futurePlans: [
 		{
@@ -103,13 +96,6 @@ export const guardianWeeklySubscriptionAustralia: Subscription = {
 	subscriptionId: 'A-S00293857',
 	trialLength: 9,
 	autoRenew: true,
-	plan: {
-		name: 'Guardian Weekly - Domestic',
-		amount: 3250,
-		currency: '$',
-		currencyISO: 'AUD',
-		interval: 'month',
-	},
 	currentPlans: [],
 	futurePlans: [
 		{
@@ -161,13 +147,6 @@ export const digitalSubscriptionDD: Subscription = {
 	subscriptionId: 'A-S00287957',
 	trialLength: 16,
 	autoRenew: true,
-	plan: {
-		name: 'Digital Pack',
-		amount: 11900,
-		currency: '£',
-		currencyISO: 'GBP',
-		interval: 'year',
-	},
 	currentPlans: [],
 	futurePlans: [
 		{

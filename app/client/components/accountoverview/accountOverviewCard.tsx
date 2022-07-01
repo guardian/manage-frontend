@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import {
 	space,
@@ -34,6 +35,10 @@ interface AccountOverviewCardProps {
 
 export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 	const mainPlan = getMainPlan(props.productDetail.subscription);
+	if (!mainPlan) {
+		Sentry.captureMessage('mainPlan does not exist in accountOverviewCard');
+		return null;
+	}
 
 	const hasCancellationPending: boolean =
 		props.productDetail.subscription.cancelledAt;

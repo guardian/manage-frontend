@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import {
 	space,
@@ -38,6 +39,7 @@ import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertI
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { ErrorIcon } from '../svgs/errorIcon';
+import { GenericErrorMessage } from '../identity/GenericErrorMessage';
 import { GiftIcon } from '../svgs/giftIcon';
 import { ContributionUpdateAmount } from './contributionUpdateAmount';
 import { NewsletterOptinSection } from './newsletterOptinSection';
@@ -70,6 +72,10 @@ const InnerContent = ({
 	productDetail,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
+	if (!mainPlan) {
+		Sentry.captureMessage('mainPlan does not exist in manageProduct page');
+		return <GenericErrorMessage />;
+	}
 
 	const groupedProductType = manageProductProps.groupedProductType;
 

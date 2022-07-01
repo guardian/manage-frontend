@@ -53,13 +53,6 @@ export const guardianWeeklyCard: ProductDetail = {
 		subscriptionId: 'A-S00286635',
 		trialLength: 9,
 		autoRenew: true,
-		plan: {
-			name: 'Guardian Weekly - Domestic',
-			amount: 15000,
-			currency: '£',
-			currencyISO: 'GBP',
-			interval: 'year',
-		},
 		currentPlans: [],
 		futurePlans: [
 			{
@@ -228,13 +221,6 @@ export const newspaperVoucherPaypal: ProductDetail = {
 		subscriptionId: 'A-S00285104',
 		trialLength: -7,
 		autoRenew: true,
-		plan: {
-			name: 'Newspaper Digital Voucher',
-			amount: 5299,
-			currency: '£',
-			currencyISO: 'GBP',
-			interval: 'month',
-		},
 		currentPlans: [
 			{
 				name: 'Everyday',
@@ -308,13 +294,6 @@ export const guardianWeeklyCurrentSubscription: ProductDetail = {
 		subscriptionId: 'A-S00293857',
 		trialLength: -37,
 		autoRenew: true,
-		plan: {
-			name: 'Guardian Weekly - Domestic',
-			amount: 3250,
-			currency: '$',
-			currencyISO: 'AUD',
-			interval: 'month',
-		},
 		currentPlans: [
 			{
 				name: null,
@@ -379,13 +358,6 @@ export const homeDeliverySubscription: ProductDetail = {
 		subscriptionId: 'A-S00293857',
 		trialLength: -37,
 		autoRenew: true,
-		plan: {
-			name: 'Newspaper Delivery',
-			amount: 3250,
-			currency: '$',
-			currencyISO: 'AUD',
-			interval: 'month',
-		},
 		currentPlans: [
 			{
 				name: 'Everyday',
@@ -453,13 +425,6 @@ export const contribution: ProductDetail = {
 		subscriptionId: 'A-S00303370',
 		trialLength: -24,
 		autoRenew: true,
-		plan: {
-			name: 'Contributor',
-			amount: 10000,
-			currency: '£',
-			currencyISO: 'GBP',
-			interval: 'month',
-		},
 		currentPlans: [
 			{
 				name: null,

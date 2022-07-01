@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import { LinkButton } from '@guardian/source-react-components';
 import {
@@ -19,6 +20,7 @@ import {
 	Subscription,
 	getMainPlan,
 } from '../../../../shared/productResponse';
+import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
@@ -47,6 +49,13 @@ import { ReadOnlyAddressDisplay } from './readOnlyAddressDisplay';
 const renderDeliveryRecordsConfirmation =
 	(subscription: Subscription) => (data: DeliveryRecordsResponse) => {
 		const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
+
+		if (!mainPlan) {
+			Sentry.captureMessage(
+				'mainPlan does not exist in deliveryRecordsProblemReview',
+			);
+			return <GenericErrorMessage />;
+		}
 
 		return (
 			<DeliveryRecordsProblemConfirmationFC
