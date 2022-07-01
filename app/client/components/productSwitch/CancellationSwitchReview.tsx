@@ -44,6 +44,12 @@ import {
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
+import {
+	headingCss,
+	listCss,
+	standfirstCss,
+	tickListCss,
+} from './productSwitchStyles';
 
 /**
  * Generic Card container component
@@ -235,16 +241,6 @@ const CancellationSwitchReview = () => {
 		}`;
 	};
 
-	const subHeadingCss = css`
-		border-top: 1px solid ${palette.neutral[86]};
-		${headline.xxsmall({ fontWeight: 'bold' })};
-		margin-top: ${space[12]}px;
-		margin-bottom: ${space[3]}px;
-		${minWidth.tablet} {
-			${headline.small({ fontWeight: 'bold' })};
-		} ;
-	`;
-
 	const switchDetailsCardLayoutCss = css`
 		> * + * {
 			margin-top: 6px;
@@ -289,33 +285,6 @@ const CancellationSwitchReview = () => {
 			button:last-of-type {
 				flex-basis: calc(50% - 23px);
 			}
-		}
-	`;
-
-	const listCss = css`
-		${textSans.medium()};
-		margin: 0;
-		padding-left: ${space[4]}px;
-		list-style-position: outside;
-
-		> * + * {
-			margin-top: ${space[2]}px;
-		}
-	`;
-
-	const tickListCss = css`
-		list-style: none;
-		padding-left: 0;
-
-		li {
-			display: flex;
-			align-items: start;
-		}
-
-		svg {
-			flex-shrink: 0;
-			margin-right: ${space[2]}px;
-			fill: ${palette.brand[500]};
 		}
 	`;
 
@@ -424,17 +393,12 @@ const CancellationSwitchReview = () => {
 
 	return (
 		<>
-			<h2 css={subHeadingCss}>
+			<h2 css={headingCss}>
 				Change your support to a {chosenProductToSwitch.name}
 			</h2>
 
 			<Stack space={9}>
-				<p
-					css={css`
-						${textSans.medium()};
-						max-width: 60ch;
-					`}
-				>
+				<p css={standfirstCss}>
 					If you decide to change your support to a{' '}
 					{chosenProductToSwitch.name} we’ll stop your{' '}
 					{chosenProductToSwitch.billing.frequency.name}ly{' '}
