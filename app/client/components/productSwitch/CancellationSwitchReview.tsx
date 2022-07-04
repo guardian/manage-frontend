@@ -51,6 +51,7 @@ import {
 	standfirstCss,
 	tickListCss,
 } from './productSwitchStyles';
+import { productBenefits } from './ProductBenefits';
 
 /**
  * Generic Card container component
@@ -187,10 +188,10 @@ const CancellationSwitchReview = () => {
 	) as ProductSwitchContextInterface;
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
-	const chosenProductToSwitch =
+	const chosenProduct =
 		routerState?.chosenProductToSwitchTo as AvailableProductsResponse;
 
-	if (!chosenProductToSwitch) {
+	if (!chosenProduct) {
 		return <Navigate to="/" />;
 	}
 
@@ -203,6 +204,9 @@ const CancellationSwitchReview = () => {
 
 	const currentSubscription = routerState.productDetail.subscription;
 
+	const primaryBenefits = productBenefits[chosenProduct.id].slice(0, 2);
+	const additionalBenefits = productBenefits[chosenProduct.id].slice(2);
+
 	const confirmChange = async () => {
 		setConfirmingChange(true);
 
@@ -212,7 +216,7 @@ const CancellationSwitchReview = () => {
 				{
 					method: 'POST',
 					body: JSON.stringify({
-						targetProductId: chosenProductToSwitch.id,
+						targetProductId: chosenProduct.id,
 					}),
 					headers: {
 						[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
@@ -395,24 +399,24 @@ const CancellationSwitchReview = () => {
 	return (
 		<>
 			<h2 css={headingCss}>
-				Change your support to a {chosenProductToSwitch.name}
+				Change your support to a {chosenProduct.name}
 			</h2>
 
 			<Stack space={9}>
 				<p css={standfirstCss}>
 					If you decide to change your support to a{' '}
-					{chosenProductToSwitch.name} we’ll stop your{' '}
-					{chosenProductToSwitch.billing.frequency.name}ly{' '}
+					{chosenProduct.name} we’ll stop your{' '}
+					{chosenProduct.billing.frequency.name}ly{' '}
 					{productSwitchContext.productType.friendlyName} payments
 					straight away and you’ll have immediate access to the
-					benefits of a {chosenProductToSwitch.name}.
+					benefits of a {chosenProduct.name}.
 				</p>
 
 				<div css={switchDetailsCardLayoutCss}>
 					<Card
 						heading={`Your ${productSwitchContext.productType.friendlyName}`}
 					>
-						{chosenProductToSwitch.introOffer && (
+						{chosenProduct.introOffer && (
 							<hr
 								css={css`
 									display: none;
@@ -451,9 +455,9 @@ const CancellationSwitchReview = () => {
 
 					<Card
 						theme="brand"
-						heading={`Your new ${chosenProductToSwitch.name}`}
+						heading={`Your new ${chosenProduct.name}`}
 					>
-						{chosenProductToSwitch.introOffer && (
+						{chosenProduct.introOffer && (
 							<h4
 								css={css`
 									margin: 0;
@@ -463,13 +467,13 @@ const CancellationSwitchReview = () => {
 									background-color: ${palette.brand[400]};
 								`}
 							>
-								{trialCopy(chosenProductToSwitch)}{' '}
+								{trialCopy(chosenProduct)}{' '}
 								<span
 									css={css`
 										display: inline-block;
 									`}
 								>
-									{introOfferCopy(chosenProductToSwitch)}
+									{introOfferCopy(chosenProduct)}
 								</span>
 							</h4>
 						)}
@@ -480,18 +484,18 @@ const CancellationSwitchReview = () => {
 								background-color: #e3edfe;
 							`}
 						>
-							{chosenProductToSwitch.introOffer ? (
+							{chosenProduct.introOffer ? (
 								<PaymentDetails
 									paymentAmount={`
-										${introOfferPrice(chosenProductToSwitch)} for
-										${introOfferDuration(chosenProductToSwitch)}
+										${introOfferPrice(chosenProduct)} for
+										${introOfferDuration(chosenProduct)}
 									`}
 									paymentFollowOnAmount={
 										<>
 											{`Then  ${regularPrice(
-												chosenProductToSwitch,
+												chosenProduct,
 											)} ${regularBillingFrequency(
-												chosenProductToSwitch,
+												chosenProduct,
 											)}. `}
 											<strong>Cancel anytime.</strong>
 										</>
@@ -501,86 +505,75 @@ const CancellationSwitchReview = () => {
 							) : (
 								<PaymentDetails
 									paymentAmount={`${regularPrice(
-										chosenProductToSwitch,
+										chosenProduct,
 									)} ${regularBillingFrequency(
-										chosenProductToSwitch,
+										chosenProduct,
 									)}`}
 									theme="brand"
 								/>
 							)}
 
-							<ul css={[listCss, tickListCss]}>
-								<li>
-									<SvgTickRound size="small" />
-									<span>Support independent journalism</span>
-								</li>
-								<li>
-									<SvgTickRound size="small" />
-									<span>
-										Premium access to{' '}
-										<strong>
-											our award-winning news app
-										</strong>
-										, for the best mobile experience
-									</span>
-								</li>
-							</ul>
+							{primaryBenefits && (
+								<ul css={[listCss, tickListCss]}>
+									{primaryBenefits.map((benefit, index) => (
+										<li key={index}>
+											<SvgTickRound size="small" />
+											<span>{benefit}</span>
+										</li>
+									))}
+								</ul>
+							)}
 
-							<ul
-								id="additional-benefits"
-								css={[
-									listCss,
-									tickListCss,
-									css`
-										margin-top: ${space[2]}px;
-									`,
-								]}
-								hidden={!benefitsExpanded}
-							>
-								<li>
-									<SvgTickRound size="small" />
-									<span>
-										<strong>Ad-free reading</strong> on all
-										your devices
-									</span>
-								</li>
-								<li>
-									<SvgTickRound size="small" />
-									<span>
-										<strong>Off line reading</strong> in
-										both of your apps
-									</span>
-								</li>
-								<li>
-									<SvgTickRound size="small" />
-									<span>
-										Play interactive{' '}
-										<strong>crosswords</strong>
-									</span>
-								</li>
-							</ul>
-
-							<button
-								css={[
-									expanderButtonCss()(benefitsExpanded),
-									css`
-										padding: 0;
-										margin-top: ${space[4]}px;
-										margin-bottom: ${space[1]}px;
-										margin-left: 34px;
-										border-bottom: 1px solid
-											${palette.neutral[7]};
-									`,
-								]}
-								type="button"
-								aria-expanded={benefitsExpanded}
-								aria-controls="additional-benefits"
-								onClick={() =>
-									setBenefitsExpanded(!benefitsExpanded)
-								}
-							>
-								View {benefitsExpanded ? 'less' : 'more'}
-							</button>
+							{additionalBenefits && (
+								<>
+									<ul
+										id="additional-benefits"
+										css={[
+											listCss,
+											tickListCss,
+											css`
+												margin-top: ${space[2]}px;
+											`,
+										]}
+										hidden={!benefitsExpanded}
+									>
+										{additionalBenefits.map(
+											(benefit, index) => (
+												<li key={index}>
+													<SvgTickRound size="small" />
+													<span>{benefit}</span>
+												</li>
+											),
+										)}
+									</ul>
+									<button
+										css={[
+											expanderButtonCss()(
+												benefitsExpanded,
+											),
+											css`
+												padding: 0;
+												margin-top: ${space[4]}px;
+												margin-bottom: ${space[1]}px;
+												margin-left: 34px;
+												border-bottom: 1px solid
+													${palette.neutral[7]};
+											`,
+										]}
+										type="button"
+										aria-expanded={benefitsExpanded}
+										aria-controls="additional-benefits"
+										onClick={() =>
+											setBenefitsExpanded(
+												!benefitsExpanded,
+											)
+										}
+									>
+										View{' '}
+										{benefitsExpanded ? 'less' : 'more'}
+									</button>
+								</>
+							)}
 						</div>
 					</Card>
 				</div>
@@ -640,13 +633,13 @@ const CancellationSwitchReview = () => {
 								{
 									key: 'Next payment amount',
 									value: productFirstPaymentAmount(
-										chosenProductToSwitch,
+										chosenProduct,
 									),
 								},
 								{
 									key: 'Next payment date',
 									value: productStartDate(
-										chosenProductToSwitch,
+										chosenProduct,
 										true,
 									),
 								},
@@ -663,10 +656,7 @@ const CancellationSwitchReview = () => {
 							<ul css={listCss}>
 								<li>
 									We'll stop your{' '}
-									{
-										chosenProductToSwitch.billing.frequency
-											.name
-									}
+									{chosenProduct.billing.frequency.name}
 									ly{' '}
 									{
 										productSwitchContext.productType
@@ -675,14 +665,12 @@ const CancellationSwitchReview = () => {
 									payments.
 								</li>
 								<li>
-									Your new {chosenProductToSwitch.name} starts
-									today.
+									Your new {chosenProduct.name} starts today.
 								</li>
-								{chosenProductToSwitch.trial && (
+								{chosenProduct.trial && (
 									<li>
-										Your{' '}
-										{chosenProductToSwitch.trial.dayCount}{' '}
-										day free trial kicks in immediately.
+										Your {chosenProduct.trial.dayCount} day
+										free trial kicks in immediately.
 									</li>
 								)}
 							</ul>
