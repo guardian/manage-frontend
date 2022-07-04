@@ -13,12 +13,13 @@ import {
 	Button,
 	Stack,
 	SvgArrowRightStraight,
+	SvgTickRound,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router-dom';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { useLocation } from 'react-router';
 import { AvailableProductsResponse } from './productSwitchApi';
-import { productBenefitsLookup } from './ProductBenefits';
+import { productBenefits } from './ProductBenefits';
 import {
 	introOfferCopy,
 	introOfferDuration,
@@ -27,7 +28,12 @@ import {
 	regularPrice,
 	trialCopy,
 } from './productSwitchHelpers';
-import { headingCss, standfirstCss } from './productSwitchStyles';
+import {
+	headingCss,
+	listCss,
+	standfirstCss,
+	tickListCss,
+} from './productSwitchStyles';
 
 interface CancellationSwitchOfferProps {
 	availableProductsToSwitch: AvailableProductsResponse[];
@@ -266,7 +272,6 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 								css={css`
 									padding: 0 ${space[3]}px ${space[6]}px
 										${space[3]}px;
-
 									${minWidth.tablet} {
 										padding: 0 ${space[5]}px;
 									}
@@ -284,9 +289,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 									<p
 										css={css`
 											${textSans.medium()};
-											margin: 0 0 24px 0;
-											padding: 0;
-											display: inline-block;
+											margin-bottom: ${space[6]}px;
 										`}
 									>
 										Unlock additional features and benefits.
@@ -296,7 +299,6 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										css={css`
 											padding-top: ${space[6]}px;
 											border-top: 1px solid ${neutral[86]};
-
 											${minWidth.tablet} {
 												display: flex;
 												justify-content: space-between;
@@ -305,73 +307,29 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											}
 										`}
 									>
-										{productBenefitsLookup[
+										{productBenefits[
 											availableProduct.id
-										]?.column1 && (
+										] && (
 											<ul
-												css={css`
-													padding: 0;
-													margin: 0;
-
-													${minWidth.tablet} {
-														flex: 1;
-														max-width: 50%;
-														display: flex;
-														flex-flow: column nowrap;
-													}
-												`}
+												css={[
+													listCss,
+													tickListCss,
+													css`
+														${minWidth.tablet} {
+															columns: 2;
+															column-gap: ${space[4]}px;
+														}
+													`,
+												]}
 											>
-												{productBenefitsLookup[
+												{productBenefits[
 													availableProduct.id
-												]?.column1.map(
-													(benefit, benefitIndex) => (
-														<li
-															key={`column1Benefit${benefitIndex}`}
-															css={css`
-																${textSans.medium()};
-																display: flex;
-																line-height: 20px;
-																margin-bottom: ${space[3]}px;
-																:last-of-type {
-																	margin-bottom: 0;
-																}
-															`}
-														>
-															{benefit}
-														</li>
-													),
-												)}
-											</ul>
-										)}
-										{productBenefitsLookup[
-											availableProduct.id
-										]?.column2 && (
-											<ul
-												css={css`
-													padding: 0;
-													margin: 0;
-												`}
-											>
-												{productBenefitsLookup[
-													availableProduct.id
-												]?.column2.map(
-													(benefit, benefitIndex) => (
-														<li
-															key={`column2Benefit${benefitIndex}`}
-															css={css`
-																${textSans.medium()};
-																display: flex;
-																line-height: 20px;
-																margin-bottom: ${space[3]}px;
-																:last-of-type {
-																	margin-bottom: 0;
-																}
-															`}
-														>
-															{benefit}
-														</li>
-													),
-												)}
+												].map((benefit, index) => (
+													<li key={index}>
+														<SvgTickRound size="small" />
+														<span>{benefit}</span>
+													</li>
+												))}
 											</ul>
 										)}
 									</div>
