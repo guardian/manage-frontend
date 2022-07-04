@@ -572,7 +572,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
 		legacyUrlPart: 'guardianpatron',
-		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: What should this be?
+		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SOFT_OPT_IN_IDS.support_onboarding,

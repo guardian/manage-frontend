@@ -9,10 +9,9 @@ export interface StripePublicKeySet {
 export interface StripePublicKeys {
 	stripeKeyAustralia: StripePublicKeySet;
 	stripeKeyDefaultCurrencies: StripePublicKeySet;
-	stripeKeyPatrons: StripePublicKeySet;
 }
 
-// The first key from this object is the Australian/AUD one, the second key is for rest of the world and the third is for Guardian Patrons
+// The first key from this object is the Australian/AUD one, the second key is for rest of the world
 export const stripeSetupIntentConfigPromise: Promise<
 	StripePublicToSecretKeyMapping | undefined
 > = s3ConfigPromise<StripePublicToSecretKeyMapping>()(
