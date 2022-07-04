@@ -13,7 +13,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
+import { minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import GridImage from '../images/GridImage';
 import { useContext } from 'react';
@@ -118,6 +118,7 @@ const CancellationSwitchConfirmed = () => {
 						css={css`
 							padding: ${space[6]}px ${space[9]}px;
 							margin: 0;
+							max-width: 65ch;
 						`}
 					>
 						<li
@@ -247,18 +248,11 @@ const CancellationSwitchConfirmed = () => {
 							css={css`
 								${headline.xsmall({ fontWeight: 'bold' })};
 								margin: 0;
-								padding: ${space[3]}px;
+								padding: ${space[3]}px 20px;
 								color: ${brandAlt[400]};
-								${maxWidth.mobileLandscape} {
-									padding: ${space[3]}px;
-								}
-								${minWidth.tablet} {
-									font-size: 20px;
-									padding: ${space[3]}px ${space[5]}px;
-								}
 							`}
 						>
-							Download the Live app now!
+							Download the Live app
 						</h2>
 					</div>
 

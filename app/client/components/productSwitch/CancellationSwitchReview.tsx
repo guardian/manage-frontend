@@ -5,7 +5,7 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
-	SvgCheckmark,
+	SvgTickRound,
 } from '@guardian/source-react-components';
 import {
 	headline,
@@ -244,14 +244,14 @@ const CancellationSwitchReview = () => {
 
 	const switchDetailsCardLayoutCss = css`
 		> * + * {
-			margin-top: 6px;
+			margin-top: ${space[3]}px;
 		}
 
 		${minWidth.tablet} {
 			display: flex;
 			> * + * {
 				margin-top: 0;
-				margin-left: 6px;
+				margin-left: ${space[2]}px;
 			}
 		}
 	`;
@@ -284,7 +284,7 @@ const CancellationSwitchReview = () => {
 			}
 
 			button:last-of-type {
-				flex-basis: calc(50% - 23px);
+				flex-basis: calc(50% - 26px);
 			}
 		}
 	`;
@@ -438,7 +438,7 @@ const CancellationSwitchReview = () => {
 							/>
 							<ul css={[listCss, tickListCss]}>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									Support independent journalism
 								</li>
 							</ul>
@@ -511,11 +511,11 @@ const CancellationSwitchReview = () => {
 
 							<ul css={[listCss, tickListCss]}>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									<span>Support independent journalism</span>
 								</li>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									<span>
 										Premium access to{' '}
 										<strong>
@@ -527,6 +527,7 @@ const CancellationSwitchReview = () => {
 							</ul>
 
 							<ul
+								id="additional-benefits"
 								css={[
 									listCss,
 									tickListCss,
@@ -537,21 +538,21 @@ const CancellationSwitchReview = () => {
 								hidden={!benefitsExpanded}
 							>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									<span>
 										<strong>Ad-free reading</strong> on all
 										your devices
 									</span>
 								</li>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									<span>
 										<strong>Off line reading</strong> in
 										both of your apps
 									</span>
 								</li>
 								<li>
-									<SvgCheckmark size="small" />
+									<SvgTickRound size="small" />
 									<span>
 										Play interactive{' '}
 										<strong>crosswords</strong>
@@ -573,6 +574,7 @@ const CancellationSwitchReview = () => {
 								]}
 								type="button"
 								aria-expanded={benefitsExpanded}
+								aria-controls="additional-benefits"
 								onClick={() =>
 									setBenefitsExpanded(!benefitsExpanded)
 								}
