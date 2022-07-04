@@ -100,6 +100,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 		display: inline-block;
 		vertical-align: top;
 		width: calc(100% - 15ch);
+		overflow: hidden;
+		text-overflow: ellipsis;
 	`;
 
 	return (
