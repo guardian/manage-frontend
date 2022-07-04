@@ -29,7 +29,7 @@ import {
 	productFirstPaymentAmount,
 } from './productSwitchHelpers';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
-import { headingCss, standfirstCss } from './productSwitchStyles';
+import { headingCss, listCss, standfirstCss } from './productSwitchStyles';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -114,117 +114,52 @@ const CancellationSwitchConfirmed = () => {
 						/>
 					</div>
 
-					<ul
+					<div
 						css={css`
-							padding: ${space[6]}px ${space[9]}px;
-							margin: 0;
-							max-width: 65ch;
+							padding: ${space[6]}px ${space[5]}px;
+							max-width: 60ch;
 						`}
 					>
-						<li
-							css={css`
-								${textSans.medium()};
-								margin-bottom: ${space[3]}px;
-								line-height: 20px;
-							`}
-						>
-							<span
-								css={css`
-									margin-left: ${space[1]}px;
-								`}
-							>
+						<ul css={listCss}>
+							<li>
 								Check your inbox for an email containing all
 								your important information, plus details on how
 								to access your benefits.
-							</span>
-						</li>
-						<li
-							css={css`
-								${textSans.medium()};
-								margin-bottom: ${space[3]}px;
-								line-height: 20px;
-							`}
-						>
-							<span
-								css={css`
-									margin-left: ${space[1]}px;
-								`}
-							>
+							</li>
+							<li>
 								We'll stop your{' '}
-								{newProduct.billing.frequency.name}
-								ly{' '}
-								{
-									productSwitchContext.productType
-										.friendlyName
-								}{' '}
+								{newProduct.billing.frequency.name}ly{' '}
+								{productSwitchContext.productType.friendlyName}{' '}
 								payments.
-							</span>
-						</li>
-						{newProduct && (
-							<>
-								<li
-									css={css`
-										${textSans.medium()};
-										margin-bottom: ${space[3]}px;
-										line-height: 20px;
-									`}
-								>
-									<span
-										css={css`
-											margin-left: ${space[1]}px;
-										`}
-									>
-										{`Your new ${newProduct.name} starts today.`}
-									</span>
-								</li>
-								<li
-									css={css`
-										${textSans.medium()};
-										margin-bottom: ${space[3]}px;
-										line-height: 20px;
-									`}
-								>
-									<span
-										css={css`
-											margin-left: ${space[1]}px;
-										`}
-									>
-										{`Your first payment of ${productFirstPaymentAmount(
-											newProduct,
-										)} will be taken on ${productStartDate(
-											newProduct,
-										)}.`}
-									</span>
-								</li>
-							</>
-						)}
-						<li
-							css={css`
-								${textSans.medium()};
-								margin-bottom: ${space[4]}px;
-								line-height: 20px;
-							`}
-						>
-							<span
-								css={css`
-									margin-left: ${space[1]}px;
-								`}
-							>
+							</li>
+							{newProduct && (
+								<>
+									<li>
+										Your new {newProduct.name} starts today.
+									</li>
+									<li>
+										Your first payment of{' '}
+										{productFirstPaymentAmount(newProduct)}{' '}
+										will be taken on{' '}
+										{productStartDate(newProduct)}
+									</li>
+								</>
+							)}
+							<li>
 								You can manage your subscription online from
 								your{' '}
-								<Link to="/">
-									<span
-										css={css`
-											color: ${brand[500]};
-											text-decoration: underline;
-										`}
-									>
-										Account overview.
-									</span>
+								<Link
+									to="/"
+									css={css`
+										color: ${brand[500]};
+										text-decoration: underline;
+									`}
+								>
+									Account overview.
 								</Link>
-							</span>
-						</li>
-					</ul>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				<div
