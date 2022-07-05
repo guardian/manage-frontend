@@ -14,6 +14,7 @@ const ContactUs = () => (
 			border-top: 1px solid ${neutral[86]};
 			${textSans.medium()};
 			color: ${neutral[46]};
+			margin: 0;
 			padding-top: ${space[4]}px;
 
 			${minWidth.tablet} {

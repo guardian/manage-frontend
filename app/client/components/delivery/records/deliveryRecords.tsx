@@ -685,7 +685,10 @@ const DeliveryRecords = () => {
 							css={css`
 								${textSans.medium()};
 								color: ${neutral[46]};
-								margin-top: ${space[6]}px;
+								margin: ${space[6]}px 0
+									${showBottomCallCentreNumbers
+										? space[5]
+										: 0}px;
 							`}
 						>
 							If your delivery is not shown above, or you’d like

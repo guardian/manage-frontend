@@ -153,7 +153,14 @@ const Help = () => {
 			>
 				Visit Help Centre
 			</LinkButton>
-			<p css={pStyle}>
+			<p
+				css={css`
+					${textSans.medium()};
+					margin: ${callCentreOpen
+						? `30px 0 ${space[5]}px`
+						: '30px 0 0'};
+				`}
+			>
 				If you still can’t find what you need and want to contact us,
 				check{' '}
 				<span

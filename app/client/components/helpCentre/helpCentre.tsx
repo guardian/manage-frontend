@@ -20,11 +20,7 @@ const subtitleStyles = css`
 const HelpCentre = () => {
 	return (
 		<>
-			<div
-				css={css`
-					margin-bottom: ${space[24]}px;
-				`}
-			>
+			<div>
 				<h2 css={subtitleStyles}>Most popular topics</h2>
 				<div
 					css={css`

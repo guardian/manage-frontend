@@ -164,11 +164,7 @@ const ContactUs = () => {
 
 	return (
 		<>
-			<div
-				css={css`
-					margin-bottom: ${space[24]}px;
-				`}
-			>
+			<div>
 				<h1
 					css={css`
 						${headline.xxsmall({ fontWeight: 'bold' })};

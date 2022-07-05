@@ -225,7 +225,8 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 				<p
 					css={css`
 						${textSans.medium()};
-						margin-top: ${space[12]}px;
+						margin: ${space[12]}px 0
+							${showTopCallCentreNumbers ? `${space[5]}px` : '0'};
 						color: ${neutral[46]};
 					`}
 				>

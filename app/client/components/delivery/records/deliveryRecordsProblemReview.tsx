@@ -631,7 +631,8 @@ const DeliveryRecordsProblemReviewFC = (
 			<p
 				css={css`
 					${textSans.medium()};
-					margin-top: ${space[9]}px;
+					margin: ${space[6]}px 0
+						${showCallCenterNumbers ? space[5] : 0}px;
 					color: ${neutral[46]};
 				`}
 			>
