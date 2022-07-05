@@ -141,7 +141,7 @@ const CancellationSwitchConfirmed = () => {
 										Your first payment of{' '}
 										{productFirstPaymentAmount(newProduct)}{' '}
 										will be taken on{' '}
-										{productStartDate(newProduct)}
+										{productStartDate(newProduct)}.
 									</li>
 								</>
 							)}
