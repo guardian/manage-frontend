@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import {
 	space,
 	brand,
@@ -681,37 +681,36 @@ const DeliveryRecords = () => {
 						>
 							Cancel
 						</Button>
-						<p
-							css={css`
-								${textSans.medium()};
-								color: ${neutral[46]};
-								margin: ${space[6]}px 0
-									${showBottomCallCentreNumbers
-										? space[5]
-										: 0}px;
-							`}
-						>
-							If your delivery is not shown above, or you’d like
-							to talk to someone,{' '}
-							<span
+						<Stack space={5}>
+							<p
 								css={css`
-									cursor: pointer;
-									color: ${brand[500]};
-									text-decoration: underline;
+									${textSans.medium()};
+									color: ${neutral[46]};
+									margin: ${space[6]}px 0 0;
 								`}
-								onClick={() =>
-									setBottomCallCentreNumbersVisibility(
-										!showBottomCallCentreNumbers,
-									)
-								}
 							>
-								contact us
-							</span>
-							.
-						</p>
-						{showBottomCallCentreNumbers && (
-							<CallCentreEmailAndNumbers />
-						)}
+								If your delivery is not shown above, or you’d
+								like to talk to someone,{' '}
+								<span
+									css={css`
+										cursor: pointer;
+										color: ${brand[500]};
+										text-decoration: underline;
+									`}
+									onClick={() =>
+										setBottomCallCentreNumbersVisibility(
+											!showBottomCallCentreNumbers,
+										)
+									}
+								>
+									contact us
+								</span>
+								.
+							</p>
+							{showBottomCallCentreNumbers && (
+								<CallCentreEmailAndNumbers />
+							)}
+						</Stack>
 					</div>
 				</>
 			)}

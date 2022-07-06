@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import {
 	space,
 	brand,
@@ -628,30 +628,31 @@ const DeliveryRecordsProblemReviewFC = (
 					Cancel
 				</Button>
 			</div>
-			<p
-				css={css`
-					${textSans.medium()};
-					margin: ${space[6]}px 0
-						${showCallCenterNumbers ? space[5] : 0}px;
-					color: ${neutral[46]};
-				`}
-			>
-				If your delivery is not shown above, or you’d like to talk to
-				someone,{' '}
-				<span
+			<Stack space={5}>
+				<p
 					css={css`
-						color: ${brand[500]};
-						text-decoration: underline;
-						cursor: pointer;
+						${textSans.medium()};
+						margin: ${space[6]}px 0 0;
+						color: ${neutral[46]};
 					`}
-					onClick={() =>
-						setShowCallCenterNumbers(!showCallCenterNumbers)
-					}
 				>
-					contact us
-				</span>
-			</p>
-			{showCallCenterNumbers && <CallCentreEmailAndNumbers />}
+					If your delivery is not shown above, or you’d like to talk
+					to someone,{' '}
+					<span
+						css={css`
+							color: ${brand[500]};
+							text-decoration: underline;
+							cursor: pointer;
+						`}
+						onClick={() =>
+							setShowCallCenterNumbers(!showCallCenterNumbers)
+						}
+					>
+						contact us
+					</span>
+				</p>
+				{showCallCenterNumbers && <CallCentreEmailAndNumbers />}
+			</Stack>
 		</DeliveryRecordCreditContext.Provider>
 	);
 };
