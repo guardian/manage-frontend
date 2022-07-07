@@ -58,16 +58,10 @@ const CancellationSwitchEligibilityCheck = () => {
 		},
 	);
 
-	/*
-	useEffect(() => {
-		data && productSwitchContext.setAvailableProductsToSwitch(data);
-	}, []);
-	*/
-	// data && productSwitchContext.setAvailableProductsToSwitch(data);
-
 	if (error) {
 		return <CancellationReasonSelection />;
 	}
+
 	if (!data) {
 		return (
 			<WithStandardTopMargin>
@@ -80,6 +74,7 @@ const CancellationSwitchEligibilityCheck = () => {
 			</WithStandardTopMargin>
 		);
 	}
+
 	return inABTest ? (
 		<CancellationSwitchOffer availableProductsToSwitch={data} />
 	) : (

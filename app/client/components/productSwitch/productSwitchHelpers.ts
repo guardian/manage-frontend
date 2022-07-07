@@ -59,7 +59,7 @@ export const trialCopy = (product: AvailableProductsResponse): string =>
 
 /**
  * Returns copy for intro offer if present.
- * e.g. '14 days free trial then 50% off for 3 months'
+ * e.g. 'then 50% off for 3 months'
  */
 
 export const introOfferCopy = (product: AvailableProductsResponse): string => {
@@ -94,7 +94,7 @@ export const regularPrice = (product: AvailableProductsResponse): string => {
 export const regularBillingFrequency = (
 	product: AvailableProductsResponse,
 ): string => {
-	return `per  ${product.billing.frequency.name}`;
+	return `per ${product.billing.frequency.name}`;
 };
 
 /**

@@ -14,8 +14,6 @@ export default function ProductSwitchFailed() {
 	const routerState = location.state as CancellationRouterState;
 	const navigate = useNavigate();
 
-	console.log(routerState);
-
 	return routerState ? (
 		<>
 			<div
