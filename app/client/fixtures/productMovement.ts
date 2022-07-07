@@ -1,4 +1,9 @@
-export const availableProductMovesResponse = [
+import {
+	AvailableProductsResponse,
+	ProductSwitchResponse,
+} from '../components/productSwitch/productSwitchApi';
+
+export const availableProductMovesResponse: AvailableProductsResponse[] = [
 	{
 		id: '123',
 		name: 'digital subscription',
@@ -38,7 +43,7 @@ export const availableProductMovesResponse = [
 	},
 ];
 
-export const productMoveResponse = {
+export const productMoveResponse: ProductSwitchResponse = {
 	newSubscriptionName: 'asdf',
 	newProduct: {
 		id: '123',

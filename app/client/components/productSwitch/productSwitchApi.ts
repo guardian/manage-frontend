@@ -1,7 +1,7 @@
 import { Context, createContext } from 'react';
 import { ProductType } from '../../../shared/productTypes';
 
-type BillingFrequency = 'Weeks' | 'Months' | 'Years';
+type BillingFrequency = 'week' | 'month' | 'year';
 
 interface Currency {
 	symbol: string;
@@ -18,6 +18,17 @@ export interface Billing {
 	startDate: string;
 }
 
+export interface IntroOfferBilling {
+	amount?: number;
+	percentage?: number;
+	currency: Currency;
+	frequency: {
+		name: BillingFrequency;
+		count: number;
+	};
+	startDate: string;
+}
+
 export interface AvailableProductsResponse {
 	id: string;
 	name: string;
@@ -26,10 +37,7 @@ export interface AvailableProductsResponse {
 		dayCount: number;
 	};
 	introOffer?: {
-		billing: Billing & {
-			amount?: number;
-			percentage?: number;
-		};
+		billing: IntroOfferBilling;
 		duration: {
 			name: BillingFrequency;
 			count: number;

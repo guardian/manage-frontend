@@ -343,7 +343,7 @@ const CancellationSwitchReview = () => {
 	};
 
 	interface PaymentDetailsProps {
-		theme?: 'brand' | undefined;
+		theme?: 'brand';
 		paymentAmount: string | ReactNode;
 		paymentFollowOnAmount?: string | ReactNode;
 	}
