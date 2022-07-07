@@ -4,16 +4,16 @@ test('obfuscate email id', () => {
 	expect(getObfuscatedPayPalId('username@email.com')).toEqual(
 		'u******e@email.com',
 	);
-	expect(getObfuscatedPayPalId('last.first@guardian.com')).toEqual(
-		'l********t@guardian.com',
+	expect(getObfuscatedPayPalId('last.first@thegulocal.com')).toEqual(
+		'l********t@thegulocal.com',
 	);
-	expect(getObfuscatedPayPalId('j@guardian.com')).toEqual('j@guardian.com');
-	expect(getObfuscatedPayPalId('jm@guardian.com')).toEqual('jm@guardian.com');
-	expect(getObfuscatedPayPalId('jim@guardian.com')).toEqual(
-		'j*m@guardian.com',
+	expect(getObfuscatedPayPalId('j@thegulocal.com')).toEqual('j@thegulocal.com');
+	expect(getObfuscatedPayPalId('jm@thegulocal.com')).toEqual('jm@thegulocal.com');
+	expect(getObfuscatedPayPalId('jim@thegulocal.com')).toEqual(
+		'j*m@thegulocal.com',
 	);
-	expect(getObfuscatedPayPalId('james@guardian.com')).toEqual(
-		'j***s@guardian.com',
+	expect(getObfuscatedPayPalId('james@thegulocal.com')).toEqual(
+		'j***s@thegulocal.com',
 	);
 });
 

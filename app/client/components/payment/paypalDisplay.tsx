@@ -21,10 +21,10 @@ interface PayPalProps {
 // ID                    | 1 | 2   | 3
 // ----------------------|---|-----|---------
 // james                 | j | ame | s
-// james@theguardian.com | j | ame | s@theguardian.com
-// jim@theguardian.com   | j | i   | m@theguardian.com
-// jm@theguardian.com    | j |     | m@theguardian.com
-// j@theguardian.com     | j |     | @theguardian.com
+// james@thegulocal.com | j | ame | s@thegulocal.com
+// jim@thegulocal.com   | j | i   | m@thegulocal.com
+// jm@thegulocal.com    | j |     | m@thegulocal.com
+// j@thegulocal.com     | j |     | @thegulocal.com
 
 const SPLIT_PAYPAL_ID_REGEX = /^(.)(.*?)(.?|.?@.+)$/;
 
