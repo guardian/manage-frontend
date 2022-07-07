@@ -183,7 +183,7 @@ const CancellationSwitchConfirmed = () => {
 							css={css`
 								${headline.xsmall({ fontWeight: 'bold' })};
 								margin: 0;
-								padding: ${space[3]}px 20px;
+								padding: ${space[3]}px ${space[5]}px;
 								color: ${brandAlt[400]};
 							`}
 						>

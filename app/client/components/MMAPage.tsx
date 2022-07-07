@@ -539,12 +539,7 @@ const MMARouter = () => {
 
 const getMvtId = (): number => {
 	const mvtId = getCookie('GU_mvt_id');
-
-	if (mvtId) {
-		return parseInt(mvtId);
-	} else {
-		return 0;
-	}
+	return mvtId ? parseInt(mvtId) : 0;
 };
 
 export const MMAPage = (
