@@ -76,7 +76,7 @@ const YourDataDescription: FC = () => (
 			<li>Products or services you buy from us</li>
 			<li>
 				Pages you view on theguardian.com or other Guardian websites
-				when signed in
+				when signed in and where you are reading from
 			</li>
 		</ul>
 	</div>

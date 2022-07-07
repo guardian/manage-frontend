@@ -23,6 +23,7 @@ type UserPrivateFields = Partial<
 		| 'address4'
 		| 'postcode'
 		| 'country'
+		| 'registrationLocation'
 	>
 > & {
 	telephoneNumber?: {
@@ -30,6 +31,15 @@ type UserPrivateFields = Partial<
 		localNumber: string;
 	};
 };
+
+// The api error message is displayed directly to the user unless
+// you create an MMA specific error message here per field.
+const userErrorMessageMap = new Map([
+	[
+		'user.privateFields.registrationLocation',
+		'Please select a location from the list or "I prefer not to say"',
+	],
+]);
 
 interface UserAPIResponse {
 	user: IdapiUserDetails;
@@ -98,6 +108,7 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 			postcode: user.postcode,
 			country: user.country,
 			telephoneNumber,
+			registrationLocation: user.registrationLocation,
 		},
 		primaryEmailAddress: user.primaryEmailAddress,
 	};
@@ -122,6 +133,7 @@ const toUser = (response: UserAPIResponse): User => {
 		country: getFromUser('privateFields.country'),
 		countryCode: getFromUser('privateFields.telephoneNumber.countryCode'),
 		localNumber: getFromUser('privateFields.telephoneNumber.localNumber'),
+		registrationLocation: getFromUser('privateFields.registrationLocation'),
 		consents,
 		validated: user.statusFields.userEmailValidated,
 	};
@@ -146,9 +158,11 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
 	const error = response.errors.reduce((a, e) => {
 		return {
 			...a,
-			[getFieldNameFromContext(e.context)]: e.description,
+			[getFieldNameFromContext(e.context)]:
+				userErrorMessageMap.get(e.context) || e.description,
 		};
 	}, {} as UserError['error']);
+
 	return {
 		type: ErrorTypes.VALIDATION,
 		error,

@@ -18,6 +18,8 @@ type FormInputProps<T> = Pick<
 type FormSelectProps<T> = FormInputProps<T> & {
 	options: string[];
 	labelModifier?: (option: string) => string;
+	firstOptionDisabled?: boolean;
+	firstOptionLabel?: string; // placeholder label for null/empty string
 };
 
 const getError = <T,>(
@@ -48,7 +50,13 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
 };
 
 export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
-	const { options, labelModifier } = props;
+	const {
+		options,
+		firstOptionLabel,
+		firstOptionDisabled = false,
+		labelModifier,
+	} = props;
+
 	const optionEls = options.map((o) => {
 		const optionLabel = labelModifier ? labelModifier(o) : o;
 		return (
@@ -64,7 +72,9 @@ export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
 			formikProps={props.formikProps}
 		>
 			<Field component="select" name={name}>
-				<option value="" />
+				<option disabled={firstOptionDisabled} value="">
+					{firstOptionLabel}
+				</option>
 				{optionEls}
 			</Field>
 		</FormField>

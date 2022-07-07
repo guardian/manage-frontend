@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
 import palette from '../../../colours';
+import { minWidth } from '../../../styles/breakpoints';
 import { Button } from '../../buttons';
 import {
 	FormEmailField,
@@ -17,6 +18,7 @@ import {
 	COUNTRIES,
 	ErrorTypes,
 	PHONE_CALLING_CODES,
+	RegistrationLocations,
 	Titles,
 	User,
 } from '../models';
@@ -36,6 +38,17 @@ type SettingsFormSectionProps = SettingsFormProps;
 
 const lines = () => <Lines n={1} margin="32px auto 16px" />;
 const titles = Object.values(Titles);
+const registrationLocations = Object.values(RegistrationLocations);
+const registrationLocationLabelModifier = (location: string) => {
+	switch (location) {
+		case 'Europe':
+			return `${location} (non UK)`;
+		case 'Prefer not to say':
+			return `I prefer not to say`;
+		default:
+			return location;
+	}
+};
 
 const deletePhoneNumber = async () => {
 	await PhoneNumber.remove();
@@ -87,6 +100,23 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			<a css={aCss} href={IdentityLocations.CONTACT_AND_DELIVERY_HELP}>
 				Help with updating your contact or delivery details.
 			</a>
+		</span>
+	);
+	const locationDescription = (
+		<span>
+			We work out your location using cookies, so your experience is more
+			relevant to you. You can make sure this is accurate when you are
+			signed in by selecting your location. If you don’t want to share
+			this information, please select{' '}
+			<span
+				css={{
+					[minWidth.desktop]: {
+						display: 'block',
+					},
+				}}
+			>
+				“I prefer not to say”.
+			</span>
 		</span>
 	);
 	const deletePhoneNumberButton = (
@@ -202,6 +232,18 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					name="country"
 					label="Country"
 					options={COUNTRIES.flatMap((country) => country.name)}
+					formikProps={props}
+				/>
+			</PageSection>
+			{lines()}
+			<PageSection title="Location" description={locationDescription}>
+				<FormSelectField
+					name="registrationLocation" // must match api field name
+					label="Location"
+					labelModifier={registrationLocationLabelModifier}
+					options={registrationLocations}
+					firstOptionLabel="Unknown"
+					firstOptionDisabled={true}
 					formikProps={props}
 				/>
 			</PageSection>

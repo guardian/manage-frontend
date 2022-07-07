@@ -40,6 +40,7 @@ export interface User {
 	country: string;
 	countryCode: string;
 	localNumber: number;
+	registrationLocation: registrationLocationType;
 }
 
 export interface UserError {
@@ -87,7 +88,20 @@ export interface ConsentOptionCollection {
  * The following models are being used to aid in migration of functionality off of a legacy system. There is
  * currently no standard library or API for these values at the Guardian, when these become available, these hardcoded values should be replaced.
  * Note: COUNTRIES comes from a non-standard list used by the Guardian.
+ * Note : REGISTRATION LOCATION comes from a non-standard list used by the Guardian and enforced by the Identity API
  */
+
+type registrationLocationType = `${RegistrationLocations}`;
+export enum RegistrationLocations {
+	PREFER_NOT_TO_SAY = 'Prefer not to say',
+	UNITED_KINGDOM = 'United Kingdom',
+	EUROPE = 'Europe',
+	UNITED_STATES = 'United States',
+	CANADA = 'Canada',
+	AUSTRALIA = 'Australia',
+	NEW_ZEALAND = 'New Zealand',
+	OTHER = 'Other',
+}
 
 export enum Titles {
 	MR = 'Mr',
