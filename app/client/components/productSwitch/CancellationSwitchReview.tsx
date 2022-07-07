@@ -5,6 +5,7 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
+	SvgArrowRightStraight,
 	SvgTickRound,
 } from '@guardian/source-react-components';
 import {
@@ -16,7 +17,6 @@ import {
 import { minWidth } from '../../styles/breakpoints';
 import { CardDisplay } from '../payment/cardDisplay';
 import { expanderButtonCss } from '../expanderButton';
-import { ArrowInCircle } from '../svgs/arrowInCircle';
 import {
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
@@ -246,7 +246,10 @@ const CancellationSwitchReview = () => {
 		}`;
 	};
 
-	const switchDetailsCardLayoutCss = css`
+	const arrowIconWidth = 36;
+	const cardLayoutGap = space[2];
+
+	const cardLayoutCss = css`
 		> * + * {
 			margin-top: ${space[3]}px;
 		}
@@ -255,12 +258,12 @@ const CancellationSwitchReview = () => {
 			display: flex;
 			> * + * {
 				margin-top: 0;
-				margin-left: ${space[2]}px;
+				margin-left: ${cardLayoutGap}px;
 			}
 		}
 	`;
 
-	const switchArrowCss = css`
+	const arrowIconCss = css`
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -268,6 +271,17 @@ const CancellationSwitchReview = () => {
 
 		${minWidth.tablet} {
 			transform: none;
+		}
+
+		span {
+			display: flex;
+			padding: ${space[1]}px;
+			border-radius: 50%;
+			border: 1px solid ${palette.neutral[86]};
+		}
+
+		svg {
+			fill: ${palette.brand[400]};
 		}
 	`;
 
@@ -288,7 +302,9 @@ const CancellationSwitchReview = () => {
 			}
 
 			button:last-of-type {
-				flex-basis: calc(50% - 26px);
+				flex-basis: calc(
+					50% - ${(cardLayoutGap + arrowIconWidth) / 2}px
+				);
 			}
 		}
 	`;
@@ -412,7 +428,7 @@ const CancellationSwitchReview = () => {
 					benefits of a {chosenProduct.name}.
 				</p>
 
-				<div css={switchDetailsCardLayoutCss}>
+				<div css={cardLayoutCss}>
 					<Card
 						heading={`Your ${productSwitchContext.productType.friendlyName}`}
 					>
@@ -449,8 +465,10 @@ const CancellationSwitchReview = () => {
 						</div>
 					</Card>
 
-					<div css={switchArrowCss}>
-						<ArrowInCircle />
+					<div css={arrowIconCss}>
+						<span>
+							<SvgArrowRightStraight size="small" />
+						</span>
 					</div>
 
 					<Card
