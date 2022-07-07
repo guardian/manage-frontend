@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	brand,
 	brandAlt,
@@ -11,6 +11,7 @@ import { maxWidth, minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgArrowRightStraight,
 	SvgTickRound,
@@ -227,27 +228,20 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										</div>
 									</div>
 								)}
-								<div>
-									<span>
+								<div
+									css={css`
+										margin: ${space[4]}px 0 ${space[5]}px 0;
+										${minWidth.tablet} {
+											margin: 0;
+										}
+									`}
+								>
+									<ThemeProvider
+										theme={buttonThemeReaderRevenueBrand}
+									>
 										<Button
-											cssOverrides={css`
-												background-color: ${brandAlt[400]};
-												border: none;
-
-												:hover {
-													background-color: ${brandAlt[300]};
-												}
-
-												margin: ${space[4]}px 0
-													${space[5]}px 0;
-
-												${minWidth.tablet} {
-													margin: 0;
-												}
-											`}
 											icon={<SvgArrowRightStraight />}
 											iconSide="right"
-											priority="secondary"
 											nudgeIcon
 											onClick={() => {
 												navigate('./switch', {
@@ -264,7 +258,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										>
 											{`Explore a ${availableProduct.name}`}
 										</Button>
-									</span>
+									</ThemeProvider>
 								</div>
 							</div>
 
@@ -338,13 +332,15 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 						</div>
 					),
 				)}
-				<div>
+				<div
+					css={css`
+						${minWidth.tablet} {
+							display: flex;
+							justify-content: flex-end;
+						}
+					`}
+				>
 					<Button
-						cssOverrides={css`
-							${minWidth.tablet} {
-								float: right;
-							}
-						`}
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
 						onClick={() =>
