@@ -66,6 +66,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 
 	const isGifted = isGift(props.productDetail.subscription);
 
+	const isSafeToUpdatePaymentMethod =
+		props.productDetail.subscription.safeToUpdatePaymentMethod;
+
 	const userIsGifter = isGifted && props.productDetail.isPaidTier;
 
 	const giftPurchaseDate = props.productDetail.subscription.lastPaymentDate;
@@ -101,6 +104,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 		display: inline-block;
 		vertical-align: top;
 		width: calc(100% - 15ch);
+		overflow: hidden;
+		text-overflow: ellipsis;
 	`;
 
 	return (
@@ -457,7 +462,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									)}
 								</li>
 							</ul>
-							{!isGifted && (
+							{!isGifted && isSafeToUpdatePaymentMethod && (
 								<div
 									css={css`
 										margin-top: auto;
