@@ -6,7 +6,7 @@ export const ProductMovementTest: ABTest = {
 	expiry: '2023-12-01', // Remember that the server side test expiry can be different
 	author: 'supporter.revenue.retention.dev@guardian.co.uk',
 	description: 'Initial AB test for our product movement MVP',
-	audience: 0.5, // 0.01% (1 is 100%)
+	audience: 1, // 0.01% (1 is 100%)
 	audienceOffset: 0.5, // 50% (1 is 100%). Prevent overlapping with other tests.
 	successMeasure: 'It works',
 	audienceCriteria: 'Everyone',
