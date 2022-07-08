@@ -13,8 +13,8 @@ import {
 	textSans,
 	palette,
 	space,
+	from,
 } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
 import { CardDisplay } from '../payment/cardDisplay';
 import { expanderButtonCss } from '../expanderButton';
 import {
@@ -115,7 +115,7 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 		padding: ${space[4]}px;
 		${textSans.medium()};
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			flex-direction: row;
 			flex-wrap: wrap;
 		}
@@ -129,7 +129,7 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 			margin-top: 0;
 		}
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			flex: 0 1 50%;
 			margin-top: 0;
 			padding-top: ${space[2]}px;
@@ -254,7 +254,7 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[3]}px;
 		}
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: flex;
 			> * + * {
 				margin-top: 0;
@@ -269,7 +269,7 @@ const CancellationSwitchReview = () => {
 		align-items: center;
 		transform: rotate(90deg);
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			transform: none;
 		}
 
@@ -293,7 +293,7 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[4]}px;
 		}
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			flex-direction: row;
 			justify-content: space-between;
 
@@ -375,7 +375,7 @@ const CancellationSwitchReview = () => {
 					`
 						border-bottom: 1px solid ${palette.neutral[60]};
 					`}
-					${minWidth.tablet} {
+					${from.tablet} {
 						min-height: 64px;
 					}
 				`}
@@ -441,7 +441,7 @@ const CancellationSwitchReview = () => {
 									border: none;
 									border-bottom: 1px solid
 										${palette.neutral[86]};
-									${minWidth.tablet} {
+									${from.tablet} {
 										display: block;
 									}
 								`}
