@@ -509,14 +509,24 @@ const CancellationSwitchReview = () => {
 										${introOfferDuration(chosenProduct)}
 									`}
 									paymentFollowOnAmount={
-										<>
+										<span
+											css={css`
+												padding-left: 8ch;
+											`}
+										>
 											{`Then  ${regularPrice(
 												chosenProduct,
 											)} ${regularBillingFrequency(
 												chosenProduct,
 											)}. `}
-											<strong>Cancel anytime.</strong>
-										</>
+											<strong
+												css={css`
+													display: inline-block;
+												`}
+											>
+												Cancel anytime.
+											</strong>
+										</span>
 									}
 									theme="brand"
 								/>
