@@ -10,6 +10,7 @@ import {
 	deliveryRecordsAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	// productMoveAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -30,6 +31,10 @@ import {
 	reactivateReminderHandler,
 } from '../reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
+import {
+	availableProductMovesResponse,
+	productMoveResponse,
+} from '../../client/fixtures/productMovement';
 
 const router = Router();
 
@@ -135,6 +140,33 @@ router.patch(
 		'caseId',
 	]),
 );
+
+/*
+router.get(
+	'/available-product-moves/:subscriptionName',
+	productMoveAPI(
+		'available-product-moves/:subscriptionName',
+		'GET_AVAILABLE_PRODUCTS',
+	),
+);
+*/
+
+//
+router.get('/available-product-moves/:subscriptionName', (_, response) => {
+	response.json(availableProductMovesResponse);
+});
+//
+
+/*
+router.post(
+	'/product-move/:subscriptionName',
+	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT'),
+);
+*/
+
+router.post('/product-move/:subscriptionName', (_, response) => {
+	response.json(productMoveResponse);
+});
 
 router.get(
 	'/holidays/:subscriptionName/potential',

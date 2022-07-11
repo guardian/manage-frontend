@@ -30,6 +30,7 @@ const apiNames = [
 	'holiday-stop-api',
 	'invoicing-api',
 	'contact-us-api',
+	'product-move-api',
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -209,9 +210,15 @@ const deliveryRecordsAPIGateway = getApiGateway(
 	'membership',
 	'delivery-records-api',
 );
-
 export const deliveryRecordsAPI =
 	deliveryRecordsAPIGateway.authorisedExpressCallback;
+
+const productMoveAPIGateway = getApiGateway(
+	'membership',
+	'product-move-api',
+	generateAwsSignatureHeaders,
+);
+export const productMoveAPI = productMoveAPIGateway.authorisedExpressCallback;
 
 const invoicingAPIGateway = getApiGateway(
 	'support',

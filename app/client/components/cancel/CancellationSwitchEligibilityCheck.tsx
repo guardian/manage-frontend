@@ -1,6 +1,6 @@
 import CancellationReasonSelection from './CancellationReasonSelection';
-import CancellationSwitchOffer from './CancellationSwitchOffer';
-import { useLocation } from 'react-router-dom';
+import CancellationSwitchOffer from '../productSwitch/CancellationSwitchOffer';
+import { useLocation, Navigate } from 'react-router-dom';
 import {
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
@@ -9,8 +9,17 @@ import {
 	CancellationContextInterface,
 } from './CancellationContainer';
 import { useContext } from 'react';
+import useFetch from '../../services/useFetch';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import { Spinner } from '../spinner';
+import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
+import { useAB } from '@guardian/ab-react';
+import { ProductMovementTest } from '../../experiments/tests/product-movement-test';
 
 const CancellationSwitchEligibilityCheck = () => {
+	const ABTestAPI = useAB();
+
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const cancellationContext = useContext(
@@ -19,6 +28,10 @@ const CancellationSwitchEligibilityCheck = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
+
+	if (!routerState) {
+		return <Navigate to="/" />;
+	}
 
 	if (routerState?.dontShowOffer) {
 		pageTitleContext.setPageTitle(
@@ -30,11 +43,40 @@ const CancellationSwitchEligibilityCheck = () => {
 		return <CancellationReasonSelection />;
 	}
 
-	const isEligibleToSwitch: boolean = false;
-	const inABTest: boolean = false;
+	const inABTest = ABTestAPI.isUserInVariant(
+		ProductMovementTest.id,
+		ProductMovementTest.variants[1].id,
+	);
 
-	return inABTest && isEligibleToSwitch ? (
-		<CancellationSwitchOffer />
+	const { data, error } = useFetch<AvailableProductsResponse[]>(
+		`/api/available-product-moves/${routerState.productDetail.subscription.subscriptionId}`,
+		{
+			method: 'GET',
+			headers: {
+				[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
+			},
+		},
+	);
+
+	if (error) {
+		return <CancellationReasonSelection />;
+	}
+
+	if (!data) {
+		return (
+			<WithStandardTopMargin>
+				<Spinner
+					loadingMessage={`Checking your ${
+						cancellationContext.productType.shortFriendlyName ||
+						cancellationContext.productType.friendlyName
+					} details...`}
+				/>
+			</WithStandardTopMargin>
+		);
+	}
+
+	return inABTest ? (
+		<CancellationSwitchOffer availableProductsToSwitch={data} />
 	) : (
 		<CancellationReasonSelection />
 	);

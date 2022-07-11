@@ -3,6 +3,8 @@ import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
 	beforeEach(() => {
+		cy.setCookie('GU_mvt_id', '0');
+
 		signInAndAcceptCookies();
 
 		cy.intercept('POST', '/api/case', {

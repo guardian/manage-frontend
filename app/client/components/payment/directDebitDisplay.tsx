@@ -68,21 +68,16 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 			<div
 				css={css`
 					display: flex;
+					align-items: center;
 				`}
 			>
 				<DirectDebitLogo
 					fill={brand[400]}
 					additionalCss={css`
-						margin: 0 10px 0 0;
-					`}
-				/>
-				<span
-					css={css`
 						margin-right: 10px;
 					`}
-				>
-					{sanitiseAccountNumber(props.accountNumber, true)}
-				</span>
+				/>
+				<span>{sanitiseAccountNumber(props.accountNumber, true)}</span>
 			</div>
 		);
 	}
