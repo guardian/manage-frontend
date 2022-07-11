@@ -13,6 +13,7 @@ import {
 	textSans,
 	palette,
 	space,
+	between,
 	from,
 } from '@guardian/source-foundations';
 import { CardDisplay } from '../payment/cardDisplay';
@@ -254,7 +255,15 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[3]}px;
 		}
 
-		${from.tablet} {
+		${between.tablet.and.desktop} {
+			display: flex;
+			> * + * {
+				margin-top: 0;
+				margin-left: ${cardLayoutGap}px;
+			}
+		}
+
+		${from.leftCol} {
 			display: flex;
 			> * + * {
 				margin-top: 0;
